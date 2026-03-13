@@ -64,7 +64,7 @@ namespace gum_tests {
     static void testRandomSeed() {
       CHECK(((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10)));
 
-      GUM_CHECK_EQ(GUM_RANDOMSEED, 0);
+      CHECK_EQ(GUM_RANDOMSEED, 0);
 
       gum::initRandom(20);
       const auto x1 = gum::randomProba();
@@ -107,11 +107,11 @@ namespace gum_tests {
       const auto x42 = gum::randomProba();
 
       gum::initRandom(0);
-      GUM_CHECK_NE(x0, gum::randomProba());   // may fail but highly improbable
+      CHECK_NE(x0, gum::randomProba());   // may fail but highly improbable
       gum::initRandom(10);
-      GUM_CHECK_EQ(x10, gum::randomProba());
+      CHECK_EQ(x10, gum::randomProba());
       gum::initRandom(42);
-      GUM_CHECK_EQ(x42, gum::randomProba());
+      CHECK_EQ(x42, gum::randomProba());
       gum::initRandom(GUM_RANDOMSEED);
     }
 

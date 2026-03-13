@@ -67,26 +67,26 @@ namespace gum_tests {
       heap1.insert(10);
       heap1.insert(10);
 
-      GUM_CHECK_EQ(heap1.top(), 2);
+      CHECK_EQ(heap1.top(), 2);
       heap1.pop();
-      GUM_CHECK_EQ(heap1.top(), 8);
+      CHECK_EQ(heap1.top(), 8);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), 10);
+      CHECK_EQ(heap1.top(), 10);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), 10);
+      CHECK_EQ(heap1.top(), 10);
 
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(heap1.empty(), false);
-      GUM_CHECK_EQ(heap1.contains(8), false);
-      GUM_CHECK_EQ(heap1.contains(23), true);
-      GUM_CHECK_EQ(heap1.contains(10), true);
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(heap1.empty(), false);
+      CHECK_EQ(heap1.contains(8), false);
+      CHECK_EQ(heap1.contains(23), true);
+      CHECK_EQ(heap1.contains(10), true);
 
       heap1.erase(10);
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(heap1.erase(150));
 
       heap1.eraseByPos(0);
-      GUM_CHECK_EQ(heap1.top(), 23);
+      CHECK_EQ(heap1.top(), 23);
     }
 
     static void testConstructor2() {
@@ -100,26 +100,26 @@ namespace gum_tests {
       heap1.insert(10);
       heap1.insert(10);
 
-      GUM_CHECK_EQ(heap1.top(), 24);
+      CHECK_EQ(heap1.top(), 24);
       heap1.pop();
-      GUM_CHECK_EQ(heap1.top(), 23);
+      CHECK_EQ(heap1.top(), 23);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), 10);
+      CHECK_EQ(heap1.top(), 10);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), 10);
+      CHECK_EQ(heap1.top(), 10);
 
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(heap1.empty(), false);
-      GUM_CHECK_EQ(heap1.contains(23), false);
-      GUM_CHECK_EQ(heap1.contains(2), true);
-      GUM_CHECK_EQ(heap1.contains(8), true);
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(heap1.empty(), false);
+      CHECK_EQ(heap1.contains(23), false);
+      CHECK_EQ(heap1.contains(2), true);
+      CHECK_EQ(heap1.contains(8), true);
 
       heap1.erase(10);
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(heap1.erase(150));
 
       heap1.eraseByPos(0);
-      GUM_CHECK_EQ(heap1.top(), 8);
+      CHECK_EQ(heap1.top(), 8);
     }
 
     static void testMoves() {
@@ -130,8 +130,8 @@ namespace gum_tests {
       gum::Heap< int, std::greater< int > > heap4 = std::move(heap3);
       heap3                                       = std::move(heap2);
       heap2                                       = std::move(heap1);
-      GUM_CHECK_EQ(heap2.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(heap2.top(), 5);
+      CHECK_EQ(heap2.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(heap2.top(), 5);
     }
 
     static void testCopy() {
@@ -150,10 +150,10 @@ namespace gum_tests {
       heap2.insert(20);
 
       heap2 = heap1;
-      GUM_CHECK_EQ(heap2.size(), (gum::Size)heap1.size());
+      CHECK_EQ(heap2.size(), (gum::Size)heap1.size());
 
       gum::Heap< int > heap3(heap1);
-      GUM_CHECK_EQ(heap3.size(), (gum::Size)heap1.size());
+      CHECK_EQ(heap3.size(), (gum::Size)heap1.size());
     }
 
     static void testErase() {
@@ -168,14 +168,14 @@ namespace gum_tests {
       heap1.insert(10);
 
       heap1.eraseByPos(0);
-      GUM_CHECK_EQ(heap1.top(), 8);
+      CHECK_EQ(heap1.top(), 8);
       GUM_CHECK_ASSERT_THROWS_NOTHING(heap1.eraseByPos(150));
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(6));
       heap1.eraseByPos(4);
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(5));
       heap1.eraseByPos(4);
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(heap1.contains(24), false);
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(heap1.contains(24), false);
     }
 
     class SetCmp {
@@ -213,27 +213,27 @@ namespace gum_tests {
       heap1.insert(s2);
       heap1.insert(s5);
 
-      GUM_CHECK_EQ(heap1.top(), s1);
+      CHECK_EQ(heap1.top(), s1);
       heap1.pop();
-      GUM_CHECK_EQ(heap1.top(), s2);
+      CHECK_EQ(heap1.top(), s2);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), s2);
+      CHECK_EQ(heap1.top(), s2);
       heap1.eraseTop();
-      GUM_CHECK_EQ(heap1.top(), s2);
+      CHECK_EQ(heap1.top(), s2);
 
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(heap1.empty(), false);
-      GUM_CHECK_EQ(heap1.contains(s1), false);
-      GUM_CHECK_EQ(heap1.contains(s4), true);
-      GUM_CHECK_EQ(heap1.contains(s5), true);
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(heap1.empty(), false);
+      CHECK_EQ(heap1.contains(s1), false);
+      CHECK_EQ(heap1.contains(s4), true);
+      CHECK_EQ(heap1.contains(s5), true);
 
       gum::Set< int > s6;
       heap1.erase(s2);
-      GUM_CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(heap1.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(heap1.erase(s6));
 
       heap1.eraseByPos(0);
-      GUM_CHECK_EQ(heap1.top(), s4);
+      CHECK_EQ(heap1.top(), s4);
     }
   };
 

@@ -92,13 +92,13 @@ namespace gum_tests {
       CHECK(ig->graph().existsNode(ig->id(m.get("p"))));
       CHECK(ig->graph().existsNode(ig->id(m.get("c"))));
       CHECK(ig->graph().existsNode(ig->id(m.get("e"))));
-      GUM_CHECK_EQ(ig->graph().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(ig->graph().size(), static_cast< gum::Size >(5));
       // Checking existing edges
       CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("p"))));
       CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("c"))));
       CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))));
       CHECK(ig->graph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))));
-      GUM_CHECK_EQ(ig->graph().sizeEdges(), static_cast< gum::Size >(4));
+      CHECK_EQ(ig->graph().sizeEdges(), static_cast< gum::Size >(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
     }
 
@@ -107,17 +107,17 @@ namespace gum_tests {
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
       GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Testing power supply
-      GUM_CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
-      GUM_CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("r"))).l->l);
-      GUM_CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
-      GUM_CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+      CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
+      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("r"))).l->l);
+      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
+      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
       // Testing rooms
-      GUM_CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
-      GUM_CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
-      GUM_CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+      CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
+      CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
+      CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
       // Testing printers
-      GUM_CHECK_EQ(ig->size(ig->node(ig->id(m.get("p"))).l), static_cast< gum::Size >(1));
-      GUM_CHECK_NE(ig->node(ig->id(m.get("p"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+      CHECK_EQ(ig->size(ig->node(ig->id(m.get("p"))).l), static_cast< gum::Size >(1));
+      CHECK_NE(ig->node(ig->id(m.get("p"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
     }
 
@@ -172,7 +172,7 @@ namespace gum_tests {
       CHECK(ig->graph().existsNode(ig->id(m.get("another_computer"))));
 
       ++node_count;
-      GUM_CHECK_EQ(ig->graph().size(), (gum::Size)node_count);
+      CHECK_EQ(ig->graph().size(), (gum::Size)node_count);
       // Checking existing edges from pow
       int edge_count = 0;
 
@@ -212,7 +212,7 @@ namespace gum_tests {
                                    ig->id(m.get("another_computer"))));
 
       ++edge_count;
-      GUM_CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+      CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
     }
 
@@ -221,8 +221,8 @@ namespace gum_tests {
       gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
       GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
       // Testing each labels size (the number of nodes with the given label)
-      GUM_CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
+      CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
+      CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
       CHECK((ig->size(ig->node(ig->id(m.get("another_printer"))).l))
             == (static_cast< gum::Size >(3)));
       CHECK((ig->size(ig->node(ig->id(m.get("another_computer"))).l))
@@ -246,7 +246,7 @@ namespace gum_tests {
                 ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l))
             == (static_cast< gum::Size >(15)));
       edge_count += 15;
-      GUM_CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+      CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
     }
 

@@ -376,7 +376,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -400,7 +400,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       gum::GibbsSampling< double > inf(&bn);
       aSimpleGibbsApproxListener   agsl(inf);
@@ -411,8 +411,8 @@ namespace gum_tests {
       inf.setVerbosity(false);
       inf.setEpsilon(EPSILON_FOR_GIBBS);
       GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
-      GUM_CHECK_EQ(agsl.getNbr() * inf.periodSize() + inf.burnIn(), inf.nbrIterations());
-      GUM_CHECK_NE(agsl.getMess(), std::string(""));
+      CHECK_EQ(agsl.getNbr() * inf.periodSize() + inf.burnIn(), inf.nbrIterations());
+      CHECK_NE(agsl.getMess(), std::string(""));
     }
 
     static void testEvidenceAsTargetOnCplxBN() {
@@ -480,7 +480,7 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        GUM_CHECK_LT(err, RELEVANT_ERR);
+        CHECK_LT(err, RELEVANT_ERR);
       }
       {
         auto exact = gum::LazyPropagation(&bn);
@@ -498,7 +498,7 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        GUM_CHECK_LT(err, RELEVANT_ERR);
+        CHECK_LT(err, RELEVANT_ERR);
       }
       {
         auto exact = gum::LazyPropagation(&bn);
@@ -516,7 +516,7 @@ namespace gum_tests {
           const double err_n = (exact.posterior(n) - gibbs.posterior(n)).abs().max();
           if (err < err_n) err = err_n;
         }
-        GUM_CHECK_LT(err, RELEVANT_ERR);
+        CHECK_LT(err, RELEVANT_ERR);
       }
     }
   };

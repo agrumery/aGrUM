@@ -72,12 +72,12 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }   // namespace gum_tests
 
@@ -95,8 +95,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isClass("Bar"));
     }
 
@@ -114,8 +114,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isClass("Bar"));
     }
 
@@ -133,8 +133,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 7| Error : label expected";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
       CHECK(!prm.isClass("Bar"));
     }
 
@@ -148,11 +148,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -162,7 +162,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -177,11 +177,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -191,7 +191,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -212,11 +212,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -225,7 +225,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
@@ -235,7 +235,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.4).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.6).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -262,8 +262,8 @@ namespace gum_tests {
       msg << "|4 col 9| Error : PRMAttribute Bar.isWorking CPT does not sum to "
              "1, "
              "found 0.4";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleClassError2() {
@@ -287,8 +287,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 29| Error : Parent stat not found";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleClassError3() {
@@ -314,8 +314,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|4 col 9| Error : Illegal CPT size, expected 4 found 6 for "
              "attribute Bar.isWorking";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleRules1() {
@@ -335,11 +335,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -348,7 +348,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.1).epsilon(1e-6));
@@ -358,7 +358,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -379,11 +379,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -392,7 +392,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
@@ -402,7 +402,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -423,11 +423,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -436,7 +436,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.1).epsilon(1e-6));
@@ -446,7 +446,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -467,11 +467,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -480,7 +480,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.1).epsilon(1e-6));
@@ -490,7 +490,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.8).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -516,8 +516,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|5 col 15| Error : Illegal CPT value \"110/100\" in attribute "
              "Bar.isWorking, formula resolve to 1.1";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleRulesError2() {
@@ -541,8 +541,8 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|5 col 1| Error : Expected 1 value(s), found 2";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleRulesError3() {
@@ -567,8 +567,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 6| Error : Illegal CPT value \"FOO\" in attribute "
              "Bar.isWorking, could not resolve the following formula: \"FOO\"";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleRulesError4() {
@@ -591,11 +591,11 @@ namespace gum_tests {
       std::string line;
       std::getline(output, line);
       std::string msg = "|5 col 1| Error : Label BAR is not part of state domain";
-      GUM_CHECK_EQ(line, msg);
+      CHECK_EQ(line, msg);
       std::getline(output, line);
       msg = "|6 col 1| Error : Label FOO is not part of state domain";
-      GUM_CHECK_EQ(line, msg);
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg);
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testSimpleParameter1() {
@@ -614,22 +614,22 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       const auto& cpf = state.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(2));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(std::exp(-0.003 * 8760)).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(1 - std::exp(-0.003 * 8760)).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -652,10 +652,10 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -664,7 +664,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(std::exp(-0.003 * 8760)).epsilon(1e-6));
@@ -674,7 +674,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(1.0).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.0).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -689,23 +689,23 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoo"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &(foo));
+      CHECK_EQ(&(myFoo.slotType()), &(foo));
       CHECK(!myFoo.isArray());
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
@@ -721,23 +721,23 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoo"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &(foo));
+      CHECK_EQ(&(myFoo.slotType()), &(foo));
       CHECK(myFoo.isArray());
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
@@ -762,23 +762,23 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoo"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(!myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
@@ -788,7 +788,7 @@ namespace gum_tests {
       CHECK(bar.exists("myFoo.state"));
       const auto& chain = bar.get("myFoo.state");
       CHECK(cpf.variablesSequence().exists(&(chain.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(std::exp(-0.003 * 8760)).epsilon(1e-6));
@@ -823,23 +823,23 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
       CHECK(prm.isClass("Foo"));
       const auto& foo = prm.getClass("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoo"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoo")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoo"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(!myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
@@ -849,7 +849,7 @@ namespace gum_tests {
       CHECK(bar.exists("myFoo.state"));
       const auto& chain = bar.get("myFoo.state");
       CHECK(cpf.variablesSequence().exists(&(chain.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(std::exp(-0.003 * 8760)).epsilon(1e-6));
@@ -887,8 +887,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|9 col 29| Error : Link myfoo in chain myfoo.state "
              "not found";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testClassWithReferenceError2() {
@@ -916,8 +916,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|9 col 29| Error : Link stat in chain myFoo.stat not "
              "found";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testClassWithReferenceError3() {
@@ -944,8 +944,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|8 col 29| Error : Link myFoo in chain myFoo.state "
              "not found";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
     }
 
     static void testClassWithReferenceError4() {
@@ -975,8 +975,8 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
-      GUM_CHECK_EQ(line, msg.str());
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(line, msg.str());
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
     }
 
     static void testClassWithReferenceError6() {
@@ -1007,7 +1007,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|7 col 1| Error : Class Foo cannot reference "
              "subclass Bar";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testOrAggregate() {
@@ -1024,30 +1024,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
     }
 
     static void testOrAggregateArray() {
@@ -1065,30 +1065,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::OR);
     }
 
     static void testAndAggregate() {
@@ -1105,30 +1105,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
     }
 
     static void testAndAggregateArray() {
@@ -1146,30 +1146,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AND);
     }
 
     static void testForAllAggregate() {
@@ -1187,30 +1187,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
     }
 
     static void testForAllAggregateArray() {
@@ -1229,30 +1229,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::FORALL);
     }
 
     static void testExistsAggregate() {
@@ -1270,30 +1270,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
     }
 
     static void testExistsAggregateArray() {
@@ -1312,30 +1312,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::EXISTS);
     }
 
     static void testMinAggregate() {
@@ -1353,30 +1353,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
     }
 
     static void testMinAggregateArray() {
@@ -1395,30 +1395,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MIN);
     }
 
     static void testMaxAggregate() {
@@ -1436,30 +1436,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
     }
 
     static void testMaxAggregateArray() {
@@ -1478,30 +1478,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MAX);
     }
 
     static void testMedianAggregate() {
@@ -1519,30 +1519,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
     }
 
     static void testMedianAggregateArray() {
@@ -1561,30 +1561,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::MEDIAN);
     }
 
     static void testAmplitudeAggregate() {
@@ -1602,30 +1602,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
     }
 
     static void testAmplitudeAggregateArray() {
@@ -1644,30 +1644,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::AMPLITUDE);
     }
 
     static void testCountAggregate() {
@@ -1685,30 +1685,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
     }
 
     static void testCountAggregateArray() {
@@ -1727,30 +1727,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::COUNT);
     }
 
     static void testSumAggregate() {
@@ -1768,30 +1768,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
     }
 
     static void testSumAggregateArray() {
@@ -1810,30 +1810,30 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       const auto& state = foo.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.aggregates().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("myFoos"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("myFoos")));
       const auto& myFoo
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("myFoos"));
-      GUM_CHECK_EQ(&(myFoo.slotType()), &foo);
+      CHECK_EQ(&(myFoo.slotType()), &foo);
       CHECK(myFoo.isArray());
       CHECK(bar.exists("isWorking"));
       const auto& isWorking = bar.get("isWorking");
       CHECK(gum::prm::PRMClassElement< double >::isAggregate(isWorking));
       const auto& agg = static_cast< const gum::prm::PRMAggregate< double >& >(isWorking);
-      GUM_CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
+      CHECK_EQ(agg.agg_type(), gum::prm::PRMAggregate< double >::AggregateType::SUM);
     }
 
     static void testOrAggregateWithErrors1() {
@@ -1855,7 +1855,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 24| Error : Link myBoos in chain myBoos.state "
              "not found";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testOrAggregateWithErrors2() {
@@ -1877,7 +1877,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 24| Error : Link st in chain myFoos.st not "
              "found";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testOrAggregateWithErrors3() {
@@ -1898,7 +1898,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|6 col 24| Error : invalid declaration";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testOrAggregateWithErrors4() {
@@ -1923,7 +1923,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|11 col 39| Error : Expected type boolean for parent "
              "myBoos.state, found state";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testCountAggregateWithErrors5() {
@@ -1946,7 +1946,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|7 col 39| Error : Parameter foobar in aggregate "
              "isWorking does not match any expected values";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testInheritance1() {
@@ -1962,19 +1962,19 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
       CHECK(prm.isClass("Bar"));
-      GUM_CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       const auto& bar = prm.getClass("Bar");
       CHECK(foo.isSuperTypeOf(bar));
       CHECK(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)));
-      GUM_CHECK_EQ(bar.parameters().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.slotChains().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.parameters().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.slotChains().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
     }
 
     static void testInheritance2() {
@@ -1990,19 +1990,19 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
       CHECK(prm.isInterface("Foo"));
       const auto& foo = prm.getInterface("Foo");
       CHECK(prm.isClass("Bar"));
-      GUM_CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       const auto& bar = prm.getClass("Bar");
       CHECK(foo.isSuperTypeOf(bar));
       CHECK(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&foo)));
-      GUM_CHECK_EQ(bar.parameters().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.slotChains().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bar.parameters().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.slotChains().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(1));
     }
 
     static void testInheritance3() {
@@ -2025,11 +2025,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
       CHECK(prm.isInterface("iFoo"));
       const auto& ifoo = prm.getInterface("iFoo");
-      GUM_CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Foo"));
       const auto& foo = prm.getClass("Foo");
       CHECK(ifoo.isSuperTypeOf(foo));
@@ -2037,7 +2037,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass("Bar");
       CHECK(ifoo.isSuperTypeOf(bar));
       CHECK(foo.isSuperTypeOf(bar));
-      GUM_CHECK_EQ(&(bar.super()), &(foo));
+      CHECK_EQ(&(bar.super()), &(foo));
       CHECK(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
     }
 
@@ -2060,7 +2060,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 22| Error : Interface Bar not found";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testInheritanceError2() {
@@ -2083,7 +2083,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|4 col 7| Error : Class Foo does not implement all of "
              "interface iFoo attributes";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testInheritanceError3() {
@@ -2107,7 +2107,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 7| Error : Class Foo attribute state does not "
              "respect interface iFoo";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testInheritanceError4() {
@@ -2129,7 +2129,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|4 col 19| Error : Unknown class oo";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testInheritanceError5() {
@@ -2153,7 +2153,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|6 col 7| Error : Illegal overload of element state from "
              "class Foo";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testOrderDoesNotMatter1() {
@@ -2176,11 +2176,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
       CHECK(prm.isInterface("iFoo"));
       const auto& ifoo = prm.getInterface("iFoo");
-      GUM_CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Foo"));
       const auto& foo = prm.getClass("Foo");
       CHECK(ifoo.isSuperTypeOf(foo));
@@ -2188,7 +2188,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass("Bar");
       CHECK(ifoo.isSuperTypeOf(bar));
       CHECK(foo.isSuperTypeOf(bar));
-      GUM_CHECK_EQ(&(bar.super()), &(foo));
+      CHECK_EQ(&(bar.super()), &(foo));
       CHECK(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
     }
 
@@ -2212,11 +2212,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
       CHECK(prm.isInterface("iFoo"));
       const auto& ifoo = prm.getInterface("iFoo");
-      GUM_CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(ifoo.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(ifoo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Foo"));
       const auto& foo = prm.getClass("Foo");
       CHECK(ifoo.isSuperTypeOf(foo));
@@ -2224,7 +2224,7 @@ namespace gum_tests {
       const auto& bar = prm.getClass("Bar");
       CHECK(ifoo.isSuperTypeOf(bar));
       CHECK(foo.isSuperTypeOf(bar));
-      GUM_CHECK_EQ(&(bar.super()), &(foo));
+      CHECK_EQ(&(bar.super()), &(foo));
       CHECK(bar.implements().contains(const_cast< gum::prm::PRMInterface< double >* >(&ifoo)));
     }
 
@@ -2238,7 +2238,7 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ("", output.str());
+      CHECK_EQ("", output.str());
     }
 
     static void testClassWithOverloading() {
@@ -2270,53 +2270,53 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.interfaces().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(2));
       CHECK(prm.isInterface("Plop"));
       const auto& plop = prm.getInterface("Plop");
-      GUM_CHECK_EQ(plop.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(plop.attributes().size(), static_cast< gum::Size >(1));
       CHECK(plop.exists("state"));
       CHECK(plop.exists("(boolean)state"));
 
       CHECK(prm.isInterface("SubPlop"));
       const auto& sub_plop = prm.getInterface("SubPlop");
-      GUM_CHECK_EQ(sub_plop.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(sub_plop.attributes().size(), static_cast< gum::Size >(2));
       CHECK(sub_plop.exists("state"));
       CHECK(sub_plop.exists("(boolean)state"));
       CHECK(sub_plop.exists("(state)state"));
 
       CHECK(prm.isClass("Foo"));
       const auto& foo = prm.getClass("Foo");
-      GUM_CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(foo.attributes().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("state"));
       CHECK(foo.exists("(boolean)state"));
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(foo.get("state")));
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(foo.get("(boolean)state")));
-      GUM_CHECK_EQ(&(foo.get("state")), &(foo.get("(boolean)state")));
-      GUM_CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(&(foo.get("state")), &(foo.get("(boolean)state")));
+      CHECK_EQ(foo.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(foo.exists("plop"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(foo.get("plop")));
       const auto& ref_plop
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(foo.get("plop"));
-      GUM_CHECK_EQ(&(ref_plop.slotType()), &plop);
+      CHECK_EQ(&(ref_plop.slotType()), &plop);
 
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       CHECK(bar.exists("(boolean)state"));
       CHECK(bar.exists("(state)state"));
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(bar.get("state")));
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(boolean)state")));
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(bar.get("(state)state")));
-      GUM_CHECK_EQ(&(bar.get("state")), &(bar.get("(state)state")));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(&(bar.get("state")), &(bar.get("(state)state")));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(1));
       CHECK(bar.exists("plop"));
       CHECK(gum::prm::PRMClassElement< double >::isReferenceSlot(bar.get("plop")));
       const auto& ref_subplop
           = static_cast< const gum::prm::PRMReferenceSlot< double >& >(bar.get("plop"));
-      GUM_CHECK_EQ(&(ref_subplop.slotType()), &sub_plop);
+      CHECK_EQ(&(ref_subplop.slotType()), &sub_plop);
     }
 
     static void testClassWithOverloadingError1() {
@@ -2353,7 +2353,7 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|5 col 33| Error : Illegal overload of element plop from class "
              "Bar";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testAggregateWithError() {
@@ -2376,7 +2376,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|8 col 26| Error : Illegal parent myFoos";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testAnonymousType1() {
@@ -2395,11 +2395,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -2408,7 +2408,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
@@ -2418,7 +2418,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.4).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.6).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -2438,11 +2438,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -2451,7 +2451,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
@@ -2461,7 +2461,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.4).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.6).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -2481,11 +2481,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -2494,7 +2494,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
@@ -2504,7 +2504,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.4).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.6).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -2524,11 +2524,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(1));
       CHECK(prm.isClass("Bar"));
       const auto& bar = prm.getClass("Bar");
-      GUM_CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bar.attributes().size(), static_cast< gum::Size >(2));
       CHECK(bar.exists("state"));
       const auto& state = bar.get("state");
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(state));
@@ -2537,7 +2537,7 @@ namespace gum_tests {
       CHECK(gum::prm::PRMClassElement< double >::isAttribute(isWorking));
       const auto& cpf = isWorking.cpf();
       CHECK(cpf.variablesSequence().exists(&(state.type().variable())));
-      GUM_CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(cpf.domainSize(), static_cast< gum::Size >(4));
       auto i = gum::Instantiation(cpf);
       i.setFirst();
       CHECK((cpf[i]) == doctest::Approx(0.2).epsilon(1e-6));
@@ -2547,7 +2547,7 @@ namespace gum_tests {
       CHECK((cpf[i]) == doctest::Approx(0.4).epsilon(1e-6));
       i.inc();
       CHECK((cpf[i]) == doctest::Approx(0.6).epsilon(1e-6));
-      GUM_CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bar.referenceSlots().size(), static_cast< gum::Size >(0));
       CHECK_THROWS_AS(bar.super(), const gum::NotFound&);
     }
 
@@ -2567,8 +2567,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 6| Error : invalid declaration\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 6| Error : invalid declaration\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
 
     static void testAnonymousTypeError2() {
@@ -2587,8 +2587,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 8| Error : invalid declaration\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 8| Error : invalid declaration\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
 
     static void testAnonymousTypeError3() {
@@ -2607,8 +2607,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 3| Error : invalid declaration\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 3| Error : invalid declaration\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
 
     static void testAnonymousTypeError4() {
@@ -2627,8 +2627,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 5| Error : integer expected\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 5| Error : integer expected\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
 
     static void testAnonymousTypeError5() {
@@ -2647,8 +2647,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 4| Error : invalid declaration\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 4| Error : invalid declaration\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
 
     static void testAnonymousTypeError6() {
@@ -2667,8 +2667,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "|2 col 6| Error : invalid declaration\n");
-      GUM_CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(output.str(), "|2 col 6| Error : invalid declaration\n");
+      CHECK_EQ(prm.classes().size(), static_cast< gum::Size >(0));
     }
   };
 

@@ -858,20 +858,20 @@ namespace gum_tests {
       {
         auto t2 = t1.maxOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
-        GUM_CHECK_EQ(t2, *t3);
+        CHECK_EQ(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.maxOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
-        GUM_CHECK_EQ(t2, *t3);
+        CHECK_EQ(t2, *t3);
         delete (t3);
       }
       {
         gum::Tensor< double > t3;
         auto                  t2 = t1.maxOut(proj_set);
         Proj.execute(t3, t1, proj_set);
-        GUM_CHECK_EQ(t2, t3);
+        CHECK_EQ(t2, t3);
       }
 
       {
@@ -908,11 +908,11 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
-      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
-      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       gum::Tensor< double > t6;
@@ -988,8 +988,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        GUM_CHECK_EQ(t2, *t3);
-        GUM_CHECK_EQ(t1, *t3);
+        CHECK_EQ(t2, *t3);
+        CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1009,8 +1009,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.maxOut(del_vars);
-        GUM_CHECK_EQ(t2, *t3);
-        GUM_CHECK_EQ(t1, *t3);
+        CHECK_EQ(t2, *t3);
+        CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1020,8 +1020,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.maxOut(del_vars);
-        GUM_CHECK_EQ(t2, *t3);
-        GUM_CHECK_EQ(t1, *t3);
+        CHECK_EQ(t2, *t3);
+        CHECK_EQ(t1, *t3);
         gum::Instantiation inst(t3);
         CHECK(t3->get(inst) == 3.0);
         delete (t3);
@@ -1038,8 +1038,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        GUM_CHECK_EQ(t2, *t3);
-        GUM_CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
+        CHECK_EQ(t2, *t3);
+        CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
         gum::Instantiation inst3(t3);
         CHECK(((*t3)[inst3]) == doctest::Approx(2.0).epsilon(0.001));
         delete (t3);
@@ -1055,8 +1055,8 @@ namespace gum_tests {
       {
         gum::Tensor< double >* t3 = proj.execute(t1, del_vars);
         auto                   t2 = t1.sumOut(del_vars);
-        GUM_CHECK_EQ(t2, *t3);
-        GUM_CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
+        CHECK_EQ(t2, *t3);
+        CHECK_EQ(t3->variablesSequence().size(), gum::Size(0));
         gum::Instantiation inst3(t3);
         CHECK(((*t3)[inst3]) == doctest::Approx(5.0).epsilon(0.001));
         delete (t3);
@@ -1132,11 +1132,11 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       delete t5;
 
-      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
-      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       gum::Tensor< double > t6;
@@ -1234,13 +1234,13 @@ namespace gum_tests {
       {
         auto t2 = t1.sumOut(del_vars);
         auto t3 = Proj.execute(t1, del_vars);
-        GUM_CHECK_EQ(t2, *t3);
+        CHECK_EQ(t2, *t3);
         delete t3;
       }
       {
         auto t2 = t1.sumOut(proj_set);
         auto t3 = Proj.execute(t1, proj_set);
-        GUM_CHECK_EQ(t2, *t3);
+        CHECK_EQ(t2, *t3);
         delete t3;
       }
 
@@ -1250,18 +1250,18 @@ namespace gum_tests {
       gum::Tensor< double >* t5 = Proj.execute(t1, proj_set);
       {
         auto t2 = t1.sumOut(proj_set);
-        GUM_CHECK_EQ(t2, *t5);
+        CHECK_EQ(t2, *t5);
 
         gum::Instantiation I5(*t5);
         CHECK((1.0) == doctest::Approx((*t5)[I5]).epsilon(0.0001));
       }
       delete t5;
 
-      GUM_CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
-      GUM_CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1, proj_set), 59049);
+      CHECK_EQ(Proj.nbOperations(t1.variablesSequence(), proj_set), 59049);
 
       std::pair< double, double > yyy = Proj.memoryUsage(t1, del_vars);
-      GUM_CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.first, 2187 * sizeof(double) + sizeof(gum::Tensor< double >));
       yyy = Proj.memoryUsage(t1.variablesSequence(), del_vars);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

@@ -66,29 +66,29 @@ namespace gum_tests {
 
       gum::Set< int > set2{1, 2, 3};
       set = new gum::Set< int >(set2);
-      GUM_CHECK_EQ(*set, set2);
+      CHECK_EQ(*set, set2);
       delete set;
 
       gum::Set< int > set3{1, 2, 3};
       set = new gum::Set< int >(set3);
-      GUM_CHECK_EQ(*set, set3);
+      CHECK_EQ(*set, set3);
       delete set;
 
       set = new gum::Set< int >{1, 2, 3};
       gum::Set< int > set4(std::move(*set));
       delete set;
-      GUM_CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
 
       set4.clear();
       set4 = set2;
-      GUM_CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
       set4.clear();
-      GUM_CHECK_EQ(set4.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(set4.size(), static_cast< gum::Size >(0));
       set4 = set3;
-      GUM_CHECK_EQ(set4, set3);
+      CHECK_EQ(set4, set3);
       set4.clear();
       set4 = std::move(set2);
-      GUM_CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set4.size(), static_cast< gum::Size >(3));
     }   // namespace gum_tests
 
     static void testMoves() {
@@ -102,7 +102,7 @@ namespace gum_tests {
       set3                 = std::move(set2);
       set2                 = std::move(set1);
 
-      GUM_CHECK_EQ(set2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set2.size(), static_cast< gum::Size >(3));
     }
 
     static void testInsert() {
@@ -134,16 +134,16 @@ namespace gum_tests {
       fill(t2);
       fill(t3);
 
-      GUM_CHECK_EQ(t1, t1);
-      GUM_CHECK_EQ(t2, t2);
-      GUM_CHECK_EQ(t3, t3);
+      CHECK_EQ(t1, t1);
+      CHECK_EQ(t2, t2);
+      CHECK_EQ(t3, t3);
 
-      GUM_CHECK_EQ(t1, t2);
-      GUM_CHECK_EQ(t2, t1);
-      GUM_CHECK_EQ(t1, t3);
-      GUM_CHECK_EQ(t3, t1);
-      GUM_CHECK_EQ(t2, t3);
-      GUM_CHECK_EQ(t3, t2);
+      CHECK_EQ(t1, t2);
+      CHECK_EQ(t2, t1);
+      CHECK_EQ(t1, t3);
+      CHECK_EQ(t3, t1);
+      CHECK_EQ(t2, t3);
+      CHECK_EQ(t3, t2);
 
       t2.erase(1);
       t2.erase(3);
@@ -153,27 +153,27 @@ namespace gum_tests {
       t3.erase(4);
       t3.erase(6);
 
-      GUM_CHECK_NE(t1, t2);
-      GUM_CHECK_NE(t2, t1);
-      GUM_CHECK_NE(t1, t3);
-      GUM_CHECK_NE(t3, t1);
-      GUM_CHECK_NE(t2, t3);
-      GUM_CHECK_NE(t3, t2);
+      CHECK_NE(t1, t2);
+      CHECK_NE(t2, t1);
+      CHECK_NE(t1, t3);
+      CHECK_NE(t3, t1);
+      CHECK_NE(t2, t3);
+      CHECK_NE(t3, t2);
 
       gum::Set< int > t4, t5;
       fill(t4);
-      GUM_CHECK_EQ(t1, t4);
-      GUM_CHECK_NE(t2, t4);
-      GUM_CHECK_EQ(t4, t1);
-      GUM_CHECK_NE(t5, t4);
+      CHECK_EQ(t1, t4);
+      CHECK_NE(t2, t4);
+      CHECK_EQ(t4, t1);
+      CHECK_NE(t5, t4);
     }
 
     static void testSize() {
       gum::Set< int > set;
 
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(0));
       fill(set);
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(6));
     }
 
     static void testErase() {
@@ -181,22 +181,22 @@ namespace gum_tests {
       fill(set);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(4));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(5));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(6));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(1));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(3));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(3));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(5));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(1));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(4));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(-23));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(10000));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(42));
 
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(1));
 
       gum::Set< int > set2;
       fill(set2);
@@ -209,74 +209,74 @@ namespace gum_tests {
 
       gum::Set< int >::iterator iter1 = set.begin();
       gum::SetIterator< int >   iter2 = set.begin();
-      GUM_CHECK_EQ(iter1, iter2);
-      GUM_CHECK_EQ(*iter1, 3);
-      GUM_CHECK_NE(iter1, set.end());
-      GUM_CHECK_NE(iter2, set.end());
+      CHECK_EQ(iter1, iter2);
+      CHECK_EQ(*iter1, 3);
+      CHECK_NE(iter1, set.end());
+      CHECK_NE(iter2, set.end());
 
       gum::Set< int >::iterator iter3 = set.begin();
       gum::SetIterator< int >   iter4 = set.begin();
-      GUM_CHECK_EQ(iter3, iter4);
-      GUM_CHECK_EQ(*iter3, 3);
-      GUM_CHECK_NE(iter3, set.end());
-      GUM_CHECK_NE(iter4, set.end());
+      CHECK_EQ(iter3, iter4);
+      CHECK_EQ(*iter3, 3);
+      CHECK_NE(iter3, set.end());
+      CHECK_NE(iter4, set.end());
 
       gum::Set< int >::const_iterator iter5 = set.cbegin();
       gum::SetConstIterator< int >    iter6 = set.cbegin();
-      GUM_CHECK_EQ(iter5, iter6);
-      GUM_CHECK_EQ(*iter5, 3);
-      GUM_CHECK_NE(iter5, set.end());
-      GUM_CHECK_NE(iter6, set.end());
+      CHECK_EQ(iter5, iter6);
+      CHECK_EQ(*iter5, 3);
+      CHECK_NE(iter5, set.end());
+      CHECK_NE(iter6, set.end());
 
       gum::Set< int >::const_iterator iter7 = set.cbegin();
       gum::SetConstIterator< int >    iter8 = set.cbegin();
-      GUM_CHECK_EQ(iter7, iter8);
-      GUM_CHECK_EQ(*iter8, 3);
-      GUM_CHECK_NE(iter7, set.cend());
-      GUM_CHECK_NE(iter8, set.cend());
+      CHECK_EQ(iter7, iter8);
+      CHECK_EQ(*iter8, 3);
+      CHECK_NE(iter7, set.cend());
+      CHECK_NE(iter8, set.cend());
     }
 
     static void testEraseIterator() {
       gum::Set< int > set;
       fill(set);
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(6));
 
       auto iter = set.beginSafe();   // safe iterator needed here
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(iter));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(5));
 
       ++iter;
       ++iter;
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(iter));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(4));
 
       iter = set.begin();
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(iter));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(3));
 
       iter = set.end();
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.erase(iter));
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(3));
 
       gum::Set< int > set2;
       fill(set2);
-      GUM_CHECK_EQ(set2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(set2.size(), static_cast< gum::Size >(6));
       iter = set2.beginSafe();   // safe iterator needed here
       GUM_CHECK_ASSERT_THROWS_NOTHING(set2.erase(iter));
-      GUM_CHECK_EQ(set2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(set2.size(), static_cast< gum::Size >(5));
     }
 
     static void testClear() {
       gum::Set< int > set;
 
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.clear());
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(0));
 
       fill(set);
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(6));
       GUM_CHECK_ASSERT_THROWS_NOTHING(set.clear());
-      GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(set.size(), static_cast< gum::Size >(0));
     }
 
     static void testIsEmpty() {
@@ -321,15 +321,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2 = t1);
       GUM_CHECK_ASSERT_THROWS_NOTHING(t3 = t2);
 
-      GUM_CHECK_EQ(t1, t2);
-      GUM_CHECK_EQ(t3, t2);
-      GUM_CHECK_EQ(t1, t3);
+      CHECK_EQ(t1, t2);
+      CHECK_EQ(t3, t2);
+      CHECK_EQ(t1, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(t2.clear());
 
-      GUM_CHECK_NE(t1, t2);
-      GUM_CHECK_NE(t2, t3);
-      GUM_CHECK_EQ(t1, t3);
+      CHECK_NE(t1, t2);
+      CHECK_NE(t2, t3);
+      CHECK_EQ(t1, t3);
     }
 
     static void testIntersectionOperator() {
@@ -341,31 +341,31 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t1 * t2);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, t2);
+      CHECK_EQ(inter, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t1 * t3);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, t3);
+      CHECK_EQ(inter, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t1 * t1);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, t1);
+      CHECK_EQ(inter, t1);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t2 * t2);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, t2);
+      CHECK_EQ(inter, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t3 * t3);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, t3);
+      CHECK_EQ(inter, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t2 * t3);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, empty);
+      CHECK_EQ(inter, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeInter = t3 * t2);
       inter = getIntersection(fakeInter);
-      GUM_CHECK_EQ(inter, empty);
+      CHECK_EQ(inter, empty);
     }
 
     static void testUnionOperator() {
@@ -377,31 +377,31 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = empty + t2);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t2);
+      CHECK_EQ(unionSet, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = empty + t3);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t3);
+      CHECK_EQ(unionSet, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = t1 + t1);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t1);
+      CHECK_EQ(unionSet, t1);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t2);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t2);
+      CHECK_EQ(unionSet, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t3);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t3);
+      CHECK_EQ(unionSet, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = t2 + t3);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t1);
+      CHECK_EQ(unionSet, t1);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(fakeUnion = t3 + t2);
       unionSet = getUnion(fakeUnion);
-      GUM_CHECK_EQ(unionSet, t1);
+      CHECK_EQ(unionSet, t1);
     }
 
     static void testDisjunctionOperator() {
@@ -411,40 +411,40 @@ namespace gum_tests {
       fillOdd(t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t1 - t2);
-      GUM_CHECK_EQ(disjunction, t3);
+      CHECK_EQ(disjunction, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t1 - t3);
-      GUM_CHECK_EQ(disjunction, t2);
+      CHECK_EQ(disjunction, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t1 - t1);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t2 - t2);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t3 - t3);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t2 - t3);
-      GUM_CHECK_EQ(disjunction, t2);
+      CHECK_EQ(disjunction, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t2 - empty);
-      GUM_CHECK_EQ(disjunction, t2);
+      CHECK_EQ(disjunction, t2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t3 - t2);
-      GUM_CHECK_EQ(disjunction, t3);
+      CHECK_EQ(disjunction, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = t3 - empty);
-      GUM_CHECK_EQ(disjunction, t3);
+      CHECK_EQ(disjunction, t3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = empty - t1);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = empty - t2);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(disjunction = empty - t3);
-      GUM_CHECK_EQ(disjunction, empty);
+      CHECK_EQ(disjunction, empty);
     }
 
     static void testMap1() {
@@ -473,7 +473,7 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained);
+      CHECK_EQ(t1, obtained);
 
       gum::Set< int > obtained2;
 
@@ -481,7 +481,7 @@ namespace gum_tests {
         obtained2.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained2);
+      CHECK_EQ(t1, obtained2);
 
       obtained.clear();
       obtained2.clear();
@@ -490,31 +490,31 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained);
+      CHECK_EQ(t1, obtained);
 
       for (gum::Set< int >::const_iterator iter = t1.cbegin(); iter != t1.cend(); ++iter) {
         obtained2.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained2);
+      CHECK_EQ(t1, obtained2);
 
       gum::Set< int >::iterator       iter1;
       gum::Set< int >::iterator       iter2(t1);
       gum::Set< int >::const_iterator iter3(iter1);
       gum::Set< int >::const_iterator iter4(iter2);
-      GUM_CHECK_EQ(iter4, iter2);
+      CHECK_EQ(iter4, iter2);
       gum::Set< int >::const_iterator iter5 = t1.begin();
       gum::Set< int >::const_iterator iter6(iter5);
-      GUM_CHECK_EQ(*iter5, *iter6);
+      CHECK_EQ(*iter5, *iter6);
       gum::Set< int >::const_iterator iter7(std::move(iter6));
-      GUM_CHECK_EQ(*iter7, *(t1.begin()));
+      CHECK_EQ(*iter7, *(t1.begin()));
 
       iter7 = iter5;
-      GUM_CHECK_EQ(*iter7, *iter5);
+      CHECK_EQ(*iter7, *iter5);
       iter7 = std::move(iter4);
-      GUM_CHECK_EQ(*iter7, *iter2);
+      CHECK_EQ(*iter7, *iter2);
       iter7 = iter3;
-      GUM_CHECK_EQ(iter7, iter3);
+      CHECK_EQ(iter7, iter3);
 
       iter7 = t1.begin();
       iter1 = t1.begin();
@@ -522,8 +522,8 @@ namespace gum_tests {
       ++iter1;
       ++iter1;
       ++iter1;
-      GUM_CHECK_EQ(*iter7, *iter1);
-      GUM_CHECK_EQ(iter7, t1.begin() + 3);
+      CHECK_EQ(*iter7, *iter1);
+      CHECK_EQ(iter7, t1.begin() + 3);
     }
 
     static void testIterator_2() {
@@ -535,14 +535,14 @@ namespace gum_tests {
       for (const auto i: t1)
         obtained.insert(i);
 
-      GUM_CHECK_EQ(t1, obtained);
+      CHECK_EQ(t1, obtained);
       obtained.clear();
 
       for (gum::Set< int >::iterator iter = t1.begin(); iter != t1.end(); ++iter) {
         obtained.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained);
+      CHECK_EQ(t1, obtained);
 
       obtained.clear();
 
@@ -550,25 +550,25 @@ namespace gum_tests {
         obtained.insert(*iter);
       }
 
-      GUM_CHECK_EQ(t1, obtained);
+      CHECK_EQ(t1, obtained);
 
       gum::Set< int >::iterator       iter1;
       gum::Set< int >::iterator       iter2(t1);
       gum::Set< int >::const_iterator iter3(iter1);
       gum::Set< int >::const_iterator iter4(iter2);
-      GUM_CHECK_EQ(iter4, iter2);
+      CHECK_EQ(iter4, iter2);
       gum::Set< int >::const_iterator iter5 = t1.begin();
       gum::Set< int >::const_iterator iter6(iter5);
-      GUM_CHECK_EQ(*iter5, *iter6);
+      CHECK_EQ(*iter5, *iter6);
       gum::Set< int >::const_iterator iter7(std::move(iter6));
-      GUM_CHECK_EQ(*iter7, *(t1.begin()));
+      CHECK_EQ(*iter7, *(t1.begin()));
 
       iter7 = iter5;
-      GUM_CHECK_EQ(*iter7, *iter5);
+      CHECK_EQ(*iter7, *iter5);
       iter7 = std::move(iter4);
-      GUM_CHECK_EQ(*iter7, *iter2);
+      CHECK_EQ(*iter7, *iter2);
       iter7 = iter3;
-      GUM_CHECK_EQ(iter7, iter3);
+      CHECK_EQ(iter7, iter3);
 
       iter7 = t1.begin();
       iter1 = t1.begin();
@@ -576,14 +576,14 @@ namespace gum_tests {
       ++iter1;
       ++iter1;
       ++iter1;
-      GUM_CHECK_EQ(*iter7, *iter1);
-      GUM_CHECK_EQ(iter7, t1.begin() + 3);
+      CHECK_EQ(*iter7, *iter1);
+      CHECK_EQ(iter7, t1.begin() + 3);
     }
 
     static void testInitializerList() {
       gum::Set< int > t{1};
-      GUM_CHECK_EQ(t.size(), 1u);
-      GUM_CHECK_EQ(t.toString(), "{1}");
+      CHECK_EQ(t.size(), 1u);
+      CHECK_EQ(t.toString(), "{1}");
     }
 
     static void testSubsetSuperset() {

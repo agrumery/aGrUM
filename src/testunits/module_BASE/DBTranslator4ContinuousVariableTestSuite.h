@@ -62,16 +62,16 @@ namespace gum_tests {
       gum::learning::DBTranslator4ContinuousVariable translator;
       CHECK(translator.isLossless());
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));
-      GUM_CHECK_EQ(translator.translate("3").cont_val, 3);
-      GUM_CHECK_EQ(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f})), 3);
+      CHECK_EQ(translator.translate("3").cont_val, 3);
+      CHECK_EQ(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{3.0f})), 3);
 
-      GUM_CHECK_EQ(translator.missingValue().cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator.missingValue().cont_val, std::numeric_limits< float >::max());
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("5"));
-      GUM_CHECK_EQ(translator.translate("4.22").cont_val, 4.22f);
-      GUM_CHECK_EQ(translator.translate("-5.34").cont_val, -5.34f);
-      GUM_CHECK_EQ(translator.translate("-5.34e3").cont_val, -5.34e3f);
-      GUM_CHECK_EQ(translator.translate("-5.34e-34").cont_val, -5.34e-34f);
+      CHECK_EQ(translator.translate("4.22").cont_val, 4.22f);
+      CHECK_EQ(translator.translate("-5.34").cont_val, -5.34f);
+      CHECK_EQ(translator.translate("-5.34e3").cont_val, -5.34e3f);
+      CHECK_EQ(translator.translate("-5.34e-34").cont_val, -5.34e-34f);
       CHECK(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{-5.34f}))
             == -5.34f);
       CHECK(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{-5.34e3f}))
@@ -86,10 +86,10 @@ namespace gum_tests {
       CHECK(!translator2.missingSymbols().exists("2"));
       CHECK(!translator2.missingSymbols().exists("20"));
       CHECK(!translator2.missingSymbols().exists("4"));
-      GUM_CHECK_EQ(translator.translate("4.22").cont_val, 4.22f);
+      CHECK_EQ(translator.translate("4.22").cont_val, 4.22f);
       CHECK_THROWS_AS(translator2.translate("yyy"), const gum::TypeError&);
-      GUM_CHECK_EQ(translator2.translate("N/A").cont_val, std::numeric_limits< float >::max());
-      GUM_CHECK_EQ(translator2.translate("xxx").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator2.translate("N/A").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator2.translate("xxx").cont_val, std::numeric_limits< float >::max());
 
       gum::ContinuousVariable< double >              var("X2", "", -2, 10);
       gum::learning::DBTranslator4ContinuousVariable translator3(var, missing);
@@ -99,22 +99,22 @@ namespace gum_tests {
       CHECK(translator3.missingSymbols().exists("N/A"));
       CHECK(translator3.missingSymbols().exists("xxx"));
 
-      GUM_CHECK_EQ(translator3.translate("4.22").cont_val, 4.22f);
-      GUM_CHECK_EQ(translator3.translate("-2").cont_val, -2.0f);
-      GUM_CHECK_EQ(translator3.translate("10").cont_val, 10.0f);
+      CHECK_EQ(translator3.translate("4.22").cont_val, 4.22f);
+      CHECK_EQ(translator3.translate("-2").cont_val, -2.0f);
+      CHECK_EQ(translator3.translate("10").cont_val, 10.0f);
       CHECK_THROWS_AS(translator3.translate("11"), const gum::UnknownLabelInDatabase&);
-      GUM_CHECK_EQ(translator3.translate("N/A").cont_val, std::numeric_limits< float >::max());
-      GUM_CHECK_EQ(translator3.translate("xxx").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator3.translate("N/A").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator3.translate("xxx").cont_val, std::numeric_limits< float >::max());
 
       const auto& tr_var    = *(translator3.variable());
       int         good_cont = 1;
       try {
         const gum::ContinuousVariable< double >& xvar_cont
             = dynamic_cast< const gum::ContinuousVariable< double >& >(tr_var);
-        GUM_CHECK_EQ(xvar_cont.lowerBound(), -2.0);
-        GUM_CHECK_EQ(xvar_cont.upperBound(), 10.0);
+        CHECK_EQ(xvar_cont.lowerBound(), -2.0);
+        CHECK_EQ(xvar_cont.upperBound(), 10.0);
       } catch (std::bad_cast&) { good_cont = 0; }
-      GUM_CHECK_EQ(good_cont, 1);
+      CHECK_EQ(good_cont, 1);
 
       std::vector< std::string >                     missing4{"2", "N/A", "20", "4", "xxx", "-10"};
       gum::learning::DBTranslator4ContinuousVariable translator4(var, missing4, true);
@@ -123,15 +123,15 @@ namespace gum_tests {
       CHECK(translator4.missingSymbols().exists("20"));
       CHECK(translator4.missingSymbols().exists("N/A"));
       CHECK(translator4.missingSymbols().exists("xxx"));
-      GUM_CHECK_EQ(translator4.translate("4.22").cont_val, 4.22f);
-      GUM_CHECK_EQ(translator4.translate("-2").cont_val, -2.0f);
-      GUM_CHECK_EQ(translator4.translate("10").cont_val, 10.0f);
-      GUM_CHECK_EQ(translator4.translate("18").cont_val, 18.0f);
-      GUM_CHECK_EQ(translator4.translate("20").cont_val, std::numeric_limits< float >::max());
-      GUM_CHECK_EQ(translator4.translate("19.5").cont_val, 19.5f);
+      CHECK_EQ(translator4.translate("4.22").cont_val, 4.22f);
+      CHECK_EQ(translator4.translate("-2").cont_val, -2.0f);
+      CHECK_EQ(translator4.translate("10").cont_val, 10.0f);
+      CHECK_EQ(translator4.translate("18").cont_val, 18.0f);
+      CHECK_EQ(translator4.translate("20").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator4.translate("19.5").cont_val, 19.5f);
       CHECK_THROWS_AS(translator4.translate("21"), const gum::OperationNotAllowed&);
-      GUM_CHECK_EQ(translator4.translate("-12").cont_val, -12.0f);
-      GUM_CHECK_EQ(translator4.translate("-10").cont_val, -10.0f);
+      CHECK_EQ(translator4.translate("-12").cont_val, -12.0f);
+      CHECK_EQ(translator4.translate("-10").cont_val, -10.0f);
       CHECK(std::stof(translator4.translateBack(gum::learning::DBTranslatedValue{5.3f})) == 5.3f);
       CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
                       const gum::UnknownLabelInDatabase&);
@@ -144,12 +144,12 @@ namespace gum_tests {
       gum::learning::DBTranslator4ContinuousVariable translator5(var, missing4, true);
       CHECK(!translator5.missingSymbols().exists("2"));
       CHECK(!translator5.missingSymbols().exists("4"));
-      GUM_CHECK_EQ(translator5.translate("-10").cont_val, std::numeric_limits< float >::max());
+      CHECK_EQ(translator5.translate("-10").cont_val, std::numeric_limits< float >::max());
       CHECK_THROWS_AS(translator5.translate("-11"), const gum::OperationNotAllowed&);
-      GUM_CHECK_EQ(translator5.translate("220").cont_val, 220.0f);
-      GUM_CHECK_EQ(translator5.translate("20").cont_val, 20.0f);
+      CHECK_EQ(translator5.translate("220").cont_val, 220.0f);
+      CHECK_EQ(translator5.translate("20").cont_val, 20.0f);
 
-      GUM_CHECK_EQ(translator5.needsReordering(), false);
+      CHECK_EQ(translator5.needsReordering(), false);
       CHECK(translator5.reorder().empty());
     }   // namespace gum_tests
 
@@ -161,7 +161,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4ContinuousVariable translator(var, missing, true);
         CHECK(!translator.missingSymbols().exists("2"));
         CHECK(!translator.missingSymbols().exists("4"));
-        GUM_CHECK_EQ(translator.translate("-10").cont_val, std::numeric_limits< float >::max());
+        CHECK_EQ(translator.translate("-10").cont_val, std::numeric_limits< float >::max());
 
         CHECK(std::stof(translator.translateBack(gum::learning::DBTranslatedValue{5.3f})) == 5.3f);
         CHECK_THROWS_AS(translator.translateBack(gum::learning::DBTranslatedValue{50.0f}),
@@ -174,7 +174,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4ContinuousVariable translator2(translator);
         CHECK(!translator2.missingSymbols().exists("2"));
         CHECK(!translator2.missingSymbols().exists("4"));
-        GUM_CHECK_EQ(translator2.translate("-10").cont_val, std::numeric_limits< float >::max());
+        CHECK_EQ(translator2.translate("-10").cont_val, std::numeric_limits< float >::max());
 
         CHECK(std::stof(translator2.translateBack(gum::learning::DBTranslatedValue{5.3f})) == 5.3f);
         CHECK_THROWS_AS(translator2.translateBack(gum::learning::DBTranslatedValue{50.0f}),
@@ -187,7 +187,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4ContinuousVariable translator3(translator2);
         CHECK(!translator3.missingSymbols().exists("2"));
         CHECK(!translator3.missingSymbols().exists("4"));
-        GUM_CHECK_EQ(translator3.translate("-10").cont_val, std::numeric_limits< float >::max());
+        CHECK_EQ(translator3.translate("-10").cont_val, std::numeric_limits< float >::max());
 
         CHECK(std::stof(translator3.translateBack(gum::learning::DBTranslatedValue{5.3f})) == 5.3f);
         CHECK_THROWS_AS(translator3.translateBack(gum::learning::DBTranslatedValue{50.0f}),
@@ -200,7 +200,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4ContinuousVariable translator4(std::move(translator3));
         CHECK(!translator4.missingSymbols().exists("2"));
         CHECK(!translator4.missingSymbols().exists("4"));
-        GUM_CHECK_EQ(translator4.translate("-10").cont_val, std::numeric_limits< float >::max());
+        CHECK_EQ(translator4.translate("-10").cont_val, std::numeric_limits< float >::max());
 
         CHECK(std::stof(translator4.translateBack(gum::learning::DBTranslatedValue{5.3f})) == 5.3f);
         CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{50.0f}),
@@ -214,7 +214,7 @@ namespace gum_tests {
 
         CHECK(!translator5->missingSymbols().exists("2"));
         CHECK(!translator5->missingSymbols().exists("4"));
-        GUM_CHECK_EQ(translator5->translate("-10").cont_val, std::numeric_limits< float >::max());
+        CHECK_EQ(translator5->translate("-10").cont_val, std::numeric_limits< float >::max());
 
         CHECK(std::stof(translator5->translateBack(gum::learning::DBTranslatedValue{5.3f}))
               == 5.3f);
@@ -227,26 +227,26 @@ namespace gum_tests {
 
         delete translator5;
 
-        GUM_CHECK_EQ(translator4.translate("12").cont_val, 12.0f);
-        GUM_CHECK_EQ(translator4.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator4.variable()->upperBoundAsDouble(), 12.0f);
+        CHECK_EQ(translator4.translate("12").cont_val, 12.0f);
+        CHECK_EQ(translator4.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator4.variable()->upperBoundAsDouble(), 12.0f);
         translator4 = translator2;
-        GUM_CHECK_EQ(translator4.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator4.variable()->upperBoundAsDouble(), 10.0f);
+        CHECK_EQ(translator4.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator4.variable()->upperBoundAsDouble(), 10.0f);
 
-        GUM_CHECK_EQ(translator.translate("12").cont_val, 12.0f);
-        GUM_CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator.variable()->upperBoundAsDouble(), 12.0f);
+        CHECK_EQ(translator.translate("12").cont_val, 12.0f);
+        CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator.variable()->upperBoundAsDouble(), 12.0f);
         translator = translator2;
-        GUM_CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator.variable()->upperBoundAsDouble(), 10.0f);
+        CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator.variable()->upperBoundAsDouble(), 10.0f);
 
-        GUM_CHECK_EQ(translator.translate("12").cont_val, 12.0f);
-        GUM_CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator.variable()->upperBoundAsDouble(), 12.0f);
+        CHECK_EQ(translator.translate("12").cont_val, 12.0f);
+        CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator.variable()->upperBoundAsDouble(), 12.0f);
         translator = std::move(translator2);
-        GUM_CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
-        GUM_CHECK_EQ(translator.variable()->upperBoundAsDouble(), 10.0f);
+        CHECK_EQ(translator.variable()->lowerBoundAsDouble(), -2.0f);
+        CHECK_EQ(translator.variable()->upperBoundAsDouble(), 10.0f);
       }
     }
   };

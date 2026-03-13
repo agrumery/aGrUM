@@ -62,13 +62,13 @@ namespace gum_tests {
 
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
 
-      GUM_CHECK_EQ(ptr1, ptr2);
+      CHECK_EQ(ptr1, ptr2);
 
-      GUM_CHECK_NE(ptr1, ptr3);
+      CHECK_NE(ptr1, ptr3);
 
       ptr3 = ptr1;
 
-      GUM_CHECK_EQ(ptr1, ptr3);
+      CHECK_EQ(ptr1, ptr3);
     }
 
     static void testModify() {
@@ -76,23 +76,23 @@ namespace gum_tests {
       gum::RefPtr< int > ptr2 = ptr1, ptr3;
       ptr3                    = ptr1;
 
-      GUM_CHECK_EQ(ptr1, ptr2);
+      CHECK_EQ(ptr1, ptr2);
 
       ptr2.clear();
 
-      GUM_CHECK_NE(ptr1, ptr2);
+      CHECK_NE(ptr1, ptr2);
 
       *ptr1 = 5;
 
-      GUM_CHECK_EQ(*ptr1, 5);
+      CHECK_EQ(*ptr1, 5);
 
       ptr1 = 0;
 
-      GUM_CHECK_EQ(ptr1.refCount(), 0U);
+      CHECK_EQ(ptr1.refCount(), 0U);
 
       ptr2 = ptr1;
 
-      GUM_CHECK_EQ(ptr2.refCount(), 0U);
+      CHECK_EQ(ptr2.refCount(), 0U);
     }
 
     struct toto {
@@ -112,11 +112,11 @@ namespace gum_tests {
     static void testDowncast() {
       gum::RefPtr< titi > ptr1(new titi);
 
-      GUM_CHECK_EQ(ptr1->getY(), 3);
+      CHECK_EQ(ptr1->getY(), 3);
 
       gum::RefPtr< toto > ptr2(ptr1);
 
-      GUM_CHECK_NE(ptr1->getY(), ptr2->getY());
+      CHECK_NE(ptr1->getY(), ptr2->getY());
     }
   };
 

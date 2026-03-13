@@ -64,40 +64,40 @@ namespace gum_tests {
       {
         auto mb = gum::MarkovBlanket(bn, "a");
 
-        GUM_CHECK_EQ(mb.size(), 2u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 1u);
+        CHECK_EQ(mb.size(), 2u);
+        CHECK_EQ(mb.sizeArcs(), 1u);
       }
       {
         auto mb = gum::MarkovBlanket(bn, 0);
 
-        GUM_CHECK_EQ(mb.size(), 2u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 1u);
+        CHECK_EQ(mb.size(), 2u);
+        CHECK_EQ(mb.sizeArcs(), 1u);
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "b");
 
-        GUM_CHECK_EQ(mb.size(), 3u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 2u);
+        CHECK_EQ(mb.size(), 3u);
+        CHECK_EQ(mb.sizeArcs(), 2u);
       }
       {
         auto mb = gum::MarkovBlanket(bn, 1);
 
-        GUM_CHECK_EQ(mb.size(), 3u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 2u);
+        CHECK_EQ(mb.size(), 3u);
+        CHECK_EQ(mb.sizeArcs(), 2u);
       }
 
       {
         auto mb = gum::MarkovBlanket(bn, "c");
 
-        GUM_CHECK_EQ(mb.size(), 2u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 1u);
+        CHECK_EQ(mb.size(), 2u);
+        CHECK_EQ(mb.sizeArcs(), 1u);
       }
       {
         auto mb = gum::MarkovBlanket(bn, 2);
 
-        GUM_CHECK_EQ(mb.size(), 2u);
-        GUM_CHECK_EQ(mb.sizeArcs(), 1u);
+        CHECK_EQ(mb.size(), 2u);
+        CHECK_EQ(mb.sizeArcs(), 1u);
       }
     }   // namespace gum_tests
 
@@ -138,9 +138,9 @@ namespace gum_tests {
       const auto bn
           = gum::BayesNet< float >::fastPrototype("Z<-A->B->C->D->E<-Y;X->G<-F<-C<-I<-H->W");
       CHECK_THROWS_AS(gum::MarkovBlanket(bn, "C", 0).size(), const gum::InvalidArgument&);
-      GUM_CHECK_EQ(gum::MarkovBlanket(bn, "C", 1).size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(gum::MarkovBlanket(bn, "C", 2).size(), static_cast< gum::Size >(11));
-      GUM_CHECK_EQ(gum::MarkovBlanket(bn, "C", 3).size(), static_cast< gum::Size >(13));
+      CHECK_EQ(gum::MarkovBlanket(bn, "C", 1).size(), static_cast< gum::Size >(5));
+      CHECK_EQ(gum::MarkovBlanket(bn, "C", 2).size(), static_cast< gum::Size >(11));
+      CHECK_EQ(gum::MarkovBlanket(bn, "C", 3).size(), static_cast< gum::Size >(13));
     }
   };
 

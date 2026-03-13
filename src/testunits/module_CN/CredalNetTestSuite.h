@@ -131,9 +131,9 @@ namespace gum_tests {
       ids.push_back(cn->addVariable("B", 3));   // id 1
       ids.push_back(cn->addVariable("C", 3));   // id 2
 
-      GUM_CHECK_EQ(ids[0], 0U);
-      GUM_CHECK_EQ(ids[1], 1U);
-      GUM_CHECK_EQ(ids[2], 2U);
+      CHECK_EQ(ids[0], 0U);
+      CHECK_EQ(ids[1], 1U);
+      CHECK_EQ(ids[2], 2U);
 
       cn->addArc(ids[0], ids[2]);
       cn->addArc(ids[1], ids[2]);
@@ -280,7 +280,7 @@ namespace gum_tests {
               lps[id][entry].solve());   // we solve the lp
 
           gum::Size sols_size = gum::Size(lps_sols[id][entry].size());
-          GUM_CHECK_EQ(vertices.size(), sols_size);
+          CHECK_EQ(vertices.size(), sols_size);
 
           std::vector< bool > checked(sols_size, false);
 
@@ -346,12 +346,12 @@ namespace gum_tests {
       const auto& valsmax = cnet.get_binaryCPT_max();
 
       for (gum::Idx i = 0; i < 4; i++) {
-        GUM_CHECK_EQ(valsmin[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0));
-        GUM_CHECK_EQ(valsmax[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0));
-        GUM_CHECK_EQ(valsmin[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0));
-        GUM_CHECK_EQ(valsmax[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0));
-        GUM_CHECK_EQ(valsmin[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0));
-        GUM_CHECK_EQ(valsmax[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0));
+        CHECK_EQ(valsmin[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0));
+        CHECK_EQ(valsmax[current.idFromName("B-v0")][i], (i == 0 ? 1.0 : 0.0));
+        CHECK_EQ(valsmin[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0));
+        CHECK_EQ(valsmax[current.idFromName("B-v1")][i], (i == 1 ? 1.0 : 0.0));
+        CHECK_EQ(valsmin[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0));
+        CHECK_EQ(valsmax[current.idFromName("B-v2")][i], (i == 2 ? 1.0 : 0.0));
       }
     }
 

@@ -63,7 +63,7 @@ namespace gum_tests {
 
       cache.insert(set1, 2.0);
       CHECK(cache.exists(set1));
-      GUM_CHECK_EQ(cache.score(set1), 2.0);
+      CHECK_EQ(cache.score(set1), 2.0);
 
       gum::NodeId node0 = 0;
       gum::NodeId node1 = 1;
@@ -76,83 +76,83 @@ namespace gum_tests {
       gum::learning::IdCondSet set2(node0, empty);
       cache.insert(set2, 3.2);
       CHECK(cache.exists(set2));
-      GUM_CHECK_EQ(cache.score(set2), 3.2);
+      CHECK_EQ(cache.score(set2), 3.2);
 
       CHECK_THROWS_AS(cache.insert(set2, 5.2), const gum::DuplicateElement&);
-      GUM_CHECK_EQ(cache.size(), std::size_t(2));
+      CHECK_EQ(cache.size(), std::size_t(2));
       cache.clear();
-      GUM_CHECK_EQ(cache.size(), std::size_t(0));
+      CHECK_EQ(cache.size(), std::size_t(0));
 
       gum::learning::IdCondSet xset2(set2);
       cache.insert(std::move(xset2), 7.3);
       CHECK(cache.exists(set2));
-      GUM_CHECK_EQ(cache.score(set2), 7.3);
+      CHECK_EQ(cache.score(set2), 7.3);
 
       std::vector< gum::NodeId > vect{node4, node2, node3};
       gum::learning::IdCondSet   set3(node0, node1, vect, true, true);
       CHECK(!cache.exists(set3));
       cache.insert(set3, 1.3);
       CHECK(cache.exists(set3));
-      GUM_CHECK_EQ(cache.score(set3), 1.3);
-      GUM_CHECK_EQ(cache.score(set2), 7.3);
-      GUM_CHECK_EQ(cache.size(), std::size_t(2));
+      CHECK_EQ(cache.score(set3), 1.3);
+      CHECK_EQ(cache.score(set2), 7.3);
+      CHECK_EQ(cache.size(), std::size_t(2));
 
       gum::learning::ScoringCache cache2(cache);
       CHECK(cache2.exists(set3));
-      GUM_CHECK_EQ(cache2.score(set3), 1.3);
-      GUM_CHECK_EQ(cache2.score(set2), 7.3);
-      GUM_CHECK_EQ(cache2.size(), std::size_t(2));
+      CHECK_EQ(cache2.score(set3), 1.3);
+      CHECK_EQ(cache2.score(set2), 7.3);
+      CHECK_EQ(cache2.size(), std::size_t(2));
 
       cache2.erase(set2);
       CHECK(cache2.exists(set3));
       CHECK(!cache2.exists(set2));
-      GUM_CHECK_EQ(cache2.score(set3), 1.3);
+      CHECK_EQ(cache2.score(set3), 1.3);
       CHECK_THROWS_AS(cache2.score(set2), const gum::NotFound&);
-      GUM_CHECK_EQ(cache2.size(), std::size_t(1));
+      CHECK_EQ(cache2.size(), std::size_t(1));
       CHECK(cache.exists(set3));
-      GUM_CHECK_EQ(cache.score(set3), 1.3);
-      GUM_CHECK_EQ(cache.score(set2), 7.3);
-      GUM_CHECK_EQ(cache.size(), std::size_t(2));
+      CHECK_EQ(cache.score(set3), 1.3);
+      CHECK_EQ(cache.score(set2), 7.3);
+      CHECK_EQ(cache.size(), std::size_t(2));
 
       gum::learning::ScoringCache cache3(std::move(cache2));
       CHECK(cache3.exists(set3));
       CHECK(!cache3.exists(set2));
-      GUM_CHECK_EQ(cache3.score(set3), 1.3);
+      CHECK_EQ(cache3.score(set3), 1.3);
       CHECK_THROWS_AS(cache3.score(set2), const gum::NotFound&);
-      GUM_CHECK_EQ(cache3.size(), std::size_t(1));
+      CHECK_EQ(cache3.size(), std::size_t(1));
       CHECK(cache.exists(set3));
-      GUM_CHECK_EQ(cache.score(set3), 1.3);
-      GUM_CHECK_EQ(cache.score(set2), 7.3);
-      GUM_CHECK_EQ(cache.size(), std::size_t(2));
+      CHECK_EQ(cache.score(set3), 1.3);
+      CHECK_EQ(cache.score(set2), 7.3);
+      CHECK_EQ(cache.size(), std::size_t(2));
 
       gum::learning::ScoringCache* cache4 = cache3.clone();
       CHECK(cache4->exists(set3));
       CHECK(!cache4->exists(set2));
-      GUM_CHECK_EQ(cache4->score(set3), 1.3);
+      CHECK_EQ(cache4->score(set3), 1.3);
       CHECK_THROWS_AS(cache4->score(set2), const gum::NotFound&);
-      GUM_CHECK_EQ(cache4->size(), std::size_t(1));
+      CHECK_EQ(cache4->size(), std::size_t(1));
       CHECK(cache.exists(set3));
-      GUM_CHECK_EQ(cache.score(set3), 1.3);
-      GUM_CHECK_EQ(cache.score(set2), 7.3);
-      GUM_CHECK_EQ(cache.size(), std::size_t(2));
+      CHECK_EQ(cache.score(set3), 1.3);
+      CHECK_EQ(cache.score(set2), 7.3);
+      CHECK_EQ(cache.size(), std::size_t(2));
 
       cache3 = cache;
       CHECK(cache3.exists(set3));
-      GUM_CHECK_EQ(cache3.score(set3), 1.3);
-      GUM_CHECK_EQ(cache3.score(set2), 7.3);
-      GUM_CHECK_EQ(cache3.size(), std::size_t(2));
+      CHECK_EQ(cache3.score(set3), 1.3);
+      CHECK_EQ(cache3.score(set2), 7.3);
+      CHECK_EQ(cache3.size(), std::size_t(2));
 
       gum::learning::IdCondSet set4(node1, vect, true);
       GUM_CHECK_ASSERT_THROWS_NOTHING(cache3.erase(set4));
-      GUM_CHECK_EQ(cache3.score(set3), 1.3);
-      GUM_CHECK_EQ(cache3.score(set2), 7.3);
-      GUM_CHECK_EQ(cache3.size(), std::size_t(2));
+      CHECK_EQ(cache3.score(set3), 1.3);
+      CHECK_EQ(cache3.score(set2), 7.3);
+      CHECK_EQ(cache3.size(), std::size_t(2));
 
       *cache4 = std::move(cache3);
       CHECK(cache4->exists(set3));
-      GUM_CHECK_EQ(cache4->score(set3), 1.3);
-      GUM_CHECK_EQ(cache4->score(set2), 7.3);
-      GUM_CHECK_EQ(cache4->size(), std::size_t(2));
+      CHECK_EQ(cache4->score(set3), 1.3);
+      CHECK_EQ(cache4->score(set2), 7.3);
+      CHECK_EQ(cache4->size(), std::size_t(2));
 
       delete cache4;
     }   // namespace gum_tests

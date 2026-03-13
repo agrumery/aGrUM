@@ -169,9 +169,9 @@ namespace gum_tests {
     void testConstructor() {
       gum::BayesNet< double >* topology = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >());
-      GUM_CHECK_EQ(topology->size(), static_cast< gum::Idx >(0));
-      GUM_CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(0));
-      GUM_CHECK_EQ(topology->dim(), static_cast< gum::Idx >(0));
+      CHECK_EQ(topology->size(), static_cast< gum::Idx >(0));
+      CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(0));
+      CHECK_EQ(topology->dim(), static_cast< gum::Idx >(0));
 
       CHECK_THROWS_AS(topology->addArc(1, 2), const gum::InvalidNode&);
       gum::List< gum::NodeId > idList;
@@ -182,9 +182,9 @@ namespace gum_tests {
       CHECK((topology->toString())
             == ("BN{nodes: 5, arcs: 6, domainSize: 48, "
                 "dim: 24, mem: 320o}"));
-      GUM_CHECK_EQ(topology->size(), static_cast< gum::Idx >(5));
-      GUM_CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(6));
-      GUM_CHECK_EQ(topology->dim(), static_cast< gum::Idx >(24));
+      CHECK_EQ(topology->size(), static_cast< gum::Idx >(5));
+      CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(6));
+      CHECK_EQ(topology->dim(), static_cast< gum::Idx >(24));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete topology);
     }
@@ -197,19 +197,19 @@ namespace gum_tests {
       gum::BayesNet< double >* copy = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::BayesNet< double >(source));
 
-      GUM_CHECK_EQ(source.dag().size(), copy->dag().size());
-      GUM_CHECK_EQ(source.dag().sizeArcs(), copy->dag().sizeArcs());
+      CHECK_EQ(source.dag().size(), copy->dag().size());
+      CHECK_EQ(source.dag().sizeArcs(), copy->dag().sizeArcs());
 
       for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
         CHECK(copy->dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
         const gum::DiscreteVariable& cpVar  = copy->variable(node);
-        GUM_CHECK_EQ(srcVar.name(), cpVar.name());
+        CHECK_EQ(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
-            GUM_CHECK_EQ(srcVar.label(i), cpVar.label(i));
+            CHECK_EQ(srcVar.label(i), cpVar.label(i));
           }
         } else {
           CHECK(false);
@@ -231,7 +231,7 @@ namespace gum_tests {
             srcInst.chgVal(source.variable(id), cpInst.val(i));
           }
 
-          GUM_CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
+          CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
         }
       }
 
@@ -246,19 +246,19 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy = source);
 
-      GUM_CHECK_EQ(source.dag().size(), copy.dag().size());
-      GUM_CHECK_EQ(source.dag().sizeArcs(), copy.dag().sizeArcs());
+      CHECK_EQ(source.dag().size(), copy.dag().size());
+      CHECK_EQ(source.dag().sizeArcs(), copy.dag().sizeArcs());
 
       for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
         CHECK(copy.dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
         const gum::DiscreteVariable& cpVar  = copy.variable(node);
-        GUM_CHECK_EQ(srcVar.name(), cpVar.name());
+        CHECK_EQ(srcVar.name(), cpVar.name());
 
         if (srcVar.domainSize() == cpVar.domainSize()) {
           for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
-            GUM_CHECK_EQ(srcVar.label(i), cpVar.label(i));
+            CHECK_EQ(srcVar.label(i), cpVar.label(i));
           }
         } else {
           CHECK(false);
@@ -279,7 +279,7 @@ namespace gum_tests {
             srcInst.chgVal(source.variable(id), cpInst.val(i));
           }
 
-          GUM_CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
+          CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
         }
       }
 
@@ -295,7 +295,7 @@ namespace gum_tests {
           c_str << *var << ",";
         }
 
-        GUM_CHECK_EQ(c_str.str(), s_str.str());
+        CHECK_EQ(c_str.str(), s_str.str());
       }
     }
 
@@ -309,8 +309,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
 
       // Test for uniqueness of the ids
 
@@ -327,13 +327,13 @@ namespace gum_tests {
       gum::LabelizedVariable const* varPtr = nullptr;
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
-      GUM_CHECK_EQ(*varPtr, *var1);
+      CHECK_EQ(*varPtr, *var1);
 
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
     }
 
     void testInsertion_2() {
@@ -346,18 +346,18 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
 
       gum::LabelizedVariable const* varPtr = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
-      GUM_CHECK_EQ(*varPtr, *var1);
+      CHECK_EQ(*varPtr, *var1);
 
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
-      GUM_CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
+      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
     }
 
     void testIterations() {
@@ -372,7 +372,7 @@ namespace gum_tests {
         cpt++;
       }
 
-      GUM_CHECK_EQ(cpt, bn.size());
+      CHECK_EQ(cpt, bn.size());
 
       cpt = static_cast< gum::Size >(0);
       for (const auto& arc: bn.arcs()) {
@@ -380,7 +380,7 @@ namespace gum_tests {
         cpt++;
       }
 
-      GUM_CHECK_EQ(cpt, bn.sizeArcs());
+      CHECK_EQ(cpt, bn.sizeArcs());
     }
 
     void testArcInsertion() {
@@ -402,7 +402,7 @@ namespace gum_tests {
 
       CHECK_THROWS_AS(bn.addArc(idList[3], idList[4]), const gum::DuplicateElement&);
 
-      GUM_CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseVar() {
@@ -417,9 +417,9 @@ namespace gum_tests {
       CHECK(!bn.empty());
       CHECK(!bn.dag().emptyArcs());
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
 
       bn.erase(idList[0]);
 
@@ -431,9 +431,9 @@ namespace gum_tests {
 
       CHECK(bn.dag().emptyArcs());
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(0));
 
       idList.clear();
       GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
@@ -441,9 +441,9 @@ namespace gum_tests {
       CHECK(!bn.empty());
       CHECK(!bn.dag().emptyArcs());
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseArc() {
@@ -458,9 +458,9 @@ namespace gum_tests {
       CHECK(!bn.empty());
       CHECK(!bn.dag().emptyArcs());
 
-      GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[2])));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[2], idList[4])));
@@ -540,7 +540,7 @@ namespace gum_tests {
 
         bn.generateCPTs();
         s2 << bn.cpt(node);
-        GUM_CHECK_NE(s1.str(), s2.str());
+        CHECK_NE(s1.str(), s2.str());
       }
     }
 
@@ -552,7 +552,7 @@ namespace gum_tests {
 
       gum::UndiGraph graph;
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph = bn.moralGraph());
-      GUM_CHECK_EQ(graph, getRealMoralGraph(bn, idList));
+      CHECK_EQ(graph, getRealMoralGraph(bn, idList));
     }
 
     void testTopologicalOrder() {
@@ -564,7 +564,7 @@ namespace gum_tests {
       gum::Sequence< gum::NodeId > topoOrder;
       GUM_CHECK_ASSERT_THROWS_NOTHING(topoOrder = bn.topologicalOrder());
 
-      GUM_CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(5));
     }
 
     void testcpt() {
@@ -572,11 +572,11 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
 
       fill(bn, idList);
-      GUM_CHECK_EQ(bn.cpt(idList[0]).domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(bn.cpt(idList[1]).domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(bn.cpt(idList[2]).domainSize(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(bn.cpt(idList[3]).domainSize(), static_cast< gum::Size >(8));
-      GUM_CHECK_EQ(bn.cpt(idList[4]).domainSize(), static_cast< gum::Size >(24));
+      CHECK_EQ(bn.cpt(idList[0]).domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(bn.cpt(idList[1]).domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(bn.cpt(idList[2]).domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(bn.cpt(idList[3]).domainSize(), static_cast< gum::Size >(8));
+      CHECK_EQ(bn.cpt(idList[4]).domainSize(), static_cast< gum::Size >(24));
     }
 
     void testCPTCoherencyVarRemoval() {
@@ -585,14 +585,14 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      GUM_CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
       CHECK(bn.dag().existsArc(idList[0], idList[3]));
       CHECK(bn.dag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_1
           = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
-      GUM_CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
+      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
@@ -600,13 +600,13 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.erase(idList[1]));
 
-      GUM_CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
       CHECK(bn.dag().existsArc(idList[0], idList[3]));
       CHECK(!bn.dag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
       dmnSize_2 *= bn.variable(idList[3]).domainSize();
-      GUM_CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
+      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
 
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
       CHECK_THROWS(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
@@ -619,14 +619,14 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      GUM_CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
       CHECK(bn.dag().existsArc(idList[0], idList[3]));
       CHECK(bn.dag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_1
           = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
       dmnSize_1 *= bn.variable(idList[3]).domainSize();
-      GUM_CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
+      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
 
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
@@ -634,13 +634,13 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
 
-      GUM_CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
       CHECK(bn.dag().existsArc(idList[0], idList[3]));
       CHECK(!bn.dag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
       dmnSize_2 *= bn.variable(idList[3]).domainSize();
-      GUM_CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
+      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
 
       CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
       CHECK(!bn.cpt(idList[3]).contains(bn.variable(idList[1])));
@@ -663,9 +663,9 @@ namespace gum_tests {
       fill(bn, idList);
 
       for (const auto node: bn.nodes()) {
-        GUM_CHECK_EQ(bn.idFromName(bn.variable(node).name()), node);
-        GUM_CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
-        GUM_CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
+        CHECK_EQ(bn.idFromName(bn.variable(node).name()), node);
+        CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
+        CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
       }
 
       CHECK_THROWS_AS(bn.idFromName("choucroute"), const gum::NotFound&);
@@ -689,45 +689,45 @@ namespace gum_tests {
       gum::BayesNet< double > bn_cpy_1 = *bn_1;
       gum::BayesNet< double > bn_cpy_2 = *bn_2;
 
-      GUM_CHECK_EQ(bn_cpy_1, bn_cpy_1);
-      GUM_CHECK_EQ(bn_cpy_1, (*bn_1));
-      GUM_CHECK_EQ(bn_cpy_2, bn_cpy_2);
-      GUM_CHECK_EQ(bn_cpy_2, (*bn_2));
-      GUM_CHECK_NE((*bn_1), (*bn_2));
-      GUM_CHECK_NE(bn_cpy_1, bn_cpy_2);
+      CHECK_EQ(bn_cpy_1, bn_cpy_1);
+      CHECK_EQ(bn_cpy_1, (*bn_1));
+      CHECK_EQ(bn_cpy_2, bn_cpy_2);
+      CHECK_EQ(bn_cpy_2, (*bn_2));
+      CHECK_NE((*bn_1), (*bn_2));
+      CHECK_NE(bn_cpy_1, bn_cpy_2);
 
-      GUM_CHECK_EQ(bn_cpy_1, bn_cpy_1);
-      GUM_CHECK_EQ(bn_cpy_1, (*bn_1));
-      GUM_CHECK_EQ(bn_cpy_2, bn_cpy_2);
-      GUM_CHECK_EQ(bn_cpy_2, (*bn_2));
-      GUM_CHECK_NE((*bn_1), (*bn_2));
-      GUM_CHECK_NE(bn_cpy_1, bn_cpy_2);
+      CHECK_EQ(bn_cpy_1, bn_cpy_1);
+      CHECK_EQ(bn_cpy_1, (*bn_1));
+      CHECK_EQ(bn_cpy_2, bn_cpy_2);
+      CHECK_EQ(bn_cpy_2, (*bn_2));
+      CHECK_NE((*bn_1), (*bn_2));
+      CHECK_NE(bn_cpy_1, bn_cpy_2);
 
       gum::BayesNet< double > cpy = *bn_1;
-      GUM_CHECK_EQ(cpy, (*bn_1));
-      GUM_CHECK_NE(cpy, (*bn_2));
+      CHECK_EQ(cpy, (*bn_1));
+      CHECK_NE(cpy, (*bn_2));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(cpy = *bn_2);
 
-      GUM_CHECK_EQ(cpy, (*bn_2));
+      CHECK_EQ(cpy, (*bn_2));
 
-      GUM_CHECK_EQ(cpy, (*bn_2));
-      GUM_CHECK_NE(cpy, (*bn_1));
-      GUM_CHECK_NE(cpy, (*bn_1));
+      CHECK_EQ(cpy, (*bn_2));
+      CHECK_NE(cpy, (*bn_1));
+      CHECK_NE(cpy, (*bn_1));
 
       CHECK_NOTHROW(cpy = cpy);
 
-      GUM_CHECK_EQ(cpy, (*bn_2));
+      CHECK_EQ(cpy, (*bn_2));
 
-      GUM_CHECK_EQ(cpy, (*bn_2));
-      GUM_CHECK_NE(cpy, (*bn_1));
-      GUM_CHECK_NE(cpy, (*bn_1));
+      CHECK_EQ(cpy, (*bn_2));
+      CHECK_NE(cpy, (*bn_1));
+      CHECK_NE(cpy, (*bn_1));
 
       std::string s1 = cpy.toString();
       delete bn_2;
       delete bn_1;
       std::string s2 = cpy.toString();
-      GUM_CHECK_EQ(s1, s2);
+      CHECK_EQ(s1, s2);
     }
 
     void testAggregatorNodes() {
@@ -762,9 +762,9 @@ namespace gum_tests {
       fill(bn, idList);
 
       auto i = bn.completeInstantiation();
-      GUM_CHECK_EQ(i.nbrDim(), bn.size());
+      CHECK_EQ(i.nbrDim(), bn.size());
 
-      GUM_CHECK_EQ(i.domainSize(), (gum::Size)(2 * 2 * 2 * 2 * 3));
+      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 2 * 2 * 2 * 3));
 
       double a = 0.0;
       CHECK_NOTHROW(a = bn.jointProbability(i));
@@ -779,7 +779,7 @@ namespace gum_tests {
       double b = 0.0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
 
-      GUM_CHECK_EQ(a, b);
+      CHECK_EQ(a, b);
     }
 
     void testArcReversal() {
@@ -812,10 +812,10 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
 
-      GUM_CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({0|1})");
+      CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({0|1})");
       CHECK_NOTHROW(
           dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
-      GUM_CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({x|1})");
+      CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({x|1})");
     }
 
     void testShortCutAddFastVar() {
@@ -827,8 +827,8 @@ namespace gum_tests {
 
       CHECK_NOTHROW(i1 = bn.add("A", 2));
       CHECK_NOTHROW(i2 = bn.add("B", 3));
-      GUM_CHECK_EQ(i1, gum::NodeId(0));
-      GUM_CHECK_EQ(i2, gum::NodeId(1));
+      CHECK_EQ(i1, gum::NodeId(0));
+      CHECK_EQ(i2, gum::NodeId(1));
 
       CHECK_THROWS_AS(i3 = bn.add("A", 5), const gum::DuplicateLabel&);
       // the variable "C",1 can be created but the BN does not allow to add such a variable
@@ -836,10 +836,10 @@ namespace gum_tests {
       GUM_UNUSED(i3);
 
       CHECK_NOTHROW(bn.addArc(i1, i2));
-      GUM_CHECK_EQ(bn.log10DomainSize(), std::log10(2.0 * 3.0));
+      CHECK_EQ(bn.log10DomainSize(), std::log10(2.0 * 3.0));
 
       CHECK_NOTHROW(bn.add("X{top|middle|bottom}"));
-      GUM_CHECK_EQ(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})");
+      CHECK_EQ(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})");
 
       // a mono-label with default 4 is impossible
       CHECK_THROWS_AS(bn.add("Y[1,1]", 4), const gum::ArgumentError&);
@@ -853,11 +853,11 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
       GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
 
-      GUM_CHECK_EQ(bn.maxVarDomainSize(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(bn.minParam(), 0.0f);
-      GUM_CHECK_EQ(bn.maxParam(), 1.0f);
-      GUM_CHECK_EQ(bn.minNonZeroParam(), 0.1f);
-      GUM_CHECK_EQ(bn.maxNonOneParam(), 0.9f);
+      CHECK_EQ(bn.maxVarDomainSize(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.minParam(), 0.0f);
+      CHECK_EQ(bn.maxParam(), 1.0f);
+      CHECK_EQ(bn.minNonZeroParam(), 0.1f);
+      CHECK_EQ(bn.maxNonOneParam(), 0.9f);
     }
 
     void testMinimalCondSet() {
@@ -892,16 +892,16 @@ namespace gum_tests {
       bn.addArc(f, g);
       bn.addArc(h, e);
 
-      GUM_CHECK_EQ(bn.minimalCondSet(c, {a, b, c, d, e, f, g, h}), gum::NodeSet({c}));
-      GUM_CHECK_EQ(bn.minimalCondSet(c, {a, b, d, e, f, g, h}), gum::NodeSet({a, b, e, h}));
-      GUM_CHECK_EQ(bn.minimalCondSet(c, {e, f, g}), gum::NodeSet({e, f}));
-      GUM_CHECK_EQ(bn.minimalCondSet(c, {b, e, f, g}), gum::NodeSet({e, b}));
-      GUM_CHECK_EQ(bn.minimalCondSet(c, {a, e, f, g}), gum::NodeSet({a, e, f}));
+      CHECK_EQ(bn.minimalCondSet(c, {a, b, c, d, e, f, g, h}), gum::NodeSet({c}));
+      CHECK_EQ(bn.minimalCondSet(c, {a, b, d, e, f, g, h}), gum::NodeSet({a, b, e, h}));
+      CHECK_EQ(bn.minimalCondSet(c, {e, f, g}), gum::NodeSet({e, f}));
+      CHECK_EQ(bn.minimalCondSet(c, {b, e, f, g}), gum::NodeSet({e, b}));
+      CHECK_EQ(bn.minimalCondSet(c, {a, e, f, g}), gum::NodeSet({a, e, f}));
 
       // for set of targets
-      GUM_CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, e, f, g, h}), gum::NodeSet({d, e}));
-      GUM_CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}), gum::NodeSet({c, d, h, f}));
-      GUM_CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}));
+      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, e, f, g, h}), gum::NodeSet({d, e}));
+      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}), gum::NodeSet({c, d, h, f}));
+      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}));
     }
 
     void testMinimalCondSet2() {
@@ -926,42 +926,42 @@ namespace gum_tests {
       bn.addArc("E", "D");
       bn.addArc("F", "B");
 
-      GUM_CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 2, 3, 5, 6})), gum::NodeSet({0, 2, 3}));
+      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 2, 3, 5, 6})), gum::NodeSet({0, 2, 3}));
 
-      GUM_CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 5})), gum::NodeSet({0}));
+      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 5})), gum::NodeSet({0}));
 
-      GUM_CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 3, 5})), gum::NodeSet({0, 1, 3}));
+      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 3, 5})), gum::NodeSet({0, 1, 3}));
     }
 
     void testFastPrototype() {
       try {
         auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c", 3);
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b[5]->c;a->c");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c;a[1000]->c");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
 
         CHECK_THROWS_AS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
                         const gum::InvalidDirectedCycle&);
 
         bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
 
         CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
                         const gum::InvalidArgument&);
@@ -969,61 +969,61 @@ namespace gum_tests {
                         const gum::InvalidArgument&);
 
         bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
 
         bn = gum::BayesNet< float >::fastPrototype("a<-b<-c<-d<-e<-f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
 
         bn = gum::BayesNet< float >::fastPrototype("a<-b->c<-d->e<-f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d<-e->f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c;c->d<-e->f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d;d<-e->f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
 
         bn = gum::BayesNet< float >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
-        GUM_CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        GUM_CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
       } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
     void testFastPrototypeVarType() {
       auto bn = gum::BayesNet< float >::fastPrototype("a");
-      GUM_CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
+      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[0,1]");
-      GUM_CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
+      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
 
       CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[0,0]"), const gum::InvalidArgument&);
       CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,0]"), const gum::InvalidArgument&);
       CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,1]"), const gum::InvalidArgument&);
 
       bn = gum::BayesNet< float >::fastPrototype("a[5]");
-      GUM_CHECK_EQ(bn.variable("a").toString(), "a:Range([0,4])");
+      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,4])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[2,5]");
-      GUM_CHECK_EQ(bn.variable("a").toString(), "a:Range([2,5])");
+      CHECK_EQ(bn.variable("a").toString(), "a:Range([2,5])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[-2,2]");
-      GUM_CHECK_EQ(bn.variable("a").toString(), "a:Range([-2,2])");
+      CHECK_EQ(bn.variable("a").toString(), "a:Range([-2,2])");
 
       bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
       CHECK((bn.variable("a").toString())
@@ -1031,22 +1031,22 @@ namespace gum_tests {
 
       bn = gum::BayesNet< float >::fastPrototype(
           "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
-      GUM_CHECK_EQ(bn.variable("a").varType(), gum::VarType::INTEGER);
-      GUM_CHECK_EQ(bn.variable("b").varType(), gum::VarType::INTEGER);
-      GUM_CHECK_EQ(bn.variable("c").varType(), gum::VarType::LABELIZED);
-      GUM_CHECK_EQ(bn.variable("d").varType(), gum::VarType::NUMERICAL);
-      GUM_CHECK_EQ(bn.variable("e").varType(), gum::VarType::NUMERICAL);
-      GUM_CHECK_EQ(bn.variable("f").varType(), gum::VarType::NUMERICAL);
+      CHECK_EQ(bn.variable("a").varType(), gum::VarType::INTEGER);
+      CHECK_EQ(bn.variable("b").varType(), gum::VarType::INTEGER);
+      CHECK_EQ(bn.variable("c").varType(), gum::VarType::LABELIZED);
+      CHECK_EQ(bn.variable("d").varType(), gum::VarType::NUMERICAL);
+      CHECK_EQ(bn.variable("e").varType(), gum::VarType::NUMERICAL);
+      CHECK_EQ(bn.variable("f").varType(), gum::VarType::NUMERICAL);
     }
 
     void testNonRegressionCPTinReverseArc() {
       const auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
       auto       bn2 = gum::BayesNet< double >(bn1);
       bn2.reverseArc("A", "B");
-      GUM_CHECK_EQ(bn1.cpt("A").variable(0).name(), "A");
-      GUM_CHECK_EQ(bn2.cpt("A").variable(0).name(), "A");
-      GUM_CHECK_EQ(bn1.cpt("B").variable(0).name(), "B");
-      GUM_CHECK_EQ(bn2.cpt("B").variable(0).name(), "B");
+      CHECK_EQ(bn1.cpt("A").variable(0).name(), "A");
+      CHECK_EQ(bn2.cpt("A").variable(0).name(), "A");
+      CHECK_EQ(bn1.cpt("B").variable(0).name(), "B");
+      CHECK_EQ(bn2.cpt("B").variable(0).name(), "B");
     }
 
     void testClearBN() {
@@ -1084,31 +1084,31 @@ namespace gum_tests {
     void testCheck() {
       {
         const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(0));
+        CHECK_EQ(bn.check().size(), gum::Size(0));
 
         bn.cpt("B").fillWith(-1);
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(2));
+        CHECK_EQ(bn.check().size(), gum::Size(2));
       }
       {
         const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(0));
+        CHECK_EQ(bn.check().size(), gum::Size(0));
 
         bn.cpt("B").fillWith(0);
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(1));
+        CHECK_EQ(bn.check().size(), gum::Size(1));
 
         bn.cpt("C").fillWith(2);
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(3));
+        CHECK_EQ(bn.check().size(), gum::Size(3));
       }
       {
         const auto bn
             = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(0));
+        CHECK_EQ(bn.check().size(), gum::Size(0));
 
         bn.cpt("X").scale(12);
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(2));
+        CHECK_EQ(bn.check().size(), gum::Size(2));
 
         bn.cpt("Z1").scale(12);
-        GUM_CHECK_EQ(bn.check().size(), gum::Size(4));
+        CHECK_EQ(bn.check().size(), gum::Size(4));
       }
     }
 
@@ -1127,7 +1127,7 @@ namespace gum_tests {
         };
         gum::ThreadExecutor::execute(20, opExecute);
 
-        GUM_CHECK_EQ(gum::Size(nbth), 20 * bn.maxVarDomainSize());
+        CHECK_EQ(gum::Size(nbth), 20 * bn.maxVarDomainSize());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -1140,9 +1140,9 @@ namespace gum_tests {
         bn2.cpt(i).fillWith(1);
         bn3.cpt(i).fillWith(1);
       }
-      GUM_CHECK_EQ(bn, bn);
-      GUM_CHECK_NE(bn, bn2);
-      GUM_CHECK_EQ(bn, bn3);
+      CHECK_EQ(bn, bn);
+      CHECK_NE(bn, bn2);
+      CHECK_EQ(bn, bn3);
     }
 
     void testcontextulizedBN() {
@@ -1156,8 +1156,8 @@ namespace gum_tests {
 
       auto bn2 = bn.contextualize(Iobs, Iint);
 
-      GUM_CHECK_EQ(bn2.size(), gum::Size(6));
-      GUM_CHECK_EQ(bn2.sizeArcs(), gum::Size(4));
+      CHECK_EQ(bn2.size(), gum::Size(6));
+      CHECK_EQ(bn2.sizeArcs(), gum::Size(4));
     }
 
     void testcontextulizedBN2() {
@@ -1171,8 +1171,8 @@ namespace gum_tests {
 
       auto bn2 = bn.contextualize(Iobs, Iint);
 
-      GUM_CHECK_EQ(bn2.size(), gum::Size(6));
-      GUM_CHECK_EQ(bn2.sizeArcs(), gum::Size(1));
+      CHECK_EQ(bn2.size(), gum::Size(6));
+      CHECK_EQ(bn2.sizeArcs(), gum::Size(1));
     }
   };
 

@@ -78,9 +78,9 @@ namespace gum_tests {
       auto nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
       reader.showElegantErrorsAndWarnings();
 
 

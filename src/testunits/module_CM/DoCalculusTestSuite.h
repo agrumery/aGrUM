@@ -74,7 +74,7 @@ namespace gum_tests {
       auto                      built    = dc.getBackDoorTree(X, Y, Zset);
       auto                      builtStr = built->toString();
 
-      GUM_CHECK_NE(built.get(), (void*)nullptr);
+      CHECK_NE(built.get(), (void*)nullptr);
       CHECK(builtStr.find("sum on Z") != std::string::npos);
       CHECK(builtStr.find("P(Y|X,Z)") != std::string::npos);
       CHECK(builtStr.find("joint P(Z)") != std::string::npos);
@@ -101,7 +101,7 @@ namespace gum_tests {
 
       auto manual = std::make_unique< gum::ASTsum< double > >(std::vector< std::string >{"Z"},
                                                               std::move(prod));
-      GUM_CHECK_EQ(built->toString(), manual->toString());
+      CHECK_EQ(built->toString(), manual->toString());
     }
 
     // Backdoor with empty Z: expect reduction to P(Y|X).
@@ -117,7 +117,7 @@ namespace gum_tests {
       gum::DoCalculus< double > dc(cm);
       auto                      built = dc.getBackDoorTree(X, Y, Zset);
 
-      GUM_CHECK_NE(built.get(), (void*)nullptr);
+      CHECK_NE(built.get(), (void*)nullptr);
 
       // manual P(Y|X)
       gum::Set< std::string > lhsY;
@@ -129,7 +129,7 @@ namespace gum_tests {
                                                                          lhsY,
                                                                          knwX);
 
-      GUM_CHECK_EQ(built->toString(), manual->toString());
+      CHECK_EQ(built->toString(), manual->toString());
     }
 
     // Frontdoor classic: X->Z->Y with latent U -> {X,Y}.
@@ -185,7 +185,7 @@ namespace gum_tests {
                                                               std::move(outer_prod));
 
       // --- Comparison ---
-      GUM_CHECK_EQ(built->toString(), manual->toString());
+      CHECK_EQ(built->toString(), manual->toString());
     }
 
     // Preconditions: zset must be non-empty for frontdoor; cause/effect and zset must be observed.

@@ -269,7 +269,7 @@ namespace gum_tests {
       CHECK((gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{}))
             == (dag.dSeparation(A, B, gum::NodeSet{})));
 
-      GUM_CHECK_EQ(gum::Separation::isDSeparated(dag, A, B, C), dag.dSeparation(A, B, C));
+      CHECK_EQ(gum::Separation::isDSeparated(dag, A, B, C), dag.dSeparation(A, B, C));
     }
 
     static void testtest_dsep_confounder_conditioning_blocks() {

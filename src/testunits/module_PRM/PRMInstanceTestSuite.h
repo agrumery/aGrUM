@@ -132,7 +132,7 @@ namespace gum_tests {
       // Act
       auto actual = i.obj_type();
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testType() {
@@ -142,7 +142,7 @@ namespace gum_tests {
       // Act
       auto actual = &(i.type());
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testTypeConst() {
@@ -153,7 +153,7 @@ namespace gum_tests {
       // Act
       const auto actual = &(const_i.type());
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testExistsById() {
@@ -164,7 +164,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists(id);
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testNotExistsById() {
@@ -174,7 +174,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists(666);
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testExistsByName() {
@@ -184,7 +184,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists("a");
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testNotExistsByName() {
@@ -194,7 +194,7 @@ namespace gum_tests {
       // Act
       bool actual = i.exists("aazeazeaze");
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testGetByName() {
@@ -205,10 +205,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(attr = &(i.get("a")));
       // Assert
-      GUM_CHECK_EQ(attr->name(), "a");
-      GUM_CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
-      GUM_CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      GUM_CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      CHECK_EQ(attr->name(), "a");
+      CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
+      CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
+      CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
     }
 
     static void testGetByNameConst() {
@@ -220,10 +220,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(attr = &(const_i.get("a")));
       // Assert
-      GUM_CHECK_EQ(attr->name(), "a");
-      GUM_CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
-      GUM_CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      GUM_CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      CHECK_EQ(attr->name(), "a");
+      CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
+      CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
+      CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
     }
 
     static void testGetByNameNotFound() {
@@ -249,10 +249,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(attr = &(i.get(class_attr.id())));
       // Assert
-      GUM_CHECK_EQ(attr->name(), "a");
-      GUM_CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
-      GUM_CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      GUM_CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      CHECK_EQ(attr->name(), "a");
+      CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
+      CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
+      CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
     }
 
     static void testGetByIdConst() {
@@ -264,10 +264,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(attr = &(const_i.get(class_attr.id())));
       // Assert
-      GUM_CHECK_EQ(attr->name(), "a");
-      GUM_CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
-      GUM_CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
-      GUM_CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
+      CHECK_EQ(attr->name(), "a");
+      CHECK_NE(&(attr->type().variable()), &(class_attr.type().variable()));
+      CHECK_EQ(attr->cpf().domainSize(), class_attr.cpf().domainSize());
+      CHECK_EQ(attr->cpf().nbrDim(), class_attr.cpf().nbrDim());
     }
 
     static void testGetByIdNotFound() {
@@ -292,7 +292,7 @@ namespace gum_tests {
       // Act
       auto actual = i.size();
       // Assert
-      GUM_CHECK_EQ(expected, actual);
+      CHECK_EQ(expected, actual);
     }
 
     /// @}
@@ -317,10 +317,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(bij = &(i.bijection()));
       // Assert
-      GUM_CHECK_EQ(bij->second(var_a), i_a);
-      GUM_CHECK_EQ(bij->second(var_b), i_b);
-      GUM_CHECK_EQ(bij->first(i_a), var_a);
-      GUM_CHECK_EQ(bij->first(i_b), var_b);
+      CHECK_EQ(bij->second(var_a), i_a);
+      CHECK_EQ(bij->second(var_b), i_b);
+      CHECK_EQ(bij->first(i_a), var_a);
+      CHECK_EQ(bij->first(i_b), var_b);
     }
 
     /// @}

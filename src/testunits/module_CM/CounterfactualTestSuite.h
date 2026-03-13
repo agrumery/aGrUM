@@ -143,9 +143,9 @@ namespace gum_tests {
       CHECK((got.get(I)) == doctest::Approx(1.0).epsilon(1e-12));
 
       auto I0 = instFor(got, {{"salary", "80"}});
-      GUM_CHECK_LT(std::abs(got.get(I0)), 1e-12);
+      CHECK_LT(std::abs(got.get(I0)), 1e-12);
       auto I2 = instFor(got, {{"salary", "82"}});
-      GUM_CHECK_LT(std::abs(got.get(I2)), 1e-12);
+      CHECK_LT(std::abs(got.get(I2)), 1e-12);
     }
 
     // Same scenario, using the NodeSet / ID-based overloads, from the same BIFXML.

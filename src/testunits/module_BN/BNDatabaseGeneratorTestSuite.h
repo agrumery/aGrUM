@@ -105,21 +105,21 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
 
       auto varOrder = dbgen->varOrder();
-      GUM_CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
-      GUM_CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(1));
-      GUM_CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(2));
-      GUM_CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(3));
-      GUM_CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(4));
+      CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
+      CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(1));
+      CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(2));
+      CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(3));
+      CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(4));
 
       auto varOrderNames = dbgen->varOrderNames();
-      GUM_CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(varOrderNames.at(0), "A");
-      GUM_CHECK_EQ(varOrderNames.at(1), "S");
-      GUM_CHECK_EQ(varOrderNames.at(2), "E");
-      GUM_CHECK_EQ(varOrderNames.at(3), "O");
-      GUM_CHECK_EQ(varOrderNames.at(4), "R");
-      GUM_CHECK_EQ(varOrderNames.at(5), "T");
+      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(varOrderNames.at(0), "A");
+      CHECK_EQ(varOrderNames.at(1), "S");
+      CHECK_EQ(varOrderNames.at(2), "E");
+      CHECK_EQ(varOrderNames.at(3), "O");
+      CHECK_EQ(varOrderNames.at(4), "R");
+      CHECK_EQ(varOrderNames.at(5), "T");
 
       delete dbgen;
     }
@@ -138,34 +138,34 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
       auto varOrderNames = dbgen->varOrderNames();
-      GUM_CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(varOrderNames.at(1), "A");
-      GUM_CHECK_EQ(varOrderNames.at(0), "S");
-      GUM_CHECK_EQ(varOrderNames.at(3), "E");
-      GUM_CHECK_EQ(varOrderNames.at(2), "O");
-      GUM_CHECK_EQ(varOrderNames.at(5), "R");
-      GUM_CHECK_EQ(varOrderNames.at(4), "T");
+      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(varOrderNames.at(1), "A");
+      CHECK_EQ(varOrderNames.at(0), "S");
+      CHECK_EQ(varOrderNames.at(3), "E");
+      CHECK_EQ(varOrderNames.at(2), "O");
+      CHECK_EQ(varOrderNames.at(5), "R");
+      CHECK_EQ(varOrderNames.at(4), "T");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder2));
       auto varOrder = dbgen->varOrder();
-      GUM_CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
-      GUM_CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(2));
-      GUM_CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(3));
-      GUM_CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(4));
-      GUM_CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(1));
-      GUM_CHECK_EQ(varOrder.at(5), static_cast< gum::Idx >(5));
+      CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
+      CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(2));
+      CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(3));
+      CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(4));
+      CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(1));
+      CHECK_EQ(varOrder.at(5), static_cast< gum::Idx >(5));
 
       std::string csvFile = GET_RESSOURCES_PATH("csv/survey1.csv");
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile));
       varOrderNames = dbgen->varOrderNames();
-      GUM_CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(varOrderNames.at(0), "E");
-      GUM_CHECK_EQ(varOrderNames.at(1), "A");
-      GUM_CHECK_EQ(varOrderNames.at(2), "O");
-      GUM_CHECK_EQ(varOrderNames.at(3), "T");
-      GUM_CHECK_EQ(varOrderNames.at(4), "R");
-      GUM_CHECK_EQ(varOrderNames.at(5), "S");
+      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(varOrderNames.at(0), "E");
+      CHECK_EQ(varOrderNames.at(1), "A");
+      CHECK_EQ(varOrderNames.at(2), "O");
+      CHECK_EQ(varOrderNames.at(3), "T");
+      CHECK_EQ(varOrderNames.at(4), "R");
+      CHECK_EQ(varOrderNames.at(5), "S");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder());
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder());
@@ -199,24 +199,24 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
 
       for (const auto& row: database) {
-        GUM_CHECK_LT(row.at(0), domSizeA);
-        GUM_CHECK_LT(row.at(1), domSizeS);
-        GUM_CHECK_LT(row.at(2), domSizeE);
-        GUM_CHECK_LT(row.at(3), domSizeO);
-        GUM_CHECK_LT(row.at(4), domSizeR);
-        GUM_CHECK_LT(row.at(5), domSizeT);
+        CHECK_LT(row.at(0), domSizeA);
+        CHECK_LT(row.at(1), domSizeS);
+        CHECK_LT(row.at(2), domSizeE);
+        CHECK_LT(row.at(3), domSizeO);
+        CHECK_LT(row.at(4), domSizeR);
+        CHECK_LT(row.at(5), domSizeT);
       }
 
       std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
       CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
       GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
       for (const auto& row: database) {
-        GUM_CHECK_LT(row.at(0), domSizeS);
-        GUM_CHECK_LT(row.at(1), domSizeE);
-        GUM_CHECK_LT(row.at(2), domSizeT);
-        GUM_CHECK_LT(row.at(3), domSizeR);
-        GUM_CHECK_LT(row.at(4), domSizeA);
-        GUM_CHECK_LT(row.at(5), domSizeO);
+        CHECK_LT(row.at(0), domSizeS);
+        CHECK_LT(row.at(1), domSizeE);
+        CHECK_LT(row.at(2), domSizeT);
+        CHECK_LT(row.at(3), domSizeR);
+        CHECK_LT(row.at(4), domSizeA);
+        CHECK_LT(row.at(5), domSizeO);
       }
 
       std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
@@ -224,12 +224,12 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
       for (const auto& row: database) {
-        GUM_CHECK_LT(row.at(0), domSizeS);
-        GUM_CHECK_LT(row.at(1), domSizeT);
-        GUM_CHECK_LT(row.at(2), domSizeE);
-        GUM_CHECK_LT(row.at(3), domSizeR);
-        GUM_CHECK_LT(row.at(4), domSizeO);
-        GUM_CHECK_LT(row.at(5), domSizeA);
+        CHECK_LT(row.at(0), domSizeS);
+        CHECK_LT(row.at(1), domSizeT);
+        CHECK_LT(row.at(2), domSizeE);
+        CHECK_LT(row.at(3), domSizeR);
+        CHECK_LT(row.at(4), domSizeO);
+        CHECK_LT(row.at(5), domSizeA);
       }
       delete dbgen;
     }
@@ -253,15 +253,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
 
       // log2likehood must proportional to number of samples
-      GUM_CHECK_LT(std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2), tolerance);
-      GUM_CHECK_LT(std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3), tolerance);
+      CHECK_LT(std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2), tolerance);
+      CHECK_LT(std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3), tolerance);
 
       // log2likelihood must be aprox nbSamples * entropy (theorical result)
       double entropy
           = (bn.cpt(0) * bn.cpt(1) * bn.cpt(2) * bn.cpt(3) * bn.cpt(4) * bn.cpt(5)).entropy();
-      GUM_CHECK_LT(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
-      GUM_CHECK_LT(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
-      GUM_CHECK_LT(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
+      CHECK_LT(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
+      CHECK_LT(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
+      CHECK_LT(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
 
       delete dbgen;
     }
@@ -309,7 +309,7 @@ namespace gum_tests {
       std::string                line;
       std::vector< std::string > header;
       std::getline(csvFile, line);
-      GUM_CHECK_EQ(line, "S E T R A O");
+      CHECK_EQ(line, "S E T R A O");
 
       while (std::getline(csvFile, line)) {
         std::istringstream iss(line);
@@ -326,12 +326,12 @@ namespace gum_tests {
         iss >> valA;
         iss >> valO;
 
-        GUM_CHECK_NE(std::find(domA.begin(), domA.end(), valA), domA.end());
-        GUM_CHECK_NE(std::find(domS.begin(), domS.end(), valS), domS.end());
-        GUM_CHECK_NE(std::find(domE.begin(), domE.end(), valE), domE.end());
-        GUM_CHECK_NE(std::find(domO.begin(), domO.end(), valO), domO.end());
-        GUM_CHECK_NE(std::find(domR.begin(), domR.end(), valR), domR.end());
-        GUM_CHECK_NE(std::find(domT.begin(), domT.end(), valT), domT.end());
+        CHECK_NE(std::find(domA.begin(), domA.end(), valA), domA.end());
+        CHECK_NE(std::find(domS.begin(), domS.end(), valS), domS.end());
+        CHECK_NE(std::find(domE.begin(), domE.end(), valE), domE.end());
+        CHECK_NE(std::find(domO.begin(), domO.end(), valO), domO.end());
+        CHECK_NE(std::find(domR.begin(), domR.end(), valR), domR.end());
+        CHECK_NE(std::find(domT.begin(), domT.end(), valT), domT.end());
       }
       csvFile.close();
 
@@ -381,7 +381,7 @@ namespace gum_tests {
       std::string                line;
       std::vector< std::string > header;
       std::getline(csvFile, line);
-      GUM_CHECK_EQ(line, "S E T R A O");
+      CHECK_EQ(line, "S E T R A O");
 
       while (std::getline(csvFile, line)) {
         std::istringstream iss(line);
@@ -398,12 +398,12 @@ namespace gum_tests {
         iss >> valA;
         iss >> valO;
 
-        GUM_CHECK_LT(valS, domSizeS);
-        GUM_CHECK_LT(valE, domSizeE);
-        GUM_CHECK_LT(valT, domSizeT);
-        GUM_CHECK_LT(valR, domSizeR);
-        GUM_CHECK_LT(valA, domSizeA);
-        GUM_CHECK_LT(valO, domSizeO);
+        CHECK_LT(valS, domSizeS);
+        CHECK_LT(valE, domSizeE);
+        CHECK_LT(valT, domSizeT);
+        CHECK_LT(valR, domSizeR);
+        CHECK_LT(valA, domSizeA);
+        CHECK_LT(valO, domSizeO);
       }
       csvFile.close();
 
@@ -458,12 +458,12 @@ namespace gum_tests {
       handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        GUM_CHECK_LT(row[0].discr_val, domSizeA);
-        GUM_CHECK_LT(row[1].discr_val, domSizeS);
-        GUM_CHECK_LT(row[2].discr_val, domSizeE);
-        GUM_CHECK_LT(row[3].discr_val, domSizeO);
-        GUM_CHECK_LT(row[4].discr_val, domSizeR);
-        GUM_CHECK_LT(row[5].discr_val, domSizeT);
+        CHECK_LT(row[0].discr_val, domSizeA);
+        CHECK_LT(row[1].discr_val, domSizeS);
+        CHECK_LT(row[2].discr_val, domSizeE);
+        CHECK_LT(row[3].discr_val, domSizeO);
+        CHECK_LT(row[4].discr_val, domSizeR);
+        CHECK_LT(row[5].discr_val, domSizeT);
         handler.nextRow();
       }
 
@@ -498,12 +498,12 @@ namespace gum_tests {
       handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        GUM_CHECK_LT(row[0].discr_val, domSizeS);
-        GUM_CHECK_LT(row[1].discr_val, domSizeE);
-        GUM_CHECK_LT(row[2].discr_val, domSizeT);
-        GUM_CHECK_LT(row[3].discr_val, domSizeR);
-        GUM_CHECK_LT(row[4].discr_val, domSizeA);
-        GUM_CHECK_LT(row[5].discr_val, domSizeO);
+        CHECK_LT(row[0].discr_val, domSizeS);
+        CHECK_LT(row[1].discr_val, domSizeE);
+        CHECK_LT(row[2].discr_val, domSizeT);
+        CHECK_LT(row[3].discr_val, domSizeR);
+        CHECK_LT(row[4].discr_val, domSizeA);
+        CHECK_LT(row[5].discr_val, domSizeO);
         handler.nextRow();
       }
 
@@ -515,18 +515,18 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double > dbgen(bn);
 
       ASimpleDBGeneratorListener gener(dbgen);
-      GUM_CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(gener.getMess(), "");
+      CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(0));
+      CHECK_EQ(gener.getMess(), "");
       dbgen.drawSamples(100);
-      GUM_CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(4950));
-      GUM_CHECK_NE(gener.getMess(), "");
+      CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(4950));
+      CHECK_NE(gener.getMess(), "");
 
       ASimpleDBGeneratorListener gener2(dbgen);
-      GUM_CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(gener2.getMess(), "");
+      CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(0));
+      CHECK_EQ(gener2.getMess(), "");
       dbgen.drawSamples(1000);
-      GUM_CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(4950));
-      GUM_CHECK_NE(gener2.getMess(), "");
+      CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(4950));
+      CHECK_NE(gener2.getMess(), "");
     }
 
     static void testDrawingWithEvidence() {
@@ -538,7 +538,7 @@ namespace gum_tests {
       filter.add(bn.variable(0));
       filter.setFirst();
       dbgen.drawSamples(100, filter);
-      GUM_CHECK_LT(dbgen.samplesNbRows(), 101u);   // some samples have been rejected
+      CHECK_LT(dbgen.samplesNbRows(), 101u);   // some samples have been rejected
     }
 
     static void testAccuracy() {
@@ -622,7 +622,7 @@ namespace gum_tests {
           CHECK(d >= 1.5);
           CHECK(d <= 14);
         }
-        GUM_CHECK_EQ(pos++, nbLines);
+        CHECK_EQ(pos++, nbLines);
       }
 
       // MEDIAN
@@ -637,7 +637,7 @@ namespace gum_tests {
           CHECK(gum::isNumericalWithResult(dummyLine, &d));
           CHECK(((d == 1.75) || (d == 2.25) || (d == 6.25) || (d == 12)));
         }
-        GUM_CHECK_EQ(pos, nbLines);
+        CHECK_EQ(pos, nbLines);
       }
 
       // INTERVALLS
@@ -649,9 +649,9 @@ namespace gum_tests {
         pos = 0;
         while (getline(stream, dummyLine)) {
           pos++;
-          GUM_CHECK_EQ(dummyLine.front(), '[');
+          CHECK_EQ(dummyLine.front(), '[');
         }
-        GUM_CHECK_EQ(pos, nbLines);
+        CHECK_EQ(pos, nbLines);
       }
     }
 
@@ -672,8 +672,8 @@ namespace gum_tests {
       const auto nbLines = 10;
       timer.reset();
       dbgen.drawSamples(nbLines, filter, 5);
-      GUM_CHECK_LT(timer.step(), 5.5);
-      GUM_CHECK_EQ(dbgen.samplesNbRows(), 0u);
+      CHECK_LT(timer.step(), 5.5);
+      CHECK_EQ(dbgen.samplesNbRows(), 0u);
     }
   };
 

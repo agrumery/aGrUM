@@ -154,7 +154,7 @@ namespace gum_tests {
       }
 
       gum::ExactBNdistance< double > kl(net2, net2);
-      GUM_CHECK_EQ(kl.difficulty(), gum::Complexity::Correct);
+      CHECK_EQ(kl.difficulty(), gum::Complexity::Correct);
 
       gum::BayesNet< double > net;
       {
@@ -164,7 +164,7 @@ namespace gum_tests {
       }
 
       gum::BNdistance< double > kl2(net, net);
-      GUM_CHECK_EQ(kl2.difficulty(), gum::Complexity::Heavy);
+      CHECK_EQ(kl2.difficulty(), gum::Complexity::Heavy);
     }
 
     static void testKLComputation() {
@@ -177,11 +177,11 @@ namespace gum_tests {
 
       double                         vkl = 0.0;
       gum::ExactBNdistance< double > stupid_bfkl(net3, net3);
-      GUM_CHECK_EQ(stupid_bfkl.difficulty(), gum::Complexity::Correct);
+      CHECK_EQ(stupid_bfkl.difficulty(), gum::Complexity::Correct);
       GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klPQ());
-      GUM_CHECK_EQ(vkl, 0.0);
+      CHECK_EQ(vkl, 0.0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = stupid_bfkl.klQP());
-      GUM_CHECK_EQ(vkl, 0.0);
+      CHECK_EQ(vkl, 0.0);
 
       gum::BayesNet< double > net4;
       {
@@ -199,17 +199,17 @@ namespace gum_tests {
         reader.proceed();
       }
       gum::BNdistance< double > kl(net3, net5);
-      GUM_CHECK_EQ(kl.difficulty(), gum::Complexity::Correct);
+      CHECK_EQ(kl.difficulty(), gum::Complexity::Correct);
       {
         gum::ExactBNdistance< double > gkl(kl);
         GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
-        GUM_CHECK_NE(vkl, static_cast< float >(0.0));
+        CHECK_NE(vkl, static_cast< float >(0.0));
       }
       {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
-        GUM_CHECK_NE(vkl, static_cast< float >(0.0));
+        CHECK_NE(vkl, static_cast< float >(0.0));
         CHECK_THROWS_AS(gkl.history(), const gum::OperationNotAllowed&);
       }
 
@@ -217,7 +217,7 @@ namespace gum_tests {
         gum::GibbsBNdistance< double > gkl(kl);
         gkl.setMaxIter(40);
         GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = gkl.klPQ());
-        GUM_CHECK_NE(vkl, static_cast< float >(0.0));
+        CHECK_NE(vkl, static_cast< float >(0.0));
         CHECK_THROWS_AS(gkl.history(), const gum::OperationNotAllowed&);
       }
     }
@@ -241,8 +241,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(kl.klPQ());
       CHECK((kl.klPQ()) == doctest::Approx(0.241864114).epsilon(1e-7));
       CHECK((kl.klQP()) == doctest::Approx(0.399826689).epsilon(1e-7));
-      GUM_CHECK_EQ(kl.errorPQ(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(kl.errorQP(), static_cast< gum::Size >(0));
+      CHECK_EQ(kl.errorPQ(), static_cast< gum::Size >(0));
+      CHECK_EQ(kl.errorQP(), static_cast< gum::Size >(0));
       CHECK((kl.hellinger()) == doctest::Approx(0.321089688).epsilon(1e-7));
       CHECK((kl.jsd()) == doctest::Approx(0.0696153).epsilon(1e-7));
       CHECK((kl.bhattacharya()) == doctest::Approx(0.0529255).epsilon(1e-7));

@@ -171,46 +171,46 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       // install a node
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
 
       // install twice the same node
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v1")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a non-existing node
-      GUM_CHECK_EQ(bn.dag().exists((gum::NodeId)100), false);
+      CHECK_EQ(bn.dag().exists((gum::NodeId)100), false);
       CHECK_THROWS_AS(frag.installNode((gum::NodeId)100), const gum::NotFound&);
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a second node (without arc)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a third node (and 2 arcs)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v3")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v5")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag2.installAscendants(bn.idFromName("v5")));
-      GUM_CHECK_EQ(frag2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(6));
     }
 
     static void testInstallNodesWithVar() {
@@ -220,45 +220,45 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
 
       // install a node
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
 
       // install twice the same node
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v1"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a non-existing node
       CHECK_THROWS_AS(frag.installNode("v100"), const gum::NotFound&);
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a second node (without arc)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a third node (and 2 arcs)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v3"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v5"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
 
       // another test for ascendants
       gum::BayesNetFragment< double > frag2(bn);
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag2.installAscendants("v5"));
-      GUM_CHECK_EQ(frag2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(6));
     }
 
     static void testUninstallNode() {
@@ -269,13 +269,13 @@ namespace gum_tests {
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // uninstall node 3 (in the middle)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.uninstallNode(bn.idFromName("v3")));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
     }
 
     static void testUninstallNodeWithNames() {
@@ -286,13 +286,13 @@ namespace gum_tests {
 
       // install ascendants (nothing should happen)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       // uninstall node 3 (in the middle)
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.uninstallNode("v3"));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
     }
 
     static void testIBayetNetMethodsWithoutLocalCPTs() {
@@ -307,24 +307,24 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
 
-      GUM_CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
-      GUM_CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
+      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
+      CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
 
-      GUM_CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
+      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       CHECK((pow(10, frag.log10DomainSize()))
             == doctest::Approx(2 * 2 * 3).epsilon(GUM_SMALL_ERROR));
 
       auto I = frag.completeInstantiation();
       I.setFirst();
-      GUM_CHECK_EQ(I.toString(), "<v1:0|v3:0|v6:0>");
+      CHECK_EQ(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
         double p = bn.cpt(bn.idFromName("v1"))[I] * bn.cpt(bn.idFromName("v3"))[I]
@@ -341,7 +341,7 @@ namespace gum_tests {
         count++;
       }
 
-      GUM_CHECK_EQ(count, frag.size());
+      CHECK_EQ(count, frag.size());
 
       count = 0;
 
@@ -350,13 +350,13 @@ namespace gum_tests {
         count++;
       }
 
-      GUM_CHECK_EQ(count, frag.sizeArcs());
+      CHECK_EQ(count, frag.sizeArcs());
 
       const auto order = frag.topologicalOrder();
-      GUM_CHECK_EQ(order.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.variable(order.atPos(0)).name(), "v1");
-      GUM_CHECK_EQ(frag.variable(order.atPos(1)).name(), "v3");
-      GUM_CHECK_EQ(frag.variable(order.atPos(2)).name(), "v6");
+      CHECK_EQ(order.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.variable(order.atPos(0)).name(), "v1");
+      CHECK_EQ(frag.variable(order.atPos(1)).name(), "v3");
+      CHECK_EQ(frag.variable(order.atPos(2)).name(), "v6");
     }
 
     static void testIBayetNetMethodsWithoutLocalCPTsWithNames() {
@@ -371,24 +371,24 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
 
-      GUM_CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
-      GUM_CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
+      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
+      CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
 
-      GUM_CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
+      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       CHECK((pow(10, frag.log10DomainSize()))
             == doctest::Approx(2 * 2 * 3).epsilon(GUM_SMALL_ERROR));
 
       auto I = frag.completeInstantiation();
       I.setFirst();
-      GUM_CHECK_EQ(I.toString(), "<v1:0|v3:0|v6:0>");
+      CHECK_EQ(I.toString(), "<v1:0|v3:0|v6:0>");
 
       while (!I.end()) {
         double p = bn.cpt("v1")[I] * bn.cpt("v3")[I] * bn.cpt("v6")[I];
@@ -404,7 +404,7 @@ namespace gum_tests {
         count++;
       }
 
-      GUM_CHECK_EQ(count, frag.size());
+      CHECK_EQ(count, frag.size());
 
       count = 0;
 
@@ -413,13 +413,13 @@ namespace gum_tests {
         count++;
       }
 
-      GUM_CHECK_EQ(count, frag.sizeArcs());
+      CHECK_EQ(count, frag.sizeArcs());
 
       const auto order = frag.topologicalOrder();
-      GUM_CHECK_EQ(order.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.variable(order.atPos(0)).name(), "v1");
-      GUM_CHECK_EQ(frag.variable(order.atPos(1)).name(), "v3");
-      GUM_CHECK_EQ(frag.variable(order.atPos(2)).name(), "v6");
+      CHECK_EQ(order.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.variable(order.atPos(0)).name(), "v1");
+      CHECK_EQ(frag.variable(order.atPos(1)).name(), "v3");
+      CHECK_EQ(frag.variable(order.atPos(2)).name(), "v6");
     }
 
     static void testListeners() {
@@ -429,25 +429,25 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag(bn);
       frag.installAscendants(bn.idFromName("v5"));
 
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
 
       bn.erase(bn.idFromName("v4"));
 
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(3));
 
-      GUM_CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(2));
       CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
       CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
       CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
-      GUM_CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(1));
+      CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(1));
       CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
       CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
       CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
@@ -459,26 +459,26 @@ namespace gum_tests {
       gum::BayesNetFragment< double > frag2(bn2);
       frag2.installAscendants(bn2.idFromName("v6"));
 
-      GUM_CHECK_EQ(frag2.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag2.sizeArcs(), static_cast< gum::Size >(2));
 
       std::string tostr2{frag2.toString()};
 
       bn2.erase(bn2.idFromName("v4"));
 
-      GUM_CHECK_EQ(frag2.toString(), tostr2);
+      CHECK_EQ(frag2.toString(), tostr2);
 
       bn2.eraseArc(gum::Arc(bn.idFromName("v2"), bn2.idFromName("v5")));
 
-      GUM_CHECK_EQ(frag2.toString(), tostr2);
+      CHECK_EQ(frag2.toString(), tostr2);
 
       bn2.add(gum::LabelizedVariable("v7", "unused var"));
 
-      GUM_CHECK_EQ(frag2.toString(), tostr2);
+      CHECK_EQ(frag2.toString(), tostr2);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn2.addArc(bn2.idFromName("v6"), bn2.idFromName("v7")));
 
-      GUM_CHECK_EQ(frag2.toString(), tostr2);
+      CHECK_EQ(frag2.toString(), tostr2);
     }
 
     static void testRelevantForRelevantReasonning() {
@@ -510,8 +510,8 @@ namespace gum_tests {
         newV3 << bn.variable(bn.idFromName("v3"));
         newV3.fillWith({0.0, 1.0});
         frag.installMarginal(frag.idFromName("v3"), newV3);   // 1   3->6
-        GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(1));
+        CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(1));
 
         gum::LazyPropagation< double > inf_frag(&frag);
         inf_frag.makeInference();
@@ -532,8 +532,8 @@ namespace gum_tests {
       fill(bn);
       gum::BayesNetFragment< double > frag(bn);
       frag.installAscendants(bn.idFromName("v6"));   // 1->3->6
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       for (const auto node: frag.nodes())
         CHECK(frag.checkConsistency(node));
@@ -542,8 +542,8 @@ namespace gum_tests {
 
       frag.installNode(bn.idFromName("v5"));
       // 1->3->6 et 3->5 but 5 does not have all this parents (2,3 et 4)
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(3));
 
       for (const auto node: frag.nodes())
         CHECK((node == frag.idFromName("v5") || frag.checkConsistency(node)));
@@ -555,34 +555,34 @@ namespace gum_tests {
       newV5.fillWith({0.0, 0.0, 1.0});
       frag.installMarginal(frag.idFromName("v5"), newV5);   // 1-->3-->6 5
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
       frag.installAscendants(bn.idFromName("v4"));
       CHECK(!frag.checkConsistency());   // V5 has now 2 parents : 4 and 2
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
 
       frag.uninstallCPT(frag.idFromName("v5"));
       // V5 tensor got its 3 parents back from the referred BN
       // the fragment is the BN
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
 
       // removing 4 make V5 unconsistent
       frag.uninstallNode(frag.idFromName("v4"));
       CHECK(!frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(4));
 
       gum::Tensor< double > newV5bis;
       newV5bis << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
                << bn.variable(bn.idFromName("v3"));
       frag.installCPT(frag.idFromName("v5"), newV5bis);
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(4));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(4));
     }
 
     static void testInferenceWithLocalCPTs() {
@@ -597,8 +597,8 @@ namespace gum_tests {
         frag.installNode(node);
 
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(7));
 
       gum::Tensor< double > newV5;
       newV5 << bn.variable(bn.idFromName("v5")) << bn.variable(bn.idFromName("v2"))
@@ -613,8 +613,8 @@ namespace gum_tests {
 
       frag.installCPT(frag.idFromName("v5"), newV5);
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(6));
       str2file("outputs/test.dot", bn2.toDot());
 
       CHECK(bn2 == frag);
@@ -637,7 +637,7 @@ namespace gum_tests {
 
     static void testCopyToBN() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
-      GUM_CHECK_EQ(&bn.cpt("B").variable(1), &bn.variable("A"));
+      CHECK_EQ(&bn.cpt("B").variable(1), &bn.variable("A"));
 
       gum::BayesNetFragment< double > frag(bn);
 
@@ -649,38 +649,38 @@ namespace gum_tests {
       // minibn checking if the tensor are well copied
       frag.installNode("A");
       CHECK(frag.checkConsistency());
-      GUM_CHECK_EQ(&bn.variable("A"), &frag.variable("A"));
-      GUM_CHECK_EQ(&bn.variable("B"), &frag.variable("B"));
-      GUM_CHECK_EQ(bn.cpt("A").toString(), frag.cpt("A").toString());
-      GUM_CHECK_EQ(bn.cpt("B").toString(), frag.cpt("B").toString());
-      GUM_CHECK_EQ(&frag.cpt("B").variable(1), &bn.variable("A"));
-      GUM_CHECK_EQ(&frag.cpt("B").variable(1), &frag.variable("A"));
+      CHECK_EQ(&bn.variable("A"), &frag.variable("A"));
+      CHECK_EQ(&bn.variable("B"), &frag.variable("B"));
+      CHECK_EQ(bn.cpt("A").toString(), frag.cpt("A").toString());
+      CHECK_EQ(bn.cpt("B").toString(), frag.cpt("B").toString());
+      CHECK_EQ(&frag.cpt("B").variable(1), &bn.variable("A"));
+      CHECK_EQ(&frag.cpt("B").variable(1), &frag.variable("A"));
 
       const auto& minibn = frag.toBN();
-      GUM_CHECK_EQ(minibn.size(), 2u);
-      GUM_CHECK_EQ(minibn.sizeArcs(), 1u);
-      GUM_CHECK_NE(&bn.variable("A"), &minibn.variable("A"));
-      GUM_CHECK_NE(&bn.variable("B"), &minibn.variable("B"));
-      GUM_CHECK_EQ(bn.cpt("A").toString(), minibn.cpt("A").toString());
-      GUM_CHECK_EQ(bn.cpt("B").toString(), minibn.cpt("B").toString());
-      GUM_CHECK_EQ(&minibn.cpt("B").variable(1), &minibn.variable("A"));
-      GUM_CHECK_NE(&minibn.cpt("B").variable(1), &frag.variable("A"));
+      CHECK_EQ(minibn.size(), 2u);
+      CHECK_EQ(minibn.sizeArcs(), 1u);
+      CHECK_NE(&bn.variable("A"), &minibn.variable("A"));
+      CHECK_NE(&bn.variable("B"), &minibn.variable("B"));
+      CHECK_EQ(bn.cpt("A").toString(), minibn.cpt("A").toString());
+      CHECK_EQ(bn.cpt("B").toString(), minibn.cpt("B").toString());
+      CHECK_EQ(&minibn.cpt("B").variable(1), &minibn.variable("A"));
+      CHECK_NE(&minibn.cpt("B").variable(1), &frag.variable("A"));
     }
 
     static void testGraphicalMethods() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
-      GUM_CHECK_EQ(&bn.cpt("B").variable(1), &bn.variable("A"));
+      CHECK_EQ(&bn.cpt("B").variable(1), &bn.variable("A"));
 
       gum::BayesNetFragment< double > frag(bn);
       frag.installNode("A");
       frag.installNode("B");
       frag.installNode("C");
 
-      GUM_CHECK_EQ(frag.children("B"), gum::NodeSet({2}));
+      CHECK_EQ(frag.children("B"), gum::NodeSet({2}));
       CHECK((frag.variableNodeMap().size())
             == (static_cast< gum::Size >(6)));   // the size of bn.size() ...
 
-      GUM_CHECK_EQ(frag.nodes().asNodeSet(), gum::NodeSet({0, 1, 2}));
+      CHECK_EQ(frag.nodes().asNodeSet(), gum::NodeSet({0, 1, 2}));
     }
   };
 

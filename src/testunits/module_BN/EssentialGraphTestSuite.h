@@ -63,27 +63,27 @@ namespace gum_tests {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 3u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 0u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 2u);
+      CHECK_EQ(eg.size(), 3u);
+      CHECK_EQ(eg.sizeArcs(), 0u);
+      CHECK_EQ(eg.sizeEdges(), 2u);
     }   // namespace gum_tests
 
     static void testVstructure() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 3u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 2u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 0u);
+      CHECK_EQ(eg.size(), 3u);
+      CHECK_EQ(eg.sizeArcs(), 2u);
+      CHECK_EQ(eg.sizeEdges(), 0u);
     }
 
     static void testCaseD() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 4u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 3u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 2u);
+      CHECK_EQ(eg.size(), 4u);
+      CHECK_EQ(eg.sizeArcs(), 3u);
+      CHECK_EQ(eg.sizeEdges(), 2u);
     }
 
     static void testNotebook1() {
@@ -91,27 +91,27 @@ namespace gum_tests {
           "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 13u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 8u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 5u);
+      CHECK_EQ(eg.size(), 13u);
+      CHECK_EQ(eg.sizeArcs(), 8u);
+      CHECK_EQ(eg.sizeEdges(), 5u);
     }
 
     static void testNotebook2() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 4u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 0u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 5u);
+      CHECK_EQ(eg.size(), 4u);
+      CHECK_EQ(eg.sizeArcs(), 0u);
+      CHECK_EQ(eg.sizeEdges(), 5u);
     }
 
     static void testNotebook3() {
       auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
       auto eg = gum::EssentialGraph(bn);
 
-      GUM_CHECK_EQ(eg.size(), 5u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 3u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 1u);
+      CHECK_EQ(eg.size(), 5u);
+      CHECK_EQ(eg.sizeArcs(), 3u);
+      CHECK_EQ(eg.sizeEdges(), 1u);
     }
 
     static void testSkeleton() {
@@ -119,21 +119,21 @@ namespace gum_tests {
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      GUM_CHECK_EQ(skel.size(), 5u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 1u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 3u);
+      CHECK_EQ(skel.size(), 5u);
+      CHECK_EQ(eg.sizeEdges(), 1u);
+      CHECK_EQ(eg.sizeArcs(), 3u);
 
-      GUM_CHECK_EQ(eg.idFromName("Z"), 0u);
-      GUM_CHECK_EQ(eg.idFromName("X"), 1u);
-      GUM_CHECK_EQ(eg.idFromName("U"), 2u);
-      GUM_CHECK_EQ(eg.idFromName("Y"), 3u);
-      GUM_CHECK_EQ(eg.idFromName("W"), 4u);
+      CHECK_EQ(eg.idFromName("Z"), 0u);
+      CHECK_EQ(eg.idFromName("X"), 1u);
+      CHECK_EQ(eg.idFromName("U"), 2u);
+      CHECK_EQ(eg.idFromName("Y"), 3u);
+      CHECK_EQ(eg.idFromName("W"), 4u);
 
-      GUM_CHECK_EQ(eg.nameFromId(0u), "Z");
-      GUM_CHECK_EQ(eg.nameFromId(1u), "X");
-      GUM_CHECK_EQ(eg.nameFromId(2u), "U");
-      GUM_CHECK_EQ(eg.nameFromId(3u), "Y");
-      GUM_CHECK_EQ(eg.nameFromId(4u), "W");
+      CHECK_EQ(eg.nameFromId(0u), "Z");
+      CHECK_EQ(eg.nameFromId(1u), "X");
+      CHECK_EQ(eg.nameFromId(2u), "U");
+      CHECK_EQ(eg.nameFromId(3u), "Y");
+      CHECK_EQ(eg.nameFromId(4u), "W");
     }
 
     static void testNonRegression1() {
@@ -141,9 +141,9 @@ namespace gum_tests {
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      GUM_CHECK_EQ(skel.size(), 3u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 3u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 0u);
+      CHECK_EQ(skel.size(), 3u);
+      CHECK_EQ(eg.sizeEdges(), 3u);
+      CHECK_EQ(eg.sizeArcs(), 0u);
     }
 
     static void testNonRegression2() {
@@ -151,18 +151,18 @@ namespace gum_tests {
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
 
-      GUM_CHECK_EQ(skel.size(), 4u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 0u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 4u);
+      CHECK_EQ(skel.size(), 4u);
+      CHECK_EQ(eg.sizeEdges(), 0u);
+      CHECK_EQ(eg.sizeArcs(), 4u);
     }
 
     static void testNonRegression3() {
       auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
       auto eg   = gum::EssentialGraph(bn);
       auto skel = eg.skeleton();
-      GUM_CHECK_EQ(skel.size(), 6u);
-      GUM_CHECK_EQ(eg.sizeEdges(), 2u);
-      GUM_CHECK_EQ(eg.sizeArcs(), 4u);
+      CHECK_EQ(skel.size(), 6u);
+      CHECK_EQ(eg.sizeEdges(), 2u);
+      CHECK_EQ(eg.sizeArcs(), 4u);
     }
   };
 

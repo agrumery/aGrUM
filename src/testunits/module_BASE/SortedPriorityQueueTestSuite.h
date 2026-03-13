@@ -60,9 +60,9 @@ namespace gum_tests {
     static void testString() {
       gum::SortedPriorityQueue< std::string > queue1;
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.bottom(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
@@ -83,67 +83,67 @@ namespace gum_tests {
         std::stringstream str;
         str << queue1.toString();
         std::string str2 = "[(EEE, 24) ; (DDD, 23) ; (BBB, 10) ; (AAA, 8) ; (CCC, 2)]";
-        GUM_CHECK_EQ(str.str(), str2);
+        CHECK_EQ(str.str(), str2);
       }
 
       {
         std::vector< std::string > vect = {"EEE", "DDD", "BBB", "AAA", "CCC"};
         int                        i    = 0;
         for (const auto& val: queue1) {
-          GUM_CHECK_EQ(val, vect[i++]);
+          CHECK_EQ(val, vect[i++]);
         }
         i = 0;
         for (auto iter = queue1.beginSafe(); iter != queue1.endSafe(); ++iter)
-          GUM_CHECK_EQ(*iter, vect[i++]);
+          CHECK_EQ(*iter, vect[i++]);
         i = 4;
         for (auto iter = queue1.rbegin(); iter != queue1.rend(); ++iter)
-          GUM_CHECK_EQ(*iter, vect[i--]);
+          CHECK_EQ(*iter, vect[i--]);
         i = 4;
         for (auto iter = queue1.rbeginSafe(); iter != queue1.rendSafe(); ++iter)
-          GUM_CHECK_EQ(*iter, vect[i--]);
+          CHECK_EQ(*iter, vect[i--]);
       }
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains("AAA"), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains("AAA"), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
 
       queue1.eraseTop();
       std::string str = queue1.top();
-      GUM_CHECK_EQ(str, "DDD");
-      GUM_CHECK_EQ(queue1.topPriority(), 23);
+      CHECK_EQ(str, "DDD");
+      CHECK_EQ(queue1.topPriority(), 23);
 
       str = queue1.pop();
-      GUM_CHECK_EQ(str, "DDD");
-      GUM_CHECK_EQ(queue1.top(), "BBB");
-      GUM_CHECK_EQ(queue1.topPriority(), 10);
+      CHECK_EQ(str, "DDD");
+      CHECK_EQ(queue1.top(), "BBB");
+      CHECK_EQ(queue1.topPriority(), 10);
 
       queue1.insert("EEE", 24);   // queue = [(EEE, 24), (BBB, 10), (AAA, 8), (CCC, 2)]
       queue1.eraseBottom();       // queue = [(EEE, 24), (BBB, 10), (AAA, 8)]
       str = queue1.bottom();
-      GUM_CHECK_EQ(str, "AAA");
-      GUM_CHECK_EQ(queue1.bottomPriority(), 8);
+      CHECK_EQ(str, "AAA");
+      CHECK_EQ(queue1.bottomPriority(), 8);
 
       queue1.setPriority("BBB", 3);
       {
         std::string str2 = "[(EEE, 24) ; (AAA, 8) ; (BBB, 3)]";
-        GUM_CHECK_EQ(queue1.toString(), str2);
+        CHECK_EQ(queue1.toString(), str2);
       }
 
       nb = 2;
       queue1.setPriority("BBB", nb);
-      GUM_CHECK_EQ(queue1.bottom(), "BBB");
+      CHECK_EQ(queue1.bottom(), "BBB");
 
-      GUM_CHECK_EQ(queue1.bottomPriority(), 2);
+      CHECK_EQ(queue1.bottomPriority(), 2);
       {
         std::string str2 = "[(EEE, 24) ; (AAA, 8) ; (BBB, 2)]";
-        GUM_CHECK_EQ(queue1.toString(), str2);
+        CHECK_EQ(queue1.toString(), str2);
       }
 
       queue1.setPriority("BBB", 10);
       {
         std::string str2 = "[(EEE, 24) ; (BBB, 10) ; (AAA, 8)]";
-        GUM_CHECK_EQ(queue1.toString(), str2);
+        CHECK_EQ(queue1.toString(), str2);
       }
       queue1.setPriority("BBB", 9);
       queue1.setPriority("BBB", 10);
@@ -153,19 +153,19 @@ namespace gum_tests {
 
       CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority("BBB"), 10);
+      CHECK_EQ(queue1.priority("BBB"), 10);
 
       queue1.clear();
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.bottom(), const gum::NotFound&);
     }   // namespace gum_tests
 
     static void testInt() {
       gum::SortedPriorityQueue< std::pair< int, int >, double > queue;
-      GUM_CHECK_EQ(queue.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue.empty(), true);
+      CHECK_EQ(queue.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue.empty(), true);
 
       std::vector< std::pair< std::pair< int, int >, double > > vect;
       for (int i = 0; i < 100; ++i) {
@@ -182,38 +182,38 @@ namespace gum_tests {
           queue.insert(std::move(elt2.first), std::move(elt2.second));
         }
       }
-      GUM_CHECK_EQ(vect2string(vect), queue.toString());
+      CHECK_EQ(vect2string(vect), queue.toString());
 
-      GUM_CHECK_EQ(queue.size(), static_cast< gum::Size >(100));
-      GUM_CHECK_EQ(queue.empty(), false);
-      GUM_CHECK_EQ(queue.contains(std::pair< int, int >(15, 25)), true);
-      GUM_CHECK_EQ(queue.contains(std::pair< int, int >(15, 15)), false);
+      CHECK_EQ(queue.size(), static_cast< gum::Size >(100));
+      CHECK_EQ(queue.empty(), false);
+      CHECK_EQ(queue.contains(std::pair< int, int >(15, 25)), true);
+      CHECK_EQ(queue.contains(std::pair< int, int >(15, 15)), false);
 
       queue.eraseTop();
       vect.erase(vect.begin());
       auto                  res = queue.top();
       std::pair< int, int > res2(98, 108);
-      GUM_CHECK_EQ(res, res2);
-      GUM_CHECK_EQ(queue.topPriority(), 980.0);
+      CHECK_EQ(res, res2);
+      CHECK_EQ(queue.topPriority(), 980.0);
       res2 = {0, 10};
       res  = queue.bottom();
-      GUM_CHECK_EQ(res, res2);
-      GUM_CHECK_EQ(queue.bottomPriority(), 0.0);
+      CHECK_EQ(res, res2);
+      CHECK_EQ(queue.bottomPriority(), 0.0);
 
       res = queue.pop();
       vect.erase(vect.begin());
       res2 = {98, 108};
-      GUM_CHECK_EQ(res, res2);
+      CHECK_EQ(res, res2);
       res2 = {97, 107};
-      GUM_CHECK_EQ(queue.top(), res2);
-      GUM_CHECK_EQ(queue.topPriority(), 970);
+      CHECK_EQ(queue.top(), res2);
+      CHECK_EQ(queue.topPriority(), 970);
 
       res = queue.popBottom();
       vect.pop_back();
       res2 = {0, 10};
-      GUM_CHECK_EQ(res, res2);
+      CHECK_EQ(res, res2);
 
-      GUM_CHECK_EQ(vect2string(vect), queue.toString());
+      CHECK_EQ(vect2string(vect), queue.toString());
 
       vect2 = vect;
       std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
@@ -221,7 +221,7 @@ namespace gum_tests {
         const auto& value = elt.first;
         vect.erase(vect.begin() + pos2vect(vect, value));
         queue.erase(value);
-        GUM_CHECK_EQ(vect2string(vect), queue.toString());
+        CHECK_EQ(vect2string(vect), queue.toString());
       }
     }
 
@@ -239,7 +239,7 @@ namespace gum_tests {
       for (const auto& elt: vect2) {
         queue.insert(elt.first, elt.second);
       }
-      GUM_CHECK_EQ(vect2string(vect), queue.toString());
+      CHECK_EQ(vect2string(vect), queue.toString());
 
       std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
@@ -265,7 +265,7 @@ namespace gum_tests {
         if (i3 == 0) CHECK_NOTHROW(*iter3);
 
         vect.erase(vect.begin() + pos2vect(vect, value));
-        GUM_CHECK_EQ(vect2string(vect), queue.toString());
+        CHECK_EQ(vect2string(vect), queue.toString());
       }
     }
 

@@ -114,15 +114,15 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
       gum::Size elts = c.attributes().size() + c.aggregates().size();
-      GUM_CHECK_EQ(bn->size(), elts);
+      CHECK_EQ(bn->size(), elts);
 
       for (const auto attr: c.attributes()) {
         gum::NodeId id = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(attr->cpf());
         GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName(attr->safeName()));
         GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        GUM_CHECK_EQ(attr->cpf().nbrDim(), bn->cpt(id).nbrDim());
-        GUM_CHECK_EQ(attr->cpf().domainSize(), bn->cpt(id).domainSize());
+        CHECK_EQ(attr->cpf().nbrDim(), bn->cpt(id).nbrDim());
+        CHECK_EQ(attr->cpf().domainSize(), bn->cpt(id).domainSize());
       }
 
       CHECK(bn->modalities().size() > 0);
@@ -133,15 +133,15 @@ namespace gum_tests {
       gum::prm::InstanceBayesNet< double >* bn = 0;
       gum::prm::PRMInstance< double >&      i  = prm->getSystem("aSys").get("c1");
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn = new gum::prm::InstanceBayesNet< double >(i));
-      GUM_CHECK_EQ(bn->size(), i.size());
+      CHECK_EQ(bn->size(), i.size());
 
       for (auto attr = i.begin(); attr != i.end(); ++attr) {
         gum::NodeId id = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING((*(attr.val())).cpf());
         GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName((*(attr.val())).safeName()));
         GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        GUM_CHECK_EQ((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        GUM_CHECK_EQ((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
+        CHECK_EQ((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
+        CHECK_EQ((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
       }
 
       CHECK(bn->modalities().size() > 0);
@@ -169,20 +169,20 @@ namespace gum_tests {
         size_t                            pos      = var.find_first_of('.');
         gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
         gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
-        GUM_CHECK_NE(bn.cpt(node).nbrDim(), static_cast< gum::Size >(0));
+        CHECK_NE(bn.cpt(node).nbrDim(), static_cast< gum::Size >(0));
 
         if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
-          GUM_CHECK_NE(attr.cpf().nbrDim(), static_cast< gum::Size >(1));
+          CHECK_NE(attr.cpf().nbrDim(), static_cast< gum::Size >(1));
         }
       }
 
-      GUM_CHECK_EQ(count, wount);
+      CHECK_EQ(count, wount);
 
       for (const auto node: bn.nodes()) {
         const gum::DiscreteVariable* var = &(bn.variable(node));
 
         for (const auto node2: bn.nodes())
-          if (node != node2) { GUM_CHECK_NE(var, &(bn.variable(node2))); }
+          if (node != node2) { CHECK_NE(var, &(bn.variable(node2))); }
       }
     }
 

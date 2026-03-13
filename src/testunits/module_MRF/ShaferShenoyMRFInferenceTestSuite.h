@@ -93,7 +93,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        GUM_CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
       }
     }
 
@@ -114,7 +114,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        GUM_CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
       }
     }
 
@@ -137,7 +137,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        GUM_CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
       }
     }
 
@@ -160,7 +160,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        GUM_CHECK_LT((postbn - postmn).abs().max(), 1e-8);
+        CHECK_LT((postbn - postmn).abs().max(), 1e-8);
       }
     }
 
@@ -183,7 +183,7 @@ namespace gum_tests {
         postmn.add(bn.variable(n));
         postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
 
-        GUM_CHECK_LT((postbn - postmn).abs().max(), 1e-8);
+        CHECK_LT((postbn - postmn).abs().max(), 1e-8);
       }
     }
 
@@ -223,13 +223,13 @@ namespace gum_tests {
       gum::Tensor< double > Cwith_evB1(iemn.posterior("C"));
       gum::Tensor< double > Ewith_evB1(iemn.posterior("E"));
 
-      GUM_CHECK_LT(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8);
-      GUM_CHECK_LT(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8);
-      GUM_CHECK_LT(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8);
+      CHECK_LT(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8);
+      CHECK_LT(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8);
+      CHECK_LT(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8);
 
-      GUM_CHECK_LT((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8);
-      GUM_CHECK_LT((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
-      GUM_CHECK_LT((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
+      CHECK_LT((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8);
+      CHECK_LT((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
+      CHECK_LT((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
     }
 
     static void testIndependencyInference() {
@@ -264,7 +264,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          GUM_CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
 
@@ -285,7 +285,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          GUM_CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
     }
@@ -311,7 +311,7 @@ namespace gum_tests {
         ie2.makeInference();
 
         for (const auto n: mn.nodes()) {
-          GUM_CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
         }
       }
     }

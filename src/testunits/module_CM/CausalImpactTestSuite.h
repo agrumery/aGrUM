@@ -476,11 +476,11 @@ namespace gum_tests {
       gum::CausalModel< double >  cm(bn);
       gum::CausalImpact< double > ci(cm, names({"Y"}), names({"X"}), StrSet{});
       std::string                 latex = ci.latexQuery("DO<", ">");
-      GUM_CHECK_NE(latex.find("DO<"), std::string::npos);
-      GUM_CHECK_NE(latex.find(">"), std::string::npos);
+      CHECK_NE(latex.find("DO<"), std::string::npos);
+      CHECK_NE(latex.find(">"), std::string::npos);
       std::string latex2 = ci.toLatex("DO<", ">");
-      GUM_CHECK_NE(latex2.find("DO<"), std::string::npos);
-      GUM_CHECK_NE(latex2.find(">"), std::string::npos);
+      CHECK_NE(latex2.find("DO<"), std::string::npos);
+      CHECK_NE(latex2.find(">"), std::string::npos);
     }
 
     // ---------------------------------------------------------------------------
@@ -531,8 +531,8 @@ namespace gum_tests {
 
 
       // Both should be identifiable -> non-empty tensors
-      GUM_CHECK_NE(ff_tensor.nbrDim(), gum::Idx(0));
-      GUM_CHECK_NE(cls_tensor.nbrDim(), gum::Idx(0));
+      CHECK_NE(ff_tensor.nbrDim(), gum::Idx(0));
+      CHECK_NE(cls_tensor.nbrDim(), gum::Idx(0));
 
       // creatng partial cls_tensor
       gum::Instantiation J;                    // start empty → partial instantiation
@@ -552,7 +552,7 @@ namespace gum_tests {
         auto Ia = instFor(ff_tensor, {{"Y", "a"}});
         auto Ib = instFor(ff_tensor, {{"Y", "b"}});
         CHECK((ff_tensor.get(Ia)) == doctest::Approx(1.0).epsilon(1e-12));
-        GUM_CHECK_LT(std::abs(ff_tensor.get(Ib)), 1e-12);
+        CHECK_LT(std::abs(ff_tensor.get(Ib)), 1e-12);
       }
 
       // Exercise explanation and result printing (should not throw and not be empty)
@@ -582,7 +582,7 @@ namespace gum_tests {
       auto [formula, tensor, expl] = gum::causalImpact< double >(cm, on, doing, know, values);
 
       // Identified => tensor not empty
-      GUM_CHECK_NE(tensor.nbrDim(), gum::Idx(0));
+      CHECK_NE(tensor.nbrDim(), gum::Idx(0));
 
       // P(Y=u)=0.2, P(Y=v)=0.8 unchanged by do(X=a)
       auto Iu = instFor(tensor, {{"Y", "u"}});

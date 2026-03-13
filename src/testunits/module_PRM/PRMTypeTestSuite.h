@@ -79,9 +79,9 @@ namespace gum_tests {
       // Act
       auto boolean = PRMType::boolean();
       // Assert
-      GUM_CHECK_EQ(boolean->variable().domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(boolean->variable().label(0), labels[0]);
-      GUM_CHECK_EQ(boolean->variable().label(1), labels[1]);
+      CHECK_EQ(boolean->variable().domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(boolean->variable().label(0), labels[0]);
+      CHECK_EQ(boolean->variable().label(1), labels[1]);
       delete boolean;
     }
 
@@ -149,12 +149,12 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(variable = &(boolean.variable()));
       // Assert
-      GUM_CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
-      GUM_CHECK_EQ(variable->description(), _boolean_->description());
-      GUM_CHECK_EQ(variable->label(0), _boolean_->label(0));
-      GUM_CHECK_EQ(variable->label(1), _boolean_->label(1));
-      GUM_CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
-      GUM_CHECK_NE(variable, _boolean_);
+      CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
+      CHECK_EQ(variable->description(), _boolean_->description());
+      CHECK_EQ(variable->label(0), _boolean_->label(0));
+      CHECK_EQ(variable->label(1), _boolean_->label(1));
+      CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
+      CHECK_NE(variable, _boolean_);
     }
 
     static void testGetVariableConst() {
@@ -165,12 +165,12 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(variable = &(const_boolean.variable()));
       // Assert
-      GUM_CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
-      GUM_CHECK_EQ(variable->description(), _boolean_->description());
-      GUM_CHECK_EQ(variable->label(0), _boolean_->label(0));
-      GUM_CHECK_EQ(variable->label(1), _boolean_->label(1));
-      GUM_CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
-      GUM_CHECK_NE(variable, _boolean_);
+      CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
+      CHECK_EQ(variable->description(), _boolean_->description());
+      CHECK_EQ(variable->label(0), _boolean_->label(0));
+      CHECK_EQ(variable->label(1), _boolean_->label(1));
+      CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
+      CHECK_NE(variable, _boolean_);
     }
 
     static void testIndirectionOperator() {
@@ -180,12 +180,12 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(variable = &(*boolean));
       // Assert
-      GUM_CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
-      GUM_CHECK_EQ(variable->description(), _boolean_->description());
-      GUM_CHECK_EQ(variable->label(0), _boolean_->label(0));
-      GUM_CHECK_EQ(variable->label(1), _boolean_->label(1));
-      GUM_CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
-      GUM_CHECK_NE(variable, _boolean_);
+      CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
+      CHECK_EQ(variable->description(), _boolean_->description());
+      CHECK_EQ(variable->label(0), _boolean_->label(0));
+      CHECK_EQ(variable->label(1), _boolean_->label(1));
+      CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
+      CHECK_NE(variable, _boolean_);
     }
 
     static void testIndirectionOperatorConst() {
@@ -196,12 +196,12 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(variable = &(*const_boolean));
       // Assert
-      GUM_CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
-      GUM_CHECK_EQ(variable->description(), _boolean_->description());
-      GUM_CHECK_EQ(variable->label(0), _boolean_->label(0));
-      GUM_CHECK_EQ(variable->label(1), _boolean_->label(1));
-      GUM_CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
-      GUM_CHECK_NE(variable, _boolean_);
+      CHECK_NE(variable->name().find(_boolean_->name()), std::string::npos);
+      CHECK_EQ(variable->description(), _boolean_->description());
+      CHECK_EQ(variable->label(0), _boolean_->label(0));
+      CHECK_EQ(variable->label(1), _boolean_->label(1));
+      CHECK_EQ(variable->domainSize(), _boolean_->domainSize());
+      CHECK_NE(variable, _boolean_);
     }
 
     static void testEqualityOperator() {
@@ -210,14 +210,14 @@ namespace gum_tests {
       PRMType b{*_boolean_};
       PRMType c{*_state_};
       // Act & Assert
-      GUM_CHECK_EQ(a, a);
-      GUM_CHECK_EQ(a, b);
-      GUM_CHECK_EQ(b, a);
+      CHECK_EQ(a, a);
+      CHECK_EQ(a, b);
+      CHECK_EQ(b, a);
 
-      GUM_CHECK_NE(c, a);
-      GUM_CHECK_NE(a, c);
-      GUM_CHECK_NE(c, b);
-      GUM_CHECK_NE(b, c);
+      CHECK_NE(c, a);
+      CHECK_NE(a, c);
+      CHECK_NE(c, b);
+      CHECK_NE(b, c);
     }
 
     static void testInequalityOperator() {
@@ -227,14 +227,14 @@ namespace gum_tests {
       PRMType c{*_state_};
 
       // Act & Assert
-      GUM_CHECK_EQ(a, a);
-      GUM_CHECK_EQ(a, b);
-      GUM_CHECK_EQ(b, a);
+      CHECK_EQ(a, a);
+      CHECK_EQ(a, b);
+      CHECK_EQ(b, a);
 
-      GUM_CHECK_NE(c, a);
-      GUM_CHECK_NE(a, c);
-      GUM_CHECK_NE(c, b);
-      GUM_CHECK_NE(b, c);
+      CHECK_NE(c, a);
+      CHECK_NE(a, c);
+      CHECK_NE(c, b);
+      CHECK_NE(b, c);
     }
 
     static void testObjType() {
@@ -244,7 +244,7 @@ namespace gum_tests {
       // Act
       auto actual = boolean.obj_type();
       // Assert
-      GUM_CHECK_EQ(expected, actual);
+      CHECK_EQ(expected, actual);
     }
 
     static void testName() {
@@ -254,7 +254,7 @@ namespace gum_tests {
       // Act
       auto actual = boolean.name();
       // Assert
-      GUM_CHECK_EQ(expected, actual);
+      CHECK_EQ(expected, actual);
     }
 
     static void testIsSubType() {
@@ -316,7 +316,7 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(super = &(state.superType()));
       // Act & Assert
-      GUM_CHECK_EQ(*super, boolean);
+      CHECK_EQ(*super, boolean);
     }
 
     static void testSuperConst() {
@@ -331,7 +331,7 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(super = &(dummy.superType()));
       // Act & Assert
-      GUM_CHECK_EQ(*super, boolean);
+      CHECK_EQ(*super, boolean);
     }
 
     static void testSuperNotFound() {
@@ -352,10 +352,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(state.setSuper(boolean_bis));
       // Assert
-      GUM_CHECK_EQ(state.superType(), boolean);
-      GUM_CHECK_EQ(state.superType(), boolean_bis);
-      GUM_CHECK_NE(&(state.superType()), &boolean);
-      GUM_CHECK_EQ(&(state.superType()), &boolean_bis);
+      CHECK_EQ(state.superType(), boolean);
+      CHECK_EQ(state.superType(), boolean_bis);
+      CHECK_NE(&(state.superType()), &boolean);
+      CHECK_EQ(&(state.superType()), &boolean_bis);
     }
 
     static void testSetSuperWrongtype() {
@@ -388,7 +388,7 @@ namespace gum_tests {
       // Act
       auto actual = state.label_map();
       // Assert
-      GUM_CHECK_EQ(map, actual);
+      CHECK_EQ(map, actual);
     }
 
     static void testLabelMapNotFound() {

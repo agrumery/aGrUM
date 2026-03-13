@@ -352,8 +352,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
       /// time out criterion during burn in test
-      GUM_CHECK_EQ(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations());
-      GUM_CHECK_NE(mcl.msg(), std::string(""));
+      CHECK_EQ(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations());
+      CHECK_NE(mcl.msg(), std::string(""));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 

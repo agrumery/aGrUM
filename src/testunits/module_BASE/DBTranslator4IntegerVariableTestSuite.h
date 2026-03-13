@@ -67,14 +67,14 @@ namespace gum_tests {
       gum::learning::DBTranslator4IntegerVariable translator(var);
       CHECK(translator.isLossless());
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("1"));
-      GUM_CHECK_EQ(translator.translate("1").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(translator.translate("3").discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(translator.translate("10").discr_val, (std::size_t)2);
+      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)0);
+      CHECK_EQ(translator.translate("3").discr_val, (std::size_t)1);
+      CHECK_EQ(translator.translate("10").discr_val, (std::size_t)2);
       CHECK_THROWS_AS(translator.translate("0"), const gum::UnknownLabelInDatabase&);
       CHECK_THROWS_AS(translator.translate("11"), const gum::UnknownLabelInDatabase&);
       CHECK_THROWS_AS(translator.translate("aaa"), const gum::TypeError&);
 
-      GUM_CHECK_EQ(translator.missingValue().discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(translator.missingValue().discr_val, std::numeric_limits< std::size_t >::max());
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("12"));
       CHECK(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}) == "1");
@@ -85,38 +85,37 @@ namespace gum_tests {
       try {
         const gum::IntegerVariable& xvar_discr
             = dynamic_cast< const gum::IntegerVariable& >(tr_var);
-        GUM_CHECK_EQ(xvar_discr.domainSize(), static_cast< gum::Size >(4));
-        GUM_CHECK_EQ(xvar_discr.label(0), "1");
-        GUM_CHECK_EQ(xvar_discr.label(1), "3");
-        GUM_CHECK_EQ(xvar_discr.label(2), "10");
-        GUM_CHECK_EQ(xvar_discr.label(3), "12");
+        CHECK_EQ(xvar_discr.domainSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(xvar_discr.label(0), "1");
+        CHECK_EQ(xvar_discr.label(1), "3");
+        CHECK_EQ(xvar_discr.label(2), "10");
+        CHECK_EQ(xvar_discr.label(3), "12");
       } catch (std::bad_cast&) { good = 0; }
-      GUM_CHECK_EQ(good, 1);
+      CHECK_EQ(good, 1);
 
       std::vector< std::string >                  missing{"?", "N/A", "???"};
       gum::learning::DBTranslator4IntegerVariable translator2(var, missing);
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator2.translate("1"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator2.translate("12"));
-      GUM_CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)1);
+      CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)0);
+      CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)1);
       CHECK((translator2.translate("N/A").discr_val)
             == (std::numeric_limits< std::size_t >::max()));
-      GUM_CHECK_EQ(translator2.translate("?").discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(translator2.translate("?").discr_val, std::numeric_limits< std::size_t >::max());
       CHECK((translator2.translate("???").discr_val)
             == (std::numeric_limits< std::size_t >::max()));
       CHECK_THROWS_AS(translator2.translate("??"), const gum::TypeError&);
-      GUM_CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "1");
-      GUM_CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}),
-                   "10");
+      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "1");
+      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "10");
 
       gum::learning::DBTranslator4IntegerVariable translator3(var, missing, 4);
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator3.translate("1"));
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator3.translate("10"));
-      GUM_CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(translator3.translate("3").discr_val, (std::size_t)1);
+      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)0);
+      CHECK_EQ(translator3.translate("3").discr_val, (std::size_t)1);
       CHECK((translator3.translate("N/A").discr_val)
             == (std::numeric_limits< std::size_t >::max()));
-      GUM_CHECK_EQ(translator3.translate("?").discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(translator3.translate("?").discr_val, std::numeric_limits< std::size_t >::max());
       CHECK((translator3.translate("???").discr_val)
             == (std::numeric_limits< std::size_t >::max()));
       CHECK_THROWS_AS(translator3.translate("??"), const gum::TypeError&);
@@ -130,13 +129,13 @@ namespace gum_tests {
                 gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()}))
             == ("?"));
 
-      GUM_CHECK_EQ(translator3.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(translator3.domainSize(), static_cast< gum::Size >(4));
 
       CHECK_THROWS_AS(gum::learning::DBTranslator4IntegerVariable translator4(var, missing, 1),
                       const gum::SizeError&);
 
-      GUM_CHECK_EQ(translator3.variable()->toString(), "X1:Integer({1|3|10|12})");
-      GUM_CHECK_EQ(translator3.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(translator3.variable()->toString(), "X1:Integer({1|3|10|12})");
+      CHECK_EQ(translator3.domainSize(), static_cast< gum::Size >(4));
       CHECK(!translator3.hasEditableDictionary());
       translator3.setEditableDictionaryMode(true);
       CHECK(!translator3.hasEditableDictionary());
@@ -153,15 +152,15 @@ namespace gum_tests {
         var.addValue(12);
 
         gum::learning::DBTranslator4IntegerVariable translator(var);
-        GUM_CHECK_EQ(translator.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator.translate("12").discr_val, (std::size_t)3);
+        CHECK_EQ(translator.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator.translate("12").discr_val, (std::size_t)3);
         CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("3"));
         CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("10"));
-        GUM_CHECK_EQ(translator.variable()->toString(), "X1:Integer({1|3|10|12})");
+        CHECK_EQ(translator.variable()->toString(), "X1:Integer({1|3|10|12})");
 
         CHECK((translator.translate(translator.translateBack(translator.translate("1"))).discr_val)
               == ((std::size_t)0));
@@ -173,117 +172,117 @@ namespace gum_tests {
         var2.addValue(4);
 
         gum::learning::DBTranslator4IntegerVariable translator2(var2);
-        GUM_CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator2.translate("2").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)3);
+        CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator2.translate("2").discr_val, (std::size_t)1);
+        CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)3);
         CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("2"));
         CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("3"));
-        GUM_CHECK_EQ(translator2.variable()->toString(), "X2:Integer({1|2|3|4})");
+        CHECK_EQ(translator2.variable()->toString(), "X2:Integer({1|2|3|4})");
 
         gum::learning::DBTranslator4IntegerVariable translator3(translator);
-        GUM_CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator3.translate("10").discr_val, (std::size_t)2);
-        GUM_CHECK_EQ(translator3.translate("12").discr_val, (std::size_t)3);
+        CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator3.translate("10").discr_val, (std::size_t)2);
+        CHECK_EQ(translator3.translate("12").discr_val, (std::size_t)3);
         CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("3"));
         CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("10"));
-        GUM_CHECK_EQ(translator3.variable()->toString(), "X1:Integer({1|3|10|12})");
+        CHECK_EQ(translator3.variable()->toString(), "X1:Integer({1|3|10|12})");
 
         gum::learning::DBTranslator4IntegerVariable translator4(translator2);
-        GUM_CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)3);
+        CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)1);
+        CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)3);
         CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("2"));
         CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("3"));
-        GUM_CHECK_EQ(translator4.variable()->toString(), "X2:Integer({1|2|3|4})");
+        CHECK_EQ(translator4.variable()->toString(), "X2:Integer({1|2|3|4})");
 
         gum::learning::DBTranslator4IntegerVariable translator5(std::move(translator3));
-        GUM_CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator5.translate("10").discr_val, (std::size_t)2);
-        GUM_CHECK_EQ(translator5.translate("12").discr_val, (std::size_t)3);
+        CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator5.translate("10").discr_val, (std::size_t)2);
+        CHECK_EQ(translator5.translate("12").discr_val, (std::size_t)3);
         CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("3"));
         CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("10"));
-        GUM_CHECK_EQ(translator5.variable()->toString(), "X1:Integer({1|3|10|12})");
+        CHECK_EQ(translator5.variable()->toString(), "X1:Integer({1|3|10|12})");
 
         gum::learning::DBTranslator4IntegerVariable translator6(std::move(translator4));
-        GUM_CHECK_EQ(translator6.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator6.translate("2").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator6.translate("4").discr_val, (std::size_t)3);
+        CHECK_EQ(translator6.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator6.translate("2").discr_val, (std::size_t)1);
+        CHECK_EQ(translator6.translate("4").discr_val, (std::size_t)3);
         CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("2"));
         CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("3"));
-        GUM_CHECK_EQ(translator6.variable()->toString(), "X2:Integer({1|2|3|4})");
+        CHECK_EQ(translator6.variable()->toString(), "X2:Integer({1|2|3|4})");
 
         gum::learning::DBTranslator4IntegerVariable* translator7 = translator6.clone();
-        GUM_CHECK_EQ(translator7->translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator7->translate("2").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator7->translate("4").discr_val, (std::size_t)3);
+        CHECK_EQ(translator7->translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator7->translate("2").discr_val, (std::size_t)1);
+        CHECK_EQ(translator7->translate("4").discr_val, (std::size_t)3);
         CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("2"));
         CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("3"));
-        GUM_CHECK_EQ(translator7->variable()->toString(), "X2:Integer({1|2|3|4})");
+        CHECK_EQ(translator7->variable()->toString(), "X2:Integer({1|2|3|4})");
 
         delete translator7;
 
         gum::learning::DBTranslator4IntegerVariable translator8(var);
         translator8 = translator6;
-        GUM_CHECK_EQ(translator8.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator8.translate("2").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator8.translate("4").discr_val, (std::size_t)3);
+        CHECK_EQ(translator8.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator8.translate("2").discr_val, (std::size_t)1);
+        CHECK_EQ(translator8.translate("4").discr_val, (std::size_t)3);
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("2"));
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("3"));
-        GUM_CHECK_EQ(translator8.variable()->toString(), "X2:Integer({1|2|3|4})");
+        CHECK_EQ(translator8.variable()->toString(), "X2:Integer({1|2|3|4})");
 
         gum::learning::DBTranslator4IntegerVariable translator8bis(var);
         gum::learning::DBTranslator4IntegerVariable translator9(var2);
         translator9 = translator8bis;
-        GUM_CHECK_EQ(translator9.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator9.translate("3").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator9.translate("10").discr_val, (std::size_t)2);
+        CHECK_EQ(translator9.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator9.translate("3").discr_val, (std::size_t)1);
+        CHECK_EQ(translator9.translate("10").discr_val, (std::size_t)2);
         CHECK((translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("3"));
         CHECK((translator9.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("10"));
-        GUM_CHECK_EQ(translator9.variable()->toString(), "X1:Integer({1|3|10|12})");
+        CHECK_EQ(translator9.variable()->toString(), "X1:Integer({1|3|10|12})");
 
         translator8 = std::move(translator9);
-        GUM_CHECK_EQ(translator8.translate("1").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(translator8.translate("3").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(translator8.translate("10").discr_val, (std::size_t)2);
+        CHECK_EQ(translator8.translate("1").discr_val, (std::size_t)0);
+        CHECK_EQ(translator8.translate("3").discr_val, (std::size_t)1);
+        CHECK_EQ(translator8.translate("10").discr_val, (std::size_t)2);
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
               == ("1"));
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
               == ("3"));
         CHECK((translator8.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
               == ("10"));
-        GUM_CHECK_EQ(translator8.variable()->toString(), "X1:Integer({1|3|10|12})");
+        CHECK_EQ(translator8.variable()->toString(), "X1:Integer({1|3|10|12})");
 
         CHECK_THROWS_AS(translator8.translate("5"), gum::UnknownLabelInDatabase&);
       }

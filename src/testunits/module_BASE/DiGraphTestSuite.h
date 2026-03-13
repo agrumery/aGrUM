@@ -127,7 +127,7 @@ namespace gum_tests {
 
       gum::DiGraph* copy = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING((copy = new gum::DiGraph(graph)));
-      GUM_CHECK_EQ(graph, *copy);
+      CHECK_EQ(graph, *copy);
       delete (copy);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(gum::DiGraph copy2 = graph);
@@ -144,14 +144,14 @@ namespace gum_tests {
 
       g2 = g3 = graph;
 
-      GUM_CHECK_EQ(g2, graph);
-      GUM_CHECK_EQ(g3, graph);
+      CHECK_EQ(g2, graph);
+      CHECK_EQ(g3, graph);
 
       g2.clear();
       g3.clearArcs();
 
-      GUM_CHECK_NE(g2, graph);
-      GUM_CHECK_NE(g3, graph);
+      CHECK_NE(g2, graph);
+      CHECK_NE(g3, graph);
     }
 
     void testEmptyNodes() {
@@ -203,8 +203,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
-      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 2);
+      CHECK_EQ(nodeCount, graph.size() + 1);
+      CHECK_EQ(arcCount, graph.sizeArcs() + 2);
 
       CHECK(!graph.exists(id2));
       CHECK(!graph.existsArc(id2, id4));
@@ -217,16 +217,16 @@ namespace gum_tests {
       gum::Size nodeCount = graph.size();
       gum::Size arcCount  = graph.sizeArcs();
 
-      GUM_CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(arcCount, static_cast< gum::Size >(6));
+      CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
+      CHECK_EQ(arcCount, static_cast< gum::Size >(6));
 
       for (int i = 0; i < 10; i++) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
       }
 
-      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
+      CHECK_EQ(nodeCount, graph.size() + 1);
 
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 3);
+      CHECK_EQ(arcCount, graph.sizeArcs() + 3);
 
       CHECK(!graph.existsArc(id3, id5));
       CHECK(!graph.existsArc(id4, id5));
@@ -245,8 +245,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
 
-      GUM_CHECK_EQ(nodeCount, graph.size());
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 1);
+      CHECK_EQ(nodeCount, graph.size());
+      CHECK_EQ(arcCount, graph.sizeArcs() + 1);
 
       CHECK(!graph.existsArc(id5, id2));
     }
@@ -255,7 +255,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeSet nodelist = graph.asNodeSet();
-      GUM_CHECK_EQ(nodelist.size(), graph.size());
+      CHECK_EQ(nodelist.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
       for (const auto node: nodelist)
@@ -263,14 +263,14 @@ namespace gum_tests {
 
       CHECK(graph.empty());
 
-      GUM_CHECK_EQ(nodeCount, nodelist.size());
+      CHECK_EQ(nodeCount, nodelist.size());
     }
 
     void testGetArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::ArcSet arclist = graph.arcs();
-      GUM_CHECK_EQ(arclist.size(), graph.sizeArcs());
+      CHECK_EQ(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
       for (const auto& arc: arclist)
@@ -278,14 +278,14 @@ namespace gum_tests {
 
       CHECK(graph.emptyArcs());
 
-      GUM_CHECK_EQ(arcCount, arclist.size());
+      CHECK_EQ(arcCount, arclist.size());
     }
 
     void testNodeListMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
-      GUM_CHECK_EQ(list.size(), graph.size());
+      CHECK_EQ(list.size(), graph.size());
 
       gum::Size s = 0;
 
@@ -293,7 +293,7 @@ namespace gum_tests {
         s += *iter;
       }
 
-      GUM_CHECK_EQ(s, (gum::Size)(2 * (id1 + id2 + id3 + id4 + id5)));
+      CHECK_EQ(s, (gum::Size)(2 * (id1 + id2 + id3 + id4 + id5)));
     }
 
     void testTwistedNodeListMapNodes() {
@@ -302,7 +302,7 @@ namespace gum_tests {
       gum::List< gum::Size > list;
       CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
 
-      GUM_CHECK_EQ(list.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(list.size(), static_cast< gum::Size >(0));
     }
 
     void testHashMapNodes() {
@@ -310,7 +310,7 @@ namespace gum_tests {
 
       gum::NodeProperty< gum::Size > hashmap
           = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
-      GUM_CHECK_EQ(hashmap.size(), graph.size());
+      CHECK_EQ(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -320,7 +320,7 @@ namespace gum_tests {
         sv += elt.second;
       }
 
-      GUM_CHECK_EQ(sk * 2, sv);
+      CHECK_EQ(sk * 2, sv);
     }
 
     void testTwistedHashMapNodes() {
@@ -329,14 +329,14 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > hashmap;
       CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
 
-      GUM_CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
     }
 
     void testListMapArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapArcs(&simpleArcMapFunction);
-      GUM_CHECK_EQ(list.size(), graph.sizeArcs());
+      CHECK_EQ(list.size(), graph.sizeArcs());
 
       gum::Size s = 0;
 
@@ -344,14 +344,14 @@ namespace gum_tests {
         s += *iter;
       }
 
-      GUM_CHECK_EQ(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+      CHECK_EQ(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
     }
 
     void testHashMapArcs() {
       gum::DiGraph graph = buildGraph();
 
       gum::ArcProperty< gum::Size > hashmap = graph.arcsProperty(&simpleArcMapFunction);
-      GUM_CHECK_EQ(hashmap.size(), graph.sizeArcs());
+      CHECK_EQ(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -361,7 +361,7 @@ namespace gum_tests {
         sk += elt.first.head() + elt.first.tail();
       }
 
-      GUM_CHECK_EQ(sk, sv);
+      CHECK_EQ(sk, sv);
     }
 
     // this test should be in NodeGraphPartTestSuite.h which does not exist for
@@ -372,7 +372,7 @@ namespace gum_tests {
 
       gum::NodeId id  = graph.nextNodeId();
       gum::NodeId id2 = graph.addNode();
-      GUM_CHECK_EQ(id, id2);
+      CHECK_EQ(id, id2);
     }
 
     void testDirectedPaths() {
@@ -380,24 +380,24 @@ namespace gum_tests {
         gum::DiGraph graph = buildGraph();
 
         std::vector< gum::NodeId > path = graph.directedPath(0, 1);
-        GUM_CHECK_EQ(path.size(), 4U);
-        GUM_CHECK_EQ(path[0], 0U);
-        GUM_CHECK_EQ(path[1], 3U);
-        GUM_CHECK_EQ(path[2], 4U);
-        GUM_CHECK_EQ(path[3], 1U);
+        CHECK_EQ(path.size(), 4U);
+        CHECK_EQ(path[0], 0U);
+        CHECK_EQ(path[1], 3U);
+        CHECK_EQ(path[2], 4U);
+        CHECK_EQ(path[3], 1U);
 
-        GUM_CHECK_EQ(graph.hasDirectedPath(0, 1), true);
-        GUM_CHECK_EQ(graph.hasDirectedPath(0, 0), false);
-        GUM_CHECK_EQ(graph.hasDirectedPath(0, 4), true);
-        GUM_CHECK_EQ(graph.hasDirectedPath(1, 1), true);
+        CHECK_EQ(graph.hasDirectedPath(0, 1), true);
+        CHECK_EQ(graph.hasDirectedPath(0, 0), false);
+        CHECK_EQ(graph.hasDirectedPath(0, 4), true);
+        CHECK_EQ(graph.hasDirectedPath(1, 1), true);
 
         CHECK_THROWS_AS(graph.directedPath(1, 2), const gum::NotFound&);
 
         std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
-        GUM_CHECK_EQ(path2.size(), 3U);
-        GUM_CHECK_EQ(path2[0], 1U);
-        GUM_CHECK_EQ(path2[1], 4U);
-        GUM_CHECK_EQ(path2[2], 2U);
+        CHECK_EQ(path2.size(), 3U);
+        CHECK_EQ(path2[0], 1U);
+        CHECK_EQ(path2[1], 4U);
+        CHECK_EQ(path2[2], 2U);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
   };

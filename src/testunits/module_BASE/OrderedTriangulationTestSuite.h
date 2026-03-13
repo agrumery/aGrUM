@@ -98,9 +98,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr2 = triang.triangulatedGraph();
 
-      GUM_CHECK_EQ(gr2.sizeNodes(), 8U);
+      CHECK_EQ(gr2.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(gr2.sizeEdges(), 14U);
+      CHECK_EQ(gr2.sizeEdges(), 14U);
 
       triang.clear();
 
@@ -109,9 +109,9 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr3 = triang.triangulatedGraph();
 
-      GUM_CHECK_EQ(gr3.sizeNodes(), 8U);
+      CHECK_EQ(gr3.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(gr3.sizeEdges(), 14U);
+      CHECK_EQ(gr3.sizeEdges(), 14U);
 
       triang.clear();
 
@@ -123,37 +123,37 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr5 = triang.triangulatedGraph();
 
-      GUM_CHECK_EQ(gr5.sizeNodes(), 8U);
+      CHECK_EQ(gr5.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(gr5.sizeEdges(), 23U);
+      CHECK_EQ(gr5.sizeEdges(), 23U);
 
       const gum::EdgeSet& edges2 = triang.fillIns();
 
-      GUM_CHECK_EQ(edges2.size(), 9U);
+      CHECK_EQ(edges2.size(), 9U);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(20, 80)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(20, 80)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(40, 80)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(40, 80)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(30, 50)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(30, 50)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(30, 70)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(30, 70)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(40, 70)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(40, 70)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(50, 80)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(50, 80)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(70, 80)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(70, 80)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(60, 70)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(60, 70)), true);
 
-      GUM_CHECK_EQ(edges2.exists(gum::Edge(60, 80)), true);
+      CHECK_EQ(edges2.exists(gum::Edge(60, 80)), true);
 
       const gum::CliqueGraph& JT = triang.junctionTree();
 
-      GUM_CHECK_EQ(JT.sizeNodes(), 3U);
+      CHECK_EQ(JT.sizeNodes(), 3U);
 
-      GUM_CHECK_EQ(JT.sizeEdges(), 2U);
+      CHECK_EQ(JT.sizeEdges(), 2U);
 
       const gum::NodeSet& clique1 = JT.clique(0);
 
@@ -169,11 +169,11 @@ namespace gum_tests {
 
       cc3 << 40 << 50 << 60 << 70 << 80;
 
-      GUM_CHECK_EQ(clique1, cc1);
+      CHECK_EQ(clique1, cc1);
 
-      GUM_CHECK_EQ(clique2, cc2);
+      CHECK_EQ(clique2, cc2);
 
-      GUM_CHECK_EQ(clique3, cc3);
+      CHECK_EQ(clique3, cc3);
 
       for (gum::Idx i = 0; i < 8; ++i)
         sequence[i] = gum::NodeId((8 - i) * 10);
@@ -185,15 +185,15 @@ namespace gum_tests {
 
       const gum::UndiGraph& gr4 = triang.triangulatedGraph();
 
-      GUM_CHECK_EQ(gr4.sizeNodes(), 8U);
+      CHECK_EQ(gr4.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(gr4.sizeEdges(), 14U);
+      CHECK_EQ(gr4.sizeEdges(), 14U);
 
       const gum::EdgeSet& edges = triang.fillIns();
 
-      GUM_CHECK_EQ(edges.size(), 1U);
+      CHECK_EQ(edges.size(), 1U);
 
-      GUM_CHECK_EQ(*(edges.begin()), gum::Edge(20, 50));
+      CHECK_EQ(*(edges.begin()), gum::Edge(20, 50));
     }   // namespace gum_tests
 
     static void testTriangulatedGraph2() {
@@ -224,21 +224,21 @@ namespace gum_tests {
 
       const gum::CliqueGraph& elim = triang.eliminationTree();
 
-      GUM_CHECK_EQ(elim.sizeNodes(), 8U);
+      CHECK_EQ(elim.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(elim.sizeEdges(), 7U);
+      CHECK_EQ(elim.sizeEdges(), 7U);
 
       const gum::CliqueGraph& JT = triang.junctionTree();
 
-      GUM_CHECK_EQ(JT.sizeNodes(), 6U);
+      CHECK_EQ(JT.sizeNodes(), 6U);
 
-      GUM_CHECK_EQ(JT.sizeEdges(), 5U);
+      CHECK_EQ(JT.sizeEdges(), 5U);
 
       const gum::UndiGraph& gr = triang.triangulatedGraph();
 
-      GUM_CHECK_EQ(gr.sizeNodes(), 8U);
+      CHECK_EQ(gr.sizeNodes(), 8U);
 
-      GUM_CHECK_EQ(gr.sizeEdges(), 13U);
+      CHECK_EQ(gr.sizeEdges(), 13U);
     }
 
     private:

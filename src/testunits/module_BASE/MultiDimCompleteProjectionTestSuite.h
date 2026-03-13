@@ -219,7 +219,7 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(t1, inst);
 
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray(&t1, &inst2);
@@ -227,7 +227,7 @@ namespace gum_tests {
 
       t2 = projectSumMultiDimArray(&t1);
       t3 = local_projsum(t1);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
@@ -255,14 +255,14 @@ namespace gum_tests {
       double             t2 = projectMaxMultiDimArray(&t1);
       double             t3 = local_projmax(tt1, inst);
 
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst2);
       CHECK(local_equal(inst2, inst));
 
       t2 = projectMaxMultiDimImplementation(&t1);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst3(t1);
       t2 = projectMaxMultiDimImplementation(&t1, &inst3);
@@ -292,13 +292,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      GUM_CHECK_EQ(*t2, *t3);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(*t2, *t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       pointerDelete(t1);
 
@@ -327,13 +327,13 @@ namespace gum_tests {
       double*            t2 = projectMaxMultiDimArray4Pointers(t1);
       double*            t3 = local_projmax(*tt1, inst);
 
-      GUM_CHECK_EQ(*t2, *t3);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(*t2, *t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(*t1);
       t2 = projectMaxMultiDimArray4Pointers(t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       pointerDelete(tt1);
 
@@ -364,11 +364,11 @@ namespace gum_tests {
       gum::Instantiation inst(t1);
       double             t2 = projectMax(t1);
       double             t3 = local_projmax(t1, inst);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(t1, &inst2);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
       CHECK(local_equal(inst2, inst));
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -399,13 +399,13 @@ namespace gum_tests {
       double*            t2 = projectMax(*t1);
       double*            t3 = local_projmax(*t1, inst);
 
-      GUM_CHECK_EQ(*t2, *t3);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(*t2, *t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = projectMax(*t1, &inst2);
       CHECK(local_equal(inst2, inst));
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       pointerDelete(t1);
 
@@ -437,15 +437,15 @@ namespace gum_tests {
       double             t2 = Proj.project(t1);
       double             t3 = local_projmax(t1, inst);
 
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       gum::Instantiation inst2(t1);
       t2 = Proj.project(t1, &inst2);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       Proj.setProjectFunction(myMax);
       t2 = Proj.project(t1);
-      GUM_CHECK_EQ(t2, t3);
+      CHECK_EQ(t2, t3);
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];

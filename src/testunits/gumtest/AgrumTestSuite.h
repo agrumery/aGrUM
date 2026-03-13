@@ -52,6 +52,7 @@
 #  endif
 
 #  include <agrum/agrum.h>
+
 #  include <agrum/base/core/debug.h>
 
 #  include <doctest/doctest.h>
@@ -61,18 +62,6 @@
 // ============================================================================
 #  define GUM_SMALL_ERROR      (1e-5)
 #  define GUM_VERY_SMALL_ERROR (1e-10)
-
-// ============================================================================
-// Comparison macros to avoid clangd warning:
-// "Overloaded operator << has higher precedence than comparison operator"
-// Usage: GUM_CHECK_EQ(a, b) instead of CHECK((a) == (b))
-// ============================================================================
-#  define GUM_CHECK_EQ(a, b) CHECK(((a) == (b)))
-#  define GUM_CHECK_NE(a, b) CHECK(((a) != (b)))
-#  define GUM_CHECK_LT(a, b) CHECK(((a) < (b)))
-#  define GUM_CHECK_LE(a, b) CHECK(((a) <= (b)))
-#  define GUM_CHECK_GT(a, b) CHECK(((a) > (b)))
-#  define GUM_CHECK_GE(a, b) CHECK(((a) >= (b)))
 
 // ============================================================================
 // aGrUM-specific assertion macro for exception handling with error display
@@ -89,9 +78,9 @@
 // Tensor comparison macros (aGrUM-specific)
 // ============================================================================
 #  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(p1, p2, delta) \
-    CHECK(((p1) - (p2)).abs().max() < delta)
+    CHECK_LT(((p1) - (p2)).abs().max(), delta)
 #  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(p1, p2) \
-    CHECK(((p1) - (p2)).abs().max() < GUM_SMALL_ERROR)
+    CHECK_LT(((p1) - (p2)).abs().max(), GUM_SMALL_ERROR)
 #  define GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, delta) \
     GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
 #  define GUM_CHECK_TENSOR_ALMOST_EQUALS(p1, p2) \
@@ -100,7 +89,7 @@
     GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, GUM_VERY_SMALL_ERROR)
 
 #  define GUM_CHECK_TENSOR_DIFFERS_SAMEVARS(p1, p2) \
-    CHECK(((p1) - (p2)).abs().max() > GUM_VERY_SMALL_ERROR)
+    CHECK_GT(((p1) - (p2)).abs().max(), GUM_VERY_SMALL_ERROR)
 #  define GUM_CHECK_TENSOR_DIFFERS(p1, p2) \
     GUM_CHECK_TENSOR_DIFFERS_SAMEVARS((p1), (gum::Tensor(p1).fillWith(p2)))
 
@@ -108,7 +97,7 @@
     {                                                \
       GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)            \
       GUM_TRACE_VAR(p2)                              \
-      CHECK(((p1) - (p2)).abs().max() < delta);      \
+      CHECK_LT(((p1) - (p2)).abs().max(), delta);    \
     }
 
 // ============================================================================
@@ -135,7 +124,7 @@
       test##TestName();                                                           \
     }
 #  define GUM_TEST_IMPL(Suite, Module, TestName) GUM_TEST_IMPL_(Suite, Module, TestName)
-#  define GUM_TEST_ACTIF(TestName) GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
+#  define GUM_TEST_ACTIF(TestName)               GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
 // Helper macros for generating warnings with file and line information
 #  define GUM_STRINGIFY_(x) #x
 #  define GUM_STRINGIFY(x)  GUM_STRINGIFY_(x)

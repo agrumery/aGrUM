@@ -182,10 +182,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      // GUM_CHECK_EQ(graph.arcs().size(), static_cast<gum::Size>(5));
-      // GUM_CHECK_EQ(graph.edges().size(), static_cast<gum::Size>(3));
+      // CHECK_EQ(graph.arcs().size(), static_cast<gum::Size>(5));
+      // CHECK_EQ(graph.edges().size(), static_cast<gum::Size>(3));
       std::vector< gum::Arc > latents = search.latentVariables();
-      GUM_CHECK_EQ(latents.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(latents.size(), static_cast< gum::Size >(0));
       gum::DAG dag = search.learnStructure(cI, graph);
     }
 
@@ -235,10 +235,10 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      GUM_CHECK_EQ(graph.arcs().size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(graph.edges().size(), static_cast< gum::Size >(3));
+      CHECK_EQ(graph.arcs().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(graph.edges().size(), static_cast< gum::Size >(3));
       std::vector< gum::Arc > latents = search.latentVariables();
-      GUM_CHECK_EQ(latents.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(latents.size(), static_cast< gum::Size >(0));
       CHECK(graph.existsArc(4, 3));
       CHECK(graph.existsEdge(5, 7));
     }
@@ -278,13 +278,13 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      GUM_CHECK_EQ(g.arcs().size(), static_cast<gum::Size>(0));
-      GUM_CHECK_EQ(g.edges().size(), static_cast<gum::Size>(9));
+      CHECK_EQ(g.arcs().size(), static_cast<gum::Size>(0));
+      CHECK_EQ(g.edges().size(), static_cast<gum::Size>(9));
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      GUM_CHECK_EQ(dag.arcs().size(), static_cast<gum::Size>(9));
-      GUM_CHECK_EQ(latents.size(), static_cast<gum::Size>(0));
+      CHECK_EQ(dag.arcs().size(), static_cast<gum::Size>(9));
+      CHECK_EQ(latents.size(), static_cast<gum::Size>(0));
       */
     }
   };

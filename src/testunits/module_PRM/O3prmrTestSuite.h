@@ -67,9 +67,9 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
         if (si->errors() > 0) { si->showElegantErrorsAndWarnings(); }
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         delete si;
       }   // namespace gum_tests
@@ -92,8 +92,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query2.o3prmr")));
 
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(1));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         delete si;
       } catch (gum::Exception&) { CHECK(false); }
@@ -109,8 +109,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         delete si;
       } catch (gum::Exception&) { CHECK(false); }
@@ -125,8 +125,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryObserveTest.o3prmr")));
 
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         // Observe correctly
         const auto& c1 = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
@@ -150,9 +150,9 @@ namespace gum_tests {
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(j.val(c2_equipState.type().variable()))
               == "Dysfunctional") {
-            GUM_CHECK_EQ(p->get(j), 1.0);
+            CHECK_EQ(p->get(j), 1.0);
           } else {
-            GUM_CHECK_EQ(p->get(j), 0.0);
+            CHECK_EQ(p->get(j), 0.0);
           }
         }
 
@@ -169,8 +169,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/queryUnobserveTest.o3prmr")));
 
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         // Unobserve correctly
         const gum::prm::PRMInstance< double >& c1
@@ -201,8 +201,8 @@ namespace gum_tests {
             si->interpretFile(GET_RESSOURCES_PATH("o3prmr/requests/query1.o3prmr")));
 
         si->showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->warnings(), static_cast< gum::Size >(0));
 
         const gum::prm::PRMInstance< double >& c1
             = si->prm()->getSystem("systems.MySystem.MySystem").get("c1");
@@ -230,9 +230,9 @@ namespace gum_tests {
         for (j.setFirst(); !j.end(); j.inc()) {
           if (c2_equipState.type().variable().label(j.val(c2_equipState.type().variable()))
               == "Dysfunctional") {
-            GUM_CHECK_EQ(p->get(j), 1.0);
+            CHECK_EQ(p->get(j), 1.0);
           } else {
-            GUM_CHECK_EQ(p->get(j), 0.0);
+            CHECK_EQ(p->get(j), 0.0);
           }
         }
 
@@ -252,8 +252,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(asia = &(prm->getClass("Asia.Asia")));
         // Assert
-        GUM_CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8));
+        CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8));
         delete si;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -272,8 +272,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(sys.groundedBN(factory));
         // Assert
-        GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
         delete si;
         delete bn;
       } catch (gum::Exception&) { CHECK(false); }
@@ -287,7 +287,7 @@ namespace gum_tests {
         si->addPath(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/"));
         si->interpretFile(GET_RESSOURCES_PATH("o3prmr/AsiaOneFile/myRequest.o3prmr"));
         // si->showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si->count(), static_cast< gum::Size >(0));
+        CHECK_EQ(si->count(), static_cast< gum::Size >(0));
         if (!si->count()) {
           auto                           prm = si->prm();
           const auto&                    sys = prm->getSystem("Asia.Asia");
@@ -296,8 +296,8 @@ namespace gum_tests {
           // Act
           CHECK_NOTHROW(sys.groundedBN(factory));
           // Assert
-          GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-          GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+          CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+          CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
           delete bn;
         }
         delete si;
@@ -320,8 +320,8 @@ namespace gum_tests {
         // Act
         GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(factory));
         // Assert
-        GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(144));
-        GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(193));
+        CHECK_EQ(bn->size(), static_cast< gum::Size >(144));
+        CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(193));
         delete si;
         delete bn;
       } catch (gum::Exception&) { CHECK(false); }
@@ -338,10 +338,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
 
-        GUM_CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
 
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -356,10 +356,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/ADD/Request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
 
-        GUM_CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
 
         auto result = si.results()[0];
 
@@ -376,10 +376,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/aggregates/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
 
-        GUM_CHECK_EQ(si.results().size(), static_cast< gum::Size >(7));
+        CHECK_EQ(si.results().size(), static_cast< gum::Size >(7));
 
         auto result = si.results()[0];
 
@@ -396,10 +396,10 @@ namespace gum_tests {
             si.interpretFile(GET_RESSOURCES_PATH("o3prmr/University/fr/request.o3prmr")));
 
         si.showElegantErrorsAndWarnings();
-        GUM_CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(si.warnings(), static_cast< gum::Size >(0));
 
-        GUM_CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(si.results().size(), static_cast< gum::Size >(1));
 
       } catch (gum::Exception&) { CHECK(false); }
     }

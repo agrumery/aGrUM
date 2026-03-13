@@ -89,21 +89,21 @@ namespace gum_tests {
       sC.insert("C");
 
       gum::ASTposteriorProba< double > nod(bn, sAC, sB);
-      GUM_CHECK_EQ(nod.toString(), "P(A,C|B)");
+      CHECK_EQ(nod.toString(), "P(A,C|B)");
 
       gum::ASTposteriorProba< double > nod2(bn, sA, sC);
-      GUM_CHECK_EQ(nod2.toString(), "P(A|C)");
+      CHECK_EQ(nod2.toString(), "P(A|C)");
 
       gum::ASTposteriorProba< double > nod3(bn.dag(), id2name_fromBN(bn), sAC, sB);
-      GUM_CHECK_EQ(nod3.toString(), "P(A,C|B)");
+      CHECK_EQ(nod3.toString(), "P(A,C|B)");
 
       gum::ASTposteriorProba< double > nod4(bn.dag(), id2name_fromBN(bn), sA, sC);
-      GUM_CHECK_EQ(nod4.toString(), "P(A|C)");
+      CHECK_EQ(nod4.toString(), "P(A|C)");
       // sum on A
       auto n1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
 
       gum::ASTsum< double > su("A", std::move(n1));
-      GUM_CHECK_EQ(su.toString(), "sum on A for\n| P(A,C|B)");
+      CHECK_EQ(su.toString(), "sum on A for\n| P(A,C|B)");
 
       // sum on A,C (accept flat or nested formatting)
       auto n2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
@@ -120,13 +120,13 @@ namespace gum_tests {
       auto                  p1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
       auto                  p2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
       gum::ASTdiv< double > op(std::move(p1), std::move(p2));
-      GUM_CHECK_EQ(op.toString(), "/\n| P(A,C|B)\n| P(A|C)");
+      CHECK_EQ(op.toString(), "/\n| P(A,C|B)\n| P(A|C)");
 
       // plus
       auto                   p3 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
       auto                   p4 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
       gum::ASTplus< double > op2(std::move(p3), std::move(p4));
-      GUM_CHECK_EQ(op2.toString(), "+\n| P(A,C|B)\n| P(A|C)");
+      CHECK_EQ(op2.toString(), "+\n| P(A,C|B)\n| P(A|C)");
 
       // mult(op, op2)
       auto m1 = std::make_unique< gum::ASTdiv< double > >(
@@ -169,14 +169,14 @@ namespace gum_tests {
         s.insert("A");
         return s;
       }());
-      GUM_CHECK_EQ(j1.toString(), "joint P(A)");
+      CHECK_EQ(j1.toString(), "joint P(A)");
       gum::ASTjointProba< double > j2([] {
         gum::Set< std::string > s;
         s.insert("A");
         s.insert("C");
         return s;
       }());
-      GUM_CHECK_EQ(j2.toString(), "joint P(A,C)");
+      CHECK_EQ(j2.toString(), "joint P(A,C)");
     }
 
     // -------------------------------------------------------------------
@@ -191,10 +191,10 @@ namespace gum_tests {
       knw.insert("z2");
       knw.insert("z3");
       gum::ASTposteriorProba< double > nod(m, y, knw);
-      GUM_CHECK_EQ(nod.toString(), "P(y|z1,z3)");
+      CHECK_EQ(nod.toString(), "P(y|z1,z3)");
 
       gum::ASTposteriorProba< double > nod2(m.dag(), id2name_fromBN(m), y, knw);
-      GUM_CHECK_EQ(nod2.toString(), "P(y|z1,z3)");
+      CHECK_EQ(nod2.toString(), "P(y|z1,z3)");
     }
 
     // -------------------------------------------------------------------
@@ -413,8 +413,8 @@ namespace gum_tests {
       auto orig  = std::make_unique< gum::ASTposteriorProba< double > >(bn, C, B);
       auto clone = orig->copy();
 
-      GUM_CHECK_EQ(orig->toString(), clone->toString());
-      GUM_CHECK_EQ(orig->toLatex(), clone->toLatex());
+      CHECK_EQ(orig->toString(), clone->toString());
+      CHECK_EQ(orig->toLatex(), clone->toLatex());
       GUM_CHECK_TENSOR_ALMOST_EQUALS(orig->eval(bn), clone->eval(bn));
     }
 
@@ -465,11 +465,11 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto                   t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      A,
                                                                      C);   // P(A|C)
-      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto                   t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      C,
                                                                      none);   // P(C)
@@ -514,12 +514,12 @@ namespace gum_tests {
       sB.insert("B");
 
       gum::ASTposteriorProba< double > nod(bn, sCA, sB);
-      GUM_CHECK_EQ(nod.toString(), "P(A,C|B)");
-      GUM_CHECK_EQ(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
+      CHECK_EQ(nod.toString(), "P(A,C|B)");
+      CHECK_EQ(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
 
       gum::ASTjointProba< double > j(sCA);
-      GUM_CHECK_EQ(j.toString(), "joint P(A,C)");
-      GUM_CHECK_EQ(j.toLatex(), "P\\left(A,C\\right)");
+      CHECK_EQ(j.toString(), "joint P(A,C)");
+      CHECK_EQ(j.toLatex(), "P\\left(A,C\\right)");
     }
 
     // -------------------------------------------------------------------
@@ -537,17 +537,17 @@ namespace gum_tests {
 
       // P(A,C | B)
       gum::ASTposteriorProba< double > nod(bn, sAC, sB);
-      GUM_CHECK_EQ(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
+      CHECK_EQ(nod.toLatex(), "P\\left(A,C\\mid B\\right)");
 
       // P(A | C)
       gum::ASTposteriorProba< double > nod2(bn, sA, sC);
-      GUM_CHECK_EQ(nod2.toLatex(), "P\\left(A\\mid C\\right)");
+      CHECK_EQ(nod2.toLatex(), "P\\left(A\\mid C\\right)");
 
       // sum over A :  \sum_{A}{ P(A,C | B) }
       {
         auto n1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
         auto su = gum::ASTsum< double >("A", std::move(n1));
-        GUM_CHECK_EQ(su.toLatex(), "\\sum_{A}{P\\left(A,C\\mid B\\right)}");
+        CHECK_EQ(su.toLatex(), "\\sum_{A}{P\\left(A,C\\mid B\\right)}");
       }
 
       // sum over A,C (flattened):  \sum_{A,C}{ P(A,C | B) }
@@ -557,7 +557,7 @@ namespace gum_tests {
         twoVars.push_back("A");
         twoVars.push_back("C");
         gum::ASTsum< double > su2(twoVars, std::move(n2));
-        GUM_CHECK_EQ(su2.toLatex(), "\\sum_{A,C}{P\\left(A,C\\mid B\\right)}");
+        CHECK_EQ(su2.toLatex(), "\\sum_{A,C}{P\\left(A,C\\mid B\\right)}");
       }
 
       // division: note the intentional leading space before \frac
@@ -573,7 +573,7 @@ namespace gum_tests {
         auto p3 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
         auto p4 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
         gum::ASTplus< double > op2(std::move(p3), std::move(p4));
-        GUM_CHECK_EQ(op2.toLatex(), "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
+        CHECK_EQ(op2.toLatex(), "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)");
       }
 
       // mult(div, plus): spaces around \cdot, no extra parentheses
@@ -611,14 +611,14 @@ namespace gum_tests {
           s.insert("A");
           return s;
         }());
-        GUM_CHECK_EQ(j1.toLatex(), "P\\left(A\\right)");
+        CHECK_EQ(j1.toLatex(), "P\\left(A\\right)");
         gum::ASTjointProba< double > j2([] {
           gum::Set< std::string > s;
           s.insert("A");
           s.insert("C");
           return s;
         }());
-        GUM_CHECK_EQ(j2.toLatex(), "P\\left(A,C\\right)");
+        CHECK_EQ(j2.toLatex(), "P\\left(A,C\\right)");
       }
     }
 
@@ -631,10 +631,10 @@ namespace gum_tests {
       knw.insert("z2");
       knw.insert("z3");
       gum::ASTposteriorProba< double > nod(m, y, knw);
-      GUM_CHECK_EQ(nod.toLatex(), "P\\left(y\\mid z1,z3\\right)");
+      CHECK_EQ(nod.toLatex(), "P\\left(y\\mid z1,z3\\right)");
 
       gum::ASTposteriorProba< double > nod2(m, y, knw);
-      GUM_CHECK_EQ(nod2.toLatex(), "P\\left(y\\mid z1,z3\\right)");
+      CHECK_EQ(nod2.toLatex(), "P\\left(y\\mid z1,z3\\right)");
     }
   };
 

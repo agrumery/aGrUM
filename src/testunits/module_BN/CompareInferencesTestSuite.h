@@ -422,8 +422,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
         CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
         CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
@@ -452,8 +452,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
         CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
         CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
@@ -491,8 +491,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
@@ -518,8 +518,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
@@ -551,8 +551,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
@@ -592,8 +592,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
       GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
       // Assert
-      GUM_CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      GUM_CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
 
       gum::Instantiation i_ve(p_ve);
       for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {

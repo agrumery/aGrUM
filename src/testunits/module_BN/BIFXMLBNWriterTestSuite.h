@@ -96,7 +96,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
       for (auto v: reload.nodes()) {
-        GUM_CHECK_EQ(reload.variable(v).toFast(), bn.variable(reload.variable(v).name()).toFast());
+        CHECK_EQ(reload.variable(v).toFast(), bn.variable(reload.variable(v).name()).toFast());
         GUM_CHECK_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()));
       }
     }

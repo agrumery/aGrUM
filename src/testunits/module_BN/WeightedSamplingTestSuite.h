@@ -358,7 +358,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -382,7 +382,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       try {
         gum::LazyPropagation< double > lazy(&bn);
@@ -406,7 +406,7 @@ namespace gum_tests {
       gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
       gum::WeightedSampling< double > inf(&bn);
       aSimpleWeightedListener         agsl(inf);
@@ -416,8 +416,8 @@ namespace gum_tests {
       inf.setEpsilon(EPSILON_FOR_WEIGHTED);
       GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
-      GUM_CHECK_EQ(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
-      GUM_CHECK_NE(agsl.getMess(), std::string(""));
+      CHECK_EQ(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
+      CHECK_NE(agsl.getMess(), std::string(""));
     }
 
     static void testEvidenceAsTargetOnCplxBN() {

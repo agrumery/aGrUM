@@ -74,9 +74,9 @@ namespace gum_tests {
     static void testConstruct() {
       gum::PriorityQueue< std::string > queue1;
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
@@ -89,45 +89,45 @@ namespace gum_tests {
       int         nb  = 24;
       queue1.insert(xxx, nb);
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains("AAA"), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains("AAA"), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
 
       const std::string& str = queue1.top();
-      GUM_CHECK_EQ(str, "CCC");
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(str, "CCC");
+      CHECK_EQ(queue1.topPriority(), 2);
 
       std::string str2 = queue1.pop();
-      GUM_CHECK_EQ(str2, "CCC");
-      GUM_CHECK_EQ(queue1.top(), "AAA");
-      GUM_CHECK_EQ(queue1.topPriority(), 8);
+      CHECK_EQ(str2, "CCC");
+      CHECK_EQ(queue1.top(), "AAA");
+      CHECK_EQ(queue1.topPriority(), 8);
 
       queue1.setPriorityByPos(0, 4);
-      GUM_CHECK_EQ(queue1.top(), "AAA");
-      GUM_CHECK_EQ(queue1.topPriority(), 4);
+      CHECK_EQ(queue1.top(), "AAA");
+      CHECK_EQ(queue1.topPriority(), 4);
       CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority("BBB", 100);
       nb = 2;
       queue1.setPriority("BBB", nb);
-      GUM_CHECK_EQ(queue1.top(), "BBB");
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(queue1.top(), "BBB");
+      CHECK_EQ(queue1.topPriority(), 2);
       CHECK_THROWS_AS(queue1.setPriority("zzz", 4), const gum::NotFound&);
 
       CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority("BBB"), 2);
+      CHECK_EQ(queue1.priority("BBB"), 2);
 
       queue1.resize(10);
-      GUM_CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
+      CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
 
       const gum::HashTable< std::string, gum::Size >& vals = queue1.allValues();
-      GUM_CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
 
       gum::PriorityQueue< std::string > queue10{std::pair< std::string, int >("aa", 3),
                                                 std::pair< std::string, int >("bb", 2)};
-      GUM_CHECK_EQ(queue10.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(queue10.top(), "bb");
+      CHECK_EQ(queue10.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(queue10.top(), "bb");
     }   // namespace gum_tests
 
     static void testMoveScalar() {
@@ -137,30 +137,30 @@ namespace gum_tests {
 
       gum::PriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
-      GUM_CHECK_EQ(queue3.top(), 2);
-      GUM_CHECK_EQ(queue3.topPriority(), 1);
-      GUM_CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue3.top(), 2);
+      CHECK_EQ(queue3.topPriority(), 1);
+      CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< int, int, std::less< int > > queue4(queue1);
-      GUM_CHECK_EQ(queue4.top(), 2);
-      GUM_CHECK_EQ(queue4.topPriority(), 1);
-      GUM_CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue4.top(), 2);
+      CHECK_EQ(queue4.topPriority(), 1);
+      CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< int > queue2 = std::move(queue1);
-      GUM_CHECK_EQ(queue2.top(), 2);
-      GUM_CHECK_EQ(queue2.topPriority(), 1);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.top(), 2);
+      CHECK_EQ(queue2.topPriority(), 1);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
-      GUM_CHECK_EQ(queue5.top(), 2);
-      GUM_CHECK_EQ(queue5.topPriority(), 1);
-      GUM_CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue5.top(), 2);
+      CHECK_EQ(queue5.topPriority(), 1);
+      CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< int > queue6{std::pair< int, int >(2, 1)};
       queue6 = std::move(queue2);
-      GUM_CHECK_EQ(queue6.top(), 2);
-      GUM_CHECK_EQ(queue6.topPriority(), 1);
-      GUM_CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue6.top(), 2);
+      CHECK_EQ(queue6.topPriority(), 1);
+      CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
     }
 
     static void testMoveGen() {
@@ -170,38 +170,38 @@ namespace gum_tests {
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue3;
       queue3 = queue1;
-      GUM_CHECK_EQ(queue3.top(), "b");
-      GUM_CHECK_EQ(queue3.topPriority(), 1);
-      GUM_CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue3.top(), "b");
+      CHECK_EQ(queue3.topPriority(), 1);
+      CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue4(queue1);
-      GUM_CHECK_EQ(queue4.top(), "b");
-      GUM_CHECK_EQ(queue4.topPriority(), 1);
-      GUM_CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue4.top(), "b");
+      CHECK_EQ(queue4.topPriority(), 1);
+      CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< std::string > queue2 = std::move(queue1);
-      GUM_CHECK_EQ(queue2.top(), "b");
-      GUM_CHECK_EQ(queue2.topPriority(), 1);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.top(), "b");
+      CHECK_EQ(queue2.topPriority(), 1);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< std::string, int, std::less< int > > queue5(std::move(queue4));
-      GUM_CHECK_EQ(queue5.top(), "b");
-      GUM_CHECK_EQ(queue5.topPriority(), 1);
-      GUM_CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue5.top(), "b");
+      CHECK_EQ(queue5.topPriority(), 1);
+      CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
 
       gum::PriorityQueue< std::string > queue6{std::pair< std::string, int >("a", 1)};
       queue6 = std::move(queue2);
-      GUM_CHECK_EQ(queue6.top(), "b");
-      GUM_CHECK_EQ(queue6.topPriority(), 1);
-      GUM_CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue6.top(), "b");
+      CHECK_EQ(queue6.topPriority(), 1);
+      CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
     }
 
     static void testScalar() {
       gum::PriorityQueue< int > queue1;
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains(32), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains(32), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
@@ -214,40 +214,40 @@ namespace gum_tests {
       int nb  = 24;
       queue1.insert(xxx, nb);
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains(1), true);
-      GUM_CHECK_EQ(queue1.contains(26), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains(1), true);
+      CHECK_EQ(queue1.contains(26), false);
 
       int str = queue1.top();
-      GUM_CHECK_EQ(str, 3);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(str, 3);
+      CHECK_EQ(queue1.topPriority(), 2);
 
       int str2 = queue1.pop();
-      GUM_CHECK_EQ(str2, 3);
-      GUM_CHECK_EQ(queue1.top(), 1);
-      GUM_CHECK_EQ(queue1.topPriority(), 8);
+      CHECK_EQ(str2, 3);
+      CHECK_EQ(queue1.top(), 1);
+      CHECK_EQ(queue1.topPriority(), 8);
 
       queue1.setPriorityByPos(0, 4);
-      GUM_CHECK_EQ(queue1.top(), 1);
-      GUM_CHECK_EQ(queue1.topPriority(), 4);
+      CHECK_EQ(queue1.top(), 1);
+      CHECK_EQ(queue1.topPriority(), 4);
       CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority(2, 100);
       nb = 2;
       queue1.setPriority(2, nb);
-      GUM_CHECK_EQ(queue1.top(), 2);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(queue1.top(), 2);
+      CHECK_EQ(queue1.topPriority(), 2);
       CHECK_THROWS_AS(queue1.setPriority(25, 4), const gum::NotFound&);
 
       CHECK_THROWS_AS(queue1.priority(25), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority(2), 2);
+      CHECK_EQ(queue1.priority(2), 2);
 
       queue1.resize(10);
-      GUM_CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
+      CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
 
       const gum::HashTable< int, gum::Size >& vals = queue1.allValues();
-      GUM_CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
     }
 
     static void testCopy() {
@@ -259,40 +259,40 @@ namespace gum_tests {
       queue1.insert("EEE", 24);
 
       gum::PriorityQueue< std::string > queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
 
       queue2.clear();
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
       GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
 
       queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
 
       queue2.eraseTop();
-      GUM_CHECK_EQ(queue2.topPriority(), 8);
+      CHECK_EQ(queue2.topPriority(), 8);
       queue2.eraseByPos(0);
-      GUM_CHECK_EQ(queue2.topPriority(), 10);
+      CHECK_EQ(queue2.topPriority(), 10);
       queue2.eraseByPos(3);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
       queue2.erase("AAA");
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
 
       const std::string& str1 = queue2[0];
-      GUM_CHECK_EQ(str1, "BBB");
+      CHECK_EQ(str1, "BBB");
     }
 
     static void testConstObj() {
@@ -304,9 +304,9 @@ namespace gum_tests {
       set5 << 1 << 2 << 3 << 4 << 5;
 
       gum::PriorityQueue< gum::Set< int > > queue1;
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains(set1), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains(set1), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
@@ -317,41 +317,41 @@ namespace gum_tests {
       queue1.insert(set4, 23);
       queue1.insert(set5, 24);
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains(set1), true);
-      GUM_CHECK_EQ(queue1.contains(set6), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains(set1), true);
+      CHECK_EQ(queue1.contains(set6), false);
 
       const gum::Set< int >& str = queue1.top();
-      GUM_CHECK_EQ(str, set3);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(str, set3);
+      CHECK_EQ(queue1.topPriority(), 2);
 
       gum::Set< int > str2 = queue1.pop();
-      GUM_CHECK_EQ(str2, set3);
-      GUM_CHECK_EQ(queue1.top(), set1);
-      GUM_CHECK_EQ(queue1.topPriority(), 8);
+      CHECK_EQ(str2, set3);
+      CHECK_EQ(queue1.top(), set1);
+      CHECK_EQ(queue1.topPriority(), 8);
 
       queue1.setPriorityByPos(0, 4);
-      GUM_CHECK_EQ(queue1.top(), set1);
-      GUM_CHECK_EQ(queue1.topPriority(), 4);
+      CHECK_EQ(queue1.top(), set1);
+      CHECK_EQ(queue1.topPriority(), 4);
       CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       int nb = 2;
       queue1.setPriority(set2, nb);
-      GUM_CHECK_EQ(queue1.top(), set2);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(queue1.top(), set2);
+      CHECK_EQ(queue1.topPriority(), 2);
       CHECK_THROWS_AS(queue1.setPriority(set6, 4), const gum::NotFound&);
 
       CHECK_THROWS_AS(queue1.priority(set6), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority(set2), 2);
+      CHECK_EQ(queue1.priority(set2), 2);
 
       queue1.resize(10);
-      GUM_CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
+      CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
 
       CHECK_THROWS_AS(queue1.insert(set1, 10), const gum::DuplicateElement&);
 
       const gum::HashTable< gum::Set< int >, gum::Size >& vals = queue1.allValues();
-      GUM_CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
 
       queue1.clear();
       queue1.insert(set1, 8);
@@ -365,36 +365,36 @@ namespace gum_tests {
       queue2.eraseTop();
       queue2 = queue1;
 
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains(set1), true);
-      GUM_CHECK_EQ(queue2.contains(set6), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains(set1), true);
+      CHECK_EQ(queue2.contains(set6), false);
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains(set1), true);
-      GUM_CHECK_EQ(queue2.contains(set6), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains(set1), true);
+      CHECK_EQ(queue2.contains(set6), false);
 
       queue2.eraseTop();
-      GUM_CHECK_EQ(queue2.topPriority(), 8);
+      CHECK_EQ(queue2.topPriority(), 8);
       queue2.eraseByPos(0);
-      GUM_CHECK_EQ(queue2.topPriority(), 10);
+      CHECK_EQ(queue2.topPriority(), 10);
       queue2.eraseByPos(3);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
       queue2.erase(set1);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
 
       const gum::Set< int >& str3 = queue2[0];
       const gum::Set< int >& str4 = queue2[1];
-      GUM_CHECK_EQ(str3, set2);
-      GUM_CHECK_EQ(str4, set4);
+      CHECK_EQ(str3, set2);
+      CHECK_EQ(str4, set4);
     }
 
     static void testMultiConstruct() {
       gum::MultiPriorityQueue< std::string > queue1;
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
@@ -406,38 +406,38 @@ namespace gum_tests {
       queue1.insert("EEE", 24);
       queue1.insert("AAA", 10);
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains("AAA"), true);
-      GUM_CHECK_EQ(queue1.contains("ZZZ"), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains("AAA"), true);
+      CHECK_EQ(queue1.contains("ZZZ"), false);
 
       const std::string& str = queue1.top();
-      GUM_CHECK_EQ(str, "CCC");
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(str, "CCC");
+      CHECK_EQ(queue1.topPriority(), 2);
 
       std::string str2 = queue1.pop();
-      GUM_CHECK_EQ(str2, "CCC");
-      GUM_CHECK_EQ(queue1.top(), "AAA");
-      GUM_CHECK_EQ(queue1.topPriority(), 8);
+      CHECK_EQ(str2, "CCC");
+      CHECK_EQ(queue1.top(), "AAA");
+      CHECK_EQ(queue1.topPriority(), 8);
 
       queue1.setPriorityByPos(0, 4);
-      GUM_CHECK_EQ(queue1.top(), "AAA");
-      GUM_CHECK_EQ(queue1.topPriority(), 4);
+      CHECK_EQ(queue1.top(), "AAA");
+      CHECK_EQ(queue1.topPriority(), 4);
       CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority("BBB", 2);
-      GUM_CHECK_EQ(queue1.top(), "BBB");
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(queue1.top(), "BBB");
+      CHECK_EQ(queue1.topPriority(), 2);
       CHECK_THROWS_AS(queue1.setPriority("zzz", 4), const gum::NotFound&);
 
       CHECK_THROWS_AS(queue1.priority("zzz"), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority("BBB"), 2);
+      CHECK_EQ(queue1.priority("BBB"), 2);
 
       queue1.resize(10);
-      GUM_CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
+      CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
 
       const gum::HashTable< std::string, std::vector< gum::Size > >& vals = queue1.allValues();
-      GUM_CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
     }
 
     static void testMultiCopy() {
@@ -450,42 +450,42 @@ namespace gum_tests {
       queue1.insert("AAA", 20);
 
       gum::MultiPriorityQueue< std::string > queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
 
       queue2.clear();
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(0));
       GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.eraseByPos(10));
       GUM_CHECK_ASSERT_THROWS_NOTHING(queue2.erase("RRR"));
 
       queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains("AAA"), true);
-      GUM_CHECK_EQ(queue2.contains("ZZZ"), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains("AAA"), true);
+      CHECK_EQ(queue2.contains("ZZZ"), false);
 
       queue2.eraseTop();
-      GUM_CHECK_EQ(queue2.topPriority(), 8);
+      CHECK_EQ(queue2.topPriority(), 8);
       queue2.eraseByPos(0);
-      GUM_CHECK_EQ(queue2.topPriority(), 10);
+      CHECK_EQ(queue2.topPriority(), 10);
       queue2.eraseByPos(3);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
       queue2.erase("AAA");
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(2));
 
       const std::string& str1 = queue2[0];
       const std::string& str2 = queue2[1];
-      GUM_CHECK_EQ(str1, "BBB");
-      GUM_CHECK_EQ(str2, "DDD");
+      CHECK_EQ(str1, "BBB");
+      CHECK_EQ(str2, "DDD");
     }
 
     static void testMultiConstObj() {
@@ -497,9 +497,9 @@ namespace gum_tests {
       set5 << 1 << 2 << 3 << 4 << 5;
 
       gum::MultiPriorityQueue< gum::Set< int > > queue1;
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(queue1.empty(), true);
-      GUM_CHECK_EQ(queue1.contains(set1), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(queue1.empty(), true);
+      CHECK_EQ(queue1.contains(set1), false);
       CHECK_THROWS_AS(queue1.top(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.pop(), const gum::NotFound&);
       CHECK_THROWS_AS(queue1.topPriority(), const gum::NotFound&);
@@ -511,38 +511,38 @@ namespace gum_tests {
       queue1.insert(set5, 24);
       queue1.insert(set1, 10);
 
-      GUM_CHECK_EQ(queue1.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue1.empty(), false);
-      GUM_CHECK_EQ(queue1.contains(set1), true);
-      GUM_CHECK_EQ(queue1.contains(set6), false);
+      CHECK_EQ(queue1.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue1.empty(), false);
+      CHECK_EQ(queue1.contains(set1), true);
+      CHECK_EQ(queue1.contains(set6), false);
 
       const gum::Set< int >& str = queue1.top();
-      GUM_CHECK_EQ(str, set3);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(str, set3);
+      CHECK_EQ(queue1.topPriority(), 2);
 
       gum::Set< int > str2 = queue1.pop();
-      GUM_CHECK_EQ(str2, set3);
-      GUM_CHECK_EQ(queue1.top(), set1);
-      GUM_CHECK_EQ(queue1.topPriority(), 8);
+      CHECK_EQ(str2, set3);
+      CHECK_EQ(queue1.top(), set1);
+      CHECK_EQ(queue1.topPriority(), 8);
 
       queue1.setPriorityByPos(0, 4);
-      GUM_CHECK_EQ(queue1.top(), set1);
-      GUM_CHECK_EQ(queue1.topPriority(), 4);
+      CHECK_EQ(queue1.top(), set1);
+      CHECK_EQ(queue1.topPriority(), 4);
       CHECK_THROWS_AS(queue1.setPriorityByPos(10, 4), const gum::NotFound&);
 
       queue1.setPriority(set2, 2);
-      GUM_CHECK_EQ(queue1.top(), set2);
-      GUM_CHECK_EQ(queue1.topPriority(), 2);
+      CHECK_EQ(queue1.top(), set2);
+      CHECK_EQ(queue1.topPriority(), 2);
       CHECK_THROWS_AS(queue1.setPriority(set6, 4), const gum::NotFound&);
 
       CHECK_THROWS_AS(queue1.priority(set6), const gum::NotFound&);
-      GUM_CHECK_EQ(queue1.priority(set2), 2);
+      CHECK_EQ(queue1.priority(set2), 2);
 
       queue1.resize(10);
-      GUM_CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
+      CHECK_EQ(queue1.capacity(), static_cast< gum::Size >(10));
 
       const gum::HashTable< gum::Set< int >, std::vector< gum::Size > >& vals = queue1.allValues();
-      GUM_CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(vals.size(), static_cast< gum::Size >(4));
 
       queue1.clear();
       queue1.insert(set1, 8);
@@ -557,29 +557,29 @@ namespace gum_tests {
       queue2.eraseTop();
       queue2 = queue1;
 
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains(set1), true);
-      GUM_CHECK_EQ(queue2.contains(set6), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains(set1), true);
+      CHECK_EQ(queue2.contains(set6), false);
       queue2 = queue1;
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
-      GUM_CHECK_EQ(queue2.empty(), false);
-      GUM_CHECK_EQ(queue2.contains(set1), true);
-      GUM_CHECK_EQ(queue2.contains(set6), false);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(queue2.empty(), false);
+      CHECK_EQ(queue2.contains(set1), true);
+      CHECK_EQ(queue2.contains(set6), false);
 
       queue2.eraseTop();
-      GUM_CHECK_EQ(queue2.topPriority(), 8);
+      CHECK_EQ(queue2.topPriority(), 8);
       queue2.eraseByPos(0);
-      GUM_CHECK_EQ(queue2.topPriority(), 10);
+      CHECK_EQ(queue2.topPriority(), 10);
       queue2.eraseByPos(3);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
       queue2.erase(set1);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(2));
 
       const gum::Set< int >& str3 = queue2[0];
       const gum::Set< int >& str4 = queue2[1];
-      GUM_CHECK_EQ(str3, set2);
-      GUM_CHECK_EQ(str4, set4);
+      CHECK_EQ(str3, set2);
+      CHECK_EQ(str4, set4);
     }
 
     static void testMultiMoveScalar() {
@@ -589,30 +589,30 @@ namespace gum_tests {
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue3;
       queue3 = queue1;
-      GUM_CHECK_EQ(queue3.top(), 2);
-      GUM_CHECK_EQ(queue3.topPriority(), 1);
-      GUM_CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue3.top(), 2);
+      CHECK_EQ(queue3.topPriority(), 1);
+      CHECK_EQ(queue3.size(), static_cast< gum::Size >(3));
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue4(queue1);
-      GUM_CHECK_EQ(queue4.top(), 2);
-      GUM_CHECK_EQ(queue4.topPriority(), 1);
-      GUM_CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue4.top(), 2);
+      CHECK_EQ(queue4.topPriority(), 1);
+      CHECK_EQ(queue4.size(), static_cast< gum::Size >(3));
 
       gum::MultiPriorityQueue< int > queue2 = std::move(queue1);
-      GUM_CHECK_EQ(queue2.top(), 2);
-      GUM_CHECK_EQ(queue2.topPriority(), 1);
-      GUM_CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue2.top(), 2);
+      CHECK_EQ(queue2.topPriority(), 1);
+      CHECK_EQ(queue2.size(), static_cast< gum::Size >(3));
 
       gum::MultiPriorityQueue< int, int, std::less< int > > queue5(std::move(queue4));
-      GUM_CHECK_EQ(queue5.top(), 2);
-      GUM_CHECK_EQ(queue5.topPriority(), 1);
-      GUM_CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue5.top(), 2);
+      CHECK_EQ(queue5.topPriority(), 1);
+      CHECK_EQ(queue5.size(), static_cast< gum::Size >(3));
 
       gum::MultiPriorityQueue< int > queue6{std::pair< int, int >(2, 1)};
       queue6 = std::move(queue2);
-      GUM_CHECK_EQ(queue6.top(), 2);
-      GUM_CHECK_EQ(queue6.topPriority(), 1);
-      GUM_CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(queue6.top(), 2);
+      CHECK_EQ(queue6.topPriority(), 1);
+      CHECK_EQ(queue6.size(), static_cast< gum::Size >(3));
     }
   };
 

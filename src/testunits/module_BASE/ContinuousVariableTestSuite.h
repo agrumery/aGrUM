@@ -62,74 +62,74 @@ namespace gum_tests {
     public:
     static void test_constructors() {
       gum::ContinuousVariable<> var1("x1", "");
-      GUM_CHECK_EQ(var1.upperBound(), std::numeric_limits< double >::infinity());
-      GUM_CHECK_EQ(var1.lowerBound(), -std::numeric_limits< double >::infinity());
+      CHECK_EQ(var1.upperBound(), std::numeric_limits< double >::infinity());
+      CHECK_EQ(var1.lowerBound(), -std::numeric_limits< double >::infinity());
 
       gum::ContinuousVariable<> var2("x2", "", -10, 10);
-      GUM_CHECK_EQ(var2.lowerBound(), -10.0f);
-      GUM_CHECK_EQ(var2.upperBound(), 10.0f);
+      CHECK_EQ(var2.lowerBound(), -10.0f);
+      CHECK_EQ(var2.upperBound(), 10.0f);
 
       gum::ContinuousVariable<> var3(var2);
-      GUM_CHECK_EQ(var3.lowerBound(), -10.0f);
-      GUM_CHECK_EQ(var3.upperBound(), 10.0f);
+      CHECK_EQ(var3.lowerBound(), -10.0f);
+      CHECK_EQ(var3.upperBound(), 10.0f);
 
       gum::ContinuousVariable< double > var4(var3);
-      GUM_CHECK_EQ(var4.lowerBound(), -10.0);
-      GUM_CHECK_EQ(var4.upperBound(), 10.0);
+      CHECK_EQ(var4.lowerBound(), -10.0);
+      CHECK_EQ(var4.upperBound(), 10.0);
 
       gum::ContinuousVariable< double > var5(std::move(var4));
-      GUM_CHECK_EQ(var4.lowerBound(), -10.0);
-      GUM_CHECK_EQ(var4.upperBound(), 10.0);
+      CHECK_EQ(var4.lowerBound(), -10.0);
+      CHECK_EQ(var4.upperBound(), 10.0);
 
       gum::ContinuousVariable< double >* var6 = var5.clone();
-      GUM_CHECK_EQ(var6->lowerBound(), -10.0);
-      GUM_CHECK_EQ(var6->upperBound(), 10.0);
+      CHECK_EQ(var6->lowerBound(), -10.0);
+      CHECK_EQ(var6->upperBound(), 10.0);
       delete var6;
 
       var3 = var1;
-      GUM_CHECK_EQ(var3.upperBound(), std::numeric_limits< double >::infinity());
-      GUM_CHECK_EQ(var3.lowerBound(), -std::numeric_limits< double >::infinity());
+      CHECK_EQ(var3.upperBound(), std::numeric_limits< double >::infinity());
+      CHECK_EQ(var3.lowerBound(), -std::numeric_limits< double >::infinity());
 
       var3 = var5;
-      GUM_CHECK_EQ(var3.lowerBound(), -10.0f);
-      GUM_CHECK_EQ(var3.upperBound(), 10.0f);
+      CHECK_EQ(var3.lowerBound(), -10.0f);
+      CHECK_EQ(var3.upperBound(), 10.0f);
 
       var4.setUpperBound(5);
       var4.setLowerBound(0);
-      GUM_CHECK_EQ(var4.lowerBound(), 0.0);
-      GUM_CHECK_EQ(var4.upperBound(), 5.0);
+      CHECK_EQ(var4.lowerBound(), 0.0);
+      CHECK_EQ(var4.upperBound(), 5.0);
       var4 = std::move(var5);
-      GUM_CHECK_EQ(var4.lowerBound(), -10.0);
-      GUM_CHECK_EQ(var4.upperBound(), 10.0);
+      CHECK_EQ(var4.lowerBound(), -10.0);
+      CHECK_EQ(var4.upperBound(), 10.0);
     }   // namespace gum_tests
 
     static void test_methods() {
       gum::ContinuousVariable<> var1("x1", "");
-      GUM_CHECK_EQ(var1.upperBound(), std::numeric_limits< double >::infinity());
-      GUM_CHECK_EQ(var1.lowerBound(), -std::numeric_limits< double >::infinity());
+      CHECK_EQ(var1.upperBound(), std::numeric_limits< double >::infinity());
+      CHECK_EQ(var1.lowerBound(), -std::numeric_limits< double >::infinity());
 
       gum::ContinuousVariable<> var2("x2", "xxx", -10, 10);
-      GUM_CHECK_EQ(var2.lowerBound(), -10.0f);
-      GUM_CHECK_EQ(var2.upperBound(), 10.0f);
+      CHECK_EQ(var2.lowerBound(), -10.0f);
+      CHECK_EQ(var2.upperBound(), 10.0f);
 
-      GUM_CHECK_EQ(var1["44"], 44.0f);
-      GUM_CHECK_EQ(var2["4"], 4.0f);
+      CHECK_EQ(var1["44"], 44.0f);
+      CHECK_EQ(var2["4"], 4.0f);
       CHECK_THROWS_AS(var2["44"], const gum::OutOfBounds&);
       CHECK_THROWS_AS(var2["4xx"], const gum::TypeError&);
-      GUM_CHECK_EQ(var2[" \t\t4\t  "], 4.0f);
+      CHECK_EQ(var2[" \t\t4\t  "], 4.0f);
 
       CHECK_THROWS_AS(var2.setLowerBound(44.0f), const gum::OutOfBounds&);
       var2.setLowerBound(4);
-      GUM_CHECK_EQ(var2.lowerBound(), 4.0f);
-      GUM_CHECK_EQ(var2.upperBound(), 10.0f);
+      CHECK_EQ(var2.lowerBound(), 4.0f);
+      CHECK_EQ(var2.upperBound(), 10.0f);
 
       CHECK_THROWS_AS(var2.setUpperBound(2.0f), const gum::OutOfBounds&);
       var2.setUpperBound(8.5f);
-      GUM_CHECK_EQ(var2.lowerBound(), 4.0f);
-      GUM_CHECK_EQ(var2.upperBound(), 8.5f);
+      CHECK_EQ(var2.lowerBound(), 4.0f);
+      CHECK_EQ(var2.upperBound(), 8.5f);
 
-      GUM_CHECK_EQ(var2.varType(), gum::VarType::CONTINUOUS);
-      GUM_CHECK_EQ(std::stof(var2.label(4.5)), 4.5f);
+      CHECK_EQ(var2.varType(), gum::VarType::CONTINUOUS);
+      CHECK_EQ(std::stof(var2.label(4.5)), 4.5f);
       CHECK_THROWS_AS(var2.label(10.0f), const gum::OutOfBounds&);
       CHECK(var2.belongs(5.6f));
       CHECK(!var2.belongs(15.6f));
@@ -140,13 +140,13 @@ namespace gum_tests {
       std::regex  reg(regexp);
       std::smatch match;
       CHECK(std::regex_match(domain, match, reg));
-      GUM_CHECK_EQ(std::stof(match[1]), 4.0f);
-      GUM_CHECK_EQ(std::stof(match[2]), 8.5f);
+      CHECK_EQ(std::stof(match[1]), 4.0f);
+      CHECK_EQ(std::stof(match[2]), 8.5f);
       */
-      GUM_CHECK_EQ(domain, "[4;8.5]");
+      CHECK_EQ(domain, "[4;8.5]");
 
-      GUM_CHECK_EQ(var2.toString(), ("x2" + domain));
-      GUM_CHECK_EQ(var2.toStringWithDescription(), var2.description() + domain);
+      CHECK_EQ(var2.toString(), ("x2" + domain));
+      CHECK_EQ(var2.toStringWithDescription(), var2.description() + domain);
     }
   };
 

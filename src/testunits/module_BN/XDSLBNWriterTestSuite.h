@@ -124,7 +124,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
 
       for (auto i: bn->nodes()) {
-        GUM_CHECK_EQ(bn->cpt(i).toString(), net.cpt(bn->variable(i).name()).toString());
+        CHECK_EQ(bn->cpt(i).toString(), net.cpt(bn->variable(i).name()).toString());
       }
     }
 

@@ -120,8 +120,8 @@ namespace gum_tests {
 
       gum::Size nbErr = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      GUM_CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(*mn, net);
+      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+      CHECK_EQ(*mn, net);
     }
 
     private:

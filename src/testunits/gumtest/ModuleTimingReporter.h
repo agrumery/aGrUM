@@ -157,7 +157,7 @@ namespace gum_test {
       suite.totalTime += seconds;
 
       // Progress dot: '.' = success, 'F' = failure
-      _out << (stats.testCaseSuccess ? '.' : 'F');
+      _out << (stats.testCaseSuccess ? '+' : 'F');
       _out.flush();
       _currentSuiteCount++;
     }

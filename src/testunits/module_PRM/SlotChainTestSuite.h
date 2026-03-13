@@ -245,7 +245,7 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(elt = &(simple.lastElt()));
       // Assert
-      GUM_CHECK_EQ(_boolAttr_->safeName(), elt->safeName());
+      CHECK_EQ(_boolAttr_->safeName(), elt->safeName());
     }
 
     static void testLastEltSimpleConst() {
@@ -256,7 +256,7 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(elt = &(const_simple.lastElt()));
       // Assert
-      GUM_CHECK_EQ(_boolAttr_->safeName(), elt->safeName());
+      CHECK_EQ(_boolAttr_->safeName(), elt->safeName());
     }
 
     static void testChain() {
@@ -266,10 +266,10 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(chain = &(simple.chain()));
       // ASSERT
-      GUM_CHECK_EQ(chain->size(), _booleanChain_->size());
-      GUM_CHECK_EQ(chain->atPos(0), _booleanChain_->atPos(0));
-      GUM_CHECK_EQ(chain->atPos(1), _booleanChain_->atPos(1));
-      GUM_CHECK_NE(chain->atPos(2), _booleanChain_->atPos(2));
+      CHECK_EQ(chain->size(), _booleanChain_->size());
+      CHECK_EQ(chain->atPos(0), _booleanChain_->atPos(0));
+      CHECK_EQ(chain->atPos(1), _booleanChain_->atPos(1));
+      CHECK_NE(chain->atPos(2), _booleanChain_->atPos(2));
     }
 
     static void testCpf() {
@@ -283,7 +283,7 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(expected[i], actual[j]);
+        CHECK_EQ(expected[i], actual[j]);
       }
       CHECK(i.end());
       CHECK(j.end());
@@ -301,7 +301,7 @@ namespace gum_tests {
       gum::Instantiation i(expected);
       gum::Instantiation j(actual);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(expected[i], actual[j]);
+        CHECK_EQ(expected[i], actual[j]);
       }
       CHECK(i.end());
       CHECK(j.end());
@@ -320,7 +320,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      GUM_CHECK_EQ(before, after);
+      CHECK_EQ(before, after);
       CHECK(!child.cpf().contains(parent.type().variable()));
     }
 
@@ -334,7 +334,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      GUM_CHECK_EQ(before, after);
+      CHECK_EQ(before, after);
       CHECK(!child.cpf().contains(parent.type().variable()));
     }
 
@@ -347,7 +347,7 @@ namespace gum_tests {
       CHECK_NOTHROW(parent.addChild(child));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      GUM_CHECK_EQ(before, after);
+      CHECK_EQ(before, after);
       CHECK(!parent.cpf().contains(child.type().variable()));
     }
 

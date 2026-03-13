@@ -186,7 +186,7 @@ namespace gum_tests {
     }
 
     static void testClassConstruction() {
-      GUM_CHECK_EQ(_asia_->attributes().size(), static_cast< gum::Size >(8));
+      CHECK_EQ(_asia_->attributes().size(), static_cast< gum::Size >(8));
     }
 
     static void testAddInstance() {
@@ -198,7 +198,7 @@ namespace gum_tests {
       // Assert
       CHECK(sys.exists("asia"));
       CHECK(sys.isInstantiated(*_asia_));
-      GUM_CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
     }
 
     static void testInstantiate() {
@@ -211,7 +211,7 @@ namespace gum_tests {
       // Assert
       CHECK(sys.exists("asia"));
       CHECK(sys.isInstantiated(*_asia_));
-      GUM_CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
+      CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
     }
 
     static void testGroundBN() {
@@ -230,12 +230,12 @@ namespace gum_tests {
         y0 = bn->cpt(1).toString();
       }
       // Assert
-      GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-      GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+      CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+      CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
       x1 = bn->cpt(0).toString();
       y1 = bn->cpt(1).toString();
-      GUM_CHECK_EQ(x0, x1);
-      GUM_CHECK_EQ(y0, y1);
+      CHECK_EQ(x0, x1);
+      CHECK_EQ(y0, y1);
       delete bn;
     }
 
@@ -251,8 +251,8 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(delete sys);
       // Assert
-      GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-      GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+      CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+      CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
       for (auto node: bn->dag()) {
         const gum::Tensor< double >* cpt = nullptr;
         GUM_CHECK_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
@@ -298,7 +298,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -322,7 +322,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -346,7 +346,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -370,7 +370,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -394,7 +394,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -418,7 +418,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -442,7 +442,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }
@@ -466,7 +466,7 @@ namespace gum_tests {
       gum::Instantiation i(cpf);
       gum::Instantiation j(cpt);
       for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        GUM_CHECK_EQ(cpf.get(i), cpt->get(j));
+        CHECK_EQ(cpf.get(i), cpt->get(j));
       }
       delete bn;
     }

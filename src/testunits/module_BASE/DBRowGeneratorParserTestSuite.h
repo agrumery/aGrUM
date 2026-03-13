@@ -282,7 +282,7 @@ namespace gum_tests {
       }
       CHECK(nb_rows == std::size_t(4));
       const auto& tgenset = parser8.generatorSet();
-      GUM_CHECK_EQ(tgenset.size(), std::size_t(0));
+      CHECK_EQ(tgenset.size(), std::size_t(0));
 
       gum::learning::DBRowGeneratorParser parser9(parser8);
       parser9.reset();
@@ -296,7 +296,7 @@ namespace gum_tests {
         ++nb_rows;
       }
       CHECK(nb_rows == std::size_t(4));
-      GUM_CHECK_EQ(parser9.generatorSet().size(), std::size_t(0));
+      CHECK_EQ(parser9.generatorSet().size(), std::size_t(0));
 
       parser8 = parser2;
       parser8.reset();
@@ -329,7 +329,7 @@ namespace gum_tests {
         ++nb_rows;
       }
       CHECK(nb_rows == std::size_t(4));
-      GUM_CHECK_EQ(parser2.generatorSet().size(), std::size_t(0));
+      CHECK_EQ(parser2.generatorSet().size(), std::size_t(0));
     }
 
     static void testEM() {
@@ -404,9 +404,9 @@ namespace gum_tests {
         const auto& row  = parser.row();
         const auto& xrow = row.row();
 
-        GUM_CHECK_EQ(row.weight(), 1.0);
-        GUM_CHECK_EQ(xrow[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xrow[1].discr_val, std::size_t(1));
+        CHECK_EQ(row.weight(), 1.0);
+        CHECK_EQ(xrow[0].discr_val, std::size_t(0));
+        CHECK_EQ(xrow[1].discr_val, std::size_t(1));
       }
 
       for (int i = 0; i < 2; ++i) {
@@ -418,15 +418,15 @@ namespace gum_tests {
 
         const auto& fill_row1  = parser.row();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
         CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
 
         ++inst;
         const auto& fill_row2  = parser.row();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
         CHECK((fill_row2.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
       }
 
@@ -473,7 +473,7 @@ namespace gum_tests {
         int nb_observed = 0;
         for (auto obs: observed)
           if (obs) ++nb_observed;
-        GUM_CHECK_EQ(nb_observed, 4);
+        CHECK_EQ(nb_observed, 4);
       }
     }
   };

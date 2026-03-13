@@ -61,7 +61,7 @@ namespace gum_tests {
       gum::CausalModel< double > cm(bn);
 
       // BN has 2 variables
-      GUM_CHECK_EQ(cm.observationalBN().size(), 2u);
+      CHECK_EQ(cm.observationalBN().size(), 2u);
       CHECK(cm.existsArc("A", "B"));
       CHECK(!cm.existsArc("B", "A"));
     }
@@ -146,7 +146,7 @@ namespace gum_tests {
 
         auto subA = cm.inducedCausalSubModel(cm, subsetA);
 
-        GUM_CHECK_EQ(subA.observationalBN().size(), 3u);
+        CHECK_EQ(subA.observationalBN().size(), 3u);
         CHECK(subA.existsArc("X", "Y"));
         CHECK(subA.existsArc("Y", "Z"));
         CHECK(!subA.existsArc("X", "Z"));   // removed by latent surgery
@@ -165,7 +165,7 @@ namespace gum_tests {
 
         auto subB = cm.inducedCausalSubModel(cm, subsetB);
 
-        GUM_CHECK_EQ(subB.observationalBN().size(), 2u);
+        CHECK_EQ(subB.observationalBN().size(), 2u);
         CHECK(subB.existsArc("Y", "Z"));   // observed arc preserved
 
         // U must be absent; do NOT call existsArc("U", ...)
@@ -179,7 +179,7 @@ namespace gum_tests {
 
         auto subC = cm.inducedCausalSubModel(cm, subsetC);
 
-        GUM_CHECK_EQ(subC.observationalBN().size(), 1u);
+        CHECK_EQ(subC.observationalBN().size(), 1u);
         // U must be absent; do NOT call existsArc("U", ...)
         CHECK(!subC.latentVariablesNames().contains("U"));
       }
@@ -193,18 +193,18 @@ namespace gum_tests {
       // --- parents / children (by name)
       {
         auto pB = cm.parents("B");
-        GUM_CHECK_EQ(pB.size(), 1u);
+        CHECK_EQ(pB.size(), 1u);
         CHECK(pB.contains(cm.idFromName("A")));
 
         auto cA = cm.children("A");
-        GUM_CHECK_EQ(cA.size(), 1u);
+        CHECK_EQ(cA.size(), 1u);
         CHECK(cA.contains(cm.idFromName("B")));
 
         auto pC = cm.parents("C");
-        GUM_CHECK_EQ(pC.size(), 0u);
+        CHECK_EQ(pC.size(), 0u);
 
         auto cD = cm.children("D");
-        GUM_CHECK_EQ(cD.size(), 0u);
+        CHECK_EQ(cD.size(), 0u);
       }
 
       // --- same via NodeId overloads (should match)
@@ -215,21 +215,21 @@ namespace gum_tests {
         auto idD = bn.idFromName("D");
 
         auto pB = cm.parents(idB);
-        GUM_CHECK_EQ(pB.size(), 1u);
+        CHECK_EQ(pB.size(), 1u);
         CHECK(pB.contains(idA));
 
         auto cA = cm.children(idA);
-        GUM_CHECK_EQ(cA.size(), 1u);
+        CHECK_EQ(cA.size(), 1u);
         CHECK(cA.contains(idB));
 
-        GUM_CHECK_EQ(cm.parents(idC).size(), 0u);
-        GUM_CHECK_EQ(cm.children(idD).size(), 0u);
+        CHECK_EQ(cm.parents(idC).size(), 0u);
+        CHECK_EQ(cm.children(idD).size(), 0u);
       }
 
       // --- connected components: initially 2 ( {A,B} and {C,D} )
       {
         auto comps = cm.connectedComponents();
-        GUM_CHECK_EQ(comps.size(), 2u);
+        CHECK_EQ(comps.size(), 2u);
       }
 
       // Add latent U that confounds B and C -> bridges the two components
@@ -239,22 +239,22 @@ namespace gum_tests {
 
         // Parents now reflect the latent
         auto pB = cm.parents("B");
-        GUM_CHECK_EQ(pB.size(), 2u);   // {A, U}
+        CHECK_EQ(pB.size(), 2u);   // {A, U}
         CHECK(pB.contains(cm.idFromName("A")));
         CHECK(pB.contains(cm.idFromName("U")));
 
         auto pC = cm.parents("C");
-        GUM_CHECK_EQ(pC.size(), 1u);   // {U}
+        CHECK_EQ(pC.size(), 1u);   // {U}
         CHECK(pC.contains(cm.idFromName("U")));
 
         auto cU = cm.children("U");
-        GUM_CHECK_EQ(cU.size(), 2u);   // {B, C}
+        CHECK_EQ(cU.size(), 2u);   // {B, C}
         CHECK(cU.contains(cm.idFromName("B")));
         CHECK(cU.contains(cm.idFromName("C")));
 
         // Components collapse to 1 due to the latent bridge
         auto comps2 = cm.connectedComponents();
-        GUM_CHECK_EQ(comps2.size(), 1u);
+        CHECK_EQ(comps2.size(), 1u);
       }
     }
 
@@ -270,7 +270,7 @@ namespace gum_tests {
 
       auto bd = cm.backDoor(X, Y);
       CHECK(bd.has_value());
-      GUM_CHECK_EQ(bd.value().size(), 1u);
+      CHECK_EQ(bd.value().size(), 1u);
       CHECK(bd.value().contains(Z));
 
       // Returned set must not contain latents.
@@ -307,7 +307,7 @@ namespace gum_tests {
 
       auto fd = cm.frontDoor(X, Y);
       CHECK(fd.has_value());
-      GUM_CHECK_EQ(fd.value().size(), 1u);
+      CHECK_EQ(fd.value().size(), 1u);
       CHECK(fd.value().contains(Z));
 
       for (auto n: fd.value())

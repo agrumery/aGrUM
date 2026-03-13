@@ -139,10 +139,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator.hasRows());
       }
 
@@ -153,10 +153,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator.hasRows());
       }
 
@@ -166,16 +166,16 @@ namespace gum_tests {
       generator.setColumnsOfInterest(cols_of_interest1);
       {
         const auto& xcols = generator.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator.setInputRow(input_row1);
         CHECK(generator.hasRows());
 
         const auto& output_row3  = generator.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator.setInputRow(input_row1);
         CHECK(generator.hasRows());
@@ -184,8 +184,8 @@ namespace gum_tests {
         CHECK(generator.hasRows());
         const auto& output_row3b  = generator.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator.setColumnsOfInterest(cols_of_interest2);
@@ -200,23 +200,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -226,23 +226,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -262,14 +262,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -289,7 +289,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
@@ -301,16 +301,16 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       generator.setColumnsOfInterest(cols_of_interest1);
@@ -318,9 +318,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator2(generator);
       CHECK(!generator2.hasRows());
-      GUM_CHECK_EQ(generator2.columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator2.columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator2.columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator2.columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator2.columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator2.columnsOfInterest()[1], std::size_t(3));
 
       {
         generator2.setInputRow(input_row1);
@@ -329,10 +329,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator2.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator2.hasRows());
       }
 
@@ -343,10 +343,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator2.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator2.hasRows());
       }
 
@@ -354,16 +354,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator2.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator2.setInputRow(input_row1);
         CHECK(generator2.hasRows());
 
         const auto& output_row3  = generator2.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator2.setInputRow(input_row1);
         CHECK(generator2.hasRows());
@@ -372,17 +372,17 @@ namespace gum_tests {
         CHECK(generator2.hasRows());
         const auto& output_row3b  = generator2.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator2.setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator2.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -392,23 +392,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator2.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator2.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator2.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -418,23 +418,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator2.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator2.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator2.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -454,14 +454,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator2.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -481,7 +481,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator2.setColumnsOfInterest(cols_of_interest1);
@@ -489,9 +489,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator3(generator);
       CHECK(!generator3.hasRows());
-      GUM_CHECK_EQ(generator3.columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator3.columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator3.columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator3.columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator3.columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator3.columnsOfInterest()[1], std::size_t(3));
 
       {
         generator3.setInputRow(input_row1);
@@ -500,10 +500,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator3.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator3.hasRows());
       }
 
@@ -514,10 +514,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator3.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator3.hasRows());
       }
 
@@ -525,16 +525,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator3.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator3.setInputRow(input_row1);
         CHECK(generator3.hasRows());
 
         const auto& output_row3  = generator3.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator3.setInputRow(input_row1);
         CHECK(generator3.hasRows());
@@ -543,17 +543,17 @@ namespace gum_tests {
         CHECK(generator3.hasRows());
         const auto& output_row3b  = generator3.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator3.setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator3.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -563,23 +563,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator3.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator3.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator3.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -589,23 +589,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator3.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator3.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator3.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -625,14 +625,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator3.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -652,7 +652,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator3.setColumnsOfInterest(cols_of_interest1);
@@ -660,9 +660,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator4(std::move(generator2));
       CHECK(!generator4.hasRows());
-      GUM_CHECK_EQ(generator4.columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator4.columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator4.columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator4.columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator4.columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator4.columnsOfInterest()[1], std::size_t(3));
 
       {
         generator4.setInputRow(input_row1);
@@ -671,10 +671,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator4.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator4.hasRows());
       }
 
@@ -685,10 +685,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator4.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator4.hasRows());
       }
 
@@ -696,16 +696,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator4.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator4.setInputRow(input_row1);
         CHECK(generator4.hasRows());
 
         const auto& output_row3  = generator4.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator4.setInputRow(input_row1);
         CHECK(generator4.hasRows());
@@ -714,17 +714,17 @@ namespace gum_tests {
         CHECK(generator4.hasRows());
         const auto& output_row3b  = generator4.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator4.setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator4.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -734,23 +734,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator4.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator4.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator4.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -760,23 +760,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator4.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator4.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator4.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -796,14 +796,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator4.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -823,7 +823,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator4.setColumnsOfInterest(cols_of_interest1);
@@ -831,9 +831,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator5(std::move(generator3));
       CHECK(!generator5.hasRows());
-      GUM_CHECK_EQ(generator5.columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator5.columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator5.columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator5.columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator5.columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator5.columnsOfInterest()[1], std::size_t(3));
 
       {
         generator5.setInputRow(input_row1);
@@ -842,10 +842,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator5.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator5.hasRows());
       }
 
@@ -856,10 +856,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator5.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator5.hasRows());
       }
 
@@ -867,16 +867,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator5.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator5.setInputRow(input_row1);
         CHECK(generator5.hasRows());
 
         const auto& output_row3  = generator5.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator5.setInputRow(input_row1);
         CHECK(generator5.hasRows());
@@ -885,17 +885,17 @@ namespace gum_tests {
         CHECK(generator5.hasRows());
         const auto& output_row3b  = generator5.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator5.setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator5.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -905,23 +905,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator5.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator5.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator5.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -931,23 +931,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator5.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator5.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator5.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -967,14 +967,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator5.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -994,7 +994,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator5.setColumnsOfInterest(cols_of_interest1);
@@ -1002,9 +1002,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<>* generator6 = generator4.clone();
       CHECK(!generator6->hasRows());
-      GUM_CHECK_EQ(generator6->columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator6->columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator6->columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator6->columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator6->columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator6->columnsOfInterest()[1], std::size_t(3));
 
       {
         generator6->setInputRow(input_row1);
@@ -1013,10 +1013,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator6->generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator6->hasRows());
       }
 
@@ -1027,10 +1027,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator6->generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator6->hasRows());
       }
 
@@ -1038,16 +1038,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator6->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator6->setInputRow(input_row1);
         CHECK(generator6->hasRows());
 
         const auto& output_row3  = generator6->generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator6->setInputRow(input_row1);
         CHECK(generator6->hasRows());
@@ -1056,17 +1056,17 @@ namespace gum_tests {
         CHECK(generator6->hasRows());
         const auto& output_row3b  = generator6->generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator6->setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator6->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -1076,23 +1076,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator6->generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator6->generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator6->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -1102,23 +1102,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator6->generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator6->generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator6->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -1138,14 +1138,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator6->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -1165,7 +1165,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator6->setColumnsOfInterest(cols_of_interest1);
@@ -1174,9 +1174,9 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<>* generator7 = generator5.clone();
       CHECK(!generator7->hasRows());
-      GUM_CHECK_EQ(generator7->columnsOfInterest().size(), std::size_t(2));
-      GUM_CHECK_EQ(generator7->columnsOfInterest()[0], std::size_t(0));
-      GUM_CHECK_EQ(generator7->columnsOfInterest()[1], std::size_t(3));
+      CHECK_EQ(generator7->columnsOfInterest().size(), std::size_t(2));
+      CHECK_EQ(generator7->columnsOfInterest()[0], std::size_t(0));
+      CHECK_EQ(generator7->columnsOfInterest()[1], std::size_t(3));
 
       {
         generator7->setInputRow(input_row1);
@@ -1185,10 +1185,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator7->generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator7->hasRows());
       }
 
@@ -1199,10 +1199,10 @@ namespace gum_tests {
 
         const auto& output_row2  = generator7->generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator7->hasRows());
       }
 
@@ -1210,16 +1210,16 @@ namespace gum_tests {
 
       {
         const auto& xcols = generator7->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator7->setInputRow(input_row1);
         CHECK(generator7->hasRows());
 
         const auto& output_row3  = generator7->generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator7->setInputRow(input_row1);
         CHECK(generator7->hasRows());
@@ -1228,17 +1228,17 @@ namespace gum_tests {
         CHECK(generator7->hasRows());
         const auto& output_row3b  = generator7->generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator7->setColumnsOfInterest(cols_of_interest2);
 
       {
         const auto& xcols = generator7->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
         gum::Instantiation    inst(proba);
@@ -1248,23 +1248,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator7->generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator7->generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator7->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -1274,23 +1274,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator7->generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator7->generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator7->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -1310,14 +1310,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator7->columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -1337,7 +1337,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       generator7->setColumnsOfInterest(cols_of_interest1);
@@ -1349,11 +1349,11 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator8(col_types, bn2);
       CHECK(!generator8.hasRows());
-      GUM_CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
+      CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
 
       generator.setInputRow(input_row1);
       CHECK(!generator8.hasRows());
-      GUM_CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
+      CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
       generator8 = generator;
 
       {
@@ -1363,10 +1363,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator8.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator8.hasRows());
       }
 
@@ -1377,26 +1377,26 @@ namespace gum_tests {
 
         const auto& output_row2  = generator8.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator8.hasRows());
       }
 
       generator8.setColumnsOfInterest(cols_of_interest1);
       {
         const auto& xcols = generator8.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator8.setInputRow(input_row1);
         CHECK(generator8.hasRows());
 
         const auto& output_row3  = generator8.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator8.setInputRow(input_row1);
         CHECK(generator8.hasRows());
@@ -1405,8 +1405,8 @@ namespace gum_tests {
         CHECK(generator8.hasRows());
         const auto& output_row3b  = generator8.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator8.setColumnsOfInterest(cols_of_interest2);
@@ -1421,23 +1421,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator8.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator8.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator8.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -1447,23 +1447,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator8.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator8.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator8.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -1483,14 +1483,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator8.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -1510,7 +1510,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
@@ -1522,16 +1522,16 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator8.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator8.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       generator8.setColumnsOfInterest(cols_of_interest1);
@@ -1539,11 +1539,11 @@ namespace gum_tests {
 
       gum::learning::DBRowGeneratorEM<> generator9(col_types, bn2);
       CHECK(!generator9.hasRows());
-      GUM_CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
+      CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
 
       generator.setInputRow(input_row1);
       CHECK(!generator9.hasRows());
-      GUM_CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
+      CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
       generator9 = std::move(generator);
 
       {
@@ -1553,10 +1553,10 @@ namespace gum_tests {
 
         const auto& output_row1  = generator9.generate();
         const auto& xoutput_row1 = output_row1.row();
-        GUM_CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
         CHECK(!generator9.hasRows());
       }
 
@@ -1567,26 +1567,26 @@ namespace gum_tests {
 
         const auto& output_row2  = generator9.generate();
         const auto& xoutput_row2 = output_row2.row();
-        GUM_CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
         CHECK(!generator9.hasRows());
       }
 
       generator9.setColumnsOfInterest(cols_of_interest1);
       {
         const auto& xcols = generator9.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(3));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(3));
         generator9.setInputRow(input_row1);
         CHECK(generator9.hasRows());
 
         const auto& output_row3  = generator9.generate();
         const auto& xoutput_row3 = output_row3.row();
-        GUM_CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
 
         generator9.setInputRow(input_row1);
         CHECK(generator9.hasRows());
@@ -1595,8 +1595,8 @@ namespace gum_tests {
         CHECK(generator9.hasRows());
         const auto& output_row3b  = generator9.generate();
         const auto& xoutput_row3b = output_row3b.row();
-        GUM_CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
       }
 
       generator9.setColumnsOfInterest(cols_of_interest2);
@@ -1611,23 +1611,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator9.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator9.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator9.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
         gum::Instantiation    inst(proba);
@@ -1637,23 +1637,23 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator9.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator9.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       {
         const auto& xcols = generator9.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
         gum::Instantiation    inst(proba);
@@ -1673,14 +1673,14 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
         const auto& xcols = generator9.columnsOfInterest();
-        GUM_CHECK_EQ(xcols.size(), std::size_t(2));
-        GUM_CHECK_EQ(xcols[0], std::size_t(0));
-        GUM_CHECK_EQ(xcols[1], std::size_t(1));
+        CHECK_EQ(xcols.size(), std::size_t(2));
+        CHECK_EQ(xcols[0], std::size_t(0));
+        CHECK_EQ(xcols[1], std::size_t(1));
 
         gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
         gum::Instantiation    inst(proba);
@@ -1700,7 +1700,7 @@ namespace gum_tests {
           CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
         }
 
-        GUM_CHECK_EQ(nb, 4);
+        CHECK_EQ(nb, 4);
       }
 
       {
@@ -1712,16 +1712,16 @@ namespace gum_tests {
 
         const auto& fill_row1  = generator9.generate();
         const auto& xfill_row1 = fill_row1.row();
-        GUM_CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(fill_row1.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+        CHECK_EQ(fill_row1.weight(), proba.get(inst));
 
         ++inst;
         const auto& fill_row2  = generator9.generate();
         const auto& xfill_row2 = fill_row2.row();
-        GUM_CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        GUM_CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        GUM_CHECK_EQ(fill_row2.weight(), proba.get(inst));
+        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+        CHECK_EQ(fill_row2.weight(), proba.get(inst));
       }
 
       generator9.setColumnsOfInterest(cols_of_interest1);

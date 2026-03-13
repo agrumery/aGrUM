@@ -222,9 +222,9 @@ namespace gum_tests {
                                       gum::Tensor< double > >
           comb4(std::move(comb3));
       CHECK(!comb4.implyDeletion());
-      GUM_CHECK_EQ(comb4, comb1);
-      GUM_CHECK_NE(comb4, comb2);
-      GUM_CHECK_EQ(comb4.result().multiDim(), pot4);
+      CHECK_EQ(comb4, comb1);
+      CHECK_NE(comb4, comb2);
+      CHECK_EQ(comb4.result().multiDim(), pot4);
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
                                       gum::Tensor< double >,
@@ -239,8 +239,8 @@ namespace gum_tests {
                                       gum::Tensor< double >,
                                       gum::Tensor< double > >* comb6 = comb4.clone();
       CHECK(!comb6->implyDeletion());
-      GUM_CHECK_EQ(*comb6, comb4);
-      GUM_CHECK_EQ(comb6->result().multiDim(), pot4);
+      CHECK_EQ(*comb6, comb4);
+      CHECK_EQ(comb6->result().multiDim(), pot4);
       delete comb6;
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
@@ -260,13 +260,13 @@ namespace gum_tests {
       CHECK(!comb1.hasSimilarArguments(dynamic_cast< gum::ScheduleOperator& >(comb7)));
       CHECK(comb1.isSameOperator(comb7));
       CHECK(comb1.isSameOperator(dynamic_cast< gum::ScheduleOperator& >(comb7)));
-      GUM_CHECK_NE(comb1, comb7);
+      CHECK_NE(comb1, comb7);
 
       comb1.setCombinationFunction(mymult);
       CHECK(!comb1.isExecuted());
       comb1.execute();
       gum::Tensor< double > mult32(pot3 * pot2);
-      GUM_CHECK_EQ(comb1.result().multiDim(), mult32);
+      CHECK_EQ(comb1.result().multiDim(), mult32);
       CHECK(!comb1.implyDeletion());
       CHECK(!comb1.isSameOperator(comb7));
 
@@ -295,10 +295,10 @@ namespace gum_tests {
       comb1.execute();
       CHECK(comb1.isExecuted());
       CHECK(!result1.isAbstract());
-      GUM_CHECK_EQ(result1.multiDim().max(), 8.5);
-      GUM_CHECK_EQ(result1.multiDim().min(), 8.5);
-      GUM_CHECK_EQ(result1.domainSize(), 1u);
-      GUM_CHECK_EQ(result1.multiDim().domainSize(), 1u);
+      CHECK_EQ(result1.multiDim().max(), 8.5);
+      CHECK_EQ(result1.multiDim().min(), 8.5);
+      CHECK_EQ(result1.domainSize(), 1u);
+      CHECK_EQ(result1.multiDim().domainSize(), 1u);
 
 
       std::vector< gum::LabelizedVariable* > vars(10);
@@ -325,12 +325,12 @@ namespace gum_tests {
           comb2(f1, f3, myadd);
       comb2.execute();
       const gum::Tensor< double >& result2 = comb2.result().multiDim();
-      GUM_CHECK_EQ(result2.domainSize(), 2u);
-      GUM_CHECK_EQ(comb2.result().domainSize(), 2u);
+      CHECK_EQ(result2.domainSize(), 2u);
+      CHECK_EQ(comb2.result().domainSize(), 2u);
 
       gum::Instantiation i2(result2);
       for (i2.setFirst(); !i2.end(); ++i2) {
-        GUM_CHECK_EQ(result2[i2], p3[i2] + 3.0);
+        CHECK_EQ(result2[i2], p3[i2] + 3.0);
       }
 
       gum::ScheduleBinaryCombination< gum::Tensor< double >,
@@ -339,8 +339,8 @@ namespace gum_tests {
           comb3(f1, f4, myadd);
       comb3.execute();
       const gum::Tensor< double >& result3 = comb3.result().multiDim();
-      GUM_CHECK_EQ(result3.domainSize(), 4u);
-      GUM_CHECK_EQ(comb3.result().domainSize(), 4u);
+      CHECK_EQ(result3.domainSize(), 4u);
+      CHECK_EQ(comb3.result().domainSize(), 4u);
 
       gum::Instantiation i3(result3);
       for (i3.setFirst(); !i3.end(); ++i3) {

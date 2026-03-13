@@ -105,11 +105,11 @@ namespace gum_tests {
 
       auto yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-      GUM_CHECK_EQ(yyy.first, 116 * sizeof(double) + 5 * sizeof(gum::Tensor< double >));
-      GUM_CHECK_EQ(yyy.second, 36 * sizeof(double) + 3 * sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.first, 116 * sizeof(double) + 5 * sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.second, 36 * sizeof(double) + 3 * sizeof(gum::Tensor< double >));
 
-      GUM_CHECK_EQ(nb_ops, 421);   // combinations + projections + deletions
-      GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(nb_ops, 421);   // combinations + projections + deletions
+      CHECK_EQ(res.size(), static_cast< gum::Size >(3));
 
       gum::Set< const gum::Tensor< double >* >::const_iterator iter = res.begin();
       const gum::Tensor< double >*                             res1 = *iter;
@@ -564,11 +564,11 @@ namespace gum_tests {
 
       auto yyy = projcomb.memoryUsage(to_comb, del_vars);
 
-      GUM_CHECK_EQ(yyy.first, 116 * sizeof(float) + 5 * sizeof(gum::Tensor< float >));
-      GUM_CHECK_EQ(yyy.second, 36 * sizeof(float) + 3 * sizeof(gum::Tensor< float >));
+      CHECK_EQ(yyy.first, 116 * sizeof(float) + 5 * sizeof(gum::Tensor< float >));
+      CHECK_EQ(yyy.second, 36 * sizeof(float) + 3 * sizeof(gum::Tensor< float >));
 
-      GUM_CHECK_EQ(nb_ops, 421);
-      GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(nb_ops, 421);
+      CHECK_EQ(res.size(), static_cast< gum::Size >(3));
 
       gum::Set< const gum::Tensor< float >* >::const_iterator iter = res.begin();
       const gum::Tensor< float >*                             res1 = *iter;
@@ -642,7 +642,7 @@ namespace gum_tests {
         auto t4   = *iter;
         ++iter;
         auto t5 = *iter;
-        GUM_CHECK_EQ(t3, *t4 * (*t5));
+        CHECK_EQ(t3, *t4 * (*t5));
         gum::Instantiation inst(t3);
         CHECK(t3.get(inst) == 12.0);
 
@@ -675,7 +675,7 @@ namespace gum_tests {
 
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
-        GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(res.size(), static_cast< gum::Size >(3));
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -688,14 +688,14 @@ namespace gum_tests {
           delete ptrPot;
         }
 
-        GUM_CHECK_EQ(nb_empty, 3);
+        CHECK_EQ(nb_empty, 3);
         CHECK(prod > 0.0);   // wtf ?
       }
 
       del_vars << vars[2];
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
-        GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(res.size(), static_cast< gum::Size >(3));
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -708,8 +708,8 @@ namespace gum_tests {
           delete ptrPot;
         }
 
-        GUM_CHECK_EQ(nb_empty, 3);
-        GUM_CHECK_EQ(prod, 30.0);
+        CHECK_EQ(nb_empty, 3);
+        CHECK_EQ(prod, 30.0);
       }
 
 
@@ -723,7 +723,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
 
-        GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(3));
+        CHECK_EQ(res.size(), static_cast< gum::Size >(3));
 
         int   nb_empty = 0;
         float prod     = 1;
@@ -736,7 +736,7 @@ namespace gum_tests {
           delete ptrPot;
         }
 
-        GUM_CHECK_EQ(nb_empty, 3);
+        CHECK_EQ(nb_empty, 3);
         CHECK((prod) == doctest::Approx(60.0).epsilon(1e-3));
       }
 
@@ -749,7 +749,7 @@ namespace gum_tests {
       {
         gum::Set< const gum::Tensor< float >* > res = projcomb.execute(to_comb, del_vars);
 
-        GUM_CHECK_EQ(res.size(), static_cast< gum::Size >(2));
+        CHECK_EQ(res.size(), static_cast< gum::Size >(2));
 
         auto t4 = t1 * t2;
 
@@ -759,11 +759,11 @@ namespace gum_tests {
             gum::Instantiation I(*ptrPot);
             nb_empty++;
           } else {
-            GUM_CHECK_EQ(t4, *ptrPot);
+            CHECK_EQ(t4, *ptrPot);
           }
           delete ptrPot;
         }
-        GUM_CHECK_EQ(nb_empty, 2);
+        CHECK_EQ(nb_empty, 2);
       }
 
       for (gum::Idx i = 0; i < vars.size(); ++i)

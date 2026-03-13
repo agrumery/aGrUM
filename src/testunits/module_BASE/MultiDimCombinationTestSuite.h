@@ -116,23 +116,23 @@ namespace gum_tests {
         gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
         CHECK(t6);
-        GUM_CHECK_EQ(*t6, *t5);
+        CHECK_EQ(*t6, *t5);
 
         delete t4;
         delete t5;
         delete t6;
 
-        GUM_CHECK_EQ(xxx.nbOperations(set), 16641);
+        CHECK_EQ(xxx.nbOperations(set), 16641);
         auto yyy = xxx.memoryUsage(set);
-        GUM_CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
-        GUM_CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
+        CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
+        CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
 
         t4 = new gum::Tensor< double >(t1 * t2);
         t5 = new gum::Tensor< double >(t3 * (*t4));
         xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
         CHECK(t6);
-        GUM_CHECK_EQ(*t6, *t5);
+        CHECK_EQ(*t6, *t5);
 
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;
@@ -219,7 +219,7 @@ namespace gum_tests {
       gum::Tensor< double >* t3 = xxx.execute(set);
       {
         gum::Instantiation inst3(t3);
-        GUM_CHECK_EQ((*t3)[inst3], 12.0);
+        CHECK_EQ((*t3)[inst3], 12.0);
       }
       delete t3;
       t3 = nullptr;
@@ -345,23 +345,23 @@ namespace gum_tests {
         gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
         t6 = xxx.execute(set);
         CHECK(t6);
-        GUM_CHECK_EQ(*t6, *t5);
+        CHECK_EQ(*t6, *t5);
 
         delete t4;
         delete t5;
         delete t6;
 
-        GUM_CHECK_EQ(xxx.nbOperations(set), 16641);
+        CHECK_EQ(xxx.nbOperations(set), 16641);
         auto yyy = xxx.memoryUsage(set);
-        GUM_CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
-        GUM_CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
+        CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
+        CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
 
         t4 = new gum::Tensor< double >(t1 * t2);
         t5 = new gum::Tensor< double >(t3 * (*t4));
         xxx.setCombinationFunction(multTensor);
         t6 = xxx.execute(set);
         CHECK(t6);
-        GUM_CHECK_EQ(*t6, *t5);
+        CHECK_EQ(*t6, *t5);
 
         gum::Set< const gum::IScheduleMultiDim* >    sched_set;
         std::vector< const gum::IScheduleMultiDim* > sched_vect;

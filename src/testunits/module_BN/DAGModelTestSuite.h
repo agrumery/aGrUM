@@ -77,39 +77,39 @@ namespace gum_tests {
 
     static void testAncestors() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
-      GUM_CHECK_EQ(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
-      GUM_CHECK_EQ(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
+      CHECK_EQ(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
+      CHECK_EQ(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
 
-      GUM_CHECK_EQ(bn.descendants(1), gum::NodeSet());
-      GUM_CHECK_EQ(bn.descendants("B"), gum::NodeSet());
+      CHECK_EQ(bn.descendants(1), gum::NodeSet());
+      CHECK_EQ(bn.descendants("B"), gum::NodeSet());
 
-      GUM_CHECK_EQ(bn.ancestors(1), gum::NodeSet({0, 2, 6, 8, 9}));
-      GUM_CHECK_EQ(bn.ancestors("B"), gum::NodeSet({0, 2, 6, 8, 9}));
+      CHECK_EQ(bn.ancestors(1), gum::NodeSet({0, 2, 6, 8, 9}));
+      CHECK_EQ(bn.ancestors("B"), gum::NodeSet({0, 2, 6, 8, 9}));
 
-      GUM_CHECK_EQ(bn.ancestors(9), gum::NodeSet());
-      GUM_CHECK_EQ(bn.ancestors("J"), gum::NodeSet());
+      CHECK_EQ(bn.ancestors(9), gum::NodeSet());
+      CHECK_EQ(bn.ancestors("J"), gum::NodeSet());
     }
 
     static void testMoralizedAncestralGraph() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
       auto g = bn.moralizedAncestralGraph({"I", "J"});
-      GUM_CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
-      GUM_CHECK_EQ(g.edges(), gum::EdgeSet({}));
+      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
+      CHECK_EQ(g.edges(), gum::EdgeSet({}));
 
       g = bn.moralizedAncestralGraph({"A"});
-      GUM_CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
-      GUM_CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
+      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
+      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
       // just for the fun
-      GUM_CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
+      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
 
       // V-structure
       g = bn.moralizedAncestralGraph({"C"});
-      GUM_CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
-      GUM_CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
+      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
+      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
 
       g = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
-      GUM_CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
+      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
       CHECK((g.edges())
             == (gum::EdgeSet({gum::Edge(2, 8),
                               gum::Edge(2, 9),
@@ -120,7 +120,7 @@ namespace gum_tests {
                               gum::Edge(6, 8)})));
 
       g = bn.moralizedAncestralGraph({"F", "B", "E", "H"});
-      GUM_CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
+      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
       CHECK((g.edges())
             == (gum::EdgeSet({gum::Edge(2, 8),
                               gum::Edge(2, 9),

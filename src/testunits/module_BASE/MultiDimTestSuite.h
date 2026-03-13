@@ -61,20 +61,20 @@ namespace gum_tests {
     public:
     static void testCreation() {
       gum::MultiDimArray< double > m;
-      GUM_CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(m.domainSize(), static_cast< gum::Size >(1));
+      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(0));
+      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(1));
 
       gum::LabelizedVariable a("a", "", 4), b("b", "", 5);
       m << a;
-      GUM_CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(m.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
+      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(4));
       m << b;
-      GUM_CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(m.domainSize(), static_cast< gum::Size >(20));
+      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(2));
+      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(20));
 
       gum::MultiDimArray< double > mm = m;
-      GUM_CHECK_EQ(mm.nbrDim(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(mm.domainSize(), static_cast< gum::Size >(20));
+      CHECK_EQ(mm.nbrDim(), static_cast< gum::Size >(2));
+      CHECK_EQ(mm.domainSize(), static_cast< gum::Size >(20));
     }   // namespace gum_tests
 
     static void testMemoryCrash() {

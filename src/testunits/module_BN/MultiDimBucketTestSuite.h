@@ -188,15 +188,15 @@ namespace gum_tests {
 
         CHECK(!bucket->isBucketEmpty());
 
-        GUM_CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(5));
+        CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(5));
         CHECK_NOTHROW(bucket->erase(_tensors_->at(4)));
-        GUM_CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(4));
 
         for (size_t i = 5; i > 0; --i) {
           CHECK_NOTHROW(bucket->erase(_tensors_->at(i - 1)));
         }
 
-        GUM_CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(0));
+        CHECK_EQ(bucket->bucketSize(), static_cast< gum::Size >(0));
 
         CHECK(bucket->isBucketEmpty());
         delete bucket;
@@ -219,8 +219,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
         gum::Instantiation inst(product);
 
-        GUM_CHECK_EQ(bucket->domainSize(), product.domainSize());
-        GUM_CHECK_EQ(bucket->nbrDim(), product.nbrDim());
+        CHECK_EQ(bucket->domainSize(), product.domainSize());
+        CHECK_EQ(bucket->nbrDim(), product.nbrDim());
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           CHECK((bucket->get(inst))
@@ -247,9 +247,9 @@ namespace gum_tests {
 
         GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
         gum::Instantiation inst(product);
-        GUM_CHECK_EQ(bucket->domainSize(), product.domainSize());
-        GUM_CHECK_EQ(bucket->nbrDim(), product.nbrDim());
-        GUM_CHECK_EQ(bucket->realSize(), static_cast< gum::Size >(0));
+        CHECK_EQ(bucket->domainSize(), product.domainSize());
+        CHECK_EQ(bucket->nbrDim(), product.nbrDim());
+        CHECK_EQ(bucket->realSize(), static_cast< gum::Size >(0));
 
         for (inst.setFirst(); !inst.end(); inst.inc()) {
           CHECK((bucket->get(inst))
@@ -386,7 +386,7 @@ namespace gum_tests {
         CHECK(!bucket->bucketChanged());
         GUM_CHECK_ASSERT_THROWS_NOTHING(_makeProduct_(product));
 
-        GUM_CHECK_EQ(bucket->realSize(), static_cast< gum::Size >(0));
+        CHECK_EQ(bucket->realSize(), static_cast< gum::Size >(0));
 
         gum::Instantiation* inst = nullptr;
         GUM_CHECK_ASSERT_THROWS_NOTHING(inst = new gum::Instantiation(*bucket));
@@ -431,7 +431,7 @@ namespace gum_tests {
 
       if (bucket != 0) {
         CHECK_NOTHROW(_fillBucket_(bucket));
-        GUM_CHECK_EQ(bucket->allVariables().size(), static_cast< gum::Size >(10));
+        CHECK_EQ(bucket->allVariables().size(), static_cast< gum::Size >(10));
         gum::Size inBucket  = 0;
         gum::Size outBucket = 0;
 
@@ -444,9 +444,9 @@ namespace gum_tests {
           CHECK(false);
         }
 
-        GUM_CHECK_EQ(inBucket, bucket->nbrDim());
+        CHECK_EQ(inBucket, bucket->nbrDim());
 
-        GUM_CHECK_EQ(inBucket + outBucket, static_cast< gum::Size >(10));
+        CHECK_EQ(inBucket + outBucket, static_cast< gum::Size >(10));
         delete bucket;
       }
     }

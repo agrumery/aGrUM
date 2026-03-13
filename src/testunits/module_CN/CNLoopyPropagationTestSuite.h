@@ -287,8 +287,8 @@ namespace gum_tests {
         lp.makeInference();
       } catch (gum::Exception&) { CHECK(false); }
 
-      GUM_CHECK_EQ(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
-      GUM_CHECK_NE(mcl.msg(), std::string(""));
+      CHECK_EQ(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
+      CHECK_NE(mcl.msg(), std::string(""));
 
       try {
         lp.eraseAllEvidence();

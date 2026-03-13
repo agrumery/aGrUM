@@ -71,12 +71,12 @@ namespace gum_tests {
         f.endClass();
 
         const auto& c = prm->getClass("MyClass");
-        GUM_CHECK_EQ(static_cast< gum::Size >(1), c.parameters().size());
+        CHECK_EQ(static_cast< gum::Size >(1), c.parameters().size());
         const auto& elt = c.get("lambda");
         CHECK(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        GUM_CHECK_EQ(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
-        GUM_CHECK_EQ(lambda.value(), 0.001);
+        CHECK_EQ(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
+        CHECK_EQ(lambda.value(), 0.001);
 
         delete prm;
 
@@ -98,25 +98,25 @@ namespace gum_tests {
         f.addParameter("real", "lambda", 0.001);
         f.endClass();
 
-        GUM_CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(1));
 
         f.startSystem("MySystem");
         f.addInstance("MyClass", "i");
         f.endSystem();
 
-        GUM_CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(2));
 
         const auto& super_c = prm->getClass("MyClass");
         const auto& c       = prm->getClass("MyClass<lambda=0.001>");
 
         CHECK(c.isSubTypeOf(super_c));
 
-        GUM_CHECK_EQ(static_cast< gum::Size >(1), c.parameters().size());
+        CHECK_EQ(static_cast< gum::Size >(1), c.parameters().size());
         const auto& elt = c.get("lambda");
         CHECK(gum::prm::PRMClassElement< double >::isParameter(elt));
         const auto& lambda = static_cast< const gum::prm::PRMParameter< double >& >(elt);
-        GUM_CHECK_EQ(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
-        GUM_CHECK_EQ(lambda.value(), 0.001);
+        CHECK_EQ(lambda.valueType(), gum::prm::PRMParameter< double >::REAL);
+        CHECK_EQ(lambda.value(), 0.001);
 
         delete prm;
 
@@ -178,7 +178,7 @@ namespace gum_tests {
         f.addInstance("MyClass", "j");
         f.addInstance("MyClass", "k", params);
 
-        GUM_CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(3));
+        CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(3));
 
         f.endSystem();
         const auto& s = prm->getSystem("MySystem");

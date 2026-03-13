@@ -81,13 +81,13 @@ namespace gum_tests {
       CHECK((p.toString())
             == ("a:Labelized({0|1})=noisyORNet([0.2], b:Labelized({0|1})[0.4], "
                 "c:Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
-      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       gum::MultiDimNoisyORNet< double > q(p);
       CHECK((q.toString())
             == ("a:Labelized({0|1})=noisyORNet([0.2], b:Labelized({0|1})[0.4], "
                 "c:Labelized({0|1})[1], d:Labelized({0|1})[0.7])"));
-      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
     }   // namespace gum_tests
 
     static void testCompatibleWithHardOR() {

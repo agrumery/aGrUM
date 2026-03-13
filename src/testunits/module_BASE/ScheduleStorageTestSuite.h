@@ -103,13 +103,13 @@ namespace gum_tests {
       CHECK(store2.implyDeletion());
       CHECK(store2bis.implyDeletion());
 
-      GUM_CHECK_NE(store1, store1bis);
+      CHECK_NE(store1, store1bis);
       CHECK(store1.isSameOperator(store1bis));
       CHECK(!(store1 == store1bis));
       CHECK(store1.hasSimilarArguments(store1bis));
       CHECK(store1.hasSameArguments(store1bis));
 
-      GUM_CHECK_NE(store2, store2bis);
+      CHECK_NE(store2, store2bis);
       CHECK(store2.isSameOperator(store2bis));
       CHECK(!(store2 == store2bis));
       CHECK(store2.hasSimilarArguments(store2bis));
@@ -130,49 +130,49 @@ namespace gum_tests {
       CHECK(xres1.empty());
 
       const auto& arg1 = store1.arg();
-      GUM_CHECK_EQ(&arg1, &f1);
-      GUM_CHECK_EQ(arg1, f1);
+      CHECK_EQ(&arg1, &f1);
+      CHECK_EQ(arg1, f1);
 
       const auto& args1 = store1.args();
-      GUM_CHECK_EQ(args1.size(), gum::Size(1));
+      CHECK_EQ(args1.size(), gum::Size(1));
       CHECK(arg1 == *args1[0]);
 
       store1.execute();
       CHECK(f1.isAbstract());
       CHECK(store1.arg().isAbstract());
-      GUM_CHECK_EQ(v1.size(), 1u);
-      GUM_CHECK_EQ(pot1, v1[0]);
+      CHECK_EQ(v1.size(), 1u);
+      CHECK_EQ(pot1, v1[0]);
       CHECK_THROWS_AS(store1.undo(), const gum::OperationNotAllowed&);
 
       store1bis.execute();
       CHECK(f1b.isAbstract());
-      GUM_CHECK_EQ(v1.size(), 2u);
-      GUM_CHECK_EQ(v1[0], v1[1]);
+      CHECK_EQ(v1.size(), 2u);
+      CHECK_EQ(v1[0], v1[1]);
 
       store2.execute();
       CHECK(store2.isExecuted());
       CHECK(f2.isAbstract());
       CHECK(store2.arg().isAbstract());
-      GUM_CHECK_EQ(set2.size(), gum::Size(1));
-      GUM_CHECK_EQ(**(set2.begin()), pot2);
+      CHECK_EQ(set2.size(), gum::Size(1));
+      CHECK_EQ(**(set2.begin()), pot2);
       CHECK_THROWS_AS(store2bis.execute(), const gum::NullElement&);
 
       store2ter.execute();
       CHECK(store2ter.isExecuted());
       CHECK(f2b.isAbstract());
       CHECK(store2ter.arg().isAbstract());
-      GUM_CHECK_EQ(set2b.size(), gum::Size(1));
-      GUM_CHECK_EQ(**(set2.begin()), **(set2b.begin()));
+      CHECK_EQ(set2b.size(), gum::Size(1));
+      CHECK_EQ(**(set2.begin()), **(set2b.begin()));
 
       CHECK(store2.nbOperations() == 1.0);
 
       const auto [xfirst, xsecond] = store2.memoryUsage();
-      GUM_CHECK_EQ(xfirst, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*));
-      GUM_CHECK_EQ(xsecond, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*));
+      CHECK_EQ(xfirst, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*));
+      CHECK_EQ(xsecond, -4.0 * sizeof(double) - sizeof(gum::Tensor< double >*));
 
       const std::pair< double, double > xxx1 = store1.memoryUsage();
-      GUM_CHECK_EQ(xxx1.first, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
-      GUM_CHECK_EQ(xxx1.second, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
+      CHECK_EQ(xxx1.first, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
+      CHECK_EQ(xxx1.second, -16.0 * sizeof(double) - sizeof(gum::Tensor< double >));
 
       gum::ScheduleMultiDim< gum::Tensor< double > >             f1c(pot1, true);
       gum::ScheduleStorage< gum::Tensor< double >, std::vector > store4(f1c, v1);
@@ -202,21 +202,21 @@ namespace gum_tests {
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store3bis = store2bis;
       store3bis                                                          = store2ter;
       CHECK(store3bis.implyDeletion());
-      GUM_CHECK_EQ(store3bis, store2ter);
+      CHECK_EQ(store3bis, store2ter);
       CHECK(store3bis != store2bis);
 
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set > store6 = store2bis;
       store3bis                                                       = std::move(store2bis);
-      GUM_CHECK_EQ(store6, store3bis);
+      CHECK_EQ(store6, store3bis);
 
       gum::ScheduleStorage< gum::Tensor< double >*, gum::Set >* store7 = store6.clone();
       CHECK(store7->implyDeletion());
-      GUM_CHECK_EQ(store6, *store7);
+      CHECK_EQ(store6, *store7);
       delete store7;
 
       std::stringstream s;
       s << "store ( " << f1b.toString() << " )";
-      GUM_CHECK_EQ(s.str(), store1bis.toString());
+      CHECK_EQ(s.str(), store1bis.toString());
 
       gum::VariableSet del_vars1;
       del_vars1 << vars[0] << vars[3];

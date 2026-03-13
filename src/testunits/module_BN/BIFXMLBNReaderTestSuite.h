@@ -84,7 +84,7 @@ namespace gum_tests {
       std::string              file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file1.bifxml");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       gum::BIFXMLBNReader< double > reader(net, file);
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
@@ -102,13 +102,13 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      GUM_CHECK_EQ(isOK, static_cast< gum::Size >(0));
+      CHECK_EQ(isOK, static_cast< gum::Size >(0));
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(!net->empty());
-        GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(2));
+        CHECK_EQ(net->size(), static_cast< gum::Size >(2));
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -117,11 +117,11 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        GUM_CHECK_EQ(var_1.name(), "n1");
-        GUM_CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_1.name(), "n1");
+        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
 
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        GUM_CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
@@ -130,11 +130,11 @@ namespace gum_tests {
         CHECK((proba_1[inst_1]) == doctest::Approx(0.8f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        GUM_CHECK_EQ(var_2.name(), "n2");
-        GUM_CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_2.name(), "n2");
+        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
 
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        GUM_CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
@@ -153,16 +153,16 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      GUM_CHECK_EQ(isOK, static_cast< gum::Size >(0));
+      CHECK_EQ(isOK, static_cast< gum::Size >(0));
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
-        GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(5));
+        CHECK_EQ(net->size(), static_cast< gum::Size >(5));
 
         const gum::Tensor< double >& proba = net->cpt(net->idFromName("dog-out"));
 
-        GUM_CHECK_EQ(proba.domainSize(), static_cast< gum::Size >(8));
+        CHECK_EQ(proba.domainSize(), static_cast< gum::Size >(8));
 
         delete (net);
       }
@@ -175,12 +175,12 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      GUM_CHECK_EQ(isOK, static_cast< gum::Size >(0));
+      CHECK_EQ(isOK, static_cast< gum::Size >(0));
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
-        GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(2));
+        CHECK_EQ(net->size(), static_cast< gum::Size >(2));
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -189,13 +189,13 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        GUM_CHECK_EQ(var_1.name(), "n1");
+        CHECK_EQ(var_1.name(), "n1");
 
-        GUM_CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
 
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
 
-        GUM_CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_1(proba_1);
 
@@ -209,13 +209,13 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
 
-        GUM_CHECK_EQ(var_2.name(), "n2");
+        CHECK_EQ(var_2.name(), "n2");
 
-        GUM_CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
 
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
 
-        GUM_CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_2(proba_2);
 
@@ -238,8 +238,8 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      GUM_CHECK_EQ(isOK, static_cast< gum::Size >(0));
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_EQ(isOK, static_cast< gum::Size >(0));
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
@@ -249,17 +249,17 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(idMap["n1"]);
 
-        GUM_CHECK_EQ(var_1.name(), "n1");
+        CHECK_EQ(var_1.name(), "n1");
 
-        GUM_CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
 
-        GUM_CHECK_EQ(var_1.label(0), "0");
+        CHECK_EQ(var_1.label(0), "0");
 
-        GUM_CHECK_EQ(var_1.label(1), "1");
+        CHECK_EQ(var_1.label(1), "1");
 
         const gum::Tensor< double >& proba_1 = net->cpt(idMap["n1"]);
 
-        GUM_CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_1(proba_1);
 
@@ -273,17 +273,17 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_2 = net->variable(idMap["n2"]);
 
-        GUM_CHECK_EQ(var_2.name(), "n2");
+        CHECK_EQ(var_2.name(), "n2");
 
-        GUM_CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
 
-        GUM_CHECK_EQ(var_2.label(0), "foo");
+        CHECK_EQ(var_2.label(0), "foo");
 
-        GUM_CHECK_EQ(var_2.label(1), "bar");
+        CHECK_EQ(var_2.label(1), "bar");
 
         const gum::Tensor< double >& proba_2 = net->cpt(idMap["n2"]);
 
-        GUM_CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
 
         gum::Instantiation inst_2(proba_2);
 
@@ -297,19 +297,19 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_3 = net->variable(idMap["n3"]);
 
-        GUM_CHECK_EQ(var_3.name(), "n3");
+        CHECK_EQ(var_3.name(), "n3");
 
-        GUM_CHECK_EQ(var_3.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_3.domainSize(), static_cast< gum::Size >(2));
 
-        GUM_CHECK_EQ(var_3.label(0), "0");
+        CHECK_EQ(var_3.label(0), "0");
 
-        GUM_CHECK_EQ(var_3.label(1), "1");
+        CHECK_EQ(var_3.label(1), "1");
 
         CHECK(net->dag().existsArc(idMap["n1"], idMap["n3"]));
 
         const gum::Tensor< double >& proba_3 = net->cpt(idMap["n3"]);
 
-        GUM_CHECK_EQ(proba_3.domainSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(proba_3.domainSize(), static_cast< gum::Size >(4));
 
         gum::Instantiation inst_3(proba_3);
 
@@ -335,13 +335,13 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_4 = net->variable(idMap["n4"]);
 
-        GUM_CHECK_EQ(var_4.name(), "n4");
+        CHECK_EQ(var_4.name(), "n4");
 
-        GUM_CHECK_EQ(var_4.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_4.domainSize(), static_cast< gum::Size >(2));
 
-        GUM_CHECK_EQ(var_4.label(0), "0");
+        CHECK_EQ(var_4.label(0), "0");
 
-        GUM_CHECK_EQ(var_4.label(1), "1");
+        CHECK_EQ(var_4.label(1), "1");
 
         CHECK(net->dag().existsArc(idMap["n1"], idMap["n4"]));
 
@@ -349,7 +349,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_4 = net->cpt(idMap["n4"]);
 
-        GUM_CHECK_EQ(proba_4.domainSize(), static_cast< gum::Size >(8));
+        CHECK_EQ(proba_4.domainSize(), static_cast< gum::Size >(8));
 
         gum::Instantiation inst_4(proba_4);
 
@@ -395,23 +395,23 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        GUM_CHECK_EQ(proba_4[inst_4], 1);
+        CHECK_EQ(proba_4[inst_4], 1);
 
         inst_4.chgVal(var_4, 1);
 
-        GUM_CHECK_EQ(proba_4[inst_4], 0);
+        CHECK_EQ(proba_4[inst_4], 0);
 
         const gum::DiscreteVariable& var_5 = net->variable(idMap["n5"]);
 
-        GUM_CHECK_EQ(var_5.name(), "n5");
+        CHECK_EQ(var_5.name(), "n5");
 
-        GUM_CHECK_EQ(var_5.domainSize(), static_cast< gum::Size >(3));
+        CHECK_EQ(var_5.domainSize(), static_cast< gum::Size >(3));
 
-        GUM_CHECK_EQ(var_5.label(0), "space");
+        CHECK_EQ(var_5.label(0), "space");
 
-        GUM_CHECK_EQ(var_5.label(1), "final");
+        CHECK_EQ(var_5.label(1), "final");
 
-        GUM_CHECK_EQ(var_5.label(2), "frontiere");
+        CHECK_EQ(var_5.label(2), "frontiere");
 
         CHECK(net->dag().existsArc(idMap["n2"], idMap["n5"]));
 
@@ -419,7 +419,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_5 = net->cpt(idMap["n5"]);
 
-        GUM_CHECK_EQ(proba_5.domainSize(), static_cast< gum::Size >(12));
+        CHECK_EQ(proba_5.domainSize(), static_cast< gum::Size >(12));
 
         gum::Instantiation inst_5(proba_5);
 
@@ -485,17 +485,17 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 2);
 
-        GUM_CHECK_EQ(proba_5[inst_5], 0);
+        CHECK_EQ(proba_5[inst_5], 0);
 
         const gum::DiscreteVariable& var_6 = net->variable(idMap["n6"]);
 
-        GUM_CHECK_EQ(var_6.name(), "n6");
+        CHECK_EQ(var_6.name(), "n6");
 
-        GUM_CHECK_EQ(var_6.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_6.domainSize(), static_cast< gum::Size >(2));
 
-        GUM_CHECK_EQ(var_6.label(0), "0");
+        CHECK_EQ(var_6.label(0), "0");
 
-        GUM_CHECK_EQ(var_6.label(1), "1");
+        CHECK_EQ(var_6.label(1), "1");
 
         CHECK(net->dag().existsArc(idMap["n1"], idMap["n6"]));
 
@@ -503,7 +503,7 @@ namespace gum_tests {
 
         const gum::Tensor< double >& proba_6 = net->cpt(idMap["n6"]);
 
-        GUM_CHECK_EQ(proba_6.domainSize(), static_cast< gum::Size >(12));
+        CHECK_EQ(proba_6.domainSize(), static_cast< gum::Size >(12));
 
         gum::Instantiation inst_6(proba_6);
 
@@ -557,15 +557,15 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        GUM_CHECK_EQ(proba_6[inst_6], 1);
+        CHECK_EQ(proba_6[inst_6], 1);
 
         inst_6.chgVal(var_5, 1);
 
-        GUM_CHECK_EQ(proba_6[inst_6], 0);
+        CHECK_EQ(proba_6[inst_6], 0);
 
         inst_6.chgVal(var_5, 2);
 
-        GUM_CHECK_EQ(proba_6[inst_6], 0);
+        CHECK_EQ(proba_6[inst_6], 0);
 
         delete net;
       }
@@ -578,7 +578,7 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      GUM_CHECK_EQ(isOK, static_cast< gum::Size >(0));
+      CHECK_EQ(isOK, static_cast< gum::Size >(0));
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
@@ -592,13 +592,13 @@ namespace gum_tests {
 
       if (idMap.exists("HISTORY") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
-        GUM_CHECK_EQ(history.domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(history.label(0), "TRUE");
-        GUM_CHECK_EQ(history.label(1), "FALSE");
+        CHECK_EQ(history.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(history.label(0), "TRUE");
+        CHECK_EQ(history.label(1), "FALSE");
         CHECK(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]));
 
         const gum::Tensor< double >& historyCPT = net->cpt(idMap["HISTORY"]);
-        GUM_CHECK_EQ(historyCPT.domainSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(historyCPT.domainSize(), static_cast< gum::Size >(4));
         CHECK(historyCPT.contains(net->variable(idMap["HISTORY"])));
         CHECK(historyCPT.contains(net->variable(idMap["LVFAILURE"])));
 
@@ -624,13 +624,13 @@ namespace gum_tests {
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
-        GUM_CHECK_EQ(errlowoutput.domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(errlowoutput.label(0), "TRUE");
-        GUM_CHECK_EQ(errlowoutput.label(1), "FALSE");
+        CHECK_EQ(errlowoutput.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(errlowoutput.label(0), "TRUE");
+        CHECK_EQ(errlowoutput.label(1), "FALSE");
         CHECK(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
 
         const gum::Tensor< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
-        GUM_CHECK_EQ(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2));
         CHECK(errlowoutputCPT.contains(errlowoutput));
 
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
@@ -651,13 +651,13 @@ namespace gum_tests {
         const gum::DiscreteVariable& hypovolemia = net->variable(idMap["HYPOVOLEMIA"]);
         const gum::DiscreteVariable& lvfailure   = net->variable(idMap["LVFAILURE"]);
         // checking label order
-        GUM_CHECK_EQ(lvedvolume.label(0), "LOW");
-        GUM_CHECK_EQ(lvedvolume.label(1), "NORMAL");
-        GUM_CHECK_EQ(lvedvolume.label(2), "HIGH");
-        GUM_CHECK_EQ(hypovolemia.label(0), "TRUE");
-        GUM_CHECK_EQ(hypovolemia.label(1), "FALSE");
-        GUM_CHECK_EQ(lvfailure.label(0), "TRUE");
-        GUM_CHECK_EQ(lvfailure.label(1), "FALSE");
+        CHECK_EQ(lvedvolume.label(0), "LOW");
+        CHECK_EQ(lvedvolume.label(1), "NORMAL");
+        CHECK_EQ(lvedvolume.label(2), "HIGH");
+        CHECK_EQ(hypovolemia.label(0), "TRUE");
+        CHECK_EQ(hypovolemia.label(1), "FALSE");
+        CHECK_EQ(lvfailure.label(0), "TRUE");
+        CHECK_EQ(lvfailure.label(1), "FALSE");
 
         const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
         gum::Instantiation           inst(cpt);

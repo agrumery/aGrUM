@@ -61,8 +61,8 @@ namespace gum_tests {
     public:
     static void test_int() {
       gum::AVLTree< int > tree1;
-      GUM_CHECK_EQ(tree1.empty(), true);
-      GUM_CHECK_EQ(tree1.size(), gum::Size(0));
+      CHECK_EQ(tree1.empty(), true);
+      CHECK_EQ(tree1.size(), gum::Size(0));
       CHECK_THROWS_AS(tree1.lowestValue(), const gum::NotFound&);
       CHECK_THROWS_AS(tree1.highestValue(), const gum::NotFound&);
 
@@ -78,19 +78,19 @@ namespace gum_tests {
       std::sort(vect.begin(), vect.end());
       gum::AVLTreeIterator< int > tree1_beg(tree1, true), tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i)
-        GUM_CHECK_EQ(*tree1_beg, vect[i]);
+        CHECK_EQ(*tree1_beg, vect[i]);
       int i = 0;
       for (auto iter = tree1.begin(); iter != tree1.end(); ++iter) {
-        GUM_CHECK_EQ(*iter, vect[i++]);
+        CHECK_EQ(*iter, vect[i++]);
       }
       i = 0;
       for (const auto val: tree2) {
-        GUM_CHECK_EQ(val, vect[i++]);
+        CHECK_EQ(val, vect[i++]);
       }
       gum::AVLTree< int > tree3(std::move(tree2));
       i = 0;
       for (const auto val: tree3) {
-        GUM_CHECK_EQ(val, vect[i++]);
+        CHECK_EQ(val, vect[i++]);
       }
 
       {
@@ -104,10 +104,10 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        GUM_CHECK_EQ(sss, str.str());
+        CHECK_EQ(sss, str.str());
         std::stringstream str2;
         str2 << tree3;
-        GUM_CHECK_EQ(str.str(), str2.str());
+        CHECK_EQ(str.str(), str2.str());
       }
 
       gum::AVLTree< int > tree4;
@@ -115,17 +115,17 @@ namespace gum_tests {
         tree4.insert(i);
       i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
-        GUM_CHECK_EQ(*iter, i);
+        CHECK_EQ(*iter, i);
       }
       i = 99;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); iter += 2, i -= 2) {
-        GUM_CHECK_EQ(*iter, i);
+        CHECK_EQ(*iter, i);
       }
       i = 0;
       for (auto iter = tree4.begin(); iter != tree4.end(); iter += 2, i += 2) {
-        GUM_CHECK_EQ(*iter, i);
+        CHECK_EQ(*iter, i);
       }
-      GUM_CHECK_EQ(tree4.size(), gum::Size(100));
+      CHECK_EQ(tree4.size(), gum::Size(100));
 
       {
         auto xiter1 = tree4.begin();
@@ -160,11 +160,11 @@ namespace gum_tests {
           CHECK_THROWS_AS(*iter3, const gum::NotFound&);
           auto iter2 = iter3;
           --iter2;
-          GUM_CHECK_EQ(*iter2, 5);
-        } else if (i >= 2) GUM_CHECK_EQ(*iter3, (i - 2) * 4 + 9);
+          CHECK_EQ(*iter2, 5);
+        } else if (i >= 2) CHECK_EQ(*iter3, (i - 2) * 4 + 9);
       }
 
-      GUM_CHECK_EQ(tree2.size(), 100);
+      CHECK_EQ(tree2.size(), 100);
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
@@ -178,29 +178,29 @@ namespace gum_tests {
           CHECK_THROWS_AS(*iter4, const gum::NotFound&);
           auto iter2 = iter4;
           --iter2;
-          GUM_CHECK_EQ(*iter2, 95);
-        } else if (i >= 2) GUM_CHECK_EQ(*iter4, 99 - (i - 2) * 4 - 9);
+          CHECK_EQ(*iter2, 95);
+        } else if (i >= 2) CHECK_EQ(*iter4, 99 - (i - 2) * 4 - 9);
       }
 
       auto iter5 = gum::AVLTreeIteratorSafe(tree2, false);   // equiv rbegin
-      GUM_CHECK_EQ(++iter5, tree2.endSafe());
+      CHECK_EQ(++iter5, tree2.endSafe());
       CHECK_NOTHROW(tree2.erase(iter5));
 
       iter3 = tree2.beginSafe();
       iter4 = tree2.rbeginSafe();
       tree2.clear();
-      GUM_CHECK_EQ(iter3, tree2.endSafe());
-      GUM_CHECK_EQ(iter4, tree2.rendSafe());
+      CHECK_EQ(iter3, tree2.endSafe());
+      CHECK_EQ(iter4, tree2.rendSafe());
 
       tree2.insert(std::move(4));
       tree2.emplace(5);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(2));
+      CHECK_EQ(tree2.size(), gum::Size(2));
       tree2.erase(4);
       tree2.erase(3);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(1));
-      GUM_CHECK_EQ(*(tree2.begin()), 5);
+      CHECK_EQ(tree2.size(), gum::Size(1));
+      CHECK_EQ(*(tree2.begin()), 5);
       tree2.erase(5);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(0));
+      CHECK_EQ(tree2.size(), gum::Size(0));
     }
 
     static void test_safe() {
@@ -211,18 +211,18 @@ namespace gum_tests {
       auto                iter3 = tree1.rbeginSafe();
       auto                iter4 = new gum::AVLTreeReverseIteratorSafe< int >(tree1);
 
-      GUM_CHECK_EQ(iter1, *iter2);
-      GUM_CHECK_EQ(iter3, *iter4);
+      CHECK_EQ(iter1, *iter2);
+      CHECK_EQ(iter3, *iter4);
       gum::AVLTree< int > tree2(std::move(tree1));
       auto                iter5 = tree1.beginSafe();
       auto                iter6 = tree1.rbeginSafe();
-      GUM_CHECK_EQ(iter5, *iter2);
-      GUM_CHECK_EQ(iter6, *iter4);
+      CHECK_EQ(iter5, *iter2);
+      CHECK_EQ(iter6, *iter4);
       delete iter2;
       delete iter4;
       gum::AVLTree< int > tree3(std::move(tree2));
-      GUM_CHECK_EQ(iter5, iter1);
-      GUM_CHECK_EQ(iter6, iter3);
+      CHECK_EQ(iter5, iter1);
+      CHECK_EQ(iter6, iter3);
     }
 
     struct Mycmp {
@@ -234,8 +234,8 @@ namespace gum_tests {
 
     static void test_pairs() {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree1;
-      GUM_CHECK_EQ(tree1.empty(), true);
-      GUM_CHECK_EQ(tree1.size(), gum::Size(0));
+      CHECK_EQ(tree1.empty(), true);
+      CHECK_EQ(tree1.size(), gum::Size(0));
       CHECK_THROWS_AS(tree1.lowestValue(), const gum::NotFound&);
       CHECK_THROWS_AS(tree1.highestValue(), const gum::NotFound&);
 
@@ -256,21 +256,21 @@ namespace gum_tests {
       gum::AVLTreeIterator< std::pair< int, int >, Mycmp > tree1_beg(tree1, true),
           tree1_end = tree1.end();
       for (int i = 0; tree1_beg != tree1_end; ++tree1_beg, ++i) {
-        GUM_CHECK_EQ(*tree1_beg, vect[i]);
+        CHECK_EQ(*tree1_beg, vect[i]);
       }
       int i = 0;
       for (auto iter = tree1.begin(); iter != tree1.end(); ++iter) {
-        GUM_CHECK_EQ(*iter, vect[i++]);
+        CHECK_EQ(*iter, vect[i++]);
       }
       i = 0;
       for (const auto& val: tree2) {
-        GUM_CHECK_EQ(val, vect[i++]);
+        CHECK_EQ(val, vect[i++]);
       }
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree3(std::move(tree2));
       i = 0;
       for (const auto& val: tree3) {
-        GUM_CHECK_EQ(val, vect[i++]);
+        CHECK_EQ(val, vect[i++]);
       }
 
       gum::AVLTree< std::pair< int, int >, Mycmp > tree4;
@@ -279,19 +279,19 @@ namespace gum_tests {
       i = static_cast< int >(tree4.size()) - 1;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); ++iter, --i) {
         std::pair< int, int > pair(i, i + 5);
-        GUM_CHECK_EQ(*iter, pair);
+        CHECK_EQ(*iter, pair);
       }
       i = 99;
       for (auto iter = tree4.rbegin(); iter != tree4.rend(); iter += 2, i -= 2) {
         std::pair< int, int > pair(i, i + 5);
-        GUM_CHECK_EQ(*iter, pair);
+        CHECK_EQ(*iter, pair);
       }
       i = 0;
       for (auto iter = tree4.begin(); iter != tree4.end(); iter += 2, i += 2) {
         std::pair< int, int > pair(i, i + 5);
-        GUM_CHECK_EQ(*iter, pair);
+        CHECK_EQ(*iter, pair);
       }
-      GUM_CHECK_EQ(tree4.size(), gum::Size(100));
+      CHECK_EQ(tree4.size(), gum::Size(100));
 
       tree2 = tree4;
 
@@ -309,15 +309,15 @@ namespace gum_tests {
           auto iter2 = iter3;
           --iter2;
           std::pair< int, int > pair(5, 10);
-          GUM_CHECK_EQ(*iter2, pair);
+          CHECK_EQ(*iter2, pair);
         } else if (i >= 2) {
           const int             x = (i - 2) * 4 + 9;
           std::pair< int, int > pair(x, x + 5);
-          GUM_CHECK_EQ(*iter3, pair);
+          CHECK_EQ(*iter3, pair);
         }
       }
 
-      GUM_CHECK_EQ(tree2.size(), 100);
+      CHECK_EQ(tree2.size(), 100);
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
@@ -332,37 +332,37 @@ namespace gum_tests {
           auto iter2 = iter4;
           --iter2;
           std::pair< int, int > pair(95, 100);
-          GUM_CHECK_EQ(*iter2, pair);
+          CHECK_EQ(*iter2, pair);
         } else if (i >= 2) {
           const int             x = 99 - (i - 2) * 4 - 9;
           std::pair< int, int > pair(x, x + 5);
-          GUM_CHECK_EQ(*iter4, pair);
+          CHECK_EQ(*iter4, pair);
         }
       }
 
       auto iter5 = gum::AVLTreeIteratorSafe(tree2, false);   // equiv rbegin
-      GUM_CHECK_EQ(++iter5, tree2.endSafe());
+      CHECK_EQ(++iter5, tree2.endSafe());
       CHECK_NOTHROW(tree2.erase(iter5));
 
       iter3 = tree2.beginSafe();
       iter4 = tree2.rbeginSafe();
       tree2.clear();
-      GUM_CHECK_EQ(iter3, tree2.endSafe());
-      GUM_CHECK_EQ(iter4, tree2.rendSafe());
+      CHECK_EQ(iter3, tree2.endSafe());
+      CHECK_EQ(iter4, tree2.rendSafe());
 
       std::pair< int, int > pair(4, 9);
       tree2.insert(std::move(pair));
       tree2.emplace(5, 10);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(2));
+      CHECK_EQ(tree2.size(), gum::Size(2));
       std::pair< int, int > pair2(4, 9);
       tree2.erase(pair2);
       std::pair< int, int > pair3(3, 8);
       tree2.erase(pair3);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(1));
+      CHECK_EQ(tree2.size(), gum::Size(1));
       std::pair< int, int > pair4(5, 10);
-      GUM_CHECK_EQ(*(tree2.begin()), pair4);
+      CHECK_EQ(*(tree2.begin()), pair4);
       tree2.erase(pair4);
-      GUM_CHECK_EQ(tree2.size(), gum::Size(0));
+      CHECK_EQ(tree2.size(), gum::Size(0));
     }
 
     static void test_erase() {
@@ -379,28 +379,28 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        GUM_CHECK_EQ(sss, str.str());
+        CHECK_EQ(sss, str.str());
         std::stringstream str2;
         str2 << tree;
-        GUM_CHECK_EQ(str.str(), str2.str());
+        CHECK_EQ(str.str(), str2.str());
       }
 
-      GUM_CHECK_EQ(tree.size(), static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(tree.empty(), false);
-      GUM_CHECK_EQ(tree.contains(8), true);
-      GUM_CHECK_EQ(tree.contains(5), false);
+      CHECK_EQ(tree.size(), static_cast< gum::Size >(5));
+      CHECK_EQ(tree.empty(), false);
+      CHECK_EQ(tree.contains(8), true);
+      CHECK_EQ(tree.contains(5), false);
 
       tree.erase(tree.highestValue());
       const int high = tree.highestValue();
-      GUM_CHECK_EQ(high, 23);
-      GUM_CHECK_EQ(tree.highestValue(), 23);
+      CHECK_EQ(high, 23);
+      CHECK_EQ(tree.highestValue(), 23);
 
       tree.erase(tree.highestValue());   // remains: {2, 8, 10}
-      GUM_CHECK_EQ(tree.highestValue(), 10);
+      CHECK_EQ(tree.highestValue(), 10);
       tree.erase(tree.highestValue());   // remains: {2, 8}
-      GUM_CHECK_EQ(tree.highestValue(), 8);
+      CHECK_EQ(tree.highestValue(), 8);
       tree.erase(tree.highestValue());   // remains: {2}
-      GUM_CHECK_EQ(tree.highestValue(), 2);
+      CHECK_EQ(tree.highestValue(), 2);
       tree.erase(tree.highestValue());   // remains: {}
       CHECK_THROWS_AS(tree.highestValue(), gum::NotFound&);
 
@@ -417,31 +417,31 @@ namespace gum_tests {
           str << val;
         }
         str << '}';
-        GUM_CHECK_EQ(sss, str.str());
+        CHECK_EQ(sss, str.str());
         std::stringstream str2;
         str2 << tree;
-        GUM_CHECK_EQ(str.str(), str2.str());
+        CHECK_EQ(str.str(), str2.str());
       }
 
       tree.erase(tree.lowestValue());   // remains: {8, 10, 23, 24}
       const int low = tree.lowestValue();
-      GUM_CHECK_EQ(low, 8);
-      GUM_CHECK_EQ(tree.lowestValue(), 8);
+      CHECK_EQ(low, 8);
+      CHECK_EQ(tree.lowestValue(), 8);
 
       tree.erase(tree.lowestValue());   // remains: {10, 23, 24}
-      GUM_CHECK_EQ(tree.lowestValue(), 10);
+      CHECK_EQ(tree.lowestValue(), 10);
       tree.erase(tree.lowestValue());   // remains: {23, 24}
-      GUM_CHECK_EQ(tree.lowestValue(), 23);
+      CHECK_EQ(tree.lowestValue(), 23);
       tree.erase(tree.lowestValue());   // remains: {24}
-      GUM_CHECK_EQ(tree.lowestValue(), 24);
+      CHECK_EQ(tree.lowestValue(), 24);
       tree.erase(tree.lowestValue());   // remains: {}
       CHECK_THROWS_AS(tree.lowestValue(), gum::NotFound&);
     }
 
     static void test_shuffle() {
       gum::AVLTree< std::pair< int, int >, Mycmp > tree;
-      GUM_CHECK_EQ(tree.empty(), true);
-      GUM_CHECK_EQ(tree.size(), gum::Size(0));
+      CHECK_EQ(tree.empty(), true);
+      CHECK_EQ(tree.size(), gum::Size(0));
       CHECK_THROWS_AS(tree.lowestValue(), const gum::NotFound&);
       CHECK_THROWS_AS(tree.highestValue(), const gum::NotFound&);
 
@@ -458,13 +458,13 @@ namespace gum_tests {
           tree.insert(std::move(elt2));
         }
       }
-      GUM_CHECK_EQ(vect2string(vect), tree.toString());
+      CHECK_EQ(vect2string(vect), tree.toString());
 
       std::shuffle(std::begin(vect2), std::end(vect2), gum::randomGenerator());
       for (const auto& elt: vect2) {
         tree.erase(elt);
         vect.erase(vect.begin() + pos2vect(vect, elt));
-        GUM_CHECK_EQ(vect2string(vect), tree.toString());
+        CHECK_EQ(vect2string(vect), tree.toString());
       }
     }
 

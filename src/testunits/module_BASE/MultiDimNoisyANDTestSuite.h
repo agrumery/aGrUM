@@ -81,13 +81,13 @@ namespace gum_tests {
       CHECK((p.toString())
             == ("a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
                 "[1], d:Labelized({0|1})[0.7])"));
-      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       gum::MultiDimNoisyAND< double > q(p);
       CHECK((q.toString())
             == ("a:Labelized({0|1})=noisyAND([0.2], b:Labelized({0|1})[0.4], c:Labelized({0|1})"
                 "[1], d:Labelized({0|1})[0.7])"));
-      GUM_CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
       // trying a noisyAND with 0 as external weight (not allowed)
       CHECK_THROWS_AS(gum::MultiDimNoisyAND< double > qq(0.0f), const gum::InvalidArgument&);

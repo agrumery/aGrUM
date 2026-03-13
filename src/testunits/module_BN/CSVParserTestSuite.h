@@ -72,26 +72,26 @@ namespace gum_tests {
 
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(3));
-      GUM_CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
 
       count = testParseString("1,2,3,4 \r\n 5,6,7,8 \r\n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(3));
-      GUM_CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV
 
       count = testParseString("1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(5));
-      GUM_CHECK_EQ(res, std::string("1:2:3:4|5:6::8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2:3:4|5:6::8|9:10:11:12|"));
 
       // simpleCSV
 
       count = testParseString(",,,, \n ,,,, \n ,,,,", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(3));
-      GUM_CHECK_EQ(res, std::string("::::|::::|::::|"));
+      CHECK_EQ(res, std::string("::::|::::|::::|"));
     };
 
     void testSimpleCSVwithComment() {
@@ -103,36 +103,36 @@ namespace gum_tests {
       count = testParseString("1,2,3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with comment line
 
       count = testParseString("1,2,3,4 \n\t  # this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with commented pa
 
       count = testParseString("1#,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1|5:6:7:8|9:10:11:12|"));
 
       count = testParseString("1  #,2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1|5:6:7:8|9:10:11:12|"));
 
       count = testParseString("1 , # 2,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:|5:6:7:8|9:10:11:12|"));
 
       count = testParseString("1 ,2 # ,3,4 \n\t# this is a comment \n 5,6,7,8 \n 9,10,11,12", res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:2|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:2|5:6:7:8|9:10:11:12|"));
     };
 
     void testSimpleCSVwithDoubleQuote() {
@@ -144,7 +144,7 @@ namespace gum_tests {
                               res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:fjkdls2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:fjkdls2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with separator in the double-quoted
       // token
@@ -153,14 +153,14 @@ namespace gum_tests {
                               res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:fjk,dls2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:fjk,dls2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with # in the double-quoted token
       count = testParseString("1,\"fjk,dl#s2\",3,4 \n# this is a comment \n 5,6,7,8 \n 9,10,11,12",
                               res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:fjk,dl#s2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:fjk,dl#s2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with double quoted token with double quote in the
       // double-quoted
@@ -170,7 +170,7 @@ namespace gum_tests {
                               res);
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
-      GUM_CHECK_EQ(res, std::string("1:fjk,dl\\\"s2:3:4|5:6:7:8|9:10:11:12|"));
+      CHECK_EQ(res, std::string("1:fjk,dl\\\"s2:3:4|5:6:7:8|9:10:11:12|"));
 
       // simpleCSV with not ending double quoted token
       CHECK_THROWS_AS(
@@ -183,7 +183,7 @@ namespace gum_tests {
                                 res);
         FAIL("gum::SyntaxError should have been thrown");
       } catch (gum::SyntaxError& f) {
-        GUM_CHECK_NE(f.errorContent().find("String quote missing", 0), std::string::npos);
+        CHECK_NE(f.errorContent().find("String quote missing", 0), std::string::npos);
         CHECK((f.col()) == static_cast< std::size_t >(2));
         CHECK((f.line()) == static_cast< std::size_t >(1));
       }
@@ -200,7 +200,7 @@ namespace gum_tests {
                                 res);
         FAIL("gum::FatalError should have been thrown");
       } catch (gum::SyntaxError& f) {
-        GUM_CHECK_NE(f.errorContent().find("Delimiter missing", 0), std::string::npos);
+        CHECK_NE(f.errorContent().find("Delimiter missing", 0), std::string::npos);
         CHECK((f.col()) == static_cast< std::size_t >(12));
         CHECK((f.line()) == static_cast< std::size_t >(1));
       }
@@ -214,7 +214,7 @@ namespace gum_tests {
       count = testParseString("1,1a,1b\n2a,2,3c", res);
       CHECK((count) == static_cast< std::size_t >(2));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(2));
-      GUM_CHECK_EQ(res, std::string("1:1a:1b|2a:2:3c|"));
+      CHECK_EQ(res, std::string("1:1a:1b|2a:2:3c|"));
     }
 
     static void testUseNewStream() {
@@ -227,8 +227,8 @@ namespace gum_tests {
 
       parser.next();
       const std::vector< std::string >& v1 = parser.current();
-      GUM_CHECK_EQ(v1[0], "1");
-      GUM_CHECK_EQ(v1[2], "3");
+      CHECK_EQ(v1[0], "1");
+      CHECK_EQ(v1[2], "3");
 
       std::string        csvstring2 = "a,b,c,d\ne,f,g,h\n";
       std::istringstream in2(csvstring2);
@@ -239,8 +239,8 @@ namespace gum_tests {
 
       parser.next();
       const std::vector< std::string >& v2 = parser.current();
-      GUM_CHECK_EQ(v2[0], "a");
-      GUM_CHECK_EQ(v2[2], "c");
+      CHECK_EQ(v2[0], "a");
+      CHECK_EQ(v2[2], "c");
     }
 
     static void testGuillemet() {
@@ -254,9 +254,9 @@ namespace gum_tests {
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
-        GUM_CHECK_EQ(v1[0], "a");
-        GUM_CHECK_EQ(v1[1], "b");
-        GUM_CHECK_EQ(v1[2], "c d,e");
+        CHECK_EQ(v1[0], "a");
+        CHECK_EQ(v1[1], "b");
+        CHECK_EQ(v1[2], "c d,e");
       }
       {
         std::string              csvstring1 = "\"\",\"\",\"c d,e\" \n 9,10,11";
@@ -268,9 +268,9 @@ namespace gum_tests {
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
-        GUM_CHECK_EQ(v1[0], "");
-        GUM_CHECK_EQ(v1[1], "");
-        GUM_CHECK_EQ(v1[2], "c d,e");
+        CHECK_EQ(v1[0], "");
+        CHECK_EQ(v1[1], "");
+        CHECK_EQ(v1[2], "c d,e");
       }
     }
 
@@ -285,10 +285,10 @@ namespace gum_tests {
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
-        GUM_CHECK_EQ(v1[0], "'a'");
-        GUM_CHECK_EQ(v1[1], "'b'");
-        GUM_CHECK_EQ(v1[2], "'c d");
-        GUM_CHECK_EQ(v1[3], "e'");
+        CHECK_EQ(v1[0], "'a'");
+        CHECK_EQ(v1[1], "'b'");
+        CHECK_EQ(v1[2], "'c d");
+        CHECK_EQ(v1[3], "e'");
       }
       {
         std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
@@ -300,9 +300,9 @@ namespace gum_tests {
 
         parser.next();
         const std::vector< std::string >& v1 = parser.current();
-        GUM_CHECK_EQ(v1[0], "a");
-        GUM_CHECK_EQ(v1[1], "b");
-        GUM_CHECK_EQ(v1[2], "c d,e");
+        CHECK_EQ(v1[0], "a");
+        CHECK_EQ(v1[1], "b");
+        CHECK_EQ(v1[2], "c d,e");
       }
     }
   };

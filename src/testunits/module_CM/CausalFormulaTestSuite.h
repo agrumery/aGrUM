@@ -85,8 +85,8 @@ namespace gum_tests {
       gum::CausalFormula< double > cf(cm, std::move(ast), NameSet{"Y"}, NameSet{});
 
       // Test LaTeX generation
-      GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y\\right)");
-      GUM_CHECK_EQ(cf.toLatex(), "P\\left(Y\\right) = \\sum_{X}{P\\left(X,Y\\right)}");
+      CHECK_EQ(cf.latexQuery(), "P\\left(Y\\right)");
+      CHECK_EQ(cf.toLatex(), "P\\left(Y\\right) = \\sum_{X}{P\\left(X,Y\\right)}");
 
       // Test evaluation
       auto result_pot = cf.eval();
@@ -125,7 +125,7 @@ namespace gum_tests {
       gum::CausalFormula< double > cf(cm, std::move(ast), {"Y"}, {"X"});
 
       // Test LaTeX
-      GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
+      CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
       CHECK((cf.toLatex())
             == ("P\\left(Y \\mid do(X)\\right) =  \\frac "
                 "{P\\left(X,Y\\right)}{\\sum_{Y}{P\\left(X,Y\'\\right)}}"));
@@ -161,7 +161,7 @@ namespace gum_tests {
       gum::CausalFormula< double > cf(cm, std::move(ast), {"Y"}, NameSet{}, {"X"});
 
       // Test LaTeX
-      GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid X\\right)");
+      CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid X\\right)");
       CHECK((cf.toLatex())
             == ("P\\left(Y \\mid X\\right) = \\sum_{Z}{P\\left(Y\\mid X,Z\\right) \\cdot "
                 "P\\left(Z\\right)}"));
@@ -201,7 +201,7 @@ namespace gum_tests {
       // Case 1: P(Y | do(X))
       {
         gum::CausalFormula< double > cf(cm, dummyAST->copy(), NameSet{"Y"}, NameSet{"X"});
-        GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
+        CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
       }
 
       // Case 2: P(Y | do(X), Z)
@@ -211,19 +211,19 @@ namespace gum_tests {
                                         NameSet{"Y"},
                                         NameSet{"X"},
                                         NameSet{"Z"});
-        GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X),Z\\right)");
+        CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X),Z\\right)");
       }
 
       // Case 3: P(Y | do(X,W)) - multiple interventions
       {
         gum::CausalFormula< double > cf(cm, dummyAST->copy(), NameSet{"Y"}, NameSet{"X", "W"});
-        GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(W,X)\\right)");
+        CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(W,X)\\right)");
       }
 
       // Case 4: P(Y,Z | do(X)) - multiple outcomes
       {
         gum::CausalFormula< double > cf(cm, dummyAST->copy(), NameSet{"Y", "Z"}, NameSet{"X"});
-        GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y,Z \\mid do(X)\\right)");
+        CHECK_EQ(cf.latexQuery(), "P\\left(Y,Z \\mid do(X)\\right)");
       }
 
       // Case 5: P(Y | Z) - observational (no 'do')
@@ -233,7 +233,7 @@ namespace gum_tests {
                                         NameSet{"Y"},
                                         NameSet{},
                                         NameSet{"Z"});
-        GUM_CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid Z\\right)");
+        CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid Z\\right)");
       }
     }
 
@@ -257,7 +257,7 @@ namespace gum_tests {
       // Test full LaTeX string
       std::string expected_latex = "P\\left(Y \\mid do(X)\\right) = \\sum_{Z}{P\\left(Y\\mid "
                                    "X,Z\\right) \\cdot P\\left(Z\\right)}";
-      GUM_CHECK_EQ(cf.toLatex(), expected_latex);
+      CHECK_EQ(cf.toLatex(), expected_latex);
 
       // Test eval()
       auto result_pot = cf.eval();
@@ -281,7 +281,7 @@ namespace gum_tests {
       auto expected_str = ast->toString();
 
       gum::CausalFormula< double > cf(cm, std::move(ast), NameSet{"B"}, NameSet{"A"});
-      GUM_CHECK_EQ(cf.toString(), expected_str);
+      CHECK_EQ(cf.toString(), expected_str);
     }
 
     static void testCopy_IsDeep() {
@@ -294,10 +294,10 @@ namespace gum_tests {
       auto                         clone = original.copy();
 
       // Pointers to root AST must be different
-      GUM_CHECK_NE(&original.root(), &clone->root());
+      CHECK_NE(&original.root(), &clone->root());
 
       // Check for value equality
-      GUM_CHECK_EQ(original.toLatex(), clone->toLatex());
+      CHECK_EQ(original.toLatex(), clone->toLatex());
       GUM_CHECK_TENSOR_ALMOST_EQUALS(original.eval(), clone->eval());
     }
 
@@ -308,11 +308,11 @@ namespace gum_tests {
       auto dummyAST = std::make_unique< gum::ASTjointProba< double > >(NameSet{"Y"});
       gum::CausalFormula< double > cf(cm, std::move(dummyAST), NameSet{"Y"}, NameSet{"X"});
       std::string                  latex = cf.latexQuery("DO<", ">");
-      GUM_CHECK_NE(latex.find("DO<"), std::string::npos);
-      GUM_CHECK_NE(latex.find(">"), std::string::npos);
+      CHECK_NE(latex.find("DO<"), std::string::npos);
+      CHECK_NE(latex.find(">"), std::string::npos);
       std::string latex2 = cf.toLatex("DO<", ">");
-      GUM_CHECK_NE(latex2.find("DO<"), std::string::npos);
-      GUM_CHECK_NE(latex2.find(">"), std::string::npos);
+      CHECK_NE(latex2.find("DO<"), std::string::npos);
+      CHECK_NE(latex2.find(">"), std::string::npos);
     }
   };
 

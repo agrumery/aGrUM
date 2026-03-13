@@ -66,15 +66,15 @@ namespace gum_tests {
       try {
         gum::prm::o3prm::O3prmReader< double > reader;
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(GET_RESSOURCES_PATH("o3prm/types.o3prm")));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         reader.showElegantErrorsAndWarnings(std::cout);
         gum::prm::PRM< double >* prm = reader.prm();
-        GUM_CHECK_EQ(prm->type("t_state").variable().domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(prm->type("t_ink").variable().domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(prm->type("t_degraded").variable().domainSize(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(prm->type("t_bw_p").variable().domainSize(), static_cast< gum::Size >(4));
-        GUM_CHECK_EQ(prm->type("t_color_p").variable().domainSize(), static_cast< gum::Size >(5));
+        CHECK_EQ(prm->type("t_state").variable().domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(prm->type("t_ink").variable().domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(prm->type("t_degraded").variable().domainSize(), static_cast< gum::Size >(3));
+        CHECK_EQ(prm->type("t_bw_p").variable().domainSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(prm->type("t_color_p").variable().domainSize(), static_cast< gum::Size >(5));
         delete prm;
       }   // namespace gum_tests
 
@@ -111,7 +111,7 @@ namespace gum_tests {
         CHECK(prm->type("t_color_p").isSubTypeOf(prm->type("boolean")));
         CHECK(prm->type("t_color_p").isSubTypeOf(prm->type("t_state")));
         CHECK(prm->type("t_color_p").isSubTypeOf(prm->type("t_degraded")));
-        GUM_CHECK_EQ(prm->types().size(), static_cast< gum::Size >(7));
+        CHECK_EQ(prm->types().size(), static_cast< gum::Size >(7));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -121,11 +121,11 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/printers.o3prm")));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = reader.prm();
-        GUM_CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(5));
+        CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(5));
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Room"));
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"));
@@ -143,10 +143,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("PowerSupply"));
         gum::prm::PRMClass< double >& c = prm->getClass("PowerSupply");
-        GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -159,10 +159,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Room"));
         gum::prm::PRMClass< double >& c = prm->getClass("Room");
-        GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -175,10 +175,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Equipment"));
         gum::prm::PRMClass< double >& c = prm->getClass("Equipment");
-        GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(1));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -191,10 +191,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Printer"));
         gum::prm::PRMClass< double >& c = prm->getClass("Printer");
-        GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(3));
+        CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(1));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -207,10 +207,10 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
         gum::prm::PRMClass< double >& c = prm->getClass("Computer");
-        GUM_CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(c.attributes().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(c.referenceSlots().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(c.aggregates().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(c.slotChains().size(), static_cast< gum::Size >(2));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -222,19 +222,19 @@ namespace gum_tests {
         std::string file    = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
         std::string package = "fr.lip6.printers";
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm = reader.prm());
         if (prm) {
-          GUM_CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(7));
+          CHECK_EQ(prm->classes().size(), static_cast< gum::Size >(7));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.PowerSupply"));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.Room"));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.BWPrinter"));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.ColorPrinter"));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("fr.lip6.printers.Computer"));
-          GUM_CHECK_EQ(prm->interfaces().size(), static_cast< gum::Size >(2));
+          CHECK_EQ(prm->interfaces().size(), static_cast< gum::Size >(2));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Equipment"));
           GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Printer"));
           delete prm;
@@ -408,8 +408,8 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         // Classes
         gum::prm::PRMClass< double >& PowerSupply = prm->getClass("fr.lip6.printers.PowerSupply");
-        GUM_CHECK_EQ(PowerSupply.attributes().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(PowerSupply.containerDag().sizeArcs(), static_cast< gum::Size >(1));
+        CHECK_EQ(PowerSupply.attributes().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(PowerSupply.containerDag().sizeArcs(), static_cast< gum::Size >(1));
         GUM_CHECK_ASSERT_THROWS_NOTHING(PowerSupply["(boolean)state"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(PowerSupply["state"]);
         CHECK(PowerSupply["state"].type().isSubTypeOf(PowerSupply["(boolean)state"].type()));
@@ -419,11 +419,11 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(n1 = PowerSupply["(boolean)state"].id());
         GUM_CHECK_ASSERT_THROWS_NOTHING(n2 = PowerSupply["state"].id());
         GUM_CHECK_ASSERT_THROWS_NOTHING(n3 = PowerSupply["(fr.lip6.printers.t_state)state"].id());
-        GUM_CHECK_EQ(n2, n3);
+        CHECK_EQ(n2, n3);
         CHECK(PowerSupply.containerDag().existsArc(n2, n1));
-        GUM_CHECK_EQ(PowerSupply.referenceSlots().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(PowerSupply.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(PowerSupply.slotChains().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(PowerSupply.referenceSlots().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(PowerSupply.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(PowerSupply.slotChains().size(), static_cast< gum::Size >(0));
         // Testing interfaces for the state attribute and its cast descendant
         CHECK(!PowerSupply.isOutputNode(PowerSupply["(boolean)state"]));
         CHECK(!PowerSupply.isInputNode(PowerSupply["(boolean)state"]));
@@ -447,10 +447,10 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm  = reader.prm();
         gum::prm::PRMClass< double >& Room = prm->getClass("fr.lip6.printers.Room");
-        GUM_CHECK_EQ(Room.attributes().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(Room.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(Room.aggregates().size(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(Room.slotChains().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(Room.attributes().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(Room.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(Room.aggregates().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(Room.slotChains().size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -465,24 +465,24 @@ namespace gum_tests {
         gum::prm::PRM< double >*          prm = reader.prm();
         gum::prm::PRMInterface< double >& Equipment
             = prm->getInterface("fr.lip6.printers.Equipment");
-        GUM_CHECK_EQ(Equipment.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(Equipment.attributes().size(), static_cast< gum::Size >(3));
+        CHECK_EQ(Equipment.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(Equipment.attributes().size(), static_cast< gum::Size >(3));
         GUM_CHECK_ASSERT_THROWS_NOTHING(Equipment["equipState"]);
-        GUM_CHECK_EQ(Equipment["equipState"].type().name(), "fr.lip6.printers.t_degraded");
+        CHECK_EQ(Equipment["equipState"].type().name(), "fr.lip6.printers.t_degraded");
         GUM_CHECK_ASSERT_THROWS_NOTHING(Equipment["(fr.lip6.printers.t_state)equipState"]);
         CHECK((Equipment["(fr.lip6.printers.t_state)equipState"].type().name())
               == ("fr.lip6.printers.t_state"));
         GUM_CHECK_ASSERT_THROWS_NOTHING(Equipment["(boolean)equipState"]);
-        GUM_CHECK_EQ(Equipment["(boolean)equipState"].type().name(), "boolean");
+        CHECK_EQ(Equipment["(boolean)equipState"].type().name(), "boolean");
         // Testing gum::NodeId, inputs and outputs
         gum::NodeId st      = Equipment["equipState"].id();
         gum::NodeId deg_st  = Equipment["(fr.lip6.printers.t_degraded)equipState"].id();
         gum::NodeId st_st   = Equipment["(fr.lip6.printers.t_state)equipState"].id();
         gum::NodeId bool_st = Equipment["(boolean)equipState"].id();
-        GUM_CHECK_EQ(st, deg_st);
-        GUM_CHECK_NE(st, st_st);
-        GUM_CHECK_NE(st, bool_st);
-        GUM_CHECK_NE(st_st, bool_st);
+        CHECK_EQ(st, deg_st);
+        CHECK_NE(st, st_st);
+        CHECK_NE(st, bool_st);
+        CHECK_NE(st_st, bool_st);
         // t_degraded equipState
         CHECK(!Equipment.isOutputNode(Equipment["equipState"]));
         CHECK(!Equipment.isInputNode(Equipment["equipState"]));
@@ -509,15 +509,15 @@ namespace gum_tests {
         gum::prm::PRM< double >* prm = reader.prm();
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getInterface("fr.lip6.printers.Printer"));
         gum::prm::PRMInterface< double >& Printer = prm->getInterface("fr.lip6.printers.Printer");
-        GUM_CHECK_EQ(Printer.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(Printer.attributes().size(), static_cast< gum::Size >(5));
+        CHECK_EQ(Printer.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(Printer.attributes().size(), static_cast< gum::Size >(5));
         GUM_CHECK_ASSERT_THROWS_NOTHING(Printer["room"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(Printer["equipState"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(Printer["hasPaper"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(Printer["hasInk"]);
-        GUM_CHECK_EQ(Printer["equipState"].type().name(), "fr.lip6.printers.t_degraded");
-        GUM_CHECK_EQ(Printer["hasPaper"].type().name(), "boolean");
-        GUM_CHECK_EQ(Printer["hasInk"].type().name(), "boolean");
+        CHECK_EQ(Printer["equipState"].type().name(), "fr.lip6.printers.t_degraded");
+        CHECK_EQ(Printer["hasPaper"].type().name(), "boolean");
+        CHECK_EQ(Printer["hasInk"].type().name(), "boolean");
         // Testing gum::NodeId, inputs and outputs
         gum::NodeId st      = Printer["equipState"].id();
         gum::NodeId deg_st  = Printer["(fr.lip6.printers.t_degraded)equipState"].id();
@@ -527,12 +527,12 @@ namespace gum_tests {
         gum::NodeId bool_hp = Printer["(boolean)hasPaper"].id();
         gum::NodeId hi      = Printer["hasInk"].id();
         gum::NodeId bool_hi = Printer["(boolean)hasInk"].id();
-        GUM_CHECK_EQ(st, deg_st);
-        GUM_CHECK_NE(st, st_st);
-        GUM_CHECK_NE(st, bool_st);
-        GUM_CHECK_NE(st_st, bool_st);
-        GUM_CHECK_EQ(hp, bool_hp);
-        GUM_CHECK_EQ(hi, bool_hi);
+        CHECK_EQ(st, deg_st);
+        CHECK_NE(st, st_st);
+        CHECK_NE(st, bool_st);
+        CHECK_NE(st_st, bool_st);
+        CHECK_EQ(hp, bool_hp);
+        CHECK_EQ(hi, bool_hi);
         // t_degraded equipState
         CHECK(Printer.isOutputNode(Printer["(fr.lip6.printers.t_degraded)equipState"]));
         CHECK(!Printer.isInputNode(Printer["(fr.lip6.printers.t_degraded)equipState"]));
@@ -571,10 +571,10 @@ namespace gum_tests {
     //         prm->getClass( "fr.lip6.printers.BWPrinter" ) );
     //     gum::prm::Class<double>& BWPrinter =
     //         prm->getClass( "fr.lip6.printers.BWPrinter" );
-    //     GUM_CHECK_EQ(BWPrinter.referenceSlots().size(), static_cast<gum::Size>(1));
-    //     GUM_CHECK_EQ(BWPrinter.attributes().size(), static_cast<gum::Size>(9));
-    //     GUM_CHECK_EQ(BWPrinter.slotChains().size(), static_cast<gum::Size>(1));
-    //     GUM_CHECK_EQ(BWPrinter.aggregates().size(), static_cast<gum::Size>(0));
+    //     CHECK_EQ(BWPrinter.referenceSlots().size(), static_cast<gum::Size>(1));
+    //     CHECK_EQ(BWPrinter.attributes().size(), static_cast<gum::Size>(9));
+    //     CHECK_EQ(BWPrinter.slotChains().size(), static_cast<gum::Size>(1));
+    //     CHECK_EQ(BWPrinter.aggregates().size(), static_cast<gum::Size>(0));
     //     GUM_CHECK_ASSERT_THROWS_NOTHING( BWPrinter["room"] );
     //     GUM_CHECK_ASSERT_THROWS_NOTHING( BWPrinter["(boolean)equipState"] );
     //     GUM_CHECK_ASSERT_THROWS_NOTHING(
@@ -612,16 +612,16 @@ namespace gum_tests {
     //     gum::NodeId st_hi =
     //     BWPrinter["(fr.lip6.printers.t_state)hasInk"].id();
     //     gum::NodeId i_hi = BWPrinter["(fr.lip6.printers.t_ink)hasInk"].id();
-    //     GUM_CHECK_EQ(st, deg_st);
-    //     GUM_CHECK_NE(st, st_st);
-    //     GUM_CHECK_NE(st, bool_st);
-    //     GUM_CHECK_NE(st_st, bool_st);
-    //     GUM_CHECK_EQ(hp, p_hp);
-    //     GUM_CHECK_NE(hp, st_hp);
-    //     GUM_CHECK_NE(hp, bool_hp);
-    //     GUM_CHECK_EQ(hi, i_hi);
-    //     GUM_CHECK_NE(hi, st_hi);
-    //     GUM_CHECK_NE(hi, bool_hi);
+    //     CHECK_EQ(st, deg_st);
+    //     CHECK_NE(st, st_st);
+    //     CHECK_NE(st, bool_st);
+    //     CHECK_NE(st_st, bool_st);
+    //     CHECK_EQ(hp, p_hp);
+    //     CHECK_NE(hp, st_hp);
+    //     CHECK_NE(hp, bool_hp);
+    //     CHECK_EQ(hi, i_hi);
+    //     CHECK_NE(hi, st_hi);
+    //     CHECK_NE(hi, bool_hi);
     //     // t_degraded equipState
     //     CHECK( BWPrinter.isOutputNode(
     //         BWPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
@@ -691,9 +691,9 @@ namespace gum_tests {
     //        prm->getClass( "fr.lip6.printers.ColorPrinter" );
     //    CHECK((ColorPrinter.referenceSlots().size()) == (static_cast<gum::Size>(1)
     //));
-    //    GUM_CHECK_EQ(ColorPrinter.attributes().size(), static_cast<gum::Size>(19));
-    //    GUM_CHECK_EQ(ColorPrinter.aggregates().size(), static_cast<gum::Size>(0));
-    //    GUM_CHECK_EQ(ColorPrinter.slotChains().size(), static_cast<gum::Size>(1));
+    //    CHECK_EQ(ColorPrinter.attributes().size(), static_cast<gum::Size>(19));
+    //    CHECK_EQ(ColorPrinter.aggregates().size(), static_cast<gum::Size>(0));
+    //    CHECK_EQ(ColorPrinter.slotChains().size(), static_cast<gum::Size>(1));
     //    GUM_CHECK_ASSERT_THROWS_NOTHING( ColorPrinter["room"] );
     //    GUM_CHECK_ASSERT_THROWS_NOTHING( ColorPrinter["(boolean)equipState"] );
     //    GUM_CHECK_ASSERT_THROWS_NOTHING(
@@ -769,30 +769,30 @@ namespace gum_tests {
     //    gum::NodeId st_ce =
     //    ColorPrinter["(fr.lip6.printers.t_state)cyan"].id();
     //    gum::NodeId i_ce = ColorPrinter["(fr.lip6.printers.t_ink)cyan"].id();
-    //    GUM_CHECK_EQ(st, deg_st);
-    //    GUM_CHECK_NE(st, st_st);
-    //    GUM_CHECK_NE(st, bool_st);
-    //    GUM_CHECK_NE(st_st, bool_st);
-    //    GUM_CHECK_EQ(hp, p_hp);
-    //    GUM_CHECK_NE(hp, st_hp);
-    //    GUM_CHECK_NE(hp, bool_hp);
-    //    GUM_CHECK_EQ(hi, bool_hi);
-    //    GUM_CHECK_EQ(bl, i_bl);
-    //    GUM_CHECK_NE(bl, st_bl);
-    //    GUM_CHECK_NE(bl, bool_bl);
-    //    GUM_CHECK_NE(st_bl, bool_bl);
-    //    GUM_CHECK_EQ(ma, i_ma);
-    //    GUM_CHECK_NE(ma, st_ma);
-    //    GUM_CHECK_NE(ma, bool_ma);
-    //    GUM_CHECK_NE(st_ma, bool_ma);
-    //    GUM_CHECK_EQ(ye, i_ye);
-    //    GUM_CHECK_NE(ye, st_ye);
-    //    GUM_CHECK_NE(ye, bool_ye);
-    //    GUM_CHECK_NE(st_ye, bool_ye);
-    //    GUM_CHECK_EQ(ce, i_ce);
-    //    GUM_CHECK_NE(ce, st_ce);
-    //    GUM_CHECK_NE(ce, bool_ce);
-    //    GUM_CHECK_NE(st_ce, bool_ce);
+    //    CHECK_EQ(st, deg_st);
+    //    CHECK_NE(st, st_st);
+    //    CHECK_NE(st, bool_st);
+    //    CHECK_NE(st_st, bool_st);
+    //    CHECK_EQ(hp, p_hp);
+    //    CHECK_NE(hp, st_hp);
+    //    CHECK_NE(hp, bool_hp);
+    //    CHECK_EQ(hi, bool_hi);
+    //    CHECK_EQ(bl, i_bl);
+    //    CHECK_NE(bl, st_bl);
+    //    CHECK_NE(bl, bool_bl);
+    //    CHECK_NE(st_bl, bool_bl);
+    //    CHECK_EQ(ma, i_ma);
+    //    CHECK_NE(ma, st_ma);
+    //    CHECK_NE(ma, bool_ma);
+    //    CHECK_NE(st_ma, bool_ma);
+    //    CHECK_EQ(ye, i_ye);
+    //    CHECK_NE(ye, st_ye);
+    //    CHECK_NE(ye, bool_ye);
+    //    CHECK_NE(st_ye, bool_ye);
+    //    CHECK_EQ(ce, i_ce);
+    //    CHECK_NE(ce, st_ce);
+    //    CHECK_NE(ce, bool_ce);
+    //    CHECK_NE(st_ce, bool_ce);
     //    // t_degraded equipState
     //    CHECK( ColorPrinter.isOutputNode(
     //        ColorPrinter["(fr.lip6.printers.t_degraded)equipState"] ) );
@@ -939,10 +939,10 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm      = reader.prm();
         gum::prm::PRMClass< double >& Computer = prm->getClass("fr.lip6.printers.Computer");
-        GUM_CHECK_EQ(Computer.attributes().size(), static_cast< gum::Size >(4));
-        GUM_CHECK_EQ(Computer.referenceSlots().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(Computer.aggregates().size(), static_cast< gum::Size >(4));
-        GUM_CHECK_EQ(Computer.slotChains().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(Computer.attributes().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(Computer.referenceSlots().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(Computer.aggregates().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(Computer.slotChains().size(), static_cast< gum::Size >(2));
         GUM_CHECK_ASSERT_THROWS_NOTHING(Computer["(boolean)functional_printer"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(Computer["functional_printer"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(Computer["(boolean)degraded_printer"]);
@@ -970,10 +970,10 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        GUM_CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
-        GUM_CHECK_EQ(SafeComputer.referenceSlots().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(SafeComputer.aggregates().size(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(SafeComputer.slotChains().size(), static_cast< gum::Size >(3));
+        CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(SafeComputer.referenceSlots().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(SafeComputer.aggregates().size(), static_cast< gum::Size >(3));
+        CHECK_EQ(SafeComputer.slotChains().size(), static_cast< gum::Size >(3));
         GUM_CHECK_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)functional_printer"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(SafeComputer["functional_printer"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(SafeComputer["(boolean)degraded_printer"]);
@@ -1004,7 +1004,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        GUM_CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
         CHECK(SafeComputer.exists("can_print"));
         const auto& cpf = SafeComputer.get("can_print").cpf();
         auto        set = gum::VariableSet();
@@ -1014,7 +1014,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+        CHECK_EQ(set.size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1028,7 +1028,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.Computer");
-        GUM_CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
         CHECK(SafeComputer.exists("equipState"));
         const auto& cpf = SafeComputer.get("equipState").cpf();
         auto        set = gum::VariableSet();
@@ -1037,7 +1037,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+        CHECK_EQ(set.size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1051,7 +1051,7 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm          = reader.prm();
         gum::prm::PRMClass< double >& SafeComputer = prm->getClass("fr.lip6.printers.SafeComputer");
-        GUM_CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
+        CHECK_EQ(SafeComputer.attributes().size(), static_cast< gum::Size >(4));
         CHECK(SafeComputer.exists("equipState"));
         const auto& cpf = SafeComputer.get("equipState").cpf();
         auto        set = gum::VariableSet();
@@ -1061,7 +1061,7 @@ namespace gum_tests {
         for (auto var: cpf.variablesSequence()) {
           if (set.contains(var)) { set.erase(var); }
         }
-        GUM_CHECK_EQ(set.size(), static_cast< gum::Size >(0));
+        CHECK_EQ(set.size(), static_cast< gum::Size >(0));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1071,8 +1071,8 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/printers_systems.o3prm")));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         reader.showElegantErrorsAndWarnings();
         gum::prm::PRM< double >* prm = 0;
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm = reader.prm());
@@ -1086,8 +1086,8 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/complexprinters_system.o3prm")));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
@@ -1107,18 +1107,18 @@ namespace gum_tests {
           std::cout << e.errorContent();
           std::cout << e.errorCallStack();
         }
-        GUM_CHECK_EQ(sys->get(Power).size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(sys->get(Room).size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(sys->get(BWPrinter).size(), static_cast< gum::Size >(10));
-        GUM_CHECK_EQ(sys->get(ColorPrinter).size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(sys->get(Computer).size(), static_cast< gum::Size >(2));
+        CHECK_EQ(sys->get(Power).size(), static_cast< gum::Size >(1));
+        CHECK_EQ(sys->get(Room).size(), static_cast< gum::Size >(1));
+        CHECK_EQ(sys->get(BWPrinter).size(), static_cast< gum::Size >(10));
+        CHECK_EQ(sys->get(ColorPrinter).size(), static_cast< gum::Size >(2));
+        CHECK_EQ(sys->get(Computer).size(), static_cast< gum::Size >(2));
         int count = 0;
 
         for (auto iter = sys->begin(); iter != sys->end(); ++iter) {
           ++count;
         }
 
-        GUM_CHECK_EQ(count, 18);
+        CHECK_EQ(count, 18);
 
         if (prm) { delete prm; }
       } catch (gum::Exception&) { CHECK(false); }
@@ -1129,8 +1129,8 @@ namespace gum_tests {
         gum::prm::o3prm::O3prmReader< double > reader;
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prm/inference.o3prm")));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         gum::prm::PRM< double >* prm = nullptr;
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm = reader.prm());
         gum::prm::PRMSystem< double >* sys = nullptr;
@@ -1168,8 +1168,8 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             reader.readFile(GET_RESSOURCES_PATH("o3prmr/systems/MySystem.o3prm"),
                             "systems.MySystem"));
-        GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         reader.showElegantErrorsAndWarnings();
 
         gum::prm::PRM< double >* prm = nullptr;
@@ -1177,13 +1177,13 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(prm = reader.prm());
         gum::Size class_count = prm->classes().size();
         class_count += prm->interfaces().size();
-        GUM_CHECK_EQ(class_count,
-                     static_cast< gum::Size >(11));   // Don't forget param subclasses !
+        CHECK_EQ(class_count,
+                 static_cast< gum::Size >(11));   // Don't forget param subclasses !
 
-        GUM_CHECK_EQ(prm->systems().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(prm->systems().size(), static_cast< gum::Size >(1));
         gum::prm::PRMSystem< double >* sys = nullptr;
         GUM_CHECK_ASSERT_THROWS_NOTHING(sys = &(prm->getSystem("systems.MySystem.MySystem")));
-        GUM_CHECK_EQ(sys->size(), static_cast< gum::Size >(16));
+        CHECK_EQ(sys->size(), static_cast< gum::Size >(16));
 
         // Checking that all class DAG are generated
         for (auto c: prm->classes()) {
@@ -1250,9 +1250,9 @@ namespace gum_tests {
         GUM_CHECK_ASSERT_THROWS_NOTHING(reader.readFile(file, package));
         gum::prm::PRM< double >*      prm        = reader.prm();
         gum::prm::PRMClass< double >& ParamClass = prm->getClass("fr.lip6.printers.ParamClass");
-        GUM_CHECK_EQ(ParamClass.attributes().size(), static_cast< gum::Size >(9));
-        GUM_CHECK_EQ(ParamClass.referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(ParamClass.slotChains().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(ParamClass.attributes().size(), static_cast< gum::Size >(9));
+        CHECK_EQ(ParamClass.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(ParamClass.slotChains().size(), static_cast< gum::Size >(1));
         GUM_CHECK_ASSERT_THROWS_NOTHING(ParamClass["lambda"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(ParamClass["t"]);
         GUM_CHECK_ASSERT_THROWS_NOTHING(ParamClass["room"]);
@@ -1300,7 +1300,7 @@ namespace gum_tests {
           values.push_back(hasInk.cpf()[inst]);
         }
 
-        GUM_CHECK_EQ(values.size(), (size_t)2);
+        CHECK_EQ(values.size(), (size_t)2);
         CHECK((values[0]) == doctest::Approx(0.4).epsilon(1e-6));
         CHECK((values[1]) == doctest::Approx(0.6).epsilon(1e-6));
 
@@ -1327,7 +1327,7 @@ namespace gum_tests {
           values.push_back(hasPaper.cpf()[inst]);
         }
 
-        GUM_CHECK_EQ(values.size(), (size_t)3);
+        CHECK_EQ(values.size(), (size_t)3);
         CHECK((values[0]) == doctest::Approx(std::exp(-0.4 * 4)).epsilon(1e-6));
         CHECK((values[1]) == doctest::Approx(1 - std::exp(-0.4 * 4)).epsilon(1e-6));
         CHECK((values[2]) == doctest::Approx(0.0).epsilon(1e-6));
@@ -1355,7 +1355,7 @@ namespace gum_tests {
           values.push_back(hasInk.cpf()[inst]);
         }
 
-        GUM_CHECK_EQ(values.size(), (size_t)2);
+        CHECK_EQ(values.size(), (size_t)2);
         CHECK((values[0]) == doctest::Approx(0.001).epsilon(1e-6));
         CHECK((values[1]) == doctest::Approx(0.999).epsilon(1e-6));
 
@@ -1375,8 +1375,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(asia = &(prm->getClass("Asia")));
         // Assert
-        GUM_CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8));
+        CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(8));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1399,8 +1399,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(sys.groundedBN(factory));
         // Assert
-        GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
         delete prm;
         delete bn;
       } catch (gum::Exception&) { CHECK(false); }
@@ -1418,8 +1418,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(asia = &(prm->getClass("VisitAsia")));
         // Assert
-        GUM_CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(1));
+        CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(1));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1436,9 +1436,9 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(asia = &(prm->getClass("Asia")));
         // Assert
-        GUM_CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(6));
-        GUM_CHECK_EQ(asia->referenceSlots().size(), static_cast< gum::Size >(1));
-        GUM_CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(7));
+        CHECK_EQ(asia->attributes().size(), static_cast< gum::Size >(6));
+        CHECK_EQ(asia->referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(asia->containerDag().sizeArcs(), static_cast< gum::Size >(7));
         delete prm;
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1458,8 +1458,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(sys.groundedBN(factory));
         // Assert
-        GUM_CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
         delete prm;
         delete bn;
       } catch (gum::Exception&) { CHECK(false); }
@@ -1472,7 +1472,7 @@ namespace gum_tests {
       std::string                            package = "";
       // Act & Assert
       CHECK_NOTHROW(reader.readFile(file, package));
-      GUM_CHECK_NE(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_NE(reader.errors(), static_cast< gum::Size >(0));
       if (reader.prm()) { delete reader.prm(); }
     }
 
@@ -1483,7 +1483,7 @@ namespace gum_tests {
       std::string package = "";
       // Act & Assert
       CHECK_NOTHROW(reader.readFile(file, package));
-      GUM_CHECK_NE(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_NE(reader.errors(), static_cast< gum::Size >(0));
       if (reader.prm()) { delete reader.prm(); }
     }
 
@@ -1496,8 +1496,8 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(1));
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(1));
+        CHECK_NE(reader.prm(), nullptr);
         delete reader.prm();
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1511,9 +1511,9 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
         delete reader.prm();
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1527,9 +1527,9 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
         delete reader.prm();
       } catch (gum::Exception&) { CHECK(false); }
     }
@@ -1543,9 +1543,9 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
 
         auto sys = &(reader.prm()->getSystem("fr.base.Work"));
         for (auto iter: *sys) {
@@ -1575,25 +1575,25 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
 
         auto prm = reader.prm();
         for (auto c: prm->classes()) {
           try {
             for (auto i: c->implements()) {
               for (auto r: i->referenceSlots()) {
-                GUM_CHECK_EQ(r->name(), c->get(r->id()).name());
-                GUM_CHECK_EQ(r->safeName(), c->get(r->id()).safeName());
-                GUM_CHECK_EQ(r->id(), c->get(r->name()).id());
+                CHECK_EQ(r->name(), c->get(r->id()).name());
+                CHECK_EQ(r->safeName(), c->get(r->id()).safeName());
+                CHECK_EQ(r->id(), c->get(r->name()).id());
               }
               for (auto r: c->referenceSlots()) {
                 if (i->exists(r->name())) {
-                  GUM_CHECK_EQ(r->name(), i->get(r->id()).name());
-                  GUM_CHECK_EQ(r->safeName(), i->get(r->id()).safeName());
-                  GUM_CHECK_EQ(r->id(), i->get(r->name()).id());
+                  CHECK_EQ(r->name(), i->get(r->id()).name());
+                  CHECK_EQ(r->safeName(), i->get(r->id()).safeName());
+                  CHECK_EQ(r->id(), i->get(r->name()).id());
                 }
               }
             }
@@ -1615,10 +1615,10 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
 
         auto prm = reader.prm();
         for (auto c: prm->classes()) {
@@ -1628,8 +1628,8 @@ namespace gum_tests {
                 CHECK(c->exists(a->name()));
                 CHECK(c->exists(a->safeName()));
                 CHECK(c->exists(a->id()));
-                GUM_CHECK_EQ(a->safeName(), c->get(a->id()).safeName());
-                GUM_CHECK_EQ(a->id(), c->get(a->id()).id());
+                CHECK_EQ(a->safeName(), c->get(a->id()).safeName());
+                CHECK_EQ(a->id(), c->get(a->id()).id());
               }
             }
           } catch (gum::NotFound&) {
@@ -1650,10 +1650,10 @@ namespace gum_tests {
         // Act
         CHECK_NOTHROW(reader.readFile(file, package));
         // Assert
-        GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+        CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
         if (reader.errors()) { reader.showElegantErrorsAndWarnings(); }
 
-        GUM_CHECK_NE(reader.prm(), nullptr);
+        CHECK_NE(reader.prm(), nullptr);
 
         if (reader.prm() != nullptr) {
           delete reader.prm();

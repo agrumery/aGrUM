@@ -96,51 +96,51 @@ namespace gum_tests {
     static void testIsIntegerWithResult() {
       int res;
       CHECK(gum::isIntegerWithResult("12", &res));
-      GUM_CHECK_EQ(res, 12);
+      CHECK_EQ(res, 12);
       CHECK(!gum::isIntegerWithResult("foo", &res));
       CHECK(!gum::isIntegerWithResult("12foo", &res));
       CHECK(!gum::isIntegerWithResult("foo12", &res));
       CHECK(!gum::isIntegerWithResult("foo12bar", &res));
 
       CHECK(gum::isIntegerWithResult("+12", &res));
-      GUM_CHECK_EQ(res, 12);
+      CHECK_EQ(res, 12);
       CHECK(!gum::isIntegerWithResult("1+2", &res));
 
       CHECK(gum::isIntegerWithResult("-12", &res));
-      GUM_CHECK_EQ(res, -12);
+      CHECK_EQ(res, -12);
       CHECK(!gum::isIntegerWithResult("1-2", &res));
     }   // namespace gum_tests
 
     static void testisNumericalWithResWithResult() {
       double res;
       CHECK(gum::isNumericalWithResult("12", &res));
-      GUM_CHECK_EQ(res, 12.0);
+      CHECK_EQ(res, 12.0);
       CHECK(!gum::isNumericalWithResult("foo", &res));
       CHECK(!gum::isNumericalWithResult("12foo", &res));
       CHECK(!gum::isNumericalWithResult("foo12", &res));
       CHECK(!gum::isNumericalWithResult("foo12bar", &res));
 
       CHECK(gum::isNumericalWithResult("12.5", &res));
-      GUM_CHECK_EQ(res, 12.5);
+      CHECK_EQ(res, 12.5);
       CHECK(!gum::isNumericalWithResult("12.5foo", &res));
       CHECK(!gum::isNumericalWithResult("foo12.5", &res));
       CHECK(!gum::isNumericalWithResult("foo12.5bar", &res));
 
       CHECK(gum::isNumericalWithResult("+12", &res));
-      GUM_CHECK_EQ(res, 12.0);
+      CHECK_EQ(res, 12.0);
       CHECK(!gum::isNumericalWithResult("1+2", &res));
 
       CHECK(gum::isNumericalWithResult("-12", &res));
-      GUM_CHECK_EQ(res, -12.0);
+      CHECK_EQ(res, -12.0);
       CHECK(!gum::isNumericalWithResult("1-2", &res));
 
       CHECK(gum::isNumericalWithResult("-1.2", &res));
       CHECK(gum::isNumericalWithResult("1.2", &res));
-      GUM_CHECK_EQ(res, 1.2);
+      CHECK_EQ(res, 1.2);
       CHECK(gum::isNumericalWithResult("+1.2", &res));
-      GUM_CHECK_EQ(res, 1.2);
+      CHECK_EQ(res, 1.2);
       CHECK(gum::isNumericalWithResult("1.2e-8", &res));
-      GUM_CHECK_EQ(res, 1.2e-8);
+      CHECK_EQ(res, 1.2e-8);
     }
   };
 

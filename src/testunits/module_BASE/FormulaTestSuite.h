@@ -444,7 +444,7 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(result = gum::to_string(f));
       // Assert
-      GUM_CHECK_EQ(result, expected);
+      CHECK_EQ(result, expected);
     }
 
     static void testToStream() {
@@ -455,7 +455,7 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(result << f);
       // Assert
-      GUM_CHECK_EQ(result.str(), expected);
+      CHECK_EQ(result.str(), expected);
     }
   };
 

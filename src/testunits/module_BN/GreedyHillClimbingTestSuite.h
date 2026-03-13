@@ -266,7 +266,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      GUM_CHECK_EQ(dag.arcs().size(), static_cast< gum::Size >(11));
+      CHECK_EQ(dag.arcs().size(), static_cast< gum::Size >(11));
 
       // gum::BayesNet<double> bn =
       // search.learnBN<double> ( selector, estimator,
@@ -335,7 +335,7 @@ namespace gum_tests {
       search.approximationScheme().setEpsilon(1000);
 
       gum::DAG dag = search.learnStructure(selector);
-      GUM_CHECK_EQ(dag.arcs().size(), static_cast< gum::Size >(11));
+      CHECK_EQ(dag.arcs().size(), static_cast< gum::Size >(11));
 
       gum::BayesNet< double > bn = search.learnBN< double >(selector, estimator);
 
@@ -343,8 +343,8 @@ namespace gum_tests {
       const std::string s1 = "1";
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        GUM_CHECK_EQ(var.label(0), s0);
-        GUM_CHECK_EQ(var.label(1), s1);
+        CHECK_EQ(var.label(0), s0);
+        CHECK_EQ(var.label(1), s1);
       }
     }
 
@@ -414,9 +414,9 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (gum::Idx i = 0; i < database.nbVariables(); ++i) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        GUM_CHECK_EQ(var.label(0), s0);
-        GUM_CHECK_EQ(var.label(1), s1);
-        if (seq.exists(i)) { GUM_CHECK_EQ(var.label(2), s2); }
+        CHECK_EQ(var.label(0), s0);
+        CHECK_EQ(var.label(1), s1);
+        if (seq.exists(i)) { CHECK_EQ(var.label(2), s2); }
       }
     }
 
@@ -488,9 +488,9 @@ namespace gum_tests {
       gum::Set< gum::Idx > seq{1, 10, 11, 14};
       for (auto i: seq) {
         const gum::DiscreteVariable& var = bn.variable(i);
-        GUM_CHECK_EQ(var.label(0), s0);
-        GUM_CHECK_EQ(var.label(1), s1);
-        GUM_CHECK_EQ(var.label(2), s2);
+        CHECK_EQ(var.label(0), s0);
+        CHECK_EQ(var.label(1), s1);
+        CHECK_EQ(var.label(2), s2);
       }
     }
 
@@ -531,7 +531,7 @@ namespace gum_tests {
       // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
-                                                                 dirichlet_genset);
+                                                           dirichlet_genset);
       gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
@@ -571,7 +571,7 @@ namespace gum_tests {
 
         while (_applyNextChange_(score, scores, xdag)) {}
 
-        GUM_CHECK_EQ(xdag, dag);
+        CHECK_EQ(xdag, dag);
       }
     }
 

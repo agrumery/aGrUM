@@ -186,7 +186,7 @@ namespace gum_tests {
 
       gum::MixedGraph* copy = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING((copy = new gum::MixedGraph(graph)));
-      GUM_CHECK_EQ(graph, *copy);
+      CHECK_EQ(graph, *copy);
       delete (copy);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(gum::MixedGraph copy2 = graph);
@@ -257,9 +257,9 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
 
-      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
-      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 1);
+      CHECK_EQ(nodeCount, graph.size() + 1);
+      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+      CHECK_EQ(arcCount, graph.sizeArcs() + 1);
 
       CHECK(!graph.exists(id2));
       CHECK(!graph.existsEdge(id2, id4));
@@ -274,18 +274,18 @@ namespace gum_tests {
       gum::Size edgeCount = graph.sizeEdges();
       gum::Size arcCount  = graph.sizeArcs();
 
-      GUM_CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
-      GUM_CHECK_EQ(edgeCount, static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(arcCount, static_cast< gum::Size >(3));
+      CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
+      CHECK_EQ(edgeCount, static_cast< gum::Size >(3));
+      CHECK_EQ(arcCount, static_cast< gum::Size >(3));
 
       for (int i = 0; i < 10; i++) {
         GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
       }
 
-      GUM_CHECK_EQ(nodeCount, graph.size() + 1);
+      CHECK_EQ(nodeCount, graph.size() + 1);
 
-      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 2);
+      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+      CHECK_EQ(arcCount, graph.sizeArcs() + 2);
 
       CHECK(!graph.existsEdge(2, 4));
       CHECK(!graph.existsEdge(3, 4));
@@ -304,8 +304,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
 
-      GUM_CHECK_EQ(nodeCount, graph.size());
-      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+      CHECK_EQ(nodeCount, graph.size());
+      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
 
       CHECK(!graph.existsEdge(2, 4));
     }
@@ -322,8 +322,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
 
-      GUM_CHECK_EQ(nodeCount, graph.size());
-      GUM_CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+      CHECK_EQ(nodeCount, graph.size());
+      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
 
       CHECK(!graph.existsEdge(id3, id5));
     }
@@ -340,8 +340,8 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseArc(gum::Arc(id5, id2)));
 
-      GUM_CHECK_EQ(nodeCount, graph.size());
-      GUM_CHECK_EQ(arcCount, graph.sizeArcs() + 1);
+      CHECK_EQ(nodeCount, graph.size());
+      CHECK_EQ(arcCount, graph.sizeArcs() + 1);
 
       CHECK(!graph.existsArc(id5, id2));
     }
@@ -350,7 +350,7 @@ namespace gum_tests {
       gum::MixedGraph graph = buildGraph();
 
       const gum::NodeSet nodeset = graph.asNodeSet();
-      GUM_CHECK_EQ(nodeset.size(), graph.size());
+      CHECK_EQ(nodeset.size(), graph.size());
       gum::Size nodeCount = graph.size();
 
       for (const auto node: nodeset)
@@ -358,14 +358,14 @@ namespace gum_tests {
 
       CHECK(graph.empty());
 
-      GUM_CHECK_EQ(nodeCount, nodeset.size());
+      CHECK_EQ(nodeCount, nodeset.size());
     }
 
     void testGetArcs() {
       gum::MixedGraph graph = buildGraph();
 
       gum::ArcSet arclist = graph.arcs();
-      GUM_CHECK_EQ(arclist.size(), graph.sizeArcs());
+      CHECK_EQ(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
       for (const auto& arc: arclist)
@@ -373,14 +373,14 @@ namespace gum_tests {
 
       CHECK(graph.emptyArcs());
 
-      GUM_CHECK_EQ(arcCount, arclist.size());
+      CHECK_EQ(arcCount, arclist.size());
     }
 
     void testGetEdges() {
       gum::MixedGraph graph = buildGraph();
 
       gum::EdgeSet edgeset = graph.edges();
-      GUM_CHECK_EQ(edgeset.size(), graph.sizeEdges());
+      CHECK_EQ(edgeset.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
       for (const auto& edge: edgeset)
@@ -388,14 +388,14 @@ namespace gum_tests {
 
       CHECK(graph.emptyEdges());
 
-      GUM_CHECK_EQ(edgeCount, edgeset.size());
+      CHECK_EQ(edgeCount, edgeset.size());
     }
 
     void testNodeListMapNodes() {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
-      GUM_CHECK_EQ(list.size(), graph.size());
+      CHECK_EQ(list.size(), graph.size());
 
       gum::Size s = 0;
 
@@ -403,7 +403,7 @@ namespace gum_tests {
         s += *iter;
       }
 
-      GUM_CHECK_EQ(s, 2 * (id1 + id2 + id3 + id4 + id5));
+      CHECK_EQ(s, 2 * (id1 + id2 + id3 + id4 + id5));
     }
 
     void testTwistedNodeListMapNodes() {
@@ -412,7 +412,7 @@ namespace gum_tests {
       gum::List< gum::Size > list;
       CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
 
-      GUM_CHECK_EQ(list.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(list.size(), static_cast< gum::Size >(0));
     }
 
     void testHashMapNodes() {
@@ -420,7 +420,7 @@ namespace gum_tests {
 
       gum::NodeProperty< gum::Size > hashmap
           = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
-      GUM_CHECK_EQ(hashmap.size(), graph.size());
+      CHECK_EQ(hashmap.size(), graph.size());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -430,7 +430,7 @@ namespace gum_tests {
         sv += elt.second;
       }
 
-      GUM_CHECK_EQ(sk * 2, sv);
+      CHECK_EQ(sk * 2, sv);
     }
 
     void testTwistedHashMapNodes() {
@@ -439,14 +439,14 @@ namespace gum_tests {
       gum::NodeProperty< gum::Size > hashmap;
       CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
 
-      GUM_CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
+      CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
     }
 
     void testListMapEdges() {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
-      GUM_CHECK_EQ(list.size(), graph.sizeEdges());
+      CHECK_EQ(list.size(), graph.sizeEdges());
 
       gum::Size s = 0;
 
@@ -461,14 +461,14 @@ namespace gum_tests {
       //         \ / /            3 -> 4
       //          4_/             1 -- 3
       //                          4 -> 1
-      GUM_CHECK_EQ(s, (gum::Size)(0 + 2 + 2 + 4 + 1 + 3));
+      CHECK_EQ(s, (gum::Size)(0 + 2 + 2 + 4 + 1 + 3));
     }
 
     void testHashMapEdges() {
       gum::MixedGraph graph = buildGraph();
 
       gum::EdgeProperty< gum::Size > hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
-      GUM_CHECK_EQ(hashmap.size(), graph.sizeEdges());
+      CHECK_EQ(hashmap.size(), graph.sizeEdges());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -478,14 +478,14 @@ namespace gum_tests {
         sk += elt.first.first() + elt.first.second();
       }
 
-      GUM_CHECK_EQ(sk, sv);
+      CHECK_EQ(sk, sv);
     }
 
     void testListMapArcs() {
       gum::MixedGraph graph = buildGraph();
 
       gum::List< gum::Size > list = graph.listMapArcs(&simpleArcMapFunction);
-      GUM_CHECK_EQ(list.size(), graph.sizeArcs());
+      CHECK_EQ(list.size(), graph.sizeArcs());
 
       gum::Size s = 0;
 
@@ -500,14 +500,14 @@ namespace gum_tests {
       //         \ / /            3 -> 4
       //          4_/             1 -- 3
       //                          4 -> 1
-      GUM_CHECK_EQ(s, (gum::Size)(0 + 3 + 3 + 4 + 4 + 1));
+      CHECK_EQ(s, (gum::Size)(0 + 3 + 3 + 4 + 4 + 1));
     }
 
     void testHashMapArcs() {
       gum::MixedGraph graph = buildGraph();
 
       gum::ArcProperty< gum::Size > hashmap = graph.arcsProperty(&simpleArcMapFunction);
-      GUM_CHECK_EQ(hashmap.size(), graph.sizeArcs());
+      CHECK_EQ(hashmap.size(), graph.sizeArcs());
 
       gum::Size sk = 0;
       gum::Size sv = 0;
@@ -517,7 +517,7 @@ namespace gum_tests {
         sk += elt.first.head() + elt.first.tail();
       }
 
-      GUM_CHECK_EQ(sk, sv);
+      CHECK_EQ(sk, sv);
     }
 
     void testCopyOperator() {
@@ -531,16 +531,16 @@ namespace gum_tests {
 
       g2 = g3 = g4 = graph;
 
-      GUM_CHECK_EQ(g2, graph);
-      GUM_CHECK_EQ(g3, graph);
-      GUM_CHECK_EQ(g4, graph);
+      CHECK_EQ(g2, graph);
+      CHECK_EQ(g3, graph);
+      CHECK_EQ(g4, graph);
 
       g2.clear();
       g3.clearArcs();
       g4.clearEdges();
 
-      GUM_CHECK_NE(g2, graph);
-      GUM_CHECK_NE(g3, graph);
+      CHECK_NE(g2, graph);
+      CHECK_NE(g3, graph);
     }
   };
 

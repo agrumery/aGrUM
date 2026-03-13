@@ -359,14 +359,14 @@ namespace gum_tests {
 
           for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
                inst.inc(), jnst.inc()) {
-            GUM_CHECK_EQ(m_ve.nbrDim(), m_ss.nbrDim());
-            GUM_CHECK_EQ(m_ve.nbrDim(), m_sve.nbrDim());
-            GUM_CHECK_EQ(m_ve.nbrDim(), m_sved.nbrDim());
-            GUM_CHECK_EQ(m_ve.nbrDim(), m_struct.nbrDim());
-            GUM_CHECK_EQ(m_ve.domainSize(), m_ss.domainSize());
-            GUM_CHECK_EQ(m_ve.domainSize(), m_sve.domainSize());
-            GUM_CHECK_EQ(m_ve.domainSize(), m_sved.domainSize());
-            GUM_CHECK_EQ(m_ve.domainSize(), m_struct.domainSize());
+            CHECK_EQ(m_ve.nbrDim(), m_ss.nbrDim());
+            CHECK_EQ(m_ve.nbrDim(), m_sve.nbrDim());
+            CHECK_EQ(m_ve.nbrDim(), m_sved.nbrDim());
+            CHECK_EQ(m_ve.nbrDim(), m_struct.nbrDim());
+            CHECK_EQ(m_ve.domainSize(), m_ss.domainSize());
+            CHECK_EQ(m_ve.domainSize(), m_sve.domainSize());
+            CHECK_EQ(m_ve.domainSize(), m_sved.domainSize());
+            CHECK_EQ(m_ve.domainSize(), m_struct.domainSize());
             CHECK((m_ve.get(inst)) == doctest::Approx(m_ss.get(inst)).epsilon(1.0e-3));
             CHECK((m_sve.get(jnst)) == doctest::Approx(m_ss.get(inst)).epsilon(1.0e-3));
             CHECK((m_sved.get(jnst)) == doctest::Approx(m_sve.get(jnst)).epsilon(1.0e-3));
@@ -521,7 +521,7 @@ namespace gum_tests {
         gum::prm::PRMInference< double >::Chain q_chain = std::make_pair(&q_i, &q_a);
         gum::Tensor< double >                   m;
         g_ve->posterior(q_chain, m);
-        GUM_CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
+        CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
         gum::Instantiation inst(m);
         inst.setFirst();
         CHECK((m.get(inst)) == doctest::Approx(1.0).epsilon(1e-6));

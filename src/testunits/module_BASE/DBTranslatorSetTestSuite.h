@@ -70,80 +70,80 @@ namespace gum_tests {
       gum::learning::DBTranslator4LabelizedVariable translator1(missing, 3);
       std::size_t                                   pos;
       pos = set.insertTranslator(translator1, 1);
-      GUM_CHECK_EQ(pos, std::size_t(0));
+      CHECK_EQ(pos, std::size_t(0));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       pos = set.insertTranslator(translator0, 0);
-      GUM_CHECK_EQ(pos, std::size_t(1));
+      CHECK_EQ(pos, std::size_t(1));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       pos = set.insertTranslator(translator2, 2);
-      GUM_CHECK_EQ(pos, std::size_t(2));
+      CHECK_EQ(pos, std::size_t(2));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-      GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+      CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
 
       std::vector< std::string > row4{"???", "???", "???"};
-      GUM_CHECK_EQ(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max());
       CHECK_THROWS_AS(set.translate(row4, 1), const gum::TypeError&);
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
       CHECK_THROWS_AS(set.translate(row5, 1), const gum::TypeError&);
-      GUM_CHECK_EQ(set.translate(row5, 2).discr_val, (std::size_t)2);
+      CHECK_EQ(set.translate(row5, 2).discr_val, (std::size_t)2);
 
       CHECK_THROWS_AS(set.translateSafe(row5, 3), const gum::UndefinedElement&);
 
-      GUM_CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0), "toto");
-      GUM_CHECK_EQ(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)), 7.42f);
-      GUM_CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2), "???");
+      CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0), "toto");
+      CHECK_EQ(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)), 7.42f);
+      CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2), "???");
       CHECK_THROWS_AS(set.translateBackSafe(gum::learning::DBTranslatedValue{std::size_t{0}}, 3),
                       const gum::UndefinedElement&);
 
-      GUM_CHECK_EQ(set.domainSize(0), (std::size_t)2);
-      GUM_CHECK_EQ(set.domainSize(2), (std::size_t)3);
-      GUM_CHECK_EQ(set.domainSize(1), std::numeric_limits< std::size_t >::max());
-      GUM_CHECK_EQ(set.domainSizeSafe(0), (std::size_t)2);
-      GUM_CHECK_EQ(set.domainSizeSafe(2), (std::size_t)3);
-      GUM_CHECK_EQ(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.domainSize(0), (std::size_t)2);
+      CHECK_EQ(set.domainSize(2), (std::size_t)3);
+      CHECK_EQ(set.domainSize(1), std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.domainSizeSafe(0), (std::size_t)2);
+      CHECK_EQ(set.domainSizeSafe(2), (std::size_t)3);
+      CHECK_EQ(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max());
 
       gum::learning::DBTranslator4LabelizedVariable xtrans
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(set.translator(0));
-      GUM_CHECK_EQ(xtrans.translate("toto").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(xtrans.translate("titi").discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(xtrans.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(xtrans.translate("toto").discr_val, (std::size_t)0);
+      CHECK_EQ(xtrans.translate("titi").discr_val, (std::size_t)1);
+      CHECK_EQ(xtrans.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
 
       gum::learning::DBTranslator4LabelizedVariable xtransb
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
               set.translatorSafe(0));
-      GUM_CHECK_EQ(xtransb.translate("toto").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(xtransb.translate("titi").discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(xtransb.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(xtransb.translate("toto").discr_val, (std::size_t)0);
+      CHECK_EQ(xtransb.translate("titi").discr_val, (std::size_t)1);
+      CHECK_EQ(xtransb.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
 
-      GUM_CHECK_EQ(set.nbTranslators(), (std::size_t)3);
-      GUM_CHECK_EQ(set.size(), (std::size_t)3);
+      CHECK_EQ(set.nbTranslators(), (std::size_t)3);
+      CHECK_EQ(set.size(), (std::size_t)3);
 
       gum::LabelizedVariable var = dynamic_cast< const gum::LabelizedVariable& >(set.variable(0));
-      GUM_CHECK_EQ(var.domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(var.label(0), "toto");
-      GUM_CHECK_EQ(var.label(1), "titi");
+      CHECK_EQ(var.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(var.label(0), "toto");
+      CHECK_EQ(var.label(1), "titi");
 
       gum::LabelizedVariable varb
           = dynamic_cast< const gum::LabelizedVariable& >(set.variableSafe(0));
-      GUM_CHECK_EQ(varb.domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(varb.label(0), "toto");
-      GUM_CHECK_EQ(varb.label(1), "titi");
+      CHECK_EQ(varb.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(varb.label(0), "toto");
+      CHECK_EQ(varb.label(1), "titi");
 
       const gum::learning::DBTranslatedValue miss_disc{std::numeric_limits< std::size_t >::max()};
       const gum::learning::DBTranslatedValue miss_cont{std::numeric_limits< float >::max()};
@@ -157,19 +157,19 @@ namespace gum_tests {
       CHECK(set.needsReordering(0));
       CHECK(set.needsReorderingSafe(0));
       const auto order = set.reorder(0);
-      GUM_CHECK_EQ(order[0], std::size_t(1));
-      GUM_CHECK_EQ(order[1], std::size_t(0));
+      CHECK_EQ(order[0], std::size_t(1));
+      CHECK_EQ(order[1], std::size_t(0));
 
-      GUM_CHECK_EQ(set.inputColumn(0), std::size_t(1));
-      GUM_CHECK_EQ(set.inputColumn(1), std::size_t(0));
-      GUM_CHECK_EQ(set.inputColumn(2), std::size_t(2));
-      GUM_CHECK_EQ(set.inputColumnSafe(0), std::size_t(1));
-      GUM_CHECK_EQ(set.inputColumnSafe(1), std::size_t(0));
-      GUM_CHECK_EQ(set.inputColumnSafe(2), std::size_t(2));
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(2));
+      CHECK_EQ(set.inputColumn(0), std::size_t(1));
+      CHECK_EQ(set.inputColumn(1), std::size_t(0));
+      CHECK_EQ(set.inputColumn(2), std::size_t(2));
+      CHECK_EQ(set.inputColumnSafe(0), std::size_t(1));
+      CHECK_EQ(set.inputColumnSafe(1), std::size_t(0));
+      CHECK_EQ(set.inputColumnSafe(2), std::size_t(2));
+      CHECK_EQ(set.highestInputColumn(), std::size_t(2));
 
       set.clear();
-      GUM_CHECK_EQ(set.nbTranslators(), (std::size_t)0);
+      CHECK_EQ(set.nbTranslators(), (std::size_t)0);
     }   // namespace gum_tests
 
     static void testTrans2() {
@@ -187,95 +187,95 @@ namespace gum_tests {
         set.insertTranslator(translator2, 2);
 
         std::vector< std::string > row1{".33", "toto", "titi"};
-        GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
 
         std::vector< std::string > row2{".22", "titi", "toto"};
-        GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
 
         std::vector< std::string > row3{".33", "toto", "toto"};
-        GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
 
         gum::learning::DBTranslator4LabelizedVariable xtrans
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set.translator(0));
-        GUM_CHECK_EQ(xtrans.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans.translate("titi").discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(xtrans.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
+        CHECK_EQ(xtrans.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans.translate("???").discr_val, std::numeric_limits< std::size_t >::max());
 
         gum::learning::DBTranslatorSet set2(set);
-        GUM_CHECK_EQ(set2.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set2.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set2.translate(row1, 2).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set2.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set2.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set2.translate(row2, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set2.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set2.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set2.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set2.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set2.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set2.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
         gum::learning::DBTranslator4LabelizedVariable xtrans2
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set2.translator(0));
-        GUM_CHECK_EQ(xtrans2.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans2.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans2.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans2.translate("titi").discr_val, (std::size_t)1);
 
         gum::learning::DBTranslatorSet set2bis(set2);
         gum::learning::DBTranslatorSet set3(std::move(set2));
-        GUM_CHECK_EQ(set3.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set3.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set3.translate(row1, 2).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set3.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set3.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set3.translate(row2, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set3.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set3.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set3.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set3.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set3.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set3.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
         gum::learning::DBTranslator4LabelizedVariable xtrans3
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set3.translator(0));
-        GUM_CHECK_EQ(xtrans3.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans3.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans3.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans3.translate("titi").discr_val, (std::size_t)1);
 
         gum::learning::DBTranslatorSet set4(set);
-        GUM_CHECK_EQ(set4.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set4.translate(row1, 2).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set4.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set4.translate(row2, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set4.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set4.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set4.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set4.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set4.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set4.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set4.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set4.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set4.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set4.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set4.translate(row3, 2).discr_val, (std::size_t)1);
         gum::learning::DBTranslator4LabelizedVariable xtrans4
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4.translator(0));
-        GUM_CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
 
         gum::learning::DBTranslatorSet set5(std::move(set2bis));
-        GUM_CHECK_EQ(set5.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set5.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set5.translate(row1, 2).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set5.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set5.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set5.translate(row2, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set5.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set5.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set5.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set5.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set5.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set5.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set5.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set5.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set5.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set5.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set5.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set5.translate(row3, 2).discr_val, (std::size_t)1);
         gum::learning::DBTranslator4LabelizedVariable xtrans5
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set5.translator(0));
-        GUM_CHECK_EQ(xtrans5.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans5.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans5.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans5.translate("titi").discr_val, (std::size_t)1);
 
         const auto ordersafe = set.reorderSafe(0);
-        GUM_CHECK_EQ(ordersafe[0], std::size_t(1));
-        GUM_CHECK_EQ(ordersafe[1], std::size_t(0));
+        CHECK_EQ(ordersafe[0], std::size_t(1));
+        CHECK_EQ(ordersafe[1], std::size_t(0));
       }
     }
 
@@ -293,36 +293,36 @@ namespace gum_tests {
       set.insertTranslator(translator2, 2);
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-      GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+      CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
 
 
       gum::learning::DBTranslatorSet* set4 = set.clone();
-      GUM_CHECK_EQ(set4->translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set4->translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set4->translate(row1, 2).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set4->translate(row2, 0).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set4->translate(row2, 1).cont_val, 0.22f);
-      GUM_CHECK_EQ(set4->translate(row2, 2).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set4->translate(row3, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set4->translate(row3, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set4->translate(row3, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set4->translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set4->translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set4->translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set4->translate(row2, 0).discr_val, (std::size_t)1);
+      CHECK_EQ(set4->translate(row2, 1).cont_val, 0.22f);
+      CHECK_EQ(set4->translate(row2, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set4->translate(row3, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set4->translate(row3, 1).cont_val, 0.33f);
+      CHECK_EQ(set4->translate(row3, 2).discr_val, (std::size_t)1);
       gum::learning::DBTranslator4LabelizedVariable xtrans4
           = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
               set4->translator(0));
-      GUM_CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
+      CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
+      CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
 
       delete set4;
     }
@@ -342,69 +342,69 @@ namespace gum_tests {
         set.insertTranslator(translator2, 2);
 
         std::vector< std::string > row1{".33", "toto", "titi"};
-        GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
 
         std::vector< std::string > row2{".22", "titi", "toto"};
-        GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
 
         std::vector< std::string > row3{".33", "toto", "toto"};
-        GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
 
         gum::learning::DBTranslatorSet* set4 = set.clone();
-        GUM_CHECK_EQ(set4->translate(row1, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4->translate(row1, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set4->translate(row1, 2).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4->translate(row2, 0).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set4->translate(row2, 1).cont_val, 0.22f);
-        GUM_CHECK_EQ(set4->translate(row2, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set4->translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set4->translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set4->translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set4->translate(row1, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set4->translate(row1, 1).cont_val, 0.33f);
+        CHECK_EQ(set4->translate(row1, 2).discr_val, (std::size_t)0);
+        CHECK_EQ(set4->translate(row2, 0).discr_val, (std::size_t)1);
+        CHECK_EQ(set4->translate(row2, 1).cont_val, 0.22f);
+        CHECK_EQ(set4->translate(row2, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set4->translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set4->translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set4->translate(row3, 2).discr_val, (std::size_t)1);
         gum::learning::DBTranslator4LabelizedVariable xtrans4
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->translator(0));
-        GUM_CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans4.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans4.translate("titi").discr_val, (std::size_t)1);
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4b
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->operator[](0));
-        GUM_CHECK_EQ(xtrans4b.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans4b.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans4b.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans4b.translate("titi").discr_val, (std::size_t)1);
 
         gum::learning::DBTranslator4LabelizedVariable xtrans4t
             = dynamic_cast< const gum::learning::DBTranslator4LabelizedVariable& >(
                 set4->translatorSafe(0));
-        GUM_CHECK_EQ(xtrans4t.translate("toto").discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(xtrans4t.translate("titi").discr_val, (std::size_t)1);
+        CHECK_EQ(xtrans4t.translate("toto").discr_val, (std::size_t)0);
+        CHECK_EQ(xtrans4t.translate("titi").discr_val, (std::size_t)1);
 
         delete set4;
 
         gum::learning::DBTranslatorSet set2;
-        GUM_CHECK_EQ(set2.nbTranslators(), (std::size_t)0);
+        CHECK_EQ(set2.nbTranslators(), (std::size_t)0);
         set2 = set;
-        GUM_CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set2.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set2.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set2.translate(row3, 2).discr_val, (std::size_t)1);
 
         gum::learning::DBTranslatorSet set3;
-        GUM_CHECK_EQ(set3.nbTranslators(), (std::size_t)0);
+        CHECK_EQ(set3.nbTranslators(), (std::size_t)0);
         set3 = std::move(set);
-        GUM_CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
-        GUM_CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
-        GUM_CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
-        GUM_CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
+        CHECK_EQ(set3.translate(row3, 0).discr_val, (std::size_t)0);
+        CHECK_EQ(set3.translate(row3, 1).cont_val, 0.33f);
+        CHECK_EQ(set3.translate(row3, 2).discr_val, (std::size_t)1);
       }
     }
 
@@ -417,32 +417,32 @@ namespace gum_tests {
       var1.addLabel("toto");
       var1.addLabel("titi");
       pos = set.insertTranslator(var1, 1, missing, false);
-      GUM_CHECK_EQ(pos, std::size_t(0));
+      CHECK_EQ(pos, std::size_t(0));
 
       gum::ContinuousVariable< double > var0("var0", "");
       pos = set.insertTranslator(var0, 0, missing);
-      GUM_CHECK_EQ(pos, std::size_t(1));
+      CHECK_EQ(pos, std::size_t(1));
 
       gum::LabelizedVariable var2("var2", "", 0);
       var2.addLabel("titi");
       var2.addLabel("toto");
       pos = set.insertTranslator(var2, 2, missing);
-      GUM_CHECK_EQ(pos, std::size_t(2));
+      CHECK_EQ(pos, std::size_t(2));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-      GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+      CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
     }
 
     static void testTrans6() {
@@ -452,61 +452,61 @@ namespace gum_tests {
       gum::learning::DBTranslator4LabelizedVariable translator1(missing, 3);
       std::size_t                                   pos;
       pos = set.insertTranslator(translator1, 1, false);
-      GUM_CHECK_EQ(pos, std::size_t(0));
+      CHECK_EQ(pos, std::size_t(0));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       pos = set.insertTranslator(translator0, 0);
-      GUM_CHECK_EQ(pos, std::size_t(1));
+      CHECK_EQ(pos, std::size_t(1));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       pos = set.insertTranslator(translator2, 2);
-      GUM_CHECK_EQ(pos, std::size_t(2));
+      CHECK_EQ(pos, std::size_t(2));
 
       pos = set.insertTranslator(translator1, 1, false);
-      GUM_CHECK_EQ(pos, std::size_t(3));
+      CHECK_EQ(pos, std::size_t(3));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 3).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 3).discr_val, (std::size_t)0);
 
       std::vector< std::string > row2{".22", "titi", "toto"};
-      GUM_CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
-      GUM_CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row2, 3).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 0).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 1).cont_val, 0.22f);
+      CHECK_EQ(set.translate(row2, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row2, 3).discr_val, (std::size_t)1);
 
       std::vector< std::string > row3{".33", "toto", "toto"};
-      GUM_CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
-      GUM_CHECK_EQ(set.translate(row3, 3).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row3, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row3, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row3, 2).discr_val, (std::size_t)1);
+      CHECK_EQ(set.translate(row3, 3).discr_val, (std::size_t)0);
 
       std::vector< std::string > row4{"???", "???", "???"};
-      GUM_CHECK_EQ(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.translate(row4, 0).discr_val, std::numeric_limits< std::size_t >::max());
       CHECK_THROWS_AS(set.translate(row4, 1), const gum::TypeError&);
-      GUM_CHECK_EQ(set.translate(row4, 3).discr_val, std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.translate(row4, 3).discr_val, std::numeric_limits< std::size_t >::max());
 
       std::vector< std::string > row5{"4.22x", "???", "???"};
       CHECK_THROWS_AS(set.translate(row5, 1), const gum::TypeError&);
-      GUM_CHECK_EQ(set.translate(row5, 2).discr_val, (std::size_t)2);
+      CHECK_EQ(set.translate(row5, 2).discr_val, (std::size_t)2);
 
       CHECK_THROWS_AS(set.translateSafe(row5, 4), const gum::UndefinedElement&);
 
-      GUM_CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0), "toto");
-      GUM_CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 3), "toto");
-      GUM_CHECK_EQ(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)), 7.42f);
-      GUM_CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2), "???");
+      CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 0), "toto");
+      CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}, 3), "toto");
+      CHECK_EQ(std::stof(set.translateBack(gum::learning::DBTranslatedValue{7.42f}, 1)), 7.42f);
+      CHECK_EQ(set.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}, 2), "???");
 
-      GUM_CHECK_EQ(set.domainSize(0), (std::size_t)2);
-      GUM_CHECK_EQ(set.domainSize(2), (std::size_t)3);
-      GUM_CHECK_EQ(set.domainSize(1), std::numeric_limits< std::size_t >::max());
-      GUM_CHECK_EQ(set.domainSize(3), (std::size_t)2);
-      GUM_CHECK_EQ(set.domainSizeSafe(0), (std::size_t)2);
-      GUM_CHECK_EQ(set.domainSizeSafe(2), (std::size_t)3);
-      GUM_CHECK_EQ(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max());
-      GUM_CHECK_EQ(set.domainSizeSafe(3), (std::size_t)2);
+      CHECK_EQ(set.domainSize(0), (std::size_t)2);
+      CHECK_EQ(set.domainSize(2), (std::size_t)3);
+      CHECK_EQ(set.domainSize(1), std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.domainSize(3), (std::size_t)2);
+      CHECK_EQ(set.domainSizeSafe(0), (std::size_t)2);
+      CHECK_EQ(set.domainSizeSafe(2), (std::size_t)3);
+      CHECK_EQ(set.domainSizeSafe(1), std::numeric_limits< std::size_t >::max());
+      CHECK_EQ(set.domainSizeSafe(3), (std::size_t)2);
     }
 
     static void testTrans7() {
@@ -517,22 +517,22 @@ namespace gum_tests {
       var1.addLabel("toto");
       var1.addLabel("titi");
       pos = set.insertTranslator(var1, 1, false);
-      GUM_CHECK_EQ(pos, std::size_t(0));
+      CHECK_EQ(pos, std::size_t(0));
 
       gum::ContinuousVariable< double > var0("var0", "");
       pos = set.insertTranslator(var0, 0);
-      GUM_CHECK_EQ(pos, std::size_t(1));
+      CHECK_EQ(pos, std::size_t(1));
 
       gum::LabelizedVariable var2("var2", "", 0);
       var2.addLabel("titi");
       var2.addLabel("toto");
       pos = set.insertTranslator(var2, 2);
-      GUM_CHECK_EQ(pos, std::size_t(2));
+      CHECK_EQ(pos, std::size_t(2));
 
       std::vector< std::string > row1{".33", "toto", "titi"};
-      GUM_CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
-      GUM_CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
-      GUM_CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 0).discr_val, (std::size_t)0);
+      CHECK_EQ(set.translate(row1, 1).cont_val, 0.33f);
+      CHECK_EQ(set.translate(row1, 2).discr_val, (std::size_t)0);
     }
 
     static void testTrans8() {
@@ -544,74 +544,74 @@ namespace gum_tests {
 
       std::size_t pos;
       pos = set.insertTranslator(translator1, 1);
-      GUM_CHECK_EQ(pos, std::size_t(0));
+      CHECK_EQ(pos, std::size_t(0));
 
       gum::learning::DBTranslator4ContinuousVariable translator0;
       translator0.setVariableName("X0");
       pos = set.insertTranslator(translator0, 0);
-      GUM_CHECK_EQ(pos, std::size_t(1));
+      CHECK_EQ(pos, std::size_t(1));
 
       gum::learning::DBTranslator4LabelizedVariable translator2;
       translator2.setVariableName("X2");
       pos = set.insertTranslator(translator2, 2);
-      GUM_CHECK_EQ(pos, std::size_t(2));
+      CHECK_EQ(pos, std::size_t(2));
 
       translator1.setVariableName("Y1");
       pos = set.insertTranslator(translator1, 1, false);
-      GUM_CHECK_EQ(pos, std::size_t(3));
+      CHECK_EQ(pos, std::size_t(3));
 
       translator0.setVariableName("Y0");
       pos = set.insertTranslator(translator0, 0, false);
-      GUM_CHECK_EQ(pos, std::size_t(4));
+      CHECK_EQ(pos, std::size_t(4));
 
       translator0.setVariableName("Z0");
       pos = set.insertTranslator(translator0, 0, false);
-      GUM_CHECK_EQ(pos, std::size_t(5));
+      CHECK_EQ(pos, std::size_t(5));
 
       translator1.setVariableName("Z1");
       pos = set.insertTranslator(translator1, 1, false);
-      GUM_CHECK_EQ(pos, std::size_t(6));
+      CHECK_EQ(pos, std::size_t(6));
 
       const auto& vectTrans = set.translators();
-      GUM_CHECK_EQ(vectTrans.size(), std::size_t(7));
+      CHECK_EQ(vectTrans.size(), std::size_t(7));
 
-      GUM_CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
-      GUM_CHECK_EQ(vectTrans[1]->variable()->name(), "X0");
-      GUM_CHECK_EQ(vectTrans[2]->variable()->name(), "X2");
-      GUM_CHECK_EQ(vectTrans[3]->variable()->name(), "Y1");
-      GUM_CHECK_EQ(vectTrans[4]->variable()->name(), "Y0");
-      GUM_CHECK_EQ(vectTrans[5]->variable()->name(), "Z0");
-      GUM_CHECK_EQ(vectTrans[6]->variable()->name(), "Z1");
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(2));
+      CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
+      CHECK_EQ(vectTrans[1]->variable()->name(), "X0");
+      CHECK_EQ(vectTrans[2]->variable()->name(), "X2");
+      CHECK_EQ(vectTrans[3]->variable()->name(), "Y1");
+      CHECK_EQ(vectTrans[4]->variable()->name(), "Y0");
+      CHECK_EQ(vectTrans[5]->variable()->name(), "Z0");
+      CHECK_EQ(vectTrans[6]->variable()->name(), "Z1");
+      CHECK_EQ(set.highestInputColumn(), std::size_t(2));
 
       set.eraseTranslator(4, false);
-      GUM_CHECK_EQ(vectTrans.size(), std::size_t(6));
-      GUM_CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
-      GUM_CHECK_EQ(vectTrans[1]->variable()->name(), "X0");
-      GUM_CHECK_EQ(vectTrans[2]->variable()->name(), "X2");
-      GUM_CHECK_EQ(vectTrans[3]->variable()->name(), "Y1");
-      GUM_CHECK_EQ(vectTrans[4]->variable()->name(), "Z0");
-      GUM_CHECK_EQ(vectTrans[5]->variable()->name(), "Z1");
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(2));
+      CHECK_EQ(vectTrans.size(), std::size_t(6));
+      CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
+      CHECK_EQ(vectTrans[1]->variable()->name(), "X0");
+      CHECK_EQ(vectTrans[2]->variable()->name(), "X2");
+      CHECK_EQ(vectTrans[3]->variable()->name(), "Y1");
+      CHECK_EQ(vectTrans[4]->variable()->name(), "Z0");
+      CHECK_EQ(vectTrans[5]->variable()->name(), "Z1");
+      CHECK_EQ(set.highestInputColumn(), std::size_t(2));
 
       set.eraseTranslator(0, true);
-      GUM_CHECK_EQ(vectTrans.size(), std::size_t(4));
-      GUM_CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
-      GUM_CHECK_EQ(vectTrans[1]->variable()->name(), "X2");
-      GUM_CHECK_EQ(vectTrans[2]->variable()->name(), "Y1");
-      GUM_CHECK_EQ(vectTrans[3]->variable()->name(), "Z1");
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(2));
+      CHECK_EQ(vectTrans.size(), std::size_t(4));
+      CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
+      CHECK_EQ(vectTrans[1]->variable()->name(), "X2");
+      CHECK_EQ(vectTrans[2]->variable()->name(), "Y1");
+      CHECK_EQ(vectTrans[3]->variable()->name(), "Z1");
+      CHECK_EQ(set.highestInputColumn(), std::size_t(2));
 
       set.eraseTranslator(2, true);
-      GUM_CHECK_EQ(vectTrans.size(), std::size_t(3));
-      GUM_CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
-      GUM_CHECK_EQ(vectTrans[1]->variable()->name(), "Y1");
-      GUM_CHECK_EQ(vectTrans[2]->variable()->name(), "Z1");
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(1));
+      CHECK_EQ(vectTrans.size(), std::size_t(3));
+      CHECK_EQ(vectTrans[0]->variable()->name(), "X1");
+      CHECK_EQ(vectTrans[1]->variable()->name(), "Y1");
+      CHECK_EQ(vectTrans[2]->variable()->name(), "Z1");
+      CHECK_EQ(set.highestInputColumn(), std::size_t(1));
 
       set.eraseTranslator(1, true);
-      GUM_CHECK_EQ(vectTrans.size(), std::size_t(0));
-      GUM_CHECK_EQ(set.highestInputColumn(), std::size_t(0));
+      CHECK_EQ(vectTrans.size(), std::size_t(0));
+      CHECK_EQ(set.highestInputColumn(), std::size_t(0));
     }
   };
 

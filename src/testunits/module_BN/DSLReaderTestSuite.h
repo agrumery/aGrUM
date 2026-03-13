@@ -87,11 +87,11 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
         CHECK(net->empty());
@@ -105,15 +105,15 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
-        GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(2));
+        CHECK_EQ(net->size(), static_cast< gum::Size >(2));
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -122,10 +122,10 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        GUM_CHECK_EQ(var_1.name(), "n1");
-        GUM_CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_1.name(), "n1");
+        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        GUM_CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
         CHECK(std::abs((proba_1[inst_1] - 0.2f)) < 0.001f);
@@ -133,10 +133,10 @@ namespace gum_tests {
         CHECK(std::abs((proba_1[inst_1] - 0.8f)) < 0.001f);
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        GUM_CHECK_EQ(var_2.name(), "n2");
-        GUM_CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_2.name(), "n2");
+        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        GUM_CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
         CHECK(std::abs((proba_2[inst_2] - 0.3f)) < 0.001f);
@@ -154,14 +154,14 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_NE(net, nullptr);
 
       if (net != nullptr) {
-        GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(2));
+        CHECK_EQ(net->size(), static_cast< gum::Size >(2));
         gum::NodeId node_1 = 0, node_2 = 0;
 
         for (const auto node: net->nodes())
@@ -170,10 +170,10 @@ namespace gum_tests {
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
-        GUM_CHECK_EQ(var_1.name(), "n1");
-        GUM_CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_1.name(), "n1");
+        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
         const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        GUM_CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
         gum::Instantiation inst_1(proba_1);
         inst_1.setFirst();
         CHECK(std::abs((proba_1[inst_1] - 0.2)) < 0.001);
@@ -181,10 +181,10 @@ namespace gum_tests {
         CHECK(std::abs((proba_1[inst_1] - 0.8)) < 0.001);
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        GUM_CHECK_EQ(var_2.name(), "n2");
-        GUM_CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(var_2.name(), "n2");
+        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
         const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        GUM_CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
         gum::Instantiation inst_2(proba_2);
         inst_2.setFirst();
         CHECK(std::abs((proba_2[inst_2] - 0.3)) < 0.001);
@@ -201,12 +201,12 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(6));
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(net->size(), static_cast< gum::Size >(6));
+      CHECK_NE(net, nullptr);
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile3.txt");
       GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
@@ -221,12 +221,12 @@ namespace gum_tests {
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       reader.trace(true);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
       // 0 warnings : no properties
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(net->size(), static_cast< gum::Size >(13));
-      GUM_CHECK_NE(net, nullptr);
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(net->size(), static_cast< gum::Size >(13));
+      CHECK_NE(net, nullptr);
       gum::DSLWriter< double > writer;
       std::string              file2 = GET_RESSOURCES_PATH("outputs/DSLWriter_Ling.txt");
       GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file2, *net));
@@ -241,9 +241,9 @@ namespace gum_tests {
 
       gum::Size nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       gum::HashTable< std::string, gum::NodeId > idMap;
 
@@ -257,12 +257,12 @@ namespace gum_tests {
 
       if (idMap.exists("HISTORY") && idMap.exists("LVFAILURE")) {
         const gum::DiscreteVariable& history = net->variable(idMap["HISTORY"]);
-        GUM_CHECK_EQ(history.domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(history.label(0), "TRUE");
-        GUM_CHECK_EQ(history.label(1), "FALSE");
+        CHECK_EQ(history.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(history.label(0), "TRUE");
+        CHECK_EQ(history.label(1), "FALSE");
         CHECK(net->dag().existsArc(idMap["LVFAILURE"], idMap["HISTORY"]));
         const gum::Tensor< double >& historyCPT = net->cpt(idMap["HISTORY"]);
-        GUM_CHECK_EQ(historyCPT.domainSize(), static_cast< gum::Size >(4));
+        CHECK_EQ(historyCPT.domainSize(), static_cast< gum::Size >(4));
         CHECK(historyCPT.contains(net->variable(idMap["HISTORY"])));
         CHECK(historyCPT.contains(net->variable(idMap["LVFAILURE"])));
         gum::Instantiation historyInst(historyCPT);
@@ -291,12 +291,12 @@ namespace gum_tests {
 
       if (idMap.exists("ERRLOWOUTPUT") && idMap.exists("HRBP")) {
         const gum::DiscreteVariable& errlowoutput = net->variable(idMap["ERRLOWOUTPUT"]);
-        GUM_CHECK_EQ(errlowoutput.domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(errlowoutput.label(0), "TRUE");
-        GUM_CHECK_EQ(errlowoutput.label(1), "FALSE");
+        CHECK_EQ(errlowoutput.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(errlowoutput.label(0), "TRUE");
+        CHECK_EQ(errlowoutput.label(1), "FALSE");
         CHECK(net->dag().existsArc(idMap["ERRLOWOUTPUT"], idMap["HRBP"]));
         const gum::Tensor< double >& errlowoutputCPT = net->cpt(idMap["ERRLOWOUTPUT"]);
-        GUM_CHECK_EQ(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(errlowoutputCPT.domainSize(), static_cast< gum::Size >(2));
         CHECK(errlowoutputCPT.contains(errlowoutput));
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
         errlowoutputInst.chgVal(errlowoutput, 0);
@@ -316,13 +316,13 @@ namespace gum_tests {
         const gum::DiscreteVariable& hypovolemia = net->variable(idMap["HYPOVOLEMIA"]);
         const gum::DiscreteVariable& lvfailure   = net->variable(idMap["LVFAILURE"]);
         // checking label order
-        GUM_CHECK_EQ(lvedvolume.label(0), "LOW");
-        GUM_CHECK_EQ(lvedvolume.label(1), "NORMAL");
-        GUM_CHECK_EQ(lvedvolume.label(2), "HIGH");
-        GUM_CHECK_EQ(hypovolemia.label(0), "TRUE");
-        GUM_CHECK_EQ(hypovolemia.label(1), "FALSE");
-        GUM_CHECK_EQ(lvfailure.label(0), "TRUE");
-        GUM_CHECK_EQ(lvfailure.label(1), "FALSE");
+        CHECK_EQ(lvedvolume.label(0), "LOW");
+        CHECK_EQ(lvedvolume.label(1), "NORMAL");
+        CHECK_EQ(lvedvolume.label(2), "HIGH");
+        CHECK_EQ(hypovolemia.label(0), "TRUE");
+        CHECK_EQ(hypovolemia.label(1), "FALSE");
+        CHECK_EQ(lvfailure.label(0), "TRUE");
+        CHECK_EQ(lvfailure.label(1), "FALSE");
         const gum::Tensor< double >& cpt = net->cpt(idMap["LVEDVOLUME"]);
         gum::Instantiation           inst(cpt);
         gum::Instantiation           var_inst;
@@ -383,9 +383,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -396,9 +396,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -409,9 +409,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -422,9 +422,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -435,9 +435,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -448,9 +448,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -464,9 +464,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -477,9 +477,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -490,9 +490,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }
@@ -503,9 +503,9 @@ namespace gum_tests {
       gum::DSLReader< double > reader(net, file);
       gum::Size                nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      GUM_CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      GUM_CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
 
       if (net) delete net;
     }

@@ -249,7 +249,7 @@ namespace gum_tests {
         // Act
         PRMAggregate agg("my_agg", t, *_boolean_);
         // Assert
-        GUM_CHECK_EQ(agg.agg_type(), t);
+        CHECK_EQ(agg.agg_type(), t);
       }
     }
 
@@ -261,7 +261,7 @@ namespace gum_tests {
       // Act
       CHECK_NOTHROW(expected = agg.label());
       // Assert
-      GUM_CHECK_EQ(actual, expected);
+      CHECK_EQ(actual, expected);
     }
 
     static void testLabelOperationNotAllowed() {
@@ -281,7 +281,7 @@ namespace gum_tests {
       CHECK_NOTHROW(child.addParent(parent));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      GUM_CHECK_EQ(before, after);
+      CHECK_EQ(before, after);
       CHECK(!parent.cpf().contains(child.type().variable()));
     }
 
@@ -294,7 +294,7 @@ namespace gum_tests {
       CHECK_NOTHROW(parent.addChild(child));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      GUM_CHECK_EQ(before, after);
+      CHECK_EQ(before, after);
       CHECK(!child.cpf().contains(parent.type().variable()));
     }
 

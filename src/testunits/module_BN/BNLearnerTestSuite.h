@@ -90,9 +90,9 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.useScoreBD());
-      GUM_CHECK_NE("", learner.checkScorePriorCompatibility());
+      CHECK_NE("", learner.checkScorePriorCompatibility());
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.useScoreBDeu());
-      GUM_CHECK_EQ("", learner.checkScorePriorCompatibility());
+      CHECK_EQ("", learner.checkScorePriorCompatibility());
       learner.useScoreLog2Likelihood();
 
       learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
@@ -120,14 +120,14 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
+        CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       learner.setDatabaseWeight(10.0);
       const auto&  db     = learner.database();
       const double weight = 10.0 / double(db.nbRows());
       for (const auto& row: db) {
-        GUM_CHECK_EQ(row.weight(), weight);
+        CHECK_EQ(row.weight(), weight);
       }
       CHECK((learner.databaseWeight()) == doctest::Approx(10.0).epsilon(1e-4));
 
@@ -139,11 +139,11 @@ namespace gum_tests {
       auto index = std::size_t(0);
       for (const auto& row: db) {
         if (index % 2) {
-          GUM_CHECK_EQ(row.weight(), 2.0);
-          GUM_CHECK_EQ(learner.recordWeight(index), 2.0);
+          CHECK_EQ(row.weight(), 2.0);
+          CHECK_EQ(learner.recordWeight(index), 2.0);
         } else {
-          GUM_CHECK_EQ(row.weight(), 10.0);
-          GUM_CHECK_EQ(learner.recordWeight(index), 10.0);
+          CHECK_EQ(row.weight(), 10.0);
+          CHECK_EQ(learner.recordWeight(index), 10.0);
         }
         ++index;
       }
@@ -169,7 +169,7 @@ namespace gum_tests {
         learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        GUM_CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.dag(), bn2.dag());
       }
 
       {
@@ -192,7 +192,7 @@ namespace gum_tests {
         learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        GUM_CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.dag(), bn2.dag());
       }
 
       {
@@ -228,7 +228,7 @@ namespace gum_tests {
         learner2.useScoreAIC();
         gum::BayesNet< double > xbn2 = learner2.learnBN();
 
-        GUM_CHECK_EQ(xbn1.dag(), xbn2.dag());
+        CHECK_EQ(xbn1.dag(), xbn2.dag());
       }
     }
 
@@ -281,13 +281,13 @@ namespace gum_tests {
         }
 
         learner.useDatabaseRanges(ranges);
-        GUM_CHECK_EQ(learner.databaseRanges(), ranges);
+        CHECK_EQ(learner.databaseRanges(), ranges);
 
         learner.clearDatabaseRanges();
-        GUM_CHECK_NE(learner.databaseRanges(), ranges);
+        CHECK_NE(learner.databaseRanges(), ranges);
 
         learner.useCrossValidationFold(fold, k);
-        GUM_CHECK_EQ(learner.databaseRanges(), ranges);
+        CHECK_EQ(learner.databaseRanges(), ranges);
 
         gum::BayesNet< double > bn1 = learner.learnBN();
 
@@ -297,7 +297,7 @@ namespace gum_tests {
         gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
-        GUM_CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.dag(), bn2.dag());
 
         gum::Instantiation I1;
         gum::Instantiation I2;
@@ -322,7 +322,7 @@ namespace gum_tests {
           LL2 += bn2.log2JointProbability(I2) * row.weight();
         }
 
-        GUM_CHECK_EQ(LL1, LL2);
+        CHECK_EQ(LL1, LL2);
       }
     }
 
@@ -337,7 +337,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         auto mg = learner.learnPDAG();
-        GUM_CHECK_EQ(mg.sizeArcs(), static_cast< gum::Size >(0));
+        CHECK_EQ(mg.sizeArcs(), static_cast< gum::Size >(0));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -453,7 +453,7 @@ namespace gum_tests {
 
         try {
           gum::BayesNet< double > bn = learner.learnBN();
-          GUM_CHECK_EQ(bn.dag().arcs().size(), 9);
+          CHECK_EQ(bn.dag().arcs().size(), 9);
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       } catch (gum::Exception& e) {
         GUM_TRACE(e.errorType());
@@ -480,7 +480,7 @@ namespace gum_tests {
 
       gum::BayesNet< double > bn2 = learner.learnBN();
       for (auto& name: database.variableNames()) {
-        GUM_CHECK_EQ(bn2.variableFromName(name).domainSize(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn2.variableFromName(name).domainSize(), static_cast< gum::Size >(3));
       }
     }
 
@@ -533,10 +533,10 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.variable(0).domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(bn.variable(2).domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(bn.variable(0).label(0), "false");
-        GUM_CHECK_EQ(bn.variable(0).label(1), "true");
+        CHECK_EQ(bn.variable(0).domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.variable(2).domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.variable(0).label(0), "false");
+        CHECK_EQ(bn.variable(0).label(1), "true");
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -579,10 +579,10 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.variable(0).domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(bn.variable(2).domainSize(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(bn.variable(0).label(0), "0");
-        GUM_CHECK_EQ(bn.variable(0).label(1), "1");
+        CHECK_EQ(bn.variable(0).domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.variable(2).domainSize(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.variable(0).label(0), "0");
+        CHECK_EQ(bn.variable(0).label(1), "1");
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -616,7 +616,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
-        GUM_CHECK_EQ(bn.dim(), static_cast< gum::Size >(25));
+        CHECK_EQ(bn.dim(), static_cast< gum::Size >(25));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -628,7 +628,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        GUM_CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -654,7 +654,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnParameters(dag);
-        GUM_CHECK_EQ(bn.dim(), static_cast< gum::Size >(25));
+        CHECK_EQ(bn.dim(), static_cast< gum::Size >(25));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -666,7 +666,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        GUM_CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -706,11 +706,11 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        GUM_CHECK_EQ(bn2.dim(), bn.dim());
+        CHECK_EQ(bn2.dim(), bn.dim());
 
         for (gum::NodeId node: bn.nodes()) {
           gum::NodeId node2 = bn2.idFromName(bn.variable(node).name());
-          GUM_CHECK_EQ(bn.variable(node).toString(), bn2.variable(node2).toString());
+          CHECK_EQ(bn.variable(node).toString(), bn2.variable(node2).toString());
         }
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
@@ -810,9 +810,9 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        GUM_CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(2));
-        GUM_CHECK_EQ(listen.getMess(), "stopped on request");
-        GUM_CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
+        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(2));
+        CHECK_EQ(listen.getMess(), "stopped on request");
+        CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia2.csv"));
@@ -825,9 +825,9 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        GUM_CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(3));
-        GUM_CHECK_EQ(listen.getMess(), "stopped on request");
-        GUM_CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
+        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(3));
+        CHECK_EQ(listen.getMess(), "stopped on request");
+        CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -841,8 +841,8 @@ namespace gum_tests {
 
         CHECK((listen.getNbr())
               == doctest::Approx(static_cast< gum::Size >(15)).epsilon(1));   // 75
-        GUM_CHECK_EQ(listen.getMess(), "stopped on request");
-        GUM_CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
+        CHECK_EQ(listen.getMess(), "stopped on request");
+        CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -855,8 +855,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = learner.learnBN();
 
         CHECK((listen.getNbr()) == doctest::Approx(static_cast< gum::Size >(3)).epsilon(1));   // 2?
-        GUM_CHECK_EQ(listen.getMess(), "stopped on request");
-        GUM_CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
+        CHECK_EQ(listen.getMess(), "stopped on request");
+        CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
     }
 
@@ -910,9 +910,9 @@ namespace gum_tests {
         learn3 = learner.learnParameters(dbn.dag());
       }
 
-      GUM_CHECK_EQ(learn1.variable(learn1.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
-      GUM_CHECK_EQ(learn2.variable(learn2.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
-      GUM_CHECK_EQ(learn2.variable(learn3.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
+      CHECK_EQ(learn1.variable(learn1.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
+      CHECK_EQ(learn2.variable(learn2.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
+      CHECK_EQ(learn2.variable(learn3.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
 
       auto&              p1 = learn1.cpt(learn1.idFromName("c_0"));
       auto&              p2 = learn2.cpt(learn2.idFromName("c_0"));
@@ -922,10 +922,10 @@ namespace gum_tests {
       gum::Instantiation I3(p3);
 
       for (I1.setFirst(), I2.setFirst(), I3.setFirst(); !I1.end(); I1.inc(), I2.inc(), I3.inc()) {
-        GUM_CHECK_EQ(I1.toString(), I2.toString());   // same modalities orders
-        GUM_CHECK_EQ(I1.toString(), I3.toString());   // same modalities orders
-        GUM_CHECK_EQ(p1[I1], p2[I2]);                 // same probabilities
-        GUM_CHECK_EQ(p1[I1], p3[I3]);                 // same probabilities
+        CHECK_EQ(I1.toString(), I2.toString());   // same modalities orders
+        CHECK_EQ(I1.toString(), I3.toString());   // same modalities orders
+        CHECK_EQ(p1[I1], p2[I2]);                 // same probabilities
+        CHECK_EQ(p1[I1], p3[I3]);                 // same probabilities
       }
 
       gum::BayesNet< double > learn4;
@@ -1111,12 +1111,12 @@ namespace gum_tests {
       int                          good      = 1;
       try {
         const auto& xvar_discr = dynamic_cast< const gum::DiscretizedVariable< int >& >(var_discr);
-        GUM_CHECK_EQ(xvar_discr.domainSize(), static_cast< gum::Size >(9));
-        GUM_CHECK_EQ(xvar_discr.label(0), "[60;65[");
-        GUM_CHECK_EQ(xvar_discr.label(1), "[65;70[");
-        GUM_CHECK_EQ(xvar_discr.label(8), "[100;105]");
+        CHECK_EQ(xvar_discr.domainSize(), static_cast< gum::Size >(9));
+        CHECK_EQ(xvar_discr.label(0), "[60;65[");
+        CHECK_EQ(xvar_discr.label(1), "[65;70[");
+        CHECK_EQ(xvar_discr.label(8), "[100;105]");
       } catch (const std::bad_cast&) { good = 0; }
-      GUM_CHECK_EQ(good, 1);
+      CHECK_EQ(good, 1);
     }
 
     static void test_setSliceOrderWithNames() {
@@ -1198,7 +1198,7 @@ namespace gum_tests {
       // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
-                                                                 dirichlet_genset);
+                                                           dirichlet_genset);
       gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
@@ -1234,7 +1234,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > xbn = learner.learnBN();
 
-        GUM_CHECK_EQ(xbn.moralGraph(), bn.moralGraph());
+        CHECK_EQ(xbn.moralGraph(), bn.moralGraph());
       }
     }
 
@@ -1261,13 +1261,13 @@ namespace gum_tests {
           .EMdisableMaxIter()
           .EMdisableMaxTime()
           .useSmoothingPrior();
-      GUM_CHECK_EQ(learner.EMMinEpsilonRate(), 1e-3);
-      GUM_CHECK_EQ(learner.EMisEnabledMinEpsilonRate(), true);
-      GUM_CHECK_EQ(learner.EMisEnabledEpsilon(), false);
-      GUM_CHECK_EQ(learner.EMisEnabledMaxIter(), false);
-      GUM_CHECK_EQ(learner.EMisEnabledMaxTime(), false);
-      GUM_CHECK_EQ(learner.EMMaxIter(), 10);
-      GUM_CHECK_EQ(learner.EMMaxTime(), 200);
+      CHECK_EQ(learner.EMMinEpsilonRate(), 1e-3);
+      CHECK_EQ(learner.EMisEnabledMinEpsilonRate(), true);
+      CHECK_EQ(learner.EMisEnabledEpsilon(), false);
+      CHECK_EQ(learner.EMisEnabledMaxIter(), false);
+      CHECK_EQ(learner.EMisEnabledMaxTime(), false);
+      CHECK_EQ(learner.EMMaxIter(), 10);
+      CHECK_EQ(learner.EMMaxTime(), 200);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.EM().nbrIterations());
@@ -1422,8 +1422,8 @@ namespace gum_tests {
 
     static void test_loglikelihood() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/chi2.csv"));
-      GUM_CHECK_EQ(learner.nbRows(), static_cast< gum::Size >(500));
-      GUM_CHECK_EQ(learner.nbCols(), static_cast< gum::Size >(4));
+      CHECK_EQ(learner.nbRows(), static_cast< gum::Size >(500));
+      CHECK_EQ(learner.nbCols(), static_cast< gum::Size >(4));
 
       double siz = -1.0 * learner.database().size();
       learner.useNoPrior();
@@ -1467,7 +1467,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
       }
 
       {
@@ -1478,7 +1478,7 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
         gum::ArcSet possible_arcs{gum::Arc(bn.idFromName("smoking"), bn.idFromName("lung_cancer")),
                                   gum::Arc(bn.idFromName("bronchitis"), bn.idFromName("smoking")),
                                   gum::Arc(bn.idFromName("smoking"), bn.idFromName("bronchitis")),
@@ -1496,7 +1496,7 @@ namespace gum_tests {
         learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
         gum::ArcSet possible_arcs{gum::Arc(bn.idFromName("bronchitis"), bn.idFromName("smoking")),
                                   gum::Arc(bn.idFromName("smoking"), bn.idFromName("bronchitis")),
                                   gum::Arc(bn.idFromName("lung_cancer"), bn.idFromName("smoking"))};
@@ -1513,8 +1513,8 @@ namespace gum_tests {
         learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(3));
-        GUM_CHECK_LE(static_cast< gum::Size >(1), bn.sizeArcs());
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_LE(static_cast< gum::Size >(1), bn.sizeArcs());
 
         gum::ArcSet possible_arcs{
             gum::Arc(bn.idFromName("smoking"), bn.idFromName("lung_cancer")),
@@ -1539,7 +1539,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
       }
 
       {
@@ -1550,7 +1550,7 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
       }
@@ -1565,7 +1565,7 @@ namespace gum_tests {
         learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
       }
@@ -1580,7 +1580,7 @@ namespace gum_tests {
         learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
@@ -1598,7 +1598,7 @@ namespace gum_tests {
         learner.addPossibleEdge("visit_to_Asia", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
       }
 
       {
@@ -1609,7 +1609,7 @@ namespace gum_tests {
         learner.addPossibleEdge("bronchitis", "smoking");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
       }
@@ -1624,7 +1624,7 @@ namespace gum_tests {
         learner.addForbiddenArc("smoking", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(2));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
       }
@@ -1639,7 +1639,7 @@ namespace gum_tests {
         learner.addMandatoryArc("visit_to_Asia", "bronchitis");
 
         gum::BayesNet< double > bn = learner.learnBN();
-        GUM_CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
@@ -1648,12 +1648,12 @@ namespace gum_tests {
 
     static void testPseudoCount() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/minimal.csv"));
-      GUM_CHECK_EQ(learner.domainSize(0), 2u);
-      GUM_CHECK_EQ(learner.domainSize("X"), 2u);
-      GUM_CHECK_EQ(learner.domainSize(1), 2u);
-      GUM_CHECK_EQ(learner.domainSize("Y"), 2u);
-      GUM_CHECK_EQ(learner.domainSize(2), 3u);
-      GUM_CHECK_EQ(learner.domainSize("Z"), 3u);
+      CHECK_EQ(learner.domainSize(0), 2u);
+      CHECK_EQ(learner.domainSize("X"), 2u);
+      CHECK_EQ(learner.domainSize(1), 2u);
+      CHECK_EQ(learner.domainSize("Y"), 2u);
+      CHECK_EQ(learner.domainSize(2), 3u);
+      CHECK_EQ(learner.domainSize("Z"), 3u);
       learner.useNoPrior();
 
       CHECK((learner.rawPseudoCount(std::vector< gum::NodeId >({0})))
@@ -1685,7 +1685,7 @@ namespace gum_tests {
 
       gum::learning::BNLearner learner2(GET_RESSOURCES_PATH("csv/asia.csv"), templ12);
       auto                     bn2 = learner2.learnParameters(templ12.dag());
-      GUM_CHECK_EQ(bn.cpt("lung_cancer").toString(), bn2.cpt("lung_cancer").toString());
+      CHECK_EQ(bn.cpt("lung_cancer").toString(), bn2.cpt("lung_cancer").toString());
 
       //////////////////////////
       // with score AIC
@@ -1756,32 +1756,32 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/renewal.csv"));
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(std::get< 0 >(state[0]), "Filename");
-        GUM_CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
+        CHECK_EQ(state.size(), static_cast< gum::Size >(8));
+        CHECK_EQ(std::get< 0 >(state[0]), "Filename");
+        CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
 
-        GUM_CHECK_EQ(std::get< 0 >(state[1]), "Size");
-        GUM_CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
+        CHECK_EQ(std::get< 0 >(state[1]), "Size");
+        CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[2]), "Variables");
+        CHECK_EQ(std::get< 0 >(state[2]), "Variables");
         CHECK((std::get< 1 >(state[2]))
               == ("loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
                   "coupon[2], recent visit[2]"));
 
-        GUM_CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
-        GUM_CHECK_EQ(std::get< 1 >(state[3]), "True");
+        CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
+        CHECK_EQ(std::get< 1 >(state[3]), "True");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
-        GUM_CHECK_EQ(std::get< 1 >(state[4]), "False");
+        CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
+        CHECK_EQ(std::get< 1 >(state[4]), "False");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-        GUM_CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[6]), "Correction");
-        GUM_CHECK_EQ(std::get< 1 >(state[6]), "MDL");
+        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
+        CHECK_EQ(std::get< 1 >(state[6]), "MDL");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[7]), "Prior");
-        GUM_CHECK_EQ(std::get< 1 >(state[7]), "-");
+        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+        CHECK_EQ(std::get< 1 >(state[7]), "-");
       }
 
       learner.useMIIC();
@@ -1789,71 +1789,71 @@ namespace gum_tests {
 
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(std::get< 0 >(state[0]), "Filename");
-        GUM_CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
+        CHECK_EQ(state.size(), static_cast< gum::Size >(8));
+        CHECK_EQ(std::get< 0 >(state[0]), "Filename");
+        CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
 
-        GUM_CHECK_EQ(std::get< 0 >(state[1]), "Size");
-        GUM_CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
+        CHECK_EQ(std::get< 0 >(state[1]), "Size");
+        CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[2]), "Variables");
+        CHECK_EQ(std::get< 0 >(state[2]), "Variables");
         CHECK((std::get< 1 >(state[2]))
               == ("loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
                   "coupon[2], recent visit[2]"));
 
 
-        GUM_CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
-        GUM_CHECK_EQ(std::get< 1 >(state[3]), "True");
+        CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
+        CHECK_EQ(std::get< 1 >(state[3]), "True");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
-        GUM_CHECK_EQ(std::get< 1 >(state[4]), "False");
+        CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
+        CHECK_EQ(std::get< 1 >(state[4]), "False");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-        GUM_CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[6]), "Correction");
-        GUM_CHECK_EQ(std::get< 1 >(state[6]), "NML");
+        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
+        CHECK_EQ(std::get< 1 >(state[6]), "NML");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[7]), "Prior");
-        GUM_CHECK_EQ(std::get< 1 >(state[7]), "-");
+        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+        CHECK_EQ(std::get< 1 >(state[7]), "-");
       }
 
       learner.addPossibleEdge("loyalty", "renewal");
       learner.setSliceOrder({{"loyalty", "renewal"}, {"recent visit", "corporate customer"}});
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(10));
-        GUM_CHECK_EQ(std::get< 0 >(state[0]), "Filename");
-        GUM_CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
+        CHECK_EQ(state.size(), static_cast< gum::Size >(10));
+        CHECK_EQ(std::get< 0 >(state[0]), "Filename");
+        CHECK_EQ(std::get< 1 >(state[0]), GET_RESSOURCES_PATH("csv/renewal.csv"));
 
-        GUM_CHECK_EQ(std::get< 0 >(state[1]), "Size");
-        GUM_CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
+        CHECK_EQ(std::get< 0 >(state[1]), "Size");
+        CHECK_EQ(std::get< 1 >(state[1]), "(50000,6)");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[2]), "Variables");
+        CHECK_EQ(std::get< 0 >(state[2]), "Variables");
         CHECK((std::get< 1 >(state[2]))
               == ("loyalty[2], renewal[2], yearly consumption[5], corporate customer[2], "
                   "coupon[2], recent visit[2]"));
 
 
-        GUM_CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
-        GUM_CHECK_EQ(std::get< 1 >(state[3]), "True");
+        CHECK_EQ(std::get< 0 >(state[3]), "Induced types");
+        CHECK_EQ(std::get< 1 >(state[3]), "True");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
-        GUM_CHECK_EQ(std::get< 1 >(state[4]), "False");
+        CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
+        CHECK_EQ(std::get< 1 >(state[4]), "False");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-        GUM_CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[6]), "Correction");
-        GUM_CHECK_EQ(std::get< 1 >(state[6]), "NML");
+        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
+        CHECK_EQ(std::get< 1 >(state[6]), "NML");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[7]), "Prior");
-        GUM_CHECK_EQ(std::get< 1 >(state[7]), "-");
+        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+        CHECK_EQ(std::get< 1 >(state[7]), "-");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[8]), "Constraint Possible Edges");
-        GUM_CHECK_EQ(std::get< 1 >(state[8]), "{loyalty--renewal}");
+        CHECK_EQ(std::get< 0 >(state[8]), "Constraint Possible Edges");
+        CHECK_EQ(std::get< 1 >(state[8]), "{loyalty--renewal}");
 
-        GUM_CHECK_EQ(std::get< 0 >(state[9]), "Constraint Slice Order");
+        CHECK_EQ(std::get< 0 >(state[9]), "Constraint Slice Order");
         CHECK((std::get< 1 >(state[9]))
               == ("{corporate customer:1, renewal:0, loyalty:0, recent visit:1}"));
       }
@@ -1864,9 +1864,9 @@ namespace gum_tests {
       learner.setInitialDAG(dag);
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(11));
-        GUM_CHECK_EQ(std::get< 0 >(state[10]), "Initial DAG");
-        GUM_CHECK_EQ(std::get< 1 >(state[10]), "True");
+        CHECK_EQ(state.size(), static_cast< gum::Size >(11));
+        CHECK_EQ(std::get< 0 >(state[10]), "Initial DAG");
+        CHECK_EQ(std::get< 1 >(state[10]), "True");
       }
     }
 
@@ -1876,22 +1876,22 @@ namespace gum_tests {
       learner.useK2(std::vector< gum::NodeId >{5, 4, 3, 2, 1, 0});
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(10));
-        GUM_CHECK_EQ(std::get< 0 >(state[6]), "K2 order");
+        CHECK_EQ(state.size(), static_cast< gum::Size >(10));
+        CHECK_EQ(std::get< 0 >(state[6]), "K2 order");
         CHECK(
             (std::get< 1 >(state[6]))
             == ("recent visit, coupon, corporate customer, yearly consumption, renewal, loyalty"));
 
-        GUM_CHECK_EQ(std::get< 0 >(state[9]), "Database weight");
-        GUM_CHECK_EQ(std::get< 1 >(state[9]), "1000.000000");
+        CHECK_EQ(std::get< 0 >(state[9]), "Database weight");
+        CHECK_EQ(std::get< 1 >(state[9]), "1000.000000");
       }
       learner.useScoreAIC();
       learner.useBDeuPrior();
       {
         auto state = learner.state();
-        GUM_CHECK_EQ(state.size(), static_cast< gum::Size >(11));
-        GUM_CHECK_EQ(std::get< 0 >(state[8]), "Prior");
-        GUM_CHECK_NE(std::get< 2 >(state[8]), "");   // there is a comment about AIC versus BDeu
+        CHECK_EQ(state.size(), static_cast< gum::Size >(11));
+        CHECK_EQ(std::get< 0 >(state[8]), "Prior");
+        CHECK_NE(std::get< 2 >(state[8]), "");   // there is a comment about AIC versus BDeu
       }
     }
 
@@ -1941,13 +1941,13 @@ namespace gum_tests {
           learner.useDatabaseRanges(ranges);
           learner.setNumberOfThreads(nb_threads);
 
-          GUM_CHECK_EQ(learner.databaseRanges(), ranges);
+          CHECK_EQ(learner.databaseRanges(), ranges);
 
           learner.clearDatabaseRanges();
-          GUM_CHECK_NE(learner.databaseRanges(), ranges);
+          CHECK_NE(learner.databaseRanges(), ranges);
 
           learner.useCrossValidationFold(fold, k);
-          GUM_CHECK_EQ(learner.databaseRanges(), ranges);
+          CHECK_EQ(learner.databaseRanges(), ranges);
 
           gum::BayesNet< double > bn1 = learner.learnBN();
 
@@ -1957,7 +1957,7 @@ namespace gum_tests {
           gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
           gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
-          GUM_CHECK_EQ(bn1.dag(), bn2.dag());
+          CHECK_EQ(bn1.dag(), bn2.dag());
 
           gum::Instantiation I1;
           gum::Instantiation I2;
@@ -1982,7 +1982,7 @@ namespace gum_tests {
             LL2 += bn2.log2JointProbability(I2) * row.weight();
           }
 
-          GUM_CHECK_EQ(LL1, LL2);
+          CHECK_EQ(LL1, LL2);
         }
       }
     }
@@ -2068,19 +2068,19 @@ namespace gum_tests {
       bn.cpt(hh).fillWith({0.2, 0.8, 0.7, 0.3});
 
       gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/paramEM.csv"), bn);
-      GUM_CHECK_EQ(learner.hasMissingValues(), true);
+      CHECK_EQ(learner.hasMissingValues(), true);
 
       learner.useEM(1e-2);
       learner.useSmoothingPrior();
       learner.setVerbosity(true);
       auto bn1 = learner.learnParameters(bn.dag());
-      GUM_CHECK_LE(1UL, learner.EMnbrIterations());
+      CHECK_LE(1UL, learner.EMnbrIterations());
 
       for (auto node: bn.dag()) {
         const auto& cpt  = bn1.cpt(node);
         auto        cpt2 = cpt;
         cpt2.normalizeAsCPT();
-        GUM_CHECK_EQ(cpt, cpt2);
+        CHECK_EQ(cpt, cpt2);
       }
     }
 
@@ -2141,20 +2141,20 @@ namespace gum_tests {
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
         auto                               bn = learner.learnBN();
-        GUM_CHECK_LT(static_cast< gum::Size >(0), bn.parents("smoking").size());
-        GUM_CHECK_LT(static_cast< gum::Size >(0), bn.children("visit_to_Asia").size());
+        CHECK_LT(static_cast< gum::Size >(0), bn.parents("smoking").size());
+        CHECK_LT(static_cast< gum::Size >(0), bn.children("visit_to_Asia").size());
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
         learner.addNoParentNode("smoking");
         auto bn = learner.learnBN();
-        GUM_CHECK_EQ(static_cast< gum::Size >(0), bn.parents("smoking").size());
+        CHECK_EQ(static_cast< gum::Size >(0), bn.parents("smoking").size());
       }
       {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
         learner.addNoChildrenNode("visit_to_Asia");
         auto bn = learner.learnBN();
-        GUM_CHECK_EQ(static_cast< gum::Size >(0), bn.children("visit_to_Asia").size());
+        CHECK_EQ(static_cast< gum::Size >(0), bn.children("visit_to_Asia").size());
       }
     }
 
@@ -2170,10 +2170,10 @@ namespace gum_tests {
       learner2.copyState(learner);
 
       auto state2 = learner2.state();
-      GUM_CHECK_EQ(state.size(), state2.size());
+      CHECK_EQ(state.size(), state2.size());
       for (gum::Size i = 0; i < state.size(); ++i) {
-        GUM_CHECK_EQ(std::get< 0 >(state[i]), std::get< 0 >(state2[i]));
-        GUM_CHECK_EQ(std::get< 1 >(state[i]), std::get< 1 >(state2[i]));
+        CHECK_EQ(std::get< 0 >(state[i]), std::get< 0 >(state2[i]));
+        CHECK_EQ(std::get< 1 >(state[i]), std::get< 1 >(state2[i]));
       }
     }
 
@@ -2189,13 +2189,13 @@ namespace gum_tests {
       learner2.copyState(learner);
 
       auto state2 = learner2.state();
-      GUM_CHECK_EQ(state.size(), state2.size());
+      CHECK_EQ(state.size(), state2.size());
       for (gum::Size i = 0; i < state.size(); ++i) {
         const auto& key = std::get< 0 >(state[i]);
         const auto& val = std::get< 1 >(state[i]);
         if ((key == "Filename") || (key == "Variables")) continue;
-        GUM_CHECK_EQ(key, std::get< 0 >(state2[i]));
-        GUM_CHECK_EQ(val, std::get< 1 >(state2[i]));
+        CHECK_EQ(key, std::get< 0 >(state2[i]));
+        CHECK_EQ(val, std::get< 1 >(state2[i]));
       }
     }
 

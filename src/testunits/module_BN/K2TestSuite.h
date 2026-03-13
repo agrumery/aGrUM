@@ -120,8 +120,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-        GUM_CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(8));
-        GUM_CHECK_EQ(bn2.dag().arcs().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn2.dag().arcs().size(), static_cast< gum::Size >(8));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }   // namespace gum_tests
 

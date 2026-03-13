@@ -71,13 +71,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("t_state"));
       auto state = prm.type("t_state");
-      GUM_CHECK_EQ(state.variable().domainSize(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(state.variable().label(0), "OK");
-      GUM_CHECK_EQ(state.variable().label(1), "NOK");
+      CHECK_EQ(state.variable().domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(state.variable().label(0), "OK");
+      CHECK_EQ(state.variable().label(1), "NOK");
     }   // namespace gum_tests
 
     static void testSimpleTypeError1() {
@@ -92,8 +92,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : invalid declaration" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -109,8 +109,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 29| Error : semicolon expected" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -126,8 +126,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|2 col 1| Error : semicolon expected" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
       CHECK(!prm.isType("t_ink"));
     }
@@ -144,8 +144,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 23| Error : comma expected" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -161,8 +161,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 24| Error : invalid declaration" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -178,8 +178,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -195,8 +195,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 21| Error : invalid declaration" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -212,8 +212,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 25| Error : invalid declaration" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -229,8 +229,8 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|2 col 6| Error : Type t_state exists already" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
     }
 
@@ -246,16 +246,16 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("t_state"));
       const auto& boolean = prm.type("boolean");
       const auto& state   = prm.type("t_state");
       CHECK(state.isSubTypeOf(boolean));
       const auto& map = state.label_map();
-      GUM_CHECK_EQ(map.size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(map[0], static_cast< gum::Size >(1));
-      GUM_CHECK_EQ(map[1], static_cast< gum::Size >(0));
+      CHECK_EQ(map.size(), static_cast< gum::Size >(2));
+      CHECK_EQ(map[0], static_cast< gum::Size >(1));
+      CHECK_EQ(map[1], static_cast< gum::Size >(0));
     }
 
     static void testExtendedTypeError1() {
@@ -270,13 +270,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 21| Error : comma expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testExtendedTypeError2() {
@@ -291,11 +291,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
       std::stringstream msg;
       msg << "|1 col 22| Error : Unknown type foobar" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(output.str(), msg.str());
     }
 
     static void testExtendedTypeError3() {
@@ -310,11 +310,11 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_state"));
       std::stringstream msg;
       msg << "|2 col 5| Error : Unknown label vrue in boolean" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(output.str(), msg.str());
     }
 
     static void testOrderDoesNotMatter() {
@@ -333,10 +333,10 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(3));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(3));
       CHECK(prm.isType("t_state"));
       CHECK(prm.isType("t_degraded"));
-      GUM_CHECK_EQ(output.str(), "");
+      CHECK_EQ(output.str(), "");
     }
 
     static void testIntType() {
@@ -349,21 +349,21 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("t_power"));
       auto power = prm.type("t_power");
-      GUM_CHECK_EQ(power.variable().domainSize(), static_cast< gum::Size >(10));
-      GUM_CHECK_EQ(power.variable().label(0), "0");
-      GUM_CHECK_EQ(power.variable().label(1), "1");
-      GUM_CHECK_EQ(power.variable().label(2), "2");
-      GUM_CHECK_EQ(power.variable().label(3), "3");
-      GUM_CHECK_EQ(power.variable().label(4), "4");
-      GUM_CHECK_EQ(power.variable().label(5), "5");
-      GUM_CHECK_EQ(power.variable().label(6), "6");
-      GUM_CHECK_EQ(power.variable().label(7), "7");
-      GUM_CHECK_EQ(power.variable().label(8), "8");
-      GUM_CHECK_EQ(power.variable().label(9), "9");
+      CHECK_EQ(power.variable().domainSize(), static_cast< gum::Size >(10));
+      CHECK_EQ(power.variable().label(0), "0");
+      CHECK_EQ(power.variable().label(1), "1");
+      CHECK_EQ(power.variable().label(2), "2");
+      CHECK_EQ(power.variable().label(3), "3");
+      CHECK_EQ(power.variable().label(4), "4");
+      CHECK_EQ(power.variable().label(5), "5");
+      CHECK_EQ(power.variable().label(6), "6");
+      CHECK_EQ(power.variable().label(7), "7");
+      CHECK_EQ(power.variable().label(8), "8");
+      CHECK_EQ(power.variable().label(9), "9");
     }
 
     static void testIntTypeWithNegatives() {
@@ -377,29 +377,29 @@ namespace gum_tests {
         // Act
         GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
         // Assert
-        GUM_CHECK_EQ(output.str(), "");
-        GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+        CHECK_EQ(output.str(), "");
+        CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
         CHECK(prm.isType("t_power"));
         auto power = prm.type("t_power");
-        GUM_CHECK_EQ(power.variable().domainSize(), static_cast< gum::Size >(19));
-        GUM_CHECK_EQ(power.variable().label(0), "-9");
-        GUM_CHECK_EQ(power.variable().label(1), "-8");
-        GUM_CHECK_EQ(power.variable().label(2), "-7");
-        GUM_CHECK_EQ(power.variable().label(3), "-6");
-        GUM_CHECK_EQ(power.variable().label(4), "-5");
-        GUM_CHECK_EQ(power.variable().label(5), "-4");
-        GUM_CHECK_EQ(power.variable().label(6), "-3");
-        GUM_CHECK_EQ(power.variable().label(7), "-2");
-        GUM_CHECK_EQ(power.variable().label(8), "-1");
-        GUM_CHECK_EQ(power.variable().label(9), "0");
-        GUM_CHECK_EQ(power.variable().label(10), "1");
-        GUM_CHECK_EQ(power.variable().label(11), "2");
-        GUM_CHECK_EQ(power.variable().label(12), "3");
-        GUM_CHECK_EQ(power.variable().label(13), "4");
-        GUM_CHECK_EQ(power.variable().label(14), "5");
-        GUM_CHECK_EQ(power.variable().label(15), "6");
-        GUM_CHECK_EQ(power.variable().label(16), "7");
-        GUM_CHECK_EQ(power.variable().label(17), "8");
+        CHECK_EQ(power.variable().domainSize(), static_cast< gum::Size >(19));
+        CHECK_EQ(power.variable().label(0), "-9");
+        CHECK_EQ(power.variable().label(1), "-8");
+        CHECK_EQ(power.variable().label(2), "-7");
+        CHECK_EQ(power.variable().label(3), "-6");
+        CHECK_EQ(power.variable().label(4), "-5");
+        CHECK_EQ(power.variable().label(5), "-4");
+        CHECK_EQ(power.variable().label(6), "-3");
+        CHECK_EQ(power.variable().label(7), "-2");
+        CHECK_EQ(power.variable().label(8), "-1");
+        CHECK_EQ(power.variable().label(9), "0");
+        CHECK_EQ(power.variable().label(10), "1");
+        CHECK_EQ(power.variable().label(11), "2");
+        CHECK_EQ(power.variable().label(12), "3");
+        CHECK_EQ(power.variable().label(13), "4");
+        CHECK_EQ(power.variable().label(14), "5");
+        CHECK_EQ(power.variable().label(15), "6");
+        CHECK_EQ(power.variable().label(16), "7");
+        CHECK_EQ(power.variable().label(17), "8");
       } catch (gum::OutOfBounds& e) { GUM_SHOWERROR(e); }
     }
 
@@ -413,13 +413,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : comma expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError2() {
@@ -432,13 +432,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 18| Error : \"(\" expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError3() {
@@ -451,13 +451,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 21| Error : comma expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError4() {
@@ -470,13 +470,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 6| Error : label expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError5() {
@@ -489,13 +489,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : integer expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError6() {
@@ -508,13 +508,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 23| Error : \")\" expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError7() {
@@ -527,13 +527,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 19| Error : integer expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError8() {
@@ -546,13 +546,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 24| Error : semicolon expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError9() {
@@ -565,13 +565,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 25| Error : semicolon expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testIntTypeError10() {
@@ -584,13 +584,13 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(1));
       CHECK(!prm.isType("t_power"));
       auto line = std::string();
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 24| Error : semicolon expected";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
 
     static void testTypeInModule1() {
@@ -603,8 +603,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(!prm.isType("t_state"));
       CHECK(prm.isType("fr.agrum.t_state"));
     }
@@ -625,8 +625,8 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output, "fr.agrum"));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(3));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(3));
       CHECK(!prm.isType("t_state"));
       CHECK(prm.isType("fr.agrum.t_state"));
       CHECK(!prm.isType("t_degraded"));
@@ -643,16 +643,16 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("range"));
       const auto& range = prm.type("range");
-      GUM_CHECK_EQ(range.variable().labels().size(), static_cast< gum::Size >(10));
-      GUM_CHECK_EQ(range.variable().varType(), gum::VarType::RANGE);
-      GUM_CHECK_EQ(range.variable().labels().at(0), "1");
-      GUM_CHECK_EQ(range.variable().labels().at(1), "2");
-      GUM_CHECK_EQ(range.variable().labels().at(2), "3");
-      GUM_CHECK_EQ(range.variable().labels().at(9), "10");
+      CHECK_EQ(range.variable().labels().size(), static_cast< gum::Size >(10));
+      CHECK_EQ(range.variable().varType(), gum::VarType::RANGE);
+      CHECK_EQ(range.variable().labels().at(0), "1");
+      CHECK_EQ(range.variable().labels().at(1), "2");
+      CHECK_EQ(range.variable().labels().at(2), "3");
+      CHECK_EQ(range.variable().labels().at(9), "10");
     }
 
     static void testRealType1() {
@@ -665,14 +665,14 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("angle"));
       const auto& angle = prm.type("angle");
-      GUM_CHECK_EQ(angle.variable().varType(), gum::VarType::DISCRETIZED);
-      GUM_CHECK_EQ(angle.variable().labels().size(), static_cast< gum::Size >(2));
-      GUM_CHECK_EQ(angle.variable().labels().at(0), "[0;90[");
-      GUM_CHECK_EQ(angle.variable().labels().at(1), "[90;180]");
+      CHECK_EQ(angle.variable().varType(), gum::VarType::DISCRETIZED);
+      CHECK_EQ(angle.variable().labels().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(angle.variable().labels().at(0), "[0;90[");
+      CHECK_EQ(angle.variable().labels().at(1), "[90;180]");
     }
 
     static void testRealType2() {
@@ -685,14 +685,14 @@ namespace gum_tests {
       // Act
       GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
       // Assert
-      GUM_CHECK_EQ(output.str(), "");
-      GUM_CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
+      CHECK_EQ(output.str(), "");
+      CHECK_EQ(prm.types().size(), static_cast< gum::Size >(2));
       CHECK(prm.isType("angle"));
       const auto& angle = prm.type("angle");
-      GUM_CHECK_EQ(angle.variable().labels().size(), static_cast< gum::Size >(3));
-      GUM_CHECK_EQ(angle.variable().labels().at(0), "[0;90[");
-      GUM_CHECK_EQ(angle.variable().labels().at(1), "[90;180[");
-      GUM_CHECK_EQ(angle.variable().labels().at(2), "[180;360]");
+      CHECK_EQ(angle.variable().labels().size(), static_cast< gum::Size >(3));
+      CHECK_EQ(angle.variable().labels().at(0), "[0;90[");
+      CHECK_EQ(angle.variable().labels().at(1), "[90;180[");
+      CHECK_EQ(angle.variable().labels().at(2), "[180;360]");
     }
 
     static void testRealTypeError1() {
@@ -707,7 +707,7 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 2 values in range expected at least 3" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(output.str(), msg.str());
     }
 
     static void testRealTypeError2() {
@@ -722,7 +722,7 @@ namespace gum_tests {
       // Assert
       std::stringstream msg;
       msg << "|1 col 1| Error : Found 1 values in range expected at least 3" << std::endl;
-      GUM_CHECK_EQ(output.str(), msg.str());
+      CHECK_EQ(output.str(), msg.str());
     }
 
     static void testRealTypeError3() {
@@ -739,7 +739,7 @@ namespace gum_tests {
       std::getline(output, line);
       std::stringstream msg;
       msg << "|1 col 20| Error : invalid declaration";
-      GUM_CHECK_EQ(line, msg.str());
+      CHECK_EQ(line, msg.str());
     }
   };
 

@@ -95,17 +95,17 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      GUM_CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
+      CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
 
       for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          GUM_CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
-          GUM_CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
+          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
+          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
         } else {
-          GUM_CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
-          GUM_CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
+          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
+          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
         }
 
         gum::Size                                            six  = 0;
@@ -124,9 +124,9 @@ namespace gum_tests {
           }
         }
 
-        GUM_CHECK_EQ(six, static_cast< gum::Size >(30));
+        CHECK_EQ(six, static_cast< gum::Size >(30));
 
-        if (i.referenceSlots().size()) { GUM_CHECK_EQ(two, static_cast< gum::Size >(2)); }
+        if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
       }
 
       // testing classes
@@ -135,7 +135,7 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        GUM_CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
+        CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
@@ -147,7 +147,7 @@ namespace gum_tests {
 
       // testing instances
       const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      GUM_CHECK_EQ(sys.size(), static_cast< gum::Size >(100));
+      CHECK_EQ(sys.size(), static_cast< gum::Size >(100));
 
       if (prm) delete prm;
 
@@ -167,7 +167,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
       // testing interfaces
       const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      GUM_CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
+      CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
 
       for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
            iter != i_set.end();
@@ -175,11 +175,11 @@ namespace gum_tests {
         const gum::prm::PRMInterface< double >& i = **iter;
 
         if (i.referenceSlots().size()) {
-          GUM_CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
-          GUM_CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
+          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
+          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
         } else {
-          GUM_CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
-          GUM_CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
+          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
+          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
         }
 
         gum::Size                                            six  = 0;
@@ -198,9 +198,9 @@ namespace gum_tests {
           }
         }
 
-        GUM_CHECK_EQ(six, static_cast< gum::Size >(30));
+        CHECK_EQ(six, static_cast< gum::Size >(30));
 
-        if (i.referenceSlots().size()) { GUM_CHECK_EQ(two, static_cast< gum::Size >(2)); }
+        if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
       }
 
       // testing classes
@@ -209,7 +209,7 @@ namespace gum_tests {
       for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
            c != c_set.end();
            ++c) {
-        GUM_CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
+        CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
 
         for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
              = (**c).attributes().begin();
