@@ -170,30 +170,30 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation score(parser, prior);
       score.useNoCorr();
 
-      CHECK((score.score(1, 6, std::vector< gum::NodeId >{0}))
-            == doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0})).epsilon(0.001));
+      CHECK_EQ((score.score(1, 6, std::vector< gum::NodeId >{0})),
+               doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0})).epsilon(0.001));
 
       CHECK((score.score(2, 6, std::vector< gum::NodeId >{}))
             == doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
-      CHECK((score.score(2, 6)) == doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
-      CHECK((score.score(4, 7)) == doctest::Approx(_I_(parser, 4, 7)).epsilon(0.001));
+      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
+      CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7)).epsilon(0.001));
 
       score.clear();
-      CHECK((score.score(6, 2)) == doctest::Approx(_I_(parser, 6, 2)).epsilon(0.001));
-      CHECK((score.score(2, 6)) == doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
+      CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2)).epsilon(0.001));
+      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
 
       score.clear();
-      CHECK((score.score(0, 1, 5)) == doctest::Approx(_I_(parser, 0, 1, 5)).epsilon(0.01));
+      CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5)).epsilon(0.01));
       CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
             == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1})).epsilon(0.001));
 
       score.clear();
-      CHECK((score.score(4, 5, 7)) == doctest::Approx(_I_(parser, 4, 5, 7)).epsilon(0.001));
-      CHECK((score.score(4, 7, 5)) == doctest::Approx(_I_(parser, 4, 7, 5)).epsilon(0.001));
-      CHECK((score.score(5, 4, 7)) == doctest::Approx(_I_(parser, 5, 4, 7)).epsilon(0.001));
-      CHECK((score.score(5, 7, 4)) == doctest::Approx(_I_(parser, 5, 7, 4)).epsilon(0.001));
-      CHECK((score.score(7, 5, 4)) == doctest::Approx(_I_(parser, 7, 5, 4)).epsilon(0.001));
-      CHECK((score.score(7, 4, 5)) == doctest::Approx(_I_(parser, 7, 4, 5)).epsilon(0.001));
+      CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7)).epsilon(0.001));
+      CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5)).epsilon(0.001));
+      CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7)).epsilon(0.001));
+      CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4)).epsilon(0.001));
+      CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4)).epsilon(0.001));
+      CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5)).epsilon(0.001));
 
       score.clear();
       CHECK(
@@ -230,8 +230,8 @@ namespace gum_tests {
 
       const double cst = 0.5 * std::log2(10000);
 
-      CHECK((score.score(2, 6)) == doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
-      CHECK((score.score(4, 7)) == doctest::Approx(_I_(parser, 4, 7) - cst).epsilon(1e-4));
+      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
+      CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7) - cst).epsilon(1e-4));
       CHECK((score.score(4, 7, std::vector< gum::NodeId >{5}))
             == doctest::Approx(_I_(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst)
                    .epsilon(GUM_SMALL_ERROR));
@@ -242,23 +242,23 @@ namespace gum_tests {
             == doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
 
       score.clear();
-      CHECK((score.score(6, 2)) == doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
-      CHECK((score.score(2, 6)) == doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
+      CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
+      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
 
       score.clear();
-      CHECK((score.score(0, 1, 5)) == doctest::Approx(_I_(parser, 0, 1, 5) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5) + cst).epsilon(1e-4));
       CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
             == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}) + 2 * cst)
                    .epsilon(1e-4));
 
 
       score.clear();
-      CHECK((score.score(4, 5, 7)) == doctest::Approx(_I_(parser, 4, 5, 7) + cst).epsilon(1e-4));
-      CHECK((score.score(4, 7, 5)) == doctest::Approx(_I_(parser, 4, 7, 5) + cst).epsilon(1e-4));
-      CHECK((score.score(5, 4, 7)) == doctest::Approx(_I_(parser, 5, 4, 7) + cst).epsilon(1e-4));
-      CHECK((score.score(5, 7, 4)) == doctest::Approx(_I_(parser, 5, 7, 4) + cst).epsilon(1e-4));
-      CHECK((score.score(7, 5, 4)) == doctest::Approx(_I_(parser, 7, 5, 4) + cst).epsilon(1e-4));
-      CHECK((score.score(7, 4, 5)) == doctest::Approx(_I_(parser, 7, 4, 5) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4) + cst).epsilon(1e-4));
+      CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5) + cst).epsilon(1e-4));
     }
 
 
@@ -324,7 +324,7 @@ namespace gum_tests {
         gum::learning::CorrectedMutualInformation score2(parser2, prior2);
         score2.useNoCorr();
 
-        CHECK((score1.score(0, 1, 2)) == doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
         score2.clear();
         database2.setAllRowsWeight(1);
         score2.useNoCorr();
@@ -345,7 +345,7 @@ namespace gum_tests {
         gum::learning::CorrectedMutualInformation score2(parser2, prior2);
         score2.useMDL();
 
-        CHECK((score1.score(0, 1, 2)) == doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
         score2.clear();
         database2.setAllRowsWeight(1);
         score2.useMDL();
@@ -366,7 +366,7 @@ namespace gum_tests {
         gum::learning::CorrectedMutualInformation score2(parser2, prior2);
         score2.useNML();
 
-        CHECK((score1.score(0, 1, 2)) == doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
         score2.clear();
         database2.setAllRowsWeight(1);
         score2.useNML();

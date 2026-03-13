@@ -264,37 +264,37 @@ namespace gum_tests {
     }
 
     static void testLabelizedComparison() {
-      CHECK(*FASTVARDBL("A{On|Off|Defun}") == *FASTVARDBL("A{On|Off|Defun}"));
-      CHECK(*FASTVARDBL("A{On|Off|Defun}") != *FASTVARDBL("A{Off|On|Defun}"));
-      CHECK(*FASTVARDBL("A{On|Off|Defun}") != *FASTVARDBL("B{On|Off|Defun}"));
-      CHECK(*FASTVARDBL("A{On|Off|Defun}") != *FASTVARDBL("A{On|Off}"));
-      CHECK(*FASTVARDBL("A{On|Off|Defun}") != *FASTVARDBL("A{On|Off|Defun|Beurk}"));
+      CHECK_EQ(*FASTVARDBL("A{On|Off|Defun}"), *FASTVARDBL("A{On|Off|Defun}"));
+      CHECK_NE(*FASTVARDBL("A{On|Off|Defun}"), *FASTVARDBL("A{Off|On|Defun}"));
+      CHECK_NE(*FASTVARDBL("A{On|Off|Defun}"), *FASTVARDBL("B{On|Off|Defun}"));
+      CHECK_NE(*FASTVARDBL("A{On|Off|Defun}"), *FASTVARDBL("A{On|Off}"));
+      CHECK_NE(*FASTVARDBL("A{On|Off|Defun}"), *FASTVARDBL("A{On|Off|Defun|Beurk}"));
     }
 
     static void testRangeComparison() {
-      CHECK(*FASTVARDBL("A[3,5]") == *FASTVARDBL("A[3,5]"));
-      CHECK(*FASTVARDBL("A[5]  ") == *FASTVARDBL("A[0,4]"));
-      CHECK(*FASTVARDBL("A[3,5]") != *FASTVARDBL("B[3,5]"));
-      CHECK(*FASTVARDBL("A[3,5]") != *FASTVARDBL("A[2,5]"));
-      CHECK(*FASTVARDBL("A[3,5]") != *FASTVARDBL("A[3,6]"));
+      CHECK_EQ(*FASTVARDBL("A[3,5]"), *FASTVARDBL("A[3,5]"));
+      CHECK_EQ(*FASTVARDBL("A[5]  "), *FASTVARDBL("A[0,4]"));
+      CHECK_NE(*FASTVARDBL("A[3,5]"), *FASTVARDBL("B[3,5]"));
+      CHECK_NE(*FASTVARDBL("A[3,5]"), *FASTVARDBL("A[2,5]"));
+      CHECK_NE(*FASTVARDBL("A[3,5]"), *FASTVARDBL("A[3,6]"));
     }
 
     static void testIntegerComparison() {
-      CHECK(*FASTVARDBL("A{3|5|9}") == *FASTVARDBL("A{3|5|9}"));
-      CHECK(*FASTVARDBL("A{3|5|9}") == *FASTVARDBL("A{3|9|5}"));
-      CHECK(*FASTVARDBL("A{3|5|9}") != *FASTVARDBL("B{3|9|5}"));
-      CHECK(*FASTVARDBL("A{3|5|9}") != *FASTVARDBL("A{3|9}"));
-      CHECK(*FASTVARDBL("A{3|5|9}") != *FASTVARDBL("A{3|9|5|12}"));
-      CHECK(*FASTVARDBL("A{1:7:4}") == *FASTVARDBL("A{1|3|5|7}"));
+      CHECK_EQ(*FASTVARDBL("A{3|5|9}"), *FASTVARDBL("A{3|5|9}"));
+      CHECK_EQ(*FASTVARDBL("A{3|5|9}"), *FASTVARDBL("A{3|9|5}"));
+      CHECK_NE(*FASTVARDBL("A{3|5|9}"), *FASTVARDBL("B{3|9|5}"));
+      CHECK_NE(*FASTVARDBL("A{3|5|9}"), *FASTVARDBL("A{3|9}"));
+      CHECK_NE(*FASTVARDBL("A{3|5|9}"), *FASTVARDBL("A{3|9|5|12}"));
+      CHECK_EQ(*FASTVARDBL("A{1:7:4}"), *FASTVARDBL("A{1|3|5|7}"));
     }
 
     static void testNumericalDiscreteComparison() {
-      CHECK(*FASTVARDBL("A{3.4|5.4|9.4}") == *FASTVARDBL("A{3.4|5.4|9.4}"));
-      CHECK(*FASTVARDBL("A{3.4|5.4|9.4}") == *FASTVARDBL("A{3.4|9.4|5.4}"));
-      CHECK(*FASTVARDBL("A{3.4|5.4|9.4}") != *FASTVARDBL("B{3.4|9.4|5.4}"));
-      CHECK(*FASTVARDBL("A{3.4|5.4|9.4}") != *FASTVARDBL("A{3.4|9.4}"));
-      CHECK(*FASTVARDBL("A{3.4|5.4|9.4}") != *FASTVARDBL("A{3.4|9.4|5|12.4}"));
-      CHECK(*FASTVARDBL("A{1.4:7.4:4}") == *FASTVARDBL("A{1.4|3.4|5.4|7.4}"));
+      CHECK_EQ(*FASTVARDBL("A{3.4|5.4|9.4}"), *FASTVARDBL("A{3.4|5.4|9.4}"));
+      CHECK_EQ(*FASTVARDBL("A{3.4|5.4|9.4}"), *FASTVARDBL("A{3.4|9.4|5.4}"));
+      CHECK_NE(*FASTVARDBL("A{3.4|5.4|9.4}"), *FASTVARDBL("B{3.4|9.4|5.4}"));
+      CHECK_NE(*FASTVARDBL("A{3.4|5.4|9.4}"), *FASTVARDBL("A{3.4|9.4}"));
+      CHECK_NE(*FASTVARDBL("A{3.4|5.4|9.4}"), *FASTVARDBL("A{3.4|9.4|5|12.4}"));
+      CHECK_EQ(*FASTVARDBL("A{1.4:7.4:4}"), *FASTVARDBL("A{1.4|3.4|5.4|7.4}"));
     }
 
     static void testEquallySpacedIntervall() {

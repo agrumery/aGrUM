@@ -1117,13 +1117,14 @@ namespace gum_tests {
       std::vector< double > xcounts(4, 0.0);
       int                   nb_row = 0;
       for (const auto& row: database) {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(0), std::size_t(1)}, row);
+        gum::Tensor< double > proba
+            = _infer_(bn, {static_cast< std::size_t >(0), static_cast< std::size_t >(1)}, row);
 
         std::size_t idx;
         for (gum::Instantiation inst(proba); !inst.end(); ++inst) {
           if (proba.variablesSequence()[0]->name() == "A")
-            idx = inst.val(0) + std::size_t(2) * inst.val(1);
-          else idx = inst.val(1) + std::size_t(2) * inst.val(0);
+            idx = inst.val(0) + static_cast< std::size_t >(2) * inst.val(1);
+          else idx = inst.val(1) + static_cast< std::size_t >(2) * inst.val(0);
           xcounts[idx] += proba.get(inst) * 100;
         }
 
@@ -1131,8 +1132,8 @@ namespace gum_tests {
         if (nb_row == 5) break;
       }
 
-      for (std::size_t i = std::size_t(0); i < std::size_t(4); ++i) {
-        CHECK((counts[i]) == doctest::Approx(xcounts[i]).epsilon(0.001));
+      for (auto i = static_cast< std::size_t >(0); i < static_cast< std::size_t >(4); ++i) {
+        CHECK_EQ((counts[i]), doctest::Approx(xcounts[i]).epsilon(0.001));
       }
     }
   };

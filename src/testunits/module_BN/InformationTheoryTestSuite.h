@@ -86,11 +86,11 @@ namespace gum_tests {
 
       auto it = gum::InformationTheory(ie, {"A"}, {"B"});
 
-      CHECK(fabs((it.entropyXY()) - (1.27338275)) < 1e-5);
-      CHECK(fabs((it.entropyX()) - (0.72192809)) < 1e-5);
-      CHECK(fabs((it.entropyY()) - (0.58423881)) < 1e-5);
-      CHECK(fabs((it.entropyXgivenY()) - (0.68914394)) < 1e-5);
-      CHECK(fabs((it.mutualInformationXY()) - (0.03278416)) < 1e-5);
+      CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
     }
 
     static void testCheckSimpleBNwithEvidence() {
@@ -105,23 +105,23 @@ namespace gum_tests {
       {
         auto it = gum::InformationTheory(ie, {"A"}, {"B"});
 
-        CHECK(fabs((it.entropyXY()) - (1.27338275)) < 1e-5);
-        CHECK(fabs((it.entropyX()) - (0.72192809)) < 1e-5);
-        CHECK(fabs((it.entropyY()) - (0.58423881)) < 1e-5);
-        CHECK(fabs((it.entropyXgivenY()) - (0.68914394)) < 1e-5);
-        CHECK(fabs((it.entropyYgivenX()) - (0.551455)) < 1e-5);
-        CHECK(fabs((it.mutualInformationXY()) - (0.03278416)) < 1e-5);
+        CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
       }
       ie.chgEvidence("C", 1);
       {
         auto it = gum::InformationTheory(ie, {"A"}, {"B"});
 
-        CHECK(fabs((it.entropyXY()) - (1.52075993298977)) < 1e-5);
-        CHECK(fabs((it.entropyX()) - (0.72192809)) < 1e-5);
-        CHECK(fabs((it.entropyY()) - (0.826746372492618)) < 1e-5);
-        CHECK(fabs((it.entropyXgivenY()) - (0.694013560497155)) < 1e-5);
-        CHECK(fabs((it.entropyYgivenX()) - (0.798832)) < 1e-5);
-        CHECK(fabs((it.mutualInformationXY()) - (0.0279145343902076)) < 1e-5);
+        CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
       }
     }
 
@@ -137,23 +137,23 @@ namespace gum_tests {
       {
         auto it = gum::InformationTheory(ie, {"A"}, {"B"});
 
-        CHECK(fabs((it.entropyXY()) - (1.27338275)) < 1e-5);
-        CHECK(fabs((it.entropyX()) - (0.72192809)) < 1e-5);
-        CHECK(fabs((it.entropyY()) - (0.58423881)) < 1e-5);
-        CHECK(fabs((it.entropyXgivenY()) - (0.68914394)) < 1e-5);
-        CHECK(fabs((it.entropyYgivenX()) - (0.551455)) < 1e-5);
-        CHECK(fabs((it.mutualInformationXY()) - (0.03278416)) < 1e-5);
+        CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
       }
       ie.chgEvidence("C", 1);
       {
         auto it = gum::InformationTheory(ie, {"A"}, {"B"});
 
-        CHECK(fabs((it.entropyXY()) - (1.52075993298977)) < 1e-5);
-        CHECK(fabs((it.entropyX()) - (0.72192809)) < 1e-5);
-        CHECK(fabs((it.entropyY()) - (0.826746372492618)) < 1e-5);
-        CHECK(fabs((it.entropyXgivenY()) - (0.694013560497155)) < 1e-5);
-        CHECK(fabs((it.entropyYgivenX()) - (0.798832)) < 1e-5);
-        CHECK(fabs((it.mutualInformationXY()) - (0.0279145343902076)) < 1e-5);
+        CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
+        CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
       }
     }
 
@@ -224,7 +224,8 @@ namespace gum_tests {
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory itlazy(lazy, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
         gum::InformationTheory itshaf(shaf, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
-        CHECK(fabs((itlazy.mutualInformationXY()) - (itshaf.mutualInformationXY())) < 1e-10);
+        CHECK_LT(fabs((itlazy.mutualInformationXY()) - (itshaf.mutualInformationXY())),
+                 GUM_VERY_SMALL_ERROR);
       }
     }
 
@@ -259,13 +260,14 @@ namespace gum_tests {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{arc.first()},
                                                                   gum::NodeSet{arc.second()});
-        CHECK(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())) < 1e-10);
+        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+                 GUM_VERY_SMALL_ERROR);
       }
       for (const auto& node: bn.nodes()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{node},
                                                                   gum::NodeSet{});
-        CHECK(fabs((h(node)) - (it.entropyX())) < 1e-10);
+        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
       }
     }
 
@@ -306,13 +308,14 @@ namespace gum_tests {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{node},
                                                                   gum::NodeSet{});
-        CHECK(fabs((h(node)) - (it.entropyX())) < 1e-10);
+        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{arc.first()},
                                                                   gum::NodeSet{arc.second()});
-        CHECK(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())) < 1e-10);
+        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+                 GUM_VERY_SMALL_ERROR);
       }
     }
 
@@ -353,13 +356,14 @@ namespace gum_tests {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{node},
                                                                   gum::NodeSet{});
-        CHECK(fabs((h(node)) - (it.entropyX())) < 1e-10);
+        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
       }
       for (const auto& arc: bn.arcs()) {
         gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
                                                                   gum::NodeSet{arc.first()},
                                                                   gum::NodeSet{arc.second()});
-        CHECK(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())) < 1e-10);
+        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+                 GUM_VERY_SMALL_ERROR);
       }
     }
 
@@ -367,40 +371,44 @@ namespace gum_tests {
     template < class IT >
     static void check_this_information_theoryXY(IT& it) {
       // H(X|Y)=H(X,Y)-H(Y)
-      CHECK(fabs((it.entropyXgivenY()) - (it.entropyXY() - it.entropyY())) < 1e-10);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (it.entropyXY() - it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
 
       // H(Y|X)=H(X|Y)-H(X)+H(Y)
-      CHECK(fabs((it.entropyYgivenX()) - (it.entropyXgivenY() - it.entropyX() + it.entropyY()))
-            < 1e-10);
+      CHECK_LT(fabs((it.entropyYgivenX()) - (it.entropyXgivenY() - it.entropyX() + it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
 
       // I(X,Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)
-      CHECK(fabs((it.mutualInformationXY()) - (it.entropyX() - it.entropyXgivenY())) < 1e-10);
-      CHECK(fabs((it.mutualInformationXY()) - (it.entropyY() - it.entropyYgivenX())) < 1e-10);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyX() - it.entropyXgivenY())),
+               GUM_VERY_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
 
       // I(X,Y)=H(X)+H(Y)-H(X,Y)
-      CHECK(fabs((it.mutualInformationXY()) - (it.entropyX() + it.entropyY() - it.entropyXY()))
-            < 1e-10);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyX() + it.entropyY() - it.entropyXY())),
+               GUM_VERY_SMALL_ERROR);
 
       // I(X,Y)=H(X,Y)-H(X|Y)-H(Y|X)
-      CHECK(fabs((it.mutualInformationXY())
-                 - (it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX()))
-            < 1e-10);
+      CHECK_LT(fabs((it.mutualInformationXY())
+                    - (it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
 
       // V(X,Y)=2H(X,Y)-H(X)-H(Y)
-      CHECK(fabs((it.variationOfInformationXY())
-                 - (2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX()))
-            < 1e-10);
+      CHECK_LT(fabs((it.variationOfInformationXY())
+                    - (2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
     }
 
     template < class IT >
     static void check_this_information_theoryXYZ(IT& it) {
       // H(X|Y);Z=H(X,Y|Z)-H(Y|Z)
-      CHECK(fabs((it.entropyXgivenYZ()) - (it.entropyXYgivenZ() - it.entropyYgivenZ())) < 1e-10);
+      CHECK_LT(fabs((it.entropyXgivenYZ()) - (it.entropyXYgivenZ() - it.entropyYgivenZ())),
+               GUM_VERY_SMALL_ERROR);
 
       // I(X,Y|Z)=H(X|Z)+H(Y|Z)-H(X,Y|Z)
-      CHECK(fabs((it.mutualInformationXYgivenZ())
-                 - (it.entropyXgivenZ() + it.entropyYgivenZ() - it.entropyXYgivenZ()))
-            < 1e-10);
+      CHECK_LT(fabs((it.mutualInformationXYgivenZ())
+                    - (it.entropyXgivenZ() + it.entropyYgivenZ() - it.entropyXYgivenZ())),
+               GUM_VERY_SMALL_ERROR);
     }
   };
 

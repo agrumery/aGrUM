@@ -164,7 +164,6 @@ namespace gum_tests {
           CHECK(((var2->varType() == gum::VarType::RANGE)
                  || (var2->varType() == gum::VarType::INTEGER)));
         }
-
         learner2.useScoreBDeu();
         learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();

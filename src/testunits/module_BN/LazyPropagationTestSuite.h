@@ -150,7 +150,7 @@ namespace gum_tests {
       // Testing the inference
       gum::LazyPropagation inf(_bn);
       inf.setNumberOfThreads(1);
-      CHECK(inf.getNumberOfThreads() == gum::Size(1));
+      CHECK_EQ(inf.getNumberOfThreads(), gum::Size(1));
       CHECK_NOTHROW(inf.makeInference());
     }
 
@@ -427,7 +427,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ(proba, doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(*_bn);
       gum::Tensor< double > ev0;
@@ -440,7 +440,7 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ((proba), doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
     void testEvidenceProbability2() {
@@ -455,7 +455,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ((proba), doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(*_bn);
       gum::Tensor< double > ev0;
@@ -468,7 +468,7 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ((proba), doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
     void testEvidenceProbabilityAsia() {
@@ -493,7 +493,7 @@ namespace gum_tests {
       inf.makeInference();
       auto proba2 = inf.evidenceProbability();
 
-      CHECK((proba) == doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ((proba), doctest::Approx(proba2).epsilon(GUM_SMALL_ERROR));
 
       auto                  bn_joint = this->joint(bn);
       gum::Tensor< double > ev0;
@@ -506,7 +506,7 @@ namespace gum_tests {
       bn_joint *= ev0;
       const auto proba3 = bn_joint.sumIn({&var0}).sum();
 
-      CHECK((proba) == doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
+      CHECK_EQ((proba), doctest::Approx(proba3).epsilon(GUM_SMALL_ERROR));
     }
 
     void testAsia() {
@@ -823,14 +823,14 @@ namespace gum_tests {
                     }
                   } catch (gum::IncompatibleEvidence&) {
                     // check evidence incompatibility:
-                    if (node2 == gum::NodeId(2)) {
+                    if (node2 == 2u) {
                       // node2 = tuberculos_or_cancer, then node =
                       // tuberculosis
-                      CHECK(((inst2_index == gum::Size(1)) && (inst_index == 0)));
+                      CHECK(((inst2_index == 1u) && (inst_index == 0u)));
                     } else {
                       // node2 = lung_cancer & node =
                       // tuberculos_or_cancer
-                      CHECK(((inst2_index == 0) && (inst_index == gum::Size(1))));
+                      CHECK(((inst2_index == 0u) && (inst_index == 1u)));
                     }
                   }
                 }
@@ -1154,7 +1154,7 @@ namespace gum_tests {
       gum::LazyPropagation ie2(&bn);
       JMI = ie2.jointMutualInformation({1, 3, 4});
 
-      CHECK((JMI) == doctest::Approx(byHandJMI).epsilon(1e-7));
+      CHECK_EQ((JMI), doctest::Approx(byHandJMI).epsilon(1e-7));
 
       ie.clear();
       ie.addJointTarget({0, 1, 2, 3});
@@ -1172,7 +1172,7 @@ namespace gum_tests {
       gum::LazyPropagation ie3(&bn);
       JMI = ie3.jointMutualInformation({0, 1, 2, 3});
 
-      CHECK((JMI) == doctest::Approx(byHandJMI).epsilon(1e-7));
+      CHECK_EQ((JMI), doctest::Approx(byHandJMI).epsilon(1e-7));
     }
 
     void testLogitInBN() {
@@ -1243,7 +1243,7 @@ namespace gum_tests {
       int j = 0;
 
       for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+        CHECK_EQ((p[i]), doctest::Approx(witness[j]).epsilon(1e-6));
       }
 
       gum::LazyPropagation inf_LazyProp(&bn);
@@ -1328,8 +1328,8 @@ namespace gum_tests {
         inf.addEvidence(ev0);
         double xpe0 = inf.evidenceProbability();
         double pe0  = (p0 * ev0).sum();
-        CHECK((pe0) == doctest::Approx(0.27).epsilon(0.0001));
-        CHECK((xpe0) == doctest::Approx(pe0).epsilon(0.0001));
+        CHECK_EQ((pe0), doctest::Approx(0.27).epsilon(0.0001));
+        CHECK_EQ((xpe0), doctest::Approx(pe0).epsilon(0.0001));
       }
 
       {
@@ -1337,8 +1337,8 @@ namespace gum_tests {
         inf.addEvidence(ev0b);
         double xpe0b = inf.evidenceProbability();
         double pe0b  = (p0 * ev0b).sum();
-        CHECK((pe0b) == doctest::Approx(0.7).epsilon(0.0001));
-        CHECK((xpe0b) == doctest::Approx(pe0b).epsilon(0.0001));
+        CHECK_EQ((pe0b), doctest::Approx(0.7).epsilon(0.0001));
+        CHECK_EQ((xpe0b), doctest::Approx(pe0b).epsilon(0.0001));
       }
 
       gum::NodeId ii1 = bn.add(*vars[1]);
@@ -1360,8 +1360,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0 * p1 * ev1).sum();
-        CHECK((pe01) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
-        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
+        CHECK_EQ((pe01), doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe01), doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1370,8 +1370,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0b * p1 * ev1).sum();
-        CHECK((pe01) == doctest::Approx(0.7 * 0.52).epsilon(0.0001));
-        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
+        CHECK_EQ((pe01), doctest::Approx(0.7 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe01), doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1380,8 +1380,8 @@ namespace gum_tests {
         inf.addEvidence(ev1b);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0 * p1 * ev1b).sum();
-        CHECK((pe01) == doctest::Approx(0.27 * 0.6).epsilon(0.0001));
-        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
+        CHECK_EQ((pe01), doctest::Approx(0.27 * 0.6).epsilon(0.0001));
+        CHECK_EQ((xpe01), doctest::Approx(pe01).epsilon(0.0001));
       }
 
       {
@@ -1390,8 +1390,8 @@ namespace gum_tests {
         inf.addEvidence(ev1b);
         double xpe01 = inf.evidenceProbability();
         double pe01  = (p0 * ev0b * p1 * ev1b).sum();
-        CHECK((pe01) == doctest::Approx(0.7 * 0.6).epsilon(0.0001));
-        CHECK((xpe01) == doctest::Approx(pe01).epsilon(0.0001));
+        CHECK_EQ((pe01), doctest::Approx(0.7 * 0.6).epsilon(0.0001));
+        CHECK_EQ((xpe01), doctest::Approx(pe01).epsilon(0.0001));
       }
 
       gum::NodeId ii2 = bn.add(*vars[2]);
@@ -1406,8 +1406,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe02 = inf.evidenceProbability();
         double pe02  = (p0 * ev0 * p1 * ev1 * p2).sum();
-        CHECK((pe02) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
-        CHECK((xpe02) == doctest::Approx(pe02).epsilon(0.0001));
+        CHECK_EQ((pe02), doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe02), doctest::Approx(pe02).epsilon(0.0001));
       }
 
       gum::NodeId ii3 = bn.add(*vars[3]);
@@ -1422,8 +1422,8 @@ namespace gum_tests {
         inf.addEvidence(ev1);
         double xpe03 = inf.evidenceProbability();
         double pe03  = (p0 * ev0 * p1 * ev1 * p2 * p3).sum();
-        CHECK((pe03) == doctest::Approx(0.27 * 0.52).epsilon(0.0001));
-        CHECK((xpe03) == doctest::Approx(pe03).epsilon(0.0001));
+        CHECK_EQ((pe03), doctest::Approx(0.27 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe03), doctest::Approx(pe03).epsilon(0.0001));
       }
 
       gum::Tensor< double > ev3;
@@ -1444,8 +1444,8 @@ namespace gum_tests {
 
         // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
         double p03 = 0.322 * 0.12 + 0.378 * 0.09 + 0.066 * 0.08 + 0.234 * .06;
-        CHECK((pe0_3) == doctest::Approx(p03 * 0.52).epsilon(0.0001));
-        CHECK((xpe0_3) == doctest::Approx(pe0_3).epsilon(0.0001));
+        CHECK_EQ((pe0_3), doctest::Approx(p03 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe0_3), doctest::Approx(pe0_3).epsilon(0.0001));
       }
 
       {
@@ -1458,8 +1458,8 @@ namespace gum_tests {
 
         // P(x0,x3) = [X00: [0.3220, 0.3780], x01: [0.0660, 0.2340]]
         double p03 = 0.322 * 0.3 + 0.066 * 0.2;
-        CHECK((pe0_3) == doctest::Approx(p03 * 0.52).epsilon(0.0001));
-        CHECK((xpe0_3) == doctest::Approx(pe0_3).epsilon(0.0001));
+        CHECK_EQ((pe0_3), doctest::Approx(p03 * 0.52).epsilon(0.0001));
+        CHECK_EQ((xpe0_3), doctest::Approx(pe0_3).epsilon(0.0001));
       }
 
       gum::NodeId ii4 = bn.add(*vars[4]);
@@ -1494,7 +1494,7 @@ namespace gum_tests {
 
         double xpe0_5 = inf.evidenceProbability();
         double pe0_5  = (pot0_5 * ev0 * ev1 * ev5).sum();
-        CHECK((xpe0_5) == doctest::Approx(pe0_5).epsilon(0.0001));
+        CHECK_EQ((xpe0_5), doctest::Approx(pe0_5).epsilon(0.0001));
       }
 
       gum::NodeId i6 = bn.add(*vars[6]);
@@ -1515,7 +1515,7 @@ namespace gum_tests {
 
         double xpe0_6 = inf.evidenceProbability();
         double pe0_6  = (pot0_5 * ev0 * ev1 * ev5 * p6 * ev6).sum();
-        CHECK((xpe0_6) == doctest::Approx(pe0_6).epsilon(0.0001));
+        CHECK_EQ((xpe0_6), doctest::Approx(pe0_6).epsilon(0.0001));
       }
 
       gum::NodeId i7 = bn.add(*vars[7]);
@@ -1545,7 +1545,7 @@ namespace gum_tests {
 
         double xpe0_7 = inf.evidenceProbability();
         double pe0_7  = (pot0_7 * ev0 * ev1 * ev5 * ev7 * p6 * ev6).sum();
-        CHECK((xpe0_7) == doctest::Approx(pe0_7).epsilon(0.0001));
+        CHECK_EQ((xpe0_7), doctest::Approx(pe0_7).epsilon(0.0001));
       }
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
@@ -1596,12 +1596,12 @@ namespace gum_tests {
       {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
-        CHECK(inf.targets().size() == gum::Size(1));
+        CHECK_EQ(inf.targets().size(), gum::Size(1));
         inf.makeInference();
         CHECK_THROWS_AS(inf.posterior(n3), const gum::UndefinedElement&);
         inf.addTarget("x3");
         const auto& pot3 = inf.posterior(n3);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(2));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(2));
 
         gum::VariableSet            set3{&x0, &x1, &x2, &x4};
         const gum::Tensor< double > pot3bis = (p0 * p1 * p2 * p3 * p4).sumOut(set3).normalize();
@@ -1613,16 +1613,16 @@ namespace gum_tests {
         inf.addTarget("x0");
         inf.addTarget("x2");
 
-        CHECK(inf.targets().size() == gum::Size(2));
+        CHECK_EQ(inf.targets().size(), gum::Size(2));
         inf.makeInference();
 
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(1));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(1));
 
         inf.addEvidence(n4, 1);
         inf.makeInference();
 
         const auto& pot2 = inf.posterior(n2);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(2));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(2));
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;
@@ -1638,15 +1638,15 @@ namespace gum_tests {
       {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
-        CHECK(inf.targets().size() == gum::Size(1));
+        CHECK_EQ(inf.targets().size(), gum::Size(1));
         inf.makeInference();
         CHECK_THROWS_AS(inf.posterior(n2), const gum::UndefinedElement&);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(1));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(1));
 
         inf.addTarget("x2");
         inf.addEvidence(n4, 1);
         const auto& pot2 = inf.posterior(n2);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(2));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(2));
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;
@@ -1660,16 +1660,16 @@ namespace gum_tests {
       {
         gum::LazyPropagation inf(&xbn);
         inf.addTarget("x0");
-        CHECK(inf.targets().size() == gum::Size(1));
+        CHECK_EQ(inf.targets().size(), gum::Size(1));
         inf.makeInference();
         CHECK_THROWS_AS(inf.posterior(n2), const gum::UndefinedElement&);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(1));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(1));
 
         inf.addTarget("x2");
         inf.addEvidence(n4, 1);
         inf.makeInference();
         const auto& pot2 = inf.posterior(n2);
-        CHECK(inf.junctionTree()->sizeNodes() == gum::Size(2));
+        CHECK_EQ(inf.junctionTree()->sizeNodes(), gum::Size(2));
 
         gum::VariableSet      set2{&x0, &x1, &x3, &x4};
         gum::Tensor< double > ev4;

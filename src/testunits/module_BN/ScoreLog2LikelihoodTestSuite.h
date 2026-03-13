@@ -76,10 +76,9 @@ namespace gum_tests {
       return score;
     }   // namespace gum_tests
 
-    static bool _equal_(const double x, const double y) {
-      double dev = x >= y ? (x - y) / x : (y - x) / y;
-      if (dev < 0) dev = -dev;
-      return dev <= GUM_SMALL_ERROR;
+    static double _rel_dist_(const double x, const double y) {
+      const double dev = x >= y ? (x - y) / x : (y - x) / y;
+      return (dev < 0) ? -dev : dev;
     }
 
 
@@ -150,19 +149,19 @@ namespace gum_tests {
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
       std::vector< double > N_ij_1;
       double                xscore_1 = _score_(N_ijk_1, N_ij_1);
-      CHECK(_equal_(xscore_1, score.score(node0)));
+      CHECK_LT(_rel_dist_(xscore_1, score.score(node0)), GUM_SMALL_ERROR);
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{201, 76, 1, 1001, 1, 76, 1, 51, 1};
       std::vector< double > N_ij_2{278, 1078, 53};
       double                xscore_2 = _score_(N_ijk_2, N_ij_2);
-      CHECK(_equal_(xscore_2, score.score(node0, cond2)));
+      CHECK_LT(_rel_dist_(xscore_2, score.score(node0, cond2)), GUM_SMALL_ERROR);
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{1, 76, 1, 201, 51, 76, 1001, 1, 1};
       std::vector< double > N_ij_3{78, 328, 1003};
       double                xscore_3 = _score_(N_ijk_3, N_ij_3);
-      CHECK(_equal_(xscore_3, score.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_3, score.score(node0, cond3)), GUM_SMALL_ERROR);
 
 
       gum::learning::ScoreLog2Likelihood score2(score);
@@ -170,45 +169,45 @@ namespace gum_tests {
           score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score2.score(node0)));
-      CHECK(_equal_(xscore_2, score2.score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score2.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score2.score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score2.score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score2.score(node0, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score3.score(node0)));
-      CHECK(_equal_(xscore_2, score3.score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score3.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score3.score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score3.score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score3.score(node0, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(score);
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(std::move(score));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       delete score4;
     }
@@ -290,20 +289,20 @@ namespace gum_tests {
       std::vector< double > N_ijk_1{1201.0, 126.0, 76.0};
       std::vector< double > N_ij_1;
       double                xscore_1 = _score_(N_ijk_1, N_ij_1);
-      CHECK(_equal_(xscore_1, score.score(node2)));
+      CHECK_LT(_rel_dist_(xscore_1, score.score(node2)), GUM_SMALL_ERROR);
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{201, 76, 1, 1001, 1, 76, 1, 51, 1};
       std::vector< double > N_ij_2{278, 1078, 53};
       double                xscore_2 = _score_(N_ijk_2, N_ij_2);
-      CHECK(_equal_(xscore_2, score.score(node2, cond2)));
+      CHECK_LT(_rel_dist_(xscore_2, score.score(node2, cond2)), GUM_SMALL_ERROR);
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{1, 76, 1, 201, 51, 76, 1001, 1, 1};
       std::vector< double > N_ij_3{78, 328, 1003};
       double                xscore_3 = _score_(N_ijk_3, N_ij_3);
-      CHECK(_equal_(xscore_3, score.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_3, score.score(node2, cond3)), GUM_SMALL_ERROR);
 
 
       gum::learning::ScoreLog2Likelihood score2(score);
@@ -311,45 +310,45 @@ namespace gum_tests {
           score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score2.score(node2)));
-      CHECK(_equal_(xscore_2, score2.score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score2.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score2.score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score2.score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score2.score(node2, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score3.score(node2)));
-      CHECK(_equal_(xscore_2, score3.score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score3.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score3.score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score3.score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score3.score(node2, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(score);
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(std::move(score));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       delete score4;
     }
@@ -422,19 +421,19 @@ namespace gum_tests {
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
       std::vector< double > N_ij_1;
       double                xscore_1 = _score_(N_ijk_1, N_ij_1);
-      CHECK(_equal_(xscore_1, score.score(node0)));
+      CHECK_LT(_rel_dist_(xscore_1, score.score(node0)), GUM_SMALL_ERROR);
 
       // idset2: node0 | node1
       std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
       std::vector< double > N_ij_2{278, 278, 3};
       double                xscore_2 = _score_(N_ijk_2, N_ij_2);
-      CHECK(_equal_(xscore_2, score.score(node0, cond2)));
+      CHECK_LT(_rel_dist_(xscore_2, score.score(node0, cond2)), GUM_SMALL_ERROR);
 
       // idset3: node0 | node3
       std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
       std::vector< double > N_ij_3{78, 278, 203};
       double                xscore_3 = _score_(N_ijk_3, N_ij_3);
-      CHECK(_equal_(xscore_3, score.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_3, score.score(node0, cond3)), GUM_SMALL_ERROR);
 
 
       gum::learning::ScoreLog2Likelihood score2(score);
@@ -442,45 +441,45 @@ namespace gum_tests {
           score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score2.score(node0)));
-      CHECK(_equal_(xscore_2, score2.score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score2.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score2.score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score2.score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score2.score(node0, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score3.score(node0)));
-      CHECK(_equal_(xscore_2, score3.score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score3.score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score3.score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score3.score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score3.score(node0, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(score);
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(std::move(score));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node0)));
-      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
       delete score4;
     }
@@ -564,20 +563,20 @@ namespace gum_tests {
       std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
       std::vector< double > N_ij_1;
       double                xscore_1 = _score_(N_ijk_1, N_ij_1);
-      CHECK(_equal_(xscore_1, score.score(node2)));
+      CHECK_LT(_rel_dist_(xscore_1, score.score(node2)), GUM_SMALL_ERROR);
 
 
       // idset2: node2 | node5
       std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
       std::vector< double > N_ij_2{278, 278, 3};
       double                xscore_2 = _score_(N_ijk_2, N_ij_2);
-      CHECK(_equal_(xscore_2, score.score(node2, cond2)));
+      CHECK_LT(_rel_dist_(xscore_2, score.score(node2, cond2)), GUM_SMALL_ERROR);
 
       // idset3: node2 | node1
       std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
       std::vector< double > N_ij_3{78, 278, 203};
       double                xscore_3 = _score_(N_ijk_3, N_ij_3);
-      CHECK(_equal_(xscore_3, score.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_3, score.score(node2, cond3)), GUM_SMALL_ERROR);
 
 
       gum::learning::ScoreLog2Likelihood score2(score);
@@ -585,45 +584,45 @@ namespace gum_tests {
           score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score2.score(node2)));
-      CHECK(_equal_(xscore_2, score2.score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score2.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score2.score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score2.score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score2.score(node2, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood score3(std::move(score2));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score3.score(node2)));
-      CHECK(_equal_(xscore_2, score3.score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score3.score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score3.score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score3.score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score3.score(node2, cond3)), GUM_SMALL_ERROR);
 
       gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(score);
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       score4->operator=(std::move(score));
       GUM_CHECK_ASSERT_THROWS_NOTHING(
           score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
       GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-      CHECK(_equal_(xscore_1, score4->score(node2)));
-      CHECK(_equal_(xscore_2, score4->score(node2, cond2)));
-      CHECK(_equal_(xscore_3, score4->score(node2, cond3)));
+      CHECK_LT(_rel_dist_(xscore_1, score4->score(node2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_2, score4->score(node2, cond2)), GUM_SMALL_ERROR);
+      CHECK_LT(_rel_dist_(xscore_3, score4->score(node2, cond3)), GUM_SMALL_ERROR);
 
       delete score4;
     }
@@ -699,19 +698,19 @@ namespace gum_tests {
         std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
         std::vector< double > N_ij_1;
         double                xscore_1 = _score_(N_ijk_1, N_ij_1);
-        CHECK(_equal_(xscore_1, score.score(node0)));
+        CHECK_LT(_rel_dist_(xscore_1, score.score(node0)), GUM_SMALL_ERROR);
 
         // idset2: node0 | node1
         std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
         std::vector< double > N_ij_2{278, 278, 3};
         double                xscore_2 = _score_(N_ijk_2, N_ij_2);
-        CHECK(_equal_(xscore_2, score.score(node0, cond2)));
+        CHECK_LT(_rel_dist_(xscore_2, score.score(node0, cond2)), GUM_SMALL_ERROR);
 
         // idset3: node0 | node3
         std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
         std::vector< double > N_ij_3{78, 278, 203};
         double                xscore_3 = _score_(N_ijk_3, N_ij_3);
-        CHECK(_equal_(xscore_3, score.score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_3, score.score(node0, cond3)), GUM_SMALL_ERROR);
 
 
         gum::learning::ScoreLog2Likelihood score2(score);
@@ -719,45 +718,45 @@ namespace gum_tests {
             score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
 
-        CHECK(_equal_(xscore_1, score2.score(node0)));
-        CHECK(_equal_(xscore_2, score2.score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score2.score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_1, score2.score(node0)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_2, score2.score(node0, cond2)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_3, score2.score(node0, cond3)), GUM_SMALL_ERROR);
 
         gum::learning::ScoreLog2Likelihood score3(std::move(score2));
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
 
-        CHECK(_equal_(xscore_1, score3.score(node0)));
-        CHECK(_equal_(xscore_2, score3.score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score3.score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_1, score3.score(node0)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_2, score3.score(node0, cond2)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_3, score3.score(node0, cond3)), GUM_SMALL_ERROR);
 
         gum::learning::ScoreLog2Likelihood* score4 = score3.clone();
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
         score4->operator=(score);
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
         score4->operator=(std::move(score));
         GUM_CHECK_ASSERT_THROWS_NOTHING(
             score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
         GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
 
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+        CHECK_LT(_rel_dist_(xscore_1, score4->score(node0)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_2, score4->score(node0, cond2)), GUM_SMALL_ERROR);
+        CHECK_LT(_rel_dist_(xscore_3, score4->score(node0, cond3)), GUM_SMALL_ERROR);
 
         delete score4;
       }
