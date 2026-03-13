@@ -994,7 +994,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#if !defined(GUM_NO_EXTERN_TEMPLATE_CLASS) && !defined(SWIG)
 extern template class gum::Set< int >;
 extern template class gum::Set< long >;
 extern template class gum::Set< unsigned int >;
