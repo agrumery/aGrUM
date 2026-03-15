@@ -55,6 +55,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -93,7 +94,7 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        Size readFile(const std::string& file, const std::string& module = "");
+        Size readFile(std::string_view file, std::string_view module = "");
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
@@ -108,7 +109,7 @@ namespace gum {
          *
          * @param class_path A semicolon separated list of paths.
          */
-        void setClassPath(const std::string& class_path);
+        void setClassPath(std::string_view class_path);
 
         /**
          * @brief Add a list of paths to look for o3prm
@@ -118,7 +119,7 @@ namespace gum {
          *
          * @param class_path A semicolon separated list of paths.
          */
-        void addClassPath(const std::string& class_path);
+        void addClassPath(std::string_view class_path);
 
         gum::prm::PRM< GUM_SCALAR >* prm() { return _prm_; }
 

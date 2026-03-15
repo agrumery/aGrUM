@@ -57,10 +57,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  std::string _createMsg_(const std::string& filename,
-                          const std::string& function,
-                          const int          line,
-                          const std::string& msg) {
+  std::string _createMsg_(std::string_view filename,
+                          std::string_view function,
+                          const int        line,
+                          std::string_view msg) {
     std::stringstream stream;
 #  ifdef GUM_FOR_SWIG
     stream << std::endl << msg << std::endl;
@@ -77,8 +77,8 @@ namespace gum {
   Exception::Exception(const Exception& e) :
       std::exception(e), msg_(e.msg_), type_(e.type_), what_(e.what_) {}
 
-  Exception::Exception(std::string aMsg, std::string aType) :
-      std::exception(), msg_(std::move(aMsg)), type_(std::move(aType)) {
+  Exception::Exception(std::string_view aMsg, std::string_view aType) :
+      std::exception(), msg_(aMsg), type_(aType) {
 #  ifdef GUM_FOR_SWIG
     what_ = "[pyAgrum] " + type_ + ": " + msg_;
 #  else    // GUM_FOR_SWIG

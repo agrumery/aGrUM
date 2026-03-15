@@ -51,6 +51,7 @@
 // utility provides the std::pair <> template
 #include <climits>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -605,12 +606,18 @@ namespace gum {
      */
     static Size castToSize(const std::string& key);
 
+    /// @brief Returns the value of a string_view key as a Size (heterogeneous lookup).
+    static Size castToSize(std::string_view key);
+
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
     virtual Size operator()(const std::string& key) const override final;
+
+    /// @brief Non-virtual overload for heterogeneous lookup with string_view.
+    Size operator()(std::string_view key) const;
   };
 
   /**

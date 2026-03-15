@@ -51,9 +51,9 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
     }
   };
 
-  void whenStop(const void* src, const std::string& message) {
+  void whenStop(const void* src, std::string_view message) {
     if (_pyWhenStop_) {
-      PyObject* arglist = Py_BuildValue("(s)", message.c_str());
+      PyObject* arglist = Py_BuildValue("(s)", message.data());
       PyObject_Call(_pyWhenStop_, arglist, NULL);
       Py_DECREF(arglist);
     }

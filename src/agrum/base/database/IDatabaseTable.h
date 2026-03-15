@@ -55,6 +55,7 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -876,13 +877,13 @@ namespace gum {
        * the columns, use method columnsFromVariableName
        * @throw UndefinedElement is raised if there exists no column with
        * the given name*/
-      std::size_t columnFromVariableName(const std::string& name) const;
+      std::size_t columnFromVariableName(std::string_view name) const;
 
       /// returns the indices of all the columns whose name is passed in argument
       /** It may happen that several columns correspond to a given variable
        * name. In this case, the function returns the indices of all the
        * columns of the IDatabase that match the name. */
-      DBVector< std::size_t > columnsFromVariableName(const std::string& name) const;
+      DBVector< std::size_t > columnsFromVariableName(std::string_view name) const;
 
       /// returns the number of variables (columns) of the database
       std::size_t nbVariables() const noexcept;

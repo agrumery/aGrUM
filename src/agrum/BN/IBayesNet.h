@@ -83,7 +83,7 @@ namespace gum {
      * Default constructor.
      */
     IBayesNet();
-    explicit IBayesNet(std::string name);
+    explicit IBayesNet(std::string_view name);
 
     /**
      * Destructor.
@@ -137,14 +137,14 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual NodeId idFromName(const std::string& name) const = 0;
+    virtual NodeId idFromName(std::string_view name) const = 0;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(std::string_view name) const = 0;
     /// @}
 
     // ===========================================================================
@@ -237,26 +237,26 @@ namespace gum {
      * @return a Tensor for a (numerical) discrete variable representing an evidence with a float
      * as observed value
      */
-    Tensor< GUM_SCALAR > evEq(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evEq(std::string_view name, double value) const;
 
     /**
      * @return a Tensor for a (numerical) discrete variable representing an evidence with a
      * interval of float as observed value
      */
-    Tensor< GUM_SCALAR > evIn(const std::string& name, double val1, double val2) const;
+    Tensor< GUM_SCALAR > evIn(std::string_view name, double val1, double val2) const;
 
     /**
      * @return a Tensor for a (numerical) discrete variable representing an evidence with an
      * observed value less than the parameter
      */
-    Tensor< GUM_SCALAR > evLt(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evLt(std::string_view name, double value) const;
 
 
     /**
      * @return a Tensor for a (numerical) discrete variable representing an evidence with an
      * observed value greater than the parameter
      */
-    Tensor< GUM_SCALAR > evGt(const std::string& name, double value) const;
+    Tensor< GUM_SCALAR > evGt(std::string_view name, double value) const;
 
 
     /**

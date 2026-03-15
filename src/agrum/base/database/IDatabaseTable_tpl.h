@@ -623,7 +623,7 @@ namespace gum {
     /// returns the index of the column whose name is passed in argument
     template < typename T_DATA >
     INLINE std::size_t
-           IDatabaseTable< T_DATA >::columnFromVariableName(const std::string& name) const {
+           IDatabaseTable< T_DATA >::columnFromVariableName(std::string_view name) const {
       const std::size_t size = variable_names_.size();
       for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) return i;
@@ -634,7 +634,7 @@ namespace gum {
     /// returns the indices of the columns whose name is passed in argument
     template < typename T_DATA >
     INLINE typename IDatabaseTable< T_DATA >::template DBVector< std::size_t >
-        IDatabaseTable< T_DATA >::columnsFromVariableName(const std::string& name) const {
+        IDatabaseTable< T_DATA >::columnsFromVariableName(std::string_view name) const {
       const std::size_t       size = variable_names_.size();
       DBVector< std::size_t > cols;
       for (std::size_t i = 0; i < size; ++i)

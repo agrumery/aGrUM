@@ -130,11 +130,11 @@ namespace gum {
     virtual void add(const DiscreteVariable& v) final;
 
     virtual void erase(const DiscreteVariable& var) final;
-    virtual void erase(const std::string& name) final;
+    virtual void erase(std::string_view name) final;
 
     virtual const Sequence< const DiscreteVariable* >& variablesSequence() const final;
     virtual const DiscreteVariable&                    variable(Idx) const final;
-    virtual const DiscreteVariable& variable(const std::string& name) const final;
+    virtual const DiscreteVariable& variable(std::string_view name) const final;
 
     virtual Idx pos(const DiscreteVariable& var) const final;
 

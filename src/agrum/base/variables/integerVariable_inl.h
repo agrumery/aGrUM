@@ -64,7 +64,7 @@
 namespace gum {
 
   /// Default constructor
-  INLINE IntegerVariable::IntegerVariable(const std::string& aName, const std::string& aDesc) :
+  INLINE IntegerVariable::IntegerVariable(std::string_view aName, std::string_view aDesc) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(IntegerVariable);
@@ -121,8 +121,8 @@ namespace gum {
   INLINE VarType IntegerVariable::varType() const { return VarType::INTEGER; }
 
   /// returns the index of a given label
-  INLINE Idx IntegerVariable::index(const std::string& aLabel) const {
-    const auto x   = std::stoi(aLabel);
+  INLINE Idx IntegerVariable::index(std::string_view aLabel) const {
+    const auto x   = std::stoi(std::string{aLabel});
     const Idx  ind = std::lower_bound(_domain_.begin(), _domain_.end(), x) - _domain_.begin();
 
     if (ind != _domain_.size() && _domain_[ind] == x) {

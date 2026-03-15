@@ -81,7 +81,7 @@ namespace gum::learning {
     _parser_ = new DBRowGeneratorParser(_database_.handler(), DBRowGeneratorSet());
   }
 
-  IBNLearner::Database::Database(const std::string&                filename,
+  IBNLearner::Database::Database(std::string_view                  filename,
                                  const std::vector< std::string >& missing_symbols,
                                  const bool                        induceTypes) :
       Database(IBNLearner::readFile_(filename, missing_symbols)) {
@@ -96,12 +96,12 @@ namespace gum::learning {
     }
   }
 
-  IBNLearner::Database::Database(const std::string&                CSV_filename,
+  IBNLearner::Database::Database(std::string_view                  CSV_filename,
                                  const Database&                   score_database,
                                  const std::vector< std::string >& missing_symbols) {
     // assign to each column name in the CSV file its column
     IBNLearner::isCSVFileName_(CSV_filename);
-    DBInitializerFromCSV                  initializer(CSV_filename);
+    DBInitializerFromCSV                  initializer{std::string(CSV_filename)};
     const auto&                           prior_names   = initializer.variableNames();
     std::size_t                           prior_nb_vars = prior_names.size();
     HashTable< std::string, std::size_t > prior_names2col(prior_nb_vars);
@@ -198,7 +198,7 @@ namespace gum::learning {
 
   // ===========================================================================
 
-  IBNLearner::IBNLearner(const std::string&                filename,
+  IBNLearner::IBNLearner(std::string_view                  filename,
                          const std::vector< std::string >& missing_symbols,
                          const bool                        induceTypes) :
       inducedTypes_(induceTypes), scoreDatabase_(filename, missing_symbols, induceTypes),
@@ -423,7 +423,7 @@ namespace gum::learning {
     return database;
   }
 
-  void IBNLearner::isCSVFileName_(const std::string& filename) {
+  void IBNLearner::isCSVFileName_(std::string_view filename) {
     // get the extension of the file
 
     if (auto filename_size = Size(filename.size()); filename_size < 4) {
@@ -432,7 +432,7 @@ namespace gum::learning {
                 "file type of the database")
     }
 
-    auto extension = filename.substr(filename.size() - 4);
+    std::string extension(filename.substr(filename.size() - 4));
     std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 
     if (extension != ".csv") {
@@ -440,12 +440,12 @@ namespace gum::learning {
     }
   }
 
-  DatabaseTable IBNLearner::readFile_(const std::string&                filename,
+  DatabaseTable IBNLearner::readFile_(std::string_view                  filename,
                                       const std::vector< std::string >& missing_symbols) {
     // get the extension of the file
     isCSVFileName_(filename);
 
-    DBInitializerFromCSV initializer(filename);
+    DBInitializerFromCSV initializer{std::string(filename)};
 
     const auto&       var_names = initializer.variableNames();
     const std::size_t nb_vars   = var_names.size();
@@ -967,8 +967,8 @@ namespace gum::learning {
     return chi2score.statistics(id1, id2, knowing);
   }
 
-  std::pair< double, double > IBNLearner::chi2(const std::string&                name1,
-                                               const std::string&                name2,
+  std::pair< double, double > IBNLearner::chi2(std::string_view                  name1,
+                                               std::string_view                  name2,
                                                const std::vector< std::string >& knowing) {
     std::vector< NodeId > knowingIds;
     std::transform(knowing.begin(),
@@ -985,8 +985,8 @@ namespace gum::learning {
     return g2score.statistics(id1, id2, knowing);
   }
 
-  std::pair< double, double > IBNLearner::G2(const std::string&                name1,
-                                             const std::string&                name2,
+  std::pair< double, double > IBNLearner::G2(std::string_view                  name1,
+                                             std::string_view                  name2,
                                              const std::vector< std::string >& knowing) {
     std::vector< NodeId > knowingIds;
     std::transform(knowing.begin(),
@@ -1050,8 +1050,8 @@ namespace gum::learning {
     else return cmi.score(id1, id2, knowing) / scoreDatabase_.weight();
   }
 
-  double IBNLearner::correctedMutualInformation(const std::string&                var1,
-                                                const std::string&                var2,
+  double IBNLearner::correctedMutualInformation(std::string_view                  var1,
+                                                std::string_view                  var2,
                                                 const std::vector< std::string >& knowing) {
     std::vector< NodeId > knowingIds;
 
@@ -1073,8 +1073,8 @@ namespace gum::learning {
     else return cmi.score(id1, id2, knowing) / scoreDatabase_.weight();
   }
 
-  double IBNLearner::mutualInformation(const std::string&                var1,
-                                       const std::string&                var2,
+  double IBNLearner::mutualInformation(std::string_view                  var1,
+                                       std::string_view                  var2,
                                        const std::vector< std::string >& knowing) {
     std::vector< NodeId > knowingIds;
 
@@ -1092,7 +1092,7 @@ namespace gum::learning {
     return score_->score(var, knowing);
   }
 
-  double IBNLearner::score(const std::string& var, const std::vector< std::string >& knowing) {
+  double IBNLearner::score(std::string_view var, const std::vector< std::string >& knowing) {
     auto mapper = [this](const std::string& c) { return this->idFromName(c); };
 
     const NodeId          id = this->idFromName(var);

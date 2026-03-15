@@ -53,6 +53,7 @@
 #include <atomic>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/core/hashTable.h>
@@ -115,10 +116,10 @@ namespace gum {
      * two MultiDimImplementations. This constraint is imposed by the C++
      * typing system.
      */
-    void insert(const std::string& operation_name,
-                const std::string& type1,
-                const std::string& type2,
-                OperatorPtr        newFunction);
+    void insert(std::string_view operation_name,
+                std::string_view type1,
+                std::string_view type2,
+                OperatorPtr      newFunction);
 
     /**
      * @brief removes a given entry from the register
@@ -137,9 +138,9 @@ namespace gum {
      * @param type2 the \e real type of the second multiDim taken in argument
      * by the function to remove.
      */
-    void erase(const std::string& operation_name,
-               const std::string& type1,
-               const std::string& type2);
+    void erase(std::string_view operation_name,
+               std::string_view type1,
+               std::string_view type2);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -158,9 +159,9 @@ namespace gum {
      * @param type2 the \e real type of the second multiDim taken in argument
      * by the function we look for
      */
-    bool exists(const std::string& operation_name,
-                const std::string& type1,
-                const std::string& type2) const;
+    bool exists(std::string_view operation_name,
+                std::string_view type1,
+                std::string_view type2) const;
 
     /**
      * @brief returns the specialized operator assigned to a given pair of
@@ -183,9 +184,9 @@ namespace gum {
      * @throws NotFound exception is thrown if the operator we look for does
      * not exist within this register.
      */
-    OperatorPtr get(const std::string& operation_name,
-                    const std::string& type1,
-                    const std::string& type2) const;
+    OperatorPtr get(std::string_view operation_name,
+                    std::string_view type1,
+                    std::string_view type2) const;
 
     /// @}
     // ========================================================================
@@ -237,9 +238,9 @@ namespace gum {
 
   /// A function to more easily register new operators in MultiDims
   template < typename GUM_ELEMENT >
-  void registerOperator(const std::string& operation_name,
-                        const std::string& type1,
-                        const std::string& type2,
+  void registerOperator(std::string_view operation_name,
+                        std::string_view type1,
+                        std::string_view type2,
                         typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr function);
 
 } /* namespace gum */

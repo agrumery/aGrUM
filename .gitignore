@@ -100,3 +100,5 @@ wrappers/pyagrum/doc/sphinx/notebooks/out/*
 # Pipenv files
 Pipfile
 Pipfile.lock
+
+compile_flags.txt

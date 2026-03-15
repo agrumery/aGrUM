@@ -878,7 +878,7 @@ namespace gum {
       INLINE bool O3ClassFactory< GUM_SCALAR >::_checkSlotChainLink_(
           const PRMClassElementContainer< GUM_SCALAR >& c,
           const O3Label&                                chain,
-          const std::string&                            s) {
+          std::string_view                              s) {
         if (!c.exists(s)) {
           O3PRM_CLASS_LINK_NOT_FOUND(chain, s, *_errors_);
           return false;

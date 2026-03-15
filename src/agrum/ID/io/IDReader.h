@@ -55,6 +55,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -78,7 +79,7 @@ namespace gum {
      * A reader is created to reading a defined file.
      * Note that an ID as to be created before and given in parameter.
      */
-    IDReader(InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath);
+    IDReader(InfluenceDiagram< GUM_SCALAR >* infdiag, std::string_view filePath);
 
     /**
      * Default destructor.

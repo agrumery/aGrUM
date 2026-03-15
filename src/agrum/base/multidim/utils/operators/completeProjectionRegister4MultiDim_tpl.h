@@ -60,15 +60,15 @@ namespace gum {
   // adds a new entry into the register
   template < typename GUM_ELEMENT >
   void CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::insert(
-      const std::string& projection_name,
-      const std::string& type_multidim,
+      std::string_view projection_name,
+      std::string_view type_multidim,
       typename CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionPtr
           newFunction) {
     // insert the new entry
     CompleteProjectionSet* theset;
 
     if (!_set_.exists(projection_name)) {
-      theset = _set_.insert(projection_name, new CompleteProjectionSet).second;
+      theset = _set_.insert(std::string{projection_name}, new CompleteProjectionSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
@@ -79,13 +79,13 @@ namespace gum {
       theset = _set_[projection_name];
     }
 
-    theset->insert(type_multidim, newFunction);
+    theset->insert(std::string{type_multidim}, newFunction);
   }
 
   // removes a given entry from the register
   template < typename GUM_ELEMENT >
-  void CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::erase(const std::string& projection_name,
-                                                                 const std::string& type_multidim) {
+  void CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::erase(std::string_view projection_name,
+                                                                 std::string_view type_multidim) {
     if (!_set_.exists(projection_name)) return;
 
     CompleteProjectionSet* theset = _set_[projection_name];
@@ -96,8 +96,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
   INLINE bool CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::exists(
-      const std::string& projection_name,
-      const std::string& type_multidim) const {
+      std::string_view projection_name,
+      std::string_view type_multidim) const {
     if (!_set_.exists(projection_name)) return false;
 
     const CompleteProjectionSet& theset = *(_set_[projection_name]);
@@ -109,8 +109,8 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE typename CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionPtr
       CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::get(
-          const std::string& projection_name,
-          const std::string& type_multidim) const {
+          std::string_view projection_name,
+          std::string_view type_multidim) const {
     const CompleteProjectionSet& theset = *(_set_[projection_name]);
     return theset[type_multidim];
   }
@@ -158,8 +158,8 @@ namespace gum {
   // a function to more easily register new projection functions in MultiDims
   template < typename GUM_ELEMENT >
   void registerCompleteProjection(
-      const std::string& projection_name,
-      const std::string& type_multidim,
+      std::string_view projection_name,
+      std::string_view type_multidim,
       typename CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionPtr function) {
     CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::Register().insert(projection_name,
                                                                           type_multidim,

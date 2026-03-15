@@ -86,7 +86,7 @@ namespace gum {
     public:
     static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var, Idx value);
     static Tensor< GUM_SCALAR > deterministicTensor(const DiscreteVariable& var,
-                                                    const std::string&      label);
+                                                    std::string_view        label);
     static Tensor< GUM_SCALAR > uniformTensor(const DiscreteVariable& var);
     // =========================================================================
     /// @name Constructors, Destructors and Copy
@@ -293,7 +293,7 @@ namespace gum {
     /** create a new Tensor with a certain variable in first
      * @throw InvalidArgument if the var is not in the tensor
      */
-    Tensor< GUM_SCALAR > putFirst(const std::string& varname) const;
+    Tensor< GUM_SCALAR > putFirst(std::string_view varname) const;
 
     /**
      * @brief copy a Tensor data using name of variables and labels (not

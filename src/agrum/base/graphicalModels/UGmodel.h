@@ -109,7 +109,7 @@ namespace gum {
      * Return true if this node exists in this graphical model.
      */
     bool exists(NodeId node) const final;
-    bool exists(const std::string& name) const final;
+    bool exists(std::string_view name) const final;
 
     /// @}
 
@@ -125,14 +125,14 @@ namespace gum {
      * @return true if the edge exists
      */
     bool existsEdge(const NodeId node1, const NodeId node2) const;
-    bool existsEdge(const std::string& name1, const std::string& name2) const;
+    bool existsEdge(std::string_view name1, std::string_view name2) const;
 
     /// returns the neighbours of a node as set of nodes
     /** Note that the set of nodes returned may be empty if no edge within the
      * EdgeGraphPart contains the given node.
      * @param id the node toward which the edge returned are pointing */
     const NodeSet& neighbours(const NodeId id) const;
-    const NodeSet& neighbours(const std::string& name) const;
+    const NodeSet& neighbours(std::string_view name) const;
 
     /** check if X and Y are independent given Z
      */
@@ -141,8 +141,8 @@ namespace gum {
      */
     bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const final;
 
-    bool isIndependent(const std::string&                Xname,
-                       const std::string&                Yname,
+    bool isIndependent(std::string_view                  Xname,
+                       std::string_view                  Yname,
                        const std::vector< std::string >& Znames) const {
       return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
     };
@@ -170,7 +170,7 @@ namespace gum {
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
     NodeSet family(const NodeId id) const final;
-    NodeSet family(const std::string& name) const final;
+    NodeSet family(std::string_view name) const final;
 
     protected:
     /**

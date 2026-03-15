@@ -128,12 +128,12 @@ namespace gum {
   }
 
   INLINE
-  NodeId VariableNodeMap::idFromName(const std::string& name) const {
+  NodeId VariableNodeMap::idFromName(std::string_view name) const {
     return _names2nodes_.second(name);
   }
 
   INLINE
-  const DiscreteVariable& VariableNodeMap::variableFromName(const std::string& name) const {
+  const DiscreteVariable& VariableNodeMap::variableFromName(std::string_view name) const {
     return *_nodes2vars_.second(idFromName(name));
   }
 
@@ -141,7 +141,7 @@ namespace gum {
   // @throws DuplicateLabel if this name already exists
   // @throws NotFound Raised if no nodes matches id.
   INLINE
-  void VariableNodeMap::changeName(NodeId id, const std::string& new_name) {
+  void VariableNodeMap::changeName(NodeId id, std::string_view new_name) {
     if (_names2nodes_.existsFirst(new_name)) {
       GUM_ERROR(DuplicateLabel, "Unable to insert var with the name '" << new_name << "'.")
     }
@@ -150,7 +150,7 @@ namespace gum {
 
     _names2nodes_.eraseFirst(var->name());
     var->setName(new_name);
-    _names2nodes_.insert(new_name, id);
+    _names2nodes_.insert(std::string(new_name), id);
   }
 
   INLINE const std::string& VariableNodeMap::name(NodeId id) const {

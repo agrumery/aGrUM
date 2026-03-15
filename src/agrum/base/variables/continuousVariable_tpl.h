@@ -61,10 +61,10 @@ namespace gum {
 
   /// Default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(const std::string& aName,
-                                                              const std::string& aDesc,
-                                                              GUM_SCALAR         lower_bound,
-                                                              GUM_SCALAR         upper_bound) :
+  INLINE ContinuousVariable< GUM_SCALAR >::ContinuousVariable(std::string_view aName,
+                                                              std::string_view aDesc,
+                                                              GUM_SCALAR       lower_bound,
+                                                              GUM_SCALAR       upper_bound) :
       IContinuousVariable(aName, aDesc), _lower_bound_(lower_bound), _upper_bound_(upper_bound) {
     if (_lower_bound_ > _upper_bound_) { std::swap(_upper_bound_, _lower_bound_); }
     GUM_CONSTRUCTOR(ContinuousVariable);
@@ -143,8 +143,8 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string (unspecialized version)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::operator[](const std::string& str) const {
-    std::istringstream stream(str);
+  INLINE GUM_SCALAR ContinuousVariable< GUM_SCALAR >::operator[](std::string_view str) const {
+    std::istringstream stream{std::string(str)};
     GUM_SCALAR         value;
     stream >> value;
 

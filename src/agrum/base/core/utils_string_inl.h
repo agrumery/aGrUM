@@ -56,9 +56,10 @@
 namespace gum {
   INLINE
 
-  std::string toLower(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-    return str;
+  std::string toLower(std::string_view str) {
+    std::string result{str};
+    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
   }
 
   INLINE
@@ -85,7 +86,7 @@ namespace gum {
 
   INLINE
 
-  std::string remove_newline(const std::string& s) {
+  std::string remove_newline(std::string_view s) {
     std::string res{s};
     std::erase(res, '\n');
     std::erase(res, '\r');
@@ -93,14 +94,13 @@ namespace gum {
   }
 
   INLINE
-  bool isInteger(const std::string& val) { return isIntegerWithResult(val, nullptr); }
+  bool isInteger(std::string_view val) { return isIntegerWithResult(val, nullptr); }
 
   INLINE
-  bool isNumerical(const std::string& val) { return isNumericalWithResult(val, nullptr); }
+  bool isNumerical(std::string_view val) { return isNumericalWithResult(val, nullptr); }
 
   INLINE
-
-  std::string trim_copy(const std::string& s) {
+  std::string trim_copy(std::string_view s) {
     std::string res{s};
     trim(res);
     return res;

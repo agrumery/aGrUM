@@ -64,7 +64,7 @@ namespace gum {
 
     /// returns the translation of a string, as found in the current dictionary
     INLINE DBTranslatedValue
-        DBTranslator4NumericalDiscreteVariable::translate(const std::string& str) {
+        DBTranslator4NumericalDiscreteVariable::translate(std::string_view str) {
       // try to get the index of str within the NumericalDiscrete variable.
       double     d;
       const bool b = isNumericalWithResult(str, &d);

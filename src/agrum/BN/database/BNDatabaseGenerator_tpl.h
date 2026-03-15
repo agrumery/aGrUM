@@ -210,7 +210,7 @@ namespace gum::learning {
 
   /// generates database, and writes csv file
   template < GUM_Numeric GUM_SCALAR >
-  void BNDatabaseGenerator< GUM_SCALAR >::toCSV(const std::string& csvFileURL,
+  void BNDatabaseGenerator< GUM_SCALAR >::toCSV(std::string_view csvFileURL,
                                                 bool               useLabels,
                                                 bool               append,
                                                 std::string        csvSeparator,
@@ -223,7 +223,7 @@ namespace gum::learning {
 
     bool includeHeader = true;
     if (append) {
-      std::ifstream csvFile(csvFileURL);
+      std::ifstream csvFile(std::filesystem::path{csvFileURL});
       if (csvFile) {
         if (auto varOrder = _varOrderFromCSV_(csvFile, csvSeparator);
             checkOnAppend && varOrder != _varOrder_)
@@ -240,7 +240,7 @@ namespace gum::learning {
 
     auto ofstreamFlag = append ? std::ofstream::app : std::ofstream::out;
 
-    std::ofstream os(csvFileURL, ofstreamFlag);
+    std::ofstream os(std::filesystem::path{csvFileURL}, ofstreamFlag);
     bool          firstCol = true;
     if (includeHeader) {
       for (const auto& i: _varOrder_) {
@@ -401,8 +401,8 @@ namespace gum::learning {
 
   /// change columns order according to a csv file
   template < GUM_Numeric GUM_SCALAR >
-  void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(const std::string& csvFileURL,
-                                                             const std::string& csvSeparator) {
+  void BNDatabaseGenerator< GUM_SCALAR >::setVarOrderFromCSV(std::string_view csvFileURL,
+                                                             std::string_view csvSeparator) {
     setVarOrder(_varOrderFromCSV_(csvFileURL, csvSeparator));
   }
 
@@ -469,9 +469,9 @@ namespace gum::learning {
   /// returns varOrder from a csv file
   template < GUM_Numeric GUM_SCALAR >
   std::vector< Idx >
-      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(const std::string& csvFileURL,
-                                                           const std::string& csvSeparator) const {
-    std::ifstream      csvFile(csvFileURL);
+      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::string_view csvFileURL,
+                                                           std::string_view csvSeparator) const {
+    std::ifstream      csvFile(std::filesystem::path{csvFileURL});
     std::vector< Idx > varOrder;
     if (csvFile) {
       varOrder = _varOrderFromCSV_(csvFile, csvSeparator);
@@ -486,8 +486,8 @@ namespace gum::learning {
   /// returns varOrder from a csv file
   template < GUM_Numeric GUM_SCALAR >
   std::vector< Idx >
-      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::ifstream&     csvFile,
-                                                           const std::string& csvSeparator) const {
+      BNDatabaseGenerator< GUM_SCALAR >::_varOrderFromCSV_(std::ifstream&   csvFile,
+                                                           std::string_view csvSeparator) const {
     std::string                line;
     std::vector< std::string > header_found;
     header_found.reserve(_nbVars_);

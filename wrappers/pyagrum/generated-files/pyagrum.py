@@ -715,7 +715,7 @@ _Set_end_ = cvar._Set_end_
 _Set_end_safe_ = cvar._Set_end_safe_
 
 
-def _createMsg_(filename: str, function: str, line: int, msg: str) -> str:
+def _createMsg_(filename: "str_view", function: "str_view", line: int, msg: "str_view") -> str:
     return _pyagrum._createMsg_(filename, function, line, msg)
 class FatalError(GumException):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -1380,7 +1380,7 @@ class Variable(object):
     def __eq__(self, aRV: "pyagrum.Variable") -> bool:
         return _pyagrum.Variable___eq__(self, aRV)
 
-    def setName(self, theValue: str) -> None:
+    def setName(self, theValue: "str_view") -> None:
         r"""
 
         sets the name of the variable.
@@ -1404,7 +1404,7 @@ class Variable(object):
         """
         return _pyagrum.Variable_name(self)
 
-    def setDescription(self, theValue: str) -> None:
+    def setDescription(self, theValue: "str_view") -> None:
         r"""
 
         set the description of the variable.
@@ -1574,7 +1574,7 @@ class DiscreteVariable(Variable):
     def toFast(self) -> str:
         return _pyagrum.DiscreteVariable_toFast(self)
 
-    def index(self, label: str) -> int:
+    def index(self, label: "str_view") -> int:
         r"""
 
         Parameters
@@ -1900,7 +1900,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_clone(self)
 
-    def index(self, label: str) -> int:
+    def index(self, label: "str_view") -> int:
         r"""
 
         Parameters
@@ -1916,7 +1916,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_index(self, label)
 
-    def isLabel(self, aLabel: str) -> bool:
+    def isLabel(self, aLabel: "str_view") -> bool:
         r"""
 
         Indicates whether the variable already has the label passed in argument
@@ -1958,7 +1958,7 @@ class LabelizedVariable(DiscreteVariable):
 
 
 
-    def changeLabel(self, pos: int, aLabel: str) -> None:
+    def changeLabel(self, pos: int, aLabel: "str_view") -> None:
         r"""
 
         Change the label at the specified index
@@ -2009,7 +2009,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_label(self, i)
 
-    def posLabel(self, label: str) -> int:
+    def posLabel(self, label: "str_view") -> int:
         return _pyagrum.LabelizedVariable_posLabel(self, label)
 
     def numerical(self, index: int) -> float:
@@ -2305,7 +2305,7 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyagrum.RangeVariable_belongs(self, val)
 
-    def index(self, arg2: str) -> int:
+    def index(self, arg2: "str_view") -> int:
         r"""
 
         Parameters
@@ -2454,7 +2454,7 @@ class IntegerVariable(DiscreteVariable):
     def toFast(self) -> str:
         return _pyagrum.IntegerVariable_toFast(self)
 
-    def index(self, label: str) -> int:
+    def index(self, label: "str_view") -> int:
         r"""
 
         Parameters
@@ -2757,7 +2757,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def toFast(self) -> str:
         return _pyagrum.NumericalDiscreteVariable_toFast(self)
 
-    def index(self, label: str) -> int:
+    def index(self, label: "str_view") -> int:
         r"""
 
         Parameters
@@ -6156,7 +6156,7 @@ class GraphicalModel(object):
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrum.delete_GraphicalModel
 
-    def property(self, name: str) -> str:
+    def property(self, name: "str_view") -> str:
         r"""
 
         Returns the value associated to this property.
@@ -6181,7 +6181,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_property(self, name)
 
-    def propertyWithDefault(self, name: str, byDefault: str) -> str:
+    def propertyWithDefault(self, name: "str_view", byDefault: str) -> str:
         r"""
 
         Returns the value associated to this property or the default value if there is no such property.
@@ -6203,7 +6203,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_propertyWithDefault(self, name, byDefault)
 
-    def setProperty(self, name: str, value: str) -> None:
+    def setProperty(self, name: "str_view", value: "str_view") -> None:
         r"""
 
         Create or change the couple (name,value) in the properties.
@@ -6334,10 +6334,10 @@ class GraphicalModel(object):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.GraphicalModel_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         return _pyagrum.GraphicalModel_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         return _pyagrum.GraphicalModel_variableFromName(self, name)
 
     def log10DomainSize(self) -> float:
@@ -7745,7 +7745,7 @@ class Tensor(object):
         """
         return _pyagrum.Tensor_reorganize(self, *args)
 
-    def putFirst(self, varname: str) -> "pyagrum.Tensor":
+    def putFirst(self, varname: "str_view") -> "pyagrum.Tensor":
         r"""
 
         Parameters
@@ -9457,7 +9457,7 @@ class PythonApproximationListener(object):
     def whenProgress(self, src: object, step: int, error: float, duration: float) -> None:
         return _pyagrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
-    def whenStop(self, src: object, message: str) -> None:
+    def whenStop(self, src: object, message: "str_view") -> None:
         return _pyagrum.PythonApproximationListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
@@ -9495,7 +9495,7 @@ class PythonDatabaseGeneratorListener(object):
     def whenProgress(self, src: object, step: int, duration: float) -> None:
         return _pyagrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
 
-    def whenStop(self, src: object, message: str) -> None:
+    def whenStop(self, src: object, message: "str_view") -> None:
         return _pyagrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
@@ -10381,7 +10381,7 @@ class EssentialGraph(object):
     def skeleton(self) -> "pyagrum.UndiGraph":
         return _pyagrum.EssentialGraph_skeleton(self)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Parameters
@@ -11127,7 +11127,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Returns a variable's id given its name in the graph.
@@ -11154,7 +11154,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         r"""
 
         Parameters
@@ -11313,7 +11313,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_toDot(self)
 
-    def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
+    def evEq(self, name: "str_view", value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
@@ -11347,7 +11347,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evEq(self, name, value)
 
-    def evIn(self, name: str, val1: float, val2: float) -> "pyagrum.Tensor":
+    def evIn(self, name: "str_view", val1: float, val2: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
@@ -11374,7 +11374,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evIn(self, name, val1, val2)
 
-    def evLt(self, name: str, value: float) -> "pyagrum.Tensor":
+    def evLt(self, name: "str_view", value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
@@ -11398,7 +11398,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evLt(self, name, value)
 
-    def evGt(self, name: str, value: float) -> "pyagrum.Tensor":
+    def evGt(self, name: "str_view", value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
@@ -12018,7 +12018,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Returns a variable's id given its name in the graph.
@@ -12045,7 +12045,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         r"""
 
         Parameters
@@ -13459,7 +13459,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Returns a variable's id given its name in the graph.
@@ -13486,7 +13486,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         r"""
 
         Parameters
@@ -25633,7 +25633,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_names(self)
 
-    def idFromName(self, var_name: str) -> int:
+    def idFromName(self, var_name: "str_view") -> int:
         r"""
 
         Parameters
@@ -26733,7 +26733,7 @@ class CredalNet(object):
         _pyagrum.CredalNet_swiginit(self, _pyagrum.new_CredalNet(*args))
     __swig_destroy__ = _pyagrum.delete_CredalNet
 
-    def addVariable(self, name: str, card: int) -> int:
+    def addVariable(self, name: "str_view", card: int) -> int:
         r"""
 
         Parameters
@@ -27002,7 +27002,7 @@ class CredalNet(object):
         """
         return _pyagrum.CredalNet_approximatedBinarization(self)
 
-    def saveBNsMinMax(self, min_path: str, max_path: str) -> None:
+    def saveBNsMinMax(self, min_path: "str_view", max_path: "str_view") -> None:
         r"""
 
         If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
@@ -27222,7 +27222,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_makeInference(self)
 
-    def insertEvidenceFile(self, path: str) -> None:
+    def insertEvidenceFile(self, path: "str_view") -> None:
         r"""
 
         Insert evidence from file.
@@ -27641,7 +27641,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_inferenceType(self, *args)
 
-    def saveInference(self, path: str) -> None:
+    def saveInference(self, path: "str_view") -> None:
         r"""
 
         Saves marginals.
@@ -27663,7 +27663,7 @@ class CNLoopyPropagation(object):
 
     __swig_destroy__ = _pyagrum.delete_CNLoopyPropagation
 
-    def insertEvidenceFile(self, path: str) -> None:
+    def insertEvidenceFile(self, path: "str_view") -> None:
         r"""
 
         Insert evidence from file.
@@ -28354,7 +28354,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Returns a variable's id given its name.
@@ -28377,7 +28377,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         r"""
 
         Parameters
@@ -29734,10 +29734,10 @@ class IMarkovRandomField(UGmodel):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.IMarkovRandomField_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         return _pyagrum.IMarkovRandomField_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         return _pyagrum.IMarkovRandomField_variableFromName(self, name)
 
     def __eq__(self, _from: "IMarkovRandomField") -> bool:
@@ -30098,10 +30098,10 @@ class MarkovRandomField(IMarkovRandomField):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.MarkovRandomField_nodeId(self, var)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         return _pyagrum.MarkovRandomField_idFromName(self, name)
 
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
         return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
     def generateFactors(self) -> None:
@@ -32106,7 +32106,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_names(self)
 
-    def idFromName(self, name: str) -> int:
+    def idFromName(self, name: "str_view") -> int:
         r"""
 
         Return the NodeId of a variable by name.

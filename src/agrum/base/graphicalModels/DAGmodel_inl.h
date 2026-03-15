@@ -69,25 +69,25 @@ namespace gum {
     return dag_.existsArc(tail, head);
   }
 
-  INLINE bool DAGmodel::existsArc(const std::string& nametail, const std::string& namehead) const {
+  INLINE bool DAGmodel::existsArc(std::string_view nametail, std::string_view namehead) const {
     return existsArc(idFromName(nametail), idFromName(namehead));
   }
 
   INLINE const NodeSet& DAGmodel::parents(const NodeId id) const { return dag_.parents(id); }
 
-  INLINE const NodeSet& DAGmodel::parents(const std::string& name) const {
+  INLINE const NodeSet& DAGmodel::parents(std::string_view name) const {
     return parents(idFromName(name));
   }
 
   INLINE NodeSet DAGmodel::family(const NodeId id) const { return dag_.family(id); }
 
-  INLINE NodeSet DAGmodel::family(const std::string& name) const {
+  INLINE NodeSet DAGmodel::family(std::string_view name) const {
     return dag_.family(idFromName(name));
   }
 
   INLINE const NodeSet& DAGmodel::children(const NodeId id) const { return dag_.children(id); }
 
-  INLINE const NodeSet& DAGmodel::children(const std::string& name) const {
+  INLINE const NodeSet& DAGmodel::children(std::string_view name) const {
     return dag_.children(idFromName(name));
   }
 
@@ -105,7 +105,7 @@ namespace gum {
 
   INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
 
-  INLINE bool DAGmodel::exists(const std::string& name) const {
+  INLINE bool DAGmodel::exists(std::string_view name) const {
     try {
       return exists(idFromName(name));
     } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
@@ -117,13 +117,13 @@ namespace gum {
 
   INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag().descendants(id); }
 
-  INLINE NodeSet DAGmodel::descendants(const std::string& name) const {
+  INLINE NodeSet DAGmodel::descendants(std::string_view name) const {
     return descendants(idFromName(name));
   }
 
   INLINE NodeSet DAGmodel::ancestors(const NodeId id) const { return dag().ancestors(id); }
 
-  INLINE NodeSet DAGmodel::ancestors(const std::string& name) const {
+  INLINE NodeSet DAGmodel::ancestors(std::string_view name) const {
     return ancestors(idFromName(name));
   }
 
@@ -152,7 +152,7 @@ namespace gum {
     return dag_.minimalCondSet(targets, soids);
   }
 
-  INLINE NodeSet DAGmodel::minimalCondSet(const std::string&                target,
+  INLINE NodeSet DAGmodel::minimalCondSet(std::string_view                  target,
                                           const std::vector< std::string >& soids) const {
     return dag_.minimalCondSet(idFromName(target), nodeset(soids));
   }

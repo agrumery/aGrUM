@@ -43,6 +43,7 @@
 #define GUM_UTILS_PRM_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -65,7 +66,7 @@ namespace gum {
     using prm_float = float;
 
     /// Decompose a string in a vector of strings using "." as separators.
-    void decomposePath(const std::string& path, std::vector< std::string >& v);
+    void decomposePath(std::string_view path, std::vector< std::string >& v);
 
     /**
      * @brief Returns a copy of a Tensor after applying a bijection over the

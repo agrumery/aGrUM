@@ -82,7 +82,7 @@ namespace gum {
       /// @name Constructors & destructor
       // ========================================================================
       /// @{
-      explicit PRMAttribute(const std::string& name);
+      explicit PRMAttribute(std::string_view name);
 
       /// Destructor.
       virtual ~PRMAttribute();

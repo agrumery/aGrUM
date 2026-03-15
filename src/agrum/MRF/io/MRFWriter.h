@@ -52,8 +52,10 @@
 #ifndef GUM_MN_WRITER_H
 #define GUM_MN_WRITER_H
 
+#include <filesystem>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -105,7 +107,7 @@ namespace gum {
      * @param MN The Markov random field writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(const std::string& filePath, const IMarkovRandomField< GUM_SCALAR >& MN) = 0;
+    virtual void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& MN) = 0;
   };
 
 

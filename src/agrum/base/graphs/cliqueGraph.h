@@ -237,11 +237,11 @@ namespace gum {
 
     /// friendly displays the content of the map of the CliqueGraph in DOT format
 
-    virtual std::string mapToDot(double             scaleClique,
-                                 double             scaleSep,
-                                 double             lenEdge,
-                                 const std::string& colorClique = "burlywood",
-                                 const std::string& colorSep    = "palegreen") const;
+    virtual std::string mapToDot(double           scaleClique,
+                                 double           scaleSep,
+                                 double           lenEdge,
+                                 std::string_view colorClique = "burlywood",
+                                 std::string_view colorSep    = "palegreen") const;
 
     /// @}
 

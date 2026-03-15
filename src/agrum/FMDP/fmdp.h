@@ -50,6 +50,7 @@
 #define GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 //======================================================================
 #include <string>
+#include <string_view>
 #include <vector>
 //======================================================================
 //======================================================================
@@ -144,7 +145,7 @@ namespace gum {
      * Adds an action to FMDP description
      * @throw DuplicateElement if an action with same name already exists
      */
-    void addAction(Idx actionId, const std::string& action);
+    void addAction(Idx actionId, std::string_view action);
 
     /**
      * Returns an iterator reference to he beginning of the list of actions
@@ -257,7 +258,7 @@ namespace gum {
     /**
      * Returns action id
      */
-    Idx actionId(const std::string&) const;
+    Idx actionId(std::string_view) const;
 
     /**
      * Displays the FMDP in a Dot format

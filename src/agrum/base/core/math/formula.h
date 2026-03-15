@@ -433,17 +433,17 @@ namespace gum {
      * @brief Push a function in the formula.
      * @param func The function to push.
      */
-    void _push_function_(const std::string& func);
+    void _push_function_(std::string_view func);
 
     /**
      * @brief Push a variable in the formula.
      */
-    void _push_variable_(const std::string& var);
+    void _push_variable_(std::string_view var);
 
     /**
      * @brief Use this if you don't know if ident is a function or a variable.
      */
-    void _push_identifier_(const std::string& ident);
+    void _push_identifier_(std::string_view ident);
 
     /**
      * @brief Push a comma in the formula.

@@ -46,7 +46,7 @@
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
-  UAIBNReader< GUM_SCALAR >::UAIBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
+  UAIBNReader< GUM_SCALAR >::UAIBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(UAIBNReader);
     _bn_         = bn;
@@ -258,18 +258,18 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIBNReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIBNReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
     GUM_ERROR(gum::OperationNotAllowed, "")
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIBNReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIBNReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIBNReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIBNReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addWarning(s, _streamName_, lig, col);
   }
 

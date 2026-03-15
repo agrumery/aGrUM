@@ -123,7 +123,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNetFragment< GUM_SCALAR >::idFromName(const std::string& name) const {
+  INLINE NodeId BayesNetFragment< GUM_SCALAR >::idFromName(std::string_view name) const {
     NodeId id = _bn_.idFromName(name);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << name << " is not installed")
@@ -133,7 +133,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE const DiscreteVariable&
-      BayesNetFragment< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      BayesNetFragment< GUM_SCALAR >::variableFromName(std::string_view name) const {
     NodeId id = idFromName(name);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << name << " is not installed")

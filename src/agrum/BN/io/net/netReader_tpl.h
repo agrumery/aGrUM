@@ -48,7 +48,7 @@
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
-  NetReader< GUM_SCALAR >::NetReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
+  NetReader< GUM_SCALAR >::NetReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(NetReader);
     _bn_         = bn;

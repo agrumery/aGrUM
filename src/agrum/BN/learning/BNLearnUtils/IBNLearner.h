@@ -138,7 +138,7 @@ namespace gum::learning {
        * variables. By setting induceTypes to true, this is precisely what the
        * BNLearner will do.
        */
-      explicit Database(const std::string&                file,
+      explicit Database(std::string_view                  file,
                         const std::vector< std::string >& missing_symbols,
                         const bool                        induceTypes = false);
 
@@ -159,7 +159,7 @@ namespace gum::learning {
        * @param missing_symbols the set of symbols in the CSV file that
        * correspond to missing data
        */
-      Database(const std::string&                filename,
+      Database(std::string_view                  filename,
                const Database&                   score_database,
                const std::vector< std::string >& missing_symbols);
 
@@ -171,7 +171,7 @@ namespace gum::learning {
        * correspond to missing data
        */
       template < GUM_Numeric GUM_SCALAR >
-      Database(const std::string&                 filename,
+      Database(std::string_view                   filename,
                const gum::BayesNet< GUM_SCALAR >& bn,
                const std::vector< std::string >&  missing_symbols);
 
@@ -214,7 +214,7 @@ namespace gum::learning {
       const std::vector< std::string >& names() const;
 
       /// returns the node id corresponding to a variable name
-      NodeId idFromName(const std::string& var_name) const;
+      NodeId idFromName(std::string_view var_name) const;
 
       /// returns the variable name corresponding to a given node id
       const std::string& nameFromId(NodeId id) const;
@@ -297,7 +297,7 @@ namespace gum::learning {
      * precisely what the BNLearner will do. If inducedTypes is false, all the values in
      * the dataset are interpreted as "labels", i.e., as categorical values.
      */
-    IBNLearner(const std::string&                filename,
+    IBNLearner(std::string_view                  filename,
                const std::vector< std::string >& missingSymbols,
                bool                              induceTypes = true);
 
@@ -321,7 +321,7 @@ namespace gum::learning {
      * be interpreted as missing values
      */
     template < GUM_Numeric GUM_SCALAR >
-    IBNLearner(const std::string&                 filename,
+    IBNLearner(std::string_view                   filename,
                const gum::BayesNet< GUM_SCALAR >& src,
                const std::vector< std::string >&  missing_symbols);
 
@@ -373,14 +373,14 @@ namespace gum::learning {
     /// returns the domain sizes of the variables in the database
     const std::vector< std::size_t >& domainSizes() const;
     Size                              domainSize(NodeId var) const;
-    Size                              domainSize(const std::string& var) const;
+    Size                              domainSize(std::string_view var) const;
 
     /// returns the node id corresponding to a variable name
     /**
      * @throw MissingVariableInDatabase if a variable of the BN is not found
      * in the database.
      */
-    NodeId idFromName(const std::string& var_name) const;
+    NodeId idFromName(std::string_view var_name) const;
 
     /// returns the database used by the BNLearner
     const DatabaseTable& database() const;
@@ -465,8 +465,8 @@ namespace gum::learning {
      * @param knowing list of observed variables
      * @return a std::pair<double,double>
      */
-    std::pair< double, double > chi2(const std::string&                name1,
-                                     const std::string&                name2,
+    std::pair< double, double > chi2(std::string_view                  name1,
+                                     std::string_view                  name2,
                                      const std::vector< std::string >& knowing = {});
 
     /**
@@ -485,8 +485,8 @@ namespace gum::learning {
      * @param knowing list of observed variables
      * @return a std::pair<double,double>
      */
-    std::pair< double, double > G2(const std::string&                name1,
-                                   const std::string&                name2,
+    std::pair< double, double > G2(std::string_view                  name1,
+                                   std::string_view                  name2,
                                    const std::vector< std::string >& knowing = {});
 
     /**
@@ -533,8 +533,8 @@ namespace gum::learning {
      * @param knowing an optional vector of conditioning rows
      * @return a double
      */
-    double mutualInformation(const std::string&                var1,
-                             const std::string&                var2,
+    double mutualInformation(std::string_view                  var1,
+                             std::string_view                  var2,
                              const std::vector< std::string >& knowing = {});
 
 
@@ -568,8 +568,8 @@ namespace gum::learning {
      * @param knowing an optional vector of conditioning rows
      * @return a double
      */
-    double correctedMutualInformation(const std::string&                var1,
-                                      const std::string&                var2,
+    double correctedMutualInformation(std::string_view                  var1,
+                                      std::string_view                  var2,
                                       const std::vector< std::string >& knowing = {});
 
     /**
@@ -591,7 +591,7 @@ namespace gum::learning {
      * by their names
      * @return a double corresponding to the value of the score
      */
-    double score(const std::string& vars, const std::vector< std::string >& knowing = {});
+    double score(std::string_view vars, const std::vector< std::string >& knowing = {});
 
     /**
      * Return the pseudo-counts of NodeIds vars in the base in a raw array
@@ -742,7 +742,7 @@ namespace gum::learning {
     void useSmoothingPrior(double weight = 1);
 
     /// use the Dirichlet prior from a database
-    void useDirichletPrior(const std::string& filename, double weight = 1);
+    void useDirichletPrior(std::string_view filename, double weight = 1);
 
     /// checks whether the current score and prior are compatible
     /** @returns a non empty string if the prior is somehow compatible with the
@@ -836,14 +836,14 @@ namespace gum::learning {
     /// @{
     void addForbiddenArc(const Arc& arc);
     void addForbiddenArc(NodeId tail, NodeId head);
-    void addForbiddenArc(const std::string& tail, const std::string& head);
+    void addForbiddenArc(std::string_view tail, std::string_view head);
     /// @}
 
     /// @name remove a forbidden arc
     /// @{
     void eraseForbiddenArc(const Arc& arc);
     void eraseForbiddenArc(NodeId tail, NodeId head);
-    void eraseForbiddenArc(const std::string& tail, const std::string& head);
+    void eraseForbiddenArc(std::string_view tail, std::string_view head);
     ///@}
 
     /// assign a set of mandatory arcs
@@ -853,37 +853,37 @@ namespace gum::learning {
     ///@{
     void addMandatoryArc(const Arc& arc);
     void addMandatoryArc(NodeId tail, NodeId head);
-    void addMandatoryArc(const std::string& tail, const std::string& head);
+    void addMandatoryArc(std::string_view tail, std::string_view head);
     ///@}
 
     /// @name remove a mandatory arc
     ///@{
     void eraseMandatoryArc(const Arc& arc);
     void eraseMandatoryArc(NodeId tail, NodeId head);
-    void eraseMandatoryArc(const std::string& tail, const std::string& head);
+    void eraseMandatoryArc(std::string_view tail, std::string_view head);
     /// @}
 
     /// @name add a node with no parent
     ///@{
     void addNoParentNode(NodeId node);
-    void addNoParentNode(const std::string& node);
+    void addNoParentNode(std::string_view node);
     /// @}
 
     /// @name remove a node with no parent
     ///@{
     void eraseNoParentNode(NodeId node);
-    void eraseNoParentNode(const std::string& node);
+    void eraseNoParentNode(std::string_view node);
 
     /// @name add a node with no children
     ///@{
     void addNoChildrenNode(NodeId node);
-    void addNoChildrenNode(const std::string& node);
+    void addNoChildrenNode(std::string_view node);
     /// @}
 
     /// @name remove a node with no children
     ///@{
     void eraseNoChildrenNode(NodeId node);
-    void eraseNoChildrenNode(const std::string& node);
+    void eraseNoChildrenNode(std::string_view node);
     /// @}
 
     /// assign a set of possible edges
@@ -901,14 +901,14 @@ namespace gum::learning {
     /// @{
     void addPossibleEdge(const Edge& edge);
     void addPossibleEdge(NodeId tail, NodeId head);
-    void addPossibleEdge(const std::string& tail, const std::string& head);
+    void addPossibleEdge(std::string_view tail, std::string_view head);
     /// @}
 
     /// @name remove a possible edge
     /// @{
     void erasePossibleEdge(const Edge& edge);
     void erasePossibleEdge(NodeId tail, NodeId head);
-    void erasePossibleEdge(const std::string& tail, const std::string& head);
+    void erasePossibleEdge(std::string_view tail, std::string_view head);
     ///@}
 
     ///@}
@@ -1038,11 +1038,11 @@ namespace gum::learning {
     const ApproximationScheme* currentAlgorithm_{nullptr};
 
     /// reads a file and returns a databaseVectInRam
-    static DatabaseTable readFile_(const std::string&                filename,
+    static DatabaseTable readFile_(std::string_view                  filename,
                                    const std::vector< std::string >& missing_symbols);
 
     /// checks whether the extension of a CSV filename is correct
-    static void isCSVFileName_(const std::string& filename);
+    static void isCSVFileName_(std::string_view filename);
 
     /// create the prior used for learning
     virtual void createPrior_() = 0;
@@ -1094,7 +1094,7 @@ namespace gum::learning {
 
     /// distribute signals
     INLINE void distributeStop(const ApproximationScheme* approximationScheme,
-                               const std::string&         message) {
+                               std::string_view           message) {
       setCurrentApproximationScheme(approximationScheme);
 
       if (onStop.hasListener()) GUM_EMIT1(onStop, message);

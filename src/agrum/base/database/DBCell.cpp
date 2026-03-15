@@ -83,7 +83,7 @@ namespace gum {
     }
 
     // determines whether a string corresponds to an integer
-    bool DBCell::isInteger(const std::string& str) {
+    bool DBCell::isInteger(std::string_view str) {
       if (str.empty()) return false;
 
       // trim the string
@@ -104,7 +104,7 @@ namespace gum {
     }
 
     // determines whether a string corresponds to an integer
-    bool DBCell::isReal(const std::string& str) {
+    bool DBCell::isReal(std::string_view str) {
       if (str.empty()) return false;
 
       // trim the string
@@ -233,7 +233,7 @@ namespace gum {
     }
 
     // raises an appropriate exception when encountering a type error
-    std::string DBCell::_typeErrorMsg_(const std::string& true_type) const {
+    std::string DBCell::_typeErrorMsg_(std::string_view true_type) const {
       std::stringstream str;
       switch (_type_) {
         case EltType::REAL :

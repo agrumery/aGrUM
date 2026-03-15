@@ -75,7 +75,7 @@ namespace gum {
      * Default constructor.
      */
     FMDPSimulator(const FMDP< double >* fmdp);
-    FMDPSimulator(const std::string& resource);
+    FMDPSimulator(std::string_view resource);
 
     /**
      * Default destructor.

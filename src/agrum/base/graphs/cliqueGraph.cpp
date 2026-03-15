@@ -292,7 +292,7 @@ namespace gum {
     return stream.str();
   }
 
-  std::string expandCliqueContent(const NodeSet& clique, const std::string& delim = "-") {
+  std::string expandCliqueContent(const NodeSet& clique, std::string_view delim = "-") {
     std::stringstream stream;
     bool              first = true;
 
@@ -372,11 +372,11 @@ namespace gum {
     return stream.str();
   }
 
-  std::string CliqueGraph::mapToDot(double             scaleClique,
-                                    double             scaleSep,
-                                    double             lenEdge,
-                                    const std::string& colorClique,
-                                    const std::string& colorSep) const {
+  std::string CliqueGraph::mapToDot(double           scaleClique,
+                                    double           scaleSep,
+                                    double           lenEdge,
+                                    std::string_view colorClique,
+                                    std::string_view colorSep) const {
     std::stringstream stream;
     stream << "graph {" << std::endl;
     stream << "  bgcolor=transparent;" << std::endl;

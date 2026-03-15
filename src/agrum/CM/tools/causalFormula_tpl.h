@@ -101,7 +101,7 @@ namespace gum {
                                              const Set< std::string >&                on,
                                              const Set< std::string >&                doing,
                                              const Set< std::string >&                knowing,
-                                             const std::string&                       explanation) :
+                                             std::string_view                         explanation) :
       _cm(cm), _root(std::move(root)), _on(_toNodeSetFromNames_(cm, on)),
       _doing(_toNodeSetFromNames_(cm, doing)), _knowing(_toNodeSetFromNames_(cm, knowing)),
       _explanation(explanation) {
@@ -115,7 +115,7 @@ namespace gum {
                                              const NodeSet&                           on,
                                              const NodeSet&                           doing,
                                              const NodeSet&                           knowing,
-                                             const std::string&                       explanation) :
+                                             std::string_view                         explanation) :
       _cm(cm), _root(std::move(root)), _on(on), _doing(doing), _knowing(knowing),
       _explanation(explanation) {
     _ensureVariablesExist();
@@ -152,8 +152,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string CausalFormula< GUM_SCALAR >::toLatex(const std::string& doOperatorPrefix,
-                                                   const std::string& doOperatorSuffix) const {
+  std::string CausalFormula< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
+                                                   std::string_view doOperatorSuffix) const {
     // Track variable name occurrences for prime management in AST LaTeX
     HashTable< std::string, int > nameOccur;
 
@@ -173,8 +173,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string CausalFormula< GUM_SCALAR >::latexQuery(const std::string& doOperatorPrefix,
-                                                      const std::string& doOperatorSuffix) const {
+  std::string CausalFormula< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
+                                                      std::string_view doOperatorSuffix) const {
     const auto& bn = _cm.observationalBN();
 
     auto namesSorted = [&](const NodeSet& S) {

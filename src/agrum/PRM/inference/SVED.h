@@ -48,6 +48,7 @@
 #ifndef GUM_SVED_H
 #define GUM_SVED_H
 
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
@@ -197,7 +198,7 @@ namespace gum {
                             BucketSet&                                pool,
                             BucketSet&                                trash);
 
-      std::string _trim_(const std::string& s);
+      std::string _trim_(std::string_view s);
       /// @}
     };
 

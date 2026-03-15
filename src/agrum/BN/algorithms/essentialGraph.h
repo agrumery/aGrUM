@@ -49,6 +49,8 @@
 #ifndef GUM_ESSENTIALGRAPH_H
 #define GUM_ESSENTIALGRAPH_H
 
+#include <string_view>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
@@ -126,7 +128,7 @@ namespace gum {
     const NodeGraphPart& nodes() const;
 
     /// wrappping @ref DAGModel::idFromName()
-    NodeId idFromName(const std::string& name) const;
+    NodeId idFromName(std::string_view name) const;
 
     /// wrappping @ref DAGModel::variable(node).name()
     const std::string& nameFromId(NodeId node) const;

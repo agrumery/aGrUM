@@ -102,9 +102,9 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                 const IBayesNet< GUM_SCALAR >& bn) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+    std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);
 

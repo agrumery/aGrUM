@@ -105,9 +105,9 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(const std::string&             filePath,
+  INLINE void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                      const IBayesNet< GUM_SCALAR >& bn) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+    std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);
 

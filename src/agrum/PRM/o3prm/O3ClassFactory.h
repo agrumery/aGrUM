@@ -198,7 +198,7 @@ namespace gum {
 
         bool _checkSlotChainLink_(const PRMClassElementContainer< GUM_SCALAR >& c,
                                   const O3Label&                                chain,
-                                  const std::string&                            s);
+                                  std::string_view                              s);
         /// @}
 
         /// @name Checking and adding Aggregates

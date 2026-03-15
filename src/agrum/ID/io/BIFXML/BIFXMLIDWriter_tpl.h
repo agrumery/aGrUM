@@ -108,9 +108,9 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(std::string                           filePath,
+  INLINE void BIFXMLIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
                                                   const InfluenceDiagram< GUM_SCALAR >& infdiag) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+    std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     write(output, infdiag);
 

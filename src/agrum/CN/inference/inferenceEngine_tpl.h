@@ -166,8 +166,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertModalsFile(const std::string& path) {
-      std::ifstream mod_stream(path.c_str(), std::ios::in);
+    void InferenceEngine< GUM_SCALAR >::insertModalsFile(std::string_view path) {
+      std::ifstream mod_stream(std::string(path), std::ios::in);
 
       if (!mod_stream.good()) {
         GUM_ERROR(OperationNotAllowed,
@@ -282,8 +282,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertEvidenceFile(const std::string& path) {
-      std::ifstream evi_stream(path.c_str(), std::ios::in);
+    void InferenceEngine< GUM_SCALAR >::insertEvidenceFile(std::string_view path) {
+      std::ifstream evi_stream(std::string(path), std::ios::in);
 
       if (!evi_stream.good()) {
         GUM_ERROR(IOError,
@@ -355,8 +355,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::insertQueryFile(const std::string& path) {
-      std::ifstream evi_stream(path.c_str(), std::ios::in);
+    void InferenceEngine< GUM_SCALAR >::insertQueryFile(std::string_view path) {
+      std::ifstream evi_stream(std::string(path), std::ios::in);
 
       if (!evi_stream.good()) {
         GUM_ERROR(IOError,
@@ -426,13 +426,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >
-           InferenceEngine< GUM_SCALAR >::marginalMin(const std::string& varName) const {
+           InferenceEngine< GUM_SCALAR >::marginalMin(std::string_view varName) const {
       return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE Tensor< GUM_SCALAR >
-           InferenceEngine< GUM_SCALAR >::marginalMax(const std::string& varName) const {
+           InferenceEngine< GUM_SCALAR >::marginalMax(std::string_view varName) const {
       return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 
@@ -454,13 +454,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR&
-        InferenceEngine< GUM_SCALAR >::expectationMin(const std::string& varName) const {
+        InferenceEngine< GUM_SCALAR >::expectationMin(std::string_view varName) const {
       return expectationMin_[credalNet_->current_bn().idFromName(varName)];
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const GUM_SCALAR&
-        InferenceEngine< GUM_SCALAR >::expectationMax(const std::string& varName) const {
+        InferenceEngine< GUM_SCALAR >::expectationMax(std::string_view varName) const {
       return expectationMax_[credalNet_->current_bn().idFromName(varName)];
     }
 
@@ -476,7 +476,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
-        InferenceEngine< GUM_SCALAR >::dynamicExpMin(const std::string& varName) const {
+        InferenceEngine< GUM_SCALAR >::dynamicExpMin(std::string_view varName) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< "
                            "GUM_SCALAR >::dynamicExpMin ( const std::string & "
                            "varName ) const : ";
@@ -493,7 +493,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const std::vector< GUM_SCALAR >&
-        InferenceEngine< GUM_SCALAR >::dynamicExpMax(const std::string& varName) const {
+        InferenceEngine< GUM_SCALAR >::dynamicExpMax(std::string_view varName) const {
       std::string errTxt = "const std::vector< GUM_SCALAR > & InferenceEngine< "
                            "GUM_SCALAR >::dynamicExpMax ( const std::string & "
                            "varName ) const : ";
@@ -515,8 +515,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveMarginals(const std::string& path) const {
-      std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
+    void InferenceEngine< GUM_SCALAR >::saveMarginals(std::string_view path) const {
+      std::ofstream m_stream(std::string(path), std::ios::out | std::ios::trunc);
 
       if (!m_stream.good()) {
         GUM_ERROR(IOError,
@@ -538,7 +538,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveExpectations(const std::string& path) const {
+    void InferenceEngine< GUM_SCALAR >::saveExpectations(std::string_view path) const {
       if (dynamicExpMin_.empty())   //_modal.empty())
         return;
 
@@ -546,7 +546,7 @@ namespace gum {
       // else if(dynamicExpMin_.empty() || dynamicExpMax_.empty())
       //_dynamicExpectations(); // works with or without a dynamic network
 
-      std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
+      std::ofstream m_stream(std::string(path), std::ios::out | std::ios::trunc);
 
       if (!m_stream.good()) {
         GUM_ERROR(IOError,
@@ -610,8 +610,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::saveVertices(const std::string& path) const {
-      std::ofstream m_stream(path.c_str(), std::ios::out | std::ios::trunc);
+    void InferenceEngine< GUM_SCALAR >::saveVertices(std::string_view path) const {
+      std::ofstream m_stream(std::string(path), std::ios::out | std::ios::trunc);
 
       if (!m_stream.good()) {
         GUM_ERROR(IOError,
@@ -1173,26 +1173,26 @@ namespace gum {
 
     /// adds a new hard evidence on node named nodeName
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string& nodeName, const Idx val) {
+    void InferenceEngine< GUM_SCALAR >::addEvidence(std::string_view nodeName, const Idx val) {
       addEvidence(this->credalNet_->current_bn().idFromName(nodeName), val);
     }
 
     /// adds a new hard evidence on node id
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::addEvidence(NodeId id, const std::string& label) {
+    void InferenceEngine< GUM_SCALAR >::addEvidence(NodeId id, std::string_view label) {
       addEvidence(id, this->credalNet_->current_bn().variable(id)[label]);
     }
 
     /// adds a new hard evidence on node named nodeName
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string& nodeName,
-                                                    const std::string& label) {
+    void InferenceEngine< GUM_SCALAR >::addEvidence(std::string_view nodeName,
+                                                    std::string_view label) {
       const NodeId id = this->credalNet_->current_bn().idFromName(nodeName);
       addEvidence(id, this->credalNet_->current_bn().variable(id)[label]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::addEvidence(const std::string&               nodeName,
+    void InferenceEngine< GUM_SCALAR >::addEvidence(std::string_view                 nodeName,
                                                     const std::vector< GUM_SCALAR >& vals) {
       addEvidence(this->credalNet_->current_bn().idFromName(nodeName), vals);
     }

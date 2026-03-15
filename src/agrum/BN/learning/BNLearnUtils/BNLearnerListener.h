@@ -93,7 +93,7 @@ namespace gum {
                                 const Size   pourcent,
                                 const double error,
                                 const double time) final;
-      virtual void whenStop(const void* src, const std::string& message) override;
+      virtual void whenStop(const void* src, std::string_view message) override;
 
       private:
       BNLearnerListener(const BNLearnerListener& other);

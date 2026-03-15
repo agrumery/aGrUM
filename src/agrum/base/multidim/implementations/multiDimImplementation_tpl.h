@@ -192,7 +192,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE const DiscreteVariable&
-      MultiDimImplementation< GUM_ELEMENT >::variable(const std::string& name) const {
+      MultiDimImplementation< GUM_ELEMENT >::variable(std::string_view name) const {
     for (const auto& v: _vars_) {
       if (v->name() == name) return *v;
     }

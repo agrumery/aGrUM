@@ -53,6 +53,7 @@
 #include <list>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
@@ -158,11 +159,11 @@ namespace gum {
       std::string _generateType_(PRMFactory< GUM_SCALAR >& f);
 
       void _generateInterfaces_(PRMFactory< GUM_SCALAR >& f,
-                                const std::string&        type,
+                                std::string_view          type,
                                 std::vector< MyData >&    l);
 
       void _generateClasses_(PRMFactory< GUM_SCALAR >&                       f,
-                             const std::string&                              type,
+                             std::string_view                                type,
                              std::vector< typename LayerGenerator::MyData >& l);
 
       void _generateClassDag_(Size                                            lvl,

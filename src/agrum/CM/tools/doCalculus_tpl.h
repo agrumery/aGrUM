@@ -144,9 +144,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
-      DoCalculus< GUM_SCALAR >::getBackDoorTree(const std::string& causeName,
-                                                const std::string& effectName,
-                                                const NameList&    zNames) const {
+      DoCalculus< GUM_SCALAR >::getBackDoorTree(std::string_view causeName,
+                                                std::string_view effectName,
+                                                const NameList&  zNames) const {
     const NodeId x = _cm.idFromName(causeName);
     const NodeId y = _cm.idFromName(effectName);
 
@@ -227,9 +227,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   typename DoCalculus< GUM_SCALAR >::FormulaPtr
-      DoCalculus< GUM_SCALAR >::getFrontDoorTree(const std::string& causeName,
-                                                 const std::string& effectName,
-                                                 const NameList&    zNames) const {
+      DoCalculus< GUM_SCALAR >::getFrontDoorTree(std::string_view causeName,
+                                                 std::string_view effectName,
+                                                 const NameList&  zNames) const {
     const NodeId x = _cm.idFromName(causeName);
     const NodeId y = _cm.idFromName(effectName);
 

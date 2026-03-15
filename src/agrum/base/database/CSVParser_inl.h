@@ -48,8 +48,8 @@ namespace gum {
 
 
     // search for quote taking into account the '\'...
-    INLINE std::size_t CSVParser::_correspondingQuoteMarker_(const std::string& str,
-                                                             std::size_t        pos) const {
+    INLINE std::size_t CSVParser::_correspondingQuoteMarker_(std::string_view str,
+                                                             std::size_t      pos) const {
       std::size_t res = pos, before;
 
       while (true) {

@@ -49,6 +49,7 @@
 #ifndef GUM_SVE_H
 #define GUM_SVE_H
 
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
@@ -205,7 +206,7 @@ namespace gum {
                                            const PRMAggregate< GUM_SCALAR >* agg);
 
       void        _initLiftedNodes_(const PRMClass< GUM_SCALAR >& c);
-      std::string _trim_(const std::string& s);
+      std::string _trim_(std::string_view s);
 
       /// @}
     };

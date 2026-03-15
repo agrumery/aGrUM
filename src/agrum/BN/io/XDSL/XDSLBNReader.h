@@ -96,6 +96,7 @@ GONZALES(_at_AMU)
 #include <list>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -123,7 +124,7 @@ namespace gum {
      * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
-    XDSLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
+    XDSLBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filePath);
 
     /**
      * Default destructor.

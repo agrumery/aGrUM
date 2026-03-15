@@ -141,7 +141,7 @@ namespace gum {
 
       /// unsigned int notOptDelete;
 
-      virtual void insertEvidenceFile(const std::string& path) {
+      virtual void insertEvidenceFile(std::string_view path) {
         InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
       };
 

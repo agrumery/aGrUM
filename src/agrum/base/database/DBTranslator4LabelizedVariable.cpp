@@ -160,7 +160,7 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    DBTranslatedValue DBTranslator4LabelizedVariable::translate(const std::string& str) {
+    DBTranslatedValue DBTranslator4LabelizedVariable::translate(std::string_view str) {
       // try to get the index of str within the labelized variable. If this
       // cannot be found, try to find if this corresponds to a missing value.
       // Finally, if this is still not a missing value and, if enabled, try
@@ -180,8 +180,9 @@ namespace gum {
             GUM_ERROR(SizeError,
                       "String \"" << str << "\" cannot be translated "
                                   << "because the dictionary is already full");
-          _variable_.addLabel(str);
-          this->back_dico_.insert(size, str);
+          const std::string s(str);
+          _variable_.addLabel(s);
+          this->back_dico_.insert(size, s);
           return DBTranslatedValue{size};
         } else
           GUM_ERROR(UnknownLabelInDatabase,

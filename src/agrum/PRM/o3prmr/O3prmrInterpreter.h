@@ -99,8 +99,8 @@ namespace gum {
          * If any errors occured, return true.
          * Requests results can be retrieve be results() methods.
          * */
-        bool interpretFile(const std::string& filename);
-        bool interpretLine(const std::string& line);
+        bool interpretFile(std::string_view filename);
+        bool interpretLine(std::string_view line);
 
         /// Retrieve prm object.
         const gum::prm::PRM< double >* prm() const;
@@ -170,7 +170,7 @@ namespace gum {
 
         std::string findSystemName(std::string& s);
         std::string findInstanceName(std::string& s, const gum::prm::PRMSystem< double >& sys);
-        std::string findAttributeName(const std::string&                     s,
+        std::string findAttributeName(std::string_view                       s,
                                       const gum::prm::PRMInstance< double >& instance);
         const PRMSystem< double >& system(std::string& ident);
         void                       generateInfEngine(const gum::prm::PRMSystem< double >& sys);
@@ -178,7 +178,7 @@ namespace gum {
         void addError(std::string msg);
         void addWarning(std::string msg);
 
-        std::string _readFile_(const std::string& file);
+        std::string _readFile_(std::string_view file);
 
         O3prmrContext< double >*                m_context;
         gum::prm::o3prm::O3prmReader< double >* m_reader;

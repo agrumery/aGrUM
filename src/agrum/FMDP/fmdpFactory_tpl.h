@@ -126,7 +126,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE const DiscreteVariable*
-      FMDPFactory< GUM_ELEMENT >::variable(const std::string& name) const {
+      FMDPFactory< GUM_ELEMENT >::variable(std::string_view name) const {
     for (const auto& elt: _varNameMap_)
       if (elt.first.compare(name) == 0) return elt.second;
 
@@ -162,10 +162,10 @@ namespace gum {
   // Tells the factory the current variable's name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::variableName(const std::string& name) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::variableName(std::string_view name) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("variableName");
     else {
-      if (_varNameMap_.exists(name)) GUM_ERROR(DuplicateElement, "Name already used: " + name)
+      if (_varNameMap_.exists(name)) GUM_ERROR(DuplicateElement, "Name already used: " << name)
 
       _foo_flag_     = true;
       _stringBag_[0] = name;
@@ -176,7 +176,7 @@ namespace gum {
   // Tells the factory the current variable's description.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::variableDescription(const std::string& desc) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::variableDescription(std::string_view desc) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("variableDescription");
     else {
       _bar_flag_     = true;
@@ -189,18 +189,18 @@ namespace gum {
   //                         with the same name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addModality(const std::string& name) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::addModality(std::string_view name) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("addModality");
     else {
       _checkModalityInBag_(name);
-      _stringBag_.push_back(name);
+      _stringBag_.emplace_back(name);
     }
   }
 
   // Check if in  _stringBag_ there is no other modality with the same name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_checkModalityInBag_(const std::string& mod) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::_checkModalityInBag_(std::string_view mod) {
     for (size_t i = 2; i < _stringBag_.size(); ++i)
       if (mod == _stringBag_[i])
         GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.")
@@ -273,11 +273,11 @@ namespace gum {
   // Tells the factory to add an action
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addAction(const std::string& action) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::addAction(std::string_view action) {
     if (state() != FMDPfactory_state::ACTION) _illegalStateError_("addAction");
     else {
-      _stringBag_.push_back(action);
-      _fmdp_->addAction(_actionIdcpt_++, action);
+      _stringBag_.emplace_back(action);
+      _fmdp_->addAction(_actionIdcpt_++, std::string(action));
     }
   }
 
@@ -320,15 +320,15 @@ namespace gum {
   // Tells the factory to add an action
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(const std::string&        var,
+  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view          var,
                                                         const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_ELEMENT >* t
         = reinterpret_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
 
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("addTransition");
     else if (_foo_flag_)
-      _fmdp_->addTransitionForAction(_fmdp_->actionId(_stringBag_[0]), _varNameMap_[var], t);
-    else _fmdp_->addTransition(_varNameMap_[var], t);
+      _fmdp_->addTransitionForAction(_fmdp_->actionId(_stringBag_[0]), variable(var), t);
+    else _fmdp_->addTransition(variable(var), t);
   }
 
   // Tells the factory to add a transition table to the current fmdp.
@@ -336,18 +336,19 @@ namespace gum {
   // multiDimFunctionGraph.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(const std::string& var) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view var) {
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("addTransition");
     else {
       this->_finalizeFunctionGraph_();
 
       if (_foo_flag_) {
-        this->_FunctionGraph_->setTableName("ACTION :" + _stringBag_[0] + " - VARIABLE : " + var);
+        this->_FunctionGraph_->setTableName("ACTION :" + _stringBag_[0] + " - VARIABLE : "
+                                            + std::string(var));
         _fmdp_->addTransitionForAction(_fmdp_->actionId(_stringBag_[0]),
-                                       _varNameMap_[var],
+                                       variable(var),
                                        this->_FunctionGraph_);
       } else {
-        _fmdp_->addTransition(_varNameMap_[var], this->_FunctionGraph_);
+        _fmdp_->addTransition(variable(var), this->_FunctionGraph_);
       }
     }
   }
@@ -449,10 +450,9 @@ namespace gum {
   // reward diagram is an operation between simplier dd
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::setOperationModeOn(std::string operationType) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::setOperationModeOn(std::string_view operationType) {
     _foo_flag_ = true;
-    std::string ot(operationType);
-    _stringBag_.push_back(ot);
+    _stringBag_.push_back(std::string{operationType});
   }
 
   // Tells the factory to add a reward
@@ -574,7 +574,7 @@ namespace gum {
   // Insert in diagram a non terminal node
 
   template < typename GUM_ELEMENT >
-  INLINE NodeId FMDPFactory< GUM_ELEMENT >::addInternalNode(std::string name_of_var) {
+  INLINE NodeId FMDPFactory< GUM_ELEMENT >::addInternalNode(std::string_view name_of_var) {
     return _FunctionGraph_->manager()->addInternalNode(variable(name_of_var));
   }
 
@@ -608,7 +608,7 @@ namespace gum {
   // Raise an OperationNotAllowed with the message "Illegal state."
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_illegalStateError_(const std::string& s) {
+  INLINE void FMDPFactory< GUM_ELEMENT >::_illegalStateError_(std::string_view s) {
     std::string msg = "Illegal state call (";
     msg += s;
     msg += ") in state ";

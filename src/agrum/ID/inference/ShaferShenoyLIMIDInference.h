@@ -50,6 +50,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -122,7 +123,7 @@ namespace gum {
 
     gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
 
-    gum::Tensor< GUM_SCALAR > optimalDecision(const std::string& decisionName) final {
+    gum::Tensor< GUM_SCALAR > optimalDecision(std::string_view decisionName) final {
       return optimalDecision(this->influenceDiagram().idFromName(decisionName));
     };
 
@@ -134,7 +135,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
 
-    const Tensor< GUM_SCALAR >& posterior(const std::string& name) final {
+    const Tensor< GUM_SCALAR >& posterior(std::string_view name) final {
       return posterior(this->influenceDiagram().idFromName(name));
     };
 
@@ -146,7 +147,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node) final;
 
-    virtual const Tensor< GUM_SCALAR >& posteriorUtility(const std::string& name) final {
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(std::string_view name) final {
       return posteriorUtility(this->influenceDiagram().idFromName(name));
     };
 
@@ -158,7 +159,7 @@ namespace gum {
      */
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) final;
 
-    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(const std::string& name) final {
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(std::string_view name) final {
       return meanVar(this->influenceDiagram().idFromName(name));
     };
 

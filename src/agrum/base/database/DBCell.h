@@ -50,6 +50,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -181,7 +182,7 @@ namespace gum {
 
       /// sets the content of the DBCell from a string
       /** @throw TypeError if the string does not correspond to a real number */
-      void setReal(const std::string& elt);
+      void setReal(std::string_view elt);
 
       /// returns the DBcell as an integer
       /** @warning if the cell is not of type INTEGER, the dbcell will not try
@@ -195,7 +196,7 @@ namespace gum {
 
       /// sets the content of the DBCell from a string
       /** @throw TypeError if the string does not correspond to an integer */
-      void setInteger(const std::string& elt);
+      void setInteger(std::string_view elt);
 
       /// returns the DBcell as a string
       /** @warning if the cell is not of type STRING, the dbcell will not try to
@@ -239,7 +240,7 @@ namespace gum {
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned EltType represents a missing value. */
-      static EltType bestType(const std::string&                str,
+      static EltType bestType(std::string_view                  str,
                               const std::vector< std::string >& missingVals);
 
       /// returns the DBCell with the best type for an element encoded as a string
@@ -247,7 +248,7 @@ namespace gum {
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned DBCell represents a missing value. */
-      static DBCell bestDBCell(const std::string&                str,
+      static DBCell bestDBCell(std::string_view                  str,
                                const std::vector< std::string >& missingVals);
 
       /// returns the content of the DBCell as a string, whatever its type
@@ -257,13 +258,13 @@ namespace gum {
       std::string toString(const std::vector< std::string >& missingVals) const;
 
       /// determines whether a string corresponds precisely to an integer
-      static bool isInteger(const std::string& str);
+      static bool isInteger(std::string_view str);
 
       /// determine whether a string corresponds precisely to a real number
-      static bool isReal(const std::string& str);
+      static bool isReal(std::string_view str);
 
       /// checks whether a string correspond to a missing value
-      static bool isMissing(const std::string& str, const std::vector< std::string >& missingVals);
+      static bool isMissing(std::string_view str, const std::vector< std::string >& missingVals);
 
       /// @}
 
@@ -286,7 +287,7 @@ namespace gum {
       using UnionType = typename std::conditional< sizeof(int) < sizeof(float), float, int >::type;
 
       // raises an appropriate exception when encountering a type error
-      std::string _typeErrorMsg_(const std::string& real_type) const;
+      std::string _typeErrorMsg_(std::string_view real_type) const;
 
 
       // a bijection assigning to each string index its corresponding string

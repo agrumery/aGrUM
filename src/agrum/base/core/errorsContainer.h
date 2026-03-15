@@ -79,7 +79,7 @@ namespace gum {
      * @param msg The parsing error message.
      * @param line The line where the parsing error occured.
      */
-    ParseError(bool is_error, const std::string& msg, Idx line);
+    ParseError(bool is_error, std::string_view msg, Idx line);
 
     /**
      * @brief Class constructor.
@@ -89,11 +89,11 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError(bool               is_error,
-               const std::string& msg,
-               const std::string& filename,
-               Idx                line,
-               Idx                col = 0);
+    ParseError(bool             is_error,
+               std::string_view msg,
+               std::string_view filename,
+               Idx              line,
+               Idx              col = 0);
 
     /**
      * @brief Class constructor.
@@ -104,12 +104,12 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError(bool               is_error,
-               const std::string& msg,
-               const std::string& filename,
-               const std::string& code,
-               Idx                line,
-               Idx                col = 0);
+    ParseError(bool             is_error,
+               std::string_view msg,
+               std::string_view filename,
+               std::string_view code,
+               Idx              line,
+               Idx              col = 0);
 
     /**
      * @brief Copy constructor.
@@ -238,7 +238,7 @@ namespace gum {
      * @param line The error's line.
      * @param col The error's column.
      */
-    void addError(const std::string& msg, const std::string& filename, Idx line, Idx col);
+    void addError(std::string_view msg, std::string_view filename, Idx line, Idx col);
 
     /**
      * @brief Adds a warning.
@@ -247,14 +247,14 @@ namespace gum {
      * @param line The warning's line.
      * @param col The warning's column.
      */
-    void addWarning(const std::string& msg, const std::string& filename, Idx line, Idx col);
+    void addWarning(std::string_view msg, std::string_view filename, Idx line, Idx col);
 
     /**
      * @brief Add an exception.
      * @param msg The exception's message.
      * @param filename The exception's file.
      */
-    void addException(const std::string& msg, const std::string& filename);
+    void addException(std::string_view msg, std::string_view filename);
 
     /**
      * @brief Returns the number of errors and warnings.

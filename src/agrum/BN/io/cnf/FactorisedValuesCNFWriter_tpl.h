@@ -166,17 +166,17 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
-      const std::string&             filePath,
+      std::string_view               filePath,
       const IBayesNet< GUM_SCALAR >& bn) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
-    std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
+    std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
+    std::ofstream outputvar(std::string{filePath} + ".var", std::ios_base::trunc);
 
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : " << filePath << " not writable.")
 
     std::stringstream strfile, strfile2;
 
     if (!outputvar.good())
-      GUM_ERROR(IOError, "Input/Output error : " << (filePath + ".var") << " not writable.")
+      GUM_ERROR(IOError, "Input/Output error : " << (std::string(filePath) + ".var") << " not writable.")
 
     Idx num      = 0;
     Idx numparam = 0;

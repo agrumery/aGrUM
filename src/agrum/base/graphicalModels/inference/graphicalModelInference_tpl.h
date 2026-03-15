@@ -233,22 +233,22 @@ namespace gum {
 
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(const std::string& nodeName,
-                                                                 const Idx          val) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(std::string_view nodeName,
+                                                                 const Idx        val) {
     addEvidence(this->model().idFromName(nodeName), val);
   }
 
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(NodeId             id,
-                                                                 const std::string& label) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(NodeId           id,
+                                                                 std::string_view label) {
     addEvidence(id, this->model().variable(id)[label]);
   }
 
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(const std::string& nodeName,
-                                                                 const std::string& label) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::addEvidence(std::string_view nodeName,
+                                                                 std::string_view label) {
     const NodeId id = this->model().idFromName(nodeName);
     addEvidence(id, this->model().variable(id)[label]);
   }
@@ -279,7 +279,7 @@ namespace gum {
 
   // adds a new evidence on node id (might be soft or hard)
   template < GUM_Numeric GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::addEvidence(const std::string&               nodeName,
+  void GraphicalModelInference< GUM_SCALAR >::addEvidence(std::string_view                 nodeName,
                                                           const std::vector< GUM_SCALAR >& vals) {
     addEvidence(this->model().idFromName(nodeName), vals);
   }
@@ -369,21 +369,21 @@ namespace gum {
   // indicates whether node id has received an evidence
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::hasEvidence(const std::string& nodeName) const {
+      GraphicalModelInference< GUM_SCALAR >::hasEvidence(std::string_view nodeName) const {
     return hasEvidence(this->model().idFromName(nodeName));
   }
 
   // indicates whether node id has received a hard evidence
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(const std::string& nodeName) const {
+      GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(std::string_view nodeName) const {
     return hasHardEvidence(this->model().idFromName(nodeName));
   }
 
   // indicates whether node id has received a soft evidence
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(const std::string& nodeName) const {
+      GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(std::string_view nodeName) const {
     return hasSoftEvidence(this->model().idFromName(nodeName));
   }
 
@@ -395,22 +395,22 @@ namespace gum {
 
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(const std::string& nodeName,
-                                                                 const Idx          val) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view nodeName,
+                                                                 const Idx        val) {
     chgEvidence(this->model().idFromName(nodeName), val);
   }
 
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId             id,
-                                                                 const std::string& label) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId           id,
+                                                                 std::string_view label) {
     chgEvidence(id, this->model().variable(id)[label]);
   }
 
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(const std::string& nodeName,
-                                                                 const std::string& label) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view nodeName,
+                                                                 std::string_view label) {
     NodeId id = this->model().idFromName(nodeName);
     chgEvidence(id, this->model().variable(id)[label]);
   }
@@ -443,7 +443,7 @@ namespace gum {
   // change the value of an already existing evidence (might be soft or hard)
   template < GUM_Numeric GUM_SCALAR >
   INLINE void
-      GraphicalModelInference< GUM_SCALAR >::chgEvidence(const std::string&               nodeName,
+      GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view                 nodeName,
                                                          const std::vector< GUM_SCALAR >& vals) {
     chgEvidence(this->model().idFromName(nodeName), vals);
   }
@@ -532,7 +532,7 @@ namespace gum {
 
   // removed the evidence, if any, corresponding to node of name nodeName
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GraphicalModelInference< GUM_SCALAR >::eraseEvidence(const std::string& nodeName) {
+  INLINE void GraphicalModelInference< GUM_SCALAR >::eraseEvidence(std::string_view nodeName) {
     eraseEvidence(this->model().idFromName(nodeName));
   }
 

@@ -396,7 +396,7 @@ namespace gum {
   }
 
   INLINE
-  void Formula::_push_function_(const std::string& func) {
+  void Formula::_push_function_(std::string_view func) {
     if (func == "exp") {
       FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::exp);
       _push_stack_(t);
@@ -443,7 +443,7 @@ namespace gum {
   const HashTable< std::string, double >& Formula::variables() const { return _variables_; }
 
   INLINE
-  void Formula::_push_variable_(const std::string& var) {
+  void Formula::_push_variable_(std::string_view var) {
     if (_variables_.exists(var)) {
       _push_number_(_variables_[var]);
 
@@ -453,7 +453,7 @@ namespace gum {
   }
 
   INLINE
-  void Formula::_push_identifier_(const std::string& ident) {
+  void Formula::_push_identifier_(std::string_view ident) {
     try {
       _push_function_(ident);
 

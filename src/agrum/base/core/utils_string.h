@@ -53,6 +53,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -71,7 +72,7 @@ namespace gum {
    * @brief Returns the lowercase version of str.
    * @return Returns the lowercase version of str.
    */
-  std::string toLower(std::string str);
+  std::string toLower(std::string_view str);
 
   /**
    * @brief Returns true if value ends with ending.
@@ -85,7 +86,7 @@ namespace gum {
    * @param delimiter string
    * @return Vector of splitted strings
    */
-  std::vector< std::string > split(const std::string& orig, const std::string& delimiter);
+  std::vector< std::string > split(std::string_view orig, std::string_view delimiter);
 
   /**
    * @brief Replace val by new_val in s.
@@ -94,35 +95,35 @@ namespace gum {
    * @param new_val The new value to replace val in s.
    * @return A new string with val replaced by new_val.
    */
-  std::string replace(const std::string& s, const std::string& val, const std::string& new_val);
+  std::string replace(std::string_view s, std::string_view val, std::string_view new_val);
 
   /**
    * @brief return true is a string contains an integer value
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  bool isInteger(const std::string& val);
+  bool isInteger(std::string_view val);
 
   /**
    * @brief return true is a string contains an integer value
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  bool isIntegerWithResult(const std::string& val, int* res);
+  bool isIntegerWithResult(std::string_view val, int* res);
 
   /**
    * @brief return true is a string contains a numerical (double) value
    * @param s A string
    * @return true if s exactly contains a double
    */
-  bool isNumerical(const std::string& val);
+  bool isNumerical(std::string_view val);
 
   /**
    * @brief return true is a string contains a numerical (double) value
    * @param s A string     *
    * @return true if s exactly contains a double
    */
-  bool isNumericalWithResult(const std::string& val, double* res);
+  bool isNumericalWithResult(std::string_view val, double* res);
 
 
   /**
@@ -148,14 +149,14 @@ namespace gum {
    * @param s A string
    * @return the new string trimmed from start
    */
-  std::string trim_copy(const std::string& s);
+  std::string trim_copy(std::string_view s);
 
   /**
    * @brief remove all newlines in a string
    * @param s A string
    * @return the new string with no newline
    */
-  std::string remove_newline(const std::string& s);
+  std::string remove_newline(std::string_view s);
 
   template < typename T >
   inline std::string compact_tostr(T value) {

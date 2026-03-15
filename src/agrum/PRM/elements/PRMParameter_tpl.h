@@ -51,9 +51,9 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMParameter< GUM_SCALAR >::PRMParameter(const std::string& name,
-                                             ParameterType      type,
-                                             GUM_SCALAR         value) :
+    PRMParameter< GUM_SCALAR >::PRMParameter(std::string_view name,
+                                             ParameterType    type,
+                                             GUM_SCALAR       value) :
         PRMClassElement< GUM_SCALAR >(name), _type_(type), _value_(value) {
       GUM_CONSTRUCTOR(PRMParameter);
       this->safeName_ = name;

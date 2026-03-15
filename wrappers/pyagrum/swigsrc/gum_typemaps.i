@@ -151,18 +151,20 @@
 }
 // Typecheck for const gum::NodeSet&.
 //
-// Accepts any Python sequence (list, tuple, set, frozenset) whose elements
-// are all integers (NodeIds). Rejects as soon as a string element is found,
-// so that string-based calling conventions (variable names) fall through to
-// the appropriate overload:
-//   - list of strings  → vector<string> overload (SWIG sequence typemap)
-//   - set of strings   → PyObject* %extend dispatcher (e.g. MarkovRandomField)
+// Accepts Python set/frozenset whose elements are all integers (NodeIds).
+// Lists and tuples are intentionally excluded so that they fall through to
+// PyObject* %extend dispatchers (e.g. MarkovRandomField::addFactor) which
+// preserve insertion order for list arguments.
 //
-// Without this check, the NodeSet 'in' typemap would call PyLong_AsLong on
-// string elements and raise "str object cannot be interpreted as an integer".
+// Rationale for set-only: a Python set is semantically unordered — it maps
+// naturally to gum::NodeSet. A Python list implies ordering; callers that
+// pass a list expect order-preserving behaviour (handled by %extend PyObject*).
+//
+// Rejects as soon as a string element is found, so that string-based
+// calling conventions fall through to the appropriate overload:
+//   - set of strings  → PyObject* %extend dispatcher (e.g. MarkovRandomField)
 %typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) const gum::NodeSet& {
-  if (PySet_Check($input) || PyFrozenSet_Check($input) ||
-      PyList_Check($input) || PyTuple_Check($input)) {
+  if (PySet_Check($input) || PyFrozenSet_Check($input)) {
     $1 = 1;
     PyObject* _tc_iter = PyObject_GetIter($input);
     if (_tc_iter) {

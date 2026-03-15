@@ -101,7 +101,7 @@ namespace gum {
      * @param aName the name
      * @param aDesc the description
      */
-    DiscretizedVariable(const std::string& aName, const std::string& aDesc);
+    DiscretizedVariable(std::string_view aName, std::string_view aDesc);
 
     /**
      * Constructor
@@ -111,8 +111,8 @@ namespace gum {
      * @param is_empirical determine the behavior of the variable for value below or above the
      * limits. If false, it is treated as an error.
      */
-    DiscretizedVariable(const std::string&            aName,
-                        const std::string&            aDesc,
+    DiscretizedVariable(std::string_view              aName,
+                        std::string_view              aDesc,
                         const std::vector< T_TICKS >& ticks,
                         bool                          is_empirical = false);
 
@@ -176,7 +176,7 @@ namespace gum {
 
     /// from the label to its index in var.
     /// @throws NotFound
-    Idx index(const std::string& label) const override;
+    Idx index(std::string_view label) const override;
     /// from the T+TICKS to its index in var.
     /// @throws NotFound
     Idx index(const T_TICKS tick) const;

@@ -50,6 +50,7 @@
 #define GUM_BAYESNET_FACTORY_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
@@ -136,11 +137,11 @@ namespace gum {
 
     /// Returns the NodeId of a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    NodeId variableId(const std::string& name) const final;
+    NodeId variableId(std::string_view name) const final;
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    const DiscreteVariable& variable(const std::string& name) const;
+    const DiscreteVariable& variable(std::string_view name) const;
 
     /// Returns the domainSize of the cpt for the node n.
     /// @throw NotFound raised if no such NodeId exists.
@@ -159,7 +160,7 @@ namespace gum {
     void variableType(const VarType& type);
 
     /// Tells the factory to add a property to the current network.
-    void addNetworkProperty(const std::string& propName, const std::string& propValue) final;
+    void addNetworkProperty(std::string_view propName, std::string_view propValue) final;
 
     /// Tells the factory that we're out of a network declaration.
     void endNetworkDeclaration() final;
@@ -176,13 +177,13 @@ namespace gum {
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    void variableName(const std::string& name) final;
+    void variableName(std::string_view name) final;
 
     /// Tells the factory the current variable's description.
-    void variableDescription(const std::string& desc) final;
+    void variableDescription(std::string_view desc) final;
 
     /// Adds a modality to the current labelized variable.
-    void addModality(const std::string& name) final;
+    void addModality(std::string_view name) final;
 
     /// Adds the min value of the current range variable.
     void addMin(const long& min);
@@ -228,12 +229,12 @@ namespace gum {
     /// Tells the factory that we're declaring parents for some variable.
     /// @param var The concerned variable's name.
     /// @throw NotFound Raised if var does not exists.
-    void startParentsDeclaration(const std::string& var) final;
+    void startParentsDeclaration(std::string_view var) final;
 
     /// Tells the factory for which variable we're declaring parents.
     /// @param var The parent's name.
     /// @throw NotFound Raised if var does not exists.
-    void addParent(const std::string& var) final;
+    void addParent(std::string_view var) final;
 
     /// Tells the factory that we've finished declaring parents for some
     /// variable.
@@ -254,7 +255,7 @@ namespace gum {
     /// Tells the factory that we're declaring a conditional probability table
     /// for some variable.
     /// @param var The concerned variable's name.
-    void startRawProbabilityDeclaration(const std::string& var) final;
+    void startRawProbabilityDeclaration(std::string_view var) final;
 
     /**
      * @brief Fills the variable's table with the values in rawTable.
@@ -300,7 +301,7 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're starting a factorized declaration.
-    void startFactorizedProbabilityDeclaration(const std::string& var) final;
+    void startFactorizedProbabilityDeclaration(std::string_view var) final;
 
     /// Tells the factory that we start an entry of a factorized conditional
     /// probability table.
@@ -312,7 +313,7 @@ namespace gum {
 
     /// Tells the factory on which modality we want to instantiate one of
     /// variable's parent.
-    void setParentModality(const std::string& parent, const std::string& modality) final;
+    void setParentModality(std::string_view parent, std::string_view modality) final;
 
     /**
      * @brief Gives the values of the variable with respect to precedent
@@ -403,7 +404,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if redefineParents == false and if
      * table is not a valid CPT for var in the current state of the BayesNet.
      */
-    void setVariableCPT(const std::string&  varName,
+    void setVariableCPT(std::string_view    varName,
                         MultiDimAdressable* table,
                         bool                redefineParents) final;
 
@@ -448,18 +449,18 @@ namespace gum {
     BayesNetFactory< GUM_SCALAR >& operator=(const BayesNetFactory< GUM_SCALAR >& source) = delete;
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void _illegalStateError_(const std::string& s);
+    void _illegalStateError_(std::string_view s);
 
     /// Check if a variable with the given name exists, if not raise an NotFound
     /// exception.
-    void _checkVariableName_(const std::string& name) const;
+    void _checkVariableName_(std::string_view name) const;
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
-    Idx _checkVariableModality_(const std::string& name, const std::string& mod);
+    Idx _checkVariableModality_(std::string_view name, std::string_view mod);
 
     /// Check if in  _stringBag_ there is no other modality with the same name.
-    void _checkModalityInBag_(const std::string& mod);
+    void _checkModalityInBag_(std::string_view mod);
 
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.

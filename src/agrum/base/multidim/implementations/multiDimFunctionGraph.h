@@ -330,7 +330,7 @@ namespace gum {
      * @brief Sets the name of the table represented by this structure.
      * @param name the new name of this structure.
      */
-    void setTableName(const std::string& name);
+    void setTableName(std::string_view name);
 
     /**
      * @brief Returns true if this MultiDimFunctionGraph is reduced and

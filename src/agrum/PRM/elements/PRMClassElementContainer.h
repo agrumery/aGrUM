@@ -87,7 +87,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      PRMClassElementContainer(const std::string& name);
+      PRMClassElementContainer(std::string_view name);
 
       /// Destructor.
       virtual ~PRMClassElementContainer();
@@ -110,7 +110,7 @@ namespace gum {
        * PRMClassElementContainer or
        * in the PRMClassElementContainer hierarchy.
        */
-      virtual bool exists(const std::string& name) const;
+      virtual bool exists(std::string_view name) const;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -118,7 +118,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement< GUM_SCALAR >& get(const std::string& name) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& get(std::string_view name) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -126,7 +126,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement< GUM_SCALAR >& get(const std::string& name) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >& get(std::string_view name) const = 0;
 
       /**
        * @brief Add a PRMClassElement<GUM_SCALAR> to this
@@ -193,7 +193,7 @@ namespace gum {
       /**
        * Add an arc between two PRMClassElement<GUM_SCALAR>.
        */
-      virtual void addArc(const std::string& tail, const std::string& head) = 0;
+      virtual void addArc(std::string_view tail, std::string_view head) = 0;
 
       /**
        * @brief Returns true if the node is an input node.
@@ -355,7 +355,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement< GUM_SCALAR >& operator[](const std::string& name) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -363,7 +363,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement< GUM_SCALAR >& operator[](const std::string& name) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) const = 0;
 
       /// @}
       // ========================================================================

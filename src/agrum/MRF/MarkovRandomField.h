@@ -109,10 +109,10 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                         Size               domainSize);
-    static MarkovRandomField< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                         const std::string& domain = "[2]");
+    static MarkovRandomField< GUM_SCALAR > fastPrototype(std::string_view dotlike,
+                                                         Size             domainSize);
+    static MarkovRandomField< GUM_SCALAR > fastPrototype(std::string_view dotlike,
+                                                         std::string_view domain = "[2]");
 
     /**
      * build a Markov random field from a Bayesian network
@@ -136,7 +136,7 @@ namespace gum {
      *
      * @param name The MarkovRandomField's name.
      */
-    explicit MarkovRandomField(std::string name);
+    explicit MarkovRandomField(std::string_view name);
 
     /**
      * @brief Destructor.
@@ -234,7 +234,7 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod = 2);
+    NodeId add(std::string_view fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * @brief Add a variable to the gum::MarkovRandomField.
@@ -275,7 +275,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::MarkovRandomField.
      */
-    void erase(const std::string& name);
+    void erase(std::string_view name);
 
     /**
      * @brief Remove a variable from the gum::MarkovRandomField.
@@ -307,7 +307,7 @@ namespace gum {
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::MarkovRandomField.
      */
-    const DiscreteVariable& variable(const std::string& name) const {
+    const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
     };
 
@@ -320,12 +320,12 @@ namespace gum {
      *                        gum::MarkovRandomField.
      * @throws NotFound Raised if no variable matches id.
      */
-    void changeVariableName(NodeId id, const std::string& new_name);
+    void changeVariableName(NodeId id, std::string_view new_name);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName(const std::string& name, const std::string& new_name) {
+    void changeVariableName(std::string_view name, std::string_view new_name) {
       changeVariableName(idFromName(name), new_name);
     }
 
@@ -339,14 +339,14 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id or if the variable is not
      * a LabelizedVariable
      */
-    void changeVariableLabel(NodeId id, const std::string& old_label, const std::string& new_label);
+    void changeVariableLabel(NodeId id, std::string_view old_label, std::string_view new_label);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableLabel(const std::string& name,
-                             const std::string& old_label,
-                             const std::string& new_label) {
+    void changeVariableLabel(std::string_view name,
+                             std::string_view old_label,
+                             std::string_view new_label) {
       changeVariableLabel(idFromName(name), old_label, new_label);
     }
 
@@ -368,7 +368,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::MarkovRandomField.
      */
-    NodeId idFromName(const std::string& name) const final;
+    NodeId idFromName(std::string_view name) const final;
 
     /**
      * @brief Returns a variable given its name in the gum::MarkovRandomField.
@@ -379,7 +379,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::MarkovRandomField.
      */
-    const DiscreteVariable& variableFromName(const std::string& name) const final;
+    const DiscreteVariable& variableFromName(std::string_view name) const final;
     /// @}
 
     // ===========================================================================

@@ -73,7 +73,7 @@ namespace gum_tests {
       _nbr_++;
     }
 
-    void whenStop(const void* buffer, const std::string& s) final { _mess_ = s; }
+    void whenStop(const void* buffer, std::string_view s) final { _mess_ = s; }
 
     gum::Size getNbr() { return _nbr_; }
 

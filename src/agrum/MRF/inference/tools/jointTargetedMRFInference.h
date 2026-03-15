@@ -147,7 +147,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(const std::string& nodeName) final;
+    virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
     /// @}
 
 

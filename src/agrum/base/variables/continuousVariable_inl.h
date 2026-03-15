@@ -59,11 +59,12 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for floats
   template <>
-  INLINE float ContinuousVariable< float >::operator[](const std::string& str) const {
+  INLINE float ContinuousVariable< float >::operator[](std::string_view str) const {
     float       value;
     std::size_t pos;
+    std::string s(str);
     try {
-      value = std::stof(str, &pos);
+      value = std::stof(s, &pos);
     } catch (std::invalid_argument&) {
       GUM_ERROR(TypeError, "the value is not a number")
     } catch (std::out_of_range&) { GUM_ERROR(OutOfBounds, "the value is too huge") }
@@ -80,11 +81,12 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
-  INLINE double ContinuousVariable< double >::operator[](const std::string& str) const {
+  INLINE double ContinuousVariable< double >::operator[](std::string_view str) const {
     double      value;
     std::size_t pos;
+    std::string s(str);
     try {
-      value = std::stod(str, &pos);
+      value = std::stod(s, &pos);
     } catch (std::invalid_argument&) {
       GUM_ERROR(TypeError, "the value is not a number")
     } catch (std::out_of_range&) { GUM_ERROR(OutOfBounds, "the value is too huge") }

@@ -65,7 +65,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(std::string name) : UGmodel() {
+  INLINE IMarkovRandomField< GUM_SCALAR >::IMarkovRandomField(std::string_view name) : UGmodel() {
     GUM_CONSTRUCTOR(IMarkovRandomField);
     this->setProperty("name", name);
   }
@@ -313,7 +313,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE const NodeSet&
-      IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(const std::string& name) const {
+      IMarkovRandomField< GUM_SCALAR >::smallestFactorFromNode(std::string_view name) const {
     if (!this->exists(name)) {
       GUM_ERROR(NotFound, "No factor containing the variable <" << name << ">")
     }

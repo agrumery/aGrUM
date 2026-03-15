@@ -53,6 +53,7 @@
 
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
@@ -127,12 +128,12 @@ namespace gum {
     ErrorsContainer         _errors_;
 
     void               _generateBN_(prm::PRMSystem< GUM_SCALAR >& system);
-    static std::string _getVariableName_(const std::string& path,
-                                         const std::string& type,
-                                         const std::string& name,
-                                         const std::string& toRemove = "");
-    static std::string _getEntityName_(const std::string& filename);
-    static std::string _getInstanceName_(const std::string& classname);
+    static std::string _getVariableName_(std::string_view path,
+                                         std::string_view type,
+                                         std::string_view name,
+                                         std::string_view toRemove = "");
+    static std::string _getEntityName_(std::string_view filename);
+    static std::string _getInstanceName_(std::string_view classname);
   };
 
 }   // namespace gum

@@ -58,7 +58,7 @@
 namespace gum {
   namespace prm {
     template < GUM_Numeric GUM_SCALAR >
-    PRMSystem< GUM_SCALAR >::PRMSystem(const std::string& name) : PRMObject(name) {
+    PRMSystem< GUM_SCALAR >::PRMSystem(std::string_view name) : PRMObject(name) {
       GUM_CONSTRUCTOR(PRMSystem);
     }
 
@@ -158,7 +158,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::_groundAgg_(const PRMClassElement< GUM_SCALAR >& elt,
-                                              const std::string&                   name,
+                                              std::string_view                     name,
                                               BayesNetFactory< GUM_SCALAR >&       factory) const {
       factory.startVariableDeclaration();
       factory.variableName(name);
@@ -374,7 +374,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId PRMSystem< GUM_SCALAR >::add(const std::string&         array,
+    INLINE NodeId PRMSystem< GUM_SCALAR >::add(std::string_view           array,
                                                PRMInstance< GUM_SCALAR >& i) {
       return add(array, &i);
     }
@@ -423,12 +423,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMSystem< GUM_SCALAR >::isInstance(const std::string& name) const {
+    INLINE bool PRMSystem< GUM_SCALAR >::isInstance(std::string_view name) const {
       return nameMap_.exists(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMSystem< GUM_SCALAR >::isArray(const std::string& name) const {
+    INLINE bool PRMSystem< GUM_SCALAR >::isArray(std::string_view name) const {
       return arrayMap_.exists(name);
     }
 
@@ -440,7 +440,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(const std::string& name) {
+    INLINE PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(std::string_view name) {
       auto p = nameMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       return *(*p);
@@ -448,7 +448,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMInstance< GUM_SCALAR >&
-                 PRMSystem< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMSystem< GUM_SCALAR >::get(std::string_view name) const {
       auto p = nameMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       return *(*p);
@@ -466,7 +466,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     INLINE const Sequence< PRMInstance< GUM_SCALAR >* >&
 
-        PRMSystem< GUM_SCALAR >::getArray(const std::string& name) const {
+        PRMSystem< GUM_SCALAR >::getArray(std::string_view name) const {
       auto p = arrayMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->second);
@@ -474,7 +474,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElementContainer< GUM_SCALAR >&
-           PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) {
+           PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) {
       auto p = arrayMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
@@ -482,14 +482,14 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElementContainer< GUM_SCALAR >&
-                 PRMSystem< GUM_SCALAR >::getArrayType(const std::string& name) const {
+                 PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) const {
       auto p = arrayMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId PRMSystem< GUM_SCALAR >::add(const std::string&         array,
+    INLINE NodeId PRMSystem< GUM_SCALAR >::add(std::string_view           array,
                                                PRMInstance< GUM_SCALAR >* i) {
       auto p_arr = arrayMap_.tryGet(array);
       if (!p_arr) GUM_ERROR(NotFound, "found no array matching the given name")
@@ -505,14 +505,14 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMSystem< GUM_SCALAR >::addArray(const std::string&                      array,
+    INLINE void PRMSystem< GUM_SCALAR >::addArray(std::string_view                        array,
                                                   PRMClassElementContainer< GUM_SCALAR >& type) {
       if (arrayMap_.exists(array)) {
         GUM_ERROR(DuplicateElement, "an array '" << array << "' is already in this System")
       }
 
       arrayMap_.insert(
-          array,
+          std::string{array},
           PRMSystem< GUM_SCALAR >::model_pair(&type, new Sequence< PRMInstance< GUM_SCALAR >* >()));
     }
 
@@ -539,7 +539,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::array_iterator
-        PRMSystem< GUM_SCALAR >::begin(const std::string& a) {
+        PRMSystem< GUM_SCALAR >::begin(std::string_view a) {
       auto p = arrayMap_.tryGet(a);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->begin();
@@ -547,7 +547,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::array_iterator&
-        PRMSystem< GUM_SCALAR >::end(const std::string& a) {
+        PRMSystem< GUM_SCALAR >::end(std::string_view a) {
       auto p = arrayMap_.tryGet(a);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->end();
@@ -555,7 +555,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE typename PRMSystem< GUM_SCALAR >::const_array_iterator
-        PRMSystem< GUM_SCALAR >::begin(const std::string& a) const {
+        PRMSystem< GUM_SCALAR >::begin(std::string_view a) const {
       auto p = arrayMap_.tryGet(a);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->begin();
@@ -563,14 +563,14 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const typename PRMSystem< GUM_SCALAR >::const_array_iterator&
-        PRMSystem< GUM_SCALAR >::end(const std::string& a) const {
+        PRMSystem< GUM_SCALAR >::end(std::string_view a) const {
       auto p = arrayMap_.tryGet(a);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return p->second->end();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMSystem< GUM_SCALAR >::exists(const std::string& name) const {
+    INLINE bool PRMSystem< GUM_SCALAR >::exists(std::string_view name) const {
       return nameMap_.exists(name) || arrayMap_.exists(name);
     }
   } /* namespace prm */

@@ -100,7 +100,7 @@ namespace gum {
        * of this PRMAttribute.
        *             it will be deleted after the call of ~PRMAttribute.
        */
-      PRMScalarAttribute(const std::string&                    name,
+      PRMScalarAttribute(std::string_view                      name,
                          const PRMType&                        type,
                          MultiDimImplementation< GUM_SCALAR >* impl
                          = new MultiDimArray< GUM_SCALAR >());

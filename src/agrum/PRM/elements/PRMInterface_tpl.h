@@ -54,13 +54,13 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMInterface< GUM_SCALAR >::PRMInterface(const std::string& name) :
+    PRMInterface< GUM_SCALAR >::PRMInterface(std::string_view name) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superInterface_(0) {
       GUM_CONSTRUCTOR(PRMInterface);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMInterface< GUM_SCALAR >::PRMInterface(const std::string&          name,
+    PRMInterface< GUM_SCALAR >::PRMInterface(std::string_view            name,
                                              PRMInterface< GUM_SCALAR >& super,
                                              bool                        delayInheritance) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superInterface_(&super) {
@@ -351,8 +351,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::addArc(const std::string& tail,
-                                                   const std::string& head) {
+    INLINE void PRMInterface< GUM_SCALAR >::addArc(std::string_view tail,
+                                                   std::string_view head) {
       GUM_ERROR(OperationNotAllowed, "an Interface does ! have arcs")
     }
 
@@ -391,13 +391,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-           PRMInterface< GUM_SCALAR >::operator[](const std::string& name) {
+           PRMInterface< GUM_SCALAR >::operator[](std::string_view name) {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 PRMInterface< GUM_SCALAR >::operator[](const std::string& name) const {
+                 PRMInterface< GUM_SCALAR >::operator[](std::string_view name) const {
       return get(name);
     }
 
@@ -431,7 +431,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(const std::string& name) {
+    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(std::string_view name) {
       auto p = _nameMap_.tryGet(name);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
       return **p;
@@ -439,7 +439,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 PRMInterface< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMInterface< GUM_SCALAR >::get(std::string_view name) const {
       auto p = _nameMap_.tryGet(name);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
       return **p;

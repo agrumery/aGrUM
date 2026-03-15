@@ -80,7 +80,7 @@ namespace gum_tests {
       _nbr_++;
     }
 
-    void whenStop(const void* buffer, const std::string& s) final {
+    void whenStop(const void* buffer, std::string_view s) final {
       _nbr_++;
       _mess_ = s;
     }

@@ -219,7 +219,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
-    virtual void addEvidence(const std::string& nodeName, const Idx val) final;
+    virtual void addEvidence(std::string_view nodeName, const Idx val) final;
 
     /// adds a new hard evidence on node id
     /**
@@ -227,7 +227,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence(NodeId id, const std::string& label) final;
+    virtual void addEvidence(NodeId id, std::string_view label) final;
 
     /// adds a new hard evidence on node named nodeName
     /**
@@ -235,7 +235,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
-    virtual void addEvidence(const std::string& nodeName, const std::string& label) final;
+    virtual void addEvidence(std::string_view nodeName, std::string_view label) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -255,7 +255,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node nodeName
      */
-    virtual void addEvidence(const std::string&               nodeName,
+    virtual void addEvidence(std::string_view                 nodeName,
                              const std::vector< GUM_SCALAR >& vals) final;
 
     /// adds a new evidence on node id (might be soft or hard)
@@ -316,7 +316,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(const std::string& nodeName, const Idx val) final;
+    virtual void chgEvidence(std::string_view nodeName, const Idx val) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -324,7 +324,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(NodeId id, const std::string& label) final;
+    virtual void chgEvidence(NodeId id, std::string_view label) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -332,7 +332,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(const std::string& nodeName, const std::string& label) final;
+    virtual void chgEvidence(std::string_view nodeName, std::string_view label) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -352,7 +352,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence(const std::string&               nodeName,
+    virtual void chgEvidence(std::string_view                 nodeName,
                              const std::vector< GUM_SCALAR >& vals) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
@@ -373,7 +373,7 @@ namespace gum {
     virtual void eraseEvidence(NodeId id) final;
 
     /// removed the evidence, if any, corresponding to node of name nodeName
-    virtual void eraseEvidence(const std::string& nodeName) final;
+    virtual void eraseEvidence(std::string_view nodeName) final;
 
     /// indicates whether some node(s) have received evidence
     virtual bool hasEvidence() const final;
@@ -388,13 +388,13 @@ namespace gum {
     virtual bool hasSoftEvidence(NodeId id) const final;
     /// indicates whether node id has received an evidence
 
-    virtual bool hasEvidence(const std::string& nodeName) const final;
+    virtual bool hasEvidence(std::string_view nodeName) const final;
 
     /// indicates whether node id has received a hard evidence
-    virtual bool hasHardEvidence(const std::string& nodeName) const final;
+    virtual bool hasHardEvidence(std::string_view nodeName) const final;
 
     /// indicates whether node id has received a soft evidence
-    virtual bool hasSoftEvidence(const std::string& nodeName) const final;
+    virtual bool hasSoftEvidence(std::string_view nodeName) const final;
 
     /// returns the number of evidence entered into the Bayesian network
     virtual Size nbrEvidence() const final;

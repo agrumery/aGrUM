@@ -102,7 +102,7 @@ namespace gum {
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool
-      MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(const std::string& nodeName) const {
+      MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
     return isTarget(this->MRF().idFromName(nodeName));
   }
 
@@ -161,7 +161,7 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
-  void MarginalTargetedMRFInference< GUM_SCALAR >::addTarget(const std::string& nodeName) {
+  void MarginalTargetedMRFInference< GUM_SCALAR >::addTarget(std::string_view nodeName) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -196,7 +196,7 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
-  void MarginalTargetedMRFInference< GUM_SCALAR >::eraseTarget(const std::string& nodeName) {
+  void MarginalTargetedMRFInference< GUM_SCALAR >::eraseTarget(std::string_view nodeName) {
     // check if the node belongs to the Markov random field
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -250,7 +250,7 @@ namespace gum {
   // Compute the posterior of a node.
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-      MarginalTargetedMRFInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      MarginalTargetedMRFInference< GUM_SCALAR >::posterior(std::string_view nodeName) {
     return posterior(this->MRF().idFromName(nodeName));
   }
 
@@ -266,7 +266,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(const std::string& nodeName) {
+  INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(std::string_view nodeName) {
     return H(this->MRF().idFromName(nodeName));
   }
 
@@ -311,7 +311,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > MarginalTargetedMRFInference< GUM_SCALAR >::evidenceImpact(
-      const std::string&                target,
+      std::string_view                  target,
       const std::vector< std::string >& evs) {
     const auto& mn = this->MRF();
     return evidenceImpact(mn.idFromName(target), mn.nodeset(evs));

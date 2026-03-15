@@ -50,6 +50,7 @@
 #define GUM_PRM_OBJECT_H
 
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -133,7 +134,7 @@ namespace gum {
        * Constructor.
        * @param name The name of this object.
        */
-      explicit PRMObject(const std::string& name);
+      explicit PRMObject(std::string_view name);
 
       /**
        * Copy constructor.
@@ -165,7 +166,7 @@ namespace gum {
        * @brief Change the name of the PRM Object.
        * @warning Don't do this unless you know what you are doing !
        */
-      void name(const std::string& name);
+      void name(std::string_view name);
 
       /**
        * Returns the type of this object.

@@ -49,6 +49,7 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -83,7 +84,7 @@ namespace gum {
        * Default constructor.
        * @param name The class name.
        */
-      explicit PRMClass(const std::string& name);
+      explicit PRMClass(std::string_view name);
 
       /**
        * Constructor for building a subclass of super.
@@ -91,7 +92,7 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass(const std::string&      name,
+      PRMClass(std::string_view        name,
                PRMClass< GUM_SCALAR >& super,
                bool                    delayInheritance = false);
 
@@ -103,7 +104,7 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass(const std::string&                        name,
+      PRMClass(std::string_view                          name,
                const Set< PRMInterface< GUM_SCALAR >* >& set,
                bool                                      delayInheritance = false);
 
@@ -115,7 +116,7 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass(const std::string&                        name,
+      PRMClass(std::string_view                          name,
                PRMClass< GUM_SCALAR >&                   super,
                const Set< PRMInterface< GUM_SCALAR >* >& set,
                bool                                      delayInheritance = false);
@@ -174,15 +175,15 @@ namespace gum {
        * @throw NotFound Raised if safe_name does not name an
        * PRMAttribute<GUM_SCALAR> in this Class<GUM_SCALAR>.
        */
-      bool isCastDescendant(const std::string& safe_name) const;
+      bool isCastDescendant(std::string_view safe_name) const;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      PRMClassElement< GUM_SCALAR >& get(const std::string& name);
+      PRMClassElement< GUM_SCALAR >& get(std::string_view name);
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >& get(const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& get(std::string_view name) const;
 
       /// See gum::prm::add(PRMClassElement<GUM_SCALAR>*).
       virtual NodeId add(PRMClassElement< GUM_SCALAR >* elt);
@@ -191,7 +192,7 @@ namespace gum {
       virtual NodeId overload(PRMClassElement< GUM_SCALAR >* elt);
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::addArc().
-      virtual void addArc(const std::string& tail, const std::string& head);
+      virtual void addArc(std::string_view tail, std::string_view head);
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -299,11 +300,11 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      PRMClassElement< GUM_SCALAR >& operator[](const std::string& name);
+      PRMClassElement< GUM_SCALAR >& operator[](std::string_view name);
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >& operator[](const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) const;
 
       /// @}
 
@@ -315,7 +316,7 @@ namespace gum {
       void inheritAggregates();
       void inheritSlotChains();
       void initializeInheritance();
-      void completeInheritance(const std::string& attr);
+      void completeInheritance(std::string_view attr);
       /// @}
 
       protected:

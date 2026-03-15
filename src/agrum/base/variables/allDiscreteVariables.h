@@ -72,8 +72,8 @@ namespace gum {
    * @return an unique_ptr on the new variable.
    */
   template < GUM_Numeric GUM_SCALAR = double >
-  std::unique_ptr< DiscreteVariable > fastVariable(std::string        var_description,
-                                                   const std::string& default_domain = "[2]");
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string      var_description,
+                                                   std::string_view default_domain = "[2]");
 }   // namespace gum
 
 #include <agrum/base/variables/allDiscreteVariables_tpl.h>

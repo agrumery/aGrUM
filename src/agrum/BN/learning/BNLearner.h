@@ -92,7 +92,7 @@ namespace gum {
        * variables. By setting induceTypes to true, this is precisely what the
        * BNLearner will do.
        */
-      BNLearner(const std::string&                filename,
+      BNLearner(std::string_view                  filename,
                 const std::vector< std::string >& missingSymbols = {"?"},
                 const bool                        induceTypes    = true);
 
@@ -109,7 +109,7 @@ namespace gum {
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
        * to find those modalities and nodeids.
        **/
-      BNLearner(const std::string&                 filename,
+      BNLearner(std::string_view                   filename,
                 const gum::BayesNet< GUM_SCALAR >& src,
                 const std::vector< std::string >&  missing_symbols = {"?"});
 
@@ -477,7 +477,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& useDirichletPrior(const std::string& filename, double weight = 1) {
+      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight = 1) {
         IBNLearner::useDirichletPrior(filename, weight);
         return *this;
       }
@@ -566,7 +566,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tail, std::string_view head) {
         IBNLearner::addForbiddenArc(tail, head);
         return *this;
       }
@@ -581,7 +581,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tail, std::string_view head) {
         IBNLearner::eraseForbiddenArc(tail, head);
         return *this;
       }
@@ -596,7 +596,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tail, std::string_view head) {
         IBNLearner::addMandatoryArc(tail, head);
         return *this;
       }
@@ -611,7 +611,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tail, std::string_view head) {
         IBNLearner::eraseMandatoryArc(tail, head);
         return *this;
       }
@@ -626,7 +626,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail, std::string_view head) {
         IBNLearner::addPossibleEdge(tail, head);
         return *this;
       }
@@ -641,7 +641,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(const std::string& tail, const std::string& head) {
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail, std::string_view head) {
         IBNLearner::erasePossibleEdge(tail, head);
         return *this;
       }
@@ -666,7 +666,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addNoParentNode(const std::string& name) {
+      BNLearner< GUM_SCALAR >& addNoParentNode(std::string_view name) {
         IBNLearner::addNoParentNode(name);
         return *this;
       }
@@ -676,7 +676,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseNoParentNode(const std::string& name) {
+      BNLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name) {
         IBNLearner::eraseNoParentNode(name);
         return *this;
       }
@@ -686,7 +686,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& addNoChildrenNode(const std::string& name) {
+      BNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name) {
         IBNLearner::addNoChildrenNode(name);
         return *this;
       }
@@ -696,7 +696,7 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(const std::string& name) {
+      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name) {
         IBNLearner::eraseNoChildrenNode(name);
         return *this;
       }
@@ -713,7 +713,7 @@ namespace gum {
       BayesNet< GUM_SCALAR > _prior_bn_;
 
       /// read the first line of a file to find column names
-      NodeProperty< Sequence< std::string > > _labelsFromBN_(const std::string&            filename,
+      NodeProperty< Sequence< std::string > > _labelsFromBN_(std::string_view              filename,
                                                              const BayesNet< GUM_SCALAR >& src);
 
       /**

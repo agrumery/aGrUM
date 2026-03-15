@@ -87,7 +87,7 @@ namespace gum_tests {
       __nbr++;
     }
 
-    void whenStop(const void* buffer, const std::string& s) { __msg = s; }
+    void whenStop(const void* buffer, std::string_view s) { __msg = s; }
 
     int nbr() { return __nbr; }
 

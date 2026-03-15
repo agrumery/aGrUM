@@ -263,9 +263,9 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_LINK_NOT_FOUND(const O3Label&     chain,
-                                      const std::string& s,
-                                      ErrorsContainer&   errors) {
+      void O3PRM_CLASS_LINK_NOT_FOUND(const O3Label&   chain,
+                                      std::string_view s,
+                                      ErrorsContainer& errors) {
         const auto&       pos = chain.position();
         std::stringstream msg;
         msg << "Error : "
@@ -273,11 +273,11 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_ILLEGAL_CPT_SIZE(const std::string& c,
-                                        const O3Label&     attr,
-                                        Size               found,
-                                        Size               expected,
-                                        ErrorsContainer&   errors) {
+      void O3PRM_CLASS_ILLEGAL_CPT_SIZE(std::string_view c,
+                                        const O3Label&   attr,
+                                        Size             found,
+                                        Size             expected,
+                                        ErrorsContainer& errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
         msg << "Error : "
@@ -286,10 +286,10 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_ILLEGAL_CPT_VALUE(const std::string& c,
-                                         const O3Label&     attr,
-                                         const O3Formula&   f,
-                                         ErrorsContainer&   errors) {
+      void O3PRM_CLASS_ILLEGAL_CPT_VALUE(std::string_view c,
+                                         const O3Label&   attr,
+                                         const O3Formula& f,
+                                         ErrorsContainer& errors) {
         const auto&       pos = f.position();
         std::stringstream msg;
         msg << "Error : "
@@ -305,10 +305,10 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(const std::string& c,
-                                             const O3Label&     attr,
-                                             float              f,
-                                             ErrorsContainer&   errors) {
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(std::string_view c,
+                                             const O3Label&   attr,
+                                             float            f,
+                                             ErrorsContainer& errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
         msg << "Error : "
@@ -316,10 +316,10 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(const std::string& c,
-                                                     const O3Label&     attr,
-                                                     float              f,
-                                                     ErrorsContainer&   errors) {
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(std::string_view c,
+                                                     const O3Label&   attr,
+                                                     float            f,
+                                                     ErrorsContainer& errors) {
         const auto&       pos = attr.position();
         std::stringstream msg;
         msg << "Warning : "
@@ -357,10 +357,10 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&     prnt,
-                                         const std::string& expected,
-                                         const std::string& found,
-                                         ErrorsContainer&   errors) {
+      void O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&   prnt,
+                                         std::string_view expected,
+                                         std::string_view found,
+                                         ErrorsContainer& errors) {
         const auto&       pos = prnt.position();
         std::stringstream msg;
         msg << "Error : "
@@ -586,9 +586,9 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
-      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND(const O3Label&     ref,
-                                            const std::string& type,
-                                            ErrorsContainer&   errors) {
+      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND(const O3Label&   ref,
+                                            std::string_view type,
+                                            ErrorsContainer& errors) {
         const auto&       pos = ref.position();
         std::stringstream msg;
         msg << "Error : "

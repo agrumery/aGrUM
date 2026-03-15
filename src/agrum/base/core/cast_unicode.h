@@ -53,13 +53,14 @@
 #include <locale>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 /**
  * @brief Cast a std::string into a std::wstring.
  * @param str The std::string to cast.
  * @return Returns the std::wstring of str.
  */
-std::wstring widen(const std::string& str);
+std::wstring widen(std::string_view str);
 
 /**
  * @brief Cast a std::wstring into a std::string.

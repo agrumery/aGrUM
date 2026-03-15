@@ -51,8 +51,10 @@
 #ifndef GUM_ID_WRITER_H
 #define GUM_ID_WRITER_H
 
+#include <filesystem>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -100,7 +102,7 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
+    virtual void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
   };
 } /* namespace gum */
 

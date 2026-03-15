@@ -98,6 +98,7 @@ GONZALES(_at_AMU)
 #include <list>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -125,7 +126,7 @@ namespace gum {
      * A reader is created to reading a defined file.
      * Note that an ID as to be created before and given in parameter.
      */
-    BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath);
+    BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag, std::string_view filePath);
 
     /**
      * Default destructor.

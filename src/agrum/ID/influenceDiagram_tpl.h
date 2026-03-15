@@ -60,11 +60,11 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
                            std::string                          node,
-                           const std::string&                   domain) {
+                           std::string_view                     domain) {
     bool        isUtil  = false;
     bool        isDeci  = false;
     bool        isChanc = false;
-    std::string ds      = domain;
+    std::string ds(domain);
     switch (*(node.begin())) {
       case '*' :
         isDeci = true;
@@ -96,14 +96,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
-      InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike, Size domainSize) {
+      InfluenceDiagram< GUM_SCALAR >::fastPrototype(std::string_view dotlike, Size domainSize) {
     return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
   }
 
   template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
-      InfluenceDiagram< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                    const std::string& domain) {
+      InfluenceDiagram< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
+                                                    std::string_view domain) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
@@ -411,14 +411,14 @@ namespace gum {
 
   // Getter by name
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::idFromName(const std::string& name) const {
+  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::idFromName(std::string_view name) const {
     return _variableMap_.idFromName(name);
   }
 
   // Getter by name
   template < GUM_Numeric GUM_SCALAR >
   INLINE const DiscreteVariable&
-      InfluenceDiagram< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      InfluenceDiagram< GUM_SCALAR >::variableFromName(std::string_view name) const {
     return _variableMap_.variableFromName(name);
   }
 
@@ -584,8 +584,8 @@ namespace gum {
   /* we allow the user to change the name of a variable
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId             id,
-                                                                 const std::string& new_name) {
+  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId          id,
+                                                                 std::string_view new_name) {
     _variableMap_.changeName(id, new_name);
   }
 
@@ -847,16 +847,16 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(const std::string& fast_description,
-                                                       unsigned int       default_nbrmod) {
-    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+  NodeId InfluenceDiagram< GUM_SCALAR >::addChanceNode(std::string_view fast_description,
+                                                       unsigned int     default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return addChanceNode(*v);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addUtilityNode(const std::string& fast_description) {
-    auto v = fastVariable< GUM_SCALAR >(fast_description, 1);
+  NodeId InfluenceDiagram< GUM_SCALAR >::addUtilityNode(std::string_view fast_description) {
+    auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), 1);
     if (v->domainSize() >= 2)
       GUM_ERROR(OperationNotAllowed,
                 v->name() << " has a domain size >= 2 which is impossible for a utility node")
@@ -864,17 +864,17 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::addDecisionNode(const std::string& fast_description,
-                                                         unsigned int       default_nbrmod) {
-    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+  NodeId InfluenceDiagram< GUM_SCALAR >::addDecisionNode(std::string_view fast_description,
+                                                         unsigned int     default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return addDecisionNode(*v);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId InfluenceDiagram< GUM_SCALAR >::add(const std::string& fast_description,
-                                             unsigned int       default_nbrmod) {
-    std::string node = fast_description;
+  NodeId InfluenceDiagram< GUM_SCALAR >::add(std::string_view fast_description,
+                                             unsigned int     default_nbrmod) {
+    std::string node(fast_description);
     switch (*(node.begin())) {
       case '*' : node.erase(0, 1); return addDecisionNode(node, default_nbrmod);
       case '$' : node.erase(0, 1); return addUtilityNode(node);

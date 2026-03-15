@@ -99,10 +99,10 @@ namespace gum {
      * @param domainSize the default domain size for chance and decision variables
      * @return the resulting influence diagram
      */
-    static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                        Size               domainSize);
-    static InfluenceDiagram< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                        const std::string& domain = "[2]");
+    static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike,
+                                                        Size             domainSize);
+    static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike,
+                                                        std::string_view domain = "[2]");
 
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -155,7 +155,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
 
-    virtual const Tensor< GUM_SCALAR >& cpt(std::string name) const final {
+    virtual const Tensor< GUM_SCALAR >& cpt(std::string_view name) const final {
       return cpt(idFromName(name));
     };
 
@@ -165,7 +165,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& utility(NodeId varId) const;
 
-    virtual const Tensor< GUM_SCALAR >& utility(std::string name) const final {
+    virtual const Tensor< GUM_SCALAR >& utility(std::string_view name) const final {
       return utility(idFromName(name));
     };
 
@@ -180,21 +180,21 @@ namespace gum {
      */
     bool isUtilityNode(NodeId varId) const;
 
-    bool isUtilityNode(const std::string& name) const { return isUtilityNode(idFromName(name)); };
+    bool isUtilityNode(std::string_view name) const { return isUtilityNode(idFromName(name)); };
 
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
 
-    bool isDecisionNode(const std::string& name) const { return isDecisionNode(idFromName(name)); };
+    bool isDecisionNode(std::string_view name) const { return isDecisionNode(idFromName(name)); };
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
 
-    bool isChanceNode(const std::string& name) const { return isChanceNode(idFromName(name)); };
+    bool isChanceNode(std::string_view name) const { return isChanceNode(idFromName(name)); };
 
     /**
      * Returns the number of utility nodes
@@ -217,7 +217,7 @@ namespace gum {
      */
     const DiscreteVariable& variable(NodeId id) const final;
 
-    const DiscreteVariable& variable(const std::string& name) const {
+    const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
     };
 
@@ -229,11 +229,11 @@ namespace gum {
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    NodeId idFromName(const std::string& name) const final;
+    NodeId idFromName(std::string_view name) const final;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    const DiscreteVariable& variableFromName(const std::string& name) const final;
+    const DiscreteVariable& variableFromName(std::string_view name) const final;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -347,7 +347,7 @@ namespace gum {
      *                        gum::InfluenceDiagram.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod = 2);
+    NodeId add(std::string_view fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * Add a chance variable from a description in "fast" syntax.
@@ -368,7 +368,7 @@ namespace gum {
      *                        gum::InfluenceDiagram.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId addChanceNode(const std::string& fast_description, unsigned int default_nbrmod = 2);
+    NodeId addChanceNode(std::string_view fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * Add a utility variable from a description in "fast" syntax with only one value.
@@ -378,7 +378,7 @@ namespace gum {
      *
      * @param fast_description(: str) following "fast" syntax description
      */
-    NodeId addUtilityNode(const std::string& fast_description);
+    NodeId addUtilityNode(std::string_view fast_description);
 
     /**
      * Add a decision variable from a description in "fast" syntax.
@@ -396,7 +396,7 @@ namespace gum {
      *                        gum::InfluenceDiagram.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId addDecisionNode(const std::string& fast_description, unsigned int default_nbrmod = 2);
+    NodeId addDecisionNode(std::string_view fast_description, unsigned int default_nbrmod = 2);
 
 
     /**
@@ -408,7 +408,7 @@ namespace gum {
      */
     void erase(NodeId id);
 
-    void erase(const std::string& name) { erase(idFromName(name)); };
+    void erase(std::string_view name) { erase(idFromName(name)); };
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -423,9 +423,9 @@ namespace gum {
      * @throws DuplicateLabel if this name already exists
      * @throws NotFound Raised if no nodes matches id.
      */
-    void changeVariableName(NodeId id, const std::string& new_name);
+    void changeVariableName(NodeId id, std::string_view new_name);
 
-    void changeVariableName(const std::string& name, const std::string& new_name) {
+    void changeVariableName(std::string_view name, std::string_view new_name) {
       changeVariableName(idFromName(name), new_name);
     }
 
@@ -446,7 +446,7 @@ namespace gum {
      */
     void addArc(NodeId tail, NodeId head);
 
-    void addArc(const std::string& tail, const std::string& head) {
+    void addArc(std::string_view tail, std::string_view head) {
       addArc(idFromName(tail), idFromName(head));
     }
 
@@ -469,7 +469,7 @@ namespace gum {
      */
     void eraseArc(NodeId tail, NodeId head);
 
-    void eraseArc(const std::string& tail, const std::string& head) {
+    void eraseArc(std::string_view tail, std::string_view head) {
       eraseArc(idFromName(tail), idFromName(head));
     }
 
@@ -501,7 +501,7 @@ namespace gum {
      */
     bool existsPathBetween(NodeId src, NodeId dest) const;
 
-    bool existsPathBetween(const std::string& src, const std::string& dest) const {
+    bool existsPathBetween(std::string_view src, std::string_view dest) const {
       return existsPathBetween(idFromName(src), idFromName(dest));
     }
 

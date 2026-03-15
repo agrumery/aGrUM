@@ -124,13 +124,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId InstanceBayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+    INLINE NodeId InstanceBayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
       return _get_(name).id();
     }
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const DiscreteVariable&
-        InstanceBayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+        InstanceBayesNet< GUM_SCALAR >::variableFromName(std::string_view name) const {
       return _get_(name).type().variable();
     }
 
@@ -142,7 +142,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 InstanceBayesNet< GUM_SCALAR >::_get_(const std::string& name) const {
+                 InstanceBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
       if (!_inst_->exists(name)) GUM_ERROR(NotFound, "no element found with that name")
       return _inst_->get(name);
     }

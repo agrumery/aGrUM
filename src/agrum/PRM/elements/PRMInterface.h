@@ -51,6 +51,7 @@
 
 #include <set>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -92,7 +93,7 @@ namespace gum {
        * Default constructor.
        * @param name The interface name.
        */
-      explicit PRMInterface(const std::string& name);
+      explicit PRMInterface(std::string_view name);
 
       /**
        * Constructor for building a subclass of super.
@@ -100,7 +101,7 @@ namespace gum {
        * @param super The super PRMInterface of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMInterface(const std::string&          name,
+      PRMInterface(std::string_view            name,
                    PRMInterface< GUM_SCALAR >& super,
                    bool                        delayInheritance = false);
 
@@ -134,7 +135,7 @@ namespace gum {
        * @throw OperationNotAllowed Systematically throws an
        *OperationNotAllowed.
        */
-      void addArc(const std::string& tail, const std::string& head);
+      void addArc(std::string_view tail, std::string_view head);
 
       /// @}
       // ========================================================================
@@ -146,11 +147,11 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual PRMClassElement< GUM_SCALAR >& get(const std::string& name);
+      virtual PRMClassElement< GUM_SCALAR >& get(std::string_view name);
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      virtual const PRMClassElement< GUM_SCALAR >& get(const std::string& name) const;
+      virtual const PRMClassElement< GUM_SCALAR >& get(std::string_view name) const;
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -280,11 +281,11 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      PRMClassElement< GUM_SCALAR >& operator[](const std::string& name);
+      PRMClassElement< GUM_SCALAR >& operator[](std::string_view name);
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >& operator[](const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) const;
 
       /// @}
       // ========================================================================

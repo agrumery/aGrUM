@@ -256,7 +256,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::erase(const std::string& name) {
+  INLINE void MultiDimDecorator< GUM_ELEMENT >::erase(std::string_view name) {
     erase(variable(name));
   }
 
@@ -267,7 +267,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE const DiscreteVariable&
-      MultiDimDecorator< GUM_ELEMENT >::variable(const std::string& name) const {
+      MultiDimDecorator< GUM_ELEMENT >::variable(std::string_view name) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variable(name);
   }
 

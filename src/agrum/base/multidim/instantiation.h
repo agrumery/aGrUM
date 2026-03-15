@@ -272,7 +272,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
     void erase(const DiscreteVariable& v) final;
-    void erase(const std::string& name);
+    void erase(std::string_view name);
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -326,7 +326,7 @@ namespace gum {
      * @throw NotFound Raised it var does not belong to the instantiation.
      */
     Idx val(const DiscreteVariable& var) const;
-    Idx val(const std::string& name) const;
+    Idx val(std::string_view name) const;
 
     /**
      * @brief Returns the current value of a given variable.
@@ -360,7 +360,7 @@ namespace gum {
      * @warging This function is not O(1)
      * @throw NotFound Raised if the element cannot be found.
      */
-    const DiscreteVariable& variable(const std::string& name) const final;
+    const DiscreteVariable& variable(std::string_view name) const final;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -425,7 +425,7 @@ namespace gum {
      * @throw NotFound Raised if newval is not a possible value for the
      * variable
      */
-    Instantiation& chgVal(const std::string& var, Idx newval);
+    Instantiation& chgVal(std::string_view var, Idx newval);
 
     /**
      * @brief Assign newval to variable at position varPos in the Instantiation.
@@ -447,7 +447,7 @@ namespace gum {
      * @throw OutOfBounds Raised if newval is not a possible value for the
      * variable
      */
-    Instantiation& chgVal(const std::string& var, const std::string& newval);
+    Instantiation& chgVal(std::string_view var, std::string_view newval);
 
     /**
      * @brief Assign the values from i in the Instantiation.
@@ -492,7 +492,7 @@ namespace gum {
      * @return Returns true if v is in the Instantiation.
      */
     bool contains(const DiscreteVariable& v) const final;
-    bool contains(const std::string& name) const;
+    bool contains(std::string_view name) const;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.

@@ -671,7 +671,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::putFirst(const std::string& varname) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::putFirst(std::string_view varname) const {
     const DiscreteVariable* var = nullptr;
 
     for (gum::Idx i = 0; i < this->nbrDim(); i++)
@@ -1171,7 +1171,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::deterministicTensor(const DiscreteVariable& var,
-                                                                 const std::string&      value) {
+                                                                 std::string_view        value) {
     return Tensor< GUM_SCALAR >::deterministicTensor(var, var.index(value));
   }
 

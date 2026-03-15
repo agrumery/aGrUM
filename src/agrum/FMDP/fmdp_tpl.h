@@ -161,7 +161,7 @@ namespace gum {
   // @throw DuplicateElement if an action with same name already exists
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE void FMDP< GUM_ELEMENT >::addAction(Idx actionId, const std::string& action) {
+  INLINE void FMDP< GUM_ELEMENT >::addAction(Idx actionId, std::string_view action) {
     if (actionId == 0) GUM_ERROR(DuplicateElement, " Action Id 0 is reserved.")
 
     for (BijectionIteratorSafe< Idx, const std::string* > actIter = _actionMap_.beginSafe();
@@ -336,7 +336,7 @@ namespace gum {
   // Returns action id
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE Idx FMDP< GUM_ELEMENT >::actionId(const std::string& action) const {
+  INLINE Idx FMDP< GUM_ELEMENT >::actionId(std::string_view action) const {
     for (BijectionIterator< Idx, const std::string* > actIter = _actionMap_.begin();
          actIter != _actionMap_.end();
          ++actIter)

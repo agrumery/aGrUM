@@ -234,20 +234,21 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    DBTranslatedValue DBTranslator4RangeVariable::translate(const std::string& str) {
+    DBTranslatedValue DBTranslator4RangeVariable::translate(std::string_view str) {
       // try to get the index of str within the labelized variable. If this
       // cannot be found, try to find if this corresponds to a missing value.
       // Finally, if this is still not a missing value and, if enabled, try
       // to add str as a new label
+      const std::string s(str);
       try {
-        return DBTranslatedValue{this->back_dico_.first(str)};
+        return DBTranslatedValue{this->back_dico_.first(s)};
       } catch (gum::Exception&) {
         // check that this is not a missing value
         if (this->isMissingSymbol(str)) {
-          if (auto ptr_is_str_translated = _status_int_missing_symbols_.tryGet(str)) {
+          if (auto ptr_is_str_translated = _status_int_missing_symbols_.tryGet(s)) {
             if (!*ptr_is_str_translated) {   // the string is not translated yet
               *ptr_is_str_translated = true;
-              _translated_int_missing_symbols_.insert(std::stol(str));
+              _translated_int_missing_symbols_.insert(std::stol(s));
             }
           }
           return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
@@ -261,12 +262,12 @@ namespace gum {
         }
 
         // check if str could correspond to a bound of the range variable
-        if (!DBCell::isInteger(str)) {
+        if (!DBCell::isInteger(s)) {
           GUM_ERROR(TypeError,
                     "String \"" << str << "\" cannot be translated because "
                                 << "it cannot be converted into an integer");
         }
-        const long new_value = std::stol(str);
+        const long new_value = std::stol(s);
 
         // if str corresponds to a missing symbol that we already
         // translated, raise an exception
@@ -291,7 +292,7 @@ namespace gum {
           }
           _variable_.setMinVal(new_value);
           _variable_.setMaxVal(new_value);
-          this->back_dico_.insert(std::size_t(0), str);
+          this->back_dico_.insert(std::size_t(0), s);
           return DBTranslatedValue{std::size_t(0)};
         }
 

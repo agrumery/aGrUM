@@ -91,7 +91,7 @@ namespace gum {
        * @param type The type of this reference slot.
        * @param isArray Determine if this reference slot is multiple or not.
        */
-      PRMReferenceSlot(const std::string&                      name,
+      PRMReferenceSlot(std::string_view                        name,
                        PRMClassElementContainer< GUM_SCALAR >& type,
                        bool                                    isArray = false);
 

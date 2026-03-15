@@ -64,7 +64,7 @@ namespace gum {
     /// @{
 
     /// Default constructor
-    IDiscretizedVariable(const std::string& aName, const std::string& aDesc);
+    IDiscretizedVariable(std::string_view aName, std::string_view aDesc);
 
     /** Copy Constructor.
      *

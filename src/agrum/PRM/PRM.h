@@ -100,13 +100,13 @@ namespace gum {
        * @param name The name of a possible PRMType in this PRM.
        * @return Returns true if name names a PRMType in this PRM.
        */
-      bool isType(const std::string& name) const;
+      bool isType(std::string_view name) const;
 
       /**
        * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
        */
-      bool isClass(const std::string& name) const;
+      bool isClass(std::string_view name) const;
 
       /**
        * @param name The name of a possible PRMInterface<GUM_SCALAR> in this
@@ -114,25 +114,25 @@ namespace gum {
        * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this
        * PRM.
        */
-      bool isInterface(const std::string& name) const;
+      bool isInterface(std::string_view name) const;
 
       /**
        * @param name The name of a possible PRMSystem<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a PRMSystem<GUM_SCALAR> in this PRM.
        */
-      bool isSystem(const std::string& name) const;
+      bool isSystem(std::string_view name) const;
 
       /**
        * Returns a constant reference on a PRMType given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      PRMType& type(const std::string& name);
+      PRMType& type(std::string_view name);
 
       /**
        * Returns a constant reference on a PRMType given it's name.
        * @throw NotFound Raised if no type is found with the given name.
        */
-      const PRMType& type(const std::string& name) const;
+      const PRMType& type(std::string_view name) const;
 
       /**
        * Returns the Set of all PRMType in this PRM.
@@ -143,13 +143,13 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      PRMClass< GUM_SCALAR >& getClass(const std::string& name);
+      PRMClass< GUM_SCALAR >& getClass(std::string_view name);
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const PRMClass< GUM_SCALAR >& getClass(const std::string& name) const;
+      const PRMClass< GUM_SCALAR >& getClass(std::string_view name) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -160,13 +160,13 @@ namespace gum {
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      PRMInterface< GUM_SCALAR >& getInterface(const std::string& name);
+      PRMInterface< GUM_SCALAR >& getInterface(std::string_view name);
 
       /**
        * Returns a constant reference on a Class<GUM_SCALAR> given it's name.
        * @throw NotFound Raised if no class is found with the given name.
        */
-      const PRMInterface< GUM_SCALAR >& getInterface(const std::string& name) const;
+      const PRMInterface< GUM_SCALAR >& getInterface(std::string_view name) const;
 
       /**
        * Returns the Set of all Class<GUM_SCALAR> in this PRM.
@@ -178,14 +178,14 @@ namespace gum {
        * name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      PRMSystem< GUM_SCALAR >& getSystem(const std::string& name);
+      PRMSystem< GUM_SCALAR >& getSystem(std::string_view name);
 
       /**
        * Returns a constant reference on a PRMSystem<GUM_SCALAR> given it's
        * name.
        * @throw NotFound Raised if no model is found with the given name.
        */
-      const PRMSystem< GUM_SCALAR >& getSystem(const std::string& name) const;
+      const PRMSystem< GUM_SCALAR >& getSystem(std::string_view name) const;
 
       /**
        * Returns the Set of all Systems in this PRM.

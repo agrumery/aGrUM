@@ -54,7 +54,7 @@ namespace gum {
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BNReader< GUM_SCALAR >::BNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) {
+  INLINE BNReader< GUM_SCALAR >::BNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename) {
     GUM_CONSTRUCTOR(BNReader);
   }
 

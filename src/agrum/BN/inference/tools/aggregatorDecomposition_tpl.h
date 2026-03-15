@@ -81,28 +81,29 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId AggregatorDecomposition< GUM_SCALAR >::addAggregator_(BayesNet< GUM_SCALAR >& bn,
-                                                               const std::string&      aggType,
+                                                               std::string_view        aggType,
                                                                const DiscreteVariable& var,
                                                                Idx                     value) {
-    if (toLower(aggType) == "min") {
+    const auto aggLower = toLower(aggType);
+    if (aggLower == "min") {
       return bn.addMIN(var);
-    } else if (toLower(aggType) == "max") {
+    } else if (aggLower == "max") {
       return bn.addMAX(var);
-    } else if (toLower(aggType) == "count") {
+    } else if (aggLower == "count") {
       return bn.addCOUNT(var, value);
-    } else if (toLower(aggType) == "exists") {
+    } else if (aggLower == "exists") {
       return bn.addEXISTS(var, value);
-    } else if (toLower(aggType) == "or") {
+    } else if (aggLower == "or") {
       return bn.addOR(var);
-    } else if (toLower(aggType) == "and") {
+    } else if (aggLower == "and") {
       return bn.addAND(var);
-    } else if (toLower(aggType) == "forall") {
+    } else if (aggLower == "forall") {
       return bn.addFORALL(var);
-    } else if (toLower(aggType) == "amplitude") {
+    } else if (aggLower == "amplitude") {
       return bn.addAMPLITUDE(var);
-    } else if (toLower(aggType) == "median") {
+    } else if (aggLower == "median") {
       return bn.addMEDIAN(var);
-    } else if (toLower(aggType) == "sum") {
+    } else if (aggLower == "sum") {
       return bn.addSUM(var);
     } else {
       std::string msg = "Unknown aggregate: ";

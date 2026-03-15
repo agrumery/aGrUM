@@ -79,24 +79,24 @@ namespace gum {
   }
 
   INLINE
-  void ErrorsContainer::addError(const std::string& msg,
-                                 const std::string& filename,
-                                 Idx                line,
-                                 Idx                col) {
-    add(ParseError(true, msg, filename, line, col));
+  void ErrorsContainer::addError(std::string_view msg,
+                                 std::string_view filename,
+                                 Idx              line,
+                                 Idx              col) {
+    add(ParseError(true, std::string(msg), std::string(filename), line, col));
   }
 
   INLINE
-  void ErrorsContainer::addWarning(const std::string& msg,
-                                   const std::string& filename,
-                                   Idx                line,
-                                   Idx                col) {
-    add(ParseError(false, msg, filename, line, col));
+  void ErrorsContainer::addWarning(std::string_view msg,
+                                   std::string_view filename,
+                                   Idx              line,
+                                   Idx              col) {
+    add(ParseError(false, std::string(msg), std::string(filename), line, col));
   }
 
   INLINE
-  void ErrorsContainer::addException(const std::string& msg, const std::string& filename) {
-    add(ParseError(true, msg, filename, 0, 0));
+  void ErrorsContainer::addException(std::string_view msg, std::string_view filename) {
+    add(ParseError(true, std::string(msg), std::string(filename), 0, 0));
   }
 
   INLINE

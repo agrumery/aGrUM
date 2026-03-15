@@ -212,7 +212,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmReader< GUM_SCALAR >::setClassPath(const std::string& class_path) {
+      void O3prmReader< GUM_SCALAR >::setClassPath(std::string_view class_path) {
         _class_path_ = std::vector< std::string >();
         size_t i     = 0;
         size_t j     = class_path.find(';');
@@ -232,8 +232,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmReader< GUM_SCALAR >::addClassPath(const std::string& class_path) {
-        auto path = class_path;
+      void O3prmReader< GUM_SCALAR >::addClassPath(std::string_view class_path) {
+        std::string path(class_path);
         if (path[path.size() - 1] != '/') { path.append("/"); }
         std::filesystem::directory_entry dir(path);
         if (!dir.exists()) {
@@ -312,8 +312,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Size O3prmReader< GUM_SCALAR >::readFile(const std::string& file,
-                                                      const std::string& module) {
+      INLINE Size O3prmReader< GUM_SCALAR >::readFile(std::string_view file,
+                                                      std::string_view module) {
         try {
           auto const lastSlashIndex = file.find_last_of('/');
 
@@ -329,7 +329,7 @@ namespace gum {
 
           std::ifstream input(absFilename);
           if (input.is_open()) {
-            _readStream_(input, file, module);
+            _readStream_(input, std::string(file), std::string(module));
           } else {
             _errors_.addException("could not open file", file);
           }

@@ -308,8 +308,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size StructuredBayesBall< GUM_SCALAR >::occurrence(const std::string& key) const {
-      return _reqMap_[key].second;
+    INLINE Size StructuredBayesBall< GUM_SCALAR >::occurrence(std::string_view key) const {
+      return _reqMap_[std::string{key}].second;
     }
 
     template < GUM_Numeric GUM_SCALAR >

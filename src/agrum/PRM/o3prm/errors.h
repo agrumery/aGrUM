@@ -49,6 +49,7 @@
 
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/core/errorsContainer.h>
@@ -128,30 +129,30 @@ namespace gum {
 
       void O3PRM_CLASS_ILLEGAL_PARENT(const O3Label& parent, ErrorsContainer& errors);
 
-      void O3PRM_CLASS_LINK_NOT_FOUND(const O3Label&     chain,
-                                      const std::string& s,
-                                      ErrorsContainer&   errors);
+      void O3PRM_CLASS_LINK_NOT_FOUND(const O3Label&   chain,
+                                      std::string_view s,
+                                      ErrorsContainer& errors);
 
-      void O3PRM_CLASS_ILLEGAL_CPT_SIZE(const std::string& c,
-                                        const O3Label&     attr,
-                                        Size               found,
-                                        Size               expected,
-                                        ErrorsContainer&   errors);
+      void O3PRM_CLASS_ILLEGAL_CPT_SIZE(std::string_view c,
+                                        const O3Label&   attr,
+                                        Size             found,
+                                        Size             expected,
+                                        ErrorsContainer& errors);
 
-      void O3PRM_CLASS_ILLEGAL_CPT_VALUE(const std::string& c,
-                                         const O3Label&     attr,
-                                         const O3Formula&   f,
-                                         ErrorsContainer&   errors);
+      void O3PRM_CLASS_ILLEGAL_CPT_VALUE(std::string_view c,
+                                         const O3Label&   attr,
+                                         const O3Formula& f,
+                                         ErrorsContainer& errors);
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(const std::string& c,
-                                             const O3Label&     attr,
-                                             float              f,
-                                             ErrorsContainer&   errors);
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(std::string_view c,
+                                             const O3Label&   attr,
+                                             float            f,
+                                             ErrorsContainer& errors);
 
-      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(const std::string& c,
-                                                     const O3Label&     attr,
-                                                     float              f,
-                                                     ErrorsContainer&   errors);
+      void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(std::string_view c,
+                                                     const O3Label&   attr,
+                                                     float            f,
+                                                     ErrorsContainer& errors);
 
 
       void O3PRM_CLASS_ILLEGAL_RULE_SIZE(const O3RuleCPT::O3Rule& rule,
@@ -166,10 +167,10 @@ namespace gum {
 
       void O3PRM_CLASS_WRONG_PARENT(const O3Label& prnt, ErrorsContainer& errors);
 
-      void O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&     prnt,
-                                         const std::string& expected,
-                                         const std::string& found,
-                                         ErrorsContainer&   errors);
+      void O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&   prnt,
+                                         std::string_view expected,
+                                         std::string_view found,
+                                         ErrorsContainer& errors);
 
       void O3PRM_CLASS_ILLEGAL_OVERLOAD(const O3Label&   elt,
                                         const O3Label&   super,
@@ -238,9 +239,9 @@ namespace gum {
 
       void O3PRM_SYSTEM_INSTANCE_NOT_FOUND(const O3Label& i, ErrorsContainer& errors);
 
-      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND(const O3Label&     ref,
-                                            const std::string& type,
-                                            ErrorsContainer&   errors);
+      void O3PRM_SYSTEM_REFERENCE_NOT_FOUND(const O3Label&   ref,
+                                            std::string_view type,
+                                            ErrorsContainer& errors);
 
       void O3PRM_SYSTEM_NOT_AN_ARRAY(const O3Label& val, ErrorsContainer& errors);
 

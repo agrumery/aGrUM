@@ -57,14 +57,14 @@
 namespace gum {
   namespace prm {
     template < GUM_Numeric GUM_SCALAR >
-    PRMClass< GUM_SCALAR >::PRMClass(const std::string& name) :
+    PRMClass< GUM_SCALAR >::PRMClass(std::string_view name) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(nullptr), _implements_(nullptr),
         _bijection_(nullptr) {
       GUM_CONSTRUCTOR(PRMClass);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClass< GUM_SCALAR >::PRMClass(const std::string&      name,
+    PRMClass< GUM_SCALAR >::PRMClass(std::string_view        name,
                                      PRMClass< GUM_SCALAR >& super,
                                      bool                    delayInheritance) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(&super), _implements_(nullptr),
@@ -77,7 +77,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClass< GUM_SCALAR >::PRMClass(const std::string&                        name,
+    PRMClass< GUM_SCALAR >::PRMClass(std::string_view                          name,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
                                      bool                                      delayInheritance) :
         PRMClassElementContainer< GUM_SCALAR >(name), _superClass_(nullptr),
@@ -88,7 +88,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClass< GUM_SCALAR >::PRMClass(const std::string&                        name,
+    PRMClass< GUM_SCALAR >::PRMClass(std::string_view                          name,
                                      PRMClass< GUM_SCALAR >&                   super,
                                      const Set< PRMInterface< GUM_SCALAR >* >& set,
                                      bool                                      delayInheritance) :
@@ -293,7 +293,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void PRMClass< GUM_SCALAR >::completeInheritance(const std::string& name) {
+    void PRMClass< GUM_SCALAR >::completeInheritance(std::string_view name) {
       if (_superClass_) {
         auto& elt = this->get(name);
         if (!(PRMClassElement< GUM_SCALAR >::isAttribute(elt)
@@ -479,8 +479,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void PRMClass< GUM_SCALAR >::addArc(const std::string& tail_name,
-                                        const std::string& head_name) {
+    void PRMClass< GUM_SCALAR >::addArc(std::string_view tail_name,
+                                        std::string_view head_name) {
       auto p_tail = _nameMap_.tryGet(tail_name);
       auto p_head = _nameMap_.tryGet(head_name);
 
@@ -1000,7 +1000,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(const std::string& name) {
+    INLINE PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(std::string_view name) {
       auto p = _nameMap_.tryGet(name);
       if (!p) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
@@ -1010,7 +1010,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 PRMClass< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMClass< GUM_SCALAR >::get(std::string_view name) const {
       auto p = _nameMap_.tryGet(name);
       if (!p) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
@@ -1035,8 +1035,8 @@ namespace gum {
       const PRMClass< GUM_SCALAR >* c;
       Idx                           depth;
 
-      ParamScopeData(const std::string& s, const PRMReferenceSlot< GUM_SCALAR >& ref, Idx d) :
-          prefix(s + ref.name() + "."),
+      ParamScopeData(std::string_view s, const PRMReferenceSlot< GUM_SCALAR >& ref, Idx d) :
+          prefix(std::string{s}.append(ref.name()).append(".")),
           c(static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType()))), depth(d) {}
     };
 
@@ -1127,13 +1127,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE PRMClassElement< GUM_SCALAR >&
-           PRMClass< GUM_SCALAR >::operator[](const std::string& name) {
+           PRMClass< GUM_SCALAR >::operator[](std::string_view name) {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMClassElement< GUM_SCALAR >&
-                 PRMClass< GUM_SCALAR >::operator[](const std::string& name) const {
+                 PRMClass< GUM_SCALAR >::operator[](std::string_view name) const {
       return get(name);
     }
 
@@ -1194,7 +1194,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClass< GUM_SCALAR >::isCastDescendant(const std::string& safe_name) const {
+    INLINE bool PRMClass< GUM_SCALAR >::isCastDescendant(std::string_view safe_name) const {
       const PRMClassElement< GUM_SCALAR >& elt = get(safe_name);
 
       try {

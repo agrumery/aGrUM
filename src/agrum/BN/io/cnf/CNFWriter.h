@@ -125,7 +125,7 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) override = 0;
+    void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) override = 0;
 
     inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const override {
       return IApproximationPolicy< GUM_SCALAR >::fromExact(value);

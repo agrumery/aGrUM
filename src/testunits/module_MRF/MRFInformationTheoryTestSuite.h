@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,      *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -38,73 +38,92 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
 
-/**
- * @file
- * @brief Definition of abstract classes for file input  manipulation
- * of Markov random fields.
- *
- * Every classe used to read a MRF from a file, must inherit from
- * MRFWriter or MRFReader.
- *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
- */
-#ifndef GUM_MN_READER_H
-#define GUM_MN_READER_H
 
 #include <iostream>
 #include <string>
-#include <string_view>
+#include <vector>
 
-#include <agrum/agrum.h>
+#include <gumtest/AgrumTestSuite.h>
+#include <gumtest/utils.h>
 
+#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
+#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
-namespace gum {
-  /* =========================================================================*/
-  /* ===                               READERS                            === */
-  /* =========================================================================*/
-  /**
-   * @class MRFReader
-   * @headerfile MRFReader.h <agrum/MRF/io/MRFReader.h>
-   * @ingroup mn_io
-   * @brief Pure virtual class for reading a MRF from a file.
-   *
-   * Every class used to read the content of a Markov random field from a stream,
-   * or a file must be a subclass of MRFReader.
-   */
-  template < GUM_Numeric GUM_SCALAR >
-  class MRFReader {
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  MRFInformationTheory
+#define GUM_CURRENT_MODULE MRF
+
+namespace gum_tests {
+  struct MRFInformationTheoryTestSuite {
     public:
-    /**
-     * Constructor
-     * A reader is defined for reading a defined file. Hence the 2 args of the
-     * constructor.
-     * Note that the MRF has to be built outside the reader. There is no
-     * delegation to create/destroy the MRF from inside the reader.
-     */
-    MRFReader(MarkovRandomField< GUM_SCALAR >* MN, std::string_view filename);
+    static void testMRFCheckConsistency() {
+      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--B");
 
-    /**
-     * Default destructor.
-     */
-    virtual ~MRFReader();
+      gum::ShaferShenoyMRFInference ie(&mrf);
 
-    /**
-     * Reads a Markov random field from the file referenced by filePath into`
-     * parameter MarkovRandomField.
-     * @return Returns the number of error during the parsing (0 if none).
-     */
-    virtual Size proceed() = 0;
+      auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
+      check_this_information_theoryXY(it);
+    }
+
+    static void testMRFCheckConsistency3points() {
+      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D--E--B");
+
+      gum::ShaferShenoyMRFInference ie(&mrf);
+
+      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+      check_this_information_theoryXY(it);
+      check_this_information_theoryXYZ(it);
+    }
+
+    private:
+    template < class IT >
+    static void check_this_information_theoryXY(IT& it) {
+      // H(X|Y)=H(X,Y)-H(Y)
+      CHECK_LT(fabs((it.entropyXgivenY()) - (it.entropyXY() - it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
+
+      // H(Y|X)=H(X|Y)-H(X)+H(Y)
+      CHECK_LT(fabs((it.entropyYgivenX()) - (it.entropyXgivenY() - it.entropyX() + it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
+
+      // I(X,Y)=H(X)-H(X|Y)=H(Y)-H(Y|X)
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyX() - it.entropyXgivenY())),
+               GUM_VERY_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
+
+      // I(X,Y)=H(X)+H(Y)-H(X,Y)
+      CHECK_LT(fabs((it.mutualInformationXY()) - (it.entropyX() + it.entropyY() - it.entropyXY())),
+               GUM_VERY_SMALL_ERROR);
+
+      // I(X,Y)=H(X,Y)-H(X|Y)-H(Y|X)
+      CHECK_LT(fabs((it.mutualInformationXY())
+                    - (it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
+
+      // V(X,Y)=2H(X,Y)-H(X)-H(Y)
+      CHECK_LT(fabs((it.variationOfInformationXY())
+                    - (2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+               GUM_VERY_SMALL_ERROR);
+    }
+
+    template < class IT >
+    static void check_this_information_theoryXYZ(IT& it) {
+      // H(X|Y);Z=H(X,Y|Z)-H(Y|Z)
+      CHECK_LT(fabs((it.entropyXgivenYZ()) - (it.entropyXYgivenZ() - it.entropyYgivenZ())),
+               GUM_VERY_SMALL_ERROR);
+
+      // I(X,Y|Z)=H(X|Z)+H(Y|Z)-H(X,Y|Z)
+      CHECK_LT(fabs((it.mutualInformationXYgivenZ())
+                    - (it.entropyXgivenZ() + it.entropyYgivenZ() - it.entropyXYgivenZ())),
+               GUM_VERY_SMALL_ERROR);
+    }
   };
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class MRFReader< double >;
-#endif
-
-} /* namespace gum */
-
-#include <agrum/MRF/io/MRFReader_tpl.h>
-
-#endif   // GUM_MN_READER_H
+  GUM_TEST_ACTIF(MRFCheckConsistency)
+  GUM_TEST_ACTIF(MRFCheckConsistency3points)
+}   // namespace gum_tests

@@ -249,8 +249,8 @@ namespace gum {
      * @param actionName : its human name
      */
     // ==========================================================================
-    void addAction(const Idx actionId, const std::string& actionName) {
-      fmdp_->addAction(actionId, actionName);
+    void addAction(const Idx actionId, std::string_view actionName) {
+      fmdp_->addAction(actionId, std::string(actionName));
     }
 
     // ==========================================================================

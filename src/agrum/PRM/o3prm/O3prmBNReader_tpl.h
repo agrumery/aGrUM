@@ -53,30 +53,31 @@
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string O3prmBNReader< GUM_SCALAR >::_getVariableName_(const std::string& path,
-                                                                    const std::string& type,
-                                                                    const std::string& name,
-                                                                    const std::string& toRemove) {
-    auto res = path + name;   // path ends up with a "."
-    if (toRemove != "") {
+  INLINE std::string O3prmBNReader< GUM_SCALAR >::_getVariableName_(std::string_view path,
+                                                                    std::string_view type,
+                                                                    std::string_view name,
+                                                                    std::string_view toRemove) {
+    std::string res(path);
+    res.append(name);   // path ends up with a "."
+    if (!toRemove.empty()) {
       if (res.substr(0, toRemove.size()) == toRemove) { res = res.substr(toRemove.size()); }
     }
     return res;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string O3prmBNReader< GUM_SCALAR >::_getInstanceName_(const std::string& classname) {
-    auto res = classname.substr(0, 4);
+  std::string O3prmBNReader< GUM_SCALAR >::_getInstanceName_(std::string_view classname) {
+    std::string res{classname.substr(0, 4)};
     std::transform(res.begin(), res.end(), res.begin(), ::tolower);
     return res;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string O3prmBNReader< GUM_SCALAR >::_getEntityName_(const std::string& filename) {
+  std::string O3prmBNReader< GUM_SCALAR >::_getEntityName_(std::string_view filename) {
     auto b = filename.find_last_of("/\\");
     auto e = filename.find_last_of(".") - 1;
     GUM_ASSERT(e > b);   // we are waiting ../../basename.o3prm
-    return filename.substr(b + 1, e - b);
+    return std::string{filename.substr(b + 1, e - b)};
   }
 
   template < GUM_Numeric GUM_SCALAR >

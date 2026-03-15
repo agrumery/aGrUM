@@ -128,10 +128,10 @@ namespace gum {
       virtual NodeId nodeId(const DiscreteVariable& var) const;
 
       /// See gum::IBaseBayesNet::idFromName().
-      virtual NodeId idFromName(const std::string& name) const;
+      virtual NodeId idFromName(std::string_view name) const;
 
       /// See gum::IBaseBayesNet::variableFromName().
-      virtual const DiscreteVariable& variableFromName(const std::string& name) const;
+      virtual const DiscreteVariable& variableFromName(std::string_view name) const;
 
       /// See gum::IBaseBayesNet::modalities().
       const NodeProperty< Size >& modalities() const;
@@ -158,7 +158,7 @@ namespace gum {
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement< GUM_SCALAR >& _get_(const std::string& name) const;
+      const PRMClassElement< GUM_SCALAR >& _get_(std::string_view name) const;
 
       /// The PRMClassElementContainer decorated by this.
       const PRMClass< GUM_SCALAR >* _class_;

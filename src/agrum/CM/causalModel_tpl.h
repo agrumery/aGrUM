@@ -74,7 +74,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void CausalModel< GUM_SCALAR >::addLatentVariable(
-      const std::string&                latentName,
+      std::string_view                  latentName,
       const std::vector< std::string >& childrenOfLatent,
       bool                              assumeNonSpurious) {
     std::vector< NodeId > childIds;
@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void CausalModel< GUM_SCALAR >::addLatentVariable(const std::string&           latentName,
+  void CausalModel< GUM_SCALAR >::addLatentVariable(std::string_view             latentName,
                                                     const std::vector< NodeId >& childrenOfLatent,
                                                     bool assumeNonSpurious) {
     // must have at least 2 children
@@ -98,7 +98,7 @@ namespace gum {
     const NodeId id_latent = _causalDAG_.addNode();
 
     // record bookkeeping
-    _id2name_.insert(id_latent, latentName);
+    _id2name_.insert(id_latent, std::string(latentName));
 
     // add arcs latent -> each child
     for (const auto& cid: childrenOfLatent) {
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool CausalModel< GUM_SCALAR >::existsArc(const std::string& x, const std::string& y) const {
+  bool CausalModel< GUM_SCALAR >::existsArc(std::string_view x, std::string_view y) const {
     const NodeId ix = idFromName(x);
     const NodeId iy = idFromName(y);
     return existsArc(ix, iy);
@@ -175,7 +175,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void CausalModel< GUM_SCALAR >::assumeSpurious(const std::string& x, const std::string& y) {
+  void CausalModel< GUM_SCALAR >::assumeSpurious(std::string_view x, std::string_view y) {
     assumeSpurious(idFromName(x), idFromName(y));
   }
 
@@ -192,7 +192,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void CausalModel< GUM_SCALAR >::assumeNonSpurious(const std::string& x, const std::string& y) {
+  void CausalModel< GUM_SCALAR >::assumeNonSpurious(std::string_view x, std::string_view y) {
     assumeNonSpurious(idFromName(x), idFromName(y));
   }
 
@@ -202,8 +202,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(const std::string& x,
-                                                    const std::string& y) const {
+  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(std::string_view x,
+                                                    std::string_view y) const {
     return isAssumedSpurious(idFromName(x), idFromName(y));
   }
 
@@ -327,7 +327,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeSet CausalModel< GUM_SCALAR >::parents(const std::string& name) const {
+  NodeSet CausalModel< GUM_SCALAR >::parents(std::string_view name) const {
     return parents(idFromName(name));
   }
 
@@ -337,7 +337,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeSet CausalModel< GUM_SCALAR >::children(const std::string& name) const {
+  NodeSet CausalModel< GUM_SCALAR >::children(std::string_view name) const {
     return children(idFromName(name));
   }
 
@@ -464,9 +464,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId CausalModel< GUM_SCALAR >::idFromName(const std::string& name) const {
-    if (_id2name_.existsSecond(name)) {
-      return _id2name_.first(name);
+  NodeId CausalModel< GUM_SCALAR >::idFromName(std::string_view name) const {
+    if (_id2name_.existsSecond(std::string(name))) {
+      return _id2name_.first(std::string(name));
     } else {
       return _observationalBN_.idFromName(name);
     }

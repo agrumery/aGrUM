@@ -78,7 +78,7 @@ namespace gum::learning {
   }
 
   // returns the node id corresponding to a variable name
-  INLINE NodeId IBNLearner::Database::idFromName(const std::string& var_name) const {
+  INLINE NodeId IBNLearner::Database::idFromName(std::string_view var_name) const {
     try {
       const auto cols = _database_.columnsFromVariableName(var_name);
       return _nodeId2cols_.first(cols[0]);
@@ -133,7 +133,7 @@ namespace gum::learning {
   // ===========================================================================
 
   // returns the node id corresponding to a variable name
-  INLINE NodeId IBNLearner::idFromName(const std::string& var_name) const {
+  INLINE NodeId IBNLearner::idFromName(std::string_view var_name) const {
     return scoreDatabase_.idFromName(var_name);
   }
 
@@ -348,12 +348,12 @@ namespace gum::learning {
   }
 
   // assign a new forbidden edge
-  INLINE void IBNLearner::addPossibleEdge(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::addPossibleEdge(std::string_view tail, std::string_view head) {
     addPossibleEdge(Edge(idFromName(tail), idFromName(head)));
   }
 
   // remove a forbidden edge
-  INLINE void IBNLearner::erasePossibleEdge(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::erasePossibleEdge(std::string_view tail, std::string_view head) {
     erasePossibleEdge(Edge(idFromName(tail), idFromName(head)));
   }
 
@@ -381,12 +381,12 @@ namespace gum::learning {
   }
 
   // assign a new forbidden arc
-  INLINE void IBNLearner::addForbiddenArc(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::addForbiddenArc(std::string_view tail, std::string_view head) {
     addForbiddenArc(Arc(idFromName(tail), idFromName(head)));
   }
 
   // remove a forbidden arc
-  INLINE void IBNLearner::eraseForbiddenArc(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::eraseForbiddenArc(std::string_view tail, std::string_view head) {
     eraseForbiddenArc(Arc(idFromName(tail), idFromName(head)));
   }
 
@@ -405,7 +405,7 @@ namespace gum::learning {
 
   INLINE void IBNLearner::addNoParentNode(NodeId node) { constraintNoParentNodes_.addNode(node); }
 
-  INLINE void IBNLearner::addNoParentNode(const std::string& name) {
+  INLINE void IBNLearner::addNoParentNode(std::string_view name) {
     addNoParentNode(idFromName(name));
   }
 
@@ -413,7 +413,7 @@ namespace gum::learning {
     constraintNoParentNodes_.eraseNode(node);
   }
 
-  INLINE void IBNLearner::eraseNoParentNode(const std::string& name) {
+  INLINE void IBNLearner::eraseNoParentNode(std::string_view name) {
     eraseNoParentNode(idFromName(name));
   }
 
@@ -421,7 +421,7 @@ namespace gum::learning {
     constraintNoChildrenNodes_.addNode(node);
   }
 
-  INLINE void IBNLearner::addNoChildrenNode(const std::string& name) {
+  INLINE void IBNLearner::addNoChildrenNode(std::string_view name) {
     addNoChildrenNode(idFromName(name));
   }
 
@@ -429,17 +429,17 @@ namespace gum::learning {
     constraintNoChildrenNodes_.eraseNode(node);
   }
 
-  INLINE void IBNLearner::eraseNoChildrenNode(const std::string& name) {
+  INLINE void IBNLearner::eraseNoChildrenNode(std::string_view name) {
     eraseNoChildrenNode(idFromName(name));
   }
 
   // assign a new forbidden arc
-  INLINE void IBNLearner::addMandatoryArc(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::addMandatoryArc(std::string_view tail, std::string_view head) {
     addMandatoryArc(Arc(idFromName(tail), idFromName(head)));
   }
 
   // remove a forbidden arc
-  INLINE void IBNLearner::eraseMandatoryArc(const std::string& tail, const std::string& head) {
+  INLINE void IBNLearner::eraseMandatoryArc(std::string_view tail, std::string_view head) {
     eraseMandatoryArc(Arc(idFromName(tail), idFromName(head)));
   }
 
@@ -495,7 +495,7 @@ namespace gum::learning {
   }
 
   // use the Dirichlet prior
-  INLINE void IBNLearner::useDirichletPrior(const std::string& filename, double weight) {
+  INLINE void IBNLearner::useDirichletPrior(std::string_view filename, double weight) {
     if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
 
     priorDbname_ = filename;
@@ -545,7 +545,7 @@ namespace gum::learning {
   INLINE Size IBNLearner::domainSize(NodeId var) const { return scoreDatabase_.domainSizes()[var]; }
 
   // returns the modalities  of a variables in the database
-  INLINE Size IBNLearner::domainSize(const std::string& var) const {
+  INLINE Size IBNLearner::domainSize(std::string_view var) const {
     return scoreDatabase_.domainSizes()[idFromName(var)];
   }
 

@@ -56,11 +56,11 @@ namespace gum {
     CSVParser::~CSVParser() { GUM_DESTRUCTOR(CSVParser); }
 
 
-    void CSVParser::_getNextTriplet_(const std::string& str,
-                                     std::size_t&       first_letter_token,
-                                     std::size_t&       next_token,
-                                     std::size_t&       last_letter_token,
-                                     std::size_t        from) const {
+    void CSVParser::_getNextTriplet_(std::string_view str,
+                                     std::size_t&     first_letter_token,
+                                     std::size_t&     next_token,
+                                     std::size_t&     last_letter_token,
+                                     std::size_t      from) const {
       first_letter_token = str.find_first_not_of(_spaces_, from);
 
       if (first_letter_token == std::string::npos) {
@@ -98,7 +98,7 @@ namespace gum {
     }
 
 
-    void CSVParser::_tokenize_(const std::string& s) {
+    void CSVParser::_tokenize_(std::string_view s) {
       // looking for first commentMarker not in a string
       std::size_t commentMarker = s.find_first_of(_commentMarker_, 0);
       std::size_t quoteMarker   = s.find_first_of(_quoteMarker_, 0);
@@ -117,7 +117,7 @@ namespace gum {
         quoteMarker = s.find_first_of(_quoteMarker_, quoteMarkerEnd + 1);
       }
 
-      std::string str = s.substr(0, commentMarker);
+      std::string_view str = s.substr(0, commentMarker);
 
       std::size_t counter = 0, first_letter_token, next_token, last_letter_token;
 

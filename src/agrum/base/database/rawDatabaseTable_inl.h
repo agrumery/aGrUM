@@ -98,7 +98,7 @@ namespace gum {
     }
 
     // translates a string into a DBCell and returns it
-    INLINE DBCell RawDatabaseTable::_convert_(const std::string& elt) const {
+    INLINE DBCell RawDatabaseTable::_convert_(std::string_view elt) const {
       return DBCell::bestDBCell(elt, this->missing_symbols_);
     }
 

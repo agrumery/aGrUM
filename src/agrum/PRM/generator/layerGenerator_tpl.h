@@ -85,7 +85,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void LayerGenerator< GUM_SCALAR >::_generateInterfaces_(
         PRMFactory< GUM_SCALAR >&                                     f,
-        const std::string&                                            type,
+        std::string_view                                              type,
         std::vector< typename LayerGenerator< GUM_SCALAR >::MyData >& l) {
       for (Size lvl = 0; lvl < _layers_.size(); ++lvl) {
         l.push_back(LayerGenerator< GUM_SCALAR >::MyData());
@@ -114,7 +114,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void LayerGenerator< GUM_SCALAR >::_generateClasses_(
         PRMFactory< GUM_SCALAR >&                                     f,
-        const std::string&                                            type,
+        std::string_view                                              type,
         std::vector< typename LayerGenerator< GUM_SCALAR >::MyData >& l) {
       Size               size = 0;
       GUM_SCALAR         sum  = 0.0;

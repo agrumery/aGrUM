@@ -62,8 +62,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    NodeId CredalNet< GUM_SCALAR >::addVariable(const std::string& name, const Size& card) {
-      LabelizedVariable var(name, "node " + name, card);
+    NodeId CredalNet< GUM_SCALAR >::addVariable(std::string_view name, const Size& card) {
+      LabelizedVariable var(name, "node " + std::string{name}, card);
 
       NodeId a = _src_bn_.add(var);
       NodeId b = _src_bn_min_.add(var);
@@ -409,8 +409,8 @@ namespace gum {
     ///////////////////////////////////////////////
 
     template < GUM_Numeric GUM_SCALAR >
-    CredalNet< GUM_SCALAR >::CredalNet(const std::string& src_min_num,
-                                       const std::string& src_max_den) {
+    CredalNet< GUM_SCALAR >::CredalNet(std::string_view src_min_num,
+                                       std::string_view src_max_den) {
       _initParams_();
       _initCNNets_(src_min_num, src_max_den);
 
@@ -935,12 +935,12 @@ namespace gum {
      * save a BN with lower probabilities and a BN with upper ones
      */
     template < GUM_Numeric GUM_SCALAR >
-    void CredalNet< GUM_SCALAR >::saveBNsMinMax(const std::string& min_path,
-                                                const std::string& max_path) const {
+    void CredalNet< GUM_SCALAR >::saveBNsMinMax(std::string_view min_path,
+                                                std::string_view max_path) const {
       BIFWriter< GUM_SCALAR > writer;
 
-      std::string   minfilename = min_path;   //"min.bif";
-      std::string   maxfilename = max_path;   //"max.bif";
+      std::string   minfilename(min_path);   //"min.bif";
+      std::string   maxfilename(max_path);   //"max.bif";
       std::ofstream min_file(minfilename.c_str(), std::ios::out | std::ios::trunc);
       std::ofstream max_file(maxfilename.c_str(), std::ios::out | std::ios::trunc);
 
@@ -1407,8 +1407,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void CredalNet< GUM_SCALAR >::_initCNNets_(const std::string& src_min_num,
-                                               const std::string& src_max_den) {
+    void CredalNet< GUM_SCALAR >::_initCNNets_(std::string_view src_min_num,
+                                               std::string_view src_max_den) {
       BIFReader< GUM_SCALAR > reader(&_src_bn_, src_min_num);
       std::string             other;
 

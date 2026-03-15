@@ -405,6 +405,12 @@ namespace gum {
      */
     const T2& second(const T1& first) const;
 
+    /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
+    template < typename K >
+      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+                && !std::same_as< std::decay_t< K >, std::string >)
+    const T2& second(const K& first) const;
+
     /**
      * @brief Returns the second value of a pair given its first value or
      * default_val if first is unfound.
@@ -424,6 +430,12 @@ namespace gum {
      * gum::Bijection.
      */
     bool existsFirst(const T1& first) const;
+
+    /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
+    template < typename K >
+      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+                && !std::same_as< std::decay_t< K >, std::string >)
+    bool existsFirst(const K& first) const;
 
     /**
      * @brief Returns true if second is the second element in a pair in the
@@ -449,6 +461,12 @@ namespace gum {
      * @return An optional_ref to the second value, or empty if not found.
      */
     optional_ref< const T2 > trySecond(const T1& first) const;
+
+    /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
+    template < typename K >
+      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+                && !std::same_as< std::decay_t< K >, std::string >)
+    optional_ref< const T2 > trySecond(const K& first) const;
 
     /**
      * @brief Inserts a new association in the gum::Bijection.

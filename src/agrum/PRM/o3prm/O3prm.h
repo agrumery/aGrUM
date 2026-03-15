@@ -48,6 +48,7 @@
  */
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -72,7 +73,7 @@ namespace gum {
       class O3Position {
         public:
         O3Position();
-        O3Position(const std::string& filename, int line, int column);
+        O3Position(std::string_view filename, int line, int column);
         O3Position(const O3Position& src);
         O3Position(O3Position&& src);
         ~O3Position();
@@ -192,7 +193,7 @@ namespace gum {
       class O3Label {
         public:
         O3Label();
-        O3Label(const O3Position& pos, const std::string& label);
+        O3Label(const O3Position& pos, std::string_view label);
         O3Label(const O3Label& src);
         O3Label(O3Label&& src);
         ~O3Label();

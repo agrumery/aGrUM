@@ -69,7 +69,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string name) : DAGmodel() {
+  INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string_view name) : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet)
     this->setProperty("name", name);
   }
@@ -368,23 +368,23 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(const std::string& name, double value) const {
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evEq(std::string_view name, double value) const {
     return Tensor< GUM_SCALAR >::evEq(variableFromName(name), value);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR >
-      IBayesNet< GUM_SCALAR >::evIn(const std::string& name, double val1, double val2) const {
+      IBayesNet< GUM_SCALAR >::evIn(std::string_view name, double val1, double val2) const {
     return Tensor< GUM_SCALAR >::evIn(variableFromName(name), val1, val2);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(const std::string& name, double val) const {
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evGt(std::string_view name, double val) const {
     return Tensor< GUM_SCALAR >::evGt(variableFromName(name), val);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(const std::string& name, double val) const {
+  Tensor< GUM_SCALAR > IBayesNet< GUM_SCALAR >::evLt(std::string_view name, double val) const {
     return Tensor< GUM_SCALAR >::evLt(variableFromName(name), val);
   }
 } /* namespace gum */

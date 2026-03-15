@@ -51,6 +51,8 @@
 #ifndef GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 #define GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 
+#include <string_view>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/signal/signalers.h>
@@ -80,7 +82,7 @@ namespace gum {
     Signaler< Size, double, double > onProgress;
 
     /// Criteria messageApproximationScheme
-    Signaler< const std::string& > onStop;
+    Signaler< std::string_view > onStop;
 
     /// The different state of an approximation scheme.
     enum class ApproximationSchemeSTATE : char {

@@ -93,15 +93,15 @@ namespace gum {
 
     FormulaPtr getBackDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
 
-    FormulaPtr getBackDoorTree(const std::string& causeName,
-                               const std::string& effectName,
-                               const NameList&    zNames) const;
+    FormulaPtr getBackDoorTree(std::string_view causeName,
+                               std::string_view effectName,
+                               const NameList&  zNames) const;
 
     FormulaPtr getFrontDoorTree(NodeId cause, NodeId effect, const NodeSet& zset) const;
 
-    FormulaPtr getFrontDoorTree(const std::string& causeName,
-                                const std::string& effectName,
-                                const NameList&    zNames) const;
+    FormulaPtr getFrontDoorTree(std::string_view causeName,
+                                std::string_view effectName,
+                                const NameList&  zNames) const;
 
     /* --------------------- General identification ----------------- */
 

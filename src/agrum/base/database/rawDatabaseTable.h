@@ -312,7 +312,7 @@ namespace gum {
       DBVector< std::size_t > _ignored_cols_;
 
       /// translates a string into a DBCell and returns it
-      DBCell _convert_(const std::string& elt) const;
+      DBCell _convert_(std::string_view elt) const;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
     };

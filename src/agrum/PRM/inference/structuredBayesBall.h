@@ -48,6 +48,7 @@
 
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/PRM/inference/PRMInference.h>
@@ -97,7 +98,7 @@ namespace gum {
 
       /// Returns the number of occurrence of the given key, which is the number
       /// of PRMInstance<GUM_SCALAR> sharing the same set of requisite nodes.
-      Size occurrence(const std::string& key) const;
+      Size occurrence(std::string_view key) const;
 
       /// Returns the ratio between the total number of instances and the number
       /// of instances with the same configuration.

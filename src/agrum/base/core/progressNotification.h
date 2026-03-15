@@ -50,6 +50,8 @@
 #ifndef AGRUM_PROGRESSNOTIFICATION_H
 #define AGRUM_PROGRESSNOTIFICATION_H
 
+#include <string_view>
+
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/core/timer.h>
 
@@ -67,7 +69,7 @@ namespace gum {
     Signaler< Size, double > onProgress;
 
     /// with a possible explanation for stopping
-    Signaler< const std::string& > onStop;
+    Signaler< std::string_view > onStop;
   };
 
   /**
@@ -101,7 +103,7 @@ namespace gum {
      * @param src The signal source.
      * @param message A message.
      */
-    virtual void whenStop(const void* src, const std::string& message) = 0;
+    virtual void whenStop(const void* src, std::string_view message) = 0;
 
     protected:
     /**

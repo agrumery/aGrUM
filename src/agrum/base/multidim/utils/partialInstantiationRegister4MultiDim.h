@@ -52,6 +52,7 @@
 #include <atomic>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/variables/discreteVariable.h>
@@ -119,8 +120,8 @@ namespace gum {
      * by function \e newFunction.
      * @param newFunction A pointer to the new function to register.
      */
-    void insert(const std::string&      instantiation_func_name,
-                const std::string&      type_multidim,
+    void insert(std::string_view        instantiation_func_name,
+                std::string_view        type_multidim,
                 PartialInstantiationPtr newFunction);
 
     /**
@@ -135,7 +136,7 @@ namespace gum {
      * @param type_multidim The \e real type of the multiDim taken in argument
      * by the function to remove.
      */
-    void erase(const std::string& instantiation_func_name, const std::string& type_multidim);
+    void erase(std::string_view instantiation_func_name, std::string_view type_multidim);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -150,7 +151,7 @@ namespace gum {
      * by the function we look for.
      * @return Returns true if a given entry exists in the register.
      */
-    bool exists(const std::string& instantiation_func_name, const std::string& type_multidim) const;
+    bool exists(std::string_view instantiation_func_name, std::string_view type_multidim) const;
 
     /**
      * @brief Returns the specialized partial instantiation operator assigned
@@ -168,8 +169,8 @@ namespace gum {
      * @throws NotFound Raised if the operator we look for does not exist
      * within this register.
      */
-    PartialInstantiationPtr get(const std::string& instantiation_func_name,
-                                const std::string& type_multidim) const;
+    PartialInstantiationPtr get(std::string_view instantiation_func_name,
+                                std::string_view type_multidim) const;
 
     /// @}
     // =========================================================================
@@ -229,8 +230,8 @@ namespace gum {
   /// MultiDims
   template < typename GUM_ELEMENT >
   void registerPartialInstantiation(
-      const std::string& instantiation_func_name,
-      const std::string& type_multidim,
+      std::string_view instantiation_func_name,
+      std::string_view type_multidim,
       typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           function);
 

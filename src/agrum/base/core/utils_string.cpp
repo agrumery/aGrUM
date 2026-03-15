@@ -85,13 +85,13 @@ namespace gum {
     return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
   }
 
-  std::vector< std::string > split(const std::string& str, const std::string& delim) {
+  std::vector< std::string > split(std::string_view str, std::string_view delim) {
     std::vector< std::string > tokens;
     size_t                     prev = 0, pos = 0;
     do {
       pos = str.find(delim, prev);
       if (pos == std::string::npos) pos = str.length();
-      std::string token = str.substr(prev, pos - prev);
+      std::string token(str.substr(prev, pos - prev));
       if (!token.empty()) tokens.push_back(token);
       prev = pos + delim.length();
     } while (pos < str.length() && prev < str.length());
@@ -109,8 +109,8 @@ namespace gum {
   return {first, last};
 } */
 
-  std::string replace(const std::string& s, const std::string& val, const std::string& new_val) {
-    auto retVal = s;
+  std::string replace(std::string_view s, std::string_view val, std::string_view new_val) {
+    std::string retVal(s);
     auto pos    = retVal.find(val);
     while (pos != std::string::npos) {
       std::stringstream sBuff;
@@ -121,24 +121,26 @@ namespace gum {
     return retVal;
   }
 
-  bool isIntegerWithResult(const std::string& val, int* res) {
+  bool isIntegerWithResult(std::string_view val, int* res) {
     if (val.empty()) return false;
     std::size_t pos = 0;
     if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
 
-    if (val.find_first_not_of("0123456789", pos) != std::string::npos) return false;
+    if (val.find_first_not_of("0123456789", pos) != std::string_view::npos) return false;
 
     if (res != nullptr) {
-      const char* p = (val[0] == '+') ? 1 + val.c_str() : val.c_str();
+      std::string s(val);
+      const char* p = (val[0] == '+') ? 1 + s.c_str() : s.c_str();
       *res          = std::stoi(p);
     }
 
     return true;
   }
 
-  bool isNumericalWithResult(const std::string& val, double* res) {
+  bool isNumericalWithResult(std::string_view val, double* res) {
+    std::string s(val);
     char*       endptr = nullptr;
-    const char* str    = val.c_str();
+    const char* str    = s.c_str();
     double      d      = std::strtod(str, &endptr);
 
     if (*endptr != '\0' || endptr == str) return false;

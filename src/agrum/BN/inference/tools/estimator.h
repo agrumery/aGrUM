@@ -48,6 +48,7 @@
 #ifndef GUM_ESTIMATOR_H
 #define GUM_ESTIMATOR_H
 
+#include <string_view>
 #include <vector>
 
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
@@ -156,7 +157,7 @@ namespace gum {
      * computes the amount of cumulative weights for paramater val over the amount
      * of total cumulative weights
      */
-    GUM_SCALAR EV(std::string name, Idx val);
+    GUM_SCALAR EV(std::string_view name, Idx val);
 
     /// returns variance of Bernouilli variable (called by it's name) of given
     /// parameter
@@ -168,7 +169,7 @@ namespace gum {
      *
      * computes variance for Bernouilli law using EV(name, val)
      */
-    GUM_SCALAR variance(std::string name, Idx val);   // variance corrigée
+    GUM_SCALAR variance(std::string_view name, Idx val);   // variance corrigée
 
     private:
     /// the set of single posteriors computed during the last inference

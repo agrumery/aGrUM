@@ -152,7 +152,7 @@ namespace gum {
      * @warging This function is not O(1)
      * @throw NotFound Raised if the element cannot be found.
      */
-    virtual const DiscreteVariable& variable(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variable(std::string_view name) const = 0;
 
     /**
      * @brief Returns the index of a variable.

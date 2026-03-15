@@ -114,7 +114,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-      SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
+      SamplingInference< GUM_SCALAR >::currentPosterior(std::string_view name) {
     return currentPosterior(this->BN().idFromName(name));
   }
 

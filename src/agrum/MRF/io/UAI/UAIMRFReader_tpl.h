@@ -47,7 +47,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   UAIMRFReader< GUM_SCALAR >::UAIMRFReader(MarkovRandomField< GUM_SCALAR >* MN,
-                                           const std::string&               filename) :
+                                           std::string_view                 filename) :
       MRFReader< GUM_SCALAR >(MN, filename) {
     GUM_CONSTRUCTOR(UAIMRFReader);
     _mn_ = MN;
@@ -253,18 +253,18 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIMRFReader< GUM_SCALAR >::_addFatalError_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
     GUM_ERROR(gum::OperationNotAllowed, s)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIMRFReader< GUM_SCALAR >::_addError_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addError(s, _streamName_, lig, col);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, const std::string& s) {
+  INLINE void UAIMRFReader< GUM_SCALAR >::_addWarning_(Idx lig, Idx col, std::string_view s) {
     _parser_->errors().addWarning(s, _streamName_, lig, col);
   }
 

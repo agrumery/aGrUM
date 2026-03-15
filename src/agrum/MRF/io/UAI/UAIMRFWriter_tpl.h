@@ -97,9 +97,9 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFWriter< GUM_SCALAR >::write(const std::string&                      filePath,
+  INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& MN) {
-    std::ofstream output(filePath.c_str(), std::ios_base::trunc);
+    std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     write(output, MN);
 

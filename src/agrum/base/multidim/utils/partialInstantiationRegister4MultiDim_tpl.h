@@ -59,15 +59,15 @@ namespace gum {
   // adds a new entry into the register
   template < typename GUM_ELEMENT >
   void PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::insert(
-      const std::string& instantiation_func_name,
-      const std::string& type_multidim,
+      std::string_view instantiation_func_name,
+      std::string_view type_multidim,
       typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           newFunction) {
     // insert the new entry
     PartialInstantiationSet* theset = nullptr;
 
     if (!_set_.exists(instantiation_func_name)) {
-      theset = _set_.insert(instantiation_func_name, new PartialInstantiationSet).second;
+      theset = _set_.insert(std::string{instantiation_func_name}, new PartialInstantiationSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the
@@ -79,14 +79,14 @@ namespace gum {
       theset = _set_[instantiation_func_name];
     }
 
-    theset->insert(type_multidim, newFunction);
+    theset->insert(std::string{type_multidim}, newFunction);
   }
 
   // removes a given entry from the register
   template < typename GUM_ELEMENT >
   void PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::erase(
-      const std::string& instantiation_func_name,
-      const std::string& type_multidim) {
+      std::string_view instantiation_func_name,
+      std::string_view type_multidim) {
     if (!_set_.exists(instantiation_func_name)) return;
 
     PartialInstantiationSet* theset = _set_[instantiation_func_name];
@@ -97,8 +97,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
   INLINE bool PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::exists(
-      const std::string& instantiation_func_name,
-      const std::string& type_multidim) const {
+      std::string_view instantiation_func_name,
+      std::string_view type_multidim) const {
     if (!_set_.exists(instantiation_func_name)) return false;
 
     const PartialInstantiationSet& theset = *(_set_[instantiation_func_name]);
@@ -110,8 +110,8 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
       PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::get(
-          const std::string& instantiation_func_name,
-          const std::string& type_multidim) const {
+          std::string_view instantiation_func_name,
+          std::string_view type_multidim) const {
     const PartialInstantiationSet& theset = *(_set_[instantiation_func_name]);
     return theset[type_multidim];
   }
@@ -161,8 +161,8 @@ namespace gum {
   // MultiDims
   template < typename GUM_ELEMENT >
   void registerPartialInstantiation(
-      const std::string& instantiation_func_name,
-      const std::string& type_multidim,
+      std::string_view instantiation_func_name,
+      std::string_view type_multidim,
       typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
           function) {
     PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::Register().insert(instantiation_func_name,

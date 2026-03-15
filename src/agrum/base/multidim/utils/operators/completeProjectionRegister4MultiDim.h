@@ -53,6 +53,7 @@
 #include <atomic>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/multidim/instantiation.h>
@@ -114,8 +115,8 @@ namespace gum {
      * MultiDimImplementations. This constraint is imposed by the C++ typing
      * system.
      */
-    void insert(const std::string&    projection_name,
-                const std::string&    type_multidim,
+    void insert(std::string_view      projection_name,
+                std::string_view      type_multidim,
                 CompleteProjectionPtr newFunction);
 
     /**
@@ -132,7 +133,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function to remove
      */
-    void erase(const std::string& projection_name, const std::string& type_multidim);
+    void erase(std::string_view projection_name, std::string_view type_multidim);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -148,7 +149,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function we look for.
      */
-    bool exists(const std::string& projection_name, const std::string& type_multidim) const;
+    bool exists(std::string_view projection_name, std::string_view type_multidim) const;
 
     /**
      * @brief returns the specialized projection operator assigned to a given
@@ -166,8 +167,8 @@ namespace gum {
      * by the function we look for @throws NotFound exception is thrown if the
      * operator we look for does not exist within this register.
      */
-    CompleteProjectionPtr get(const std::string& projection_name,
-                              const std::string& type_multidim) const;
+    CompleteProjectionPtr get(std::string_view projection_name,
+                              std::string_view type_multidim) const;
 
     /// @}
 
@@ -222,8 +223,8 @@ namespace gum {
   /// @ingroup multidim_op_group
   template < typename GUM_ELEMENT >
   void registerCompleteProjection(
-      const std::string& projection_name,
-      const std::string& type_multidim,
+      std::string_view projection_name,
+      std::string_view type_multidim,
       typename CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionPtr function);
 
 } /* namespace gum */

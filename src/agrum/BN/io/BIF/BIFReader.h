@@ -142,7 +142,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class BIFReader final: public BNReader< GUM_SCALAR > {
     public:
-    BIFReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
+    BIFReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename);
 
     ~BIFReader();
 

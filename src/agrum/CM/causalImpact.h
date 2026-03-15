@@ -89,8 +89,8 @@ namespace gum {
     [[nodiscard]] std::string toString() const { return _resultFormula_.toString(); }
 
     /// @brief Generates a full LaTeX equation: Query = Formula.
-    [[nodiscard]] std::string toLatex(const std::string& doOperatorPrefix = "do(",
-                                      const std::string& doOperatorSuffix = ")") const {
+    [[nodiscard]] std::string toLatex(std::string_view doOperatorPrefix = "do(",
+                                      std::string_view doOperatorSuffix = ")") const {
       return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
     }
 
@@ -98,8 +98,8 @@ namespace gum {
      * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
      * @note This version does not yet support specific variable values.
      */
-    [[nodiscard]] std::string latexQuery(const std::string& doOperatorPrefix = "do(",
-                                         const std::string& doOperatorSuffix = ")") const {
+    [[nodiscard]] std::string latexQuery(std::string_view doOperatorPrefix = "do(",
+                                         std::string_view doOperatorSuffix = ")") const {
       return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
     }
 

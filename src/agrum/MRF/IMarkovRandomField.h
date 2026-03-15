@@ -83,7 +83,7 @@ namespace gum {
      * Default constructor.
      */
     IMarkovRandomField();
-    explicit IMarkovRandomField(std::string name);
+    explicit IMarkovRandomField(std::string_view name);
 
     /**
      * Destructor.
@@ -127,7 +127,7 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const NodeSet& smallestFactorFromNode(const std::string& name) const;
+    virtual const NodeSet& smallestFactorFromNode(std::string_view name) const;
 
     /**
      * Returns the set of factors as a IMarkovRandomField::FactorTable
@@ -159,14 +159,14 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual NodeId idFromName(const std::string& name) const = 0;
+    virtual NodeId idFromName(std::string_view name) const = 0;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(std::string_view name) const = 0;
     /// @}
 
     /**

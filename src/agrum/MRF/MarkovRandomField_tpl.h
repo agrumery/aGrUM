@@ -74,9 +74,9 @@
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeId build_node_for_MN(MarkovRandomField< GUM_SCALAR >& mn,
-                           const std::string&               node,
-                           const std::string&               default_domain) {
-    auto v = fastVariable< GUM_SCALAR >(node, default_domain);
+                           std::string_view                 node,
+                           std::string_view                 default_domain) {
+    auto v = fastVariable< GUM_SCALAR >(std::string{node}, default_domain);
 
     NodeId res;
     if (mn.exists(v->name())) res = mn.idFromName(v->name());
@@ -86,14 +86,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >
-      MarkovRandomField< GUM_SCALAR >::fastPrototype(const std::string& dotlike, Size domainSize) {
+      MarkovRandomField< GUM_SCALAR >::fastPrototype(std::string_view dotlike, Size domainSize) {
     return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
   }
 
   template < GUM_Numeric GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >
-      MarkovRandomField< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                     const std::string& domain) {
+      MarkovRandomField< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
+                                                     std::string_view domain) {
     MarkovRandomField< GUM_SCALAR > mn;
 
 
@@ -133,7 +133,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MarkovRandomField< GUM_SCALAR >::MarkovRandomField(std::string name) :
+  INLINE MarkovRandomField< GUM_SCALAR >::MarkovRandomField(std::string_view name) :
       IMarkovRandomField< GUM_SCALAR >(name), _topologyTransformationInProgress_(false) {
     GUM_CONSTRUCTOR(MarkovRandomField);
   }
@@ -172,15 +172,15 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId             id,
-                                                                  const std::string& new_name) {
+  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId          id,
+                                                                  std::string_view new_name) {
     _varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId             id,
-                                                                   const std::string& old_label,
-                                                                   const std::string& new_label) {
+  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId           id,
+                                                                   std::string_view old_label,
+                                                                   std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
     }
@@ -231,9 +231,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(const std::string& fast_description,
+  INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(std::string_view fast_description,
                                                      unsigned int       default_nbrmod) {
-    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+    auto v = fastVariable< GUM_SCALAR >(std::string{fast_description}, default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);
   }
@@ -265,13 +265,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::idFromName(const std::string& name) const {
+  INLINE NodeId MarkovRandomField< GUM_SCALAR >::idFromName(std::string_view name) const {
     return _varMap_.idFromName(name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE const DiscreteVariable&
-      MarkovRandomField< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      MarkovRandomField< GUM_SCALAR >::variableFromName(std::string_view name) const {
     return _varMap_.variableFromName(name);
   }
 
@@ -286,7 +286,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::erase(const std::string& name) {
+  INLINE void MarkovRandomField< GUM_SCALAR >::erase(std::string_view name) {
     erase(idFromName(name));
   }
 

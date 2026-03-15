@@ -244,9 +244,25 @@ namespace gum {
     return *(_firstToSecond_[first]);
   }
 
+  template < typename T1, typename T2, bool Gen >
+  template < typename K >
+    requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE const T2& BijectionImplementation< T1, T2, Gen >::second(const K& first) const {
+    return *(_firstToSecond_[first]);
+  }
+
   // Test whether the bijection contains the "first" value
   template < typename T1, typename T2, bool Gen >
   INLINE bool BijectionImplementation< T1, T2, Gen >::existsFirst(const T1& first) const {
+    return _firstToSecond_.exists(first);
+  }
+
+  template < typename T1, typename T2, bool Gen >
+  template < typename K >
+    requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE bool BijectionImplementation< T1, T2, Gen >::existsFirst(const K& first) const {
     return _firstToSecond_.exists(first);
   }
 
@@ -269,6 +285,17 @@ namespace gum {
   template < typename T1, typename T2, bool Gen >
   INLINE optional_ref< const T2 >
          BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
+    auto ptr = _firstToSecond_.tryGet(first);
+    if (!ptr) return {};
+    return optional_ref< const T2 >(**ptr);
+  }
+
+  template < typename T1, typename T2, bool Gen >
+  template < typename K >
+    requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE optional_ref< const T2 >
+         BijectionImplementation< T1, T2, Gen >::trySecond(const K& first) const {
     auto ptr = _firstToSecond_.tryGet(first);
     if (!ptr) return {};
     return optional_ref< const T2 >(**ptr);

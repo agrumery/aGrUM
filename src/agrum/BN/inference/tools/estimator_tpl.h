@@ -156,14 +156,14 @@ namespace gum {
   /* expected value considering a Bernouilli variable with parameter val */
 
   template < GUM_Numeric GUM_SCALAR >
-  GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, Idx val) {
+  GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string_view name, Idx val) {
     return estimator_[name][val] / wtotal_;
   }
 
   /* variance considering a Bernouilli variable with parameter val */
 
   template < GUM_Numeric GUM_SCALAR >
-  GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string name, Idx val) {
+  GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string_view name, Idx val) {
     GUM_SCALAR p = EV(name, val);
     return p * (1 - p);
   }

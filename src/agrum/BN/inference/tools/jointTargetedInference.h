@@ -51,6 +51,8 @@
 #define GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
 
 
+#include <string_view>
+
 #include <agrum/agrum.h>
 
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
@@ -145,7 +147,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(const std::string& nodeName) final;
+    virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
     /// @}
 
 
@@ -238,7 +240,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR I(const std::string& Xname, const std::string& Yname);
+    GUM_SCALAR I(std::string_view Xname, std::string_view Yname);
 
     /** Variation of information between X and Y
      * @see http://en.wikipedia.org/wiki/Variation_of_information
@@ -256,7 +258,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR VI(const std::string& Xname, const std::string& Yname);
+    GUM_SCALAR VI(std::string_view Xname, std::string_view Yname);
 
     /** Mutual information between targets
      * @see https://en.wikipedia.org/wiki/Interaction_information

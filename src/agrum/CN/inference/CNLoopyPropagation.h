@@ -51,6 +51,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <string_view>
 #include <limits>
 
 #include <agrum/CN/inference/inferenceEngine.h>
@@ -139,7 +140,7 @@ namespace gum {
        * This one is easier to read but harder for scripts to parse.
        * @param path The path to the file to save marginals.
        */
-      void saveInference(const std::string& path);
+      void saveInference(std::string_view path);
 
       /// @}
 
@@ -391,7 +392,7 @@ namespace gum {
       // cnfunc getCN = &infE::getCN;
 
       public:
-      virtual void insertEvidenceFile(const std::string& path) {
+      virtual void insertEvidenceFile(std::string_view path) {
         InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
       };
     };

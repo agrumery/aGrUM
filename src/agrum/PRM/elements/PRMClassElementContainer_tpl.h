@@ -63,7 +63,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE
-        PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(const std::string& name) :
+        PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(std::string_view name) :
         PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }
@@ -182,7 +182,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(const std::string& name) const {
+    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(std::string_view name) const {
       try {
         get(name);
         return true;

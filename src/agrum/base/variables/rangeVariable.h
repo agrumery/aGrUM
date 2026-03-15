@@ -75,10 +75,10 @@ namespace gum {
 
     /// @{
     ///  constructors
-    RangeVariable(const std::string& aName, const std::string& aDesc, long minVal, long maxVal);
+    RangeVariable(std::string_view aName, std::string_view aDesc, long minVal, long maxVal);
 
     /// by de default min=0, max=1
-    RangeVariable(const std::string& aName, const std::string& aDesc);
+    RangeVariable(std::string_view aName, std::string_view aDesc);
 
     /** Copy Constructor.
      *
@@ -154,7 +154,7 @@ namespace gum {
      * @return the modality index from the label
      * @throw NotFound
      */
-    Idx index(const std::string&) const final;
+    Idx index(std::string_view) const final;
 
     ///  returns the closest index of the value
     Idx closestIndex(double val) const final;

@@ -95,7 +95,7 @@ namespace gum {
     // ========================================================================
     /// @{
     NodeId addAggregator_(BayesNet< GUM_SCALAR >& bn,
-                          const std::string&      aggType,
+                          std::string_view        aggType,
                           const DiscreteVariable& var,
                           Idx                     value);
 

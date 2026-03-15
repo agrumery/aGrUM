@@ -150,7 +150,7 @@ namespace gum {
      *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string&                latentName,
+    void addLatentVariable(std::string_view                  latentName,
                            const std::vector< std::string >& childrenOfLatent,
                            bool                              assumeNonSpurious = false);
 
@@ -171,7 +171,7 @@ namespace gum {
      *          to preserve, and another with `assumeNonSpurious = false` for the subset to drop.
      *          A finer-grained edit API may be added later.
      */
-    void addLatentVariable(const std::string&           latentName,
+    void addLatentVariable(std::string_view             latentName,
                            const std::vector< NodeId >& childrenOfLatent,
                            bool                         assumeNonSpurious = false);
 
@@ -179,27 +179,27 @@ namespace gum {
     bool existsArc(NodeId x, NodeId y) const;
 
     /// @brief Whether a causal arc x → y exists (by names) in the causal DAG.
-    bool existsArc(const std::string& x, const std::string& y) const;
+    bool existsArc(std::string_view x, std::string_view y) const;
 
     /**
      * @brief Mark an arc as spurious: present in observationalBN, removed from causalDAG.
      * Throws if arc is not present in observationalBN.
      */
     void assumeSpurious(NodeId x, NodeId y);
-    void assumeSpurious(const std::string& x, const std::string& y);
+    void assumeSpurious(std::string_view x, std::string_view y);
 
     /**
      * @brief Mark an arc as non-spurious: present in observationalBN, added to causalDAG.
      * Throws if arc is not present in observationalBN.
      */
     void assumeNonSpurious(NodeId x, NodeId y);
-    void assumeNonSpurious(const std::string& x, const std::string& y);
+    void assumeNonSpurious(std::string_view x, std::string_view y);
 
     /**
      * @brief Returns true if arc is present in observationalBN and absent in causalDAG.
      */
     bool isAssumedSpurious(NodeId x, NodeId y) const;
-    bool isAssumedSpurious(const std::string& x, const std::string& y) const;
+    bool isAssumedSpurious(std::string_view x, std::string_view y) const;
 
     // ======================================================================
     // Door-criteria conveniences
@@ -277,7 +277,7 @@ namespace gum {
     Set< std::string > names() const;
 
     /// @brief Node id from variable name (observed or latent).
-    NodeId idFromName(const std::string& name) const;
+    NodeId idFromName(std::string_view name) const;
 
     /// @brief Variable name from node id (observed or latent).
     std::string nameFromId(NodeId id) const;
@@ -295,13 +295,13 @@ namespace gum {
     NodeSet parents(NodeId x) const;
 
     /// @brief Parents of a node (by name) in the causal DAG (including latents).
-    NodeSet parents(const std::string& name) const;
+    NodeSet parents(std::string_view name) const;
 
     /// @brief Children of a node (by id) in the causal DAG (including latents).
     NodeSet children(NodeId x) const;
 
     /// @brief Children of a node (by name) in the causal DAG (including latents).
-    NodeSet children(const std::string& name) const;
+    NodeSet children(std::string_view name) const;
 
     /**
      * @brief Weakly connected components of the causal DAG.

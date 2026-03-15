@@ -52,6 +52,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -117,7 +118,7 @@ namespace gum {
 
     /// sets the name of the variable
     /** @param theValue */
-    void setName(const std::string& theValue);
+    void setName(std::string_view theValue);
 
     /// returns the name of the variable
     const std::string& name() const;
@@ -125,7 +126,7 @@ namespace gum {
     /// sets the description of the variable
     /// @warning since  _description_ is mutable, setDescription() is const
     /** @param theValue */
-    void setDescription(const std::string& theValue) const;
+    void setDescription(std::string_view theValue) const;
 
     /// returns the description of the variable
     const std::string& description() const;
@@ -149,7 +150,7 @@ namespace gum {
     /// constructor
     /** @param aName name of the variable
      * @param aDesc description of the variable */
-    Variable(const std::string& aName, const std::string& aDesc);
+    Variable(std::string_view aName, std::string_view aDesc);
 
     /// copy constructor
     /** @param aRV the variable we copy */

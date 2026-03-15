@@ -48,12 +48,12 @@
 namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
-  IBNLearner::Database::Database(const std::string&                filename,
+  IBNLearner::Database::Database(std::string_view                  filename,
                                  const BayesNet< GUM_SCALAR >&     bn,
                                  const std::vector< std::string >& missing_symbols) {
     // assign to each column name in the database its position
     IBNLearner::isCSVFileName_(filename);
-    DBInitializerFromCSV                  initializer(filename);
+    DBInitializerFromCSV                  initializer{std::string(filename)};
     const auto&                           xvar_names = initializer.variableNames();
     std::size_t                           nb_vars    = xvar_names.size();
     HashTable< std::string, std::size_t > var_names(nb_vars);
@@ -98,7 +98,7 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  IBNLearner::IBNLearner(const std::string&                 filename,
+  IBNLearner::IBNLearner(std::string_view                   filename,
                          const gum::BayesNet< GUM_SCALAR >& bn,
                          const std::vector< std::string >&  missing_symbols) :
       scoreDatabase_(filename, bn, missing_symbols) {

@@ -90,8 +90,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string& aName,
-                                                             const std::string& aDesc) :
+  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view aName,
+                                                             std::string_view aDesc) :
       IDiscretizedVariable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     _is_empirical = false;
@@ -99,8 +99,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(const std::string&            aName,
-                                                             const std::string&            aDesc,
+  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view              aName,
+                                                             std::string_view              aDesc,
                                                              const std::vector< T_TICKS >& ticks,
                                                              bool is_empirical) :
       IDiscretizedVariable(aName, aDesc) {
@@ -221,11 +221,11 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE Idx DiscretizedVariable< T_TICKS >::index(const std::string& label) const {
+  INLINE Idx DiscretizedVariable< T_TICKS >::index(std::string_view label) const {
     if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()) }
 
     // first check if label contains a numeric value
-    std::istringstream i(label);
+    std::istringstream i(std::string{label});
     T_TICKS            target;
     if (i >> target) {
       if (target < _ticks_[0]) {
@@ -250,7 +250,7 @@ namespace gum {
     }
 
     // second check if label contains an interval '[t1;t2]'
-    std::istringstream ii(label);
+    std::istringstream ii(std::string{label});
     T_TICKS            t2;
     char               c1;
     char               c2;

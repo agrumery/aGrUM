@@ -59,8 +59,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::unique_ptr< DiscreteVariable > fastVariable(std::string        var_description,
-                                                   const std::string& default_domain) {
+  std::unique_ptr< DiscreteVariable > fastVariable(std::string      var_description,
+                                                   std::string_view default_domain) {
     Size                       ds        = 0;
     long                       range_min = 0;
     long                       range_max = 1;

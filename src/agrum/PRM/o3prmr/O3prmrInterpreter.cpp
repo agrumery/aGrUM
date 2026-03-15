@@ -150,15 +150,15 @@ namespace gum {
        * If any errors occured, return true.
        * Requests results can be retrieve be results() methods.
        * */
-      bool O3prmrInterpreter::interpretFile(const std::string& filename) {
+      bool O3prmrInterpreter::interpretFile(std::string_view filename) {
         m_results.clear();
 
         try {
           std::string file_content = _readFile_(filename);
 
           delete m_context;
-          m_context = new O3prmrContext< double >(filename);
-          O3prmrContext< double > c(filename);
+          m_context = new O3prmrContext< double >(std::string(filename));
+          O3prmrContext< double > c{std::string(filename)};
 
           // On vérifie la syntaxe
           unsigned char* buffer = new unsigned char[file_content.length() + 1];
@@ -192,9 +192,9 @@ namespace gum {
         } catch (gum::Exception&) { return false; }
       }
 
-      std::string O3prmrInterpreter::_readFile_(const std::string& file) {
+      std::string O3prmrInterpreter::_readFile_(std::string_view file) {
         // read entire file into string
-        std::ifstream istream(file, std::ifstream::binary);
+        std::ifstream istream(std::string(file), std::ifstream::binary);
         if (istream) {
           // get length of file:
           istream.seekg(0, istream.end);
@@ -213,12 +213,12 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "Could not open file")
       }
 
-      bool O3prmrInterpreter::interpretLine(const std::string& line) {
+      bool O3prmrInterpreter::interpretLine(std::string_view line) {
         m_results.clear();
 
         // On vérifie la syntaxe
         O3prmrContext< double > c;
-        Scanner                 s((unsigned char*)line.c_str(), (int)line.length());
+        Scanner                 s((unsigned char*)line.data(), (int)line.length());
         Parser                  p(&s);
         p.setO3prmrContext(&c);
         p.Parse();
@@ -707,12 +707,12 @@ namespace gum {
         return name;
       }
 
-      std::string O3prmrInterpreter::findAttributeName(const std::string&           s,
+      std::string O3prmrInterpreter::findAttributeName(std::string_view             s,
                                                        const PRMInstance< double >& instance) {
         if (!instance.exists(s))
-          throw "'" + s + "' is not an attribute of instance '" + instance.name() + "'.";
+          throw "'" + std::string{s} + "' is not an attribute of instance '" + instance.name() + "'.";
 
-        return s;
+        return std::string{s};
       }
 
       // After this method, ident doesn't contains the system name anymore.

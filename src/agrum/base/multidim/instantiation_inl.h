@@ -54,7 +54,7 @@ namespace gum {
   // indicates whether a given variable belongs to the Instantiation
   INLINE bool Instantiation::contains(const DiscreteVariable& v) const { return _vars_.exists(&v); }
 
-  INLINE bool Instantiation::contains(const std::string& name) const {
+  INLINE bool Instantiation::contains(std::string_view name) const {
     for (const auto& v: _vars_) {
       if (v->name() == name) return true;
     }
@@ -110,11 +110,11 @@ namespace gum {
     return *this;
   }
 
-  INLINE Instantiation& Instantiation::chgVal(const std::string& var, Idx newVal) {
+  INLINE Instantiation& Instantiation::chgVal(std::string_view var, Idx newVal) {
     return chgVal(variable(var), newVal);
   }
 
-  INLINE Instantiation& Instantiation::chgVal(const std::string& var, const std::string& newVal) {
+  INLINE Instantiation& Instantiation::chgVal(std::string_view var, std::string_view newVal) {
     const auto& vv  = variable(var);
     Idx         pos = vv.index(newVal);
     return chgVal(vv, pos);
@@ -154,7 +154,7 @@ namespace gum {
     _erase_(v);
   }
 
-  INLINE void Instantiation::erase(const std::string& name) { erase(variable(name)); }
+  INLINE void Instantiation::erase(std::string_view name) { erase(variable(name)); }
 
   // removes everything
   INLINE void Instantiation::clear() {
@@ -196,7 +196,7 @@ namespace gum {
   }
 
   // returns the current value of a given variable
-  INLINE Idx Instantiation::val(const std::string& name) const { return val(variable(name)); }
+  INLINE Idx Instantiation::val(std::string_view name) const { return val(variable(name)); }
 
   // returns the current value of a given variable
   INLINE Idx Instantiation::valFromPtr(const DiscreteVariable* pvar) const {
@@ -207,7 +207,7 @@ namespace gum {
   INLINE const DiscreteVariable& Instantiation::variable(Idx i) const { return *(_vars_.atPos(i)); }
 
   // returns the variable with name in the tuple
-  INLINE const DiscreteVariable& Instantiation::variable(const std::string& name) const {
+  INLINE const DiscreteVariable& Instantiation::variable(std::string_view name) const {
     for (const auto& v: _vars_) {
       if (v->name() == name) return *v;
     }

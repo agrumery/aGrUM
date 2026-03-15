@@ -124,7 +124,7 @@ namespace gum {
     /// we allow the user to change the name of a variable
     /** @throws DuplicateLabel if this name already exists
      * @throws NotFound Raised if no nodes matches id. */
-    void changeName(NodeId id, const std::string& new_name);
+    void changeName(NodeId id, std::string_view new_name);
 
     /// removes all the associations
     void clear();
@@ -174,8 +174,8 @@ namespace gum {
     /// @{
 
     /// @throw NotFound if no such name exists in the graph.
-    NodeId                  idFromName(const std::string& name) const;
-    const DiscreteVariable& variableFromName(const std::string& name) const;
+    NodeId                  idFromName(std::string_view name) const;
+    const DiscreteVariable& variableFromName(std::string_view name) const;
 
     /// @}
 

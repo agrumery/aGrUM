@@ -93,7 +93,7 @@ namespace gum {
                                       time);
     }
 
-    void BNLearnerListener::whenStop(const void* src, const std::string& message) {
+    void BNLearnerListener::whenStop(const void* src, std::string_view message) {
       _bnlearner_->distributeStop(static_cast< const ApproximationScheme* >(src), message);
     }
   }   // namespace learning

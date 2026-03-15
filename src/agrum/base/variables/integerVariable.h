@@ -70,15 +70,15 @@ namespace gum {
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      */
-    IntegerVariable(const std::string& aName, const std::string& aDesc = "");
+    IntegerVariable(std::string_view aName, std::string_view aDesc = "");
 
     /** @brief constructor assigning a domain to the variable
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      * @param domain the domain (set of values) of the variable
      */
-    IntegerVariable(const std::string&        aName,
-                    const std::string&        aDesc,
+    IntegerVariable(std::string_view          aName,
+                    std::string_view          aDesc,
                     const std::vector< int >& domain);
 
     /** @brief constructor assigning a domain to the variable
@@ -88,11 +88,11 @@ namespace gum {
      * @param last the last value
      * @param nb the number of values
      */
-    IntegerVariable(const std::string& aName,
-                    const std::string& aDesc,
-                    int                first,
-                    int                last,
-                    Size               nb);
+    IntegerVariable(std::string_view aName,
+                    std::string_view aDesc,
+                    int              first,
+                    int              last,
+                    Size             nb);
 
     /// Copy constructor
     /**
@@ -147,7 +147,7 @@ namespace gum {
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    Idx index(const std::string& label) const final;
+    Idx index(std::string_view label) const final;
 
     ///  returns the closest index of the value
     Idx closestIndex(double val) const final;

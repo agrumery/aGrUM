@@ -55,7 +55,7 @@ namespace gum {
 
       O3Position::O3Position() : _file_(""), _line_(0), _column_(0) { GUM_CONSTRUCTOR(O3Position); }
 
-      O3Position::O3Position(const std::string& file, int line, int column) :
+      O3Position::O3Position(std::string_view file, int line, int column) :
           _file_(file), _line_(line), _column_(column) {
         GUM_CONSTRUCTOR(O3Position);
       }
@@ -245,7 +245,7 @@ namespace gum {
         ;
       }
 
-      O3Label::O3Label(const O3Position& pos, const std::string& label) :
+      O3Label::O3Label(const O3Position& pos, std::string_view label) :
           _pos_(pos), _label_(label) {
         GUM_CONSTRUCTOR(O3Label);
       }

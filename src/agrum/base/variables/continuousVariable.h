@@ -52,6 +52,7 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -76,8 +77,8 @@ namespace gum {
     /** It is possible to create ContinuousVariable with lower_bound > upper_bound.
      * In this case, the min and the max are swapped.
      * By default, the range of the variable is (-inf,+inf). */
-    ContinuousVariable(const std::string& aName,
-                       const std::string& aDesc,
+    ContinuousVariable(std::string_view aName,
+                       std::string_view aDesc,
                        GUM_SCALAR lower_bound = -std::numeric_limits< GUM_SCALAR >::infinity(),
                        GUM_SCALAR upper_bound = std::numeric_limits< GUM_SCALAR >::infinity());
 
@@ -121,7 +122,7 @@ namespace gum {
     /** @throw OutOfBounds is raised if the value does not belong to the
      * domain of the variable
      * @throw TypeError if the string cannot be converted into a T_VAL */
-    GUM_SCALAR operator[](const std::string& str) const;
+    GUM_SCALAR operator[](std::string_view str) const;
 
     /// @}
 
@@ -214,10 +215,10 @@ namespace gum {
 
   // specialized operator[] for real numbers
   template <>
-  float ContinuousVariable< float >::operator[](const std::string& str) const;
+  float ContinuousVariable< float >::operator[](std::string_view str) const;
 
   template <>
-  double ContinuousVariable< double >::operator[](const std::string& str) const;
+  double ContinuousVariable< double >::operator[](std::string_view str) const;
 
 
 } /* namespace gum */

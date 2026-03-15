@@ -56,7 +56,7 @@ namespace gum {
   /* =========================================================================*/
 
   // Default constructor
-  INLINE DiscreteVariable::DiscreteVariable(const std::string& aName, const std::string& aDesc) :
+  INLINE DiscreteVariable::DiscreteVariable(std::string_view aName, std::string_view aDesc) :
       Variable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscreteVariable)
   }

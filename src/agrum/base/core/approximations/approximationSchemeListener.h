@@ -49,6 +49,8 @@
 #ifndef APPROXIMATIONSCHEMELISTENER_H
 #define APPROXIMATIONSCHEMELISTENER_H
 
+#include <string_view>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
@@ -94,7 +96,7 @@ namespace gum {
      * @param src The signal source.
      * @param message A message.
      */
-    virtual void whenStop(const void* src, const std::string& message) = 0;
+    virtual void whenStop(const void* src, std::string_view message) = 0;
 
     protected:
     /**

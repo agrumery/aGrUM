@@ -116,9 +116,9 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike, Size domainSize);
-    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
-                                                const std::string& domainSize = "[2]");
+    static BayesNet< GUM_SCALAR > fastPrototype(std::string_view dotlike, Size domainSize);
+    static BayesNet< GUM_SCALAR > fastPrototype(std::string_view dotlike,
+                                                std::string_view domainSize = "[2]");
 
     // ===========================================================================
     /// @name Constructors and Destructor
@@ -135,7 +135,7 @@ namespace gum {
      *
      * @param name The BayesNet's name.
      */
-    explicit BayesNet(std::string name);
+    explicit BayesNet(std::string_view name);
 
     /**
      * @brief Destructor.
@@ -179,7 +179,7 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const {
       return cpt(idFromName(name));
     };
 
@@ -225,7 +225,7 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add(const std::string& fast_description, unsigned int default_nbrmod = 2);
+    NodeId add(std::string_view fast_description, unsigned int default_nbrmod = 2);
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -301,7 +301,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::BayesNet.
      */
-    void erase(const std::string& name) { erase(idFromName(name)); };
+    void erase(std::string_view name) { erase(idFromName(name)); };
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -331,7 +331,7 @@ namespace gum {
      * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
      *        gum::BayesNet.
      */
-    const DiscreteVariable& variable(const std::string& name) const {
+    const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
     };
 
@@ -344,12 +344,12 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotFound Raised if no variable matches id.
      */
-    void changeVariableName(NodeId id, const std::string& new_name);
+    void changeVariableName(NodeId id, std::string_view new_name);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName(const std::string& name, const std::string& new_name) {
+    void changeVariableName(std::string_view name, std::string_view new_name) {
       changeVariableName(idFromName(name), new_name);
     }
 
@@ -363,14 +363,14 @@ namespace gum {
      * @throws NotFound Raised if no variable matches id or if the variable is not
      * a LabelizedVariable
      */
-    void changeVariableLabel(NodeId id, const std::string& old_label, const std::string& new_label);
+    void changeVariableLabel(NodeId id, std::string_view old_label, std::string_view new_label);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableLabel(const std::string& name,
-                             const std::string& old_label,
-                             const std::string& new_label) {
+    void changeVariableLabel(std::string_view name,
+                             std::string_view old_label,
+                             std::string_view new_label) {
       changeVariableLabel(idFromName(name), old_label, new_label);
     }
 
@@ -392,7 +392,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::BayesNet.
      */
-    NodeId idFromName(const std::string& name) const final;
+    NodeId idFromName(std::string_view name) const final;
 
     /**
      * @brief Returns a variable given its name in the gum::BayesNet.
@@ -403,7 +403,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::BayesNet.
      */
-    const DiscreteVariable& variableFromName(const std::string& name) const final;
+    const DiscreteVariable& variableFromName(std::string_view name) const final;
     /// @}
 
     // ===========================================================================
@@ -426,7 +426,7 @@ namespace gum {
      *
      * @throw gum::DuplicateElement if the arc already exists
      */
-    void addArc(const std::string& tail, const std::string& head);
+    void addArc(std::string_view tail, std::string_view head);
 
     /**
      * Removes an arc in the BN, and update head's CTP.
@@ -448,7 +448,7 @@ namespace gum {
     /**
      * Removes an arc in the BN, and update head's CTP.
      */
-    void eraseArc(const std::string& tail, const std::string& head) {
+    void eraseArc(std::string_view tail, std::string_view head) {
       eraseArc(idFromName(tail), idFromName(head));
     }
 
@@ -482,7 +482,7 @@ namespace gum {
     /// @{
     void reverseArc(NodeId tail, NodeId head);
 
-    void reverseArc(const std::string& tail, const std::string& head) {
+    void reverseArc(std::string_view tail, std::string_view head) {
       reverseArc(idFromName(tail), idFromName(head));
     }
 
@@ -644,7 +644,7 @@ namespace gum {
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
-    void addWeightedArc(const std::string& tail, const std::string& head, GUM_SCALAR causalWeight) {
+    void addWeightedArc(std::string_view tail, std::string_view head, GUM_SCALAR causalWeight) {
       addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
     };
 
@@ -656,14 +656,14 @@ namespace gum {
     /// randomly generate CPT for a given node in a given structure
     void generateCPT(NodeId node) const;
 
-    void generateCPT(const std::string& name) const { generateCPT(idFromName(name)); };
+    void generateCPT(std::string_view name) const { generateCPT(idFromName(name)); };
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     ///  _probaMap_[NodeId]
     void changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot);
-    void changeTensor(const std::string& name, Tensor< GUM_SCALAR >* newPot);
+    void changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot);
 
     /** create a contextual BN from this and a set of hard observations and hard interventions.
      *

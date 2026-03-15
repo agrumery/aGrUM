@@ -115,7 +115,7 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag);
+    virtual void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag);
 
     private:
     /**

@@ -50,6 +50,7 @@
 #define GUM_SYSTEM_H
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/variables/integerVariable.h>
@@ -75,7 +76,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      explicit PRMSystem(const std::string& name);
+      explicit PRMSystem(std::string_view name);
 
       /// Destructor.
       virtual ~PRMSystem();
@@ -119,7 +120,7 @@ namespace gum {
 
       /// Retruns true either if name is an instance or an array in this
       /// PRMSystem.
-      bool exists(const std::string& name) const;
+      bool exists(std::string_view name) const;
 
       /// Returns true if the given Class<GUM_SCALAR> has at least one
       /// PRMInstance
@@ -127,10 +128,10 @@ namespace gum {
       bool isInstantiated(const PRMClass< GUM_SCALAR >& c) const;
 
       /// Returns true if an PRMInstance with the given name exists.
-      bool isInstance(const std::string& name) const;
+      bool isInstance(std::string_view name) const;
 
       /// Returns true if an array with the given name exists.
-      bool isArray(const std::string& name) const;
+      bool isArray(std::string_view name) const;
 
       /**
        * Returns the grounded Bayesian network of this system.
@@ -149,11 +150,11 @@ namespace gum {
 
       /// Returns a reference over an PRMInstance given it's name
       /// @throw NotFound Raised if the no PRMInstance matches name.
-      PRMInstance< GUM_SCALAR >& get(const std::string& name);
+      PRMInstance< GUM_SCALAR >& get(std::string_view name);
 
       /// Returns a constant reference over an PRMInstance given it's name
       /// @throw NotFound Raised if the no PRMInstance matches name.
-      const PRMInstance< GUM_SCALAR >& get(const std::string& name) const;
+      const PRMInstance< GUM_SCALAR >& get(std::string_view name) const;
 
       /// Returns the sequence of all instances of the given type
       /// @throw NotFound Raised if there is instantiation of type.
@@ -172,15 +173,15 @@ namespace gum {
 
       /// Returns the sequence of instances of a given array.
       /// @throw NotFound Raised if no array matches name.
-      const Sequence< PRMInstance< GUM_SCALAR >* >& getArray(const std::string& name) const;
+      const Sequence< PRMInstance< GUM_SCALAR >* >& getArray(std::string_view name) const;
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      PRMClassElementContainer< GUM_SCALAR >& getArrayType(const std::string& name);
+      PRMClassElementContainer< GUM_SCALAR >& getArrayType(std::string_view name);
 
       /// Returns the type of the given array.
       /// @throw NotFound Raised if no array matches name.
-      const PRMClassElementContainer< GUM_SCALAR >& getArrayType(const std::string& name) const;
+      const PRMClassElementContainer< GUM_SCALAR >& getArrayType(std::string_view name) const;
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
@@ -188,7 +189,7 @@ namespace gum {
       /// @throw DuplicateElement Raised if an PRMInstance with same name
       /// already
       /// exists.
-      NodeId add(const std::string& array, PRMInstance< GUM_SCALAR >* i);
+      NodeId add(std::string_view array, PRMInstance< GUM_SCALAR >* i);
 
       /// @brief Add an PRMInstance to an array in this system.
       /// If the array doesn't exists it is created.
@@ -196,13 +197,13 @@ namespace gum {
       /// @throw DuplicateElement Raised if an PRMInstance with same name
       /// already
       /// exists.
-      NodeId add(const std::string& array, PRMInstance< GUM_SCALAR >& i);
+      NodeId add(std::string_view array, PRMInstance< GUM_SCALAR >& i);
 
       /// @brief Add an array of instances in this system.
       /// If the array doesn't exists it is created.
       /// @throw DuplicateElement Raised if an existing array with the same name
       ///                         already exists.
-      void addArray(const std::string& array, PRMClassElementContainer< GUM_SCALAR >& type);
+      void addArray(std::string_view array, PRMClassElementContainer< GUM_SCALAR >& type);
 
       /// @}
       // ========================================================================
@@ -236,12 +237,12 @@ namespace gum {
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
       /// @throw NotFound Raised if no array matches a.
-      array_iterator begin(const std::string& a);
+      array_iterator begin(std::string_view a);
 
       /// Returns an iterator at the end of the Sequence of PRMInstance
       /// in the array named a.
       /// @throw NotFound Raised if no array matches a.
-      const array_iterator& end(const std::string& a);
+      const array_iterator& end(std::string_view a);
 
       /// Iterator over the PRMInstance in an array in this PRMSystem.
       using const_array_iterator = typename Sequence< PRMInstance< GUM_SCALAR >* >::const_iterator;
@@ -249,12 +250,12 @@ namespace gum {
       /// Returns an iterator at the beginning of the Sequence of PRMInstance
       /// in the array named a;
       /// @throw NotFound Raised if no array matches a.
-      const_array_iterator begin(const std::string& a) const;
+      const_array_iterator begin(std::string_view a) const;
 
       /// Returns an iterator at the end of the Sequence of PRMInstance
       /// in the array named a.
       /// @throw NotFound Raised if no array matches a.
-      const const_array_iterator& end(const std::string& a) const;
+      const const_array_iterator& end(std::string_view a) const;
 
       /// @}
 
@@ -331,7 +332,7 @@ namespace gum {
       /// @param name    The aggregator's name in the grounded IBayesNet.
       /// @param factory The factory used to build the grounded IBayesNet.
       void _groundAgg_(const PRMClassElement< GUM_SCALAR >& elt,
-                       const std::string&                   name,
+                       std::string_view                     name,
                        BayesNetFactory< GUM_SCALAR >&       factory) const;
       /// @}
     };

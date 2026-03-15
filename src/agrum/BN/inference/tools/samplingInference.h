@@ -50,6 +50,8 @@
 #ifndef GUM_SAMPLING_INFERENCE_H
 #define GUM_SAMPLING_INFERENCE_H
 
+#include <string_view>
+
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/tools/estimator.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
@@ -118,7 +120,7 @@ namespace gum {
      * targets.
      * @throw NotFound if node corresponding to name is not in the BN.
      */
-    const Tensor< GUM_SCALAR >& currentPosterior(const std::string& name);
+    const Tensor< GUM_SCALAR >& currentPosterior(std::string_view name);
     /// @}
     /// @}
 

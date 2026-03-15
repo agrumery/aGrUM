@@ -54,7 +54,7 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClassElement< GUM_SCALAR >::PRMClassElement(const std::string& name) : PRMObject(name) {
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(std::string_view name) : PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElement);
     }
 

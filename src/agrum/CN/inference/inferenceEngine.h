@@ -48,6 +48,7 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 #include <map>
+#include <string_view>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/threads/threadData.h>
@@ -367,7 +368,7 @@ namespace gum {
        * @throw InvalidArgument if val is not a value for id
        * @throw InvalidArgument if nodeName already has an evidence
        */
-      virtual void addEvidence(const std::string& nodeName, const Idx val) final;
+      virtual void addEvidence(std::string_view nodeName, const Idx val) final;
 
       /// adds a new hard evidence on node id
       /**
@@ -375,7 +376,7 @@ namespace gum {
        * @throw InvalidArgument if val is not a value for id
        * @throw InvalidArgument if id already has an evidence
        */
-      virtual void addEvidence(NodeId id, const std::string& label) final;
+      virtual void addEvidence(NodeId id, std::string_view label) final;
 
       /// adds a new hard evidence on node named nodeName
       /**
@@ -383,7 +384,7 @@ namespace gum {
        * @throw InvalidArgument if val is not a value for id
        * @throw InvalidArgument if nodeName already has an evidence
        */
-      virtual void addEvidence(const std::string& nodeName, const std::string& label) final;
+      virtual void addEvidence(std::string_view nodeName, std::string_view label) final;
 
       /// adds a new evidence on node id (might be soft or hard)
       /**
@@ -403,7 +404,7 @@ namespace gum {
        * @throw InvalidArgument if the size of vals is different from the domain
        *        size of node nodeName
        */
-      virtual void addEvidence(const std::string&               nodeName,
+      virtual void addEvidence(std::string_view                 nodeName,
                                const std::vector< GUM_SCALAR >& vals) final;
 
       /// adds a new evidence on node id (might be soft or hard)
@@ -427,7 +428,7 @@ namespace gum {
        * Insert variables modalities from file to compute expectations.
        * @param path The path to the modalities file.
        */
-      void insertModalsFile(const std::string& path);
+      void insertModalsFile(std::string_view path);
 
       /**
        * Insert variables modalities from map to compute expectations.
@@ -439,7 +440,7 @@ namespace gum {
        * Insert evidence from file.
        * @param path The path to the evidence file.
        */
-      virtual void insertEvidenceFile(const std::string& path);
+      virtual void insertEvidenceFile(std::string_view path);
 
       /**
        * Insert evidence from map.
@@ -457,7 +458,7 @@ namespace gum {
        * Insert query variables states from file.
        * @param path The path to the query file.
        */
-      void insertQueryFile(const std::string& path);
+      void insertQueryFile(std::string_view path);
 
       /**
        * Insert query variables and states from Property.
@@ -489,14 +490,14 @@ namespace gum {
        * @param varName The variable name which lower marginals we want.
        * @return A constant reference to this variable lower marginals.
        */
-      Tensor< GUM_SCALAR > marginalMin(const std::string& varName) const;
+      Tensor< GUM_SCALAR > marginalMin(std::string_view varName) const;
 
       /**
        * Get the upper marginals of a given variable name.
        * @param varName The variable name which upper marginals we want.
        * @return A constant reference to this variable upper marginals.
        */
-      Tensor< GUM_SCALAR > marginalMax(const std::string& varName) const;
+      Tensor< GUM_SCALAR > marginalMax(std::string_view varName) const;
 
       /**
        * Get the lower expectation of a given node id.
@@ -517,14 +518,14 @@ namespace gum {
        * @param varName The variable name which lower expectation we want.
        * @return A constant reference to this variable lower expectation.
        */
-      const GUM_SCALAR& expectationMin(const std::string& varName) const;
+      const GUM_SCALAR& expectationMin(std::string_view varName) const;
 
       /**
        * Get the upper expectation of a given variable name.
        * @param varName The variable name which upper expectation we want.
        * @return A constant reference to this variable upper expectation.
        */
-      const GUM_SCALAR& expectationMax(const std::string& varName) const;
+      const GUM_SCALAR& expectationMax(std::string_view varName) const;
 
       /**
        * Get the lower dynamic expectation of a given variable prefix (without
@@ -537,7 +538,7 @@ namespace gum {
        * time
        * steps.
        */
-      const std::vector< GUM_SCALAR >& dynamicExpMin(const std::string& varName) const;
+      const std::vector< GUM_SCALAR >& dynamicExpMin(std::string_view varName) const;
 
       /**
        * Get the upper dynamic expectation of a given variable prefix (without
@@ -550,7 +551,7 @@ namespace gum {
        * time
        * steps.
        */
-      const std::vector< GUM_SCALAR >& dynamicExpMax(const std::string& varName) const;
+      const std::vector< GUM_SCALAR >& dynamicExpMax(std::string_view varName) const;
 
       /**
        * Get the vertice of a given node id.
@@ -563,19 +564,19 @@ namespace gum {
        * Saves marginals to file.
        * @param path The path to the file to be used.
        */
-      void saveMarginals(const std::string& path) const;
+      void saveMarginals(std::string_view path) const;
 
       /**
        * Saves expectations to file.
        *  @param path The path to the file to be used.
        */
-      void saveExpectations(const std::string& path) const;
+      void saveExpectations(std::string_view path) const;
 
       /**
        * Saves vertices to file.
        * @param path The path to the file to be used.
        */
-      void saveVertices(const std::string& path) const;
+      void saveVertices(std::string_view path) const;
 
       /**
        * Compute dynamic expectations.

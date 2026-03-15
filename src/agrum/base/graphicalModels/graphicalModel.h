@@ -90,19 +90,19 @@ namespace gum {
      * Return the value of the property name of this GraphicalModel.
      * @throw NotFound Raised if no name property is found.
      */
-    const std::string& property(const std::string& name) const;
+    const std::string& property(std::string_view name) const;
 
     /**
      * Return the value of the property name of this GraphicalModel.
      * return byDefault if the property name is not found
      */
-    const std::string& propertyWithDefault(const std::string& name,
+    const std::string& propertyWithDefault(std::string_view   name,
                                            const std::string& byDefault) const;
 
     /**
      * Add or change a property of this GraphicalModel.
      */
-    void setProperty(const std::string& name, const std::string& value);
+    void setProperty(std::string_view name, std::string_view value);
 
     /**
      * List of all the properties
@@ -131,8 +131,8 @@ namespace gum {
     /**
      * Return true if this node exists in this graphical model.
      */
-    virtual bool exists(NodeId node) const             = 0;
-    virtual bool exists(const std::string& name) const = 0;
+    virtual bool exists(NodeId node) const          = 0;
+    virtual bool exists(std::string_view name) const = 0;
 
     /**
      * transform a vector of NodeId in a vector of names
@@ -189,11 +189,11 @@ namespace gum {
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual NodeId idFromName(const std::string& name) const = 0;
+    virtual NodeId idFromName(std::string_view name) const = 0;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual const DiscreteVariable& variableFromName(const std::string& name) const = 0;
+    virtual const DiscreteVariable& variableFromName(std::string_view name) const = 0;
 
     /// @}
 
@@ -222,8 +222,8 @@ namespace gum {
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
-    virtual NodeSet family(const NodeId id) const         = 0;
-    virtual NodeSet family(const std::string& name) const = 0;
+    virtual NodeSet family(const NodeId id) const      = 0;
+    virtual NodeSet family(std::string_view name) const = 0;
 
     protected:
     /**

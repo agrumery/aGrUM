@@ -244,7 +244,7 @@ namespace gum {
   // Compute the posterior of a node
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-      JointTargetedInference< GUM_SCALAR >::posterior(const std::string& nodeName) {
+      JointTargetedInference< GUM_SCALAR >::posterior(std::string_view nodeName) {
     return posterior(this->BN().idFromName(nodeName));
   }
 

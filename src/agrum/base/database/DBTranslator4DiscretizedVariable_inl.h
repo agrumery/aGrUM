@@ -57,7 +57,7 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    INLINE DBTranslatedValue DBTranslator4DiscretizedVariable::translate(const std::string& str) {
+    INLINE DBTranslatedValue DBTranslator4DiscretizedVariable::translate(std::string_view str) {
       // try to get the index of str within the discretized variable.
       try {
         return DBTranslatedValue{std::size_t(_variable_[str])};
@@ -70,7 +70,7 @@ namespace gum {
         // to execute translate ( translateBack ( translate ( str ) ) )
         // without raising an exception
         try {
-          return DBTranslatedValue{this->back_dico_.first(str)};
+          return DBTranslatedValue{this->back_dico_.first(std::string(str))};
         } catch (const gum::Exception&) {
           if (!DBCell::isReal(str)) {
             GUM_ERROR(TypeError,

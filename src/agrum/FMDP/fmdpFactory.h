@@ -51,6 +51,7 @@
 #define GUM_FMDP_FACTORY_H
 //======================================================================
 #include <string>
+#include <string_view>
 #include <vector>
 //======================================================================
 
@@ -127,7 +128,7 @@ namespace gum {
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    const DiscreteVariable* variable(const std::string& name) const;
+    const DiscreteVariable* variable(std::string_view name) const;
 
     /// @}
     // ==========================================================================
@@ -141,13 +142,13 @@ namespace gum {
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    void variableName(const std::string& name);
+    void variableName(std::string_view name);
 
     /// Tells the factory the current variable's description.
-    void variableDescription(const std::string& desc);
+    void variableDescription(std::string_view desc);
 
     /// Adds a modality to the current variable.
-    void addModality(const std::string& name);
+    void addModality(std::string_view name);
 
     /// Tells the factory that we're out of a variable declaration.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
@@ -164,7 +165,7 @@ namespace gum {
     void startActionDeclaration();
 
     /// Tells the factory to add an action to the current fmdp.
-    void addAction(const std::string& action);
+    void addAction(std::string_view action);
 
     /// Tells the factory that we're out of an action declaration.
     void endActionDeclaration();
@@ -179,12 +180,12 @@ namespace gum {
     void startTransitionDeclaration();
 
     /// Tells the factory to add a transition table to the current fmdp.
-    void addTransition(const std::string& var, const MultiDimAdressable* transition);
+    void addTransition(std::string_view var, const MultiDimAdressable* transition);
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
     /// multiDimFunctionGraph.
-    void addTransition(const std::string& var);
+    void addTransition(std::string_view var);
 
     /// Tells the factory that we're out of a transition declaration.
     void endTransitionDeclaration();
@@ -221,7 +222,7 @@ namespace gum {
     /// Tells the factory that we're in a reward declaration mode where the
     /// global reward diagram is an operation between
     /// simplier decision diagram..
-    void setOperationModeOn(std::string operationType);
+    void setOperationModeOn(std::string_view operationType);
 
     /// Tells the factory to add a reward table to the current fmdp.
     void addReward(const MultiDimAdressable* reward);
@@ -258,7 +259,7 @@ namespace gum {
     /// @{
 
     /// Insert in diagram a non terminal node
-    NodeId addInternalNode(std::string name_of_var);
+    NodeId addInternalNode(std::string_view name_of_var);
 
     /// Insert in diagram a terminal node
     NodeId addTerminalNode(float value);
@@ -293,7 +294,7 @@ namespace gum {
 
     /// Used in VARIABLE mode
     /// Checks if in  _stringBag_ there is no other modality with the same name.
-    void _checkModalityInBag_(const std::string& mod);
+    void _checkModalityInBag_(std::string_view mod);
 
     /// Reset the different parts used to constructed the FMDP.
     void _resetParts_();
@@ -325,7 +326,7 @@ namespace gum {
     FMDPFactory< GUM_ELEMENT >& operator=(const FMDPFactory< GUM_ELEMENT >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void _illegalStateError_(const std::string& s);
+    void _illegalStateError_(std::string_view s);
   };
 
 

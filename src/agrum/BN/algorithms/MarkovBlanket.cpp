@@ -84,7 +84,7 @@ namespace gum {
     }
   }
 
-  MarkovBlanket::MarkovBlanket(const DAGmodel& m, const std::string& name, int level) :
+  MarkovBlanket::MarkovBlanket(const DAGmodel& m, std::string_view name, int level) :
       MarkovBlanket(m, m.idFromName(name), level) {}
 
   MarkovBlanket::~MarkovBlanket() {}

@@ -84,7 +84,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void ClusteredLayerGenerator< GUM_SCALAR >::_generateInterfaces_(
         PRMFactory< GUM_SCALAR >&                                              f,
-        const std::string&                                                     type,
+        std::string_view                                                       type,
         std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l) {
       for (Size lvl = 0; lvl < _layers_.size(); ++lvl) {
         l.push_back(ClusteredLayerGenerator< GUM_SCALAR >::MyData());
@@ -113,7 +113,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void ClusteredLayerGenerator< GUM_SCALAR >::_generateClasses_(
         PRMFactory< GUM_SCALAR >&                                              f,
-        const std::string&                                                     type,
+        std::string_view                                                       type,
         std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l) {
       // double ratio = getClusterRatio() + RAND_MAX;
       Set< std::string > i;
@@ -135,7 +135,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void ClusteredLayerGenerator< GUM_SCALAR >::_generateCluster_(
         PRMFactory< GUM_SCALAR >&                                              f,
-        const std::string&                                                     type,
+        std::string_view                                                       type,
         std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l,
         Size                                                                   lvl,
         Set< std::string >&                                                    i) {
@@ -323,7 +323,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void ClusteredLayerGenerator< GUM_SCALAR >::_generateClass_(
         PRMFactory< GUM_SCALAR >&                                              f,
-        const std::string&                                                     type,
+        std::string_view                                                       type,
         std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l,
         Size                                                                   lvl,
         Set< std::string >&                                                    i) {

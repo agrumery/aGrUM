@@ -56,7 +56,7 @@ namespace gum {
 
   /// Default constructor
   INLINE
-  IContinuousVariable::IContinuousVariable(const std::string& aName, const std::string& aDesc) :
+  IContinuousVariable::IContinuousVariable(std::string_view aName, std::string_view aDesc) :
       Variable(aName, aDesc) {}
 
   /// Copy Constructor

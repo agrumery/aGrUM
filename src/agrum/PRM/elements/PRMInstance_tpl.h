@@ -54,7 +54,7 @@
 namespace gum {
   namespace prm {
     template < GUM_Numeric GUM_SCALAR >
-    PRMInstance< GUM_SCALAR >::PRMInstance(const std::string& name, PRMClass< GUM_SCALAR >& type) :
+    PRMInstance< GUM_SCALAR >::PRMInstance(std::string_view name, PRMClass< GUM_SCALAR >& type) :
         PRMObject(name), _instantiated_(false), _type_(&type) {
       GUM_CONSTRUCTOR(PRMInstance);
 
@@ -295,7 +295,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMInstance< GUM_SCALAR >::exists(const std::string& name) const {
+    INLINE bool PRMInstance< GUM_SCALAR >::exists(std::string_view name) const {
       return _type_->exists(name) && exists(_type_->get(name).id());
     }
 
@@ -314,14 +314,14 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(const std::string& name) {
+    INLINE PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(std::string_view name) {
       if (!exists(name)) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       return *(_nodeIdMap_[type().get(name).id()]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE const PRMAttribute< GUM_SCALAR >&
-                 PRMInstance< GUM_SCALAR >::get(const std::string& name) const {
+                 PRMInstance< GUM_SCALAR >::get(std::string_view name) const {
       if (!exists(name)) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       return *(_nodeIdMap_[type().get(name).id()]);
     }

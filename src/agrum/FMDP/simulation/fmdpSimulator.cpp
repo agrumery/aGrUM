@@ -71,7 +71,7 @@ namespace gum {
     GUM_CONSTRUCTOR(FMDPSimulator);
   }
 
-  FMDPSimulator::FMDPSimulator(const std::string& ressource) : AbstractSimulator(), _loaded_(true) {
+  FMDPSimulator::FMDPSimulator(std::string_view ressource) : AbstractSimulator(), _loaded_(true) {
     GUM_CONSTRUCTOR(FMDPSimulator);
 
     _fmdp_ = new FMDP< double >(true);

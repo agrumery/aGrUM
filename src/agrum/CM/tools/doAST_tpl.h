@@ -58,7 +58,7 @@ namespace gum {
   // ASTtree
   // ================================================================
   template < GUM_Numeric GUM_SCALAR >
-  ASTtree< GUM_SCALAR >::ASTtree(const std::string& type) : _type(type) {}
+  ASTtree< GUM_SCALAR >::ASTtree(std::string_view type) : _type(type) {}
 
   template < GUM_Numeric GUM_SCALAR >
   std::string ASTtree< GUM_SCALAR >::toLatex(HashTable< std::string, int > nameOccur) const {
@@ -67,12 +67,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string ASTtree< GUM_SCALAR >::_latexCorrect(const std::string&             srcName,
+  std::string ASTtree< GUM_SCALAR >::_latexCorrect(std::string_view               srcName,
                                                    HashTable< std::string, int >& nameOccur) {
-    int       count = nameOccur.getWithDefault(srcName, 0);
+    int       count = nameOccur.getWithDefault(std::string{srcName}, 0);
     const int nbr   = (count > 1) ? (count - 1) : 0;
     // append nbr primes
-    return srcName + std::string(static_cast< size_t >(nbr), '\'');
+    return std::string{srcName} + std::string(static_cast< size_t >(nbr), '\'');
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -92,17 +92,17 @@ namespace gum {
   // ASTBinaryOp
   // ================================================================
   template < GUM_Numeric GUM_SCALAR >
-  ASTBinaryOp< GUM_SCALAR >::ASTBinaryOp(const std::string&                       type,
+  ASTBinaryOp< GUM_SCALAR >::ASTBinaryOp(std::string_view                         type,
                                          std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
                                          std::unique_ptr< ASTtree< GUM_SCALAR > > op2) :
       ASTtree< GUM_SCALAR >(type), _op1(std::move(op1)), _op2(std::move(op2)) {}
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string ASTBinaryOp< GUM_SCALAR >::toString(const std::string& prefix) const {
+  std::string ASTBinaryOp< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::stringstream s;
     s << prefix << this->_type << "\n";
-    s << _op1->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX) << "\n";
-    s << _op2->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
+    s << _op1->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX) << "\n";
+    s << _op2->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
     return s.str();
   }
 
@@ -256,7 +256,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string ASTposteriorProba< GUM_SCALAR >::toString(const std::string& prefix) const {
+  std::string ASTposteriorProba< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::stringstream s;
     s << "P(";
 
@@ -286,7 +286,7 @@ namespace gum {
     }
 
     s << ")";
-    return prefix + s.str();
+    return std::string{prefix} + s.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -424,7 +424,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string ASTjointProba< GUM_SCALAR >::toString(const std::string& prefix) const {
+  std::string ASTjointProba< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::stringstream s;
     s << "joint P(";
 
@@ -440,7 +440,7 @@ namespace gum {
     }
 
     s << ")";
-    return prefix + s.str();
+    return std::string{prefix} + s.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -496,7 +496,7 @@ namespace gum {
   // ASTsum  :  sum out over variable of sub-term
   // ================================================================
   template < GUM_Numeric GUM_SCALAR >
-  ASTsum< GUM_SCALAR >::ASTsum(const std::string&                       var,
+  ASTsum< GUM_SCALAR >::ASTsum(std::string_view                         var,
                                std::unique_ptr< ASTtree< GUM_SCALAR > > term) :
       ASTtree< GUM_SCALAR >("_sum_"), _var(var), _term(std::move(term)) {}
 
@@ -517,10 +517,10 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string ASTsum< GUM_SCALAR >::toString(const std::string& prefix) const {
+  std::string ASTsum< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::stringstream s;
     s << prefix << "sum on " << _var << " for\n";
-    s << _term->toString(prefix + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
+    s << _term->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
     return s.str();
   }
 

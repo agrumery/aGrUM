@@ -59,7 +59,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
-                                                      const std::string&              filePath) :
+                                                      std::string_view                filePath) :
       IDReader< GUM_SCALAR >(infdiag, filePath) {
     GUM_CONSTRUCTOR(BIFXMLIDReader);
     _infdiag_  = infdiag;

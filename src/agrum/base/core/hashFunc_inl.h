@@ -47,6 +47,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -95,6 +96,29 @@ namespace gum {
 
   // Returns the hashed value of a key.
   INLINE Size HashFunc< std::string >::operator()(const std::string& key) const {
+    return castToSize(key) & this->hash_mask_;
+  }
+
+  /// returns an unnormalized hashed key for string_view (heterogeneous lookup)
+  INLINE Size HashFunc< std::string >::castToSize(std::string_view key) {
+    Size        h        = 0;
+    Size        size     = Size(key.size());
+    const char* char_ptr = key.data();
+    const Size* int_ptr  = (const Size*)char_ptr;
+
+    for (; size >= sizeof(Size); size -= sizeof(Size), ++int_ptr) {
+      h = h * HashFuncConst::gold + *int_ptr;
+    }
+
+    for (char_ptr = (const char*)int_ptr; size != Size(0); --size, ++char_ptr) {
+      h = Size(19) * h + Size(*char_ptr);
+    }
+
+    return h;
+  }
+
+  // Non-virtual overload for heterogeneous lookup with string_view.
+  INLINE Size HashFunc< std::string >::operator()(std::string_view key) const {
     return castToSize(key) & this->hash_mask_;
   }
 

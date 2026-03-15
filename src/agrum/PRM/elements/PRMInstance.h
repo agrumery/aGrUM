@@ -96,7 +96,7 @@ namespace gum {
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      PRMInstance(const std::string& name, PRMClass< GUM_SCALAR >& type);
+      PRMInstance(std::string_view name, PRMClass< GUM_SCALAR >& type);
 
       /// Destructor.
       virtual ~PRMInstance();
@@ -132,7 +132,7 @@ namespace gum {
        * Returns true if name matches an PRMAttribute<GUM_SCALAR> in this
        * PRMInstance<GUM_SCALAR>.
        */
-      bool exists(const std::string& name) const;
+      bool exists(std::string_view name) const;
 
       /**
        * @brief Getter on an PRMAttribute<GUM_SCALAR> of this
@@ -160,7 +160,7 @@ namespace gum {
        *
        * @throw NotFound Raised if there is no PRMAttribute<GUM_SCALAR> named n.
        */
-      PRMAttribute< GUM_SCALAR >& get(const std::string& name);
+      PRMAttribute< GUM_SCALAR >& get(std::string_view name);
 
       /**
        * @brief Getter on an PRMAttribute<GUM_SCALAR> of this
@@ -188,7 +188,7 @@ namespace gum {
        *
        * @throw NotFound Raised if there is no PRMClassElement named n.
        */
-      const PRMAttribute< GUM_SCALAR >& get(const std::string& name) const;
+      const PRMAttribute< GUM_SCALAR >& get(std::string_view name) const;
 
       /**
        * Returns the number of attributes in this PRMInstance<GUM_SCALAR>.

@@ -80,7 +80,7 @@ namespace gum {
      * create/destroy
      * the BN from inside the reader.
      */
-    DSLReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
+    DSLReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename);
 
     /**
      * Default destructor.

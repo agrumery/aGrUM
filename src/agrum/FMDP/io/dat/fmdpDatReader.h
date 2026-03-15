@@ -111,7 +111,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   class FMDPDatReader: public FMDPReader< GUM_ELEMENT > {
     public:
-    FMDPDatReader(FMDP< GUM_ELEMENT >* fmdp, const std::string& filename);
+    FMDPDatReader(FMDP< GUM_ELEMENT >* fmdp, std::string_view filename);
     ~FMDPDatReader();
 
     /// Direct access to FMDPDat scanner (mandatory for listener connection)

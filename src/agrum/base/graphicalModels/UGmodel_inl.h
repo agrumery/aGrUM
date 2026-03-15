@@ -69,19 +69,19 @@ namespace gum {
     return graph_.existsEdge(node1, node2);
   }
 
-  INLINE bool UGmodel::existsEdge(const std::string& name1, const std::string& name2) const {
+  INLINE bool UGmodel::existsEdge(std::string_view name1, std::string_view name2) const {
     return existsEdge(idFromName(name1), idFromName(name2));
   }
 
   INLINE const NodeSet& UGmodel::neighbours(const NodeId id) const { return graph_.neighbours(id); }
 
-  INLINE const NodeSet& UGmodel::neighbours(const std::string& name) const {
+  INLINE const NodeSet& UGmodel::neighbours(std::string_view name) const {
     return neighbours(idFromName(name));
   }
 
   INLINE bool UGmodel::exists(NodeId node) const { return graph_.exists(node); }
 
-  INLINE bool UGmodel::exists(const std::string& name) const {
+  INLINE bool UGmodel::exists(std::string_view name) const {
     try {
       return exists(idFromName(name));
     } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
@@ -103,5 +103,5 @@ namespace gum {
     return gum::NodeSet{id};
   }
 
-  INLINE NodeSet UGmodel::family(const std::string& name) const { return family(idFromName(name)); }
+  INLINE NodeSet UGmodel::family(std::string_view name) const { return family(idFromName(name)); }
 } /* namespace gum */

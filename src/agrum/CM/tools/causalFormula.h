@@ -88,7 +88,7 @@ namespace gum {
                   const Set< std::string >&                on,
                   const Set< std::string >&                doing,
                   const Set< std::string >&                knowing     = Set< std::string >{},
-                  const std::string&                       explanation = "");
+                  std::string_view                         explanation = "");
 
     /**
      * @brief Constructs a CausalFormula object (variables given by node ids).
@@ -105,7 +105,7 @@ namespace gum {
                   const NodeSet&                           on,
                   const NodeSet&                           doing,
                   const NodeSet&                           knowing     = NodeSet{},
-                  const std::string&                       explanation = "");
+                  std::string_view                         explanation = "");
 
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
     Tensor< GUM_SCALAR > eval() const;
@@ -114,15 +114,15 @@ namespace gum {
     std::string toString() const;
 
     /// @brief Generates a full LaTeX equation: Query = Formula.
-    std::string toLatex(const std::string& doOperatorPrefix = "do(",
-                        const std::string& doOperatorSuffix = ")") const;
+    std::string toLatex(std::string_view doOperatorPrefix = "do(",
+                        std::string_view doOperatorSuffix = ")") const;
 
     /**
      * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
      * @note This version does not yet support specific variable values.
      */
-    std::string latexQuery(const std::string& doOperatorPrefix = "do(",
-                           const std::string& doOperatorSuffix = ")") const;
+    std::string latexQuery(std::string_view doOperatorPrefix = "do(",
+                           std::string_view doOperatorSuffix = ")") const;
 
     /// @brief Creates a deep copy of the CausalFormula (including its AST).
     std::unique_ptr< CausalFormula< GUM_SCALAR > > copy() const;

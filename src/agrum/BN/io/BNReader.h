@@ -54,6 +54,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -82,7 +83,7 @@ namespace gum {
      * Note that the BN has to be built outside the reader. There is no
      * delegation to create/destroy the BN from inside the reader.
      */
-    BNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
+    BNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename);
 
     /**
      * Default destructor.

@@ -70,15 +70,15 @@ namespace gum {
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      */
-    NumericalDiscreteVariable(const std::string& aName, const std::string& aDesc = "");
+    NumericalDiscreteVariable(std::string_view aName, std::string_view aDesc = "");
 
     /** @brief constructor assigning a domain to the variable
      * @param aName the name of the variable
      * @param aDesc the Description of the variable, if any
      * @param domain the domain (set of values) of the variable
      */
-    NumericalDiscreteVariable(const std::string&           aName,
-                              const std::string&           aDesc,
+    NumericalDiscreteVariable(std::string_view             aName,
+                              std::string_view             aDesc,
                               const std::vector< double >& domain);
 
     /** @brief constructor assigning a domain to the variable
@@ -88,11 +88,11 @@ namespace gum {
      * @param last the last value
      * @param nb the number of values
      */
-    NumericalDiscreteVariable(const std::string& aName,
-                              const std::string& aDesc,
-                              double             first,
-                              double             last,
-                              Size               nb);
+    NumericalDiscreteVariable(std::string_view aName,
+                              std::string_view aDesc,
+                              double           first,
+                              double           last,
+                              Size             nb);
 
     /// Copy constructor
     /**
@@ -145,7 +145,7 @@ namespace gum {
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    Idx index(const std::string& label) const final;
+    Idx index(std::string_view label) const final;
 
     /**
      * gives the index of the value closest to val

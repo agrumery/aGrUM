@@ -51,7 +51,7 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMAttribute< GUM_SCALAR >::PRMAttribute(const std::string& name) :
+    PRMAttribute< GUM_SCALAR >::PRMAttribute(std::string_view name) :
         PRMClassElement< GUM_SCALAR >(name) {
       GUM_CONSTRUCTOR(PRMAttribute);
     }

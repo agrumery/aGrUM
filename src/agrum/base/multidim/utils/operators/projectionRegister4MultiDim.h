@@ -53,6 +53,7 @@
 #include <atomic>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/variables/discreteVariable.h>
@@ -114,9 +115,9 @@ namespace gum {
      * MultiDimImplementations. This constraint is imposed by the C++ typing
      * system
      */
-    void insert(const std::string& projection_name,
-                const std::string& type_multidim,
-                ProjectionPtr      newFunction);
+    void insert(std::string_view projection_name,
+                std::string_view type_multidim,
+                ProjectionPtr    newFunction);
 
     /**
      * @brief removes a given entry from the register
@@ -132,7 +133,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function to remove
      */
-    void erase(const std::string& projection_name, const std::string& type_multidim);
+    void erase(std::string_view projection_name, std::string_view type_multidim);
 
     /**
      * @brief indicates whether a given entry exists in the register
@@ -148,7 +149,7 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function we look for
      */
-    bool exists(const std::string& projection_name, const std::string& type_multidim) const;
+    bool exists(std::string_view projection_name, std::string_view type_multidim) const;
 
     /**
      * @brief returns the specialized projection operator assigned to a given
@@ -168,7 +169,7 @@ namespace gum {
      * @throws NotFound exception is thrown if the operator we look for does
      * not exist within this register.
      */
-    ProjectionPtr get(const std::string& projection_name, const std::string& type_multidim) const;
+    ProjectionPtr get(std::string_view projection_name, std::string_view type_multidim) const;
 
     /// @}
     // ========================================================================
@@ -221,8 +222,8 @@ namespace gum {
   /// A function to more easily register new projection functions in MultiDims
   template < typename GUM_ELEMENT >
   void registerProjection(
-      const std::string&                                                 projection_name,
-      const std::string&                                                 type_multidim,
+      std::string_view                                                   projection_name,
+      std::string_view                                                   type_multidim,
       typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr function);
 
   // a display operator for ProjectionPtrs

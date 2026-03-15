@@ -502,9 +502,11 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string SVED< GUM_SCALAR >::_trim_(const std::string& s) {
-      if (auto pos = s.find_first_of("<"); pos != std::string::npos) { return s.substr(0, pos); }
-      return s;
+    INLINE std::string SVED< GUM_SCALAR >::_trim_(std::string_view s) {
+      if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
+        return std::string{s.substr(0, pos)};
+      }
+      return std::string{s};
     }
 
     template < GUM_Numeric GUM_SCALAR >

@@ -82,7 +82,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::write(const std::string&             filePath,
+  void BNWriter< GUM_SCALAR >::write(std::string_view               filePath,
                                      const IBayesNet< GUM_SCALAR >& bn) {
     _syntacticalCheck(bn);
     _doWrite(filePath, bn);
@@ -116,19 +116,19 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName(const std::string& name) {
+  std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName(std::string_view name) {
     if (!_allowModification_)
-      return name;   // we do anything if the names will be modified when saved ...
+      return std::string{name};   // we do anything if the names will be modified when saved ...
     return _buildNameWithOnlyValidChars(name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::_buildNameWithOnlyValidChars(const std::string& name) {
+  std::string BNWriter< GUM_SCALAR >::_buildNameWithOnlyValidChars(std::string_view name) {
     std::string pat = "[^_a-z0-9]+";
     std::regex  reg(pat, std::regex::icase);
     std::smatch sm;
 
-    std::string out = name;
+    std::string out{name};
     while (std::regex_search(out, sm, reg)) {
       out = std::regex_replace(out, reg, "_");
     }

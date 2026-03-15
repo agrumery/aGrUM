@@ -45,6 +45,7 @@
 
 #include <istream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -131,15 +132,15 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
       private:
-      void _getNextTriplet_(const std::string& str,
-                            std::size_t&       first_letter_token,
-                            std::size_t&       next_token,
-                            std::size_t&       last_letter_token,
-                            std::size_t        from) const;
+      void _getNextTriplet_(std::string_view str,
+                            std::size_t&     first_letter_token,
+                            std::size_t&     next_token,
+                            std::size_t&     last_letter_token,
+                            std::size_t      from) const;
 
-      void _tokenize_(const std::string& str);
+      void _tokenize_(std::string_view str);
 
-      std::size_t _correspondingQuoteMarker_(const std::string& str, std::size_t pos) const;
+      std::size_t _correspondingQuoteMarker_(std::string_view str, std::size_t pos) const;
 
 
       std::string _line_;

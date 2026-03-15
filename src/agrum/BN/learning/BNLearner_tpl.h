@@ -61,7 +61,7 @@ namespace gum {
 
   namespace learning {
     template < GUM_Numeric GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const std::string&                filename,
+    BNLearner< GUM_SCALAR >::BNLearner(std::string_view                  filename,
                                        const std::vector< std::string >& missingSymbols,
                                        const bool                        induceTypes) :
         IBNLearner(filename, missingSymbols, induceTypes) {
@@ -74,7 +74,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
+    BNLearner< GUM_SCALAR >::BNLearner(std::string_view                   filename,
                                        const gum::BayesNet< GUM_SCALAR >& bn,
                                        const std::vector< std::string >&  missing_symbols) :
         IBNLearner(filename, bn, missing_symbols) {
@@ -322,15 +322,15 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     NodeProperty< Sequence< std::string > >
-        BNLearner< GUM_SCALAR >::_labelsFromBN_(const std::string&            filename,
+        BNLearner< GUM_SCALAR >::_labelsFromBN_(std::string_view              filename,
                                                 const BayesNet< GUM_SCALAR >& src) {
-      std::ifstream in(filename, std::ifstream::in);
+      std::ifstream in(std::string(filename), std::ifstream::in);
 
       if ((in.rdstate() & std::ifstream::failbit) != 0) {
         GUM_ERROR(gum::IOError, "File " << filename << " not found")
       }
 
-      CSVParser parser(in, filename);
+      CSVParser parser(in, std::string(filename));
       parser.next();
       auto names = parser.current();
 

@@ -267,7 +267,7 @@ namespace gum {
        * found.
        * @throws TypeError is raised if the translation cannot be found and
        * the translator and the string does not correspond to a number. */
-      virtual DBTranslatedValue translate(const std::string& str) final;
+      virtual DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.

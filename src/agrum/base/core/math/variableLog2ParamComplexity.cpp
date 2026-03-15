@@ -151,7 +151,7 @@ namespace gum {
   }
 
   /// the function used to write the cpp file with the values of log2(Cnr)
-  void VariableLog2ParamComplexity::CnrToFile(const std::string& filename) {
+  void VariableLog2ParamComplexity::CnrToFile(std::string_view filename) {
     // save all the value of cn2
     std::vector< long double > cn2_table(VariableLog2ParamComplexityCTableNSize);
     cn2_table[0] = 1;
@@ -180,7 +180,7 @@ namespace gum {
     }
 
     // write the header of the output file
-    std::ofstream outfile(filename);
+    std::ofstream outfile{std::string(filename)};
     if (!outfile.is_open()) { GUM_ERROR(IOError, "It is impossible to open file " << filename) }
     outfile.precision(20);
     outfile << "namespace gum {\n\n";

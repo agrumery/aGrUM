@@ -66,8 +66,8 @@
 namespace gum {
 
   /// Default constructor
-  INLINE NumericalDiscreteVariable::NumericalDiscreteVariable(const std::string& aName,
-                                                              const std::string& aDesc) :
+  INLINE NumericalDiscreteVariable::NumericalDiscreteVariable(std::string_view aName,
+                                                              std::string_view aDesc) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(NumericalDiscreteVariable);
@@ -131,8 +131,8 @@ namespace gum {
   INLINE VarType NumericalDiscreteVariable::varType() const { return VarType::NUMERICAL; }
 
   /// returns the index of a given label
-  INLINE Idx NumericalDiscreteVariable::index(const std::string& aLabel) const {
-    const auto x   = std::stod(aLabel);
+  INLINE Idx NumericalDiscreteVariable::index(std::string_view aLabel) const {
+    const auto x   = std::stod(std::string{aLabel});
     const Idx  ind = std::lower_bound(_domain_.begin(), _domain_.end(), x) - _domain_.begin();
 
     if (ind != _domain_.size() && _domain_[ind] == x) {

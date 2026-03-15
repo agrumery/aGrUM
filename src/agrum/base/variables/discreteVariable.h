@@ -50,6 +50,7 @@
 
 #include <ostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -84,7 +85,7 @@ namespace gum {
 
     /// Default constructor
 
-    DiscreteVariable(const std::string& aName, const std::string& aDesc);
+    DiscreteVariable(std::string_view aName, std::string_view aDesc);
 
     /// Copy constructor
     /** Copy Constructor.
@@ -153,9 +154,9 @@ namespace gum {
     ///  @warning This operation may have different complexity in different
     /// subclasses.
     /// @throws NotFound
-    Idx operator[](const std::string& label) const { return index(label); };
+    Idx operator[](std::string_view label) const { return index(label); };
 
-    virtual Idx index(const std::string& label) const = 0;
+    virtual Idx index(std::string_view label) const = 0;
 
     /// get the indice-th label. This method is pure virtual.
     /** @param indice the index of the label we wish to return

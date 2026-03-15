@@ -51,6 +51,7 @@
 #define GUM_MARKOV_RANDOM_FIELD_MARGINAL_TARGETED_INFERENCE_H
 
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -130,7 +131,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(const std::string& nodeName);
+    virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName);
 
     /// @}
 
@@ -156,7 +157,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if target is not a NodeId in the Markov net
      */
-    virtual void addTarget(const std::string& nodeName) final;
+    virtual void addTarget(std::string_view nodeName) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
@@ -166,13 +167,13 @@ namespace gum {
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
-    virtual void eraseTarget(const std::string& nodeName) final;
+    virtual void eraseTarget(std::string_view nodeName) final;
 
     /// return true if variable is a (marginal) target
     virtual bool isTarget(NodeId node) const final;
 
     /// return true if variable is a (marginal) target
-    virtual bool isTarget(const std::string& nodeName) const final;
+    virtual bool isTarget(std::string_view nodeName) const final;
 
     /// returns the number of marginal targets
     virtual Size nbrTargets() const noexcept final;
@@ -197,7 +198,7 @@ namespace gum {
      * Compute Shanon's entropy of a node given the observation
      * @see http://en.wikipedia.org/wiki/Information_entropy
      */
-    virtual GUM_SCALAR H(const std::string& nodeName) final;
+    virtual GUM_SCALAR H(std::string_view nodeName) final;
 
     ///@}
 
@@ -225,7 +226,7 @@ namespace gum {
      * @param evs the nodeId of the observed variable
      * @return a Tensor
      */
-    Tensor< GUM_SCALAR > evidenceImpact(const std::string&                target,
+    Tensor< GUM_SCALAR > evidenceImpact(std::string_view                  target,
                                         const std::vector< std::string >& evs);
 
     protected:

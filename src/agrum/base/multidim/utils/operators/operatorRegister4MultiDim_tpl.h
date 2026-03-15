@@ -60,15 +60,15 @@ namespace gum {
   // adds a new entry into the register
   template < typename GUM_ELEMENT >
   void OperatorRegister4MultiDim< GUM_ELEMENT >::insert(
-      const std::string&                                             operation_name,
-      const std::string&                                             type1,
-      const std::string&                                             type2,
+      std::string_view                                               operation_name,
+      std::string_view                                               type1,
+      std::string_view                                               type2,
       typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr newFunction) {
     // insert the new entry
     OperatorSet* theset;
 
     if (!_set_.exists(operation_name)) {
-      theset = _set_.insert(operation_name, new OperatorSet).second;
+      theset = _set_.insert(std::string{operation_name}, new OperatorSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the OperatorRegister4MultiDim will be
@@ -86,24 +86,24 @@ namespace gum {
 
   // removes a given entry from the register
   template < typename GUM_ELEMENT >
-  void OperatorRegister4MultiDim< GUM_ELEMENT >::erase(const std::string& operation_name,
-                                                       const std::string& type1,
-                                                       const std::string& type2) {
+  void OperatorRegister4MultiDim< GUM_ELEMENT >::erase(std::string_view operation_name,
+                                                       std::string_view type1,
+                                                       std::string_view type2) {
     if (!_set_.exists(operation_name)) return;
 
     OperatorSet* theset = _set_[operation_name];
 
-    theset->erase(std::pair< std::string, std::string >(type1, type2));
+    theset->erase(std::pair< std::string, std::string >(std::string{type1}, std::string{type2}));
   }
 
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
-  INLINE bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(const std::string& operation_name,
-                                                               const std::string& type1,
-                                                               const std::string& type2) const {
+  INLINE bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view operation_name,
+                                                               std::string_view type1,
+                                                               std::string_view type2) const {
     if (!_set_.exists(operation_name)) return false;
     const OperatorSet&                          theset = *(_set_[operation_name]);
-    const std::pair< std::string, std::string > key(type1, type2);
+    const std::pair< std::string, std::string > key(std::string{type1}, std::string{type2});
     return theset.exists(key);
   }
 
@@ -111,11 +111,11 @@ namespace gum {
    * MultiDimImplementations */
   template < typename GUM_ELEMENT >
   INLINE typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr
-      OperatorRegister4MultiDim< GUM_ELEMENT >::get(const std::string& operation_name,
-                                                    const std::string& type1,
-                                                    const std::string& type2) const {
+      OperatorRegister4MultiDim< GUM_ELEMENT >::get(std::string_view operation_name,
+                                                    std::string_view type1,
+                                                    std::string_view type2) const {
     const OperatorSet&                          theset = *(_set_[operation_name]);
-    const std::pair< std::string, std::string > key(type1, type2);
+    const std::pair< std::string, std::string > key(std::string{type1}, std::string{type2});
     return theset[key];
   }
 
@@ -159,9 +159,9 @@ namespace gum {
 
   // a function to more easily register new operators in MultiDims
   template < typename GUM_ELEMENT >
-  void registerOperator(const std::string& operation_name,
-                        const std::string& type1,
-                        const std::string& type2,
+  void registerOperator(std::string_view operation_name,
+                        std::string_view type1,
+                        std::string_view type2,
                         typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr function) {
     OperatorRegister4MultiDim< GUM_ELEMENT >::Register().insert(operation_name,
                                                                 type1,

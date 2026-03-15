@@ -226,9 +226,10 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    DBTranslatedValue DBTranslator4ContinuousVariable::translate(const std::string& str) {
+    DBTranslatedValue DBTranslator4ContinuousVariable::translate(std::string_view str) {
+      const std::string s(str);
       // check if the string is actually a number
-      if (!DBCell::isReal(str)) {
+      if (!DBCell::isReal(s)) {
         if (this->isMissingSymbol(str)) {
           return DBTranslatedValue{std::numeric_limits< float >::max()};
         } else
@@ -238,14 +239,14 @@ namespace gum {
       }
 
       // here we know that the string is a number
-      const float number = std::stof(str);
+      const float number = std::stof(s);
 
       // if we are in the range of the variable, return the number
       if (_variable_.belongs(number)) return DBTranslatedValue{number};
 
       // check that this is not a missing value
       if (this->isMissingSymbol(str)) {
-        if (!_status_float_missing_symbols_[str]) { _status_float_missing_symbols_[str] = true; }
+        if (!_status_float_missing_symbols_[s]) { _status_float_missing_symbols_[s] = true; }
         return DBTranslatedValue{std::numeric_limits< float >::max()};
       }
 

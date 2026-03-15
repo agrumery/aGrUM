@@ -81,9 +81,9 @@ namespace gum {
      * @param nbrLabel the domainSize (2 by default)
      */
 
-    LabelizedVariable(const std::string& aName,
-                      const std::string& aDesc    = "",
-                      const Size         nbrLabel = 2);
+    LabelizedVariable(std::string_view aName,
+                      std::string_view aDesc    = "",
+                      const Size       nbrLabel = 2);
 
     /** @brief constructor
      * @param aName the name
@@ -91,8 +91,8 @@ namespace gum {
      * @param labels the labels
      */
 
-    LabelizedVariable(const std::string&                aName,
-                      const std::string&                aDesc,
+    LabelizedVariable(std::string_view                  aName,
+                      std::string_view                  aDesc,
                       const std::vector< std::string >& labels);
 
     /// Copy constructor
@@ -125,7 +125,7 @@ namespace gum {
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    Idx index(const std::string& label) const final;
+    Idx index(std::string_view label) const final;
 
     /// @}
 
@@ -139,7 +139,7 @@ namespace gum {
      * argument
      * @param aLabel The label
      * @return true if the label already exists */
-    bool isLabel(const std::string& aLabel) const;
+    bool isLabel(std::string_view aLabel) const;
 
     /// add a label with a new index (we assume that we will NEVER remove a
     /// label)
@@ -148,7 +148,7 @@ namespace gum {
      * the label
      * @return *this which allows : v.addLabel("1").addLabel("2")...;
      */
-    LabelizedVariable& addLabel(const std::string& aLabel);
+    LabelizedVariable& addLabel(std::string_view aLabel);
 
     /// change a label for this index
     /** @param pos the index of the label to be changed
@@ -160,7 +160,7 @@ namespace gum {
      * variable representation,
      * this method is allowed on const LabelizedVariable.
      */
-    void changeLabel(Idx pos, const std::string& aLabel) const;
+    void changeLabel(Idx pos, std::string_view aLabel) const;
 
     /// erase all the labels
     void eraseLabels();
@@ -171,7 +171,7 @@ namespace gum {
     std::string label(Idx i) const final;
 
     /// return the pos from label
-    Idx posLabel(const std::string& label) const;
+    Idx posLabel(std::string_view label) const;
 
     /// get a numerical representation of the index-the value.
     double numerical(Idx index) const final;

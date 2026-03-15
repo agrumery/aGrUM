@@ -48,7 +48,7 @@
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
-  DSLReader< GUM_SCALAR >::DSLReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename) :
+  DSLReader< GUM_SCALAR >::DSLReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename) :
       BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(DSLReader);
     _bn_         = bn;

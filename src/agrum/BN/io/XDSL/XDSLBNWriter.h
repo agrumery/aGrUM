@@ -118,7 +118,7 @@ namespace gum {
      * @param bn The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     /**

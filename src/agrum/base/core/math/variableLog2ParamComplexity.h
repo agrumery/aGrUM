@@ -52,6 +52,7 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -132,7 +133,7 @@ namespace gum {
     double log2Cnr(const std::size_t r, const double n);
 
     /// the function used to write the cpp file with the values of log2(Cnr)
-    void CnrToFile(const std::string& filename);
+    void CnrToFile(std::string_view filename);
 
     /// indicates whether we wish to use a cache for the Cnr
     void useCache(const bool on_off);

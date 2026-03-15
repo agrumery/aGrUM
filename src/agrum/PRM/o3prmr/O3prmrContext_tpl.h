@@ -57,7 +57,7 @@ namespace gum {
       /* ******************************************************************* */
 
       template < GUM_Numeric GUM_SCALAR >
-      O3prmrContext< GUM_SCALAR >::O3prmrContext(const std::string& filename) {
+      O3prmrContext< GUM_SCALAR >::O3prmrContext(std::string_view filename) {
         m_filename   = filename;
         m_mainImport = 0;
       }
@@ -89,12 +89,12 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrContext< GUM_SCALAR >::setPackage(const std::string& package) {
+      void O3prmrContext< GUM_SCALAR >::setPackage(std::string_view package) {
         m_package = package;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      std::string O3prmrContext< GUM_SCALAR >::aliasToImport(const std::string& alias) {
+      std::string O3prmrContext< GUM_SCALAR >::aliasToImport(std::string_view alias) {
         for (Idx i = Size(m_imports.size()); i > 0; i--)
           if (m_imports[i - 1]->alias == alias) return m_imports[i - 1]->value;
 
@@ -107,9 +107,9 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrContext< GUM_SCALAR >::addImport(int                line,
-                                                  const std::string& import,
-                                                  const std::string& alias) {
+      void O3prmrContext< GUM_SCALAR >::addImport(int             line,
+                                                  std::string_view import,
+                                                  std::string_view alias) {
         m_imports.push_back(new ImportCommand(line, import, alias));
 
         if (alias == "default") m_mainImport = m_imports.back();
@@ -117,7 +117,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void
-          O3prmrContext< GUM_SCALAR >::addImport(int line, const std::string& import, bool ismain) {
+          O3prmrContext< GUM_SCALAR >::addImport(int line, std::string_view import, bool ismain) {
         m_imports.push_back(new ImportCommand(line, import, import));
 
         if (ismain) m_mainImport = m_imports.back();
@@ -175,7 +175,7 @@ namespace gum {
       /* ******************************************************************* */
 
       template < GUM_Numeric GUM_SCALAR >
-      O3prmrSession< GUM_SCALAR >::O3prmrSession(const std::string& name) {
+      O3prmrSession< GUM_SCALAR >::O3prmrSession(std::string_view name) {
         m_name = name;
       }
 
@@ -209,29 +209,29 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addObserve(int                line,
-                                                   const std::string& leftValue,
-                                                   const std::string& rightValue) {
+      void O3prmrSession< GUM_SCALAR >::addObserve(int             line,
+                                                   std::string_view leftValue,
+                                                   std::string_view rightValue) {
         addCommand(new ObserveCommand< GUM_SCALAR >(line, leftValue, rightValue));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addUnobserve(int line, const std::string& value) {
+      void O3prmrSession< GUM_SCALAR >::addUnobserve(int line, std::string_view value) {
         addCommand(new UnobserveCommand< GUM_SCALAR >(line, value));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addQuery(int line, const std::string& value) {
+      void O3prmrSession< GUM_SCALAR >::addQuery(int line, std::string_view value) {
         addCommand(new QueryCommand< GUM_SCALAR >(line, value));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addSetEngine(int line, const std::string& value) {
+      void O3prmrSession< GUM_SCALAR >::addSetEngine(int line, std::string_view value) {
         addCommand(new SetEngineCommand(line, value));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addSetGndEngine(int line, const std::string& value) {
+      void O3prmrSession< GUM_SCALAR >::addSetGndEngine(int line, std::string_view value) {
         addCommand(new SetGndEngineCommand(line, value));
       }
 

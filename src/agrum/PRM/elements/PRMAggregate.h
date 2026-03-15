@@ -51,6 +51,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>
@@ -109,26 +110,27 @@ namespace gum {
        *
        * @throw Raise NotFound exception if no matches is found.
        */
-      static AggregateType str2enum(const std::string& str) {
-        if (toLower(str) == "min") {
+      static AggregateType str2enum(std::string_view str) {
+        const auto strLower = toLower(str);
+        if (strLower == "min") {
           return AggregateType::MIN;
-        } else if (toLower(str) == "max") {
+        } else if (strLower == "max") {
           return AggregateType::MAX;
-        } else if (toLower(str) == "count") {
+        } else if (strLower == "count") {
           return AggregateType::COUNT;
-        } else if (toLower(str) == "exists") {
+        } else if (strLower == "exists") {
           return AggregateType::EXISTS;
-        } else if (toLower(str) == "or") {
+        } else if (strLower == "or") {
           return AggregateType::OR;
-        } else if (toLower(str) == "and") {
+        } else if (strLower == "and") {
           return AggregateType::AND;
-        } else if (toLower(str) == "forall") {
+        } else if (strLower == "forall") {
           return AggregateType::FORALL;
-        } else if (toLower(str) == "amplitude") {
+        } else if (strLower == "amplitude") {
           return AggregateType::AMPLITUDE;
-        } else if (toLower(str) == "median") {
+        } else if (strLower == "median") {
           return AggregateType::MEDIAN;
-        } else if (toLower(str) == "sum") {
+        } else if (strLower == "sum") {
           return AggregateType::SUM;
         } else {
           std::string msg = "Unknown aggregate: ";
@@ -150,7 +152,7 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      PRMAggregate(const std::string& name, AggregateType aggType, const PRMType& rvType);
+      PRMAggregate(std::string_view name, AggregateType aggType, const PRMType& rvType);
 
       /**
        * Default constructor.
@@ -160,7 +162,7 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      PRMAggregate(const std::string& name,
+      PRMAggregate(std::string_view name,
                    AggregateType      aggType,
                    const PRMType&     rvType,
                    Idx                label);
@@ -206,7 +208,7 @@ namespace gum {
        * @brief Set the aggregator's label.
        */
       void setLabel(Idx idx);
-      void setLabel(const std::string& label);
+      void setLabel(std::string_view label);
 
       /**
        * @brief Returns true if the label is defined.

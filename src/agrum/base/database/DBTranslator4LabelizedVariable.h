@@ -297,7 +297,7 @@ namespace gum {
        * @throws SizeError is raised if the number of entries in the dictionary
        * has already reached its maximum.
        */
-      virtual DBTranslatedValue translate(const std::string& str) final;
+      virtual DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.

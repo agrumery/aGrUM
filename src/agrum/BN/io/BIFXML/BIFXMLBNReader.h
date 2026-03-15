@@ -127,7 +127,7 @@ namespace gum {
      * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
-    BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
+    BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filePath);
 
     /**
      * Constructor from an input stream.

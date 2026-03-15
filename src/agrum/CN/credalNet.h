@@ -61,6 +61,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
 #include <agrum/base/core/exceptions.h>
@@ -122,7 +123,7 @@ namespace gum {
        * @param src_max_den The ( optional ) path to a BayesNet which contains
        *upper probabilities.
        */
-      CredalNet(const std::string& src_min_num, const std::string& src_max_den = "");
+      CredalNet(std::string_view src_min_num, std::string_view src_max_den = "");
 
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet.
@@ -155,7 +156,7 @@ namespace gum {
        * @param card The cardinality of the variable
        * @return The \c NodeId of the variable in the network
        */
-      NodeId addVariable(const std::string& name, const Size& card);
+      NodeId addVariable(std::string_view name, const Size& card);
 
       /**
        * @brief Adds an arc between two nodes.
@@ -418,7 +419,7 @@ namespace gum {
        *j)
        *\f$.
        */
-      void saveBNsMinMax(const std::string& min_path, const std::string& max_path) const;
+      void saveBNsMinMax(std::string_view min_path, std::string_view max_path) const;
 
       // PH void vacants ( int &result ) const;
       // PH void notVacants ( int &result ) const;
@@ -663,7 +664,7 @@ namespace gum {
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been
        * called */
-      void _initCNNets_(const std::string& src_min_num, const std::string& src_max_den);
+      void _initCNNets_(std::string_view src_min_num, std::string_view src_max_den);
 
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been

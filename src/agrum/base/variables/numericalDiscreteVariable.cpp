@@ -50,8 +50,8 @@
 namespace gum {
 
   /// constructor assigning a domain to the variable
-  NumericalDiscreteVariable::NumericalDiscreteVariable(const std::string&           aName,
-                                                       const std::string&           aDesc,
+  NumericalDiscreteVariable::NumericalDiscreteVariable(std::string_view             aName,
+                                                       std::string_view             aDesc,
                                                        const std::vector< double >& domain) :
       DiscreteVariable(aName, aDesc) {
     // get the values in increasing order
@@ -69,10 +69,10 @@ namespace gum {
   }
 
   /// constructor assigning a domain to the variable
-  NumericalDiscreteVariable::NumericalDiscreteVariable(const std::string& aName,
-                                                       const std::string& aDesc,
-                                                       double             first,
-                                                       double             last,
+  NumericalDiscreteVariable::NumericalDiscreteVariable(std::string_view aName,
+                                                       std::string_view aDesc,
+                                                       double           first,
+                                                       double           last,
                                                        Size nb) : DiscreteVariable(aName, aDesc) {
     // store the sorted values into a sequence
     if (nb < 2) GUM_ERROR(ArgumentError, "The size of the domain must be >2 (here :" << nb << ").")

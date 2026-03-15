@@ -52,6 +52,7 @@
 
 #include <limits>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -197,7 +198,7 @@ namespace gum {
       /// @{
 
       /// alias for method translate
-      DBTranslatedValue operator<<(const std::string& str);
+      DBTranslatedValue operator<<(std::string_view str);
 
       /// alias for method translateBack
       std::string operator>>(const DBTranslatedValue translated_val);
@@ -249,7 +250,7 @@ namespace gum {
        * @throws TypeError is raised if the translation cannot be found and
        * the insertion of the string into the translator's dictionary fails
        * due to str being impossible to be converted into an appropriate type. */
-      virtual DBTranslatedValue translate(const std::string& str) = 0;
+      virtual DBTranslatedValue translate(std::string_view str) = 0;
 
       /// returns the original value for a given translation
       /** @param translated_val a value that should result from a translation
@@ -326,16 +327,16 @@ namespace gum {
       const Set< std::string >& missingSymbols() const;
 
       /// indicates whether a string corresponds to a missing symbol
-      bool isMissingSymbol(const std::string& str) const;
+      bool isMissingSymbol(std::string_view str) const;
 
       /// returns the variable stored into the translator
       virtual const Variable* variable() const = 0;
 
       /// sets the name of the variable stored into the translator
-      void setVariableName(const std::string& str) const;
+      void setVariableName(std::string_view str) const;
 
       /// sets the name of the variable stored into the translator
-      void setVariableDescription(const std::string& str) const;
+      void setVariableDescription(std::string_view str) const;
 
       /// returns the type of values handled by the translator
       /** @returns either DBTranslatedValueType::DISCRETE if the translator

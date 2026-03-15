@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -49,8 +49,6 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
-#include <agrum/MRF/MarkovRandomField.h>
 
 #include "agrum/base/multidim/tensor.h"
 #include "testunits/gumtest/AgrumTestSuite.h"
@@ -58,11 +56,11 @@
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
-#define GUM_CURRENT_SUITE  InformationTheory
+#define GUM_CURRENT_SUITE  BNInformationTheory
 #define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
-  struct InformationTheoryTestSuite {
+  struct BNInformationTheoryTestSuite {
     public:
     static void testConstructor1() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
@@ -75,7 +73,7 @@ namespace gum_tests {
       auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
       CHECK_EQ(it.entropyX(), it2.entropyX());
       CHECK_EQ(it.entropyY(), it2.entropyY());
-    }   // namespace gum_tests
+    }
 
     static void testCheckSimpleBN() {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
@@ -175,15 +173,6 @@ namespace gum_tests {
       check_this_information_theoryXY(it);
     }
 
-    static void testMRFCheckConsistency() {
-      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--B");
-
-      gum::ShaferShenoyMRFInference ie(&mrf);
-
-      auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theoryXY(it);
-    }
-
     static void testCheckConsistency3points() {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
 
@@ -198,16 +187,6 @@ namespace gum_tests {
       const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
 
       gum::ShaferShenoyInference ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
-      check_this_information_theoryXY(it);
-      check_this_information_theoryXYZ(it);
-    }
-
-    static void testMRFCheckConsistency3points() {
-      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D--E--B");
-
-      gum::ShaferShenoyMRFInference ie(&mrf);
 
       auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
       check_this_information_theoryXY(it);
@@ -418,10 +397,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ShafShenCheckSimpleBNwithEvidence)
   GUM_TEST_ACTIF(CheckConsistency)
   GUM_TEST_ACTIF(ShafShenCheckConsistency)
-  GUM_TEST_ACTIF(MRFCheckConsistency)
   GUM_TEST_ACTIF(CheckConsistency3points)
   GUM_TEST_ACTIF(ShafShenCheckConsistency3points)
-  GUM_TEST_ACTIF(MRFCheckConsistency3points)
   GUM_TEST_ACTIF(CheckCrossInferenceConsistency)
   GUM_TEST_ACTIF(checkMutalInformationOnArc)
   GUM_TEST_ACTIF(checkMutalInformationOnArcWithEvidence)

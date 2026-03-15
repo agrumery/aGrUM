@@ -49,6 +49,7 @@
 #define GUM_INTERFACE_BAYESNET_FACTORY_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/graphicalModels/variableNodeMap.h>
@@ -108,40 +109,40 @@ namespace gum {
     /// @brief Please @see BayesNetFactory<GUM_SCALAR> for documentation.
     virtual const DiscreteVariable& varInBN(NodeId id)                        = 0;
     virtual factory_state           state() const                             = 0;
-    virtual NodeId                  variableId(const std::string& name) const = 0;
+    virtual NodeId                  variableId(std::string_view name) const = 0;
     virtual Size                    cptDomainSize(NodeId n) const             = 0;
 
-    virtual void startNetworkDeclaration()                                                     = 0;
-    virtual void addNetworkProperty(const std::string& propName, const std::string& propValue) = 0;
-    virtual void endNetworkDeclaration()                                                       = 0;
-    virtual void startVariableDeclaration()                                                    = 0;
-    virtual void variableName(const std::string& name)                                         = 0;
-    virtual void variableDescription(const std::string& desc)                                  = 0;
-    virtual void variableType(const VarType& type)                                             = 0;
-    virtual void addModality(const std::string& name)                                          = 0;
-    virtual void addMin(const long& min)                                                       = 0;
-    virtual void addMax(const long& max)                                                       = 0;
-    virtual void setVariableCPTImplementation(MultiDimAdressable* impl)                        = 0;
-    virtual NodeId endVariableDeclaration()                                                    = 0;
-    virtual void   startParentsDeclaration(const std::string& var)                             = 0;
-    virtual void   addParent(const std::string& var)                                           = 0;
-    virtual void   endParentsDeclaration()                                                     = 0;
-    virtual void   startRawProbabilityDeclaration(const std::string& var)                      = 0;
+    virtual void startNetworkDeclaration()                                                         = 0;
+    virtual void addNetworkProperty(std::string_view propName, std::string_view propValue)         = 0;
+    virtual void endNetworkDeclaration()                                                           = 0;
+    virtual void startVariableDeclaration()                                                        = 0;
+    virtual void variableName(std::string_view name)                                               = 0;
+    virtual void variableDescription(std::string_view desc)                                        = 0;
+    virtual void variableType(const VarType& type)                                                 = 0;
+    virtual void addModality(std::string_view name)                                                = 0;
+    virtual void addMin(const long& min)                                                           = 0;
+    virtual void addMax(const long& max)                                                           = 0;
+    virtual void setVariableCPTImplementation(MultiDimAdressable* impl)                            = 0;
+    virtual NodeId endVariableDeclaration()                                                        = 0;
+    virtual void   startParentsDeclaration(std::string_view var)                                   = 0;
+    virtual void   addParent(std::string_view var)                                                 = 0;
+    virtual void   endParentsDeclaration()                                                         = 0;
+    virtual void   startRawProbabilityDeclaration(std::string_view var)                            = 0;
     virtual void   rawConditionalTable(const std::vector< std::string >& variables,
-                                       const std::vector< float >&       rawTable)             = 0;
-    virtual void   rawConditionalTable(const std::vector< float >& rawTable)                   = 0;
-    virtual void   endRawProbabilityDeclaration()                                              = 0;
-    virtual void   startFactorizedProbabilityDeclaration(const std::string& var)               = 0;
-    virtual void   startFactorizedEntry()                                                      = 0;
-    virtual void   endFactorizedEntry()                                                        = 0;
-    virtual void   setParentModality(const std::string& parent, const std::string& modality)   = 0;
-    virtual void   setVariableValuesUnchecked(const std::vector< float >& values)              = 0;
-    virtual void   setVariableValues(const std::vector< float >& values)                       = 0;
-    virtual void   endFactorizedProbabilityDeclaration()                                       = 0;
-    virtual void   setVariable(const DiscreteVariable& var)                                    = 0;
-    virtual void   setVariableCPT(const std::string&  varName,
+                                       const std::vector< float >&       rawTable)                 = 0;
+    virtual void   rawConditionalTable(const std::vector< float >& rawTable)                       = 0;
+    virtual void   endRawProbabilityDeclaration()                                                  = 0;
+    virtual void   startFactorizedProbabilityDeclaration(std::string_view var)                     = 0;
+    virtual void   startFactorizedEntry()                                                          = 0;
+    virtual void   endFactorizedEntry()                                                            = 0;
+    virtual void   setParentModality(std::string_view parent, std::string_view modality)           = 0;
+    virtual void   setVariableValuesUnchecked(const std::vector< float >& values)                  = 0;
+    virtual void   setVariableValues(const std::vector< float >& values)                           = 0;
+    virtual void   endFactorizedProbabilityDeclaration()                                           = 0;
+    virtual void   setVariable(const DiscreteVariable& var)                                        = 0;
+    virtual void   setVariableCPT(std::string_view     varName,
                                   MultiDimAdressable* table,
-                                  bool                redefineParents)                         = 0;
+                                  bool                redefineParents)                             = 0;
     /// @}
 
     private:

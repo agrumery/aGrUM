@@ -55,6 +55,7 @@
 //======================================================================
 #include <iostream>
 #include <string>
+#include <string_view>
 //======================================================================
 #include <agrum/agrum.h>
 //======================================================================
@@ -88,7 +89,7 @@ namespace gum {
      * delegation to create/destroy
      * the FMDP from inside the reader.
      */
-    FMDPReader(FMDP< GUM_ELEMENT >* fmdp, const std::string& filename);
+    FMDPReader(FMDP< GUM_ELEMENT >* fmdp, std::string_view filename);
 
     /**
      * Default destructor.

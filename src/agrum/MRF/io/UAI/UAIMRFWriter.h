@@ -111,7 +111,7 @@ namespace gum {
      * @param MN The Markov net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string& filePath, const IMarkovRandomField< GUM_SCALAR >& MN) final;
+    void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& MN) final;
 
     private:
     /**

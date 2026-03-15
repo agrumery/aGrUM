@@ -83,8 +83,8 @@ namespace gum {
     return double(_minBound_ + static_cast< long >(indice));
   }
 
-  INLINE Idx RangeVariable::index(const std::string& label) const {
-    std::istringstream i(label);
+  INLINE Idx RangeVariable::index(std::string_view label) const {
+    std::istringstream i(std::string{label});
     long               target;
 
     if (!(i >> target)) { GUM_ERROR(NotFound, "Bad label : " << label << " for " << *this) }

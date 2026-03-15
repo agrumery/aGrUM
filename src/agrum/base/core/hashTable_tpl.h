@@ -114,6 +114,16 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
+  INLINE HashTableBucket< Key, Val >*
+      HashTableList< Key, Val >::bucket(std::string_view key) const
+      requires std::same_as< Key, std::string > {
+    for (Bucket* ptr = _deb_list_; ptr != nullptr; ptr = ptr->next)
+      if (ptr->key() == key) return ptr;
+
+    return nullptr;
+  }
+
+  template < typename Key, typename Val >
   INLINE void HashTableList< Key, Val >::erase(HashTableBucket< Key, Val >* ptr) {
     // check that the pointer is not nullptr
     if (ptr == nullptr) { GUM_ERROR(NullElement, "trying to erase a nullptr bucket") }
@@ -534,6 +544,28 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE Val& HashTable< Key, Val >::operator[](const K& key) {
+    std::string_view sv{key};
+    Bucket*          b = _nodes_[_hash_func_(sv)].bucket(sv);
+    if (b == nullptr) { GUM_ERROR(NotFound, "No element with the key <" << sv << ">") }
+    return b->val();
+  }
+
+  template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE const Val& HashTable< Key, Val >::operator[](const K& key) const {
+    std::string_view sv{key};
+    const Bucket*    b = _nodes_[_hash_func_(sv)].bucket(sv);
+    if (b == nullptr) { GUM_ERROR(NotFound, "No element with the key <" << sv << ">") }
+    return b->pair.second;
+  }
+
+  template < typename Key, typename Val >
   INLINE Size HashTable< Key, Val >::size() const noexcept {
     return _nb_elements_;
   }
@@ -549,6 +581,15 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE bool HashTable< Key, Val >::exists(const K& key) const {
+    std::string_view sv{key};
+    return _nodes_[_hash_func_(sv)].bucket(sv) != nullptr;
+  }
+
+  template < typename Key, typename Val >
   INLINE optional_ref< Val > HashTable< Key, Val >::tryGet(const Key& key) {
     Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
     if (bucket == nullptr) return {};
@@ -560,6 +601,28 @@ namespace gum {
     const Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
     if (bucket == nullptr) return {};
     return bucket->pair.second;
+  }
+
+  template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE optional_ref< Val > HashTable< Key, Val >::tryGet(const K& key) {
+    std::string_view sv{key};
+    Bucket*          b = _nodes_[_hash_func_(sv)].bucket(sv);
+    if (b == nullptr) return {};
+    return b->val();
+  }
+
+  template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE optional_ref< const Val > HashTable< Key, Val >::tryGet(const K& key) const {
+    std::string_view sv{key};
+    const Bucket*    b = _nodes_[_hash_func_(sv)].bucket(sv);
+    if (b == nullptr) return {};
+    return optional_ref< const Val >{b->pair.second};
   }
 
   template < typename Key, typename Val >
@@ -779,6 +842,17 @@ namespace gum {
     // get the bucket containing the element to erase
     HashTableBucket< Key, Val >* bucket = _nodes_[hash].bucket(key);
 
+    _erase_(bucket, hash);
+  }
+
+  template < typename Key, typename Val >
+  template < typename K >
+    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+              && !std::same_as< std::decay_t< K >, std::string >)
+  INLINE void HashTable< Key, Val >::erase(const K& key) {
+    std::string_view             sv{key};
+    Size                         hash   = _hash_func_(sv);
+    HashTableBucket< Key, Val >* bucket = _nodes_[hash].bucket(sv);
     _erase_(bucket, hash);
   }
 

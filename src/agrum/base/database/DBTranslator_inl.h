@@ -138,7 +138,7 @@ namespace gum {
     }
 
     /// alias for method translate
-    INLINE DBTranslatedValue DBTranslator::operator<<(const std::string& str) {
+    INLINE DBTranslatedValue DBTranslator::operator<<(std::string_view str) {
       return translate(str);
     }
 
@@ -166,18 +166,18 @@ namespace gum {
     }
 
     /// indicates whether a string corresponds to a missing symbol
-    INLINE bool DBTranslator::isMissingSymbol(const std::string& str) const {
-      return missing_symbols_.exists(str);
+    INLINE bool DBTranslator::isMissingSymbol(std::string_view str) const {
+      return missing_symbols_.exists(std::string(str));
     }
 
     /// sets the name of the variable stored into the translator
-    INLINE void DBTranslator::setVariableName(const std::string& str) const {
-      const_cast< Variable* >(this->variable())->setName(str);
+    INLINE void DBTranslator::setVariableName(std::string_view str) const {
+      const_cast< Variable* >(this->variable())->setName(std::string(str));
     }
 
     /// sets the name of the variable stored into the translator
-    INLINE void DBTranslator::setVariableDescription(const std::string& str) const {
-      const_cast< Variable* >(this->variable())->setDescription(str);
+    INLINE void DBTranslator::setVariableDescription(std::string_view str) const {
+      const_cast< Variable* >(this->variable())->setDescription(std::string(str));
     }
 
     /// indicates whether a translated value corresponds to a missing value

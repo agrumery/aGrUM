@@ -307,7 +307,7 @@ namespace gum {
        * a translator that contains a variable whose domain is {x,y,z,t} as
        * well as a missing value symbol z).
        */
-      virtual DBTranslatedValue translate(const std::string& str) final;
+      virtual DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.

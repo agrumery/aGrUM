@@ -57,15 +57,15 @@ namespace gum {
   // ==========================================================================
   // constructors
   // ==========================================================================
-  RangeVariable::RangeVariable(const std::string& aName,
-                               const std::string& aDesc,
-                               long               minVal,
-                               long               maxVal) :
+  RangeVariable::RangeVariable(std::string_view aName,
+                               std::string_view aDesc,
+                               long             minVal,
+                               long             maxVal) :
       DiscreteVariable(aName, aDesc), _minBound_(minVal), _maxBound_(maxVal) {
     GUM_CONSTRUCTOR(RangeVariable);
   }
 
-  RangeVariable::RangeVariable(const std::string& aName, const std::string& aDesc) :
+  RangeVariable::RangeVariable(std::string_view aName, std::string_view aDesc) :
       DiscreteVariable(aName, aDesc), _minBound_(0), _maxBound_(1) {
     GUM_CONSTRUCTOR(RangeVariable);
   }

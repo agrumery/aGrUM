@@ -61,14 +61,14 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMFormAttribute< GUM_SCALAR >::PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,
-                                                     const std::string&                     name,
+                                                     std::string_view                       name,
                                                      const PRMType&                         type,
                                                      MultiDimImplementation< std::string >* impl) :
         PRMAttribute< GUM_SCALAR >(name), _type_(new PRMType(type)), _cpf_(0), _formulas_(impl),
         _class_(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       _formulas_->add(_type_->variable());
-      this->safeName_ = PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >

@@ -54,7 +54,7 @@ namespace gum {
 
   /// constructor
 
-  INLINE Variable::Variable(const std::string& aName, const std::string& aDesc) :
+  INLINE Variable::Variable(std::string_view aName, std::string_view aDesc) :
       _name_(aName), _description_(aDesc) {   // for debugging purposes
     GUM_CONSTRUCTOR(Variable);
   }
@@ -83,7 +83,7 @@ namespace gum {
 
   /// sets the  _name_ of the variable
 
-  INLINE void Variable::setName(const std::string& theValue) { _name_ = theValue; }
+  INLINE void Variable::setName(std::string_view theValue) { _name_ = theValue; }
 
   /// returns the  _name_ of the variable
 
@@ -91,7 +91,7 @@ namespace gum {
 
   /// sets the  _description_ of the variable
 
-  INLINE void Variable::setDescription(const std::string& theValue) const {
+  INLINE void Variable::setDescription(std::string_view theValue) const {
     _description_ = theValue;
   }
 

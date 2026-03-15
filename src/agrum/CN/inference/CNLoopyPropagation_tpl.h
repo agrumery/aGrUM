@@ -46,9 +46,10 @@
 namespace gum::credal {
 
   template < GUM_Numeric GUM_SCALAR >
-  void CNLoopyPropagation< GUM_SCALAR >::saveInference(const std::string& path) {
-    std::string path_name = path.substr(0, path.size() - 4);
-    path_name             = path_name + ".res";
+  void CNLoopyPropagation< GUM_SCALAR >::saveInference(std::string_view path) {
+    const std::string spath(path);
+    std::string       path_name = spath.substr(0, spath.size() - 4);
+    path_name                   = path_name + ".res";
 
     std::ofstream res(path_name.c_str(), std::ios::out | std::ios::trunc);
 
@@ -60,9 +61,9 @@ namespace gum::credal {
     }
 
 
-    if (std::string ext = path.substr(path.size() - 3, path.size());
+    if (std::string ext = spath.substr(spath.size() - 3, spath.size());
         std::strcmp(ext.c_str(), "evi") == 0) {
-      std::ifstream evi(path.c_str(), std::ios::in);
+      std::ifstream evi(spath.c_str(), std::ios::in);
       std::string   ligne;
 
       if (!evi.good()) {

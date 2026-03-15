@@ -76,9 +76,9 @@
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeId build_node(gum::BayesNet< GUM_SCALAR >& bn,
-                    const std::string&           node,
-                    const std::string&           default_domain) {
-    auto v = fastVariable< GUM_SCALAR >(node, default_domain);
+                    std::string_view             node,
+                    std::string_view             default_domain) {
+    auto v = fastVariable< GUM_SCALAR >(std::string{node}, std::string(default_domain));
 
     NodeId res;
     if (bn.exists(v->name())) res = bn.idFromName(v->name());
@@ -87,14 +87,14 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                               Size               domainSize) {
+  BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
+                                                               Size             domainSize) {
     return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(const std::string& dotlike,
-                                                               const std::string& domain) {
+  BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
+                                                               std::string_view domain) {
     gum::BayesNet< GUM_SCALAR > bn;
 
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
@@ -130,7 +130,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BayesNet< GUM_SCALAR >::BayesNet(std::string name) : IBayesNet< GUM_SCALAR >(name) {
+  INLINE BayesNet< GUM_SCALAR >::BayesNet(std::string_view name) : IBayesNet< GUM_SCALAR >(name) {
     GUM_CONSTRUCTOR(BayesNet)
   }
 
@@ -169,14 +169,14 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableName(NodeId id, const std::string& new_name) {
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
     _varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId             id,
-                                                          const std::string& old_label,
-                                                          const std::string& new_label) {
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId           id,
+                                                          std::string_view old_label,
+                                                          std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED)
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
@@ -203,9 +203,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const std::string& fast_description,
-                                            unsigned int       default_nbrmod) {
-    auto v = fastVariable< GUM_SCALAR >(fast_description, default_nbrmod);
+  INLINE NodeId BayesNet< GUM_SCALAR >::add(std::string_view fast_description,
+                                            unsigned int     default_nbrmod) {
+    auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);
   }
@@ -244,13 +244,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::idFromName(const std::string& name) const {
+  INLINE NodeId BayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
     return _varMap_.idFromName(name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE const DiscreteVariable&
-      BayesNet< GUM_SCALAR >::variableFromName(const std::string& name) const {
+      BayesNet< GUM_SCALAR >::variableFromName(std::string_view name) const {
     return _varMap_.variableFromName(name);
   }
 
@@ -307,7 +307,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::addArc(const std::string& tail, const std::string& head) {
+  INLINE void BayesNet< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
     try {
       addArc(this->idFromName(tail), this->idFromName(head));
     } catch (DuplicateElement const&) {
@@ -633,7 +633,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(const std::string& name, Tensor< GUM_SCALAR >* newPot) {
+  void BayesNet< GUM_SCALAR >::changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot) {
     changeTensor(idFromName(name), newPot);
   }
 

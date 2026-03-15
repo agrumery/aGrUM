@@ -143,7 +143,7 @@ namespace gum {
      */
     const Tensor< GUM_SCALAR >& cpt(NodeId varId) const final;
 
-    const Tensor< GUM_SCALAR >& cpt(const std::string& name) const {
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const {
       return cpt(idFromName(name));
     };
 
@@ -159,7 +159,7 @@ namespace gum {
      */
     virtual const DiscreteVariable& variable(NodeId id) const final;
 
-    virtual const DiscreteVariable& variable(const std::string& name) const final {
+    virtual const DiscreteVariable& variable(std::string_view name) const final {
       return variable(idFromName(name));
     };
 
@@ -175,14 +175,14 @@ namespace gum {
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual NodeId idFromName(const std::string& name) const final;
+    virtual NodeId idFromName(std::string_view name) const final;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable& variableFromName(const std::string& name) const final;
+    virtual const DiscreteVariable& variableFromName(std::string_view name) const final;
 
     /**
      * creates a dot representing the whole referred BN hilighting the fragment.
@@ -200,7 +200,7 @@ namespace gum {
      */
     bool isInstalledNode(NodeId id) const;
 
-    bool isInstalledNode(const std::string& name) const {
+    bool isInstalledNode(std::string_view name) const {
       return isInstalledNode(idFromName(name));
     };
 
@@ -212,7 +212,7 @@ namespace gum {
      */
     void installNode(NodeId id);
 
-    void installNode(const std::string& name) { installNode(_bn_.idFromName(name)); }
+    void installNode(std::string_view name) { installNode(_bn_.idFromName(name)); }
 
     /**
      * install a node and all its ascendants
@@ -222,7 +222,7 @@ namespace gum {
      */
     void installAscendants(NodeId id);
 
-    void installAscendants(const std::string& name) { installAscendants(_bn_.idFromName(name)); }
+    void installAscendants(std::string_view name) { installAscendants(_bn_.idFromName(name)); }
 
     /**
      * uninstall a node referenced by its nodeId
@@ -231,7 +231,7 @@ namespace gum {
      */
     void uninstallNode(NodeId id);
 
-    void uninstallNode(const std::string& name) { uninstallNode(idFromName(name)); }
+    void uninstallNode(std::string_view name) { uninstallNode(idFromName(name)); }
 
     /**
      * install a local marginal BY COPY for a node into the fragment.
@@ -245,7 +245,7 @@ namespace gum {
      **/
     void installMarginal(NodeId id, const Tensor< GUM_SCALAR >& pot);
 
-    void installMarginal(const std::string& name, const Tensor< GUM_SCALAR >& pot) {
+    void installMarginal(std::string_view name, const Tensor< GUM_SCALAR >& pot) {
       installMarginal(_bn_.idFromName(name), pot);
     }
 
@@ -263,7 +263,7 @@ namespace gum {
      **/
     void installCPT(NodeId id, const Tensor< GUM_SCALAR >& pot);
 
-    void installCPT(const std::string& name, const Tensor< GUM_SCALAR >& pot) {
+    void installCPT(std::string_view name, const Tensor< GUM_SCALAR >& pot) {
       installCPT(_bn_.idFromName(name), pot);
     };
 
@@ -276,7 +276,7 @@ namespace gum {
      */
     void uninstallCPT(NodeId id);
 
-    void uninstallCPT(const std::string& name) { uninstallCPT(idFromName(name)); }
+    void uninstallCPT(std::string_view name) { uninstallCPT(idFromName(name)); }
 
     /**
      * returns true if the nodeId's (local or not) cpt is consistent with its
@@ -286,7 +286,7 @@ namespace gum {
      */
     bool checkConsistency(NodeId id) const;
 
-    bool checkConsistency(const std::string& name) const {
+    bool checkConsistency(std::string_view name) const {
       return checkConsistency(idFromName(name));
     }
 

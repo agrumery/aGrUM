@@ -66,7 +66,7 @@ namespace gum {
   class MarkovBlanket {
     public:
     MarkovBlanket(const DAGmodel& m, NodeId n, int level = 1);
-    MarkovBlanket(const DAGmodel& m, const std::string& name, int level = 1);
+    MarkovBlanket(const DAGmodel& m, std::string_view name, int level = 1);
 
     ~MarkovBlanket();
 

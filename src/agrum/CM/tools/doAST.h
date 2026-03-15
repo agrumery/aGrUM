@@ -51,6 +51,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -89,7 +90,7 @@ namespace gum {
   class ASTtree {
     public:
     /// Construct an AST node with a descriptive `type` string (used in dumps).
-    explicit ASTtree(const std::string& type);
+    explicit ASTtree(std::string_view type);
 
     virtual ~ASTtree() { GUM_DESTRUCTOR(ASTtree) };
 
@@ -107,7 +108,7 @@ namespace gum {
      * @brief Human-readable multi-line rendering (for debugging / logs).
      * @param prefix indentation prefix propagated to children
      */
-    virtual std::string toString(const std::string& prefix = "") const = 0;
+    virtual std::string toString(std::string_view prefix = "") const = 0;
 
     /**
      * @brief LaTeX rendering with full name protection.
@@ -152,7 +153,7 @@ namespace gum {
     std::string                  _type;
 
     /// @brief Sanitize a single variable name for LaTeX and ensure uniqueness.
-    static std::string _latexCorrect(const std::string&             srcName,
+    static std::string _latexCorrect(std::string_view               srcName,
                                      HashTable< std::string, int >& nameOccur);
     /// @brief Sanitize a set of variable names for LaTeX and ensure uniqueness.
     static std::vector< std::string > _latexCorrect(const Set< std::string >&      srcNames,
@@ -177,7 +178,7 @@ namespace gum {
      * @param op1 left operand (owned)
      * @param op2 right operand (owned)
      */
-    ASTBinaryOp(const std::string&                       typ,
+    ASTBinaryOp(std::string_view                         typ,
                 std::unique_ptr< ASTtree< GUM_SCALAR > > op1,
                 std::unique_ptr< ASTtree< GUM_SCALAR > > op2);
 
@@ -193,7 +194,7 @@ namespace gum {
     const ASTtree< GUM_SCALAR >& op2() const { return *_op2; }
 
     /// @copydoc ASTtree::toString
-    std::string toString(const std::string& prefix = "") const override;
+    std::string toString(std::string_view prefix = "") const override;
 
     protected:
     std::unique_ptr< ASTtree< GUM_SCALAR > > _op1, _op2;
@@ -325,7 +326,7 @@ namespace gum {
     const Set< std::string >& knw() const noexcept { return _knw; }
 
     /// @copydoc ASTtree::toString
-    std::string toString(const std::string& prefix = "") const override;
+    std::string toString(std::string_view prefix = "") const override;
     /// @copydoc ASTtree::protectToLatex
     std::string protectToLatex(HashTable< std::string, int >& nameOccur) const override;
     /// @copydoc ASTtree::fastToLatex
@@ -372,7 +373,7 @@ namespace gum {
     const Set< std::string >& varNames() const noexcept { return _varNames; }
 
     /// @copydoc ASTtree::toString
-    std::string toString(const std::string& prefix = "") const override;
+    std::string toString(std::string_view prefix = "") const override;
     /// @copydoc ASTtree::protectToLatex
     std::string protectToLatex(HashTable< std::string, int >& nameOccur) const override;
     /// @copydoc ASTtree::fastToLatex
@@ -402,7 +403,7 @@ namespace gum {
   class ASTsum: public ASTtree< GUM_SCALAR > {
     public:
     /// Single-variable summation \( \sum_{\text{var}} \text{term} \).
-    ASTsum(const std::string& var, std::unique_ptr< ASTtree< GUM_SCALAR > > term);
+    ASTsum(std::string_view var, std::unique_ptr< ASTtree< GUM_SCALAR > > term);
 
     /**
      * @brief Multi-variable overload: recursively builds nested sums in the
@@ -414,7 +415,7 @@ namespace gum {
     const ASTtree< GUM_SCALAR >& term() const { return *_term; }
 
     /// @copydoc ASTtree::toString
-    std::string toString(const std::string& prefix = "") const override;
+    std::string toString(std::string_view prefix = "") const override;
     /// @copydoc ASTtree::protectToLatex
     std::string protectToLatex(HashTable< std::string, int >& nameOccur) const override;
     /// @copydoc ASTtree::fastToLatex

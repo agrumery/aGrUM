@@ -63,10 +63,11 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    INLINE DBTranslatedValue DBTranslator4IntegerVariable::translate(const std::string& str) {
-      const bool b = isInteger(str);
+    INLINE DBTranslatedValue DBTranslator4IntegerVariable::translate(std::string_view str) {
+      const bool        b(isInteger(str));
+      const std::string s(str);
       if (b)
-        if (this->back_dico_.existsSecond(str)) return {this->back_dico_.first(str)};
+        if (this->back_dico_.existsSecond(s)) return {this->back_dico_.first(s)};
 
       if (this->isMissingSymbol(str))
         return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};

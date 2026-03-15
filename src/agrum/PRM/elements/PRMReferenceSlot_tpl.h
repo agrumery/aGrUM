@@ -53,12 +53,12 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(const std::string&                      name,
+    PRMReferenceSlot< GUM_SCALAR >::PRMReferenceSlot(std::string_view                        name,
                                                      PRMClassElementContainer< GUM_SCALAR >& type,
                                                      bool isArray) :
         PRMClassElement< GUM_SCALAR >(name), _slotType_(type), _isArray_(isArray) {
       GUM_CONSTRUCTOR(PRMReferenceSlot);
-      this->safeName_ = PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = (PRMObject::LEFT_CAST() + type.name() + PRMObject::RIGHT_CAST()).append(name);
     }
 
     // Destructor.

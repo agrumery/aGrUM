@@ -50,6 +50,8 @@
 #define GUM_FORM_ATTRIBUTE_H
 
 
+#include <string_view>
+
 #include <agrum/PRM/elements/PRMClass.h>
 
 namespace gum {
@@ -68,7 +70,7 @@ namespace gum {
     class PRMFormAttribute: public PRMAttribute< GUM_SCALAR > {
       public:
       PRMFormAttribute(const PRMClass< GUM_SCALAR >&          c,
-                       const std::string&                     name,
+                       std::string_view                       name,
                        const PRMType&                         type,
                        MultiDimImplementation< std::string >* impl
                        = new MultiDimArray< std::string >());

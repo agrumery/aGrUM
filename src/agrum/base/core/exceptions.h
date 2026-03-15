@@ -52,6 +52,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/core/types.h>
@@ -127,7 +128,7 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    explicit Exception(std::string aMsg = "", std::string aType = "Generic error");
+    explicit Exception(std::string_view aMsg = "", std::string_view aType = "Generic error");
 
     Exception(const Exception& e);
 
@@ -524,10 +525,10 @@ namespace gum {
   class HedgeException;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  std::string _createMsg_(const std::string& filename,
-                          const std::string& function,
-                          int                line,
-                          const std::string& msg);
+  std::string _createMsg_(std::string_view filename,
+                          std::string_view function,
+                          int              line,
+                          std::string_view msg);
 
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
 

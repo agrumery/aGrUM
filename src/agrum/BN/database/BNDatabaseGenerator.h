@@ -87,7 +87,9 @@
 #ifndef GUM_BN_DATABASE_GENERATOR
 #define GUM_BN_DATABASE_GENERATOR
 
+#include <filesystem>
 #include <fstream>
+#include <string_view>
 
 #include <agrum/base/core/progressNotification.h>
 #include <agrum/base/database/databaseTable.h>
@@ -159,11 +161,11 @@ namespace gum {
       void setDiscretizedLabelModeInterval();
 
       /// generates csv representing the generated database
-      void toCSV(const std::string& csvFileURL,
-                 bool               useLabels     = true,
-                 bool               append        = false,
-                 std::string        csvSeparator  = ",",
-                 bool               checkOnAppend = false) const;
+      void toCSV(std::string_view csvFileURL,
+                 bool             useLabels     = true,
+                 bool             append        = false,
+                 std::string      csvSeparator  = ",",
+                 bool             checkOnAppend = false) const;
 
       /// generates a DatabaseVectInRAM
       DatabaseTable toDatabaseTable(bool useLabels = true) const;
@@ -185,7 +187,7 @@ namespace gum {
       void setVarOrder(const std::vector< std::string >& varOrder);
 
       /// change columns order according to a csv file
-      void setVarOrderFromCSV(const std::string& csvFileURL, const std::string& csvSeparator = ",");
+      void setVarOrderFromCSV(std::string_view csvFileURL, std::string_view csvSeparator = ",");
 
       /// set columns in topoligical order
       void setTopologicalVarOrder();
@@ -238,12 +240,12 @@ namespace gum {
       std::string _label_(const std::vector< Idx >& row, const DiscreteVariable& v, Idx i) const;
 
       /// returns varOrder from a csv file
-      std::vector< Idx > _varOrderFromCSV_(const std::string& csvFileURL,
-                                           const std::string& csvSeparator = ",") const;
+      std::vector< Idx > _varOrderFromCSV_(std::string_view csvFileURL,
+                                           std::string_view csvSeparator = ",") const;
 
       /// returns varOrder from a csv file
-      std::vector< Idx > _varOrderFromCSV_(std::ifstream&     csvFile,
-                                           const std::string& csvSeparator = ",") const;
+      std::vector< Idx > _varOrderFromCSV_(std::ifstream&   csvFile,
+                                           std::string_view csvSeparator = ",") const;
 
       // forbidden copies / moves
       BNDatabaseGenerator(const BNDatabaseGenerator&)            = delete;

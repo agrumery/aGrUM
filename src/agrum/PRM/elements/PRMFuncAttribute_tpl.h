@@ -53,7 +53,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-        const std::string&                    name,
+        std::string_view                      name,
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {

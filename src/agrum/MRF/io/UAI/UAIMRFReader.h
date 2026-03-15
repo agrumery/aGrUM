@@ -53,6 +53,7 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -90,7 +91,7 @@ namespace gum {
      * create/destroy
      * the MRF from inside the reader.
      */
-    UAIMRFReader(MarkovRandomField< GUM_SCALAR >* MN, const std::string& filename);
+    UAIMRFReader(MarkovRandomField< GUM_SCALAR >* MN, std::string_view filename);
 
     /**
      * Default destructor.
@@ -159,9 +160,9 @@ namespace gum {
     bool _ioerror_;
 
     void _addFatalError_(Idx lig, Idx col,
-                         const std::string& s);   // throw an exception
-    void _addError_(Idx lig, Idx col, const std::string& s);
-    void _addWarning_(Idx lig, Idx col, const std::string& s);
+                         std::string_view s);   // throw an exception
+    void _addError_(Idx lig, Idx col, std::string_view s);
+    void _addWarning_(Idx lig, Idx col, std::string_view s);
   };
 
 

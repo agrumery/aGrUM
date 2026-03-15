@@ -54,6 +54,7 @@
 #include <list>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/PRM/generator/layerGenerator.h>
@@ -147,21 +148,21 @@ namespace gum {
       std::string _generateType_(PRMFactory< GUM_SCALAR >& f);
 
       void _generateInterfaces_(PRMFactory< GUM_SCALAR >& f,
-                                const std::string&        type,
+                                std::string_view          type,
                                 std::vector< MyData >&    l);
 
       void _generateClasses_(PRMFactory< GUM_SCALAR >&                                f,
-                             const std::string&                                       type,
+                             std::string_view                                         type,
                              std::vector< typename ClusteredLayerGenerator::MyData >& l);
 
       void _generateCluster_(PRMFactory< GUM_SCALAR >&                                f,
-                             const std::string&                                       type,
+                             std::string_view                                         type,
                              std::vector< typename ClusteredLayerGenerator::MyData >& l,
                              Size                                                     lvl,
                              Set< std::string >&                                      i);
 
       void _generateClass_(PRMFactory< GUM_SCALAR >&                                f,
-                           const std::string&                                       type,
+                           std::string_view                                         type,
                            std::vector< typename ClusteredLayerGenerator::MyData >& l,
                            Size                                                     lvl,
                            Set< std::string >&                                      i);

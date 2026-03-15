@@ -106,7 +106,7 @@ namespace gum {
      * Return true if this node exists in this graphical model.
      */
     bool exists(NodeId node) const final;
-    bool exists(const std::string& name) const final;
+    bool exists(std::string_view name) const final;
 
     /// @}
 
@@ -122,7 +122,7 @@ namespace gum {
      * @return true if the arc exists
      */
     bool existsArc(const NodeId tail, const NodeId head) const;
-    bool existsArc(const std::string& nametail, const std::string& namehead) const;
+    bool existsArc(std::string_view nametail, std::string_view namehead) const;
 
     /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of nodes returned may be empty if no arc within the
@@ -131,7 +131,7 @@ namespace gum {
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
     const NodeSet& parents(const NodeId id) const;
-    const NodeSet& parents(const std::string& name) const;
+    const NodeSet& parents(std::string_view name) const;
 
     /// returns the parents of a set of nodes
     NodeSet parents(const NodeSet& ids) const;
@@ -143,7 +143,7 @@ namespace gum {
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
     NodeSet family(const NodeId id) const final;
-    NodeSet family(const std::string& name) const final;
+    NodeSet family(std::string_view name) const final;
 
     /// returns the set of nodes with arc outgoing from a given node
     /** Note that the set of nodes returned may be empty if no node
@@ -152,7 +152,7 @@ namespace gum {
      * @param name the name of the node which is the tail of an arc with the
      * returned nodes */
     const NodeSet& children(const NodeId id) const;
-    const NodeSet& children(const std::string& name) const;
+    const NodeSet& children(std::string_view name) const;
 
     /// returns the children of a set of nodes
     NodeSet children(const NodeSet& ids) const;
@@ -166,7 +166,7 @@ namespace gum {
      * @param name the name of the node which is the tail of a directed path with
      * the returned nodes */
     NodeSet descendants(const NodeId id) const;
-    NodeSet descendants(const std::string& name) const;
+    NodeSet descendants(std::string_view name) const;
 
     /// returns the set of nodes with directed path ingoing to a given node
     /** Note that the set of nodes returned may be empty if no path within the
@@ -176,7 +176,7 @@ namespace gum {
      * @param name the name of the node which is the head of a directed path with
      * the returned nodes */
     NodeSet ancestors(const NodeId id) const;
-    NodeSet ancestors(const std::string& name) const;
+    NodeSet ancestors(std::string_view name) const;
     /// @}
 
     /// @name Graphical methods
@@ -199,8 +199,8 @@ namespace gum {
      */
     bool isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const final;
 
-    bool isIndependent(const std::string&                Xname,
-                       const std::string&                Yname,
+    bool isIndependent(std::string_view                  Xname,
+                       std::string_view                  Yname,
                        const std::vector< std::string >& Znames) const {
       return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
     };
@@ -249,7 +249,7 @@ namespace gum {
      *
      * i.e. P(target| soids)=P(target|@return)
      */
-    NodeSet minimalCondSet(const std::string&                target,
+    NodeSet minimalCondSet(std::string_view                  target,
                            const std::vector< std::string >& soids) const;
 
 

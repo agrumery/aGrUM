@@ -52,8 +52,10 @@
 #ifndef GUM_BN_WRITER_H
 #define GUM_BN_WRITER_H
 
+#include <filesystem>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
@@ -118,7 +120,7 @@ namespace gum {
      * @param bn The Bayesian network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn);
+    void write(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn);
 
     GUM_NODISCARD bool isModificationAllowed() const;
     void               setAllowModification(bool am);
@@ -142,7 +144,7 @@ namespace gum {
      * @param bn The Bayesian network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) = 0;
+    virtual void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) = 0;
 
     ///@{
 
@@ -154,8 +156,8 @@ namespace gum {
     virtual void _syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn);
 
     void        _validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn);
-    std::string _onlyValidCharsInName(const std::string& name);
-    std::string _buildNameWithOnlyValidChars(const std::string& name);
+    std::string _onlyValidCharsInName(std::string_view name);
+    std::string _buildNameWithOnlyValidChars(std::string_view name);
 
     ///}
 

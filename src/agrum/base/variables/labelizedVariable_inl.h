@@ -75,25 +75,25 @@ namespace gum {
   }
 
   // add a label with a new index (we assume that we will NEVER remove a label)
-  INLINE LabelizedVariable& LabelizedVariable::addLabel(const std::string& aLabel) {
-    _labels_.insert(aLabel);
+  INLINE LabelizedVariable& LabelizedVariable::addLabel(std::string_view aLabel) {
+    _labels_.insert(std::string(aLabel));
 
     return *this;
   }
 
-  INLINE void LabelizedVariable::changeLabel(Idx pos, const std::string& aLabel) const {
+  INLINE void LabelizedVariable::changeLabel(Idx pos, std::string_view aLabel) const {
     if (_labels_[pos] == aLabel) return;
 
     if (isLabel(aLabel)) GUM_ERROR(DuplicateElement, "Label '" << aLabel << "' already exists")
 
-    _labels_.setAtPos(pos, aLabel);
+    _labels_.setAtPos(pos, std::string{aLabel});
   }
 
   // Default constructor
 
-  INLINE LabelizedVariable::LabelizedVariable(const std::string& aName,
-                                              const std::string& aDesc,
-                                              const Size         nbrLabel) :
+  INLINE LabelizedVariable::LabelizedVariable(std::string_view aName,
+                                              std::string_view aDesc,
+                                              const Size       nbrLabel) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
@@ -106,8 +106,8 @@ namespace gum {
   }
 
   INLINE
-  LabelizedVariable::LabelizedVariable(const std::string&                aName,
-                                       const std::string&                aDesc,
+  LabelizedVariable::LabelizedVariable(std::string_view                  aName,
+                                       std::string_view                  aDesc,
                                        const std::vector< std::string >& labels) :
       DiscreteVariable(aName, aDesc) {
     // for debugging purposes
@@ -117,8 +117,8 @@ namespace gum {
       _labels_.insert(labels[i]);
   }
 
-  INLINE Idx LabelizedVariable::posLabel(const std::string& label) const {
-    return _labels_.pos(label);
+  INLINE Idx LabelizedVariable::posLabel(std::string_view label) const {
+    return _labels_.pos(std::string{label});
   }
 
   // Copy constructor
@@ -148,8 +148,8 @@ namespace gum {
   }
 
   // indicates whether the variable already has the label passed in argument
-  INLINE bool LabelizedVariable::isLabel(const std::string& aLabel) const {
-    return _labels_.exists(aLabel);
+  INLINE bool LabelizedVariable::isLabel(std::string_view aLabel) const {
+    return _labels_.exists(std::string{aLabel});
   }
 
   // returns the ith label
@@ -162,9 +162,9 @@ namespace gum {
   INLINE Idx LabelizedVariable::closestIndex(double val) const {
       GUM_ERROR(NotImplementedYet, "closestIndex has no meaning for LabelizedVariable")}
 
-  INLINE Idx LabelizedVariable::index(const std::string& aLabel) const {
+  INLINE Idx LabelizedVariable::index(std::string_view aLabel) const {
     try {
-      return _labels_.pos(aLabel);
+      return _labels_.pos(std::string{aLabel});
     } catch (...) {
       GUM_ERROR(OutOfBounds, "label '" << aLabel << "' is unknown in " << this->toString())
     }

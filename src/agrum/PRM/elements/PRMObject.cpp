@@ -59,7 +59,7 @@ namespace gum {
     // Constructor.
     // @param type The type of this object.
     // ==========================================================================
-    PRMObject::PRMObject(const std::string& name) : _name_(name) { GUM_CONSTRUCTOR(PRMObject); }
+    PRMObject::PRMObject(std::string_view name) : _name_(name) { GUM_CONSTRUCTOR(PRMObject); }
 
     // ==========================================================================
     // Copy constructor.

@@ -88,7 +88,7 @@ namespace gum {
        * @throw DupplicateElement Raised if c contains already an element with
        *                          the same name.
        */
-      explicit PRMClassElement(const std::string& name);
+      explicit PRMClassElement(std::string_view name);
 
       /**
        * Copy constructor.

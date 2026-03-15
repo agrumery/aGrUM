@@ -95,7 +95,7 @@ namespace gum_tests {
       std::cout << _nbr_ << ": error = " << b << std::endl;
     }
 
-    void whenStop(const void* buffer, const std::string& s) { _mess_ = s; }
+    void whenStop(const void* buffer, std::string_view s) { _mess_ = s; }
 
     int getNbr() { return _nbr_; }
 

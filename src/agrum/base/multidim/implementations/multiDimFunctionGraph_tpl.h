@@ -595,7 +595,7 @@ namespace gum {
   // Sets the name of the table represented by this structure.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::setTableName(
-      const std::string& name) {
+      std::string_view name) {
     _tableName_ = name;
   }
 

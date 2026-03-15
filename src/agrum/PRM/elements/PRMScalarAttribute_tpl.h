@@ -60,7 +60,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMScalarAttribute< GUM_SCALAR >::PRMScalarAttribute(
-        const std::string&                    name,
+        std::string_view                      name,
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMAttribute< GUM_SCALAR >(name), _type_(new PRMType(type)),
@@ -68,7 +68,7 @@ namespace gum {
       GUM_CONSTRUCTOR(PRMScalarAttribute);
       _cpf_->add(_type_->variable());
 
-      this->safeName_ = PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST() + name;
+      this->safeName_ = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
