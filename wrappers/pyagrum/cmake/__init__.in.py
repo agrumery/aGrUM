@@ -57,12 +57,12 @@ from .pyagrum import statsObj
 from .pyagrum import fastGraph
 from .pyagrum import config
 from .pyagrum import (
-    DiscretizedVariable,
-    LabelizedVariable,
-    RangeVariable,
-    DiscreteVariable,
-    IntegerVariable,
-    NumericalDiscreteVariable,
+  DiscretizedVariable,
+  LabelizedVariable,
+  RangeVariable,
+  DiscreteVariable,
+  IntegerVariable,
+  NumericalDiscreteVariable,
 )
 from .pyagrum import Tensor, Instantiation, Tensor
 from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
@@ -71,59 +71,59 @@ from .pyagrum import MeekRules
 from .pyagrum import ApproximationScheme
 from .pyagrum import fastVariable
 from .pyagrum import (
-    initRandom,
-    randomProba,
-    randomDistribution,
-    randomGeneratorSeed,
-    randomValue,
+  initRandom,
+  randomProba,
+  randomDistribution,
+  randomGeneratorSeed,
+  randomValue,
 )
 from .pyagrum import (
-    isOMP,
-    getNumberOfThreads,
-    getMaxNumberOfThreads,
-    getNumberOfLogicalProcessors,
-    setNumberOfThreads,
+  isOMP,
+  getNumberOfThreads,
+  getMaxNumberOfThreads,
+  getNumberOfLogicalProcessors,
+  setNumberOfThreads,
 )
 from .pyagrum import (
-    VarType_DISCRETIZED,
-    VarType_LABELIZED,
-    VarType_RANGE,
-    VarType_INTEGER,
-    VarType_NUMERICAL,
+  VarType_DISCRETIZED,
+  VarType_LABELIZED,
+  VarType_RANGE,
+  VarType_INTEGER,
+  VarType_NUMERICAL,
 )
 from .pyagrum import (
-    DefaultInLabel,
-    DuplicateElement,
-    DuplicateLabel,
-    GumException,
-    FatalError,
-    FormatNotFound,
-    GraphError,
-    IOError,
-    InvalidArc,
-    InvalidArgument,
-    InvalidArgumentsNumber,
-    InvalidDirectedCycle,
-    InvalidEdge,
-    InvalidNode,
-    DatabaseError,
-    MissingValueInDatabase,
-    MissingVariableInDatabase,
-    NoChild,
-    NoNeighbour,
-    NoParent,
-    NotFound,
-    NullElement,
-    OperationNotAllowed,
-    OutOfBounds,
-    ArgumentError,
-    SizeError,
-    SyntaxError,
-    UndefinedElement,
-    UndefinedIteratorKey,
-    UndefinedIteratorValue,
-    UnknownLabelInDatabase,
-    CPTError,
+  DefaultInLabel,
+  DuplicateElement,
+  DuplicateLabel,
+  GumException,
+  FatalError,
+  FormatNotFound,
+  GraphError,
+  IOError,
+  InvalidArc,
+  InvalidArgument,
+  InvalidArgumentsNumber,
+  InvalidDirectedCycle,
+  InvalidEdge,
+  InvalidNode,
+  DatabaseError,
+  MissingValueInDatabase,
+  MissingVariableInDatabase,
+  NoChild,
+  NoNeighbour,
+  NoParent,
+  NotFound,
+  NullElement,
+  OperationNotAllowed,
+  OutOfBounds,
+  ArgumentError,
+  SizeError,
+  SyntaxError,
+  UndefinedElement,
+  UndefinedIteratorKey,
+  UndefinedIteratorValue,
+  UnknownLabelInDatabase,
+  CPTError,
 )
 
 # submodule BN
@@ -135,23 +135,23 @@ from .pyagrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
 from .pyagrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
 from .pyagrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyagrum import (
-    LoopyBeliefPropagation,
-    GibbsSampling,
-    MonteCarloSampling,
-    ImportanceSampling,
-    WeightedSampling,
+  LoopyBeliefPropagation,
+  GibbsSampling,
+  MonteCarloSampling,
+  ImportanceSampling,
+  WeightedSampling,
 )
 from .pyagrum import (
-    LoopyImportanceSampling,
-    LoopyGibbsSampling,
-    LoopyWeightedSampling,
-    LoopyMonteCarloSampling,
+  LoopyImportanceSampling,
+  LoopyGibbsSampling,
+  LoopyWeightedSampling,
+  LoopyMonteCarloSampling,
 )
 from .pyagrum import (
-    PythonApproximationListener,
-    PythonBNListener,
-    PythonLoadListener,
-    PythonDatabaseGeneratorListener,
+  PythonApproximationListener,
+  PythonBNListener,
+  PythonLoadListener,
+  PythonDatabaseGeneratorListener,
 )
 from .pyagrum import BNGenerator
 from .pyagrum import BNDatabaseGenerator, InformationTheory
@@ -162,48 +162,62 @@ import sys
 
 # sublodule MRF
 try:
-    from .pyagrum import getPosterior
-    from .pyagrum import availableMRFExts, loadMRF, saveMRF
-    from .pyagrum import fastMRF
-    from .pyagrum import MarkovRandomField, ShaferShenoyMRFInference
+  from .pyagrum import getPosterior
+  from .pyagrum import availableMRFExts, loadMRF, saveMRF
+  from .pyagrum import fastMRF
+  from .pyagrum import MarkovRandomField, ShaferShenoyMRFInference
 except ImportError:
-    sys.stderr.write("** pyagrum ** : Could not load Markov Random Field submodule")
+  sys.stderr.write("** pyagrum ** : Could not load Markov Random Field submodule")
 
 # submodule CN
 try:
-    from .pyagrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+  from .pyagrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 except ImportError:
-    sys.stderr.write("** pyagrum ** : Could not load Credal Net submodule")
+  sys.stderr.write("** pyagrum ** : Could not load Credal Net submodule")
 
 # submodule ID
 try:
-    from .pyagrum import IDGenerator
-    from .pyagrum import availableIDExts, loadID, saveID
-    from .pyagrum import fastID
-    from .pyagrum import InfluenceDiagram, ShaferShenoyLIMIDInference
+  from .pyagrum import IDGenerator
+  from .pyagrum import availableIDExts, loadID, saveID
+  from .pyagrum import fastID
+  from .pyagrum import InfluenceDiagram, ShaferShenoyLIMIDInference
 except ImportError:
-    sys.stderr.write("** pyagrum ** : Could not load Influence Diagram submodule")
+  sys.stderr.write("** pyagrum ** : Could not load Influence Diagram submodule")
 
 # submodule CM
 try:
-    from .pyagrum import DoorCriteria
-    from .pyagrum import CausalModel
-    from .pyagrum import CausalImpact
-    from .pyagrum import Counterfactual
-    from .pyagrum import causalImpact, counterfactual, counterfactualModel
+  from .pyagrum import DoorCriteria
+  from .pyagrum import CausalModel
+  from .pyagrum import CausalImpact
+  from .pyagrum import Counterfactual
+  from .pyagrum import causalImpact, counterfactual, counterfactualModel
 except ImportError:
-    sys.stderr.write("** pyagrum ** : Could not load Causal submodule")
+  sys.stderr.write("** pyagrum ** : Could not load Causal submodule")
 
 from .common import (
-    __version__,
-    __license__,
-    __project_url__,
-    __project_name__,
-    __project_description__,
-    __project__,
-    about,
+  __version__,
+  __license__,
+  __project_url__,
+  __project_name__,
+  __project_description__,
+  __project__,
+  about,
 )
 
 # deprecated
 from .deprecated import deprecated_arg
-from .pyagrum import Potential
+
+# type
+from typing import NewType
+
+DirectedModel = BayesNet | DAG | CausalModel | InfluenceDiagram
+
+NodeId = NewType("NodeId", int)
+NodeList = list[NodeId]
+NodeSet = set[NodeId]
+
+ArcSet = set[tuple[NodeId, NodeId]]
+NameSet = set[str]
+
+LatentDescriptor = tuple[str, tuple[str, str]]
+LatentDescriptorList = list[LatentDescriptor]

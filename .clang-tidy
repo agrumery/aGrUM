@@ -4,13 +4,13 @@ Checks: >
   -*,
   clang-diagnostic-*,
   clang-analyzer-*,
-  bugprone-*,
+  bug-prone-*,
   modernize-*,
   performance-*,
   readability-braces-around-statements,
   readability-identifier-naming,
   -modernize-use-trailing-return-type,
-  
+
 WarningsAsErrors: ''
 HeaderFileExtensions:
 

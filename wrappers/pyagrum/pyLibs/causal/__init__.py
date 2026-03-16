@@ -45,37 +45,19 @@ do-calculus the causal impact in such a model.
 """
 
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
-__copyright__ = "(c) 2019-2024 PARIS"
+__copyright__ = "(c) 2019-2026 PARIS"
 
-from ._causalImpact import causalImpact, counterfactualModel, counterfactual
-from ._doorCriteria import backdoor_generator, frontdoor_generator
-from ._doAST import ASTtree, ASTjointProba, ASTmult, ASTdiv, ASTsum, ASTposteriorProba, ASTminus, ASTplus, ASTBinaryOp
-from ._doCalculus import doCalculusWithObservation, identifyingIntervention
-from ._CausalFormula import CausalFormula
-from ._CausalModel import CausalModel
-from ._exceptions import HedgeException, UnidentifiableException
-from pyagrum.causalEffectEstimation import CausalEffectEstimation
-import sys
+"""
+Deprecated for older pyAgrum (since >2.3.2)
+"""
 
-__all__ = [
-  "CausalModel",
-  "CausalFormula",
-  "CausalEffectEstimation",
-  "causalImpact",
-  "counterfactualModel",
-  "counterfactual",
-  "doCalculusWithObservation",
-  "identifyingIntervention",
-  "backdoor_generator",
-  "HedgeException",
-  "UnidentifiableException",
-  "ASTtree",
-  "ASTjointProba",
-  "ASTmult",
-  "ASTdiv",
-  "ASTsum",
-  "ASTposteriorProba",
-  "ASTminus",
-  "ASTplus",
-  "ASTBinaryOp",
-]
+import warnings
+
+warnings.warn(
+  "Module 'causal' is deprecated in pyAgrum >2.3.2. Use 'gum.CausalModel' (and so on) instead.",
+  DeprecationWarning,
+  stacklevel=2
+)
+
+# pylint: disable=unused-import
+from pyagrum import causalImpact, counterfactualModel, counterfactual, CausalModel

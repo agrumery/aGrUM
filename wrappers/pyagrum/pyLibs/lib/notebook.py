@@ -1821,6 +1821,6 @@ else:
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
-  gum.Potential._repr_html_ = lambda self: getTensor(self)
+  gum.Tensor._repr_html_ = lambda self: getTensor(self)
 
   dot.Dot._repr_html_ = lambda self: getGraph(self)
