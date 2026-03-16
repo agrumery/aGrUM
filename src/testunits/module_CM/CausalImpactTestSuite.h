@@ -593,8 +593,8 @@ namespace gum_tests {
       CHECK((tensor.get(Iv)) == doctest::Approx(0.8).epsilon(1e-12));
     }
 
-    static void testFromNotebook18() {
-      auto bn           = gum::BayesNet< double >::fastPrototype("X1<-Ca->X2;X1->Y1;X2->Y2");
+    static void testFromNotebook13() {
+      auto bn           = gum::BayesNet< double >::fastPrototype("X1<-Ca->X2;X1->Y1;X2->Y2;Y2->Y1");
       auto causal_model = gum::CausalModel< double >(bn, {{"L1", bn.ids({"Y1", "Y2"})}});
       const auto [ci, tensor, explanation]
           = gum::causalImpact< double >(causal_model,
@@ -636,7 +636,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(CustomDoOperatorLatex)
   GUM_TEST_ACTIF(causalImpact_FreeFn_matches_Class_on_deterministic_chain)
   GUM_TEST_ACTIF(causalImpact_FreeFn_no_effect_independent_roots)
-  GUM_TEST_ACTIF(FromNotebook18)
+  GUM_TEST_ACTIF(FromNotebook13)
   GUM_TEST_ACTIF(FromNotebookFrontdoor)
 
 }   // namespace gum_tests
