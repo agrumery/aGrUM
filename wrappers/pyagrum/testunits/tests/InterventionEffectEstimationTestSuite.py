@@ -42,7 +42,8 @@ import unittest
 
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-import pyagrum.causal as csl
+
+import pyagrum.causalEffectEstimation as csl
 
 from pyagrum.causalEffectEstimation._utils import RCTError, BackdoorError, FrontdoorError, IVError
 
@@ -82,7 +83,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith([0.5, 0.5])
     bn.cpt("Y").fillFromDistribution(norm, loc="2*T", scale=1)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
 
     cee = csl.CausalEffectEstimation(df, cslbn)
 
@@ -128,7 +129,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith([0.7, 0.3])
     bn.cpt("Y").fillFromDistribution(norm, loc="X + 2*T", scale=1)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
 
     cee = csl.CausalEffectEstimation(df, cslbn)
 
@@ -189,7 +190,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillFromDistribution(logistic, loc="X", scale=1)
     bn.cpt("Y").fillFromDistribution(norm, loc="X + 2*T", scale=1)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
 
     cee = csl.CausalEffectEstimation(df, cslbn)
 
@@ -262,7 +263,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith(cpt_T)
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
     cee = csl.CausalEffectEstimation(df, cslbn)
@@ -339,7 +340,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith(cpt_T)
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
     cee = csl.CausalEffectEstimation(df, cslbn)
@@ -398,7 +399,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith(cpt_T)
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
     cslbn.addCausalArc("T", "Y")
 
@@ -478,7 +479,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("T").fillWith(cpt_T)
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
-    cslbn = csl.CausalModel(bn)
+    cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
     cslbn.addCausalArc("T", "Y")
 

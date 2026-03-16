@@ -42,7 +42,6 @@ import numpy as np
 import pandas as pd
 
 import pyagrum as gum
-import pyagrum.causal as csl
 
 
 class CausalBNEstimator:
@@ -58,35 +57,35 @@ class CausalBNEstimator:
   identifiable through do-calculus.
   """
 
-  def _useCausalStructure(self, cm_clone: csl.CausalModel, causal_model: csl.CausalModel) -> None:
+  def _useCausalStructure(self, cm_clone: gum.CausalModel, causal_model: gum.CausalModel) -> None:
     """
     Use the causal structure given by `cm_clone` on `causal_model`.
 
     Parameters
     ----------
-    cm_clone: csl.CausalStructure
+    cm_clone: csl.CausalModel
         The model recieving the causal structure.
-    causal_model: csl.CausalStructure
+    causal_model: csl.CausalModel
         The model giving the causal structure.
     """
 
     for id in causal_model.latentVariablesIds():
-      childrens = causal_model.causalBN().children(id)
-      childrens = {causal_model.causalBN().variable(c).name() for c in childrens}
-      cm_clone.addLatentVariable(causal_model.causalBN().variable(id).name(), tuple(childrens))
+      childrens = causal_model.causalDAG().children(id)
+      childrens = {causal_model.causalDAG().variable(c).name() for c in childrens}
+      cm_clone.addLatentVariable(causal_model.causalDAG().variable(id).name(), tuple(childrens))
     for x, y in causal_model.arcs():
       if not cm_clone.existsArc(x, y):
         cm_clone.addCausalArc(x, y)
 
   def __init__(
-    self, causal_model: csl.CausalModel, treatment: str, outcome: str, instrument: str | None = None
+    self, causal_model: gum.CausalModel, treatment: str, outcome: str, instrument: str | None = None
   ) -> None:
     """
-    Initialize an Causal Model estimator.
+    Initialize a Causal Model estimator.
 
     Parameters
     ----------
-    causal_model: csl.CausalModel
+    causal_model: gum.CausalModel
         The causal graph.
     treatment: str
         The treatment variable.
@@ -96,7 +95,7 @@ class CausalBNEstimator:
         The instrumental variable
     """
 
-    if isinstance(causal_model, csl.CausalModel):
+    if isinstance(causal_model, gum.CausalModel):
       self.causal_model = causal_model.clone()
       self._useCausalStructure(self.causal_model, causal_model)
     else:
@@ -126,7 +125,7 @@ class CausalBNEstimator:
 
     parameter_learner.fitParameters(bn)
 
-    causal_model = csl.CausalModel(bn)
+    causal_model = gum.CausalModel(bn)
     self._useCausalStructure(causal_model, self.causal_model)
     self.causal_model = causal_model
 
@@ -151,7 +150,7 @@ class CausalBNEstimator:
 
     splits = list()
     accumulator = ""
-    for letter in self.causal_model.causalBN().variable(var).domain():
+    for letter in self.causal_model.causalDAG().variable(var).domain():
       if letter in ["-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
         accumulator += letter
       elif len(accumulator) > 0:

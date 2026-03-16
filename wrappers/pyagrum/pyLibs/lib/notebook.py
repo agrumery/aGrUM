@@ -78,10 +78,10 @@ from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot
 from pyagrum.lib.mrf2graph import MRF2FactorGraphdot
+
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
-from pyagrum.lib.causal2graph import showCausalImpact
 
 import pyagrum.lib._colors as gumcols
 
@@ -222,6 +222,7 @@ class FlowLayout(object):
         self.add(arg)
       else:
         self.add(arg, captions[i])
+    return self
 
   def _repr_html_(self):
     return self.html().data
@@ -1743,6 +1744,123 @@ def inspectBN(bn):
   return flow
 
 
+
+def getCausalModel(cm: gum.CausalModel, size=None) -> str:
+  """
+  return a HTML representing the causal model
+
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  size: int|str
+    the size of the rendered graph
+
+  Returns
+  -------
+  pydot.Dot
+    the dot representation
+  """
+  if size is None:
+    size = gum.config["causal", "default_graph_size"]
+  return getDot(cm.toDot(), size)
+
+
+def showCausalModel(cm: gum.CausalModel, size=None):
+  """
+  Shows a pydot svg representation of the causal DAG
+
+  Parameters
+  ----------
+  cm: CausalModel
+    the causal model
+  size: int|str
+    the size of the rendered graph
+  """
+  if size is None:
+    size = gum.config["causal", "default_graph_size"]
+  showDot(cm.toDot(), size=size)
+
+
+def getCausalImpact(
+   model: gum.CausalModel,
+   on: str | gum.NameSet,
+   doing: str | gum.NameSet,
+   knowing: None | gum.NameSet = None,
+   values: None | dict[str, int] = None,
+):
+  """
+  return a HTML representing of the three values defining a causal impact : formula, value, explanation
+
+  Parameters
+  ----------
+  model: CausalModel
+    the causal model
+  on: str | Set[str]
+    the impacted variable(s)
+  doing: str | Set[str]
+    the interventions
+  knowing: str | Set[str]
+    the observations
+  values: dict[str,int] default=None
+    value for certain variables
+
+  Returns
+  -------
+  HTML
+  """
+  formula, impact, explanation = gum.causalImpact(model, on, doing, knowing, values)
+
+  flow.clear()
+  flow.add(getCausalModel(model), caption="Causal Model")
+
+  if formula is None:
+    flow.add(explanation, caption="Impossible")
+  else:
+    flow.add(
+      "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n",
+      caption="Explanation : " + explanation,
+      )
+
+  if formula is None:
+    res = "No result"
+  else:
+    if impact.variable(0).domainSize() < 5:
+      res = impact
+    else:
+      res = getProba(impact)
+  flow.add(res, caption="Impact")
+
+  return flow.html()
+
+
+def showCausalImpact(
+   model: gum.CausalModel,
+   on: Union[str, NameSet],
+   doing: Union[str, NameSet],
+   knowing: Optional[NameSet] = None,
+   values: Optional[Dict[str, int]] = None,
+):
+  """
+  display a HTML representing of the three values defining a causal impact :  formula, value, explanation
+
+  Parameters
+  ----------
+  model: CausalModel
+    the causal model
+  on: str | Set[str]
+    the impacted variable(s)
+  doing: str | Set[str]
+    the interventions
+  knowing: str | Set[str]
+    the observations
+  values: Dict[str,int] default=None
+    value for certain variables
+  """
+  html = getCausalImpact(model, on, doing, knowing, values)
+  IPython.display.display(html)
+
+
 def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
   mpl.rcParams["figure.facecolor"] = gum.config["notebook", "figure_facecolor"]
@@ -1820,6 +1938,9 @@ else:
   gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+
+  gum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
+  gum.CausalImpact._repr_html_ = lambda self: getCausalImpact(self)
 
   gum.Tensor._repr_html_ = lambda self: getTensor(self)
 

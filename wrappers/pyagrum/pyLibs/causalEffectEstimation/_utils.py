@@ -39,7 +39,6 @@
 ############################################################################
 
 import pyagrum as gum
-import pyagrum.causal as csl
 
 from collections import deque
 
@@ -170,7 +169,7 @@ def RCT(causal_model: csl.CausalModel, intervention: str, outcome: str) -> set[s
       Set with the names of the confounders if ignorability.
       None if ignorability is not satisfied.
   """
-  cbn_without_T_Y = gum.BayesNet(causal_model.causalBN())
+  cbn_without_T_Y = gum.BayesNet(causal_model.causalDAG())
   t = cbn_without_T_Y.idFromName(intervention)
   y = cbn_without_T_Y.idFromName(outcome)
 
@@ -245,7 +244,7 @@ def generalizedFrontDoor(causal_model: csl.CausalModel, intervention: str, outco
   """
 
   obn = causal_model.observationalBN()
-  cbn = causal_model.causalBN()
+  cbn = causal_model.causalDAG()
 
   mediators = csl._doorCriteria.nodes_on_dipath(obn, obn.idFromName(intervention), obn.idFromName(outcome))
   mediators = {obn.variable(m).name() for m in mediators}
@@ -410,7 +409,7 @@ def _ancestralInstrument(causal_model: csl.CausalModel, t: int, y: int, z: int) 
   """
 
   mutilated_obn = gum.BayesNet(causal_model.observationalBN())
-  mutilated_cbn = gum.BayesNet(causal_model.causalBN())
+  mutilated_cbn = gum.BayesNet(causal_model.causalDAG())
 
   if mutilated_obn.existsArc(t, y):
     mutilated_obn.eraseArc(t, y)

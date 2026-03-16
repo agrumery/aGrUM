@@ -43,7 +43,7 @@ import numpy as np
 
 from typing import Any
 
-import pyagrum.causal as csl
+import pyagrum as gum
 
 from ._utils import (
   MisspecifiedAdjustmentError,
@@ -157,7 +157,7 @@ class CausalEffectEstimation:
     causal_model_info = (
       f"{self._causal_model}"
       f"\n\t- names\t\t: {self._causal_model.names()}"
-      f"\n\t- causal BN\t: {self._causal_model.causalBN()}"
+      f"\n\t- causal BN\t: {self._causal_model.causalDAG()}"
       f"\n\t- observ. BN\t: {self._causal_model.observationalBN()}"
     )
 

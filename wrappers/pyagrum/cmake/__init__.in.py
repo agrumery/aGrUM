@@ -206,6 +206,13 @@ from .common import (
 
 # deprecated
 from .deprecated import deprecated_arg
+import warnings
+
+def deprecatedCausalBN(obj,*args,**kwargs):
+  warnings.warn("causalBN is deprecated since 2.3.2. Please use causalDAG.", DeprecationWarning, stacklevel=2)
+  return obj.causalDAG(*args,**kwargs)
+
+CausalModel.causalBN = lambda s: deprecatedCausalBN(s)
 
 # type
 from typing import NewType
