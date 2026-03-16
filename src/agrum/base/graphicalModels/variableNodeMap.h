@@ -105,6 +105,9 @@ namespace gum {
     /// Return true if var matches a node.
     bool exists(const DiscreteVariable& var) const;
 
+    /// Return true if name matches a node.
+    bool exists(const std::string& name) const;
+
     /// Maps id with var.
     /**
      * @warning Var is added by copy.

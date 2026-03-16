@@ -106,9 +106,7 @@ namespace gum {
   INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
 
   INLINE bool DAGmodel::exists(std::string_view name) const {
-    try {
-      return exists(idFromName(name));
-    } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
+    return variableNodeMap().exists(name);
   }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const { return (NodeGraphPart&)dag_; }

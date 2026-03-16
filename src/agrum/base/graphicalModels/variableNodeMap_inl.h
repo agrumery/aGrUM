@@ -78,6 +78,10 @@ namespace gum {
     return _nodes2vars_.existsSecond(&var);
   }
 
+  // Return true if name matches a node
+  INLINE
+  bool VariableNodeMap::exists(const std::string& name) const { return _names2nodes_.existsFirst(name); }
+
   // Return the size of the map
   INLINE
   gum::Size VariableNodeMap::size() const { return _nodes2vars_.size(); }
