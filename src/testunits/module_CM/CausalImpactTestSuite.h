@@ -594,16 +594,29 @@ namespace gum_tests {
     }
 
     static void testFromNotebook18() {
-      auto bn           = gum::BayesNet< double >::fastPrototype("X2->Ca->X1->Y1<-Y2<-X2");
-      auto causal_model = gum::CausalModel< double >(bn, {{"L1", bn.ids({"X1", "Y1"})}});
+      auto bn           = gum::BayesNet< double >::fastPrototype("X1<-Ca->X2;X1->Y1;X2->Y2");
+      auto causal_model = gum::CausalModel< double >(bn, {{"L1", bn.ids({"Y1", "Y2"})}});
       const auto [ci, tensor, explanation]
           = gum::causalImpact< double >(causal_model,
-                                        gum::Set< std::string >{"X1"},
+                                        gum::Set< std::string >{"Y1"},
                                         gum::Set< std::string >{"X2"});
-      CHECK_EQ(tensor.variable(0).name(), "X1");
+      CHECK_EQ(tensor.variable(0).name(), "Y1");
       CHECK_EQ(tensor.nbrDim(), 1u);
       CHECK(gum::contains(explanation, "backdoor"));
-      CHECK(gum::contains(explanation, "\"X1\""));
+      CHECK(gum::contains(explanation, "'X1'"));
+    }
+
+    static void testFromNotebookFrontdoor() {
+      auto bn = gum::BayesNet< double >::fastPrototype("X->M->Y;X->Y");
+      auto causal_model = gum::CausalModel< double >(bn, {{"L1", bn.ids({"X", "Y"})}});
+      const auto [ci, tensor, explanation]
+          = gum::causalImpact< double >(causal_model,
+                                          gum::Set< std::string >{"Y"},
+                                          gum::Set< std::string >{"X"});
+      CHECK_EQ(tensor.variable(0).name(), "Y");
+      CHECK_EQ(tensor.nbrDim(), 2u);
+      CHECK(gum::contains(explanation, "frontdoor"));
+      CHECK(gum::contains(explanation, "'M'"));
     }
   };
 
@@ -624,5 +637,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(causalImpact_FreeFn_matches_Class_on_deterministic_chain)
   GUM_TEST_ACTIF(causalImpact_FreeFn_no_effect_independent_roots)
   GUM_TEST_ACTIF(FromNotebook18)
+  GUM_TEST_ACTIF(FromNotebookFrontdoor)
 
 }   // namespace gum_tests

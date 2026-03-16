@@ -45,6 +45,22 @@
 
 namespace gum {
 
+  namespace {
+    template <GUM_Numeric GUM_SCALAR>
+    std::string _formatNodeSetNames_(const CausalModel<GUM_SCALAR>& cm, const NodeSet& zset) {
+      std::vector<std::string> names;
+      for (auto id : zset) names.push_back(cm.nameFromId(id));
+      std::sort(names.begin(), names.end());
+      std::string out = "[";
+      for (size_t i = 0; i < names.size(); ++i) {
+        if (i > 0) out += ", ";
+        out += "'" + names[i] + "'";
+      }
+      out += "]";
+      return out;
+    }
+  }
+
   // ---------- helpers ----------
 
   template < GUM_Numeric GUM_SCALAR >
@@ -148,12 +164,12 @@ namespace gum {
             NodeSet Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getBackDoorTree(Xid, Yid, Z);
-            return CausalFormula< GUM_SCALAR >(cm,
-                                               std::move(ast),
-                                               on,
-                                               doing,
-                                               knowing,
-                                               "Identified via backdoor (adjustment).");
+              return CausalFormula< GUM_SCALAR >(cm,
+                                                 std::move(ast),
+                                                 on,
+                                                 doing,
+                                                 knowing,
+                                                 std::string("backdoor ") + _formatNodeSetNames_(cm, Z) + " found.");
           }
         }
 
@@ -164,12 +180,12 @@ namespace gum {
             NodeSet Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getFrontDoorTree(Xid, Yid, Z);
-            return CausalFormula< GUM_SCALAR >(cm,
-                                               std::move(ast),
-                                               on,
-                                               doing,
-                                               knowing,
-                                               "Identified via frontdoor (mediator adjustment).");
+              return CausalFormula< GUM_SCALAR >(cm,
+                                                 std::move(ast),
+                                                 on,
+                                                 doing,
+                                                 knowing,
+                                                 std::string("frontdoor ") + _formatNodeSetNames_(cm, Z) + " found.");
           }
         }
       }
