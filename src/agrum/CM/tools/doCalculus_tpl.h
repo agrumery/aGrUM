@@ -102,7 +102,8 @@ namespace gum {
     }
 
     // ids -> names
-    const auto&       bn    = _cm.observationalBN();
+    const auto&       dag   = _cm.causalDAG();
+    auto              mapO  = _cm.id2name(/*includeLatentVariables=*/false);
     const std::string xName = _cm.nameFromId(cause);
     const std::string yName = _cm.nameFromId(effect);
 
@@ -123,7 +124,7 @@ namespace gum {
     knw.insert(xName);
     for (const auto& zn: zNames)
       knw.insert(zn);
-    auto Pyxz = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhsY, knw);
+    auto Pyxz = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(dag, mapO, lhsY, knw);
 
     if (zNames.empty()) {
       // returns P(y | x)
