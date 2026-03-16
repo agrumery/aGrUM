@@ -49,6 +49,7 @@
  */
 
 #include <algorithm>
+#include <ranges>
 
 // to ease IDE parser
 #include <agrum/base/core/utils_string.h>
@@ -58,34 +59,35 @@ namespace gum {
 
   std::string toLower(std::string_view str) {
     std::string result{str};
-    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    std::ranges::transform(result, result.begin(), [](unsigned char c) { return std::tolower(c); });
     return result;
   }
 
   INLINE
+  bool contains(std::string_view s, std::string_view needle) {
+    return s.find(needle) != std::string::npos;
+  }
 
+  INLINE
   void ltrim(std::string& s) {
     s.erase(s.begin(),
-            std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+            std::ranges::find_if_not(s, [](unsigned char ch) { return std::isspace(ch); }));
   }
 
   INLINE
-
   void rtrim(std::string& s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); })
-                .base(),
-            s.end());
+    auto it = std::ranges::find_if_not(s | std::views::reverse,
+                                       [](unsigned char ch) { return std::isspace(ch); });
+    s.erase(it.base(), s.end());
   }
 
   INLINE
-
   void trim(std::string& s) {
     ltrim(s);
     rtrim(s);
   }
 
   INLINE
-
   std::string remove_newline(std::string_view s) {
     std::string res{s};
     std::erase(res, '\n');

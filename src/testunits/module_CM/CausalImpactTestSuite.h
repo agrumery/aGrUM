@@ -54,6 +54,8 @@
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/causalFormula.h>
 
+#include <agrum/base/core/utils_string.h>
+
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CausalImpact
@@ -106,7 +108,7 @@ namespace gum_tests {
     public:
     // A) Null effect via d-separation: X -> Z -> Y with knowing={Z}
     // Expected: P(Y | do(X), Z) == P(Y | Z) == bn.cpt("Y")
-    static void testtest_NullEffect_DSeparation() {
+    static void testNullEffect_DSeparation() {
       auto bn = gum::BayesNet< double >::fastPrototype("X->Z->Y");
       bn.generateCPTs();
       gum::CausalModel< double > cm(bn);
@@ -131,7 +133,7 @@ namespace gum_tests {
     // B) Backdoor with observed confounder:
     // BN: Gender -> Drug -> Patient ; Gender -> Patient
     // Expected: sum_G P(Patient | Drug, G) P(G) == (cpt(Patient) * cpt(Gender)).sumOut(Gender)
-    static void testtest_Backdoor_WithObservedConfounder() {
+    static void testBackdoor_WithObservedConfounder() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype(
           "Gender{M|F}->Drug{No|Yes}->Patient{No|Yes};Gender{M|F}->Patient{No|Yes}");
@@ -156,7 +158,7 @@ namespace gum_tests {
 
     // C) Frontdoor (canonical): X->Z->Y, with latent U between X and Y
     // Expected: sum_z P(z|x) P(y|z) == (cpt("Z") * cpt("Y")).sumOut(Z)
-    static void testtest_Frontdoor_SimpleLatent() {
+    static void testFrontdoor_SimpleLatent() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("X->Z->Y");
       bn.generateCPTs();
@@ -185,7 +187,7 @@ namespace gum_tests {
 
     // D) “Trivial” backdoor: X -> Y  (backdoor set is ∅)
     // Expected: P(Y|do(X)) == P(Y|X) == cpt("Y")
-    static void testtest_Backdoor_Trivial_XtoY() {
+    static void testBackdoor_Trivial_XtoY() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("X->Y");
       bn.generateCPTs();
@@ -210,7 +212,7 @@ namespace gum_tests {
     // E) Hedge / unidentifiable:
     // BN: X->Y; U ; latent Z -> {X,Y,U}, assumeNonSpurious=true
     // Expected: evaluation throws (null AST / hedge)
-    static void testtest_WHY19_Hedge_Unidentifiable() {
+    static void testWHY19_Hedge_Unidentifiable() {
       // Repeat with directDoCalculus: force do-calculus path, should throw as above
       auto bn = gum::BayesNet< double >::fastPrototype("X->Y;U");
       bn.generateCPTs();
@@ -231,7 +233,7 @@ namespace gum_tests {
     }
 
     // F) Pairwise overlaps among on/doing/knowing must throw at construction
-    static void testtest_PairwiseOverlapsThrow() {
+    static void testPairwiseOverlapsThrow() {
       // Repeat with directDoCalculus: force do-calculus path, should throw as above
       auto bn = gum::BayesNet< double >::fastPrototype("A->B");
       bn.generateCPTs();
@@ -250,7 +252,7 @@ namespace gum_tests {
     }
 
     // G) Accented variable names are fine
-    static void testtest_AccentsInVariables() {
+    static void testAccentsInVariables() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("héhé->hoho");
       bn.generateCPTs();
@@ -266,7 +268,7 @@ namespace gum_tests {
 
     // H) Complex “From R”-style model: should not raise during eval
     // TODO :Make active test when ID algorithm is implemented
-    static void testtest_FromR_NoRaise() {
+    static void testFromR_NoRaise() {
       // Repeat with directDoCalculus: force do-calculus path, should not throw
       auto m = gum::BayesNet< double >::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
       m.generateCPTs();
@@ -295,7 +297,7 @@ namespace gum_tests {
     // With fixed CPTs (the classic Simpson example), we should have:
     // P(Healed | do(Drug=With)) = 0.45 and P(Healed | do(Drug=Without)) = 0.60
     // but observationally P(Healed | Drug=With) > P(Healed | Drug=Without).
-    static void testtest_SimpsonParadox_BackdoorAverage() {
+    static void testSimpsonParadox_BackdoorAverage() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype(
           "Gender{F|M}->Drug{Without|With}->Patient{Sick|Healed}<-Gender");
@@ -358,7 +360,7 @@ namespace gum_tests {
 
     // J) Tobacco #1: Direct causality Smoking -> Cancer (trivial backdoor ∅)
     // Expected: P(Cancer | do(Smoking)) == P(Cancer | Smoking) == CPT(Cancer)
-    static void testtest_Tobacco_DirectCausality_TrivialBackdoor() {
+    static void testTobacco_DirectCausality_TrivialBackdoor() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("Smoking->Cancer");
       bn.generateCPTs();
@@ -383,7 +385,7 @@ namespace gum_tests {
     // L) Tobacco #3: Frontdoor with mediator Tar and latent U between Smoking,Cancer
     // Graph: Smoking -> Tar -> Cancer, U -> {Smoking, Cancer} (latent)
     // Expected (frontdoor): P(Cancer | do(Smoking)) = sum_z P(z|Smoking) P(Cancer|z)
-    static void testtest_Tobacco_Frontdoor_WithMediatorTar() {
+    static void testTobacco_Frontdoor_WithMediatorTar() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("Smoking->Tar->Cancer");
       bn.generateCPTs();
@@ -416,7 +418,7 @@ namespace gum_tests {
     // M) Tobacco #4: Unidentifiable hedge (latent confounder + direct edge kept)
     // Graph: Smoking -> Cancer and latent U -> {Smoking, Cancer}, assumeNonSpurious=true
     // Expected: Identification fails => eval() throws
-    static void testtest_Tobacco_Unidentifiable_Hedge() {
+    static void testTobacco_Unidentifiable_Hedge() {
       // Repeat with directDoCalculus: force do-calculus path, should throw as above
       auto bn = gum::BayesNet< double >::fastPrototype("Smoking->Cancer");
       bn.generateCPTs();
@@ -439,7 +441,7 @@ namespace gum_tests {
     // N) Do-calculus chain: W->X->Z->Y and W->Z
     // Effect of X on Y (no observations) is identified by backdoor over W:
     // P(Y | do(X)) = sum_w P(Y | X,w) P(w), with P(Y|X,w) = sum_z P(Y|z) P(z|X,w).
-    static void testtest_DoCalculus_WXZYW_BackdoorW() {
+    static void testDoCalculus_WXZYW_BackdoorW() {
       // Repeat with directDoCalculus: force do-calculus path, should match above
       auto bn = gum::BayesNet< double >::fastPrototype("w->x->z->y;w->z");
       bn.generateCPTs();
@@ -448,46 +450,46 @@ namespace gum_tests {
       gum::CausalImpact< double > ci(cm, names({"y"}), names({"x"}), StrSet{});
 
       CHECK_NOTHROW({
-        auto got          = ci.eval();
-        auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
-        auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
-        auto p_w          = bn.cpt(bn.idFromName("w"));
-        auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
-        auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
+        const auto got          = ci.eval();
+        const auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
+        const auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
+        const auto p_w          = bn.cpt(bn.idFromName("w"));
+        const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
+        const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
 
       gum::CausalImpact< double > ci_dc(cm, names({"y"}), names({"x"}), StrSet{}, true);
       CHECK_NOTHROW({
-        auto got          = ci_dc.eval();
-        auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
-        auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
-        auto p_w          = bn.cpt(bn.idFromName("w"));
-        auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
-        auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
+        const auto got          = ci_dc.eval();
+        const auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
+        const auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
+        const auto p_w          = bn.cpt(bn.idFromName("w"));
+        const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
+        const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
     }
 
     // Custom do-operator prefix/suffix test (must be last)
-    static void testtest_CustomDoOperatorLatex() {
+    static void testCustomDoOperatorLatex() {
       auto bn = gum::BayesNet< double >::fastPrototype("X->Y");
       bn.generateCPTs();
       gum::CausalModel< double >  cm(bn);
       gum::CausalImpact< double > ci(cm, names({"Y"}), names({"X"}), StrSet{});
       std::string                 latex = ci.latexQuery("DO<", ">");
       CHECK_NE(latex.find("DO<"), std::string::npos);
-      CHECK_NE(latex.find(">"), std::string::npos);
+      CHECK_NE(latex.find('>'), std::string::npos);
       std::string latex2 = ci.toLatex("DO<", ">");
       CHECK_NE(latex2.find("DO<"), std::string::npos);
-      CHECK_NE(latex2.find(">"), std::string::npos);
+      CHECK_NE(latex2.find('>'), std::string::npos);
     }
 
     // ---------------------------------------------------------------------------
     // Test 1: Compare free function vs class on a deterministic chain X->Y (Y=X)
     // do(X=a) => P(Y=a)=1 and the whole tensor equals the class' evaluation.
     // ---------------------------------------------------------------------------
-    static void testtest_causalImpact_FreeFn_matches_Class_on_deterministic_chain() {
+    static void testcausalImpact_FreeFn_matches_Class_on_deterministic_chain() {
       // BN: X{a|b} -> Y{a|b}
       auto bn = gum::BayesNet< double >::fastPrototype("X{a|b}->Y{a|b}");
       bn.cpt("X").fillWith({0.5, 0.5});   // prior on X
@@ -565,7 +567,7 @@ namespace gum_tests {
     // Test 2: No causal effect — independent roots X and Y.
     // do(X) must not change P(Y).
     // ---------------------------------------------------------------------------
-    static void testtest_causalImpact_FreeFn_no_effect_independent_roots() {
+    static void testcausalImpact_FreeFn_no_effect_independent_roots() {
       // BN: X{a|b}; Y{u|v} (no edges)
       auto bn = gum::BayesNet< double >::fastPrototype("X{a|b};Y{u|v}");
       bn.cpt("X").fillWith({0.3, 0.7});
@@ -579,7 +581,7 @@ namespace gum_tests {
       const gum::Set< std::string > doing = names({"X"});
       const gum::Set< std::string > know;   // empty
 
-      auto [formula, tensor, expl] = gum::causalImpact< double >(cm, on, doing, know, values);
+      const auto [formula, tensor, expl] = gum::causalImpact< double >(cm, on, doing, know, values);
 
       // Identified => tensor not empty
       CHECK_NE(tensor.nbrDim(), gum::Idx(0));
@@ -590,23 +592,37 @@ namespace gum_tests {
       CHECK((tensor.get(Iu)) == doctest::Approx(0.2).epsilon(1e-12));
       CHECK((tensor.get(Iv)) == doctest::Approx(0.8).epsilon(1e-12));
     }
+
+    static void testFromNotebook18() {
+      auto bn           = gum::BayesNet< double >::fastPrototype("X2->Ca->X1->Y1<-Y2<-X2");
+      auto causal_model = gum::CausalModel< double >(bn, {{"L1", bn.ids({"X1", "Y1"})}});
+      const auto [ci, tensor, explanation]
+          = gum::causalImpact< double >(causal_model,
+                                        gum::Set< std::string >{"X1"},
+                                        gum::Set< std::string >{"X2"});
+      CHECK_EQ(tensor.variable(0).name(), "X1");
+      CHECK_EQ(tensor.nbrDim(), 1u);
+      CHECK(gum::contains(explanation, "backdoor"));
+      CHECK(gum::contains(explanation, "\"X1\""));
+    }
   };
 
-  GUM_TEST_ACTIF(test_NullEffect_DSeparation)
-  GUM_TEST_ACTIF(test_Backdoor_WithObservedConfounder)
-  GUM_TEST_ACTIF(test_Frontdoor_SimpleLatent)
-  GUM_TEST_ACTIF(test_Backdoor_Trivial_XtoY)
-  GUM_TEST_ACTIF(test_WHY19_Hedge_Unidentifiable)
-  GUM_TEST_ACTIF(test_PairwiseOverlapsThrow)
-  GUM_TEST_ACTIF(test_AccentsInVariables)
-  GUM_TEST_ACTIF(test_FromR_NoRaise)
-  GUM_TEST_ACTIF(test_SimpsonParadox_BackdoorAverage)
-  GUM_TEST_ACTIF(test_Tobacco_DirectCausality_TrivialBackdoor)
-  GUM_TEST_ACTIF(test_Tobacco_Frontdoor_WithMediatorTar)
-  GUM_TEST_ACTIF(test_Tobacco_Unidentifiable_Hedge)
-  GUM_TEST_ACTIF(test_DoCalculus_WXZYW_BackdoorW)
-  GUM_TEST_ACTIF(test_CustomDoOperatorLatex)
-  GUM_TEST_ACTIF(test_causalImpact_FreeFn_matches_Class_on_deterministic_chain)
-  GUM_TEST_ACTIF(test_causalImpact_FreeFn_no_effect_independent_roots)
+  GUM_TEST_ACTIF(NullEffect_DSeparation)
+  GUM_TEST_ACTIF(Backdoor_WithObservedConfounder)
+  GUM_TEST_ACTIF(Frontdoor_SimpleLatent)
+  GUM_TEST_ACTIF(Backdoor_Trivial_XtoY)
+  GUM_TEST_ACTIF(WHY19_Hedge_Unidentifiable)
+  GUM_TEST_ACTIF(PairwiseOverlapsThrow)
+  GUM_TEST_ACTIF(AccentsInVariables)
+  GUM_TEST_ACTIF(FromR_NoRaise)
+  GUM_TEST_ACTIF(SimpsonParadox_BackdoorAverage)
+  GUM_TEST_ACTIF(Tobacco_DirectCausality_TrivialBackdoor)
+  GUM_TEST_ACTIF(Tobacco_Frontdoor_WithMediatorTar)
+  GUM_TEST_ACTIF(Tobacco_Unidentifiable_Hedge)
+  GUM_TEST_ACTIF(DoCalculus_WXZYW_BackdoorW)
+  GUM_TEST_ACTIF(CustomDoOperatorLatex)
+  GUM_TEST_ACTIF(causalImpact_FreeFn_matches_Class_on_deterministic_chain)
+  GUM_TEST_ACTIF(causalImpact_FreeFn_no_effect_independent_roots)
+  GUM_TEST_ACTIF(FromNotebook18)
 
 }   // namespace gum_tests

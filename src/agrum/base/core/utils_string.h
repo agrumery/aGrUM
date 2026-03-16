@@ -53,10 +53,11 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
+
+#include <string_view>
 
 namespace gum {
   /// @ingroup utilities_group
@@ -73,6 +74,14 @@ namespace gum {
    * @return Returns the lowercase version of str.
    */
   std::string toLower(std::string_view str);
+
+  /**
+   * true if needle in s
+   *
+   * @param s
+   * @param needle   * @return
+   */
+  bool contains(std::string_view s, std::string_view needle);
 
   /**
    * @brief Returns true if value ends with ending.

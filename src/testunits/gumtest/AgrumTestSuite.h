@@ -77,27 +77,31 @@
 // ============================================================================
 // Tensor comparison macros (aGrUM-specific)
 // ============================================================================
-#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(p1, p2, delta) \
-    CHECK_LT(((p1) - (p2)).abs().max(), delta)
-#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(p1, p2) \
-    CHECK_LT(((p1) - (p2)).abs().max(), GUM_SMALL_ERROR)
-#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, delta) \
-    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA((p1), (gum::Tensor(p1).fillWith(p2)), delta)
-#  define GUM_CHECK_TENSOR_ALMOST_EQUALS(p1, p2) \
-    GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, GUM_SMALL_ERROR)
-#  define GUM_CHECK_TENSOR_QUASI_EQUALS(p1, p2) \
-    GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(p1, p2, GUM_VERY_SMALL_ERROR)
+#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(var_check_p1, var_check_p2, delta) \
+    CHECK_LT(((var_check_p1) - (var_check_p2)).abs().max(), delta)
+#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(var_check_p1, var_check_p2) \
+    CHECK_LT(((var_check_p1) - (var_check_p2)).abs().max(), GUM_SMALL_ERROR)
+#  define GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(var_check_p1, var_check_p2, delta) \
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(                                \
+        (var_check_p1),                                                           \
+        (gum::Tensor(var_check_p1).fillWith(var_check_p2)),                       \
+        delta)
+#  define GUM_CHECK_TENSOR_ALMOST_EQUALS(var_check_p1, var_check_p2) \
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(var_check_p1, var_check_p2, GUM_SMALL_ERROR)
+#  define GUM_CHECK_TENSOR_QUASI_EQUALS(var_check_p1, var_check_p2) \
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_DELTA(var_check_p1, var_check_p2, GUM_VERY_SMALL_ERROR)
 
-#  define GUM_CHECK_TENSOR_DIFFERS_SAMEVARS(p1, p2) \
-    CHECK_GT(((p1) - (p2)).abs().max(), GUM_VERY_SMALL_ERROR)
-#  define GUM_CHECK_TENSOR_DIFFERS(p1, p2) \
-    GUM_CHECK_TENSOR_DIFFERS_SAMEVARS((p1), (gum::Tensor(p1).fillWith(p2)))
+#  define GUM_CHECK_TENSOR_DIFFERS_SAMEVARS(var_check_p1, var_check_p2) \
+    CHECK_GT(((var_check_p1) - (var_check_p2)).abs().max(), GUM_VERY_SMALL_ERROR)
+#  define GUM_CHECK_TENSOR_DIFFERS(var_check_p1, var_check_p2) \
+    GUM_CHECK_TENSOR_DIFFERS_SAMEVARS((var_check_p1),          \
+                                      (gum::Tensor(var_check_p1).fillWith(var_check_p2)))
 
-#  define GUM_CHECK_TENSOR_SHOW_DELTA(p1, p2, delta) \
-    {                                                \
-      GUM_TRACE_NEWLINE GUM_TRACE_VAR(p1)            \
-      GUM_TRACE_VAR(p2)                              \
-      CHECK_LT(((p1) - (p2)).abs().max(), delta);    \
+#  define GUM_CHECK_TENSOR_SHOW_DELTA(var_check_p1, var_check_p2, delta) \
+    {                                                                    \
+      GUM_TRACE_NEWLINE GUM_TRACE_VAR(var_check_p1)                      \
+      GUM_TRACE_VAR(var_check_p2)                                        \
+      CHECK_LT(((var_check_p1) - (var_check_p2)).abs().max(), delta);    \
     }
 
 // ============================================================================

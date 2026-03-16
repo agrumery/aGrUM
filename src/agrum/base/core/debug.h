@@ -148,20 +148,16 @@
 #  endif   // GUM_DEBUG_MODE
 
 #  ifdef GUM_TRACE_ON
-#    define _GUM_PRINT(file, line, msg)                                    \
-      {                                                                    \
-        std::string ff(file);                                              \
-        std::cout << file << ":" << line << " [GUM] " << msg << std::endl; \
-      }
+#    define GUM_FILE_LINE_PRINT(file, line, msg) \
+      { std::cout << std::endl << file << ":" << line << " [GUM] " << msg << std::endl; }
 
-#    define GUM_CHECKPOINT     _GUM_PRINT(__FILE__, __LINE__, "******** checkpoint ********")
-#    define GUM_TRACE(msg)     _GUM_PRINT(__FILE__, __LINE__, msg)
-#    define GUM_TRACE_VAR(var) _GUM_PRINT(__FILE__, __LINE__, "<" << #var << ">: " << var)
-
+#    define GUM_CHECKPOINT     GUM_FILE_LINE_PRINT(__FILE__, __LINE__, "******** checkpoint ********")
+#    define GUM_TRACE(msg)     GUM_FILE_LINE_PRINT(__FILE__, __LINE__, msg)
+#    define GUM_TRACE_VAR(var) GUM_FILE_LINE_PRINT(__FILE__, __LINE__, "<" << #var << ">: " << var)
 #    define GUM_TRACE_NEWLINE \
       { std::cout << std::endl; }
 #  else   // GUM_TRACE_ON
-#    define _GUM_PRINT(line, file, x)
+#    define GUM_FILE_LINE_PRINT(line, file, x)
 #    define GUM_CHECKPOINT
 #    define GUM_TRACE(msg)
 #    define GUM_TRACE_VAR(var)
