@@ -627,7 +627,8 @@ namespace gum_tests {
                                         gum::Set< std::string >{"A"},
                                         gum::Set< std::string >{"B"});
       CHECK(gum::contains(explanation, "No causal effect"));
-      CHECK(gum::contains(explanation, "d-separated"));
+      CHECK(gum::contains(explanation, "removing incoming edges into"));
+      CHECK(gum::contains(explanation, "B"));
     }
   };
 

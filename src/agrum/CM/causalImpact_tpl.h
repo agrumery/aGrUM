@@ -41,6 +41,8 @@
 
 #pragma once
 
+#include <sstream>
+
 #include <agrum/CM/causalImpact.h>
 
 namespace gum {
@@ -57,6 +59,51 @@ namespace gum {
         out += "'" + names[i] + "'";
       }
       out += "]";
+      return out;
+    }
+
+    inline std::string _formatVarsForSentence_(const Set<std::string>& vars) {
+      std::vector<std::string> names;
+      for (const auto& v : vars)
+        names.push_back(v);
+      std::sort(names.begin(), names.end());
+
+      if (names.empty()) return "";
+      if (names.size() == 1) return names[0];
+      if (names.size() == 2) return names[0] + " and " + names[1];
+
+      std::ostringstream os;
+      for (size_t i = 0; i < names.size(); ++i) {
+        if (i > 0) os << (i + 1 == names.size() ? ", and " : ", ");
+        os << names[i];
+      }
+      return os.str();
+    }
+
+    inline std::string _dsepExplanation_(const Set<std::string>& on,
+                                         const Set<std::string>& doing,
+                                         const Set<std::string>& knowing) {
+      std::ostringstream os;
+      os << "No causal effect of " << _formatVarsForSentence_(doing)
+         << " on " << _formatVarsForSentence_(on)
+         << " because they are d-separated after removing incoming edges into "
+         << _formatVarsForSentence_(doing);
+
+      if (!knowing.empty()) {
+        os << " and conditioning on " << _formatVarsForSentence_(knowing);
+      }
+
+      os << ".";
+      return os.str();
+    }
+
+    inline DAG _removeIncomingIntoLocal_(const DAG& g, const NodeSet& xset) {
+      DAG out(g);
+      for (const auto x : xset) {
+        const auto parents = out.parents(x);
+        for (const auto p : parents)
+          out.eraseArc(Arc(p, x));
+      }
       return out;
     }
   }
@@ -136,19 +183,6 @@ namespace gum {
     NodeSet cond = i_knowing;
 
     if (!directDoCalculus) {
-      if (Separation::isDSeparated(cm.causalDAG(), i_doing, i_on, cond)) {
-        // P(Y | K) in the observational BN
-        auto ast = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(cm.observationalBN(),
-                                                                       on,
-                                                                       knowing);
-        return CausalFormula< GUM_SCALAR >(cm,
-                                           std::move(ast),
-                                           on,
-                                           doing,
-                                           knowing,
-                                           "No causal effect (d-separated).");
-      }
-
       // single-X, single-Y, empty-K: try BACKDOOR then FRONTDOOR
       if (doing.size() == 1 && on.size() == 1 && knowing.empty()) {
         const auto& Xname = *doing.begin();
@@ -188,6 +222,21 @@ namespace gum {
                                                  std::string("frontdoor ") + _formatNodeSetNames_(cm, Z) + " found.");
           }
         }
+      }
+
+      // fallback: no causal effect in G_bar(X)
+      const DAG gXbar = _removeIncomingIntoLocal_(cm.causalDAG(), i_doing);
+      if (Separation::isDSeparated(gXbar, i_doing, i_on, cond)) {
+        // P(Y | K) in the observational BN
+        auto ast = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(cm.observationalBN(),
+                                                                       on,
+                                                                       knowing);
+        return CausalFormula< GUM_SCALAR >(cm,
+                                           std::move(ast),
+                                           on,
+                                           doing,
+                                           knowing,
+                                           _dsepExplanation_(on, doing, knowing));
       }
     }
 
