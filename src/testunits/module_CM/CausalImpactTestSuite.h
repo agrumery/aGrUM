@@ -415,6 +415,38 @@ namespace gum_tests {
       });
     }
 
+    static void testTobacco_Frontdoor_Latex_Primes_And_Parentheses() {
+      auto bn = gum::BayesNet< double >::fastPrototype("Smoking->Tar->Cancer;Smoking->Cancer");
+
+      gum::LatentDescriptorVector lat;
+      lat.emplace_back(
+          "Genotype",
+          std::vector< gum::NodeId >{bn.idFromName("Smoking"), bn.idFromName("Cancer")});
+
+      gum::CausalModel< double > cm(bn, lat, /*assumeNonSpurious=*/false);
+
+      const auto [formula, tensor, explanation]
+          = gum::causalImpact< double >(cm,
+                                        gum::Set< std::string >{"Cancer"},
+                                        gum::Set< std::string >{"Smoking"});
+
+      const std::string latex = formula.toLatex();
+
+      CHECK_EQ(tensor.variable(0).name(), "Cancer");
+      CHECK_EQ(tensor.nbrDim(), 2u);
+
+      CHECK(gum::contains(explanation, "frontdoor"));
+      CHECK(gum::contains(explanation, "'Tar'"));
+
+      CHECK(gum::contains(latex, "P\\left(Cancer \\mid do(Smoking)\\right) = "));
+      CHECK(gum::contains(latex, "\\sum_{Tar}{"));
+      CHECK(gum::contains(latex, "P\\left(Tar\\mid Smoking\\right)"));
+      CHECK(gum::contains(latex, "\\left(\\sum_{Smoking'}{"));
+      CHECK(gum::contains(latex, "P\\left(Cancer\\mid Smoking',Tar\\right)"));
+      CHECK(gum::contains(latex, "P\\left(Smoking'\\right)"));
+      CHECK(!gum::contains(latex, "\\sum_{Smoking}{"));
+    }
+
     // M) Tobacco #4: Unidentifiable hedge (latent confounder + direct edge kept)
     // Graph: Smoking -> Cancer and latent U -> {Smoking, Cancer}, assumeNonSpurious=true
     // Expected: Identification fails => eval() throws
@@ -643,6 +675,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(SimpsonParadox_BackdoorAverage)
   GUM_TEST_ACTIF(Tobacco_DirectCausality_TrivialBackdoor)
   GUM_TEST_ACTIF(Tobacco_Frontdoor_WithMediatorTar)
+  GUM_TEST_ACTIF(Tobacco_Frontdoor_Latex_Primes_And_Parentheses)
   GUM_TEST_ACTIF(Tobacco_Unidentifiable_Hedge)
   GUM_TEST_ACTIF(DoCalculus_WXZYW_BackdoorW)
   GUM_TEST_ACTIF(CustomDoOperatorLatex)

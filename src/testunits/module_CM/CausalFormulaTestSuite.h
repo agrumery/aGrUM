@@ -128,7 +128,7 @@ namespace gum_tests {
       CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
       CHECK((cf.toLatex())
             == ("P\\left(Y \\mid do(X)\\right) =  \\frac "
-                "{P\\left(X,Y\\right)}{\\sum_{Y}{P\\left(X,Y\'\\right)}}"));
+                "{P\\left(X,Y\\right)}{\\sum_{Y'}{P\\left(X,Y\'\\right)}}"));
 
       // Test evaluation
       auto result_pot = cf.eval();

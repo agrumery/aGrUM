@@ -542,18 +542,22 @@ namespace gum {
     }
 
     // Build corrected (prime-adjusted) names, then sort.
-    std::sort(vars.begin(), vars.end());
+    Set< std::string > varNames;
+    for (const auto& v: vars) {
+      varNames.insert(v);
+    }
+    auto corr = ASTtree< GUM_SCALAR >::_latexCorrect(varNames, nameOccur);
 
     // Join corrected names with commas
     std::stringstream names;
-    for (size_t i = 0; i < vars.size(); ++i) {
+    for (size_t i = 0; i < corr.size(); ++i) {
       if (i) names << ",";
-      names << vars[i];
+      names << corr[i];
     }
 
     // Inner formula is the first non-sum node's latex with current nameOccur
     std::stringstream out;
-    out << "\\sum_{" << names.str() << "}{" << a->fastToLatex(nameOccur) << "}";
+    out << "\\sum_{" << names.str() << "}{" << a->protectToLatex(nameOccur) << "}";
 
     // Restore nameOccur (decrement each var)
     for (const auto& v: vars) {
