@@ -51,43 +51,49 @@
 
 #include <agrum/CM/tools/causalFormula.h>
 
-namespace gum {
-
+namespace gum
+{
   // ---------- helpers ----------
 
-  template < GUM_Numeric GUM_SCALAR >
-  NodeSet CausalFormula< GUM_SCALAR >::_toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                            const Set< std::string >& names) {
-    NodeSet     ids;
+  template <GUM_Numeric GUM_SCALAR>
+  NodeSet CausalFormula<GUM_SCALAR>::_toNodeSetFromNames_(const CausalModel<GUM_SCALAR>& cm,
+                                                          const Set<std::string>& names)
+  {
+    NodeSet ids;
     const auto& bn = cm.observationalBN();
-    for (const auto& n: names) {
-      ids.insert(bn.idFromName(n));   // throws NotFound if unknown
+    for (const auto& n : names)
+    {
+      ids.insert(bn.idFromName(n)); // throws NotFound if unknown
     }
     return ids;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  void CausalFormula< GUM_SCALAR >::_ensureVariablesExist() const {
+  template <GUM_Numeric GUM_SCALAR>
+  void CausalFormula<GUM_SCALAR>::_ensureVariablesExist() const
+  {
     const auto& bn = _cm.observationalBN();
     // Touch the variable object to ensure validity (throws NotFound if invalid)
-    for (const auto& id: _on)
+    for (const auto& id : _on)
       (void)bn.variable(id);
-    for (const auto& id: _doing)
+    for (const auto& id : _doing)
       (void)bn.variable(id);
-    for (const auto& id: _knowing)
+    for (const auto& id : _knowing)
       (void)bn.variable(id);
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  void CausalFormula< GUM_SCALAR >::_ensureNoVariablesOverlap() const {
+  template <GUM_Numeric GUM_SCALAR>
+  void CausalFormula<GUM_SCALAR>::_ensureNoVariablesOverlap() const
+  {
     // Ensure pairwise disjointness: on ∩ doing = ∅, on ∩ knowing = ∅, doing ∩ knowing = ∅
-    for (const auto& id: _on) {
+    for (const auto& id : _on)
+    {
       if (_doing.contains(id))
         GUM_ERROR(OperationNotAllowed, "Variable cannot be both in 'on' and 'doing'");
       if (_knowing.contains(id))
         GUM_ERROR(OperationNotAllowed, "Variable cannot be both in 'on' and 'knowing'");
     }
-    for (const auto& id: _doing) {
+    for (const auto& id : _doing)
+    {
       if (_knowing.contains(id))
         GUM_ERROR(OperationNotAllowed, "Variable cannot be both in 'doing' and 'knowing'");
     }
@@ -95,29 +101,31 @@ namespace gum {
 
   // ---------- constructors ----------
 
-  template < GUM_Numeric GUM_SCALAR >
-  CausalFormula< GUM_SCALAR >::CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
-                                             std::unique_ptr< ASTtree< GUM_SCALAR > > root,
-                                             const Set< std::string >&                on,
-                                             const Set< std::string >&                doing,
-                                             const Set< std::string >&                knowing,
-                                             std::string_view                         explanation) :
-      _cm(cm), _root(std::move(root)), _on(_toNodeSetFromNames_(cm, on)),
-      _doing(_toNodeSetFromNames_(cm, doing)), _knowing(_toNodeSetFromNames_(cm, knowing)),
-      _explanation(explanation) {
+  template <GUM_Numeric GUM_SCALAR>
+  CausalFormula<GUM_SCALAR>::CausalFormula(const CausalModel<GUM_SCALAR>& cm,
+                                           std::unique_ptr<ASTtree<GUM_SCALAR>> root,
+                                           const Set<std::string>& on,
+                                           const Set<std::string>& doing,
+                                           const Set<std::string>& knowing,
+                                           std::string_view explanation) :
+    _cm(cm), _root(std::move(root)), _on(_toNodeSetFromNames_(cm, on)),
+    _doing(_toNodeSetFromNames_(cm, doing)), _knowing(_toNodeSetFromNames_(cm, knowing)),
+    _explanation(explanation)
+  {
     _ensureVariablesExist();
     _ensureNoVariablesOverlap();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  CausalFormula< GUM_SCALAR >::CausalFormula(const CausalModel< GUM_SCALAR >&         cm,
-                                             std::unique_ptr< ASTtree< GUM_SCALAR > > root,
-                                             const NodeSet&                           on,
-                                             const NodeSet&                           doing,
-                                             const NodeSet&                           knowing,
-                                             std::string_view                         explanation) :
-      _cm(cm), _root(std::move(root)), _on(on), _doing(doing), _knowing(knowing),
-      _explanation(explanation) {
+  template <GUM_Numeric GUM_SCALAR>
+  CausalFormula<GUM_SCALAR>::CausalFormula(const CausalModel<GUM_SCALAR>& cm,
+                                           std::unique_ptr<ASTtree<GUM_SCALAR>> root,
+                                           const NodeSet& on,
+                                           const NodeSet& doing,
+                                           const NodeSet& knowing,
+                                           std::string_view explanation) :
+    _cm(cm), _root(std::move(root)), _on(on), _doing(doing), _knowing(knowing),
+    _explanation(explanation)
+  {
     _ensureVariablesExist();
     _ensureNoVariablesOverlap();
   }
@@ -125,42 +133,52 @@ namespace gum {
   // ---------- core API ----------
 
   // causalFormula_tpl.h (or inline in the header)
-  template < GUM_Numeric GUM_SCALAR >
-  inline bool CausalFormula< GUM_SCALAR >::isIdentified() const noexcept {
-    return static_cast< bool >(_root);
+  template <GUM_Numeric GUM_SCALAR>
+  inline bool CausalFormula<GUM_SCALAR>::isIdentified() const noexcept
+  {
+    return static_cast<bool>(_root);
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  inline const ASTtree< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::root() const {
+  template <GUM_Numeric GUM_SCALAR>
+  inline const ASTtree<GUM_SCALAR>& CausalFormula<GUM_SCALAR>::root() const
+  {
     if (!_root) GUM_ERROR(OperationNotAllowed, "No AST: effect not identified.");
     return *_root;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > CausalFormula< GUM_SCALAR >::eval() const {
-    if (!_root) {
+  template <GUM_Numeric GUM_SCALAR>
+  Tensor<GUM_SCALAR> CausalFormula<GUM_SCALAR>::eval() const
+  {
+    if (!_root)
+    {
       GUM_ERROR(gum::OperationNotAllowed,
                 "CausalFormula::eval() called on a non-identified formula.");
     }
     return _root->eval(_cm.observationalBN());
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::string CausalFormula< GUM_SCALAR >::toString() const {
-    if (!_root) return "[unidentifiable] " + _explanation;
+  template <GUM_Numeric GUM_SCALAR>
+  std::string CausalFormula<GUM_SCALAR>::toString() const
+  {
+    if (!_root) return "[unidentifiable]";
     return _root->toString();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::string CausalFormula< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
-                                                   std::string_view doOperatorSuffix) const {
-    // Track variable name occurrences for prime management in AST LaTeX
-    HashTable< std::string, int > nameOccur;
+  template <GUM_Numeric GUM_SCALAR>
+  std::string CausalFormula<GUM_SCALAR>::toLatex(std::string_view doOperatorPrefix,
+                                                 std::string_view doOperatorSuffix) const
+  {
+    if (!_root) return "[unidentifiable]";
 
-    const auto& bn       = _cm.observationalBN();
-    auto        addNames = [&](const NodeSet& S) {
-      for (const auto& id: S) {
-        const auto& v    = bn.variable(id);
+    // Track variable name occurrences for prime management in AST LaTeX
+    HashTable<std::string, int> nameOccur;
+
+    const auto& bn = _cm.observationalBN();
+    auto addNames = [&](const NodeSet& S)
+    {
+      for (const auto& id : S)
+      {
+        const auto& v = bn.variable(id);
         const auto& name = v.name();
         if (!nameOccur.exists(name)) nameOccur.insert(name, 1);
       }
@@ -172,43 +190,49 @@ namespace gum {
     return latexQuery(doOperatorPrefix, doOperatorSuffix) + " = " + _root->toLatex(nameOccur);
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::string CausalFormula< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
-                                                      std::string_view doOperatorSuffix) const {
+  template <GUM_Numeric GUM_SCALAR>
+  std::string CausalFormula<GUM_SCALAR>::latexQuery(std::string_view doOperatorPrefix,
+                                                    std::string_view doOperatorSuffix) const
+  {
     const auto& bn = _cm.observationalBN();
 
-    auto namesSorted = [&](const NodeSet& S) {
-      std::vector< std::string > res;
+    auto namesSorted = [&](const NodeSet& S)
+    {
+      std::vector<std::string> res;
       res.reserve(S.size());
-      for (const auto& id: S)
+      for (const auto& id : S)
         res.emplace_back(bn.variable(id).name());
       std::sort(res.begin(), res.end());
       return res;
     };
 
-    const auto onNames      = namesSorted(_on);
-    const auto doingNames   = namesSorted(_doing);
+    const auto onNames = namesSorted(_on);
+    const auto doingNames = namesSorted(_doing);
     const auto knowingNames = namesSorted(_knowing);
 
     std::stringstream ss;
     ss << "P\\left(";
 
-    for (size_t i = 0; i < onNames.size(); ++i) {
+    for (size_t i = 0; i < onNames.size(); ++i)
+    {
       ss << onNames[i];
       if (i + 1 < onNames.size()) ss << ",";
     }
 
-    if (!doingNames.empty() || !knowingNames.empty()) {
+    if (!doingNames.empty() || !knowingNames.empty())
+    {
       ss << " \\mid ";
 
-      if (!doingNames.empty()) {
+      if (!doingNames.empty())
+      {
         ss << doOperatorPrefix << doingNames.front();
         for (size_t i = 1; i < doingNames.size(); ++i)
           ss << "," << doingNames[i];
         ss << doOperatorSuffix;
       }
 
-      if (!knowingNames.empty()) {
+      if (!knowingNames.empty())
+      {
         if (!doingNames.empty()) ss << ",";
         ss << knowingNames.front();
         for (size_t i = 1; i < knowingNames.size(); ++i)
@@ -220,48 +244,51 @@ namespace gum {
     return ss.str();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::unique_ptr< CausalFormula< GUM_SCALAR > > CausalFormula< GUM_SCALAR >::copy() const {
-    return std::make_unique< CausalFormula< GUM_SCALAR > >(_cm,
-                                                           _root->copy(),
-                                                           _on,
-                                                           _doing,
-                                                           _knowing);
+  template <GUM_Numeric GUM_SCALAR>
+  std::unique_ptr<CausalFormula<GUM_SCALAR>> CausalFormula<GUM_SCALAR>::copy() const
+  {
+    return std::make_unique<CausalFormula<GUM_SCALAR>>(_cm,
+                                                       _root->copy(),
+                                                       _on,
+                                                       _doing,
+                                                       _knowing);
   }
 
   // ---------- convenience name accessors ----------
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::vector< std::string > CausalFormula< GUM_SCALAR >::onNames() const {
-    const auto&                bn = _cm.observationalBN();
-    std::vector< std::string > out;
+  template <GUM_Numeric GUM_SCALAR>
+  std::vector<std::string> CausalFormula<GUM_SCALAR>::onNames() const
+  {
+    const auto& bn = _cm.observationalBN();
+    std::vector<std::string> out;
     out.reserve(_on.size());
-    for (const auto& id: _on)
+    for (const auto& id : _on)
       out.emplace_back(bn.variable(id).name());
     std::sort(out.begin(), out.end());
     return out;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::vector< std::string > CausalFormula< GUM_SCALAR >::doingNames() const {
-    const auto&                bn = _cm.observationalBN();
-    std::vector< std::string > out;
+  template <GUM_Numeric GUM_SCALAR>
+  std::vector<std::string> CausalFormula<GUM_SCALAR>::doingNames() const
+  {
+    const auto& bn = _cm.observationalBN();
+    std::vector<std::string> out;
     out.reserve(_doing.size());
-    for (const auto& id: _doing)
+    for (const auto& id : _doing)
       out.emplace_back(bn.variable(id).name());
     std::sort(out.begin(), out.end());
     return out;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::vector< std::string > CausalFormula< GUM_SCALAR >::knowingNames() const {
-    const auto&                bn = _cm.observationalBN();
-    std::vector< std::string > out;
+  template <GUM_Numeric GUM_SCALAR>
+  std::vector<std::string> CausalFormula<GUM_SCALAR>::knowingNames() const
+  {
+    const auto& bn = _cm.observationalBN();
+    std::vector<std::string> out;
     out.reserve(_knowing.size());
-    for (const auto& id: _knowing)
+    for (const auto& id : _knowing)
       out.emplace_back(bn.variable(id).name());
     std::sort(out.begin(), out.end());
     return out;
   }
-
-}   // namespace gum
+} // namespace gum

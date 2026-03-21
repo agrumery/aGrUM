@@ -1812,19 +1812,16 @@ def getCausalImpact(
   formula, impact, explanation = gum.causalImpact(model, on, doing, knowing, values)
 
   flow.clear()
-  flow.add(getCausalModel(model), caption="Causal Model")
+  flow.add(model, caption="Causal Model")
 
-  if formula is None:
-    flow.add(explanation, caption="Impossible")
+  if not formula.isIdentified():
+    flow.add(explanation, caption="Explanation")
+    res = "No result"
   else:
     flow.add(
       "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n",
       caption="Explanation : " + explanation,
       )
-
-  if formula is None:
-    res = "No result"
-  else:
     if impact.variable(0).domainSize() < 5:
       res = impact
     else:
