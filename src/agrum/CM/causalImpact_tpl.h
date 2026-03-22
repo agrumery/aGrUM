@@ -41,74 +41,73 @@
 
 #pragma once
 
+#include <algorithm>
 #include <sstream>
 
 #include <agrum/CM/causalImpact.h>
 
 namespace gum {
+  // ---------- helpers ----------
 
-  namespace {
-    template <GUM_Numeric GUM_SCALAR>
-    std::string _formatNodeSetNames_(const CausalModel<GUM_SCALAR>& cm, const NodeSet& zset) {
-      std::vector<std::string> names;
-      for (auto id : zset) names.push_back(cm.nameFromId(id));
-      std::sort(names.begin(), names.end());
-      std::string out = "[";
-      for (size_t i = 0; i < names.size(); ++i) {
-        if (i > 0) out += ", ";
-        out += "'" + names[i] + "'";
-      }
-      out += "]";
-      return out;
+  inline std::string _formatVarsForSentence_(const Set< std::string >& vars) {
+    std::vector< std::string > names;
+    for (const auto& v: vars) {
+      names.push_back(v);
     }
+    std::ranges::sort(names);
 
-    inline std::string _formatVarsForSentence_(const Set<std::string>& vars) {
-      std::vector<std::string> names;
-      for (const auto& v : vars)
-        names.push_back(v);
-      std::sort(names.begin(), names.end());
+    if (names.empty()) { return ""; }
+    if (names.size() == 1) { return names[0]; }
+    if (names.size() == 2) { return names[0] + " and " + names[1]; }
 
-      if (names.empty()) return "";
-      if (names.size() == 1) return names[0];
-      if (names.size() == 2) return names[0] + " and " + names[1];
-
-      std::ostringstream os;
-      for (size_t i = 0; i < names.size(); ++i) {
-        if (i > 0) os << (i + 1 == names.size() ? ", and " : ", ");
-        os << names[i];
-      }
-      return os.str();
+    std::ostringstream os;
+    for (size_t i = 0; i < names.size(); ++i) {
+      if (i > 0) { os << (i + 1 == names.size() ? ", and " : ", "); }
+      os << names[i];
     }
-
-    inline std::string _dsepExplanation_(const Set<std::string>& on,
-                                         const Set<std::string>& doing,
-                                         const Set<std::string>& knowing) {
-      std::ostringstream os;
-      os << "No causal effect of " << _formatVarsForSentence_(doing)
-         << " on " << _formatVarsForSentence_(on)
-         << " because they are d-separated after removing incoming edges into "
-         << _formatVarsForSentence_(doing);
-
-      if (!knowing.empty()) {
-        os << " and conditioning on " << _formatVarsForSentence_(knowing);
-      }
-
-      os << ".";
-      return os.str();
-    }
-
-    inline DAG _removeIncomingIntoLocal_(const DAG& g, const NodeSet& xset) {
-      DAG out(g);
-      for (const auto x : xset) {
-        const auto parents = out.parents(x);
-        for (const auto p : parents)
-          out.eraseArc(Arc(p, x));
-      }
-      return out;
-    }
+    return os.str();
   }
 
-  // ---------- helpers ----------
+  inline std::string _dsepExplanation_(const Set< std::string >& on,
+                                       const Set< std::string >& doing,
+                                       const Set< std::string >& knowing) {
+    std::ostringstream os;
+    os << "No causal effect of " << _formatVarsForSentence_(doing) << " on "
+       << _formatVarsForSentence_(on)
+       << " because they are d-separated after removing incoming edges into "
+       << _formatVarsForSentence_(doing);
+
+    if (!knowing.empty()) { os << " and conditioning on " << _formatVarsForSentence_(knowing); }
+
+    os << ".";
+    return os.str();
+  }
+
+  inline DAG _removeIncomingIntoLocal_(const DAG& g, const NodeSet& xset) {
+    DAG out(g);
+    for (const auto x: xset) {
+      const auto parents = out.parents(x);
+      for (const auto p: parents)
+        out.eraseArc(Arc(p, x));
+    }
+    return out;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string _formatNodeSetNames_(const CausalModel< GUM_SCALAR >& cm, const NodeSet& zset) {
+    std::vector< std::string > names;
+    for (auto id: zset) {
+      names.push_back(cm.nameFromId(id));
+    }
+    std::ranges::sort(names);
+    std::string out = "[";
+    for (size_t i = 0; i < names.size(); ++i) {
+      if (i > 0) out += ", ";
+      out += "'" + names[i] + "'";
+    }
+    out += "]";
+    return out;
+  }
 
   template < GUM_Numeric GUM_SCALAR >
   typename gum::Set< std::string >
@@ -134,10 +133,15 @@ namespace gum {
   bool CausalImpact< GUM_SCALAR >::_disjoint_(const Set< std::string >& a,
                                               const Set< std::string >& b,
                                               const Set< std::string >& c) {
-    for (const auto& x: a)
-      if (b.contains(x) || c.contains(x)) return false;
-    for (const auto& x: b)
-      if (c.contains(x)) return false;
+    if (std::any_of(a.begin(), a.end(), [&b, &c](const auto& x) {
+          return b.contains(x) || c.contains(x);
+        })) {
+      return false;
+    }
+    if (std::any_of(b.begin(), b.end(), [&c](const auto& x) { return c.contains(x); })) {
+      return false;
+    }
+
     return true;
   }
 
@@ -194,16 +198,20 @@ namespace gum {
         {
           auto optZ = cm.backDoor(Xid, Yid);   // nullopt = no set found
           if (optZ.has_value()
-              && Separation::isBackdoorSeparated(cm.causalDAG(), NodeSet{Xid}, NodeSet{Yid}, *optZ)) {
-            NodeSet Z = *optZ;
+              && Separation::isBackdoorSeparated(cm.causalDAG(),
+                                                 NodeSet{Xid},
+                                                 NodeSet{Yid},
+                                                 *optZ)) {
+            NodeSet                  Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getBackDoorTree(Xid, Yid, Z);
-              return CausalFormula< GUM_SCALAR >(cm,
-                                                 std::move(ast),
-                                                 on,
-                                                 doing,
-                                                 knowing,
-                                                 std::string("backdoor ") + _formatNodeSetNames_(cm, Z) + " found.");
+            return CausalFormula< GUM_SCALAR >(cm,
+                                               std::move(ast),
+                                               on,
+                                               doing,
+                                               knowing,
+                                               std::string("backdoor ")
+                                                   + _formatNodeSetNames_(cm, Z) + " found.");
           }
         }
 
@@ -211,15 +219,16 @@ namespace gum {
         {
           auto optZ = cm.frontDoor(Xid, Yid);
           if (optZ.has_value() && !optZ->empty()) {
-            NodeSet Z = *optZ;
+            NodeSet                  Z = *optZ;
             DoCalculus< GUM_SCALAR > dc(cm);
             auto                     ast = dc.getFrontDoorTree(Xid, Yid, Z);
-              return CausalFormula< GUM_SCALAR >(cm,
-                                                 std::move(ast),
-                                                 on,
-                                                 doing,
-                                                 knowing,
-                                                 std::string("frontdoor ") + _formatNodeSetNames_(cm, Z) + " found.");
+            return CausalFormula< GUM_SCALAR >(cm,
+                                               std::move(ast),
+                                               on,
+                                               doing,
+                                               knowing,
+                                               std::string("frontdoor ")
+                                                   + _formatNodeSetNames_(cm, Z) + " found.");
           }
         }
       }
@@ -293,12 +302,12 @@ namespace gum {
                                   const HashTable< std::string, std::string >& values) {
     Instantiation I;   // start empty (partial instantiation)
 
-    for (const auto& kv: values) {
+    for (const auto& [k, v]: values) {
       try {
-        const auto&    var = tensor.variable(kv.first);   // skip if not in tensor
-        const gum::Idx idx = var.index(kv.second);        // skip if label unknown
-        I.add(var);                                       // add this dim only
-        I.chgVal(var, idx);                               // fix its value
+        const auto&    var = tensor.variable(k);   // skip if not in tensor
+        const gum::Idx idx = var.index(v);         // skip if label unknown
+        I.add(var);                                // add this dim only
+        I.chgVal(var, idx);                        // fix its value
       } catch (const gum::NotFound&) {
         // variable or label not found: ignore (non-strict)
         continue;
@@ -322,8 +331,7 @@ namespace gum {
 
     // Numeric value: empty tensor if not identifiable
     Tensor< GUM_SCALAR > numeric;
-    if (ci.isIdentified()) numeric = ci.eval();
-
+    if (ci.isIdentified()) { numeric = ci.eval(); }
 
     // If specific values were provided, strictly slice the tensor to those values
     if (!values.empty() && numeric.nbrDim() > 0) {

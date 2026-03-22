@@ -76,8 +76,7 @@ import pyagrum as gum
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot
-from pyagrum.lib.mrf2graph import MRF2FactorGraphdot
+from pyagrum.lib.mrf2graph import MRF2UGdot,MRF2FactorGraphdot
 
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
@@ -1936,8 +1935,10 @@ else:
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
+  # by default, show the formula
+  gum.CausalImpact._repr_html_ = lambda self: f"$${self.toLatex()}$$"
+
   gum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
-  gum.CausalImpact._repr_html_ = lambda self: getCausalImpact(self)
 
   gum.Tensor._repr_html_ = lambda self: getTensor(self)
 
