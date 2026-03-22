@@ -48,8 +48,6 @@
 #ifndef GUM_SET_H
 #define GUM_SET_H
 
-#include <iostream>
-#include <sstream>
 #include <string>
 
 #include <agrum/base/core/debug.h>
@@ -180,7 +178,7 @@ namespace gum {
      * @brief Move constructor.
      * @param aHT The gum::Set to move.
      */
-    Set(Set< Key >&& aHT);
+    Set(Set< Key >&& aHT) noexcept;
 
     /**
      * @brief Class destructor.
@@ -205,7 +203,7 @@ namespace gum {
      * @param from The gum::Set to move.
      * @return Returns this gum::Set.
      */
-    Set< Key >& operator=(Set< Key >&& from);
+    Set< Key >& operator=(Set< Key >&& from) noexcept;
 
     /**
      * @brief Mathematical equality between two sets.
@@ -213,13 +211,6 @@ namespace gum {
      * @return Returns true if both gum::Set are equal.
      */
     bool operator==(const Set< Key >& s2) const;
-
-    /**
-     * @brief Mathematical inequality between two sets.
-     * @param s2 The gum::Set to test for inequality.
-     * @return Returns true if both gum::Set are not equal.
-     */
-    bool operator!=(const Set< Key >& s2) const;
 
     /**
      * @brief Intersection update operator
@@ -419,13 +410,13 @@ namespace gum {
      * @brief The usual safe end iterator to parse the set.
      * @return Returns the usual safe end iterator to parse the set.
      */
-    const iterator_safe& endSafe() const noexcept;
+    static const iterator_safe& endSafe() noexcept;
 
     /**
      * @brief The usual safe end iterator to parse the set.
      * @return Returns the usual safe end iterator to parse the set.
      */
-    const const_iterator_safe& cendSafe() const noexcept;
+    static const const_iterator_safe& cendSafe() noexcept;
 
     /**
      * @brief The usual unsafe begin iterator to parse the set.
@@ -443,13 +434,13 @@ namespace gum {
      * @brief The usual unsafe end iterator to parse the set.
      * @return Returns the usual unsafe end iterator to parse the set.
      */
-    const iterator& end() const noexcept;
+    static const iterator& end() noexcept;
 
     /**
      * @brief The usual unsafe end iterator to parse the set.
      * @return Returns the usual unsafe end iterator to parse the set.
      */
-    const const_iterator& cend() const noexcept;
+    static const const_iterator& cend() noexcept;
 
     /// @}
 
@@ -507,7 +498,7 @@ namespace gum {
      * @brief Creates a hashtable of NewKey from the set.
      *
      * @warning The order in the resulting hashtable may not be similar to that
-     * of the original set. Hence iterators on the former may not parse it in
+     * of the original set. Hence, iterators on the former may not parse it in
      * the same order as iterators on the latter.
      *
      * @param f A function that maps Key into a NewKey
@@ -558,7 +549,7 @@ namespace gum {
     HashTable< Key, bool > _inside_;
 
     /// Convert a hash table into a set of keys.
-    Set(const HashTable< Key, bool >& h);
+    explicit Set(const HashTable< Key, bool >& h);
   };
 
   // ===========================================================================
@@ -616,7 +607,7 @@ namespace gum {
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position { BEGIN, END };
+    enum class Position : unsigned char { BEGIN, END };
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -643,7 +634,7 @@ namespace gum {
      * @param from The gum::Set to iterate over.
      * @param pos Where to start iterating.
      */
-    SetIteratorSafe(const Set< Key >& from, Position pos = BEGIN);
+    explicit SetIteratorSafe(const Set< Key >& from, Position pos = Position::BEGIN);
 
     /**
      * @brief Copy constructor.
@@ -653,15 +644,15 @@ namespace gum {
 
     /**
      * @brief Copy constructor.
-     * @param from The iterator to copy.
+     * @param iter The iterator to copy.
      */
-    explicit SetIteratorSafe(const SetIterator< Key >& from);
+    explicit SetIteratorSafe(const SetIterator< Key >& iter);
 
     /**
      * @brief Move constructor.
      * @param from The iterator to move.
      */
-    SetIteratorSafe(SetIteratorSafe< Key >&& from);
+    SetIteratorSafe(SetIteratorSafe< Key >&& from) noexcept;
 
     /**
      * Class destructor.
@@ -683,10 +674,10 @@ namespace gum {
 
     /**
      * @brief Assignment operator.
-     * @param from The iterator to copy.
+     * @param iter The iterator to copy.
      * @return Returns this iterator.
      */
-    SetIteratorSafe< Key >& operator=(const SetIterator< Key >& from);
+    SetIteratorSafe< Key >& operator=(const SetIterator< Key >& iter);
 
     /**
      * @brief Assignment operator.
@@ -714,14 +705,6 @@ namespace gum {
      * @return Returns a new iterator.
      */
     SetIteratorSafe< Key > operator+(Size i) const;
-
-    /**
-     * @brief Indicates whether two iterators point to different elements or
-     * sets.
-     * @param from The iterator to test for inequality.
-     * @return Returns true if both iterator are not equal.
-     */
-    bool operator!=(const SetIteratorSafe< Key >& from) const noexcept;
 
     /**
      * @brief Indicates whether two iterators point toward the same element of
@@ -834,7 +817,7 @@ namespace gum {
      * @brief An enumeration to position the iterator at the beginning or the
      * end of the set.
      */
-    enum Position { BEGIN, END };
+    enum class Position : unsigned char { BEGIN, END };
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -861,13 +844,13 @@ namespace gum {
      * @param from The gum::Set to iterator over.
      * @param pos Where to start iterating.
      */
-    SetIterator(const Set< Key >& from, Position pos = BEGIN);
+    explicit SetIterator(const Set< Key >& from, Position pos = Position::BEGIN);
 
     /**
      * @brief Copy constructor.
-     * @param from The iterator to copy.
+     * @param iter The iterator to copy.
      */
-    SetIterator(const SetIterator< Key >& from) noexcept;
+    SetIterator(const SetIterator< Key >& iter) noexcept;
 
     /**
      * @brief Move constructor.
@@ -888,10 +871,10 @@ namespace gum {
 
     /**
      * @brief Assignment operator.
-     * @param from The iterator to copy.
+     * @param iter The iterator to copy.
      * @return Returns this iterator.
      */
-    SetIterator< Key >& operator=(const SetIterator< Key >& from) noexcept;
+    SetIterator< Key >& operator=(const SetIterator< Key >& iter) noexcept;
 
     /**
      * @brief Assignment operator.
@@ -908,33 +891,25 @@ namespace gum {
 
     /**
      * @brief Makes the iterator point to i elements further in the set.
-     * @param i The number of increments.
+     * @param nb The number of increments.
      * @return Returns this iterator.
      */
-    SetIterator< Key >& operator+=(Size i) noexcept;
+    SetIterator< Key >& operator+=(Size nb) noexcept;
 
     /**
      * @brief Returns a new iterator.
-     * @param i The number of increments.
+     * @param nb The number of increments.
      * @return Returns a new iterator.
      */
-    SetIterator< Key > operator+(Size i) const noexcept;
-
-    /**
-     * @brief Indicates whether two iterators point to different elements or
-     * sets.
-     * @param from The iterator to test for inequality.
-     * @return Returns true if both iterator are not equal.
-     */
-    bool operator!=(const SetIterator< Key >& from) const noexcept;
+    SetIterator< Key > operator+(Size nb) const noexcept;
 
     /**
      * @brief Indicates whether two iterators point toward the same element of
      * a same set.
-     * @param from The iterator to test for equality.
+     * @param iter The iterator to test for equality.
      * @return Returns true if both iterator are equal.
      */
-    bool operator==(const SetIterator< Key >& from) const noexcept;
+    bool operator==(const SetIterator< Key >& iter) const noexcept;
 
     /**
      * @brief Returns the element pointed to by the iterator.
@@ -997,7 +972,7 @@ namespace gum {
     static Size castToSize(const Set< T >& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const Set< T >& key) const override final;
+    Size operator()(const Set< T >& key) const final;
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -1012,8 +987,8 @@ namespace gum {
   extern const SetIterator< int >     _static_Set_end_;
   extern const SetIteratorSafe< int > _static_Set_end_safe_;
 
-  inline constexpr void* const _Set_end_      = (void* const)&_static_Set_end_;
-  inline constexpr void* const _Set_end_safe_ = (void* const)&_static_Set_end_safe_;
+  inline constexpr const void* const _Set_end_      = &_static_Set_end_;
+  inline constexpr const void* const _Set_end_safe_ = &_static_Set_end_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
