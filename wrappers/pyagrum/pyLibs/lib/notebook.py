@@ -1810,6 +1810,9 @@ def getCausalImpact(
   """
   formula, impact, explanation = gum.causalImpact(model, on, doing, knowing, values)
 
+  if explanation.startswith("Effect not identifiable"):
+    explanation = "Effect not identifiable"
+
   flow.clear()
   flow.add(model, caption="Causal Model")
 

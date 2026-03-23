@@ -662,6 +662,32 @@ namespace gum_tests {
       CHECK(gum::contains(explanation, "removing incoming edges into"));
       CHECK(gum::contains(explanation, "B"));
     }
+
+    static void testFromNotebook64() {
+      const auto m = gum::BayesNet< double >::fastPrototype("z2->x->z1->y;z2->z1;z2->z3->y");
+      auto       d = gum::CausalModel(m,
+                                      {{"X-Z2", m.ids({"x", "z2"})},
+                                       {"X-Z3", m.ids({"x", "z3"})},
+                                       {"X-Y", m.ids({"x", "y"})},
+                                       {"Y-Z2", m.ids({"y", "z2"})}});
+      const auto [ci, tensor, explanation]
+          = gum::causalImpact< double >(d, {"y", "z2", "z1", "z3"}, {"x"});
+
+      // computation for this formula directly in aGrUM
+      const auto f1       = m.cpt("x") * m.cpt("z2") * m.cpt("z3") * m.cpt("y");
+      const auto f2       = f1.sumOut(vset(m, {"x"}));
+      const auto f3       = f1.sumOut(vset(m, {"x", "y"}));
+      const auto f4       = f2 / f3;
+      const auto pyResult = m.cpt("z3") * m.cpt("z1") * m.cpt("z2") * f4;
+      const auto tensor2  = gum::Tensor(tensor).fillWith(pyResult);
+      const auto diff     = (tensor - tensor2).abs();
+      CHECK_LT(diff.min(), GUM_SMALL_ERROR);
+      CHECK_LT(diff.max(), GUM_SMALL_ERROR);
+
+      // check if in the string there is only once subtring "frac"
+      auto t = gum::split(ci.toLatex(), "frac");
+      CHECK_EQ(t.size(), 2);   // if there are 1 "frac" substring
+    }
   };
 
   GUM_TEST_ACTIF(NullEffect_DSeparation)
@@ -684,5 +710,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FromNotebook13)
   GUM_TEST_ACTIF(FromNotebookFrontdoor)
   GUM_TEST_ACTIF(FromNotebookTobacco)
+  GUM_TEST_ACTIF(FromNotebook64)
 
 }   // namespace gum_tests
