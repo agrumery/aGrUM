@@ -65,21 +65,22 @@ class ActBuilderPyAgrum(ActBuilder):
   PYAGRUM_MODULES = _load_pyagrum_test_modules()
 
   def check_consistency(self) -> bool:
-    cur_modules = self.current["modules"]
-    if self.current["tests"] == "list":
-      error("List of [[pyAgrum]]'s tests is not available for now. Sorry.")
-      return False
+    if self.current["action"] == "test":
+      cur_modules = self.current["modules"]
+      if self.current["tests"] == "list":
+        error("List of [[pyAgrum]]'s tests is not available for now. Sorry.")
+        return False
 
-    if cur_modules in {"list", "show"}:
-      notif("Available [[pyAgrum]] modules: " + ", ".join(sorted(self.PYAGRUM_MODULES)))
-      notif("Usage: -m all+nb | -m all | -m <module>")
-      return False
+      if cur_modules in {"list", "show"}:
+        notif("Available [[pyAgrum]] modules: " + ", ".join(sorted(self.PYAGRUM_MODULES)))
+        notif("Usage: -m all+nb | -m all | -m <module>")
+        return False
 
-    if cur_modules not in {"", "all", "all+nb", "nb"} and cur_modules not in self.PYAGRUM_MODULES:
-      error(
-        f"Unknown module [[{cur_modules}]]. Expected: all, all+nb, nb, list, show, or <module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
-      )
-      return False
+      if cur_modules not in {"", "all", "all+nb", "nb"} and cur_modules not in self.PYAGRUM_MODULES:
+        error(
+          f"Unknown module [[{cur_modules}]]. Expected: all, all+nb, nb, list, show, or <module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
+        )
+        return False
 
     if not self.check_compiler_and_maker():
       return False

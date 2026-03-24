@@ -340,35 +340,32 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeId >
       DoCalculus< GUM_SCALAR >::_topoObserved_(const CausalModel< GUM_SCALAR >& cm) const {
-    const NodeSet lat = cm.latentVariablesIds();
-    const NodeSet V   = cm.observationalBN().dag().nodes().asNodeSet();
+    const auto& dag = cm.observationalBN().dag();
+    const NodeSet V = dag.nodes().asNodeSet();
 
-    // indegree counting ignoring latent parents
+    // indegree in the observed DAG
     std::unordered_map< NodeId, Size > indeg;
-    for (auto v: V) {
-      Size cnt = 0;
-      for (auto p: cm.parents(v))
-        if (!lat.contains(p)) ++cnt;
-      indeg[v] = cnt;
-    }
+    for (auto v: V)
+      indeg[v] = dag.parents(v).size();
 
     std::vector< NodeId > order;
     order.reserve(V.size());
 
-    // Kahn
+    // Kahn on observed DAG only
     std::queue< NodeId > q;
     for (const auto& kv: indeg)
       if (kv.second == 0) q.push(kv.first);
 
     while (!q.empty()) {
-      NodeId u = q.front();
+      const NodeId u = q.front();
       q.pop();
       order.push_back(u);
-      for (auto c: cm.children(u)) {
-        if (lat.contains(c) || !indeg.count(c)) continue;
+
+      for (auto c: dag.children(u)) {
         if (indeg[c] > 0) {
           --indeg[c];
-          if (indeg[c] == 0) q.push(c);
+          if (indeg[c] == 0)
+            q.push(c);
         }
       }
     }
@@ -665,7 +662,8 @@ namespace gum {
           for (auto v: order)
             if (S.contains(v)) ordering.push_back(v);
 
-          for (auto v: ordering) {
+          for (Size j = 0; j < ordering.size(); ++j) {
+            auto v = ordering[j];
             std::unique_ptr< ASTtree< GUM_SCALAR > > term;
             if (!P) {
               // from BN: P(v | predecessors) using chain rule prefix
@@ -678,13 +676,52 @@ namespace gum {
               if (condNames.empty()) term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
               else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
             } else {
-              // from accumulated P: P(v | rest) = P / sum_v P
-              auto                       num = std::unique_ptr< ASTtree< GUM_SCALAR > >(P->copy());
-              std::vector< std::string > tosum{cm.nameFromId(v)};
-              auto                       den = std::make_unique< ASTsum< GUM_SCALAR > >(
-                  tosum,
-                  std::unique_ptr< ASTtree< GUM_SCALAR > >(P->copy()));
-              term = std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(num), std::move(den));
+              // from accumulated P: factorize Q[S] by full-order prefix marginals
+              Size k = pos[v];
+              std::vector< std::string > prefixNames;
+              prefixNames.reserve(k + 1);
+              for (Size i = 0; i <= k; ++i)
+                prefixNames.push_back(cm.nameFromId(order[i]));
+
+              // numerator = marginal of P on current prefix
+              std::unique_ptr< ASTtree< GUM_SCALAR > > num(
+                  P->copy());
+              std::vector< std::string > sumNum;
+              for (auto u: V) {
+                const auto& un = cm.nameFromId(u);
+                if (std::find(prefixNames.begin(), prefixNames.end(), un) == prefixNames.end()) {
+                  sumNum.push_back(un);
+                }
+              }
+              if (!sumNum.empty()) {
+                num = std::make_unique< ASTsum< GUM_SCALAR > >(sumNum, std::move(num));
+              }
+
+              if (k == 0) {
+                Set< std::string > lhs;
+                lhs.insert(cm.nameFromId(v));
+                term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
+
+              } else {
+                // denominator = marginal of P on previous prefix
+                std::unique_ptr< ASTtree< GUM_SCALAR > > den(
+                    P->copy());
+                std::vector< std::string > prevPrefix;
+                prevPrefix.reserve(k);
+                for (Size i = 0; i < k; ++i)
+                  prevPrefix.push_back(cm.nameFromId(order[i]));
+                std::vector< std::string > sumDen;
+                for (auto u: V) {
+                  const auto& un = cm.nameFromId(u);
+                  if (std::find(prevPrefix.begin(), prevPrefix.end(), un) == prevPrefix.end()) {
+                    sumDen.push_back(un);
+                  }
+                }
+                if (!sumDen.empty()) {
+                  den = std::make_unique< ASTsum< GUM_SCALAR > >(sumDen, std::move(den));
+                }
+                term = std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(num), std::move(den));
+              }
             }
 
             if (!prod) prod = std::move(term);
@@ -732,7 +769,8 @@ namespace gum {
         for (auto v: order)
           if (Spr.contains(v)) ordering.push_back(v);
 
-        for (auto v: ordering) {
+        for (Size j = 0; j < ordering.size(); ++j) {
+          auto v = ordering[j];
           std::unique_ptr< ASTtree< GUM_SCALAR > > term;
           if (!P) {
             Size               k = pos[v];
@@ -744,12 +782,52 @@ namespace gum {
             if (condNames.empty()) term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
             else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
           } else {
-            auto                       num = std::unique_ptr< ASTtree< GUM_SCALAR > >(P->copy());
-            std::vector< std::string > tosum{cm.nameFromId(v)};
-            auto                       den = std::make_unique< ASTsum< GUM_SCALAR > >(
-                tosum,
-                std::unique_ptr< ASTtree< GUM_SCALAR > >(P->copy()));
-            term = std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(num), std::move(den));
+            // from accumulated P: factorize Q[Spr] by full-order prefix marginals
+            Size k = pos[v];
+            std::vector< std::string > prefixNames;
+            prefixNames.reserve(k + 1);
+            for (Size i = 0; i <= k; ++i)
+              prefixNames.push_back(cm.nameFromId(order[i]));
+
+            // numerator = marginal of P on current prefix
+            std::unique_ptr< ASTtree< GUM_SCALAR > > num(
+                P->copy());
+            std::vector< std::string > sumNum;
+            for (auto u: V) {
+              const auto& un = cm.nameFromId(u);
+              if (std::find(prefixNames.begin(), prefixNames.end(), un) == prefixNames.end()) {
+                sumNum.push_back(un);
+              }
+            }
+            if (!sumNum.empty()) {
+              num = std::make_unique< ASTsum< GUM_SCALAR > >(sumNum, std::move(num));
+            }
+
+            if (k == 0) {
+              Set< std::string > lhs;
+              lhs.insert(cm.nameFromId(v));
+              term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
+
+            } else {
+              // denominator = marginal of P on previous prefix
+              std::unique_ptr< ASTtree< GUM_SCALAR > > den(
+                  P->copy());
+              std::vector< std::string > prevPrefix;
+              prevPrefix.reserve(k);
+              for (Size i = 0; i < k; ++i)
+                prevPrefix.push_back(cm.nameFromId(order[i]));
+              std::vector< std::string > sumDen;
+              for (auto u: V) {
+                const auto& un = cm.nameFromId(u);
+                if (std::find(prevPrefix.begin(), prevPrefix.end(), un) == prevPrefix.end()) {
+                  sumDen.push_back(un);
+                }
+              }
+              if (!sumDen.empty()) {
+                den = std::make_unique< ASTsum< GUM_SCALAR > >(sumDen, std::move(den));
+              }
+              term = std::make_unique< ASTdiv< GUM_SCALAR > >(std::move(num), std::move(den));
+            }
           }
 
           if (!prod) prod = std::move(term);
