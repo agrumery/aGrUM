@@ -7773,8 +7773,8 @@ class Tensor(object):
 
         Parameters
         ----------
-        v : number or list of values or pyagrum.Tensor
-            a value or a list/pyagrum.Tensor containing the values to fill the Tensor with.
+        v : number or list of values or pyagrum.Tensor or numpy.ndarray
+            a value or a list/pyagrum.Tensor/ndarray containing the values to fill the Tensor with.
 
         mapping : list|tuple|dict
 
@@ -7787,6 +7787,8 @@ class Tensor(object):
             - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.
 
             - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
+
+            - if `v` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
 
         Returns
         -------
@@ -7802,9 +7804,19 @@ class Tensor(object):
 
         """
 
+        if len(args)==1:
+          import numpy
+          if isinstance(args[0], numpy.ndarray):
+            arr = args[0]
+            if arr.ndim > 1:
+              expected = tuple(reversed(self.shape))
+              if arr.shape != expected:
+                raise ValueError(f"[pyAgrum] numpy array shape {arr.shape} does not match Tensor shape {expected}")
+            self._fillWithNpArray(arr)
+            return self
         if len(args)>1:
           d=args[1]
-          if type(d)==dict:
+          if isinstance(d, dict):
             if set(d.keys())==set(self.names):
               return self.fillWith(args[0],[d[s] for s in self.names])
             else:
@@ -8462,6 +8474,15 @@ class Tensor(object):
     def __ne__(self, b: "Tensor") -> bool:
         return _pyagrum.Tensor___ne__(self, b)
 
+    def _as_nparray_raw(self, self_pyobj: object) -> object:
+        return _pyagrum.Tensor__as_nparray_raw(self, self_pyobj)
+
+    def _toarray_raw(self) -> object:
+        return _pyagrum.Tensor__toarray_raw(self)
+
+    def _fillWithNpArray(self, arr: object) -> object:
+        return _pyagrum.Tensor__fillWithNpArray(self, arr)
+
     def __radd__(self,other):
       return self.__add__(other)
 
@@ -8856,12 +8877,58 @@ class Tensor(object):
 
     def toarray(self):
         """
+        Return a copy of the Tensor's data as a shaped numpy array.
+
+        The shape follows the Tensor's variable order: the last variable added
+        varies fastest (C order), so the shape is ``tuple(reversed(self.shape))``.
+
         Returns
         -------
-        array
-            the tensor as an array
+        numpy.ndarray
+            New float64 array; modifying it does not affect the Tensor.
+
+        Examples
+        --------
+        >>> t = pyagrum.Tensor().add(pyagrum.LabelizedVariable("a","",2)).add(pyagrum.LabelizedVariable("b","",3))
+        >>> t.fillWith([1,2,3,4,5,6])
+        >>> t.toarray()          # shape (3, 2)
+        array([[1., 2.],
+               [3., 4.],
+               [5., 6.]])
         """
-        return self.__getitem__({})
+        arr = self._toarray_raw()
+        if self.nbrDim() > 0:
+            arr.shape = tuple(reversed(self.shape))
+        return arr
+
+    def as_nparray(self):
+        """
+        Return a zero-copy numpy view over the Tensor's internal data buffer.
+
+        The returned array shares memory with the Tensor: modifying one modifies
+        the other. The Tensor is kept alive as long as the view exists.
+
+        The shape follows the same convention as :meth:`toarray`:
+        ``tuple(reversed(self.shape))``.
+
+        Returns
+        -------
+        numpy.ndarray
+            float64 view, shape ``tuple(reversed(self.shape))``, C-contiguous.
+
+        Examples
+        --------
+        >>> t = pyagrum.Tensor().add(pyagrum.LabelizedVariable("a","",2)).add(pyagrum.LabelizedVariable("b","",3))
+        >>> t.fillWith([1,2,3,4,5,6])
+        >>> v = t.as_nparray()   # shape (3, 2), shares buffer with t
+        >>> v[0, 0] = 99
+        >>> t[{"a": 0, "b": 0}]  # 99.0
+        99.0
+        """
+        arr = self._as_nparray_raw(self)
+        if self.nbrDim() > 0:
+            arr.shape = tuple(reversed(self.shape))
+        return arr
 
     def topandas(self):
         """

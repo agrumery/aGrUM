@@ -116,11 +116,20 @@ def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
 
 def get_base_dir(tmp):
   """Find the proper directory where pyAgrum is installed (normally
-  tmp/lib/pythonX.Y/sites-packages where X.Y is the Python version used to
-  build pyAgrum)."""
+  tmp/lib/pythonX.Y/site-packages where X.Y is the Python version used to
+  build pyAgrum). Scans the actual directory to handle cmake cache mismatches
+  when switching Python versions between builds."""
   if platform.system() == "Windows":
     return join(tmp, "lib", "site-packages")
   else:
+    lib_dir = join(tmp, "lib")
+    try:
+      for entry in sorted(listdir(lib_dir)):
+        candidate = join(lib_dir, entry, "site-packages")
+        if entry.startswith("python") and os.path.isdir(candidate):
+          return candidate
+    except OSError:
+      pass
     major = sys.version_info[0]
     minor = sys.version_info[1]
     return join(tmp, "lib", f"python{major}.{minor}", "site-packages")
@@ -161,6 +170,11 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
 def get_tags(stable_abi_off, minimal_python_api):
   """Get proper tags for PEP427 wheel filenames using only the standard library."""
   arch = sysconfig.get_platform().replace("-", "_").replace(".", "_")
+  # Normalize macOS tag: macosx_26_arm64 → macosx_26_0_arm64 (minor version required by pip)
+  if arch.startswith("macosx_"):
+    parts = arch.split("_")
+    if len(parts) == 3:  # macosx, major, arch — minor is missing
+      arch = f"macosx_{parts[1]}_0_{parts[2]}"
   if arch == "linux_x86_64":
     arch = "manylinux2014_x86_64"
   elif arch == "linux_i686":
