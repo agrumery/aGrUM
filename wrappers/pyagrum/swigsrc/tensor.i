@@ -92,6 +92,16 @@ CHANGE_THEN_RETURN_SELF(translate)
 
 CHANGE_THEN_RETURN_SELF(fillWith)
 %pythonprepend gum::Tensor<double>::fillWith %{
+if len(args)==1:
+  import numpy
+  if isinstance(args[0], numpy.ndarray):
+    arr = args[0]
+    if arr.ndim > 1:
+      expected = tuple(reversed(self.shape))
+      if arr.shape != expected:
+        raise ValueError(f"[pyAgrum] numpy array shape {arr.shape} does not match Tensor shape {expected}")
+    self._fillWithNpArray(arr)
+    return self
 if len(args)>1:
   d=args[1]
   if type(d)==dict:
@@ -226,6 +236,25 @@ if len(args)>1:
       return *self!=b;
     }
 
+    // --- numpy interoperability (C level) ---
+
+    // Zero-copy view: self_pyobj is the Python Tensor object passed as base.
+    PyObject* _as_nparray_raw(PyObject* self_pyobj) {
+      return PyAgrumHelper::tensorAsNpArrayRaw(self, self_pyobj);
+    }
+
+    // Copy into a new numpy array.
+    PyObject* _toarray_raw() const {
+      return PyAgrumHelper::tensorToArray(self);
+    }
+
+    // Fill from a C-contiguous float64 numpy array via a single memcpy.
+    // Returns None on success, nullptr (exception set) on error.
+    PyObject* _fillWithNpArray(PyObject* arr) {
+      if (PyAgrumHelper::tensorFillWithNpArray(self, arr) < 0)
+        return nullptr;
+      Py_RETURN_NONE;
+    }
 
   %pythoncode {
     def __radd__(self,other):
@@ -622,12 +651,39 @@ if len(args)>1:
 
     def toarray(self):
         """
+        Returns a copy of the Tensor's data as a shaped numpy array.
+
         Returns
         -------
-        array
-            the tensor as an array
+        numpy.ndarray
+            float64 array with shape matching the Tensor's variable dimensions
         """
-        return self.__getitem__({})
+        arr = self._toarray_raw()
+        if self.nbrDim() > 0:
+            arr.shape = tuple(reversed(self.shape))
+        return arr
+
+    def as_nparray(self):
+        """
+        Returns a zero-copy numpy view over the Tensor's internal data buffer.
+
+        The returned array shares memory with the Tensor: modifying one modifies
+        the other. The Tensor is kept alive as long as the view exists.
+
+        Returns
+        -------
+        numpy.ndarray
+            float64 view of size domainSize(), 1D, C-contiguous
+
+        Warnings
+        --------
+        The array is 1D (flat). Dimension ordering follows the Tensor's internal
+        iteration order (same as for domainSize()), not the variable declaration order.
+        """
+        arr = self._as_nparray_raw(self)
+        if self.nbrDim() > 0:
+            arr.shape = tuple(reversed(self.shape))
+        return arr
 
     def topandas(self):
         """

@@ -1135,7 +1135,76 @@ class TestOperators(pyAgrumTestCase):
     #  pxy=px*py
 
 
+class TestNumpyInterop(pyAgrumTestCase):
+  def setUp(self):
+    self.a = gum.LabelizedVariable("a", "", 2)
+    self.b = gum.LabelizedVariable("b", "", 3)
+
+  def _make_tensor(self):
+    t = gum.Tensor().add(self.a).add(self.b)
+    t.fillWith([1, 2, 3, 4, 5, 6])
+    return t
+
+  def testToArrayReturnsCopy(self):
+    t = self._make_tensor()
+    arr = t.toarray()
+    self.assertIsInstance(arr, np.ndarray)
+    self.assertEqual(arr.shape, (3, 2))   # reversed(self.shape) = reversed((2,3))
+    self.assertEqual(arr.dtype, np.float64)
+    # modifying the copy must not affect the Tensor
+    arr[0, 0] = -1.0
+    self.assertNotEqual(t.toarray()[0, 0], -1.0)
+
+  def testAsNparrayIsZeroCopy(self):
+    t = self._make_tensor()
+    view = t.as_nparray()
+    self.assertIsInstance(view, np.ndarray)
+    self.assertEqual(view.shape, (3, 2))  # same shape as toarray()
+    self.assertEqual(view.dtype, np.float64)
+    # modifying the view must affect the Tensor (zero-copy)
+    view[0, 0] = 99.0
+    self.assertEqual(t.toarray()[0, 0], 99.0)
+
+  def testAsNparrayKeepsTensorAlive(self):
+    t = self._make_tensor()
+    view = t.as_nparray()
+    del t
+    # view should still be usable (base object keeps Tensor alive)
+    self.assertEqual(view.shape, (3, 2))
+    self.assertAlmostEqual(view[0, 0], 1.0)
+
+  def testFillWithNpArray(self):
+    t = self._make_tensor()
+    arr = np.array([10, 20, 30, 40, 50, 60], dtype=np.float64)
+    t.fillWith(arr)
+    np.testing.assert_array_equal(t.toarray().flatten(), arr)
+
+  def testFillWithNpArrayWrongSize(self):
+    t = self._make_tensor()
+    with self.assertRaises(ValueError):
+      t.fillWith(np.array([1, 2, 3], dtype=np.float64))
+
+  def testFillWithNpArrayWrongDtype(self):
+    t = self._make_tensor()
+    with self.assertRaises(TypeError):
+      t.fillWith(np.array([1, 2, 3, 4, 5, 6], dtype=np.int32))
+
+  def testFillWithNpArrayND(self):
+    t = self._make_tensor()
+    expected_shape = tuple(reversed(t.shape))  # (3, 2)
+    arr = np.arange(1, 7, dtype=np.float64).reshape(expected_shape)
+    t.fillWith(arr)
+    np.testing.assert_array_equal(t.toarray(), arr)
+
+  def testFillWithNpArrayNDWrongShape(self):
+    t = self._make_tensor()
+    arr = np.arange(1, 7, dtype=np.float64).reshape(2, 3)  # wrong shape
+    with self.assertRaises(ValueError):
+      t.fillWith(arr)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)
 addTests(ts, TestIndexs)
 addTests(ts, TestOperators)
+addTests(ts, TestNumpyInterop)

@@ -28,6 +28,10 @@
 
 #include <Python.h>
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#include <numpy/arrayobject.h>
+#include <cstring>
+
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
@@ -678,5 +682,89 @@ namespace PyAgrumHelper {
     }
     return q;
   }
+  // ---- numpy interoperability helpers ----------------------------------------
+
+  // Zero-copy view: creates a numpy array pointing to the Tensor's buffer.
+  // self_pyobj becomes the numpy base object (keeps the Tensor alive).
+  PyObject* tensorAsNpArrayRaw(gum::Tensor< double >* self,
+                               PyObject*              self_pyobj) {
+    double* raw = self->content()->data();
+    if (raw == nullptr) {
+      PyErr_SetString(PyExc_RuntimeError,
+                      "[pyAgrum] Tensor has no contiguous data buffer");
+      return nullptr;
+    }
+    npy_intp dims[1] = {static_cast< npy_intp >(self->domainSize())};
+    PyObject* arr    = PyArray_New(&PyArray_Type,
+                                   1,
+                                   dims,
+                                   NPY_DOUBLE,
+                                   nullptr,
+                                   raw,
+                                   0,
+                                   NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_WRITEABLE,
+                                   nullptr);
+    if (arr == nullptr) return nullptr;
+    Py_INCREF(self_pyobj);   // SetBaseObject steals the reference
+    if (PyArray_SetBaseObject(reinterpret_cast< PyArrayObject* >(arr),
+                              self_pyobj)
+        < 0) {
+      Py_DECREF(arr);
+      return nullptr;
+    }
+    return arr;
+  }
+
+  // Copy: allocates a new numpy array and memcpys the Tensor's data into it.
+  PyObject* tensorToArray(const gum::Tensor< double >* self) {
+    npy_intp  dims[1] = {static_cast< npy_intp >(self->domainSize())};
+    PyObject* arr     = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    if (arr == nullptr) return nullptr;
+    const double* src = self->content()->data();
+    if (src != nullptr && dims[0] > 0)
+      std::memcpy(PyArray_DATA(reinterpret_cast< PyArrayObject* >(arr)),
+                  src,
+                  dims[0] * sizeof(double));
+    return arr;
+  }
+
+  // Fill: single memcpy from a C-contiguous float64 numpy array into the
+  // Tensor's buffer. Returns 0 on success, -1 on error (exception set).
+  int tensorFillWithNpArray(gum::Tensor< double >* self, PyObject* arr) {
+    if (!PyArray_Check(arr)) {
+      PyErr_SetString(PyExc_TypeError, "[pyAgrum] argument is not a numpy array");
+      return -1;
+    }
+    PyArrayObject* nparr = reinterpret_cast< PyArrayObject* >(arr);
+    if (!PyArray_IS_C_CONTIGUOUS(nparr)) {
+      PyErr_SetString(PyExc_ValueError,
+                      "[pyAgrum] numpy array must be C-contiguous");
+      return -1;
+    }
+    if (PyArray_TYPE(nparr) != NPY_DOUBLE) {
+      PyErr_SetString(PyExc_TypeError,
+                      "[pyAgrum] numpy array must have dtype float64");
+      return -1;
+    }
+    npy_intp  np_size = PyArray_SIZE(nparr);
+    gum::Size t_size  = self->domainSize();
+    if (static_cast< gum::Size >(np_size) != t_size) {
+      PyErr_Format(PyExc_ValueError,
+                   "[pyAgrum] numpy array size %zd does not match "
+                   "Tensor domainSize %zu",
+                   static_cast< Py_ssize_t >(np_size),
+                   static_cast< std::size_t >(t_size));
+      return -1;
+    }
+    double* dst = self->content()->data();
+    if (dst == nullptr) {
+      PyErr_SetString(PyExc_RuntimeError,
+                      "[pyAgrum] Tensor has no contiguous data buffer");
+      return -1;
+    }
+    std::memcpy(dst, PyArray_DATA(nparr), t_size * sizeof(double));
+    return 0;
+  }
+
 }   // namespace PyAgrumHelper
 #endif   // PYAGRUM_HELPER
