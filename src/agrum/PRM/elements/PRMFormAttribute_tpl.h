@@ -68,7 +68,8 @@ namespace gum {
         _class_(&c) {
       GUM_CONSTRUCTOR(PRMFormAttribute);
       _formulas_->add(_type_->variable());
-      this->safeName_ = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
+      this->safeName_
+          = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >

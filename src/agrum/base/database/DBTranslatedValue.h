@@ -108,7 +108,7 @@ namespace gum {
       constexpr DBTranslatedValue(const std::size_t& val) : discr_val{val} {}
 
       /// destructor
-      ~DBTranslatedValue() {};
+      ~DBTranslatedValue() = default;
 
       /// @}
     };

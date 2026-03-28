@@ -47,10 +47,11 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
+
+#include <string_view>
 
 // to ease parsing in IDE
 #include <agrum/base/core/hashFunc.h>

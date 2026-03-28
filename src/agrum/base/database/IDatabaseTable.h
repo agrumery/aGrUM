@@ -55,7 +55,6 @@
 #include <memory>
 #include <mutex>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -66,6 +65,8 @@
 #include <agrum/base/database/DBCell.h>
 #include <agrum/base/database/DBHandler.h>
 #include <agrum/base/database/DBTranslator.h>
+
+#include <string_view>
 
 namespace gum {
 

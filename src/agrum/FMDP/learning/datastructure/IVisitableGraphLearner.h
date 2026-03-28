@@ -78,7 +78,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor (virtual and empty since it's an interface)
     // ==========================================================================
-    virtual ~IVisitableGraphLearner() {}
+    virtual ~IVisitableGraphLearner() = default;
 
     /// @}
 

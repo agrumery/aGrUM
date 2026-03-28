@@ -340,8 +340,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeId >
       DoCalculus< GUM_SCALAR >::_topoObserved_(const CausalModel< GUM_SCALAR >& cm) const {
-    const auto& dag = cm.observationalBN().dag();
-    const NodeSet V = dag.nodes().asNodeSet();
+    const auto&   dag = cm.observationalBN().dag();
+    const NodeSet V   = dag.nodes().asNodeSet();
 
     // indegree in the observed DAG
     std::unordered_map< NodeId, Size > indeg;
@@ -364,8 +364,7 @@ namespace gum {
       for (auto c: dag.children(u)) {
         if (indeg[c] > 0) {
           --indeg[c];
-          if (indeg[c] == 0)
-            q.push(c);
+          if (indeg[c] == 0) q.push(c);
         }
       }
     }
@@ -663,7 +662,7 @@ namespace gum {
             if (S.contains(v)) ordering.push_back(v);
 
           for (Size j = 0; j < ordering.size(); ++j) {
-            auto v = ordering[j];
+            auto                                     v = ordering[j];
             std::unique_ptr< ASTtree< GUM_SCALAR > > term;
             if (!P) {
               // from BN: P(v | predecessors) using chain rule prefix
@@ -677,16 +676,15 @@ namespace gum {
               else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
             } else {
               // from accumulated P: factorize Q[S] by full-order prefix marginals
-              Size k = pos[v];
+              Size                       k = pos[v];
               std::vector< std::string > prefixNames;
               prefixNames.reserve(k + 1);
               for (Size i = 0; i <= k; ++i)
                 prefixNames.push_back(cm.nameFromId(order[i]));
 
               // numerator = marginal of P on current prefix
-              std::unique_ptr< ASTtree< GUM_SCALAR > > num(
-                  P->copy());
-              std::vector< std::string > sumNum;
+              std::unique_ptr< ASTtree< GUM_SCALAR > > num(P->copy());
+              std::vector< std::string >               sumNum;
               for (auto u: V) {
                 const auto& un = cm.nameFromId(u);
                 if (std::find(prefixNames.begin(), prefixNames.end(), un) == prefixNames.end()) {
@@ -704,9 +702,8 @@ namespace gum {
 
               } else {
                 // denominator = marginal of P on previous prefix
-                std::unique_ptr< ASTtree< GUM_SCALAR > > den(
-                    P->copy());
-                std::vector< std::string > prevPrefix;
+                std::unique_ptr< ASTtree< GUM_SCALAR > > den(P->copy());
+                std::vector< std::string >               prevPrefix;
                 prevPrefix.reserve(k);
                 for (Size i = 0; i < k; ++i)
                   prevPrefix.push_back(cm.nameFromId(order[i]));
@@ -770,7 +767,7 @@ namespace gum {
           if (Spr.contains(v)) ordering.push_back(v);
 
         for (Size j = 0; j < ordering.size(); ++j) {
-          auto v = ordering[j];
+          auto                                     v = ordering[j];
           std::unique_ptr< ASTtree< GUM_SCALAR > > term;
           if (!P) {
             Size               k = pos[v];
@@ -783,16 +780,15 @@ namespace gum {
             else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
           } else {
             // from accumulated P: factorize Q[Spr] by full-order prefix marginals
-            Size k = pos[v];
+            Size                       k = pos[v];
             std::vector< std::string > prefixNames;
             prefixNames.reserve(k + 1);
             for (Size i = 0; i <= k; ++i)
               prefixNames.push_back(cm.nameFromId(order[i]));
 
             // numerator = marginal of P on current prefix
-            std::unique_ptr< ASTtree< GUM_SCALAR > > num(
-                P->copy());
-            std::vector< std::string > sumNum;
+            std::unique_ptr< ASTtree< GUM_SCALAR > > num(P->copy());
+            std::vector< std::string >               sumNum;
             for (auto u: V) {
               const auto& un = cm.nameFromId(u);
               if (std::find(prefixNames.begin(), prefixNames.end(), un) == prefixNames.end()) {
@@ -810,9 +806,8 @@ namespace gum {
 
             } else {
               // denominator = marginal of P on previous prefix
-              std::unique_ptr< ASTtree< GUM_SCALAR > > den(
-                  P->copy());
-              std::vector< std::string > prevPrefix;
+              std::unique_ptr< ASTtree< GUM_SCALAR > > den(P->copy());
+              std::vector< std::string >               prevPrefix;
               prevPrefix.reserve(k);
               for (Size i = 0; i < k; ++i)
                 prevPrefix.push_back(cm.nameFromId(order[i]));

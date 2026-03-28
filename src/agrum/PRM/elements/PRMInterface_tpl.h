@@ -351,8 +351,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::addArc(std::string_view tail,
-                                                   std::string_view head) {
+    INLINE void PRMInterface< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
       GUM_ERROR(OperationNotAllowed, "an Interface does ! have arcs")
     }
 

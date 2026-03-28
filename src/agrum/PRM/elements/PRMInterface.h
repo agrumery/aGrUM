@@ -51,13 +51,14 @@
 
 #include <set>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/elements/PRMReferenceSlot.h>
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

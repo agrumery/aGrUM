@@ -50,13 +50,13 @@
 #include <cstring>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/bijection.h>
 
+#include <string_view>
 #include <type_traits>
 
 namespace gum {
@@ -150,8 +150,6 @@ namespace gum {
       /// test of equality
       bool operator==(const DBCell& from) const;
 
-      /// test of inequality
-      bool operator!=(const DBCell& from) const;
 
       /// @}
 
@@ -240,16 +238,14 @@ namespace gum {
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned EltType represents a missing value. */
-      static EltType bestType(std::string_view                  str,
-                              const std::vector< std::string >& missingVals);
+      static EltType bestType(std::string_view str, const std::vector< std::string >& missingVals);
 
       /// returns the DBCell with the best type for an element encoded as a string
       /** @param str the string to convert into a DBCell
        * @param missingVals a vector containing the set of strings that should
        * be interpreted as missing values. Whenever str matches one these strings,
        * the returned DBCell represents a missing value. */
-      static DBCell bestDBCell(std::string_view                  str,
-                               const std::vector< std::string >& missingVals);
+      static DBCell bestDBCell(std::string_view str, const std::vector< std::string >& missingVals);
 
       /// returns the content of the DBCell as a string, whatever its type
       /** @throw UndefinedElement is raised if the DBCell corresponds to a

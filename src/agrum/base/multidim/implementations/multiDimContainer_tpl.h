@@ -166,14 +166,6 @@ namespace gum {
     return true;
   }
 
-  // Test if this tensor is different of p.
-
-  template < typename GUM_ELEMENT >
-  INLINE bool MultiDimContainer< GUM_ELEMENT >::operator!=(
-      const MultiDimContainer< GUM_ELEMENT >& p) const {
-    return !operator==(p);
-  }
-
   // automation fill with vector.
   template < typename GUM_ELEMENT >
   void MultiDimContainer< GUM_ELEMENT >::populate(const std::vector< GUM_ELEMENT >& v) const {

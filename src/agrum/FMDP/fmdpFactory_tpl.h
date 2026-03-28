@@ -125,8 +125,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable*
-      FMDPFactory< GUM_ELEMENT >::variable(std::string_view name) const {
+  INLINE const DiscreteVariable* FMDPFactory< GUM_ELEMENT >::variable(std::string_view name) const {
     for (const auto& elt: _varNameMap_)
       if (elt.first.compare(name) == 0) return elt.second;
 
@@ -342,8 +341,8 @@ namespace gum {
       this->_finalizeFunctionGraph_();
 
       if (_foo_flag_) {
-        this->_FunctionGraph_->setTableName("ACTION :" + _stringBag_[0] + " - VARIABLE : "
-                                            + std::string(var));
+        this->_FunctionGraph_->setTableName("ACTION :" + _stringBag_[0]
+                                            + " - VARIABLE : " + std::string(var));
         _fmdp_->addTransitionForAction(_fmdp_->actionId(_stringBag_[0]),
                                        variable(var),
                                        this->_FunctionGraph_);

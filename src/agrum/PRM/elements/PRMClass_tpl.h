@@ -479,8 +479,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void PRMClass< GUM_SCALAR >::addArc(std::string_view tail_name,
-                                        std::string_view head_name) {
+    void PRMClass< GUM_SCALAR >::addArc(std::string_view tail_name, std::string_view head_name) {
       auto p_tail = _nameMap_.tryGet(tail_name);
       auto p_head = _nameMap_.tryGet(head_name);
 

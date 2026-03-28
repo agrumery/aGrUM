@@ -172,13 +172,7 @@ namespace gum {
     // not virtual : it is a feature !!! :)
     bool operator==(const UndiGraph& g) const;
 
-    /// tests whether two UndiGraphs are different
-    /** @param g the UndiGraph with which "this" is compared */
-    // not virtual : it is a feature !!! :)
-    bool operator!=(const UndiGraph& g) const;
-
     /// @}
-
     // ############################################################################
     /// @name Accessors/Modifiers
     // ############################################################################

@@ -114,9 +114,9 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
-  INLINE HashTableBucket< Key, Val >*
-      HashTableList< Key, Val >::bucket(std::string_view key) const
-      requires std::same_as< Key, std::string > {
+  INLINE HashTableBucket< Key, Val >* HashTableList< Key, Val >::bucket(std::string_view key) const
+    requires std::same_as< Key, std::string >
+  {
     for (Bucket* ptr = _deb_list_; ptr != nullptr; ptr = ptr->next)
       if (ptr->key() == key) return ptr;
 
@@ -545,8 +545,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE Val& HashTable< Key, Val >::operator[](const K& key) {
     std::string_view sv{key};
     Bucket*          b = _nodes_[_hash_func_(sv)].bucket(sv);
@@ -556,8 +556,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE const Val& HashTable< Key, Val >::operator[](const K& key) const {
     std::string_view sv{key};
     const Bucket*    b = _nodes_[_hash_func_(sv)].bucket(sv);
@@ -582,8 +582,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE bool HashTable< Key, Val >::exists(const K& key) const {
     std::string_view sv{key};
     return _nodes_[_hash_func_(sv)].bucket(sv) != nullptr;
@@ -605,8 +605,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE optional_ref< Val > HashTable< Key, Val >::tryGet(const K& key) {
     std::string_view sv{key};
     Bucket*          b = _nodes_[_hash_func_(sv)].bucket(sv);
@@ -616,8 +616,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE optional_ref< const Val > HashTable< Key, Val >::tryGet(const K& key) const {
     std::string_view sv{key};
     const Bucket*    b = _nodes_[_hash_func_(sv)].bucket(sv);
@@ -847,8 +847,8 @@ namespace gum {
 
   template < typename Key, typename Val >
   template < typename K >
-    requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-              && !std::same_as< std::decay_t< K >, std::string >)
+    requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+             && !std::same_as< std::decay_t< K >, std::string >)
   INLINE void HashTable< Key, Val >::erase(const K& key) {
     std::string_view             sv{key};
     Size                         hash   = _hash_func_(sv);

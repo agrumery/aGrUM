@@ -368,8 +368,7 @@ namespace gum {
 
   // indicates whether node id has received an evidence
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool
-      GraphicalModelInference< GUM_SCALAR >::hasEvidence(std::string_view nodeName) const {
+  INLINE bool GraphicalModelInference< GUM_SCALAR >::hasEvidence(std::string_view nodeName) const {
     return hasEvidence(this->model().idFromName(nodeName));
   }
 

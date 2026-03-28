@@ -214,8 +214,6 @@ namespace gum {
       return true;
     }
 
-    bool operator!=(const ActionSet& compared) const { return !(*this == compared); }
-
     /// @}
 
     // ============================================================================

@@ -262,7 +262,7 @@ namespace gum {
 
   bool CliqueGraph::operator==(const CliqueGraph& from) const {
     // check if both graphical structures are identical
-    if (UndiGraph::operator!=(from)) return false;
+    if (!UndiGraph::operator==(from)) return false;
 
     // check if the  _cliques_ are identical
     for (const auto& [node, nodes]: _cliques_)

@@ -710,7 +710,8 @@ namespace gum {
       std::string O3prmrInterpreter::findAttributeName(std::string_view             s,
                                                        const PRMInstance< double >& instance) {
         if (!instance.exists(s))
-          throw "'" + std::string{s} + "' is not an attribute of instance '" + instance.name() + "'.";
+          throw "'" + std::string{s} + "' is not an attribute of instance '" + instance.name()
+              + "'.";
 
         return std::string{s};
       }

@@ -71,7 +71,8 @@ namespace gum {
         PRMClassElement< GUM_SCALAR >(name), _agg_type_(aggType), _type_(new PRMType(rvType)),
         _label_(std::shared_ptr< Idx >(new Idx(INT_MAX))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
+      this->safeName_
+          = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
       this->_type_->variable().setName(name);
     }
 
@@ -83,7 +84,8 @@ namespace gum {
         PRMClassElement< GUM_SCALAR >(name), _agg_type_(aggType), _type_(new PRMType(rvType)),
         _label_(std::shared_ptr< Idx >(new Idx(label))) {
       GUM_CONSTRUCTOR(PRMAggregate);
-      this->safeName_ = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
+      this->safeName_
+          = (PRMObject::LEFT_CAST() + _type_->name() + PRMObject::RIGHT_CAST()).append(name);
       this->_type_->variable().setName(name);
     }
 

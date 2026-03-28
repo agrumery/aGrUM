@@ -51,8 +51,9 @@
 #define GUM_FMDP_FACTORY_H
 //======================================================================
 #include <string>
-#include <string_view>
 #include <vector>
+
+#include <string_view>
 //======================================================================
 
 #include <agrum/base/variables/labelizedVariable.h>

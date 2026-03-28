@@ -99,8 +99,7 @@ namespace gum {
      * @param domainSize the default domain size for chance and decision variables
      * @return the resulting influence diagram
      */
-    static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike,
-                                                        Size             domainSize);
+    static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike, Size domainSize);
     static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike,
                                                         std::string_view domain = "[2]");
 
@@ -131,10 +130,6 @@ namespace gum {
 
     /// @}
     bool operator==(const InfluenceDiagram< GUM_SCALAR >& other) const;
-
-    bool operator!=(const InfluenceDiagram< GUM_SCALAR >& other) const {
-      return !operator==(other);
-    }
 
     /// @return Returns a dot representation of this Influence Diagram.
     std::string toDot() const;

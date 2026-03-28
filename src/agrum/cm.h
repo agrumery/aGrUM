@@ -43,7 +43,6 @@
 #define GUM_CM_H
 
 #include <agrum/bn.h>
-#include <agrum/CM/causalModel.h>
 #include <agrum/CM/counterfactual.h>
 #include <agrum/CM/doorCriteria.h>
 

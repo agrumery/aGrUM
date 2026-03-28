@@ -96,13 +96,14 @@ GONZALES(_at_AMU)
 #include <list>
 #include <sstream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/io/BNReader.h>
+
+#include <string_view>
 
 namespace gum {
 

@@ -117,8 +117,6 @@ namespace gum {
     /// operator ==
     bool operator==(const Schedule&) const;
 
-    /// operator !=
-    bool operator!=(const Schedule&) const;
 
     /// @}
 

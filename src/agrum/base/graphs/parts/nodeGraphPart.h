@@ -122,8 +122,6 @@ namespace gum {
     /// checks whether two iterators point toward the same node
     bool operator==(const NodeGraphPartIterator& it) const noexcept;
 
-    /// checks whether two iterators point toward different nodes
-    bool operator!=(const NodeGraphPartIterator& it) const noexcept;
 
     /// increment the iterator
     NodeGraphPartIterator& operator++() noexcept;
@@ -327,9 +325,6 @@ namespace gum {
     /** @param p the NodeGraphPart to be compared with "this" */
     bool operator==(const NodeGraphPart& p) const;
 
-    /// check whether two NodeGraphParts contain different nodes
-    /** @param p the NodeGraphPart to be compared with "this" */
-    bool operator!=(const NodeGraphPart& p) const;
 
     /// @}
 

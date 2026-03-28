@@ -53,12 +53,13 @@
 #include <limits>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/IPRMFactory.h>
+
+#include <string_view>
 
 namespace gum {
 
@@ -353,10 +354,10 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void startClass(std::string_view           c,
-                              std::string_view           ext              = "",
-                              const Set< std::string >*  implements       = nullptr,
-                              bool                       delayInheritance = false) override;
+      virtual void startClass(std::string_view          c,
+                              std::string_view          ext              = "",
+                              const Set< std::string >* implements       = nullptr,
+                              bool                      delayInheritance = false) override;
 
       /**
        * Continue the declaration of a class.

@@ -163,9 +163,6 @@ namespace gum {
               || (_val_integer_ == from._val_integer_));
     }
 
-    /// test of inequality
-    INLINE bool DBCell::operator!=(const DBCell& from) const { return !operator==(from); }
-
     /// returns the current type of the DBCell
     INLINE DBCell::EltType DBCell::type() const noexcept { return _type_; }
 

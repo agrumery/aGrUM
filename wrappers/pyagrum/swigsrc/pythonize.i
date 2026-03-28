@@ -53,6 +53,7 @@
 
 %ignore* ::operator<<;
 %ignore* ::operator>>;
+%ignore* ::operator!=;
 
 %rename ( append ) gum::Sequence::insert ( const KEY& k );
 %rename ( index ) gum::Sequence::pos ( const KEY& key ) const ;

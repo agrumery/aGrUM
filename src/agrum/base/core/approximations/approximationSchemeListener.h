@@ -49,11 +49,11 @@
 #ifndef APPROXIMATIONSCHEMELISTENER_H
 #define APPROXIMATIONSCHEMELISTENER_H
 
-#include <string_view>
-
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
+
+#include <string_view>
 
 namespace gum {
 

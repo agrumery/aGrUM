@@ -50,12 +50,13 @@
 
 #include <ostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/set.h>
 #include <agrum/base/variables/variable.h>
+
+#include <string_view>
 
 namespace gum {
   /* ===========================================================================

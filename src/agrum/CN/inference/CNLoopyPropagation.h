@@ -51,10 +51,11 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <string_view>
 #include <limits>
 
 #include <agrum/CN/inference/inferenceEngine.h>
+
+#include <string_view>
 
 #define INF_ std::numeric_limits< GUM_SCALAR >::infinity()
 

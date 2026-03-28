@@ -285,7 +285,7 @@ namespace gum_tests {
       try {
         const std::string connection_string = "Driver=" + driver_name + ";Database="
                                             + GET_RESSOURCES_PATH("sqlite/asia.sqlite") + ";";
-        const std::string query = "select * from asia";
+        const std::string query             = "select * from asia";
 
         // the database contains the following rows:
         // smoking lung_cancer bronchitis visit_to_Asia tuberculosis

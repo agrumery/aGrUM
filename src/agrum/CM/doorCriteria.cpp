@@ -190,7 +190,7 @@ namespace gum {
       if (only_minimal || stopAtFirst) return out;
     }
 
-    DAG     G = Separation::reduceForDSeparation(dag, Xset, Yset, Zempty);
+    DAG G = Separation::reduceForDSeparation(dag, Xset, Yset, Zempty);
 
     // Candidate pool = nodes(G) \ (Desc(X) ∪ {X,Y} ∪ excluded_nodes)
     NodeSet descX = dag.descendants(X);
@@ -429,28 +429,30 @@ namespace gum {
     return res;
   }
 
-  // pyagrum.backdoor_reach inner function:
-  // inner_br(bn, x, pht, reach0, reach1)
-  // - always explore children into reach1
-  // - explore parents into reach0 only if pht == false
-  static void _inner_br(const DAG& dag, NodeId x, bool pht, NodeSet& reach0, NodeSet& reach1) {
-    // children phase
-    for (auto c: dag.children(x)) {
-      if (!reach0.contains(c) && !reach1.contains(c)) {
-        reach1.insert(c);
-        _inner_br(dag, c, true, reach0, reach1);   // after child step, forbid next parent step
+  namespace {
+    // pyagrum.backdoor_reach inner function:
+    // inner_br(bn, x, pht, reach0, reach1)
+    // - always explore children into reach1
+    // - explore parents into reach0 only if pht == false
+    void _inner_br(const DAG& dag, NodeId x, bool pht, NodeSet& reach0, NodeSet& reach1) {
+      // children phase
+      for (auto c: dag.children(x)) {
+        if (!reach0.contains(c) && !reach1.contains(c)) {
+          reach1.insert(c);
+          _inner_br(dag, c, true, reach0, reach1);   // after child step, forbid next parent step
+        }
       }
-    }
-    // parents phase (only if we did not just take a parent step)
-    if (!pht) {
-      for (auto p: dag.parents(x)) {
-        if (!reach0.contains(p)) {
-          reach0.insert(p);
-          _inner_br(dag, p, false, reach0, reach1);
+      // parents phase (only if we did not just take a parent step)
+      if (!pht) {
+        for (auto p: dag.parents(x)) {
+          if (!reach0.contains(p)) {
+            reach0.insert(p);
+            _inner_br(dag, p, false, reach0, reach1);
+          }
         }
       }
     }
-  }
+  }   // namespace
 
   NodeSet DoorCriteria::backdoorReach(const DAG& dag, NodeId a) {
     NodeSet reach0;   // via a parent step

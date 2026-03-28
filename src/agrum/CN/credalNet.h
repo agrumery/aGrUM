@@ -61,7 +61,6 @@
 #include <set>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
 
 #include <agrum/base/core/exceptions.h>
@@ -72,6 +71,7 @@
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/CN/polytope/LrsWrapper.h>
 
+#include <string_view>
 #include <sys/stat.h>
 
 // 64 bits for windows (long is 32 bits)

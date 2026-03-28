@@ -334,9 +334,6 @@ namespace gum {
       return true;
     }
 
-    /// returns true if the sets differ
-    INLINE bool IdCondSet::operator!=(const IdCondSet& from) const { return !operator==(from); }
-
     /// Returns a safe begin iterator.
     INLINE typename IdCondSet::iterator_safe IdCondSet::beginSafe() const {
       return IdCondSetIterator(*this);

@@ -179,9 +179,7 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const {
-      return cpt(idFromName(name));
-    };
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); };
 
     /**
      * @brief Returns a map between variables and nodes of this gum::BayesNet.

@@ -211,10 +211,10 @@ namespace gum::learning {
   /// generates database, and writes csv file
   template < GUM_Numeric GUM_SCALAR >
   void BNDatabaseGenerator< GUM_SCALAR >::toCSV(std::string_view csvFileURL,
-                                                bool               useLabels,
-                                                bool               append,
-                                                std::string        csvSeparator,
-                                                bool               checkOnAppend) const {
+                                                bool             useLabels,
+                                                bool             append,
+                                                std::string      csvSeparator,
+                                                bool             checkOnAppend) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
     if (csvSeparator.find('\n') != std::string::npos) {

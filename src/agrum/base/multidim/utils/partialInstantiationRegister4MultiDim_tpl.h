@@ -67,7 +67,8 @@ namespace gum {
     PartialInstantiationSet* theset = nullptr;
 
     if (!_set_.exists(instantiation_func_name)) {
-      theset = _set_.insert(std::string{instantiation_func_name}, new PartialInstantiationSet).second;
+      theset
+          = _set_.insert(std::string{instantiation_func_name}, new PartialInstantiationSet).second;
 #  ifdef GUM_DEBUG_MODE
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the

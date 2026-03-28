@@ -132,8 +132,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClass< GUM_SCALAR >&
-                 PRM< GUM_SCALAR >::getClass(std::string_view name) const {
+    INLINE const PRMClass< GUM_SCALAR >& PRM< GUM_SCALAR >::getClass(std::string_view name) const {
       return *(_classMap_[name]);
     }
 

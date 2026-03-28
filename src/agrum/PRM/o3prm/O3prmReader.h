@@ -55,7 +55,6 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -66,6 +65,8 @@
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

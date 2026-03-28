@@ -1197,7 +1197,7 @@ namespace gum_tests {
       // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
-                                                           dirichlet_genset);
+                                                                 dirichlet_genset);
       gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
@@ -1238,6 +1238,7 @@ namespace gum_tests {
     }
 
     static void test_EM() {
+      gum::initRandom(42);   // fix seed for deterministic EM initialisation
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
                                                  std::vector< std::string >{"?"});
 

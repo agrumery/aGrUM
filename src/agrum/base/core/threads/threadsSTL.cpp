@@ -60,8 +60,10 @@ namespace gum {
 
   namespace threadsSTL {
 
-    // the number of threads used the next time we enter into a parallel region
-    static unsigned int _nb_threads_{getMaxNumberOfThreads()};
+    namespace {
+      // the number of threads used the next time we enter into a parallel region
+      unsigned int _nb_threads_{getMaxNumberOfThreads()};
+    }   // namespace
 
     // returns the max number of threads used by default when entering the
     // next parallel region

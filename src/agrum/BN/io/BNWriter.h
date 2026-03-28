@@ -55,11 +55,12 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/BN/IBayesNet.h>
+
+#include <string_view>
 
 namespace gum {
 

@@ -249,8 +249,7 @@ namespace gum {
      *
      * i.e. P(target| soids)=P(target|@return)
      */
-    NodeSet minimalCondSet(std::string_view                  target,
-                           const std::vector< std::string >& soids) const;
+    NodeSet minimalCondSet(std::string_view target, const std::vector< std::string >& soids) const;
 
 
     /***

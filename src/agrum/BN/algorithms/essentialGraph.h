@@ -49,12 +49,12 @@
 #ifndef GUM_ESSENTIALGRAPH_H
 #define GUM_ESSENTIALGRAPH_H
 
-#include <string_view>
-
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
 #include <agrum/base/graphs/PDAG.h>
+
+#include <string_view>
 
 namespace gum {
 

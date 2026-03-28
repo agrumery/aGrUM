@@ -49,7 +49,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <string_view>
 
 #include <agrum/base/core/math/formula.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
@@ -57,15 +56,17 @@
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
 #include <agrum/PRM/PRMFactory.h>
 
+#include <string_view>
+
 namespace gum {
 
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMFactory< GUM_SCALAR >::startClass(std::string_view           name,
-                                                     std::string_view           extends,
-                                                     const Set< std::string >*  implements,
-                                                     bool                       delayInheritance) {
+    INLINE void PRMFactory< GUM_SCALAR >::startClass(std::string_view          name,
+                                                     std::string_view          extends,
+                                                     const Set< std::string >* implements,
+                                                     bool                      delayInheritance) {
       std::string real_name = _addPrefix_(name);
       if (_prm_->_classMap_.exists(real_name) || _prm_->_interfaceMap_.exists(real_name)) {
         GUM_ERROR(DuplicateElement, "'" << real_name << "' is already used.")
@@ -254,7 +255,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     INLINE void PRMFactory< GUM_SCALAR >::_addParent_(PRMClassElementContainer< GUM_SCALAR >* c,
                                                       PRMAttribute< GUM_SCALAR >*             a,
-                                                      std::string_view                        name) {
+                                                      std::string_view name) {
       if (c->exists(name)) {
         PRMClassElement< GUM_SCALAR >& elt = c->get(name);
 
@@ -1209,8 +1210,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClass< GUM_SCALAR >*
-        PRMFactory< GUM_SCALAR >::_retrieveClass_(std::string_view name) const {
+    PRMClass< GUM_SCALAR >* PRMFactory< GUM_SCALAR >::_retrieveClass_(std::string_view name) const {
       PRMClass< GUM_SCALAR >* a_class = nullptr;
       std::string             full_name;
 
@@ -1812,8 +1812,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClass< GUM_SCALAR >&
-           PRMFactory< GUM_SCALAR >::retrieveClass(std::string_view name) {
+    INLINE PRMClass< GUM_SCALAR >& PRMFactory< GUM_SCALAR >::retrieveClass(std::string_view name) {
       return *_retrieveClass_(name);
     }
 

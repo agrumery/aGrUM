@@ -176,7 +176,8 @@ namespace gum {
     std::stringstream strfile, strfile2;
 
     if (!outputvar.good())
-      GUM_ERROR(IOError, "Input/Output error : " << (std::string(filePath) + ".var") << " not writable.")
+      GUM_ERROR(IOError,
+                "Input/Output error : " << (std::string(filePath) + ".var") << " not writable.")
 
     Idx num      = 0;
     Idx numparam = 0;

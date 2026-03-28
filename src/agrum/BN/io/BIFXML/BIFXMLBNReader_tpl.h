@@ -69,10 +69,10 @@ namespace gum {
                                                       std::istream&           stream) :
       BNReader< GUM_SCALAR >(bn, "<stream>") {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
-    _bn_            = bn;
-    _isFromStream_  = true;
-    _xmlContent_    = std::string(std::istreambuf_iterator< char >(stream),
-                               std::istreambuf_iterator< char >());
+    _bn_           = bn;
+    _isFromStream_ = true;
+    _xmlContent_
+        = std::string(std::istreambuf_iterator< char >(stream), std::istreambuf_iterator< char >());
   }
 
   /*

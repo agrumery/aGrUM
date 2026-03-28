@@ -74,7 +74,7 @@ namespace gum {
      */
     class ISignaler {
       public:
-      virtual ~ISignaler() {};
+      virtual ~ISignaler()                                                         = default;
       virtual void detachFromTarget(Listener* target)                              = 0;
       virtual void duplicateTarget(const Listener* oldtarget, Listener* newtarget) = 0;
       virtual bool hasListener()                                                   = 0;

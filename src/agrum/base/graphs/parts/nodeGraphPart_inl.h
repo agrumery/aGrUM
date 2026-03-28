@@ -123,12 +123,6 @@ namespace gum {
     return ((pos_ == it.pos_) && (valid_ == it.valid_) && (nodes_ == it.nodes_));
   }
 
-  /// checks whether two iterators point toward different nodes
-  INLINE
-  bool NodeGraphPartIterator::operator!=(const NodeGraphPartIterator& it) const noexcept {
-    return !(operator==(it));
-  }
-
   /// increment the iterator
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::operator++() noexcept {
     ++pos_;
@@ -351,8 +345,6 @@ namespace gum {
 
     return true;
   }
-
-  INLINE bool NodeGraphPart::operator!=(const NodeGraphPart& p) const { return !operator==(p); }
 
   INLINE NodeSet NodeGraphPart::asNodeSet() const {
     NodeSet son(sizeNodes());

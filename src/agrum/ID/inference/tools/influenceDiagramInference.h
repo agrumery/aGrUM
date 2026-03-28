@@ -51,10 +51,10 @@
 #ifndef GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 #define GUM_INFLUENCE_DIAGRAM_INFERENCE_H
 
-#include <string_view>
-
 #include <agrum/base/graphicalModels/inference/graphicalModelInference.h>
 #include <agrum/ID/influenceDiagram.h>
+
+#include <string_view>
 
 namespace gum {
   /**
@@ -90,16 +90,16 @@ namespace gum {
      * the inference. */
     virtual const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const final;
 
-    virtual gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId)          = 0;
+    virtual gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId)         = 0;
     virtual gum::Tensor< GUM_SCALAR > optimalDecision(std::string_view nodename) = 0;
 
-    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node)              = 0;
+    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node)               = 0;
     virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodename) = 0;
 
-    virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node)              = 0;
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node)               = 0;
     virtual const Tensor< GUM_SCALAR >& posteriorUtility(std::string_view nodename) = 0;
 
-    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node)              = 0;
+    virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node)               = 0;
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(std::string_view nodename) = 0;
 
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > MEU() = 0;

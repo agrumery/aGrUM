@@ -245,8 +245,7 @@ namespace gum {
         ;
       }
 
-      O3Label::O3Label(const O3Position& pos, std::string_view label) :
-          _pos_(pos), _label_(label) {
+      O3Label::O3Label(const O3Position& pos, std::string_view label) : _pos_(pos), _label_(label) {
         GUM_CONSTRUCTOR(O3Label);
       }
 

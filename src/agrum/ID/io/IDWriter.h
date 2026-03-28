@@ -54,11 +54,12 @@
 #include <filesystem>
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/ID/influenceDiagram.h>
+
+#include <string_view>
 
 namespace gum {
 
@@ -102,7 +103,8 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
+    virtual void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag)
+        = 0;
   };
 } /* namespace gum */
 

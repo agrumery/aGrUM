@@ -52,9 +52,10 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
+
+#include <string_view>
 
 namespace gum {
 

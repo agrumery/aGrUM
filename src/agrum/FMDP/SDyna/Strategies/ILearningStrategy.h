@@ -81,7 +81,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor (virtual and empty since it's an interface)
     // ==========================================================================
-    virtual ~ILearningStrategy() {}
+    virtual ~ILearningStrategy() = default;
 
     /// @}
 

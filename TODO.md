@@ -28,9 +28,11 @@ C  (Namespaces anonymes) — indépendant
 #### Problème
 
 `MultiDimImplementation<T>` stocke les variables comme pointeurs bruts :
+
 ```cpp
 Sequence<const DiscreteVariable*> _vars_;
 ```
+
 Le contrat de durée de vie (la variable doit outlive tous les Tensors qui la référencent) est
 implicite, non vérifiable par le compilateur, et violable dès qu'un Tensor est créé hors du
 modèle graphique qui possède ses variables. Dans le MRF, plusieurs facteurs partagent la même
@@ -338,61 +340,8 @@ dans `BN/algorithms/`.
   Exposer `VariableContext` via SWIG. Adapter les typemaps si nécessaire pour que les
   modèles Python puissent partager un contexte explicite.
 
-### B3. Vue numpy zero-copy sur `gum::Tensor<double>` | I:4 D:3
+## C. Maintenance ✓ (fait)
 
-Exposer le buffer interne de `MultiDimArray<double>` comme une vue numpy sans copie.
+~~**`src/agrum/` — Namespaces anonymes** | I:3 D:2~~
 
-#### Principe
-
-`MultiDimArray<double>` possède un `double*` continu. `PyArray_SimpleNewFromData` crée un
-`numpy.ndarray` qui pointe directement dessus. Pour garantir la durée de vie, on assigne le
-Tensor Python comme `base` du tableau via `PyArray_SetBaseObject(arr, self)` — le GC ne
-détruira pas le Tensor tant que la vue vit.
-
-#### API cible
-
-```python
-arr = t.toArray()   # np.ndarray, vue directe (zero-copy), shape = dimensions des variables
-t.fillFromArray(arr)  # écrit dans le buffer interne depuis un ndarray compatible
-```
-
-#### Implémentation
-
-- `toArray()` : `%extend` C retournant un `PyObject*` construit via
-  `PyArray_SimpleNewFromData` + `PyArray_SetBaseObject`.
-- `fillFromArray()` : copie depuis un ndarray contigu compatible (dtype float64) vers le
-  buffer interne — nécessaire quand on veut remplacer les valeurs depuis Python.
-- Shape du tableau : ordre des variables tel que retourné par `Tensor.variablesSequence()`,
-  dimensions = `var.domainSize()` pour chaque variable.
-
-#### État actuel
-
-- Buffer interne : `mutable std::vector<GUM_ELEMENT> values_` (protected) dans `MultiDimArray`.
-- Aucun `data()` public existant — seul accès par index via `unsafeGet(offset)` / `getByOffset(offset)`.
-- Taille : `domainSize()` / `realSize()` publics.
-- `MultiDimArray` est intentionnellement ignoré côté SWIG (`%ignore gum::MultiDimArray`).
-
-#### Ordre d'implémentation
-
-1. Ajouter `const GUM_ELEMENT* data() const noexcept { return values_.data(); }` public dans
-   `MultiDimArray` (`multiDimArray.h`).
-2. Vérifier qu'aucun `toArray()` n'existe déjà sur `Tensor` côté Python.
-3. `%extend gum::Tensor<double>` : `toArray()` via `PyArray_SimpleNewFromData` +
-   `PyArray_SetBaseObject(arr, self)` dans `swigsrc/tensor.i`.
-4. `%extend` `fillFromArray()` : copie depuis ndarray contigu float64 vers `values_`.
-5. Tests Python : modifier `arr` modifie le Tensor (zero-copy), shape, dtype, Tensor vide.
-
----
-
-## C. Maintenance
-
-**`src/agrum/` — Namespaces anonymes** | I:3 D:2
-
-Utiliser `namespace { ... }` pour toute fonction/variable interne à un `.cpp` (au lieu de
-`static` ou d'une exposition accidentelle dans le namespace global).
-
-**`src/agrum/` — Méthodes `= default` et redondances** | I:2 D:2
-
-Passer en revue les constructeurs/destructeurs/opérateurs de copie/déplacement triviaux et
-les remplacer par `= default` quand applicable. Identifier et supprimer les opérateurs
-redondants (`!=` exprimable via `==`, comparaisons dérivables via `<=>`, etc.).
+~~**`src/agrum/` — Méthodes `= default` et redondances** | I:2 D:2~~

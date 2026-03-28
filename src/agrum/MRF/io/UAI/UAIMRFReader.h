@@ -53,11 +53,12 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/MRF/io/MRFReader.h>
+
+#include <string_view>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER

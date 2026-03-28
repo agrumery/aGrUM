@@ -49,13 +49,14 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
-#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {
@@ -92,9 +93,7 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass(std::string_view        name,
-               PRMClass< GUM_SCALAR >& super,
-               bool                    delayInheritance = false);
+      PRMClass(std::string_view name, PRMClass< GUM_SCALAR >& super, bool delayInheritance = false);
 
       /**
        * Constructor for building a Class<GUM_SCALAR> implementing several each

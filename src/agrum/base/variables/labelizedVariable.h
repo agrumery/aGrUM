@@ -81,9 +81,7 @@ namespace gum {
      * @param nbrLabel the domainSize (2 by default)
      */
 
-    LabelizedVariable(std::string_view aName,
-                      std::string_view aDesc    = "",
-                      const Size       nbrLabel = 2);
+    LabelizedVariable(std::string_view aName, std::string_view aDesc = "", const Size nbrLabel = 2);
 
     /** @brief constructor
      * @param aName the name

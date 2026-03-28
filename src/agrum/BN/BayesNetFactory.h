@@ -50,11 +50,12 @@
 #define GUM_BAYESNET_FACTORY_H
 
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNetFactory.h>
+
+#include <string_view>
 
 namespace gum {
 

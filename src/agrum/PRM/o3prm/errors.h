@@ -49,11 +49,12 @@
 
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/base/core/errorsContainer.h>
 #include <agrum/PRM/o3prm/O3prm.h>
+
+#include <string_view>
 
 #ifndef GUM_PRM_O3PRM_ERRORS_H
 #  define GUM_PRM_O3PRM_ERRORS_H

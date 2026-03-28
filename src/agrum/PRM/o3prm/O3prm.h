@@ -48,13 +48,14 @@
  */
 
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/math/formula.h>
+
+#include <string_view>
 
 #ifndef GUM_PRM_O3PRM_PRM_H
 #  define GUM_PRM_O3PRM_PRM_H

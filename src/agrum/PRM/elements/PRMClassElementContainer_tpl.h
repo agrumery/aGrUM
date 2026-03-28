@@ -62,8 +62,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE
-        PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(std::string_view name) :
+    INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(std::string_view name) :
         PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }

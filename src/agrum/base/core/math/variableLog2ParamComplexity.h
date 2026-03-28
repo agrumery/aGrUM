@@ -52,13 +52,13 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/hashTable.h>
 
 #include <agrum/base/core/math/math_utils.h>
+#include <string_view>
 
 namespace gum {
 

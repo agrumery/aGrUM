@@ -584,7 +584,7 @@ namespace gum {
   /* we allow the user to change the name of a variable
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId          id,
+  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                  std::string_view new_name) {
     _variableMap_.changeName(id, new_name);
   }

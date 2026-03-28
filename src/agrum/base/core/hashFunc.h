@@ -51,13 +51,13 @@
 // utility provides the std::pair <> template
 #include <climits>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/refPtr.h>
 
+#include <string_view>
 #include <type_traits>
 
 namespace gum {

@@ -51,10 +51,11 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {
@@ -162,10 +163,7 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      PRMAggregate(std::string_view name,
-                   AggregateType      aggType,
-                   const PRMType&     rvType,
-                   Idx                label);
+      PRMAggregate(std::string_view name, AggregateType aggType, const PRMType& rvType, Idx label);
 
       /// Destructor.
       virtual ~PRMAggregate();

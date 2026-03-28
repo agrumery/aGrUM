@@ -467,8 +467,7 @@ namespace gum {
   // for some variable.
   // @param var The concerned variable's name.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void
-      BayesNetFactory< GUM_SCALAR >::startRawProbabilityDeclaration(std::string_view var) {
+  INLINE void BayesNetFactory< GUM_SCALAR >::startRawProbabilityDeclaration(std::string_view var) {
     if (state() != factory_state::NONE) {
       _illegalStateError_("startRawProbabilityDeclaration");
     } else {

@@ -111,9 +111,6 @@ namespace gum {
 
     INLINE bool PRMType::operator==(const PRMType& obj) const { return name() == obj.name(); }
 
-    INLINE bool PRMType::operator!=(const PRMObject& obj) const { return !operator==(obj); }
-
-    INLINE bool PRMType::operator!=(const PRMType& obj) const { return !operator==(obj); }
 
   } /* namespace prm */
 } /* namespace gum */

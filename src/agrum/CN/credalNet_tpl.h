@@ -409,8 +409,7 @@ namespace gum {
     ///////////////////////////////////////////////
 
     template < GUM_Numeric GUM_SCALAR >
-    CredalNet< GUM_SCALAR >::CredalNet(std::string_view src_min_num,
-                                       std::string_view src_max_den) {
+    CredalNet< GUM_SCALAR >::CredalNet(std::string_view src_min_num, std::string_view src_max_den) {
       _initParams_();
       _initCNNets_(src_min_num, src_max_den);
 

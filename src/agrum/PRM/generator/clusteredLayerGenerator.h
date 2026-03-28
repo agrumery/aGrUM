@@ -54,10 +54,11 @@
 #include <list>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/PRM/generator/layerGenerator.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

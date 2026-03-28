@@ -52,10 +52,11 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/base/core/types.h>
+
+#include <string_view>
 
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 

@@ -109,8 +109,7 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting Bayesian network
      */
-    static MarkovRandomField< GUM_SCALAR > fastPrototype(std::string_view dotlike,
-                                                         Size             domainSize);
+    static MarkovRandomField< GUM_SCALAR > fastPrototype(std::string_view dotlike, Size domainSize);
     static MarkovRandomField< GUM_SCALAR > fastPrototype(std::string_view dotlike,
                                                          std::string_view domain = "[2]");
 

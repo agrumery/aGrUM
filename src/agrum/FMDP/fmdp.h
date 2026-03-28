@@ -50,8 +50,9 @@
 #define GUM_FACTORED_MARKOV_DECISION_PROCESS_H
 //======================================================================
 #include <string>
-#include <string_view>
 #include <vector>
+
+#include <string_view>
 //======================================================================
 //======================================================================
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>

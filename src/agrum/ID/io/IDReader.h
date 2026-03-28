@@ -55,11 +55,12 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/ID/influenceDiagram.h>
+
+#include <string_view>
 
 namespace gum {
 

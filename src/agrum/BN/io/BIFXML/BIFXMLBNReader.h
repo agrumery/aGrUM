@@ -93,8 +93,8 @@ GONZALES(_at_AMU)
 
 #define TIXML_USE_TICPP
 
-#include <iterator>
 #include <istream>
+#include <iterator>
 #include <list>
 #include <sstream>
 #include <string>

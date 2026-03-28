@@ -300,11 +300,6 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool IMarkovRandomField< GUM_SCALAR >::operator!=(const IMarkovRandomField& from) const {
-    return !this->operator==(from);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream&                           output,
                                   const IMarkovRandomField< GUM_SCALAR >& bn) {
     output << bn.toString();

@@ -161,27 +161,11 @@ namespace gum {
     // ============================================================================
     bool operator==(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const;
 
-    bool operator!=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return !(*this == compared);
-    }
-
     // ============================================================================
-    /// Checks if val is lower or higher from the compared ArgMaxSet val
+    /// Ordering comparisons based on val (C++20 spaceship operator)
     // ============================================================================
-    bool operator<(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return _val_ < compared.value() ? true : false;
-    }
-
-    bool operator>(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return compared < *this;
-    }
-
-    bool operator<=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return !(*this > compared);
-    }
-
-    bool operator>=(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
-      return !(*this < compared);
+    auto operator<=>(const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+      return _val_ <=> compared.value();
     }
 
     /// @}

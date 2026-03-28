@@ -172,7 +172,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId          id,
+  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                   std::string_view new_name) {
     _varMap_.changeName(id, new_name);
   }
@@ -232,7 +232,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(std::string_view fast_description,
-                                                     unsigned int       default_nbrmod) {
+                                                     unsigned int     default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(std::string{fast_description}, default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);

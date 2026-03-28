@@ -359,13 +359,6 @@ namespace gum {
     bool operator==(const MultiDimContainer< GUM_ELEMENT >& p) const;
 
     /**
-     * @brief Test if this MultiDimContainer is different of p.
-     * @param p The MultiDimContainer to test for inequality.
-     * @return Returns true if this MultiDimContainer is different of p.
-     */
-    bool operator!=(const MultiDimContainer< GUM_ELEMENT >& p) const;
-
-    /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */

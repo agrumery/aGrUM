@@ -107,7 +107,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrContext< GUM_SCALAR >::addImport(int             line,
+      void O3prmrContext< GUM_SCALAR >::addImport(int              line,
                                                   std::string_view import,
                                                   std::string_view alias) {
         m_imports.push_back(new ImportCommand(line, import, alias));
@@ -116,8 +116,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void
-          O3prmrContext< GUM_SCALAR >::addImport(int line, std::string_view import, bool ismain) {
+      void O3prmrContext< GUM_SCALAR >::addImport(int line, std::string_view import, bool ismain) {
         m_imports.push_back(new ImportCommand(line, import, import));
 
         if (ismain) m_mainImport = m_imports.back();
@@ -209,7 +208,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmrSession< GUM_SCALAR >::addObserve(int             line,
+      void O3prmrSession< GUM_SCALAR >::addObserve(int              line,
                                                    std::string_view leftValue,
                                                    std::string_view rightValue) {
         addCommand(new ObserveCommand< GUM_SCALAR >(line, leftValue, rightValue));

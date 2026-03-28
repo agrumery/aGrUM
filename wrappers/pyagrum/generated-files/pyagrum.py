@@ -2238,7 +2238,7 @@ class RangeVariable(DiscreteVariable):
 
         Returns
         -------
-        int :
+        long :
           the lower bound of the variable
 
         """
@@ -2251,7 +2251,7 @@ class RangeVariable(DiscreteVariable):
 
         Parameters
         ----------
-        minVal : int
+        minVal : long
           The new value of the lower bound
 
         Warnings
@@ -2266,7 +2266,7 @@ class RangeVariable(DiscreteVariable):
 
         Returns
         -------
-        int :
+        long :
           the upper bound of the variable.
 
         """
@@ -2279,7 +2279,7 @@ class RangeVariable(DiscreteVariable):
 
         Parameters
         ----------
-        maxVal : int
+        maxVal : long
           The new value of the upper bound
 
         Warnings
@@ -2294,7 +2294,7 @@ class RangeVariable(DiscreteVariable):
 
         Parameters
         ----------
-        val : int
+        val : long
           the value to be tested
 
         Returns
@@ -2871,7 +2871,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        value : double
             the new value
 
         Returns
@@ -3181,9 +3181,6 @@ class UndiGraph(object):
 
     def __eq__(self, g: "pyagrum.UndiGraph") -> bool:
         return _pyagrum.UndiGraph___eq__(self, g)
-
-    def __ne__(self, g: "pyagrum.UndiGraph") -> bool:
-        return _pyagrum.UndiGraph___ne__(self, g)
 
     def eraseNode(self, id: int) -> None:
         r"""
@@ -4092,11 +4089,11 @@ class DAG(DiGraph):
 
         Parameters
         ----------
-        X : int sequence of int
+        X : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
-        Y : int sequence of int
+        Y : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
-        Z : int sequence of int (optional)
+        Z : int | sequence of int (optional)
           a sequence of node ids (int) or a single node id (int)
         Returns
         -------
@@ -4113,7 +4110,7 @@ class DAG(DiGraph):
 
         Parameters
         ----------
-        nodes : int sequence of int
+        nodes : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
         Returns
         -------
@@ -4832,11 +4829,11 @@ class PDAG(MixedGraph):
 
         Parameters
         ----------
-        X : int sequence of int
+        X : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
-        Y : int sequence of int
+        Y : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
-        Z : int sequence of int (optional)
+        Z : int | sequence of int (optional)
           a sequence of node ids (int) or a single node id (int)
         Returns
         -------
@@ -4853,7 +4850,7 @@ class PDAG(MixedGraph):
 
         Parameters
         ----------
-        nodes : int sequence of int
+        nodes : int | sequence of int
           a sequence of node ids (int) or a single node id (int)
         Returns
         -------
@@ -5384,9 +5381,9 @@ class MeekRules(object):
     def propagateToCPDAG(self, mg: "MixedGraph") -> "pyagrum.PDAG":
         r"""
 
-        Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. And then arbitratily resolves float orientations. This method returns a `pyagrum.PDAG` with the properties of CPDAG.
+        Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. And then arbitratily resolves double orientations. This method returns a `pyagrum.PDAG` with the properties of CPDAG.
 
-        The arbitrary resolution of float orientations is not deterministic. It depends on the order of the edges in the graph. `pyagrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG`.
+        The arbitrary resolution of double orientations is not deterministic. It depends on the order of the edges in the graph. `pyagrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG`.
 
         Parameters
         ----------
@@ -6360,11 +6357,11 @@ class GraphicalModel(object):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -6572,7 +6569,7 @@ class DAGmodel(GraphicalModel):
 
         Parameters
         ----------
-        nodes : str|intlist of str|int
+        nodes : str|int|list of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -6594,11 +6591,11 @@ class DAGmodel(GraphicalModel):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -6718,11 +6715,11 @@ class UGmodel(GraphicalModel):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -7203,7 +7200,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
             - **aName** (*str*) -- the name of the variable
             - **aDesc** (*str*) -- the description of the variable
-            - **ticks** (*list[float]*) -- the list of ticks to add
+            - **ticks** (*list[double]*) -- the list of ticks to add
             - **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
 
 
@@ -7280,7 +7277,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         """
         Parameters
         ----------
-        aTick : float
+        aTick : double
             the Tick to be added
 
         Returns
@@ -7518,9 +7515,6 @@ class MultiDimContainer(object):
     def __eq__(self, p: "pyagrum.Tensor") -> bool:
         return _pyagrum.MultiDimContainer___eq__(self, p)
 
-    def __ne__(self, p: "pyagrum.Tensor") -> bool:
-        return _pyagrum.MultiDimContainer___ne__(self, p)
-
     def apply(self, f: "std::function< float (float) >") -> None:
         return _pyagrum.MultiDimContainer_apply(self, f)
 
@@ -7565,7 +7559,7 @@ class Tensor(object):
         ----------
         var : pyagrum.DiscreteVariable
           the variable to use
-        value: int str
+        value: int | str
           the indice or the label of the value for the variable
 
         Returns
@@ -8909,7 +8903,7 @@ class Tensor(object):
         Return a zero-copy numpy view over the Tensor's internal data buffer.
 
         The returned array shares memory with the Tensor: modifying one modifies
-        the other. The Tensor is kept alive as int as the view exists.
+        the other. The Tensor is kept alive as long as the view exists.
 
         The shape follows the same convention as :meth:`toarray`:
         ``tuple(reversed(self.shape))``.
@@ -11301,9 +11295,6 @@ class IBayesNet(DAGmodel):
     def __eq__(self, _from: "IBayesNet") -> bool:
         return _pyagrum.IBayesNet___eq__(self, _from)
 
-    def __ne__(self, _from: "IBayesNet") -> bool:
-        return _pyagrum.IBayesNet___ne__(self, _from)
-
     def dim(self) -> int:
         r"""
 
@@ -11405,7 +11396,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
           the current name or the id of the variable
         value: float
 
@@ -11429,7 +11420,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
           the current name or the id of the variable
         valueMin: float
           the minimum value
@@ -11456,7 +11447,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
           the current name or the id of the variable
         value: float
 
@@ -11490,7 +11481,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
           the current name or the id of the variable
         value: float
 
@@ -11580,11 +11571,11 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -11821,7 +11812,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        nodes : str|intlist of str|int
+        nodes : str|int|list of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -11915,7 +11906,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        VarId :  int str
+        VarId :  int | str
             a variable's id (int) or name
 
         Returns
@@ -11992,7 +11983,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : int str | pyagrum.DiscreteVariable
+        var : int | str | pyagrum.DiscreteVariable
             the current name, the id of the variable or a reference to the variable
 
         """
@@ -12030,7 +12021,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             the current name or the id of the variable
         new_name : str
             the new name of the variable
@@ -12052,7 +12043,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             the current name or the id of the variable
         old_label : str
             the new label
@@ -12143,9 +12134,9 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head : int str
+        head : int | str
             a variable's id (int) or name
-        tail : int str
+        tail : int | str
             a variable's id (int) or name
 
         Raises
@@ -12169,9 +12160,9 @@ class BayesNet(IBayesNet):
         ----------
         arc : pyagrum.Arc when calling eraseArc(arc)
             The arc to be removed.
-        head : int str
+        head : int | str
             a variable's id (int) or name for the head when calling eraseArc(head,tail)
-        tail : int str
+        tail : int | str
             a variable's id (int) or name for the tail when calling eraseArc(head,tail)
 
         """
@@ -12576,9 +12567,9 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        head : int str
+        head : int | str
             a variable's id (int) or name
-        tail : int str
+        tail : int | str
             a variable's id (int) or name
         causalWeight : float
             the added causal weight
@@ -12608,7 +12599,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id (int) or name
 
         """
@@ -12621,7 +12612,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             the current name or the id of the variable
         newPot : pyagrum.Tensor
             the new tensor
@@ -12741,11 +12732,11 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -12982,7 +12973,7 @@ class BayesNet(IBayesNet):
 
         Parameters
         ----------
-        nodes : str|intlist of str|int
+        nodes : str|int|list of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -13022,7 +13013,7 @@ class BayesNet(IBayesNet):
 
       Parameters
       ----------
-      listArcs : List[Tuple[intstr,intstr]]
+      listArcs : List[Tuple[int|str,int|str]]
         the list of arcs
       """
       self.beginTopologyTransformation()
@@ -13834,11 +13825,11 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -14075,7 +14066,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Parameters
         ----------
-        nodes : str|intlist of str|int
+        nodes : str|int|list of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -14115,7 +14106,7 @@ class BayesNetFragment(IBayesNet, ):
 
       Parameters
       ----------
-      listArcs : List[Tuple[intstr,intstr]]
+      listArcs : List[Tuple[int|str,int|str]]
         the list of arcs
       """
       self.beginTopologyTransformation()
@@ -14354,7 +14345,7 @@ class LazyPropagation(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -14904,7 +14895,7 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        targets : list of intstr
+        targets : list of int|str
           a list of node Ids or node names
         evs : set
           a set of nodes ids or names.
@@ -15193,7 +15184,7 @@ class ShaferShenoyInference(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -15743,7 +15734,7 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        targets : list of intstr
+        targets : list of int|str
           a list of node Ids or node names
         evs : set
           a set of nodes ids or names.
@@ -16039,7 +16030,7 @@ class VariableElimination(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -16537,7 +16528,7 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        targets : list of intstr
+        targets : list of int|str
           a list of node Ids or node names
         evs : set
           a set of nodes ids or names.
@@ -16992,7 +16983,7 @@ class GibbsSampling(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -17811,7 +17802,7 @@ class ImportanceSampling(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -18586,7 +18577,7 @@ class WeightedSampling(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -19361,7 +19352,7 @@ class MonteCarloSampling(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -20150,7 +20141,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -20939,7 +20930,7 @@ class LoopyWeightedSampling(WeightedSampling):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -21728,7 +21719,7 @@ class LoopyGibbsSampling(GibbsSampling):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -22583,7 +22574,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -23358,7 +23349,7 @@ class LoopyBeliefPropagation(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -25249,9 +25240,9 @@ class BNLearner(object):
         ----------
         arc : pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         """
@@ -25266,9 +25257,9 @@ class BNLearner(object):
         ----------
         arc: pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         """
@@ -25288,9 +25279,9 @@ class BNLearner(object):
         ----------
         arc : pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         Raises
@@ -25308,9 +25299,9 @@ class BNLearner(object):
         ----------
         arc: pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         """
@@ -25330,9 +25321,9 @@ class BNLearner(object):
         ----------
         arc : pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         """
@@ -25347,9 +25338,9 @@ class BNLearner(object):
         ----------
         arc : pyagrum.Arc
             an arc
-        head : int str
+        head : int | str
             a variable's id or name
-        tail : int str
+        tail : int | str
             a variable's id or name
 
         """
@@ -25375,7 +25366,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id or name
 
         """
@@ -25388,7 +25379,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id or name
 
         """
@@ -25401,7 +25392,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id or name
 
         """
@@ -25414,7 +25405,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id or name
 
         """
@@ -25937,7 +25928,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        vars: list of intstr
+        vars: list of int|str
                 the list of variables
 
         Returns
@@ -28240,9 +28231,6 @@ class InfluenceDiagram(DAGmodel):
     def __eq__(self, other: "InfluenceDiagram") -> bool:
         return _pyagrum.InfluenceDiagram___eq__(self, other)
 
-    def __ne__(self, other: "InfluenceDiagram") -> bool:
-        return _pyagrum.InfluenceDiagram___ne__(self, other)
-
     def toDot(self) -> str:
         r"""
 
@@ -28264,7 +28252,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             a variable's id (int) or name
 
         Returns
@@ -28285,7 +28273,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             a variable's id (int) or name
 
         Returns
@@ -28608,7 +28596,7 @@ class InfluenceDiagram(DAGmodel):
         ----------
         id : int
             The id of the variable to erase.
-        var :  int str | pyagrum.DiscreteVariable
+        var :  int | str | pyagrum.DiscreteVariable
             a variable's id (int) or name or th reference on the variable to remove.
 
         """
@@ -28619,7 +28607,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             a variable's id (int) or name
         new_name : str
             the name of the variable
@@ -28641,9 +28629,9 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        tail : int str
+        tail : int | str
             a variable's id (int) or name
-        head : int str
+        head : int | str
             a variable's id (int) or name
 
         Raises
@@ -28667,9 +28655,9 @@ class InfluenceDiagram(DAGmodel):
         ----------
         arc : pyagrum.Arc
             The arc to be removed whn calling eraseArc(arc)
-        tail : int str
+        tail : int | str
             a variable's id (int) or name when calling eraseArc(tail,head)
-        head : int str
+        head : int | str
             a variable's id (int) or name when calling eraseArc(tail,head)
 
         """
@@ -28848,7 +28836,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             a variable's id (int) or name
 
         Returns
@@ -28864,7 +28852,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        var : int str
+        var : int | str
             a variable's id (int) or name
 
         Returns
@@ -28936,7 +28924,7 @@ class InfluenceDiagram(DAGmodel):
 
         Parameters
         ----------
-        nodes : str|intlist of str|int
+        nodes : str|int|list of str|int
           the list of of nodeIds or names
 
         Warnings
@@ -29351,7 +29339,7 @@ class ShaferShenoyLIMIDInference(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -29813,9 +29801,6 @@ class IMarkovRandomField(UGmodel):
     def __eq__(self, _from: "IMarkovRandomField") -> bool:
         return _pyagrum.IMarkovRandomField___eq__(self, _from)
 
-    def __ne__(self, _from: "IMarkovRandomField") -> bool:
-        return _pyagrum.IMarkovRandomField___ne__(self, _from)
-
     def dim(self) -> int:
         return _pyagrum.IMarkovRandomField_dim(self)
 
@@ -29968,11 +29953,11 @@ class IMarkovRandomField(UGmodel):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -30110,7 +30095,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        var :int str | pyagrum.DiscreteVariable
+        var :int | str | pyagrum.DiscreteVariable
             a variable's id (int) or name of variable or a reference of this variable to remove.
 
         """
@@ -30128,7 +30113,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        car :int str
+        car :int | str
             a variable's id (int) or name
         new_name : str
             the new name of the variable
@@ -30150,7 +30135,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        var :int str
+        var :int | str
             a variable's id (int) or name
         old_label : str
             the old label
@@ -30189,7 +30174,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        node : int str
+        node : int | str
             a variable's id (int) or name
 
         """
@@ -30378,11 +30363,11 @@ class MarkovRandomField(IMarkovRandomField):
 
         Parameters
         ----------
-        X : str|intlist of str|int
+        X : str|int|list of str|int
               a list of of nodeIds or names
-        Y : str|intlist of str|int
+        Y : str|int|list of str|int
               a list of of nodeIds or names
-        Z : str|intlist of str|int
+        Z : str|int|list of str|int
               a list of of nodeIds or names
 
         Raises
@@ -30748,7 +30733,7 @@ class ShaferShenoyMRFInference(object):
           a node Id
         nodeName : int
           a node name
-        val : intstr
+        val : int|str
           a node value or the label of the node value
         vals : list of float
           a list of values
@@ -31217,7 +31202,7 @@ class ShaferShenoyMRFInference(object):
 
         Parameters
         ----------
-        targets : list of intstr
+        targets : list of int|str
           a list of node Ids or node names
         evs : set
           a set of nodes ids or names.

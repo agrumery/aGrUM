@@ -51,12 +51,13 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/BN/IBayesNet.h>
+
+#include <string_view>
 
 namespace gum {
 

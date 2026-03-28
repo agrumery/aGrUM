@@ -51,11 +51,12 @@
 #define GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H
 
 #include <string>
-#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/BN/inference/tools/BayesNetInference.h>
+
+#include <string_view>
 
 namespace gum {
 

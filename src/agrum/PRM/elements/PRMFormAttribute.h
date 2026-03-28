@@ -50,9 +50,9 @@
 #define GUM_FORM_ATTRIBUTE_H
 
 
-#include <string_view>
-
 #include <agrum/PRM/elements/PRMClass.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

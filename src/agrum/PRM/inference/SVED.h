@@ -48,7 +48,6 @@
 #ifndef GUM_SVED_H
 #define GUM_SVED_H
 
-#include <string_view>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
@@ -57,6 +56,8 @@
 #include <agrum/PRM/classDependencyGraph.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
 #include <agrum/PRM/instanceBayesNet.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

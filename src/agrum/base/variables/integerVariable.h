@@ -88,11 +88,7 @@ namespace gum {
      * @param last the last value
      * @param nb the number of values
      */
-    IntegerVariable(std::string_view aName,
-                    std::string_view aDesc,
-                    int              first,
-                    int              last,
-                    Size             nb);
+    IntegerVariable(std::string_view aName, std::string_view aDesc, int first, int last, Size nb);
 
     /// Copy constructor
     /**

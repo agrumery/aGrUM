@@ -49,9 +49,9 @@
 #ifndef AGRUM_DECISIONTENSOR_H
 #define AGRUM_DECISIONTENSOR_H
 
-#include <string_view>
-
 #include <agrum/base/multidim/tensor.h>
+
+#include <string_view>
 
 namespace gum {
   /**
@@ -121,8 +121,6 @@ namespace gum {
       return ((p.probPot == this->probPot)
               && (p.probPot * p.utilPot == this->probPot * this->utilPot));
     }
-
-    bool operator!=(const DecisionTensor< GUM_SCALAR >& p) const { return !operator==(p); }
 
     const DiscreteVariable* variable(std::string_view name) const {
       for (const auto& v: probPot.variablesSequence()) {

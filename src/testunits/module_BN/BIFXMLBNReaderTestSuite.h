@@ -201,11 +201,11 @@ namespace gum_tests {
 
         inst_1.setFirst();
 
-        CHECK_EQ((proba_1[inst_1]) , doctest::Approx(0.2f).epsilon(0.001f));
+        CHECK_EQ((proba_1[inst_1]), doctest::Approx(0.2f).epsilon(0.001f));
 
         inst_1.setLast();
 
-        CHECK_EQ((proba_1[inst_1]) , doctest::Approx(0.8f).epsilon(0.001f));
+        CHECK_EQ((proba_1[inst_1]), doctest::Approx(0.8f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_2 = net->variable(node_2);
 
@@ -221,11 +221,11 @@ namespace gum_tests {
 
         inst_2.setFirst();
 
-        CHECK_EQ((proba_2[inst_2]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((proba_2[inst_2]), doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_2.setLast();
 
-        CHECK_EQ((proba_2[inst_2]) , doctest::Approx(0.7f).epsilon(0.001f));
+        CHECK_EQ((proba_2[inst_2]), doctest::Approx(0.7f).epsilon(0.001f));
 
         delete net;
       }
@@ -265,11 +265,11 @@ namespace gum_tests {
 
         inst_1.setFirst();
 
-        CHECK_EQ((proba_1[inst_1]) , doctest::Approx(0.2f).epsilon(0.001f));
+        CHECK_EQ((proba_1[inst_1]), doctest::Approx(0.2f).epsilon(0.001f));
 
         inst_1.setLast();
 
-        CHECK_EQ((proba_1[inst_1]) , doctest::Approx(0.8f).epsilon(0.001f));
+        CHECK_EQ((proba_1[inst_1]), doctest::Approx(0.8f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_2 = net->variable(idMap["n2"]);
 
@@ -289,11 +289,11 @@ namespace gum_tests {
 
         inst_2.setFirst();
 
-        CHECK_EQ((proba_2[inst_2]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((proba_2[inst_2]), doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_2.setLast();
 
-        CHECK_EQ((proba_2[inst_2]) , doctest::Approx(0.7f).epsilon(0.001f));
+        CHECK_EQ((proba_2[inst_2]), doctest::Approx(0.7f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_3 = net->variable(idMap["n3"]);
 
@@ -317,21 +317,21 @@ namespace gum_tests {
 
         inst_3.chgVal(var_3, 0);
 
-        CHECK_EQ((proba_3[inst_3]) , doctest::Approx(0.1f).epsilon(0.001f));
+        CHECK_EQ((proba_3[inst_3]), doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_3.chgVal(var_3, 1);
 
-        CHECK_EQ((proba_3[inst_3]) , doctest::Approx(0.9f).epsilon(0.001f));
+        CHECK_EQ((proba_3[inst_3]), doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_3.chgVal(var_1, 1);
 
         inst_3.chgVal(var_3, 0);
 
-        CHECK_EQ((proba_3[inst_3]) , doctest::Approx(0.9f).epsilon(0.001f));
+        CHECK_EQ((proba_3[inst_3]), doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_3.chgVal(var_3, 1);
 
-        CHECK_EQ((proba_3[inst_3]) , doctest::Approx(0.1f).epsilon(0.001f));
+        CHECK_EQ((proba_3[inst_3]), doctest::Approx(0.1f).epsilon(0.001f));
 
         const gum::DiscreteVariable& var_4 = net->variable(idMap["n4"]);
 
@@ -359,11 +359,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.4f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.6f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 1);
 
@@ -371,11 +371,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 0);
 
@@ -383,11 +383,11 @@ namespace gum_tests {
 
         inst_4.chgVal(var_4, 0);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_4, 1);
 
-        CHECK_EQ((proba_4[inst_4]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_4[inst_4]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_4.chgVal(var_1, 1);
 
@@ -429,15 +429,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.6f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.1f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 0);
 
@@ -445,15 +445,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.0f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.0f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 1);
 
@@ -461,15 +461,15 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.4f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.6f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.0f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.0f).epsilon(0.001f));
 
         inst_5.chgVal(var_2, 1);
 
@@ -477,11 +477,11 @@ namespace gum_tests {
 
         inst_5.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_5[inst_5]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_5[inst_5]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_5.chgVal(var_5, 2);
 
@@ -513,29 +513,29 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.1f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.1f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.2f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.2f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.3f).epsilon(0.001f));
 
         inst_6.chgVal(var_1, 1);
 
         inst_6.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.4f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.4f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.5f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.5f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.6f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.6f).epsilon(0.001f));
 
         inst_6.chgVal(var_6, 1);
 
@@ -543,15 +543,15 @@ namespace gum_tests {
 
         inst_6.chgVal(var_5, 0);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.7f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.7f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 1);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.8f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.8f).epsilon(0.001f));
 
         inst_6.chgVal(var_5, 2);
 
-        CHECK_EQ((proba_6[inst_6]) , doctest::Approx(0.9f).epsilon(0.001f));
+        CHECK_EQ((proba_6[inst_6]), doctest::Approx(0.9f).epsilon(0.001f));
 
         inst_6.chgVal(var_1, 1);
 
@@ -605,16 +605,16 @@ namespace gum_tests {
         gum::Instantiation historyInst(historyCPT);
         historyInst.chgVal(history, 0);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
-        CHECK_EQ((historyCPT[historyInst]) , doctest::Approx(0.9f).epsilon(0.0001f));
+        CHECK_EQ((historyCPT[historyInst]), doctest::Approx(0.9f).epsilon(0.0001f));
         historyInst.chgVal(history, 1);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 0);
-        CHECK_EQ((historyCPT[historyInst]) , doctest::Approx(0.1f).epsilon(0.0001f));
+        CHECK_EQ((historyCPT[historyInst]), doctest::Approx(0.1f).epsilon(0.0001f));
         historyInst.chgVal(history, 0);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
-        CHECK_EQ((historyCPT[historyInst]) , doctest::Approx(0.01f).epsilon(0.0001f));
+        CHECK_EQ((historyCPT[historyInst]), doctest::Approx(0.01f).epsilon(0.0001f));
         historyInst.chgVal(history, 1);
         historyInst.chgVal(net->variable(idMap["LVFAILURE"]), 1);
-        CHECK_EQ((historyCPT[historyInst]) , doctest::Approx(0.99f).epsilon(0.0001f));
+        CHECK_EQ((historyCPT[historyInst]), doctest::Approx(0.99f).epsilon(0.0001f));
       }
 
       // The node wich we'll test
@@ -635,9 +635,9 @@ namespace gum_tests {
 
         gum::Instantiation errlowoutputInst(errlowoutputCPT);
         errlowoutputInst.chgVal(errlowoutput, 0);
-        CHECK_EQ((errlowoutputCPT[errlowoutputInst]) , doctest::Approx(0.05f).epsilon(0.001f));
+        CHECK_EQ((errlowoutputCPT[errlowoutputInst]), doctest::Approx(0.05f).epsilon(0.001f));
         errlowoutputInst.chgVal(errlowoutput, 1);
-        CHECK_EQ((errlowoutputCPT[errlowoutputInst]) , doctest::Approx(0.95f).epsilon(0.001f));
+        CHECK_EQ((errlowoutputCPT[errlowoutputInst]), doctest::Approx(0.95f).epsilon(0.001f));
       }
 
       // The nide wich we'll test
@@ -671,7 +671,7 @@ namespace gum_tests {
         size_t i         = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          CHECK_EQ((cpt[inst]) , doctest::Approx(array_1[i]).epsilon(0.001f));
+          CHECK_EQ((cpt[inst]), doctest::Approx(array_1[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -680,7 +680,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          CHECK_EQ((cpt[inst]) , doctest::Approx(array_2[i]).epsilon(0.001f));
+          CHECK_EQ((cpt[inst]), doctest::Approx(array_2[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 0);
@@ -689,7 +689,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          CHECK_EQ((cpt[inst]) , doctest::Approx(array_3[i]).epsilon(0.001f));
+          CHECK_EQ((cpt[inst]), doctest::Approx(array_3[i]).epsilon(0.001f));
         }
 
         inst.chgVal(hypovolemia, 1);
@@ -698,7 +698,7 @@ namespace gum_tests {
         i               = 0;
 
         for (inst.setFirstIn(var_inst); !inst.end(); inst.incIn(var_inst), ++i) {
-          CHECK_EQ((cpt[inst]) , doctest::Approx(array_4[i]).epsilon(0.001f));
+          CHECK_EQ((cpt[inst]), doctest::Approx(array_4[i]).epsilon(0.001f));
         }
       }
 
@@ -723,11 +723,11 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      CHECK_EQ((isOK) , (static_cast< gum::Size >(0)));
+      CHECK_EQ((isOK), (static_cast< gum::Size >(0)));
       CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        CHECK_EQ((net->size()) , (static_cast< gum::Size >(2)));
+        CHECK_EQ((net->size()), (static_cast< gum::Size >(2)));
 
         gum::NodeId node_1 = 0, node_2 = 0;
         for (const auto node: net->nodes())
@@ -736,15 +736,15 @@ namespace gum_tests {
 
         gum::Instantiation inst_1(net->cpt(node_1));
         inst_1.setFirst();
-        CHECK_EQ((net->cpt(node_1)[inst_1]) , doctest::Approx(0.2f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.2f).epsilon(0.001f));
         inst_1.setLast();
-        CHECK_EQ((net->cpt(node_1)[inst_1]) , doctest::Approx(0.8f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.8f).epsilon(0.001f));
 
         gum::Instantiation inst_2(net->cpt(node_2));
         inst_2.setFirst();
-        CHECK_EQ((net->cpt(node_2)[inst_2]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.3f).epsilon(0.001f));
         inst_2.setLast();
-        CHECK_EQ((net->cpt(node_2)[inst_2]) , doctest::Approx(0.7f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.7f).epsilon(0.001f));
 
         delete net;
       }
@@ -762,11 +762,11 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      CHECK_EQ((isOK) , (static_cast< gum::Size >(0)));
+      CHECK_EQ((isOK), (static_cast< gum::Size >(0)));
       CHECK((net) != (nullptr));
 
       if (net != nullptr) {
-        CHECK_EQ((net->size()) , (static_cast< gum::Size >(2)));
+        CHECK_EQ((net->size()), (static_cast< gum::Size >(2)));
 
         gum::NodeId node_1 = 0, node_2 = 0;
         for (const auto node: net->nodes())
@@ -775,15 +775,15 @@ namespace gum_tests {
 
         gum::Instantiation inst_1(net->cpt(node_1));
         inst_1.setFirst();
-        CHECK_EQ((net->cpt(node_1)[inst_1]) , doctest::Approx(0.2f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.2f).epsilon(0.001f));
         inst_1.setLast();
-        CHECK_EQ((net->cpt(node_1)[inst_1]) , doctest::Approx(0.8f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.8f).epsilon(0.001f));
 
         gum::Instantiation inst_2(net->cpt(node_2));
         inst_2.setFirst();
-        CHECK_EQ((net->cpt(node_2)[inst_2]) , doctest::Approx(0.3f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.3f).epsilon(0.001f));
         inst_2.setLast();
-        CHECK_EQ((net->cpt(node_2)[inst_2]) , doctest::Approx(0.7f).epsilon(0.001f));
+        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.7f).epsilon(0.001f));
 
         delete net;
       }
@@ -821,23 +821,23 @@ namespace gum_tests {
 
       gum::Size isOK = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      CHECK_EQ((isOK) , (static_cast< gum::Size >(0)));
-      CHECK_EQ((net->size()) , (static_cast< gum::Size >(2)));
+      CHECK_EQ((isOK), (static_cast< gum::Size >(0)));
+      CHECK_EQ((net->size()), (static_cast< gum::Size >(2)));
 
       gum::NodeId idA = net->idFromName("A");
       gum::NodeId idB = net->idFromName("B");
 
       gum::Instantiation instA(net->cpt(idA));
       instA.setFirst();
-      CHECK_EQ((net->cpt(idA)[instA]) , doctest::Approx(0.4f).epsilon(0.001f));
+      CHECK_EQ((net->cpt(idA)[instA]), doctest::Approx(0.4f).epsilon(0.001f));
       instA.setLast();
-      CHECK_EQ((net->cpt(idA)[instA]) , doctest::Approx(0.6f).epsilon(0.001f));
+      CHECK_EQ((net->cpt(idA)[instA]), doctest::Approx(0.6f).epsilon(0.001f));
 
       gum::Instantiation instB(net->cpt(idB));
       instB.setFirst();
-      CHECK_EQ((net->cpt(idB)[instB]) , doctest::Approx(0.1f).epsilon(0.001f));
+      CHECK_EQ((net->cpt(idB)[instB]), doctest::Approx(0.1f).epsilon(0.001f));
       instB.setLast();
-      CHECK_EQ((net->cpt(idB)[instB]) , doctest::Approx(0.9f).epsilon(0.001f));
+      CHECK_EQ((net->cpt(idB)[instB]), doctest::Approx(0.9f).epsilon(0.001f));
 
       delete net;
     }
@@ -847,7 +847,7 @@ namespace gum_tests {
       auto                          net  = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, file);
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-      CHECK_EQ((net->propertyWithDefault("name", "")) , ("fastPrototype"));
+      CHECK_EQ((net->propertyWithDefault("name", "")), ("fastPrototype"));
       delete net;
     }
 
@@ -872,7 +872,7 @@ namespace gum_tests {
       std::istringstream            iss(xml);
       gum::BIFXMLBNReader< double > reader(net, iss);
       GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-      CHECK_EQ((net->propertyWithDefault("name", "")) , ("myNetwork"));
+      CHECK_EQ((net->propertyWithDefault("name", "")), ("myNetwork"));
       delete net;
     }
 

@@ -89,11 +89,12 @@
 
 #include <filesystem>
 #include <fstream>
-#include <string_view>
 
 #include <agrum/base/core/progressNotification.h>
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/BN/BayesNet.h>
+
+#include <string_view>
 
 namespace gum {
 

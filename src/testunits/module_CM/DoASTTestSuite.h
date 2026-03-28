@@ -465,11 +465,11 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      auto                   t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      A,
                                                                      C);   // P(A|C)
-      auto                   t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      C,
                                                                      none);   // P(C)

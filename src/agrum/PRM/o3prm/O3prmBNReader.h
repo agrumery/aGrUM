@@ -53,10 +53,11 @@
 
 #include <algorithm>
 #include <string>
-#include <string_view>
 
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+
+#include <string_view>
 
 namespace gum {
   /**

@@ -105,7 +105,6 @@ namespace gum {
 
     bool operator==(const Parent& comp) const;
 
-    bool operator!=(const Parent& comp) const;
 
     Parent& operator=(const Parent& src);
     /// @}

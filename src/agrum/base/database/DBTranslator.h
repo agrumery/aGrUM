@@ -52,7 +52,6 @@
 
 #include <limits>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -62,6 +61,8 @@
 #include <agrum/base/core/set.h>
 #include <agrum/base/database/DBTranslatedValue.h>
 #include <agrum/base/variables/variable.h>
+
+#include <string_view>
 
 namespace gum {
 

@@ -54,7 +54,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMSlotChain< GUM_SCALAR >::PRMSlotChain(
-        std::string_view                                   name,
+        std::string_view                                  name,
         const Sequence< PRMClassElement< GUM_SCALAR >* >& chain) :
         PRMClassElement< GUM_SCALAR >(name),
         _chain_(new Sequence< PRMClassElement< GUM_SCALAR >* >(chain)), _isMultiple_(false) {
@@ -76,8 +76,8 @@ namespace gum {
 
       _copyLastElt_();
 
-      this->safeName_
-          = (PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST()).append(name);
+      this->safeName_ = (PRMObject::LEFT_CAST() + lastElt().type().name() + PRMObject::RIGHT_CAST())
+                            .append(name);
       this->lastElt().type().variable().setName(name);
     }
 

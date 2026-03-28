@@ -52,10 +52,11 @@
 #include <atomic>
 #include <iostream>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/base/variables/discreteVariable.h>
+
+#include <string_view>
 
 namespace gum {
 

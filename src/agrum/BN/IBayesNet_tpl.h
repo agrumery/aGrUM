@@ -293,11 +293,6 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool IBayesNet< GUM_SCALAR >::operator!=(const IBayesNet& from) const {
-    return !this->operator==(from);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;

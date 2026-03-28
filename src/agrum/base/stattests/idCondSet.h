@@ -314,8 +314,6 @@ namespace gum {
       /// returns true if both sets are equal
       bool operator==(const IdCondSet& from) const;
 
-      /// returns true if the sets differ
-      bool operator!=(const IdCondSet& from) const;
 
       /// @}
 

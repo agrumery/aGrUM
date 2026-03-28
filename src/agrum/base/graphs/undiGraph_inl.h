@@ -88,6 +88,5 @@ namespace gum {
     return EdgeGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE bool UndiGraph::operator!=(const UndiGraph& p) const { return !operator==(p); }
 
 } /* namespace gum */

@@ -992,8 +992,6 @@ namespace gum_tests {
       CHECK_EQ(reader.warnings(), static_cast< gum::Size >(826));
       // 2 warnings : properties
       CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-
     }
   };
 

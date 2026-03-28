@@ -51,14 +51,13 @@
 #ifndef GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 #define GUM_APPROXIMATION_SCHEME_CONFIGURATION_H
 
-#include <string_view>
-
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/core/timer.h>
 
 #include <agrum/base/core/math/math_utils.h>
+#include <string_view>
 
 namespace gum {
 

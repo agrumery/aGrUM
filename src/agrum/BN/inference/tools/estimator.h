@@ -48,10 +48,11 @@
 #ifndef GUM_ESTIMATOR_H
 #define GUM_ESTIMATOR_H
 
-#include <string_view>
 #include <vector>
 
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
+
+#include <string_view>
 
 namespace gum {
 

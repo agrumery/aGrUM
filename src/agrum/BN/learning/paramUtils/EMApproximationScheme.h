@@ -76,7 +76,7 @@ namespace gum {
         ApproximationScheme::disableEpsilon();
       }
 
-      virtual ~EMApproximationScheme() {}
+      virtual ~EMApproximationScheme() = default;
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal difference between two

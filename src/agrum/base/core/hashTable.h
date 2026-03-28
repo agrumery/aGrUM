@@ -53,7 +53,6 @@
 #include <iostream>
 #include <limits>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -64,6 +63,7 @@
 
 #include <agrum/base/core/optional_ref.h>
 #include <initializer_list>
+#include <string_view>
 
 namespace gum {
 
@@ -281,7 +281,7 @@ namespace gum {
     /**
      * Class destructor.
      */
-    ~HashTableBucket() {}
+    ~HashTableBucket() = default;
 
     /**
      * @brief Returns the pair stored in this bucket.
@@ -930,16 +930,17 @@ namespace gum {
      * @throws NotFound exception is thrown if the element cannot be found. */
     const Val& operator[](const Key& key) const;
 
-    /// @brief Heterogeneous lookup: operator[] without string allocation (accepts string_view, const char*, etc.).
+    /// @brief Heterogeneous lookup: operator[] without string allocation (accepts string_view,
+    /// const char*, etc.).
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     Val& operator[](const K& key);
 
     /// @brief Heterogeneous lookup: operator[] const without string allocation.
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     const Val& operator[](const K& key) const;
 
     /**
@@ -1081,10 +1082,11 @@ namespace gum {
      */
     bool exists(const Key& key) const;
 
-    /// @brief Heterogeneous lookup: exists() without string allocation (accepts string_view, const char*, etc.).
+    /// @brief Heterogeneous lookup: exists() without string allocation (accepts string_view, const
+    /// char*, etc.).
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     bool exists(const K& key) const;
 
     /**
@@ -1101,16 +1103,17 @@ namespace gum {
     /// @copydoc tryGet(const Key&)
     optional_ref< const Val > tryGet(const Key& key) const;
 
-    /// @brief Heterogeneous lookup: tryGet() without string allocation (accepts string_view, const char*, etc.).
+    /// @brief Heterogeneous lookup: tryGet() without string allocation (accepts string_view, const
+    /// char*, etc.).
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     optional_ref< Val > tryGet(const K& key);
 
     /// @brief Heterogeneous lookup: tryGet() const without string allocation.
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     optional_ref< const Val > tryGet(const K& key) const;
 
     /**
@@ -1286,10 +1289,11 @@ namespace gum {
      */
     void erase(const Key& key);
 
-    /// @brief Heterogeneous lookup: erase() without string allocation (accepts string_view, const char*, etc.).
+    /// @brief Heterogeneous lookup: erase() without string allocation (accepts string_view, const
+    /// char*, etc.).
     template < typename K >
-      requires (std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< Key, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     void erase(const K& key);
 
     /**

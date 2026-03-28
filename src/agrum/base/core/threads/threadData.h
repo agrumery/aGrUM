@@ -96,7 +96,7 @@ namespace gum {
     ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
 
     /// destructor
-    ~ThreadData() {}
+    ~ThreadData() = default;
 
     /// @}
 

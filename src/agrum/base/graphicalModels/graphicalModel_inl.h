@@ -60,9 +60,7 @@ namespace gum {
   INLINE
   const std::string& GraphicalModel::property(std::string_view name) const {
     auto p = _properties_().tryGet(name);
-    if (!p) {
-      GUM_ERROR(NotFound, "The following property does not exists: " << name)
-    }
+    if (!p) { GUM_ERROR(NotFound, "The following property does not exists: " << name) }
     return *p;
   }
 

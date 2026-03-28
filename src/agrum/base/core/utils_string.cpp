@@ -111,7 +111,7 @@ namespace gum {
 
   std::string replace(std::string_view s, std::string_view val, std::string_view new_val) {
     std::string retVal(s);
-    auto pos    = retVal.find(val);
+    auto        pos = retVal.find(val);
     while (pos != std::string::npos) {
       std::stringstream sBuff;
       sBuff << s.substr(0, pos) << new_val << s.substr(pos + val.size(), std::string::npos);

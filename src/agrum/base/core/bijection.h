@@ -407,8 +407,8 @@ namespace gum {
 
     /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
     template < typename K >
-      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     const T2& second(const K& first) const;
 
     /**
@@ -433,8 +433,8 @@ namespace gum {
 
     /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
     template < typename K >
-      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     bool existsFirst(const K& first) const;
 
     /**
@@ -464,8 +464,8 @@ namespace gum {
 
     /// Heterogeneous overload: accepts any type convertible to string_view when T1=std::string
     template < typename K >
-      requires (std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
-                && !std::same_as< std::decay_t< K >, std::string >)
+      requires(std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
+               && !std::same_as< std::decay_t< K >, std::string >)
     optional_ref< const T2 > trySecond(const K& first) const;
 
     /**

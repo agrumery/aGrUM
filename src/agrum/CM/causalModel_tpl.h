@@ -202,8 +202,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(std::string_view x,
-                                                    std::string_view y) const {
+  bool CausalModel< GUM_SCALAR >::isAssumedSpurious(std::string_view x, std::string_view y) const {
     return isAssumedSpurious(idFromName(x), idFromName(y));
   }
 

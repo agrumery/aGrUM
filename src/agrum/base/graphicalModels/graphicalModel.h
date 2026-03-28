@@ -131,7 +131,7 @@ namespace gum {
     /**
      * Return true if this node exists in this graphical model.
      */
-    virtual bool exists(NodeId node) const          = 0;
+    virtual bool exists(NodeId node) const           = 0;
     virtual bool exists(std::string_view name) const = 0;
 
     /**
@@ -222,7 +222,7 @@ namespace gum {
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
      * the returned nodes*/
-    virtual NodeSet family(const NodeId id) const      = 0;
+    virtual NodeSet family(const NodeId id) const       = 0;
     virtual NodeSet family(std::string_view name) const = 0;
 
     protected:

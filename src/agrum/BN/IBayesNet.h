@@ -183,9 +183,6 @@ namespace gum {
      */
     bool operator==(const IBayesNet< GUM_SCALAR >& from) const;
 
-    /// @return Returns false if the src and this are equal.
-    bool operator!=(const IBayesNet< GUM_SCALAR >& from) const;
-
     /**
      * Returns the dimension (the number of free parameters) in this bayes net.
      *

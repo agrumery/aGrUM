@@ -50,7 +50,6 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -63,6 +62,8 @@
 #include <agrum/base/multidim/implementations/multiDimSparse.h>
 #include <agrum/ID/inference/tools/decisionTensor.h>
 #include <agrum/ID/inference/tools/influenceDiagramInference.h>
+
+#include <string_view>
 
 namespace gum {
 

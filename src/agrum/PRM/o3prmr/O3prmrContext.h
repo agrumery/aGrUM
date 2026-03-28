@@ -51,10 +51,11 @@
 
 #include <map>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/PRM/inference/PRMInference.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {
@@ -74,7 +75,7 @@ namespace gum {
 
         O3prmrCommand(const O3prmrCommand& c) : line(c.line) {}
 
-        virtual ~O3prmrCommand() {}
+        virtual ~O3prmrCommand() = default;
 
         virtual RequestType type() const     = 0;
         virtual std::string toString() const = 0;
@@ -114,8 +115,7 @@ namespace gum {
       ///
       class SetGndEngineCommand: public O3prmrCommand {
         public:
-        SetGndEngineCommand(int line, std::string_view value) :
-            O3prmrCommand(line), value(value) {}
+        SetGndEngineCommand(int line, std::string_view value) : O3prmrCommand(line), value(value) {}
 
         SetGndEngineCommand(const SetGndEngineCommand& c) : O3prmrCommand(c), value(c.value) {}
 

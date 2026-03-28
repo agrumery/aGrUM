@@ -112,8 +112,7 @@ namespace gum {
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *PRMClassElement<GUM_SCALAR>.
        */
-      PRMSlotChain(std::string_view                                   name,
-                   const Sequence< PRMClassElement< GUM_SCALAR >* >& chain);
+      PRMSlotChain(std::string_view name, const Sequence< PRMClassElement< GUM_SCALAR >* >& chain);
 
       /** @brief Tweak constructor.
        *

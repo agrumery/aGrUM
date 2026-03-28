@@ -134,7 +134,7 @@ namespace gum {
 
     virtual const Sequence< const DiscreteVariable* >& variablesSequence() const final;
     virtual const DiscreteVariable&                    variable(Idx) const final;
-    virtual const DiscreteVariable& variable(std::string_view name) const final;
+    virtual const DiscreteVariable&                    variable(std::string_view name) const final;
 
     virtual Idx pos(const DiscreteVariable& var) const final;
 

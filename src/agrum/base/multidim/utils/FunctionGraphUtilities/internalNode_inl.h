@@ -75,9 +75,6 @@ namespace gum {
   }
 
   INLINE
-  bool Parent::operator!=(const Parent& comp) const { return !(comp == *this); }
-
-  INLINE
   Parent& Parent::operator=(const Parent& src) {
     this->parentId = src.parentId;
     this->modality = src.modality;

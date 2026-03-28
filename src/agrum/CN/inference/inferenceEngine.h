@@ -48,12 +48,13 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 #include <map>
-#include <string_view>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/threads/threadData.h>
 #include <agrum/base/core/threads/threadNumberManager.h>
 #include <agrum/CN/tools/varMod2BNsMap.h>
+
+#include <string_view>
 
 namespace gum {
   namespace credal {

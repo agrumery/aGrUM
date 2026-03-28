@@ -48,10 +48,11 @@
 
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/PRM/inference/PRMInference.h>
+
+#include <string_view>
 
 #ifndef GUM_STRUCTURED_BB_H
 #  define GUM_STRUCTURED_BB_H

@@ -51,11 +51,11 @@
 #define GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
 
 
-#include <string_view>
-
 #include <agrum/agrum.h>
 
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
+
+#include <string_view>
 
 namespace gum {
 

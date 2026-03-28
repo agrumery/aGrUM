@@ -53,9 +53,6 @@ namespace gum {
   /// virtual copy constructor
   INLINE Schedule* Schedule::clone() const { return new Schedule(*this); }
 
-  /// operator !=
-  INLINE bool Schedule::operator!=(const Schedule& from) const { return !operator==(from); }
-
   /// returns the version number of the schedule
   INLINE Idx Schedule::versionNumber() const { return _version_number_; }
 

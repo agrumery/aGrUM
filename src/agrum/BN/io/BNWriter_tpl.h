@@ -82,8 +82,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::write(std::string_view               filePath,
-                                     const IBayesNet< GUM_SCALAR >& bn) {
+  void BNWriter< GUM_SCALAR >::write(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) {
     _syntacticalCheck(bn);
     _doWrite(filePath, bn);
   }

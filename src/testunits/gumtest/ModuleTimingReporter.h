@@ -108,8 +108,8 @@ namespace gum_test {
 
     void test_run_end(const doctest::TestRunStats& /*stats*/) override {
       if (!_lastSuite.empty())
-          _out << " (" << _currentSuiteCount << " tests, " << std::fixed << std::setprecision(1)
-               << _currentSuiteTime << "s)\n";
+        _out << " (" << _currentSuiteCount << " tests, " << std::fixed << std::setprecision(1)
+             << _currentSuiteTime << "s)\n";
       if (_modules.empty()) return;
 
       printTimingSummary();

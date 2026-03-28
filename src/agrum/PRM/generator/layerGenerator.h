@@ -53,12 +53,13 @@
 #include <list>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/PRM/generator/PRMGenerator.h>
 #include <agrum/PRM/PRMFactory.h>
+
+#include <string_view>
 
 namespace gum {
   namespace prm {

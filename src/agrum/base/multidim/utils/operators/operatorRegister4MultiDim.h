@@ -53,10 +53,11 @@
 #include <atomic>
 #include <iostream>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include <agrum/base/core/hashTable.h>
+
+#include <string_view>
 
 namespace gum {
 
@@ -138,9 +139,7 @@ namespace gum {
      * @param type2 the \e real type of the second multiDim taken in argument
      * by the function to remove.
      */
-    void erase(std::string_view operation_name,
-               std::string_view type1,
-               std::string_view type2);
+    void erase(std::string_view operation_name, std::string_view type1, std::string_view type2);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -184,9 +183,8 @@ namespace gum {
      * @throws NotFound exception is thrown if the operator we look for does
      * not exist within this register.
      */
-    OperatorPtr get(std::string_view operation_name,
-                    std::string_view type1,
-                    std::string_view type2) const;
+    OperatorPtr
+        get(std::string_view operation_name, std::string_view type1, std::string_view type2) const;
 
     /// @}
     // ========================================================================
