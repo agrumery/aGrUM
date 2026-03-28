@@ -104,7 +104,7 @@ if len(args)==1:
     return self
 if len(args)>1:
   d=args[1]
-  if type(d)==dict:
+  if isinstance(d, dict):
     if set(d.keys())==set(self.names):
       return self.fillWith(args[0],[d[s] for s in self.names])
     else:
@@ -651,12 +651,24 @@ if len(args)>1:
 
     def toarray(self):
         """
-        Returns a copy of the Tensor's data as a shaped numpy array.
+        Return a copy of the Tensor's data as a shaped numpy array.
+
+        The shape follows the Tensor's variable order: the last variable added
+        varies fastest (C order), so the shape is ``tuple(reversed(self.shape))``.
 
         Returns
         -------
         numpy.ndarray
-            float64 array with shape matching the Tensor's variable dimensions
+            New float64 array; modifying it does not affect the Tensor.
+
+        Examples
+        --------
+        >>> t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+        >>> t.fillWith([1,2,3,4,5,6])
+        >>> t.toarray()          # shape (3, 2)
+        array([[1., 2.],
+               [3., 4.],
+               [5., 6.]])
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
@@ -665,20 +677,27 @@ if len(args)>1:
 
     def as_nparray(self):
         """
-        Returns a zero-copy numpy view over the Tensor's internal data buffer.
+        Return a zero-copy numpy view over the Tensor's internal data buffer.
 
         The returned array shares memory with the Tensor: modifying one modifies
         the other. The Tensor is kept alive as long as the view exists.
 
+        The shape follows the same convention as :meth:`toarray`:
+        ``tuple(reversed(self.shape))``.
+
         Returns
         -------
         numpy.ndarray
-            float64 view of size domainSize(), 1D, C-contiguous
+            float64 view, shape ``tuple(reversed(self.shape))``, C-contiguous.
 
-        Warnings
+        Examples
         --------
-        The array is 1D (flat). Dimension ordering follows the Tensor's internal
-        iteration order (same as for domainSize()), not the variable declaration order.
+        >>> t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+        >>> t.fillWith([1,2,3,4,5,6])
+        >>> v = t.as_nparray()   # shape (3, 2), shares buffer with t
+        >>> v[0, 0] = 99
+        >>> t[{"a": 0, "b": 0}]  # 99.0
+        99.0
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:

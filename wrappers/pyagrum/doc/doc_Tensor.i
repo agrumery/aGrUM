@@ -198,8 +198,8 @@ Automatically fills the tensor with v.
 
 Parameters
 ----------
-v : number or list of values or pyagrum.Tensor
-    a value or a list/pyagrum.Tensor containing the values to fill the Tensor with.
+v : number or list of values or pyagrum.Tensor or numpy.ndarray
+    a value or a list/pyagrum.Tensor/ndarray containing the values to fill the Tensor with.
 
 mapping : list|tuple|dict
 
@@ -212,6 +212,8 @@ Warnings
     - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.
 
     - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
+
+    - if `v` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
 
 Returns
 -------
