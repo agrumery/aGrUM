@@ -256,6 +256,18 @@ namespace gum {
      */
     void setByOffset(Idx offset, const GUM_ELEMENT& val);
 
+    /**
+     * @brief Returns a pointer to the contiguous data buffer.
+     * @return Pointer to the first element of values_.
+     */
+    const GUM_ELEMENT* data() const noexcept override { return values_.data(); }
+
+    /**
+     * @brief Returns a mutable pointer to the contiguous data buffer.
+     * @return Pointer to the first element of values_.
+     */
+    GUM_ELEMENT* data() noexcept override { return values_.data(); }
+
     /// @}
 
     protected:

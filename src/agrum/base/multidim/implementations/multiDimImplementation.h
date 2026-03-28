@@ -161,6 +161,28 @@ namespace gum {
      */
     float compressionRate() const;
 
+    /**
+     * @brief Returns a pointer to the contiguous data buffer, or nullptr if
+     * the implementation does not store data contiguously.
+     *
+     * Subclasses backed by a contiguous array (e.g. MultiDimArray) override
+     * this to expose direct memory access, enabling zero-copy interop with
+     * external libraries such as NumPy.
+     *
+     * @return Pointer to the first element of the contiguous buffer, or
+     * nullptr.
+     */
+    virtual const GUM_ELEMENT* data() const noexcept { return nullptr; }
+
+    /**
+     * @brief Returns a mutable pointer to the contiguous data buffer, or
+     * nullptr if the implementation does not store data contiguously.
+     *
+     * @return Pointer to the first element of the contiguous buffer, or
+     * nullptr.
+     */
+    virtual GUM_ELEMENT* data() noexcept { return nullptr; }
+
     /// @}
     // ========================================================================
     /// @name MultiDimInterface implementation

@@ -1437,6 +1437,69 @@ namespace gum_tests {
       CHECK_EQ(tensor.min(), 0.25);
     }
 
+    // data() on MultiDimArray: pointer not null, values match, mutable write
+    static void testDataAccessorOnMultiDimArray() {
+      gum::LabelizedVariable       a("a", "first", 2);
+      gum::LabelizedVariable       b("b", "second", 3);
+      gum::MultiDimArray< double > mda;
+      mda << a << b;
+
+      CHECK_NE(mda.data(), nullptr);
+      CHECK_EQ(mda.domainSize(), (gum::Size)6);
+
+      // fill via set(), read back through data()
+      gum::Instantiation i(mda);
+      double             cpt = 0.0;
+      for (i.setFirst(); !i.end(); ++i)
+        mda.set(i, cpt++);
+
+      for (gum::Idx offset = 0; offset < mda.domainSize(); ++offset)
+        CHECK_EQ(mda.data()[offset], (double)offset);
+
+      // mutable write through data() reflects in get()
+      mda.data()[0] = 42.0;
+      i.setFirst();
+      CHECK_EQ(mda[i], 42.0);
+    }
+
+    // data() accessed via Tensor::content() — zero-copy: write through pointer
+    // changes what the Tensor sees
+    static void testDataAccessorViaTensorContent() {
+      gum::LabelizedVariable a("a", "first", 2);
+      gum::LabelizedVariable b("b", "second", 3);
+      gum::Tensor< double >  t;
+      t << a << b;
+
+      auto* ptr = t.content()->data();
+      CHECK_NE(ptr, nullptr);
+      CHECK_EQ(t.domainSize(), (gum::Size)6);
+
+      // fill Tensor, verify through raw pointer
+      gum::Instantiation i(t);
+      double             cpt = 0.0;
+      for (i.setFirst(); !i.end(); ++i)
+        t.set(i, cpt++);
+
+      for (gum::Idx offset = 0; offset < t.domainSize(); ++offset)
+        CHECK_EQ(ptr[offset], (double)offset);
+
+      // same pointer returned on second call (stable address)
+      CHECK_EQ(ptr, t.content()->data());
+
+      // write through raw pointer, verify via data() (zero-copy: same buffer)
+      ptr[2] = 99.0;
+      CHECK_EQ(t.content()->data()[2], 99.0);
+    }
+
+    // data() on a 0-variable Tensor: domainSize==1 but values_ is not yet
+    // allocated — data() returns nullptr until the buffer is populated
+    static void testDataAccessorScalarTensor() {
+      gum::Tensor< double > t;
+      CHECK_EQ(t.domainSize(), (gum::Size)1);
+      // no variables added: internal vector is empty, data() returns nullptr
+      CHECK_EQ(t.content()->data(), nullptr);
+    }
+
     private:
     static void _testval_for_set_(const gum::Tensor< int >&             p,
                                   int                                   val,
@@ -1501,4 +1564,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(DeterministicTensor_CreatesTensorWithCorrectValue)
   GUM_TEST_ACTIF(DeterministicTensor_CreatesTensorWithCorrectLabel)
   GUM_TEST_ACTIF(UniformTensor_CreatesUniformTensor)
+  GUM_TEST_ACTIF(DataAccessorOnMultiDimArray)
+  GUM_TEST_ACTIF(DataAccessorViaTensorContent)
+  GUM_TEST_ACTIF(DataAccessorScalarTensor)
 }   // namespace gum_tests
