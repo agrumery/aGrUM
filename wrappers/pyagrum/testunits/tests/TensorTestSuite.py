@@ -1202,6 +1202,67 @@ class TestNumpyInterop(pyAgrumTestCase):
     with self.assertRaises(ValueError):
       t.fillWith(arr)
 
+  def testFillFromExpressionConstant(self):
+    # constant path: delegates to fillWith(scalar), no iteration
+    t = gum.Tensor().add(self.a).add(self.b)
+    t.fillFromExpression(2.5)
+    np.testing.assert_array_equal(t.toarray(), np.full((3, 2), 2.5))
+    # integer constant
+    t.fillFromExpression(0)
+    np.testing.assert_array_equal(t.toarray(), np.zeros((3, 2)))
+
+  def testFillFromExpressionReturnsSelf(self):
+    t = gum.Tensor().add(self.a).add(self.b)
+    self.assertIs(t.fillFromExpression(1.0), t)
+    a2 = gum.RangeVariable("x", "", 0, 1)
+    t2 = gum.Tensor().add(a2)
+    self.assertIs(t2.fillFromExpression("x"), t2)
+
+  def testFillFromExpressionValues(self):
+    # expression path: numpy array accumulation, one fillWith at the end
+    x = gum.RangeVariable("x", "", 0, 2)  # values 0, 1, 2
+    y = gum.RangeVariable("y", "", 0, 2)
+    t = gum.Tensor().add(x).add(y)
+    t.fillFromExpression("x + y")
+    I = gum.Instantiation(t)
+    I.setFirst()
+    while not I.end():
+      expected = I.variable(0).numerical(I.val(0)) + I.variable(1).numerical(I.val(1))
+      self.assertAlmostEqual(t.get(I), expected)
+      I.inc()
+
+  def testFillFromDistribution(self):
+    import scipy.stats as stats
+    # B[5] <- A[3]: for each value of A, the CPT over B follows a normal
+    A = gum.RangeVariable("A", "", 0, 2)   # 3 values: 0, 1, 2
+    B = gum.RangeVariable("B", "", 0, 4)   # 5 values: 0, 1, 2, 3, 4
+    t = gum.Tensor().add(B).add(A)
+    t.fillFromDistribution(stats.norm, loc="A", scale=1)
+    # CPT: each row (fixed A) must sum to 1 and be non-negative
+    # toarray() shape = reversed((5,3)) = (3,5): rows=A, cols=B
+    arr = t.toarray()
+    self.assertEqual(arr.shape, (3, 5))
+    self.assertTrue(np.all(arr >= 0))
+    np.testing.assert_allclose(arr.sum(axis=1), np.ones(3), atol=1e-6)
+
+  def testFillFromDistributionReturnsSelf(self):
+    import scipy.stats as stats
+    A = gum.RangeVariable("A", "", 0, 2)
+    B = gum.RangeVariable("B", "", 0, 4)
+    t = gum.Tensor().add(B).add(A)
+    self.assertIs(t.fillFromDistribution(stats.norm, loc="A", scale=1), t)
+
+  def testFillFromDistributionNoParents(self):
+    import scipy.stats as stats
+    # single-variable tensor: no parents, one column in the CPT
+    B = gum.RangeVariable("B", "", 0, 4)
+    t = gum.Tensor().add(B)
+    t.fillFromDistribution(stats.norm, loc=2, scale=1)
+    arr = t.toarray()
+    self.assertEqual(arr.shape, (5,))
+    self.assertTrue(np.all(arr >= 0))
+    self.assertAlmostEqual(arr.sum(), 1.0, places=6)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)

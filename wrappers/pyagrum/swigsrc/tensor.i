@@ -331,21 +331,23 @@ if len(args)>1:
             a reference to the modified tensor
       """
       import math
+      import numpy
       forbidden=frozenset(['__import__','__class__'])
 
-      I=pyagrum.Instantiation(self)
       code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
       if not isinstance(s_fn, (int, float)):
         if forbidden & set(code.co_names):
           raise InvalidArgument("[pyAgrum] '__import__' is not allowed in the expression '"+s_fn+"'")
 
-      I.setFirst()
-      while not I.end():
-        vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(self.nbrDim())}
-        res=s_fn if isinstance(s_fn, (int, float)) else eval(code,{'math':math},vars)
-        self.set(I,res)
-        I.inc()
+      if isinstance(s_fn, (int, float)):
+        self.fillWith(float(s_fn))
+        return self
 
+      arr=numpy.empty(self.domainSize(), dtype=numpy.float64)
+      for idx,I in enumerate(self.loopIn()):
+        vars={self.variable(i).name():self.variable(i).numerical(I.val(i)) for i in range(self.nbrDim())}
+        arr[idx]=eval(code,{'math':math},vars)
+      self.fillWith(arr)
       return self
 
     def fillFromFunction(self,s_fn):
@@ -436,6 +438,7 @@ if len(args)>1:
           If the first variable is Labelized.
       """
       import math
+      import numpy
 
       forbidden=frozenset(['__import__','__class__'])
 
@@ -457,7 +460,7 @@ if len(args)>1:
       else:
         raise InvalidArgument("[pyAgrum] The distribution must have a pdf or a pmf method")
 
-      Xs=[var.numerical(i) for i in range(var_ds)]
+      Xs=numpy.array([var.numerical(i) for i in range(var_ds)], dtype=numpy.float64)
 
       I=gum.Instantiation()
       for i in range(1,self.nbrDim()):
@@ -470,13 +473,13 @@ if len(args)>1:
               args[k]=float(s_fns[k])
               fnkeys.remove(k)
 
-      l=[]
+      arr=numpy.empty(self.domainSize(), dtype=numpy.float64)
       for pos,J in enumerate(I.loopIn()):
           vars={J.variable(i).name():J.variable(i).numerical(J.val(i)) for i in range(J.nbrDim())}
           for k in fnkeys:
               args[k]=eval(codes[k],{'math':math},vars)
-          l+=list(d(Xs,**args))
-      self.fillWith(l)
+          arr[pos*var_ds:(pos+1)*var_ds]=d(Xs,**args)
+      self.fillWith(arr)
       self.normalizeAsCPT()
       return self
 
