@@ -214,6 +214,8 @@ def deprecatedCausalBN(obj,*args,**kwargs):
 
 CausalModel.causalBN = lambda s: deprecatedCausalBN(s)
 
+
+
 # type
 from typing import NewType
 

@@ -63,9 +63,9 @@ class CausalBNEstimator:
 
     Parameters
     ----------
-    cm_clone: csl.CausalModel
+    cm_clone: gum.CausalModel
         The model recieving the causal structure.
-    causal_model: csl.CausalModel
+    causal_model: gum.CausalModel
         The model giving the causal structure.
     """
 
@@ -204,7 +204,7 @@ class CausalBNEstimator:
       ) / diffT.expectedValue(lambda d: diffT.variable(0).numerical(d[diffT.variable(0).name()]))
 
     else:
-      _, cpt0, _ = csl.causalImpact(
+      _, cpt0, _ = gum.causalImpact(
         cm=self.causal_model,
         on=self.outcome,
         doing=self.treatment,
@@ -212,7 +212,7 @@ class CausalBNEstimator:
         values=dict(zip(keys + [self.treatment], values + [0])),
       )
 
-      _, cpt1, _ = csl.causalImpact(
+      _, cpt1, _ = gum.causalImpact(
         cm=self.causal_model,
         on=self.outcome,
         doing=self.treatment,
@@ -221,7 +221,7 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise csl._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise gum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       diff = cpt1 - cpt0
       return diff.expectedValue(lambda d: diff.variable(0).numerical(d[diff.variable(0).name()]))
@@ -308,16 +308,16 @@ class CausalBNEstimator:
       ) / diffT.expectedValue(lambda d: diffT.variable(0).numerical(d[diffT.variable(0).name()]))
 
     else:
-      _, cpt0, _ = csl.causalImpact(
+      _, cpt0, _ = gum.causalImpact(
         self.causal_model, on=self.outcome, doing=self.treatment, values={self.treatment: 0}
       )
 
-      _, cpt1, _ = csl.causalImpact(
+      _, cpt1, _ = gum.causalImpact(
         self.causal_model, on=self.outcome, doing=self.treatment, values={self.treatment: 1}
       )
 
       if cpt0 is None:
-        raise csl._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise gum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       difference = cpt1 - cpt0
       return difference.expectedValue(lambda d: difference.variable(0).numerical(d[difference.variable(0).name()]))

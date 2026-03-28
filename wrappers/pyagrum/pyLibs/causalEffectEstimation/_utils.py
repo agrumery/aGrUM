@@ -152,7 +152,7 @@ class IVError(ValueError):
     super().__init__(self.message)
 
 
-def RCT(causal_model: csl.CausalModel, intervention: str, outcome: str) -> set[str] | None:
+def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[str] | None:
   """
   Determine the Randomized Controlled Trial (RCT) adjustment.
 
@@ -169,15 +169,16 @@ def RCT(causal_model: csl.CausalModel, intervention: str, outcome: str) -> set[s
       Set with the names of the confounders if ignorability.
       None if ignorability is not satisfied.
   """
-  cbn_without_T_Y = gum.BayesNet(causal_model.causalDAG())
-  t = cbn_without_T_Y.idFromName(intervention)
-  y = cbn_without_T_Y.idFromName(outcome)
+  cbn_without_T_Y = gum.DAG(causal_model.causalDAG())
+
+  t = causal_model.idFromName(intervention)
+  y = causal_model.idFromName(outcome)
 
   if cbn_without_T_Y.existsArc(t, y):
     cbn_without_T_Y.eraseArc(t, y)
 
-  if csl._dSeparation.isDSep(cbn_without_T_Y, {t}, {y}, set()):
-    return {cbn_without_T_Y.variable(pa).name() for pa in cbn_without_T_Y.parents(y)}
+  if cbn_without_T_Y.dSeparation(cbn_without_T_Y, {t}, {y}, set()):
+    return {causal_model.variable(pa).name() for pa in cbn_without_T_Y.parents(y)}
   else:
     return None
 
@@ -217,15 +218,15 @@ def _verifyFrontDoorDSep(cbn: gum.BayesNet, t: int, y: int, M: set[int], W: set[
       cbn_without_M_Y.eraseArc(m, y)
 
   res = (
-    csl._dSeparation.isDSep(cbn_without_T_M, {t}, M, W)
-    and csl._dSeparation.isDSep(cbn_without_M_Y, {y}, M, W | {t})
+    gum._dSeparation.isDSep(cbn_without_T_M, {t}, M, W)
+    and gum._dSeparation.isDSep(cbn_without_M_Y, {y}, M, W | {t})
     and t not in cbn.parents(y) | cbn.children(y)
   )
 
   return res
 
 
-def generalizedFrontDoor(causal_model: csl.CausalModel, intervention: str, outcome: str) -> tuple[set[str]] | None:
+def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str]] | None:
   """
   Identify the generalised frontdoor adjustment set and covariates.
 
@@ -246,7 +247,7 @@ def generalizedFrontDoor(causal_model: csl.CausalModel, intervention: str, outco
   obn = causal_model.observationalBN()
   cbn = causal_model.causalDAG()
 
-  mediators = csl._doorCriteria.nodes_on_dipath(obn, obn.idFromName(intervention), obn.idFromName(outcome))
+  mediators = gum._doorCriteria.nodes_on_dipath(obn, obn.idFromName(intervention), obn.idFromName(outcome))
   mediators = {obn.variable(m).name() for m in mediators}
 
   confounders = set()
@@ -344,7 +345,7 @@ def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: i
 
   Parameters
   ----------
-  causal_model: csl.CausalModel
+  causal_model: gum.CausalModel
       The causal graph.
   t: int
       The intervention node ID.
@@ -367,7 +368,7 @@ def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: i
 
   while True:
     # Moralized Graph controlling for W
-    csl._dSeparation._removeZ(moralized_ancestral_graph, W)
+    gum._dSeparation._removeZ(moralized_ancestral_graph, W)
 
     path = _findPath(moralized_ancestral_graph, y, z)
 
@@ -378,13 +379,13 @@ def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: i
     if w is not None:
       W.add(w)
 
-  if csl._dSeparation.isDSep(cbn, {z}, {y}, W):
+  if gum._dSeparation.isDSep(cbn, {z}, {y}, W):
     return W
   else:
     return None
 
 
-def _ancestralInstrument(causal_model: csl.CausalModel, t: int, y: int, z: int) -> set[int]:
+def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) -> set[int]:
   """
   Find the ancetral instrument conditioning set `W` in the `causal_model`
   with `t` as intervention, `y` as outcome and `z` as instrument.
@@ -393,7 +394,7 @@ def _ancestralInstrument(causal_model: csl.CausalModel, t: int, y: int, z: int) 
 
   Parameters
   ----------
-  causal_model: csl.CausalModel
+  causal_model: gum.CausalModel
       The causal graph.
   t: int
       The intervention node ID.
@@ -419,13 +420,13 @@ def _ancestralInstrument(causal_model: csl.CausalModel, t: int, y: int, z: int) 
   W = _nearestSeparator(mutilated_obn, mutilated_cbn, t, y, z)
   if W is None or bool(W & mutilated_cbn.descendants(y)) or t in W:
     return None
-  elif not csl._dSeparation.isDSep(mutilated_cbn, {z}, {t}, W):
+  elif not gum._dSeparation.isDSep(mutilated_cbn, {z}, {t}, W):
     return W - {t}
   else:
     return None
 
 
-def instrumentalVariable(causal_model: csl.CausalModel, intervention: str, outcome: str) -> tuple[set[str], set[str]]:
+def instrumentalVariable(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str], set[str]]:
   """
   Identifies the instrumental variables and covariates, using ancestral
   instruments.

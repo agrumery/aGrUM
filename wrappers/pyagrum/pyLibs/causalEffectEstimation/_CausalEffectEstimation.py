@@ -107,7 +107,7 @@ class CausalEffectEstimation:
   _IV = "Generalized Instrumental Variable"
   _UNKNOWN = "Unknown"
 
-  def __init__(self, df: pd.DataFrame, causal_model: csl.CausalModel) -> None:
+  def __init__(self, df: pd.DataFrame, causal_model: gum.CausalModel) -> None:
     """
     Initializes the causal estimator instance.
 
@@ -115,7 +115,7 @@ class CausalEffectEstimation:
     ----------
     df: pd.DataFrame
         The dataset for causal effect estimation.
-    causal_model: csl.CausalModel
+    causal_model: gum.CausalModel
         The causal model for causal effect identification.
     """
 
