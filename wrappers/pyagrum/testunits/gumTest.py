@@ -80,10 +80,8 @@ def go():
         islocal = cde == "installed"
       case "-m":
         parseM = 1
-        continue
       case "-t":
         parseT = 1
-        continue
       case _:
         if parseM == 1:
           parseM = 0

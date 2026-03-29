@@ -202,7 +202,6 @@ namespace gum_tests {
     // Reduction & barren nodes
     // -------------------------------------------------------------------
     static void testbarren_nodes_and_reduction() {
-      using BN = gum::BayesNet< double >;
       auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
       auto& dg = bn.dag();
 

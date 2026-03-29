@@ -73,14 +73,23 @@ class ActBuilderPyAgrum(ActBuilder):
 
       if cur_modules in {"list", "show"}:
         notif("Available [[pyAgrum]] modules: " + ", ".join(sorted(self.PYAGRUM_MODULES)))
-        notif("Usage: -m all+nb | -m all | -m <module>")
+        notif("Usage: -m all[+nb][-mod1[-mod2…]] | -m <module>")
         return False
 
       if cur_modules not in {"", "all", "all+nb", "nb"} and cur_modules not in self.PYAGRUM_MODULES:
-        error(
-          f"Unknown module [[{cur_modules}]]. Expected: all, all+nb, nb, list, show, or <module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
-        )
-        return False
+        if cur_modules.startswith("all-"):
+          unknown = set(cur_modules.split("-")[1:]) - self.PYAGRUM_MODULES
+          if unknown:
+            error(
+              f"Unknown excluded module(s): {', '.join(sorted(unknown))}. "
+              f"Known modules: {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
+            )
+            return False
+        else:
+          error(
+            f"Unknown module [[{cur_modules}]]. Expected: all[+nb][-mod1…], nb, list, show, or <module> with module in {{{', '.join(sorted(self.PYAGRUM_MODULES))}}}"
+          )
+          return False
 
     if not self.check_compiler_and_maker():
       return False

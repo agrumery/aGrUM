@@ -31346,7 +31346,7 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
         Variable(s) whose values are changed in the counterfactual scenario.
         A single string is automatically converted to a one-element set.
     profile : dict of str → str, optional
-        The factual observaton as ``{variable_name: value_name}``. This
+        The factual observation as ``{variable_name: value_name}``. This
         grounds the counterfactual (step 1: abduction). Default is empty
         (no factual observation).
     values : dict of str → str, optional
@@ -31485,34 +31485,6 @@ class DoorCriteria(object):
 
     @staticmethod
     def enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        r"""
-
-        Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of returned sets. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only minimal adjustment sets (no redundant variables).
-            Default is True.
-        stopAtFirst : bool, optional
-            If True, stop after finding the first valid set. Default is False.
-
-        Returns
-        -------
-        list of set of int
-            All valid backdoor adjustment sets (as NodeId sets).
-
-        """
         return _pyagrum.DoorCriteria_enumerateBackdoorSets(*args)
 
     @staticmethod
@@ -31548,33 +31520,6 @@ class DoorCriteria(object):
 
     @staticmethod
     def enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        r"""
-
-        Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of returned sets. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only minimal adjustment sets. Default is True.
-        stopAtFirst : bool, optional
-            If True, stop after finding the first valid set. Default is False.
-
-        Returns
-        -------
-        list of set of int
-            All valid frontdoor adjustment sets (as NodeId sets).
-
-        """
         return _pyagrum.DoorCriteria_enumerateFrontdoorSets(*args)
 
     @staticmethod
@@ -32416,7 +32361,7 @@ class CausalImpact(object):
 
         Returns
         -------
-        list of str
+        tuple of str
             Variable names in the on-set.
 
         """
@@ -32429,7 +32374,7 @@ class CausalImpact(object):
 
         Returns
         -------
-        list of str
+        tuple of str
             Variable names in the doing-set.
 
         """
@@ -32442,7 +32387,7 @@ class CausalImpact(object):
 
         Returns
         -------
-        list of str
+        tuple of str
             Variable names in the knowing-set.
 
         """
