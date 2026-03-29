@@ -67,13 +67,12 @@ CausalModel(bn, latents, keepArcs=False) -> CausalModel
 Examples
 --------
 >>> import pyagrum as gum
->>> import pyagrum.causal as csl
 >>> bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
->>> cm = csl.CausalModel(bn)
+>>> cm = gum.CausalModel(bn)
 
 Create a model with a latent confounder U between X and Y:
 
->>> cm = csl.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
+>>> cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable
@@ -412,8 +411,7 @@ str
 Examples
 --------
 >>> import pyagrum as gum
->>> import pyagrum.causal as csl
 >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = csl.CausalModel(bn)
+>>> cm = gum.CausalModel(bn)
 >>> print(cm.toDot())
 "

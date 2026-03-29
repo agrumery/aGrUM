@@ -53,28 +53,63 @@ general do-calculus (ID algorithm).
 
 Notes
 -----
-Prefer using the high-level function :func:`pyagrum.causal.causalImpact`
+You may prefer to use the high-level function :func:`pyagrum.causal.causalImpact`
 instead of constructing a CausalImpact object directly.
 
-CausalImpact(cm, on, doing, knowing=set(), directDoCalculus=False) -> CausalImpact
+CausalImpact(cm, *, on, doing, knowing=None) -> CausalImpact
     Parameters:
         - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
-        - **on** (*set of str or set of int*) -- target variables of the query.
-        - **doing** (*set of str or set of int*) -- intervened variables
-          (the do-operator applies to these).
-        - **knowing** (*set of str or set of int*) -- observed variables to
-          condition on. Default is empty.
-        - **directDoCalculus** (*bool*) -- if True, skip heuristics and go
-          directly to the ID algorithm. Default is False.
+        - **on** (*str or set of str*) -- target variable(s) of the query.
+          A single string is automatically converted to a one-element set.
+          Keyword-only.
+        - **doing** (*str or set of str*) -- intervened variable(s)
+          (the do-operator applies to these). A single string is automatically
+          converted to a one-element set. Keyword-only.
+        - **knowing** (*str or set of str, optional*) -- observed variable(s)
+          to condition on. A single string is automatically converted to a
+          one-element set. Default is empty. Keyword-only.
 
 Examples
 --------
 >>> import pyagrum as gum
->>> import pyagrum.causal as csl
 >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = csl.CausalModel(bn)
->>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+>>> cm = gum.CausalModel(bn)
+>>> formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
 >>> print(expl)
+"
+
+%feature("docstring") gum::CausalImpact::toDict
+"
+Return the identified causal formula as a JSON-serialisable dictionary.
+
+The dictionary mirrors the AST node hierarchy. Each node is a dict with
+an ``\"op\"`` key identifying its type, plus type-specific keys:
+
+- Binary operators (``+``, ``-``, ``*``, ``/``):
+  ``{\"op\": \"+\", \"op1\": {...}, \"op2\": {...}}``
+- Conditional probability ``P(vars | knowing)``:
+  ``{\"op\": \"P\", \"vars\": [...], \"knowing\": [...]}``
+- Joint probability ``P(vars)``:
+  ``{\"op\": \"P\", \"vars\": [...]}``
+- Summation / marginalisation :math:`\\sum_{\\text{var}}`:
+  ``{\"op\": \"sum\", \"var\": \"...\", \"term\": {...}}``
+
+Returns ``None`` if the effect is not identified
+(i.e. :meth:`isIdentified` is False).
+
+Returns
+-------
+dict or None
+    The AST as a nested dict, or None if not identifiable.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
+>>> cm = gum.CausalModel(bn)
+>>> ci = gum.CausalImpact(cm, on='Z', doing='X')
+>>> import json
+>>> print(json.dumps(ci.toDict(), indent=2))
 "
 
 %feature("docstring") gum::CausalImpact::isIdentified
@@ -123,9 +158,11 @@ Return a LaTeX representation of the identified causal formula.
 Parameters
 ----------
 doOperatorPrefix : str, optional
-    Prefix for the do-operator notation. Default is 'do('.
+    Prefix for the do-operator notation. Defaults to
+    ``gum.config[\"causal\", \"latex_do_prefix\"]``.
 doOperatorSuffix : str, optional
-    Suffix for the do-operator notation. Default is ')'.
+    Suffix for the do-operator notation. Defaults to
+    ``gum.config[\"causal\", \"latex_do_suffix\"]``.
 
 Returns
 -------
@@ -222,7 +259,7 @@ Return the names of the target variables.
 
 Returns
 -------
-list of str
+tuple of str
     Variable names in the on-set.
 "
 
@@ -232,7 +269,7 @@ Return the names of the intervened variables.
 
 Returns
 -------
-list of str
+tuple of str
     Variable names in the doing-set.
 "
 
@@ -242,6 +279,6 @@ Return the names of the observed variables.
 
 Returns
 -------
-list of str
+tuple of str
     Variable names in the knowing-set.
 "

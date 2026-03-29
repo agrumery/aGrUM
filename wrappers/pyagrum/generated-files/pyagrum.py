@@ -31268,7 +31268,7 @@ def getPosterior(model, *, target, evs=None):
   return pyagrum.Tensor(inf.posterior(target))
 
 
-def causalImpact(cm, on, doing, knowing=None, values=None):
+def causalImpact(cm, *, on, doing, knowing=None, values=None):
     """
     Identify and evaluate the causal effect of do(doing) on on, optionally
     conditioning on knowing.
@@ -31306,10 +31306,9 @@ def causalImpact(cm, on, doing, knowing=None, values=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+    >>> cm = pyagrum.CausalModel(bn)
+    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
     >>> print(expl)
     """
     if isinstance(on, str):
@@ -31324,7 +31323,7 @@ def causalImpact(cm, on, doing, knowing=None, values=None):
     pot._model = cm
     return lat, (pot if lat.isIdentified() else None), expl
 
-def counterfactual(cm, on, whatif, profile=None, values=None):
+def counterfactual(cm, *, on, whatif, profile=None, values=None):
     """
     Compute a counterfactual distribution using Pearl's twin network method.
 
@@ -31347,7 +31346,7 @@ def counterfactual(cm, on, whatif, profile=None, values=None):
         Variable(s) whose values are changed in the counterfactual scenario.
         A single string is automatically converted to a one-element set.
     profile : dict of str → str, optional
-        The factual observation as ``{variable_name: value_name}``. This
+        The factual observaton as ``{variable_name: value_name}``. This
         grounds the counterfactual (step 1: abduction). Default is empty
         (no factual observation).
     values : dict of str → str, optional
@@ -31364,10 +31363,9 @@ def counterfactual(cm, on, whatif, profile=None, values=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> t = csl.counterfactual(cm, on='Z', whatif='X',
+    >>> cm = pyagrum.CausalModel(bn)
+    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
     ...                        profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
@@ -31406,10 +31404,9 @@ def counterfactualModel(cm, profile=None, whatif=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> twin = csl.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
+    >>> cm = pyagrum.CausalModel(bn)
+    >>> twin = pyagrum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},
@@ -31442,13 +31439,12 @@ class DoorCriteria(object):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Z->Y')
     >>> dag = bn.dag()
     >>> x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
-    >>> csl.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
+    >>> pyagrum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
     True
-    >>> csl.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
+    >>> pyagrum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
     [{z}]
 
     """
@@ -31488,8 +31484,36 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def _enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _pyagrum.DoorCriteria__enumerateBackdoorSets(*args)
+    def enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        r"""
+
+        Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets (no redundant variables).
+            Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid backdoor adjustment sets (as NodeId sets).
+
+        """
+        return _pyagrum.DoorCriteria_enumerateBackdoorSets(*args)
 
     @staticmethod
     def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
@@ -31523,8 +31547,35 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def _enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _pyagrum.DoorCriteria__enumerateFrontdoorSets(*args)
+    def enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        r"""
+
+        Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets. Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid frontdoor adjustment sets (as NodeId sets).
+
+        """
+        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(*args)
 
     @staticmethod
     def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
@@ -31625,6 +31676,74 @@ class DoorCriteria(object):
         """
         return _pyagrum.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
 
+    @staticmethod
+    def enumerateBackdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                            only_minimal=True, stopAtFirst=False):
+        """
+        Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets (no redundant variables).
+            Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid backdoor adjustment sets (as NodeId sets).
+        """
+        return _pyagrum.DoorCriteria_enumerateBackdoorSets(
+            dag, X, Y,
+            excluded_nodes if excluded_nodes is not None else set(),
+            max_cardinality, only_minimal, stopAtFirst)
+
+    @staticmethod
+    def enumerateFrontdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                             only_minimal=True, stopAtFirst=False):
+        """
+        Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets. Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid frontdoor adjustment sets (as NodeId sets).
+        """
+        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(
+            dag, X, Y,
+            excluded_nodes if excluded_nodes is not None else set(),
+            max_cardinality, only_minimal, stopAtFirst)
+
+
     def __init__(self):
         _pyagrum.DoorCriteria_swiginit(self, _pyagrum.new_DoorCriteria())
     __swig_destroy__ = _pyagrum.delete_DoorCriteria
@@ -31663,13 +31782,12 @@ class CausalModel(object):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
-    >>> cm = csl.CausalModel(bn)
+    >>> cm = pyagrum.CausalModel(bn)
 
     Create a model with a latent confounder U between X and Y:
 
-    >>> cm = csl.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
+    >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
 
     """
 
@@ -31887,9 +32005,8 @@ class CausalModel(object):
         Examples
         --------
         >>> import pyagrum as gum
-        >>> import pyagrum.causal as csl
         >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-        >>> cm = csl.CausalModel(bn)
+        >>> cm = pyagrum.CausalModel(bn)
         >>> print(cm.toDot())
 
         """
@@ -32099,27 +32216,28 @@ class CausalImpact(object):
 
     Notes
     -----
-    Prefer using the high-level function :func:`pyagrum.causal.causalImpact`
+    You may prefer to use the high-level function :func:`pyagrum.causal.causalImpact`
     instead of constructing a CausalImpact object directly.
 
-    CausalImpact(cm, on, doing, knowing=set(), directDoCalculus=False) -> CausalImpact
+    CausalImpact(cm, *, on, doing, knowing=None) -> CausalImpact
         Parameters:
             - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
-            - **on** (*set of str or set of int) -- target variables of the query.
-            - **doing** (*set of str or set of int) -- intervened variables
-              (the do-operator applies to these).
-            - **knowing** (*set of str or set of int) -- observed variables to
-              condition on. Default is empty.
-            - **directDoCalculus** (*bool) -- if True, skip heuristics and go
-              directly to the ID algorithm. Default is False.
+            - **on** (*str or set of str*) -- target variable(s) of the query.
+              A single string is automatically converted to a one-element set.
+              Keyword-only.
+            - **doing** (*str or set of str*) -- intervened variable(s)
+              (the do-operator applies to these). A single string is automatically
+              converted to a one-element set. Keyword-only.
+            - **knowing** (*str or set of str, optional*) -- observed variable(s)
+              to condition on. A single string is automatically converted to a
+              one-element set. Default is empty. Keyword-only.
 
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+    >>> cm = pyagrum.CausalModel(bn)
+    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
     >>> print(expl)
 
     """
@@ -32159,25 +32277,14 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_toString(self)
 
-    def toLatex(self, *args) -> str:
-        r"""
+    def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
+        if doOperatorPrefix is None:
+            doOperatorPrefix = config["causal", "latex_do_prefix"]
+        if doOperatorSuffix is None:
+            doOperatorSuffix = config["causal", "latex_do_suffix"]
+        return _pyagrum.CausalImpact_toLatex(self, doOperatorPrefix, doOperatorSuffix)
 
-        Return a LaTeX representation of the identified causal formula.
 
-        Parameters
-        ----------
-        doOperatorPrefix : str, optional
-            Prefix for the do-operator notation. Default is 'do('.
-        doOperatorSuffix : str, optional
-            Suffix for the do-operator notation. Default is ')'.
-
-        Returns
-        -------
-        str
-            LaTeX string of the identified formula.
-
-        """
-        return _pyagrum.CausalImpact_toLatex(self, *args)
 
     def latexQuery(self, *args) -> str:
         r"""
@@ -32341,8 +32448,55 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_knowingNames(self)
 
-    def __init__(self, *args):
-        _pyagrum.CausalImpact_swiginit(self, _pyagrum.new_CausalImpact(*args))
+    def __init__(self, cm, *, on, doing, knowing=None):
+        if isinstance(on, str):
+            on = {on}
+        if isinstance(doing, str):
+            doing = {doing}
+        if isinstance(knowing, str):
+            knowing = {knowing}
+        _pyagrum.CausalImpact_swiginit(self, _pyagrum.new_CausalImpact(cm, on, doing,
+                                       knowing if knowing is not None else set(),
+                                       False))
+
+
+
+    def toDict(self) -> object:
+        r"""
+
+        Return the identified causal formula as a JSON-serialisable dictionary.
+
+        The dictionary mirrors the AST node hierarchy. Each node is a dict with
+        an ``"op"`` key identifying its type, plus type-specific keys:
+
+        - Binary operators (``+``, ``-``, ``*``, ``/``):
+          ``{"op": "+", "op1": {...}, "op2": {...}}``
+        - Conditional probability ``P(vars | knowing)``:
+          ``{"op": "P", "vars": [...], "knowing": [...]}``
+        - Joint probability ``P(vars)``:
+          ``{"op": "P", "vars": [...]}``
+        - Summation / marginalisation :math:`\sum_{\text{var}}`:
+          ``{"op": "sum", "var": "...", "term": {...}}``
+
+        Returns ``None`` if the effect is not identified
+        (i.e. :meth:`isIdentified` is False).
+
+        Returns
+        -------
+        dict or None
+            The AST as a nested dict, or None if not identifiable.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
+        >>> cm = pyagrum.CausalModel(bn)
+        >>> ci = pyagrum.CausalImpact(cm, on='Z', doing='X')
+        >>> import json
+        >>> print(json.dumps(ci.toDict(), indent=2))
+
+        """
+        return _pyagrum.CausalImpact_toDict(self)
     __swig_destroy__ = _pyagrum.delete_CausalImpact
 
 # Register CausalImpact in _pyagrum:
@@ -32388,10 +32542,9 @@ class Counterfactual(object):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> t = csl.counterfactual(cm, on='Z', whatif='X',
+    >>> cm = pyagrum.CausalModel(bn)
+    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
     ...                        profile={'Y': 'True'}, values={'X': 'False'})
 
     """
@@ -32579,85 +32732,4 @@ def _counterfactual(*args) -> "pyagrum.Tensor":
 
 def _counterfactualModel(cm: "CausalModel", profile: "HashTable< str,str > const &", whatif: "pyagrum.Set< str > const &") -> "pyagrum.CausalModel< float >":
     return _pyagrum._counterfactualModel(cm, profile, whatif)
-
-_CausalModel_swig_init = CausalModel.__init__
-
-def _CausalModel_init(self, bn, latents=None, keepArcs=False):
-    if latents is None:
-        _CausalModel_swig_init(self, bn)
-    else:
-        _CausalModel_swig_init(self, bn, latents, keepArcs)
-
-CausalModel.__init__ = _CausalModel_init
-del _CausalModel_init
-
-def _enumerateBackdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                              only_minimal=True, stopAtFirst=False):
-    return DoorCriteria._enumerateBackdoorSets(dag, X, Y,
-                                               excluded_nodes if excluded_nodes is not None else set(),
-                                               max_cardinality, only_minimal, stopAtFirst)
-
-def _enumerateFrontdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                               only_minimal=True, stopAtFirst=False):
-    return DoorCriteria._enumerateFrontdoorSets(dag, X, Y,
-                                                excluded_nodes if excluded_nodes is not None else set(),
-                                                max_cardinality, only_minimal, stopAtFirst)
-
-DoorCriteria.enumerateBackdoorSets  = staticmethod(_enumerateBackdoorSets_wrap)
-DoorCriteria.enumerateFrontdoorSets = staticmethod(_enumerateFrontdoorSets_wrap)
-del _enumerateBackdoorSets_wrap, _enumerateFrontdoorSets_wrap
-
-DoorCriteria.enumerateBackdoorSets.__doc__ = """
-Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
-
-Parameters
-----------
-dag : pyagrum.DAG
-    The causal DAG.
-X : int
-    NodeId of the treatment variable.
-Y : int
-    NodeId of the outcome variable.
-excluded_nodes : set of int, optional
-    Nodes that cannot appear in any adjustment set. Default is empty.
-max_cardinality : int, optional
-    Maximum size of returned sets. 0 means no limit. Default is 0.
-only_minimal : bool, optional
-    If True, return only minimal adjustment sets (no redundant variables).
-    Default is True.
-stopAtFirst : bool, optional
-    If True, stop after finding the first valid set. Default is False.
-
-Returns
--------
-list of set of int
-    All valid backdoor adjustment sets (as NodeId sets).
-"""
-
-DoorCriteria.enumerateFrontdoorSets.__doc__ = """
-Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
-
-Parameters
-----------
-dag : pyagrum.DAG
-    The causal DAG.
-X : int
-    NodeId of the treatment variable.
-Y : int
-    NodeId of the outcome variable.
-excluded_nodes : set of int, optional
-    Nodes that cannot appear in any adjustment set. Default is empty.
-max_cardinality : int, optional
-    Maximum size of returned sets. 0 means no limit. Default is 0.
-only_minimal : bool, optional
-    If True, return only minimal adjustment sets. Default is True.
-stopAtFirst : bool, optional
-    If True, stop after finding the first valid set. Default is False.
-
-Returns
--------
-list of set of int
-    All valid frontdoor adjustment sets (as NodeId sets).
-"""
-
 

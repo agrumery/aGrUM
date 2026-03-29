@@ -112,7 +112,7 @@ def getCausalImpact(
   -------
   HTML
   """
-  formula, impact, explanation = gum.causalImpact(model, on, doing, knowing, values)
+  formula, impact, explanation = gum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
 
   gnb.flow.clear()
   gnb.flow.add(getCausalModel(model), caption="Causal Model")

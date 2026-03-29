@@ -56,7 +56,7 @@ import warnings
 warnings.warn(
   "Module 'causal' is deprecated in pyAgrum >2.3.2. Use 'gum.CausalModel' (and so on) instead.",
   DeprecationWarning,
-  stacklevel=2
+  stacklevel=2,
 )
 
 # pylint: disable=unused-import

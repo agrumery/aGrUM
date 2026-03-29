@@ -62,13 +62,12 @@ High-level search for a single valid set is available via
 Examples
 --------
 >>> import pyagrum as gum
->>> import pyagrum.causal as csl
 >>> bn = gum.BayesNet.fastPrototype('X->Z->Y')
 >>> dag = bn.dag()
 >>> x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
->>> csl.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
+>>> gum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
 True
->>> csl.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
+>>> gum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
 [{z}]
 "
 
@@ -208,3 +207,9 @@ Returns
 bool
     True if an open backdoor path from X to Y exists after conditioning on Z.
 "
+
+// enumerateBackdoorSets and enumerateFrontdoorSets are documented in
+// causal_after_templates.i alongside their %extend %pythoncode wrappers.
+// %feature("docstring") here would be dead code: those methods are overridden
+// at the Python level (required because %feature("shadow") does not work on
+// overloaded methods), so their SWIG-level docstring is never reached.

@@ -160,10 +160,12 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
   if pandasFound:
     from tests import CausalDSepTestSuite
+    from tests import CausalImpactTestSuite
     from tests import CausalModelTestSuite
     from tests import CausalNonRegressionTestSuite
   else:
     CausalDSepTestSuite = None
+    CausalImpactTestSuite = None
     CausalModelTestSuite = None
     CausalNonRegressionTestSuite = None
     log.warning("[pyAgrum] Causal*TestSuite needs pandas")
@@ -242,6 +244,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       log.info("testing 'causal'")
       if pandasFound:
         tl.append(CausalDSepTestSuite.ts)
+        tl.append(CausalImpactTestSuite.ts)
         tl.append(CausalModelTestSuite.ts)
         tl.append(CausalNonRegressionTestSuite.ts)
       else:

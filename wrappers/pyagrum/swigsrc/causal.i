@@ -48,11 +48,35 @@
 %rename(_counterfactual) gum::counterfactual;
 %rename(_counterfactualModel) gum::counterfactualModel;
 
-// enumerateBackdoorSets and enumerateFrontdoorSets are renamed so that the
-// %pythoncode wrappers in causal_after_templates.i can enforce keyword-only
-// arguments starting from excluded_nodes.
-%rename(_enumerateBackdoorSets)  gum::DoorCriteria::enumerateBackdoorSets;
-%rename(_enumerateFrontdoorSets) gum::DoorCriteria::enumerateFrontdoorSets;
+
+// CausalImpact::toLatex: %feature("shadow") exposes doOperatorPrefix and
+// doOperatorSuffix as keyword-only arguments, with defaults read from the
+// pyAgrum configuration at call time.
+%feature("shadow") gum::CausalImpact::toLatex %{
+    def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
+        if doOperatorPrefix is None:
+            doOperatorPrefix = config["causal", "latex_do_prefix"]
+        if doOperatorSuffix is None:
+            doOperatorSuffix = config["causal", "latex_do_suffix"]
+        return $action(self, doOperatorPrefix, doOperatorSuffix)
+%}
+
+// CausalImpact constructor: keyword-only on/doing/knowing with str→set coercion.
+// $action expands to _pyagrum.new_CausalImpact; swiginit is the SWIG object
+// initialisation convention for this project.
+%feature("shadow") gum::CausalImpact::CausalImpact %{
+    def __init__(self, cm, *, on, doing, knowing=None):
+        if isinstance(on, str):
+            on = {on}
+        if isinstance(doing, str):
+            doing = {doing}
+        if isinstance(knowing, str):
+            knowing = {knowing}
+        _pyagrum.CausalImpact_swiginit(self, $action(cm, on, doing,
+                                       knowing if knowing is not None else set(),
+                                       False))
+%}
+
 
 // LatentDescriptorVector and LatentDescriptorIds are C++-internal types with no
 // Python representation. Ignoring them causes SWIG to suppress all overloads
@@ -63,7 +87,7 @@
 
 
 %pythoncode %{
-def causalImpact(cm, on, doing, knowing=None, values=None):
+def causalImpact(cm, *, on, doing, knowing=None, values=None):
     """
     Identify and evaluate the causal effect of do(doing) on on, optionally
     conditioning on knowing.
@@ -101,10 +125,9 @@ def causalImpact(cm, on, doing, knowing=None, values=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> formula, tensor, expl = csl.causalImpact(cm, on='Z', doing='X')
+    >>> cm = gum.CausalModel(bn)
+    >>> formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
     >>> print(expl)
     """
     if isinstance(on, str):
@@ -119,7 +142,7 @@ def causalImpact(cm, on, doing, knowing=None, values=None):
     pot._model = cm
     return lat, (pot if lat.isIdentified() else None), expl
 
-def counterfactual(cm, on, whatif, profile=None, values=None):
+def counterfactual(cm, *, on, whatif, profile=None, values=None):
     """
     Compute a counterfactual distribution using Pearl's twin network method.
 
@@ -159,10 +182,9 @@ def counterfactual(cm, on, whatif, profile=None, values=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> t = csl.counterfactual(cm, on='Z', whatif='X',
+    >>> cm = gum.CausalModel(bn)
+    >>> t = gum.counterfactual(cm, on='Z', whatif='X',
     ...                        profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
@@ -201,10 +223,9 @@ def counterfactualModel(cm, profile=None, whatif=None):
     Examples
     --------
     >>> import pyagrum as gum
-    >>> import pyagrum.causal as csl
     >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = csl.CausalModel(bn)
-    >>> twin = csl.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
+    >>> cm = gum.CausalModel(bn)
+    >>> twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},

@@ -45,29 +45,126 @@
 // declaration stay in the module-specific swigsrc/*.i files as usual.
 
 // ---------------------------------------------------------------------------
+// DoorCriteria::enumerateBackdoorSets / enumerateFrontdoorSets
+//
+// These C++ static methods have multiple overloads (full signature + shorthand)
+// and the full overload has four default parameters. SWIG expands those defaults
+// into separate Python overloads, which prevents %feature("shadow") from working
+// (SWIG silently disables shadow on overloaded methods).
+//
+// Solution: inject the keyword-only Python wrappers via %extend %pythoncode.
+// Methods defined in a %pythoncode block inside %extend appear after the C++
+// binding methods in the generated class body and therefore shadow them.
+// The C-level dispatch function _pyagrum.DoorCriteria_enumerateBackdoorSets is
+// always available because the C++ functions are not %ignore'd; we call it with
+// all arguments explicitly, so the 7-argument overload is always selected.
+// ---------------------------------------------------------------------------
+%extend gum::DoorCriteria {
+%pythoncode %{
+    @staticmethod
+    def enumerateBackdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                            only_minimal=True, stopAtFirst=False):
+        """
+        Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets (no redundant variables).
+            Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid backdoor adjustment sets (as NodeId sets).
+        """
+        return _pyagrum.DoorCriteria_enumerateBackdoorSets(
+            dag, X, Y,
+            excluded_nodes if excluded_nodes is not None else set(),
+            max_cardinality, only_minimal, stopAtFirst)
+
+    @staticmethod
+    def enumerateFrontdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
+                                             only_minimal=True, stopAtFirst=False):
+        """
+        Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of returned sets. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only minimal adjustment sets. Default is True.
+        stopAtFirst : bool, optional
+            If True, stop after finding the first valid set. Default is False.
+
+        Returns
+        -------
+        list of set of int
+            All valid frontdoor adjustment sets (as NodeId sets).
+        """
+        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(
+            dag, X, Y,
+            excluded_nodes if excluded_nodes is not None else set(),
+            max_cardinality, only_minimal, stopAtFirst)
+%}
+}
+
+// ---------------------------------------------------------------------------
+// CausalImpact<double>::toDict() — convert the identified AST to a Python dict
+//
+// The traversal helper PyAgrumHelper::PyDictFromASTtree is defined in
+// extensions/helpers.h, included at the top of pyagrum.i, so it is always
+// available to wrapper functions generated here.
+// Placed here (after_templates) because %extend on a template specialisation
+// must come after the matching %template directive.
+// ---------------------------------------------------------------------------
+%extend gum::CausalImpact<double> {
+  PyObject* toDict() const {
+    if (!$self->isIdentified()) Py_RETURN_NONE;
+    return PyAgrumHelper::PyDictFromASTtree($self->root());
+  }
+}
+
+// ---------------------------------------------------------------------------
 // CausalModel<double>: Python-friendly constructor from list[tuple[str,list[str]]]
 //
 // The C++ LatentDescriptorVector uses NodeId for children, so a plain typemap
 // cannot convert string names to ids without access to the BN (first argument).
 // This constructor calls addLatentVariable (string overload), which resolves
 // names to NodeIds internally.
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// CausalModel<double>: Python-friendly constructor from list[tuple[str,list[str]]]
 //
-// The C++ LatentDescriptorVector uses NodeId for children, so a plain typemap
-// cannot convert string names to ids without access to the BN (first argument).
-// This constructor calls addLatentVariable (string overload), which resolves
-// names to NodeIds internally.
+// latents=None (Py_None) is accepted and treated as an empty list, so that
+// CausalModel(bn, None) is equivalent to CausalModel(bn).
 //
 // %feature("kwargs") is NOT used: it causes SIGSEGV on inline-constructed
 // temporaries (e.g. gum.fastBN("...") passed as first arg) because the
 // **kwargs dispatch drops the refcount before the C++ call completes.
-// Keyword argument support (keepArcs=) is provided by the %pythoncode block below.
 // ---------------------------------------------------------------------------
 %extend gum::CausalModel<double> {
   CausalModel(const gum::BayesNet<double>& bn, PyObject* latents, bool assumeNonSpurious=false) {
     auto* cm = new gum::CausalModel<double>(bn);
+    if (latents == Py_None) return cm;
     if (!PySequence_Check(latents)) {
       delete cm;
       PyErr_SetString(PyExc_TypeError, "CausalModel: latents must be a sequence of (name, children) pairs");
@@ -100,88 +197,3 @@
     return cm;
   }
 }
-
-// Python-level __init__ replacement for CausalModel, exposing 'keepArcs' as the
-// keyword argument for assumeNonSpurious. Must appear after the class definition
-// (i.e. after %template and %extend above), hence its placement in this file.
-%pythoncode %{
-_CausalModel_swig_init = CausalModel.__init__
-
-def _CausalModel_init(self, bn, latents=None, keepArcs=False):
-    if latents is None:
-        _CausalModel_swig_init(self, bn)
-    else:
-        _CausalModel_swig_init(self, bn, latents, keepArcs)
-
-CausalModel.__init__ = _CausalModel_init
-del _CausalModel_init
-
-def _enumerateBackdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                              only_minimal=True, stopAtFirst=False):
-    return DoorCriteria._enumerateBackdoorSets(dag, X, Y,
-                                               excluded_nodes if excluded_nodes is not None else set(),
-                                               max_cardinality, only_minimal, stopAtFirst)
-
-def _enumerateFrontdoorSets_wrap(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                               only_minimal=True, stopAtFirst=False):
-    return DoorCriteria._enumerateFrontdoorSets(dag, X, Y,
-                                                excluded_nodes if excluded_nodes is not None else set(),
-                                                max_cardinality, only_minimal, stopAtFirst)
-
-DoorCriteria.enumerateBackdoorSets  = staticmethod(_enumerateBackdoorSets_wrap)
-DoorCriteria.enumerateFrontdoorSets = staticmethod(_enumerateFrontdoorSets_wrap)
-del _enumerateBackdoorSets_wrap, _enumerateFrontdoorSets_wrap
-
-DoorCriteria.enumerateBackdoorSets.__doc__ = """
-Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
-
-Parameters
-----------
-dag : pyagrum.DAG
-    The causal DAG.
-X : int
-    NodeId of the treatment variable.
-Y : int
-    NodeId of the outcome variable.
-excluded_nodes : set of int, optional
-    Nodes that cannot appear in any adjustment set. Default is empty.
-max_cardinality : int, optional
-    Maximum size of returned sets. 0 means no limit. Default is 0.
-only_minimal : bool, optional
-    If True, return only minimal adjustment sets (no redundant variables).
-    Default is True.
-stopAtFirst : bool, optional
-    If True, stop after finding the first valid set. Default is False.
-
-Returns
--------
-list of set of int
-    All valid backdoor adjustment sets (as NodeId sets).
-"""
-
-DoorCriteria.enumerateFrontdoorSets.__doc__ = """
-Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
-
-Parameters
-----------
-dag : pyagrum.DAG
-    The causal DAG.
-X : int
-    NodeId of the treatment variable.
-Y : int
-    NodeId of the outcome variable.
-excluded_nodes : set of int, optional
-    Nodes that cannot appear in any adjustment set. Default is empty.
-max_cardinality : int, optional
-    Maximum size of returned sets. 0 means no limit. Default is 0.
-only_minimal : bool, optional
-    If True, return only minimal adjustment sets. Default is True.
-stopAtFirst : bool, optional
-    If True, stop after finding the first valid set. Default is False.
-
-Returns
--------
-list of set of int
-    All valid frontdoor adjustment sets (as NodeId sets).
-"""
-%}

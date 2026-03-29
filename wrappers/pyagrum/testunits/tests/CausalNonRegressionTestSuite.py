@@ -63,24 +63,24 @@ class TestSimpson(pyAgrumTestCase):
 
   def test_CausalImpactWithoutObservation(self):
     evs = {}
-    latex, impact, explain = gum.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
+    _, _, _ = gum.causalImpact(self.model, on="Patient", doing="Drug", knowing=evs)
 
   def test_CausalImpactWithObservation(self):
     evs = {"Gender"}
-    latex, impact, explain = gum.causalImpact(self.model, "Patient", doing="Drug", knowing=evs)
+    _, _, _ = gum.causalImpact(self.model, on="Patient", doing="Drug", knowing=evs)
 
 
 class TestFromUsers(pyAgrumTestCase):
   def test_AccentsInVariables(self):
     bn = gum.fastBN("héhé->hoho")
     cm = gum.CausalModel(bn)
-    formula, impact, explanation = gum.causalImpact(cm, "héhé", "hoho")
+    _, _, _ = gum.causalImpact(cm, on="héhé", doing="hoho")
 
   def test_from_Musfiqshohan(self):
     cm = gum.CausalModel(
       gum.fastBN("A->B->C->F;A->D;A->E;C->D->E->F;C->E;"),
       [("U0", ("C", "F")), ("U1", ("C", "E")), ("U2", ("E", "F"))],
-      keepArcs=True,
+      True
     )
     gum.causalImpact(cm, on={"E"}, doing={"A", "D", "B"})
 
@@ -92,12 +92,12 @@ class TestFromR(pyAgrumTestCase):
     m.cpt("z2")[:] = [0.5, 0.5]
     m.cpt("x")[:] = [
       [0.4, 0.6],  # z2=0
-      [0.4, 0.6],
-    ]  # z2=1
+      [0.4, 0.6],  # z2=1
+    ]
     m.cpt("z3")[:] = [
       [0.3, 0.7],  # z2=0
-      [0.3, 0.7],
-    ]  # z2=1
+      [0.3, 0.7],  # z2=1
+    ]
     m.cpt("z1")[{"z2": 0, "x": 0}] = [0.2, 0.8]
     m.cpt("z1")[{"z2": 0, "x": 1}] = [0.25, 0.75]
     m.cpt("z1")[{"z2": 1, "x": 0}] = [0.1, 0.9]
@@ -112,7 +112,7 @@ class TestFromR(pyAgrumTestCase):
       m, [("X-Z2", ["x", "z2"]), ("X-Z3", ["x", "z3"]), ("X-Y", ["x", "y"]), ("Y-Z2", ["y", "z2"])], True
     )
     try:
-      formula, result, msg = gum.causalImpact(self.d, on={"y", "z2", "z1", "z3"}, doing={"x"})
+      _, _, _ = gum.causalImpact(self.d, on={"y", "z2", "z1", "z3"}, doing={"x"})
     except gum.HedgeException:
       self.fail("Should not raise")
 
@@ -126,7 +126,7 @@ class TestsFromGumWhy(pyAgrumTestCase):
       [1.0, 0.0] * 11 + [1 - i / 20 if i % 2 == 0 else (i - 1) / 20 for i in range(22)]
     )
     abModele = gum.CausalModel(ab)
-    formula, impact, explanation = gum.causalImpact(
+    _, impact, _ = gum.causalImpact(
       abModele,
       on={"Bag on Plane"},
       doing={"Elapsed time"},
@@ -138,7 +138,7 @@ class TestsFromGumWhy(pyAgrumTestCase):
   def test_DoCalculusp213(self):
     fd = gum.fastBN("w->z->x->y")
     fdModele = gum.CausalModel(fd, [("u1", ["w", "x"]), ("u2", ["w", "y"])], True)
-    formula, impact, explanation = gum.causalImpact(fdModele, on="y", doing="x")
+    _, _, _ = gum.causalImpact(fdModele, on="y", doing="x")
 
 
 ts = unittest.TestSuite()

@@ -52,18 +52,18 @@ class TestCausalModel(pyAgrumTestCase):
     obs1.cpt("Cancer")[{"Smoking": 1}] = [0.7, 0.3]
 
     modele1 = gum.CausalModel(obs1)
-    _, pot, _ = gum.causalImpact(modele1, "Cancer", "Smoking")  # when doing is 1
+    _, pot, _ = gum.causalImpact(modele1, on="Cancer", doing="Smoking")  # when doing is 1
     p = gum.Tensor(obs1.cpt("Cancer")).fillWith(pot)  # pot potential with the variables of obs1.cpt("Cancer")
     self.assertEqual(p, obs1.cpt("Cancer"))
 
     modele2 = gum.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])])
-    _, pot, _ = gum.causalImpact(modele2, "Cancer", {"Smoking"}, values={"Smoking": 1})
+    _, pot, _ = gum.causalImpact(modele2, on="Cancer", doing={"Smoking"}, values={"Smoking": 1})
     margCancer = (obs1.cpt("Smoking") * obs1.cpt("Cancer")).sumOut(["Smoking"])
     p = gum.Tensor(margCancer).fillWith(pot)  # pot potential with the variables of margCancer
     self.assertEqual(p, margCancer)
 
     modele3 = gum.CausalModel(obs1, [("Genotype", ["Smoking", "Cancer"])], True)
-    lat, pot, expl = gum.causalImpact(modele3, "Cancer", {"Smoking"}, values={"Smoking": 1})
+    _, pot, _ = gum.causalImpact(modele3, on="Cancer", doing={"Smoking"}, values={"Smoking": 1})
     self.assertIsNone(pot)
 
   def test_tobacco2(self):
@@ -84,7 +84,7 @@ class TestCausalModel(pyAgrumTestCase):
     margCancer = (obs2.cpt("Cancer") * obs2.cpt("Smoking")).sumOut(["Smoking"])
     margCancer = (margCancer * obs2.cpt("Tar")).sumOut(["Tar"])
 
-    _, pot, _ = gum.causalImpact(modele4, "Cancer", "Smoking")  # when smoking=1
+    _, pot, _ = gum.causalImpact(modele4, on="Cancer", doing="Smoking")  # when smoking=1
     p = gum.Tensor(margCancer).fillWith(pot)  # pot potential with the variables of margCancer
     self.assertEqual(p, margCancer)
 
@@ -187,7 +187,7 @@ class TestCausalModel(pyAgrumTestCase):
     # Causality, Pearl, 2009, p66
     bn = gum.fastBN("Z1->Z2->Z3->Y<-X->Z2;Z2->Y;Z1->X->Z3<-Z1")
     c = gum.CausalModel(bn, [("Z0", ("X", "Z1", "Z3"))], False)
-    _, pot, explanation = gum.causalImpact(c, "Y", "X")
+    _, pot, explanation = gum.causalImpact(c, on="Y", doing="X")
     self.assertIsNotNone(pot)
     self.assertEqual(explanation, "Identified via do-calculus (ID/IDC).")
 
@@ -228,6 +228,7 @@ class TestCausalModel(pyAgrumTestCase):
 
     self.assertEqual(pot[81 - 65], 1.0)
 
+1
 
 ts = unittest.TestSuite()
 addTests(ts, TestCausalModel)
