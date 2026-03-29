@@ -46,7 +46,7 @@ from sys import platform as os_platform
 
 if __name__ == "__main__":
   print(
-    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m all|all+nb|<module>' -t {all|test_suite_name}'",
+    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m all[+nb][-mod1[-mod2…]]|<module>' -t {all|test_suite_name}'",
     end="\n",
   )
   sys.exit(0)
@@ -198,7 +198,19 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   if test_suite != "":
     tl.append(eval(test_suite + "TestSuite.ts"))
   else:
-    if test_module in {"", "main"}:
+    # Support "all-mod1-mod2" syntax: run all modules except the listed ones.
+    # "all" alone is equivalent to "" (run everything).
+    excluded_modules: set[str] = set()
+    if test_module == "all":
+      test_module = ""
+    elif test_module.startswith("all-"):
+      excluded_modules = set(test_module.split("-")[1:])
+      test_module = ""
+
+    def wants(module: str) -> bool:
+      return test_module in {"", module} and module not in excluded_modules
+
+    if wants("main"):
       log.info("testing 'main'")
       tl.append(AggregatorsForBNTestSuite.ts)
       tl.append(AllIncrementalInferenceTestSuite.ts)
@@ -232,7 +244,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(VariablesTestSuite.ts)
       tl.append(WorkaroundTestSuite.ts)
 
-    if test_module in {"", "causaleffect"}:
+    if wants("causaleffect"):
       log.info("testing 'causaleffect'")
       if pandasFound:
         tl.append(CausalEffectEstimationTestSuite.ts)
@@ -240,7 +252,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       else:
         log.warning("Pandas not found.")
 
-    if test_module in {"", "causal"}:
+    if wants("causal"):
       log.info("testing 'causal'")
       if pandasFound:
         tl.append(CausalDSepTestSuite.ts)
@@ -250,7 +262,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       else:
         log.warning("Pandas not found.")
 
-    if test_module in {"", "skbn"}:
+    if wants("skbn"):
       log.info("testing 'skbn'")
       if pandasFound and sklearnFound:
         tl.append(BNClassifierTestSuite.ts)
@@ -258,7 +270,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       else:
         log.warning("Pandas or sklearn not found.")
 
-    if test_module in {"", "ctbn"}:
+    if wants("ctbn"):
       log.info("testing 'ctbn'")
       tl.append(CtbnCimTestSuite.ts)
       tl.append(CtbnModelTestSuite.ts)
@@ -266,7 +278,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       tl.append(CtbnIndependenceTestSuite.ts)
       tl.append(CtbnLearnerTestSuite.ts)
 
-    if test_module in {"", "clg"}:
+    if wants("clg"):
       log.info("testing 'clg'")
       if pandasFound:
         tl.append(CLGLearningTestSuite.ts)
@@ -276,11 +288,11 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       else:
         log.warning("Pandas or sklearn not found.")
 
-    if test_module in {"", "bnmixture"}:
+    if wants("bnmixture"):
       log.info("testing 'bnmixture'")
       tl.append(MixtureModelTestSuite.ts)
 
-    if test_module in {"", "explain"}:
+    if wants("explain"):
       log.info("testing 'explain'")
       if pandasFound:
         tl.append(ExplainCausalTest.ts)
