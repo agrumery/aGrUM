@@ -51,7 +51,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/graphicalModels/graphicalModel.h>
+#include <agrum/base/graphicalModels/discreteGraphicalModel.h>
 
 namespace gum {
 
@@ -61,7 +61,7 @@ namespace gum {
    * Virtual base class for PGMs using a DAG
    *
    */
-  class DAGmodel: public GraphicalModel {
+  class DAGmodel: public DiscreteGraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{

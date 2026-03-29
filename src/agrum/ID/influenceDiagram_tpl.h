@@ -187,7 +187,7 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram::clear() {
     // Removing previous tensors
     removeTables_();
-    _variableMap_.clear();
+    this->varMap_.clear();
     dag_.clear();
     _tensorMap_.clear();
     _utilityMap_.clear();
@@ -385,44 +385,6 @@ namespace gum {
   }
 
   /*
-   * Returns a constant reference to the VariableNodeMap of this Influence
-   * Diagram
-   */
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const VariableNodeMap& InfluenceDiagram< GUM_SCALAR >::variableNodeMap() const {
-    return _variableMap_;
-  }
-
-  /*
-   * Returns a constant reference over a variable given it's node id.
-   */
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable& InfluenceDiagram< GUM_SCALAR >::variable(NodeId id) const {
-    return _variableMap_[id];
-  }
-
-  /*
-   * Return id node from discrete var pointer.
-   */
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return _variableMap_.get(var);
-  }
-
-  // Getter by name
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId InfluenceDiagram< GUM_SCALAR >::idFromName(std::string_view name) const {
-    return _variableMap_.idFromName(name);
-  }
-
-  // Getter by name
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
-      InfluenceDiagram< GUM_SCALAR >::variableFromName(std::string_view name) const {
-    return _variableMap_.variableFromName(name);
-  }
-
-  /*
    * Add a chance variable, it's associate node and it's CPT. The id of the new
    * variable is automatically generated.
    */
@@ -537,7 +499,7 @@ namespace gum {
     if (DesiredId == 0) proposedId = dag_.nextNodeId();
     else proposedId = DesiredId;
 
-    _variableMap_.insert(proposedId, variableType);
+    this->varMap_.insert(proposedId, variableType);
 
     dag_.addNodeWithId(proposedId);
 
@@ -552,7 +514,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::erase(NodeId varId) {
-    if (_variableMap_.exists(varId)) {
+    if (this->varMap_.exists(varId)) {
       // Reduce the variable child's CPT or Utility Table if necessary
       for (const auto chi: dag_.children(varId))
         if (isChanceNode(chi)) _tensorMap_[chi]->erase(variable(varId));
@@ -566,7 +528,7 @@ namespace gum {
         _utilityMap_.erase(varId);
       }
 
-      _variableMap_.erase(varId);
+      this->varMap_.erase(varId);
       dag_.eraseNode(varId);
     }
   }
@@ -578,7 +540,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase(_variableMap_.get(var));
+    erase(this->varMap_.get(var));
   }
 
   /* we allow the user to change the name of a variable
@@ -586,7 +548,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                  std::string_view new_name) {
-    _variableMap_.changeName(id, new_name);
+    this->varMap_.changeName(id, new_name);
   }
 
   // ===========================================================================

@@ -113,38 +113,6 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const = 0;
 
-    /**
-     * Returns a constant reference to the VariableNodeMap of thisBN
-     */
-    virtual const VariableNodeMap& variableNodeMap() const = 0;
-
-    /**
-     * Returns a constant reference over a variable given it's node id.
-     *
-     * @throw NotFound If no variable's id matches varId.
-     */
-    virtual const DiscreteVariable& variable(NodeId id) const = 0;
-
-    /**
-     * Return id node from discrete var pointer.
-     *
-     * @throw NotFound If no variable matches var.
-     */
-    virtual NodeId nodeId(const DiscreteVariable& var) const = 0;
-
-    /**
-     * Getter by name
-     *
-     * @throw NotFound if no such name exists in the graph.
-     */
-    virtual NodeId idFromName(std::string_view name) const = 0;
-
-    /**
-     * Getter by name
-     *
-     * @throw NotFound if no such name exists in the graph.
-     */
-    virtual const DiscreteVariable& variableFromName(std::string_view name) const = 0;
     /// @}
 
     // ===========================================================================

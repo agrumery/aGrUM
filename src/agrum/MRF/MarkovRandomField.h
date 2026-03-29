@@ -193,13 +193,6 @@ namespace gum {
     virtual const FactorTable< GUM_SCALAR >& factors() const final;
 
     /**
-     * @brief Returns a map between variables and nodes of this gum::MarkovRandomField.
-     *
-     * @return Returns a constant reference to the gum::VariableNodeMap.
-     */
-    virtual const VariableNodeMap& variableNodeMap() const final;
-
-    /**
      * @brief Add a variable to the gum::MarkovRandomField.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId
@@ -298,13 +291,10 @@ namespace gum {
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::MarkovRandomField.
      */
-    const DiscreteVariable& variable(NodeId id) const final;
 
     /**
      * @brief Returns a gum::DiscreteVariable given its name in the
      *        gum::MarkovRandomField.
-     * @throw NotFound Raised if id does not match a a variable in the
-     *                 gum::MarkovRandomField.
      */
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
@@ -349,36 +339,6 @@ namespace gum {
       changeVariableLabel(idFromName(name), old_label, new_label);
     }
 
-    /**
-     * @brief Returns a variable's id in the gum::MarkovRandomField.
-     *
-     * @param var The variable from which the gum::NodeId is returned.
-     * @return Returns the gum::DiscreteVariable gum::NodeId in the
-     *         gum::MarkovRandomField.
-     * @throw NotFound If var is not in the gum::MarkovRandomField.
-     */
-    NodeId nodeId(const DiscreteVariable& var) const final;
-
-    /**
-     * @brief Returns a variable's id given its name in the gum::MarkovRandomField.
-     *
-     * @param name The variable's name from which the gum::NodeId is returned.
-     * @return Returns the variable gum::NodeId in the gum::MarkovRandomField.
-     * @throw NotFound Raised if name does not match a variable in the
-     * gum::MarkovRandomField.
-     */
-    NodeId idFromName(std::string_view name) const final;
-
-    /**
-     * @brief Returns a variable given its name in the gum::MarkovRandomField.
-     *
-     * @param name The variable's name in the gum::MarkovRandomField.
-     * @return Returns the gum::DiscreteVariable named name in the
-     * gum::MarkovRandomField.
-     * @throw NotFound Raised if name does not match a variable in the
-     * gum::MarkovRandomField.
-     */
-    const DiscreteVariable& variableFromName(std::string_view name) const final;
     /// @}
 
     // ===========================================================================
@@ -454,8 +414,6 @@ namespace gum {
 
     /// rebuild the graph after strucural changes in the factors
     void _rebuildGraph_();
-    /// the map between variable and id
-    VariableNodeMap _varMap_;
 
     /// the factors
     FactorTable< GUM_SCALAR > _factors_;
@@ -469,6 +427,11 @@ namespace gum {
     using IMarkovRandomField< GUM_SCALAR >::size;
     using IMarkovRandomField< GUM_SCALAR >::nodes;
     using IMarkovRandomField< GUM_SCALAR >::log10DomainSize;
+    using DiscreteGraphicalModel::idFromName;
+    using DiscreteGraphicalModel::variableNodeMap;
+    using DiscreteGraphicalModel::variable;
+    using DiscreteGraphicalModel::nodeId;
+    using DiscreteGraphicalModel::variableFromName;
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.

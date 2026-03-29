@@ -39,49 +39,89 @@
  ****************************************************************************/
 
 
-#include <agrum/base/graphicalModels/DAGmodel.h>
+/**
+ * @file
+ * @brief Base class for graphical models over discrete variables.
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ */
+#ifndef GUM_DISCRETE_GRAPHICAL_MODEL_H
+#define GUM_DISCRETE_GRAPHICAL_MODEL_H
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/base/graphicalModels/DAGmodel_inl.h>
-#endif /* GUM_NO_INLINE */
+#include <agrum/agrum.h>
+
+#include <agrum/base/graphicalModels/graphicalModel.h>
+#include <agrum/base/graphicalModels/variableNodeMap.h>
 
 namespace gum {
-  DAGmodel::DAGmodel() { GUM_CONSTRUCTOR(DAGmodel); }
 
-  DAGmodel::DAGmodel(const DAGmodel& from) : DiscreteGraphicalModel(from), dag_(from.dag_) {
-    GUM_CONS_CPY(DAGmodel);
-  }
+  /**
+   * @class DiscreteGraphicalModel
+   * @headerfile discreteGraphicalModel.h
+   *   <agrum/base/graphicalModels/discreteGraphicalModel.h>
+   * @brief Intermediate base class for graphical models over discrete variables.
+   *
+   * Owns a VariableNodeMap and provides concrete implementations of the five
+   * variable-accessor methods declared pure virtual in GraphicalModel
+   * (variableNodeMap, variable, nodeId, idFromName, variableFromName).
+   * All concrete models (BayesNet, MarkovRandomField, InfluenceDiagram, …)
+   * inherit from this class via DAGmodel or UGmodel.
+   */
+  class DiscreteGraphicalModel: public GraphicalModel {
+    public:
+    /// @name Constructors / Destructors
+    /// @{
 
-  DAGmodel::~DAGmodel() { GUM_DESTRUCTOR(DAGmodel); }
+    DiscreteGraphicalModel();
+    virtual ~DiscreteGraphicalModel();
+    DiscreteGraphicalModel(const DiscreteGraphicalModel& source);
 
-  DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
-    if (this != &source) {
-      DiscreteGraphicalModel::operator=(source);
-      dag_ = source.dag_;
-    }
+    /// @}
+    /// @name Variable accessor methods
+    /// @{
 
-    return *this;
-  }
+    /**
+     * Returns a constant reference to the VariableNodeMap of this model.
+     */
+    const VariableNodeMap& variableNodeMap() const override;
 
-  UndiGraph DAGmodel::moralGraph() const { return dag().moralGraph(); }
+    /**
+     * Returns a constant reference over a variable given its node id.
+     * @throw NotFound if no variable's id matches id.
+     */
+    const DiscreteVariable& variable(NodeId id) const override;
 
-  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
-    if (this == &other) return true;
+    /**
+     * Returns the NodeId of a variable.
+     * @throw NotFound if no variable matches var.
+     */
+    NodeId nodeId(const DiscreteVariable& var) const override;
 
-    if (size() != other.size()) return false;
+    /**
+     * Returns the NodeId of a variable given its name.
+     * @throw NotFound if no such name exists in the model.
+     */
+    NodeId idFromName(std::string_view name) const override;
 
-    if (sizeArcs() != other.sizeArcs()) return false;
+    /**
+     * Returns a constant reference over a variable given its name.
+     * @throw NotFound if no such name exists in the model.
+     */
+    const DiscreteVariable& variableFromName(std::string_view name) const override;
 
-    for (const auto& nid: nodes()) {
-      if (!other.exists(variable(nid).name())) return false;
-    }
+    /// @}
 
-    for (const auto& arc: arcs()) {
-      if (!other.arcs().exists(Arc(other.idFromName(variable(arc.tail()).name()),
-                                   other.idFromName(variable(arc.head()).name()))))
-        return false;
-    }
+    protected:
+    DiscreteGraphicalModel& operator=(const DiscreteGraphicalModel& source);
 
-    return true;
-  }
+    /// Mapping between NodeIds and discrete variables.
+    VariableNodeMap varMap_;
+  };
+
 }   // namespace gum
+
+#ifndef GUM_NO_INLINE
+#  include <agrum/base/graphicalModels/discreteGraphicalModel_inl.h>
+#endif /* GUM_NO_INLINE */
+
+#endif /* GUM_DISCRETE_GRAPHICAL_MODEL_H */

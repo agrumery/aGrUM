@@ -6387,7 +6387,32 @@ _static_list_end_ = cvar._static_list_end_
 _list_end_safe_ = cvar._list_end_safe_
 _list_end_ = cvar._list_end_
 
-class DAGmodel(GraphicalModel):
+class DiscreteGraphicalModel(GraphicalModel):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined - class is abstract")
+    __repr__ = _swig_repr
+    __swig_destroy__ = _pyagrum.delete_DiscreteGraphicalModel
+
+    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrum.DiscreteGraphicalModel_variableNodeMap(self)
+
+    def variable(self, id: int) -> "pyagrum.DiscreteVariable":
+        return _pyagrum.DiscreteGraphicalModel_variable(self, id)
+
+    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        return _pyagrum.DiscreteGraphicalModel_nodeId(self, var)
+
+    def idFromName(self, name: "str_view") -> int:
+        return _pyagrum.DiscreteGraphicalModel_idFromName(self, name)
+
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+        return _pyagrum.DiscreteGraphicalModel_variableFromName(self, name)
+
+# Register DiscreteGraphicalModel in _pyagrum:
+_pyagrum.DiscreteGraphicalModel_swigregister(DiscreteGraphicalModel)
+class DAGmodel(DiscreteGraphicalModel):
     r"""
 
     Abstract class used by IBayesNet and InfluenceDiagram.
@@ -6395,11 +6420,11 @@ class DAGmodel(GraphicalModel):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    def __init__(self, *args, **kwargs):
-        raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrum.delete_DAGmodel
+
+    def __init__(self, *args):
+        _pyagrum.DAGmodel_swiginit(self, _pyagrum.new_DAGmodel(*args))
 
     def dag(self) -> "pyagrum.DAG":
         r"""
@@ -6661,13 +6686,13 @@ class DAGmodel(GraphicalModel):
 
 # Register DAGmodel in _pyagrum:
 _pyagrum.DAGmodel_swigregister(DAGmodel)
-class UGmodel(GraphicalModel):
+class UGmodel(DiscreteGraphicalModel):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    def __init__(self, *args, **kwargs):
-        raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrum.delete_UGmodel
+
+    def __init__(self, *args):
+        _pyagrum.UGmodel_swiginit(self, _pyagrum.new_UGmodel(*args))
 
     def graph(self) -> "pyagrum.UndiGraph":
         return _pyagrum.UGmodel_graph(self)
@@ -11136,109 +11161,6 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_cpt(self, varId)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Returns
-        -------
-        pyagrum.variableNodeMap
-            the variable node map
-
-        """
-        return _pyagrum.IBayesNet_variableNodeMap(self)
-
-    def variable(self, id: int) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        id : int
-            a variable's id
-        name : str
-            a variable's name
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.IBayesNet_variable(self, id)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        r"""
-
-        Parameters
-        ----------
-        var : pyagrum.DiscreteVariable
-            a variable
-
-        Returns
-        -------
-        int
-            the id of the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.IBayesNet_nodeId(self, var)
-
-    def idFromName(self, name: "str_view") -> int:
-        r"""
-
-        Returns a variable's id given its name in the graph.
-
-        Parameters
-        ----------
-        name : str
-            The variable's name from which the id is returned.
-
-        Notes
-        -----
-          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
-
-        Returns
-        -------
-        int :
-            The variable's node id.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If name does not match a variable in the graph
-
-        """
-        return _pyagrum.IBayesNet_idFromName(self, name)
-
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            a variable's name
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.IBayesNet_variableFromName(self, name)
-
     def jointProbability(self, i: "pyagrum.Instantiation") -> float:
         r"""
 
@@ -11922,17 +11844,6 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_cpt(self, *args)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Returns
-        -------
-        pyagrum.variableNodeMap
-            the variable node map
-
-        """
-        return _pyagrum.BayesNet_variableNodeMap(self)
-
     def add(self, *args) -> int:
         r"""
 
@@ -11989,29 +11900,6 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_erase(self, *args)
 
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        id : int
-            a variable's id
-        name : str
-            a variable's name
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.BayesNet_variable(self, *args)
-
     def changeVariableName(self, *args) -> None:
         r"""
 
@@ -12057,75 +11945,6 @@ class BayesNet(IBayesNet):
 
         """
         return _pyagrum.BayesNet_changeVariableLabel(self, *args)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        r"""
-
-        Parameters
-        ----------
-        var : pyagrum.DiscreteVariable
-            a variable
-
-        Returns
-        -------
-        int
-            the id of the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.BayesNet_nodeId(self, var)
-
-    def idFromName(self, name: "str_view") -> int:
-        r"""
-
-        Returns a variable's id given its name in the graph.
-
-        Parameters
-        ----------
-        name : str
-            The variable's name from which the id is returned.
-
-        Notes
-        -----
-          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
-
-        Returns
-        -------
-        int :
-            The variable's node id.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If name does not match a variable in the graph
-
-        """
-        return _pyagrum.BayesNet_idFromName(self, name)
-
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            a variable's name
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the graph does not contain the variable
-
-        """
-        return _pyagrum.BayesNet_variableFromName(self, name)
 
     def addArc(self, *args) -> None:
         r"""
@@ -12666,6 +12485,41 @@ class BayesNet(IBayesNet):
 
         """
         return _pyagrum.BayesNet_log10DomainSize(self)
+
+    def idFromName(self, name: "str_view") -> int:
+        return _pyagrum.BayesNet_idFromName(self, name)
+
+    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrum.BayesNet_variableNodeMap(self)
+
+    def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            a variable's id
+        name : str
+            a variable's name
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.IndexError
+            If the graph does not contain the variable
+
+        """
+        return _pyagrum.BayesNet_variable(self, *args)
+
+    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        return _pyagrum.BayesNet_nodeId(self, var)
+
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+        return _pyagrum.BayesNet_variableFromName(self, name)
 
     def ids(self, names: list[str]) -> object:
         r"""
@@ -28370,96 +28224,6 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_decisionNodeSize(self)
 
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        id : int
-             the node id
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            a constant reference over a variabe given it's node id
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable's id matches the parameter
-
-        """
-        return _pyagrum.InfluenceDiagram_variable(self, *args)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        r"""
-
-        Parameters
-        ----------
-        var : pyagrum.DiscreteVariable
-            a variable
-
-        Returns
-        -------
-        int
-            the id of the variable
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the InfluenceDiagram does not contain the variable
-
-        """
-        return _pyagrum.InfluenceDiagram_nodeId(self, var)
-
-    def idFromName(self, name: "str_view") -> int:
-        r"""
-
-        Returns a variable's id given its name.
-
-        Parameters
-        ----------
-        name : str
-            the variable's name from which the id is returned.
-
-        Returns
-        -------
-        int
-            the variable's node id.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no such name exists in the graph.
-
-        """
-        return _pyagrum.InfluenceDiagram_idFromName(self, name)
-
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            a variable's name
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Notes
-        -----
-          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the InfluenceDiagram does not contain the variable
-
-        """
-        return _pyagrum.InfluenceDiagram_variableFromName(self, name)
-
     def add(self, *args) -> int:
         r"""
 
@@ -28704,6 +28468,36 @@ class InfluenceDiagram(DAGmodel):
 
     def endTopologyTransformation(self) -> None:
         return _pyagrum.InfluenceDiagram_endTopologyTransformation(self)
+
+    def idFromName(self, name: "str_view") -> int:
+        return _pyagrum.InfluenceDiagram_idFromName(self, name)
+
+    def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Parameters
+        ----------
+        id : int
+             the node id
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            a constant reference over a variabe given it's node id
+
+        Raises
+        ------
+        pyagrum.NotFound
+            If no variable's id matches the parameter
+
+        """
+        return _pyagrum.InfluenceDiagram_variable(self, *args)
+
+    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        return _pyagrum.InfluenceDiagram_nodeId(self, var)
+
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+        return _pyagrum.InfluenceDiagram_variableFromName(self, name)
 
     def names(self) -> object:
         r"""
@@ -29783,21 +29577,6 @@ class IMarkovRandomField(UGmodel):
     def factors(self) -> list[set[int]]:
         return _pyagrum.IMarkovRandomField_factors(self)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        return _pyagrum.IMarkovRandomField_variableNodeMap(self)
-
-    def variable(self, id: int) -> "pyagrum.DiscreteVariable":
-        return _pyagrum.IMarkovRandomField_variable(self, id)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        return _pyagrum.IMarkovRandomField_nodeId(self, var)
-
-    def idFromName(self, name: "str_view") -> int:
-        return _pyagrum.IMarkovRandomField_idFromName(self, name)
-
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
-        return _pyagrum.IMarkovRandomField_variableFromName(self, name)
-
     def __eq__(self, _from: "IMarkovRandomField") -> bool:
         return _pyagrum.IMarkovRandomField___eq__(self, _from)
 
@@ -30040,9 +29819,6 @@ class MarkovRandomField(IMarkovRandomField):
     def factors(self) -> list[set[int]]:
         return _pyagrum.MarkovRandomField_factors(self)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        return _pyagrum.MarkovRandomField_variableNodeMap(self)
-
     def add(self, *args) -> int:
         r"""
 
@@ -30101,9 +29877,6 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_erase(self, *args)
 
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        return _pyagrum.MarkovRandomField_variable(self, *args)
-
     def changeVariableName(self, *args) -> None:
         r"""
 
@@ -30149,15 +29922,6 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _pyagrum.MarkovRandomField_changeVariableLabel(self, *args)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        return _pyagrum.MarkovRandomField_nodeId(self, var)
-
-    def idFromName(self, name: "str_view") -> int:
-        return _pyagrum.MarkovRandomField_idFromName(self, name)
-
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
-        return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
     def generateFactors(self) -> None:
         r"""
@@ -30214,6 +29978,21 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _pyagrum.MarkovRandomField_log10DomainSize(self)
+
+    def idFromName(self, name: "str_view") -> int:
+        return _pyagrum.MarkovRandomField_idFromName(self, name)
+
+    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrum.MarkovRandomField_variableNodeMap(self)
+
+    def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        return _pyagrum.MarkovRandomField_variable(self, *args)
+
+    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        return _pyagrum.MarkovRandomField_nodeId(self, var)
+
+    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+        return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
     def names(self) -> object:
         r"""

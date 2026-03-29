@@ -136,7 +136,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR >::BayesNet(const BayesNet< GUM_SCALAR >& source) :
-      IBayesNet< GUM_SCALAR >(source), _varMap_(source._varMap_) {
+      IBayesNet< GUM_SCALAR >(source) {
     GUM_CONS_CPY(BayesNet)
 
     _copyTensors_(source);
@@ -146,8 +146,6 @@ namespace gum {
   BayesNet< GUM_SCALAR >& BayesNet< GUM_SCALAR >::operator=(const BayesNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IBayesNet< GUM_SCALAR >::operator=(source);
-      _varMap_ = source._varMap_;
-
       _clearTensors_();
       _copyTensors_(source);
     }
@@ -164,13 +162,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable& BayesNet< GUM_SCALAR >::variable(NodeId id) const {
-    return _varMap_.get(id);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
-    _varMap_.changeName(id, new_name);
+    this->varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -184,11 +177,6 @@ namespace gum {
         = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return _varMap_.get(var);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -234,7 +222,7 @@ namespace gum {
   NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
                                      MultiDimImplementation< GUM_SCALAR >* aContent,
                                      NodeId                                id) {
-    _varMap_.insert(id, var);
+    this->varMap_.insert(id, var);
     this->dag_.addNodeWithId(id);
 
     auto cpt = new Tensor< GUM_SCALAR >(aContent);
@@ -244,34 +232,18 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
-    return _varMap_.idFromName(name);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
-      BayesNet< GUM_SCALAR >::variableFromName(std::string_view name) const {
-    return _varMap_.variableFromName(name);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
     return *(_probaMap_[varId]);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const VariableNodeMap& BayesNet< GUM_SCALAR >::variableNodeMap() const {
-    return _varMap_;
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase(_varMap_.get(var));
+    erase(this->varMap_.get(var));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::erase(NodeId varId) {
-    if (_varMap_.exists(varId)) {
+    if (this->varMap_.exists(varId)) {
       // Reduce the variable child's CPT
       for (const NodeSet& children = this->children(varId); const auto c: children) {
         _probaMap_[c]->erase(variable(varId));
@@ -280,7 +252,7 @@ namespace gum {
       delete _probaMap_[varId];
 
       _probaMap_.erase(varId);
-      _varMap_.erase(varId);
+      this->varMap_.erase(varId);
       this->dag_.eraseNode(varId);
     }
   }
@@ -317,7 +289,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::eraseArc(const Arc& arc) {
-    if (_varMap_.exists(arc.tail()) && _varMap_.exists(arc.head())) {
+    if (this->varMap_.exists(arc.tail()) && this->varMap_.exists(arc.head())) {
       NodeId head = arc.head();
       NodeId tail = arc.tail();
       this->dag_.eraseArc(arc);
@@ -334,7 +306,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::reverseArc(const Arc& arc) {
     // check that the arc exists
-    if (!_varMap_.exists(arc.tail()) || !_varMap_.exists(arc.head()) || !dag().existsArc(arc)) {
+    if (!this->varMap_.exists(arc.tail()) || !this->varMap_.exists(arc.head()) || !dag().existsArc(arc)) {
       GUM_ERROR(InvalidArc, "a non-existing arc cannot be reversed")
     }
 

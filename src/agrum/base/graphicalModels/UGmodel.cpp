@@ -51,7 +51,9 @@ namespace gum {
     ;
   }
 
-  UGmodel::UGmodel(const UGmodel& from) : graph_(from.graph_) { GUM_CONS_CPY(UGmodel); }
+  UGmodel::UGmodel(const UGmodel& from) : DiscreteGraphicalModel(from), graph_(from.graph_) {
+    GUM_CONS_CPY(UGmodel);
+  }
 
   UGmodel::~UGmodel() {
     GUM_DESTRUCTOR(UGmodel);
@@ -60,7 +62,7 @@ namespace gum {
 
   UGmodel& UGmodel::operator=(const UGmodel& source) {
     if (this != &source) {
-      GraphicalModel::operator=(source);
+      DiscreteGraphicalModel::operator=(source);
       graph_ = source.graph_;
     }
 

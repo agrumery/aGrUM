@@ -702,6 +702,3 @@ ADD_ID_INFERENCE_API(gum::ShaferShenoyLIMIDInference<double >)
 ADD_CN_INFERENCE_API(gum::credal::CNMonteCarloSampling<double>)
 ADD_CN_INFERENCE_API(gum::credal::CNLoopyPropagation<double>)
 
-extend gum::DiscreteVariable {
-  std::string toFast() const {return "virtual method";}
-}

@@ -182,13 +182,6 @@ namespace gum {
     const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); };
 
     /**
-     * @brief Returns a map between variables and nodes of this gum::BayesNet.
-     *
-     * @return Returns a constant reference to the gum::VariableNodeMap.
-     */
-    const VariableNodeMap& variableNodeMap() const final;
-
-    /**
      * @brief Add a variable to the gum::BayesNet.
      *
      * Add a gum::DiscreteVariable, it's associated gum::NodeId and it's
@@ -314,20 +307,7 @@ namespace gum {
     void erase(const DiscreteVariable& var);
 
     /**
-     * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
-     *        gum::BayesNet.
-     *
-     * @param id The variable's id to return.
-     * @returns Returns a constant reference of the gum::DiscreteVariable
-     *          corresponding to id in the gum::BayesNet.
-     * @throw NotFound Raised if id does not match a a variable in the
-     *                 gum::BayesNet.
-     */
-    const DiscreteVariable& variable(NodeId id) const final;
-
-    /**
-     * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
-     *        gum::BayesNet.
+     * @brief Returns a gum::DiscreteVariable given its name in the gum::BayesNet.
      */
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
@@ -372,36 +352,6 @@ namespace gum {
       changeVariableLabel(idFromName(name), old_label, new_label);
     }
 
-    /**
-     * @brief Returns a variable's id in the gum::BayesNet.
-     *
-     * @param var The variable from which the gum::NodeId is returned.
-     * @return Returns the gum::DiscreteVariable gum::NodeId in the
-     *         gum::BayesNet.
-     * @throw NotFound If var is not in the gum::BayesNet.
-     */
-    NodeId nodeId(const DiscreteVariable& var) const final;
-
-    /**
-     * @brief Returns a variable's id given its name in the gum::BayesNet.
-     *
-     * @param name The variable's name from which the gum::NodeId is returned.
-     * @return Returns the variable gum::NodeId in the gum::BayesNet.
-     * @throw NotFound Raised if name does not match a variable in the
-     * gum::BayesNet.
-     */
-    NodeId idFromName(std::string_view name) const final;
-
-    /**
-     * @brief Returns a variable given its name in the gum::BayesNet.
-     *
-     * @param name The variable's name in the gum::BayesNet.
-     * @return Returns the gum::DiscreteVariable named name in the
-     * gum::BayesNet.
-     * @throw NotFound Raised if name does not match a variable in the
-     * gum::BayesNet.
-     */
-    const DiscreteVariable& variableFromName(std::string_view name) const final;
     /// @}
 
     // ===========================================================================
@@ -684,9 +634,6 @@ namespace gum {
     /// copy of tensors from a BN to another, using names of vars as ref.
     void _copyTensors_(const BayesNet< GUM_SCALAR >& source);
 
-    /// the map between variable and id
-    VariableNodeMap _varMap_;
-
     /// Mapping between the variable's id and their CPT.
     NodeProperty< Tensor< GUM_SCALAR >* > _probaMap_;
 
@@ -701,6 +648,11 @@ namespace gum {
     using IBayesNet< GUM_SCALAR >::size;
     using IBayesNet< GUM_SCALAR >::nodes;
     using IBayesNet< GUM_SCALAR >::log10DomainSize;
+    using DiscreteGraphicalModel::idFromName;
+    using DiscreteGraphicalModel::variableNodeMap;
+    using DiscreteGraphicalModel::variable;
+    using DiscreteGraphicalModel::nodeId;
+    using DiscreteGraphicalModel::variableFromName;
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.

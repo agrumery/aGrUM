@@ -223,6 +223,7 @@ namespace std {
 
 %import <agrum/base/graphicalModels/variableNodeMap.h>
 %include <agrum/base/graphicalModels/graphicalModel.h>
+%include <agrum/base/graphicalModels/discreteGraphicalModel.h>
 %include <agrum/base/graphicalModels/DAGmodel.h>
 %include <agrum/base/graphicalModels/UGmodel.h>
 

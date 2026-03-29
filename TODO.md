@@ -215,52 +215,15 @@ Tous les modèles suivent le même patron : `context_` hérité de `GraphicalMod
 
 ---
 
-### A1b. `DiscreteGraphicalModel` : factoriser `_varMap_` | I:3 D:2
+~~### A1b. `DiscreteGraphicalModel` : factoriser `_varMap_` | I:3 D:2~~
 
-**Prérequis : A1 terminé.**
+~~**TERMINÉ** — branche `feature/moveVarMap`, fusionnable dans `feature/wrapperCausalCPP`.~~
 
-BN, MRF et ID déclarent chacun `VariableNodeMap _varMap_` de façon indépendante avec le même
-type. `GraphicalModel` expose déjà `variableNodeMap()` comme méthode virtuelle pure, sans
-l'implémenter.
-
-#### Objectif
-
-Introduire une classe intermédiaire `DiscreteGraphicalModel` entre `GraphicalModel` et les
-modèles concrets, qui centralise :
-
-- `VariableNodeMap _varMap_` — mapping `NodeId ↔ DiscreteVariable*` / `name ↔ NodeId`
-- implémentation de `variableNodeMap()` (retourne `_varMap_`)
-- implémentation de `addVariable()` (délègue à `context_->intern()` puis `_varMap_.insert()`,
-  avec `context_` hérité de `GraphicalModel`)
-
-`GraphicalModel` reste la racine abstraite générique (non spécifique aux variables discrètes).
-
-#### Hiérarchie cible
-
-```
-GraphicalModel                    (context_, variableNodeMap() pure virtuelle)
-  └── DiscreteGraphicalModel      (_varMap_, variableNodeMap(), addVariable())
-        ├── DAGmodel → IBayesNet → BayesNet
-        ├── DAGmodel → InfluenceDiagram
-        └── UGmodel → IMarkovRandomField → MarkovRandomField
-```
-
-#### Ce qui change
-
-- `_varMap_` et `_variableMap_` supprimés de BN, ID, MRF — remplacés par `_varMap_` dans
-  `DiscreteGraphicalModel`.
-- `variableNodeMap()` et `addVariable()` implémentés une seule fois.
-- `DAGmodel` et `UGmodel` héritent de `DiscreteGraphicalModel` (ou directement si l'héritage
-  diamond est évité).
-- Code appelant : aucun changement visible — `variableNodeMap()`, `variable()`, `addVariable()`
-  restent accessibles via les mêmes interfaces.
-
-#### Ordre d'implémentation
-
-1. Créer `discreteGraphicalModel.h/.cpp` avec `_varMap_`, `variableNodeMap()`, `addVariable()`.
-2. Faire hériter `DAGmodel` et `UGmodel` de `DiscreteGraphicalModel`.
-3. Supprimer `_varMap_` / `_variableMap_` de BN, ID, MRF.
-4. `act test release aGrUM -m BASE+BN+MRF` — vérifier zéro régression.
+~~`DiscreteGraphicalModel` introduite entre `GraphicalModel` et `DAGmodel`/`UGmodel` :
+`varMap_` (protected) + 5 accesseurs (`variableNodeMap`, `variable`, `nodeId`, `idFromName`,
+`variableFromName`) implémentés une seule fois. `_varMap_`/`_variableMap_` supprimés de BN,
+MRF, ID. Bindings SWIG mis à jour (`%include discreteGraphicalModel.h`).
+Note : `addVariable()` reste à faire dans le cadre de A1 (dépend de `VariableContext`).~~
 
 ---
 

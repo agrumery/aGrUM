@@ -38,50 +38,33 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
 
-#include <agrum/base/graphicalModels/DAGmodel.h>
-
-#ifdef GUM_NO_INLINE
-#  include <agrum/base/graphicalModels/DAGmodel_inl.h>
-#endif /* GUM_NO_INLINE */
+#include <agrum/base/graphicalModels/discreteGraphicalModel.h>
 
 namespace gum {
-  DAGmodel::DAGmodel() { GUM_CONSTRUCTOR(DAGmodel); }
 
-  DAGmodel::DAGmodel(const DAGmodel& from) : DiscreteGraphicalModel(from), dag_(from.dag_) {
-    GUM_CONS_CPY(DAGmodel);
+  INLINE
+  const VariableNodeMap& DiscreteGraphicalModel::variableNodeMap() const { return varMap_; }
+
+  INLINE
+  const DiscreteVariable& DiscreteGraphicalModel::variable(NodeId id) const {
+    return varMap_.get(id);
   }
 
-  DAGmodel::~DAGmodel() { GUM_DESTRUCTOR(DAGmodel); }
-
-  DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
-    if (this != &source) {
-      DiscreteGraphicalModel::operator=(source);
-      dag_ = source.dag_;
-    }
-
-    return *this;
+  INLINE
+  NodeId DiscreteGraphicalModel::nodeId(const DiscreteVariable& var) const {
+    return varMap_.get(var);
   }
 
-  UndiGraph DAGmodel::moralGraph() const { return dag().moralGraph(); }
-
-  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
-    if (this == &other) return true;
-
-    if (size() != other.size()) return false;
-
-    if (sizeArcs() != other.sizeArcs()) return false;
-
-    for (const auto& nid: nodes()) {
-      if (!other.exists(variable(nid).name())) return false;
-    }
-
-    for (const auto& arc: arcs()) {
-      if (!other.arcs().exists(Arc(other.idFromName(variable(arc.tail()).name()),
-                                   other.idFromName(variable(arc.head()).name()))))
-        return false;
-    }
-
-    return true;
+  INLINE
+  NodeId DiscreteGraphicalModel::idFromName(std::string_view name) const {
+    return varMap_.idFromName(name);
   }
+
+  INLINE
+  const DiscreteVariable& DiscreteGraphicalModel::variableFromName(std::string_view name) const {
+    return varMap_.variableFromName(name);
+  }
+
 }   // namespace gum

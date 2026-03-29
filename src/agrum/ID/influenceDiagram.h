@@ -165,12 +165,6 @@ namespace gum {
     };
 
     /**
-     * Returns a constant reference to the VariableNodeMap of this Influence
-     * Diagram
-     */
-    const VariableNodeMap& variableNodeMap() const final;
-
-    /**
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
@@ -206,29 +200,9 @@ namespace gum {
      */
     Size decisionNodeSize() const;
 
-    /**
-     * Returns a constant reference over a variable given it's node id.
-     * @throw NotFound If no variable's id matches varId.
-     */
-    const DiscreteVariable& variable(NodeId id) const final;
-
     const DiscreteVariable& variable(std::string_view name) const {
       return variable(idFromName(name));
     };
-
-    /**
-     * Return id node from discrete var pointer.
-     * @throw NotFound If no variable matches var.
-     */
-    NodeId nodeId(const DiscreteVariable& var) const final;
-
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    NodeId idFromName(std::string_view name) const final;
-
-    /// Getter by name
-    /// @throw NotFound if no such name exists in the graph.
-    const DiscreteVariable& variableFromName(std::string_view name) const final;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -547,10 +521,14 @@ namespace gum {
      */
     Sequence< NodeId > getChildrenDecision_(NodeId parentDecision) const;
 
-    private:
-    /// Mapping between id and variable
-    VariableNodeMap _variableMap_;
+    public:
+    using DiscreteGraphicalModel::idFromName;
+    using DiscreteGraphicalModel::variableNodeMap;
+    using DiscreteGraphicalModel::variable;
+    using DiscreteGraphicalModel::nodeId;
+    using DiscreteGraphicalModel::variableFromName;
 
+    private:
     /// Mapping between tensor variable's id and their CPT
     NodeProperty< Tensor< GUM_SCALAR >* > _tensorMap_;
     /// Mapping between utility variable's id and their utility table

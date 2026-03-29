@@ -141,8 +141,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >::MarkovRandomField(
       const MarkovRandomField< GUM_SCALAR >& source) :
-      IMarkovRandomField< GUM_SCALAR >(source), _topologyTransformationInProgress_(false),
-      _varMap_(source._varMap_) {
+      IMarkovRandomField< GUM_SCALAR >(source), _topologyTransformationInProgress_(false) {
     GUM_CONS_CPY(MarkovRandomField);
     _copyFactors_(source);
   }
@@ -152,7 +151,6 @@ namespace gum {
       MarkovRandomField< GUM_SCALAR >::operator=(const MarkovRandomField< GUM_SCALAR >& source) {
     if (this != &source) {
       IMarkovRandomField< GUM_SCALAR >::operator=(source);
-      _varMap_                           = source._varMap_;
       _topologyTransformationInProgress_ = false;
       _copyFactors_(source);
     }
@@ -167,14 +165,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable& MarkovRandomField< GUM_SCALAR >::variable(NodeId id) const {
-    return _varMap_.get(id);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                   std::string_view new_name) {
-    _varMap_.changeName(id, new_name);
+    this->varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -188,11 +181,6 @@ namespace gum {
         = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
 
     var->changeLabel(var->posLabel(old_label), new_label);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
-    return _varMap_.get(var);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -248,7 +236,7 @@ namespace gum {
       auto& c = *kv.second;
       for (Idx i = 0; i < c.nbrDim(); i++)
         for (Idx j = i + 1; j < c.nbrDim(); j++)
-          this->graph_.addEdge(_varMap_.get(c.variable(i)), _varMap_.get(c.variable(j)));
+          this->graph_.addEdge(this->varMap_.get(c.variable(i)), this->varMap_.get(c.variable(j)));
     }
   }
 
@@ -259,30 +247,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId id) {
-    _varMap_.insert(id, var);
+    this->varMap_.insert(id, var);
     this->graph_.addNodeWithId(id);
     return id;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::idFromName(std::string_view name) const {
-    return _varMap_.idFromName(name);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
-      MarkovRandomField< GUM_SCALAR >::variableFromName(std::string_view name) const {
-    return _varMap_.variableFromName(name);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE const VariableNodeMap& MarkovRandomField< GUM_SCALAR >::variableNodeMap() const {
-    return _varMap_;
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   INLINE void MarkovRandomField< GUM_SCALAR >::erase(const DiscreteVariable& var) {
-    erase(_varMap_.get(var));
+    erase(this->varMap_.get(var));
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -292,8 +264,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::erase(NodeId varId) {
-    if (!_varMap_.exists(varId)) { GUM_ERROR(InvalidArgument, "No node with id " << varId << ".") }
-    _varMap_.erase(varId);
+    if (!this->varMap_.exists(varId)) { GUM_ERROR(InvalidArgument, "No node with id " << varId << ".") }
+    this->varMap_.erase(varId);
     this->graph_.eraseNode(varId);
 
     std::vector< NodeSet > vs;

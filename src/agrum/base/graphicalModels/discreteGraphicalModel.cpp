@@ -39,49 +39,30 @@
  ****************************************************************************/
 
 
-#include <agrum/base/graphicalModels/DAGmodel.h>
+#include <agrum/base/graphicalModels/discreteGraphicalModel.h>
 
 #ifdef GUM_NO_INLINE
-#  include <agrum/base/graphicalModels/DAGmodel_inl.h>
+#  include <agrum/base/graphicalModels/discreteGraphicalModel_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  DAGmodel::DAGmodel() { GUM_CONSTRUCTOR(DAGmodel); }
 
-  DAGmodel::DAGmodel(const DAGmodel& from) : DiscreteGraphicalModel(from), dag_(from.dag_) {
-    GUM_CONS_CPY(DAGmodel);
+  DiscreteGraphicalModel::DiscreteGraphicalModel() { GUM_CONSTRUCTOR(DiscreteGraphicalModel); }
+
+  DiscreteGraphicalModel::DiscreteGraphicalModel(const DiscreteGraphicalModel& from) :
+      GraphicalModel(from), varMap_(from.varMap_) {
+    GUM_CONS_CPY(DiscreteGraphicalModel);
   }
 
-  DAGmodel::~DAGmodel() { GUM_DESTRUCTOR(DAGmodel); }
+  DiscreteGraphicalModel::~DiscreteGraphicalModel() { GUM_DESTRUCTOR(DiscreteGraphicalModel); }
 
-  DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
+  DiscreteGraphicalModel&
+      DiscreteGraphicalModel::operator=(const DiscreteGraphicalModel& source) {
     if (this != &source) {
-      DiscreteGraphicalModel::operator=(source);
-      dag_ = source.dag_;
+      GraphicalModel::operator=(source);
+      varMap_ = source.varMap_;
     }
-
     return *this;
   }
 
-  UndiGraph DAGmodel::moralGraph() const { return dag().moralGraph(); }
-
-  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
-    if (this == &other) return true;
-
-    if (size() != other.size()) return false;
-
-    if (sizeArcs() != other.sizeArcs()) return false;
-
-    for (const auto& nid: nodes()) {
-      if (!other.exists(variable(nid).name())) return false;
-    }
-
-    for (const auto& arc: arcs()) {
-      if (!other.arcs().exists(Arc(other.idFromName(variable(arc.tail()).name()),
-                                   other.idFromName(variable(arc.head()).name()))))
-        return false;
-    }
-
-    return true;
-  }
 }   // namespace gum
