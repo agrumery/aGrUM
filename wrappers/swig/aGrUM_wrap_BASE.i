@@ -204,7 +204,7 @@ namespace std {
 
 %import <agrum/base/multidim/implementations/multiDimInterface.h>
 %import <agrum/base/multidim/implementations/multiDimAdressable.h>
-%ignore gum::MultiDimContainer::populate(std::initializer_list< GUM_SCALAR > l) const;
+%warnfilter(476) gum::MultiDimContainer::populate;
 %import <agrum/base/multidim/implementations/multiDimContainer.h>
 %import <agrum/base/multidim/implementations/multiDimDecorator.h>
 %import <agrum/base/multidim/implementations/multiDimImplementation.h>

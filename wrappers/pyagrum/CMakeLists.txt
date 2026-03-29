@@ -123,20 +123,47 @@ macro(gum_add_python_module MODULENAME)
       -I${AGRUM_SOURCE_DIR} -I${SWIG_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/swigsrc/ -I${CMAKE_CURRENT_SOURCE_DIR}/doc
       -o ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
       ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
+      COMMENT "SWIG: generating ${MODULENAME} Python bindings"
     )
-    add_custom_command(OUTPUT ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
-      ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-      ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
-      DEPENDS ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
-      ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-      ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
-      COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
-      COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h ${GENERATED_PYTHON})
+
+    # passForPyType post-processes raw/ → generated-files/.
+    # OUTPUT is a stamp file (build tree, always touched) so Ninja uses it — not the
+    # generated-files/ timestamps — to decide whether to re-run this command.
+    # generated-files/ are BYPRODUCTS: Ninja knows they may be written here, but their
+    # timestamps do not trigger re-runs. passForPyType only writes them when content
+    # changes, so pyagrumPYTHON_wrap.cxx.o is recompiled only when truly necessary.
+    set(_PASSFORPYTYPE_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_passForPyType.stamp)
+    add_custom_command(OUTPUT ${_PASSFORPYTYPE_STAMP}
+      BYPRODUCTS
+        ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+        ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+        ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
+      DEPENDS
+        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
+        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+      COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
+              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
+              ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+      COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
+              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+              ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+      COMMAND ${CMAKE_COMMAND} -E copy
+              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h ${GENERATED_PYTHON}
+      COMMAND ${CMAKE_COMMAND} -E touch ${_PASSFORPYTYPE_STAMP}
+      COMMENT "passForPyType: post-processing ${MODULENAME} SWIG output"
+    )
+
+    # Custom target so the library can declare an explicit ordering dependency on the stamp.
+    add_custom_target(${MODULENAME_LOWER}_swig_generated DEPENDS ${_PASSFORPYTYPE_STAMP})
   endif()
 
   set(_PYAGRUMLIB _${MODULENAME_LOWER})
   add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+  set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
+  if(SWIG_FOUND)
+    add_dependencies(${_PYAGRUMLIB} ${MODULENAME_LOWER}_swig_generated)
+  endif()
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
 
   if(WIN32)

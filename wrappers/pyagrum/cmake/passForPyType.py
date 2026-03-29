@@ -243,8 +243,12 @@ def _build_rules(raw_rules: list[tuple], is_python: bool) -> list[_Rule]:
   return rules
 
 
-def process_filters(src_filename: str, target_filename: str, is_python: bool, debug_mode: bool):
-  notif("Python mode" if is_python else "C++ mode")
+def process_filters(src_filename: str, is_python: bool, debug_mode: bool) -> tuple[str, list[_Rule]]:
+  """Process src_filename through type-mapping rules.
+
+  Returns the transformed content as a string and the list of rules (with
+  triggered counts), so the caller can decide whether to print the stats.
+  """
   rules = _build_rules(_RULES_PYTHON_RAW if is_python else _RULES_CPP, is_python)
 
   commentstr = "# ##" if is_python else "// ## "
@@ -254,7 +258,8 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
   _type_annotation_line = re.compile(r'(?:->|\bdef\s+\w)')
 
   typing_added = False
-  with open(src_filename, "r") as src, open(target_filename, "w") as dst:
+  output_lines = []
+  with open(src_filename, "r") as src:
     for line in src.read().splitlines():
       originalline = line
       has_annotation = bool(_type_annotation_line.search(line))
@@ -265,17 +270,22 @@ def process_filters(src_filename: str, target_filename: str, is_python: bool, de
           line = rule.regex.sub(rule.replacement, line)
           rule.triggered += 1
       if debug_mode and line != originalline:
-        print(commentstr + originalline.strip(), file=dst)
+        output_lines.append(commentstr + originalline.strip())
       if is_python and not typing_added:
         if line.strip() == "## added by passForType (pyAgrum)":  # already added annotation module
           typing_added = True
         elif line.strip() == "# Import the low-level C/C++ module":  # add annotation module
-          print(commentstr + " recursive import for typehints annotation", file=dst)
-          print("import pyagrum", file=dst)
-          print(commentstr + " end of added by passForType (pyAgrum)\n", file=dst)
+          output_lines.append(commentstr + " recursive import for typehints annotation")
+          output_lines.append("import pyagrum")
+          output_lines.append(commentstr + " end of added by passForType (pyAgrum)\n")
           typing_added = True
-      print(line, file=dst)
+      output_lines.append(line)
 
+  return "\n".join(output_lines) + "\n", rules
+
+
+def _print_stats(rules: list[_Rule], is_python: bool) -> None:
+  notif("Python mode" if is_python else "C++ mode")
   total = 0
   notif("-" * 85)
   for i, rule in enumerate(rules, 1):
@@ -299,23 +309,25 @@ def do_the_job(src_filename: str, target_filename: str, backup_filename: str, is
   if not os.path.exists(src_filename):
     raise IOError(f"File '{src_filename}' not found.")
 
-  if target_filename == _INPLACE:
-    t_filename = src_filename
-    s_filename = src_filename + ".copy"
-    shutil.copy(t_filename, s_filename)
-  else:
-    t_filename = target_filename
-    s_filename = src_filename
+  t_filename = src_filename if target_filename == _INPLACE else target_filename
+
+  new_content, rules = process_filters(src_filename, is_python, debug_mode)
+
+  if os.path.exists(t_filename):
+    with open(t_filename, "r") as f:
+      if f.read() == new_content:
+        notif(f"  - {t_filename} unchanged (skipped).")
+        return
+
+  _print_stats(rules, is_python)
 
   if not debug_mode:
     notif(f"  - backup in {backup_filename}.")
     if os.path.exists(t_filename):
       shutil.copy(t_filename, backup_filename)
 
-  process_filters(s_filename, t_filename, is_python, debug_mode)
-
-  if target_filename == _INPLACE:
-    os.remove(s_filename)
+  with open(t_filename, "w") as f:
+    f.write(new_content)
 
   notif(f"  - {t_filename} updated.")
 
