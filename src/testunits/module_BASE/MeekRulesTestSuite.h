@@ -100,6 +100,6 @@ namespace gum_tests {
     }
   };   // MeekrulesTestSuite
 
-  GUM_TEST_ACTIF(test_cycle_PDAG)
+  GUM_TEST_ACTIF(_cycle_PDAG)
   GUM_TEST_ACTIF(critereMinParents1)
 }   // namespace gum_tests

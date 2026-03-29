@@ -2224,7 +2224,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(asia_with_user_modalities_string_min)
   GUM_TEST_ACTIF(_asia_with_user_modalities_string_incorrect)
   GUM_TEST_ACTIF(_asia_with_user_modalities_numbers)
-  GUM_TEST_ACTIF(test_asia_with_user_modalities_numbers_incorrect)
+  GUM_TEST_ACTIF(_asia_with_user_modalities_numbers_incorrect)
   GUM_TEST_ACTIF(_asia_param)
   GUM_TEST_ACTIF(_asia_param_from_bn)
   GUM_TEST_ACTIF(_asia_param_float)
