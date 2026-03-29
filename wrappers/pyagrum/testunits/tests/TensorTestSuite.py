@@ -1149,7 +1149,7 @@ class TestNumpyInterop(pyAgrumTestCase):
     t = self._make_tensor()
     arr = t.toarray()
     self.assertIsInstance(arr, np.ndarray)
-    self.assertEqual(arr.shape, (3, 2))   # reversed(self.shape) = reversed((2,3))
+    self.assertEqual(arr.shape, (3, 2))  # reversed(self.shape) = reversed((2,3))
     self.assertEqual(arr.dtype, np.float64)
     # modifying the copy must not affect the Tensor
     arr[0, 0] = -1.0
@@ -1233,9 +1233,10 @@ class TestNumpyInterop(pyAgrumTestCase):
 
   def testFillFromDistribution(self):
     import scipy.stats as stats
+
     # B[5] <- A[3]: for each value of A, the CPT over B follows a normal
-    A = gum.RangeVariable("A", "", 0, 2)   # 3 values: 0, 1, 2
-    B = gum.RangeVariable("B", "", 0, 4)   # 5 values: 0, 1, 2, 3, 4
+    A = gum.RangeVariable("A", "", 0, 2)  # 3 values: 0, 1, 2
+    B = gum.RangeVariable("B", "", 0, 4)  # 5 values: 0, 1, 2, 3, 4
     t = gum.Tensor().add(B).add(A)
     t.fillFromDistribution(stats.norm, loc="A", scale=1)
     # CPT: each row (fixed A) must sum to 1 and be non-negative
@@ -1247,6 +1248,7 @@ class TestNumpyInterop(pyAgrumTestCase):
 
   def testFillFromDistributionReturnsSelf(self):
     import scipy.stats as stats
+
     A = gum.RangeVariable("A", "", 0, 2)
     B = gum.RangeVariable("B", "", 0, 4)
     t = gum.Tensor().add(B).add(A)
@@ -1254,6 +1256,7 @@ class TestNumpyInterop(pyAgrumTestCase):
 
   def testFillFromDistributionNoParents(self):
     import scipy.stats as stats
+
     # single-variable tensor: no parents, one column in the CPT
     B = gum.RangeVariable("B", "", 0, 4)
     t = gum.Tensor().add(B)

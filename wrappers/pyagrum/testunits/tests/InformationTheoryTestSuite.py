@@ -46,30 +46,26 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class TestInformationTheory(pyAgrumTestCase):
-    def testEntropyBN(self):
-        bn = gum.fastBN("A->B->C")
-        entropy1 = bn.cpt("A").expectedValue(lambda x: -math.log2(bn.cpt("A")[x]))
+  def testEntropyBN(self):
+    bn = gum.fastBN("A->B->C")
+    entropy1 = bn.cpt("A").expectedValue(lambda x: -math.log2(bn.cpt("A")[x]))
 
-        ie = gum.LazyPropagation(bn)
-        it = gum.InformationTheory(ie, ["A"], ["B"])
-        entropy2 = it.entropyX()
+    ie = gum.LazyPropagation(bn)
+    it = gum.InformationTheory(ie, ["A"], ["B"])
+    entropy2 = it.entropyX()
 
-        self.assertAlmostEqual(entropy1, entropy2, delta=1e-6)
+    self.assertAlmostEqual(entropy1, entropy2, delta=1e-6)
 
-    def testEntropyMRF(self):
-        mrf = gum.fastMRF("A--B--C;C--D")
-        qA = (
-            (mrf.factor(["A", "B", "C"]) * mrf.factor(["C", "D"]))
-            .normalize()
-            .sumIn("A")
-        )
-        entropy1 = qA.expectedValue(lambda x: -math.log2(qA[x]))
+  def testEntropyMRF(self):
+    mrf = gum.fastMRF("A--B--C;C--D")
+    qA = (mrf.factor(["A", "B", "C"]) * mrf.factor(["C", "D"])).normalize().sumIn("A")
+    entropy1 = qA.expectedValue(lambda x: -math.log2(qA[x]))
 
-        ie = gum.ShaferShenoyMRFInference(mrf)
-        it = gum.InformationTheory(ie, ["A"], ["B"])
-        entropy2 = it.entropyX()
+    ie = gum.ShaferShenoyMRFInference(mrf)
+    it = gum.InformationTheory(ie, ["A"], ["B"])
+    entropy2 = it.entropyX()
 
-        self.assertAlmostEqual(entropy1, entropy2, delta=1e-6)
+    self.assertAlmostEqual(entropy1, entropy2, delta=1e-6)
 
 
 ts = unittest.TestSuite()

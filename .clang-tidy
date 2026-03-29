@@ -7,6 +7,7 @@ Checks: >
   bug-prone-*,
   modernize-*,
   performance-*,
+  -performance-avoid-endl,
   readability-braces-around-statements,
   readability-identifier-naming,
   -modernize-use-trailing-return-type,
@@ -14,19 +15,19 @@ Checks: >
 WarningsAsErrors: ''
 HeaderFileExtensions:
 
-- ''
-- h
-- hh
-- hpp
-- hxx
+  - ''
+  - h
+  - hh
+  - hpp
+  - hxx
 ImplementationFileExtensions:
-- c
-- cc
-- cpp
-- cxx
+  - c
+  - cc
+  - cpp
+  - cxx
 HeaderFilterRegex: '.*/agrum/.*'
 ExcludeHeaderFilterRegex: '.*/agrum/base/external/.*'
-FormatStyle:     none
-CheckOptions:    {}
-SystemHeaders:   false
+FormatStyle: none
+CheckOptions: { }
+SystemHeaders: false
 ...

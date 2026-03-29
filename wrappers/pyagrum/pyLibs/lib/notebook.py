@@ -76,7 +76,7 @@ import pyagrum as gum
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot,MRF2FactorGraphdot
+from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
 
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
@@ -1743,7 +1743,6 @@ def inspectBN(bn):
   return flow
 
 
-
 def getCausalModel(cm: gum.CausalModel, size=None) -> str:
   """
   return a HTML representing the causal model
@@ -1782,11 +1781,11 @@ def showCausalModel(cm: gum.CausalModel, size=None):
 
 
 def getCausalImpact(
-   model: gum.CausalModel,
-   on: str | gum.NameSet,
-   doing: str | gum.NameSet,
-   knowing: None | gum.NameSet = None,
-   values: None | dict[str, int] = None,
+  model: gum.CausalModel,
+  on: str | gum.NameSet,
+  doing: str | gum.NameSet,
+  knowing: None | gum.NameSet = None,
+  values: None | dict[str, int] = None,
 ):
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
@@ -1808,7 +1807,7 @@ def getCausalImpact(
   -------
   HTML
   """
-  formula, impact, explanation = gum.causalImpact(model, on, doing, knowing, values)
+  formula, impact, explanation = gum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
 
   if explanation.startswith("Effect not identifiable"):
     explanation = "Effect not identifiable"
@@ -1823,7 +1822,7 @@ def getCausalImpact(
     flow.add(
       "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n",
       caption="Explanation : " + explanation,
-      )
+    )
     if impact.variable(0).domainSize() < 5:
       res = impact
     else:
@@ -1834,11 +1833,11 @@ def getCausalImpact(
 
 
 def showCausalImpact(
-   model: gum.CausalModel,
-   on: Union[str, NameSet],
-   doing: Union[str, NameSet],
-   knowing: Optional[NameSet] = None,
-   values: Optional[Dict[str, int]] = None,
+  model: gum.CausalModel,
+  on: Union[str, NameSet],
+  doing: Union[str, NameSet],
+  knowing: Optional[NameSet] = None,
+  values: Optional[Dict[str, int]] = None,
 ):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation
@@ -1938,11 +1937,8 @@ else:
   gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
   gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
-  # by default, show the formula
   gum.CausalImpact._repr_html_ = lambda self: f"$${self.toLatex()}$$"
-
   gum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
 
   gum.Tensor._repr_html_ = lambda self: getTensor(self)
-
   dot.Dot._repr_html_ = lambda self: getGraph(self)
