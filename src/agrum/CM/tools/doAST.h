@@ -412,6 +412,9 @@ namespace gum {
      */
     ASTsum(const std::vector< std::string >& vars, std::unique_ptr< ASTtree< GUM_SCALAR > > term);
 
+    /// @return the variable being eliminated by this summation
+    [[nodiscard]] const std::string& var() const { return _var; }
+
     /// @return the subterm being summed over
     const ASTtree< GUM_SCALAR >& term() const { return *_term; }
 
