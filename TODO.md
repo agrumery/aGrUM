@@ -12,137 +12,255 @@ explicite.
 ## Dépendances
 
 ```
-A1 (VariableContext)   A2 (Concepts graphes) ──→ A3 (Algos génériques)
+A1 (VariableContext) ──→ A1b (DiscreteGraphicalModel)
+A1 (VariableContext)    A2 (Concepts graphes) ──→ A3 (Algos génériques)
         │                                                  │
         └──────────────────────────────────────────────→ B2 (SWIG)
 B1 (Typage Python) ──────────────────────────────────→ B2 (SWIG, stubs)
-C  (Namespaces anonymes) — indépendant
 ```
 
 ---
 
 ## A. Architecture C++
 
-### A1. VariableContext : supprimer les dangling pointers dans MultiDim/Tensor | I:5 D:5
+### A1. VariableContext : ownership et identité sémantique des variables | I:5 D:5
 
 #### Problème
 
-`MultiDimImplementation<T>` stocke les variables comme pointeurs bruts :
+`MultiDimImplementation<T>` stocke les variables comme pointeurs bruts (`Sequence<const DiscreteVariable*> _vars_`). Deux problèmes distincts :
 
-```cpp
-Sequence<const DiscreteVariable*> _vars_;
-```
+**1. Durée de vie implicite.** La variable doit outlive tous les Tensors qui la référencent —
+contrat non vérifiable par le compilateur, violable dès qu'un Tensor est créé hors du modèle
+graphique propriétaire. Dans le MRF, plusieurs facteurs partagent la même variable via ce
+pointeur — cas le plus exposé.
 
-Le contrat de durée de vie (la variable doit outlive tous les Tensors qui la référencent) est
-implicite, non vérifiable par le compilateur, et violable dès qu'un Tensor est créé hors du
-modèle graphique qui possède ses variables. Dans le MRF, plusieurs facteurs partagent la même
-variable via ce pointeur — c'est le cas le plus exposé.
+**2. Absence d'identité sémantique.** Deux variables de même nom et type peuvent coexister
+comme objets distincts (copies dans deux BNs séparés, variable locale passée à `add()`, etc.).
+Les opérations entre Tensors reposant sur l'identité de pointeur, des variables sémantiquement
+identiques mais physiquement distinctes bloquent les opérations directes entre Tensors.
+
+#### Sémantique
+
+Un `VariableContext` est à la fois **propriétaire** et **namespace** des variables : `intern()`
+déduplique par `(nom, type concret)` — même nom + même type → même pointeur ; même nom + type
+différent → `GUM_ERROR`. Deux Tensors dans le même contexte opèrent directement par identité de
+pointeur, même issus de BNs distincts.
 
 #### Architecture cible
 
-Un `VariableContext` est le propriétaire exclusif des variables. Modèles graphiques et Tensors
-partagent le même contexte via `shared_ptr<VariableContext>`. Les Tensors conservent des
-**pointeurs bruts** dans ce contexte — zéro overhead, mais garantis valides tant qu'un
-`shared_ptr` existe.
-
 ```cpp
 // src/agrum/base/variables/variableContext.h
-namespace gum {
+class VariableContext {
+public:
+  /// Déduplication par (nom, type concret). Thread-safe (shared_mutex interne).
+  const DiscreteVariable* intern(const DiscreteVariable& var);
 
-  class VariableContext {
+  // Table globale nommée (partagée entre tous les threads)
+  static std::shared_ptr<VariableContext> create(const std::string& name); // GUM_ERROR si existe
+  static std::shared_ptr<VariableContext> get(const std::string& name);    // GUM_ERROR si absent
+  static void select(const std::string& name);   // switch explicite sans RAII
+  static std::shared_ptr<VariableContext> current();  // "default" si aucune sélection
+
+  // RAII — restaure le contexte précédent du thread à la sortie (composable)
+  class Scope {
   public:
-    /// Insère une variable (par copie) et retourne un pointeur stable.
-    const DiscreteVariable* intern(const DiscreteVariable& var);
-
-    /// Vérifie qu'une variable appartient bien à ce contexte.
-    bool owns(const DiscreteVariable* ptr) const;
-
-    /// Contexte par défaut pour les Tensors créés sans contexte explicite
-    /// (singleton statique — variables à durée de vie indéfinie, comportement
-    /// identique à l'actuel pour les usages standalone et les tests).
-    static std::shared_ptr<VariableContext> defaultContext();
-
+    explicit Scope(const std::string& name);
+    explicit Scope(std::shared_ptr<VariableContext>);
+    ~Scope();
   private:
-    std::vector<std::unique_ptr<DiscreteVariable>> vars_;
+    std::shared_ptr<VariableContext> previous_;
   };
 
+private:
+  std::vector<std::unique_ptr<DiscreteVariable>> vars_;
+  mutable std::shared_mutex vars_mutex_;
+
+  static std::unordered_map<std::string, std::shared_ptr<VariableContext>> registry_; // global
+  static std::shared_mutex registry_mutex_;
+  static thread_local std::shared_ptr<VariableContext> current_;  // par thread
+};
+// Le contexte "default" est créé à l'initialisation et toujours présent.
+```
+
+```cpp
+// MultiDimDecorator<T> — classe parente de Tensor<T>
+// Porte context_ : possède content_ (MultiDimImplementation), donc sa durée de vie
+// garantit celle des pointeurs bruts dans _vars_. MultiDimImplementation est inchangé.
+class MultiDimDecorator<T> {
+  std::shared_ptr<VariableContext> context_;
+public:
+  MultiDimDecorator() : context_(VariableContext::current()) {}
+  void add(const DiscreteVariable& v) override {
+    content_->add(context_->intern(v));   // canonicalisation ici, stockage brut inchangé
+  }
+};
+```
+
+```cpp
+// GraphicalModel — racine commune à BN, MRF, ID, CM, CN
+// Porte context_ : tout algorithme prenant un GraphicalModel& accède à context() sans cast.
+class GraphicalModel {
+protected:
+  std::shared_ptr<VariableContext> context_ = VariableContext::current();
+public:
+  std::shared_ptr<VariableContext> context() const { return context_; }
+  // addVariable() dans chaque sous-classe : context_->intern() puis _varMap_.insert(ptr)
+};
+```
+
+```cpp
+// Algorithme d'inférence — adopte le contexte du modèle (Scope : composable)
+class LazyPropagation {
+  std::shared_ptr<VariableContext> ctx_;
+public:
+  explicit LazyPropagation(const IBayesNet<double>& bn) : ctx_(bn.context()) {}
+  void makeInference() {
+    VariableContext::Scope scope(ctx_);  // tous les Tensors intermédiaires → même contexte
+  }
+};
+```
+
+#### Modes d'usage
+
+```cpp
+// Mode 1 — code existant, inchangé
+BayesNet<double> bn;
+Tensor<double> t;
+t.add(someVar);   // contexte "default"
+
+// Mode 2 — namespace nommé, switch explicite
+VariableContext::create("exp1");
+VariableContext::select("exp1");
+BayesNet<double> bn1, bn2;    // même contexte → opérations croisées directes
+VariableContext::select("default");
+
+// Mode 3 — Scope RAII (restaure le contexte précédent à la sortie)
+{
+  VariableContext::Scope ctx("exp1");
+  BayesNet<double> bn1, bn2;
 }
+
+// Mode 4 — thread worker adoptant le contexte d'un BN existant
+std::thread([ctx = bn.context()]() {
+  VariableContext::Scope scope(ctx);
+  // Tensors créés ici → même contexte que bn
+}).join();
 ```
 
-```cpp
-// MultiDimImplementation
-class MultiDimImplementation<T> {
-  std::shared_ptr<VariableContext> context_;   // tient le contexte en vie
-  Sequence<const DiscreteVariable*> _vars_;    // pointeurs bruts dans le contexte
+#### Overhead
 
-public:
-  explicit MultiDimImplementation(std::shared_ptr<VariableContext> ctx
-                                  = VariableContext::defaultContext());
-  void add(const DiscreteVariable& v);   // assertion : context_->owns(&v)
-};
-```
+**Tensors** — `MultiDimDecorator` gagne un `shared_ptr<VariableContext>` (8 octets), capturé
+une fois à la construction (lecture `thread_local` + incrément atomique). `MultiDimImplementation`
+et `MultiDimArray` sont **inchangés**. `add()` coûte un `shared_lock` non contesté + hash lookup
+— marginal, limité à la phase de construction. Les opérations de calcul (marginalisation, produit,
+projection) comparent des pointeurs bruts inchangés : **overhead nul**.
 
-```cpp
-// BayesNet
-class BayesNet<GUM_SCALAR> {
-  std::shared_ptr<VariableContext> context_;   // remplace _varMap_ comme owner
-public:
-  explicit BayesNet(std::shared_ptr<VariableContext> ctx
-                    = std::make_shared<VariableContext>());
-  std::shared_ptr<VariableContext> context() const;
-};
-```
+**Modèles graphiques** — `addVariable()` appelle `intern()` une fois par variable à la
+construction du modèle (hors chemin critique). Toutes les lectures (`variable()`, itération sur
+les nœuds) accèdent directement aux pointeurs bruts : **overhead nul**.
 
 #### Ce qui change / ce qui ne change pas
 
 | | Aujourd'hui | Avec VariableContext |
 |---|---|---|
-| Stockage dans Tensor | `const DiscreteVariable*` (brut) | `const DiscreteVariable*` (brut dans contexte) |
-| Overhead d'accès aux variables | nul | **nul** |
-| Ownership | implicite / modèle graphique | `VariableContext` |
+| Stockage dans Tensor | `const DiscreteVariable*` brut | idem (dans contexte) |
+| `MultiDimImplementation` / `MultiDimArray` | — | **inchangés** |
+| Overhead calcul Tensor | nul | **nul** |
+| Overhead `add()` / `addVariable()` | nul | hash lookup + shared_lock (construction) |
+| Constructeurs MultiDim / BN | — | **inchangés** (pas de paramètre ctx) |
+| Ownership variables | implicite / modèle | `VariableContext` |
 | Durée de vie variable | manuelle | garantie par `shared_ptr` |
-| Tensor sans contexte | créé librement | → contexte par défaut |
-| Opérations inter-tensors | par identité de pointeur | **identique** |
-| Copie de modèle | copie variables en interne | crée un nouveau contexte avec copies |
+| Opérations Tensors même BN | identité de pointeur | **identique** |
+| Opérations Tensors inter-BNs (même ctx) | échouent | **fonctionnent directement** |
+| Opérations Tensors inter-contextes | non détectées | exception explicite |
+| Thread safety | non garantie | `shared_mutex` (table + vars), `thread_local` pour current |
 
-#### Spécificités par modèle graphique
+#### Rôle réduit de `_varMap_`
 
-Tous les modèles utilisent `VariableNodeMap` pour la possession des variables — la migration
-de l'ownership vers `VariableContext` est structurellement uniforme. Les structures de facteurs
-diffèrent mais n'affectent pas ce schéma.
+`VariableNodeMap` fait aujourd'hui deux choses : ownership et mapping `NodeId ↔ Variable* / name ↔ NodeId`.
+Avec `VariableContext`, l'ownership passe au contexte. `_varMap_` devient un mapping pur, sans
+responsabilité de durée de vie.
 
-**BayesNet** : `_varMap_` → `VariableContext`. Un Tensor d'inférence reçoit `bn.context()` ;
-la destruction du BN ne détruit pas les variables tant que ce Tensor vit.
+> **Note** : remonter `_varMap_` dans `GraphicalModel` est traité en A1b.
 
-**InfluenceDiagram** : `_variableMap_` → `VariableContext`. Deux maps de Tensors
-(`_tensorMap_` chance/décision, `_utilityMap_` utilité) reçoivent toutes deux le même
-`shared_ptr<VariableContext>` à la construction.
+#### Spécificités par modèle
 
-**MarkovRandomField** : `_varMap_` → `VariableContext`. Les facteurs sont indexés par
-`NodeSet` (entiers) et non par pointeurs de variables — l'indexation n'est pas affectée.
-La procédure de suppression de nœud (recherche multi-facteurs par NodeId) fonctionne sans
-modification.
+Tous les modèles suivent le même patron : `context_` hérité de `GraphicalModel`, `_varMap_`
+(ou `_variableMap_` pour ID) réduit au mapping `NodeId ↔ ptr`.
 
-**CN, CM** : héritent de BayesNet — même patron, à vérifier lors de la migration.
+- **BayesNet** : un Tensor d'inférence capture `bn.context()` — survive à la destruction du BN.
+- **InfluenceDiagram** : `_tensorMap_` et `_utilityMap_` partagent le même `context_`.
+- **MarkovRandomField** : facteurs indexés par `NodeSet` (entiers) — non affectés. Suppression de nœud : inchangée.
+- **CN, CM** : héritent de BayesNet — même patron, à vérifier.
+- **Algorithmes d'inférence** : `Scope(model.context())` en entrée de chaque méthode créant des Tensors.
 
 #### Ordre d'implémentation
 
-1. **`variableContext.h/.cpp`** — `intern()`, `owns()`, `defaultContext()`.
-2. **`multiDimImplementation`** — ajouter `context_`, assertion dans `add()`.
-3. **`BayesNet`** — remplacer `_varMap_` comme owner ; exposer `context()`.
-4. **`InfluenceDiagram`** — remplacer `_variableMap_` ; propager aux deux maps de Tensors.
-5. **`MarkovRandomField`** — remplacer `_varMap_` ; vérifier la suppression de nœud.
-6. **CN, CM** — même migration.
-7. **Inférence** — les algorithmes créant des Tensors intermédiaires passent `model.context()`.
-8. **Tests** — (a) Tensor survit à la destruction du modèle ; (b) suppression nœud MRF
-   sans pointeurs invalides.
-9. **pyAgrum / SWIG** — exposer `VariableContext` (voir B2).
+1. **`variableContext.h/.cpp`** — `intern()`, table nommée (`create/get/select`), `Scope`,
+   `current()`, `shared_mutex` (table + vars).
+2. **`multiDimDecorator`** — `context_`, override `add()` avec `intern()`.
+3. **`GraphicalModel`** — `context_`, `context()`, `addVariable()` via `intern()` + `_varMap_`.
+4. **`BayesNet`, `InfluenceDiagram`, `MarkovRandomField`** — adapter `addVariable()` ;
+   vérifier suppression de nœud MRF.
+5. **CN, CM** — vérifier.
+6. **Inférence** — `Scope(model.context())` dans les algorithmes.
+7. **Tests** — (a) Tensor survit à la destruction du modèle ; (b) opérations inter-BNs
+   dans le même contexte ; (c) conflit de type → exception ; (d) thread worker adopte le contexte.
+8. **pyAgrum / SWIG** — exposer `VariableContext` et `Scope` (voir B2).
 
 #### Hors scope
 
-- Opérations entre Tensors de contextes **distincts** : restent une erreur
-  (`context_ == other.context_` dans les opérateurs). Comportement actuel préservé.
+- Opérations entre Tensors de contextes **distincts** : erreur explicite (`context_ == other.context_`).
 - `StructuredBayesBall` (PRM) : migration séparée, même principe.
+
+---
+
+### A1b. `DiscreteGraphicalModel` : factoriser `_varMap_` | I:3 D:2
+
+**Prérequis : A1 terminé.**
+
+BN, MRF et ID déclarent chacun `VariableNodeMap _varMap_` de façon indépendante avec le même
+type. `GraphicalModel` expose déjà `variableNodeMap()` comme méthode virtuelle pure, sans
+l'implémenter.
+
+#### Objectif
+
+Introduire une classe intermédiaire `DiscreteGraphicalModel` entre `GraphicalModel` et les
+modèles concrets, qui centralise :
+
+- `VariableNodeMap _varMap_` — mapping `NodeId ↔ DiscreteVariable*` / `name ↔ NodeId`
+- implémentation de `variableNodeMap()` (retourne `_varMap_`)
+- implémentation de `addVariable()` (délègue à `context_->intern()` puis `_varMap_.insert()`,
+  avec `context_` hérité de `GraphicalModel`)
+
+`GraphicalModel` reste la racine abstraite générique (non spécifique aux variables discrètes).
+
+#### Hiérarchie cible
+
+```
+GraphicalModel                    (context_, variableNodeMap() pure virtuelle)
+  └── DiscreteGraphicalModel      (_varMap_, variableNodeMap(), addVariable())
+        ├── DAGmodel → IBayesNet → BayesNet
+        ├── DAGmodel → InfluenceDiagram
+        └── UGmodel → IMarkovRandomField → MarkovRandomField
+```
+
+#### Ce qui change
+
+- `_varMap_` et `_variableMap_` supprimés de BN, ID, MRF — remplacés par `_varMap_` dans
+  `DiscreteGraphicalModel`.
+- `variableNodeMap()` et `addVariable()` implémentés une seule fois.
+- `DAGmodel` et `UGmodel` héritent de `DiscreteGraphicalModel` (ou directement si l'héritage
+  diamond est évité).
+- Code appelant : aucun changement visible — `variableNodeMap()`, `variable()`, `addVariable()`
+  restent accessibles via les mêmes interfaces.
+
+#### Ordre d'implémentation
+
+1. Créer `discreteGraphicalModel.h/.cpp` avec `_varMap_`, `variableNodeMap()`, `addVariable()`.
+2. Faire hériter `DAGmodel` et `UGmodel` de `DiscreteGraphicalModel`.
+3. Supprimer `_varMap_` / `_variableMap_` de BN, ID, MRF.
+4. `act test release aGrUM -m BASE+BN+MRF` — vérifier zéro régression.
 
 ---
 
@@ -316,29 +434,30 @@ dans `BN/algorithms/`.
 
 ### B2. SWIG | I:3 D:3
 
-- **`wrappers/pyagrum/swigsrc/*.i` + `pyagrum.i` — Simplifier la structure des includes**
-  | I:3 D:3
+- **Simplifier la structure des includes** | I:3 D:3
 
   Analyser l'ordre des `%include` dans `pyagrum.i` et `aGrUM_wrap_*.i` / `swigsrc/*.i`.
   Vérifier l'absence de redondances et que la convention "swigsrc avant aGrUM_wrap" est
   appliquée partout.
 
-- **`wrappers/pyagrum/swigsrc/*.i` — Audit des typemaps manquants** | I:3 D:3
+- **Audit des typemaps manquants** | I:3 D:3
 
   Identifier les blocs `%extend` / code inline qui appellent manuellement des helpers de
   conversion (`populateHashTableStrStrFromPyDict`, `populateStringSetFromPySequence`, etc.)
   alors qu'un typemap existe ou pourrait exister. Remplacer par le typemap correspondant.
 
-- **`wrappers/pyagrum/swigsrc/*.i` — Audit des `%ignore` redondants** | I:2 D:2
+- **Audit des `%ignore` redondants** | I:2 D:2
 
   Vérifier pour chaque `%ignore` si le retrait produit un warning SWIG ou une API non
   désirée. Candidats prioritaires : `%ignore gum::MultiDimWithOffset/MultiDimImplementation/
   MultiDimInterface/MultiDimDecorator/MultiDimArray` dans `tensor.i`.
 
-- **`VariableContext` — Exposition SWIG** | I:3 D:3 *(dépend de A1)*
+- **Exposition de `VariableContext`** | I:3 D:3 *(dépend de A1)*
 
-  Exposer `VariableContext` via SWIG. Adapter les typemaps si nécessaire pour que les
-  modèles Python puissent partager un contexte explicite.
+  Exposer `VariableContext` et `Scope` via SWIG. Adapter les typemaps si nécessaire pour
+  que les modèles Python puissent partager un contexte explicite.
+
+---
 
 ## C. Maintenance ✓ (fait)
 
