@@ -43,14 +43,13 @@
  * @brief DoorCriteria (backdoor/frontdoor) test suite.
  */
 #pragma once
+#include <ranges>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CM/doorCriteria.h>
-#include <agrum/CM/tools/separation.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -145,7 +144,8 @@ namespace gum_tests {
 
       auto mins = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY);
       CHECK_EQ(mins.size(), 1u);
-      CHECK((mins[0].contains(idU) && mins[0].size() == 1));
+      CHECK(mins[0].contains(idU));
+      CHECK_EQ(mins[0].size(), 1u);
 
       auto all = gum::DoorCriteria::enumerateBackdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
 
@@ -512,14 +512,14 @@ namespace gum_tests {
         std::vector< gum::NodeId > v;
         for (auto n: s)
           v.push_back(n);
-        std::sort(v.begin(), v.end());
+        std::ranges::sort(v);
         return v;
       };
       std::vector< std::vector< gum::NodeId > > vs;
       for (const auto& s: sets)
         vs.push_back(toVec(s));
       auto vs_sorted = vs;
-      std::sort(vs_sorted.begin(), vs_sorted.end());
+      std::ranges::sort(vs_sorted);
       vs_sorted.erase(std::unique(vs_sorted.begin(), vs_sorted.end()), vs_sorted.end());
       CHECK_EQ(vs, vs_sorted);
     }
@@ -678,14 +678,14 @@ namespace gum_tests {
           std::vector< gum::NodeId > v;
           for (auto n: s)
             v.push_back(n);
-          std::sort(v.begin(), v.end());
+          std::ranges::sort(v);
           return v;
         };
         std::vector< std::vector< gum::NodeId > > vs;
         for (const auto& s: fds_all)
           vs.push_back(toVec(s));
         auto vs_sorted = vs;
-        std::sort(vs_sorted.begin(), vs_sorted.end());
+        std::ranges::sort(vs_sorted);
         vs_sorted.erase(std::unique(vs_sorted.begin(), vs_sorted.end()), vs_sorted.end());
         CHECK_EQ(vs, vs_sorted);
       }
@@ -721,7 +721,7 @@ namespace gum_tests {
                                                       idX,
                                                       idY);   // only_minimal=true (default)
       CHECK_EQ(fds_min.size(), 1u);
-      CHECK(fds_min[0] == ZZ);
+      CHECK_EQ(fds_min[0], ZZ);
 
       // --- Enumeration (non-minimal) must NEVER include X or Y
       auto fds_all
@@ -794,10 +794,10 @@ namespace gum_tests {
         std::vector< gum::NodeId > v;
         for (auto n: s)
           v.push_back(n);
-        std::sort(v.begin(), v.end());
+        std::ranges::sort(v);
         return v;
       };
-      CHECK(toSortedVec(sets[0]) < toSortedVec(sets[1]));
+      CHECK_LT(toSortedVec(sets[0]), toSortedVec(sets[1]));
     }
 
     static void testLexLess_GlobalSortedOrder() {
@@ -849,11 +849,12 @@ namespace gum_tests {
         std::vector< gum::NodeId > v;
         for (auto n: s)
           v.push_back(n);
-        std::sort(v.begin(), v.end());
+        std::ranges::sort(v);
+
         return v;
       };
       for (size_t i = 1; i < sets.size(); ++i)
-        CHECK(toSortedVec(sets[i - 1]) < toSortedVec(sets[i]));
+        CHECK_LT(toSortedVec(sets[i - 1]), toSortedVec(sets[i]));
     }
 
     static void testFrontdoor_NoDirectedPath_EnumeratesSingletons() {
@@ -879,13 +880,13 @@ namespace gum_tests {
       CHECK_EQ(fds_min.size(), 1u);
       gum::NodeSet ZB;
       ZB.insert(idB);
-      CHECK(fds_min[0] == ZB);
+      CHECK_EQ(fds_min[0], ZB);
 
       // Non-minimal mode still must not introduce A, X, or Y.
       auto fds_all
           = gum::DoorCriteria::enumerateFrontdoorSets(dag, idX, idY, gum::NodeSet{}, 0, false);
       CHECK_EQ(fds_all.size(), 1u);
-      CHECK(fds_all[0] == ZB);
+      CHECK_EQ(fds_all[0], ZB);
 
       // Guard: A is pruned by FD-3 (A ← B → Y is a backdoor from A to Y).
       gum::NodeSet ZA;

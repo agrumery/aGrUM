@@ -45,11 +45,9 @@
 #pragma once
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/undiGraph.h>
@@ -65,13 +63,10 @@ namespace gum_tests {
 
   struct DSeparationTestSuite {
     private:
-    using BN      = gum::BayesNet< double >;
-    using NodeId  = gum::NodeId;
-    using NodeSet = gum::NodeSet;
-
-    // Helper to make a NodeSet from names
-    static NodeSet ns(const BN& bn, std::initializer_list< const char* > names) {
-      NodeSet s;
+    // Helper to make a gum::NodeSet from names
+    static gum::NodeSet ns(const gum::BayesNet< double >&       bn,
+                           std::initializer_list< const char* > names) {
+      gum::NodeSet s;
       for (auto n: names)
         s.insert(bn.idFromName(n));
       return s;
@@ -91,12 +86,14 @@ namespace gum_tests {
              G
     */
 
-    static BN makeRefBN() { return BN::fastPrototype("A->C->E->F->G;F<-D<-B->C;H->E"); }
+    static gum::BayesNet< double > makeRefBN() {
+      return gum::BayesNet< double >::fastPrototype("A->C->E->F->G;F<-D<-B->C;H->E");
+    }
 
     // -------------------------------------------------------------------
     // General d-separation checks
     // -------------------------------------------------------------------
-    static void testtest_general_dsep_basic_paths() {
+    static void testgeneral_dsep_basic_paths() {
       auto  bn = makeRefBN();
       auto& dg = bn.dag();
 
@@ -108,13 +105,13 @@ namespace gum_tests {
       auto G = ns(bn, {"G"});
 
       // A -> C -> E -> F -> G  (unblocked)
-      CHECK(!gum::Separation::isDSeparated(dg, A, G, NodeSet{}));
+      CHECK(!gum::Separation::isDSeparated(dg, A, G, gum::NodeSet{}));
 
       // Conditioning on F blocks all paths A->...->G
       CHECK(gum::Separation::isDSeparated(dg, A, G, F));
 
       // A ⟂ B (collider at C) without conditioning
-      CHECK(gum::Separation::isDSeparated(dg, A, B, NodeSet{}));
+      CHECK(gum::Separation::isDSeparated(dg, A, B, gum::NodeSet{}));
 
       // Conditioning on the collider C opens A—C—B
       CHECK(!gum::Separation::isDSeparated(dg, A, B, C));
@@ -129,47 +126,45 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Restricted variants: backdoor / forward
     // -------------------------------------------------------------------
-    static void testtest_backdoor_forward_simple_chain() {
+    static void testbackdoor_forward_simple_chain() {
       // A -> B -> C
-      auto  bn = BN::fastPrototype("A->B->C");
+      auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C");
       auto& dg = bn.dag();
 
       auto A = ns(bn, {"A"});
       auto C = ns(bn, {"C"});
 
       // From A (cause) to C (effect): there are NO backdoor paths into A
-      CHECK(gum::Separation::isBackdoorSeparated(dg, A, C, NodeSet{}));
+      CHECK(gum::Separation::isBackdoorSeparated(dg, A, C, gum::NodeSet{}));
 
       // From C (cause) to A (effect): backdoor path C<-B<-A exists (unblocked)
-      CHECK(!gum::Separation::isBackdoorSeparated(dg, C, A, NodeSet{}));
+      CHECK(!gum::Separation::isBackdoorSeparated(dg, C, A, gum::NodeSet{}));
 
       // Forward restriction: from A to C, forward paths exist unless we condition on B
-      CHECK(!gum::Separation::isForwardSeparated(dg, A, C, NodeSet{}));
+      CHECK(!gum::Separation::isForwardSeparated(dg, A, C, gum::NodeSet{}));
       CHECK(gum::Separation::isForwardSeparated(dg, A, C, ns(bn, {"B"})));
     }
 
-    static void testtest_backdoor_examples_from_pyagrum_suite() {
-      using BN      = gum::BayesNet< double >;
-      using NodeSet = gum::NodeSet;
-
-      auto mkNS = [](const BN& bn, std::initializer_list< const char* > names) {
-        NodeSet s;
-        for (auto n: names)
-          s.insert(bn.idFromName(n));
-        return s;
-      };
+    static void testbackdoor_examples_from_pyagrum_suite() {
+      auto mkNS
+          = [](const gum::BayesNet< double >& bn, std::initializer_list< const char* > names) {
+              gum::NodeSet s;
+              for (auto n: names)
+                s.insert(bn.idFromName(n));
+              return s;
+            };
 
       auto hasBackDoors = [&](std::initializer_list< std::initializer_list< const char* > > sets,
                               const std::string&                                            spec,
                               const char*                                                   X,
                               const char* Y) -> bool {
-        BN          bn  = BN::fastPrototype(spec);
+        const auto  bn  = gum::BayesNet< double >::fastPrototype(spec);
         const auto& dag = bn.dag();
-        auto        Xs  = mkNS(bn, {X});
-        auto        Ys  = mkNS(bn, {Y});
+        const auto  Xs  = mkNS(bn, {X});
+        const auto  Ys  = mkNS(bn, {Y});
 
         for (const auto& znames: sets) {
-          NodeSet Z;
+          gum::NodeSet Z;
           for (auto n: znames)
             Z.insert(bn.idFromName(n));
           if (!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z)) { return false; }
@@ -206,9 +201,9 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Reduction & barren nodes
     // -------------------------------------------------------------------
-    static void testtest_barren_nodes_and_reduction() {
+    static void testbarren_nodes_and_reduction() {
       using BN = gum::BayesNet< double >;
-      auto  bn = BN::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
+      auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
       auto& dg = bn.dag();
 
       const auto idA = bn.idFromName("A");
@@ -258,7 +253,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // Cross-check: general d-sep agrees with DAG::dSeparation
     // -------------------------------------------------------------------
-    static void testtest_agreement_with_DAG_API() {
+    static void testagreement_with_DAG_API() {
       auto        bn  = makeRefBN();
       const auto& dag = bn.dag();
 
@@ -266,15 +261,15 @@ namespace gum_tests {
       auto B = ns(bn, {"B"});
       auto C = ns(bn, {"C"});
 
-      CHECK((gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{}))
-            == (dag.dSeparation(A, B, gum::NodeSet{})));
+      CHECK_EQ((gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{})),
+               (dag.dSeparation(A, B, gum::NodeSet{})));
 
       CHECK_EQ(gum::Separation::isDSeparated(dag, A, B, C), dag.dSeparation(A, B, C));
     }
 
-    static void testtest_dsep_confounder_conditioning_blocks() {
+    static void testdsep_confounder_conditioning_blocks() {
       // Confounding only (no direct X->Y path): U->X, U->Y
-      auto        bn  = BN::fastPrototype("U->X;U->Y");
+      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
       const auto& dag = bn.dag();
 
       auto X = ns(bn, {"X"});
@@ -282,19 +277,19 @@ namespace gum_tests {
       auto U = ns(bn, {"U"});
 
       // Without conditioning: NOT d-separated (path X <- U -> Y is open)
-      CHECK(!gum::Separation::isDSeparated(dag, X, Y, NodeSet{}));
+      CHECK(!gum::Separation::isDSeparated(dag, X, Y, gum::NodeSet{}));
 
       // Conditioning on the confounder blocks that backdoor path
       CHECK(gum::Separation::isDSeparated(dag, X, Y, U));
     }
   };
 
-  GUM_TEST_ACTIF(test_general_dsep_basic_paths)
-  GUM_TEST_ACTIF(test_backdoor_forward_simple_chain)
-  GUM_TEST_ACTIF(test_backdoor_examples_from_pyagrum_suite)
-  GUM_TEST_ACTIF(test_barren_nodes_and_reduction)
-  GUM_TEST_ACTIF(test_agreement_with_DAG_API)
-  GUM_TEST_ACTIF(test_dsep_confounder_conditioning_blocks)
+  GUM_TEST_ACTIF(general_dsep_basic_paths)
+  GUM_TEST_ACTIF(backdoor_forward_simple_chain)
+  GUM_TEST_ACTIF(backdoor_examples_from_pyagrum_suite)
+  GUM_TEST_ACTIF(barren_nodes_and_reduction)
+  GUM_TEST_ACTIF(agreement_with_DAG_API)
+  GUM_TEST_ACTIF(dsep_confounder_conditioning_blocks)
 
 
 }   // namespace gum_tests

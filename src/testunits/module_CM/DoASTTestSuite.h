@@ -44,13 +44,11 @@
 #include <string>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/bijection.h>
 #include <agrum/base/core/exceptions.h>
-#include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/set.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -136,8 +134,8 @@ namespace gum_tests {
           std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
           std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
       gum::ASTmult< double > mult(std::move(m1), std::move(m2));
-      CHECK((mult.toString())
-            == (std::string()
+      CHECK_EQ((mult.toString()),
+               (std::string()
                 + "*\n"
                   "| /\n"
                   "| | P(A,C|B)\n"
@@ -154,8 +152,8 @@ namespace gum_tests {
           std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
           std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
       gum::ASTminus< double > minu(std::move(mm1), std::move(mm2));
-      CHECK((minu.toString())
-            == (std::string()
+      CHECK_EQ((minu.toString()),
+               (std::string()
                 + "-\n"
                   "| +\n"
                   "| | P(A,C|B)\n"
@@ -465,11 +463,11 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto                   t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      A,
                                                                      C);   // P(A|C)
-      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto                   t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
                                                                      id2name_fromBN(bn),
                                                                      C,
                                                                      none);   // P(C)
@@ -565,7 +563,8 @@ namespace gum_tests {
         auto p1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
         auto p2 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC);
         gum::ASTdiv< double > op(std::move(p1), std::move(p2));
-        CHECK((op.toLatex()) == (" \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}"));
+        CHECK_EQ((op.toLatex()),
+                 (" \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}"));
       }
 
       // plus: no parentheses, no spaces around '+'
@@ -585,8 +584,8 @@ namespace gum_tests {
             std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
             std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
         gum::ASTmult< double > mult(std::move(m1), std::move(m2));
-        CHECK((mult.toLatex())
-              == (" \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)} \\cdot "
+        CHECK_EQ((mult.toLatex()),
+                 (" \\frac {P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)} \\cdot "
                   "P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)"));
       }
 
@@ -599,8 +598,8 @@ namespace gum_tests {
             std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB),
             std::make_unique< gum::ASTposteriorProba< double > >(bn, sA, sC));
         gum::ASTminus< double > minu(std::move(mm1), std::move(mm2));
-        CHECK((minu.toLatex())
-              == ("P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)- \\frac "
+        CHECK_EQ((minu.toLatex()),
+                 ("P\\left(A,C\\mid B\\right)+P\\left(A\\mid C\\right)- \\frac "
                   "{P\\left(A,C\\mid B\\right)}{P\\left(A\\mid C\\right)}"));
       }
 

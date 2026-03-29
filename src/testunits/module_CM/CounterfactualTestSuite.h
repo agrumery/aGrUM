@@ -44,7 +44,6 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -71,19 +70,21 @@ namespace gum_tests {
 
     static StrSet names(std::initializer_list< const char* > il) {
       StrSet s;
-      for (auto* p: il)
+      for (auto* p: il) {
         s.insert(std::string(p));
+      }
       return s;
     }
 
     // Build an Instantiation slaved to tensor `t`, and set values by name/label.
     static gum::Instantiation
-        instFor(const gum::Tensor< double >&                                   t,
-                std::initializer_list< std::pair< const char*, const char* > > assigns) {
+        instFor(const gum::Tensor< double >&                                         t,
+                const std::initializer_list< std::pair< const char*, const char* > > assigns) {
       gum::Instantiation I(
           const_cast< gum::Tensor< double >& >(t));   // ctor takes (MultiDimAdressable&)
-      for (const auto& p: assigns)
+      for (const auto& p: assigns) {
         I.chgVal(std::string(p.first), std::string(p.second));
+      }
       return I;
     }
 
@@ -98,19 +99,17 @@ namespace gum_tests {
 
     public:
     // Reproduces the Python test (names-based API) using the BIFXML file.
-    static void testtest_Counterfactual_FromBIFXML_Names() {
+    static void testCounterfactual_FromBIFXML_Names() {
       auto bn = loadBNFromBIFXML();
-      // --- BEGIN TRACE BLOCK ---
       {
         std::string s;
         for (auto nid: bn.nodes()) {
-          if (!s.empty()) s += ", ";
+          if (!s.empty()) { s += ", "; }
           s += bn.variable(nid).name();
         }
       }
       // quick sanity:
       CHECK_NOTHROW(bn.idFromName("Us"));
-      // --- END TRACE BLOCK ---
 
       // quick sanity: CPTs exist & normalize shouldn't throw if called
       CHECK_NOTHROW({ (void)bn.size(); });
@@ -132,7 +131,6 @@ namespace gum_tests {
 
 
       gum::Counterfactual cf(cm, on_names, whatif_names, profile, values);
-      // exercise print() and getResult().toString() (should not throw)
       CHECK_NOTHROW({
         const auto _ = cf.toString();
         (void)cf.getResult().toString();
@@ -140,7 +138,7 @@ namespace gum_tests {
 
       const auto& got = cf.value();
       auto        I   = instFor(got, {{"salary", "81"}});
-      CHECK((got.get(I)) == doctest::Approx(1.0).epsilon(1e-12));
+      CHECK_EQ((got.get(I)), doctest::Approx(1.0).epsilon(1e-12));
 
       auto I0 = instFor(got, {{"salary", "80"}});
       CHECK_LT(std::abs(got.get(I0)), 1e-12);
@@ -149,7 +147,7 @@ namespace gum_tests {
     }
 
     // Same scenario, using the NodeSet / ID-based overloads, from the same BIFXML.
-    static void testtest_Counterfactual_FromBIFXML_IDs() {
+    static void testCounterfactual_FromBIFXML_IDs() {
       auto                       bn = loadBNFromBIFXML();
       gum::CausalModel< double > cm(bn);
 
@@ -183,11 +181,11 @@ namespace gum_tests {
 
       const auto& got = cf.value();
       auto        I   = instFor(got, {{"salary", "81"}});
-      CHECK((got.get(I)) == doctest::Approx(1.0).epsilon(1e-12));
+      CHECK_EQ((got.get(I)), doctest::Approx(1.0).epsilon(1e-12));
     }
 
     // Light smoke: ensures ctor+eval do not throw on empty profile using same file.
-    static void testtest_Counterfactual_FromBIFXML_Smoke_NoProfile() {
+    static void testCounterfactual_FromBIFXML_Smoke_NoProfile() {
       const auto             bn = loadBNFromBIFXML();
       const gum::CausalModel cm(bn);
 
@@ -207,7 +205,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------------
     // Free-function parity with Python API
     // -------------------------------------------------------------------------
-    static void testtest_FreeCounterfactual_FromBIFXML_Names() {
+    static void testFreeCounterfactual_FromBIFXML_Names() {
       auto                       bn = loadBNFromBIFXML();
       gum::CausalModel< double > cm(bn);
 
@@ -229,17 +227,17 @@ namespace gum_tests {
 
       // Class parity
       gum::Counterfactual< double > cls(cm, on_names, whatif, profile, values);
-      auto                          got_cls = cls.value();
+      const auto&                   got_cls = cls.value();
 
       // Numerically identical
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got_free, got_cls);
 
       // Spot check: mass at salary=81 is 1
       auto I = instFor(got_free, {{"salary", "81"}});
-      CHECK((got_free.get(I)) == doctest::Approx(1.0).epsilon(1e-12));
+      CHECK_EQ(got_free.get(I), doctest::Approx(1.0).epsilon(1e-12));
     }
 
-    static void testtest_FreeCounterfactualModel_roundtrip() {
+    static void testFreeCounterfactualModel_roundtrip() {
       auto                       bn = loadBNFromBIFXML();
       gum::CausalModel< double > cm(bn);
 
@@ -268,20 +266,40 @@ namespace gum_tests {
 
       // Adapt to the original BN variables (same pattern as class)
       gum::Tensor< double > adapted;
-      for (const auto& v: adj.variablesSequence())
+      for (const auto& v: adj.variablesSequence()) {
         adapted.add(cm.observationalBN().variableFromName(v->name()));
+      }
       adapted.fillWith(adj);
 
       // Should match the free counterfactual helper
       auto got_free = gum::counterfactual< double >(cm, on_names, whatif, profile, values);
       GUM_CHECK_TENSOR_ALMOST_EQUALS(adapted, got_free);
     }
-  };
-  GUM_TEST_ACTIF(test_Counterfactual_FromBIFXML_Names)
-  GUM_TEST_ACTIF(test_Counterfactual_FromBIFXML_IDs)
-  GUM_TEST_ACTIF(test_Counterfactual_FromBIFXML_Smoke_NoProfile)
-  GUM_TEST_ACTIF(test_FreeCounterfactual_FromBIFXML_Names)
-  GUM_TEST_ACTIF(test_FreeCounterfactualModel_roundtrip)
 
+    static void testSimpleCounterFactual() {
+      const auto bn = gum::BayesNet< double >::fastPrototype("X->Y->Z");
+      const auto cm = gum::CausalModel(bn);
+
+      gum::HashTable< std::string, std::string > profile;
+      profile.insert("Y", "1");
+
+      gum::Set< std::string > whatif;
+      whatif.insert("X");
+
+      const auto twin = gum::counterfactualModel(cm, profile, whatif);
+
+      CHECK_NE(twin.observationalBN().size(), 0u);
+      CHECK_NE(twin.observationalBN().sizeArcs(), 0u);
+      CHECK_NE(twin.causalDAG().size(), 0u);
+      CHECK_NE(twin.causalDAG().sizeArcs(), 0u);
+    }
+  };
+
+  GUM_TEST_ACTIF(Counterfactual_FromBIFXML_Names)
+  GUM_TEST_ACTIF(Counterfactual_FromBIFXML_IDs)
+  GUM_TEST_ACTIF(Counterfactual_FromBIFXML_Smoke_NoProfile)
+  GUM_TEST_ACTIF(FreeCounterfactual_FromBIFXML_Names)
+  GUM_TEST_ACTIF(FreeCounterfactualModel_roundtrip)
+  GUM_TEST_ACTIF(SimpleCounterFactual)
 
 }   // namespace gum_tests

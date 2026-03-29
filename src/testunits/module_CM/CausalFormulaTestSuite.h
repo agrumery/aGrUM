@@ -44,7 +44,6 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/CM/causalModel.h>
@@ -68,7 +67,7 @@ namespace gum_tests {
      * This verifies that a basic marginalization formula evaluates correctly,
      * matching the result from a standard inference engine.
      */
-    static void testtest_observational_marginal() {
+    static void testobservational_marginal() {
       // Setup: A simple X -> Y model
       auto bn = gum::BayesNet< double >::fastPrototype("X{0|1}->Y{0|1}");
       bn.cpt(bn.idFromName("X")).fillWith({0.2, 0.8});
@@ -102,7 +101,7 @@ namespace gum_tests {
     /**
      * Tests P(Y|X) = P(X,Y) / sum_Y P(X,Y)
      */
-    static void testtest_observational_conditional() {
+    static void testobservational_conditional() {
       // Setup: A simple X -> Y model
       auto bn = gum::BayesNet< double >::fastPrototype("X{0|1}->Y{0|1}");
       bn.cpt(bn.idFromName("X")).fillWith({0.2, 0.8});
@@ -126,8 +125,8 @@ namespace gum_tests {
 
       // Test LaTeX
       CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid do(X)\\right)");
-      CHECK((cf.toLatex())
-            == ("P\\left(Y \\mid do(X)\\right) =  \\frac "
+      CHECK_EQ((cf.toLatex()),
+               ("P\\left(Y \\mid do(X)\\right) =  \\frac "
                 "{P\\left(X,Y\\right)}{\\sum_{Y'}{P\\left(X,Y\'\\right)}}"));
 
       // Test evaluation
@@ -141,7 +140,7 @@ namespace gum_tests {
     /**
      * Tests P(Y|do(X)) = sum_Z P(Y|X,Z) * P(Z)
      */
-    static void testtest_interventional_backdoor() {
+    static void testinterventional_backdoor() {
       // Setup: A model requiring backdoor adjustment
       auto bn = gum::BayesNet< double >::fastPrototype("Z->X;Z->Y;X->Y");
       bn.cpt(bn.idFromName("Z")).fillWith({0.6, 0.4});
@@ -162,8 +161,8 @@ namespace gum_tests {
 
       // Test LaTeX
       CHECK_EQ(cf.latexQuery(), "P\\left(Y \\mid X\\right)");
-      CHECK((cf.toLatex())
-            == ("P\\left(Y \\mid X\\right) = \\sum_{Z}{P\\left(Y\\mid X,Z\\right) \\cdot "
+      CHECK_EQ((cf.toLatex()),
+               ("P\\left(Y \\mid X\\right) = \\sum_{Z}{P\\left(Y\\mid X,Z\\right) \\cdot "
                 "P\\left(Z\\right)}"));
 
       // Test evaluation
@@ -182,7 +181,7 @@ namespace gum_tests {
     /**
      * Tests that the CausalFormula constructor throws an exception for unknown variables.
      */
-    static void testtest_error_handling_unknown_variable() {
+    static void testerror_handling_unknown_variable() {
       auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y");
       gum::CausalModel< double > cm(bn);
       auto ast = std::make_unique< gum::ASTjointProba< double > >(NameSet{"X"});
@@ -302,7 +301,7 @@ namespace gum_tests {
     }
 
     // Custom do-operator prefix/suffix test (must be last)
-    static void testtest_CustomDoOperatorLatex() {
+    static void testCustomDoOperatorLatex() {
       auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y");
       gum::CausalModel< double > cm(bn);
       auto dummyAST = std::make_unique< gum::ASTjointProba< double > >(NameSet{"Y"});
@@ -316,15 +315,15 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(test_observational_marginal)
-  GUM_TEST_ACTIF(test_observational_conditional)
-  GUM_TEST_ACTIF(test_interventional_backdoor)
-  GUM_TEST_ACTIF(test_error_handling_unknown_variable)
+  GUM_TEST_ACTIF(observational_marginal)
+  GUM_TEST_ACTIF(observational_conditional)
+  GUM_TEST_ACTIF(interventional_backdoor)
+  GUM_TEST_ACTIF(error_handling_unknown_variable)
   GUM_TEST_ACTIF(LatexQueryRendering)
   GUM_TEST_ACTIF(FullLatex_And_Eval)
   GUM_TEST_ACTIF(ToString_DelegatesToRoot)
   GUM_TEST_ACTIF(Copy_IsDeep)
-  GUM_TEST_ACTIF(test_CustomDoOperatorLatex)
+  GUM_TEST_ACTIF(CustomDoOperatorLatex)
 
 
 }   // namespace gum_tests

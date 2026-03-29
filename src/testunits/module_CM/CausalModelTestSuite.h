@@ -42,7 +42,6 @@
 
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
@@ -93,19 +92,19 @@ namespace gum_tests {
       auto dot = cm.toDot();
       //  GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
-      CHECK(dot.find("Smoking") != std::string::npos);
-      CHECK(dot.find("Cancer") != std::string::npos);
-      CHECK(dot.find("Tar") != std::string::npos);
-      CHECK(dot.find("Genotype") != std::string::npos);
+      CHECK_NE(dot.find("Smoking"), std::string::npos);
+      CHECK_NE(dot.find("Cancer"), std::string::npos);
+      CHECK_NE(dot.find("Tar"), std::string::npos);
+      CHECK_NE(dot.find("Genotype"), std::string::npos);
 
       // Expected arcs
-      CHECK(dot.find("\"Smoking\"->\"Tar\"") != std::string::npos);
-      CHECK(dot.find("\"Tar\"->\"Cancer\"") != std::string::npos);
-      CHECK(dot.find("\"Genotype\"->\"Smoking\"") != std::string::npos);
-      CHECK(dot.find("\"Genotype\"->\"Cancer\"") != std::string::npos);
+      CHECK_NE(dot.find("\"Smoking\"->\"Tar\""), std::string::npos);
+      CHECK_NE(dot.find("\"Tar\"->\"Cancer\""), std::string::npos);
+      CHECK_NE(dot.find("\"Genotype\"->\"Smoking\""), std::string::npos);
+      CHECK_NE(dot.find("\"Genotype\"->\"Cancer\""), std::string::npos);
 
       // Because assumeNonSpurious=false by default, the direct Smoking->Cancer must be gone
-      CHECK(dot.find("\"Smoking\"->\"Cancer\"") == std::string::npos);
+      CHECK_EQ(dot.find("\"Smoking\"->\"Cancer\""), std::string::npos);
     }
 
     static void testToDotSimpson() {
@@ -118,14 +117,14 @@ namespace gum_tests {
       //   GUM_TRACE_VAR(std::string("\n") + dot); // uncomment to see the dot output
 
       // Nodes
-      CHECK(dot.find("Gender") != std::string::npos);
-      CHECK(dot.find("Drug") != std::string::npos);
-      CHECK(dot.find("Patient") != std::string::npos);
+      CHECK_NE(dot.find("Gender"), std::string::npos);
+      CHECK_NE(dot.find("Drug"), std::string::npos);
+      CHECK_NE(dot.find("Patient"), std::string::npos);
 
       // Expected arcs
-      CHECK(dot.find("\"Gender\"->\"Drug\"") != std::string::npos);
-      CHECK(dot.find("\"Gender\"->\"Patient\"") != std::string::npos);
-      CHECK(dot.find("\"Drug\"->\"Patient\"") != std::string::npos);
+      CHECK_NE(dot.find("\"Gender\"->\"Drug\""), std::string::npos);
+      CHECK_NE(dot.find("\"Gender\"->\"Patient\""), std::string::npos);
+      CHECK_NE(dot.find("\"Drug\"->\"Patient\""), std::string::npos);
     }
 
     static void testInducedCausalSubModel_DropsSingletonLatent() {

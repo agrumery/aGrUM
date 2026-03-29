@@ -44,7 +44,6 @@
 #include <vector>
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/agrum.h>
 
@@ -118,16 +117,24 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = bn.cpt("Y");
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = bn.cpt("Y");
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       // Repeat with directDoCalculus: force do-calculus path, should match above
       gum::CausalImpact< double > ci_dc(cm, names({"Y"}), names({"X"}), names({"Z"}), true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = bn.cpt("Y");
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = bn.cpt("Y");
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // B) Backdoor with observed confounder:
@@ -145,15 +152,23 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"Patient"}), names({"Drug"}), StrSet{}, true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = (bn.cpt("Patient") * bn.cpt("Gender")).sumOut(vset(bn, {"Gender"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // C) Frontdoor (canonical): X->Z->Y, with latent U between X and Y
@@ -174,15 +189,23 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"Y"}), names({"X"}), StrSet{}, true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = (bn.cpt("Z") * bn.cpt("Y")).sumOut(vset(bn, {"Z"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // D) “Trivial” backdoor: X -> Y  (backdoor set is ∅)
@@ -198,15 +221,23 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = bn.cpt("Y");
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = bn.cpt("Y");
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"Y"}), names({"X"}), StrSet{}, true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = bn.cpt("Y");
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = bn.cpt("Y");
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // E) Hedge / unidentifiable:
@@ -343,19 +374,19 @@ namespace gum_tests {
                      .sumOut(vset(bn, {"Gender"}));
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
 
-      CHECK((got.get(_inst(got, {{"Patient", "Healed"}, {"Drug", "With"}})))
-            == doctest::Approx(0.45).epsilon(1e-10));
+      CHECK_EQ((got.get(_inst(got, {{"Patient", "Healed"}, {"Drug", "With"}}))),
+               doctest::Approx(0.45).epsilon(1e-10));
 
-      CHECK((got.get(_inst(got, {{"Patient", "Healed"}, {"Drug", "Without"}})))
-            == doctest::Approx(0.60).epsilon(1e-10));
+      CHECK_EQ((got.get(_inst(got, {{"Patient", "Healed"}, {"Drug", "Without"}}))),
+               doctest::Approx(0.60).epsilon(1e-10));
 
       gum::CausalImpact< double > ci_dc(cm, names({"Patient"}), names({"Drug"}), StrSet{}, true);
       auto                        got_dc = ci_dc.eval();
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got_dc, exp);
-      CHECK((got_dc.get(_inst(got_dc, {{"Patient", "Healed"}, {"Drug", "With"}})))
-            == doctest::Approx(0.45).epsilon(1e-10));
-      CHECK((got_dc.get(_inst(got_dc, {{"Patient", "Healed"}, {"Drug", "Without"}})))
-            == doctest::Approx(0.60).epsilon(1e-10));
+      CHECK_EQ((got_dc.get(_inst(got_dc, {{"Patient", "Healed"}, {"Drug", "With"}}))),
+               doctest::Approx(0.45).epsilon(1e-10));
+      CHECK_EQ((got_dc.get(_inst(got_dc, {{"Patient", "Healed"}, {"Drug", "Without"}}))),
+               doctest::Approx(0.60).epsilon(1e-10));
     }
 
     // J) Tobacco #1: Direct causality Smoking -> Cancer (trivial backdoor ∅)
@@ -371,15 +402,23 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = bn.cpt(bn.idFromName("Cancer"));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = bn.cpt(bn.idFromName("Cancer"));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"Cancer"}), names({"Smoking"}), StrSet{}, true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = bn.cpt(bn.idFromName("Cancer"));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = bn.cpt(bn.idFromName("Cancer"));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // L) Tobacco #3: Frontdoor with mediator Tar and latent U between Smoking,Cancer
@@ -395,24 +434,33 @@ namespace gum_tests {
           "U",
           std::vector< gum::NodeId >{bn.idFromName("Smoking"), bn.idFromName("Cancer")});
 
-      gum::CausalModel< double > cm(bn, lat, /*assumeNonSpurious=*/false);
-
+      gum::CausalModel< double >  cm(bn, lat, false);
       gum::CausalImpact< double > ci(cm, names({"Cancer"}), names({"Smoking"}), StrSet{});
 
       CHECK_NOTHROW({
         auto got = ci.eval();
         auto exp = (bn.cpt(bn.idFromName("Tar")) * bn.cpt(bn.idFromName("Cancer")))
                        .sumOut(vset(bn, {"Tar"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci.eval();
+        auto exp = (bn.cpt(bn.idFromName("Tar")) * bn.cpt(bn.idFromName("Cancer")))
+                       .sumOut(vset(bn, {"Tar"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"Cancer"}), names({"Smoking"}), StrSet{}, true);
       CHECK_NOTHROW({
         auto got = ci_dc.eval();
         auto exp = (bn.cpt(bn.idFromName("Tar")) * bn.cpt(bn.idFromName("Cancer")))
                        .sumOut(vset(bn, {"Tar"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        auto got = ci_dc.eval();
+        auto exp = (bn.cpt(bn.idFromName("Tar")) * bn.cpt(bn.idFromName("Cancer")))
+                       .sumOut(vset(bn, {"Tar"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     static void testTobacco_Frontdoor_Latex_Primes_And_Parentheses() {
@@ -488,8 +536,16 @@ namespace gum_tests {
         const auto p_w          = bn.cpt(bn.idFromName("w"));
         const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
         const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        const auto got          = ci.eval();
+        const auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
+        const auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
+        const auto p_w          = bn.cpt(bn.idFromName("w"));
+        const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
+        const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
 
       gum::CausalImpact< double > ci_dc(cm, names({"y"}), names({"x"}), StrSet{}, true);
       CHECK_NOTHROW({
@@ -499,8 +555,16 @@ namespace gum_tests {
         const auto p_w          = bn.cpt(bn.idFromName("w"));
         const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
         const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
       });
+      {
+        const auto got          = ci_dc.eval();
+        const auto p_y_given_z  = bn.cpt(bn.idFromName("y"));
+        const auto p_z_given_xw = bn.cpt(bn.idFromName("z"));
+        const auto p_w          = bn.cpt(bn.idFromName("w"));
+        const auto p_y_given_xw = (p_y_given_z * p_z_given_xw).sumOut(vset(bn, {"z"}));
+        const auto exp          = (p_y_given_xw * p_w).sumOut(vset(bn, {"w"}));
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(got, exp);
+      }
     }
 
     // Custom do-operator prefix/suffix test (must be last)
@@ -565,8 +629,8 @@ namespace gum_tests {
 
 
       // Both should be identifiable -> non-empty tensors
-      CHECK_NE(ff_tensor.nbrDim(), gum::Idx(0));
-      CHECK_NE(cls_tensor.nbrDim(), gum::Idx(0));
+      CHECK_NE(ff_tensor.nbrDim(), 0u);
+      CHECK_NE(cls_tensor.nbrDim(), 0u);
 
       // creatng partial cls_tensor
       gum::Instantiation J;                    // start empty → partial instantiation
@@ -585,7 +649,7 @@ namespace gum_tests {
       {
         auto Ia = instFor(ff_tensor, {{"Y", "a"}});
         auto Ib = instFor(ff_tensor, {{"Y", "b"}});
-        CHECK((ff_tensor.get(Ia)) == doctest::Approx(1.0).epsilon(1e-12));
+        CHECK_EQ((ff_tensor.get(Ia)), doctest::Approx(1.0).epsilon(1e-12));
         CHECK_LT(std::abs(ff_tensor.get(Ib)), 1e-12);
       }
 
@@ -616,13 +680,13 @@ namespace gum_tests {
       const auto [formula, tensor, expl] = gum::causalImpact< double >(cm, on, doing, know, values);
 
       // Identified => tensor not empty
-      CHECK_NE(tensor.nbrDim(), gum::Idx(0));
+      CHECK_NE(tensor.nbrDim(), 0u);
 
       // P(Y=u)=0.2, P(Y=v)=0.8 unchanged by do(X=a)
       auto Iu = instFor(tensor, {{"Y", "u"}});
       auto Iv = instFor(tensor, {{"Y", "v"}});
-      CHECK((tensor.get(Iu)) == doctest::Approx(0.2).epsilon(1e-12));
-      CHECK((tensor.get(Iv)) == doctest::Approx(0.8).epsilon(1e-12));
+      CHECK_EQ((tensor.get(Iu)), doctest::Approx(0.2).epsilon(1e-12));
+      CHECK_EQ((tensor.get(Iv)), doctest::Approx(0.8).epsilon(1e-12));
     }
 
     static void testFromNotebook13() {

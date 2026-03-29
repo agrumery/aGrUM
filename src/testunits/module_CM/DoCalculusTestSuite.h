@@ -41,7 +41,6 @@
 #pragma once
 
 #include <gumtest/AgrumTestSuite.h>
-#include <gumtest/utils.h>
 
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
@@ -74,10 +73,10 @@ namespace gum_tests {
       auto                      built    = dc.getBackDoorTree(X, Y, Zset);
       auto                      builtStr = built->toString();
 
-      CHECK_NE(built.get(), (void*)nullptr);
-      CHECK(builtStr.find("sum on Z") != std::string::npos);
-      CHECK(builtStr.find("P(Y|X,Z)") != std::string::npos);
-      CHECK(builtStr.find("joint P(Z)") != std::string::npos);
+      CHECK_NE(built.get(), nullptr);
+      CHECK_NE(builtStr.find("sum on Z"), std::string::npos);
+      CHECK_NE(builtStr.find("P(Y|X,Z)"), std::string::npos);
+      CHECK_NE(builtStr.find("joint P(Z)"), std::string::npos);
 
       // 2) manual AST (must match)
       gum::Set< std::string > lhsY;
@@ -117,7 +116,7 @@ namespace gum_tests {
       gum::DoCalculus< double > dc(cm);
       auto                      built = dc.getBackDoorTree(X, Y, Zset);
 
-      CHECK_NE(built.get(), (void*)nullptr);
+      CHECK_NE(built.get(), nullptr);
 
       // manual P(Y|X)
       gum::Set< std::string > lhsY;
@@ -234,7 +233,7 @@ namespace gum_tests {
                                               std::vector< std::string >{"X"},    // doing
                                               std::vector< std::string >{"Z"});   // knowing
 
-      CHECK(ast != nullptr);
+      CHECK_NE(ast, nullptr);
       CHECK_NOTHROW({ (void)ast->eval(bn); });
     }
 
@@ -250,7 +249,7 @@ namespace gum_tests {
                                               std::vector< std::string >{"X"},
                                               std::vector< std::string >{"W"});
 
-      CHECK(ast != nullptr);
+      CHECK_NE(ast, nullptr);
       CHECK_NOTHROW({ (void)ast->eval(bn); });
     }
 
@@ -265,10 +264,10 @@ namespace gum_tests {
 
       auto ast = dc.doCalculus(std::vector< std::string >{"Y"}, std::vector< std::string >{"X"});
 
-      CHECK(ast != nullptr);
+      CHECK_NE(ast, nullptr);
       auto s = ast->toString();
       // Heuristic structural check: expression shouldn’t include "W".
-      CHECK(s.find("W") == std::string::npos);
+      CHECK_EQ(s.find("W"), std::string::npos);
     }
 
     // ======================================================================
@@ -285,9 +284,13 @@ namespace gum_tests {
       CHECK_NOTHROW({
         auto ast = dc.doCalculus(std::vector< std::string >{"B", "D"},
                                  std::vector< std::string >{"A", "C"});
-        CHECK(ast != nullptr);
-        (void)ast->toString();   // ensure it’s buildable/printable
       });
+      {
+        auto ast = dc.doCalculus(std::vector< std::string >{"B", "D"},
+                                 std::vector< std::string >{"A", "C"});
+        CHECK_NE(ast, nullptr);
+        (void)ast->toString();   // ensure it’s buildable/printable
+      }
     }
   };
 

@@ -58,7 +58,7 @@ namespace gum_tests {
 
   struct MeekRulesTestSuite {
     public:
-    static void testtest_cycle_PDAG() {
+    static void test_cycle_PDAG() {
       gum::PDAG pdag;
       for (unsigned int i = 0; i < 6; ++i) {
         pdag.addNodeWithId(i);

@@ -585,7 +585,7 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
-    static void testtest_asia_with_user_modalities_numbers_incorrect() {
+    static void test_asia_with_user_modalities_numbers_incorrect() {
       auto bn = gum::BayesNet< double >::fastPrototype(
           "smoking{1|2|big};lung_cancer{big|bigbig|3|bigbigbig|0}");
       GUM_CHECK_ASSERT_THROWS_NOTHING(
@@ -1197,7 +1197,7 @@ namespace gum_tests {
       // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
-                                                                 dirichlet_genset);
+                                                           dirichlet_genset);
       gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;
