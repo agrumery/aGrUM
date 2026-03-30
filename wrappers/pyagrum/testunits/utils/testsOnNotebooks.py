@@ -51,6 +51,8 @@ import glob
 import sys
 import warnings
 
+from .gumTestOutput import notif, warn, error
+
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
@@ -93,7 +95,10 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
     with open(errorfilename, "w") as errfn:
       traceback.print_exc(file=errfn)
 
-    res = os.path.basename(errorfilename).split("-")[0] + "-...ipynb.log"
+    # Strip the timestamp prefix (YYYYMMDD_HHMM_) to show just the notebook name.
+    _bn    = os.path.basename(errorfilename)
+    _parts = _bn.split("_", 2)
+    res    = (_parts[2] if len(_parts) == 3 else _bn) + " [ERROR]"
 
   duration = time.time() - starttime
   res = f"[ {duration:8.2f}s ] {os.path.basename(notebook_filename)[0:40]:40} {res}"
@@ -101,39 +106,12 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
   return err, res, duration
 
 
-futures = []
-
-
-def done(fn):
-  global futures
-
-  if done.firstTime:
-    done.firstTime = False
-  else:
-    print(f"\033[{3 + len(futures)}A")
-  print("=" * 58)
-  for f in futures:
-    if f.done():
-      e, res, _ = f.result()
-      print(res)
-    else:
-      if f.running():
-        state = "..."
-      else:
-        state = "zzz"
-      print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} {state}]")
-  print("=" * 58)
-
-
-done.firstTime = True
-
-
 def runNotebooks(lonb: List[str] = None):
-  global futures
-
+  # 80-Applications_ipywidgets.ipynb requires ipywidgets and a live kernel display;
+  # it cannot run headlessly under nbconvert.
   excludes = {"80-Applications_ipywidgets.ipynb"}
+
   if lonb is None:
-    # slow notebooks
     lonb = sorted(
       [
         filename
@@ -153,8 +131,30 @@ def runNotebooks(lonb: List[str] = None):
 
   start_time = time.time()
 
-  # concurrent
+  # Closure state: results keyed by future id to avoid re-calling f.result() in callbacks.
+  _results: dict[int, tuple[int, str, float]] = {}
+  _display_count = 0
+
   futures = []
+
+  def done(fn):
+    nonlocal _display_count
+    _results[id(fn)] = fn.result()
+
+    if _display_count > 0:
+      print(f"\033[{3 + len(futures)}A")
+    _display_count += 1
+
+    print("=" * 58)
+    for f in futures:
+      if id(f) in _results:
+        _, res, _ = _results[id(f)]
+        print(res)
+      else:
+        state = "..." if f.running() else "zzz"
+        print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} {state}]")
+    print("=" * 58)
+
   executor = concurrent.futures.ProcessPoolExecutor(None)
   for notebook_filename in lonb:
     fut = executor.submit(processNotebook, notebook_filename)
@@ -168,17 +168,17 @@ def runNotebooks(lonb: List[str] = None):
   errs = 0
   total_time = 0
   for f in futures:
-    e, r, d = f.result()
+    e, _, d = _results[id(f)]
     total_time += d
     errs += e
-  elapsed_time = time.time() - start_time
-  print()
-  print(f"## Profiling : {total_time * 1000:.2f} ms ##")
-  print(f"## Duration  : {elapsed_time * 1000:.2f} ms ##")
-  print(f"Failed {errs} of {len(lonb)} tests")
-  print(f"Success rate: {100 * (1 - errs / len(lonb) if len(lonb) != 0 else 1):.2f}%")
 
-  print("Python Test Suite Error : " + str(errs))
+  elapsed_time = time.time() - start_time
+  notif()
+  notif(f"## Profiling : {total_time * 1000:.2f} ms ##")
+  notif(f"## Duration  : {elapsed_time * 1000:.2f} ms ##")
+  (error if errs > 0 else notif)(f"Failed {errs} of {len(lonb)} tests")
+  notif(f"Success rate: {100 * (1 - errs / len(lonb) if len(lonb) != 0 else 1):.2f}%")
+  (error if errs > 0 else notif)("Notebook Test Suite Error : " + str(errs))
   return errs
 
 

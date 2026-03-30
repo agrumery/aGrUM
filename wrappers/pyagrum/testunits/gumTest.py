@@ -38,12 +38,19 @@
 #                                                                          #
 ############################################################################
 
+import argparse
 import os
 import platform
 import sys
+from pathlib import Path
 from sys import platform as os_platform
 
 import logging
+
+_thisdir = os.path.dirname(os.path.abspath(__file__))
+if _thisdir not in sys.path:
+  sys.path.insert(0, _thisdir)
+from utils.gumTestOutput import notif, warn, error
 
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
 # This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'
@@ -55,63 +62,48 @@ def go():
   cwd = os.getcwd()
   FORMAT = "[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s"
 
-  if os.path.isabs(__file__):
-    os.chdir(os.path.dirname(__file__))
-  else:
-    os.chdir(os.path.dirname("./" + __file__))
+  os.chdir(Path(__file__).resolve().parent)
 
   test_modules = PYAGRUM_TEST_MODULES
 
-  mod = "release"  # release|debug
-  islocal = True  # installed|local : test the installed version
+  parser = argparse.ArgumentParser(prog="gumTest.py", add_help=False)
+  parser.add_argument("mode", nargs="?", default="release", choices=["debug", "release"], type=str.lower)
+  parser.add_argument("loc",  nargs="?", default="local",   choices=["installed", "local"], type=str.lower)
+  parser.add_argument("-m", dest="module", default="")
+  parser.add_argument("-t", dest="suite",  default="all")
+  args, _ = parser.parse_known_args(sys.argv[1:])
+
+  mod      = args.mode
+  islocal  = args.loc != "installed"
   testNotebooks = False
   notebooksOnly = False
-  test_module = ""  # all modules
-  test_suite = ""  # if test_suite!="" => only this test suite
+  test_suite = "" if args.suite == "all" else args.suite
 
-  parseM = 0
-  parseT = 0
-
-  for cde in sys.argv:
-    match cde:
-      case "debug" | "release":
-        mod = cde
-      case "installed" | "local":
-        islocal = cde == "installed"
-      case "-m":
-        parseM = 1
-      case "-t":
-        parseT = 1
-      case _:
-        if parseM == 1:
-          parseM = 0
-          if cde in {"list", "show"}:
-            print(f"Available modules: {sorted(test_modules - {'', 'main'})}")
-            print("(use '-m <module>' to run only that module without notebooks)")
-            sys.exit(0)
-          elif cde == "all+nb":
-            testNotebooks = True
-          elif cde == "nb":
-            testNotebooks = True
-            notebooksOnly = True
-          elif cde == "all":
-            test_module = ""
-          elif cde in test_modules:
-            test_module = cde
-          else:
-            print(
-              f"[-m] unknown value '{cde}'. Expected: all, all+nb, nb, list, show, or <module> with module in {sorted(test_modules - {'', 'main'})}"
-            )
-            sys.exit(1)
-        elif parseT == 1:
-          parseT = 0
-          test_suite = "" if cde == "all" else cde
+  m = args.module
+  if m in {"list", "show"}:
+    notif(f"Available modules: {sorted(test_modules - {'', 'main'})}")
+    notif("(use '-m <module>' to run only that module without notebooks)")
+    sys.exit(0)
+  elif m == "all+nb":
+    testNotebooks = True
+    test_module = ""
+  elif m == "nb":
+    testNotebooks = True
+    notebooksOnly = True
+    test_module = ""
+  elif m in {"", "all"} or m.startswith("all-") or m in test_modules:
+    test_module = m
+  else:
+    error(
+      f"[-m] unknown value '{m}'. Expected: all[+nb][-mod1[-mod2…]], nb, list, show, or <module> with module in {sorted(test_modules - {'', 'main'})}"
+    )
+    sys.exit(1)
 
   logfilename = "/pyAgrumTests.log"
   if mod != "standAlone":
     logfilename = "/../../.." + logfilename
   logfilename = cwd + logfilename
-  print(f"log : {logfilename}")
+  notif(f"log : {logfilename}")
 
   log = logging.getLogger("gumTestLog")
   log.setLevel(logging.DEBUG)  # better to have too much log than not enough
@@ -137,22 +129,22 @@ def go():
   log.info("on Python {0} - {1}".format(platform.python_version(), os_platform))
   log.info("path : {}".format(gum.__file__))
 
-  print("*****************")
-  print("Python Test Suite")
-  print("*****************")
+  notif("*****************")
+  notif("Python Test Suite")
+  notif("*****************")
 
-  import testsOnPython
+  import utils.testsOnPython as testsOnPython
 
   if not notebooksOnly:
     total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
 
   if testNotebooks:
     log.info("Tests on notebooks")
-    print("\n")
-    print("*******************")
-    print("Notebook Test Suite")
-    print("*******************")
-    from testsOnNotebooks import runNotebooks
+    notif()
+    notif("*******************")
+    notif("Notebook Test Suite")
+    notif("*******************")
+    from utils.testsOnNotebooks import runNotebooks
 
     try:
       total_errs += runNotebooks()
@@ -161,19 +153,20 @@ def go():
     except Exception as e:
       log.warning(f"Error in NotebookTestSuite : {e}")
       total_errs += 1
-      print("=> Error in NotebookTestSuite")
+      error("Error in NotebookTestSuite")
 
   os.chdir(cwd)
-  print("-" * 70)
-  print(" log file ")
-  print("-" * 70)
+  notif("-" * 70)
+  notif(" log file ")
+  notif("-" * 70)
   with open(logfilename, "r") as logfile:
-    for f in logfile.readlines():
+    for f in logfile:
       if "[pyAgrum]" in f:
-        print(f, end="")
-  print("-" * 70)
+        notif(f.rstrip())
+  notif("-" * 70)
 
-  print("\n\n\nErrors : " + str(total_errs))
+  notif()
+  (error if total_errs > 0 else notif)(f"Errors : {total_errs}")
 
   sys.exit(total_errs)
 
