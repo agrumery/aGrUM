@@ -61,6 +61,10 @@ public:
   static void select(const std::string& name);   // switch explicite sans RAII
   static std::shared_ptr<VariableContext> current();  // "default" si aucune sélection
 
+  // Accès bas-coût pour la construction des Tensors (pas de refcount)
+  static VariableContext*               currentRaw();   // lecture TLS sans atomic
+  static std::weak_ptr<VariableContext> currentWeak();  // pour shadow debug uniquement
+
   // RAII — restaure le contexte précédent du thread à la sortie (composable)
   class Scope {
   public:
@@ -84,13 +88,22 @@ private:
 
 ```cpp
 // MultiDimDecorator<T> — classe parente de Tensor<T>
-// Porte context_ : possède content_ (MultiDimImplementation), donc sa durée de vie
-// garantit celle des pointeurs bruts dans _vars_. MultiDimImplementation est inchangé.
+// context_ est un raw pointer : zéro atomic à la construction/destruction.
+// Validité garantie par le Scope (ou GraphicalModel) qui détient le shared_ptr.
+// MultiDimImplementation est inchangé.
 class MultiDimDecorator<T> {
-  std::shared_ptr<VariableContext> context_;
+  VariableContext* context_;                         // raw — 8 octets, zéro atomic
+#ifndef NDEBUG
+  std::weak_ptr<VariableContext> context_dbg_;       // shadow : détecte les accès post-destruction
+#endif
 public:
-  MultiDimDecorator() : context_(VariableContext::current()) {}
+  MultiDimDecorator() : context_(VariableContext::currentRaw()) {
+#ifndef NDEBUG
+    context_dbg_ = VariableContext::currentWeak();
+#endif
+  }
   void add(const DiscreteVariable& v) override {
+    GUM_ASSERT_DBG(!context_dbg_.expired(), "Tensor outlives its VariableContext");
     content_->add(context_->intern(v));   // canonicalisation ici, stockage brut inchangé
   }
 };
@@ -149,11 +162,14 @@ std::thread([ctx = bn.context()]() {
 
 #### Overhead
 
-**Tensors** — `MultiDimDecorator` gagne un `shared_ptr<VariableContext>` (8 octets), capturé
-une fois à la construction (lecture `thread_local` + incrément atomique). `MultiDimImplementation`
+**Tensors** — `MultiDimDecorator` gagne un raw pointer `VariableContext*` (8 octets), capturé
+à la construction par lecture du `thread_local` sans refcount (zéro atomic). `MultiDimImplementation`
 et `MultiDimArray` sont **inchangés**. `add()` coûte un `shared_lock` non contesté + hash lookup
 — marginal, limité à la phase de construction. Les opérations de calcul (marginalisation, produit,
 projection) comparent des pointeurs bruts inchangés : **overhead nul**.
+
+En debug (`#ifndef NDEBUG`), un `weak_ptr` shadow est capturé à la construction et vérifié
+avant chaque `add()` — absent en release, sans impact sur le chemin de calcul.
 
 **Modèles graphiques** — `addVariable()` appelle `intern()` une fois par variable à la
 construction du modèle (hors chemin critique). Toutes les lectures (`variable()`, itération sur
@@ -166,10 +182,12 @@ les nœuds) accèdent directement aux pointeurs bruts : **overhead nul**.
 | Stockage dans Tensor | `const DiscreteVariable*` brut | idem (dans contexte) |
 | `MultiDimImplementation` / `MultiDimArray` | — | **inchangés** |
 | Overhead calcul Tensor | nul | **nul** |
+| Overhead construction/destruction Tensor | nul | **nul** (raw pointer, zéro atomic) |
 | Overhead `add()` / `addVariable()` | nul | hash lookup + shared_lock (construction) |
 | Constructeurs MultiDim / BN | — | **inchangés** (pas de paramètre ctx) |
 | Ownership variables | implicite / modèle | `VariableContext` |
-| Durée de vie variable | manuelle | garantie par `shared_ptr` |
+| Durée de vie variable | manuelle | garantie par `shared_ptr` (dans modèle/Scope) |
+| Tensor outlive son contexte | non détectable | **GUM_ERROR en debug** (shadow `weak_ptr`) |
 | Opérations Tensors même BN | identité de pointeur | **identique** |
 | Opérations Tensors inter-BNs (même ctx) | échouent | **fonctionnent directement** |
 | Opérations Tensors inter-contextes | non détectées | exception explicite |
@@ -188,7 +206,9 @@ responsabilité de durée de vie.
 Tous les modèles suivent le même patron : `context_` hérité de `GraphicalModel`, `_varMap_`
 (ou `_variableMap_` pour ID) réduit au mapping `NodeId ↔ ptr`.
 
-- **BayesNet** : un Tensor d'inférence capture `bn.context()` — survive à la destruction du BN.
+- **BayesNet** : les Tensors d'inférence sont valides tant que le modèle vit. Pour un Tensor
+  destiné à outlive le BN, capturer explicitement `bn.context()` dans un `shared_ptr<VariableContext>`
+  externe afin de prolonger la durée de vie du contexte.
 - **InfluenceDiagram** : `_tensorMap_` et `_utilityMap_` partagent le même `context_`.
 - **MarkovRandomField** : facteurs indexés par `NodeSet` (entiers) — non affectés. Suppression de nœud : inchangée.
 - **CN, CM** : héritent de BayesNet — même patron, à vérifier.
@@ -197,8 +217,9 @@ Tous les modèles suivent le même patron : `context_` hérité de `GraphicalMod
 #### Ordre d'implémentation
 
 1. **`variableContext.h/.cpp`** — `intern()`, table nommée (`create/get/select`), `Scope`,
-   `current()`, `shared_mutex` (table + vars).
-2. **`multiDimDecorator`** — `context_`, override `add()` avec `intern()`.
+   `current()`, `currentRaw()`, `currentWeak()`, `shared_mutex` (table + vars).
+2. **`multiDimDecorator`** — `context_` raw pointer + shadow `context_dbg_` (`#ifndef NDEBUG`) ;
+   `assertContextAlive_()` appelée dans `add()` et les opérations binaires.
 3. **`GraphicalModel`** — `context_`, `context()`, `addVariable()` via `intern()` + `_varMap_`.
 4. **`BayesNet`, `InfluenceDiagram`, `MarkovRandomField`** — adapter `addVariable()` ;
    vérifier suppression de nœud MRF.

@@ -119,10 +119,10 @@ namespace gum {
                          bool                          assumeNonSpurious = false);
 
     /// Copy constructor
-    CausalModel(const CausalModel& other) { GUM_CONS_CPY(CausalModel) };
+    CausalModel(const CausalModel& other);
 
     /// Move constructor
-    CausalModel(CausalModel&& other) noexcept { GUM_CONS_MOV(CausalModel) };
+    CausalModel(CausalModel&& other) noexcept;
 
     /// Destructor
     ~CausalModel() { GUM_DESTRUCTOR(CausalModel) };
@@ -224,6 +224,10 @@ namespace gum {
      */
     std::optional< NodeSet > backDoor(NodeId cause, NodeId effect) const;
 
+    std::optional< NodeSet > backDoor(std::string_view cause, std::string_view effect) const {
+      return backDoor(idFromName(cause), idFromName(effect));
+    }
+
     /**
      * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
      *        (IDs only).
@@ -243,6 +247,26 @@ namespace gum {
      */
     std::optional< NodeSet > frontDoor(NodeId cause, NodeId effect) const;
 
+    /**
+     * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
+     *        (IDs only).
+     *
+     * Enumerates admissible frontdoor sets in the current causal DAG
+     * (excluding latent variables) and returns the **first** valid one found.
+     * Returns `std::nullopt` if no frontdoor set exists at all.
+     * Note: an **empty** set is a valid frontdoor in degenerate cases.
+     *
+     * Preconditions:
+     *  - `cause` and `effect` must be **observed** variables of the model.
+     *
+     * @param cause  name (string_view) of the cause \(X\).
+     * @param effect name (string_view) of the effect \(Y\).
+     * @return std::optional<NodeSet> The frontdoor adjustment set \(Z\) as NodeIds,
+     *                                or std::nullopt if no frontdoor set exists.
+     */
+    std::optional< NodeSet > frontDoor(std::string_view cause, std::string_view effect) const {
+      return frontDoor(idFromName(cause), idFromName(effect));
+    }
 
     /**
      * @brief Induced causal submodel on a subset of nodes.
@@ -308,6 +332,32 @@ namespace gum {
      * @return A table mapping a representative NodeId to the NodeSet of nodes in its component.
      */
     HashTable< NodeId, NodeSet > connectedComponents() const;
+
+    /**
+     * From id to variable (observed only, by id). Throws if id does not correspond to an observed
+     * variable.
+     *
+     * @param id the node id
+     * @exception throws gum::NotFound if id does not correspond to an observed variable in the
+     * model
+     *
+     * @return the variable if exists
+     */
+    const DiscreteVariable& variable(NodeId id) const { return _observationalBN_.variable(id); }
+
+    /**
+     * From name to variable (observed only, by id). Throws if id does not correspond to an observed
+     * variable.
+     *
+     * @param name
+     * @exception throws gum::NotFound if id does not correspond to an observed variable in the
+     * model
+     *
+     * @return the variable if exists
+     */
+    const DiscreteVariable& variable(std::string_view name) const {
+      return _observationalBN_.variable(idFromName(name));
+    }
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

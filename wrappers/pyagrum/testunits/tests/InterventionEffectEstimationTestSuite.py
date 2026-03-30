@@ -43,7 +43,7 @@ import unittest
 import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-import pyagrum.causalEffectEstimation as csl
+import pyagrum.causalEffectEstimation as gcee
 
 from pyagrum.causalEffectEstimation._utils import RCTError, BackdoorError, FrontdoorError, IVError
 
@@ -85,7 +85,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._RCT)
@@ -131,7 +131,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._RCT)
@@ -192,7 +192,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._BACKDOOR)
@@ -266,7 +266,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._FRONTDOOR)
@@ -343,7 +343,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._FRONTDOOR)
@@ -400,10 +400,9 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
-    cslbn.addLatentVariable("u", ("T", "Y"))
-    cslbn.addCausalArc("T", "Y")
+    cslbn.addLatentVariable("u", ("T", "Y"),True)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._IV)
@@ -480,10 +479,9 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
-    cslbn.addLatentVariable("u", ("T", "Y"))
-    cslbn.addCausalArc("T", "Y")
+    cslbn.addLatentVariable("u", ("T", "Y"),True)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._IV)

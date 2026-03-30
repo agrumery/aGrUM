@@ -41,9 +41,9 @@
 import unittest
 
 import pyagrum as gum
+import pyagrum.causalEffectEstimation as gcee
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-import pyagrum.causalEffectEstimation as csl
 
 import pandas as pd
 import numpy as np
@@ -82,7 +82,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._RCT)
@@ -95,19 +95,19 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     DM_estimation = cee.estimateCausalEffect()
     self.assertAlmostEqual(DM_estimation, 2.0, delta=_delta)
 
-    self.assertRaises(gum.RCTError, cee.fitSLearner)
-    self.assertRaises(gum.RCTError, cee.fitTLearner)
-    self.assertRaises(gum.RCTError, cee.fitXLearner)
-    self.assertRaises(gum.RCTError, cee.fitPStratification)
-    self.assertRaises(gum.RCTError, cee.fitIPW)
+    self.assertRaises(gcee.RCTError, cee.fitSLearner)
+    self.assertRaises(gcee.RCTError, cee.fitTLearner)
+    self.assertRaises(gcee.RCTError, cee.fitXLearner)
+    self.assertRaises(gcee.RCTError, cee.fitPStratification)
+    self.assertRaises(gcee.RCTError, cee.fitIPW)
 
-    self.assertRaises(gum.RCTError, cee.fitSimplePlugIn)
-    self.assertRaises(gum.RCTError, cee.fitGeneralizedPlugIn)
+    self.assertRaises(gcee.RCTError, cee.fitSimplePlugIn)
+    self.assertRaises(gcee.RCTError, cee.fitGeneralizedPlugIn)
 
-    self.assertRaises(gum.RCTError, cee.fitWald)
-    self.assertRaises(gum.RCTError, cee.fitWaldIPW)
-    self.assertRaises(gum.RCTError, cee.fitNormalizedWaldIPW)
-    self.assertRaises(gum.RCTError, cee.fitTSLS)
+    self.assertRaises(gcee.RCTError, cee.fitWald)
+    self.assertRaises(gcee.RCTError, cee.fitWaldIPW)
+    self.assertRaises(gcee.RCTError, cee.fitNormalizedWaldIPW)
+    self.assertRaises(gcee.RCTError, cee.fitTSLS)
 
   def test_RCT_case(self):
     X = np.random.normal(1, 1, _n)
@@ -128,7 +128,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._RCT)
@@ -161,13 +161,13 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     IPW_estimation = cee.estimateCausalEffect()
     self.assertAlmostEqual(IPW_estimation, 2.0, delta=_delta)
 
-    self.assertRaises(gum.RCTError, cee.fitSimplePlugIn)
-    self.assertRaises(gum.RCTError, cee.fitGeneralizedPlugIn)
+    self.assertRaises(gcee.RCTError, cee.fitSimplePlugIn)
+    self.assertRaises(gcee.RCTError, cee.fitGeneralizedPlugIn)
 
-    self.assertRaises(gum.RCTError, cee.fitWald)
-    self.assertRaises(gum.RCTError, cee.fitWaldIPW)
-    self.assertRaises(gum.RCTError, cee.fitNormalizedWaldIPW)
-    self.assertRaises(gum.RCTError, cee.fitTSLS)
+    self.assertRaises(gcee.RCTError, cee.fitWald)
+    self.assertRaises(gcee.RCTError, cee.fitWaldIPW)
+    self.assertRaises(gcee.RCTError, cee.fitNormalizedWaldIPW)
+    self.assertRaises(gcee.RCTError, cee.fitTSLS)
 
   def test_backdoor_case(self):
     X = np.random.normal(1, 1, _n)
@@ -189,7 +189,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._BACKDOOR)
@@ -263,7 +263,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._FRONTDOOR)
@@ -275,20 +275,20 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     SPI_estimation = cee.estimateCausalEffect()
     self.assertAlmostEqual(SPI_estimation, 2.0, delta=_delta)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitDM)
+    self.assertRaises(gcee.FrontdoorError, cee.fitDM)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitSLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitTLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitXLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitPStratification)
-    self.assertRaises(gum.FrontdoorError, cee.fitIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitSLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitTLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitXLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitPStratification)
+    self.assertRaises(gcee.FrontdoorError, cee.fitIPW)
 
     self.assertRaises(ValueError, cee.fitGeneralizedPlugIn)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitWald)
-    self.assertRaises(gum.FrontdoorError, cee.fitWaldIPW)
-    self.assertRaises(gum.FrontdoorError, cee.fitNormalizedWaldIPW)
-    self.assertRaises(gum.FrontdoorError, cee.fitTSLS)
+    self.assertRaises(gcee.FrontdoorError, cee.fitWald)
+    self.assertRaises(gcee.FrontdoorError, cee.fitWaldIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitNormalizedWaldIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitTSLS)
 
   def test_conditional_frontdoor_case(self):
     U = np.random.normal(1, 1, _n)
@@ -340,7 +340,7 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     cslbn = gum.CausalModel(bn)
     cslbn.addLatentVariable("u", ("T", "Y"))
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._FRONTDOOR)
@@ -352,18 +352,18 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     GPI_estimation = cee.estimateCausalEffect()
     self.assertAlmostEqual(GPI_estimation, 2.0, delta=_delta)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitDM)
+    self.assertRaises(gcee.FrontdoorError, cee.fitDM)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitSLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitTLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitXLearner)
-    self.assertRaises(gum.FrontdoorError, cee.fitPStratification)
-    self.assertRaises(gum.FrontdoorError, cee.fitIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitSLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitTLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitXLearner)
+    self.assertRaises(gcee.FrontdoorError, cee.fitPStratification)
+    self.assertRaises(gcee.FrontdoorError, cee.fitIPW)
 
-    self.assertRaises(gum.FrontdoorError, cee.fitWald)
-    self.assertRaises(gum.FrontdoorError, cee.fitWaldIPW)
-    self.assertRaises(gum.FrontdoorError, cee.fitNormalizedWaldIPW)
-    self.assertRaises(gum.FrontdoorError, cee.fitTSLS)
+    self.assertRaises(gcee.FrontdoorError, cee.fitWald)
+    self.assertRaises(gcee.FrontdoorError, cee.fitWaldIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitNormalizedWaldIPW)
+    self.assertRaises(gcee.FrontdoorError, cee.fitTSLS)
 
   def test_simple_IV_case(self):
     U = np.random.normal(1, 1, _n)
@@ -397,10 +397,9 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
-    cslbn.addLatentVariable("u", ("T", "Y"))
-    cslbn.addCausalArc("T", "Y")
+    cslbn.addLatentVariable("u", ("T", "Y"),True)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._IV)
@@ -477,10 +476,10 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     bn.cpt("Y").fillWith(cpt_Y)
     bn.endTopologyTransformation()
     cslbn = gum.CausalModel(bn)
-    cslbn.addLatentVariable("u", ("T", "Y"))
-    cslbn.addCausalArc("T", "Y")
+    cslbn.addLatentVariable("u", ("T", "Y"), True)
 
-    cee = gum.CausalEffectEstimation(df, cslbn)
+
+    cee = gcee.CausalEffectEstimation(df, cslbn)
 
     adjustment = cee.identifyAdjustmentSet("T", "Y", verbose=False)
     self.assertEqual(adjustment, cee._IV)

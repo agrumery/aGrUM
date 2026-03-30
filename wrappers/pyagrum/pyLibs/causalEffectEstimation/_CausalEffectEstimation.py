@@ -336,7 +336,7 @@ class CausalEffectEstimation:
     self._T = intervention
     self._y = outcome
 
-  def identifyAdjustmentSet(self, intervention: str, outcome: str, verbose: bool = True) -> None:
+  def identifyAdjustmentSet(self, intervention: str, outcome: str, verbose: bool = True) -> str:
     """
     Identify the sufficent adjustment set of covariates.
 
@@ -354,6 +354,12 @@ class CausalEffectEstimation:
     ------
     ValueError
         The tratment isn't binary or no adjustment set was found.
+
+    Returns
+    -------
+    str
+        The identified adjustment set type among RCT, Backdoor,
+        Frontdoor, IV, or Unknown.
     """
 
     if set(self._df[intervention].unique()) != {0, 1}:

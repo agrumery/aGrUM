@@ -52,14 +52,14 @@ CausalModel(bn) -> CausalModel
     Parameters:
         - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
 
-CausalModel(bn, latents, keepArcs=False) -> CausalModel
+CausalModel(bn, latents, assumeNonSpurious=False) -> CausalModel
     Parameters:
         - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
         - **latents** (*list of (str, list of str)*) -- description of latent
           variables. Each entry is a pair ``(name, children)`` where ``name``
           is the latent variable name and ``children`` is the list of observed
           variable names it affects.
-        - **keepArcs** (*bool*) -- if True, existing arcs between the children
+        - **assumeNonSpurious** (*bool*) -- if True, existing arcs between the children
           of each latent variable are preserved. Default is False (arcs between
           affected children are removed as they are assumed to be explained by
           the latent confounder).
@@ -72,7 +72,7 @@ Examples
 
 Create a model with a latent confounder U between X and Y:
 
->>> cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
+>>> cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable
@@ -89,7 +89,7 @@ name : str
     Name of the new latent variable.
 children : list of str
     Names of the observed variables that are children of this latent variable.
-keepArcs : bool, optional
+assumeNonSpurious : bool, optional
     If True, preserve existing arcs between the specified children.
     Default is False.
 "

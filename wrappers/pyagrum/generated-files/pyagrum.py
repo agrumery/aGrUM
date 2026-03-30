@@ -31712,14 +31712,14 @@ class CausalModel(object):
         Parameters:
             - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
 
-    CausalModel(bn, latents, keepArcs=False) -> CausalModel
+    CausalModel(bn, latents, assumeNonSpurious=False) -> CausalModel
         Parameters:
             - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
             - **latents** (*list of (str, list of str)*) -- description of latent
               variables. Each entry is a pair ``(name, children)`` where ``name``
               is the latent variable name and ``children`` is the list of observed
               variable names it affects.
-            - **keepArcs** (*bool) -- if True, existing arcs between the children
+            - **assumeNonSpurious** (*bool) -- if True, existing arcs between the children
               of each latent variable are preserved. Default is False (arcs between
               affected children are removed as they are assumed to be explained by
               the latent confounder).
@@ -31732,7 +31732,7 @@ class CausalModel(object):
 
     Create a model with a latent confounder U between X and Y:
 
-    >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], keepArcs=False)
+    >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
 
     """
 
@@ -31755,7 +31755,7 @@ class CausalModel(object):
             Name of the new latent variable.
         children : list of str
             Names of the observed variables that are children of this latent variable.
-        keepArcs : bool, optional
+        assumeNonSpurious : bool, optional
             If True, preserve existing arcs between the specified children.
             Default is False.
 
@@ -31836,7 +31836,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
 
-    def backDoor(self, cause: int, effect: int) -> "std::optional< list[int] >":
+    def backDoor(self, *args) -> "std::optional< list[int] >":
         r"""
 
         Find a backdoor adjustment set between cause and effect.
@@ -31866,9 +31866,9 @@ class CausalModel(object):
         pyagrum.causal.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
 
         """
-        return _pyagrum.CausalModel_backDoor(self, cause, effect)
+        return _pyagrum.CausalModel_backDoor(self, *args)
 
-    def frontDoor(self, cause: int, effect: int) -> "std::optional< list[int] >":
+    def frontDoor(self, *args) -> "std::optional< list[int] >":
         r"""
 
         Find a frontdoor adjustment set between cause and effect.
@@ -31897,7 +31897,7 @@ class CausalModel(object):
         pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 
         """
-        return _pyagrum.CausalModel_frontDoor(self, cause, effect)
+        return _pyagrum.CausalModel_frontDoor(self, *args)
 
     def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel< float >":
         r"""
@@ -32140,6 +32140,9 @@ class CausalModel(object):
 
         """
         return _pyagrum.CausalModel_connectedComponents(self)
+
+    def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        return _pyagrum.CausalModel_variable(self, *args)
 
     def __init__(self, *args):
         _pyagrum.CausalModel_swiginit(self, _pyagrum.new_CausalModel(*args))

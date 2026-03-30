@@ -43,6 +43,8 @@
 
 #include <gumtest/AgrumTestSuite.h>
 
+#include <agrum/agrum.h>
+
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
 
@@ -57,12 +59,52 @@ namespace gum_tests {
     public:
     static void testSimpleBN() {
       auto                       bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
-      gum::CausalModel< double > cm(bn);
+      gum::CausalModel< double > cm(bn,
+                                    {{"Hidden", {bn.idFromName("A"), bn.idFromName("B")}}},
+                                    true);
 
       // BN has 2 variables
       CHECK_EQ(cm.observationalBN().size(), 2u);
       CHECK(cm.existsArc("A", "B"));
       CHECK(!cm.existsArc("B", "A"));
+
+      CHECK_THROWS(cm.idFromName("NonExistent"));
+      CHECK_THROWS(cm.variable("NonExistent"));
+      CHECK_THROWS(cm.variable(150u));
+
+      // for a latent variable : we can have its id but no (observationnal) variable is associated
+      CHECK_NOTHROW(cm.idFromName("Hidden"));
+      CHECK_THROWS(cm.variable("Hidden"));
+      CHECK_THROWS(cm.variable(cm.idFromName("Hidden")));
+
+      CHECK_NOTHROW(cm.idFromName("A"));
+      CHECK_NOTHROW(cm.variable("A"));
+      CHECK_NOTHROW(cm.variable(0));
+    }
+
+    static void testCopy() {
+      const auto       bn = gum::BayesNet< double >::fastPrototype("A[2]->B[3]");
+      gum::CausalModel cm2(bn, {{"Hidden", {bn.idFromName("A"), bn.idFromName("B")}}}, true);
+
+      const gum::CausalModel cm(cm2);
+
+      // BN has 2 variables
+      CHECK_EQ(cm.observationalBN().size(), 2u);
+      CHECK(cm.existsArc("A", "B"));
+      CHECK(!cm.existsArc("B", "A"));
+
+      CHECK_THROWS(cm.idFromName("NonExistent"));
+      CHECK_THROWS(cm.variable("NonExistent"));
+      CHECK_THROWS(cm.variable(150u));
+
+      // for a latent variable : we can have its id but no (observationnal) variable is associated
+      CHECK_NOTHROW(cm.idFromName("Hidden"));
+      CHECK_THROWS(cm.variable("Hidden"));
+      CHECK_THROWS(cm.variable(cm.idFromName("Hidden")));
+
+      CHECK_NOTHROW(cm.idFromName("A"));
+      CHECK_NOTHROW(cm.variable("A"));
+      CHECK_NOTHROW(cm.variable(0));
     }
 
     static void testLatentFromIds() {
@@ -272,6 +314,11 @@ namespace gum_tests {
       CHECK_EQ(bd.value().size(), 1u);
       CHECK(bd.value().contains(Z));
 
+      auto bd2 = cm.backDoor("X", "Y");
+      CHECK(bd2.has_value());
+      CHECK_EQ(bd2.value().size(), 1u);
+      CHECK(bd2.value().contains(Z));
+
       // Returned set must not contain latents.
       for (auto n: bd.value())
         CHECK(!cm.latentVariablesIds().contains(n));
@@ -320,6 +367,8 @@ namespace gum_tests {
 
       auto fd = cm.frontDoor(bn.idFromName("X"), bn.idFromName("Y"));
       CHECK(!fd.has_value());
+      auto fd2 = cm.frontDoor("X", "Y");
+      CHECK(!fd2.has_value());
     }
 
     // Passing a latent as cause/effect must raise (guard in CausalModel).
@@ -336,6 +385,8 @@ namespace gum_tests {
 
       CHECK_THROWS_AS(cm.backDoor(U, Y), const gum::InvalidArgument&);
       CHECK_THROWS_AS(cm.frontDoor(X, U), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(cm.backDoor("U", "Y"), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(cm.frontDoor("X", "U"), const gum::InvalidArgument&);
     }
 
     // ...existing tests...
@@ -380,6 +431,7 @@ namespace gum_tests {
   };
 
   GUM_TEST_ACTIF(SimpleBN)
+  GUM_TEST_ACTIF(Copy)
   GUM_TEST_ACTIF(LatentFromIds)
   GUM_TEST_ACTIF(ToDotSmoke)
   GUM_TEST_ACTIF(ToDotSimpson)

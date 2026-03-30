@@ -63,10 +63,26 @@ namespace gum {
                                          bool                          assumeNonSpurious) :
       _observationalBN_(observationalBN), _causalDAG_(observationalBN.dag()) {
     // add each latent (children given as names)
-    for (const auto& desc: latentVarsDescriptor) {
-      addLatentVariable(desc.first, desc.second, assumeNonSpurious);
+    for (const auto& [latent, children]: latentVarsDescriptor) {
+      addLatentVariable(latent, children, assumeNonSpurious);
     }
   }
+
+  /// Copy constructor
+  template < GUM_Numeric GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::CausalModel(const CausalModel& other) :
+      _observationalBN_(other._observationalBN_), _causalDAG_(other._causalDAG_),
+      _id2name_(other._id2name_) {
+    GUM_CONS_CPY(CausalModel)
+  };
+
+  /// Move constructor
+  template < GUM_Numeric GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::CausalModel(CausalModel&& other) noexcept :
+      _observationalBN_(std::move(other._observationalBN_)),
+      _causalDAG_(std::move(other._causalDAG_)), _id2name_(std::move(other._id2name_)) {
+    GUM_CONS_MOV(CausalModel)
+  };
 
   // ===============================
   // Latent variables

@@ -158,6 +158,8 @@ def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[s
 
   Parameters
   ----------
+  causal_model : gum.CausalModel
+    The causal model containing the DAG and the observational BN.
   intervention: str
       Intervention (treatment) variable.
   outcome: str
@@ -177,7 +179,7 @@ def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[s
   if cbn_without_T_Y.existsArc(t, y):
     cbn_without_T_Y.eraseArc(t, y)
 
-  if cbn_without_T_Y.dSeparation(cbn_without_T_Y, {t}, {y}, set()):
+  if cbn_without_T_Y.dSeparation({t}, {y}):
     return {causal_model.variable(pa).name() for pa in cbn_without_T_Y.parents(y)}
   else:
     return None
@@ -247,8 +249,11 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
   obn = causal_model.observationalBN()
   cbn = causal_model.causalDAG()
 
-  mediators = gum._doorCriteria.nodes_on_dipath(obn, obn.idFromName(intervention), obn.idFromName(outcome))
-  mediators = {obn.variable(m).name() for m in mediators}
+  print(obn.toDot())
+  mediators = gum.DoorCriteria.nodesOnDirectedPaths(obn.dag(), obn.idFromName(intervention), obn.idFromName(outcome))
+  mediators = {obn.variable(m).name() for m in mediators if m not in {obn.idFromName(intervention), obn.idFromName(outcome)}}
+  print(obn.toDot())
+  print(f"{intervention=} / {outcome=} / {mediators=}")
 
   confounders = set()
 
@@ -264,24 +269,24 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
   # Clone with latent variables:
   # Sometime the causal structure is changed while cloning,
   # so extra operations must be made
-  mutilated_causal_model = causal_model.clone()
+  mutilated_causal_model = gum.CausalModel(causal_model) #.clone()
 
-  for id in causal_model.latentVariablesIds():
-    childrens = cbn.children(id)
-    childrens = {cbn.variable(c).name() for c in childrens}
-    if cbn.variable(id).name() not in mutilated_causal_model.names().values():
-      mutilated_causal_model.addLatentVariable(cbn.variable(id).name(), tuple(childrens))
+  #for id in causal_model.latentVariablesIds():
+  #  childrens = cbn.children(id)
+  #  childrens = {cbn.variable(c).name() for c in childrens}
+  #  if cbn.variable(id).name() not in mutilated_causal_model.names().values():
+  #    mutilated_causal_model.addLatentVariable(cbn.variable(id).name(), tuple(childrens))
 
-  for c in confounders:
-    if mutilated_causal_model.existsArc(c, intervention):
-      mutilated_causal_model.eraseCausalArc(c, intervention)
-    if mutilated_causal_model.existsArc(c, outcome):
-      mutilated_causal_model.eraseCausalArc(c, outcome)
-    for m in mediators:
-      if mutilated_causal_model.existsArc(c, m):
-        mutilated_causal_model.eraseCausalArc(c, m)
+  #for c in confounders:
+  #  if mutilated_causal_model.existsArc(c, intervention):
+  #    mutilated_causal_model.eraseCausalArc(c, intervention)
+  #  if mutilated_causal_model.existsArc(c, outcome):
+  #    mutilated_causal_model.eraseCausalArc(c, outcome)
+  #  for m in mediators:
+  #    if mutilated_causal_model.existsArc(c, m):
+  #      mutilated_causal_model.eraseCausalArc(c, m)
 
-  frontdoor = mutilated_causal_model.frontDoor(cause=intervention, effect=outcome)
+  frontdoor = mutilated_causal_model.frontDoor(intervention, outcome)
 
   valid_fd = _verifyFrontDoorDSep(
     cbn,

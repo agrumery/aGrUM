@@ -904,6 +904,23 @@ namespace gum_tests {
         CHECK(!S.contains(idY));
       }
     }
+
+    static void testNoDirectedPaths() {
+      gum::DAG d;
+      d.addNodes(6u);
+      d.addArc(2, 1);
+      d.addArc(4, 1);
+      d.addArc(5, 1);
+      d.addArc(0, 2);
+      d.addArc(3, 0);
+      d.addArc(3, 2);
+      d.addArc(4, 2);
+      d.addArc(5, 0);
+
+      auto v = gum::DoorCriteria::nodesOnDirectedPaths(d, 2, 1);
+      GUM_TRACE_VAR(v);
+      CHECK_EQ(v.size(), 0u);
+    }
   };
 
 
@@ -933,6 +950,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Frontdoor_NoDirectedPath_EnumeratesSingletons)
   GUM_TEST_ACTIF(LexLess_PrefixBeforeExtension)
   GUM_TEST_ACTIF(LexLess_GlobalSortedOrder)
+  GUM_TEST_ACTIF(NoDirectedPaths)
 
 
 }   // namespace gum_tests
