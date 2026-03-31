@@ -47,6 +47,7 @@
 #define GUM_DOOR_CRITERIA_H
 
 #include <vector>
+#include <optional>
 
 #include <agrum/base/graphs/DAG.h>
 
@@ -189,7 +190,7 @@ namespace gum {
      * @param Y End node.
      * @return Set of nodes on at least one X->..->Y directed path.
      */
-    static NodeSet nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
+    static std::optional<NodeSet> nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
 
     /**
      * @brief Compute the "backdoor reach" of a node.

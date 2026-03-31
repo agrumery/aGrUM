@@ -285,10 +285,15 @@ namespace gum {
       if (p == X) return out;
 
     // Candidate pool
-    NodeSet possible = nodesOnDirectedPaths(dag, X, Y);
-    bool    noDiPath = false;
+    auto possibleOpt = nodesOnDirectedPaths(dag, X, Y);
+    bool noDiPath = !possibleOpt.has_value();
 
-    if (possible.empty()) {
+    NodeSet possible;
+    if (possibleOpt.has_value()) {
+        possible = *possibleOpt;
+    }
+
+    if (noDiPath) {
       // No directed path: use weakly connected component containing both X and Y (undirected BFS)
       NodeSet cc;
       {
@@ -411,20 +416,22 @@ namespace gum {
     return false;
   }
 
-  NodeSet DoorCriteria::nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y) {
+  std::optional<NodeSet> DoorCriteria::nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y) {
     const NodeSet f = dag.descendants(X);   // forward reach
     const NodeSet r = dag.ancestors(Y);     // reverse reach
+
+    if (!f.contains(Y)) return std::nullopt;
 
     NodeSet res;
     // A node is on some X->...->Y path iff reachable from X and can reach Y.
     for (auto n: f)
       if (r.contains(n)) res.insert(n);
 
-    // Include endpoints if connected (i.e., Y is forward-reachable from X).
-    if (f.contains(Y)) {
-      res.insert(X);
-      res.insert(Y);
-    }
+    // To match pyagrum version:
+    // - do not include X
+    // - do not include Y
+    res.erase(X);
+    res.erase(Y);
 
     return res;
   }
