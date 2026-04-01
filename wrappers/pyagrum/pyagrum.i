@@ -76,10 +76,18 @@
 %include "std_pair.i"
 %{
 #include "extensions/helpers.h"
+
+/* numpy import helper: import_array1 must live in an int-returning function.
+   Older SWIG inlines %init code directly into PyObject* PyInit_*(), which
+   would make "return -1" a type error.  The wrapper below fixes that. */
+static int _pyagrum_import_numpy(void) {
+    import_array1(-1);
+    return 0;
+}
 %}
 
 %init %{
-  import_array1(-1);
+  _pyagrum_import_numpy();
 %}
 
 //////////////////////////////////////////////////////////////////

@@ -228,10 +228,7 @@ def _verifyFrontDoorDSep(cbn: gum.CausalModel, t: int, y: int, M: set[int], W: s
   return res
 
 
-def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str]] | [
-  None,
-  None,
-]:
+def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str], set[str]] | tuple[None, None]:
   """
   Identify the generalised frontdoor adjustment set and covariates.
 
