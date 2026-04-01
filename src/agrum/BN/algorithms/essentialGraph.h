@@ -103,6 +103,12 @@ namespace gum {
     /// wrapping @ref MixedGraph::parents(ids)
     NodeSet children(const NodeSet& ids) const;
 
+    /// wrapping @ref PDAG::descendants(id)
+    NodeSet descendants(NodeId id) const;
+
+    /// wrapping @ref PDAG::ancestors(id)
+    NodeSet ancestors(NodeId id) const;
+
     /// wrapping @ref MixedGraph::parents(id)
     const NodeSet& neighbours(NodeId id) const;
 

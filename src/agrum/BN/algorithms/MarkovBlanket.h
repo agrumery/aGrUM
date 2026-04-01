@@ -91,6 +91,12 @@ namespace gum {
     /// wrapping @ref DAG::children(ids)
     NodeSet children(const NodeSet& ids) const;
 
+    /// wrapping @ref DAG::descendants(id)
+    NodeSet descendants(NodeId id) const;
+
+    /// wrapping @ref DAG::ancestors(id)
+    NodeSet ancestors(NodeId id) const;
+
     /// wrapping @ref DAG::sizeArcs()
     Size sizeArcs() const;
 

@@ -921,6 +921,80 @@ namespace gum_tests {
       GUM_TRACE_VAR(*v);
       CHECK_EQ(v->size(), 0u);
     }
+
+    static void testFirstBackdoor() {
+      // Simple chain: empty set is the (only) valid backdoor set
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
+        const auto& dag = bn.dag();
+        auto        idA = bn.idFromName("A");
+        auto        idC = bn.idFromName("C");
+
+        auto result = gum::DoorCriteria::firstBackdoor(dag, idA, idC);
+        CHECK(result.has_value());
+        CHECK_EQ(*result, gum::NodeSet{});
+      }
+      // Classic confounder U->X->Y;U->Y: first backdoor set is {U}
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
+        const auto& dag = bn.dag();
+        auto        idX = bn.idFromName("X");
+        auto        idY = bn.idFromName("Y");
+        auto        idU = bn.idFromName("U");
+
+        auto result = gum::DoorCriteria::firstBackdoor(dag, idX, idY);
+        CHECK(result.has_value());
+        CHECK(gum::DoorCriteria::satisfiesBackdoorCriterion(dag, idX, idY, *result));
+        CHECK_EQ(*result, gum::NodeSet{idU});
+      }
+      // When all blocking nodes are excluded, returns nullopt
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
+        const auto& dag = bn.dag();
+        auto        idX = bn.idFromName("X");
+        auto        idY = bn.idFromName("Y");
+        auto        idU = bn.idFromName("U");
+
+        auto result = gum::DoorCriteria::firstBackdoor(dag, idX, idY, gum::NodeSet{idU});
+        CHECK(!result.has_value());
+      }
+    }
+
+    static void testFirstFrontdoor() {
+      // Classic frontdoor: X->Z->Y with hidden U->X, U->Y; {Z} is the unique frontdoor set
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
+        const auto& dag = bn.dag();
+        auto        idX = bn.idFromName("X");
+        auto        idY = bn.idFromName("Y");
+        auto        idZ = bn.idFromName("Z");
+
+        auto result = gum::DoorCriteria::firstFrontdoor(dag, idX, idY);
+        CHECK(result.has_value());
+        CHECK(gum::DoorCriteria::satisfiesFrontdoorCriterion(dag, idX, idY, *result));
+        CHECK_EQ(*result, gum::NodeSet{idZ});
+      }
+      // Direct edge X->Y: FD-3 fails (no valid frontdoor set)
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("X->Y");
+        const auto& dag = bn.dag();
+        auto        idX = bn.idFromName("X");
+        auto        idY = bn.idFromName("Y");
+
+        auto result = gum::DoorCriteria::firstFrontdoor(dag, idX, idY);
+        CHECK(!result.has_value());
+      }
+      // No directed path X->Y: no frontdoor set exists
+      {
+        auto        bn  = gum::BayesNet< double >::fastPrototype("A->B;C->B");
+        const auto& dag = bn.dag();
+        auto        idA = bn.idFromName("A");
+        auto        idC = bn.idFromName("C");
+
+        auto result = gum::DoorCriteria::firstFrontdoor(dag, idA, idC);
+        CHECK(!result.has_value());
+      }
+    }
   };
 
 
@@ -951,6 +1025,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(LexLess_PrefixBeforeExtension)
   GUM_TEST_ACTIF(LexLess_GlobalSortedOrder)
   GUM_TEST_ACTIF(NoDirectedPaths)
+  GUM_TEST_ACTIF(FirstBackdoor)
+  GUM_TEST_ACTIF(FirstFrontdoor)
 
 
 }   // namespace gum_tests

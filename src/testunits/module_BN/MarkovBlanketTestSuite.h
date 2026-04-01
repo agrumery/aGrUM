@@ -142,11 +142,25 @@ namespace gum_tests {
       CHECK_EQ(gum::MarkovBlanket(bn, "C", 2).size(), static_cast< gum::Size >(11));
       CHECK_EQ(gum::MarkovBlanket(bn, "C", 3).size(), static_cast< gum::Size >(13));
     }
+
+    static void testAncestorsDescendants() {
+      // chain a(0)->b(1)->c(2); MB of b contains all 3 nodes
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
+      auto mb = gum::MarkovBlanket(bn, "b");
+
+      CHECK_EQ(mb.descendants(0), gum::NodeSet({1, 2}));
+      CHECK_EQ(mb.descendants(1), gum::NodeSet({2}));
+      CHECK_EQ(mb.descendants(2), gum::NodeSet());
+      CHECK_EQ(mb.ancestors(0), gum::NodeSet());
+      CHECK_EQ(mb.ancestors(1), gum::NodeSet({0}));
+      CHECK_EQ(mb.ancestors(2), gum::NodeSet({0, 1}));
+    }
   };
 
   GUM_TEST_ACTIF(Chain)
   GUM_TEST_ACTIF(MarkovBlanketStructure)
   GUM_TEST_ACTIF(MarkovBlanketSpecialArcs)
   GUM_TEST_ACTIF(MarkovBlanketMultiLevel)
+  GUM_TEST_ACTIF(AncestorsDescendants)
 
 }   // namespace gum_tests

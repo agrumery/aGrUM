@@ -164,6 +164,26 @@ namespace gum_tests {
       CHECK_EQ(eg.sizeEdges(), 2u);
       CHECK_EQ(eg.sizeArcs(), 4u);
     }
+
+    static void testAncestorsDescendants() {
+      // v-structure a(0)->b(1)<-c(2): arcs are kept directed in essential graph
+      {
+        auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
+        auto eg = gum::EssentialGraph(bn);
+
+        CHECK_EQ(eg.ancestors(1), gum::NodeSet({0, 2}));
+        CHECK_EQ(eg.descendants(0), gum::NodeSet({1}));
+        CHECK_EQ(eg.descendants(1), gum::NodeSet());
+      }
+      // chain a(0)->b(1)->c(2): all edges become undirected, no directed paths
+      {
+        auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
+        auto eg = gum::EssentialGraph(bn);
+
+        CHECK_EQ(eg.descendants(0), gum::NodeSet());
+        CHECK_EQ(eg.ancestors(2), gum::NodeSet());
+      }
+    }
   };
 
   GUM_TEST_ACTIF(Chain)
@@ -176,5 +196,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(NonRegression1)
   GUM_TEST_ACTIF(NonRegression2)
   GUM_TEST_ACTIF(NonRegression3)
+  GUM_TEST_ACTIF(AncestorsDescendants)
 
 }   // namespace gum_tests

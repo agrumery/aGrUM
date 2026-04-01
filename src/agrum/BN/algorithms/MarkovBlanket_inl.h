@@ -63,6 +63,10 @@ namespace gum {
 
   INLINE NodeSet MarkovBlanket::children(const NodeSet& ids) const { return _mb_.children(ids); }
 
+  INLINE NodeSet MarkovBlanket::descendants(NodeId id) const { return _mb_.descendants(id); }
+
+  INLINE NodeSet MarkovBlanket::ancestors(NodeId id) const { return _mb_.ancestors(id); }
+
   INLINE Size MarkovBlanket::sizeArcs() const { return _mb_.sizeArcs(); }
 
   INLINE const ArcSet& MarkovBlanket::arcs() const { return _mb_.arcs(); }

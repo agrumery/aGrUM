@@ -281,17 +281,16 @@ namespace gum {
     NodeSetVec out;
 
     // pyagrum early exit: if X is a parent of Y, yield nothing
-    for (auto p: dag.parents(Y))
-      if (p == X) return out;
+    for (auto p: dag.parents(Y)) {
+      if (p == X) { return out; }
+    }
 
     // Candidate pool
     auto possibleOpt = nodesOnDirectedPaths(dag, X, Y);
-    bool noDiPath = !possibleOpt.has_value();
+    bool noDiPath    = !possibleOpt.has_value();
 
     NodeSet possible;
-    if (possibleOpt.has_value()) {
-        possible = *possibleOpt;
-    }
+    if (possibleOpt.has_value()) { possible = *possibleOpt; }
 
     if (noDiPath) {
       // No directed path: use weakly connected component containing both X and Y (undirected BFS)
@@ -315,7 +314,7 @@ namespace gum {
             }
         }
       }
-      if (!cc.contains(Y)) return out;
+      if (!cc.contains(Y)) { return out; }
       noDiPath = true;
       possible = cc;
       possible.erase(X);
@@ -327,10 +326,12 @@ namespace gum {
 
     // Prune by backdoor reach of X and user exclusions
     NodeSet br = backdoorReach(dag, X);
-    for (auto n: br)
+    for (auto n: br) {
       possible.erase(n);
-    for (auto n: excluded_nodes)
+    }
+    for (auto n: excluded_nodes) {
       possible.erase(n);
+    }
 
     // Remove "impossible" z with a backdoor to Y given X, on a reduced graph:
     // interest = {X, Y} ∪ possible; evidence = {} (parity with pyagrum)
@@ -350,10 +351,11 @@ namespace gum {
       Zs.insert(z);
       if (!Separation::isBackdoorSeparated(g, Zs, NodeSet{Y}, condX)) { impossible.insert(z); }
     }
-    for (auto z: impossible)
+    for (auto z: impossible) {
       possible.erase(z);
+    }
 
-    if (possible.empty()) return out;
+    if (possible.empty()) { return out; }
 
     auto cand = _sortedVec(possible);
 
@@ -363,7 +365,7 @@ namespace gum {
         NodeSet Z;
         Z.insert(n);
         out.push_back(Z);
-        if (stopAtFirst) return out;
+        if (stopAtFirst) { return out; }
       }
     } else {
       const std::size_t N    = cand.size();
@@ -373,13 +375,14 @@ namespace gum {
         std::fill_n(pick.begin(), k, true);
         do {
           NodeSet Z;
-          for (std::size_t i = 0; i < N; ++i)
-            if (pick[i]) Z.insert(cand[i]);
+          for (std::size_t i = 0; i < N; ++i) {
+            if (pick[i]) { Z.insert(cand[i]); }
+          }
           // (FD-1): must block all directed X->Y paths
           if (!existsUnblockedDirectedPath(dag, X, Y, Z)) {
             if (!only_minimal || _isMinimalFrontdoorAdjustment(dag, X, Y, Z)) {
               out.push_back(Z);
-              if (stopAtFirst) return out;
+              if (stopAtFirst) { return out; }
             }
           }
         } while (std::prev_permutation(pick.begin(), pick.end()));
@@ -416,7 +419,7 @@ namespace gum {
     return false;
   }
 
-  std::optional<NodeSet> DoorCriteria::nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y) {
+  std::optional< NodeSet > DoorCriteria::nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y) {
     const NodeSet f = dag.descendants(X);   // forward reach
     const NodeSet r = dag.ancestors(Y);     // reverse reach
 

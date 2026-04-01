@@ -46,8 +46,8 @@
 #ifndef GUM_DOOR_CRITERIA_H
 #define GUM_DOOR_CRITERIA_H
 
-#include <vector>
 #include <optional>
+#include <vector>
 
 #include <agrum/base/graphs/DAG.h>
 
@@ -125,6 +125,31 @@ namespace gum {
      */
     static NodeSetVec enumerateBackdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst);
 
+    /**
+     * @brief Directly return the first backdoor adjustment set if any.
+     *
+     * @param dag Directed acyclic graph representing the causal structure.
+     * @param X Cause variable.
+     * @param Y Effect variable.
+     * @param excluded_nodes Nodes to exclude from candidate sets (e.g., latent variables).
+     * @param max_cardinality Maximum set size (0 = no limit).
+     * @param only_minimal If true, return only minimal adjustment sets.
+     *
+     * @return std::optional<NodeSet> The first valid backdoor adjustment set found, or
+     * std::nullopt if none exists.
+     */
+    static std::optional< NodeSet > firstBackdoor(const DAG&     dag,
+                                                  NodeId         X,
+                                                  NodeId         Y,
+                                                  const NodeSet& excluded_nodes  = NodeSet(),
+                                                  std::size_t    max_cardinality = 0,
+                                                  bool           only_minimal    = true) {
+      auto bds
+          = enumerateBackdoorSets(dag, X, Y, excluded_nodes, max_cardinality, only_minimal, true);
+      if (bds.empty()) { return std::nullopt; }
+      return bds.front();
+    }
+
     /* ------------------------- Frontdoor -------------------------- */
 
     /**
@@ -169,6 +194,31 @@ namespace gum {
      */
     static NodeSetVec enumerateFrontdoorSets(const DAG& dag, NodeId X, NodeId Y, bool stopAtFirst);
 
+    /**
+     * @brief Directly return the first frontdoor adjustment set if any.
+     *
+     * @param dag Directed acyclic graph representing the causal structure.
+     * @param X Cause variable.
+     * @param Y Effect variable.
+     * @param excluded_nodes Nodes to exclude from candidate sets (e.g., latent variables).
+     * @param max_cardinality Maximum set size (0 = no limit).
+     * @param only_minimal If true, return only minimal adjustment sets.
+     *
+     * @return std::optional<NodeSet> The first valid frontdoor adjustment set found, or
+     * std::nullopt if none exists.
+     */
+    static std::optional< NodeSet > firstFrontdoor(const DAG&     dag,
+                                                   NodeId         X,
+                                                   NodeId         Y,
+                                                   const NodeSet& excluded_nodes  = NodeSet(),
+                                                   std::size_t    max_cardinality = 0,
+                                                   bool           only_minimal    = true) {
+      auto fds
+          = enumerateFrontdoorSets(dag, X, Y, excluded_nodes, max_cardinality, only_minimal, true);
+      if (fds.empty()) { return std::nullopt; }
+      return fds.front();
+    }
+
     /* -------------------------- Utilities ------------------------- */
 
     /**
@@ -190,7 +240,7 @@ namespace gum {
      * @param Y End node.
      * @return Set of nodes on at least one X->..->Y directed path.
      */
-    static std::optional<NodeSet> nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
+    static std::optional< NodeSet > nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
 
     /**
      * @brief Compute the "backdoor reach" of a node.

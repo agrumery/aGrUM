@@ -63,6 +63,10 @@ namespace gum {
 
   INLINE NodeSet EssentialGraph::children(const NodeSet& ids) const { return _pdag_.children(ids); }
 
+  INLINE NodeSet EssentialGraph::descendants(NodeId id) const { return _pdag_.descendants(id); }
+
+  INLINE NodeSet EssentialGraph::ancestors(NodeId id) const { return _pdag_.ancestors(id); }
+
   INLINE const NodeSet& EssentialGraph::neighbours(NodeId id) const {
     return _pdag_.neighbours(id);
   }
