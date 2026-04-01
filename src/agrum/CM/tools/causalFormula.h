@@ -107,6 +107,19 @@ namespace gum {
                   const NodeSet&                           knowing     = NodeSet{},
                   std::string_view                         explanation = "");
 
+    /**
+     * @brief Copy constructor — performs a deep copy of the AST.
+     *
+     * Required so that types containing CausalFormula (e.g. CausalImpact) remain
+     * copy-constructible.  SWIG's SwigValueWrapper<T> stores the wrapped return
+     * value via copy construction, so without this the Windows/MSVC CI fails to
+     * compile any binding that returns CausalImpact by value.
+     */
+    CausalFormula(const CausalFormula& other);
+
+    /// Move constructor — defaulted (suppressed by the user-defined copy constructor above).
+    CausalFormula(CausalFormula&&) = default;
+
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
     Tensor< GUM_SCALAR > eval() const;
 

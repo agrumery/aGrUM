@@ -121,6 +121,11 @@ namespace gum {
     _ensureNoVariablesOverlap();
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  CausalFormula< GUM_SCALAR >::CausalFormula(const CausalFormula& other) :
+      _cm(other._cm), _root(other._root ? other._root->copy() : nullptr), _on(other._on),
+      _doing(other._doing), _knowing(other._knowing), _explanation(other._explanation) {}
+
   // ---------- core API ----------
 
   // causalFormula_tpl.h (or inline in the header)

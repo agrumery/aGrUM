@@ -190,6 +190,10 @@ namespace gum {
                  const NodeSet&                   knowing          = NodeSet(),
                  bool                             directDoCalculus = false);
 
+    /// Copy/move constructors — defaulted; require CausalFormula to be copy/move-constructible.
+    CausalImpact(const CausalImpact&) = default;
+    CausalImpact(CausalImpact&&)      = default;
+
     private:
     /// If true, skip backdoor/frontdoor and use do-calculus directly
     bool _directDoCalculus_ = false;
