@@ -120,6 +120,10 @@
 %typemap(out) const gum::NodeSet& {
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
 }
+// gum::NodeGraphPart -> Python set[int]
+%typemap(out) const gum::NodeGraphPart& {
+  $result = PyAgrumHelper::PySetFromNodeSet(*$1);
+}
 
 // std::optional<gum::NodeSet> -> Python set[int] or None
 %typemap(out) std::optional< gum::NodeSet > {

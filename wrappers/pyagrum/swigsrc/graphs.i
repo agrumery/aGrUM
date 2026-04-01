@@ -39,12 +39,6 @@
  ****************************************************************************/
 
 
-
-
-
-
-
-
 %extend gum::DAG {
    bool dSeparation(PyObject* X,PyObject* Y,PyObject* Z) {
      gum::NodeSet sX,sY,sZ;
@@ -59,12 +53,6 @@
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sX,X);
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
      return self->dSeparation(sX,sY,sZ);
-   }
-
-   gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
-     gum::NodeSet sonodes;
-     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sonodes,nodes);
-     return self->moralizedAncestralGraph(sonodes);
    }
  }
 
@@ -83,18 +71,12 @@
      PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sY,Y);
      return self->cSeparation(sX,sY,sZ);
    }
-
-   gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
-     gum::NodeSet sonodes;
-     PyAgrumHelper::populateNodeSetFromIntOrPySequenceOfInt(sonodes,nodes);
-     return self->moralizedAncestralGraph(sonodes);
-   }
  }
 
 %define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *nodes() const {
-    return PyAgrumHelper::PySetFromNodeSet(self->nodes());
+  const gum::NodeGraphPart& nodes() const {
+    return self->nodes();
   };
 
 %pythoncode {
@@ -236,14 +218,20 @@ ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PDAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *arcs() const { // add for the sub-classes (including MixedGraph and PDAG)
-    return PyAgrumHelper::PySetFromArcSet(self->arcs());
+  gum::ArcSet arcs() const { // add for the sub-classes (including MixedGraph and PDAG)
+    return self->arcs();
   };
-  PyObject *parents(gum::NodeId id) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->parents(id));
+  gum::NodeSet parents(gum::NodeId id) const {
+    return self->parents(id);
   };
-  PyObject *children(gum::NodeId id) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->children(id));
+  gum::NodeSet children(gum::NodeId id) const {
+    return self->children(id);
+  };
+  gum::NodeSet descendants(gum::NodeId id) const {
+    return self->descendants(id);
+  };
+  gum::NodeSet ancestors(gum::NodeId id) const {
+    return self->ancestors(id);
   };
 };
 %enddef
@@ -254,12 +242,12 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
 %define ADD_UNDI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *edges() const { // add for the sub-classes (including MixedGraph)
-    return PyAgrumHelper::PySetFromEdgeSet(self->edges());
+  gum::EdgeSet edges() const { // add for the sub-classes (including MixedGraph)
+    return self->edges();
   };
 
-  PyObject *neighbours(gum::NodeId id) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(id));
+  gum::NodeSet neighbours(gum::NodeId id) const {
+    return self->neighbours(id);
   };
 };
 %ignore classname::edges const;
@@ -271,14 +259,14 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
 %define ADD_MIXED_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *boundary(gum::NodeId id) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->boundary(id));
+  gum::NodeSet boundary(gum::NodeId id) const {
+    return self->boundary(id);
   };
-  PyObject *mixedOrientedPath(NodeId node1, NodeId node2) const {
-    return PyAgrumHelper::PyListFromNodeVect(self->mixedOrientedPath(node1,node2));
+  std::vector<gum::NodeId> mixedOrientedPath(NodeId node1, NodeId node2) const {
+    return self->mixedOrientedPath(node1,node2);
   };
-  PyObject* mixedUnorientedPath(NodeId node1, NodeId node2) const {
-    return PyAgrumHelper::PyListFromNodeVect(self->mixedUnorientedPath(node1,node2));
+  std::vector<gum::NodeId> mixedUnorientedPath(NodeId node1, NodeId node2) const {
+    return self->mixedUnorientedPath(node1,node2);
   };
 };
 %ignore classname::boundary const;
@@ -290,12 +278,12 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
 
 %extend gum::CliqueGraph {
-  PyObject *clique(const gum::NodeId clique) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->clique(clique));
+  gum::NodeSet clique(const gum::NodeId clique) const {
+    return self->clique(clique);
   };
 
-  PyObject* separator(const gum::NodeId cliq1,const gum::NodeId cliq2) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->separator(cliq1,cliq2));
+  gum::NodeSet separator(const gum::NodeId cliq1,const gum::NodeId cliq2) const {
+    return self->separator(cliq1,cliq2);
   };
 
   %pythoncode {
