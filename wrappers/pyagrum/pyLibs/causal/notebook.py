@@ -42,127 +42,20 @@
 This file defines some helpers for handling causal concepts in notebooks
 """
 
-import IPython
+__author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
+__copyright__ = "(c) 2019-2026 PARIS"
 
-import pyagrum
-import pyagrum.lib.notebook as gnb
+"""
+Deprecated for older pyAgrum (since >2.3.2)
+"""
 
+import warnings
 
-def getCausalModel(cm: pyagrum.CausalModel, size=None) -> str:
-  """
-  return a HTML representing the causal model
+warnings.warn(
+  "import 'causal.notebook' is deprecated in pyAgrum >2.3.2. Use directly : 'pyagrum.notebook' instead.",
+  DeprecationWarning,
+  stacklevel=2,
+)
 
-  Parameters
-  ----------
-  cm: CausalModel
-    the causal model
-  size: int|str
-    the size of the rendered graph
-
-  Returns
-  -------
-  pydot.Dot
-    the dot representation
-  """
-  if size is None:
-    size = pyagrum.config["causal", "default_graph_size"]
-  return gnb.getDot(cm.toDot(), size)
-
-
-def showCausalModel(cm: pyagrum.CausalModel, size=None):
-  """
-  Shows a pydot svg representation of the causal DAG
-
-  Parameters
-  ----------
-  cm: CausalModel
-    the causal model
-  size: int|str
-    the size of the rendered graph
-  """
-  if size is None:
-    size = pyagrum.config["causal", "default_graph_size"]
-  gnb.showDot(cm.toDot(), size=size)
-
-
-def getCausalImpact(
-  model: pyagrum.CausalModel,
-  on: Union[str, NameSet],
-  doing: Union[str, NameSet],
-  knowing: Optional[NameSet] = None,
-  values: Optional[Dict[str, int]] = None,
-):
-  """
-  return a HTML representing of the three values defining a causal impact : formula, value, explanation
-
-  Parameters
-  ----------
-  model: CausalModel
-    the causal model
-  on: str | Set[str]
-    the impacted variable(s)
-  doing: str | Set[str]
-    the interventions
-  knowing: str | Set[str]
-    the observations
-  values: Dict[str,int] default=None
-    value for certain variables
-
-  Returns
-  -------
-  HTML
-  """
-  formula, impact, explanation = pyagrum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
-
-  gnb.flow.clear()
-  gnb.flow.add(getCausalModel(model), caption="Causal Model")
-
-  if formula is None:
-    gnb.flow.add(explanation, caption="Impossible")
-  else:
-    gnb.flow.add(
-      "\n\n$$\n\\begin{equation*}" + formula.toLatex() + "\\end{equation*}\n$$\n\n",
-      caption="Explanation : " + explanation,
-    )
-
-  if formula is None:
-    res = "No result"
-  else:
-    if impact.variable(0).domainSize() < 5:
-      res = impact
-    else:
-      res = gnb.getProba(impact)
-  gnb.flow.add(res, caption="Impact")
-
-  return gnb.flow.html()
-
-
-def showCausalImpact(
-  model: pyagrum.CausalModel,
-  on: Union[str, NameSet],
-  doing: Union[str, NameSet],
-  knowing: Optional[NameSet] = None,
-  values: Optional[Dict[str, int]] = None,
-):
-  """
-  display a HTML representing of the three values defining a causal impact :  formula, value, explanation
-
-  Parameters
-  ----------
-  model: CausalModel
-    the causal model
-  on: str | Set[str]
-    the impacted variable(s)
-  doing: str | Set[str]
-    the interventions
-  knowing: str | Set[str]
-    the observations
-  values: Dict[str,int] default=None
-    value for certain variables
-  """
-  html = getCausalImpact(model, on, doing, knowing, values)
-  IPython.display.display(html)
-
-
-pyagrum.CausalModel._repr_html_ = lambda self: gnb.getDot(self.toDot(), size=pyagrum.config["causal", "default_graph_size"])
-# pyagrum.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"
+# pylint: disable=unused-import
+from pyagrum.lib.notebook import *
