@@ -44,6 +44,8 @@ import numpy as np
 from typing import Any
 
 import pyagrum as gum
+from numpy.f2py.f90mod_rules import fgetdims2
+from pyagrum import causalImpact
 
 from ._utils import (
   MisspecifiedAdjustmentError,
@@ -371,8 +373,13 @@ class CausalEffectEstimation:
       )
 
     rct = RCT(self._causal_model, intervention, outcome)
+
     backdoor = self._causal_model.backDoor(intervention, outcome)
+    if backdoor is not None:
+      backdoor = {self._causal_model.nameFromId(i) for i in backdoor}
+
     frontdoor, fd_covariates = generalizedFrontDoor(self._causal_model, intervention, outcome)
+
     instrumental_variable, iv_covariates = instrumentalVariable(self._causal_model, intervention, outcome)
 
     suggestion_text = ""
@@ -381,29 +388,23 @@ class CausalEffectEstimation:
       self.useRCTAdjustment(intervention, outcome, rct)
       suggestion_text += (
         self._RCT
-        + " adjustment found. \n\n"
-        + "Supported estimators include:"
+        + " adjustment found. \n\nSupported estimators include:"
         + RCT_ESTIMATORS_LIST
-        + "\nIf the outcome variable is a cause of other covariates "
-        "in the causal graph,\nBackdoor estimators may also be used."
+        + "\nIf the outcome variable is a cause of other covariates in the causal graph,\nBackdoor estimators may also be used."
       )
-
     elif backdoor is not None:
       self.useBackdoorAdjustment(intervention, outcome, backdoor)
       suggestion_text += (
-        self._BACKDOOR + " adjustment found. \n\n" + "Supported estimators include:" + BACKDOOR_ESTIMATORS_LIST
+        self._BACKDOOR + " adjustment found. \n\nSupported estimators include:" + BACKDOOR_ESTIMATORS_LIST
       )
-
     elif frontdoor is not None:
       self.useFrontdoorAdjustment(intervention, outcome, frontdoor, fd_covariates)
       suggestion_text += (
-        self._FRONTDOOR + " adjustment found. \n\n" + "Supported estimators include:" + FRONTDOOR_ESTIMATORS_LIST
+        self._FRONTDOOR + " adjustment found. \n\nSupported estimators include:" + FRONTDOOR_ESTIMATORS_LIST
       )
-
     elif instrumental_variable is not None:
       self.useIVAdjustment(intervention, outcome, instrumental_variable, iv_covariates)
       suggestion_text += self._IV + " adjustment found. \n\n" + "Supported estimators include:" + IV_ESTIMATORS_LIST
-
     else:
       self.useUnknownAdjustment(intervention, outcome)
       suggestion_text = (

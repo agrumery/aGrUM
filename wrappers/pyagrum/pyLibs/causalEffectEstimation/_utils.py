@@ -185,14 +185,14 @@ def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[s
     return None
 
 
-def _verifyFrontDoorDSep(cbn: gum.BayesNet, t: int, y: int, M: set[int], W: set[int]) -> bool:
+def _verifyFrontDoorDSep(cbn: gum.CausalModel, t: int, y: int, M: set[int], W: set[int]) -> bool:
   """
   Verify the generalized frontdoor adjustment d-Sepatation assumptions.
 
   Parameters
   ----------
-  cbn: gum.BayesNet
-      The causal Baysian Network.
+  cbn: gum.CausalModel
+      The causal Model
   t: int
       The intervention node ID.
   y: int
@@ -210,8 +210,8 @@ def _verifyFrontDoorDSep(cbn: gum.BayesNet, t: int, y: int, M: set[int], W: set[
       without the arcs M->{y} and t and y are not neighbors.
   """
 
-  cbn_without_T_M = gum.BayesNet(cbn)
-  cbn_without_M_Y = gum.BayesNet(cbn)
+  cbn_without_T_M = gum.DAG(cbn.causalDAG())
+  cbn_without_M_Y = gum.DAG(cbn.causalDAG())
 
   for m in M:
     if cbn_without_T_M.existsArc(t, m):
@@ -220,20 +220,25 @@ def _verifyFrontDoorDSep(cbn: gum.BayesNet, t: int, y: int, M: set[int], W: set[
       cbn_without_M_Y.eraseArc(m, y)
 
   res = (
-    gum._dSeparation.isDSep(cbn_without_T_M, {t}, M, W)
-    and gum._dSeparation.isDSep(cbn_without_M_Y, {y}, M, W | {t})
+    cbn_without_T_M.dSeparation({t}, M, W)
+    and cbn_without_M_Y.dSeparation({y}, M, W | {t})
     and t not in cbn.parents(y) | cbn.children(y)
   )
 
   return res
 
 
-def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str]] | None:
+def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str]] | [
+  None,
+  None,
+]:
   """
   Identify the generalised frontdoor adjustment set and covariates.
 
   Parameters
   ----------
+  causal_model: gum.CausalModel
+      The causal model containing the DAG and the observational BN.
   intervention: str
       Intervention (treatment) variable.
   outcome: str
@@ -247,13 +252,9 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
   """
 
   obn = causal_model.observationalBN()
-  cbn = causal_model.causalDAG()
 
-  print(obn.toDot())
   mediators = gum.DoorCriteria.nodesOnDirectedPaths(obn.dag(), obn.idFromName(intervention), obn.idFromName(outcome))
-  mediators = {obn.variable(m).name() for m in mediators if m not in {obn.idFromName(intervention), obn.idFromName(outcome)}}
-  print(obn.toDot())
-  print(f"{intervention=} / {outcome=} / {mediators=}")
+  mediators = {obn.variable(m).name() for m in mediators}
 
   confounders = set()
 
@@ -264,37 +265,35 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
     backdoor_M_Y = set() if backdoor_M_Y is None else backdoor_M_Y
     confounders |= backdoor_T_M | backdoor_M_Y
 
+  confounders = {causal_model.nameFromId(x) for x in confounders}
   confounders = confounders - {intervention}
 
-  # Clone with latent variables:
-  # Sometime the causal structure is changed while cloning,
-  # so extra operations must be made
-  mutilated_causal_model = gum.CausalModel(causal_model) #.clone()
+  mutilated_dag = gum.DAG(causal_model.causalDAG())
 
-  #for id in causal_model.latentVariablesIds():
-  #  childrens = cbn.children(id)
-  #  childrens = {cbn.variable(c).name() for c in childrens}
-  #  if cbn.variable(id).name() not in mutilated_causal_model.names().values():
-  #    mutilated_causal_model.addLatentVariable(cbn.variable(id).name(), tuple(childrens))
+  # mutilation
+  for c in confounders:
+    if causal_model.existsArc(c, intervention):
+      mutilated_dag.eraseArc(causal_model.idFromName(c), causal_model.idFromName(intervention))
+    if causal_model.existsArc(c, outcome):
+      mutilated_dag.eraseArc(causal_model.idFromName(c), causal_model.idFromName(outcome))
+    for m in mediators:
+      if causal_model.existsArc(c, m):
+        mutilated_dag.eraseArc(causal_model.idFromName(c), causal_model.idFromName(m))
 
-  #for c in confounders:
-  #  if mutilated_causal_model.existsArc(c, intervention):
-  #    mutilated_causal_model.eraseCausalArc(c, intervention)
-  #  if mutilated_causal_model.existsArc(c, outcome):
-  #    mutilated_causal_model.eraseCausalArc(c, outcome)
-  #  for m in mediators:
-  #    if mutilated_causal_model.existsArc(c, m):
-  #      mutilated_causal_model.eraseCausalArc(c, m)
-
-  frontdoor = mutilated_causal_model.frontDoor(intervention, outcome)
+  frontdoor = gum.DoorCriteria.firstFrontdoor(
+    mutilated_dag, causal_model.idFromName(intervention), causal_model.idFromName(outcome)
+  )
 
   valid_fd = _verifyFrontDoorDSep(
-    cbn,
-    cbn.idFromName(intervention),
-    cbn.idFromName(outcome),
-    {cbn.idFromName(m) for m in mediators},
-    {cbn.idFromName(m) for m in confounders},
+    causal_model,
+    causal_model.idFromName(intervention),
+    causal_model.idFromName(outcome),
+    {causal_model.idFromName(m) for m in mediators},
+    {causal_model.idFromName(m) for m in confounders},
   )
+
+  if frontdoor is not None:
+    frontdoor = {causal_model.nameFromId(m) for m in frontdoor}
 
   return (None, None) if frontdoor is None or len(mediators) == 0 or not valid_fd else (frontdoor, confounders)
 
@@ -342,7 +341,7 @@ def _findPath(
   return []
 
 
-def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: int) -> set[int]:
+def _nearestSeparator(obn: gum.DAG, cbn: gum.DAG, t: int, y: int, z: int) -> set[int] | None:
   """
   Find the nearest separator set in the `causal_model` according to `(y,w)`.
 
@@ -373,7 +372,9 @@ def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: i
 
   while True:
     # Moralized Graph controlling for W
-    gum._dSeparation._removeZ(moralized_ancestral_graph, W)
+    for node in moralized_ancestral_graph.nodes():
+      if node in W:
+        moralized_ancestral_graph.eraseNode(node)
 
     path = _findPath(moralized_ancestral_graph, y, z)
 
@@ -384,13 +385,13 @@ def _nearestSeparator(obn: gum.BayesNet, cbn: gum.BayesNet, t: int, y: int, z: i
     if w is not None:
       W.add(w)
 
-  if gum._dSeparation.isDSep(cbn, {z}, {y}, W):
+  if cbn.dSeparation({z}, {y}, W):
     return W
   else:
     return None
 
 
-def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) -> set[int]:
+def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) -> set[int] | None:
   """
   Find the ancetral instrument conditioning set `W` in the `causal_model`
   with `t` as intervention, `y` as outcome and `z` as instrument.
@@ -414,8 +415,8 @@ def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) 
       the ancetral instrument conditioning set `W`.
   """
 
-  mutilated_obn = gum.BayesNet(causal_model.observationalBN())
-  mutilated_cbn = gum.BayesNet(causal_model.causalDAG())
+  mutilated_obn = gum.DAG(causal_model.observationalBN().dag())
+  mutilated_cbn = gum.DAG(causal_model.causalDAG())
 
   if mutilated_obn.existsArc(t, y):
     mutilated_obn.eraseArc(t, y)
@@ -425,7 +426,7 @@ def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) 
   W = _nearestSeparator(mutilated_obn, mutilated_cbn, t, y, z)
   if W is None or bool(W & mutilated_cbn.descendants(y)) or t in W:
     return None
-  elif not gum._dSeparation.isDSep(mutilated_cbn, {z}, {t}, W):
+  elif not mutilated_cbn.dSeparation({z}, {t}, W):
     return W - {t}
   else:
     return None

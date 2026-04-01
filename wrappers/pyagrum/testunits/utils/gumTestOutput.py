@@ -45,20 +45,20 @@ import unittest
 
 PREFIX = "🍈  "
 
-_C_MODULE = "\033[36m"   # cyan   — module name (inside brackets)
-_C_SUITE  = "\033[32m"   # green  — SuiteName
-_C_METHOD = "\033[33m"   # yellow — method_name
-_C_ERROR  = "\033[31m"   # red    — error count
-_C_RESET  = "\033[0m"
+_C_MODULE = "\033[36m"  # cyan   — module name (inside brackets)
+_C_SUITE = "\033[32m"  # green  — SuiteName
+_C_METHOD = "\033[33m"  # yellow — method_name
+_C_ERROR = "\033[31m"  # red    — error count
+_C_RESET = "\033[0m"
 
 # Mapping of unittest trailing status strings to left-side emoji.
 # Order matters: longer matches first.
 _STATUS_SUFFIXES = [
   (" ... unexpected success", "💥"),
-  (" ... expected failure",   "✅"),
-  (" ... ok",                 "✅"),
-  (" ... FAIL",               "💥"),
-  (" ... ERROR",              "🔴"),
+  (" ... expected failure", "✅"),
+  (" ... ok", "✅"),
+  (" ... FAIL", "💥"),
+  (" ... ERROR", "🔴"),
 ]
 _SKIPPED_RE = re.compile(r" \.\.\. skipped '.*'$")
 _TEST_LINE_RE = re.compile(r"^(\S+)\s+\(([^)]+)\)$")
@@ -78,7 +78,7 @@ def _reformat(name: str, module_map: dict[str, str]) -> str:
     if mod:
       mod_name = mod
       break
-  return f"[{_C_MODULE}{mod_name}{_C_RESET}] {_C_SUITE}{suite}{_C_RESET}➜{_C_METHOD}{method}{_C_RESET}"
+  return f"[{_C_MODULE}{mod_name}{_C_RESET}] {_C_SUITE}{suite}{_C_RESET} ➜ {_C_METHOD}{method}{_C_RESET}"
 
 
 def _format_test_line(line: str, module_map: dict[str, str]) -> str:
@@ -145,12 +145,12 @@ def notif_module_stats(module_stats: dict[str, tuple[int, int]]) -> None:
   """Print per-module error/total counts, right-aligned."""
   if not module_stats:
     return
-  max_mod   = max(len(mod) for mod in module_stats)
+  max_mod = max(len(mod) for mod in module_stats)
   max_count = max(len(f"{errs}/{run}") for run, errs in module_stats.values())
   for mod, (run, errs) in sorted(module_stats.items()):
-    label   = f"[{_C_MODULE}{mod}{_C_RESET}]"
+    label = f"[{_C_MODULE}{mod}{_C_RESET}]"
     padding = " " * (max_mod - len(mod) + 1)
-    count   = f"{errs}/{run}".rjust(max_count)
+    count = f"{errs}/{run}".rjust(max_count)
     if errs > 0:
       count = f"{_C_ERROR}{count}{_C_RESET} 💥"
     notif(f"{label}{padding}{count}")
@@ -162,7 +162,7 @@ class Timer:
   Usage::
 
       with Timer() as t:
-          do_work()
+        do_work()
       print(t.elapsed)  # seconds as float
   """
 

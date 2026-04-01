@@ -57,26 +57,6 @@ class CausalBNEstimator:
   identifiable through do-calculus.
   """
 
-  def _useCausalStructure(self, cm_clone: gum.CausalModel, causal_model: gum.CausalModel) -> None:
-    """
-    Use the causal structure given by `cm_clone` on `causal_model`.
-
-    Parameters
-    ----------
-    cm_clone: gum.CausalModel
-        The model recieving the causal structure.
-    causal_model: gum.CausalModel
-        The model giving the causal structure.
-    """
-
-    for id in causal_model.latentVariablesIds():
-      childrens = causal_model.causalDAG().children(id)
-      childrens = {causal_model.causalDAG().variable(c).name() for c in childrens}
-      cm_clone.addLatentVariable(causal_model.causalDAG().variable(id).name(), tuple(childrens))
-    for x, y in causal_model.arcs():
-      if not cm_clone.existsArc(x, y):
-        cm_clone.addCausalArc(x, y)
-
   def __init__(
     self, causal_model: gum.CausalModel, treatment: str, outcome: str, instrument: str | None = None
   ) -> None:
@@ -96,16 +76,15 @@ class CausalBNEstimator:
     """
 
     if isinstance(causal_model, gum.CausalModel):
-      self.causal_model = causal_model.clone()
-      self._useCausalStructure(self.causal_model, causal_model)
+      self.causal_model = gum.CausalModel(causal_model)
     else:
-      raise ValueError("`causal_model` must be instance of `pyagrum.causal.CausalModel`.")
+      raise ValueError("`causal_model` must be instance of `pyagrum.CausalModel`.")
 
     self.treatment = treatment
     self.outcome = outcome
     self.instrument = instrument
 
-  def fit(self, df: pd.DataFrame, smoothing_prior: float = 1e-9) -> None:
+  def fit(self, df: pd.DataFrame, smoothing_prior: float = 1e-9) -> pyagrum.CausalModel:
     """
     Fit the inference model.
 
@@ -126,7 +105,6 @@ class CausalBNEstimator:
     parameter_learner.fitParameters(bn)
 
     causal_model = gum.CausalModel(bn)
-    self._useCausalStructure(causal_model, self.causal_model)
     self.causal_model = causal_model
 
     return self.causal_model

@@ -42,5 +42,21 @@ __author__ = "Thierry Rioual, Pierre-Henri Wuillemin"
 __copyright__ = "(c) 2019-2024 PARIS"
 
 from ._CausalEffectEstimation import CausalEffectEstimation
+from ._utils import (
+  MisspecifiedAdjustmentError,
+  EmptyConditionError,
+  InvalidConditionError,
+  RCTError,
+  BackdoorError,
+  FrontdoorError,
+  IVError,
+  RCT,
+  generalizedFrontDoor,
+  instrumentalVariable,
+  RCT_ESTIMATORS_LIST,
+  BACKDOOR_ESTIMATORS_LIST,
+  FRONTDOOR_ESTIMATORS_LIST,
+  IV_ESTIMATORS_LIST,
+)
 
 __all__ = ["CausalEffectEstimation"]
