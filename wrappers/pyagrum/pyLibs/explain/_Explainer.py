@@ -39,7 +39,7 @@
 ############################################################################
 
 from abc import ABC, abstractmethod
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._FIFOCache import FIFOCache
 
 # Calculations
@@ -54,7 +54,7 @@ class Explainer(ABC):
   ___Documentation___
   """
 
-  def __init__(self, bn: gum.BayesNet):
+  def __init__(self, bn: pyagrum.BayesNet):
     """
     Parameters
     ----------
@@ -63,11 +63,11 @@ class Explainer(ABC):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet.
+    TypeError : If bn is not a pyagrum.BayesNet.
     """
     super().__init__()
-    if not isinstance(bn, gum.BayesNet):
-      raise TypeError("bn must be a gum.BayesNet instance, but got {}".format(type(bn)))
+    if not isinstance(bn, pyagrum.BayesNet):
+      raise TypeError("bn must be a pyagrum.BayesNet instance, but got {}".format(type(bn)))
     self.bn = bn
     self.M = len(bn.nodes())  # Total number of nodes in the Bayesian Network.
     self.feat_names = np.empty(self.M, dtype=object)  # Array to store feature names by their node ID.

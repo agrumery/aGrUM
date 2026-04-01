@@ -42,7 +42,7 @@
 The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a graph structure.
 """
 
-import pyagrum as gum
+import pyagrum
 from typing import Dict, Tuple
 import random
 
@@ -57,13 +57,13 @@ import pandas as pd
 
 
 class CLG:
-  _graph: gum.DAG
+  _graph: pyagrum.DAG
   _id2var: Dict[NodeId, GaussianVariable]
   _name2id: Dict[str, NodeId]
   _arc2coef: Dict[Tuple[NodeId, NodeId], float or int]
 
   def __init__(self, clg=None):
-    self._graph = gum.DAG()
+    self._graph = pyagrum.DAG()
     self._id2var = {}
     self._name2id = {}
     self._arc2coef = {}
@@ -140,7 +140,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if the node is not found in the CLG.
     """
     self._id2var[node].setMu(mu)
@@ -158,7 +158,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if the node is not found in the CLG.
     """
     self._id2var[node].setSigma(sigma)
@@ -199,7 +199,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if one of the names is not found in the CLG.
     ValueError
       if the coefficient is 0.
@@ -233,7 +233,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if one of the names is not found in the CLG.
     """
     n1 = self.nameOrId(val1)
@@ -256,7 +256,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if one of the names is not found in the CLG.
     ValueError
       if the coefficient is 0.
@@ -280,7 +280,7 @@ class CLG:
 
     Returns
     -------
-    gum.DAG
+    pyagrum.DAG
       The graph of the CLG.
     """
     return self._graph
@@ -307,7 +307,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if the node is not found in the CLG.
     """
     return self._id2var[node].name()
@@ -328,7 +328,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if the name is not found in the CLG.
     """
     return self._name2id[name]
@@ -349,7 +349,7 @@ class CLG:
 
     Raises
     ------
-    gum.NotFound
+    pyagrum.NotFound
       if val is not Found in the CLG.
     """
     return self._id2var[self.nameOrId(val)]
@@ -422,7 +422,7 @@ class CLG:
       if the arc does not exist.
     """
     if not self.existsArc(val1, val2):
-      raise gum.NotFound("The arc does not exist.")
+      raise pyagrum.NotFound("The arc does not exist.")
 
     n1 = self.nameOrId(val1)
     n2 = self.nameOrId(val2)
@@ -576,20 +576,20 @@ class CLG:
       The f-score of the comparison.
     """
     # Create a BN with the same structure as the CLG
-    bn = gum.BayesNet()
+    bn = pyagrum.BayesNet()
     # add variables
     for name in self.names():
-      new_variable = gum.LabelizedVariable(name, "a labelized variable", 2)
+      new_variable = pyagrum.LabelizedVariable(name, "a labelized variable", 2)
       bn.add(new_variable)
     # add arcs
     for arc in self.arcs():
       bn.addArc(arc[0], arc[1])
 
     # Create a BN with the same structure as the clg_to_compare
-    bn_to_compare = gum.BayesNet()
+    bn_to_compare = pyagrum.BayesNet()
     # add variables
     for name in clg_to_compare.names():
-      new_variable = gum.LabelizedVariable(name, "a labelized variable", 2)
+      new_variable = pyagrum.LabelizedVariable(name, "a labelized variable", 2)
       bn_to_compare.add(new_variable)
     # add arcs and edges
     for arc in clg_to_compare.arcs():
@@ -630,7 +630,7 @@ def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, A
     The random CLG.
   """
   # Create a random BN with nb_variables variables
-  bn = gum.randomBN(names=names, n=nb_variables)
+  bn = pyagrum.randomBN(names=names, n=nb_variables)
 
   # Order names by their NodeIds
   ordered_names = [""] * nb_variables

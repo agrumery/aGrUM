@@ -46,23 +46,23 @@ from typing import Dict
 import csv
 import pydot as dot
 
-import pyagrum as gum
+import pyagrum
 from collections import namedtuple
 
 
 def setDarkTheme():
   """change the color for arcs and text in graphs to be more visible in dark theme"""
-  gum.config["notebook", "default_arc_color"] = "#AAAAAA"
+  pyagrum.config["notebook", "default_arc_color"] = "#AAAAAA"
 
 
 def setLightTheme():
   """change the color for arcs and text in graphs to be more visible in light theme"""
-  gum.config["notebook", "default_arc_color"] = "#4A4A4A"
+  pyagrum.config["notebook", "default_arc_color"] = "#4A4A4A"
 
 
 def getBlackInTheme():
   """return the color used for arc and text in graphs"""
-  return gum.config["notebook", "default_arc_color"]
+  return pyagrum.config["notebook", "default_arc_color"]
 
 
 DotPoint = namedtuple("DotPoint", ["x", "y"])
@@ -147,8 +147,8 @@ async def async_html2image(htmlcontent: str, filename: str):
     try:
       await page.screenshot(path=tmp_path, full_page=True, type="png")
       _, (x0, y0, x1, y1) = _white_bbox(tmp_path)
-      w = x1 - x0 + gum.config.asInt["notebook", "export_pdf_margin_x"]
-      h = y1 - y0 + gum.config.asInt["notebook", "export_pdf_margin_y"]
+      w = x1 - x0 + pyagrum.config.asInt["notebook", "export_pdf_margin_x"]
+      h = y1 - y0 + pyagrum.config.asInt["notebook", "export_pdf_margin_y"]
     finally:
       os.unlink(tmp_path)
     await page.add_style_tag(

@@ -47,7 +47,7 @@ from typing import List, Tuple
 import matplotlib as mpl
 import matplotlib.colors
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.lib.utils import getBlackInTheme
 
 HTMLCOLORS = {
@@ -373,9 +373,9 @@ def prepareDot(dotgraph, **kwargs):
   dotgraph.del_node('"\\n\\n"')
 
   if dotgraph.get_rankdir() is None:
-    dotgraph.set_rankdir(gum.config["notebook", "graph_rankdir"])
+    dotgraph.set_rankdir(pyagrum.config["notebook", "graph_rankdir"])
   if dotgraph.get_layout() is None:
-    dotgraph.set_layout(gum.config["notebook", "graph_layout"])
+    dotgraph.set_layout(pyagrum.config["notebook", "graph_layout"])
 
   dotgraph.set_bgcolor("transparent")
   for e in dotgraph.get_edges():

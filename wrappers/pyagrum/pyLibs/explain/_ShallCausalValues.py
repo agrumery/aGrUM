@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._ShallValues import ShallValues
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 from pyagrum.explain._ComputationCausal import CausalComputation
@@ -52,7 +52,7 @@ class CausalShallValues(ShallValues, CausalComputation):
   The CausalShallValues class computes the Causal Shall values in a Bayesian Network.
   """
 
-  def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
+  def __init__(self, bn: pyagrum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
     """
     Notes
     -----
@@ -73,7 +73,7 @@ class CausalShallValues(ShallValues, CausalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple.
     ValueError : If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
     """
@@ -88,7 +88,7 @@ class CausalShallValues(ShallValues, CausalComputation):
       func1=self._joint,
       params1={},
       func2=self._weight,
-      params2={"doLazy": gum.LazyPropagation(self.bn)},
+      params2={"doLazy": pyagrum.LazyPropagation(self.bn)},
     )
 
   def _coalition_contribution(self, posterior_prob_with, posterior_prob_without, m, s):
@@ -110,7 +110,7 @@ class CausalShallValues(ShallValues, CausalComputation):
       doNet = self._doCalculus(self.bn, tau)  # new BN
       sigma = self._outOfCoalition(tau, self.vars_ids)  # all nodes \ tau
 
-      doInst = gum.Instantiation()
+      doInst = pyagrum.Instantiation()
       for var in doNet.ids(self.feat_names):
         doInst.add(doNet.variable(var))
 
@@ -118,7 +118,7 @@ class CausalShallValues(ShallValues, CausalComputation):
       alpha = x[tau]  # extract columns in tau
       if sigma != []:
         self._chgCpt(doNet, tau, alpha)
-        doLazy = gum.LazyPropagation(doNet)
+        doLazy = pyagrum.LazyPropagation(doNet)
         doLazy.addTarget(tau[0])  # see if target should be added for optimization
         idx = self._extract(self._data, tau, alpha)
         # Compute the value for this coalition.
@@ -167,7 +167,7 @@ class CausalShallValues(ShallValues, CausalComputation):
         if sigma != []:
           # Instanciation of tau
           self._chgCpt(doNet, tau, alpha)  # BN knowing alpha
-          doLazy = gum.LazyPropagation(doNet)
+          doLazy = pyagrum.LazyPropagation(doNet)
           doLazy.addTarget(tau[0])  # just to speed up the calculation
           idx = self._extract(self._data, tau, alpha)
           # Compute the value for this coalition.

@@ -58,7 +58,7 @@ def _CalculateThreshold(
 
   Parameters
   ----------
-      bn: gum.BayesNet
+      bn: pyagrum.BayesNet
           Bayesian network to work on
       targetName: str
           Name of the target
@@ -253,7 +253,7 @@ def _listIdtoName(bn: pyagrum.BayesNet, liste: list[int]):
 
   Parameters
   ----------
-      bn: gum.BayesNet
+      bn: pyagrum.BayesNet
           Bayesian network to work on
       liste: list[int]
           List of id

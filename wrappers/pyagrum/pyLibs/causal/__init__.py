@@ -54,7 +54,7 @@ Deprecated for older pyAgrum (since >2.3.2)
 import warnings
 
 warnings.warn(
-  "Module 'causal' is deprecated in pyAgrum >2.3.2. Use 'gum.CausalModel' (and so on) instead.",
+  "Module 'causal' is deprecated in pyAgrum >2.3.2. Use 'pyagrum.CausalModel' (and so on) instead.",
   DeprecationWarning,
   stacklevel=2,
 )

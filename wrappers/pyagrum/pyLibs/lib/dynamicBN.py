@@ -48,7 +48,7 @@ import pydot as dot
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
-import pyagrum as gum
+import pyagrum
 
 noTimeCluster = "void"
 
@@ -125,7 +125,7 @@ def getTimeSlicesRange(dbn):
 
   Parameters
   ----------
-  dbn: gum.BayesNet
+  dbn: pyagrum.BayesNet
     a 2TBN or an unrolled BN
 
 
@@ -244,7 +244,7 @@ def showTimeSlices(dbn, size=None):
   from pyagrum.lib.notebook import showGraph
 
   if size is None:
-    size = gum.config["dynamicBN", "default_graph_size"]
+    size = pyagrum.config["dynamicBN", "default_graph_size"]
 
   showGraph(_TimeSlicesToDot(dbn), size)
 
@@ -265,7 +265,7 @@ def getTimeSlices(dbn, size=None):
   from pyagrum.lib.notebook import getGraph
 
   if size is None:
-    size = gum.config["dynamicBN", "default_graph_size"]
+    size = pyagrum.config["dynamicBN", "default_graph_size"]
 
   return getGraph(_TimeSlicesToDot(dbn), size)
 
@@ -290,7 +290,7 @@ def unroll2TBN(dbn, nbr):
   if not {noTimeCluster, "0", "t"}.issuperset(ts.keys()) and {"0", "t"}.issubset(ts.keys()):
     raise TypeError("unroll2TBN needs a 2-TimeSlice BN")
 
-  bn = gum.BayesNet()
+  bn = pyagrum.BayesNet()
 
   # variable creation
   for dbn_id in dbn.nodes():
@@ -363,7 +363,7 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
   vars_title : str or dict, optional
       String for default title or a dictionary with the variable name as key and its title as value.
   """
-  ie = gum.LazyPropagation(dbn)
+  ie = pyagrum.LazyPropagation(dbn)
   ie.setEvidence(evs)
   ie.makeInference()
 

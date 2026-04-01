@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._Explanation import Explanation
 
 import numpy as np
@@ -109,8 +109,8 @@ def beeswarm(
 
   # Plot the beeswarm
   ax.plot([0, 0], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle="--", color="gray")
-  color1 = gum.config["notebook", "tensor_color_0"]
-  color2 = gum.config["notebook", "tensor_color_1"]
+  color1 = pyagrum.config["notebook", "tensor_color_0"]
+  color2 = pyagrum.config["notebook", "tensor_color_1"]
   cmap = colors.LinearSegmentedColormap.from_list("custom_red_green", [color1, color2])
 
   if sort:

@@ -48,7 +48,7 @@ import warnings
 
 import sklearn
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
 from pyagrum.lib.discreteTypeProcessor import check_int
 
@@ -421,7 +421,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     self.isBinaryClassifier = len(possibleValuesY) == 2
 
-    self.bn = gum.BayesNet("Template")
+    self.bn = pyagrum.BayesNet("Template")
 
     is_int_varY = True
     min_vY = max_vY = None
@@ -438,11 +438,11 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     if is_int_varY:
       if len(possibleValuesY) == max_vY - min_vY + 1:  # no hole in the list of int
-        var = gum.RangeVariable(self.target, self.target, min_vY, max_vY)
+        var = pyagrum.RangeVariable(self.target, self.target, min_vY, max_vY)
       else:
-        var = gum.IntegerVariable(self.target, self.target, [int(v) for v in possibleValuesY])
+        var = pyagrum.IntegerVariable(self.target, self.target, [int(v) for v in possibleValuesY])
     else:
-      var = gum.LabelizedVariable(self.target, self.target, [str(v) for v in possibleValuesY])
+      var = pyagrum.LabelizedVariable(self.target, self.target, [str(v) for v in possibleValuesY])
     self.bn.add(var)
 
     for i in range(d):
@@ -456,7 +456,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     CSV(X, y, self.target, self.variableNameIndexDictionary, csvfilename)
 
-    self.learner = gum.BNLearner(csvfilename, self.bn)
+    self.learner = pyagrum.BNLearner(csvfilename, self.bn)
 
     IPrior(self.prior, self.learner, self.priorWeight, self.DirichletCsv)
 
@@ -521,7 +521,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     self.learner = None
 
     if copy:
-      self.bn = gum.BayesNet(bn)
+      self.bn = pyagrum.BayesNet(bn)
     else:
       self.bn = bn
 
@@ -774,7 +774,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         )
         returned_list.append([1 - res, res])
     else:
-      local_inst = gum.Instantiation(I)
+      local_inst = pyagrum.Instantiation(I)
       local_inst.erase(self.target)
       for x in vals:
         returned_list.append(
@@ -892,18 +892,18 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
         X = data.drop(targetName, axis=1)
 
     def bestTypedVal(v, idx):
-      if v.varType() == gum.VarType_DISCRETIZED:
+      if v.varType() == pyagrum.VarType_DISCRETIZED:
         return v.label(idx)
-      elif v.varType() == gum.VarType_INTEGER:
+      elif v.varType() == pyagrum.VarType_INTEGER:
         return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_LABELIZED:
+      elif v.varType() == pyagrum.VarType_LABELIZED:
         return v.label(idx)
-      elif v.varType() == gum.VarType_RANGE:
+      elif v.varType() == pyagrum.VarType_RANGE:
         return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_NUMERICAL:
+      elif v.varType() == pyagrum.VarType_NUMERICAL:
         return float(v.numerical(idx))
       else:
-        raise gum.NotFound("This type of variable does not exist yet.")
+        raise pyagrum.NotFound("This type of variable does not exist yet.")
 
     reverse = {v: k for k, v in self.variableNameIndexDictionary.items()}
     if isinstance(X, pandas.DataFrame):  # to be sure of the name of the columns

@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 import pyagrum.lib.notebook as gnb
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.explain import Explanation
@@ -46,7 +46,7 @@ from pyagrum.explain import Explanation
 import matplotlib.pyplot as plt
 
 
-def showShapValues(bn: gum.BayesNet, expl: Explanation | dict, cmap="plasma", y=1):
+def showShapValues(bn: pyagrum.BayesNet, expl: Explanation | dict, cmap="plasma", y=1):
   """
   Show the Shap values in the DAG of the BN
   Parameters
@@ -64,13 +64,13 @@ def showShapValues(bn: gum.BayesNet, expl: Explanation | dict, cmap="plasma", y=
   Raises
   ------
   TypeError
-      If bn is not a gum.BayesNet, if expl is neither an Explanation nor a dict, or if expl is an Explanation and y is not an integer.
+      If bn is not a pyagrum.BayesNet, if expl is neither an Explanation nor a dict, or if expl is an Explanation and y is not an integer.
   IndexError
       If expl is an Explanation and y is outside the valid class range.
   """
 
-  if not isinstance(bn, gum.BayesNet):
-    raise TypeError(f"The parameter bn must be a gum.BayesNet but got {type(bn)}")
+  if not isinstance(bn, pyagrum.BayesNet):
+    raise TypeError(f"The parameter bn must be a pyagrum.BayesNet but got {type(bn)}")
   if isinstance(expl, Explanation):
     if isinstance(y, int):
       if y < min(expl.keys()) or y > max(expl.keys()):

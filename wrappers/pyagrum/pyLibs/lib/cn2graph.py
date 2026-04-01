@@ -51,7 +51,7 @@ from tempfile import mkdtemp
 import matplotlib.pyplot as plt
 import pydot as dot
 
-import pyagrum as gum
+import pyagrum
 import pyagrum.lib._colors as gumcols
 from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
@@ -90,10 +90,10 @@ def CN2dot(
   """
   bn = cn.current_bn()
   if cmapNode is None:
-    cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
 
   # default
   minarcs = 0
@@ -107,8 +107,8 @@ def CN2dot(
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = gum.config["credalnet", "default_node_bgcolor"]
-      fgcol = gum.config["credalnet", "default_node_fgcolor"]
+      bgcol = pyagrum.config["credalnet", "default_node_bgcolor"]
+      fgcol = pyagrum.config["credalnet", "default_node_fgcolor"]
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -157,7 +157,7 @@ def CN2dot(
     graph.add_edge(edge)
 
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -216,10 +216,10 @@ def CNinference2dot(
     targets = {}
   bn = cn.current_bn()
   if cmapNode is None:
-    cmapNode = plt.get_cmap(gum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(gum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
 
   # by default
   minarcs = 0
@@ -231,7 +231,7 @@ def CNinference2dot(
 
   startTime = time.time()
   if engine is None:
-    ie = gum.CNMonteCarloSampling(cn)
+    ie = pyagrum.CNMonteCarloSampling(cn)
   else:
     ie = engine
   if len(evs) > 0:
@@ -243,11 +243,11 @@ def CNinference2dot(
 
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
-  if gum.config.asBool["notebook", "show_inference_time"]:
+  if pyagrum.config.asBool["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{gum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{gum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
@@ -255,10 +255,10 @@ def CNinference2dot(
     name = bn.variable(nid).name()
 
     # defaults
-    bgcol = gum.config["notebook", "default_node_bgcolor"]
-    fgcol = gum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = gum.config["notebook", "figure_facecolor"]
+      bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
       bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
@@ -266,12 +266,12 @@ def CNinference2dot(
 
     # 'hard' colour for evidence (?)
     # if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
-    #  bgcol = gum.config["notebook", "evidence_bgcolor"]
-    #  fgcol = gum.config["notebook", "evidence_fgcolor"]
+    #  bgcol = pyagrum.config["notebook", "evidence_bgcolor"]
+    #  fgcol = pyagrum.config["notebook", "evidence_fgcolor"]
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + gum.config["notebook", "graph_format"]
+      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graph_format"]
       saveFigProbaMinMax(ie.marginalMin(name), ie.marginalMax(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -298,7 +298,7 @@ def CNinference2dot(
   g = dot.graph_from_dot_data(dotstr)[0]
 
   if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
 

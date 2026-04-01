@@ -49,7 +49,7 @@ import numpy as np
 
 from matplotlib import pylab
 
-import pyagrum as gum
+import pyagrum
 from pyagrum import skbn
 
 CSV_TMP_SUFFIX = ".x.csv"
@@ -504,9 +504,9 @@ def _basicDraw(
   ax.grid(color="#aaaaaa", linestyle="-", linewidth=1, alpha=0.5)
 
   ax.plot(
-    [x[0] for x in points], [y[1] for y in points], "-", linewidth=3, color=gum.config["ROC", "draw_color"], zorder=3
+    [x[0] for x in points], [y[1] for y in points], "-", linewidth=3, color=pyagrum.config["ROC", "draw_color"], zorder=3
   )
-  ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=gum.config["ROC", "fill_color"])
+  ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=pyagrum.config["ROC", "fill_color"])
 
   ax.set_ylim((-0.01, 1.01))
   ax.set_xlim((-0.01, 1.01))
@@ -709,8 +709,8 @@ def showROC_PR(
       raise TypeError("first argument must be a string or a DataFrame")
 
   if bgcolor is not None:
-    oldcol = gum.config["notebook", "figure_facecolor"]
-    gum.config["notebook", "figure_facecolor"] = bgcolor
+    oldcol = pyagrum.config["notebook", "figure_facecolor"]
+    pyagrum.config["notebook", "figure_facecolor"] = bgcolor
 
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computePoints(
@@ -738,7 +738,7 @@ def showROC_PR(
   ) = _computeROC_PR(res, totalP, totalN, beta)
   try:
     shortname = os.path.basename(bn.property("name"))
-  except gum.NotFound:
+  except pyagrum.NotFound:
     shortname = "unnamed"
   title = shortname + " vs " + filename + " - " + target + "=" + str(label)
 
@@ -808,7 +808,7 @@ def showROC_PR(
     pylab.show()
 
   if bgcolor is not None:
-    gum.config["notebook", "figure_facecolor"] = oldcol
+    pyagrum.config["notebook", "figure_facecolor"] = oldcol
 
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 

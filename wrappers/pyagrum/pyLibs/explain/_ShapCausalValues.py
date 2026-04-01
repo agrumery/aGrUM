@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._ShapleyValues import ShapleyValues
 from pyagrum.explain._ComputationCausal import CausalComputation
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
@@ -74,7 +74,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple or target is not an integer or string.
+    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
     super().__init__(bn, target, logit)
@@ -85,7 +85,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
       else:
         if sample_size <= 1:
           raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
-      data = gum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      data = pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
     else:
       if not isinstance(background, tuple):
         raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")
@@ -118,7 +118,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         func1=self._posterior,
         params1={},
         func2=self._weight,
-        params2={"doLazy": gum.LazyPropagation(self.bn)},
+        params2={"doLazy": pyagrum.LazyPropagation(self.bn)},
       )
     )
 
@@ -136,7 +136,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
       sigma = self._outOfCoalition(tau, range(self.M))  # Extracts the nodes outside the coalition tau.
       alpha = x[tau]  # Instanciation of tau
       self._chgCpt(doNet, tau, alpha)  # Changes the conditional probability tables to perform do-calculus.
-      doLazy = gum.LazyPropagation(
+      doLazy = pyagrum.LazyPropagation(
         doNet
       )  # Creates a lazy propagation inference engine to compute partial join probabilities.
       doLazy.addTarget(self.target)
@@ -180,7 +180,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
       for i in range(len(x)):  # Iterates over each example in x
         alpha = x[i, tau]  # Instanciation of tau
         self._chgCpt(doNet, tau, alpha)  # Changes the conditional probability tables to perform do-calculus.
-        doLazy = gum.LazyPropagation(
+        doLazy = pyagrum.LazyPropagation(
           doNet
         )  # Creates a lazy propagation inference engine to compute partial join probabilities.
         doLazy.addTarget(self.target)

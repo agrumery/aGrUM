@@ -56,7 +56,7 @@ import sklearn.preprocessing as skp
 
 from typing import Any
 
-import pyagrum as gum
+import pyagrum
 
 
 def check_int(v: Any) -> bool:
@@ -182,7 +182,7 @@ class DiscreteTypeProcessor:
     if clearDiscretizationParameters:
       self.discretizationParametersDictionary = {}
 
-  @gum.deprecated_arg(newA="parameters", oldA="paramDiscretizationMethod", version="2.0.0")
+  @pyagrum.deprecated_arg(newA="parameters", oldA="paramDiscretizationMethod", version="2.0.0")
   def setDiscretizationParameters(self, variableName: str, method: str, parameters: Any = None):
     """
     Sets the discretization parameters for a variable. If variableName is None, sets the default parameters.
@@ -881,7 +881,7 @@ class DiscreteTypeProcessor:
           varSyntax = ""
 
       if varSyntax != "":
-        var = gum.fastVariable(variableName + varSyntax)
+        var = pyagrum.fastVariable(variableName + varSyntax)
         possibleValuesX = set(var.labels())
         f = {str(x) for x in foundValuesX}
         if not f.issubset(possibleValuesX):
@@ -899,16 +899,16 @@ class DiscreteTypeProcessor:
         min_v = int(possibleValuesX[0])
 
         if len(possibleValuesX) == max_v - min_v + 1:  # no hole in the list of int
-          return gum.RangeVariable(variableName, variableName, min_v, max_v)
+          return pyagrum.RangeVariable(variableName, variableName, min_v, max_v)
         else:
-          return gum.IntegerVariable(variableName, variableName, possibleValuesX)
+          return pyagrum.IntegerVariable(variableName, variableName, possibleValuesX)
 
       is_float_var = all(map(check_float, possibleValuesX))
       if is_float_var:
         possibleValuesX = [float(x) for x in possibleValuesX]
-        return gum.NumericalDiscreteVariable(variableName, variableName, possibleValuesX)
+        return pyagrum.NumericalDiscreteVariable(variableName, variableName, possibleValuesX)
       else:
-        return gum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
+        return pyagrum.LabelizedVariable(variableName, variableName, [str(v) for v in possibleValuesX])
     else:
       self.numberOfContinuous += 1
       if self.discretizationParametersDictionary[variableName]["method"] == "expert":
@@ -976,7 +976,7 @@ class DiscreteTypeProcessor:
         )
 
       self.totalNumberOfBins += len(binEdges) - 1
-      var = gum.DiscretizedVariable(variableName, variableName, binEdges)
+      var = pyagrum.DiscretizedVariable(variableName, variableName, binEdges)
       var.setEmpirical(True)
 
     if usingDefaultParameters:
@@ -1078,10 +1078,10 @@ class DiscreteTypeProcessor:
     >>> discretizer = DiscreteTypeProcessor(
     ...   defaultDiscretizationMethod="uniform", defaultParamDiscretizationMethod=7, discretizationThreshold=10
     ... )
-    >>> learner = gum.BNLearner(data, discretizer.discretizedTemplate(data))
+    >>> learner = pyagrum.BNLearner(data, discretizer.discretizedTemplate(data))
     """
     if template is None:
-      template = gum.BayesNet()
+      template = pyagrum.BayesNet()
 
     if isinstance(X, str):
       Xp = pandas.read_csv(X)

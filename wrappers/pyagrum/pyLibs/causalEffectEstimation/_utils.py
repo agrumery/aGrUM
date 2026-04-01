@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 
 from collections import deque
 
@@ -152,13 +152,13 @@ class IVError(ValueError):
     super().__init__(self.message)
 
 
-def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[str] | None:
+def RCT(causal_model: pyagrum.CausalModel, intervention: str, outcome: str) -> set[str] | None:
   """
   Determine the Randomized Controlled Trial (RCT) adjustment.
 
   Parameters
   ----------
-  causal_model : gum.CausalModel
+  causal_model : pyagrum.CausalModel
     The causal model containing the DAG and the observational BN.
   intervention: str
       Intervention (treatment) variable.
@@ -171,7 +171,7 @@ def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[s
       Set with the names of the confounders if ignorability.
       None if ignorability is not satisfied.
   """
-  cbn_without_T_Y = gum.DAG(causal_model.causalDAG())
+  cbn_without_T_Y = pyagrum.DAG(causal_model.causalDAG())
 
   t = causal_model.idFromName(intervention)
   y = causal_model.idFromName(outcome)
@@ -185,13 +185,13 @@ def RCT(causal_model: gum.CausalModel, intervention: str, outcome: str) -> set[s
     return None
 
 
-def _verifyFrontDoorDSep(cbn: gum.CausalModel, t: int, y: int, M: set[int], W: set[int]) -> bool:
+def _verifyFrontDoorDSep(cbn: pyagrum.CausalModel, t: int, y: int, M: set[int], W: set[int]) -> bool:
   """
   Verify the generalized frontdoor adjustment d-Sepatation assumptions.
 
   Parameters
   ----------
-  cbn: gum.CausalModel
+  cbn: pyagrum.CausalModel
       The causal Model
   t: int
       The intervention node ID.
@@ -210,8 +210,8 @@ def _verifyFrontDoorDSep(cbn: gum.CausalModel, t: int, y: int, M: set[int], W: s
       without the arcs M->{y} and t and y are not neighbors.
   """
 
-  cbn_without_T_M = gum.DAG(cbn.causalDAG())
-  cbn_without_M_Y = gum.DAG(cbn.causalDAG())
+  cbn_without_T_M = pyagrum.DAG(cbn.causalDAG())
+  cbn_without_M_Y = pyagrum.DAG(cbn.causalDAG())
 
   for m in M:
     if cbn_without_T_M.existsArc(t, m):
@@ -228,13 +228,15 @@ def _verifyFrontDoorDSep(cbn: gum.CausalModel, t: int, y: int, M: set[int], W: s
   return res
 
 
-def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str], set[str]] | tuple[None, None]:
+def generalizedFrontDoor(
+  causal_model: pyagrum.CausalModel, intervention: str, outcome: str
+) -> tuple[set[str], set[str]] | tuple[None, None]:
   """
   Identify the generalised frontdoor adjustment set and covariates.
 
   Parameters
   ----------
-  causal_model: gum.CausalModel
+  causal_model: pyagrum.CausalModel
       The causal model containing the DAG and the observational BN.
   intervention: str
       Intervention (treatment) variable.
@@ -250,7 +252,9 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
 
   obn = causal_model.observationalBN()
 
-  mediators = gum.DoorCriteria.nodesOnDirectedPaths(obn.dag(), obn.idFromName(intervention), obn.idFromName(outcome))
+  mediators = pyagrum.DoorCriteria.nodesOnDirectedPaths(
+    obn.dag(), obn.idFromName(intervention), obn.idFromName(outcome)
+  )
   mediators = {obn.variable(m).name() for m in mediators}
 
   confounders = set()
@@ -265,7 +269,7 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
   confounders = {causal_model.nameFromId(x) for x in confounders}
   confounders = confounders - {intervention}
 
-  mutilated_dag = gum.DAG(causal_model.causalDAG())
+  mutilated_dag = pyagrum.DAG(causal_model.causalDAG())
 
   # mutilation
   for c in confounders:
@@ -277,7 +281,7 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
       if causal_model.existsArc(c, m):
         mutilated_dag.eraseArc(causal_model.idFromName(c), causal_model.idFromName(m))
 
-  frontdoor = gum.DoorCriteria.firstFrontdoor(
+  frontdoor = pyagrum.DoorCriteria.firstFrontdoor(
     mutilated_dag, causal_model.idFromName(intervention), causal_model.idFromName(outcome)
   )
 
@@ -296,7 +300,7 @@ def generalizedFrontDoor(causal_model: gum.CausalModel, intervention: str, outco
 
 
 def _findPath(
-  G: gum.UndiGraph,
+  G: pyagrum.UndiGraph,
   a: int,
   b: int,
 ) -> list[int]:
@@ -305,7 +309,7 @@ def _findPath(
 
   Parameters
   ----------
-  G: gum.MixedGraph
+  G: pyagrum.MixedGraph
       The graph.
   a: int
       The starting node ID.
@@ -338,7 +342,7 @@ def _findPath(
   return []
 
 
-def _nearestSeparator(obn: gum.DAG, cbn: gum.DAG, t: int, y: int, z: int) -> set[int] | None:
+def _nearestSeparator(obn: pyagrum.DAG, cbn: pyagrum.DAG, t: int, y: int, z: int) -> set[int] | None:
   """
   Find the nearest separator set in the `causal_model` according to `(y,w)`.
 
@@ -346,7 +350,7 @@ def _nearestSeparator(obn: gum.DAG, cbn: gum.DAG, t: int, y: int, z: int) -> set
 
   Parameters
   ----------
-  causal_model: gum.CausalModel
+  causal_model: pyagrum.CausalModel
       The causal graph.
   t: int
       The intervention node ID.
@@ -388,7 +392,7 @@ def _nearestSeparator(obn: gum.DAG, cbn: gum.DAG, t: int, y: int, z: int) -> set
     return None
 
 
-def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) -> set[int] | None:
+def _ancestralInstrument(causal_model: pyagrum.CausalModel, t: int, y: int, z: int) -> set[int] | None:
   """
   Find the ancetral instrument conditioning set `W` in the `causal_model`
   with `t` as intervention, `y` as outcome and `z` as instrument.
@@ -397,7 +401,7 @@ def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) 
 
   Parameters
   ----------
-  causal_model: gum.CausalModel
+  causal_model: pyagrum.CausalModel
       The causal graph.
   t: int
       The intervention node ID.
@@ -412,8 +416,8 @@ def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) 
       the ancetral instrument conditioning set `W`.
   """
 
-  mutilated_obn = gum.DAG(causal_model.observationalBN().dag())
-  mutilated_cbn = gum.DAG(causal_model.causalDAG())
+  mutilated_obn = pyagrum.DAG(causal_model.observationalBN().dag())
+  mutilated_cbn = pyagrum.DAG(causal_model.causalDAG())
 
   if mutilated_obn.existsArc(t, y):
     mutilated_obn.eraseArc(t, y)
@@ -429,7 +433,9 @@ def _ancestralInstrument(causal_model: gum.CausalModel, t: int, y: int, z: int) 
     return None
 
 
-def instrumentalVariable(causal_model: gum.CausalModel, intervention: str, outcome: str) -> tuple[set[str], set[str]]:
+def instrumentalVariable(
+  causal_model: pyagrum.CausalModel, intervention: str, outcome: str
+) -> tuple[set[str], set[str]]:
   """
   Identifies the instrumental variables and covariates, using ancestral
   instruments.

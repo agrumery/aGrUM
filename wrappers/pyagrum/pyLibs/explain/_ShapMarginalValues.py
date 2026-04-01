@@ -48,7 +48,7 @@ import pandas as pd
 import numpy as np
 
 # aGrUM
-import pyagrum as gum
+import pyagrum
 
 # GL
 import warnings
@@ -59,7 +59,7 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
   The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
   """
 
-  def __init__(self, bn: gum.BayesNet, target: int, background: tuple | None, sample_size=1000, logit=True):
+  def __init__(self, bn: pyagrum.BayesNet, target: int, background: tuple | None, sample_size=1000, logit=True):
     """
     Parameters
     ----------
@@ -76,7 +76,7 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple or target is not an integer or string.
+    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
     super().__init__(bn, target, logit)
@@ -90,7 +90,7 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
           raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
         elif sample_size < 10:
           warnings.warn("The sample size is small, which may lead to biased Shapley values.")
-      data = gum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      data = pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
     else:
       if not isinstance(background, tuple):
         raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")

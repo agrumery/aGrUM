@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._Explanation import Explanation
 
 import numpy as np
@@ -95,11 +95,11 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
     if percentage:
       total = sum(values)
       values = [(v / total) * 100 for v in values]
-    ax.barh(columns, values, color=gum.config["notebook", "tensor_color_0"], height=0.5, alpha=0.8)
+    ax.barh(columns, values, color=pyagrum.config["notebook", "tensor_color_0"], height=0.5, alpha=0.8)
   else:
     classes = sorted(explanation.keys())
     cmap = LinearSegmentedColormap.from_list(
-      "class_cmap", [to_rgb(gum.config["notebook", "tensor_color_0"]), to_rgb(gum.config["notebook", "tensor_color_1"])]
+      "class_cmap", [to_rgb(pyagrum.config["notebook", "tensor_color_0"]), to_rgb(pyagrum.config["notebook", "tensor_color_1"])]
     )
     colors = [cmap(i / (len(explanation) - 1)) for i in range(len(explanation))]
 

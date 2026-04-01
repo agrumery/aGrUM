@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._ShallValues import ShallValues
 from pyagrum.explain._ComputationMarginal import MarginalComputation
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
@@ -53,7 +53,7 @@ class MarginalShallValues(ShallValues, MarginalComputation):
   The MarginalShallValues class computes the Marginal Shall values in a Bayesian Network.
   """
 
-  def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
+  def __init__(self, bn: pyagrum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
     """
     Notes
     -----
@@ -72,7 +72,7 @@ class MarginalShallValues(ShallValues, MarginalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple.
     ValueError : If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
     """

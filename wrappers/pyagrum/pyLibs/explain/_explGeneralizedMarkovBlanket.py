@@ -112,7 +112,7 @@ def generalizedMarkovBlanket(bn, var: int | str, k: int = 1, cmapNode=None):
       pydotplus.Dot object
   """
   if cmapNode is None:
-    cmapNode = plt.get_cmap("inferno")  # gum.config["notebook", "default_arc_cmap"])
+    cmapNode = plt.get_cmap("inferno")  # pyagrum.config["notebook", "default_arc_cmap"])
 
   maxcols = max(
     8, k

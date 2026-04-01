@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 import pylab
 import matplotlib as mpl
 import itertools
@@ -50,7 +50,7 @@ def _independenceListForPairs(bn, target=None):
 
   Parameters
   ----------
-  bn: gum.BayesNet
+  bn: pyagrum.BayesNet
     the Bayesian Network
 
   target: (optional) str or int
@@ -74,7 +74,7 @@ def _independenceListForPairs(bn, target=None):
     firstnams = nams.copy()
     indepnodes = bn.names()
   else:
-    indepnodes = {bn.variable(i).name() for i in gum.MarkovBlanket(bn, target).nodes()}
+    indepnodes = {bn.variable(i).name() for i in pyagrum.MarkovBlanket(bn, target).nodes()}
     if isinstance(target, str):
       firstnams = [target]
     else:
@@ -97,7 +97,7 @@ def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=Fa
 
   Parameters
   ----------
-  bn : gum.BayesNet
+  bn : pyagrum.BayesNet
     the Bayesian network
 
   filename : str
@@ -117,7 +117,7 @@ def independenceListForPairs(bn, filename, target=None, plot=True, alphabetic=Fa
     the list
   """
 
-  learner = gum.BNLearner(filename, bn)
+  learner = pyagrum.BNLearner(filename, bn)
   vals = {}
   for indep in _independenceListForPairs(bn, target):
     vals[indep] = learner.chi2(*indep)[1]

@@ -44,11 +44,11 @@ This file defines some helpers for handling causal concepts in notebooks
 
 import IPython
 
-import pyagrum as gum
+import pyagrum
 import pyagrum.lib.notebook as gnb
 
 
-def getCausalModel(cm: gum.CausalModel, size=None) -> str:
+def getCausalModel(cm: pyagrum.CausalModel, size=None) -> str:
   """
   return a HTML representing the causal model
 
@@ -65,11 +65,11 @@ def getCausalModel(cm: gum.CausalModel, size=None) -> str:
     the dot representation
   """
   if size is None:
-    size = gum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "default_graph_size"]
   return gnb.getDot(cm.toDot(), size)
 
 
-def showCausalModel(cm: gum.CausalModel, size=None):
+def showCausalModel(cm: pyagrum.CausalModel, size=None):
   """
   Shows a pydot svg representation of the causal DAG
 
@@ -81,12 +81,12 @@ def showCausalModel(cm: gum.CausalModel, size=None):
     the size of the rendered graph
   """
   if size is None:
-    size = gum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "default_graph_size"]
   gnb.showDot(cm.toDot(), size=size)
 
 
 def getCausalImpact(
-  model: gum.CausalModel,
+  model: pyagrum.CausalModel,
   on: Union[str, NameSet],
   doing: Union[str, NameSet],
   knowing: Optional[NameSet] = None,
@@ -112,7 +112,7 @@ def getCausalImpact(
   -------
   HTML
   """
-  formula, impact, explanation = gum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
+  formula, impact, explanation = pyagrum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
 
   gnb.flow.clear()
   gnb.flow.add(getCausalModel(model), caption="Causal Model")
@@ -138,7 +138,7 @@ def getCausalImpact(
 
 
 def showCausalImpact(
-  model: gum.CausalModel,
+  model: pyagrum.CausalModel,
   on: Union[str, NameSet],
   doing: Union[str, NameSet],
   knowing: Optional[NameSet] = None,
@@ -164,5 +164,5 @@ def showCausalImpact(
   IPython.display.display(html)
 
 
-gum.CausalModel._repr_html_ = lambda self: gnb.getDot(self.toDot(), size=gum.config["causal", "default_graph_size"])
-# gum.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"
+pyagrum.CausalModel._repr_html_ = lambda self: gnb.getDot(self.toDot(), size=pyagrum.config["causal", "default_graph_size"])
+# pyagrum.CausalFormula._repr_html_ = lambda self: f"$${self.toLatex()}$$"

@@ -47,7 +47,7 @@ import numpy
 import math
 import warnings
 
-import pyagrum as gum
+import pyagrum
 
 from ._utils import _ImplementConstraints as implementConstraints
 from ._utils import _ImplementScore as implementScore
@@ -115,7 +115,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
 
   probabilityY = learner.pseudoCount([target]).normalize().tolist()
   mutualInformation = dict()
-  undirectedGraph = gum.UndiGraph()
+  undirectedGraph = pyagrum.UndiGraph()
 
   # we calculate the mutual information of all pairs of variables
   for i in range(d):
@@ -211,7 +211,7 @@ def _fitChowLiu(X, y, bn, learner, variableList, target):
   d = xAndY.shape[1]
 
   mutualInformation = dict()
-  undirectedGraph = gum.UndiGraph()
+  undirectedGraph = pyagrum.UndiGraph()
 
   # we calculate the mutual information of all pairs of variables
   for i in range(d):

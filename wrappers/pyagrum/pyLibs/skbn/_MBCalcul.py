@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from ._utils import _listIdtoName as listIdtoName
 
 
@@ -57,7 +57,7 @@ def compileMarkovBlanket(bn, target):
       MarkovBlanket: pyagrum.BayesNet
           Markov Blanket from bn
   """
-  mb = gum.BayesNet("MarkovBlanket")
+  mb = pyagrum.BayesNet("MarkovBlanket")
 
   # add target to Markov Blanket
   mb.add(bn.variable(target))

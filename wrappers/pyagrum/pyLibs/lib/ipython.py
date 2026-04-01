@@ -50,7 +50,7 @@ import pydot as dot
 
 from IPython.display import Image, display
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot
@@ -81,7 +81,7 @@ def configuration():
   packages["IPython"] = IPython.__version__
   packages["MatPlotLib"] = mpl.__version__
   packages["Numpy"] = np.__version__
-  packages["pyAgrum"] = gum.__version__
+  packages["pyAgrum"] = pyagrum.__version__
 
   for name in packages:
     print("%s : %s" % (name, packages[name]))
@@ -99,7 +99,7 @@ def showGraph(gr, size=None):
     the size of the visualisation
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   gr.set_size(size)
   display(Image(gr.create_png()))
@@ -143,7 +143,7 @@ def showBNDiff(bn1, bn2, size=None):
       Size of the rendered graph.
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
   cmp = GraphicalBNComparator(bn1, bn2)
   showGraph(cmp.dotDiff(), size)
 
@@ -161,7 +161,7 @@ def showJunctionTree(bn, withNames=True, size=None):
   size : int or str, optional
       Size of the rendered graph.
   """
-  jtg = gum.JunctionTreeGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
   if withNames:
     return showDot(jt.toDotWithNames(bn), size)
@@ -187,7 +187,7 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
       Color map to show the node values.
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmap
@@ -207,14 +207,14 @@ def showProba(p, scale=1.0):
       Scale factor.
   """
   _ = proba2histo(p, scale)
-  #  fig.patch.set_facecolor(gum.config["notebook", "figure_facecolor"])
-  IPython.display.set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  #  fig.patch.set_facecolor(pyagrum.config["notebook", "figure_facecolor"])
+  IPython.display.set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
   plt.show()
 
 
 def showPosterior(bn, evs, target):
   """
-  Shortcut for showProba(gum.getPosterior(bn, evs, target)).
+  Shortcut for showProba(pyagrum.getPosterior(bn, evs, target)).
 
   Parameters
   ----------
@@ -225,7 +225,7 @@ def showPosterior(bn, evs, target):
   target : str
       Name of target variable.
   """
-  showProba(gum.getPosterior(bn, evs=evs, target=target))
+  showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
 
 
 def showMRF(
@@ -262,10 +262,10 @@ def showMRF(
       The graph.
   """
   if view is None:
-    view = gum.config["notebook", "default_markovrandomfield_view"]
+    view = pyagrum.config["notebook", "default_markovrandomfield_view"]
 
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmap
@@ -295,7 +295,7 @@ def showInfluenceDiagram(diag, size=None):
       The representation of the influence diagram.
   """
   if size is None:
-    size = gum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "default_id_size"]
 
   return showGraph(ID2dot(diag), size)
 
@@ -318,7 +318,7 @@ def showInference(
   import warnings
 
   warnings.warn(
-    "gum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder)."
+    "pyagrum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder)."
   )
 
 
@@ -337,16 +337,16 @@ def show(model, size=None):
   size : int, optional
       Size for the graphical model (no effect for Tensor).
   """
-  if isinstance(model, gum.BayesNet):
+  if isinstance(model, pyagrum.BayesNet):
     showBN(model, size)
-  elif isinstance(model, gum.MarkovRandomField):
+  elif isinstance(model, pyagrum.MarkovRandomField):
     showMRF(model, size)
-  elif isinstance(model, gum.InfluenceDiagram):
+  elif isinstance(model, pyagrum.InfluenceDiagram):
     showInfluenceDiagram(model, size)
-  elif isinstance(model, gum.Tensor):
+  elif isinstance(model, pyagrum.Tensor):
     showTensor(model)
   else:
-    raise gum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram")
+    raise pyagrum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram")
 
 
 # check if an instance of ipython exists

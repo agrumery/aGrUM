@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 import pyagrum.lib._colors as gumcols
 from pyagrum.lib.bn2graph import BN2dot
 
@@ -82,7 +82,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
 
   Parameters
   ----------
-  bn: gum.BayesNet
+  bn: pyagrum.BayesNet
     the BN
   evs : Dict[str,str|int|List[float]]
     map of evidence
@@ -99,12 +99,12 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
     graph as a dot representation and if asked, min_information_value, max_information_value, min_mutual_information_value, max_mutual_information_value
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if evs is None:
     evs = {}
 
-  ie = gum.LazyPropagation(bn)
+  ie = pyagrum.LazyPropagation(bn)
   ie.setEvidence(evs)
   ie.makeInference()
 
@@ -175,7 +175,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if evs is None:
     evs = {}
@@ -233,7 +233,7 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap) -> str:
     return the HTML string
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if evs is None:
     evs = {}
@@ -260,5 +260,5 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
     evs = {}
 
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
   return _reprInformation(bn, evs, size, cmap, asString=False)

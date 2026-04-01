@@ -40,7 +40,7 @@ from abc import abstractmethod
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._Explainer import Explainer
 from pyagrum.explain._Explanation import Explanation
 
@@ -54,7 +54,7 @@ class ShallValues(Explainer):
   The ShallValues class is an abstract base class for computing Shall values in a Bayesian Network.
   """
 
-  def __init__(self, bn: gum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
+  def __init__(self, bn: pyagrum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
     """
     Notes
     -----
@@ -73,7 +73,7 @@ class ShallValues(Explainer):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance, background is not a tuple.
+    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple.
     ValueError : If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
     """
@@ -90,7 +90,7 @@ class ShallValues(Explainer):
           raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
         elif sample_size < 10:
           warnings.warn("The sample size is small, which may lead to biased Shapley values.")
-      data = gum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      data = pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
     else:
       if not isinstance(background, tuple):
         raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")
@@ -119,7 +119,7 @@ class ShallValues(Explainer):
     self.func = self._log if log else self._identity
 
     # For jointProbability
-    self.inst = gum.Instantiation()
+    self.inst = pyagrum.Instantiation()
     for var in self.bn.ids(self.feat_names):
       self.inst.add(self.bn.variable(var))
 
@@ -174,7 +174,7 @@ class ShallValues(Explainer):
         raise TypeError("Since df is None, N must be an integer, but got {}".format(type(N)))
       if N < 2:
         raise ValueError("N must be greater than 1, but got {}".format(N))
-      y = gum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      y = pyagrum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       # Remove duplicate rows in generated data
       _, idx = np.unique(y, axis=0, return_index=True)
       y = y[idx, :]

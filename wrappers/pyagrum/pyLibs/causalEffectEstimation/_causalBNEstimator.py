@@ -41,7 +41,7 @@
 import numpy as np
 import pandas as pd
 
-import pyagrum as gum
+import pyagrum
 
 
 class CausalBNEstimator:
@@ -58,14 +58,14 @@ class CausalBNEstimator:
   """
 
   def __init__(
-    self, causal_model: gum.CausalModel, treatment: str, outcome: str, instrument: str | None = None
+    self, causal_model: pyagrum.CausalModel, treatment: str, outcome: str, instrument: str | None = None
   ) -> None:
     """
     Initialize a Causal Model estimator.
 
     Parameters
     ----------
-    causal_model: gum.CausalModel
+    causal_model: pyagrum.CausalModel
         The causal graph.
     treatment: str
         The treatment variable.
@@ -75,8 +75,8 @@ class CausalBNEstimator:
         The instrumental variable
     """
 
-    if isinstance(causal_model, gum.CausalModel):
-      self.causal_model = gum.CausalModel(causal_model)
+    if isinstance(causal_model, pyagrum.CausalModel):
+      self.causal_model = pyagrum.CausalModel(causal_model)
     else:
       raise ValueError("`causal_model` must be instance of `pyagrum.CausalModel`.")
 
@@ -96,15 +96,15 @@ class CausalBNEstimator:
         The uniform prior distribution. Default is 1e-9.
     """
 
-    parameter_learner = gum.BNLearner(df, self.causal_model.observationalBN())
+    parameter_learner = pyagrum.BNLearner(df, self.causal_model.observationalBN())
     parameter_learner.useNMLCorrection()
     parameter_learner.useSmoothingPrior(smoothing_prior)
 
-    bn = gum.BayesNet(self.causal_model.observationalBN())
+    bn = pyagrum.BayesNet(self.causal_model.observationalBN())
 
     parameter_learner.fitParameters(bn)
 
-    causal_model = gum.CausalModel(bn)
+    causal_model = pyagrum.CausalModel(bn)
     self.causal_model = causal_model
 
     return self.causal_model
@@ -166,7 +166,7 @@ class CausalBNEstimator:
       values.append(self._getIntervalIndex(X[covar], covar))
 
     if self.instrument is not None:
-      ie = gum.LazyPropagation(self.causal_model.observationalBN())
+      ie = pyagrum.LazyPropagation(self.causal_model.observationalBN())
       ie.setEvidence(dict(zip(keys + [self.instrument], values + [0])))
       cptY0 = ie.posterior(self.outcome)
       cptT0 = ie.posterior(self.treatment)
@@ -182,7 +182,7 @@ class CausalBNEstimator:
       ) / diffT.expectedValue(lambda d: diffT.variable(0).numerical(d[diffT.variable(0).name()]))
 
     else:
-      _, cpt0, _ = gum.causalImpact(
+      _, cpt0, _ = pyagrum.causalImpact(
         cm=self.causal_model,
         on=self.outcome,
         doing=self.treatment,
@@ -190,7 +190,7 @@ class CausalBNEstimator:
         values=dict(zip(keys + [self.treatment], values + [0])),
       )
 
-      _, cpt1, _ = gum.causalImpact(
+      _, cpt1, _ = pyagrum.causalImpact(
         cm=self.causal_model,
         on=self.outcome,
         doing=self.treatment,
@@ -199,7 +199,7 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise gum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       diff = cpt1 - cpt0
       return diff.expectedValue(lambda d: diff.variable(0).numerical(d[diff.variable(0).name()]))
@@ -270,7 +270,7 @@ class CausalBNEstimator:
     """
 
     if self.instrument is not None:
-      ie = gum.LazyPropagation(self.causal_model.observationalBN())
+      ie = pyagrum.LazyPropagation(self.causal_model.observationalBN())
       ie.setEvidence({self.instrument: 0})
       cptY0 = ie.posterior(self.outcome)
       cptT0 = ie.posterior(self.treatment)
@@ -286,16 +286,16 @@ class CausalBNEstimator:
       ) / diffT.expectedValue(lambda d: diffT.variable(0).numerical(d[diffT.variable(0).name()]))
 
     else:
-      _, cpt0, _ = gum.causalImpact(
+      _, cpt0, _ = pyagrum.causalImpact(
         self.causal_model, on=self.outcome, doing=self.treatment, values={self.treatment: 0}
       )
 
-      _, cpt1, _ = gum.causalImpact(
+      _, cpt1, _ = pyagrum.causalImpact(
         self.causal_model, on=self.outcome, doing=self.treatment, values={self.treatment: 1}
       )
 
       if cpt0 is None:
-        raise gum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       difference = cpt1 - cpt0
       return difference.expectedValue(lambda d: difference.variable(0).numerical(d[difference.variable(0).name()]))

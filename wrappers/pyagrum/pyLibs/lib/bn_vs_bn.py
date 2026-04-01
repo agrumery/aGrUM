@@ -48,7 +48,7 @@ from itertools import product, combinations
 
 import pydot as dot
 
-import pyagrum as gum
+import pyagrum
 import pyagrum.lib.bn2graph as ggr
 import pyagrum.lib.utils as gutils
 
@@ -75,16 +75,16 @@ class GraphicalBNComparator:
     another BN or antoher filename for comparison
   """
 
-  def __init__(self, bn1: str | gum.BayesNet, bn2: str | gum.BayesNet, delta=1e-6):
+  def __init__(self, bn1: str | pyagrum.BayesNet, bn2: str | pyagrum.BayesNet, delta=1e-6):
     self.DELTA_ERROR = delta
     if isinstance(bn1, str):
-      self._bn1 = gum.loadBN(bn1)
+      self._bn1 = pyagrum.loadBN(bn1)
       self._bn1.setProperty("name", '"' + os.path.basename(self._bn1.property("name") + '"'))
     else:
       self._bn1 = bn1
 
     if isinstance(bn2, str):
-      self._bn2 = gum.loadBN(bn2)
+      self._bn2 = pyagrum.loadBN(bn2)
       self._bn2.setProperty("name", '"' + os.path.basename(self._bn2.property("name") + '"'))
     else:
       self._bn2 = bn2
@@ -160,11 +160,11 @@ class GraphicalBNComparator:
 
     Raises
     ------
-    gum.KeyError
+    pyagrum.KeyError
       If cpts are not from the same variable
     """
-    I1 = gum.Instantiation(pot1)
-    I2 = gum.Instantiation(pot2)
+    I1 = pyagrum.Instantiation(pot1)
+    I2 = pyagrum.Instantiation(pot2)
     I1.setFirst()
     while not I1.end():
       I2.fromdict(I1.todict())  # copy value on the base of names
@@ -374,8 +374,8 @@ class GraphicalBNComparator:
       A dictionary containing PURE_HAMMING,STRUCTURAL_HAMMING
     """
     # convert graphs to cpdags
-    cpdag1 = gum.EssentialGraph(self._bn1).pdag()
-    cpdag2 = gum.EssentialGraph(self._bn2).pdag()
+    cpdag1 = pyagrum.EssentialGraph(self._bn1).pdag()
+    cpdag2 = pyagrum.EssentialGraph(self._bn2).pdag()
 
     # We look at all combinations
     listVariables = self._bn1.names()
@@ -463,7 +463,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
         dot.Node(
           f'"{bnref.variable(i1).name()}"',
           style="filled",
-          fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+          fillcolor=pyagrum.config["notebook", "graphdiff_correct_color"],
           color=gutils.getBlackInTheme(),
         )
       )
@@ -473,7 +473,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Node(
             f'"{bnref.variable(i1).name()}"',
             style="dashed",
-            fillcolor=gum.config["notebook", "graphdiff_correct_color"],
+            fillcolor=pyagrum.config["notebook", "graphdiff_correct_color"],
             color=gutils.getBlackInTheme(),
           )
         )
@@ -485,8 +485,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
         dot.Edge(
           f'"{n1}"',
           f'"{n2}"',
-          style=gum.config["notebook", "graphdiff_correct_style"],
-          color=gum.config["notebook", "graphdiff_correct_color"],
+          style=pyagrum.config["notebook", "graphdiff_correct_style"],
+          color=pyagrum.config["notebook", "graphdiff_correct_color"],
         )
       )
 
@@ -501,8 +501,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=gum.config["notebook", "graphdiff_missing_style"],
-            color=gum.config["notebook", "graphdiff_missing_color"],
+            style=pyagrum.config["notebook", "graphdiff_missing_style"],
+            color=pyagrum.config["notebook", "graphdiff_missing_color"],
           )
         )
         continue
@@ -512,8 +512,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=gum.config["notebook", "graphdiff_correct_style"],
-            color=gum.config["notebook", "graphdiff_correct_color"],
+            style=pyagrum.config["notebook", "graphdiff_correct_style"],
+            color=pyagrum.config["notebook", "graphdiff_correct_color"],
           )
         )
       elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
@@ -522,8 +522,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Edge(
             f'"{n2}"',
             f'"{n1}"',
-            style=gum.config["notebook", "graphdiff_reversed_style"],
-            color=gum.config["notebook", "graphdiff_reversed_color"],
+            style=pyagrum.config["notebook", "graphdiff_reversed_style"],
+            color=pyagrum.config["notebook", "graphdiff_reversed_color"],
           )
         )
       else:  # arc is missing in BN2
@@ -531,8 +531,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=gum.config["notebook", "graphdiff_missing_style"],
-            color=gum.config["notebook", "graphdiff_missing_color"],
+            style=pyagrum.config["notebook", "graphdiff_missing_style"],
+            color=pyagrum.config["notebook", "graphdiff_missing_color"],
           )
         )
 
@@ -544,8 +544,8 @@ def graphDiff(bnref, bncmp, noStyle=False):
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=gum.config["notebook", "graphdiff_overflow_style"],
-            color=gum.config["notebook", "graphdiff_overflow_color"],
+            style=pyagrum.config["notebook", "graphdiff_overflow_style"],
+            color=pyagrum.config["notebook", "graphdiff_overflow_color"],
           )
         )
 
@@ -570,8 +570,8 @@ def graphDiffLegend():
       "a",
       "b",
       label="overflow",
-      style=gum.config["notebook", "graphdiff_overflow_style"],
-      color=gum.config["notebook", "graphdiff_overflow_color"],
+      style=pyagrum.config["notebook", "graphdiff_overflow_style"],
+      color=pyagrum.config["notebook", "graphdiff_overflow_color"],
     )
   )
   res.add_edge(
@@ -579,8 +579,8 @@ def graphDiffLegend():
       "c",
       "d",
       label="Missing",
-      style=gum.config["notebook", "graphdiff_missing_style"],
-      color=gum.config["notebook", "graphdiff_missing_color"],
+      style=pyagrum.config["notebook", "graphdiff_missing_style"],
+      color=pyagrum.config["notebook", "graphdiff_missing_color"],
     )
   )
   res.add_edge(
@@ -588,8 +588,8 @@ def graphDiffLegend():
       "e",
       "f",
       label="reversed",
-      style=gum.config["notebook", "graphdiff_reversed_style"],
-      color=gum.config["notebook", "graphdiff_reversed_color"],
+      style=pyagrum.config["notebook", "graphdiff_reversed_style"],
+      color=pyagrum.config["notebook", "graphdiff_reversed_color"],
     )
   )
   res.add_edge(
@@ -597,8 +597,8 @@ def graphDiffLegend():
       "g",
       "h",
       label="Correct",
-      style=gum.config["notebook", "graphdiff_correct_style"],
-      color=gum.config["notebook", "graphdiff_correct_color"],
+      style=pyagrum.config["notebook", "graphdiff_correct_style"],
+      color=pyagrum.config["notebook", "graphdiff_correct_color"],
     )
   )
 

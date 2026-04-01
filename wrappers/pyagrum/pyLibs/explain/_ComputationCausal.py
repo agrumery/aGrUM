@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 
 # Calculations
 import numpy as np
@@ -51,9 +51,9 @@ class CausalComputation:
     return [i for i in inter if i not in tau]
 
   @staticmethod
-  def _doCalculus(bn: gum.BayesNet, tau: list[int]) -> gum.BayesNet:
+  def _doCalculus(bn: pyagrum.BayesNet, tau: list[int]) -> pyagrum.BayesNet:
     # Creates a new Bayesian Network by removing incoming arcs to the nodes in tau.
-    doNetTemplate = gum.BayesNet(bn)
+    doNetTemplate = pyagrum.BayesNet(bn)
     for i in tau:
       parents = doNetTemplate.parents(i)
       for j in parents:
@@ -61,14 +61,14 @@ class CausalComputation:
     return doNetTemplate
 
   @staticmethod
-  def _chgCpt(doNetTemplate: gum.BayesNet, tau: list[int], alpha: list[int]) -> None:
+  def _chgCpt(doNetTemplate: pyagrum.BayesNet, tau: list[int], alpha: list[int]) -> None:
     # Changes the conditional probability tables (CPTs) of the nodes in tau to reflect the values in alpha.
     for i, j in zip(tau, alpha):
       doNetTemplate.cpt(i).fillWith(0.0)
       doNetTemplate.cpt(i)[int(j)] = 1.0
 
   @staticmethod
-  def _weight(evidces: dict[int, int], count: int, doLazy: gum.LazyPropagation) -> np.ndarray:
+  def _weight(evidces: dict[int, int], count: int, doLazy: pyagrum.LazyPropagation) -> np.ndarray:
     # Returns the evidces probability.
     # The signature must be : Dict[int, int], int, **kwargs
     doLazy.updateEvidence(evidces)

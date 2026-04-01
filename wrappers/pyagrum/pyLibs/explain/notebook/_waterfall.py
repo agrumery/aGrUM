@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.explain._Explanation import Explanation
 from typing import Callable, Dict
 import numpy as np
@@ -142,9 +142,9 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict =
     height = 0.2
     arrow_width = min(0.4 * abs(delta), arrow_width_base)
     facecolor, edgecolor, alpha = (
-      (gum.config["notebook", "tensor_color_0"], "#D98383", 1)
+      (pyagrum.config["notebook", "tensor_color_0"], "#D98383", 1)
       if values[feature] <= 0
-      else (gum.config["notebook", "tensor_color_1"], "#82D882", -1)
+      else (pyagrum.config["notebook", "tensor_color_1"], "#82D882", -1)
     )
 
     # Dessin du polygon

@@ -43,7 +43,7 @@ import numpy as np
 
 from typing import Any
 
-import pyagrum as gum
+import pyagrum
 from numpy.f2py.f90mod_rules import fgetdims2
 from pyagrum import causalImpact
 
@@ -109,7 +109,7 @@ class CausalEffectEstimation:
   _IV = "Generalized Instrumental Variable"
   _UNKNOWN = "Unknown"
 
-  def __init__(self, df: pd.DataFrame, causal_model: gum.CausalModel) -> None:
+  def __init__(self, df: pd.DataFrame, causal_model: pyagrum.CausalModel) -> None:
     """
     Initializes the causal estimator instance.
 
@@ -117,7 +117,7 @@ class CausalEffectEstimation:
     ----------
     df: pd.DataFrame
         The dataset for causal effect estimation.
-    causal_model: gum.CausalModel
+    causal_model: pyagrum.CausalModel
         The causal model for causal effect identification.
     """
 

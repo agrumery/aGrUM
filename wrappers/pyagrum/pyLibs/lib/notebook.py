@@ -72,7 +72,7 @@ import IPython.core.display
 import IPython.core.pylabtools
 import IPython.display
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
@@ -106,9 +106,9 @@ class FlowLayout(object):
       display: inline-block;
       margin: 7px;
       padding : 3px;
-      border: {gum.config.asInt["notebook", "flow_border_width"]}px solid {gum.config["notebook", "flow_border_color"]};  
+      border: {pyagrum.config.asInt["notebook", "flow_border_width"]}px solid {pyagrum.config["notebook", "flow_border_color"]};  
       valign:middle;
-      background-color: {gum.config["notebook", "flow_background_color"]};
+      background-color: {pyagrum.config["notebook", "flow_background_color"]};
       }}
       </style>
       """
@@ -245,7 +245,7 @@ def configuration():
   packages["Matplotlib"] = mpl.__version__
   packages["Numpy"] = np.__version__
   packages["pyDot"] = dot.__version__
-  packages["pyAgrum"] = gum.__version__
+  packages["pyAgrum"] = pyagrum.__version__
 
   res = "<table><tr><th>Library</th><th>Version</th></tr>"
 
@@ -280,7 +280,7 @@ def _reprGraph(gr, size, asString, graph_format=None):
   gumcols.prepareDot(gr, size=size)
 
   if graph_format is None:
-    graph_format = gum.config["notebook", "graph_format"]
+    graph_format = pyagrum.config["notebook", "graph_format"]
 
   if graph_format == "svg":
     gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode("utf-8")))
@@ -308,7 +308,7 @@ def showGraph(gr: dot.Dot, size=None):
     the size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   return _reprGraph(gr, size, asString=False)
 
@@ -330,7 +330,7 @@ def getGraph(gr: dot.Dot, size=None) -> str:
     the HTML representation of the graph (as a string)
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   return _reprGraph(gr, size, asString=True)
 
@@ -352,7 +352,7 @@ def showDot(dotstring: str, size=None):
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
   showGraph(_from_dotstring(dotstring), size)
 
 
@@ -372,7 +372,7 @@ def getDot(dotstring: str, size=None) -> str:
     the HTML representation of the dot string
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   return getGraph(_from_dotstring(dotstring), size)
 
@@ -404,7 +404,7 @@ def getBNDiff(bn1, bn2, size=None, noStyle=False):
     the HTML representation of the comparison
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -431,7 +431,7 @@ def showBNDiff(bn1, bn2, size=None, noStyle=False):
     with style or not.
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -463,11 +463,11 @@ def getJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = gum.JunctionTreeGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
-    size = gum.config["notebook", "junctiontree_map_size"]
+    size = pyagrum.config["notebook", "junctiontree_map_size"]
   return getGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -498,11 +498,11 @@ def showJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = gum.JunctionTreeGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
-    size = gum.config["notebook", "junctiontree_map_size"]
+    size = pyagrum.config["notebook", "junctiontree_map_size"]
   showGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -520,9 +520,9 @@ def showJunctionTree(bn, withNames=True, size=None):
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
-  jtg = gum.JunctionTreeGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
@@ -552,9 +552,9 @@ def getJunctionTree(bn, withNames=True, size=None):
       the HTML representation of the graph
   """
   if size is None:
-    size = gum.config["notebook", "junctiontree_graph_size"]
+    size = pyagrum.config["notebook", "junctiontree_graph_size"]
 
-  jtg = gum.JunctionTreeGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
@@ -578,7 +578,7 @@ def showProba(p, scale=None):
     the zoom factor
   """
   _ = proba2histo(p, scale)
-  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -610,7 +610,7 @@ def getProba(p, scale=None) -> str:
   str
     the HTML representation of the marginal
   """
-  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
   # return _getMatplotFig(proba2histo(p, scale))
   fig = proba2histo(p, scale)
   plt.close()
@@ -631,7 +631,7 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
     the zoom factor
   """
   _ = probaMinMaxH(pmin, pmax, scale)
-  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
   plt.show()
 
 
@@ -653,13 +653,13 @@ def getProbaMinMax(pmin, pmax, scale=1.0) -> str:
   str
     the HTML representation of the marginal min,max
   """
-  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
   return _getMatplotFig(probaMinMaxH(pmin, pmax, scale))
 
 
 def getPosterior(bn, evs, target):
   """
-  shortcut for proba2histo(gum.getPosterior(bn,evs,target))
+  shortcut for proba2histo(pyagrum.getPosterior(bn,evs,target))
 
   Parameters
   ----------
@@ -674,14 +674,14 @@ def getPosterior(bn, evs, target):
   ------
     the matplotlib graph
   """
-  fig = proba2histo(gum.getPosterior(bn, evs=evs, target=target))
+  fig = proba2histo(pyagrum.getPosterior(bn, evs=evs, target=target))
   plt.close()
   return _getMatplotFig(fig)
 
 
 def showPosterior(bn, evs, target):
   """
-  shortcut for showProba(gum.getPosterior(bn,evs,target))
+  shortcut for showProba(pyagrum.getPosterior(bn,evs,target))
 
   Parameters
   ----------
@@ -692,7 +692,7 @@ def showPosterior(bn, evs, target):
   target: str|int
     name of target variable
   """
-  showProba(gum.getPosterior(bn, evs=evs, target=target))
+  showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
 
 
 def animApproximationScheme(apsc, scale=np.log10):
@@ -708,7 +708,7 @@ def animApproximationScheme(apsc, scale=np.log10):
   """
   f = plt.gcf()
 
-  h = gum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
+  h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 
@@ -789,10 +789,10 @@ def showMRF(
    the graph
   """
   if view is None:
-    view = gum.config["notebook", "default_markovrandomfield_view"]
+    view = pyagrum.config["notebook", "default_markovrandomfield_view"]
 
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
@@ -823,7 +823,7 @@ def showInfluenceDiagram(diag, size=None):
     the representation of the influence diagram
   """
   if size is None:
-    size = gum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "default_id_size"]
 
   return showGraph(ID2dot(diag), size)
 
@@ -845,7 +845,7 @@ def getInfluenceDiagram(diag, size=None):
     the HTML representation of the influence diagram
   """
   if size is None:
-    size = gum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "default_id_size"]
 
   return getGraph(ID2dot(diag), size)
 
@@ -876,7 +876,7 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     a nodeMap of values to be shown as tooltip
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -926,7 +926,7 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
     the graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -986,13 +986,13 @@ def getMRF(
     the graph
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
 
   if view is None:
-    view = gum.config["notebook", "default_markovrandomfield_view"]
+    view = pyagrum.config["notebook", "default_markovrandomfield_view"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth, edgeColor, cmapNode, cmapEdge)
@@ -1033,7 +1033,7 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     the desired representation of the Bayesian network
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1084,7 +1084,7 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
     the desired representation of the Credal Network
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "default_graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1112,8 +1112,8 @@ def showInference(model, **kwargs):
   ----------
   model: pyagrum.GraphicalModel
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
-  engine: gum.Inference
-    inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  engine: pyagrum.Inference
+    inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: Dict[int|str,int|str|List[float]]
     map of evidence
   targets: Set[str]
@@ -1144,7 +1144,7 @@ def showInference(model, **kwargs):
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = gum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "default_graph_inference_size"]
 
   showGraph(prepareShowInference(model, **kwargs), size)
 
@@ -1157,8 +1157,8 @@ def getInference(model, **kwargs):
   ----------
   model: pyagrum.GraphicalModel
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
-  engine: gum.Inference
-    inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet, gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+  engine: pyagrum.Inference
+    inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: Dict[int|str,int|str|List[float]]
     map of evidence
   targets: Set[str]
@@ -1189,7 +1189,7 @@ def getInference(model, **kwargs):
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = gum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "default_graph_inference_size"]
 
   grinf = prepareShowInference(model, **kwargs)
   return getGraph(grinf, size)
@@ -1197,12 +1197,12 @@ def getInference(model, **kwargs):
 
 def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False):
   """
-  return a representation of a gum.Tensor as a HTML table.
+  return a representation of a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ---------
-  pot: gum.Tensor
+  pot: pyagrum.Tensor
    the tensor to get
   digits: int
    number of digits to show
@@ -1220,20 +1220,20 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gumcols.hex2rgb(gum.config["notebook", "tensor_color_0"])
-  r1, g1, b1 = gumcols.hex2rgb(gum.config["notebook", "tensor_color_1"])
+  r0, g0, b0 = gumcols.hex2rgb(pyagrum.config["notebook", "tensor_color_0"])
+  r1, g1, b1 = gumcols.hex2rgb(pyagrum.config["notebook", "tensor_color_1"])
 
   if digits is None:
-    digits = gum.config.asInt["notebook", "tensor_visible_digits"]
+    digits = pyagrum.config.asInt["notebook", "tensor_visible_digits"]
 
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
 
-  with_fraction = gum.config["notebook", "tensor_with_fraction"] == "True"
+  with_fraction = pyagrum.config["notebook", "tensor_with_fraction"] == "True"
   if with_fraction:
-    fraction_limit = int(gum.config["notebook", "tensor_fraction_limit"])
-    fraction_round_error = float(gum.config["notebook", "tensor_fraction_round_error"])
-    fraction_with_latex = gum.config["notebook", "tensor_fraction_with_latex"] == "True"
+    fraction_limit = int(pyagrum.config["notebook", "tensor_fraction_limit"])
+    fraction_round_error = float(pyagrum.config["notebook", "tensor_fraction_round_error"])
+    fraction_with_latex = pyagrum.config["notebook", "tensor_fraction_with_latex"] == "True"
 
   def _rgb(r, g, b):
     return "#%02x%02x%02x" % (r, g, b)
@@ -1274,7 +1274,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
   html.append('<table style="border:1px solid black;border-collapse: collapse;">')
   if pot.empty():
     html.append("<tr><th>&nbsp;</th></tr>")
-    html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
+    html.append("<tr>" + _mkCell(pot.get(pyagrum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
       raise ValueError(f"varnames contains {len(varnames)} value(s) instead of the needed {pot.nbrDim()} value(s).")
@@ -1296,7 +1296,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
     s = "<tr>"
     if nparents > 0:
       # parents order
-      if gum.config["notebook", "tensor_parent_values"] == "revmerge":
+      if pyagrum.config["notebook", "tensor_parent_values"] == "revmerge":
         pmin, pmax, pinc = nparents - 1, 0 - 1, -1
       else:
         pmin, pmax, pinc = 0, nparents, 1
@@ -1314,7 +1314,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
 
     html.append(s)
 
-    inst = gum.Instantiation(pot)
+    inst = pyagrum.Instantiation(pot)
     off = 1
     offset = dict()
     for i in range(1, nparents + 1):
@@ -1325,13 +1325,13 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
     while not inst.end():
       s = "<tr>"
       # parents order
-      if gum.config["notebook", "tensor_parent_values"] == "revmerge":
+      if pyagrum.config["notebook", "tensor_parent_values"] == "revmerge":
         pmin, pmax, pinc = 1, nparents + 1, 1
       else:
         pmin, pmax, pinc = nparents, 0, -1
       for par in range(pmin, pmax, pinc):
         label = inst.variable(par).label(inst.val(par))
-        if par == 1 or gum.config["notebook", "tensor_parent_values"] == "nomerge":
+        if par == 1 or pyagrum.config["notebook", "tensor_parent_values"] == "nomerge":
           s += f"<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{label}</center></th>"
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
@@ -1357,7 +1357,7 @@ def __isKindOfProba(pot):
 
   Parameters
   ----------
-  pot: gum.Tensor
+  pot: pyagrum.Tensor
     the tensor
 
   Returns
@@ -1395,12 +1395,12 @@ def showPotential(pot, digits=None, withColors=None, varnames=None):
 
 def showTensor(pot, digits=None, withColors=None, varnames=None):
   """
-  show a gum.Tensor as a HTML table.
+  show a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ----------
-  pot : gum.Tensor
+  pot : pyagrum.Tensor
     the tensor to show
   digits : int
     number of digits to show
@@ -1410,7 +1410,7 @@ def showTensor(pot, digits=None, withColors=None, varnames=None):
     the aliases for variables name in the table
   """
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1426,12 +1426,12 @@ def getPotential(pot, digits=None, withColors=None, varnames=None):
 
 def getTensor(pot, digits=None, withColors=None, varnames=None):
   """
-  return a HTML string of a gum.Tensor as a HTML table.
+  return a HTML string of a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
   ----------
-  pot : gum.Tensor
+  pot : pyagrum.Tensor
     the tensor to show
   digits : int
     number of digits to show
@@ -1446,7 +1446,7 @@ def getTensor(pot, digits=None, withColors=None, varnames=None):
     the html representation of the Tensor (as a string)
   """
   if withColors is None:
-    withColors = gum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1598,7 +1598,7 @@ def getJT(jt, size=None):
     the representation of a junction tree as a HTML string
 
   """
-  if gum.config.asBool["notebook", "junctiontree_with_names"]:
+  if pyagrum.config.asBool["notebook", "junctiontree_with_names"]:
 
     def cliqlabels(c):
       labels = ",".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
@@ -1636,9 +1636,9 @@ def getJT(jt, size=None):
         '"' + cliqnames(c) + '"',
         label='"' + cliqlabels(c) + '"',
         style="filled",
-        fillcolor=gum.config["notebook", "junctiontree_clique_bgcolor"],
-        fontcolor=gum.config["notebook", "junctiontree_clique_fgcolor"],
-        fontsize=gum.config["notebook", "junctiontree_clique_fontsize"],
+        fillcolor=pyagrum.config["notebook", "junctiontree_clique_bgcolor"],
+        fontcolor=pyagrum.config["notebook", "junctiontree_clique_fgcolor"],
+        fontsize=pyagrum.config["notebook", "junctiontree_clique_fontsize"],
       )
     )
   for c1, c2 in jt.edges():
@@ -1651,16 +1651,16 @@ def getJT(jt, size=None):
         width="0",
         height="0",
         margin="0.02",
-        fillcolor=gum.config["notebook", "junctiontree_separator_bgcolor"],
-        fontcolor=gum.config["notebook", "junctiontree_separator_fgcolor"],
-        fontsize=gum.config["notebook", "junctiontree_separator_fontsize"],
+        fillcolor=pyagrum.config["notebook", "junctiontree_separator_bgcolor"],
+        fontcolor=pyagrum.config["notebook", "junctiontree_separator_fgcolor"],
+        fontsize=pyagrum.config["notebook", "junctiontree_separator_fontsize"],
       )
     )
   for c1, c2 in jt.edges():
     graph.add_edge(dot.Edge('"' + cliqnames(c1) + '"', '"' + sepnames(c1, c2) + '"'))
     graph.add_edge(dot.Edge('"' + sepnames(c1, c2) + '"', '"' + cliqnames(c2) + '"'))
 
-  graph.set_size(gum.config["notebook", "junctiontree_graph_size"])
+  graph.set_size(pyagrum.config["notebook", "junctiontree_graph_size"])
 
   return graph.to_string()
 
@@ -1670,7 +1670,7 @@ def getCliqueGraph(cg, size=None):
   (clique graph with an attribute `_engine`)
 
   Parameters
-      cg (gum.CliqueGraph): the clique graph (maybe junction tree for a _model) to
+      cg (pyagrum.CliqueGraph): the clique graph (maybe junction tree for a _model) to
                             represent
 
   Returns
@@ -1712,22 +1712,22 @@ def show(model, **kwargs):
   view: str
     graph | factorgraph | None (default) for Markov random field
   """
-  if isinstance(model, gum.BayesNet):
+  if isinstance(model, pyagrum.BayesNet):
     showBN(model, **kwargs)
-  elif isinstance(model, gum.MarkovRandomField):
+  elif isinstance(model, pyagrum.MarkovRandomField):
     showMRF(model, **kwargs)
-  elif isinstance(model, gum.InfluenceDiagram):
+  elif isinstance(model, pyagrum.InfluenceDiagram):
     showInfluenceDiagram(model, **kwargs)
-  elif isinstance(model, gum.CredalNet):
+  elif isinstance(model, pyagrum.CredalNet):
     showCN(model, **kwargs)
-  elif isinstance(model, gum.Tensor):
+  elif isinstance(model, pyagrum.Tensor):
     showTensor(model)
   elif hasattr(model, "toDot"):
     showDot(model.toDot(), **kwargs)
   elif isinstance(model, dot.Dot):
     showGraph(model, **kwargs)
   else:
-    raise gum.InvalidArgument(
+    raise pyagrum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovRandomField, Influence Diagram or Tensor or ..."
     )
 
@@ -1743,7 +1743,7 @@ def inspectBN(bn):
   return flow
 
 
-def getCausalModel(cm: gum.CausalModel, size=None) -> str:
+def getCausalModel(cm: pyagrum.CausalModel, size=None) -> str:
   """
   return a HTML representing the causal model
 
@@ -1760,11 +1760,11 @@ def getCausalModel(cm: gum.CausalModel, size=None) -> str:
     the dot representation
   """
   if size is None:
-    size = gum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "default_graph_size"]
   return getDot(cm.toDot(), size)
 
 
-def showCausalModel(cm: gum.CausalModel, size=None):
+def showCausalModel(cm: pyagrum.CausalModel, size=None):
   """
   Shows a pydot svg representation of the causal DAG
 
@@ -1776,15 +1776,15 @@ def showCausalModel(cm: gum.CausalModel, size=None):
     the size of the rendered graph
   """
   if size is None:
-    size = gum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "default_graph_size"]
   showDot(cm.toDot(), size=size)
 
 
 def getCausalImpact(
-  model: gum.CausalModel,
-  on: str | gum.NameSet,
-  doing: str | gum.NameSet,
-  knowing: None | gum.NameSet = None,
+  model: pyagrum.CausalModel,
+  on: str | pyagrum.NameSet,
+  doing: str | pyagrum.NameSet,
+  knowing: None | pyagrum.NameSet = None,
   values: None | dict[str, int] = None,
 ):
   """
@@ -1807,7 +1807,7 @@ def getCausalImpact(
   -------
   HTML
   """
-  formula, impact, explanation = gum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
+  formula, impact, explanation = pyagrum.causalImpact(model, on=on, doing=doing, knowing=knowing, values=values)
 
   if explanation.startswith("Effect not identifiable"):
     explanation = "Effect not identifiable"
@@ -1833,7 +1833,7 @@ def getCausalImpact(
 
 
 def showCausalImpact(
-  model: gum.CausalModel,
+  model: pyagrum.CausalModel,
   on: Union[str, NameSet],
   doing: Union[str, NameSet],
   knowing: Optional[NameSet] = None,
@@ -1861,8 +1861,8 @@ def showCausalImpact(
 
 def _update_config_notebooks():
   # hook to control some parameters for notebook when config changes
-  mpl.rcParams["figure.facecolor"] = gum.config["notebook", "figure_facecolor"]
-  set_matplotlib_formats(gum.config["notebook", "graph_format"])
+  mpl.rcParams["figure.facecolor"] = pyagrum.config["notebook", "figure_facecolor"]
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
 
 
 # check if an instance of ipython exists
@@ -1901,44 +1901,44 @@ else:
       color for the separator nodes
     """
     if scaleClique is None:
-      scaleClique = float(gum.config["notebook", "junctiontree_map_cliquescale"])
+      scaleClique = float(pyagrum.config["notebook", "junctiontree_map_cliquescale"])
     if scaleSep is None:
-      scaleSep = float(gum.config["notebook", "junctiontree_map_sepscale"])
+      scaleSep = float(pyagrum.config["notebook", "junctiontree_map_sepscale"])
     if lenEdge is None:
-      lenEdge = float(gum.config["notebook", "junctiontree_map_edgelen"])
+      lenEdge = float(pyagrum.config["notebook", "junctiontree_map_edgelen"])
     if colorClique is None:
-      colorClique = gum.config["notebook", "junctiontree_clique_bgcolor"]
+      colorClique = pyagrum.config["notebook", "junctiontree_clique_bgcolor"]
     if colorSep is None:
-      colorSep = gum.config["notebook", "junctiontree_separator_bgcolor"]
+      colorSep = pyagrum.config["notebook", "junctiontree_separator_bgcolor"]
     return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge, colorClique, colorSep))
 
-  setattr(gum.CliqueGraph, "map", map)
+  setattr(pyagrum.CliqueGraph, "map", map)
 
-  gum.config.add_hook(_update_config_notebooks)
-  gum.config.run_hooks()
+  pyagrum.config.add_hook(_update_config_notebooks)
+  pyagrum.config.run_hooks()
 
   # adding _repr_html_ to some pyAgrum classes !
-  gum.BayesNet._repr_html_ = lambda self: getBN(self)
-  gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
-  gum.MarkovRandomField._repr_html_ = lambda self: getMRF(self)
-  gum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
-  gum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
-  gum.CredalNet._repr_html_ = lambda self: getCN(self)
+  pyagrum.BayesNet._repr_html_ = lambda self: getBN(self)
+  pyagrum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
+  pyagrum.MarkovRandomField._repr_html_ = lambda self: getMRF(self)
+  pyagrum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
+  pyagrum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
+  pyagrum.CredalNet._repr_html_ = lambda self: getCN(self)
 
-  gum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
+  pyagrum.CliqueGraph._repr_html_ = lambda self: getCliqueGraph(self)
 
-  gum.Tensor._repr_html_ = lambda self: getTensor(self)
-  gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
+  pyagrum.Tensor._repr_html_ = lambda self: getTensor(self)
+  pyagrum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
 
-  gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
-  gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
-  gum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
-  gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
-  gum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
-  gum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.DAG._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
-  gum.CausalImpact._repr_html_ = lambda self: f"$${self.toLatex()}$$"
-  gum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
+  pyagrum.CausalImpact._repr_html_ = lambda self: f"$${self.toLatex()}$$"
+  pyagrum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
 
-  gum.Tensor._repr_html_ = lambda self: getTensor(self)
+  pyagrum.Tensor._repr_html_ = lambda self: getTensor(self)
   dot.Dot._repr_html_ = lambda self: getGraph(self)

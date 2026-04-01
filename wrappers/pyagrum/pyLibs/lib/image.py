@@ -48,7 +48,7 @@ import re
 import matplotlib.image as mpimg
 import pydot as dot
 
-import pyagrum as gum
+import pyagrum
 from pyagrum.lib.bn2graph import BN2dot, BNinference2dot
 from pyagrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyagrum.lib.id2graph import ID2dot, LIMIDinference2dot
@@ -79,13 +79,13 @@ def export(obj, filename: str = None, **kwargs):
 
     pdf export with custom margin :
     ```
-    gum.config.asInt["notebook", "export_pdf_margin_x"] = 40
-    gum.config.asInt["notebook", "export_pdf_margin_y"] = 37
+    pyagrum.config.asInt["notebook", "export_pdf_margin_x"] = 40
+    pyagrum.config.asInt["notebook", "export_pdf_margin_y"] = 37
     ```
   """
   try:
     return exportModel(obj, filename=filename, **kwargs)
-  except gum.InvalidArgument:
+  except pyagrum.InvalidArgument:
     pass
 
   # si l'objet est un string (non dot), on suppose que c'est du html
@@ -94,7 +94,7 @@ def export(obj, filename: str = None, **kwargs):
   if hasattr(obj, "_repr_html_"):
     return exportHTML(obj._repr_html_(), filename=filename)
 
-  raise gum.InvalidArgument(
+  raise pyagrum.InvalidArgument(
     "Argument obj should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string or has a method _repr_html_()"
   )
 
@@ -157,16 +157,16 @@ def exportModel(model, filename: str = None, **kwargs):
       f"{filename} in not a correct filename for export : extension '{fmt_image}' not in [pdf,png,fig,jpg,svg]."
     )
 
-  if isinstance(model, gum.BayesNet):
+  if isinstance(model, pyagrum.BayesNet):
     fig = BN2dot(model, **kwargs)
-  elif isinstance(model, gum.MarkovRandomField):
-    if gum.config["notebook", "default_markovrandomfield_view"] == "graph":
+  elif isinstance(model, pyagrum.MarkovRandomField):
+    if pyagrum.config["notebook", "default_markovrandomfield_view"] == "graph":
       fig = MRF2UGdot(model, **kwargs)
     else:
       fig = MRF2FactorGraphdot(model, **kwargs)
-  elif isinstance(model, gum.InfluenceDiagram):
+  elif isinstance(model, pyagrum.InfluenceDiagram):
     fig = ID2dot(model, **kwargs)
-  elif isinstance(model, gum.CredalNet):
+  elif isinstance(model, pyagrum.CredalNet):
     fig = CN2dot(model, **kwargs)
   elif isinstance(model, dot.Dot):
     fig = model
@@ -174,10 +174,10 @@ def exportModel(model, filename: str = None, **kwargs):
     fig = dot.graph_from_dot_data(model.toDot())[0]
   elif isinstance(model, str):
     if not re.match(r"^\s*(strict\s+)?(graph|digraph)\b", model, re.IGNORECASE):
-      raise gum.InvalidArgument("Argument model is a string but not in dot format")
+      raise pyagrum.InvalidArgument("Argument model is a string but not in dot format")
     fig = dot.graph_from_dot_data(model)[0]
   else:
-    raise gum.InvalidArgument(
+    raise pyagrum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string"
     )
 
@@ -209,7 +209,7 @@ def prepareShowInference(
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.Inference
-      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+      inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: Dict[str,str|int]
       map of evidence
   targets: Set[str|int]
@@ -244,7 +244,7 @@ def prepareShowInference(
       the obtained graph as a string
   """
   if size is None:
-    size = gum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "default_graph_inference_size"]
 
   if evs is None:
     evs = {}
@@ -252,9 +252,9 @@ def prepareShowInference(
   if targets is None:
     targets = {}
 
-  if isinstance(model, gum.BayesNet):
+  if isinstance(model, pyagrum.BayesNet):
     if engine is None:
-      engine = gum.LazyPropagation(model)
+      engine = pyagrum.LazyPropagation(model)
     return BNinference2dot(
       model,
       size=size,
@@ -267,11 +267,11 @@ def prepareShowInference(
       cmapNode=cmapNode,
       cmapArc=cmapArc,
     )
-  if isinstance(model, gum.MarkovRandomField):
+  if isinstance(model, pyagrum.MarkovRandomField):
     if view is None:
-      view = gum.config["notebook", "default_markovrandomfield_view"]
+      view = pyagrum.config["notebook", "default_markovrandomfield_view"]
     if engine is None:
-      engine = gum.ShaferShenoyMRFInference(model)
+      engine = pyagrum.ShaferShenoyMRFInference(model)
 
     if view == "graph":
       return MRFinference2UGdot(
@@ -298,13 +298,13 @@ def prepareShowInference(
       factorColor=factorColor,
       cmapNode=cmapNode,
     )
-  if isinstance(model, gum.InfluenceDiagram):
+  if isinstance(model, pyagrum.InfluenceDiagram):
     if engine is None:
-      engine = gum.ShaferShenoyLIMIDInference(model)
+      engine = pyagrum.ShaferShenoyLIMIDInference(model)
     return LIMIDinference2dot(model, size=size, engine=engine, evs=evs, targets=targets)
-  if isinstance(model, gum.CredalNet):
+  if isinstance(model, pyagrum.CredalNet):
     if engine is None:
-      engine = gum.CNMonteCarloSampling(model)
+      engine = pyagrum.CNMonteCarloSampling(model)
     return CNinference2dot(
       model,
       size=size,
@@ -317,7 +317,7 @@ def prepareShowInference(
       cmapNode=cmapNode,
     )
 
-  raise gum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram)")
+  raise pyagrum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram)")
 
 
 def prepareLinksForSVG(mainSvg):
@@ -398,7 +398,7 @@ def exportInference(model, filename: str = None, **kwargs):
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.Inference
-      inference algorithm used. If None, gum.LazyPropagation will be used for BayesNet,gum.ShaferShenoy for gum.MarkovRandomField and gum.ShaferShenoyLIMIDInference for gum.InfluenceDiagram.
+      inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: Dict[str,str|int]
       map of evidence
   targets: Set[str|int]
@@ -446,7 +446,7 @@ def exportInference(model, filename: str = None, **kwargs):
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = gum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "default_graph_inference_size"]
 
   svgtxt = dot_as_svg_string(gumcols.prepareDot(prepareShowInference(model, **kwargs), **kwargs), size=size)
 

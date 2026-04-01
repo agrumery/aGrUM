@@ -47,7 +47,7 @@ import pandas as pd
 import numpy as np
 
 # aGrUM
-import pyagrum as gum
+import pyagrum
 
 # GL
 import warnings
@@ -71,7 +71,7 @@ class ShapleyValues(Explainer):
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet or target is not an integer or string.
+    TypeError : If bn is not a pyagrum.BayesNet or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network.
     """
     super().__init__(bn)
@@ -91,13 +91,13 @@ class ShapleyValues(Explainer):
     self.target = target  # ID of the target node.
     self.target_name = self.feat_names[self.target]
     self._mb = self._markov_blanket()
-    self.ie = gum.LazyPropagation(self.bn)  # Inference engine for the Bayesian Network.
+    self.ie = pyagrum.LazyPropagation(self.bn)  # Inference engine for the Bayesian Network.
     self.ie.addTarget(self.target)  # Setting the target for inference.
     self.func = self._logit if logit else self._identity  # Function to apply to the probabilities.
 
   def _markov_blanket(self):
     # Retrieves the Markov blanket of the target node.
-    mb = gum.MarkovBlanket(self.bn, self.target).nodes()
+    mb = pyagrum.MarkovBlanket(self.bn, self.target).nodes()
     mb.remove(self.target)
     return sorted(list(mb))
 
@@ -144,7 +144,7 @@ class ShapleyValues(Explainer):
         raise TypeError("Since df is None, N must be an integer, but got {}".format(type(N)))
       if N < 2:
         raise ValueError("N must be greater than 1, but got {}".format(N))
-      y = gum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      y = pyagrum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       elements = [i for i in range(self.M) if i != self.target]
       # Remove duplicate rows in x and unused columns.
       mask_cols = [i for i in range(self.M) if i not in elements]

@@ -44,7 +44,7 @@ import warnings
 from pyagrum.explain import CausalShapValues, ConditionalShapValues, Explanation, MarginalShapValues
 
 # Calculations
-import pyagrum as gum
+import pyagrum
 
 # Plots
 import matplotlib.pyplot as plt
@@ -73,11 +73,11 @@ class ShapValues:
 
     Raises
     ------
-    TypeError : If bn is not a gum.BayesNet instance or target is not an integer or string.
+    TypeError : If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
     ValueError : If target is not a valid node id in the Bayesian Network.
     """
-    if not isinstance(bn, gum.BayesNet):
-      raise TypeError("bn must be a gum.BayesNet instance, but got {}".format(type(bn)))
+    if not isinstance(bn, pyagrum.BayesNet):
+      raise TypeError("bn must be a pyagrum.BayesNet instance, but got {}".format(type(bn)))
     if isinstance(target, str):
       if target not in bn.names():
         raise ValueError("Target node name '{}' not found in the Bayesian Network.".format(target))

@@ -45,7 +45,7 @@ The purpose of this module is to provide tools for computing different scores fr
 import csv
 import math
 
-import pyagrum as gum
+import pyagrum
 
 
 def lines_count(filename):
@@ -62,7 +62,7 @@ def checkCompatibility(bn, fields, csv_name):
 
   Parameters
   ----------
-  bn: gum.BayesNet
+  bn: pyagrum.BayesNet
     the model
   fields: Dict[str,int]
     Dict of name,position in the file
@@ -71,7 +71,7 @@ def checkCompatibility(bn, fields, csv_name):
 
   Raises
   ------
-  gum.DatabaseError
+  pyagrum.DatabaseError
     if a BN variable is not in fields
 
   Returns
@@ -82,7 +82,7 @@ def checkCompatibility(bn, fields, csv_name):
   res = {}
   for field in bn.names():
     if field not in fields:
-      raise gum.DatabaseError(f"** At least, field '{field}' is missing in {csv_name}")
+      raise pyagrum.DatabaseError(f"** At least, field '{field}' is missing in {csv_name}")
     res[bn.idFromName(field)] = fields[field]
 
   return res
@@ -95,7 +95,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
   Parameters
   ----------
   bn_name : pyagrum.BayesNet | str
-    a gum.BayesianNetwork or a filename for a BN
+    a pyagrum.BayesianNetwork or a filename for a BN
   csv_name : str
      a filename for the CSV database
   visible: bool
@@ -109,7 +109,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
     percentDatabaseUsed,scores
   """
   if isinstance(bn_name, str):
-    bn = gum.loadBN(bn_name)
+    bn = pyagrum.loadBN(bn_name)
   else:
     bn = bn_name
 
@@ -127,7 +127,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
         except csv.Error:
           if k == -1:
             # we already tried with all the file
-            raise gum.DatabaseError("csv.Sniffer could not determine delimiter even with the whole file")
+            raise pyagrum.DatabaseError("csv.Sniffer could not determine delimiter even with the whole file")
           if len(buffer) > 16384:
             # we try with all the file now
             k = -1
@@ -162,7 +162,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
         try:
           name = bn.variable(i).name()
           inst.chgVal(name, _getIdLabel(inst, name, data[positions[i]]))
-        except gum.OutOfBounds:
+        except pyagrum.OutOfBounds:
           print(
             f"Out of bounds for ({i},{positions[i]}) : unknown id or label '{data[positions[i]]}' for the variable {inst.variable(i)}"
           )
@@ -199,7 +199,7 @@ def _getIdLabel(inst, i, label):
 
   Parameters
   ----------
-  inst : gum.Instantiation
+  inst : pyagrum.Instantiation
     the inst to find the idLabel
   i: int
     the id to find the variable
