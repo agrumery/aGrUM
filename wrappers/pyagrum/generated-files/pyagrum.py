@@ -3252,7 +3252,7 @@ class UndiGraph(object):
     def __str__(self) -> str:
         return _pyagrum.UndiGraph___str__(self)
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -3392,7 +3392,7 @@ class UndiGraph(object):
         return self
 
 
-    def edges(self) -> object:
+    def edges(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -3403,7 +3403,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_edges(self)
 
-    def neighbours(self, id: int) -> object:
+    def neighbours(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -3687,7 +3687,7 @@ class DiGraph(object):
     def __str__(self) -> str:
         return _pyagrum.DiGraph___str__(self)
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -3827,7 +3827,7 @@ class DiGraph(object):
         return self
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns the set of arcs in the graph.
@@ -3840,7 +3840,7 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -3856,7 +3856,7 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -3871,6 +3871,12 @@ class DiGraph(object):
 
         """
         return _pyagrum.DiGraph_children(self, id)
+
+    def descendants(self, id: int) -> list[int]:
+        return _pyagrum.DiGraph_descendants(self, id)
+
+    def ancestors(self, id: int) -> list[int]:
+        return _pyagrum.DiGraph_ancestors(self, id)
 
     def addNode(self) -> int:
         r"""
@@ -4073,6 +4079,23 @@ class DAG(DiGraph):
     def moralGraph(self) -> "pyagrum.UndiGraph":
         return _pyagrum.DAG_moralGraph(self)
 
+    def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
+        r"""
+
+        Compute the moralized ancestral graph of the nodes from the DAG.
+
+        Parameters
+        ----------
+        nodes : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the moralized ancestral graph of the nodes from the DAG.
+
+        """
+        return _pyagrum.DAG_moralizedAncestralGraph(self, nodes)
+
     def minimalCondSet(self, *args) -> list[int]:
         return _pyagrum.DAG_minimalCondSet(self, *args)
 
@@ -4102,23 +4125,6 @@ class DAG(DiGraph):
 
         """
         return _pyagrum.DAG_dSeparation(self, *args)
-
-    def moralizedAncestralGraph(self, *args) -> "pyagrum.UndiGraph":
-        r"""
-
-        Compute the moralized ancestral graph of the nodes from the DAG.
-
-        Parameters
-        ----------
-        nodes : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
-        Returns
-        -------
-        pyagrum.UndiGraph
-          the moralized ancestral graph of the nodes from the DAG.
-
-        """
-        return _pyagrum.DAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
         r"""
@@ -4177,7 +4183,7 @@ class DAG(DiGraph):
         return self
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns the set of arcs in the graph.
@@ -4190,7 +4196,7 @@ class DAG(DiGraph):
         """
         return _pyagrum.DAG_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -4206,7 +4212,7 @@ class DAG(DiGraph):
         """
         return _pyagrum.DAG_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -4221,6 +4227,12 @@ class DAG(DiGraph):
 
         """
         return _pyagrum.DAG_children(self, id)
+
+    def descendants(self, id: int) -> list[int]:
+        return _pyagrum.DAG_descendants(self, id)
+
+    def ancestors(self, id: int) -> list[int]:
+        return _pyagrum.DAG_ancestors(self, id)
 
     def addArc(self, *args) -> None:
         r"""
@@ -4456,22 +4468,28 @@ class MixedGraph(UndiGraph, DiGraph):
         return self
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         return _pyagrum.MixedGraph_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         return _pyagrum.MixedGraph_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         return _pyagrum.MixedGraph_children(self, id)
 
-    def edges(self) -> object:
+    def descendants(self, id: int) -> list[int]:
+        return _pyagrum.MixedGraph_descendants(self, id)
+
+    def ancestors(self, id: int) -> list[int]:
+        return _pyagrum.MixedGraph_ancestors(self, id)
+
+    def edges(self) -> set[tuple[int,int]]:
         return _pyagrum.MixedGraph_edges(self)
 
-    def neighbours(self, id: int) -> object:
+    def neighbours(self, id: int) -> list[int]:
         return _pyagrum.MixedGraph_neighbours(self, id)
 
-    def boundary(self, id: int) -> object:
+    def boundary(self, id: int) -> list[int]:
         r"""
 
         Boundary are neighbours (not oriented), children and parents
@@ -4489,7 +4507,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> object:
+    def mixedOrientedPath(self, node1: int, node2: int) -> list[int]:
         r"""
 
         Parameters
@@ -4507,7 +4525,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> object:
+    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int]:
         r"""
 
         Parameters
@@ -4802,6 +4820,23 @@ class PDAG(MixedGraph):
     def moralGraph(self) -> "pyagrum.UndiGraph":
         return _pyagrum.PDAG_moralGraph(self)
 
+    def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
+        r"""
+
+        Compute the moralized ancestral graph of the nodes from the DAG.
+
+        Parameters
+        ----------
+        nodes : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the moralized ancestral graph of the nodes from the DAG.
+
+        """
+        return _pyagrum.PDAG_moralizedAncestralGraph(self, nodes)
+
     def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
         return _pyagrum.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
 
@@ -4842,23 +4877,6 @@ class PDAG(MixedGraph):
 
         """
         return _pyagrum.PDAG_cSeparation(self, *args)
-
-    def moralizedAncestralGraph(self, *args) -> "pyagrum.UndiGraph":
-        r"""
-
-        Compute the moralized ancestral graph of the nodes from the DAG.
-
-        Parameters
-        ----------
-        nodes : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
-        Returns
-        -------
-        pyagrum.UndiGraph
-          the moralized ancestral graph of the nodes from the DAG.
-
-        """
-        return _pyagrum.PDAG_moralizedAncestralGraph(self, *args)
 
     def addNodes(self, n: int) -> object:
         return _pyagrum.PDAG_addNodes(self, n)
@@ -4902,25 +4920,31 @@ class PDAG(MixedGraph):
         return self
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         return _pyagrum.PDAG_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         return _pyagrum.PDAG_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         return _pyagrum.PDAG_children(self, id)
 
-    def edges(self) -> object:
+    def descendants(self, id: int) -> list[int]:
+        return _pyagrum.PDAG_descendants(self, id)
+
+    def ancestors(self, id: int) -> list[int]:
+        return _pyagrum.PDAG_ancestors(self, id)
+
+    def edges(self) -> set[tuple[int,int]]:
         return _pyagrum.PDAG_edges(self)
 
-    def neighbours(self, id: int) -> object:
+    def neighbours(self, id: int) -> list[int]:
         return _pyagrum.PDAG_neighbours(self, id)
 
-    def boundary(self, id: int) -> object:
+    def boundary(self, id: int) -> list[int]:
         return _pyagrum.PDAG_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> object:
+    def mixedOrientedPath(self, node1: int, node2: int) -> list[int]:
         r"""
 
         Parameters
@@ -4938,7 +4962,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrum.PDAG_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> object:
+    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int]:
         r"""
 
         Parameters
@@ -5291,7 +5315,7 @@ class CliqueGraph(UndiGraph):
     def __eq__(self, _from: "CliqueGraph") -> bool:
         return _pyagrum.CliqueGraph___eq__(self, _from)
 
-    def clique(self, clique: int) -> object:
+    def clique(self, clique: int) -> list[int]:
         r"""
 
         Parameters
@@ -5312,7 +5336,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrum.CliqueGraph_clique(self, clique)
 
-    def separator(self, cliq1: int, cliq2: int) -> object:
+    def separator(self, cliq1: int, cliq2: int) -> list[int]:
         r"""
 
         Parameters
@@ -10502,7 +10526,7 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_nameFromId(self, node)
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         return _pyagrum.EssentialGraph_nodes(self)
 
     def connectedComponents(self):
@@ -10577,7 +10601,7 @@ class EssentialGraph(object):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -10588,7 +10612,7 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -10604,7 +10628,7 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -10620,7 +10644,13 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_children(self, id)
 
-    def edges(self) -> object:
+    def descendants(self, *args) -> list[int]:
+        return _pyagrum.EssentialGraph_descendants(self, *args)
+
+    def ancestors(self, *args) -> list[int]:
+        return _pyagrum.EssentialGraph_ancestors(self, *args)
+
+    def edges(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -10631,7 +10661,7 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_edges(self)
 
-    def neighbours(self, id: int) -> object:
+    def neighbours(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -10816,7 +10846,7 @@ class MarkovBlanket(object):
         """
         return _pyagrum.MarkovBlanket_hasSameStructure(self, other)
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -10899,7 +10929,7 @@ class MarkovBlanket(object):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -10910,7 +10940,7 @@ class MarkovBlanket(object):
         """
         return _pyagrum.MarkovBlanket_arcs(self)
 
-    def parents(self, id: int) -> object:
+    def parents(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -10926,7 +10956,7 @@ class MarkovBlanket(object):
         """
         return _pyagrum.MarkovBlanket_parents(self, id)
 
-    def children(self, id: int) -> object:
+    def children(self, id: int) -> list[int]:
         r"""
 
         Parameters
@@ -10941,6 +10971,12 @@ class MarkovBlanket(object):
 
         """
         return _pyagrum.MarkovBlanket_children(self, id)
+
+    def descendants(self, *args) -> list[int]:
+        return _pyagrum.MarkovBlanket_descendants(self, *args)
+
+    def ancestors(self, *args) -> list[int]:
+        return _pyagrum.MarkovBlanket_ancestors(self, *args)
 
     def connectedComponents(self):
       """ connected components from a graph/graphical models
@@ -11547,7 +11583,7 @@ class IBayesNet(DAGmodel):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -12640,7 +12676,7 @@ class BayesNet(IBayesNet):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -13733,7 +13769,7 @@ class BayesNetFragment(IBayesNet, ):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -28531,7 +28567,7 @@ class InfluenceDiagram(DAGmodel):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         r"""
 
         Returns
@@ -29638,7 +29674,7 @@ class IMarkovRandomField(UGmodel):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         return _pyagrum.IMarkovRandomField_nodes(self)
 
     def connectedComponents(self):
@@ -30028,7 +30064,7 @@ class MarkovRandomField(IMarkovRandomField):
         raise TypeError("key must be an int or a string")
 
 
-    def nodes(self) -> object:
+    def nodes(self) -> set[int]:
         return _pyagrum.MarkovRandomField_nodes(self)
 
     def connectedComponents(self):
@@ -31488,6 +31524,10 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_enumerateBackdoorSets(*args)
 
     @staticmethod
+    def firstBackdoor(*args) -> "std::optional< list[int] >":
+        return _pyagrum.DoorCriteria_firstBackdoor(*args)
+
+    @staticmethod
     def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
         r"""
 
@@ -31523,6 +31563,10 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_enumerateFrontdoorSets(*args)
 
     @staticmethod
+    def firstFrontdoor(*args) -> "std::optional< list[int] >":
+        return _pyagrum.DoorCriteria_firstFrontdoor(*args)
+
+    @staticmethod
     def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
         r"""
 
@@ -31549,7 +31593,7 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
 
     @staticmethod
-    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int]:
+    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> "std::optional< list[int] >":
         r"""
 
         Return the set of nodes lying on any directed path from X to Y.
