@@ -1,5 +1,44 @@
 # aGrUM Changelog
 
+## Changelog for x.y.z
+
+- aGrUM
+
+    * **Causal Module (CM) Development** (thanks to SCALNYX) :
+        * Created the new CM module (migration from python module).
+        * Introduced `CausalModel` and `CausalFormula`.
+        * Developed an **Abstract Syntax Tree (AST)** for do-calculus, including LaTeX export and evaluation.
+        * Added the `DoorCriteria` class for backdoor and frontdoor set enumeration.
+        * Implemented **ID/IDC** algorithms and formula introspection.
+        * Added `counterfactual` and `counterfactualModel` functions with associated tests.
+    * **Modeling & Core API**:
+        * Introduced `DiscreteGraphicalModel` to factorize variable management.
+        * Migrated the codebase from `const std::string&` to `std::string_view` for better performance.
+        * Replaced nullable pointers with `optional_ref<T>` and implemented `std::optional` in various interfaces.
+        * Added a `data()` method to `MultiDimArray` for contiguous buffer access.
+    * **Maintenance & Refactoring**:
+        * Migrated the test framework from CxxTest to **doctest**.
+        * Replaced `GUM_CHECK_*` macros with `CHECK_*` across all test suites.
+        * Fixed various **MSVC** compilation issues and name lookup errors (notably regarding `gum::Arc`).
+        * Removed improper `try/catch` logic, replacing it with explicit existence checks.
+        * Optimized **Coco/R** parser performance.
+
+
+- pyAgrum
+
+    * **Causal Integration**:
+        * Added SWIG Python bindings for the new causal module (`CausalModel`, `CausalFormula`, etc.).
+        * Refactored `causalEffectEstimation` and moved it to the top-level subpackage.
+        * Enhanced notebook support for causality, including visualization and new test cases.
+    * **Performance & Data Handling**:
+        * Implemented **NumPy interop** for `Tensor<double>`, allowing faster fills using numpy buffers.
+        * Converted all docstrings to the **NumPy format**.
+    * **Infrastructure & Bug Fixes**:
+        * Refactored the `testrunner` to use `argparse` and support module-specific exclusions.
+        * Improved the wheel builder by removing redundant dependencies and fixing macOS tag normalization.
+        * Fixed `html2image` issues in notebook contexts and improved export cropping.
+        * Updated modules to comply with the 2.3.0 coding style and `act-guideline`.
+
 ## Changelog for 2.3.2
 
 - pyAgrum

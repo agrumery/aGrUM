@@ -106,7 +106,7 @@ namespace gum {
     bool exists(const DiscreteVariable& var) const;
 
     /// Return true if name matches a node.
-    bool exists(const std::string& name) const;
+    bool exists(std::string_view name) const;
 
     /// Maps id with var.
     /**

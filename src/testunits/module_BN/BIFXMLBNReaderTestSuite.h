@@ -705,16 +705,6 @@ namespace gum_tests {
       delete net;
     }
 
-    static void testConstructorFromStream() {
-      std::string             file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file1.bifxml");
-      gum::BayesNet< double > net;
-
-      std::ifstream                  ifs(file);
-      gum::BIFXMLBNReader< double >* reader = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLBNReader< double >(&net, ifs));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-    }
-
     static void testRead_file2_from_ifstream() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file2.bifxml");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
@@ -750,140 +740,6 @@ namespace gum_tests {
       }
     }
 
-    static void testRead_file2_from_istringstream() {
-      std::string        file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file2.bifxml");
-      std::ifstream      ifs(file);
-      std::ostringstream oss;
-      oss << ifs.rdbuf();
-      std::istringstream iss(oss.str());
-
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
-      gum::BIFXMLBNReader< double > reader(net, iss);
-
-      gum::Size isOK = static_cast< gum::Size >(0);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      CHECK_EQ((isOK), (static_cast< gum::Size >(0)));
-      CHECK((net) != (nullptr));
-
-      if (net != nullptr) {
-        CHECK_EQ((net->size()), (static_cast< gum::Size >(2)));
-
-        gum::NodeId node_1 = 0, node_2 = 0;
-        for (const auto node: net->nodes())
-          if (net->variable(node).name() == "n1") node_1 = node;
-          else node_2 = node;
-
-        gum::Instantiation inst_1(net->cpt(node_1));
-        inst_1.setFirst();
-        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.2f).epsilon(0.001f));
-        inst_1.setLast();
-        CHECK_EQ((net->cpt(node_1)[inst_1]), doctest::Approx(0.8f).epsilon(0.001f));
-
-        gum::Instantiation inst_2(net->cpt(node_2));
-        inst_2.setFirst();
-        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.3f).epsilon(0.001f));
-        inst_2.setLast();
-        CHECK_EQ((net->cpt(node_2)[inst_2]), doctest::Approx(0.7f).epsilon(0.001f));
-
-        delete net;
-      }
-    }
-
-    static void testRead_from_inline_string() {
-      // Minimal BIFXML: two independent binary variables A (0.4/0.6) and B (0.1/0.9)
-      const std::string xml = R"(<?xml version="1.0" ?>
-<BIF VERSION="0.3">
-<NETWORK>
-<VARIABLE TYPE="nature">
-  <NAME>A</NAME>
-  <OUTCOME>false</OUTCOME>
-  <OUTCOME>true</OUTCOME>
-</VARIABLE>
-<VARIABLE TYPE="nature">
-  <NAME>B</NAME>
-  <OUTCOME>false</OUTCOME>
-  <OUTCOME>true</OUTCOME>
-</VARIABLE>
-<DEFINITION>
-  <FOR>A</FOR>
-  <TABLE>0.4 0.6</TABLE>
-</DEFINITION>
-<DEFINITION>
-  <FOR>B</FOR>
-  <TABLE>0.1 0.9</TABLE>
-</DEFINITION>
-</NETWORK>
-</BIF>)";
-
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
-      std::istringstream            iss(xml);
-      gum::BIFXMLBNReader< double > reader(net, iss);
-
-      gum::Size isOK = static_cast< gum::Size >(0);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(isOK = reader.proceed());
-      CHECK_EQ((isOK), (static_cast< gum::Size >(0)));
-      CHECK_EQ((net->size()), (static_cast< gum::Size >(2)));
-
-      gum::NodeId idA = net->idFromName("A");
-      gum::NodeId idB = net->idFromName("B");
-
-      gum::Instantiation instA(net->cpt(idA));
-      instA.setFirst();
-      CHECK_EQ((net->cpt(idA)[instA]), doctest::Approx(0.4f).epsilon(0.001f));
-      instA.setLast();
-      CHECK_EQ((net->cpt(idA)[instA]), doctest::Approx(0.6f).epsilon(0.001f));
-
-      gum::Instantiation instB(net->cpt(idB));
-      instB.setFirst();
-      CHECK_EQ((net->cpt(idB)[instB]), doctest::Approx(0.1f).epsilon(0.001f));
-      instB.setLast();
-      CHECK_EQ((net->cpt(idB)[instB]), doctest::Approx(0.9f).epsilon(0.001f));
-
-      delete net;
-    }
-
-    static void testRead_network_name_from_file() {
-      std::string                   file = GET_RESSOURCES_PATH("bifxml/BN_with_name.bifxml");
-      auto                          net  = new gum::BayesNet< double >();
-      gum::BIFXMLBNReader< double > reader(net, file);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-      CHECK_EQ((net->propertyWithDefault("name", "")), ("fastPrototype"));
-      delete net;
-    }
-
-    static void testRead_network_name_from_string() {
-      const std::string xml = R"(<?xml version="1.0" ?>
-<BIF VERSION="0.3">
-<NETWORK>
-<NAME>myNetwork</NAME>
-<VARIABLE TYPE="nature">
-  <NAME>X</NAME>
-  <OUTCOME>0</OUTCOME>
-  <OUTCOME>1</OUTCOME>
-</VARIABLE>
-<DEFINITION>
-  <FOR>X</FOR>
-  <TABLE>0.5 0.5</TABLE>
-</DEFINITION>
-</NETWORK>
-</BIF>)";
-
-      auto                          net = new gum::BayesNet< double >();
-      std::istringstream            iss(xml);
-      gum::BIFXMLBNReader< double > reader(net, iss);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-      CHECK_EQ((net->propertyWithDefault("name", "")), ("myNetwork"));
-      delete net;
-    }
-
-    static void testRead_from_stream_invalid_xml() {
-      std::istringstream            iss("<not valid bifxml>");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
-      gum::BIFXMLBNReader< double > reader(net, iss);
-      CHECK_THROWS_AS(reader.proceed(), const gum::IOError&);
-      delete net;
-    }
-
     static void testConstructorFromStream() {
       std::string             file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file1.bifxml");
       gum::BayesNet< double > net;
@@ -894,7 +750,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
     }
 
-    static void testRead_file2_from_ifstream() {
+    static void testRead_file2() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file2.bifxml");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();
       std::ifstream            ifs(file);
@@ -1057,7 +913,7 @@ namespace gum_tests {
 
     static void testRead_from_stream_invalid_xml() {
       std::istringstream            iss("<not valid bifxml>");
-      gum::BayesNet< double >*      net = new gum::BayesNet< double >();
+      auto                          net = new gum::BayesNet< double >();
       gum::BIFXMLBNReader< double > reader(net, iss);
       CHECK_THROWS_AS(reader.proceed(), const gum::IOError&);
       delete net;
