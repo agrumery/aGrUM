@@ -1021,10 +1021,10 @@ namespace gum_tests {
     }
 
     static void testOmi() {
-      gum::BayesNet< double > savedBN("SavedBN");
-      auto                    nid0 = savedBN.add("node0[2]");
+      auto savedBN=gum::BayesNet< double >::fastPrototype("X->Y<-Z", "{Yes|No}");
+      savedBN.setProperty("name", "SavedBN");
 
-      std::string filename{"savedbn.bifxml"};
+      std::string filename{GET_RESSOURCES_PATH("outputs/SavedBN.bifxml")};
 
       gum::BIFXMLBNWriter< double > writer;
       writer.write(filename, savedBN);
