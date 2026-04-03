@@ -75,6 +75,7 @@ namespace gum {
     DiscreteGraphicalModel();
     virtual ~DiscreteGraphicalModel();
     DiscreteGraphicalModel(const DiscreteGraphicalModel& source);
+    DiscreteGraphicalModel(DiscreteGraphicalModel&& source);
 
     /// @}
     /// @name Variable accessor methods
@@ -113,6 +114,7 @@ namespace gum {
 
     protected:
     DiscreteGraphicalModel& operator=(const DiscreteGraphicalModel& source);
+    DiscreteGraphicalModel& operator=(DiscreteGraphicalModel&& source);
 
     /// Mapping between NodeIds and discrete variables.
     VariableNodeMap varMap_;

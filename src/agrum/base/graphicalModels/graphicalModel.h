@@ -82,6 +82,11 @@ namespace gum {
      */
     GraphicalModel(const GraphicalModel& source);
 
+    /**
+     * Move constructor. Do nothing.
+     */
+    GraphicalModel(GraphicalModel&& source);
+
     /// @}
     /// @name Getter and setters
     /// @{
@@ -230,6 +235,11 @@ namespace gum {
      * Private copy operator.
      */
     GraphicalModel& operator=(const GraphicalModel& source);
+
+    /**
+     * Move assignment operator.
+     */
+    GraphicalModel& operator=(GraphicalModel&& source);
 
     private:
     /// The properties of this Directed Graphical Model.

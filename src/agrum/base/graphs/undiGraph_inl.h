@@ -76,6 +76,15 @@ namespace gum {
     return *this;
   }
 
+  INLINE UndiGraph& UndiGraph::operator=(UndiGraph&& g) {
+    if (this != &g) {
+      NodeGraphPart::operator=(std::move(g));
+      EdgeGraphPart::operator=(std::move(g));
+      GUM_OP_MOV(UndiGraph);
+    }
+    return *this;
+  }
+
   INLINE void UndiGraph::eraseNode(const NodeId id) {
     // warning: to remove the edges adjacent to id, use the unvirtualized
     // versions

@@ -78,11 +78,17 @@ namespace gum {
     /// Proceed a deep copy: all variables are copied but keep the same node id.
     VariableNodeMap(const VariableNodeMap& source);
 
+    /// Move constructor
+    VariableNodeMap(VariableNodeMap&& source);
+
     /// Destructor
     ~VariableNodeMap();
 
     /// Copy operator.
     VariableNodeMap& operator=(const VariableNodeMap& source);
+
+    /// Move assignment operator.
+    VariableNodeMap& operator=(VariableNodeMap&& source);
 
     /// @}
 

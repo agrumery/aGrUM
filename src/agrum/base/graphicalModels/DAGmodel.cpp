@@ -52,6 +52,11 @@ namespace gum {
     GUM_CONS_CPY(DAGmodel);
   }
 
+  DAGmodel::DAGmodel(DAGmodel&& from) :
+      DiscreteGraphicalModel(std::move(from)), dag_(std::move(from.dag_)) {
+    GUM_CONS_MOV(DAGmodel);
+  }
+
   DAGmodel::~DAGmodel() { GUM_DESTRUCTOR(DAGmodel); }
 
   DAGmodel& DAGmodel::operator=(const DAGmodel& source) {
@@ -60,6 +65,15 @@ namespace gum {
       dag_ = source.dag_;
     }
 
+    return *this;
+  }
+
+  DAGmodel& DAGmodel::operator=(DAGmodel&& source) {
+    if (this != &source) {
+      DiscreteGraphicalModel::operator=(std::move(source));
+      dag_ = std::move(source.dag_);
+      GUM_OP_MOV(DAGmodel);
+    }
     return *this;
   }
 

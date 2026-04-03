@@ -80,6 +80,11 @@ namespace gum {
     GUM_CONS_CPY(MixedGraph);
   }
 
+  MixedGraph::MixedGraph(MixedGraph&& g) :
+      NodeGraphPart(std::move(g)), UndiGraph(std::move(g)), DiGraph(std::move(g)) {
+    GUM_CONS_MOV(MixedGraph);
+  }
+
   MixedGraph::~MixedGraph() {   // for debugging purposes
     GUM_DESTRUCTOR(MixedGraph);
   }

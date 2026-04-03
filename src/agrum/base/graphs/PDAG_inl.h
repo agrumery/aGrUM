@@ -61,6 +61,14 @@ namespace gum {
     return *this;
   }
 
+  INLINE PDAG& PDAG::operator=(PDAG&& g) {
+    if (this != &g) {
+      MixedGraph::operator=(std::move(g));
+      GUM_OP_MOV(PDAG);
+    }
+    return *this;
+  }
+
   INLINE void PDAG::addArc(const NodeId tail, const NodeId head) {
     if (head == tail) {
       GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG for node " << head)

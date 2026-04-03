@@ -91,7 +91,7 @@
 
     Returns
     -------
-    dict(int,Set[int])
+    dict(int,set[int])
       dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
     """

@@ -77,6 +77,15 @@ namespace gum {
     return *this;
   }
 
+  INLINE DiGraph& DiGraph::operator=(DiGraph&& g) {
+    if (this != &g) {
+      NodeGraphPart::operator=(std::move(g));
+      ArcGraphPart::operator=(std::move(g));
+      GUM_OP_MOV(DiGraph);
+    }
+    return *this;
+  }
+
   INLINE void DiGraph::eraseNode(const NodeId id) {
     // warning: to remove the arcs adjacent to id, use the unvirtualized
     // versions

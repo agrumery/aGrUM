@@ -80,10 +80,25 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  IBayesNet< GUM_SCALAR >::IBayesNet(IBayesNet< GUM_SCALAR >&& source) :
+      DAGmodel(std::move(source)) {
+    GUM_CONS_MOV(IBayesNet)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   IBayesNet< GUM_SCALAR >&
       IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
     if (this != &source) { DAGmodel::operator=(source); }
 
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  IBayesNet< GUM_SCALAR >& IBayesNet< GUM_SCALAR >::operator=(IBayesNet< GUM_SCALAR >&& source) {
+    if (this != &source) {
+      DAGmodel::operator=(std::move(source));
+      GUM_OP_MOV(IBayesNet);
+    }
     return *this;
   }
 

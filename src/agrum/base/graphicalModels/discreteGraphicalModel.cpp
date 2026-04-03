@@ -54,6 +54,11 @@ namespace gum {
     GUM_CONS_CPY(DiscreteGraphicalModel);
   }
 
+  DiscreteGraphicalModel::DiscreteGraphicalModel(DiscreteGraphicalModel&& from) :
+      GraphicalModel(std::move(from)), varMap_(std::move(from.varMap_)) {
+    GUM_CONS_MOV(DiscreteGraphicalModel);
+  }
+
   DiscreteGraphicalModel::~DiscreteGraphicalModel() { GUM_DESTRUCTOR(DiscreteGraphicalModel); }
 
   DiscreteGraphicalModel&
@@ -61,6 +66,15 @@ namespace gum {
     if (this != &source) {
       GraphicalModel::operator=(source);
       varMap_ = source.varMap_;
+    }
+    return *this;
+  }
+
+  DiscreteGraphicalModel& DiscreteGraphicalModel::operator=(DiscreteGraphicalModel&& source) {
+    if (this != &source) {
+      GraphicalModel::operator=(std::move(source));
+      varMap_ = std::move(source.varMap_);
+      GUM_OP_MOV(DiscreteGraphicalModel);
     }
     return *this;
   }

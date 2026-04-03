@@ -339,111 +339,6 @@ class Vector(object):
 
 # Register Vector in _pyagrum:
 _pyagrum.Vector_swigregister(Vector)
-class Vector_uint(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def iterator(self) -> "swig::SwigPyIterator *":
-        return _pyagrum.Vector_uint_iterator(self)
-    def __iter__(self):
-        return self.iterator()
-
-    def __nonzero__(self) -> bool:
-        return _pyagrum.Vector_uint___nonzero__(self)
-
-    def __bool__(self) -> bool:
-        return _pyagrum.Vector_uint___bool__(self)
-
-    def __len__(self) -> int:
-        return _pyagrum.Vector_uint___len__(self)
-
-    def __getslice__(self, i: int, j: int) -> list[int]:
-        return _pyagrum.Vector_uint___getslice__(self, i, j)
-
-    def __setslice__(self, *args) -> None:
-        return _pyagrum.Vector_uint___setslice__(self, *args)
-
-    def __delslice__(self, i: int, j: int) -> None:
-        return _pyagrum.Vector_uint___delslice__(self, i, j)
-
-    def __delitem__(self, *args) -> None:
-        return _pyagrum.Vector_uint___delitem__(self, *args)
-
-    def __getitem__(self, *args) -> int:
-        return _pyagrum.Vector_uint___getitem__(self, *args)
-
-    def __setitem__(self, *args) -> None:
-        return _pyagrum.Vector_uint___setitem__(self, *args)
-
-    def pop(self) -> int:
-        return _pyagrum.Vector_uint_pop(self)
-
-    def append(self, x: int) -> None:
-        return _pyagrum.Vector_uint_append(self, x)
-
-    def empty(self) -> bool:
-        return _pyagrum.Vector_uint_empty(self)
-
-    def size(self) -> int:
-        return _pyagrum.Vector_uint_size(self)
-
-    def swap(self, v: "Vector_uint") -> None:
-        return _pyagrum.Vector_uint_swap(self, v)
-
-    def begin(self) -> int:
-        return _pyagrum.Vector_uint_begin(self)
-
-    def end(self) -> int:
-        return _pyagrum.Vector_uint_end(self)
-
-    def rbegin(self) -> int:
-        return _pyagrum.Vector_uint_rbegin(self)
-
-    def rend(self) -> int:
-        return _pyagrum.Vector_uint_rend(self)
-
-    def clear(self) -> None:
-        return _pyagrum.Vector_uint_clear(self)
-
-    def get_allocator(self) -> object:
-        return _pyagrum.Vector_uint_get_allocator(self)
-
-    def pop_back(self) -> None:
-        return _pyagrum.Vector_uint_pop_back(self)
-
-    def erase(self, *args) -> int:
-        return _pyagrum.Vector_uint_erase(self, *args)
-
-    def __init__(self, *args):
-        _pyagrum.Vector_uint_swiginit(self, _pyagrum.new_Vector_uint(*args))
-
-    def push_back(self, x: int) -> None:
-        return _pyagrum.Vector_uint_push_back(self, x)
-
-    def front(self) -> int:
-        return _pyagrum.Vector_uint_front(self)
-
-    def back(self) -> int:
-        return _pyagrum.Vector_uint_back(self)
-
-    def assign(self, n: int, x: int) -> None:
-        return _pyagrum.Vector_uint_assign(self, n, x)
-
-    def resize(self, *args) -> None:
-        return _pyagrum.Vector_uint_resize(self, *args)
-
-    def insert(self, *args) -> None:
-        return _pyagrum.Vector_uint_insert(self, *args)
-
-    def reserve(self, n: int) -> None:
-        return _pyagrum.Vector_uint_reserve(self, n)
-
-    def capacity(self) -> int:
-        return _pyagrum.Vector_uint_capacity(self)
-    __swig_destroy__ = _pyagrum.delete_Vector_uint
-
-# Register Vector_uint in _pyagrum:
-_pyagrum.Vector_uint_swigregister(Vector_uint)
 class Vector_int(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -459,37 +354,37 @@ class Vector_int(object):
     def __bool__(self) -> bool:
         return _pyagrum.Vector_int___bool__(self)
 
-    def __len__(self) -> "std::vector< int >::size_type":
+    def __len__(self) -> int:
         return _pyagrum.Vector_int___len__(self)
 
-    def __getslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> list[int]:
+    def __getslice__(self, i: int, j: int) -> list[int]:
         return _pyagrum.Vector_int___getslice__(self, i, j)
 
     def __setslice__(self, *args) -> None:
         return _pyagrum.Vector_int___setslice__(self, *args)
 
-    def __delslice__(self, i: "std::vector< int >::difference_type", j: "std::vector< int >::difference_type") -> None:
+    def __delslice__(self, i: int, j: int) -> None:
         return _pyagrum.Vector_int___delslice__(self, i, j)
 
     def __delitem__(self, *args) -> None:
         return _pyagrum.Vector_int___delitem__(self, *args)
 
-    def __getitem__(self, *args) -> "std::vector< int >::value_type const &":
+    def __getitem__(self, *args) -> int:
         return _pyagrum.Vector_int___getitem__(self, *args)
 
     def __setitem__(self, *args) -> None:
         return _pyagrum.Vector_int___setitem__(self, *args)
 
-    def pop(self) -> "std::vector< int >::value_type":
+    def pop(self) -> int:
         return _pyagrum.Vector_int_pop(self)
 
-    def append(self, x: "std::vector< int >::value_type const &") -> None:
+    def append(self, x: int) -> None:
         return _pyagrum.Vector_int_append(self, x)
 
     def empty(self) -> bool:
         return _pyagrum.Vector_int_empty(self)
 
-    def size(self) -> "std::vector< int >::size_type":
+    def size(self) -> int:
         return _pyagrum.Vector_int_size(self)
 
     def swap(self, v: "Vector_int") -> None:
@@ -522,16 +417,16 @@ class Vector_int(object):
     def __init__(self, *args):
         _pyagrum.Vector_int_swiginit(self, _pyagrum.new_Vector_int(*args))
 
-    def push_back(self, x: "std::vector< int >::value_type const &") -> None:
+    def push_back(self, x: int) -> None:
         return _pyagrum.Vector_int_push_back(self, x)
 
-    def front(self) -> "std::vector< int >::value_type const &":
+    def front(self) -> int:
         return _pyagrum.Vector_int_front(self)
 
-    def back(self) -> "std::vector< int >::value_type const &":
+    def back(self) -> int:
         return _pyagrum.Vector_int_back(self)
 
-    def assign(self, n: "std::vector< int >::size_type", x: "std::vector< int >::value_type const &") -> None:
+    def assign(self, n: int, x: int) -> None:
         return _pyagrum.Vector_int_assign(self, n, x)
 
     def resize(self, *args) -> None:
@@ -540,10 +435,10 @@ class Vector_int(object):
     def insert(self, *args) -> None:
         return _pyagrum.Vector_int_insert(self, *args)
 
-    def reserve(self, n: "std::vector< int >::size_type") -> None:
+    def reserve(self, n: int) -> None:
         return _pyagrum.Vector_int_reserve(self, n)
 
-    def capacity(self) -> "std::vector< int >::size_type":
+    def capacity(self) -> int:
         return _pyagrum.Vector_int_capacity(self)
     __swig_destroy__ = _pyagrum.delete_Vector_int
 
@@ -3274,7 +3169,7 @@ class UndiGraph(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -3709,7 +3604,7 @@ class DiGraph(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -10540,7 +10435,7 @@ class EssentialGraph(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -10688,7 +10583,7 @@ class EssentialGraph(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -10868,7 +10763,7 @@ class MarkovBlanket(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -10989,7 +10884,7 @@ class MarkovBlanket(object):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -11605,7 +11500,7 @@ class IBayesNet(DAGmodel):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -12698,7 +12593,7 @@ class BayesNet(IBayesNet):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -13791,7 +13686,7 @@ class BayesNetFragment(IBayesNet, ):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -28589,7 +28484,7 @@ class InfluenceDiagram(DAGmodel):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -29688,7 +29583,7 @@ class IMarkovRandomField(UGmodel):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -30078,7 +29973,7 @@ class MarkovRandomField(IMarkovRandomField):
 
       Returns
       -------
-      dict(int,Set[int])
+      dict(int,set[int])
         dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
 
       """
@@ -31524,7 +31419,7 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_enumerateBackdoorSets(*args)
 
     @staticmethod
-    def firstBackdoor(*args) -> "std::optional< list[int] >":
+    def firstBackdoor(*args) -> list[int] | None:
         return _pyagrum.DoorCriteria_firstBackdoor(*args)
 
     @staticmethod
@@ -31563,7 +31458,7 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_enumerateFrontdoorSets(*args)
 
     @staticmethod
-    def firstFrontdoor(*args) -> "std::optional< list[int] >":
+    def firstFrontdoor(*args) -> list[int] | None:
         return _pyagrum.DoorCriteria_firstFrontdoor(*args)
 
     @staticmethod
@@ -31593,7 +31488,7 @@ class DoorCriteria(object):
         return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
 
     @staticmethod
-    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> "std::optional< list[int] >":
+    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int] | None:
         r"""
 
         Return the set of nodes lying on any directed path from X to Y.
@@ -31880,7 +31775,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
 
-    def backDoor(self, *args) -> "std::optional< list[int] >":
+    def backDoor(self, *args) -> list[int] | None:
         r"""
 
         Find a backdoor adjustment set between cause and effect.
@@ -31912,7 +31807,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_backDoor(self, *args)
 
-    def frontDoor(self, *args) -> "std::optional< list[int] >":
+    def frontDoor(self, *args) -> list[int] | None:
         r"""
 
         Find a frontdoor adjustment set between cause and effect.
@@ -32033,7 +31928,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_causalDAG(self)
 
-    def names(self) -> "pyagrum.Set< str >":
+    def names(self) -> set[str]:
         r"""
 
         Return the names of all variables in the causal model (observed and latent).
@@ -32123,7 +32018,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_latentVariablesIds(self)
 
-    def latentVariablesNames(self) -> "pyagrum.Set< str >":
+    def latentVariablesNames(self) -> set[str]:
         r"""
 
         Return the names of all latent (hidden) variables in the causal model.
@@ -32172,7 +32067,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_children(self, *args)
 
-    def connectedComponents(self) -> "HashTable< int,list[int] >":
+    def connectedComponents(self) -> dict[int, list[int]]:
         r"""
 
         Return the connected components of the causal DAG (treating arcs as undirected).
@@ -32692,7 +32587,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_value(self)
 
-    def on(self) -> "pyagrum.Set< str > const &":
+    def on(self) -> set[str]:
         r"""
 
         Return the names of the target variables.
@@ -32705,7 +32600,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_on(self)
 
-    def whatif(self) -> "pyagrum.Set< str > const &":
+    def whatif(self) -> set[str]:
         r"""
 
         Return the names of the intervened variables.
@@ -32718,7 +32613,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_whatif(self)
 
-    def profile(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+    def profile(self) -> dict[str,str]:
         r"""
 
         Return the factual evidence used for abduction.
@@ -32731,7 +32626,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_profile(self)
 
-    def values(self) -> "HashTable< pyagrum.Counterfactual< float >::VarName,pyagrum.Counterfactual< float >::ValName > const &":
+    def values(self) -> dict[str,str]:
         r"""
 
         Return the counterfactual assignments for the whatif variables.
@@ -32765,6 +32660,6 @@ _pyagrum.Counterfactual_swigregister(Counterfactual)
 def _counterfactual(*args) -> "pyagrum.Tensor":
     return _pyagrum._counterfactual(*args)
 
-def _counterfactualModel(cm: "CausalModel", profile: "HashTable< str,str > const &", whatif: "pyagrum.Set< str > const &") -> "pyagrum.CausalModel< float >":
+def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel< float >":
     return _pyagrum._counterfactualModel(cm, profile, whatif)
 

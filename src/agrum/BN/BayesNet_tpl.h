@@ -143,6 +143,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  BayesNet< GUM_SCALAR >::BayesNet(BayesNet< GUM_SCALAR >&& source) :
+      IBayesNet< GUM_SCALAR >(std::move(source)),
+      _probaMap_(std::move(source._probaMap_)) {
+    GUM_CONS_MOV(BayesNet)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR >& BayesNet< GUM_SCALAR >::operator=(const BayesNet< GUM_SCALAR >& source) {
     if (this != &source) {
       IBayesNet< GUM_SCALAR >::operator=(source);
@@ -150,6 +157,17 @@ namespace gum {
       _copyTensors_(source);
     }
 
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  BayesNet< GUM_SCALAR >& BayesNet< GUM_SCALAR >::operator=(BayesNet< GUM_SCALAR >&& source) {
+    if (this != &source) {
+      IBayesNet< GUM_SCALAR >::operator=(std::move(source));
+      _clearTensors_();
+      _probaMap_ = std::move(source._probaMap_);
+      GUM_OP_MOV(BayesNet);
+    }
     return *this;
   }
 

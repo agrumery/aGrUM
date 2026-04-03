@@ -76,6 +76,10 @@ namespace gum {
 
   DiGraph::DiGraph(const DiGraph& g) : NodeGraphPart(g), ArcGraphPart(g) { GUM_CONS_CPY(DiGraph) }
 
+  DiGraph::DiGraph(DiGraph&& g) : NodeGraphPart(std::move(g)), ArcGraphPart(std::move(g)) {
+    GUM_CONS_MOV(DiGraph)
+  }
+
   DiGraph::~DiGraph() { GUM_DESTRUCTOR(DiGraph) }
 
   std::string DiGraph::toString() const {

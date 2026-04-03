@@ -61,6 +61,14 @@ namespace gum {
     return *this;
   }
 
+  INLINE DAG& DAG::operator=(DAG&& g) {
+    if (this != &g) {
+      DiGraph::operator=(std::move(g));
+      GUM_OP_MOV(DAG);
+    }
+    return *this;
+  }
+
   INLINE void DAG::addArc(const NodeId tail, const NodeId head) {
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a dag !") }
     if (hasDirectedPath(head, tail)) {

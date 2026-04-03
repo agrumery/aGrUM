@@ -147,6 +147,11 @@ namespace gum {
      */
     BayesNet(const BayesNet< GUM_SCALAR >& source);
 
+    /**
+     * @brief Move constructor.
+     */
+    BayesNet(BayesNet< GUM_SCALAR >&& source);
+
     /// @}
     // ===========================================================================
     /// @name Operators
@@ -160,6 +165,14 @@ namespace gum {
      * @return The copy of source.
      */
     BayesNet< GUM_SCALAR >& operator=(const BayesNet< GUM_SCALAR >& source);
+
+    /**
+     * @brief Move operator.
+     *
+     * @param source The moved BayesNet.
+     * @return The moved-to BayesNet.
+     */
+    BayesNet< GUM_SCALAR >& operator=(BayesNet< GUM_SCALAR >&& source);
 
     /// @}
     // ===========================================================================

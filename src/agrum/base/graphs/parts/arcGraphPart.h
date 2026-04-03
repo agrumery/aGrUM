@@ -117,6 +117,9 @@ namespace gum {
     /** @param s the ArcGraphPart to copy */
     ArcGraphPart(const ArcGraphPart& s);
 
+    /// move constructor
+    ArcGraphPart(ArcGraphPart&& s);
+
     /// destructor
     virtual ~ArcGraphPart();
 
@@ -130,6 +133,9 @@ namespace gum {
     /// copy operator
     /** @param s the ArcGraphPart to copy */
     ArcGraphPart& operator=(const ArcGraphPart& s);
+
+    /// move assignment operator
+    ArcGraphPart& operator=(ArcGraphPart&& s);
 
     /// tests whether two ArcGraphParts contain the same arcs
     /** @param p the ArcGraphPart that we compare with this */

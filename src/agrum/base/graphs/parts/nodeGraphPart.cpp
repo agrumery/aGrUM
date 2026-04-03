@@ -74,6 +74,18 @@ namespace gum {
     GUM_CONS_CPY(NodeGraphPart);
   }
 
+  NodeGraphPart::NodeGraphPart(NodeGraphPart&& s) :
+      _holes_(s._holes_), _holes_size_(s._holes_size_),
+      _holes_resize_policy_(s._holes_resize_policy_), _endIteratorSafe_(*this),
+      _boundVal_(s._boundVal_) {
+    s._holes_    = nullptr;
+    s._boundVal_ = 0;
+
+    _updateEndIteratorSafe_();
+
+    GUM_CONS_MOV(NodeGraphPart);
+  }
+
   NodeGraphPart::~NodeGraphPart() {
     if (_holes_) delete _holes_;
 

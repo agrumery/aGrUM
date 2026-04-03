@@ -146,6 +146,9 @@ namespace gum {
     /** @param g the UndiGraph to copy */
     UndiGraph(const UndiGraph& g);
 
+    /// move constructor
+    UndiGraph(UndiGraph&& g);
+
     /// destructor
     virtual ~UndiGraph();
 
@@ -166,6 +169,9 @@ namespace gum {
     /// copy operator
     /** @param g the DiGraph to copy */
     UndiGraph& operator=(const UndiGraph& g);
+
+    /// move assignment operator
+    UndiGraph& operator=(UndiGraph&& g);
 
     /// tests whether two UndiGraphs are identical (same nodes, same edges)
     /** @param g the UndiGraph with which "this" is compared */

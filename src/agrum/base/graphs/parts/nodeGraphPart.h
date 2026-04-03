@@ -307,6 +307,9 @@ namespace gum {
     /** @param s the NodeGraphPart to be copied */
     NodeGraphPart(const NodeGraphPart& s);
 
+    /// move constructor
+    NodeGraphPart(NodeGraphPart&& s);
+
     /// destructor
     virtual ~NodeGraphPart();
 
@@ -320,6 +323,9 @@ namespace gum {
     /// copy operator
     /** @param p the NodeGraphPart to be copied */
     NodeGraphPart& operator=(const NodeGraphPart& p);
+
+    /// move assignment operator
+    NodeGraphPart& operator=(NodeGraphPart&& p);
 
     /// check whether two NodeGraphParts contain the same nodes
     /** @param p the NodeGraphPart to be compared with "this" */

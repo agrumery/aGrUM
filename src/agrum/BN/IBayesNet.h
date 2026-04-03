@@ -96,9 +96,19 @@ namespace gum {
     IBayesNet(const IBayesNet< GUM_SCALAR >& source);
 
     /**
+     * Move constructor.
+     */
+    IBayesNet(IBayesNet< GUM_SCALAR >&& source);
+
+    /**
      * Copy operator.
      */
     IBayesNet< GUM_SCALAR >& operator=(const IBayesNet< GUM_SCALAR >& source);
+
+    /**
+     * Move operator.
+     */
+    IBayesNet< GUM_SCALAR >& operator=(IBayesNet< GUM_SCALAR >&& source);
 
     /// @}
     // ===========================================================================

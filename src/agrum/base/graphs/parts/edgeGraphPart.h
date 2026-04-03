@@ -113,6 +113,9 @@ namespace gum {
     /** @param s the EdgeGraphPart to copy */
     EdgeGraphPart(const EdgeGraphPart& s);
 
+    /// move constructor
+    EdgeGraphPart(EdgeGraphPart&& s);
+
     /// destructor
     virtual ~EdgeGraphPart();
 
@@ -126,6 +129,9 @@ namespace gum {
     /// copy operator
     /** @param s the EdgeGraphPart to copy */
     EdgeGraphPart& operator=(const EdgeGraphPart& s);
+
+    /// move assignment operator
+    EdgeGraphPart& operator=(EdgeGraphPart&& s);
 
     /// tests whether two EdgeGraphParts contain the same edges
     /** @param p the EdgeGraphPart that we compare with this */

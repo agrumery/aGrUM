@@ -148,6 +148,9 @@ namespace gum {
     /** @param g the DiGraph to copy */
     DiGraph(const DiGraph& g);
 
+    /// move constructor
+    DiGraph(DiGraph&& g);
+
     /// destructor
     virtual ~DiGraph();
 
@@ -168,6 +171,9 @@ namespace gum {
     /// copy operator
     /** @param g the DiGraph to copy */
     DiGraph& operator=(const DiGraph& g);
+
+    /// move assignment operator
+    DiGraph& operator=(DiGraph&& g);
 
     /// tests whether two DiGraphs are identical (same nodes, same arcs)
     /** @param g the DiGraph with which "this" is compared */

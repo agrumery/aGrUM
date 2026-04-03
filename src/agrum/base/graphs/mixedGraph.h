@@ -172,6 +172,9 @@ namespace gum {
     /** @param g the MixedGraph to copy */
     MixedGraph(const MixedGraph& g);
 
+    /// move constructor
+    MixedGraph(MixedGraph&& g);
+
     /// destructor
     virtual ~MixedGraph();
 
@@ -185,6 +188,9 @@ namespace gum {
     /// copy operator
     /** @param g the MixedGraph to copy */
     MixedGraph& operator=(const MixedGraph& g);
+
+    /// move assignment operator
+    MixedGraph& operator=(MixedGraph&& g);
 
 
     /// tests whether two MixedGraphs are identical (same nodes, arcs and edges)

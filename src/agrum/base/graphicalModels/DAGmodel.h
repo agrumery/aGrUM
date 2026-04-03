@@ -81,6 +81,11 @@ namespace gum {
      */
     DAGmodel(const DAGmodel& source);
 
+    /**
+     * Move constructor.
+     */
+    DAGmodel(DAGmodel&& source);
+
     /// @}
 
     /// @name Variable manipulation methods.
@@ -266,6 +271,7 @@ namespace gum {
      * Private copy operator.
      */
     DAGmodel& operator=(const DAGmodel& source);
+    DAGmodel& operator=(DAGmodel&& source);
 
     /// The DAG of this Directed Graphical Model.
     DAG dag_;

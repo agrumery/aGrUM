@@ -141,6 +141,9 @@ namespace gum {
     /** @param g the DAG to copy */
     DAG(const DAG& g);
 
+    /// move constructor
+    DAG(DAG&& g);
+
     /// destructor
     virtual ~DAG();
 
@@ -154,6 +157,9 @@ namespace gum {
     /// copy operator
     /** @param g the DAG to copy */
     DAG& operator=(const DAG& g);
+
+    /// move assignment operator
+    DAG& operator=(DAG&& g);
 
     /// @}
 

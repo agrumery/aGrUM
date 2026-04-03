@@ -50,10 +50,20 @@ namespace gum {
 
   GraphicalModel::GraphicalModel(const GraphicalModel& from) { GUM_CONS_CPY(GraphicalModel); }
 
+  GraphicalModel::GraphicalModel(GraphicalModel&& from) { GUM_CONS_MOV(GraphicalModel); }
+
   GraphicalModel::~GraphicalModel() { GUM_DESTRUCTOR(GraphicalModel); }
 
   GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
     if (this != &source) { _propertiesMap_ = source._propertiesMap_; }
+    return *this;
+  }
+
+  GraphicalModel& GraphicalModel::operator=(GraphicalModel&& source) {
+    if (this != &source) {
+      _propertiesMap_ = std::move(source._propertiesMap_);
+      GUM_OP_MOV(GraphicalModel);
+    }
     return *this;
   }
 

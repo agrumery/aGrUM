@@ -224,6 +224,21 @@ namespace gum {
     return *this;
   }
 
+  INLINE NodeGraphPart& NodeGraphPart::operator=(NodeGraphPart&& p) {
+    if (this != &p) {
+      clearNodes();
+      _holes_               = p._holes_;
+      _holes_size_          = p._holes_size_;
+      _holes_resize_policy_ = p._holes_resize_policy_;
+      _boundVal_            = p._boundVal_;
+      p._holes_             = nullptr;
+      p._boundVal_          = 0;
+      _updateEndIteratorSafe_();
+      GUM_OP_MOV(NodeGraphPart);
+    }
+    return *this;
+  }
+
   INLINE NodeId NodeGraphPart::nextNodeId() const {
     NodeId next = 0;
 

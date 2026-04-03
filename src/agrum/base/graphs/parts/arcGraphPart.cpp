@@ -60,6 +60,12 @@ namespace gum {
     GUM_CONSTRUCTOR(ArcGraphPart);
   }
 
+  ArcGraphPart::ArcGraphPart(ArcGraphPart&& s) :
+      _arcs_(std::move(s._arcs_)), _parents_(std::move(s._parents_)),
+      _children_(std::move(s._children_)) {
+    GUM_CONS_MOV(ArcGraphPart);
+  }
+
   ArcGraphPart::ArcGraphPart(const ArcGraphPart& s) : _arcs_(s._arcs_) {
     GUM_CONS_CPY(ArcGraphPart);
 
@@ -148,6 +154,22 @@ namespace gum {
       }
     }
 
+    return *this;
+  }
+
+  ArcGraphPart& ArcGraphPart::operator=(ArcGraphPart&& s) {
+    if (this != &s) {
+      clearArcs();
+      _arcs_     = std::move(s._arcs_);
+      _parents_  = std::move(s._parents_);
+      _children_ = std::move(s._children_);
+      if (onArcAdded.hasListener()) {
+        for (const auto& arc: _arcs_) {
+          GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
+        }
+      }
+      GUM_OP_MOV(ArcGraphPart);
+    }
     return *this;
   }
 

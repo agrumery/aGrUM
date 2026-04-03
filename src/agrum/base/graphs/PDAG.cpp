@@ -77,6 +77,10 @@ namespace gum {
 
   PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONS_CPY(PDAG); }
 
+  PDAG::PDAG(PDAG&& g) : NodeGraphPart(std::move(g)), MixedGraph(std::move(g)) {
+    GUM_CONS_MOV(PDAG);
+  }
+
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
   UndiGraph PDAG::moralGraph() const {

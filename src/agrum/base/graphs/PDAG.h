@@ -156,6 +156,9 @@ namespace gum {
     /** @param g the PDAG to copy */
     PDAG(const PDAG& g);
 
+    /// move constructor
+    PDAG(PDAG&& g);
+
     /// destructor
     virtual ~PDAG();
 
@@ -169,6 +172,9 @@ namespace gum {
     /// copy operator
     /** @param g the PDAG to copy */
     PDAG& operator=(const PDAG& g);
+
+    /// move assignment operator
+    PDAG& operator=(PDAG&& g);
 
     /// @}
 

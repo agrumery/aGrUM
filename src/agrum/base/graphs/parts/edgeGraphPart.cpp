@@ -60,6 +60,11 @@ namespace gum {
     GUM_CONSTRUCTOR(EdgeGraphPart);
   }
 
+  EdgeGraphPart::EdgeGraphPart(EdgeGraphPart&& s) :
+      _edges_(std::move(s._edges_)), _neighbours_(std::move(s._neighbours_)) {
+    GUM_CONS_MOV(EdgeGraphPart);
+  }
+
   EdgeGraphPart::EdgeGraphPart(const EdgeGraphPart& s) : _edges_(s._edges_) {
     GUM_CONS_CPY(EdgeGraphPart)
 
@@ -122,6 +127,21 @@ namespace gum {
           GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
     }
 
+    return *this;
+  }
+
+  EdgeGraphPart& EdgeGraphPart::operator=(EdgeGraphPart&& s) {
+    if (this != &s) {
+      clearEdges();
+      _edges_      = std::move(s._edges_);
+      _neighbours_ = std::move(s._neighbours_);
+      if (onEdgeAdded.hasListener()) {
+        for (const auto& edge: _edges_) {
+          GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
+        }
+      }
+      GUM_OP_MOV(EdgeGraphPart);
+    }
     return *this;
   }
 

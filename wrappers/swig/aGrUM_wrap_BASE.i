@@ -72,7 +72,7 @@
 
 namespace std {
     %template ( Vector) vector<double>;
-    %template ( Vector_uint) vector<unsigned int>;
+    //%template ( Vector_uint) vector<unsigned int>;
     %template ( Vector_int) vector<int>;
     %template ( Vector_string) vector<string>;
 }

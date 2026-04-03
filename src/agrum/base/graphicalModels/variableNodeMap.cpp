@@ -71,6 +71,13 @@ namespace gum {
     _copy_(source);
   }
 
+  // Move constructor.
+  VariableNodeMap::VariableNodeMap(VariableNodeMap&& source) :
+      _nodes2vars_(std::move(source._nodes2vars_)),
+      _names2nodes_(std::move(source._names2nodes_)) {
+    GUM_CONS_MOV(VariableNodeMap);
+  }
+
   // Destructor
   VariableNodeMap::~VariableNodeMap() {
     GUM_DESTRUCTOR(VariableNodeMap);
@@ -83,6 +90,17 @@ namespace gum {
     clear();
     _copy_(source);
 
+    return *this;
+  }
+
+  // Move assignment operator.
+  VariableNodeMap& VariableNodeMap::operator=(VariableNodeMap&& source) {
+    if (this != &source) {
+      clear();
+      _nodes2vars_  = std::move(source._nodes2vars_);
+      _names2nodes_ = std::move(source._names2nodes_);
+      GUM_OP_MOV(VariableNodeMap);
+    }
     return *this;
   }
 

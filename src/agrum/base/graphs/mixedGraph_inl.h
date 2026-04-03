@@ -66,6 +66,16 @@ namespace gum {
     return *this;
   }
 
+  INLINE MixedGraph& MixedGraph::operator=(MixedGraph&& g) {
+    if (this != &g) {
+      NodeGraphPart::operator=(std::move(g));
+      EdgeGraphPart::operator=(std::move(g));
+      ArcGraphPart::operator=(std::move(g));
+      GUM_OP_MOV(MixedGraph);
+    }
+    return *this;
+  }
+
   INLINE void MixedGraph::clear() {
     EdgeGraphPart::clearEdges();
     ArcGraphPart::clearArcs();

@@ -358,7 +358,8 @@ namespace gum {
       _key_uniqueness_policy_{table._key_uniqueness_policy_}, _begin_index_{table._begin_index_},
       _safe_iterators_(std::move(table._safe_iterators_)) {
     // for debugging purposes
-    table._size_ = 0;
+    table._size_        = 0;
+    table._nb_elements_ = 0;
     GUM_CONS_MOV(HashTable);
   }
 
@@ -447,8 +448,8 @@ namespace gum {
       _key_uniqueness_policy_ = table._key_uniqueness_policy_;
       _begin_index_           = table._begin_index_;
 
-      table._size_ = 0;   // necessary if we wish to perform moves iteratively,
-                          // i.e. x = std::move ( y ); y = std::move ( z ); ...
+      table._size_        = 0;   // necessary if we wish to perform moves iteratively,
+      table._nb_elements_ = 0;   // i.e. x = std::move ( y ); y = std::move ( z ); ...
     }
 
     return *this;
