@@ -193,3 +193,4 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %include "causal.i"
 %include "aGrUM_wrap_CM.i"
 %include "causal_after_templates.i"
+%include "gum_functions_causal.i"

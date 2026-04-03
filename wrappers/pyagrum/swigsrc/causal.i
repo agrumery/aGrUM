@@ -78,6 +78,7 @@
 %}
 
 
+
 // LatentDescriptorVector and LatentDescriptorIds are C++-internal types with no
 // Python representation. Ignoring them causes SWIG to suppress all overloads
 // that use them (including the LatentDescriptorVector constructors of CausalModel),
@@ -234,3 +235,50 @@ def counterfactualModel(cm, profile=None, whatif=None):
     return p
 
 %}
+
+
+%extend gum::CausalImpact{
+%pythoncode %{
+    def print_ast(self):
+      """
+      Print the AST of a CausalImpact function in a human readable way.
+
+      Parameters
+      ----------
+        impact : pyagrum.CausalImpact
+          the function whose AST we want to print
+      """
+      def print_ast_rec(node, name="", indent="  ", last=True):
+        marker = "└─ " if last else "├─ "
+
+        if isinstance(node, dict):
+            label = node.get("op", name)
+            print(f"{indent}{marker}{label}")
+
+            indent += "   " if last else "│  "
+
+            children = [(k, v) for k, v in node.items() if k != "op"]
+
+            for i, (key, value) in enumerate(children):
+                is_last = i == len(children) - 1
+                print_ast_rec(value, name=key, indent=indent, last=is_last)
+        else:
+            print(f"{indent}{marker}{name}: {node}")
+
+      def print_title(label:"AST"):
+        width = len(label) + 2
+        print(f"┌{'─' * width}┐")
+        print(f"│ {label} │")
+        print(f"└{'─' * width}┘")
+        return int(width/2)
+
+      def get_title(f:pyagrum.CausalImpact):
+        label=f"P({",".join(f.onNames())}|do({",".join(f.doingNames())})"
+        if len(f.knowingNames())>0:
+              label+=f",{",".join(f.knowingNames())}"
+        label+=")"
+        return label
+
+      print_ast_rec(self.toDict(),indent=" "*print_title(get_title(self)))
+%}
+}
