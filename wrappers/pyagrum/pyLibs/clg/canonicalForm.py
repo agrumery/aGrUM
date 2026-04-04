@@ -64,7 +64,7 @@ class CanonicalForm:
     self._sort()
 
   def __str__(self):
-    return "scope = {0}, K = {1}, h = {2}, g = {3}".format(self._scope, self._K.tolist(), self._h.tolist(), self._g)
+    return f"scope = {self._scope}, K = {self._K.tolist()}, h = {self._h.tolist()}, g = {self._g}"
 
   def __repr__(self):
     return str(self)

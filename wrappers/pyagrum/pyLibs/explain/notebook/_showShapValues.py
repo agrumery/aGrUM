@@ -78,7 +78,7 @@ def showShapValues(bn: pyagrum.BayesNet, expl: Explanation | dict, cmap="plasma"
           f"Target index y={y} is out of bounds; expected {min(expl.keys())} <= y < {max(expl.keys()) + 1}."
         )
     else:
-      raise TypeError("`y`must be an integer but got {}".format(y))
+      raise TypeError(f"`y`must be an integer but got {y}")
     importances = expl.importances[y]
 
   elif isinstance(expl, dict):

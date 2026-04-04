@@ -40,7 +40,7 @@
 
 import pyagrum
 from pyagrum.explain._Explanation import Explanation
-from typing import Callable, Dict
+from collections.abc import Callable
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -59,7 +59,7 @@ def _FMT(func: str) -> str:
   return ".2e" if func == "_identity" else ".2f"
 
 
-def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict = None):
+def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict = None):
   """
   Plots a waterfall chart of the SHAP/SHALL values.
 
@@ -84,13 +84,13 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict =
   """
 
   if not isinstance(explanation, Explanation):
-    raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
+    raise TypeError(f"`explanation` must be an Explanation object but got {type(explanation)}")
   if explanation.values_type == "SHAP":
     if isinstance(y, int):
       if y < min(explanation.keys()) or y > max(explanation.keys()):
         raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
     else:
-      raise TypeError("`y`must be an integer but got {}".format(y))
+      raise TypeError(f"`y`must be an integer but got {y}")
     values = explanation[y]
     baseline = explanation.baseline[y]
   elif explanation.values_type == "SHALL":
@@ -107,7 +107,7 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: Dict =
   y_positions = np.arange(len(values) * 0.25, 0, -0.25)
 
   # Create the figure and axis if not provided
-  if ax == None:
+  if ax is None:
     _, ax = plt.subplots()
 
   # Ligne de base :

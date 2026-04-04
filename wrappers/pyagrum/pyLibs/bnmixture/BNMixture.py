@@ -1,4 +1,3 @@
-from typing import Dict, List, Set
 from tempfile import TemporaryDirectory
 from zipfile import ZipFile
 
@@ -48,8 +47,8 @@ import shutil
 
 
 class IMixture:
-  _bns: Dict[str, pyagrum.BayesNet]
-  _weights: Dict[str, float]
+  _bns: dict[str, pyagrum.BayesNet]
+  _weights: dict[str, float]
   _refBN: pyagrum.BayesNet
   _refName: str
 
@@ -65,7 +64,7 @@ class IMixture:
       ret = ret[:-2]
     return ret
 
-  def names(self) -> List[str]:
+  def names(self) -> list[str]:
     """
     Returns
     -------
@@ -128,7 +127,7 @@ class IMixture:
       raise pyagrum.NotFound(f"{name} isn't in the model")
     return self._weights[name]
 
-  def weights(self) -> Dict[str, float]:
+  def weights(self) -> dict[str, float]:
     """
     Returns
     -------
@@ -267,7 +266,7 @@ class IMixture:
     res.setProperty("name", name)
     return res
 
-  def BNs(self) -> List[pyagrum.BayesNet]:
+  def BNs(self) -> list[pyagrum.BayesNet]:
     """
     Returns
     -------
@@ -276,7 +275,7 @@ class IMixture:
     """
     return [self.BN(name) for name in self.names()]
 
-  def zeroBNs(self) -> Set[str]:
+  def zeroBNs(self) -> set[str]:
     """
     Returns
     -------
@@ -386,7 +385,7 @@ class BNMixture(IMixture):
       with ZipFile(filename, "r") as zf:
         zf.extractall(temp_dir)
       weights = {}
-      with open(f"{temp_dir}/weights.txt", "r") as wf:
+      with open(f"{temp_dir}/weights.txt") as wf:
         for line in wf:
           name, w = line.split(":")
           weights[name] = float(w)
@@ -440,7 +439,7 @@ class BootstrapMixture(IMixture):
       with ZipFile(filename, "r") as zf:
         zf.extractall(temp_dir)
       weights = {}
-      with open(f"{temp_dir}/weights.txt", "r") as wf:
+      with open(f"{temp_dir}/weights.txt") as wf:
         for line in wf:
           name, w = line.split(":")
           weights[name] = float(w)

@@ -42,7 +42,7 @@ import os
 import sys
 from os.path import isdir
 import glob
-from typing import Optional, Iterator
+from collections.abc import Iterator
 
 try:
   from icecream import ic
@@ -50,7 +50,9 @@ try:
   ic.configureOutput(includeContext=True, contextAbsPath=True)
   ic.configureOutput(prefix="🍋 🐞 ➤  ")
 except ImportError:
-  ic = lambda *a: None if not a else a[0] if len(a) == 1 else a
+
+  def ic(*a):
+    return None if not a else a[0] if len(a) == 1 else a
 
 
 from .configuration import cfg
@@ -123,7 +125,7 @@ def trace(current: dict[str, str | bool], cde: str):
     notif(cde, cfg.prefix_trace)
 
 
-def notif_oneline(s: str, pref: Optional[str] = None):
+def notif_oneline(s: str, pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
@@ -133,28 +135,28 @@ def notif_oneline(s: str, pref: Optional[str] = None):
   )
 
 
-def notif(s: str = "", pref: Optional[str] = None):
+def notif(s: str = "", pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
   printutf8(f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}")
 
 
-def warn(s: str, pref: Optional[str] = None):
+def warn(s: str, pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
   printutf8(f"{pref}⚠️  {colFormat(s, cfg.C_WARNING)}{cfg.C_END}")
 
 
-def error(s: str, pref: Optional[str] = None):
+def error(s: str, pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
   printutf8(f"{pref}💥 {colFormat(s, cfg.C_ERROR)}{cfg.C_END}")
 
 
-def critic(s: str, pref: Optional[str] = None, rc: int = 1):
+def critic(s: str, pref: str | None = None, rc: int = 1):
   if pref is None:
     pref = cfg.prefix_line
 
@@ -180,8 +182,7 @@ def recglob(path: str, mask: str) -> Iterator[str]:
 
 
 def srcPyNotebooks() -> Iterator[str]:
-  for i in recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb"):
-    yield i
+  yield from recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb")
 
 
 def srcPyAgrum() -> Iterator[str]:
@@ -204,8 +205,7 @@ def srcPyIpynbAgrum() -> Iterator[str]:
 
 
 def srcCmakeAgrum() -> Iterator[str]:
-  for i in recglob(".", "CMakeLists.txt"):
-    yield i
+  yield from recglob(".", "CMakeLists.txt")
 
 
 def srcAgrum() -> Iterator[str]:

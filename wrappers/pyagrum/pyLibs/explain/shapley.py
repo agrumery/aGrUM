@@ -77,16 +77,16 @@ class ShapValues:
     ValueError : If target is not a valid node id in the Bayesian Network.
     """
     if not isinstance(bn, pyagrum.BayesNet):
-      raise TypeError("bn must be a pyagrum.BayesNet instance, but got {}".format(type(bn)))
+      raise TypeError(f"bn must be a pyagrum.BayesNet instance, but got {type(bn)}")
     if isinstance(target, str):
       if target not in bn.names():
-        raise ValueError("Target node name '{}' not found in the Bayesian Network.".format(target))
+        raise ValueError(f"Target node name '{target}' not found in the Bayesian Network.")
       target = bn.idFromName(target)  # Convert node name to ID.
     elif isinstance(target, int):
       if target not in bn.nodes():
-        raise ValueError("Target node ID {} not found in the Bayesian Network.".format(target))
+        raise ValueError(f"Target node ID {target} not found in the Bayesian Network.")
     else:
-      raise TypeError("Target must be a node ID (int) or a node name (str), but got {}".format(type(target)))
+      raise TypeError(f"Target must be a node ID (int) or a node name (str), but got {type(target)}")
     if not isinstance(logit, bool):
       warnings.warn("logit should be a boolean, unexpected calculation may occur.", UserWarning)
 

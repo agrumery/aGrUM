@@ -306,7 +306,7 @@ class SEM:
     -------
     the loaded CLG
     """
-    with open(filename, "r") as file:
+    with open(filename) as file:
       sem = file.read()
 
     return SEM.toclg(sem)

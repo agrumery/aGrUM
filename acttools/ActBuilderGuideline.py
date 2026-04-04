@@ -40,7 +40,7 @@
 
 import os
 import sys
-from typing import Iterable
+from collections.abc import Iterable
 import types
 import inspect
 from datetime import datetime
@@ -376,7 +376,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
   state = "before"  # before->inComment->after
   in_error = False
 
-  with open(filename, "r", encoding="UTF8") as origin:
+  with open(filename, encoding="UTF8") as origin:
     while line := origin.readline():
       if line.strip() == "":
         if state == "before":
@@ -431,7 +431,7 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
 
   state = "before"  # before->inComment->after
   in_error = False
-  with open(filename, "r") as origin:
+  with open(filename) as origin:
     while line := origin.readline():
       if line.strip() == "":
         if state == "before":
@@ -484,7 +484,7 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
   licence = code = ""
 
   state = "before"  # before->inComment->after
-  with open(filename, "r") as origin:
+  with open(filename) as origin:
     while line := origin.readline():
       if line.strip() == "":
         if state == "before":

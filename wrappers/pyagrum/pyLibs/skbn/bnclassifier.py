@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import List, Union
 
 import pandas
 import numpy
@@ -635,7 +634,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _nary_predict(self, X, dictName, with_labels) -> Union[List[str], List[int]]:
+  def _nary_predict(self, X, dictName, with_labels) -> list[str] | list[int]:
     """
     For a classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 
@@ -666,7 +665,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return returned_list
 
-  def _binary_predict(self, X, dictName) -> Union[List[str], List[bool]]:
+  def _binary_predict(self, X, dictName) -> list[str] | list[bool]:
     """
     For a binary classifier, predicts the most likely class for each row of input data, with bn's Markov Blanket
 

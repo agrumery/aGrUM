@@ -298,7 +298,9 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_width() != 0:
-      txt = f"{b.get_width() * perc:.{pyagrum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+      txt = (
+        f"{b.get_width() * perc:.{pyagrum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+      )
       ax.text(1, b.get_y(), txt, ha="right", va="bottom", alpha=0.7)
 
   ax.set_xlim(0, 1)

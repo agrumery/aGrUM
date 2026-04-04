@@ -43,7 +43,6 @@ The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a 
 """
 
 import pyagrum
-from typing import Dict, Tuple
 import random
 
 from .constants import NodeId
@@ -58,9 +57,9 @@ import pandas as pd
 
 class CLG:
   _graph: pyagrum.DAG
-  _id2var: Dict[NodeId, GaussianVariable]
-  _name2id: Dict[str, NodeId]
-  _arc2coef: Dict[Tuple[NodeId, NodeId], float or int]
+  _id2var: dict[NodeId, GaussianVariable]
+  _name2id: dict[str, NodeId]
+  _arc2coef: dict[tuple[NodeId, NodeId], float or int]
 
   def __init__(self, clg=None):
     self._graph = pyagrum.DAG()

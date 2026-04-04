@@ -69,7 +69,7 @@ class ActBuilderDocDoxygen(ActBuilderAgrum):
     self.run_start(prefix)
 
     err = False
-    gc = gm = gb = 0
+    gc = gm = 0
     t0 = time.time()
 
     safe_cd(self.current, "build")

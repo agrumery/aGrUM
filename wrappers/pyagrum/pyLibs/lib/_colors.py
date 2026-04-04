@@ -42,8 +42,6 @@
 Color manipulations for pyagrum.lib module
 """
 
-from typing import List, Tuple
-
 import matplotlib as mpl
 import matplotlib.colors
 
@@ -202,7 +200,7 @@ HTMLCOLORS = {
 }
 
 
-def hex2rgb(vstr: str) -> List[int]:
+def hex2rgb(vstr: str) -> list[int]:
   """
   from "#FFFFFF" to [255,255,255]
   frorm 'DarkBlue' to [0,0,139]
@@ -229,7 +227,7 @@ def hex2rgb(vstr: str) -> List[int]:
   return [int(value[i : i + lv // 3], 16) for i in range(0, lv, lv // 3)]
 
 
-def hextuple2rgb(vtuple: List[str]) -> List[int]:
+def hextuple2rgb(vtuple: list[str]) -> list[int]:
   """
   from ("FF","FF","FF") to [255,255,255]
 
@@ -265,7 +263,7 @@ def rgb2brightness(r: int, g: int, b: int) -> str:
   return "white" if brightness <= 153 else "black"
 
 
-def proba2hex(p: float, cmap: matplotlib.colors.Colormap, withSpecialColor: bool) -> Tuple[str, str, str]:
+def proba2hex(p: float, cmap: matplotlib.colors.Colormap, withSpecialColor: bool) -> tuple[str, str, str]:
   """
   From a proba p and cmap gives the HTML rgb color
 

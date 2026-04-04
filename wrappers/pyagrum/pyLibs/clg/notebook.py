@@ -148,7 +148,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
       lb = ""
     else:
       if a in arcLabel:
-        lb = "%.2f" % (arcLabel[a])
+        lb = f"{arcLabel[a]:.2f}"
       else:
         lb = ""
 

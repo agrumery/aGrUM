@@ -116,7 +116,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
   nbr_lines = lines_count(csv_name) - 1
 
   if dialect is None:
-    with open(csv_name, "r") as csvfile:
+    with open(csv_name) as csvfile:
       k = 1024
       buffer = ""
       while True:
@@ -136,7 +136,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
   num_ligne = 1
   likelihood = 0.0
 
-  with open(csv_name, "r") as csvfile:
+  with open(csv_name) as csvfile:
     batchReader = csv.reader(csvfile, dialect)
 
     titre = next(batchReader)

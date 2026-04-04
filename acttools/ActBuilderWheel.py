@@ -143,7 +143,7 @@ def get_pyAgrum_version(path):
     files = [f for f in listdir(path)]
     for f in files:
       m = re.match(pattern, f)
-      if m != None:
+      if m is not None:
         return m.group(1)
   except:
     warn(f"Error while accessing to path {path}")
@@ -160,7 +160,7 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
   try:
     with open(path) as f:
       lines = [l.replace("#PYAGRUM_WHEEL_TAGS#", tags).replace("#ACT_VERSION#", act_version) for l in f.readlines()]
-    with open(path, "wt") as f:
+    with open(path, "w") as f:
       for line in lines:
         f.write(line)
   except:

@@ -47,7 +47,7 @@ import os
 import re
 from argparse import ArgumentParser
 from subprocess import PIPE, Popen
-from typing import Any, Optional
+from typing import Any
 
 # import colorama
 # colorama.init()
@@ -98,7 +98,7 @@ def cmdline(command: str) -> str:
   return process.communicate()[0].decode()
 
 
-def is_tool(prog: str, longpath=False) -> Optional[str]:
+def is_tool(prog: str, longpath=False) -> str | None:
   progw = prog + ".exe"
   for dirname in os.environ["PATH"].split(os.pathsep):
     if os.path.exists(os.path.join(dirname, prog)):
@@ -155,7 +155,7 @@ def check_tools() -> tuple[str, str, str, str, str, str, str]:
 def parse_modules_txt() -> dict[str, str]:
   modules = {}
   module_line = re.compile(r"^\s*list\s*\(\s*APPEND\s*MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
-  with open(cfg.modulesFile, "r", encoding="utf8") as f:
+  with open(cfg.modulesFile, encoding="utf8") as f:
     for ll in f:
       rep = module_line.search(ll)
       if rep:
@@ -174,7 +174,7 @@ cfg.act_version_minor = "0"
 cfg.act_version = cfg.act_version_major + "." + cfg.act_version_minor
 
 res = dict()
-with open("VERSION.txt", "r") as version_file:
+with open("VERSION.txt") as version_file:
   for line in version_file:
     if line.startswith("#"):
       continue

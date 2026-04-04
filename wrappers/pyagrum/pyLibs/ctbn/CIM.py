@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import Dict, Optional, Union, List
 
 import numpy
 import pyagrum
@@ -150,7 +149,7 @@ class CIM:
     """
     return self._pot.nbrDim()
 
-  def extract(self, ctxt: Optional[Dict[str, str]]) -> "CIM":
+  def extract(self, ctxt: dict[str, str] | None) -> "CIM":
     """
     Creates a new CIM extracted from the current CIM using the instantiation ``ctxt``.
 
@@ -187,7 +186,7 @@ class CIM:
     # return self._pot.varNames
     return self._pot.names
 
-  def variablesSequence(self) -> List[pyagrum.DiscreteVariable]:
+  def variablesSequence(self) -> list[pyagrum.DiscreteVariable]:
     """
     Returns
     -------
@@ -210,7 +209,7 @@ class CIM:
     """
     return self._pot.variable(arg)
 
-  def findVar(self, name: str) -> Union[None, pyagrum.DiscreteVariable]:
+  def findVar(self, name: str) -> None | pyagrum.DiscreteVariable:
     """
     Finds a variable in the CIM using its name.
 
@@ -329,7 +328,7 @@ class CIM:
         return False
     return True
 
-  def toMatrix(self, ctxt: Optional[Dict[str, str]] = None) -> numpy.array:
+  def toMatrix(self, ctxt: dict[str, str] | None = None) -> numpy.array:
     """
     Converts a CIM to a numpy.array matrix.
 

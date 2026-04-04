@@ -40,7 +40,6 @@
 
 import csv
 from concurrent.futures import ProcessPoolExecutor
-from typing import Dict, Tuple
 from numpy.random import default_rng, choice
 from scipy.linalg import expm
 
@@ -170,7 +169,7 @@ class ForwardSamplingInference(CTBNInference):
     super().__init__(ctbn)
     self._posteriors = {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
 
-  def makeSample(self, posteriors: Dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
+  def makeSample(self, posteriors: dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
     """
     Fills posteriors using forward sampling.
 
@@ -208,7 +207,7 @@ class ForwardSamplingInference(CTBNInference):
         current.chgVal(v.name(), newval)
         posteriors[v.name()][newval] = 1
 
-    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> Tuple[NodeId, float]:
+    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[NodeId, float]:
       """
       Chooses the next variable to change value. The variable is chosen by drawing values of all of the variables transition
       time (i.e how much time does a variable stay in the same state). Those durations follow an exponential distribution.

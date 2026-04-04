@@ -78,12 +78,12 @@ def beeswarm(
   """
   # Check parameters
   if not isinstance(explanation, Explanation):
-    raise TypeError("`explanation` must be an Explanation object but got {}".format(type(explanation)))
+    raise TypeError(f"`explanation` must be an Explanation object but got {type(explanation)}")
 
   # Determine if The explanation object is a SHALL or SHAP explanation
   if explanation.values_type == "SHAP":
     if not isinstance(y, int):
-      raise TypeError("`y` must be an integer but got {}".format(type(y)))
+      raise TypeError(f"`y` must be an integer but got {type(y)}")
     if y < min(explanation.keys()) or y > max(explanation.keys()):
       raise IndexError(f"Target index y={y} is out of bounds; expected 0 <= y < {max(explanation.keys()) + 1}.")
     contributions = explanation[y]
@@ -101,7 +101,7 @@ def beeswarm(
   features = explanation.data
 
   # Create the figure and axis if not provided
-  if ax == None:
+  if ax is None:
     _, ax = plt.subplots()
 
   # Prepare the y-axis positions

@@ -77,13 +77,13 @@ class ShapleyValues(Explainer):
     super().__init__(bn)
     if isinstance(target, str):
       if target not in bn.names():
-        raise ValueError("Target node name '{}' not found in the Bayesian Network.".format(target))
+        raise ValueError(f"Target node name '{target}' not found in the Bayesian Network.")
       target = bn.idFromName(target)  # Convert node name to ID.
     elif isinstance(target, int):
       if target not in bn.nodes():
-        raise ValueError("Target node ID {} not found in the Bayesian Network.".format(target))
+        raise ValueError(f"Target node ID {target} not found in the Bayesian Network.")
     else:
-      raise TypeError("Target must be a node ID (int) or a node name (str), but got {}".format(type(target)))
+      raise TypeError(f"Target must be a node ID (int) or a node name (str), but got {type(target)}")
     if not isinstance(logit, bool):
       warnings.warn("logit should be a boolean, unexpected calculation may occur.", UserWarning)
 
@@ -141,9 +141,9 @@ class ShapleyValues(Explainer):
     """
     if data is None:
       if not isinstance(N, int):
-        raise TypeError("Since df is None, N must be an integer, but got {}".format(type(N)))
+        raise TypeError(f"Since df is None, N must be an integer, but got {type(N)}")
       if N < 2:
-        raise ValueError("N must be greater than 1, but got {}".format(N))
+        raise ValueError(f"N must be greater than 1, but got {N}")
       y = pyagrum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       elements = [i for i in range(self.M) if i != self.target]
       # Remove duplicate rows in x and unused columns.
@@ -155,7 +155,7 @@ class ShapleyValues(Explainer):
 
     else:
       if not isinstance(data, tuple):
-        raise TypeError(f"`data` must be a tuple (pd.DataFrame, bool).")
+        raise TypeError("`data` must be a tuple (pd.DataFrame, bool).")
       df, with_labels = data
       if not isinstance(with_labels, bool):
         warnings.warn(
@@ -223,7 +223,7 @@ class ShapleyValues(Explainer):
           elements = []
           x = np.empty((N, self.M), dtype=dtype)
           for feat in df.keys():
-            if all(not (x is None) and not (isinstance(x, float) and np.isnan(x)) for x in df[feat]):
+            if all(x is not None and not (isinstance(x, float) and np.isnan(x)) for x in df[feat]):
               id = self.bn.idFromName(feat)
               x[:, id] = df[feat]
               if id != self.target:
@@ -244,7 +244,7 @@ class ShapleyValues(Explainer):
           x = np.empty(self.M, dtype=dtype)
           elements = []
           for feat in df.keys():
-            if not (df[feat] is None):
+            if df[feat] is not None:
               id = self.bn.idFromName(feat)
               x[id] = df[feat]
               if id != self.target:
@@ -257,7 +257,7 @@ class ShapleyValues(Explainer):
 
       else:
         raise TypeError(
-          "The first element of `data` must be a pandas DataFrame, Series or a dictionary, but got {}".format(type(df))
+          f"The first element of `data` must be a pandas DataFrame, Series or a dictionary, but got {type(df)}"
         )
 
     if contributions.ndim == 2:

@@ -622,9 +622,9 @@ class _ICSW:
     if set(np.unique(w.to_numpy())) != {0, 1}:
       raise ValueError("Instrument must be binary with values 0 and 1 for ACE estimation.")
 
-    x = X.to_numpy() if not isinstance(X, np.ndarray) else X
-    t = treatment.to_numpy() if not isinstance(treatment, np.ndarray) else treatment
-    z = w.to_numpy() if not isinstance(w, np.ndarray) else w
+    X.to_numpy() if not isinstance(X, np.ndarray) else X
+    treatment.to_numpy() if not isinstance(treatment, np.ndarray) else treatment
+    w.to_numpy() if not isinstance(w, np.ndarray) else w
 
     def Likelihood(theta):
       theta_A = theta[: X.shape[1]]

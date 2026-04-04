@@ -42,7 +42,6 @@
 collection of utilities for pyagrum.lib
 """
 
-from typing import Dict
 import csv
 import pydot as dot
 
@@ -68,7 +67,7 @@ def getBlackInTheme():
 DotPoint = namedtuple("DotPoint", ["x", "y"])
 
 
-def dot_layout(g: dot.Dot) -> Dict[str, DotPoint]:
+def dot_layout(g: dot.Dot) -> dict[str, DotPoint]:
   """
   extract the layout from a dot graph
 
@@ -89,7 +88,7 @@ def dot_layout(g: dot.Dot) -> Dict[str, DotPoint]:
   }
 
 
-def apply_dot_layout(g: dot.Dot, layout: Dict[str, DotPoint]):
+def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]):
   """
   apply a layout to a dot graph
 

@@ -76,7 +76,7 @@ def configuration():
   import os
 
   packages = OrderedDict()
-  packages["OS"] = "%s [%s]" % (os.name, sys.platform)
+  packages["OS"] = f"{os.name} [{sys.platform}]"
   packages["Python"] = sys.version
   packages["IPython"] = IPython.__version__
   packages["MatPlotLib"] = mpl.__version__
@@ -84,7 +84,7 @@ def configuration():
   packages["pyAgrum"] = pyagrum.__version__
 
   for name in packages:
-    print("%s : %s" % (name, packages[name]))
+    print(f"{name} : {packages[name]}")
 
 
 def showGraph(gr, size=None):

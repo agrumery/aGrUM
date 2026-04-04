@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import Dict, Tuple, List
 
 import csv
 import math
@@ -54,7 +53,7 @@ Also contains Stats Class to store stats that are used for independence tests.
 """
 
 
-def readTrajectoryCSV(filename: str) -> Dict[int, List[Tuple[float, str, str]]]:
+def readTrajectoryCSV(filename: str) -> dict[int, list[tuple[float, str, str]]]:
   """
   Reads trajectories from a csv file.
   Storing format : {IdSample, time, var, state}
@@ -82,7 +81,7 @@ def readTrajectoryCSV(filename: str) -> Dict[int, List[Tuple[float, str, str]]]:
 
 
 def plotTrajectory(
-  v: pyagrum.DiscreteVariable, traj: List[Tuple[float, str, str]], timeHorizon: float = None, plotname: str = None
+  v: pyagrum.DiscreteVariable, traj: list[tuple[float, str, str]], timeHorizon: float = None, plotname: str = None
 ):
   """
   Plot a variable's trajectory using matplotlib.pyplot.
@@ -134,7 +133,7 @@ def plotTrajectory(
 
 def plotFollowVar(
   v: pyagrum.DiscreteVariable,
-  trajectories: Dict[int, List[Tuple[float, str, str]]],
+  trajectories: dict[int, list[tuple[float, str, str]]],
   timeHorizon: float = None,
   N: int = None,
   plotname: str = None,
@@ -210,7 +209,7 @@ def plotFollowVar(
   plt.show()
 
 
-def CTBNFromData(data: Dict[int, List[Tuple[float, str, str]]]) -> CTBN:
+def CTBNFromData(data: dict[int, list[tuple[float, str, str]]]) -> CTBN:
   """
   Constructs a CTBN and add the corresponding variables found in the trajectories.
 
@@ -337,7 +336,7 @@ class Trajectory:
     # to assert
     self.timeHorizon = self.data[0][-1][0]
 
-  def setStatValues(self, X: str, inst_u: Dict[str, str], Txu: pyagrum.Tensor, Mxu: pyagrum.Tensor):
+  def setStatValues(self, X: str, inst_u: dict[str, str], Txu: pyagrum.Tensor, Mxu: pyagrum.Tensor):
     """
     Fills the tensors given.
 
@@ -417,7 +416,7 @@ class Trajectory:
         elif time < self.timeHorizon and var in inst_u.keys():
           u_values[var] = findNextValue(var, traj, l)
 
-  def computeStats(self, X: str, U: List[str]) -> Tuple[pyagrum.Tensor, pyagrum.Tensor]:
+  def computeStats(self, X: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` and returns them as ``pyagrum.Tensor``.
 
@@ -475,7 +474,7 @@ class Trajectory:
       )
 
   def setStatsForTests(
-    self, X: str, Y: str, inst_u: Dict[str, str], Txu: pyagrum.Tensor, Txyu: pyagrum.Tensor, Mxyu: pyagrum.Tensor
+    self, X: str, Y: str, inst_u: dict[str, str], Txu: pyagrum.Tensor, Txyu: pyagrum.Tensor, Mxyu: pyagrum.Tensor
   ):
     """
     Fills the tensors given. They are used for independence testing.
@@ -570,7 +569,7 @@ class Trajectory:
         elif time < self.timeHorizon and var in inst_u.keys():
           u_values[var] = findNextValue(var, traj, l)
 
-  def computeStatsForTests(self, X: str, Y: str, U: List[str]) -> Tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
+  def computeStatsForTests(self, X: str, Y: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` when conditioned by ``Y`` and ``U`` and
     returns them as ``pyagrum.Tensor``. Used for independence testing.
@@ -664,7 +663,7 @@ class Stats:
       Conditional Intensity Matrix(CIM) of ``X`` that includes the conditioning variable ``Y``.
   """
 
-  def __init__(self, trajectory: Trajectory, X: str, Y: str, par: List[str]):
+  def __init__(self, trajectory: Trajectory, X: str, Y: str, par: list[str]):
     self.Tx, self.Txy, self.Mxy = trajectory.computeStatsForTests(X, Y, par)
     self.Mx = pyagrum.Tensor(self.Mxy).sumOut([Y])
     self.Qx = computeCIMFromStats(X, self.Mx, self.Tx)

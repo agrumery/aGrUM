@@ -43,7 +43,6 @@ The purpose of this module is to provide tools for building ROC and PR from Baye
 """
 
 import os
-from typing import List, Tuple
 
 import numpy as np
 
@@ -450,7 +449,7 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
   return pointsPR
 
 
-def _getPoint(threshold: float, thresholds: List[float], points: List[Tuple[float, float]]) -> Tuple[float, float]:
+def _getPoint(threshold: float, thresholds: list[float], points: list[tuple[float, float]]) -> tuple[float, float]:
   """
 
   Find the point corresponding to threshold in points (annotated by thresholds)
@@ -504,7 +503,12 @@ def _basicDraw(
   ax.grid(color="#aaaaaa", linestyle="-", linewidth=1, alpha=0.5)
 
   ax.plot(
-    [x[0] for x in points], [y[1] for y in points], "-", linewidth=3, color=pyagrum.config["ROC", "draw_color"], zorder=3
+    [x[0] for x in points],
+    [y[1] for y in points],
+    "-",
+    linewidth=3,
+    color=pyagrum.config["ROC", "draw_color"],
+    zorder=3,
   )
   ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=pyagrum.config["ROC", "fill_color"])
 

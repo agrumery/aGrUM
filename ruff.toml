@@ -22,6 +22,7 @@ docstring-code-format = true
 
 [lint]
 #extend-select = ["E501"]
+extend-select = ["UP"]
 # Avoid trying to fix flake8-bugbear (`B`) violations.
 unfixable = ["B","F401"]
 

@@ -111,9 +111,7 @@ def ID2dot(diag, size=None):
     for chi in diag.children(node):
       res += '  "' + diag.variable(node).name() + '"->"' + diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        res += (
-          f' [style="{pyagrum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
-        )
+        res += f' [style="{pyagrum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
       elif diag.isUtilityNode(chi):
         res += (
           f' [style="{pyagrum.config["influenceDiagram", "utility_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'

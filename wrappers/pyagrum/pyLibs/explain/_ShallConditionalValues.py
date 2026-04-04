@@ -120,7 +120,7 @@ class ConditionalShallValues(ShallValues, ConditionalComputation):
     return (joint_prob_with - joint_prob_without) / self._invcoeff_shap(len(self.vars_ids), len(nodes_id) - 1)
 
   def _shall_1dim(self, x) -> np.ndarray:
-    contributions = np.zeros((self.M))  # Initializes contributions array.
+    contributions = np.zeros(self.M)  # Initializes contributions array.
     fifo_cache = FIFOCache(2000)
     cache = CustomShapleyCache(5000)  # Initializes the custom cache.
     cache.set(-1, "", self.baseline)  # Sets the baseline probability in the cache.

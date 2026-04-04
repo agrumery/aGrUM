@@ -758,7 +758,7 @@ def _AIPW(self, learner: any):
 
   e = self.e if self.e is not None else self.propensityScoreFunc()
 
-  if self.cond == None:
+  if self.cond is None:
     df = self.df[[*self.X]]
   else:
     df = pd.DataFrame(columns=[*self.X], index=[0], data=self.cond)

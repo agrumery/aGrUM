@@ -70,14 +70,14 @@ class ActBuilderPipInstall(ActBuilder):
       return False
     self.run_done(f"Wheel  : {builder.wheel_path}")
     # use pip to install the wheel
-    self.run_start(f"Installing wheel via pip")
+    self.run_start("Installing wheel via pip")
     cmd = [sys.executable, "-m", "pip", "install", "--force-reinstall", builder.wheel_path]
     self.run_start(f"Running command: {' '.join(cmd)}")
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
     stdout, _ = proc.communicate()
     if proc.returncode != 0:
-      self.run_failed(f"Installing wheel via pip : failed")
+      self.run_failed("Installing wheel via pip : failed")
       print(stdout)
       return False
-    self.run_done(f"Wheel installed.")
+    self.run_done("Wheel installed.")
     return True

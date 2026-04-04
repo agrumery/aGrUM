@@ -84,23 +84,25 @@ class ShallValues(Explainer):
     # Processing background data
     if background is None:
       if not isinstance(sample_size, int):
-        raise TypeError("When `data`=None, `sample_size` must be an integer, but got {}".format(type(sample_size)))
+        raise TypeError(f"When `data`=None, `sample_size` must be an integer, but got {type(sample_size)}")
       else:
         if sample_size < 1:
-          raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
+          raise ValueError(f"`sample_size` must be greater than 1, but got {sample_size}")
         elif sample_size < 10:
           warnings.warn("The sample size is small, which may lead to biased Shapley values.")
-      data = pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      data = (
+        pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      )
     else:
       if not isinstance(background, tuple):
-        raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")
+        raise TypeError("`background` must be a tuple (pd.DataFrame, bool).")
       data, with_labels = background
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."
         )
       if not isinstance(data, pd.DataFrame):
-        raise TypeError("The first element of `background` must be a pandas DataFrame, but got {}".format(type(data)))
+        raise TypeError(f"The first element of `background` must be a pandas DataFrame, but got {type(data)}")
       if data.shape[0] < 2:
         warnings.warn("You are giving a single row as a background data, which will lead to biased Shapley values.")
       if data.shape[1] != self.M:
@@ -171,9 +173,9 @@ class ShallValues(Explainer):
     # Note : elements (like in ShapValues are no longer needed since partial explanation is impossible)
     if data is None:
       if not isinstance(N, int):
-        raise TypeError("Since df is None, N must be an integer, but got {}".format(type(N)))
+        raise TypeError(f"Since df is None, N must be an integer, but got {type(N)}")
       if N < 2:
-        raise ValueError("N must be greater than 1, but got {}".format(N))
+        raise ValueError(f"N must be greater than 1, but got {N}")
       y = pyagrum.generateSample(self.bn, N, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       # Remove duplicate rows in generated data
       _, idx = np.unique(y, axis=0, return_index=True)
@@ -181,7 +183,7 @@ class ShallValues(Explainer):
       contributions = self._shall_ndim(y)
     else:
       if not isinstance(data, tuple):
-        raise TypeError(f"`data` must be a tuple (pd.DataFrame, bool).")
+        raise TypeError("`data` must be a tuple (pd.DataFrame, bool).")
       df, with_labels = data
       if not isinstance(with_labels, bool):
         warnings.warn(
@@ -258,7 +260,7 @@ class ShallValues(Explainer):
           # Here we are sure that df is a single instance (a dictionary with one row).
           x = np.empty(self.M, dtype=dtype)
           for feat in df.keys():
-            if not (df[feat] is None):
+            if df[feat] is not None:
               id = self.bn.idFromName(feat)
               x[id] = df[feat]
           if x.size == 0:
@@ -268,7 +270,7 @@ class ShallValues(Explainer):
 
       else:
         raise TypeError(
-          "The first element of `data` must be a pandas DataFrame, Series or a dictionary, but got {}".format(type(df))
+          f"The first element of `data` must be a pandas DataFrame, Series or a dictionary, but got {type(df)}"
         )
 
     if contributions.ndim == 1:

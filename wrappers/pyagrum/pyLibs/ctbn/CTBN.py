@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import Dict, Tuple, List, Set
 
 import pyagrum
 
@@ -71,9 +70,9 @@ class CTBN:
   """
 
   _graph: pyagrum.DiGraph
-  _cim: Dict[NodeId, CIM]
-  _id2var: Dict[NodeId, pyagrum.DiscreteVariable]
-  _name2id: Dict[str, NodeId]
+  _cim: dict[NodeId, CIM]
+  _id2var: dict[NodeId, pyagrum.DiscreteVariable]
+  _name2id: dict[str, NodeId]
 
   def __init__(self):
     self._graph = pyagrum.DiGraph()
@@ -144,7 +143,7 @@ class CTBN:
         raise pyagrum.NotFound("the variable isn't in the ctbn")
       return self._name2id[val]
 
-  def addArc(self, val1: NameOrId, val2: NameOrId) -> Tuple[NodeId, NodeId]:
+  def addArc(self, val1: NameOrId, val2: NameOrId) -> tuple[NodeId, NodeId]:
     """
     Adds an arc ``val1`` -> ``val2``.
 
@@ -277,7 +276,7 @@ class CTBN:
     """
     return self._id2var[self._nameOrId(val)]
 
-  def variables(self) -> List[pyagrum.DiscreteVariable]:
+  def variables(self) -> list[pyagrum.DiscreteVariable]:
     """
     Returns
     -------
@@ -286,7 +285,7 @@ class CTBN:
     """
     return [self.variable(i) for i in self.nodes()]
 
-  def nodes(self) -> List[NodeId]:
+  def nodes(self) -> list[NodeId]:
     """
     Returns
     -------
@@ -295,7 +294,7 @@ class CTBN:
     """
     return list(self._id2var.keys())
 
-  def names(self) -> List[str]:
+  def names(self) -> list[str]:
     """
     Returns
     -------
@@ -304,7 +303,7 @@ class CTBN:
     """
     return list(self._name2id.keys())
 
-  def arcs(self) -> Set[Tuple[NodeId, NodeId]]:
+  def arcs(self) -> set[tuple[NodeId, NodeId]]:
     """
     Returns
     -------
@@ -313,7 +312,7 @@ class CTBN:
     """
     return self._graph.arcs()
 
-  def parents(self, val: NameOrId) -> Set[NodeId]:
+  def parents(self, val: NameOrId) -> set[NodeId]:
     """
     Parameters
     ----------
@@ -332,7 +331,7 @@ class CTBN:
     """
     return self._graph.parents(self._nameOrId(val))
 
-  def parentNames(self, val: NameOrId) -> List[str]:
+  def parentNames(self, val: NameOrId) -> list[str]:
     """
     Parameters
     ----------
@@ -351,7 +350,7 @@ class CTBN:
     """
     return [self.name(n) for n in self.parents(val)]
 
-  def children(self, val: NameOrId) -> Set[NodeId]:
+  def children(self, val: NameOrId) -> set[NodeId]:
     """
     Parameters
     ----------
@@ -370,7 +369,7 @@ class CTBN:
     """
     return self._graph.children(self._nameOrId(val))
 
-  def childrenNames(self, val: NameOrId) -> List[str]:
+  def childrenNames(self, val: NameOrId) -> list[str]:
     """
     Parameters
     ----------

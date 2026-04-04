@@ -352,7 +352,7 @@ class GeneralizedPlugIn:
       )
       return mu(MX_control) * pi(x)[:, 0] + mu(MX_treatment) * pi(x)[:, 1]
 
-    MX_control_empirical = pd.concat([pd.DataFrame(M), pd.DataFrame(X)], axis=1)
+    pd.concat([pd.DataFrame(M), pd.DataFrame(X)], axis=1)
 
     self.pseudo_control_outcome_learner.fit(X=X[treatment == 0], y=xi(M[treatment == 0], X[treatment == 0]))
 

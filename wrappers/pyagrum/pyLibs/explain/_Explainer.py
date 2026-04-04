@@ -46,7 +46,7 @@ from pyagrum.explain._FIFOCache import FIFOCache
 import numpy as np
 import math
 from itertools import combinations
-from typing import Callable
+from collections.abc import Callable
 
 
 class Explainer(ABC):
@@ -67,7 +67,7 @@ class Explainer(ABC):
     """
     super().__init__()
     if not isinstance(bn, pyagrum.BayesNet):
-      raise TypeError("bn must be a pyagrum.BayesNet instance, but got {}".format(type(bn)))
+      raise TypeError(f"bn must be a pyagrum.BayesNet instance, but got {type(bn)}")
     self.bn = bn
     self.M = len(bn.nodes())  # Total number of nodes in the Bayesian Network.
     self.feat_names = np.empty(self.M, dtype=object)  # Array to store feature names by their node ID.

@@ -99,7 +99,8 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
   else:
     classes = sorted(explanation.keys())
     cmap = LinearSegmentedColormap.from_list(
-      "class_cmap", [to_rgb(pyagrum.config["notebook", "tensor_color_0"]), to_rgb(pyagrum.config["notebook", "tensor_color_1"])]
+      "class_cmap",
+      [to_rgb(pyagrum.config["notebook", "tensor_color_0"]), to_rgb(pyagrum.config["notebook", "tensor_color_1"])],
     )
     colors = [cmap(i / (len(explanation) - 1)) for i in range(len(explanation))]
 

@@ -141,7 +141,7 @@ class CausalShallValues(ShallValues, CausalComputation):
       custom_cache.set(0, tuple(tau), joint_with)
       # Contribution of each feature
       for t in tau:
-        key = tuple((f for f in tau if f != t))
+        key = tuple(f for f in tau if f != t)
         joint_without = custom_cache.get(0, key)
         contributions[t] += self._coalition_contribution(joint_with, joint_without, len(self.vars_ids), len(tau) - 1)
     return contributions
@@ -191,7 +191,7 @@ class CausalShallValues(ShallValues, CausalComputation):
         custom_cache.set(i, tuple(tau), joint_with)
         # Contribution of each feature
         for t in tau:
-          key = tuple((f for f in tau if f != t))
+          key = tuple(f for f in tau if f != t)
           joint_without = custom_cache.get(i, key) if len(key) > 0 else custom_cache.get(0, ())
           contributions[t, i] += self._coalition_contribution(
             joint_with, joint_without, len(self.vars_ids), len(tau) - 1

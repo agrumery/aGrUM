@@ -40,7 +40,7 @@
 
 from pathlib import Path
 import re
-from typing import Sequence, Optional
+from collections.abc import Sequence
 
 from .utils import *
 
@@ -155,7 +155,7 @@ def draw_gum_dependencies(deps: dict[str, list[str]]):
     "legend_base": ("greys9", 2),
   }
 
-  def _get_node(name, label: Optional[str] = None, th: Optional[str] = None):
+  def _get_node(name, label: str | None = None, th: str | None = None):
     if label is None:
       label = name
     if th is None:
@@ -235,7 +235,7 @@ def remove_redundant_dependencies(target, includes):
   to_keep = set(includes)
 
   res = ""
-  with open(f"./src/agrum/{target}", "r") as f:
+  with open(f"./src/agrum/{target}") as f:
     for line in f.readlines():
       keep_line = True
       m = patt.match(line)

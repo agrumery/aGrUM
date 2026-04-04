@@ -1,4 +1,3 @@
-from typing import Tuple
 from numpy import quantile, array
 
 ############################################################################
@@ -214,7 +213,7 @@ class BootstrapMixtureInference(IMixtureInference):
     ref_post = self._ref_inference.posterior(name)
     return ref_post.normalize()
 
-  def quantiles(self, name: str) -> Tuple[pyagrum.Tensor, pyagrum.Tensor]:
+  def quantiles(self, name: str) -> tuple[pyagrum.Tensor, pyagrum.Tensor]:
     """
     Parameters
     ----------

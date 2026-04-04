@@ -39,7 +39,6 @@
 ############################################################################
 
 from abc import abstractmethod
-from typing import List
 from scipy.stats import f, chi2
 import logging
 import math
@@ -58,7 +57,7 @@ class IndepTest:
   """
 
   @abstractmethod
-  def testIndep(self, X: str, Y: str, U: List[str]) -> bool:
+  def testIndep(self, X: str, Y: str, U: list[str]) -> bool:
     """
     Parameters
     ----------
@@ -85,7 +84,7 @@ class Oracle(IndepTest):
     super().__init__()
     self.ctbn = ctbn
 
-  def testIndep(self, X: str, Y: str, U: List[str]) -> bool:
+  def testIndep(self, X: str, Y: str, U: list[str]) -> bool:
     """
     Parameters
     ----------
@@ -146,7 +145,7 @@ class FChi2Test(IndepTest):
     self.stats_added = False
     self.chiSqValue = None
 
-  def addVariables(self, X: str, Y: str, U: List[str]):
+  def addVariables(self, X: str, Y: str, U: list[str]):
     """
     Saves variables ``X`` and ``Y`` and the conditioning set ``U``, and generates stats to be used in statistical tests.
 
@@ -177,9 +176,9 @@ class FChi2Test(IndepTest):
     self.chiSqValue = None
     self._X: str = X
     self._Y: str = Y
-    self._U: List[str] = U
+    self._U: list[str] = U
 
-  def testIndep(self, X: str, Y: str, U: List[str]) -> bool:
+  def testIndep(self, X: str, Y: str, U: list[str]) -> bool:
     """
     Parameters
     ----------
@@ -272,7 +271,7 @@ class FChi2Test(IndepTest):
 
     return self.chiSqValue
 
-  def nullTimeToTransitionHypothesisF(self, X: str, Y: str, _: List[str]) -> bool:
+  def nullTimeToTransitionHypothesisF(self, X: str, Y: str, _: list[str]) -> bool:
     """
     Decides if the null time to transition hypothesis is rejected using F-test.
 
@@ -313,7 +312,7 @@ class FChi2Test(IndepTest):
     # Fail to reject the hypothesis
     return FAIL_TO_REJECT
 
-  def nullStateToStateTransitionHypothesisChi2(self, X: str, Y: str, _: List[str]):
+  def nullStateToStateTransitionHypothesisChi2(self, X: str, Y: str, _: list[str]):
     """
     Decides if the null state to state transition hypothesis is rejected using chi2-test.
 

@@ -81,21 +81,23 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     # Processing background data
     if background is None:
       if not isinstance(sample_size, int):
-        raise TypeError("When `data`=None, `sample_size` must be an integer, but got {}".format(type(sample_size)))
+        raise TypeError(f"When `data`=None, `sample_size` must be an integer, but got {type(sample_size)}")
       else:
         if sample_size <= 1:
-          raise ValueError("`sample_size` must be greater than 1, but got {}".format(sample_size))
-      data = pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+          raise ValueError(f"`sample_size` must be greater than 1, but got {sample_size}")
+      data = (
+        pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
+      )
     else:
       if not isinstance(background, tuple):
-        raise TypeError(f"`background` must be a tuple (pd.DataFrame, bool).")
+        raise TypeError("`background` must be a tuple (pd.DataFrame, bool).")
       data, with_labels = background
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."
         )
       if not isinstance(data, pd.DataFrame):
-        raise TypeError("The first element of `background` must be a pandas DataFrame, but got {}".format(type(data)))
+        raise TypeError(f"The first element of `background` must be a pandas DataFrame, but got {type(data)}")
       if data.shape[0] < 2:
         warnings.warn("You are giving a single row as a background data, which will lead to biased Shapley values.")
       if data.shape[1] != self.M:
@@ -158,7 +160,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
       cache.set(0, tuple(tau), posterior_with)
       # Contribution of each feature
       for t in tau:
-        key = tuple((f for f in tau if f != t))
+        key = tuple(f for f in tau if f != t)
         posterior_without = cache.get(0, key)
         contributions[t] += self._shap_term(posterior_with, posterior_without, len(elements), len(tau) - 1)
     return contributions
@@ -202,7 +204,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         cache.set(i, tuple(tau), posterior_with)
         # Contribution of each feature
         for t in tau:
-          key = tuple((f for f in tau if f != t))
+          key = tuple(f for f in tau if f != t)
           posterior_without = cache.get(i, key) if len(key) > 0 else cache.get(0, ())
           contributions[t, i] += self._shap_term(posterior_with, posterior_without, len(elements), len(tau) - 1)
     return contributions

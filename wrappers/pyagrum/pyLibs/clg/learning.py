@@ -49,7 +49,6 @@ import pandas as pd
 import numpy as np
 import itertools
 from sklearn.linear_model import LinearRegression
-from typing import Dict, List, Set, Tuple, FrozenSet
 
 from .constants import NodeId
 from .CLG import CLG
@@ -63,13 +62,13 @@ class CLGLearner:
   """
 
   _model: CLG
-  id2samples: Dict[NodeId, List]
+  id2samples: dict[NodeId, list]
   _df: pd.DataFrame
-  sepset: Dict[Tuple[NodeId, NodeId], Set[NodeId]]
+  sepset: dict[tuple[NodeId, NodeId], set[NodeId]]
   _SD: float
-  _V: Set[int]
+  _V: set[int]
   _N: int
-  r_XYZ: Dict[Tuple[FrozenSet[NodeId], FrozenSet[NodeId]], List[float]]
+  r_XYZ: dict[tuple[frozenset[NodeId], frozenset[NodeId]], list[float]]
 
   def __init__(self, filename: str, *, n_sample: int = 15, fwer_delta: float = 0.05):
     """
@@ -269,7 +268,7 @@ class CLGLearner:
       return False  # X and Y are dep
 
   @staticmethod
-  def generate_subsets(S: Set[NodeId]):
+  def generate_subsets(S: set[NodeId]):
     """
     Generator that iterates on all all the subsets of S (from the smallest to the biggest).
 
@@ -305,7 +304,7 @@ class CLGLearner:
           PC = PC - {X}
     return PC
 
-  def RAveL_MB(self, T: NodeId) -> Set[NodeId]:
+  def RAveL_MB(self, T: NodeId) -> set[NodeId]:
     """
     Find the Markov Boundary of variable T with FWER lower than Delta.
 
@@ -372,7 +371,7 @@ class CLGLearner:
           if self.test_indep(Xi, Xj, set(S)):
             # Delete edge Xi − Xj from C
             if verbose:
-              warnings.warn("{0} and {1} are conditionally independent given {2}".format(Xi, Xj, S))
+              warnings.warn(f"{Xi} and {Xj} are conditionally independent given {S}")
             C[Xi].remove(Xj)
             C[Xj].remove(Xi)
             # Let sepset(Xi,Xj) = sepset(Xj,Xi) = S
@@ -492,7 +491,7 @@ class CLGLearner:
               ):  # Xi -> Xj - Xk such that Xi and Xk are not adjacent
                 # Orient Xj -> Xk
                 if verbose:
-                  warnings.warn("Rule 1 applied:{0}->{1}".format(Xj, Xk))
+                  warnings.warn(f"Rule 1 applied:{Xj}->{Xk}")
                 C[Xk].remove(Xj)
                 new_oriented = True
                 break
@@ -509,7 +508,7 @@ class CLGLearner:
               if (Xi not in C[Xk]) and (Xj in C[Xk] and Xk not in C[Xj]):  # Xi -> Xk -> Xj
                 # Orient Xi -> Xj
                 if verbose:
-                  warnings.warn("Rule 2 applied:{0}->{1}".format(Xi, Xj))
+                  warnings.warn(f"Rule 2 applied:{Xi}->{Xj}")
                 C[Xj].remove(Xi)
                 new_oriented = True
                 break
@@ -527,7 +526,7 @@ class CLGLearner:
                 if (Xj in C[Xk] and Xk not in C[Xj]) and (Xj in C[Xl] and Xl not in C[Xj]):  # Xk -> Xj and Xl -> Xj
                   # Orient Xi -> Xj
                   if verbose:
-                    warnings.warn("Rule 3 applied:{0}->{1}".format(Xi, Xj))
+                    warnings.warn(f"Rule 3 applied:{Xi}->{Xj}")
                   C[Xj].remove(Xi)
                   new_oriented = True
                   break
@@ -568,7 +567,7 @@ class CLGLearner:
           if np.std(self.id2samples[Xi]) <= np.std(self.id2samples[Xj]):
             # Orient Xi -> Xj
             if verbose:
-              warnings.warn("Rule 0 applied:{0}->{1}".format(Xi, Xj))
+              warnings.warn(f"Rule 0 applied:{Xi}->{Xj}")
             C[Xj].remove(Xi)
             new_oriented = True
             # We only apply Rule 0 once
@@ -609,16 +608,16 @@ class CLGLearner:
             # Orient Xi -> Xk <- Xj
             if (Xi in C[Xk] and Xk in C[Xi]) and (Xj in C[Xk] and Xk in C[Xj]):
               if verbose:
-                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
+                warnings.warn(f"V-structure found:{Xi}->{Xk}<-{Xj}")
               C[Xk].remove(Xi)
               C[Xk].remove(Xj)
             elif (Xi in C[Xk] and Xk in C[Xi]) and (Xj not in C[Xk] and Xk in C[Xj]):
               if verbose:
-                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
+                warnings.warn(f"V-structure found:{Xi}->{Xk}<-{Xj}")
               C[Xk].remove(Xi)
             elif (Xi not in C[Xk] and Xk in C[Xi]) and (Xj in C[Xk] and Xk in C[Xj]):
               if verbose:
-                warnings.warn("V-structure found:{0}->{1}<-{2}".format(Xi, Xk, Xj))
+                warnings.warn(f"V-structure found:{Xi}->{Xk}<-{Xj}")
               C[Xk].remove(Xj)
 
     # Repeat the following steps until no more edges can be oriented by Step 4

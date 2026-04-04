@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import Tuple
 import pyagrum
 import random
 
@@ -69,7 +68,7 @@ def directTree(graph: pyagrum.MixedGraph, root: NodeId):
     directTree(graph, i)
 
 
-def randomCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
+def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]):
   """
   Fills the ``ctbn``'s CIMs with random values in ``valueRange``.
   Note : as diagonal coefficents are the negative sum of the coefficients one the line,
@@ -113,7 +112,7 @@ def randomCIMs(ctbn: CTBN, valueRange: Tuple[float, float]):
       I1.incOut(I2)
 
 
-def randomCTBN(valueRange: Tuple[float, float], n: int = 1, parMax: int = 1, modal: int = 2) -> CTBN:
+def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, modal: int = 2) -> CTBN:
   """
   Generates a random CTBN using Prufer's sequence.
   Note : as diagonal coefficents are the negative sum of the coefficients one the line in a CIM,

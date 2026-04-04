@@ -85,7 +85,7 @@ from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
 import pyagrum.lib._colors as gumcols
 
 
-class FlowLayout(object):
+class FlowLayout:
   """ "
   A class / object to display plots in a horizontal / flow layout below a cell
 
@@ -239,7 +239,7 @@ def configuration():
   import os
 
   packages = OrderedDict()
-  packages["OS"] = "%s [%s]" % (os.name, sys.platform)
+  packages["OS"] = f"{os.name} [{sys.platform}]"
   packages["Python"] = sys.version
   packages["IPython"] = IPython.__version__
   packages["Matplotlib"] = mpl.__version__
@@ -250,9 +250,9 @@ def configuration():
   res = "<table><tr><th>Library</th><th>Version</th></tr>"
 
   for name in packages:
-    res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
+    res += f"<tr><td>{name}</td><td>{packages[name]}</td></tr>"
 
-  res += "</table><div align='right'><small>%s</small></div>" % time.strftime("%a %b %d %H:%M:%S %Y %Z")
+  res += "</table><div align='right'><small>{}</small></div>".format(time.strftime("%a %b %d %H:%M:%S %Y %Z"))
 
   IPython.display.display(IPython.display.HTML(res))
 
@@ -1236,7 +1236,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
     fraction_with_latex = pyagrum.config["notebook", "tensor_fraction_with_latex"] == "True"
 
   def _rgb(r, g, b):
-    return "#%02x%02x%02x" % (r, g, b)
+    return f"#{r:02x}{g:02x}{b:02x}"
 
   def _mkCell(val):
     s = "<td style='"
