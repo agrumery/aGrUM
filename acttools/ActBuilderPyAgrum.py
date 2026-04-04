@@ -287,14 +287,15 @@ class ActBuilderPyAgrum(ActBuilder):
       for fichier in glob.glob(os.path.join(source_root, "**", "*.i"), recursive=True):
         os.utime(fichier, (now, now))
         notif(f"  + touched : {fichier}")
-    if self.current["build"] != "no-make":
+    if not err and self.current["build"] != "no-make":
       self.run_start(prefix + "make")
       make_cde = self.build_make()
       err = err or 0 != self.execFromLine(make_cde, checkRC=False)
     t2 = time.time()
-    self.run_start(prefix + "post")
-    post_cde = self.build_post()
-    err = err or 0 != self.execFromLine(post_cde, checkRC=False, bufferized=False)
+    if not err:
+      self.run_start(prefix + "post")
+      post_cde = self.build_post()
+      err = err or 0 != self.execFromLine(post_cde, checkRC=False, bufferized=False)
     t3 = time.time()
 
     gc = t1 - t0

@@ -479,7 +479,7 @@ Quand on lance `act test aGrUM` sans qu'aucun fichier n'ait changé, `gumTestInc
 est recompilé inutilement. Identifier pourquoi cmake ou act invalide cette cible à chaque
 invocation et corriger.
 
-### D2. acttools : poursuite après erreur de compilation | I:4 D:2
+~~### D2. acttools : poursuite après erreur de compilation | I:4 D:2~~
 
-Quand `make` échoue (erreur de compilation), `act` continue son exécution au lieu de s'arrêter.
-Il faudrait propager le code de retour non-nul de `make` pour interrompre la suite du pipeline.
+~~**TERMINÉ** — `ActBuilderPyAgrum.build()` n'avait pas de garde `if not err:` avant les phases
+make et post. Aligné sur le patron de `ActBuilderAgrum`.~~
