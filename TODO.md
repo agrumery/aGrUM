@@ -473,11 +473,11 @@ sur toute la chaîne NodeGraphPart → DAG → BayesNet.~~
 
 ## D. Outillage / Build
 
-### D1. acttools : recompilation systématique | I:3 D:3
+~~### D1. acttools : recompilation systématique | I:3 D:3~~
 
-Quand on lance `act test aGrUM` sans qu'aucun fichier n'ait changé, `gumTestIncludes.cpp.o`
-est recompilé inutilement. Identifier pourquoi cmake ou act invalide cette cible à chaque
-invocation et corriger.
+~~**TERMINÉ** — `write_test_list()` écrivait un timestamp dans `testList.cmake` à chaque
+invocation, forçant CMake à régénérer `gumTestIncludes.cpp`. Suppression du timestamp ;
+fichier réécrit seulement si la liste des tests a réellement changé.~~
 
 ~~### D2. acttools : poursuite après erreur de compilation | I:4 D:2~~
 
