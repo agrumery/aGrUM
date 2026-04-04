@@ -47,7 +47,6 @@ import pyagrum
 
 from pyagrum.ctbn import CIM
 from pyagrum.ctbn import CTBN
-from pyagrum.ctbn.constants import NodeId, NameOrId
 
 """
 This file contains inference tools for CTBNs
@@ -117,11 +116,11 @@ class SimpleInference(CTBNInference):
 
     self._joint = (t0 * q._pot).sumOut(list(t0.names))
 
-  def posterior(self, v: NameOrId) -> "pyagrum.Tensor":
+  def posterior(self, v: str | int) -> "pyagrum.Tensor":
     """
     Parameters
     ----------
-    v : NameOrId
+    v : str | int
         Name or id of the variable.
 
     Returns
@@ -152,7 +151,7 @@ class ForwardSamplingInference(CTBNInference):
   ----------
   idtraj : int
       Id of the sample.
-  trajectory : List[Tuple[float, str, str]]
+  trajectory : list[tuple[float, str, str]]
       Contains the trajectory from the last sampling.
 
   Examples
@@ -175,7 +174,7 @@ class ForwardSamplingInference(CTBNInference):
 
     Parameters
     ----------
-    posteriors : Dict[str, pyagrum.Tensor]
+    posteriors : dict[str, pyagrum.Tensor]
         A dict containing a posterior for each variable of the CTBN.
     timeHorizon : float
         Duration of the sampling.
@@ -207,7 +206,7 @@ class ForwardSamplingInference(CTBNInference):
         current.chgVal(v.name(), newval)
         posteriors[v.name()][newval] = 1
 
-    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[NodeId, float]:
+    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[int, float]:
       """
       Chooses the next variable to change value. The variable is chosen by drawing values of all of the variables transition
       time (i.e how much time does a variable stay in the same state). Those durations follow an exponential distribution.
@@ -222,7 +221,7 @@ class ForwardSamplingInference(CTBNInference):
 
       Returns
       -------
-      Tuple[NodeId, float]
+      tuple[int, float]
           The nodeId and transition time of the variable with the lowest transition time.
       """
       indice.setVals(current)
@@ -243,7 +242,7 @@ class ForwardSamplingInference(CTBNInference):
 
       return (argmin, dt)
 
-    def sampleNextState(current: pyagrum.Instantiation, indice: pyagrum.Instantiation, nextEvt: NameOrId) -> str:
+    def sampleNextState(current: pyagrum.Instantiation, indice: pyagrum.Instantiation, nextEvt: str | int) -> str:
       """
       Draw the next state of the variable nextEvt using uniform distribution over its states.
       ``current`` will contain the new value of ``nextEvt``.
@@ -254,7 +253,7 @@ class ForwardSamplingInference(CTBNInference):
           An instantiation of the variables in the ctbn to contain the new value of nextEvt.
       indice : pyagrum.Instantiation
           An instance of the variables in the ctbn plus their from_state/to_state corresponding variables.
-      nextEvt : NameOrId
+      nextEvt : str | int
           Name of id of the next variable to change state.
 
       Returns

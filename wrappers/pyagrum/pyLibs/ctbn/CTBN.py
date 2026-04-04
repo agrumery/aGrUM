@@ -42,7 +42,6 @@
 import pyagrum
 
 from pyagrum.ctbn import CIM
-from pyagrum.ctbn.constants import NodeId, NameOrId
 
 import pyagrum.ctbn
 
@@ -61,18 +60,18 @@ class CTBN:
   ----------
   _graph : pyagrum.DiGraph
       Graph representing dependency relations between variables. Also used to link a variable with an id.
-  _cim : Dict[NodeId, CIM]
+  _cim : dict[int, CIM]
       Dict containing a CIM for each nodeId(the integer given to a variable).
-  _id2var : Dict[NodeId, pyagrum.DiscreteVariable]
+  _id2var : dict[int, pyagrum.DiscreteVariable]
       Dict containing the variable associated to a node id.
-  _name2id : Dict[str, NodeId]
+  _name2id : dict[str, int]
       Dict containing the nodeId associated to a variable's name.
   """
 
   _graph: pyagrum.DiGraph
-  _cim: dict[NodeId, CIM]
-  _id2var: dict[NodeId, pyagrum.DiscreteVariable]
-  _name2id: dict[str, NodeId]
+  _cim: dict[int, CIM]
+  _id2var: dict[int, pyagrum.DiscreteVariable]
+  _name2id: dict[str, int]
 
   def __init__(self):
     self._graph = pyagrum.DiGraph()
@@ -80,7 +79,7 @@ class CTBN:
     self._id2var = {}
     self._name2id = {}
 
-  def add(self, var: pyagrum.DiscreteVariable) -> NodeId:
+  def add(self, var: pyagrum.DiscreteVariable) -> int:
     """
     Add a new variable to the Ctbn.
 
@@ -91,7 +90,7 @@ class CTBN:
 
     Returns
     -------
-    NodeId
+    int
         The id given to the variable.
 
     Raises
@@ -108,8 +107,8 @@ class CTBN:
     if var.name() in self._name2id:
       raise NameError(f"A variable with the same name ({var.name()}) already exists in this CTBN.")
 
-    # link variable to its name and NodeId
-    n = NodeId(self._graph.addNode())
+    # link variable to its name and int
+    n = self._graph.addNode()
     self._id2var[n] = var
     self._name2id[var.name()] = n
 
@@ -122,11 +121,11 @@ class CTBN:
 
     return n
 
-  def _nameOrId(self, val: NameOrId) -> NodeId:
+  def _nameOrId(self, val: str | int) -> int:
     """
     Returns
     -------
-    NodeId
+    int
         The id of a variable.
 
     Raises
@@ -143,20 +142,20 @@ class CTBN:
         raise pyagrum.NotFound("the variable isn't in the ctbn")
       return self._name2id[val]
 
-  def addArc(self, val1: NameOrId, val2: NameOrId) -> tuple[NodeId, NodeId]:
+  def addArc(self, val1: str | int, val2: str | int) -> tuple[int, int]:
     """
     Adds an arc ``val1`` -> ``val2``.
 
     Parameters
     ----------
-    val1 : NameOrId
+    val1 : str | int
         The name or id of the first variable.
-    val2 : NameOrId
+    val2 : str | int
         The name or id of the second variable.
 
     Returns
     -------
-    Tuple[NodeId, NodeId]
+    tuple[int, int]
         The created arc (``val1``, ``val2``).
 
     Raises
@@ -173,15 +172,15 @@ class CTBN:
 
     return (n1, n2)
 
-  def eraseArc(self, val1: NameOrId, val2: NameOrId):
+  def eraseArc(self, val1: str | int, val2: str | int):
     """
     Erases an arc from the graph.
 
     Parameters
     ----------
-    val1 : NameOrId
+    val1 : str | int
         The name or id of the first variable.
-    val2 : NameOrId
+    val2 : str | int
         The name or id of the second variable.
 
     Raises
@@ -196,17 +195,17 @@ class CTBN:
     self._graph.eraseArc(n1, n2)
     self._cim[n2].remove(self._id2var[n1])
 
-  def name(self, node: NodeId) -> str:
+  def name(self, node: int) -> str:
     """
     Parameters
     ----------
-    node : NodeId
+    node : int
         The id of the variable.
 
     Returns
     -------
     str
-        The variable's name linked to the NodeId.
+        The variable's name linked to the int.
 
     Raises
     ------
@@ -217,7 +216,7 @@ class CTBN:
       raise pyagrum.NotFound("The node isn't in the ctbn")
     return self._id2var[node].name()
 
-  def node(self, name: str) -> NodeId:
+  def node(self, name: str) -> int:
     """
     Parameters
     ----------
@@ -226,7 +225,7 @@ class CTBN:
 
     Returns
     -------
-    NodeId
+    int
         The id of the variable.
 
     Raises
@@ -238,11 +237,11 @@ class CTBN:
       raise pyagrum.NotFound("the variable isn't in the ctbn")
     return self._name2id[name]
 
-  def labels(self, val: NameOrId) -> tuple:
+  def labels(self, val: str | int) -> tuple:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The name or id of the variable.
 
     Returns
@@ -257,11 +256,11 @@ class CTBN:
     """
     return self._id2var[self._nameOrId(val)].labels()
 
-  def variable(self, val: NameOrId) -> "pyagrum.DiscreteVariable":
+  def variable(self, val: str | int) -> "pyagrum.DiscreteVariable":
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The name or id of the variable.
 
     Returns
@@ -280,16 +279,16 @@ class CTBN:
     """
     Returns
     -------
-    List[pyagrum.DiscreteVariable]
+    list[pyagrum.DiscreteVariable]
         The list of variables in the CTBN.
     """
     return [self.variable(i) for i in self.nodes()]
 
-  def nodes(self) -> list[NodeId]:
+  def nodes(self) -> list[int]:
     """
     Returns
     -------
-    List[NodeId]
+    list[int]
         The list of variables id in the CTBN.
     """
     return list(self._id2var.keys())
@@ -298,30 +297,30 @@ class CTBN:
     """
     Returns
     -------
-    List[str]
+    list[str]
         The list of variables name in the CTBN.
     """
     return list(self._name2id.keys())
 
-  def arcs(self) -> set[tuple[NodeId, NodeId]]:
+  def arcs(self) -> set[tuple[int, int]]:
     """
     Returns
     -------
-    Set[Tuple[NodeId, NodeId]]
+    set[tuple[int, int]]
         The set of arcs as a set of couple of NodeIds in the CTBN.
     """
     return self._graph.arcs()
 
-  def parents(self, val: NameOrId) -> set[NodeId]:
+  def parents(self, val: str | int) -> set[int]:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The variable's name or id.
 
     Returns
     -------
-    Set[NodeId]
+    set[int]
         A set containing the id of the variable's parents in the CTBN.
 
     Raises
@@ -331,16 +330,16 @@ class CTBN:
     """
     return self._graph.parents(self._nameOrId(val))
 
-  def parentNames(self, val: NameOrId) -> list[str]:
+  def parentNames(self, val: str | int) -> list[str]:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The variable's name or id.
 
     Returns
     -------
-    List[str]
+    list[str]
         A list containing the names of the variable's parents.
 
     Raises
@@ -350,16 +349,16 @@ class CTBN:
     """
     return [self.name(n) for n in self.parents(val)]
 
-  def children(self, val: NameOrId) -> set[NodeId]:
+  def children(self, val: str | int) -> set[int]:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The variable's name or id.
 
     Returns
     -------
-    Set[NodeId]
+    set[int]
         A set containing the ids of the variable's children.
 
     Raises
@@ -369,16 +368,16 @@ class CTBN:
     """
     return self._graph.children(self._nameOrId(val))
 
-  def childrenNames(self, val: NameOrId) -> list[str]:
+  def childrenNames(self, val: str | int) -> list[str]:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The variable's name or id.
 
     Returns
     -------
-    List[str]
+    list[str]
         A list containing the names of a variable's children.
 
     Raises
@@ -388,11 +387,11 @@ class CTBN:
     """
     return [self.name(n) for n in self.children(val)]
 
-  def CIM(self, val: NameOrId) -> CIM:
+  def CIM(self, val: str | int) -> CIM:
     """
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
         The variable's name or id.
 
     Returns

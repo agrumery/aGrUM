@@ -88,7 +88,7 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId or None
+    val : str | int or None
       Name or id of the variable.
 
     Returns
@@ -107,7 +107,7 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId or None
+    val : str | int or None
       Name or id of the variable.
 
     Returns
@@ -126,7 +126,7 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId or None
+    val : str | int or None
       Name or id of the variable.
 
     Returns
@@ -145,7 +145,7 @@ class ForwardSampling:
 
     Parameters
     ----------
-    val : NameOrId
+    val : str | int
       Name or id of the variable.
 
     Returns
@@ -164,7 +164,7 @@ class ForwardSampling:
 
     Parameters
     ----------
-    vals : List[NameOrId] option
+    vals : list[str | int] option
       List of names or ids of the variables.
 
     Returns

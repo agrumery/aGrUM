@@ -45,7 +45,6 @@ The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a 
 import pyagrum
 import random
 
-from .constants import NodeId
 from .GaussianVariable import GaussianVariable
 
 import pyagrum.lib.bn_vs_bn as gcm
@@ -57,9 +56,9 @@ import pandas as pd
 
 class CLG:
   _graph: pyagrum.DAG
-  _id2var: dict[NodeId, GaussianVariable]
-  _name2id: dict[str, NodeId]
-  _arc2coef: dict[tuple[NodeId, NodeId], float or int]
+  _id2var: dict[int, GaussianVariable]
+  _name2id: dict[str, int]
+  _arc2coef: dict[tuple[int, int], float or int]
 
   def __init__(self, clg=None):
     self._graph = pyagrum.DAG()
@@ -99,7 +98,7 @@ class CLG:
 
     Returns
     -------
-    NodeId
+    int
       The id of the added variable.
 
     Raises
@@ -120,7 +119,7 @@ class CLG:
     if var.name() in self._name2id:
       raise NameError(f"A variable with the same name ({var.name()}) already exists in this CLG.")
 
-    n = NodeId(self._graph.addNode())
+    n = self._graph.addNode()
     self._id2var[n] = var
     self._name2id[var.name()] = n
 
@@ -132,7 +131,7 @@ class CLG:
 
     Parameters
     ----------
-    node : NodeId
+    node : int
       The id of the variable.
     mu : float
       The new mean of the variable.
@@ -150,7 +149,7 @@ class CLG:
 
     Parameters
     ----------
-    node : NodeId
+    node : int
       The id of the variable.
     sigma : float
       The new standard deviation of the variable.
@@ -164,17 +163,17 @@ class CLG:
 
   def nameOrId(self, val):
     """
-    Return the NodeId from the name or the NodeId.
+    Return the int from the name or the int.
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
-    NodeId
-      The NodeId of the variable.
+    int
+      The int of the variable.
     """
     return val if isinstance(val, int) else self._name2id[val]
 
@@ -184,16 +183,16 @@ class CLG:
 
     Parameters
     ----------
-    val1 : NameOrId
-      The name or the NodeId of the parent variable.
-    val2 : NameOrId
-      The name or the NodeId of the child variable.
+    val1 : str | int
+      The name or the int of the parent variable.
+    val2 : str | int
+      The name or the int of the child variable.
     coef : float or int
       The coefficient of the arc.
 
     Returns
     -------
-    Tuple[NodeId, NodeId]
+    tuple[int, int]
       The tuple of the NodeIds of the parent and the child variables.
 
     Raises
@@ -220,10 +219,10 @@ class CLG:
 
     Parameters
     ----------
-    val1 : NameOrId
-      The name or the NodeId of the parent variable.
-    val2 : NameOrId
-      The name or the NodeId of the child variable.
+    val1 : str | int
+      The name or the int of the parent variable.
+    val2 : str | int
+      The name or the int of the child variable.
 
     Returns
     -------
@@ -246,10 +245,10 @@ class CLG:
 
     Parameters
     ----------
-    val1 : NameOrId
-      The name or the NodeId of the parent variable.
-    val2 : NameOrId
-      The name or the NodeId of the child variable.
+    val1 : str | int
+      The name or the int of the parent variable.
+    val2 : str | int
+      The name or the int of the child variable.
     coef : float or int
       The new coefficient of the arc.
 
@@ -296,7 +295,7 @@ class CLG:
 
     Parameters
     ----------
-    node : NodeId
+    node : int
       The id of the variable.
 
     Returns
@@ -313,7 +312,7 @@ class CLG:
 
   def idFromName(self, name):
     """
-    Return the NodeId from the name.
+    Return the int from the name.
 
     Parameters
     ----------
@@ -322,8 +321,8 @@ class CLG:
 
     Returns
     -------
-    NodeId
-      The NodeId of the variable.
+    int
+      The int of the variable.
 
     Raises
     ------
@@ -334,12 +333,12 @@ class CLG:
 
   def variable(self, val):
     """
-    Return the variable from the NodeId or from the name.
+    Return the variable from the int or from the name.
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
@@ -359,7 +358,7 @@ class CLG:
 
     Returns
     -------
-    List[GaussianVariable]
+    list[GaussianVariable]
       The list of the variables in the CLG.
     """
     return [self.variable(i) for i in self.nodes()]
@@ -370,7 +369,7 @@ class CLG:
 
     Returns
     -------
-    List[NodeId]
+    list[int]
       The list of NodeIds in the CLG.
     """
     return list(self._id2var.keys())
@@ -381,7 +380,7 @@ class CLG:
 
     Returns
     -------
-    List[str]
+    list[str]
       The list of names in the CLG.
     """
     return list(self._name2id.keys())
@@ -392,7 +391,7 @@ class CLG:
 
     Returns
     -------
-    List[Tuple[NodeId, NodeId]]
+    list[tuple[int, int]]
       The list of arcs in the CLG.
     """
     return self._graph.arcs()
@@ -403,10 +402,10 @@ class CLG:
 
     Parameters
     ----------
-    val1 : NameOrId
-      The name or the NodeId of the parent variable.
-    val2 : NameOrId
-      The name or the NodeId of the child variable.
+    val1 : str | int
+      The name or the int of the parent variable.
+    val2 : str | int
+      The name or the int of the child variable.
 
     Returns
     -------
@@ -434,12 +433,12 @@ class CLG:
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
-    Set[NodeId]
+    set[int]
       The set of parent nodes' ids.
     """
     return self._graph.parents(self.nameOrId(val))
@@ -450,12 +449,12 @@ class CLG:
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
-    List[str]
+    list[str]
       The list of val's parents' names.
     """
     return [self.name(n) for n in self.parents(val)]
@@ -466,12 +465,12 @@ class CLG:
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
-    Set[NodeId]
+    set[int]
       The set of children nodes' ids.
     """
     return self._graph.children(self.nameOrId(val))
@@ -482,12 +481,12 @@ class CLG:
 
     Parameters
     ----------
-    val : NameOrId
-      The name or the NodeId of the variable.
+    val : str | int
+      The name or the int of the variable.
 
     Returns
     -------
-    List[str]
+    list[str]
       The list of val's children's names.
     """
     return [self.name(n) for n in self.children(val)]
@@ -498,7 +497,7 @@ class CLG:
 
     Returns
     -------
-    List[NodeId]
+    list[int]
       The list of NodeIds in the topological order.
     """
     return self._graph.topologicalOrder()
@@ -509,7 +508,7 @@ class CLG:
 
     Returns
     -------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       A directed graph DAG representing the causal structure.
     """
     V = self.nodes()

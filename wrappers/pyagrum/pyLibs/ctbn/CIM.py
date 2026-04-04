@@ -155,7 +155,7 @@ class CIM:
 
     Parameters
     ----------
-    ctxt : Optional[Dict[str, str]]
+    ctxt : Optional[dict[str, str]]
         Instantiation of variables.
 
     Returns
@@ -180,7 +180,7 @@ class CIM:
     """
     Returns
     -------
-    List[str]
+    list[str]
         A list containing the name of each variable in the CIM.
     """
     # return self._pot.varNames
@@ -190,7 +190,7 @@ class CIM:
     """
     Returns
     -------
-    List[pyagrum.DiscreteVariable]
+    list[pyagrum.DiscreteVariable]
         A list containing the sequence of variables of the CIM.
     """
     return self._pot.variablesSequence()
@@ -338,7 +338,7 @@ class CIM:
 
     Parameters
     ----------
-    ctxt : Optional[Dict[str, str]] | None
+    ctxt : Optional[dict[str, str]] | None
         Instantiation of variables to use if given.
 
     Returns

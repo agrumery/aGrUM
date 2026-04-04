@@ -65,7 +65,7 @@ class IndepTest:
         Head of the arc we want to test.
     Y : str
         Tail of the arc we want to test.
-    U : List[str]
+    U : list[str]
         Known parents.
     """
     pass
@@ -92,7 +92,7 @@ class Oracle(IndepTest):
         Head of the arc we want to test.
     Y : str
         Tail of the arc we want to test.
-    U : List[str]
+    U : list[str]
         Known parents.
 
     Returns
@@ -155,7 +155,7 @@ class FChi2Test(IndepTest):
         Name of the variable.
     Y : str
         Name of the variable to test independence from, not in ``U``.
-    U : List[str]
+    U : list[str]
         List of conditioning variables.
     """
     self.stats: Stats = Stats(self.tr, X, Y, U)
@@ -186,7 +186,7 @@ class FChi2Test(IndepTest):
         Name of the variable.
     Y : str
         Name of the variable to test independence from, not in ``U``.
-    U : List[str]
+    U : list[str]
         List of conditioning variables.
 
     Returns
@@ -281,7 +281,7 @@ class FChi2Test(IndepTest):
         A random variable.
     Y : str
         A parent of ``X``.
-    _: List[str]
+    _: list[str]
         A subset of the parents of ``X`` that does not contain ``Y``.
 
     Returns
@@ -322,7 +322,7 @@ class FChi2Test(IndepTest):
         A random variable.
     Y : str
         A parent of ``X``.
-    _: List[str]
+    _: list[str]
         A subset of the parents of ``X`` that does not contain ``Y``.
 
     Returns

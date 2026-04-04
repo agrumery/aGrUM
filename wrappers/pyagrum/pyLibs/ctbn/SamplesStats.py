@@ -65,7 +65,7 @@ def readTrajectoryCSV(filename: str) -> dict[int, list[tuple[float, str, str]]]:
 
   Returns
   -------
-  Dict[int, List[Tuple[float, str, str]]]
+  dict[int, list[tuple[float, str, str]]]
       The trajectories, a trajectory for every index.
   """
   data = dict()
@@ -90,7 +90,7 @@ def plotTrajectory(
   ----------
   v : pyagrum.DiscreteVariable
       Variable to follow.
-  traj : List[Tuple[float, str, str]]
+  traj : list[tuple[float, str, str]]
       Trajectory to plot.
   timeHorizon : float
       Maximum time length to show.
@@ -145,7 +145,7 @@ def plotFollowVar(
   ----------
   v : pyagrum.DiscreteVariable
       The variable to follow.
-  trajectories : Dict[int, List[Tuple[float, str, str]]]
+  trajectories : dict[int, list[tuple[float, str, str]]]
       Contains trajectories. The result is a mean over all the trajectories.
   timeHorizon : float
       Maximum time length to plot. If None, then the entire time length of the trajectories is used.
@@ -219,7 +219,7 @@ def CTBNFromData(data: dict[int, list[tuple[float, str, str]]]) -> CTBN:
 
   Parameters
   ----------
-  data : Dict[int, List[Tuple[float, str, str]]]
+  data : dict[int, list[tuple[float, str, str]]]
       The trajectories used to look for variables.
 
   Returns
@@ -306,7 +306,7 @@ class Trajectory:
 
   Parameters
   ----------
-  source : str|Dict[int, List[Tuple[float, str, str]]]
+  source : str|dict[int, list[tuple[float, str, str]]]
       The path to a csv file containing the samples or the dict of trajectories itself.
   ctbn : CTBN
       To link the variables's name in the trajectory to their pyAgrum variable. If not given, a new CTBN is created
@@ -315,7 +315,7 @@ class Trajectory:
 
   Attributes
   ----------
-  data : Dict[int, List[Tuple[float, str, str]]]
+  data : dict[int, list[tuple[float, str, str]]]
       The samples.
   ctbn : CTBN
       The CTBN used to link the names in the trajectory to pyAgrum variables.
@@ -344,7 +344,7 @@ class Trajectory:
     ----------
     X : str
         Name of the variable.
-    inst_u : Dict[str, str]
+    inst_u : dict[str, str]
         Instance of conditioning variables.
     Txu : pyagrum.Tensor
         Tensor to fill. Contains the time spent in each state.
@@ -424,12 +424,12 @@ class Trajectory:
     ----------
     X : str
         Name of the variable.
-    U : List[str]
+    U : list[str]
         List of conditioning variable's name.
 
     Returns
     -------
-    Tuple[pyagrum.Tensor, pyagrum.Tensor]
+    tuple[pyagrum.Tensor, pyagrum.Tensor]
         The resulting tensors.
     """
     par = [self.ctbn.variable(nv) for nv in U]
@@ -485,7 +485,7 @@ class Trajectory:
         Name of the variable.
     Y : str
         Name of a conditioning variable.
-    inst_u : Dict[str, str]
+    inst_u : dict[str, str]
         Instance of conditioning variables.
     Txu : pyagrum.Tensor
         Tensor to fill. Contains the time spent in each state. Conditioned by variables in ``inst_u``.
@@ -580,12 +580,12 @@ class Trajectory:
         Name of the variable.
     Y : str
         Name of a conditioning variable not in ``U``.
-    U : List[str]
+    U : list[str]
         List of conditioning variable's name.
 
     Returns
     -------
-    Tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]
+    tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]
         The resulting tensors.
     """
     par = [self.ctbn.variable(nv) for nv in U]
@@ -642,7 +642,7 @@ class Stats:
       Name of the variable to study.
   Y : str
       Name of the variable used for conditioning variable ``X``.
-  par : List[str]
+  par : list[str]
       List of conditioning variables of ``X``.
 
   Attributes

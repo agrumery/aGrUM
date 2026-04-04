@@ -106,7 +106,7 @@ class SEM:
 
     Returns
     -------
-    Tuple[str, int] or Tuple[None, None]
+    tuple[str, int] or tuple[None, None]
       The match and the position of the next character if the string matches the pattern.
     """
     res = pattern.match(s[pos:])
@@ -127,7 +127,7 @@ class SEM:
 
     Returns
     -------
-    Tuple[str, Dict[str, str | float], float]
+    tuple[str, dict[str, str | float], float]
       The name of the variable, the dictionary of the terms and the standard deviation.
     """
 

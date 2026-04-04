@@ -43,14 +43,13 @@ import random
 
 from pyagrum.ctbn import CIM
 from pyagrum.ctbn import CTBN
-from pyagrum.ctbn.constants import NodeId
 
 """
 This file is used to generate random CTBNs using Prufer code
 """
 
 
-def directTree(graph: pyagrum.MixedGraph, root: NodeId):
+def directTree(graph: pyagrum.MixedGraph, root: int):
   """
   Direct a undirected tree.
 
@@ -58,7 +57,7 @@ def directTree(graph: pyagrum.MixedGraph, root: NodeId):
   ----------
   graph : pyagrum.MixedGraph
       A graph that contains directed/undirected arcs.
-  root : NodeId
+  root : int
       Root of the tree to direct.
   """
   for i in graph.neighbours(root):
@@ -78,7 +77,7 @@ def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]):
   ----------
   ctbn : CTBN
       The ctbn to fill.
-  valueRange : Tuple[float, float]
+  valueRange : tuple[float, float]
       Range to choose values from when filling the cims.
   """
 
@@ -120,7 +119,7 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
 
   Parameters
   ----------
-  valueRange : Tuple[float, float]
+  valueRange : tuple[float, float]
       Range to choose values from when filling the CIMs.
   n : int
       Number of variables.

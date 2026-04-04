@@ -78,7 +78,7 @@ class CanonicalForm:
 
     Returns
     ------
-    List[int]
+    list[int]
             The scope of the canonical form.
     """
     return self._scope
@@ -92,13 +92,13 @@ class CanonicalForm:
     ----------
     variable : int
       The variable to which the clg density is associated.
-    parents : List[int]
+    parents : list[int]
       Parents of the variable in the graph.
     mu : float
       The intercept of the linear regression.
     sigma : float
       The variance of the clg density.
-    B : List[float]
+    B : list[float]
       The weights of the linear regression.
 
     Returns
@@ -141,7 +141,7 @@ class CanonicalForm:
 
     Returns
     -------
-    List[int]
+    list[int]
       Parematers of the Gaussian associated to the canonical form.
     """
     Sigma = inv(self._K)
@@ -157,7 +157,7 @@ class CanonicalForm:
     ----------
     matrix : np.array
       The matrix to permute.
-    permutation : List[int]
+    permutation : list[int]
       The permutation to use.
 
     Returns
@@ -179,7 +179,7 @@ class CanonicalForm:
     ----------
     vector : np.array
       The vector to permute.
-    permutation : List[int]
+    permutation : list[int]
       The permutation to use.
 
     Returns
@@ -209,7 +209,7 @@ class CanonicalForm:
 
     Parameters
     ----------
-    variables : List[int]
+    variables : list[int]
             The variables to add to the scope.
 
     Returns
@@ -324,7 +324,7 @@ class CanonicalForm:
 
     Parameters
     ----------
-    variables : List[int]
+    variables : list[int]
       The variables to marginalize.
 
     Returns
@@ -367,7 +367,7 @@ class CanonicalForm:
 
     Parameters
     ----------
-    evidences : Dict[int, float]
+    evidences : dict[int, float]
       The evidences.
 
     Returns

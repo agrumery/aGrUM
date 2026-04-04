@@ -50,7 +50,6 @@ import numpy as np
 import itertools
 from sklearn.linear_model import LinearRegression
 
-from .constants import NodeId
 from .CLG import CLG
 from .GaussianVariable import GaussianVariable
 
@@ -62,13 +61,13 @@ class CLGLearner:
   """
 
   _model: CLG
-  id2samples: dict[NodeId, list]
+  id2samples: dict[int, list]
   _df: pd.DataFrame
-  sepset: dict[tuple[NodeId, NodeId], set[NodeId]]
+  sepset: dict[tuple[int, int], set[int]]
   _SD: float
   _V: set[int]
   _N: int
-  r_XYZ: dict[tuple[frozenset[NodeId], frozenset[NodeId]], list[float]]
+  r_XYZ: dict[tuple[frozenset[int], frozenset[int]], list[float]]
 
   def __init__(self, filename: str, *, n_sample: int = 15, fwer_delta: float = 0.05):
     """
@@ -94,8 +93,8 @@ class CLGLearner:
     for node in self._model.nodes():
       self.id2samples[node] = self._df[self._model.name(node)].tolist()
 
-    self._V = set(self._model.nodes())  # set of NodeId
-    L = len(self._V)  # the degree of NodeId set
+    self._V = set(self._model.nodes())  # set of int
+    L = len(self._V)  # the degree of int set
     self._N = L * (L - 1) * (2 ** (L - 3))  # the maximum number of hypotheses that coulbe be tested is N
     self.r_XYZ = {}
 
@@ -110,11 +109,11 @@ class CLGLearner:
 
     Parmeters
     ---------
-    X : NodeId
+    X : int
       id of the first variable tested.
-    Y : NodeId
+    Y : int
       id of the second variable tested.
-    Z : Set[NodeId]
+    Z : set[int]
       The conditioned variable's id set.
     """
     K = len(self.id2samples[X])  # number of samples
@@ -156,7 +155,7 @@ class CLGLearner:
 
     Returns
     -------
-    List[Tuple[Set[NodeId], Set[NodeId]]]
+    list[tuple[set[int], set[int]]]
       All the possible combinations of X, Y and Z.
     """
     s = set(l)
@@ -245,11 +244,11 @@ class CLGLearner:
 
     Parameters
     ----------
-    X : NodeId
+    X : int
       The id of the first variable tested.
-    Y : NodeId
+    Y : int
       The id of the second variable tested.
-    Z : Set[NodeId]
+    Z : set[int]
       The conditioned variable's id set.
 
     Returns
@@ -268,13 +267,13 @@ class CLGLearner:
       return False  # X and Y are dep
 
   @staticmethod
-  def generate_subsets(S: set[NodeId]):
+  def generate_subsets(S: set[int]):
     """
     Generator that iterates on all all the subsets of S (from the smallest to the biggest).
 
     Parameters
     ----------
-    S : Set[NodeId]
+    S : set[int]
       The set of variables.
     """
     l = list(S)
@@ -288,12 +287,12 @@ class CLGLearner:
 
     Parameters
     ----------
-    T : NodeId
+    T : int
       The id of the target variable T.
 
     Returns
     -------
-    Set[NodeId]
+    set[int]
       The Parent-Children of variable T with FWER lower than Delta.
     """
     PC = self._V - {T}
@@ -304,18 +303,18 @@ class CLGLearner:
           PC = PC - {X}
     return PC
 
-  def RAveL_MB(self, T: NodeId) -> set[NodeId]:
+  def RAveL_MB(self, T: int) -> set[int]:
     """
     Find the Markov Boundary of variable T with FWER lower than Delta.
 
     Parameters
     ----------
-    T : NodeId
+    T : int
       The id of the target variable T.
 
     Returns
     -------
-    MB : Set[NodeId]
+    MB : set[int]
       The Markov Boundary of variable T with FWER lower than Delta.
     """
     # find PC(T)
@@ -336,9 +335,9 @@ class CLGLearner:
 
     Parameters
     ----------
-    order : List[NodeId]
+    order : list[int]
       The order of the variables.
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The temporary skeleton.
     l : int
       The size of the sepset
@@ -351,7 +350,7 @@ class CLGLearner:
       True if a new edge is found, False if not.
     """
     found_edge = False
-    V = list(self._V)  # set of NodeId
+    V = list(self._V)  # set of int
     # Select a (new) ordered pair of vertices (Xi, Xj) that are adjacent in C and satisfy |C[Xi]\{Xj}| ≥ l, using order(V)
     for i in range(len(V)):
       Xi = order[i]
@@ -390,16 +389,16 @@ class CLGLearner:
 
     Parameters
     ----------
-    order : List[NodeId]
+    order : list[int]
       A particular order of the Nodes.
     verbose : bool
       Whether to print the process of Adjacency Search.
 
     Returns
     -------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The temporary skeleton.
-    sepset : Dict[Tuple[NodeId, NodeId], Set[NodeId]]
+    sepset : dict[tuple[int, int], set[int]]
       Sepset(which will be used in Step2&3 of PC-Algo).
     """
 
@@ -409,11 +408,11 @@ class CLGLearner:
 
       Parameters
       ----------
-      V : List[NodeId]
-        The list of NodeId.
-      order : List[NodeId]
+      V : list[int]
+        The list of int.
+      order : list[int]
         A particular order of the Nodes.
-      C : Dict[NodeId, Set[NodeId]]
+      C : dict[int, set[int]]
         The temporary skeleton.
       l : int
         The size of the sepset.
@@ -437,7 +436,7 @@ class CLGLearner:
       return all_satisfied
 
     # Form the complete undirected graph C on the vertex set V
-    V = list(self._V)  # set of NodeId
+    V = list(self._V)  # set of int
     C = {v: set() for v in V}  # C is shown by a Adjacency List
     for i in range(len(V) - 1):
       for j in range(i + 1, len(V)):
@@ -467,14 +466,14 @@ class CLGLearner:
 
     Parameters
     ----------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The temporary skeleton.
     verbose : bool
       Whether to print the process of this function.
 
     Returns
     -------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The final skeleton (of Step3).
     """
     while True:
@@ -547,14 +546,14 @@ class CLGLearner:
 
     Parameters
     ----------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The temporary skeleton.
     verbose : bool
       Whether to print the process of Step4.
 
     Returns
     -------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       The final skeleton (of Step4).
     new_oriented : bool
       Whether there is a new edge oriented in the fourth step.
@@ -583,14 +582,14 @@ class CLGLearner:
 
     Parameters
     ----------
-    order : List[NodeId]
+    order : list[int]
       A particular order of the Nodes.
     verbose : bool
       Whether to print the process of the PC algorithm.
 
     Returns
     -------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       A directed graph DAG representing the causal structure.
     """
     # Step 1: Apply Adjacency_search() to obtain a skeleton C and a set of sepsets
@@ -647,16 +646,16 @@ class CLGLearner:
 
     Parameters
     ----------
-    C : Dict[NodeId, Set[NodeId]]
+    C : dict[int, set[int]]
       A directed graph DAG representing the causal structure.
 
     Returns
     -------
-    id2mu : Dict[NodeId, float]
+    id2mu : dict[int, float]
       The estimated mean of each node.
-    id2sigma : Dict[NodeId, float]
+    id2sigma : dict[int, float]
       The estimated variance of each node.
-    arc2coef : Dict[Tuple[NodeId, NodeId], float]
+    arc2coef : dict[tuple[int, int], float]
       The estimated coefficients of each arc.
     """
     # Initialization

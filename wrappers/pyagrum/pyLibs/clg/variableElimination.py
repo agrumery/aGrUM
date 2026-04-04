@@ -222,7 +222,7 @@ class CLGVariableElimination:
       A list of canonical forms with variables in elimination_order eliminated.
     """
 
-    # Converting from dict[str, float] to dict[NodeId, float]
+    # Converting from dict[str, float] to dict[int, float]
     evidence = {self._clg._name2id[name]: evidence[name] for name in evidence.keys()}
 
     # Reducing the canonical forms containing observed variables

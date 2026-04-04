@@ -42,13 +42,7 @@
 The purpose of this module is to define the constants used in the package.
 """
 
-from typing import NewType
-
 ALPHA: float = 0.95
 INFINITY: float = 10e9
 REJECT = True
 FAIL_TO_REJECT = False
-
-Domain: type = list[str]
-NodeId: type = NewType("NodeId", int)
-NameOrId: type = str | NodeId

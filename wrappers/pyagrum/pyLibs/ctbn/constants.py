@@ -38,8 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import NewType
-
 """
 This file contains constants and defines types.
 """
@@ -48,7 +46,3 @@ ALPHA: float = 0.95
 INFINITY: float = 10e9
 REJECT = True
 FAIL_TO_REJECT = False
-
-Domain: type = list[str]
-NodeId: type = NewType("NodeId", int)
-NameOrId: type = str | NodeId

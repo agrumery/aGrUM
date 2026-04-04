@@ -56,7 +56,7 @@ class Learner:
 
   Parameters
   ----------
-  source : str|Dict[int, List[Tuple[float, str, str]]]
+  source : str|dict[int, list[tuple[float, str, str]]]
           Path to the csv file containing the samples(trajectories). Or directly the trajectories in a python dict.
   """
 
@@ -96,7 +96,7 @@ class Learner:
         The learned ctbn.
     """
     test = pyagrum.ctbn.FChi2Test(Trajectory(self.data))
-    # List[pyagrum.DiscreteVariable] : list of all the variables of our Ctbn
+    # list[pyagrum.DiscreteVariable] : list of all the variables of our Ctbn
     newVariableList = []
 
     newGraph = pyagrum.DiGraph()
@@ -114,7 +114,7 @@ class Learner:
         newCtbn.add(var)
       )  # makes the link between the variable and its corresponding node in the DiGraph
 
-    # List[int] : list of the indexes of all the nodes
+    # list[int] : list of the indexes of all the nodes
     variableIdList = newGraph.nodes()
 
     # We add all the possible arcs first (initialisation of the Ctbn)
@@ -125,7 +125,7 @@ class Learner:
           newGraph.addArc(id1, id2)  # arc from var1 to var2
 
     for Xi in variableIdList:  # (2.)
-      # List[int] : "U" in the Continuous-time PC Algorithm (2.1)
+      # list[int] : "U" in the Continuous-time PC Algorithm (2.1)
       parentsIdList = list(newGraph.parents(Xi))
       length = len(parentsIdList)
 
