@@ -273,9 +273,9 @@ def counterfactualModel(cm, profile=None, whatif=None):
         return int(width/2)
 
       def get_title(f:pyagrum.CausalImpact):
-        label=f"P({",".join(f.onNames())}|do({",".join(f.doingNames())})"
+        label=f"P({','.join(f.onNames())}|do({','.join(f.doingNames())})"
         if len(f.knowingNames())>0:
-              label+=f",{",".join(f.knowingNames())}"
+              label+=f",{','.join(f.knowingNames())}"
         label+=")"
         return label
 

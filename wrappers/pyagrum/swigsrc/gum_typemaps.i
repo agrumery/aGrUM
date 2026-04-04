@@ -212,6 +212,132 @@
   $result = PyAgrumHelper::PySetFromEdgeSet(*$1);
 }
 
+// std::vector<int> -> Python tuple[int]
+// SwigValueWrapper<T> (by-value return) only exposes operator T&&(), not T&.
+// Move-construct a local lvalue before iterating.
+// Return tuple to match historic swig::from behaviour.
+%typemap(out) std::vector<int> {
+  std::vector<int> _v = std::move($1);
+  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyLong_FromLong(_v[_i]));
+}
+%typemap(out) const std::vector<int>& {
+  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyLong_FromLong((*$1)[_i]));
+}
+
+// std::vector<double> -> Python tuple[float]
+%typemap(out) std::vector<double> {
+  std::vector<double> _v = std::move($1);
+  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyFloat_FromDouble(_v[_i]));
+}
+%typemap(out) const std::vector<double>& {
+  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyFloat_FromDouble((*$1)[_i]));
+}
+
+// std::vector<std::string> -> Python tuple[str]
+%typemap(out) std::vector<std::string> {
+  std::vector<std::string> _v = std::move($1);
+  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyUnicode_FromString(_v[_i].c_str()));
+}
+%typemap(out) const std::vector<std::string>& {
+  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM($result, _i, PyUnicode_FromString((*$1)[_i].c_str()));
+}
+
+// std::vector<int> <- Python sequence[int]
+%typemap(in) const std::vector<int>& (std::vector<int> _tmp_vi) {
+  if (!PySequence_Check($input) || PyUnicode_Check($input)) {
+    PyErr_SetString(PyExc_TypeError, "expected a sequence of ints");
+    SWIG_fail;
+  }
+  Py_ssize_t _n = PySequence_Size($input);
+  _tmp_vi.reserve(static_cast<std::size_t>(_n));
+  for (Py_ssize_t _i = 0; _i < _n; ++_i) {
+    PyObject* _item = PySequence_GetItem($input, _i);
+    if (!_item) SWIG_fail;
+    long _val = PyLong_AsLong(_item);
+    Py_DECREF(_item);
+    if (_val == -1 && PyErr_Occurred()) SWIG_fail;
+    _tmp_vi.push_back(static_cast<int>(_val));
+  }
+  $1 = &_tmp_vi;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_INT32_ARRAY) const std::vector<int>& {
+  $1 = (PySequence_Check($input) && !PyUnicode_Check($input)) ? 1 : 0;
+}
+
+// std::vector<double> <- Python sequence[float]
+%typemap(in) const std::vector<double>& (std::vector<double> _tmp_vd) {
+  if (!PySequence_Check($input) || PyUnicode_Check($input)) {
+    PyErr_SetString(PyExc_TypeError, "expected a sequence of floats");
+    SWIG_fail;
+  }
+  Py_ssize_t _n = PySequence_Size($input);
+  _tmp_vd.reserve(static_cast<std::size_t>(_n));
+  for (Py_ssize_t _i = 0; _i < _n; ++_i) {
+    PyObject* _item = PySequence_GetItem($input, _i);
+    if (!_item) SWIG_fail;
+    double _val = PyFloat_AsDouble(_item);
+    Py_DECREF(_item);
+    if (_val == -1.0 && PyErr_Occurred()) SWIG_fail;
+    _tmp_vd.push_back(_val);
+  }
+  $1 = &_tmp_vd;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_DOUBLE_ARRAY) const std::vector<double>& {
+  $1 = (PySequence_Check($input) && !PyUnicode_Check($input)) ? 1 : 0;
+}
+
+// std::vector<std::string> <- Python sequence[str]
+%typemap(in) const std::vector<std::string>& (std::vector<std::string> _tmp_vs) {
+  if (!PySequence_Check($input) || PyUnicode_Check($input)) {
+    PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
+    SWIG_fail;
+  }
+  Py_ssize_t _n = PySequence_Size($input);
+  _tmp_vs.reserve(static_cast<std::size_t>(_n));
+  for (Py_ssize_t _i = 0; _i < _n; ++_i) {
+    PyObject* _item = PySequence_GetItem($input, _i);
+    if (!_item) SWIG_fail;
+    _tmp_vs.push_back(PyAgrumHelper::stringFromPyObject(_item));
+    Py_DECREF(_item);
+  }
+  $1 = &_tmp_vs;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) const std::vector<std::string>& {
+  // Accept only sequences whose first element is a string.
+  // This lets PyObject* %extend dispatchers handle int-element sequences.
+  $1 = 0;
+  if (PySequence_Check($input) && !PyUnicode_Check($input)) {
+    Py_ssize_t _tc_sz = PySequence_Size($input);
+    if (_tc_sz == 0) {
+      $1 = 1;  // empty sequence: accept
+    } else {
+      PyObject* _tc_first = PySequence_GetItem($input, 0);
+      if (_tc_first) {
+        $1 = PyUnicode_Check(_tc_first) ? 1 : 0;
+        Py_DECREF(_tc_first);
+      }
+    }
+  }
+}
+
 // std::vector<gum::NodeId> -> Python list[int]
 %typemap(out) std::vector<gum::NodeId> {
   $result = PyAgrumHelper::PyListFromNodeVect($1);

@@ -1834,8 +1834,8 @@ def getCausalImpact(
 
 def showCausalImpact(
   model: pyagrum.CausalModel,
-  on: Union[str, NameSet],
-  doing: Union[str, NameSet],
+  on: str | NameSet,
+  doing: str | NameSet,
   knowing: Optional[NameSet] = None,
   values: Optional[Dict[str, int]] = None,
 ):

@@ -51,4 +51,4 @@ FAIL_TO_REJECT = False
 
 Domain: type = list[str]
 NodeId: type = NewType("NodeId", int)
-NameOrId: type = Union[str, NodeId]
+NameOrId: type = str | NodeId

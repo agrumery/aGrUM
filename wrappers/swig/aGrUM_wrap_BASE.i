@@ -70,13 +70,6 @@
 %include "std_unique_ptr.i"
 %unique_ptr(gum::DiscreteVariable) // to handle gum::fastVariable
 
-namespace std {
-    %template ( Vector) vector<double>;
-    //%template ( Vector_uint) vector<unsigned int>;
-    %template ( Vector_int) vector<int>;
-    %template ( Vector_string) vector<string>;
-}
-
 
 %ignore *::newFactory;
 
