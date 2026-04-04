@@ -56,7 +56,10 @@ namespace gum {
 
   INLINE PDAG& PDAG::operator=(const PDAG& g) {
     // avoid self assignment
-    if (this != &g) { MixedGraph::operator=(g); }
+    if (this != &g) {
+      MixedGraph::operator=(g);
+      GUM_OP_CPY(PDAG);
+    }
 
     return *this;
   }

@@ -88,7 +88,10 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   IBayesNet< GUM_SCALAR >&
       IBayesNet< GUM_SCALAR >::operator=(const IBayesNet< GUM_SCALAR >& source) {
-    if (this != &source) { DAGmodel::operator=(source); }
+    if (this != &source) {
+      DAGmodel::operator=(source);
+      GUM_OP_CPY(IBayesNet);
+    }
 
     return *this;
   }

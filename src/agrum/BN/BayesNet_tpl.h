@@ -155,6 +155,7 @@ namespace gum {
       IBayesNet< GUM_SCALAR >::operator=(source);
       _clearTensors_();
       _copyTensors_(source);
+      GUM_OP_CPY(BayesNet);
     }
 
     return *this;

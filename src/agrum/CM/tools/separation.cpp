@@ -215,10 +215,10 @@ namespace gum {
   bool
       Separation::anyUndirectedConnection(const UndiGraph& ug, const NodeSet& A, const NodeSet& B) {
     GUM_ASSERT(!A.empty() && !B.empty());
-    GUM_ASSERT(ug.nodes().supersetOf(A + B));
+    GUM_ASSERT(ug.nodes().asNodeSet().isSupersetOrEqual(A + B));
 
     // early exit if A and B share a node
-    if (!(A * B).empty()) return true;
+    if (!(A * B).empty()) { return true; }
 
     // DFS seeded with all nodes of A at once
     NodeSet               visited;

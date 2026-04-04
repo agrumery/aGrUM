@@ -50,6 +50,8 @@
 
 #include <doctest/doctest.h>
 
+#include <agrum/base/core/utils_misc.h>
+
 namespace gum_test {
 
   /**
@@ -110,6 +112,9 @@ namespace gum_test {
       if (!_lastSuite.empty())
         _out << " (" << _currentSuiteCount << " tests, " << std::fixed << std::setprecision(1)
              << _currentSuiteTime << "s)\n";
+
+      gum::_atexit_();
+
       if (_modules.empty()) return;
 
       printTimingSummary();

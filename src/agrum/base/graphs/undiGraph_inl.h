@@ -71,6 +71,7 @@ namespace gum {
       UndiGraph::clear();
       NodeGraphPart::operator=(g);
       EdgeGraphPart::operator=(g);
+      GUM_OP_CPY(UndiGraph);
     }
 
     return *this;

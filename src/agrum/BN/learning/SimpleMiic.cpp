@@ -399,7 +399,7 @@ namespace gum {
       }   // while
 
       // erasing the double headed arcs
-      GUM_TRACE(_latentCouples_)
+      //GUM_TRACE(_latentCouples_)
       for (auto iter = _latentCouples_.rbegin(); iter != _latentCouples_.rend(); ++iter) {
         graph.eraseArc(Arc(iter->head(), iter->tail()));
         if (_existsDirectedPath_(graph, iter->head(), iter->tail())) {
@@ -817,7 +817,7 @@ namespace gum {
 
     /// get the list of arcs hiding latent variables
     const std::vector< Arc > SimpleMiic::latentVariables() const {
-      GUM_CHECKPOINT
+      // GUM_CHECKPOINT
       return _latentCouples_;
     }
 
@@ -922,7 +922,7 @@ namespace gum {
           // GUM_TRACE("1.c Adding arc (" << y << "," << z << ")")
           marks[{y, z}] = '>';
           if (graph.existsArc(z, y) && _isNotLatentCouple_(z, y)) {
-            GUM_TRACE("Adding latent couple (" << z << "," << y << ")")
+            // GUM_TRACE("Adding latent couple (" << z << "," << y << ")")
             _latentCouples_.emplace_back(z, y);
           }
           if (!_arcProbas_.exists(Arc(y, z))) _arcProbas_.insert(Arc(y, z), p2);

@@ -176,6 +176,9 @@ namespace gum {
     /// copy constructor
     Edge(const Edge& src);
 
+    /// move constructor
+    Edge(Edge&& src) noexcept;
+
     /// destructor
     ~Edge();
 
@@ -204,6 +207,9 @@ namespace gum {
 
     /// copy operator
     Edge& operator=(const Edge& src);
+
+    /// move operator
+    Edge& operator=(Edge&& src) noexcept;
 
     /// checks whether two undirected edges are equal
     /** Two Edge are equal if they have the same extremal nodes, whatever their
@@ -272,6 +278,9 @@ namespace gum {
     /// copy constructor
     Arc(const Arc& src);
 
+    /// move constructor
+    Arc(Arc&& src) noexcept;
+
     /// destructor
     ~Arc();
 
@@ -306,6 +315,9 @@ namespace gum {
 
     /// copy operator
     Arc& operator=(const Arc& src);
+
+    /// move operator
+    Arc& operator=(Arc&& src) noexcept;
 
     /// checks whether two arcs are equal
     /** Two arcs are considered equal if they have the same head and tail

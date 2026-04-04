@@ -81,6 +81,9 @@ namespace gum {
      */
     UGmodel(const UGmodel& source);
 
+    /// move constructor
+    UGmodel(UGmodel&& source);
+
     /// @}
     /// @name Getter and setters
     /// @{
@@ -177,6 +180,9 @@ namespace gum {
      * Private copy operator.
      */
     UGmodel& operator=(const UGmodel& source);
+
+    /// move assignment operator
+    UGmodel& operator=(UGmodel&& source);
 
     /// The DAG of this Directed Graphical Model.
     UndiGraph graph_;

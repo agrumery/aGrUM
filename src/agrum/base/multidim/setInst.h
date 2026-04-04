@@ -117,6 +117,12 @@ namespace gum {
     SetInst(const SetInst& aI);
 
     /**
+     * @brief Move constructor.
+     * @param aI The SetInst to move.
+     */
+    SetInst(SetInst&& aI) noexcept;
+
+    /**
      * @brief Copy constructor.
      * @param aI The SetInst to copy.
      */
@@ -128,6 +134,9 @@ namespace gum {
      * operator.
      */
     SetInst& operator=(const SetInst& aI);
+
+    /// move assignment operator
+    SetInst& operator=(SetInst&& aI) noexcept;
 
     /**
      * @brief Constructor for a SetInst of all the variables of a

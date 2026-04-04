@@ -75,10 +75,24 @@ namespace gum {
     GUM_CONS_CPY(Edge);
   }
 
+  // move constructor
+  INLINE Edge::Edge(Edge&& src) noexcept : n1(src.n1), n2(src.n2) {   // for debugging purposes
+    GUM_CONS_MOV(Edge);
+  }
+
   // copy operator
   INLINE Edge& Edge::operator=(const Edge& src) {
     // for debugging purposes
     GUM_OP_CPY(Edge)
+    n1 = src.n1;
+    n2 = src.n2;
+    return *this;
+  }
+
+  // move operator
+  INLINE Edge& Edge::operator=(Edge&& src) noexcept {
+    // for debugging purposes
+    GUM_OP_MOV(Edge);
     n1 = src.n1;
     n2 = src.n2;
     return *this;
@@ -128,10 +142,24 @@ namespace gum {
     GUM_CONS_CPY(Arc);
   }
 
+  // move constructor
+  INLINE Arc::Arc(Arc&& src) noexcept : n1(src.n1), n2(src.n2) {   // for debugging purposes
+    GUM_CONS_MOV(Arc);
+  }
+
   // copy operator
   INLINE Arc& Arc::operator=(const Arc& src) {
     // for debugging purposes
     GUM_OP_CPY(Arc);
+    n1 = src.n1;
+    n2 = src.n2;
+    return *this;
+  }
+
+  // move operator
+  INLINE Arc& Arc::operator=(Arc&& src) noexcept {
+    // for debugging purposes
+    GUM_OP_MOV(Arc);
     n1 = src.n1;
     n2 = src.n2;
     return *this;

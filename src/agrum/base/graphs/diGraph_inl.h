@@ -72,6 +72,7 @@ namespace gum {
       DiGraph::clear();
       NodeGraphPart::operator=(g);
       ArcGraphPart::operator=(g);
+      GUM_OP_CPY(DiGraph);
     }
 
     return *this;

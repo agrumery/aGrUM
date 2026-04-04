@@ -84,8 +84,11 @@ namespace gum {
     /// default constructor: initialize the triangulation with en empty graph
     IncrementalTriangulation(const UnconstrainedTriangulation& triangAlgo);
 
-    /// copy operator
+    /// copy constructor
     IncrementalTriangulation(const IncrementalTriangulation& from);
+
+    /// move constructor
+    IncrementalTriangulation(IncrementalTriangulation&& from);
 
     /// destructor
     ~IncrementalTriangulation();
@@ -172,6 +175,9 @@ namespace gum {
 
     /// copy operator
     IncrementalTriangulation& operator=(const IncrementalTriangulation& from);
+
+    /// move operator
+    IncrementalTriangulation& operator=(IncrementalTriangulation&& from);
 
     /// virtual clone constructor
     virtual IncrementalTriangulation* newFactory() const final;

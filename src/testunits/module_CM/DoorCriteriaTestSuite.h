@@ -918,7 +918,6 @@ namespace gum_tests {
       d.addArc(5, 0);
 
       auto v = gum::DoorCriteria::nodesOnDirectedPaths(d, 2, 1);
-      GUM_TRACE_VAR(*v);
       CHECK_EQ(v->size(), 0u);
     }
 

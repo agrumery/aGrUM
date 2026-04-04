@@ -55,6 +55,11 @@ namespace gum {
     GUM_CONS_CPY(UGmodel);
   }
 
+  UGmodel::UGmodel(UGmodel&& from) :
+      DiscreteGraphicalModel(std::move(from)), graph_(std::move(from.graph_)) {
+    GUM_CONS_MOV(UGmodel);
+  }
+
   UGmodel::~UGmodel() {
     GUM_DESTRUCTOR(UGmodel);
     ;
@@ -64,6 +69,17 @@ namespace gum {
     if (this != &source) {
       DiscreteGraphicalModel::operator=(source);
       graph_ = source.graph_;
+      GUM_OP_CPY(UGmodel);
+    }
+
+    return *this;
+  }
+
+  UGmodel& UGmodel::operator=(UGmodel&& source) {
+    if (this != &source) {
+      DiscreteGraphicalModel::operator=(std::move(source));
+      graph_ = std::move(source.graph_);
+      GUM_OP_MOV(UGmodel);
     }
 
     return *this;

@@ -113,6 +113,11 @@ namespace gum {
     // if ( aI. _master_ && notifyMaster ) actAsSlave( *aI. _master_ );
   }
 
+  SetInst::SetInst(SetInst&& aI) noexcept :
+      _vars_(std::move(aI._vars_)), _vals_(std::move(aI._vals_)), _overflow_(aI._overflow_) {
+    GUM_CONS_MOV(SetInst);
+  }
+
   SetInst::SetInst(const Instantiation& aI) :
       /* MultiDimInterface(),  _master_( 0 ),*/ _overflow_(false) {
     // for debugging purposes
@@ -134,6 +139,17 @@ namespace gum {
     _vars_     = aI._vars_;
     _vals_     = aI._vals_;
     _overflow_ = aI._overflow_;
+    GUM_OP_CPY(SetInst);
+
+    return *this;
+  }
+
+  // move operator=
+  SetInst& SetInst::operator=(SetInst&& aI) noexcept {
+    _vars_     = std::move(aI._vars_);
+    _vals_     = std::move(aI._vals_);
+    _overflow_ = aI._overflow_;
+    GUM_OP_MOV(SetInst);
 
     return *this;
   }

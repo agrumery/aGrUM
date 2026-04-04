@@ -97,6 +97,9 @@ namespace gum {
 
     CliqueGraph(const CliqueGraph& from);
 
+    /// move constructor
+    CliqueGraph(CliqueGraph&& from);
+
     /// destructor
 
     virtual ~CliqueGraph();
@@ -253,6 +256,10 @@ namespace gum {
     /// copy operator
 
     CliqueGraph& operator=(const CliqueGraph& from);
+
+    /// move operator
+
+    CliqueGraph& operator=(CliqueGraph&& from);
 
 
     /// checks whether two clique graphs are equal

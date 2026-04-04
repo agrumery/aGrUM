@@ -65,12 +65,14 @@ namespace gum {
     /// copy operator
     ParamEstimatorML& ParamEstimatorML::operator=(const ParamEstimatorML& from) {
       ParamEstimator::operator=(from);
+      GUM_OP_CPY(ParamEstimatorML);
       return *this;
     }
 
     /// move operator
     ParamEstimatorML& ParamEstimatorML::operator=(ParamEstimatorML&& from) {
       ParamEstimator::operator=(std::move(from));
+      GUM_OP_MOV(ParamEstimatorML);
       return *this;
     }
 

@@ -60,6 +60,19 @@ namespace gum {
       UndiGraph::operator=(g);
       _cliques_    = g._cliques_;
       _separators_ = g._separators_;
+      GUM_OP_CPY(CliqueGraph);
+    }
+
+    return *this;
+  }
+
+  /// move operator
+  INLINE CliqueGraph& CliqueGraph::operator=(CliqueGraph&& g) {
+    if (this != &g) {
+      UndiGraph::operator=(std::move(g));
+      _cliques_    = std::move(g._cliques_);
+      _separators_ = std::move(g._separators_);
+      GUM_OP_MOV(CliqueGraph);
     }
 
     return *this;

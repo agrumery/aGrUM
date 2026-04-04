@@ -125,6 +125,8 @@ namespace gum {
       if (onEdgeAdded.hasListener())
         for (const auto& edge: _edges_)
           GUM_EMIT2(onEdgeAdded, edge.first(), edge.second());
+
+      GUM_OP_CPY(EdgeGraphPart);
     }
 
     return *this;

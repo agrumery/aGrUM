@@ -89,6 +89,7 @@ namespace gum {
   VariableNodeMap& VariableNodeMap::operator=(const VariableNodeMap& source) {
     clear();
     _copy_(source);
+    GUM_OP_CPY(VariableNodeMap);
 
     return *this;
   }

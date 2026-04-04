@@ -63,6 +63,7 @@ namespace gum {
     if (this != &source) {
       DiscreteGraphicalModel::operator=(source);
       dag_ = source.dag_;
+      GUM_OP_CPY(DAGmodel);
     }
 
     return *this;

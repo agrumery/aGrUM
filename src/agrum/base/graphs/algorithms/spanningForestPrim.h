@@ -83,6 +83,9 @@ namespace gum {
     /// Copy constructor
     SpanningForestPrim(const SpanningForestPrim& toCopy);
 
+    /// Move constructor
+    SpanningForestPrim(SpanningForestPrim&& from);
+
     /// Destructor
     virtual ~SpanningForestPrim();
 

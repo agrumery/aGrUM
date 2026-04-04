@@ -112,6 +112,25 @@ namespace gum {
     _domain_sizes_ = from._domain_sizes_;
   }
 
+  IncrementalTriangulation::IncrementalTriangulation(IncrementalTriangulation&& from) :
+      Triangulation(std::move(from)), _graph_(std::move(from._graph_)),
+      _junction_tree_(std::move(from._junction_tree_)), _T_mpd_(std::move(from._T_mpd_)),
+      _mps_of_node_(std::move(from._mps_of_node_)),
+      _cliques_of_mps_(std::move(from._cliques_of_mps_)),
+      _mps_of_clique_(std::move(from._mps_of_clique_)),
+      _mps_affected_(std::move(from._mps_affected_)),
+      _triangulation_(from._triangulation_),
+      _require_update_(from._require_update_),
+      _require_elimination_order_(from._require_elimination_order_),
+      _elimination_order_(std::move(from._elimination_order_)),
+      _reverse_elimination_order_(std::move(from._reverse_elimination_order_)),
+      _require_created_JT_cliques_(from._require_created_JT_cliques_),
+      _created_JT_cliques_(std::move(from._created_JT_cliques_)) {
+    from._triangulation_ = nullptr;
+    _domain_sizes_       = std::move(from._domain_sizes_);
+    GUM_CONS_MOV(IncrementalTriangulation);
+  }
+
   /// destructor
   IncrementalTriangulation::~IncrementalTriangulation() {
     GUM_DESTRUCTOR(IncrementalTriangulation);
@@ -157,6 +176,35 @@ namespace gum {
       // and create it again
       delete _triangulation_;
       _triangulation_ = from._triangulation_->newFactory();
+    }
+
+    return *this;
+  }
+
+  /// move operator
+  IncrementalTriangulation&
+      IncrementalTriangulation::operator=(IncrementalTriangulation&& from) {
+    if (this != &from) {
+      GUM_OP_MOV(IncrementalTriangulation);
+
+      _graph_                      = std::move(from._graph_);
+      _domain_sizes_               = std::move(from._domain_sizes_);
+      _junction_tree_              = std::move(from._junction_tree_);
+      _T_mpd_                      = std::move(from._T_mpd_);
+      _mps_of_node_                = std::move(from._mps_of_node_);
+      _cliques_of_mps_             = std::move(from._cliques_of_mps_);
+      _mps_of_clique_              = std::move(from._mps_of_clique_);
+      _mps_affected_               = std::move(from._mps_affected_);
+      _require_update_             = from._require_update_;
+      _require_elimination_order_  = from._require_elimination_order_;
+      _elimination_order_          = std::move(from._elimination_order_);
+      _reverse_elimination_order_  = std::move(from._reverse_elimination_order_);
+      _require_created_JT_cliques_ = from._require_created_JT_cliques_;
+      _created_JT_cliques_         = std::move(from._created_JT_cliques_);
+
+      delete _triangulation_;
+      _triangulation_      = from._triangulation_;
+      from._triangulation_ = nullptr;
     }
 
     return *this;

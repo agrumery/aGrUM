@@ -66,6 +66,7 @@ namespace gum {
     for (const auto& [latent, children]: latentVarsDescriptor) {
       addLatentVariable(latent, children, assumeNonSpurious);
     }
+    GUM_CONSTRUCTOR(CausalModel)
   }
 
   /// Copy constructor

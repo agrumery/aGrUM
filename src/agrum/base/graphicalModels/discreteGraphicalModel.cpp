@@ -66,6 +66,7 @@ namespace gum {
     if (this != &source) {
       GraphicalModel::operator=(source);
       varMap_ = source.varMap_;
+      GUM_OP_CPY(DiscreteGraphicalModel);
     }
     return *this;
   }

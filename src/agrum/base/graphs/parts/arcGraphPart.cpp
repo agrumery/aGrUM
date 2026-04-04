@@ -152,6 +152,8 @@ namespace gum {
           GUM_EMIT2(onArcAdded, arc.tail(), arc.head());
         }
       }
+
+      GUM_OP_CPY(ArcGraphPart);
     }
 
     return *this;

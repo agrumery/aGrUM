@@ -85,6 +85,14 @@ namespace gum {
     GUM_CONS_CPY(CliqueGraph)
   }
 
+  CliqueGraph::CliqueGraph(CliqueGraph&& from) :
+      NodeGraphPart(std::move(from)),   // virtual base — must be listed explicitly
+      UndiGraph(std::move(from)),
+      _cliques_(std::move(from._cliques_)),
+      _separators_(std::move(from._separators_)) {   // for debugging purposes
+    GUM_CONS_MOV(CliqueGraph)
+  }
+
   /// destructor
 
   CliqueGraph::~CliqueGraph() {   // for debugging purposes

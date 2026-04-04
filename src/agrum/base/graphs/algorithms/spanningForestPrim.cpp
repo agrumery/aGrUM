@@ -72,6 +72,15 @@ namespace gum {
     GUM_CONS_CPY(SpanningForestPrim);
   }
 
+  SpanningForestPrim::SpanningForestPrim(SpanningForestPrim&& from) :
+      SpanningForest(), _graph_(from._graph_), _costTable_(from._costTable_),
+      _edgesToExplore_(std::move(from._edgesToExplore_)),
+      _spanning_tree_(std::move(from._spanning_tree_)),
+      _spanning_tree_cost_(from._spanning_tree_cost_),
+      _require_computation_(from._require_computation_) {
+    GUM_CONS_MOV(SpanningForestPrim);
+  }
+
   // destructor
   SpanningForestPrim::~SpanningForestPrim() {
     // for debugging purposes

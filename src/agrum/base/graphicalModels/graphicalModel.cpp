@@ -55,7 +55,10 @@ namespace gum {
   GraphicalModel::~GraphicalModel() { GUM_DESTRUCTOR(GraphicalModel); }
 
   GraphicalModel& GraphicalModel::operator=(const GraphicalModel& source) {
-    if (this != &source) { _propertiesMap_ = source._propertiesMap_; }
+    if (this != &source) {
+      _propertiesMap_ = source._propertiesMap_;
+      GUM_OP_CPY(GraphicalModel);
+    }
     return *this;
   }
 

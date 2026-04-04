@@ -61,6 +61,7 @@ namespace gum {
       NodeGraphPart::operator=(g);
       EdgeGraphPart::operator=(g);
       ArcGraphPart::operator=(g);
+      GUM_OP_CPY(MixedGraph);
     }
 
     return *this;
