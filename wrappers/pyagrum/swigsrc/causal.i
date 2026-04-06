@@ -50,6 +50,7 @@
 
 %ignore *::id2name;
 %ignore *::root;
+%ignore gum::CausalImpact<double>::getResult;
 
 
 // CausalImpact::toLatex: %feature("shadow") exposes doOperatorPrefix and

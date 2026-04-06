@@ -118,6 +118,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("std::unique_ptr< gum::DiscreteVariable >", "pyagrum.DiscreteVariable"),
   # ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'list[int]'),
   ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", "list[int]"),
+  ("std::vector< std::pair< gum::Idx,gum::Idx >,std::allocator< std::pair< gum::Idx,gum::Idx > > >", "tuple[tuple[int, int], ...]"),
   ("std::vector< double,std::allocator< double > >", "tuple[float, ...]"),
   ("std::vector< int,std::allocator< int > >", "tuple[int, ...]"),
   ("std::vector< unsigned int,std::allocator< unsigned int > >", "tuple[int, ...]"),
@@ -205,6 +206,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("PyObject", "object"),
   ("void const", "object"),
   ("void", "None"),
+  ("std::string_view", "str"),
   ("std::string", "str"),
   ("char const *", "str"),
   ("std::size_t", "int"),
@@ -320,6 +322,11 @@ def do_the_job(src_filename: str, target_filename: str, backup_filename: str, is
 
   t_filename = src_filename if target_filename == _INPLACE else target_filename
 
+  if not debug_mode:
+    notif(f"  - backup {src_filename} in {backup_filename}.")
+    if os.path.exists(src_filename):
+      shutil.copy(src_filename, backup_filename)
+
   new_content, rules = process_filters(src_filename, is_python, debug_mode)
 
   if os.path.exists(t_filename):
@@ -330,10 +337,6 @@ def do_the_job(src_filename: str, target_filename: str, backup_filename: str, is
 
   _print_stats(rules, is_python)
 
-  if not debug_mode:
-    notif(f"  - backup in {backup_filename}.")
-    if os.path.exists(t_filename):
-      shutil.copy(t_filename, backup_filename)
 
   with open(t_filename, "w") as f:
     f.write(new_content)
@@ -349,10 +352,11 @@ def main(*args):
   is_python = suf == ".py"
 
   if len(args) == 2:  # normal mode
+    namedest, sufdest = os.path.splitext(args[1])
     do_the_job(
       src_filename=args[0],
       target_filename=args[1],
-      backup_filename=f"{name}.backup.{suf}",
+      backup_filename=f"{namedest}.backup.{sufdest}",
       is_python=is_python,
       debug_mode=False,
     )

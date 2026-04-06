@@ -230,6 +230,20 @@
     PyTuple_SET_ITEM($result, _i, PyLong_FromLong((*$1)[_i]));
 }
 
+// std::vector<std::pair<gum::Idx,gum::Idx>> -> Python tuple[tuple[int,int]]
+// SWIG resolves gum::Idx -> std::size_t, so the typemap must use std::size_t
+%typemap(out) std::vector< std::pair< std::size_t, std::size_t > > {
+  std::vector< std::pair< std::size_t, std::size_t > > _v = std::move($1);
+  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+  $result = PyTuple_New(_n);
+  for (Py_ssize_t _i = 0; _i < _n; ++_i) {
+    PyObject* _pair = PyTuple_New(2);
+    PyTuple_SET_ITEM(_pair, 0, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].first)));
+    PyTuple_SET_ITEM(_pair, 1, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].second)));
+    PyTuple_SET_ITEM($result, _i, _pair);
+  }
+}
+
 // std::vector<double> -> Python tuple[float]
 %typemap(out) std::vector<double> {
   std::vector<double> _v = std::move($1);

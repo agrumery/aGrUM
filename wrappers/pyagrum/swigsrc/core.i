@@ -47,6 +47,8 @@
 
 %ignore *::diffSet;
 %ignore gum::Instantiation::setValsFrom;
+%ignore gum::randomGenerator;
+%ignore gum::_rand_namespace_::generator;
 
 %pythonprepend gum::List::append %{
         args[0].__disown__() #lets c++ take care of deleting it

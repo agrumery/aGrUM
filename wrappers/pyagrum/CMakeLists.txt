@@ -148,8 +148,9 @@ macro(gum_add_python_module MODULENAME)
       COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
               ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
               ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-      COMMAND ${CMAKE_COMMAND} -E copy
-              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h ${GENERATED_PYTHON}
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+              ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
       COMMAND ${CMAKE_COMMAND} -E touch ${_PASSFORPYTYPE_STAMP}
       COMMENT "passForPyType: post-processing ${MODULENAME} SWIG output"
     )
