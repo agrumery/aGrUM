@@ -62,7 +62,6 @@ else()
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.Module NumPy REQUIRED)
 endif()
 list(APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
-add_definitions("-DSWIG_TYPE_TABLE=pyproba")
 
 if(AGRUM_PYTHON_SABI)
   set(SWIG_COMPILE_FLAGS "-DPy_LIMITED_API=0x030A0000" CACHE STRING "C++ compiler flags used for wrapper code")
@@ -162,6 +161,7 @@ macro(gum_add_python_module MODULENAME)
   set(_PYAGRUMLIB _${MODULENAME_LOWER})
   add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
   set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
+  target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
   if(SWIG_FOUND)
     add_dependencies(${_PYAGRUMLIB} ${MODULENAME_LOWER}_swig_generated)
   endif()
@@ -185,7 +185,9 @@ macro(gum_add_python_module MODULENAME)
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
 
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
+  if(SWIG_COMPILE_FLAGS)
+    target_compile_options(${_PYAGRUMLIB} PRIVATE ${SWIG_COMPILE_FLAGS})
+  endif()
   set_target_properties(${_PYAGRUMLIB} PROPERTIES UNITY_BUILD OFF)
 
   install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
@@ -196,12 +198,10 @@ macro(gum_add_python_module MODULENAME)
 
   # copy pyLibs at execution time so they are available without a build step
   execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causal" "${CMAKE_CURRENT_BINARY_DIR}/causal")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/causalEffectEstimation" "${CMAKE_CURRENT_BINARY_DIR}/causalEffectEstimation")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/skbn" "${CMAKE_CURRENT_BINARY_DIR}/skbn")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/clg" "${CMAKE_CURRENT_BINARY_DIR}/clg")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/ctbn" "${CMAKE_CURRENT_BINARY_DIR}/ctbn")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/explain" "${CMAKE_CURRENT_BINARY_DIR}/explain")
+  foreach(_pylib causal causalEffectEstimation skbn clg ctbn explain)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/${_pylib}" "${CMAKE_CURRENT_BINARY_DIR}/${_pylib}")
+  endforeach()
 
 endmacro()
 
@@ -221,21 +221,21 @@ set(PYAGRUM_REQUIREMENTS_LIST
   ${CMAKE_CURRENT_SOURCE_DIR}/testunits
 )
 
-FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt PYAGRUM_REQ_CONTENT)
-FILE(READ ${CMAKE_CURRENT_SOURCE_DIR}/optional_requirements.txt PYAGRUM_OPT_REQ_CONTENT)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt PYAGRUM_REQ_CONTENT)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/optional_requirements.txt PYAGRUM_OPT_REQ_CONTENT)
 
-FOREACH(reqdir ${PYAGRUM_REQUIREMENTS_LIST})
+foreach(reqdir ${PYAGRUM_REQUIREMENTS_LIST})
   message(STATUS "** act Notification: updating requirements.txt in ${reqdir}")
-  FILE(READ ${reqdir}/specific_requirements.txt PYAGRUM_SPECIFIC_REQ_CONTENT)
-  FILE(WRITE ${reqdir}/requirements.txt "################################\n")
-  FILE(APPEND ${reqdir}/requirements.txt "# generated : do not change it !\n")
-  FILE(APPEND ${reqdir}/requirements.txt "################################\n")
-  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_REQ_CONTENT}\n")
-  FILE(APPEND ${reqdir}/requirements.txt "#### optional requirements #####\n")
-  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_OPT_REQ_CONTENT}\n")
-  FILE(APPEND ${reqdir}/requirements.txt "################################\n")
-  FILE(APPEND ${reqdir}/requirements.txt "${PYAGRUM_SPECIFIC_REQ_CONTENT}\n")
-ENDFOREACH()
+  file(READ ${reqdir}/specific_requirements.txt PYAGRUM_SPECIFIC_REQ_CONTENT)
+  file(WRITE ${reqdir}/requirements.txt "################################\n")
+  file(APPEND ${reqdir}/requirements.txt "# generated : do not change it !\n")
+  file(APPEND ${reqdir}/requirements.txt "################################\n")
+  file(APPEND ${reqdir}/requirements.txt "${PYAGRUM_REQ_CONTENT}\n")
+  file(APPEND ${reqdir}/requirements.txt "#### optional requirements #####\n")
+  file(APPEND ${reqdir}/requirements.txt "${PYAGRUM_OPT_REQ_CONTENT}\n")
+  file(APPEND ${reqdir}/requirements.txt "################################\n")
+  file(APPEND ${reqdir}/requirements.txt "${PYAGRUM_SPECIFIC_REQ_CONTENT}\n")
+endforeach()
 # REQUIREMENTS files updated
 
 file(GLOB GUMPY_FILES "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/*.py")

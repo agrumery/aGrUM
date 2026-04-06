@@ -1,5 +1,5 @@
-INCLUDE(CheckIncludeFiles)
-CHECK_INCLUDE_FILES(execinfo.h HAVE_EXECINFO_H)
+include(CheckIncludeFiles)
+check_include_files(execinfo.h HAVE_EXECINFO_H)
 
 include(CheckTypeSize)
 CHECK_TYPE_SIZE(char GUM_CHAR_SIZE)

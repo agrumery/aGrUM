@@ -12,11 +12,11 @@ set(NANODBC_ENABLE_LIBCXX "Use libc++ if available." ON) # ON)
 
 if (USE_NANODBC)
     CHECK_INCLUDE_FILE("sql.h" HAVE_SQLHEADER)
-    IF (NOT HAVE_SQLHEADER)
+    if (NOT HAVE_SQLHEADER)
         set(USE_NANODBC OFF)
         message(STATUS "** aGrUM Notification: Can not find <sql.h>. Nanodbc support is OFF.")
-    ENDIF (NOT HAVE_SQLHEADER)
-ENDIF (USE_NANODBC)
+    endif ()
+endif ()
 
 ########################################
 ## find unixODBC or iODBC config binary
@@ -78,33 +78,35 @@ if (USE_NANODBC)
             message(STATUS "** aGrUM Notification: ODBC driver manager found")
         endif ()
 
-    endif (UNIX)
-ENDIF (USE_NANODBC)
+    endif ()
+endif ()
 
 ########################################
 ## build options
 ########################################
+set(NANODBC_COMPILE_DEFS "")
+set(NANODBC_BOOST_INCLUDE_DIRS "")
+set(NANODBC_BOOST_LIBRARY_DIRS "")
 if (USE_NANODBC)
-    add_definitions(-D_ODBC)
-    IF (NANODBC_ODBC_VERSION)
-        add_definitions(-DNANODBC_ODBC_VERSION=${NANODBC_ODBC_VERSION})
+    list(APPEND NANODBC_COMPILE_DEFS _ODBC)
+    if (NANODBC_ODBC_VERSION)
+        list(APPEND NANODBC_COMPILE_DEFS NANODBC_ODBC_VERSION=${NANODBC_ODBC_VERSION})
     endif ()
 
     if (NANODBC_USE_UNICODE)
-        add_definitions(-DNANODBC_USE_UNICODE)
+        list(APPEND NANODBC_COMPILE_DEFS NANODBC_USE_UNICODE)
         if (MSVC)
             # Sets "Use Unicode Character Set" property in Visual Studio projects
-            add_definitions(-DUNICODE -D_UNICODE)
+            list(APPEND NANODBC_COMPILE_DEFS UNICODE _UNICODE)
         endif ()
-    else ()
     endif ()
 
     if (NANODBC_USE_BOOST_CONVERT)
-        add_definitions(-DNANODBC_USE_BOOST_CONVERT)
+        list(APPEND NANODBC_COMPILE_DEFS NANODBC_USE_BOOST_CONVERT)
     endif ()
 
     if (NANODBC_HANDLE_NODATA_BUG)
-        add_definitions(-DNANODBC_HANDLE_NODATA_BUG)
+        list(APPEND NANODBC_COMPILE_DEFS NANODBC_HANDLE_NODATA_BUG)
     endif ()
 
     ########################################
@@ -115,8 +117,8 @@ if (USE_NANODBC)
         set(Boost_USE_MULTITHREADED ON)
         find_package(Boost COMPONENTS unit_test_framework locale REQUIRED)
         if (Boost_FOUND)
-            include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src ${Boost_INCLUDE_DIRS})
-            link_directories(${CMAKE_BINARY_DIR}/lib ${Boost_LIBRARY_DIRS})
+            set(NANODBC_BOOST_INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
+            set(NANODBC_BOOST_LIBRARY_DIRS ${Boost_LIBRARY_DIRS})
         endif ()
     endif ()
 
@@ -125,8 +127,8 @@ if (USE_NANODBC)
     ########################################
     if (UNIX)
         set(ODBC_LIBRARIES ${ODBCLIB})
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${ODBC_LINK_FLAGS}")
+        # ODBC_LINK_FLAGS applied to agrumBASE via target_link_options in src/CMakeLists.txt
     elseif (MSVC)
         set(ODBC_LIBRARIES odbc32.lib odbccp32.lib Ws2_32.lib)
     endif ()
-ENDIF (USE_NANODBC)
+endif ()
