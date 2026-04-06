@@ -289,21 +289,6 @@ pyagrum.NotFound
     If no variable with that NodeId exists in the causal model.
 "
 
-%feature("docstring") gum::CausalModel::id2name
-"
-Return the full NodeId ↔ name bijection.
-
-Parameters
-----------
-includeLatentVariable : bool, optional
-    If True, include latent variables in the mapping. Default is False.
-
-Returns
--------
-pyagrum.Bijection
-    A bijection between NodeIds and variable names.
-"
-
 %feature("docstring") gum::CausalModel::latentVariablesIds
 "
 Return the NodeIds of all latent (hidden) variables in the causal model.

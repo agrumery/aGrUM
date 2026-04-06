@@ -48,6 +48,9 @@
 %rename(_counterfactual) gum::counterfactual;
 %rename(_counterfactualModel) gum::counterfactualModel;
 
+%ignore *::id2name;
+%ignore *::root;
+
 
 // CausalImpact::toLatex: %feature("shadow") exposes doOperatorPrefix and
 // doOperatorSuffix as keyword-only arguments, with defaults read from the

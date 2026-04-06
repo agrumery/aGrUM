@@ -73,7 +73,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >::CausalModel(const CausalModel& other) :
       _observationalBN_(other._observationalBN_), _causalDAG_(other._causalDAG_),
-      _id2name_(other._id2name_) {
+      _ids_names_(other._ids_names_) {
     GUM_CONS_CPY(CausalModel)
   };
 
@@ -81,7 +81,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >::CausalModel(CausalModel&& other) noexcept :
       _observationalBN_(std::move(other._observationalBN_)),
-      _causalDAG_(std::move(other._causalDAG_)), _id2name_(std::move(other._id2name_)) {
+      _causalDAG_(std::move(other._causalDAG_)), _ids_names_(std::move(other._ids_names_)) {
     GUM_CONS_MOV(CausalModel)
   };
 
@@ -115,7 +115,7 @@ namespace gum {
     const NodeId id_latent = _causalDAG_.addNode();
 
     // record bookkeeping
-    _id2name_.insert(id_latent, std::string(latentName));
+    _ids_names_.insert(id_latent, std::string(latentName));
 
     // add arcs latent -> each child
     for (const auto& cid: childrenOfLatent) {
@@ -160,7 +160,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeSet CausalModel< GUM_SCALAR >::latentVariablesIds() const {
     NodeSet latentIds;
-    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+    for (auto it = _ids_names_.begin(); it != _ids_names_.end(); ++it) {
       latentIds.insert(it.first());
     }
     return latentIds;
@@ -169,7 +169,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   Set< std::string > CausalModel< GUM_SCALAR >::latentVariablesNames() const {
     Set< std::string > latentNames;
-    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+    for (auto it = _ids_names_.begin(); it != _ids_names_.end(); ++it) {
       latentNames.insert(it.second());
     }
     return latentNames;
@@ -473,7 +473,7 @@ namespace gum {
       names.insert(_observationalBN_.variable(n).name());
     }
     // latent names (from bijection)
-    for (auto it = _id2name_.begin(); it != _id2name_.end(); ++it) {
+    for (auto it = _ids_names_.begin(); it != _ids_names_.end(); ++it) {
       names.insert(it.second());
     }
     return names;
@@ -481,8 +481,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId CausalModel< GUM_SCALAR >::idFromName(std::string_view name) const {
-    if (_id2name_.existsSecond(std::string(name))) {
-      return _id2name_.first(std::string(name));
+    if (_ids_names_.existsSecond(std::string(name))) {
+      return _ids_names_.first(std::string(name));
     } else {
       return _observationalBN_.idFromName(name);
     }
@@ -490,8 +490,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string CausalModel< GUM_SCALAR >::nameFromId(NodeId id) const {
-    if (_id2name_.existsFirst(id)) {
-      return _id2name_.second(id);
+    if (_ids_names_.existsFirst(id)) {
+      return _ids_names_.second(id);
     } else {
       return _observationalBN_.variable(id).name();
     }
@@ -509,7 +509,7 @@ namespace gum {
 
     // Add latent variables if requested
     if (includeLatentVariables) {
-      for (auto iter = _id2name_.beginSafe(); iter != _id2name_.endSafe(); ++iter) {
+      for (auto iter = _ids_names_.beginSafe(); iter != _ids_names_.endSafe(); ++iter) {
         result.insert(iter.first(), iter.second());
       }
     }

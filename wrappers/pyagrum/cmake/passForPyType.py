@@ -147,6 +147,8 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("gum::Tensor< double >", 'pyagrum.Tensor'),
   ("gum::BayesNet< double >", "pyagrum.BayesNet"),
   # ("gum::MarkovNet< double >", "pyagrum.MarkovRandomField"),
+  ("gum::CausalModel< double >", "pyagrum.CausalModel"),
+  ("gum::CausalFormula< double >", "pyagrum.CausalModel"),
   ("gum::MarkovRandomField< double >", "pyagrum.MarkovRandomField"),
   ("gum::InfluenceDiagram< double >", "pyagrum.InfluenceDiagram"),
   ("gum::DiscreteVariable", "pyagrum.DiscreteVariable"),

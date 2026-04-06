@@ -90,7 +90,7 @@ namespace gum {
     DAG _causalDAG_;
 
     /// Bidirectional mapping between node ids and variable names (observed + latent).
-    Bijection< NodeId, std::string > _id2name_;
+    Bijection< NodeId, std::string > _ids_names_;
 
     public:
     /// Default constructor disabled: a causal model must be built from a BN.

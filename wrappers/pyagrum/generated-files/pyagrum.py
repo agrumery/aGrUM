@@ -31523,7 +31523,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_frontDoor(self, *args)
 
-    def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel< float >":
+    def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel":
         r"""
 
         Return the causal sub-model induced by a subset of observed nodes.
@@ -31671,24 +31671,6 @@ class CausalModel(object):
 
         """
         return _pyagrum.CausalModel_nameFromId(self, id)
-
-    def id2name(self, includeLatentVariable: bool=False) -> "Bijection< int,str >":
-        r"""
-
-        Return the full NodeId ↔ name bijection.
-
-        Parameters
-        ----------
-        includeLatentVariable : bool, optional
-            If True, include latent variables in the mapping. Default is False.
-
-        Returns
-        -------
-        pyagrum.Bijection
-            A bijection between NodeIds and variable names.
-
-        """
-        return _pyagrum.CausalModel_id2name(self, includeLatentVariable)
 
     def latentVariablesIds(self) -> list[int]:
         r"""
@@ -31896,9 +31878,6 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_isIdentified(self)
 
-    def root(self) -> "pyagrum.ASTtree< float > const &":
-        return _pyagrum.CausalImpact_root(self)
-
     def getResult(self) -> "CausalFormula< float > const &":
         r"""
 
@@ -31912,7 +31891,7 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_getResult(self)
 
-    def cm(self) -> "pyagrum.CausalModel< float > const &":
+    def cm(self) -> "pyagrum.CausalModel":
         r"""
 
         Return the causal model associated with this query.
@@ -32171,7 +32150,7 @@ class Counterfactual(object):
         _pyagrum.Counterfactual_swiginit(self, _pyagrum.new_Counterfactual(*args))
 
     @staticmethod
-    def counterFactualModel(*args) -> "pyagrum.CausalModel< float >":
+    def counterFactualModel(*args) -> "pyagrum.CausalModel":
         r"""
 
         Build the twin causal model from the original model and a factual profile.
@@ -32214,7 +32193,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_run(self)
 
-    def originalModel(self) -> "pyagrum.CausalModel< float > const &":
+    def originalModel(self) -> "pyagrum.CausalModel":
         r"""
 
         Return the original causal model.
@@ -32227,7 +32206,7 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_originalModel(self)
 
-    def twinModel(self) -> "pyagrum.CausalModel< float > const &":
+    def twinModel(self) -> "pyagrum.CausalModel":
         r"""
 
         Return the twin causal model built during the abduction step.
@@ -32345,6 +32324,6 @@ _pyagrum.Counterfactual_swigregister(Counterfactual)
 def _counterfactual(*args) -> "pyagrum.Tensor":
     return _pyagrum._counterfactual(*args)
 
-def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel< float >":
+def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
     return _pyagrum._counterfactualModel(cm, profile, whatif)
 
