@@ -128,7 +128,7 @@ namespace gum {
     /// for numerical variables, returns the closest index for the value
     virtual Idx closestIndex(double val) const = 0;
     /// for numerical variables, returns the closest label for the value
-    std::string closestLabel(double val) const;
+    virtual std::string closestLabel(double val) const;
 
     /// returns the varType of variable
     VarType varType() const override = 0;

@@ -100,10 +100,10 @@ namespace gum {
     IntegerVariable(IntegerVariable&& from) noexcept;
 
     /// virtual copy constructor
-    IntegerVariable* clone() const final;
+    IntegerVariable* clone() const override;
 
     /// destructor
-    ~IntegerVariable() final;
+    ~IntegerVariable() override;
 
     /// @}
 
@@ -131,34 +131,34 @@ namespace gum {
 
     /// @{
     /// returns the domain size of the discrete random variable
-    Size domainSize() const final;
+    Size domainSize() const override;
 
     /// returns the type of variable
-    VarType varType() const final;
+    VarType varType() const override;
 
     // returns the variable in fast syntax
-    std::string toFast() const final;
+    std::string toFast() const override;
 
     /// returns the index of a given label
     /** @param label searched label
      * @return the index of this label
      * @throw NotFound */
-    Idx index(std::string_view label) const final;
+    Idx index(std::string_view label) const override;
 
     ///  returns the closest index of the value
-    Idx closestIndex(double val) const final;
+    Idx closestIndex(double val) const override;
 
     /// returns a string corresponding to the ith value of the domain
-    std::string label(Idx index) const final;
+    std::string label(Idx index) const override;
 
     /// get a integer representation of the value at a given index
-    double numerical(Idx index) const final;
+    double numerical(Idx index) const override;
 
     /// Returns the domain as a string
-    std::string domain() const final;
+    std::string domain() const override;
 
     /// string represent the type of the variable
-    std::string stype() const final { return "Integer"; };
+    std::string stype() const override { return "Integer"; };
 
     /// returns the domain as a sequence of values
     const std::vector< int >& integerDomain() const;
@@ -186,7 +186,7 @@ namespace gum {
      * @param val the desired value
      * @return the value
      */
-    std::string closestLabel(double val) const;
+    std::string closestLabel(double val) const override;
 
     /// @}
 
@@ -195,7 +195,7 @@ namespace gum {
     /**
      * this function use the assumption that the concrete type of the variable is the same as *this
      */
-    bool _checkSameDomain_(const Variable& aRV) const final;
+    bool _checkSameDomain_(const Variable& aRV) const override;
 
     /// the domain of the variable
     std::vector< int > _domain_;

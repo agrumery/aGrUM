@@ -92,7 +92,7 @@ c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 "
 Returns
 -------
-tuple
+tuple[float,...]
     the tuple of float values that form the domain of this variable
 "
 

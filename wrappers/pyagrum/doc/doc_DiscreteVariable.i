@@ -276,7 +276,7 @@ For numerical discrete variables (all except gum.LabelizedVariable), this method
 
 Parameters
 ----------
-value : float
+val : float
   the value for which we want to find the closest index
 Returns
 -------
@@ -295,7 +295,7 @@ For numerical discrete variables (all except gum.LabelizedVariable), this method
 
 Parameters
 ----------
-value : float
+val : float
   the value for which we want to find the closest index
 Returns
 -------

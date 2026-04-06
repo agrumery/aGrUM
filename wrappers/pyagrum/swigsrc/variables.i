@@ -73,41 +73,164 @@
     # shortcuts for readonly API from derived classes
     ###########
     # Labelized
-    def posLabel(self,s):
+    def posLabel(self,s:str)->int:
+      """
+      Returns the index of the label `s` in the variable's domain (if the variable is a pyagrum.LabelizedVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.LabelizedVariable
+        NotFoundError
+          If the variable does not contain the label `s`
+
+      Returns
+      -------
+        int
+          the index of the label `s` in the variable's domain
+      """
       try:
         return self.asLabelizedVar().posLabel(s)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"posLabel not implemented for {self}")
-    def isLabel(self,s):
+    def isLabel(self,s:str)->bool:
+      """
+      returns whether s is a label of the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.LabelizedVariable
+
+      Returns
+      -------
+        bool
+          True if s is a label of the variable, False otherwise
+      """
       try:
         return self.asLabelizedVar().isLabel(s)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"isLabel not implemented for {self}")
     ###########
     # Range
-    def belongs(self,x):
+    def belongs(self,x:int)->bool:
+      """
+      returns whether x belongs to the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Parameters
+      ----------
+      x : int
+          the value for which we want to know if it belongs to the variable domain
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        bool
+          True if x belongs to the variable domain, False otherwise
+      """
       try:
         return self.asRangeVar().belongs(x)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"belongs not implemented for {self}")
-    def minVal(self):
+    def minVal(self)->int:
+      """
+      returns the minimum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        int
+          the minimum value of the variable domain
+      """
       try:
         return self.asRangeVar().minVal()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"minVal not implemented for {self}")
-    def maxVal(self):
+    def maxVal(self)->int:
+      """
+      returns the maximum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        int
+          the maximum value of the variable domain
+      """
       try:
         return self.asRangeVar().maxVal()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"maxVal- not implemented for {self}")
     ###########
-    # NumericalDiscrete / Integer
-    def numericalDomain(self):
+    # NumericalDiscreteVariable and/or IntegerVariable
+    def numericalDomain(self)->tuple[float,...]:
+      """
+      Returns the numerical domain of the variable (if the variable is a pyagrum.NumericalDiscreteVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.NumericalDiscreteVariable
+
+      Returns
+      -------
+        tuple[float,...]
+          the numerical domain of the variable
+      """
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"numericalDomain not implemented for {self}")
-    def isValue(self,x):
+
+    def integerDomain(self)->tuple[int,...]:
+      """
+      Returns the integer domain of the variable (if the variable is a pyagrum.integerVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.IntegerVariable
+
+      Returns
+      -------
+        tuple[int,...]
+          the integer domain of the variable
+      """
+      try:
+        return self.asIntegerVar().integerDomain()
+      except pyagrum.OperationNotAllowed:
+        raise NotImplementedError(f"isValue not implemented for {self}")
+
+    def isValue(self,x:float)->bool:
+      """
+      Returns whether x is a value for the variable
+
+      Parameters
+      ----------
+      x : float
+          the value for which we want to know if it is a value for the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.NumericalDiscreteVariable or a pyagrum.IntegerVariable
+
+      Returns
+      -------
+        bool
+          whether x is a value for the variable, i.e. whether x belongs to the variable domain
+      """
       try:
         return self.asNumericalDiscreteVar().isValue(x)
       except pyagrum.OperationNotAllowed:
@@ -115,29 +238,89 @@
           return self.asIntegerVar().isValue(x)
         except pyagrum.OperationNotAllowed:
           raise NotImplementedError(f"isValue not implemented for {self}")
-    def integerDomain(self):
-      try:
-        return self.asIntegerVar().integerDomain()
-      except pyagrum.OperationNotAllowed:
-        raise NotImplementedError(f"isValue not implemented for {self}")
+
     ###########
     # DiscretizedVariable
-    def isTick(self,x):
+    def isTick(self,x:float):
+      """
+      Returns whether x is a tick for the variable
+
+      Parameters
+      ----------
+      x : float
+          the value for which we want to know if it is a tick for the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        bool
+          whether x is a tick for the variable, i.e. whether x belongs to the variable's domain
+      """
       try:
         return self.asDiscretizedVar().isTick(x)
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"isTick not implemented for {self}")
-    def ticks(self):
+    def ticks(self)->tuple[float,...]:
+      """
+      Returns the ticks of the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        tuple[float,...]
+          the ticks of the variable, i.e. the values that belong to the variable's domain
+      """
       try:
         return self.asDiscretizedVar().ticks()
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"ticks not implemented for {self}")
-    def isEmpirical(self):
+    def isEmpirical(self)->bool:
+      """
+      Returns whether the variable is empirical (if the variable is a pyagrum.DiscretizedVariable). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        bool
+          whether the variable is empirical
+      """
       try:
         return self.asDiscretizedVar().isEmpirical()
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"isEmpirical not implemented for {self}")
-    def tick(self,x):
+    def tick(self,x:int):
+      """
+      Returns the x-th tick of the variable (if the variable is a pyagrum.DiscretizedVariable)
+
+      Parameters
+      ----------
+      x : int
+          the index of the tick we want to get
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+        pyagrum.OutOfBounds
+          If x is not a valid index for the ticks of the variable
+
+      Returns
+      -------
+        float
+          the x-th tick of the variable
+      """
       try:
         return self.asDiscretizedVar().tick(x)
       except pyagrum.OperationNotAllowed:
