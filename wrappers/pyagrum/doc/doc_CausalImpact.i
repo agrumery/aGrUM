@@ -189,16 +189,6 @@ str
     LaTeX string of the causal query.
 "
 
-%feature("docstring") gum::CausalImpact::getResult
-"
-Return the CausalFormula encoding the identified expression.
-
-Returns
--------
-pyagrum.causal.CausalFormula
-    The identified causal formula as an expression tree.
-"
-
 %feature("docstring") gum::CausalImpact::cm
 "
 Return the causal model associated with this query.

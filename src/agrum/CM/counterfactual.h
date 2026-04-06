@@ -96,9 +96,9 @@ namespace gum {
    *    building may propagate (e.g., unknown variable/label names, inconsistent
    *    domains).
    *
-   * @tparam GUM_SCALAR Numeric type used in potentials (e.g., double).
+   * @tparam GUM_ELEMENT Numeric type used in potentials (e.g., double).
    */
-  template < GUM_Numeric GUM_SCALAR >
+  template < GUM_Numeric GUM_ELEMENT >
   class Counterfactual {
     public:
     using VarName = std::string;
@@ -122,7 +122,7 @@ namespace gum {
      * @param values   Name→label assignments for the intervention values to use
      *                 during numeric evaluation and optional slicing. May be empty.
      */
-    Counterfactual(const CausalModel< GUM_SCALAR >&     cm,
+    Counterfactual(const CausalModel< GUM_ELEMENT >&    cm,
                    const Set< std::string >&            on,
                    const Set< std::string >&            whatif,
                    const HashTable< VarName, ValName >& profile = HashTable< VarName, ValName >(),
@@ -143,39 +143,40 @@ namespace gum {
      * @param valuesIds  NodeId→ValueId assignments for the intervention values
      *                   during numeric evaluation and optional slicing. May be empty.
      */
-    Counterfactual(const CausalModel< GUM_SCALAR >& cm,
-                   const NodeSet&                   onIds,
-                   const NodeSet&                   whatifIds,
-                   const HashTable< NodeId, Idx >&  profileIds = HashTable< NodeId, Idx >(),
-                   const HashTable< NodeId, Idx >&  valuesIds  = HashTable< NodeId, Idx >());
+    Counterfactual(const CausalModel< GUM_ELEMENT >& cm,
+                   const NodeSet&                    onIds,
+                   const NodeSet&                    whatifIds,
+                   const HashTable< NodeId, Idx >&   profileIds = HashTable< NodeId, Idx >(),
+                   const HashTable< NodeId, Idx >&   valuesIds  = HashTable< NodeId, Idx >());
 
     // ---------- Twin builders (overloaded like CausalImpact) ----------
-    static CausalModel< GUM_SCALAR >
-        counterFactualModel(const CausalModel< GUM_SCALAR >&     cm,
+    static CausalModel< GUM_ELEMENT >
+        counterFactualModel(const CausalModel< GUM_ELEMENT >&    cm,
                             const HashTable< VarName, ValName >& profile,
                             const Set< std::string >&            whatif);
 
-    static CausalModel< GUM_SCALAR > counterFactualModel(const CausalModel< GUM_SCALAR >& cm,
-                                                         const HashTable< NodeId, Idx >& profileIds,
-                                                         const NodeSet&                  whatifIds);
+    static CausalModel< GUM_ELEMENT >
+        counterFactualModel(const CausalModel< GUM_ELEMENT >& cm,
+                            const HashTable< NodeId, Idx >&   profileIds,
+                            const NodeSet&                    whatifIds);
 
     /// Rebuild the internal CausalImpact (ctor already calls this).
     void run();
 
     // ---------- Accessors ----------
-    const CausalModel< GUM_SCALAR >& originalModel() const { return _cm; }
+    const CausalModel< GUM_ELEMENT >& originalModel() const { return _cm; }
 
-    const CausalModel< GUM_SCALAR >& twinModel() const { return _twin; }
+    const CausalModel< GUM_ELEMENT >& twinModel() const { return _twin; }
 
     /**
      * @brief Symbolic result produced on the twin model.
      *
-     * Exposes the `CausalFormula` computed by the internal `CausalImpact` built
-     * over the twin model. Variable names follow those of the original BN.
+     * Exposes the `CausalImpact` built over the twin model. Variable names follow those of the
+     * original BN.
      *
-     * @return const CausalFormula<GUM_SCALAR>& The causal formula.
+     * @return const CausalImpact<GUM_ELEMENT>& The causal formula.
      */
-    const CausalFormula< GUM_SCALAR >& getResult() const { return _ciResult(); }
+    const CausalImpact< GUM_ELEMENT >& impact() const { return *_ci; }
 
     /**
      * @brief Numeric result adapted to the original model’s variables.
@@ -184,11 +185,11 @@ namespace gum {
      * twin, but each variable object belongs to the original BN (so downstream
      * code may use original variable references).
      *
-     * @return const Tensor<GUM_SCALAR>& The adapted numeric tensor. It may be
+     * @return const Tensor<GUM_ELEMENT>& The adapted numeric tensor. It may be
      *         empty (nbrDim()==0) if the effect is not identifiable or if
      *         evaluation failed.
      */
-    const Tensor< GUM_SCALAR >& value() const { return _adaptedValue; }
+    const Tensor< GUM_ELEMENT >& value() const { return _adaptedValue; }
 
     const Set< std::string >& on() const { return _on; }
 
@@ -201,27 +202,28 @@ namespace gum {
     std::string toString() const;
 
     private:
-    static Tensor< GUM_SCALAR > _adaptToOriginalVariables_(const Tensor< GUM_SCALAR >&      adj,
-                                                           const CausalModel< GUM_SCALAR >& cm);
+    static Tensor< GUM_ELEMENT > _adaptToOriginalVariables_(const Tensor< GUM_ELEMENT >&      adj,
+                                                            const CausalModel< GUM_ELEMENT >& cm);
 
-    const CausalFormula< GUM_SCALAR >& _ciResult() const;
+    const CausalFormula< GUM_ELEMENT >& _ciResult() const;
 
-    static Set< std::string > _idsToNames_(const CausalModel< GUM_SCALAR >& cm, const NodeSet& ids);
+    static Set< std::string > _idsToNames_(const CausalModel< GUM_ELEMENT >& cm,
+                                           const NodeSet&                    ids);
     static HashTable< VarName, ValName >
-        _idAssignToNameAssign_(const CausalModel< GUM_SCALAR >& cm,
-                               const HashTable< NodeId, Idx >&  idAssign);
+        _idAssignToNameAssign_(const CausalModel< GUM_ELEMENT >& cm,
+                               const HashTable< NodeId, Idx >&   idAssign);
 
     private:
-    const CausalModel< GUM_SCALAR >& _cm;
-    Set< std::string >               _on;
-    Set< std::string >               _whatif;
-    HashTable< VarName, ValName >    _profile;
-    HashTable< VarName, ValName >    _values;
+    const CausalModel< GUM_ELEMENT >& _cm;
+    Set< std::string >                _on;
+    Set< std::string >                _whatif;
+    HashTable< VarName, ValName >     _profile;
+    HashTable< VarName, ValName >     _values;
 
-    CausalModel< GUM_SCALAR > _twin;
-    Tensor< GUM_SCALAR >      _adaptedValue;
+    CausalModel< GUM_ELEMENT > _twin;
+    Tensor< GUM_ELEMENT >      _adaptedValue;
 
-    std::unique_ptr< CausalImpact< GUM_SCALAR > > _ci;
+    std::unique_ptr< CausalImpact< GUM_ELEMENT > > _ci;
   };
 
   // ============================================================================
@@ -232,27 +234,27 @@ namespace gum {
    * \brief Compute a counterfactual distribution using the high-level API.
    *
    * Mirrors the Python function `counterfactual(cm, profile, on, whatif, values)`.
-   * Internally constructs a Counterfactual<GUM_SCALAR> instance and returns
+   * Internally constructs a Counterfactual<GUM_ELEMENT> instance and returns
    * its evaluated tensor adapted to variables from \p cm.
    *
-   * @tparam GUM_SCALAR numeric scalar type (e.g., double)
+   * @tparam GUM_ELEMENT numeric scalar type (e.g., double)
    * @param cm       Causal model (original, observational world)
    * @param on       Names of variables of interest (can be a singleton)
    * @param whatif   Intervention targets (do-variables) by name
    * @param profile  Optional evidence on original world (name -> label)
    * @param values   Optional intervention values (name -> label). If empty,
    *                 the result spans all values of the \p whatif variables.
-   * @return Tensor<GUM_SCALAR> probability distribution over \p on
+   * @return Tensor<GUM_ELEMENT> probability distribution over \p on
    *         (variables are those of \p cm).
    */
-  template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > counterfactual(const CausalModel< GUM_SCALAR >&             cm,
-                                      const Set< std::string >&                    on,
-                                      const Set< std::string >&                    whatif,
-                                      const HashTable< std::string, std::string >& profile
-                                      = HashTable< std::string, std::string >(),
-                                      const HashTable< std::string, std::string >& values
-                                      = HashTable< std::string, std::string >());
+  template < GUM_Numeric GUM_ELEMENT >
+  Tensor< GUM_ELEMENT > counterfactual(const CausalModel< GUM_ELEMENT >&            cm,
+                                       const Set< std::string >&                    on,
+                                       const Set< std::string >&                    whatif,
+                                       const HashTable< std::string, std::string >& profile
+                                       = HashTable< std::string, std::string >(),
+                                       const HashTable< std::string, std::string >& values
+                                       = HashTable< std::string, std::string >());
 
   /**
    * \brief Build the twin causal model.
@@ -261,15 +263,15 @@ namespace gum {
    * It computes posteriors of idiosyncratic nodes in the original BN given
    * \p profile and replaces their priors in a cloned model.
    *
-   * @tparam GUM_SCALAR numeric scalar type (e.g., double)
+   * @tparam GUM_ELEMENT numeric scalar type (e.g., double)
    * @param cm       Original causal model
    * @param profile  Optional evidence on the original BN (name -> label)
    * @param whatif   Intervention targets (do-variables) by name
-   * @return CausalModel<GUM_SCALAR> the twin causal model
+   * @return CausalModel<GUM_ELEMENT> the twin causal model
    */
-  template < GUM_Numeric GUM_SCALAR >
-  CausalModel< GUM_SCALAR >
-      counterfactualModel(const CausalModel< GUM_SCALAR >&             cm,
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT >
+      counterfactualModel(const CausalModel< GUM_ELEMENT >&            cm,
                           const HashTable< std::string, std::string >& profile,
                           const Set< std::string >&                    whatif);
 

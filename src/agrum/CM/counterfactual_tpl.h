@@ -49,12 +49,12 @@ namespace gum {
 
   // ============================== CONSTRUCTORS ===============================
 
-  template < GUM_Numeric GUM_SCALAR >
-  Counterfactual< GUM_SCALAR >::Counterfactual(const CausalModel< GUM_SCALAR >&     cm,
-                                               const Set< std::string >&            on,
-                                               const Set< std::string >&            whatif,
-                                               const HashTable< VarName, ValName >& profile,
-                                               const HashTable< VarName, ValName >& values) :
+  template < GUM_Numeric GUM_ELEMENT >
+  Counterfactual< GUM_ELEMENT >::Counterfactual(const CausalModel< GUM_ELEMENT >&    cm,
+                                                const Set< std::string >&            on,
+                                                const Set< std::string >&            whatif,
+                                                const HashTable< VarName, ValName >& profile,
+                                                const HashTable< VarName, ValName >& values) :
       _cm(cm), _on(on), _whatif(whatif), _profile(profile), _values(values),
       _twin(cm)   // copy-construct (clone semantics)
       ,
@@ -63,27 +63,27 @@ namespace gum {
     run();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  Counterfactual< GUM_SCALAR >::Counterfactual(const CausalModel< GUM_SCALAR >& cm,
-                                               const NodeSet&                   onIds,
-                                               const NodeSet&                   whatifIds,
-                                               const HashTable< NodeId, Idx >&  profileIds,
-                                               const HashTable< NodeId, Idx >&  valuesIds) :
-      Counterfactual< GUM_SCALAR >(cm,
-                                   _idsToNames_(cm, onIds),
-                                   _idsToNames_(cm, whatifIds),
-                                   _idAssignToNameAssign_(cm, profileIds),
-                                   _idAssignToNameAssign_(cm, valuesIds)) {}
+  template < GUM_Numeric GUM_ELEMENT >
+  Counterfactual< GUM_ELEMENT >::Counterfactual(const CausalModel< GUM_ELEMENT >& cm,
+                                                const NodeSet&                    onIds,
+                                                const NodeSet&                    whatifIds,
+                                                const HashTable< NodeId, Idx >&   profileIds,
+                                                const HashTable< NodeId, Idx >&   valuesIds) :
+      Counterfactual< GUM_ELEMENT >(cm,
+                                    _idsToNames_(cm, onIds),
+                                    _idsToNames_(cm, whatifIds),
+                                    _idAssignToNameAssign_(cm, profileIds),
+                                    _idAssignToNameAssign_(cm, valuesIds)) {}
 
   // ============================== TWIN BUILDERS ==============================
 
-  template < GUM_Numeric GUM_SCALAR >
-  CausalModel< GUM_SCALAR > Counterfactual< GUM_SCALAR >::counterFactualModel(
-      const CausalModel< GUM_SCALAR >&     cm,
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT > Counterfactual< GUM_ELEMENT >::counterFactualModel(
+      const CausalModel< GUM_ELEMENT >&    cm,
       const HashTable< VarName, ValName >& profile,
       const Set< std::string >&            whatif) {
-    const auto&               origBN = cm.observationalBN();
-    CausalModel< GUM_SCALAR > twincm(origBN);   // copy (serves as clone)
+    const auto&                origBN = cm.observationalBN();
+    CausalModel< GUM_ELEMENT > twincm(origBN);   // copy (serves as clone)
 
     // 1) idiosyncratic = parentless \ (whatif ∪ latent)
     NodeSet whatifIds;
@@ -102,7 +102,7 @@ namespace gum {
     }
 
     // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-    gum::LazyPropagation< GUM_SCALAR > ie(&origBN);
+    gum::LazyPropagation< GUM_ELEMENT > ie(&origBN);
     if (!profile.empty()) {
       for (const auto& kv: profile) {
         const auto&  varName = kv.first;
@@ -117,19 +117,19 @@ namespace gum {
     // 3) Replace priors in the twin with posteriors from the original
     auto& twinBN = twincm.observationalBN();
     for (auto f: idiosyncratic) {
-      const auto&                name   = origBN.variable(f).name();
-      auto                       twinId = twinBN.idFromName(name);
-      const Tensor< GUM_SCALAR > post   = ie.posterior(f);
+      const auto&                 name   = origBN.variable(f).name();
+      auto                        twinId = twinBN.idFromName(name);
+      const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
       twinBN.cpt(twinId).fillWith(post);
     }
     return twincm;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  CausalModel< GUM_SCALAR >
-      Counterfactual< GUM_SCALAR >::counterFactualModel(const CausalModel< GUM_SCALAR >& cm,
-                                                        const HashTable< NodeId, Idx >&  profileIds,
-                                                        const NodeSet& whatifIds) {
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT >
+      Counterfactual< GUM_ELEMENT >::counterFactualModel(const CausalModel< GUM_ELEMENT >& cm,
+                                                         const HashTable< NodeId, Idx >& profileIds,
+                                                         const NodeSet& whatifIds) {
     const auto& origBN = cm.observationalBN();
     // 1) idiosyncratic = parentless \ (whatif ∪ latent)
     NodeSet idiosyncratic;
@@ -144,9 +144,9 @@ namespace gum {
     }
 
     // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-    CausalModel< GUM_SCALAR > twincm(origBN);
+    CausalModel< GUM_ELEMENT > twincm(origBN);
     {
-      gum::LazyPropagation< GUM_SCALAR > ie(&origBN);
+      gum::LazyPropagation< GUM_ELEMENT > ie(&origBN);
       if (!profileIds.empty()) {
         for (const auto& kv: profileIds) {
           const NodeId nid   = kv.first;
@@ -157,9 +157,9 @@ namespace gum {
       ie.makeInference();
       auto& twinBN = twincm.observationalBN();
       for (auto f: idiosyncratic) {
-        const auto&                name   = origBN.variable(f).name();
-        const NodeId               twinId = twinBN.idFromName(name);
-        const Tensor< GUM_SCALAR > post   = ie.posterior(f);
+        const auto&                 name   = origBN.variable(f).name();
+        const NodeId                twinId = twinBN.idFromName(name);
+        const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
         twinBN.cpt(twinId).fillWith(post);
       }
     }
@@ -168,13 +168,13 @@ namespace gum {
 
   // ================================ EXECUTION ================================
 
-  template < GUM_Numeric GUM_SCALAR >
-  void Counterfactual< GUM_SCALAR >::run() {
+  template < GUM_Numeric GUM_ELEMENT >
+  void Counterfactual< GUM_ELEMENT >::run() {
     // Build symbolic effect on the twin
-    _ci = std::make_unique< CausalImpact< GUM_SCALAR > >(_twin, _on, _whatif);
+    _ci = std::make_unique< CausalImpact< GUM_ELEMENT > >(_twin, _on, _whatif);
 
     // Numeric evaluation on the twin
-    Tensor< GUM_SCALAR > adj = _ci->eval();
+    Tensor< GUM_ELEMENT > adj = _ci->eval();
 
     // Slice by specified intervention values (partial instantiation, safe if some names are absent)
     if (!_values.empty() && adj.nbrDim() > 0) {
@@ -188,12 +188,12 @@ namespace gum {
 
   // =============================== ADAPTATION ================================
 
-  template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > Counterfactual< GUM_SCALAR >::_adaptToOriginalVariables_(
-      const Tensor< GUM_SCALAR >&      adj,
-      const CausalModel< GUM_SCALAR >& cm) {
-    Tensor< GUM_SCALAR > res;
-    const auto&          bn = cm.observationalBN();
+  template < GUM_Numeric GUM_ELEMENT >
+  Tensor< GUM_ELEMENT > Counterfactual< GUM_ELEMENT >::_adaptToOriginalVariables_(
+      const Tensor< GUM_ELEMENT >&      adj,
+      const CausalModel< GUM_ELEMENT >& cm) {
+    Tensor< GUM_ELEMENT > res;
+    const auto&           bn = cm.observationalBN();
 
     // keep adj variable order
     for (const auto& v: adj.variablesSequence()) {
@@ -205,15 +205,15 @@ namespace gum {
 
   // ============================ RESULT ACCESSOR ==============================
 
-  template < GUM_Numeric GUM_SCALAR >
-  const CausalFormula< GUM_SCALAR >& Counterfactual< GUM_SCALAR >::_ciResult() const {
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalFormula< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::_ciResult() const {
     return _ci->getResult();   // public accessor in CausalImpact
   }
 
   // ================================= PRINT ==================================
 
-  template < GUM_Numeric GUM_SCALAR >
-  std::string Counterfactual< GUM_SCALAR >::toString() const {
+  template < GUM_Numeric GUM_ELEMENT >
+  std::string Counterfactual< GUM_ELEMENT >::toString() const {
     std::stringstream os;
     os << "[Counterfactual]\n";
 
@@ -273,9 +273,10 @@ namespace gum {
 
   // ============================== HELPERS (IDs) ==============================
 
-  template < GUM_Numeric GUM_SCALAR >
-  Set< std::string > Counterfactual< GUM_SCALAR >::_idsToNames_(const CausalModel< GUM_SCALAR >& cm,
-                                                                const NodeSet& ids) {
+  template < GUM_Numeric GUM_ELEMENT >
+  Set< std::string >
+      Counterfactual< GUM_ELEMENT >::_idsToNames_(const CausalModel< GUM_ELEMENT >& cm,
+                                                  const NodeSet&                    ids) {
     Set< std::string > out;
     const auto&        bn = cm.observationalBN();
     for (auto nid: ids) {
@@ -285,12 +286,12 @@ namespace gum {
     return out;
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  HashTable< typename Counterfactual< GUM_SCALAR >::VarName,
-             typename Counterfactual< GUM_SCALAR >::ValName >
-      Counterfactual< GUM_SCALAR >::_idAssignToNameAssign_(
-          const CausalModel< GUM_SCALAR >& cm,
-          const HashTable< NodeId, Idx >&  idAssign) {
+  template < GUM_Numeric GUM_ELEMENT >
+  HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
+             typename Counterfactual< GUM_ELEMENT >::ValName >
+      Counterfactual< GUM_ELEMENT >::_idAssignToNameAssign_(
+          const CausalModel< GUM_ELEMENT >& cm,
+          const HashTable< NodeId, Idx >&   idAssign) {
     HashTable< VarName, ValName > out;
     const auto&                   bn = cm.observationalBN();
     for (const auto& kv: idAssign) {
@@ -306,26 +307,26 @@ namespace gum {
   // Standalone helpers (Python-parity)
   // ============================================================================
 
-  template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR > counterfactual(const CausalModel< GUM_SCALAR >&             cm,
-                                      const Set< std::string >&                    on,
-                                      const Set< std::string >&                    whatif,
-                                      const HashTable< std::string, std::string >& profile,
-                                      const HashTable< std::string, std::string >& values) {
+  template < GUM_Numeric GUM_ELEMENT >
+  Tensor< GUM_ELEMENT > counterfactual(const CausalModel< GUM_ELEMENT >&            cm,
+                                       const Set< std::string >&                    on,
+                                       const Set< std::string >&                    whatif,
+                                       const HashTable< std::string, std::string >& profile,
+                                       const HashTable< std::string, std::string >& values) {
     // Use the class implementation and return the adapted tensor.
-    Counterfactual< GUM_SCALAR > cf(cm, on, whatif, profile, values);
+    Counterfactual< GUM_ELEMENT > cf(cm, on, whatif, profile, values);
     return cf.value();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  CausalModel< GUM_SCALAR >
-      counterfactualModel(const CausalModel< GUM_SCALAR >&             cm,
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT >
+      counterfactualModel(const CausalModel< GUM_ELEMENT >&            cm,
                           const HashTable< std::string, std::string >& profile,
                           const Set< std::string >&                    whatif) {
     const auto& origBN = cm.observationalBN();
 
     // Clone model (copy semantics)
-    CausalModel< GUM_SCALAR > twincm(origBN);
+    CausalModel< GUM_ELEMENT > twincm(origBN);
 
     // what-if ids
     NodeSet whatifIds;
@@ -342,7 +343,7 @@ namespace gum {
       idiosyncratic.erase(id);
 
     // Posteriors in the original BN
-    LazyPropagation< GUM_SCALAR > ie(&origBN);
+    LazyPropagation< GUM_ELEMENT > ie(&origBN);
     if (!profile.empty()) {
       for (const auto& kv: profile) {
         const NodeId nid   = cm.idFromName(kv.first);
@@ -356,9 +357,9 @@ namespace gum {
     // Update priors in the twin with posteriors
     auto& twinBN = twincm.observationalBN();
     for (auto f: idiosyncratic) {
-      const auto&                name   = origBN.variable(f).name();
-      const NodeId               twinId = twinBN.idFromName(name);
-      const Tensor< GUM_SCALAR > post   = ie.posterior(f);
+      const auto&                 name   = origBN.variable(f).name();
+      const NodeId                twinId = twinBN.idFromName(name);
+      const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
       twinBN.cpt(twinId).fillWith(post);
     }
 

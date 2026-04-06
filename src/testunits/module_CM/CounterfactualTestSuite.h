@@ -133,7 +133,7 @@ namespace gum_tests {
       gum::Counterfactual cf(cm, on_names, whatif_names, profile, values);
       CHECK_NOTHROW({
         const auto _ = cf.toString();
-        (void)cf.getResult().toString();
+        (void)cf.impact().toString();
       });
 
       const auto& got = cf.value();
@@ -176,7 +176,7 @@ namespace gum_tests {
 
       CHECK_NOTHROW({
         const auto _ = cf.toString();
-        (void)cf.getResult().toString();
+        (void)cf.impact().toString();
       });
 
       const auto& got = cf.value();

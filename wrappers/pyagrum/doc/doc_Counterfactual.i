@@ -145,16 +145,16 @@ pyagrum.causal.CausalModel
     The twin model.
 "
 
-%feature("docstring") gum::Counterfactual::getResult
+%feature("docstring") gum::Counterfactual::impact
 "
-Return the CausalFormula used to compute the counterfactual distribution.
+Return the CausalImpact used to compute the counterfactual distribution.
 
 The formula is evaluated on the twin model.
 
 Returns
 -------
-pyagrum.causal.CausalFormula
-    The identified causal formula on the twin model.
+pyagrum.causal.CausalImpact
+    The identified causal impact on the twin model.
 "
 
 %feature("docstring") gum::Counterfactual::value
