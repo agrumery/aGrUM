@@ -295,7 +295,7 @@ _Set_end_ = cvar._Set_end_
 _Set_end_safe_ = cvar._Set_end_safe_
 
 
-def _createMsg_(filename: "str_view", function: "str_view", line: int, msg: "str_view") -> str:
+def _createMsg_(filename: str, function: str, line: int, msg: str) -> str:
     return _pyagrum._createMsg_(filename, function, line, msg)
 class FatalError(GumException):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -867,11 +867,8 @@ def isOMP() -> bool:
     """
     return _pyagrum.isOMP()
 
-def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > >":
+def dispatchRangeToThreads(beg: int, end: int, nb_threads: int) -> tuple[tuple[int, int], ...]:
     return _pyagrum.dispatchRangeToThreads(beg, end, nb_threads)
-
-def generator() -> "std::mt19937 &":
-    return _pyagrum.generator()
 
 def randomValue(max: int=2) -> int:
     r"""
@@ -921,9 +918,6 @@ def initRandom(seed: int=0) -> None:
 
     """
     return _pyagrum.initRandom(seed)
-
-def randomGenerator() -> "std::mt19937 &":
-    return _pyagrum.randomGenerator()
 VarType_DISCRETIZED = _pyagrum.VarType_DISCRETIZED
 VarType_LABELIZED = _pyagrum.VarType_LABELIZED
 VarType_INTEGER = _pyagrum.VarType_INTEGER
@@ -960,7 +954,7 @@ class Variable(object):
     def __eq__(self, aRV: "pyagrum.Variable") -> bool:
         return _pyagrum.Variable___eq__(self, aRV)
 
-    def setName(self, theValue: "str_view") -> None:
+    def setName(self, theValue: str) -> None:
         r"""
 
         sets the name of the variable.
@@ -984,7 +978,7 @@ class Variable(object):
         """
         return _pyagrum.Variable_name(self)
 
-    def setDescription(self, theValue: "str_view") -> None:
+    def setDescription(self, theValue: str) -> None:
         r"""
 
         set the description of the variable.
@@ -1062,7 +1056,7 @@ class DiscreteVariable(Variable):
         """
         return _pyagrum.DiscreteVariable_domainSize(self)
 
-    def labels(self) -> list[str]:
+    def labels(self) -> tuple[str, ...]:
         r"""
 
         Returns
@@ -1099,7 +1093,7 @@ class DiscreteVariable(Variable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -1121,7 +1115,7 @@ class DiscreteVariable(Variable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -1154,7 +1148,7 @@ class DiscreteVariable(Variable):
     def toFast(self) -> str:
         return _pyagrum.DiscreteVariable_toFast(self)
 
-    def index(self, label: "str_view") -> int:
+    def index(self, label: str) -> int:
         r"""
 
         Parameters
@@ -1252,41 +1246,164 @@ class DiscreteVariable(Variable):
     # shortcuts for readonly API from derived classes
     ###########
     # Labelized
-    def posLabel(self,s):
+    def posLabel(self,s:str)->int:
+      """
+      Returns the index of the label `s` in the variable's domain (if the variable is a pyagrum.LabelizedVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.LabelizedVariable
+        NotFoundError
+          If the variable does not contain the label `s`
+
+      Returns
+      -------
+        int
+          the index of the label `s` in the variable's domain
+      """
       try:
         return self.asLabelizedVar().posLabel(s)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"posLabel not implemented for {self}")
-    def isLabel(self,s):
+    def isLabel(self,s:str)->bool:
+      """
+      returns whether s is a label of the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.LabelizedVariable
+
+      Returns
+      -------
+        bool
+          True if s is a label of the variable, False otherwise
+      """
       try:
         return self.asLabelizedVar().isLabel(s)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"isLabel not implemented for {self}")
     ###########
     # Range
-    def belongs(self,x):
+    def belongs(self,x:int)->bool:
+      """
+      returns whether x belongs to the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Parameters
+      ----------
+      x : int
+          the value for which we want to know if it belongs to the variable domain
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        bool
+          True if x belongs to the variable domain, False otherwise
+      """
       try:
         return self.asRangeVar().belongs(x)
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"belongs not implemented for {self}")
-    def minVal(self):
+    def minVal(self)->int:
+      """
+      returns the minimum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        int
+          the minimum value of the variable domain
+      """
       try:
         return self.asRangeVar().minVal()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"minVal not implemented for {self}")
-    def maxVal(self):
+    def maxVal(self)->int:
+      """
+      returns the maximum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.RangeVariable
+
+      Returns
+      -------
+        int
+          the maximum value of the variable domain
+      """
       try:
         return self.asRangeVar().maxVal()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"maxVal- not implemented for {self}")
     ###########
-    # NumericalDiscrete / Integer
-    def numericalDomain(self):
+    # NumericalDiscreteVariable and/or IntegerVariable
+    def numericalDomain(self)->tuple[float,...]:
+      """
+      Returns the numerical domain of the variable (if the variable is a pyagrum.NumericalDiscreteVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.NumericalDiscreteVariable
+
+      Returns
+      -------
+        tuple[float,...]
+          the numerical domain of the variable
+      """
       try:
         return self.asNumericalDiscreteVar().numericalDomain()
       except pyagrum.OperationNotAllowed:
          raise NotImplementedError(f"numericalDomain not implemented for {self}")
-    def isValue(self,x):
+
+    def integerDomain(self)->tuple[int,...]:
+      """
+      Returns the integer domain of the variable (if the variable is a pyagrum.integerVariable)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.IntegerVariable
+
+      Returns
+      -------
+        tuple[int,...]
+          the integer domain of the variable
+      """
+      try:
+        return self.asIntegerVar().integerDomain()
+      except pyagrum.OperationNotAllowed:
+        raise NotImplementedError(f"isValue not implemented for {self}")
+
+    def isValue(self,x:float)->bool:
+      """
+      Returns whether x is a value for the variable
+
+      Parameters
+      ----------
+      x : float
+          the value for which we want to know if it is a value for the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.NumericalDiscreteVariable or a pyagrum.IntegerVariable
+
+      Returns
+      -------
+        bool
+          whether x is a value for the variable, i.e. whether x belongs to the variable domain
+      """
       try:
         return self.asNumericalDiscreteVar().isValue(x)
       except pyagrum.OperationNotAllowed:
@@ -1294,29 +1411,89 @@ class DiscreteVariable(Variable):
           return self.asIntegerVar().isValue(x)
         except pyagrum.OperationNotAllowed:
           raise NotImplementedError(f"isValue not implemented for {self}")
-    def integerDomain(self):
-      try:
-        return self.asIntegerVar().integerDomain()
-      except pyagrum.OperationNotAllowed:
-        raise NotImplementedError(f"isValue not implemented for {self}")
+
     ###########
     # DiscretizedVariable
-    def isTick(self,x):
+    def isTick(self,x:float):
+      """
+      Returns whether x is a tick for the variable
+
+      Parameters
+      ----------
+      x : float
+          the value for which we want to know if it is a tick for the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        bool
+          whether x is a tick for the variable, i.e. whether x belongs to the variable's domain
+      """
       try:
         return self.asDiscretizedVar().isTick(x)
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"isTick not implemented for {self}")
-    def ticks(self):
+    def ticks(self)->tuple[float,...]:
+      """
+      Returns the ticks of the variable
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        tuple[float,...]
+          the ticks of the variable, i.e. the values that belong to the variable's domain
+      """
       try:
         return self.asDiscretizedVar().ticks()
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"ticks not implemented for {self}")
-    def isEmpirical(self):
+    def isEmpirical(self)->bool:
+      """
+      Returns whether the variable is empirical (if the variable is a pyagrum.DiscretizedVariable). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+
+      Returns
+      -------
+        bool
+          whether the variable is empirical
+      """
       try:
         return self.asDiscretizedVar().isEmpirical()
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"isEmpirical not implemented for {self}")
-    def tick(self,x):
+    def tick(self,x:int):
+      """
+      Returns the x-th tick of the variable (if the variable is a pyagrum.DiscretizedVariable)
+
+      Parameters
+      ----------
+      x : int
+          the index of the tick we want to get
+
+      Raises
+      ------
+        NotImplementedError
+          If the variable is not a pyagrum.DiscretizedVariable
+        pyagrum.OutOfBounds
+          If x is not a valid index for the ticks of the variable
+
+      Returns
+      -------
+        float
+          the x-th tick of the variable
+      """
       try:
         return self.asDiscretizedVar().tick(x)
       except pyagrum.OperationNotAllowed:
@@ -1480,7 +1657,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_clone(self)
 
-    def index(self, label: "str_view") -> int:
+    def index(self, label: str) -> int:
         r"""
 
         Parameters
@@ -1496,7 +1673,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_index(self, label)
 
-    def isLabel(self, aLabel: "str_view") -> bool:
+    def isLabel(self, aLabel: str) -> bool:
         r"""
 
         Indicates whether the variable already has the label passed in argument
@@ -1538,7 +1715,7 @@ class LabelizedVariable(DiscreteVariable):
 
 
 
-    def changeLabel(self, pos: int, aLabel: "str_view") -> None:
+    def changeLabel(self, pos: int, aLabel: str) -> None:
         r"""
 
         Change the label at the specified index
@@ -1589,7 +1766,7 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyagrum.LabelizedVariable_label(self, i)
 
-    def posLabel(self, label: "str_view") -> int:
+    def posLabel(self, label: str) -> int:
         return _pyagrum.LabelizedVariable_posLabel(self, label)
 
     def numerical(self, index: int) -> float:
@@ -1615,7 +1792,7 @@ class LabelizedVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -1885,7 +2062,7 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyagrum.RangeVariable_belongs(self, val)
 
-    def index(self, arg2: "str_view") -> int:
+    def index(self, arg2: str) -> int:
         r"""
 
         Parameters
@@ -1908,7 +2085,7 @@ class RangeVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -2034,7 +2211,7 @@ class IntegerVariable(DiscreteVariable):
     def toFast(self) -> str:
         return _pyagrum.IntegerVariable_toFast(self)
 
-    def index(self, label: "str_view") -> int:
+    def index(self, label: str) -> int:
         r"""
 
         Parameters
@@ -2057,7 +2234,7 @@ class IntegerVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -2131,7 +2308,7 @@ class IntegerVariable(DiscreteVariable):
         """
         return _pyagrum.IntegerVariable_stype(self)
 
-    def integerDomain(self) -> list[int]:
+    def integerDomain(self) -> tuple[int, ...]:
         r"""
 
         Returns
@@ -2222,7 +2399,7 @@ class IntegerVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -2337,7 +2514,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def toFast(self) -> str:
         return _pyagrum.NumericalDiscreteVariable_toFast(self)
 
-    def index(self, label: "str_view") -> int:
+    def index(self, label: str) -> int:
         r"""
 
         Parameters
@@ -2360,7 +2537,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -2434,12 +2611,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
         """
         return _pyagrum.NumericalDiscreteVariable_stype(self)
 
-    def numericalDomain(self) -> list[float]:
+    def numericalDomain(self) -> tuple[float, ...]:
         r"""
 
         Returns
         -------
-        tuple
+        tuple[float,...]
             the tuple of float values that form the domain of this variable
 
         """
@@ -2525,7 +2702,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -5757,7 +5934,7 @@ class GraphicalModel(object):
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrum.delete_GraphicalModel
 
-    def property(self, name: "str_view") -> str:
+    def property(self, name: str) -> str:
         r"""
 
         Returns the value associated to this property.
@@ -5782,7 +5959,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_property(self, name)
 
-    def propertyWithDefault(self, name: "str_view", byDefault: str) -> str:
+    def propertyWithDefault(self, name: str, byDefault: str) -> str:
         r"""
 
         Returns the value associated to this property or the default value if there is no such property.
@@ -5804,7 +5981,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_propertyWithDefault(self, name, byDefault)
 
-    def setProperty(self, name: "str_view", value: "str_view") -> None:
+    def setProperty(self, name: str, value: str) -> None:
         r"""
 
         Create or change the couple (name,value) in the properties.
@@ -5821,7 +5998,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_setProperty(self, name, value)
 
-    def properties(self) -> list[str]:
+    def properties(self) -> tuple[str, ...]:
         return _pyagrum.GraphicalModel_properties(self)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -5861,7 +6038,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_exists(self, *args)
 
-    def names(self, *args) -> list[str]:
+    def names(self, *args) -> tuple[str, ...]:
         r"""
 
         Set of names of variables in the model
@@ -5874,7 +6051,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_names(self, *args)
 
-    def ids(self, names: list[str]) -> list[int]:
+    def ids(self, names: tuple[str, ...]) -> list[int]:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -5892,7 +6069,7 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_ids(self, names)
 
-    def nodeset(self, names: list[str]) -> list[int]:
+    def nodeset(self, names: tuple[str, ...]) -> list[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -5935,10 +6112,10 @@ class GraphicalModel(object):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.GraphicalModel_nodeId(self, var)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         return _pyagrum.GraphicalModel_idFromName(self, name)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         return _pyagrum.GraphicalModel_variableFromName(self, name)
 
     def log10DomainSize(self) -> float:
@@ -6008,10 +6185,10 @@ class DiscreteGraphicalModel(GraphicalModel):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.DiscreteGraphicalModel_nodeId(self, var)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         return _pyagrum.DiscreteGraphicalModel_idFromName(self, name)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         return _pyagrum.DiscreteGraphicalModel_variableFromName(self, name)
 
 # Register DiscreteGraphicalModel in _pyagrum:
@@ -6688,7 +6865,7 @@ class ApproximationScheme(object):
         """
         return _pyagrum.ApproximationScheme_nbrIterations(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -6806,7 +6983,7 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
     """
     return _pyagrum.fastVariable(*args)
 
-def randomDistribution(n: int) -> list[float]:
+def randomDistribution(n: int) -> tuple[float, ...]:
     r"""
 
     Parameters
@@ -7059,7 +7236,7 @@ class DiscretizedVariable(IDiscretizedVariable):
         """
         return _pyagrum.DiscretizedVariable_tick(self, i)
 
-    def ticks(self) -> list[float]:
+    def ticks(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -7077,7 +7254,7 @@ class DiscretizedVariable(IDiscretizedVariable):
 
         Parameters
         ----------
-        value : float
+        val : float
           the value for which we want to find the closest index
         Returns
         -------
@@ -7368,7 +7545,7 @@ class Tensor(object):
         """
         return _pyagrum.Tensor_reorganize(self, *args)
 
-    def putFirst(self, varname: "str_view") -> "pyagrum.Tensor":
+    def putFirst(self, varname: str) -> "pyagrum.Tensor":
         r"""
 
         Parameters
@@ -8790,7 +8967,7 @@ class Tensor(object):
         Returns
         -------
         int
-          the size of the domain of the Tensor (the number of values it can take) 
+          the size of the domain of the Tensor (the number of values it can take)
 
         """
         return _pyagrum.Tensor_domainSize(self)
@@ -8820,7 +8997,7 @@ class PairMPE(object):
         return 2
     def __repr__(self):
         return str((self.first, self.second))
-    def __getitem__(self, index): 
+    def __getitem__(self, index):
         if not (index % 2):
             return self.first
         else:
@@ -9150,7 +9327,7 @@ class PythonApproximationListener(object):
     def whenProgress(self, src: object, step: int, error: float, duration: float) -> None:
         return _pyagrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
-    def whenStop(self, src: object, message: "str_view") -> None:
+    def whenStop(self, src: object, message: str) -> None:
         return _pyagrum.PythonApproximationListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
@@ -9188,7 +9365,7 @@ class PythonDatabaseGeneratorListener(object):
     def whenProgress(self, src: object, step: int, duration: float) -> None:
         return _pyagrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
 
-    def whenStop(self, src: object, message: "str_view") -> None:
+    def whenStop(self, src: object, message: str) -> None:
         return _pyagrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
@@ -10074,7 +10251,7 @@ class EssentialGraph(object):
     def skeleton(self) -> "pyagrum.UndiGraph":
         return _pyagrum.EssentialGraph_skeleton(self)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         r"""
 
         Parameters
@@ -10817,7 +10994,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_log2JointProbability(self, i)
 
-    def check(self) -> list[str]:
+    def check(self) -> tuple[str, ...]:
         r"""
 
         Check if the BayesNet is consistent (variables, CPT, ...)
@@ -10912,7 +11089,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_toDot(self)
 
-    def evEq(self, name: "str_view", value: float) -> "pyagrum.Tensor":
+    def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
@@ -10946,7 +11123,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evEq(self, name, value)
 
-    def evIn(self, name: "str_view", val1: float, val2: float) -> "pyagrum.Tensor":
+    def evIn(self, name: str, val1: float, val2: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
@@ -10973,7 +11150,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evIn(self, name, val1, val2)
 
-    def evLt(self, name: "str_view", value: float) -> "pyagrum.Tensor":
+    def evLt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
@@ -10997,7 +11174,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_evLt(self, name, value)
 
-    def evGt(self, name: "str_view", value: float) -> "pyagrum.Tensor":
+    def evGt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
         This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
@@ -11044,7 +11221,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_memoryFootprint(self)
 
-    def ids(self, names: list[str]) -> object:
+    def ids(self, names: tuple[str, ...]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -11062,7 +11239,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_ids(self, names)
 
-    def nodeset(self, names: list[str]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -12102,7 +12279,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_log10DomainSize(self)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         return _pyagrum.BayesNet_idFromName(self, name)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -12134,10 +12311,10 @@ class BayesNet(IBayesNet):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.BayesNet_nodeId(self, var)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         return _pyagrum.BayesNet_variableFromName(self, name)
 
-    def ids(self, names: list[str]) -> object:
+    def ids(self, names: tuple[str, ...]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -12155,7 +12332,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_ids(self, names)
 
-    def nodeset(self, names: list[str]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -12990,7 +13167,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_nodeId(self, var)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         r"""
 
         Returns a variable's id given its name in the graph.
@@ -13017,7 +13194,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_idFromName(self, name)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         r"""
 
         Parameters
@@ -13230,7 +13407,7 @@ class BayesNetFragment(IBayesNet, ):
         return val
 
 
-    def ids(self, names: list[str]) -> object:
+    def ids(self, names: tuple[str, ...]) -> object:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -13248,7 +13425,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_ids(self, names)
 
-    def nodeset(self, names: list[str]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> object:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -16353,7 +16530,7 @@ class GibbsSampling(object):
         """
         return _pyagrum.GibbsSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -17172,7 +17349,7 @@ class ImportanceSampling(object):
         """
         return _pyagrum.ImportanceSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -17947,7 +18124,7 @@ class WeightedSampling(object):
         """
         return _pyagrum.WeightedSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -18722,7 +18899,7 @@ class MonteCarloSampling(object):
         """
         return _pyagrum.MonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -19511,7 +19688,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrum.LoopyImportanceSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -20300,7 +20477,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrum.LoopyWeightedSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -21089,7 +21266,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrum.LoopyGibbsSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -21944,7 +22121,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrum.LoopyMonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -22719,7 +22896,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrum.LoopyBeliefPropagation_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -23552,7 +23729,7 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrum.GibbsBNdistance_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -23839,7 +24016,7 @@ class BNDatabaseGenerator(object):
         """
         return _pyagrum.BNDatabaseGenerator_setRandomVarOrder(self)
 
-    def varOrderNames(self) -> list[str]:
+    def varOrderNames(self) -> tuple[str, ...]:
         r"""
 
         The actual order for the variable (as a tuple of NodeId)
@@ -25103,7 +25280,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -25153,7 +25330,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_learnPDAG(self)
 
-    def names(self) -> list[str]:
+    def names(self) -> tuple[str, ...]:
         r"""
 
         Returns
@@ -25164,7 +25341,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_names(self)
 
-    def idFromName(self, var_name: "str_view") -> int:
+    def idFromName(self, var_name: str) -> int:
         r"""
 
         Parameters
@@ -25390,7 +25567,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_correctedMutualInformation(self, *args)
 
-    def rawPseudoCount(self, *args) -> list[float]:
+    def rawPseudoCount(self, *args) -> tuple[float, ...]:
         r"""
 
         computes the pseudoCount (taking priors into account) of the list of variables as a list of floats.
@@ -25576,7 +25753,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_EMnbrIterations(self)
 
-    def EMHistory(self) -> list[float]:
+    def EMHistory(self) -> tuple[float, ...]:
         r"""
 
         Returns a list containing the log-likelihoods recorded after each
@@ -26264,7 +26441,7 @@ class CredalNet(object):
         _pyagrum.CredalNet_swiginit(self, _pyagrum.new_CredalNet(*args))
     __swig_destroy__ = _pyagrum.delete_CredalNet
 
-    def addVariable(self, name: "str_view", card: int) -> int:
+    def addVariable(self, name: str, card: int) -> int:
         r"""
 
         Parameters
@@ -26358,7 +26535,7 @@ class CredalNet(object):
         """
         return _pyagrum.CredalNet_setCPT(self, *args)
 
-    def fillConstraints(self, id: int, lower: list[float], upper: list[float]) -> None:
+    def fillConstraints(self, id: int, lower: tuple[float, ...], upper: tuple[float, ...]) -> None:
         r"""
 
         Set the interval constraints of the credal sets of a given node (all instantiations)
@@ -26533,7 +26710,7 @@ class CredalNet(object):
         """
         return _pyagrum.CredalNet_approximatedBinarization(self)
 
-    def saveBNsMinMax(self, min_path: "str_view", max_path: "str_view") -> None:
+    def saveBNsMinMax(self, min_path: str, max_path: str) -> None:
         r"""
 
         If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
@@ -26753,7 +26930,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_makeInference(self)
 
-    def insertEvidenceFile(self, path: "str_view") -> None:
+    def insertEvidenceFile(self, path: str) -> None:
         r"""
 
         Insert evidence from file.
@@ -26956,7 +27133,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -27049,7 +27226,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_insertModalsFile(self, path)
 
-    def dynamicExpMax(self, varName: str) -> list[float]:
+    def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
         r"""
 
         Get the upper dynamic expectation of a given variable prefix.
@@ -27067,7 +27244,7 @@ class CNMonteCarloSampling(object):
         """
         return _pyagrum.CNMonteCarloSampling_dynamicExpMax(self, varName)
 
-    def dynamicExpMin(self, varName: str) -> list[float]:
+    def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
         r"""
 
         Get the lower dynamic expectation of a given variable prefix.
@@ -27172,7 +27349,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_inferenceType(self, *args)
 
-    def saveInference(self, path: "str_view") -> None:
+    def saveInference(self, path: str) -> None:
         r"""
 
         Saves marginals.
@@ -27194,7 +27371,7 @@ class CNLoopyPropagation(object):
 
     __swig_destroy__ = _pyagrum.delete_CNLoopyPropagation
 
-    def insertEvidenceFile(self, path: "str_view") -> None:
+    def insertEvidenceFile(self, path: str) -> None:
         r"""
 
         Insert evidence from file.
@@ -27397,7 +27574,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_messageApproximationScheme(self)
 
-    def history(self) -> list[float]:
+    def history(self) -> tuple[float, ...]:
         r"""
 
         Returns
@@ -27490,7 +27667,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_insertModalsFile(self, path)
 
-    def dynamicExpMax(self, varName: str) -> list[float]:
+    def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
         r"""
 
         Get the upper dynamic expectation of a given variable prefix.
@@ -27508,7 +27685,7 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_dynamicExpMax(self, varName)
 
-    def dynamicExpMin(self, varName: str) -> list[float]:
+    def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
         r"""
 
         Get the lower dynamic expectation of a given variable prefix.
@@ -28085,7 +28262,7 @@ class InfluenceDiagram(DAGmodel):
     def endTopologyTransformation(self) -> None:
         return _pyagrum.InfluenceDiagram_endTopologyTransformation(self)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         return _pyagrum.InfluenceDiagram_idFromName(self, name)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
@@ -28112,7 +28289,7 @@ class InfluenceDiagram(DAGmodel):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.InfluenceDiagram_nodeId(self, var)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         return _pyagrum.InfluenceDiagram_variableFromName(self, name)
 
     def names(self) -> object:
@@ -29595,7 +29772,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_log10DomainSize(self)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         return _pyagrum.MarkovRandomField_idFromName(self, name)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
@@ -29607,7 +29784,7 @@ class MarkovRandomField(IMarkovRandomField):
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         return _pyagrum.MarkovRandomField_nodeId(self, var)
 
-    def variableFromName(self, name: "str_view") -> "pyagrum.DiscreteVariable":
+    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
     def names(self) -> object:
@@ -31626,7 +31803,7 @@ class CausalModel(object):
         """
         return _pyagrum.CausalModel_names(self)
 
-    def idFromName(self, name: "str_view") -> int:
+    def idFromName(self, name: str) -> int:
         r"""
 
         Return the NodeId of a variable by name.
@@ -31878,19 +32055,6 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_isIdentified(self)
 
-    def getResult(self) -> "CausalFormula< float > const &":
-        r"""
-
-        Return the CausalFormula encoding the identified expression.
-
-        Returns
-        -------
-        pyagrum.causal.CausalFormula
-            The identified causal formula as an expression tree.
-
-        """
-        return _pyagrum.CausalImpact_getResult(self)
-
     def cm(self) -> "pyagrum.CausalModel":
         r"""
 
@@ -31960,7 +32124,7 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_explanation(self)
 
-    def onNames(self) -> list[str]:
+    def onNames(self) -> tuple[str, ...]:
         r"""
 
         Return the names of the target variables.
@@ -31973,7 +32137,7 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_onNames(self)
 
-    def doingNames(self) -> list[str]:
+    def doingNames(self) -> tuple[str, ...]:
         r"""
 
         Return the names of the intervened variables.
@@ -31986,7 +32150,7 @@ class CausalImpact(object):
         """
         return _pyagrum.CausalImpact_doingNames(self)
 
-    def knowingNames(self) -> list[str]:
+    def knowingNames(self) -> tuple[str, ...]:
         r"""
 
         Return the names of the observed variables.
@@ -32222,20 +32386,20 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_twinModel(self)
 
-    def getResult(self) -> "CausalFormula< float > const &":
+    def impact(self) -> "pyagrum.CausalImpact< float > const &":
         r"""
 
-        Return the CausalFormula used to compute the counterfactual distribution.
+        Return the CausalImpact used to compute the counterfactual distribution.
 
         The formula is evaluated on the twin model.
 
         Returns
         -------
-        pyagrum.causal.CausalFormula
-            The identified causal formula on the twin model.
+        pyagrum.causal.CausalImpact
+            The identified causal impact on the twin model.
 
         """
-        return _pyagrum.Counterfactual_getResult(self)
+        return _pyagrum.Counterfactual_impact(self)
 
     def value(self) -> "pyagrum.Tensor":
         r"""
@@ -32326,4 +32490,3 @@ def _counterfactual(*args) -> "pyagrum.Tensor":
 
 def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
     return _pyagrum._counterfactualModel(cm, profile, whatif)
-
