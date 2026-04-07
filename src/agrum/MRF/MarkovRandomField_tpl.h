@@ -264,7 +264,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::erase(NodeId varId) {
-    if (!this->varMap_.exists(varId)) { GUM_ERROR(InvalidArgument, "No node with id " << varId << ".") }
+    if (!this->varMap_.exists(varId)) {
+      GUM_ERROR(InvalidArgument, "No node with id " << varId << ".")
+    }
     this->varMap_.erase(varId);
     this->graph_.eraseNode(varId);
 

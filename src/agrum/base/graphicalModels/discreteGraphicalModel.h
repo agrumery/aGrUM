@@ -51,7 +51,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/graphicalModel.h>
-#include <agrum/base/graphicalModels/variableNodeMap.h>
 
 namespace gum {
 

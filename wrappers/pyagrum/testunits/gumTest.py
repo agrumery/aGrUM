@@ -68,13 +68,13 @@ def go():
 
   parser = argparse.ArgumentParser(prog="gumTest.py", add_help=False)
   parser.add_argument("mode", nargs="?", default="release", choices=["debug", "release"], type=str.lower)
-  parser.add_argument("loc",  nargs="?", default="local",   choices=["installed", "local"], type=str.lower)
+  parser.add_argument("loc", nargs="?", default="local", choices=["installed", "local"], type=str.lower)
   parser.add_argument("-m", dest="module", default="")
-  parser.add_argument("-t", dest="suite",  default="all")
+  parser.add_argument("-t", dest="suite", default="all")
   args, _ = parser.parse_known_args(sys.argv[1:])
 
-  mod      = args.mode
-  islocal  = args.loc != "installed"
+  mod = args.mode
+  islocal = args.loc != "installed"
   testNotebooks = False
   notebooksOnly = False
   test_suite = "" if args.suite == "all" else args.suite

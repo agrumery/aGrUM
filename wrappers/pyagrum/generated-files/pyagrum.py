@@ -8967,7 +8967,7 @@ class Tensor(object):
         Returns
         -------
         int
-          the size of the domain of the Tensor (the number of values it can take)
+          the size of the domain of the Tensor (the number of values it can take) 
 
         """
         return _pyagrum.Tensor_domainSize(self)
@@ -8997,7 +8997,7 @@ class PairMPE(object):
         return 2
     def __repr__(self):
         return str((self.first, self.second))
-    def __getitem__(self, index):
+    def __getitem__(self, index): 
         if not (index % 2):
             return self.first
         else:
@@ -32490,3 +32490,4 @@ def _counterfactual(*args) -> "pyagrum.Tensor":
 
 def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
     return _pyagrum._counterfactualModel(cm, profile, whatif)
+

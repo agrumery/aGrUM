@@ -118,8 +118,7 @@ namespace gum {
       _mps_of_node_(std::move(from._mps_of_node_)),
       _cliques_of_mps_(std::move(from._cliques_of_mps_)),
       _mps_of_clique_(std::move(from._mps_of_clique_)),
-      _mps_affected_(std::move(from._mps_affected_)),
-      _triangulation_(from._triangulation_),
+      _mps_affected_(std::move(from._mps_affected_)), _triangulation_(from._triangulation_),
       _require_update_(from._require_update_),
       _require_elimination_order_(from._require_elimination_order_),
       _elimination_order_(std::move(from._elimination_order_)),
@@ -182,8 +181,7 @@ namespace gum {
   }
 
   /// move operator
-  IncrementalTriangulation&
-      IncrementalTriangulation::operator=(IncrementalTriangulation&& from) {
+  IncrementalTriangulation& IncrementalTriangulation::operator=(IncrementalTriangulation&& from) {
     if (this != &from) {
       GUM_OP_MOV(IncrementalTriangulation);
 

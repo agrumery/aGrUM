@@ -249,10 +249,12 @@ namespace gum_tests {
 
       // nodesOnDirectedPaths should return {X,Z1,Z2,Y} (W is not on any X→…→Y path)
       auto onPath = gum::DoorCriteria::nodesOnDirectedPaths(dag, idX, idY);
-      // CHECK(onPath->contains(idX)); // pyagrum version does not include endpoints; see implementation
+      // CHECK(onPath->contains(idX)); // pyagrum version does not include endpoints; see
+      // implementation
       CHECK(onPath->contains(idZ1));
       CHECK(onPath->contains(idZ2));
-      // CHECK(onPath->contains(idY)); // pyagrum version does not include endpoints; see implementation
+      // CHECK(onPath->contains(idY)); // pyagrum version does not include endpoints; see
+      // implementation
       CHECK(!onPath->contains(idW));
     }
 

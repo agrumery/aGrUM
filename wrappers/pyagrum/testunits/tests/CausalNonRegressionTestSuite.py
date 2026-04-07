@@ -80,7 +80,7 @@ class TestFromUsers(pyAgrumTestCase):
     cm = gum.CausalModel(
       gum.fastBN("A->B->C->F;A->D;A->E;C->D->E->F;C->E;"),
       [("U0", ("C", "F")), ("U1", ("C", "E")), ("U2", ("E", "F"))],
-      True
+      True,
     )
     gum.causalImpact(cm, on={"E"}, doing={"A", "D", "B"})
 

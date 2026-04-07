@@ -144,8 +144,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR >::BayesNet(BayesNet< GUM_SCALAR >&& source) :
-      IBayesNet< GUM_SCALAR >(std::move(source)),
-      _probaMap_(std::move(source._probaMap_)) {
+      IBayesNet< GUM_SCALAR >(std::move(source)), _probaMap_(std::move(source._probaMap_)) {
     GUM_CONS_MOV(BayesNet)
   }
 
@@ -325,7 +324,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::reverseArc(const Arc& arc) {
     // check that the arc exists
-    if (!this->varMap_.exists(arc.tail()) || !this->varMap_.exists(arc.head()) || !dag().existsArc(arc)) {
+    if (!this->varMap_.exists(arc.tail()) || !this->varMap_.exists(arc.head())
+        || !dag().existsArc(arc)) {
       GUM_ERROR(InvalidArc, "a non-existing arc cannot be reversed")
     }
 

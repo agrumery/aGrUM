@@ -228,6 +228,7 @@ class TestCausalModel(pyAgrumTestCase):
 
     self.assertEqual(pot[81 - 65], 1.0)
 
+
 1
 
 ts = unittest.TestSuite()

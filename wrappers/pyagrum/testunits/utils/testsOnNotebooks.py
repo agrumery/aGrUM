@@ -96,9 +96,9 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
       traceback.print_exc(file=errfn)
 
     # Strip the timestamp prefix (YYYYMMDD_HHMM_) to show just the notebook name.
-    _bn    = os.path.basename(errorfilename)
+    _bn = os.path.basename(errorfilename)
     _parts = _bn.split("_", 2)
-    res    = (_parts[2] if len(_parts) == 3 else _bn) + " [ERROR]"
+    res = (_parts[2] if len(_parts) == 3 else _bn) + " [ERROR]"
 
   duration = time.time() - starttime
   res = f"[ {duration:8.2f}s ] {os.path.basename(notebook_filename)[0:40]:40} {res}"

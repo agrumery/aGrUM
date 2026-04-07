@@ -61,8 +61,7 @@ namespace gum {
 
   DiscreteGraphicalModel::~DiscreteGraphicalModel() { GUM_DESTRUCTOR(DiscreteGraphicalModel); }
 
-  DiscreteGraphicalModel&
-      DiscreteGraphicalModel::operator=(const DiscreteGraphicalModel& source) {
+  DiscreteGraphicalModel& DiscreteGraphicalModel::operator=(const DiscreteGraphicalModel& source) {
     if (this != &source) {
       GraphicalModel::operator=(source);
       varMap_ = source.varMap_;

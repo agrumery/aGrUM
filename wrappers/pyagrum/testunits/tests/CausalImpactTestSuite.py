@@ -57,9 +57,7 @@ class TestCausalImpact(pyAgrumTestCase):
     # Non-identifiable: w1->x->z->y; w2->x; w2->z with 4 latent confounders
     bn_ni = gum.fastBN("Z1->X->Z2->Y")
     self.cm_ni = gum.CausalModel(
-      bn_ni,
-      [("L1", ["Z1", "X"]), ("L2", ["Z1", "Z2"]), ("L3", ["Z1", "Y"]), ("L4", ["Y", "X"])],
-      True
+      bn_ni, [("L1", ["Z1", "X"]), ("L2", ["Z1", "Z2"]), ("L3", ["Z1", "Y"]), ("L4", ["Y", "X"])], True
     )
 
   # ------------------------------------------------------------------
@@ -161,7 +159,7 @@ class TestCausalImpact(pyAgrumTestCase):
     self.assertIn("Z", t.names)
 
   def test_eval_not_identified_raises(self):
-    ci = gum.CausalImpact(self.cm_ni,on="Y", doing="X")
+    ci = gum.CausalImpact(self.cm_ni, on="Y", doing="X")
     with self.assertRaises(gum.OperationNotAllowed):
       ci.eval()
 
@@ -229,6 +227,7 @@ class TestCausalImpact(pyAgrumTestCase):
 
   def test_toDict_is_json_serialisable(self):
     import json
+
     ci = gum.CausalImpact(self.cm_chain, on="Z", doing="X")
     try:
       json.dumps(ci.toDict())

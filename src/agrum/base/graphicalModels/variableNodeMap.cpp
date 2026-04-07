@@ -73,8 +73,7 @@ namespace gum {
 
   // Move constructor.
   VariableNodeMap::VariableNodeMap(VariableNodeMap&& source) :
-      _nodes2vars_(std::move(source._nodes2vars_)),
-      _names2nodes_(std::move(source._names2nodes_)) {
+      _nodes2vars_(std::move(source._nodes2vars_)), _names2nodes_(std::move(source._names2nodes_)) {
     GUM_CONS_MOV(VariableNodeMap);
   }
 

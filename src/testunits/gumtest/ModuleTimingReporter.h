@@ -48,9 +48,8 @@
 #include <string>
 #include <vector>
 
-#include <doctest/doctest.h>
-
 #include <agrum/base/core/utils_misc.h>
+#include <doctest/doctest.h>
 
 namespace gum_test {
 

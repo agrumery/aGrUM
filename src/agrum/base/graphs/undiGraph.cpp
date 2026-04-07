@@ -82,8 +82,7 @@ namespace gum {
     GUM_CONS_CPY(UndiGraph);
   }
 
-  UndiGraph::UndiGraph(UndiGraph&& g) :
-      NodeGraphPart(std::move(g)), EdgeGraphPart(std::move(g)) {
+  UndiGraph::UndiGraph(UndiGraph&& g) : NodeGraphPart(std::move(g)), EdgeGraphPart(std::move(g)) {
     GUM_CONS_MOV(UndiGraph);
   }
 

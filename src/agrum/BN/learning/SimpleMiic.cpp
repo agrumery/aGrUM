@@ -399,7 +399,7 @@ namespace gum {
       }   // while
 
       // erasing the double headed arcs
-      //GUM_TRACE(_latentCouples_)
+      // GUM_TRACE(_latentCouples_)
       for (auto iter = _latentCouples_.rbegin(); iter != _latentCouples_.rend(); ++iter) {
         graph.eraseArc(Arc(iter->head(), iter->tail()));
         if (_existsDirectedPath_(graph, iter->head(), iter->tail())) {
