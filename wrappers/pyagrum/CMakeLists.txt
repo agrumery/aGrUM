@@ -179,6 +179,9 @@ macro(gum_add_python_module MODULENAME)
   target_include_directories(${_PYAGRUMLIB} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${Python_NumPy_INCLUDE_DIRS})
   target_link_libraries(${_PYAGRUMLIB} PRIVATE Python::Module)
 
+  get_filename_component(PY_LIB_DIR "${Python_LIBRARIES}" DIRECTORY)
+  target_link_directories(${_PYAGRUMLIB} PRIVATE ${PY_LIB_DIR})
+
   set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES
