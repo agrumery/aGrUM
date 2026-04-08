@@ -80,50 +80,33 @@
   };
 
 %pythoncode {
-  def connectedComponents(self):
-    """ connected components from a graph/graphical models
-
-    Compute the connected components of a pyAgrum's graph or graphical models
-    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-    The firstly visited node for each component is called a 'root' and is used as a key for the component.
-    This root has been arbitrarily chosen during the algorithm.
+  def connectedComponentsList(self):
+    """ connected components as a dict of sets
 
     Returns
     -------
-    dict(int,set[int])
-      dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+    dict(int, set[int])
+      dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
     """
-    nodes=self.nodes()
-    connected_components=dict()
+    cc = self.connectedComponents()
+    result = {}
+    for node, root in cc.items():
+      if root not in result:
+        result[root] = set()
+      result[root].add(node)
+    return result
 
-    def parcours(node,orig):
-        cc={node}
-        nodes.discard(node)
-        if hasattr(self,'children'):
-            for chi in self.children(node):
-                if chi!=orig:
-                    if chi in nodes:
-                        cc|=parcours(chi,node)
+  def connectedComponentsCount(self):
+    """ number of connected components
 
-        if hasattr(self,'parents'):
-            for par in self.parents(node):
-                if par!=orig:
-                    if par in nodes:
-                        cc|=parcours(par,node)
+    Returns
+    -------
+    int
+      the number of connected components in the graph.
 
-        if hasattr(self,'neighbours'):
-            for nei in self.neighbours(node):
-                if nei!=orig:
-                    if nei in nodes:
-                        cc|=parcours(nei,node)
-        return cc
-
-    while (len(nodes)>0):
-        root=nodes.pop()
-        connected_components[root]=parcours(root,None)
-    return connected_components
+    """
+    return len(set(self.connectedComponents().values()))
 
   def adjacencyMatrix(self):
     """ adjacency matrix from a graph/graphical models
@@ -268,6 +251,37 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
   std::vector<gum::NodeId> mixedUnorientedPath(NodeId node1, NodeId node2) const {
     return self->mixedUnorientedPath(node1,node2);
   };
+
+%pythoncode {
+  def connectedComponentsList(self):
+    """ connected components as a dict of sets
+
+    Returns
+    -------
+    dict(int, set[int])
+      dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+    """
+    cc = self.connectedComponents()
+    result = {}
+    for node, root in cc.items():
+      if root not in result:
+        result[root] = set()
+      result[root].add(node)
+    return result
+
+  def connectedComponentsCount(self):
+    """ number of connected components
+
+    Returns
+    -------
+    int
+      the number of connected components in the graph.
+
+    """
+    return len(set(self.connectedComponents().values()))
+}
+
 };
 %ignore classname::boundary const;
 %ignore classname::mixedOrientedPath const;

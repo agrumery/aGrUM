@@ -416,3 +416,16 @@
 %apply gum::HashTable<std::string, std::string>        { HashTable<std::string, std::string> };
 %apply const gum::HashTable<std::string, std::string>& { const HashTable<std::string, std::string>& };
 
+// gum::NodeProperty<gum::NodeId> (= HashTable<NodeId,NodeId>) -> Python dict[int, int]
+// Used by connectedComponents() on graph classes.
+%typemap(out) gum::NodeProperty< gum::NodeId > {
+  $result = PyAgrumHelper::PyDictFromNodePropertyNodeId($1);
+}
+
+%typemap(out) const gum::NodeProperty< gum::NodeId >& {
+  $result = PyAgrumHelper::PyDictFromNodePropertyNodeId(*$1);
+}
+
+%apply gum::NodeProperty< gum::NodeId >        { NodeProperty< NodeId > };
+%apply const gum::NodeProperty< gum::NodeId >& { const NodeProperty< NodeId >& };
+

@@ -337,6 +337,25 @@ int
     the number of arcs in the graph
 "
 
+%feature("docstring") gum::MixedGraph::connectedComponents
+"
+Returns the weakly connected components of the mixed graph (following both
+arcs and undirected edges in both directions).
+
+Each node is mapped to the id of its component root (an arbitrarily chosen
+node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+
+See Also
+--------
+connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+connectedComponentsCount : returns the number of components
+"
+
 %feature("docstring") gum::MixedGraph::boundary
 "
 Boundary are neighbours (not oriented), children and parents

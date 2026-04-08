@@ -155,7 +155,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
     if undirectedGraph.hasUndirectedCycle():
       undirectedGraph.eraseEdge(i, j)
     # dict(int:set(int)): each key is a node from every connected part of the graph. The set associated is a set of all nodes that are part of the same connected part of the graph
-  connectedParts = undirectedGraph.connectedComponents()
+  connectedParts = undirectedGraph.connectedComponentsList()
 
   for node in connectedParts:
     # int: the id of the node that will be used as a root to orient the undirected graph, initialised as 0

@@ -825,5 +825,17 @@ namespace PyAgrumHelper {
     return d;
   }
 
+  PyObject* PyDictFromNodePropertyNodeId(const gum::NodeProperty< gum::NodeId >& prop) {
+    PyObject* q = PyDict_New();
+    for (const auto& [k, v]: prop) {
+      PyObject* pykey = PyLong_FromSize_t(k);
+      PyObject* pyval = PyLong_FromSize_t(v);
+      PyDict_SetItem(q, pykey, pyval);
+      Py_DecRef(pykey);
+      Py_DecRef(pyval);
+    }
+    return q;
+  }
+
 }   // namespace PyAgrumHelper
 #endif   // PYAGRUM_HELPER

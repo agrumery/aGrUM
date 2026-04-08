@@ -196,7 +196,7 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
     elif draw == 2:
       if graph.existsArc(event[0], event[1]):
         graph.eraseArc(event[0], event[1])
-        if len(graph.connectedComponents()) > 1:
+        if graph.connectedComponentsCount() > 1:
           graph.addArc(event[0], event[1])
 
     else:

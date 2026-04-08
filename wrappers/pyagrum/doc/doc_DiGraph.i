@@ -290,6 +290,24 @@ pyagrum.InvalidDirectedCycle
   If this graph contains cycles
 "
 
+%feature("docstring") gum::DiGraph::connectedComponents
+"
+Returns the weakly connected components of the graph.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen
+node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+
+See Also
+--------
+connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+connectedComponentsCount : returns the number of components
+"
+
 %feature("docstring") gum::DiGraph::hasDirectedPath
 "
 Check if a directedpath exists between from and to.

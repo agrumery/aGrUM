@@ -3000,8 +3000,35 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_partialUndiGraph(self, nodes)
 
-    def nodes2ConnectedComponent(self) -> dict[int,int]:
-        return _pyagrum.UndiGraph_nodes2ConnectedComponent(self)
+    def chainComponents(self) -> dict[int,int]:
+        return _pyagrum.UndiGraph_chainComponents(self)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Returns the connected components of the graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen
+        node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        See Also
+        --------
+        connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+        connectedComponentsCount : returns the number of components
+
+        """
+        return _pyagrum.UndiGraph_connectedComponents(self)
+
+    def undirectedPath(self, node1: int, node2: int) -> list[int]:
+        return _pyagrum.UndiGraph_undirectedPath(self, node1, node2)
+
+    def hasUndirectedPath(self, *args) -> bool:
+        return _pyagrum.UndiGraph_hasUndirectedPath(self, *args)
 
     def __repr__(self) -> str:
         return _pyagrum.UndiGraph___repr__(self)
@@ -3020,50 +3047,33 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -3438,6 +3448,36 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_hasDirectedPath(self, _from, to)
 
+    def directedPath(self, node1: int, node2: int) -> list[int]:
+        return _pyagrum.DiGraph_directedPath(self, node1, node2)
+
+    def directedUnorientedPath(self, node1: int, node2: int) -> list[int]:
+        return _pyagrum.DiGraph_directedUnorientedPath(self, node1, node2)
+
+    def family(self, *args) -> list[int]:
+        return _pyagrum.DiGraph_family(self, *args)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Returns the weakly connected components of the graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen
+        node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        See Also
+        --------
+        connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+        connectedComponentsCount : returns the number of components
+
+        """
+        return _pyagrum.DiGraph_connectedComponents(self)
+
     def __repr__(self) -> str:
         return _pyagrum.DiGraph___repr__(self)
 
@@ -3455,50 +3495,33 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -3629,11 +3652,11 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_children(self, id)
 
-    def descendants(self, id: int) -> list[int]:
-        return _pyagrum.DiGraph_descendants(self, id)
+    def descendants(self, *args) -> list[int]:
+        return _pyagrum.DiGraph_descendants(self, *args)
 
-    def ancestors(self, id: int) -> list[int]:
-        return _pyagrum.DiGraph_ancestors(self, id)
+    def ancestors(self, *args) -> list[int]:
+        return _pyagrum.DiGraph_ancestors(self, *args)
 
     def addNode(self) -> int:
         r"""
@@ -4162,6 +4185,31 @@ class MixedGraph(UndiGraph, DiGraph):
     def chainComponent(self, node: int) -> list[int]:
         return _pyagrum.MixedGraph_chainComponent(self, node)
 
+    def chainComponents(self) -> dict[int,int]:
+        return _pyagrum.MixedGraph_chainComponents(self)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Returns the weakly connected components of the mixed graph (following both
+        arcs and undirected edges in both directions).
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen
+        node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        See Also
+        --------
+        connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+        connectedComponentsCount : returns the number of components
+
+        """
+        return _pyagrum.MixedGraph_connectedComponents(self)
+
     def __repr__(self) -> str:
         return _pyagrum.MixedGraph___repr__(self)
 
@@ -4300,6 +4348,35 @@ class MixedGraph(UndiGraph, DiGraph):
 
         """
         return _pyagrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
 
     def addNode(self) -> int:
         r"""
@@ -4737,6 +4814,35 @@ class PDAG(MixedGraph):
 
         """
         return _pyagrum.PDAG_mixedUnorientedPath(self, node1, node2)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
 
     def addNode(self) -> int:
         return _pyagrum.PDAG_addNode(self)
@@ -10286,50 +10392,33 @@ class EssentialGraph(object):
     def nodes(self) -> set[int]:
         return _pyagrum.EssentialGraph_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -10434,50 +10523,33 @@ class EssentialGraph(object):
         """
         return _pyagrum.EssentialGraph_neighbours(self, id)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -10614,50 +10686,33 @@ class MarkovBlanket(object):
         """
         return _pyagrum.MarkovBlanket_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -10735,50 +10790,33 @@ class MarkovBlanket(object):
     def ancestors(self, *args) -> list[int]:
         return _pyagrum.MarkovBlanket_ancestors(self, *args)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -11351,50 +11389,33 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -12444,50 +12465,33 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -13537,50 +13541,33 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -28335,50 +28322,33 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -29434,50 +29404,33 @@ class IMarkovRandomField(UGmodel):
     def nodes(self) -> set[int]:
         return _pyagrum.IMarkovRandomField_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
@@ -29824,50 +29777,33 @@ class MarkovRandomField(IMarkovRandomField):
     def nodes(self) -> set[int]:
         return _pyagrum.MarkovRandomField_nodes(self)
 
-    def connectedComponents(self):
-      """ connected components from a graph/graphical models
-
-      Compute the connected components of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      The firstly visited node for each component is called a 'root' and is used as a key for the component.
-      This root has been arbitrarily chosen during the algorithm.
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
 
       Returns
       -------
-      dict(int,set[int])
-        dict of connected components (as set of nodeIds (int)) with a nodeId (root) of each component as key.
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
 
       """
-      nodes=self.nodes()
-      connected_components=dict()
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
 
-      def parcours(node,orig):
-          cc={node}
-          nodes.discard(node)
-          if hasattr(self,'children'):
-              for chi in self.children(node):
-                  if chi!=orig:
-                      if chi in nodes:
-                          cc|=parcours(chi,node)
+    def connectedComponentsCount(self):
+      """ number of connected components
 
-          if hasattr(self,'parents'):
-              for par in self.parents(node):
-                  if par!=orig:
-                      if par in nodes:
-                          cc|=parcours(par,node)
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
 
-          if hasattr(self,'neighbours'):
-              for nei in self.neighbours(node):
-                  if nei!=orig:
-                      if nei in nodes:
-                          cc|=parcours(nei,node)
-          return cc
-
-      while (len(nodes)>0):
-          root=nodes.pop()
-          connected_components[root]=parcours(root,None)
-      return connected_components
+      """
+      return len(set(self.connectedComponents().values()))
 
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
