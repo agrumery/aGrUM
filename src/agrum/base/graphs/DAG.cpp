@@ -46,6 +46,8 @@
  *
  */
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/algorithms/generic/moralization.h>
+#include <agrum/base/graphs/algorithms/generic/separation.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
@@ -68,85 +70,18 @@ namespace gum {
 
   DAG::~DAG() { GUM_DESTRUCTOR(DAG); }
 
-  UndiGraph DAG::moralGraph() const {
-    UndiGraph moralgraph;
-    moralgraph.populateNodes(*this);
-    // transform the arcs into edges
-    for (const auto& arc: arcs())
-      moralgraph.addEdge(arc.first(), arc.second());
-
-    // marry the parents
-    for (const auto node: nodes()) {
-      const auto& par = parents(node);
-
-      for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-        auto it2 = it1;
-
-        for (++it2; it2 != par.end(); ++it2) {
-          // will automatically check if this edge already exists
-          moralgraph.addEdge(*it1, *it2);
-        }
-      }
-    }
-    return moralgraph;
-  }
+  UndiGraph DAG::moralGraph() const { return graph::moralGraph(*this); }
 
   UndiGraph DAG::moralizedAncestralGraph(const NodeSet& nodes) const {
-    UndiGraph res;
-    NodeSet   tmp{nodes};
-
-    // findings all nodes
-    while (!tmp.empty()) {
-      auto current = *(tmp.begin());
-      tmp.erase(current);
-
-      res.addNodeWithId(current);
-      for (auto next: parents(current))
-        if (!tmp.contains(next) && !res.exists(next)) tmp.insert(next);
-    }
-
-    // finding all edges and moralizing
-    for (auto current: res)
-      for (auto father: parents(current)) {
-        res.addEdge(current,
-                    father);   // addEdge does not complain if edge already exists
-        for (auto other_father: parents(current))
-          if (other_father != father) res.addEdge(father, other_father);
-      }
-
-    return res;
+    return graph::moralizedAncestralGraph(*this, nodes);
   }
 
   bool DAG::dSeparation(NodeId X, NodeId Y, const NodeSet& Z) const {
-    NodeSet cumul{Z};
-    cumul << X << Y;
-    auto g = moralizedAncestralGraph(cumul);
-    for (auto node: Z)
-      g.eraseNode(node);
-    return !g.hasUndirectedPath(X, Y);
+    return graph::dSeparated(*this, X, Y, Z);
   }
 
   bool DAG::dSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
-    if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument, "NodeSets " << X << ", " << Y << " should have no intersection")
-
-    NodeSet cumul{Z};
-    cumul += X;
-    cumul += Y;
-    auto g = moralizedAncestralGraph(cumul);
-    for (auto node: Z)
-      g.eraseNode(node);
-    auto cc = g.nodes2ConnectedComponent();
-
-    NodeSet Xcc, Ycc;
-    for (const auto node: X)
-      if (g.existsNode(node))   // it may be in Z too
-        if (!Xcc.exists(cc[node])) Xcc.insert(cc[node]);
-    for (const auto node: Y)
-      if (g.existsNode(node))   // it may be in Z too
-        if (!Ycc.exists(cc[node])) Ycc.insert(cc[node]);
-
-    return (Xcc * Ycc).empty();
+    return graph::dSeparated(*this, X, Y, Z);
   }
 
   // visit the nodes and add some of node from soids in minimal

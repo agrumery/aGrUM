@@ -235,6 +235,8 @@ namespace gum {
 
 } /* namespace gum */
 
+static_assert(gum::GUM_DiGraphable< gum::DAG >);
+
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
 #endif   // GU%_NO_INLINE

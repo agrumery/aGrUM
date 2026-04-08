@@ -257,6 +257,8 @@ namespace gum {
 
 } /* namespace gum */
 
+static_assert(gum::GUM_MixedGraphable< gum::PDAG >);
+
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>
 #endif   // GU%_NO_INLINE

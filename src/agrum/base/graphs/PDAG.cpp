@@ -46,6 +46,8 @@
  *
  */
 #include <agrum/base/graphs/PDAG.h>
+#include <agrum/base/graphs/algorithms/generic/moralization.h>
+#include <agrum/base/graphs/algorithms/generic/separation.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>
@@ -83,42 +85,7 @@ namespace gum {
 
   PDAG::~PDAG() { GUM_DESTRUCTOR(PDAG); }
 
-  UndiGraph PDAG::moralGraph() const {
-    UndiGraph mg;
-    mg.populateNodes(*this);
-    // transform the arcs into edges
-    for (const auto& arc: edges())
-      mg.addEdge(arc.first(), arc.second());
-    for (const auto& arc: arcs())
-      mg.addEdge(arc.first(), arc.second());
-
-    // marry the parents
-    NodeSet already;
-    for (const auto node: nodes()) {
-      if (already.contains(node)) continue;
-
-      already.insert(node);
-      auto par = parents(node);
-      auto cc  = neighbours(node);
-      while (!cc.empty()) {
-        const auto nei = cc.popFirst();
-        if (already.contains(nei)) continue;
-
-        already.insert(nei);
-        par += parents(nei);
-        cc += neighbours(nei) - already;
-      }
-
-      for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-        auto it2 = it1;
-        for (++it2; it2 != par.end(); ++it2) {
-          // will automatically check if this edge already exists
-          mg.addEdge(*it1, *it2);
-        }
-      }
-    }
-    return mg;
-  }
+  UndiGraph PDAG::moralGraph() const { return graph::moralGraph(*this); }
 
   bool rec_hasMixedReallyOrientedPath(const PDAG& gr,
                                       NodeSet&    marked,
@@ -147,65 +114,16 @@ namespace gum {
     return false;
   }
 
-  void rec_ancestral(const PDAG& graph, PDAG& ancestral, NodeId nod) {
-    for (const auto par: graph.parents(nod)) {
-      if (!ancestral.existsNode(par)) {
-        ancestral.addNodeWithId(par);
-        rec_ancestral(graph, ancestral, par);
-      }
-      ancestral.addArc(par, nod);
-    }
-    for (const auto nei: graph.neighbours(nod)) {
-      if (!ancestral.existsNode(nei)) {
-        ancestral.addNodeWithId(nei);
-        rec_ancestral(graph, ancestral, nei);
-      }
-      ancestral.addEdge(nei, nod);
-    }
-  }
-
   UndiGraph PDAG::moralizedAncestralGraph(const NodeSet& nodes) const {
-    PDAG ancestral;
-    for (const auto n: nodes) {
-      if (!ancestral.existsNode(n)) { ancestral.addNodeWithId(n); }
-      rec_ancestral(*this, ancestral, n);
-    }
-
-    return ancestral.moralGraph();
+    return graph::moralizedAncestralGraph(*this, nodes);
   }
 
   bool PDAG::cSeparation(NodeId X, NodeId Y, const NodeSet& Z) const {
-    NodeSet cumul{Z};
-    cumul << X << Y;
-    auto g = moralizedAncestralGraph(cumul);
-
-    for (auto node: Z)
-      g.eraseNode(node);
-
-    return !g.hasUndirectedPath(X, Y);
+    return graph::cSeparated(*this, X, Y, Z);
   }
 
   bool PDAG::cSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
-    if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument, "NodeSets " << X << ", " << Y << " should have no intersection")
-
-    NodeSet cumul{Z};
-    cumul += X;
-    cumul += Y;
-    auto g = moralizedAncestralGraph(cumul);
-    for (auto node: Z)
-      g.eraseNode(node);
-    auto cc = g.nodes2ConnectedComponent();
-
-    NodeSet Xcc;
-    NodeSet Ycc;
-    for (const auto node: X)
-      if (g.existsNode(node) && !Xcc.exists(cc[node]))   // it may be in Z too
-        Xcc.insert(cc[node]);
-    for (const auto node: Y)
-      if (g.existsNode(node) && !Ycc.exists(cc[node]))   // it may be in Z too
-        Ycc.insert(cc[node]);
-    return (Xcc * Ycc).empty();
+    return graph::cSeparated(*this, X, Y, Z);
   }
 
   std::string PDAG::toDot() const {
