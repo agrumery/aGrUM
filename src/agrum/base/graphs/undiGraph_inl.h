@@ -49,6 +49,9 @@
  */
 
 // to ease parser
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/base/graphs/undiGraph.h>
 
 namespace gum {
@@ -98,5 +101,34 @@ namespace gum {
     return EdgeGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
+  INLINE std::vector< NodeId > UndiGraph::undirectedPath(NodeId node1, NodeId node2) const {
+    return graph::undirectedPath(*this, node1, node2);
+  }
+
+  INLINE bool UndiGraph::hasUndirectedPath(NodeId n1, NodeId n2) const {
+    return graph::hasUndirectedPath(*this, n1, n2);
+  }
+
+  INLINE bool UndiGraph::hasUndirectedPath(NodeId n1, NodeId n2, const NodeSet& except) const {
+    return graph::hasUndirectedPath(*this, n1, n2, except);
+  }
+
+  INLINE bool UndiGraph::hasUndirectedPath(const NodeSet& n1,
+                                            const NodeSet& n2,
+                                            const NodeSet& except) const {
+    return graph::hasUndirectedPath(*this, n1, n2, except);
+  }
+
+  INLINE NodeProperty< NodeId > UndiGraph::chainComponents() const {
+    return graph::chainComponents(*this);
+  }
+
+  INLINE NodeProperty< NodeId > UndiGraph::connectedComponents() const {
+    return graph::connectedComponents(*this);
+  }
+
+  INLINE bool UndiGraph::hasUndirectedCycle() const {
+    return graph::hasUndirectedCycle(*this);
+  }
 
 } /* namespace gum */

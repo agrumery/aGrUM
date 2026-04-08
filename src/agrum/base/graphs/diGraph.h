@@ -54,6 +54,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/sequence.h>
+#include <agrum/base/graphs/graphConcepts.h>
 #include <agrum/base/graphs/parts/arcGraphPart.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
@@ -235,12 +236,37 @@ namespace gum {
      *
      */
     bool hasDirectedPath(NodeId from, NodeId to);
+
+    /// returns a directed path from node1 to node2
+    /** @throw NotFound if no directed path exists */
+    std::vector< NodeId > directedPath(NodeId node1, NodeId node2) const;
+
+    /// returns a shortest path from node1 to node2 ignoring arc orientation
+    /** @throw NotFound if no path exists */
+    std::vector< NodeId > directedUnorientedPath(NodeId node1, NodeId node2) const;
+
+    /// returns the set of all ancestors of id (nodes from which id is reachable)
+    NodeSet ancestors(NodeId id) const;
+
+    /// returns the set of all descendants of id (nodes reachable from id)
+    NodeSet descendants(NodeId id) const;
+
+    /// returns { id } ∪ parents(id)
+    NodeSet family(NodeId id) const;
+
+    /// returns the union of families of all nodes in ids
+    NodeSet family(const NodeSet& ids) const;
+
+    /// returns a property {node:id of weakly connected component}
+    NodeProperty< NodeId > connectedComponents() const;
   };
 
   /// for friendly displaying the content of directed graphs
   std::ostream& operator<<(std::ostream&, const DiGraph&);
 
 } /* namespace gum */
+
+static_assert(gum::GUM_DiGraphable< gum::DiGraph >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/diGraph_inl.h>

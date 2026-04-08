@@ -47,6 +47,11 @@
  *
  */
 
+// to ease parser in IDEs
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
+#include <agrum/base/graphs/mixedGraph.h>
+
 namespace gum {
 
   INLINE MixedGraph& MixedGraph::operator=(const MixedGraph& g) {
@@ -96,6 +101,31 @@ namespace gum {
   }
 
   INLINE NodeSet MixedGraph::boundary(NodeId node) const {
-    return neighbours(node) + parents(node) + children(node);
+    return graph::boundary(*this, node);
   }
+
+  INLINE NodeSet MixedGraph::chainComponent(NodeId node) const {
+    return graph::chainComponent(*this, node);
+  }
+
+  INLINE std::vector< NodeId > MixedGraph::mixedOrientedPath(NodeId n1, NodeId n2) const {
+    return graph::mixedOrientedPath(*this, n1, n2);
+  }
+
+  INLINE bool MixedGraph::hasMixedOrientedPath(NodeId n1, NodeId n2) const {
+    return graph::hasMixedOrientedPath(*this, n1, n2);
+  }
+
+  INLINE std::vector< NodeId > MixedGraph::mixedUnorientedPath(NodeId n1, NodeId n2) const {
+    return graph::mixedUnorientedPath(*this, n1, n2);
+  }
+
+  INLINE NodeProperty< NodeId > MixedGraph::chainComponents() const {
+    return graph::chainComponents(*this);
+  }
+
+  INLINE NodeProperty< NodeId > MixedGraph::connectedComponents() const {
+    return graph::connectedComponents(*this);
+  }
+
 } /* namespace gum */

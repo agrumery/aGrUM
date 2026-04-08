@@ -255,6 +255,12 @@ namespace gum {
     /** Note that the set of node returned may be empty.
      * @param id the node to which the edges are adjacent */
     NodeSet chainComponent(NodeId node) const;
+
+    /// returns a property {node:id of chain component} (edges only)
+    NodeProperty< NodeId > chainComponents() const;
+
+    /// returns a property {node:id of weakly connected component}
+    NodeProperty< NodeId > connectedComponents() const;
     /// @}
   };
 
@@ -262,6 +268,8 @@ namespace gum {
   std::ostream& operator<<(std::ostream&, const MixedGraph&);
 
 } /* namespace gum */
+
+static_assert(gum::GUM_MixedGraphable< gum::MixedGraph >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/mixedGraph_inl.h>

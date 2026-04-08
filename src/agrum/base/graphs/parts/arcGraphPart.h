@@ -192,38 +192,11 @@ namespace gum {
     const NodeSet& parents(NodeId id) const;
 
     /// returns the set of nodes which consists in the node and its parents
-    /** Note that the set of nodes returned may be empty if no path within the
-     * ArcGraphPart is outgoing from the given node.
-     * @param id the node which is the tail of a directed path with the returned
-     * nodes
-     **/
-    NodeSet family(NodeId id) const;
-
-    /// returns the set of nodes with directed path outgoing from a given node
-    /** Note that the set of nodes returned may be empty if no path within the
-     * ArcGraphPart is outgoing from the given node.
-     * @param id the node which is the tail of a directed path with the returned
-     * nodes
-     **/
-    NodeSet descendants(NodeId id) const;
-
-
-    /// returns the set of nodes with directed path ingoing to a given node
-    /** Note that the set of nodes returned may be empty if no path within the
-     * ArcGraphPart is ingoing to the given node.
-     * @param id the node which is the head of a directed path with the returned
-     * nodes
-     **/
-    NodeSet ancestors(NodeId id) const;
-
     /// returns the set of children of a set of nodes
     NodeSet children(const NodeSet& ids) const;
 
     /// returns the set of parents of a set of nodes
     NodeSet parents(const NodeSet& ids) const;
-
-    /// returns the set of family nodes of a set of nodes
-    NodeSet family(const NodeSet& ids) const;
 
 
     /// returns the set of nodes with arc outgoing from a given node
@@ -288,20 +261,6 @@ namespace gum {
      * @param f a function assigning a VAL to any arc */
     template < typename VAL >
     List< VAL > listMapArcs(VAL (*f)(const Arc&)) const;
-
-    /// returns a directed path from node1 to node2 belonging to the set of arcs
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    std::vector< NodeId > directedPath(NodeId node1, NodeId node2) const;
-
-    /// returns an unoriented (directed) path from node1 to node2 in the arc set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    std::vector< NodeId > directedUnorientedPath(NodeId node1, NodeId node2) const;
 
     /// @}
 

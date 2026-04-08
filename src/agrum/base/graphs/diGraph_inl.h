@@ -49,6 +49,9 @@
  */
 
 // to ease parser in IDEs
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/base/graphs/diGraph.h>
 
 namespace gum {
@@ -102,5 +105,29 @@ namespace gum {
   }
 
   // INLINE bool DiGraph::operator!=(const DiGraph& p) const { return !operator==(p); }
+
+  INLINE std::vector< NodeId > DiGraph::directedPath(NodeId node1, NodeId node2) const {
+    return graph::directedPath(*this, node1, node2);
+  }
+
+  INLINE std::vector< NodeId > DiGraph::directedUnorientedPath(NodeId node1, NodeId node2) const {
+    return graph::directedUnorientedPath(*this, node1, node2);
+  }
+
+  INLINE NodeSet DiGraph::ancestors(NodeId id) const { return graph::ancestors(*this, id); }
+
+  INLINE NodeSet DiGraph::descendants(NodeId id) const { return graph::descendants(*this, id); }
+
+  INLINE NodeSet DiGraph::family(NodeId id) const { return graph::family(*this, id); }
+
+  INLINE NodeSet DiGraph::family(const NodeSet& ids) const { return graph::family(*this, ids); }
+
+  INLINE NodeProperty< NodeId > DiGraph::connectedComponents() const {
+    return graph::connectedComponents(*this);
+  }
+
+  INLINE Sequence< NodeId > DiGraph::topologicalOrder() const {
+    return graph::topologicalOrder(*this);
+  }
 
 } /* namespace gum */

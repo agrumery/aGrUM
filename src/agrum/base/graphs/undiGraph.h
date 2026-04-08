@@ -52,6 +52,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/graphs/graphConcepts.h>
 #include <agrum/base/graphs/parts/edgeGraphPart.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
@@ -215,8 +216,25 @@ namespace gum {
     /// returns the partial graph formed by the nodes given in parameter
     virtual UndiGraph partialUndiGraph(NodeSet nodes);
 
-    /// returns a property {node:id of connected component}
-    NodeProperty< NodeId > nodes2ConnectedComponent() const;
+    /// returns a property {node:id of chain component} (edges only)
+    NodeProperty< NodeId > chainComponents() const;
+
+    /// returns a property {node:id of weakly connected component}
+    NodeProperty< NodeId > connectedComponents() const;
+
+    /// returns a shortest undirected path from node1 to node2
+    /** @throw NotFound if no path exists */
+    std::vector< NodeId > undirectedPath(NodeId node1, NodeId node2) const;
+
+    /// returns true if n1 and n2 are connected by an undirected path
+    bool hasUndirectedPath(NodeId n1, NodeId n2) const;
+
+    /// returns true if n1 and n2 are connected by a path avoiding nodes in except
+    /** n2 in except naturally leads to false */
+    bool hasUndirectedPath(NodeId n1, NodeId n2, const NodeSet& except) const;
+
+    /// returns true if any node in n1 reaches any node in n2 avoiding except
+    bool hasUndirectedPath(const NodeSet& n1, const NodeSet& n2, const NodeSet& except) const;
 
     /// @}
   };
@@ -225,6 +243,8 @@ namespace gum {
   std::ostream& operator<<(std::ostream&, const UndiGraph&);
 
 } /* namespace gum */
+
+static_assert(gum::GUM_UndiGraphable< gum::UndiGraph >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/undiGraph_inl.h>

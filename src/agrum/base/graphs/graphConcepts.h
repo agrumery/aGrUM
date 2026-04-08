@@ -39,82 +39,82 @@
  ****************************************************************************/
 
 
-/** @file
- * @brief Source implementation of Base classes for oriented graphs
+/**
+ * @file
+ * @brief C++20 concepts for aGrUM graph interfaces.
  *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * Defines structural concepts capturing the public API of the four main
+ * graph families: node-only, directed, undirected, and mixed.  These
+ * concepts are used to constrain the template parameters of generic graph
+ * algorithms (see algorithms/generic/).
  *
+ * Dependency: graphElements.h (NodeId, NodeSet, Size).
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
-#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
-#include <agrum/base/graphs/diGraph.h>
-#include <agrum/base/graphs/graphElements.h>
+#ifndef GUM_GRAPH_CONCEPTS_H
+#define GUM_GRAPH_CONCEPTS_H
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/base/graphs/diGraph_inl.h>
-#endif   // GUM_NO_INLINE
+#include <concepts>
+
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum {
 
-  DiGraph DiGraph::completeGraph(int n) {
-    DiGraph g;
-    g.addNodes(n);
+  /// @ingroup graph_group
+  /// @{
 
-    for (int j = 0; j < n; ++j) {
-      for (int k = j + 1; k < n; ++k) {
-        g.addArc(j, k);
-      }
-    }
-    return g;
-  }
+  /**
+   * @brief Concept for any graph that exposes node-level queries.
+   *
+   * Satisfied by every aGrUM graph class (DiGraph, UndiGraph, MixedGraph,
+   * DAG, PDAG, …) since they all inherit from NodeGraphPart.
+   */
+  template < typename T >
+  concept GUM_NodeGraphable = requires(const T g, NodeId id) {
+    { g.existsNode(id) } -> std::convertible_to< bool >;
+    { g.size() }         -> std::convertible_to< Size >;
+    { g.empty() }        -> std::convertible_to< bool >;
+  };
 
-  DiGraph::DiGraph(Size nodes_size,
-                   bool nodes_resize_policy,
-                   Size arcs_size,
-                   bool arcs_resize_policy) :
-      NodeGraphPart(nodes_size, nodes_resize_policy), ArcGraphPart(arcs_size, arcs_resize_policy) {
-    GUM_CONSTRUCTOR(DiGraph)
-  }
+  /**
+   * @brief Concept for directed graphs (arcs with parents/children).
+   *
+   * Satisfied by DiGraph, DAG, and the directed component of MixedGraph /
+   * PDAG.  Refines GUM_NodeGraphable.
+   */
+  template < typename T >
+  concept GUM_DiGraphable = GUM_NodeGraphable< T >
+      && requires(const T g, NodeId u, NodeId v) {
+           { g.existsArc(u, v) } -> std::convertible_to< bool >;
+           { g.parents(u) }      -> std::convertible_to< const NodeSet& >;
+           { g.children(u) }     -> std::convertible_to< const NodeSet& >;
+         };
 
-  DiGraph::DiGraph(const DiGraph& g) : NodeGraphPart(g), ArcGraphPart(g) { GUM_CONS_CPY(DiGraph) }
+  /**
+   * @brief Concept for undirected graphs (edges with neighbours).
+   *
+   * Satisfied by UndiGraph, CliqeGraph, and the undirected component of
+   * MixedGraph / PDAG.  Refines GUM_NodeGraphable.
+   */
+  template < typename T >
+  concept GUM_UndiGraphable = GUM_NodeGraphable< T >
+      && requires(const T g, NodeId u, NodeId v) {
+           { g.existsEdge(u, v) } -> std::convertible_to< bool >;
+           { g.neighbours(u) }    -> std::convertible_to< const NodeSet& >;
+         };
 
-  DiGraph::DiGraph(DiGraph&& g) : NodeGraphPart(std::move(g)), ArcGraphPart(std::move(g)) {
-    GUM_CONS_MOV(DiGraph)
-  }
+  /**
+   * @brief Concept for mixed graphs (both arcs and edges).
+   *
+   * Satisfied by MixedGraph and PDAG.  Refines both GUM_DiGraphable and
+   * GUM_UndiGraphable.
+   */
+  template < typename T >
+  concept GUM_MixedGraphable = GUM_DiGraphable< T > && GUM_UndiGraphable< T >;
 
-  DiGraph::~DiGraph() { GUM_DESTRUCTOR(DiGraph) }
+  /// @}
 
-  std::string DiGraph::toString() const {
-    std::string s = NodeGraphPart::toString();
-    s += " , ";
-    s += ArcGraphPart::toString();
-    return s;
-  }
+}   // namespace gum
 
-  std::string DiGraph::toDot() const {
-    std::stringstream strBuff;
-    std::string       tab = "     ";
-    strBuff << "digraph {" << std::endl;
-
-    for (const auto node: nodes())
-      strBuff << tab << node << ";" << std::endl;
-
-    strBuff << std::endl;
-
-    for (const auto& arc: arcs())
-      strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
-
-    strBuff << "}" << std::endl << std::endl;
-    return strBuff.str();
-  }
-
-  /// for friendly displaying the content of directed graphs
-  std::ostream& operator<<(std::ostream& stream, const DiGraph& g) {
-    stream << g.toString();
-    return stream;
-  }
-
-  bool DiGraph::hasDirectedPath(const NodeId from, const NodeId to) {
-    return graph::hasDirectedPath(*this, from, to);
-  }
-
-} /* namespace gum */
+#endif   // GUM_GRAPH_CONCEPTS_H

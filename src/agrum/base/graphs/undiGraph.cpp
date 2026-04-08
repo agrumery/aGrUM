@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 #include <agrum/base/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
@@ -89,52 +90,6 @@ namespace gum {
   UndiGraph::~UndiGraph() {
     GUM_DESTRUCTOR(UndiGraph);
     ;
-  }
-
-  bool UndiGraph::hasUndirectedCycle() const {
-    List< std::pair< NodeId, NodeId > > open_nodes;
-    NodeProperty< bool >                examined_nodes = nodesPropertyFromVal(false);
-    std::pair< NodeId, NodeId >         thePair;
-    NodeId                              current, from_current;
-
-    for (const auto node: nodes()) {
-      // check if the node has already been examined (if this is not the case,
-      // this means that we are on a new connected component)
-      if (!examined_nodes[node]) {
-        // indicates that we are examining a new node
-        examined_nodes[node] = true;
-
-        // check recursively all the nodes of node's connected component
-        thePair.first  = node;
-        thePair.second = node;
-        open_nodes.insert(thePair);
-
-        while (!open_nodes.empty()) {
-          // get a node to propagate
-          thePair = open_nodes.front();
-          open_nodes.popFront();
-
-          current      = thePair.first;
-          from_current = thePair.second;
-
-          // check the neighbours
-          for (const auto new_node: neighbours(current))
-
-            // avoid to check the node we are coming from
-            if (new_node != from_current) {
-              if (examined_nodes[new_node]) return true;
-              else {
-                examined_nodes[new_node] = true;
-                thePair.first            = new_node;
-                thePair.second           = current;
-                open_nodes.insert(thePair);
-              }
-            }
-        }
-      }
-    }
-
-    return false;
   }
 
   std::string UndiGraph::toString() const {
@@ -183,28 +138,6 @@ namespace gum {
     }
 
     return partialGraph;
-  }
-
-  NodeProperty< NodeId > UndiGraph::nodes2ConnectedComponent() const {
-    NodeProperty< NodeId > res;
-
-    NodeId numCC = 0;
-    for (const auto node: nodes()) {
-      if (res.exists(node)) continue;
-      NodeSet nodes{node};
-      while (!nodes.empty()) {
-        auto actual = *(nodes.begin());
-        nodes.erase(actual);
-        res.insert(actual, numCC);
-        for (const auto nei: neighbours(actual)) {
-          if (!res.exists(nei))
-            if (!nodes.exists(nei)) nodes.insert(nei);
-        }
-      }
-      numCC += 1;
-    }
-
-    return res;
   }
 
   /// for friendly displaying the content of undirected graphs

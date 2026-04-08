@@ -78,11 +78,6 @@ namespace gum {
     else return emptyNodeSet;
   }
 
-  INLINE NodeSet ArcGraphPart::family(NodeId id) const {
-    NodeSet res{id};
-    return res + parents(id);
-  }
-
   /// returns the set of children of a set of nodes
   INLINE NodeSet ArcGraphPart::children(const NodeSet& ids) const {
     NodeSet res;
@@ -96,14 +91,6 @@ namespace gum {
     NodeSet res;
     for (const auto node: ids)
       res += parents(node);
-    return res;
-  }
-
-  /// returns the set of family nodes of a set of nodes
-  INLINE NodeSet ArcGraphPart::family(const NodeSet& ids) const {
-    NodeSet res;
-    for (const auto node: ids)
-      res += family(node);
     return res;
   }
 

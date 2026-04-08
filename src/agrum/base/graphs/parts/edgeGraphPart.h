@@ -231,40 +231,6 @@ namespace gum {
     template < typename VAL >
     List< VAL > listMapEdges(VAL (*f)(const Edge&)) const;
 
-    /// returns a possible path from node1 to node2 in the edge set
-    /** @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
-     * @throw NotFound exception is raised if no path can be found between the
-     * two nodes */
-    std::vector< NodeId > undirectedPath(NodeId node1, NodeId node2) const;
-    /**
-     * return true if n1 and n2 are connected (by an undirected path) in the graph.
-     * @param n1 NodeId
-     * @param n2 NodeId
-     * @return bool
-     */
-    bool hasUndirectedPath(NodeId n1, NodeId n2) const;
-
-    /**
-     * return true if n1 and n2 are connected (by an undirected path not using the
-     * nodes of except) in the graph.
-     * @param n1 NodeId
-     * @param n2 NodeId
-     * @param except NodeSet
-     * @warning n1 in except has no repercussion. However n2 in except naturally
-     * leads to 'false'
-     * @return bool
-     */
-    bool hasUndirectedPath(NodeId n1, NodeId n2, const NodeSet& except) const;
-    /**
-     * return true if n1 and n2 are connected (by an undirected path not using the
-     * nodes of except) in the graph.
-     * @param n1 NodeSet
-     * @param n2 NodeSet
-     * @param except NodeSet
-     * @return bool
-     */
-    bool hasUndirectedPath(const NodeSet& n1, const NodeSet& n2, const NodeSet& except) const;
     /// @}
 
     private:
