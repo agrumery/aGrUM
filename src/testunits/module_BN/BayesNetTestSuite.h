@@ -1160,6 +1160,29 @@ namespace gum_tests {
       CHECK_EQ(bn2.sizeArcs(), gum::Size(4));
     }
 
+    void testConnectedComponents() {
+      // A isolated, B->C connected: 2 components
+      auto bn = gum::BayesNet< double >::fastPrototype("A;B->C");
+      auto cc = bn.connectedComponents();
+      CHECK_EQ(cc.size(), gum::Size(3));
+      CHECK_EQ(cc[bn.idFromName("B")], cc[bn.idFromName("C")]);
+      CHECK_NE(cc[bn.idFromName("A")], cc[bn.idFromName("B")]);
+      gum::NodeSet roots;
+      for (const auto& [node, root]: cc)
+        roots.insert(root);
+      CHECK_EQ(roots.size(), gum::Size(2));
+
+      // Fully connected: 1 component
+      auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C");
+      auto cc2 = bn2.connectedComponents();
+      CHECK_EQ(cc2[bn2.idFromName("A")], cc2[bn2.idFromName("B")]);
+      CHECK_EQ(cc2[bn2.idFromName("B")], cc2[bn2.idFromName("C")]);
+      gum::NodeSet roots2;
+      for (const auto& [node, root]: cc2)
+        roots2.insert(root);
+      CHECK_EQ(roots2.size(), gum::Size(1));
+    }
+
     void testcontextulizedBN2() {
       auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
       gum::Instantiation Iobs;
@@ -1214,4 +1237,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(operatorEqual)
   GUM_TEST_ACTIF(contextulizedBN)
   GUM_TEST_ACTIF(contextulizedBN2)
+  GUM_TEST_ACTIF(ConnectedComponents)
 }   // namespace gum_tests

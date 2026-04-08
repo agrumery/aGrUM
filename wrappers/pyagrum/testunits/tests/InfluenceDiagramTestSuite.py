@@ -211,5 +211,27 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
       )
 
 
+  def testConnectedComponents(self):
+    # A->B connected, *C isolated decision, $D isolated utility: 3 components
+    id_ = gum.fastID("A->B;*C;$D")
+    self.assertEqual(id_.connectedComponentsCount(), 3)
+    ccl = id_.connectedComponentsList()
+    self.assertEqual(len(ccl), 3)
+    sizes = sorted(len(s) for s in ccl.values())
+    self.assertEqual(sizes, [1, 1, 2])
+
+    cc = id_.connectedComponents()
+    self.assertEqual(cc[id_.idFromName("A")], cc[id_.idFromName("B")])
+    self.assertNotEqual(cc[id_.idFromName("A")], cc[id_.idFromName("C")])
+    self.assertNotEqual(cc[id_.idFromName("A")], cc[id_.idFromName("D")])
+
+    # Connect everything: 1 component
+    id2 = gum.fastID("A->B->$C<-*D")
+    self.assertEqual(id2.connectedComponentsCount(), 1)
+    ccl2 = id2.connectedComponentsList()
+    self.assertEqual(len(ccl2), 1)
+    self.assertEqual(set(list(ccl2.values())[0]), set(id2.nodes()))
+
+
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

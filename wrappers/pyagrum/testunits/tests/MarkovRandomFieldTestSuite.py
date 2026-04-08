@@ -318,5 +318,28 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
       )
 
 
+  def testConnectedComponents(self):
+    # A--B connected, C--D connected, E isolated: 3 components
+    mrf = gum.fastMRF("A--B;C--D;E")
+    self.assertEqual(mrf.connectedComponentsCount(), 3)
+    ccl = mrf.connectedComponentsList()
+    self.assertEqual(len(ccl), 3)
+    sizes = sorted(len(s) for s in ccl.values())
+    self.assertEqual(sizes, [1, 2, 2])
+
+    cc = mrf.connectedComponents()
+    self.assertEqual(cc[mrf.idFromName("A")], cc[mrf.idFromName("B")])
+    self.assertEqual(cc[mrf.idFromName("C")], cc[mrf.idFromName("D")])
+    self.assertNotEqual(cc[mrf.idFromName("A")], cc[mrf.idFromName("C")])
+    self.assertNotEqual(cc[mrf.idFromName("A")], cc[mrf.idFromName("E")])
+
+    # Connect the two groups: 1 component
+    mrf2 = gum.fastMRF("A--B--C--D;E--B")
+    self.assertEqual(mrf2.connectedComponentsCount(), 1)
+    ccl2 = mrf2.connectedComponentsList()
+    self.assertEqual(len(ccl2), 1)
+    self.assertEqual(set(list(ccl2.values())[0]), set(mrf2.nodes()))
+
+
 ts = unittest.TestSuite()
 addTests(ts, MarkovRandomFieldTestCase)

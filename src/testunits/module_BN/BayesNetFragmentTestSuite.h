@@ -667,6 +667,29 @@ namespace gum_tests {
       CHECK_NE(&minibn.cpt("B").variable(1), &frag.variable("A"));
     }
 
+    static void testConnectedComponents() {
+      // BN: A->B, C->D, E isolated
+      auto                            bn = gum::BayesNet< double >::fastPrototype("A->B;C->D;E");
+      gum::BayesNetFragment< double > frag(bn);
+      for (const auto id: bn.topologicalOrder()) {
+        // adding in topological order guarantees that each arc can be added.
+        if (bn.variable(id).name() != "D") { frag.installNode(id); }
+      }
+      // fragment is : "A->B;C;E"
+
+      auto cc = frag.connectedComponents();
+      CHECK_EQ(cc.size(), gum::Size(4));
+      CHECK_THROWS_AS(frag.idFromName("D"), const gum::NotFound&);
+      CHECK_EQ(cc[frag.idFromName("A")], cc[frag.idFromName("B")]);
+      CHECK_NE(cc[frag.idFromName("A")], cc[frag.idFromName("C")]);
+      CHECK_NE(cc[frag.idFromName("A")], cc[frag.idFromName("E")]);
+
+      gum::NodeSet roots;
+      for (const auto& [node, root]: cc)
+        roots.insert(root);
+      CHECK_EQ(roots.size(), static_cast< gum::Size >(3));
+    }
+
     static void testGraphicalMethods() {
       auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;E<-C<-F;");
       CHECK_EQ(&bn.cpt("B").variable(1), &bn.variable("A"));
@@ -697,4 +720,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(InferenceWithLocalCPTs)
   GUM_TEST_ACTIF(CopyToBN)
   GUM_TEST_ACTIF(GraphicalMethods)
+  GUM_TEST_ACTIF(ConnectedComponents)
 }   // namespace gum_tests

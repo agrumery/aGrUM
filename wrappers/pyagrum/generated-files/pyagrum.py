@@ -6552,6 +6552,9 @@ class DAGmodel(DiscreteGraphicalModel):
         """
         return _pyagrum.DAGmodel_topologicalOrder(self)
 
+    def connectedComponents(self) -> dict[int,int]:
+        return _pyagrum.DAGmodel_connectedComponents(self)
+
     def hasSameStructure(self, other: "pyagrum.DAGmodel") -> bool:
         r"""
 
@@ -6649,6 +6652,9 @@ class UGmodel(DiscreteGraphicalModel):
 
     def hasSameStructure(self, other: "pyagrum.UGmodel") -> bool:
         return _pyagrum.UGmodel_hasSameStructure(self, other)
+
+    def connectedComponents(self) -> dict[int,int]:
+        return _pyagrum.UGmodel_connectedComponents(self)
 
     def family(self, *args) -> list[int]:
         return _pyagrum.UGmodel_family(self, *args)
@@ -10356,6 +10362,9 @@ class EssentialGraph(object):
 
     def skeleton(self) -> "pyagrum.UndiGraph":
         return _pyagrum.EssentialGraph_skeleton(self)
+
+    def connectedComponents(self) -> dict[int,int]:
+        return _pyagrum.EssentialGraph_connectedComponents(self)
 
     def idFromName(self, name: str) -> int:
         r"""

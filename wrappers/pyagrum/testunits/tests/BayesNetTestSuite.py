@@ -861,6 +861,27 @@ class TestGraphicalConcepts(BayesNetTestCase):
     self.assertEqual(bn.children(1), {2})
     self.assertEqual(bn.children("A"), {1, 6})
 
+  def testConnectedComponents(self):
+    # A isolated, B->C connected: 2 components
+    bn = gum.fastBN("A;B->C")
+    self.assertEqual(bn.connectedComponentsCount(), 2)
+    cc = bn.connectedComponents()
+    self.assertEqual(len(set(cc.values())), 2)
+    self.assertEqual(cc[bn.idFromName("B")], cc[bn.idFromName("C")])
+    self.assertNotEqual(cc[bn.idFromName("A")], cc[bn.idFromName("B")])
+
+    ccl = bn.connectedComponentsList()
+    self.assertEqual(len(ccl), 2)
+    sizes = sorted(len(s) for s in ccl.values())
+    self.assertEqual(sizes, [1, 2])
+
+    # Connect A->B: one component
+    bn.addArc("A", "B")
+    self.assertEqual(bn.connectedComponentsCount(), 1)
+    ccl = bn.connectedComponentsList()
+    self.assertEqual(len(ccl), 1)
+    self.assertEqual(set(list(ccl.values())[0]), set(bn.nodes()))
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestConstructors)

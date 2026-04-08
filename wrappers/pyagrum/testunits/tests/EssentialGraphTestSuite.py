@@ -107,5 +107,25 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertEqual(eg.nameFromId(4), "W")
 
 
+  def testConnectedComponents(self):
+    # BN with two disconnected components: A->B and C->D
+    bn = gum.fastBN("A->B;C->D")
+    eg = gum.EssentialGraph(bn)
+    self.assertEqual(eg.connectedComponentsCount(), 2)
+    ccl = eg.connectedComponentsList()
+    self.assertEqual(len(ccl), 2)
+    sizes = sorted(len(s) for s in ccl.values())
+    self.assertEqual(sizes, [2, 2])
+
+    # All three methods are consistent
+    cc = eg.connectedComponents()
+    self.assertEqual(len(set(cc.values())), eg.connectedComponentsCount())
+
+    # Fully connected BN: one component
+    bn2 = gum.fastBN("A->B->C->D")
+    eg2 = gum.EssentialGraph(bn2)
+    self.assertEqual(eg2.connectedComponentsCount(), 1)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestEssentialGraph)

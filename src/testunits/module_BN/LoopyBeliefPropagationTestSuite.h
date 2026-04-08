@@ -71,23 +71,26 @@ namespace gum_tests {
 
   class aSimpleLBPListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
+    int         __nbr{0};
     std::string __mess;
 
     public:
     aSimpleLBPListener(gum::ApproximationScheme& sch) :
-        gum::ApproximationSchemeListener(sch), __nbr(0), __mess("") {};
+        gum::ApproximationSchemeListener(sch), __mess("") {};
 
-    void whenProgress(const void* buffer, const gum::Size a, const double b, const double c) {
+    void whenProgress(const void*     buffer,
+                      const gum::Size a,
+                      const double    b,
+                      const double    c) override {
       __nbr++;
     }
 
-    void whenStop(const void* buffer, std::string_view s) {
+    void whenStop(const void* buffer, std::string_view s) override {
       __nbr++;
       __mess = s;
     }
 
-    int getNbr() { return __nbr; }
+    [[nodiscard]] int getNbr() const { return __nbr; }
 
     std::string getMess() { return __mess; }
   };
@@ -108,7 +111,7 @@ namespace gum_tests {
         try {
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -131,7 +134,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -150,7 +153,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -173,7 +176,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -191,7 +194,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -214,7 +217,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -232,7 +235,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName(ev), std::vector< double >{0.2f, 0.8f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -258,7 +261,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -280,7 +283,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), std::vector< double >{0.7f, 0.3f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -306,7 +309,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -328,7 +331,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("h"), std::vector< double >{0.7f, 0.3f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -347,7 +350,7 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -365,7 +368,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -383,7 +386,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -401,7 +404,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -419,7 +422,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -440,7 +443,7 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -460,7 +463,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -480,7 +483,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), 0);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -500,7 +503,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("a"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -520,7 +523,7 @@ namespace gum_tests {
           inf.addEvidence(bn.idFromName("d"), std::vector< double >{0.7f, 0.3f, 1.0f});
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -529,9 +532,9 @@ namespace gum_tests {
     }
 
     static void testLBPAsia() {
-      gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
-      gum::Size                nbrErr = static_cast< gum::Size >(0);
+      gum::BayesNet< double > bn;
+      gum::BIFReader          reader(&bn, GET_RESSOURCES_PATH("bif/asia.bif"));
+      auto                    nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
@@ -543,7 +546,7 @@ namespace gum_tests {
           gum::LoopyBeliefPropagation< double > inf(&bn);
           inf.setVerbosity(false);
           inf.makeInference();
-          if (__compareInference(bn, lazy, inf)) break;
+          if (__compareInference(bn, lazy, inf)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -552,9 +555,9 @@ namespace gum_tests {
     }
 
     static void testLBPAlarm() {
-      gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = static_cast< gum::Size >(0);
+      gum::BayesNet< double > bn;
+      gum::BIFReader          reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
+      auto                    nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
@@ -568,7 +571,7 @@ namespace gum_tests {
           inf.makeInference();
 
           // alarm is not good for LBP
-          if (__compareInference(bn, lazy, inf, 2.5e-1)) break;
+          if (__compareInference(bn, lazy, inf, 2.5e-1)) { break; }
         } catch (gum::Exception& e) {
           GUM_SHOWERROR(e);
           CHECK(false);
@@ -577,9 +580,9 @@ namespace gum_tests {
     }
 
     static void testLBPInfListener() {
-      gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
-      gum::Size                nbrErr = static_cast< gum::Size >(0);
+      gum::BayesNet< double > bn;
+      gum::BIFReader          reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));
+      auto                    nbrErr = static_cast< gum::Size >(0);
       GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
       CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
 
@@ -594,8 +597,9 @@ namespace gum_tests {
 
     static void testAggregatorsInLBP() {
       gum::BayesNet< double > bn;
-      for (const auto& e: {"a", "b", "c", "d"})
+      for (const auto& e: {"a", "b", "c", "d"}) {
         bn.add(e, 2);
+      }
       bn.addOR(gum::LabelizedVariable("O", "", 2));
       bn.addAND(gum::LabelizedVariable("A", "", 2));
       bn.addFORALL(gum::LabelizedVariable("F", "", 2));
@@ -619,8 +623,9 @@ namespace gum_tests {
 
     static void testLogitInLBP() {
       gum::BayesNet< double > bn;
-      for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"})
+      for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"}) {
         bn.add(item, 2);
+      }
 
       gum::LabelizedVariable fever("Fever", "", 2);
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addLogit(fever, 0.3f));
@@ -645,7 +650,7 @@ namespace gum_tests {
                                    gum::LazyPropagation< GUM_SCALAR >&        lazy,
                                    gum::LoopyBeliefPropagation< GUM_SCALAR >& inf,
                                    double                                     errmax = 1e-2) {
-      GUM_SCALAR  err    = static_cast< GUM_SCALAR >(0);
+      auto        err    = static_cast< GUM_SCALAR >(0);
       std::string argstr = "";
       for (const auto& node: bn.nodes()) {
         GUM_SCALAR e = lazy.posterior(node).KL(inf.posterior(node));
@@ -656,7 +661,6 @@ namespace gum_tests {
           argstr += "  inf : " + inf.posterior(node).toString() + " \n";
         }
       }
-      if (err > errmax) { GUM_TRACE(argstr); }
       return err < errmax;
     }
   };

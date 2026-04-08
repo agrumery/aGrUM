@@ -227,6 +227,10 @@ namespace gum {
      * @param clear If false returns the previously created topology.
      */
     Sequence< NodeId > topologicalOrder() const;
+
+    /// Returns the weakly connected components of the underlying DAG.
+    /// Each node maps to the id of its component root.
+    NodeProperty< NodeId > connectedComponents() const;
     /// @}
 
     /// @return true if all the named node are the same and all the named arcs are

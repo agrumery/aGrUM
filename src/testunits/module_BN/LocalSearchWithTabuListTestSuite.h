@@ -52,10 +52,8 @@
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/graphs/DAG.h>
-#include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
@@ -83,9 +81,9 @@ namespace gum_tests {
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
+      gum::learning::DBTranslatorSet translator_set;
       for (std::size_t i = 0; i < nb_vars; ++i) {
+        gum::learning::DBTranslator4LabelizedVariable translator;
         translator_set.insertTranslator(translator, i);
       }
 
@@ -107,8 +105,8 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree(2);
       struct_constraint.setTabuListSize(100);
 
-      gum::NodeProperty< gum::NodeId > slices{std::make_pair(gum::NodeId(0), 0),
-                                              std::make_pair(gum::NodeId(1), 0)};
+      gum::NodeProperty< gum::NodeId > slices{std::make_pair(static_cast< gum::NodeId >(0), 0),
+                                              std::make_pair(static_cast< gum::NodeId >(1), 0)};
       struct_constraint.setSliceOrder(slices);
       struct_constraint.setDefaultSlice(1);
 

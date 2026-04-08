@@ -97,6 +97,10 @@ namespace gum {
     return !graph().hasUndirectedPath(X, Y, Z);
   }
 
+  INLINE NodeProperty< NodeId > UGmodel::connectedComponents() const {
+    return graph_.connectedComponents();
+  }
+
   INLINE NodeSet UGmodel::family(const NodeId id) const {
     // family is the set of the note and its parent. So for a completely undirected model, it is
     // just the node.

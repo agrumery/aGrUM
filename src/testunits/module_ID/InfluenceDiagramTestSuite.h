@@ -939,6 +939,28 @@ namespace gum_tests {
       CHECK_NE(model, model2);
       CHECK_EQ(model, model3);
     }
+
+    void testConnectedComponents() {
+      // A->B connected, *C isolated decision, $D isolated utility: 3 components
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("A->B;*C;$D");
+      auto cc = id.connectedComponents();
+      CHECK_EQ(cc.size(), gum::Size(4));
+      CHECK_EQ(cc[id.idFromName("A")], cc[id.idFromName("B")]);
+      CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("C")]);
+      CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("D")]);
+      gum::NodeSet roots;
+      for (const auto& [node, root]: cc)
+        roots.insert(root);
+      CHECK_EQ(roots.size(), gum::Size(3));
+
+      // Fully connected: 1 component
+      auto id2 = gum::InfluenceDiagram< double >::fastPrototype("A->B->$C<-*D");
+      auto cc2  = id2.connectedComponents();
+      gum::NodeSet roots2;
+      for (const auto& [node, root]: cc2)
+        roots2.insert(root);
+      CHECK_EQ(roots2.size(), gum::Size(1));
+    }
   };
 
   GUM_TEST_ACTIF(Constructor)
@@ -963,4 +985,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FastPrototypeVarType)
   GUM_TEST_ACTIF(FastVariable)
   GUM_TEST_ACTIF(operatorEqual)
+  GUM_TEST_ACTIF(ConnectedComponents)
 }   // namespace gum_tests

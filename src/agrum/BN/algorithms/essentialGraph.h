@@ -133,6 +133,10 @@ namespace gum {
     /// wrapping @ref MixedGraph::nodes()
     const NodeGraphPart& nodes() const;
 
+    /// Returns the connected components of the essential graph.
+    /// Each node maps to the id of its component root.
+    NodeProperty< NodeId > connectedComponents() const;
+
     /// wrappping @ref DAGModel::idFromName()
     NodeId idFromName(std::string_view name) const;
 

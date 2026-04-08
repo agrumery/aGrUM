@@ -113,6 +113,10 @@ namespace gum {
 
   INLINE Sequence< NodeId > DAGmodel::topologicalOrder() const { return dag().topologicalOrder(); }
 
+  INLINE NodeProperty< NodeId > DAGmodel::connectedComponents() const {
+    return dag_.connectedComponents();
+  }
+
   INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag().descendants(id); }
 
   INLINE NodeSet DAGmodel::descendants(std::string_view name) const {

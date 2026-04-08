@@ -240,6 +240,23 @@ class TestGraph(pyAgrumTestCase):
     self.assertEqual(len(ccl), 1)
     self.assertEqual(set(list(ccl.values())[0]), {0, 1, 2})
 
+  def testConnectedComponentsPDAG(self):
+    pg = gum.PDAG()
+    pg.addNodeWithId(0)
+    pg.addNodeWithId(1)
+    pg.addNodeWithId(2)
+    self.assertEqual(pg.connectedComponentsCount(), 3)
+    pg.addArc(0, 1)
+    self.assertEqual(pg.connectedComponentsCount(), 2)
+    pg.addEdge(1, 2)
+    self.assertEqual(pg.connectedComponentsCount(), 1)
+    cc = pg.connectedComponents()
+    self.assertEqual(cc[0], cc[1])
+    self.assertEqual(cc[1], cc[2])
+    ccl = pg.connectedComponentsList()
+    self.assertEqual(len(ccl), 1)
+    self.assertEqual(set(list(ccl.values())[0]), {0, 1, 2})
+
   def testAdjancecyMatrix(self):
     mg = gum.MixedGraph()
     mg.addNodes(4)

@@ -272,6 +272,26 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     self.assertEqual(repr(minibn.cpt("B").variable(1)), repr(minibn.variable("A")))
     self.assertNotEqual(repr(minibn.cpt("B").variable(1)), repr(frag.variable("A")))
 
+  def testConnectedComponents(self):
+    # BN: A->B connected, C->D connected, E isolated → fragment with all 5 nodes has 3 components
+    bn = gum.fastBN("A->B;C->D;E")
+    frag = gum.BayesNetFragment(bn)
+    for name in ["A", "B", "C", "E"]:
+      frag.installNode(name)
+
+    self.assertEqual(frag.connectedComponentsCount(), 3)
+
+    ccl = frag.connectedComponentsList()
+    self.assertEqual(len(ccl), 3)
+    sizes = sorted(len(s) for s in ccl.values())
+    self.assertEqual(sizes, [1, 1, 2])
+
+    # cc consistency: A and B share a root, C and D share a root, E is alone
+    cc = frag.connectedComponents()
+    self.assertEqual(cc[frag.idFromName("A")], cc[frag.idFromName("B")])
+    self.assertNotEqual(cc[frag.idFromName("A")], cc[frag.idFromName("C")])
+    self.assertNotEqual(cc[frag.idFromName("A")], cc[frag.idFromName("E")])
+
 
 ts = unittest.TestSuite()
 addTests(ts, BayesNetFragmentTestCase)

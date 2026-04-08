@@ -167,6 +167,10 @@ namespace gum {
     /// the same
     bool hasSameStructure(const UGmodel& other);
 
+    /// Returns the connected components of the underlying undirected graph.
+    /// Each node maps to the id of its component root.
+    NodeProperty< NodeId > connectedComponents() const;
+
     /// returns the the node as a NodeSet (in mixed graph : family is the node and its parents
     /**
      * @param id the node which is the head of an arc with the returned nodes

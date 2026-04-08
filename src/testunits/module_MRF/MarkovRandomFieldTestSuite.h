@@ -403,6 +403,29 @@ namespace gum_tests {
       // a mono-label with default 1 is possible but can not be integrated in the model
       CHECK_THROWS_AS(mn.add("Y[1,1]", 1), const gum::OperationNotAllowed&);
     }
+
+    void testConnectedComponents() {
+      // A--B connected, C--D connected, E isolated: 3 components
+      auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;C--D;E");
+      auto cc  = mrf.connectedComponents();
+      CHECK_EQ(cc.size(), gum::Size(5));
+      CHECK_EQ(cc[mrf.idFromName("A")], cc[mrf.idFromName("B")]);
+      CHECK_EQ(cc[mrf.idFromName("C")], cc[mrf.idFromName("D")]);
+      CHECK_NE(cc[mrf.idFromName("A")], cc[mrf.idFromName("C")]);
+      CHECK_NE(cc[mrf.idFromName("A")], cc[mrf.idFromName("E")]);
+      gum::NodeSet roots;
+      for (const auto& [node, root]: cc)
+        roots.insert(root);
+      CHECK_EQ(roots.size(), gum::Size(3));
+
+      // Fully connected: 1 component
+      auto mrf2 = gum::MarkovRandomField< double >::fastPrototype("A--B--C--D--E");
+      auto cc2  = mrf2.connectedComponents();
+      gum::NodeSet roots2;
+      for (const auto& [node, root]: cc2)
+        roots2.insert(root);
+      CHECK_EQ(roots2.size(), gum::Size(1));
+    }
   };
 
   GUM_TEST_ACTIF(SimpleConstructor)
@@ -425,5 +448,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FastPrototypeVarType)
   GUM_TEST_ACTIF(MonoClique)
   GUM_TEST_ACTIF(ShortCutAddFastVar)
+  GUM_TEST_ACTIF(ConnectedComponents)
 
 }   // namespace gum_tests
