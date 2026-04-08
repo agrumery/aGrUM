@@ -400,6 +400,130 @@ namespace gum_tests {
         CHECK_EQ(path2[2], 2U);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+
+    static void testAncestorsDescendants() {
+      // DAG: 0→1, 0→2, 1→3, 2→3, 3→4
+      gum::DiGraph g;
+      g.addNodes(5);
+      g.addArc(0, 1);
+      g.addArc(0, 2);
+      g.addArc(1, 3);
+      g.addArc(2, 3);
+      g.addArc(3, 4);
+
+      // ancestors
+      CHECK(g.ancestors(0).empty());
+
+      gum::NodeSet anc3 = g.ancestors(3);
+      CHECK_EQ(anc3.size(), 3U);
+      CHECK(anc3.contains(0));
+      CHECK(anc3.contains(1));
+      CHECK(anc3.contains(2));
+
+      gum::NodeSet anc4 = g.ancestors(4);
+      CHECK_EQ(anc4.size(), 4U);
+      CHECK(anc4.contains(0));
+      CHECK(anc4.contains(1));
+      CHECK(anc4.contains(2));
+      CHECK(anc4.contains(3));
+      CHECK(!anc4.contains(4));
+
+      // descendants
+      CHECK(g.descendants(4).empty());
+
+      gum::NodeSet desc0 = g.descendants(0);
+      CHECK_EQ(desc0.size(), 4U);
+      CHECK(desc0.contains(1));
+      CHECK(desc0.contains(2));
+      CHECK(desc0.contains(3));
+      CHECK(desc0.contains(4));
+      CHECK(!desc0.contains(0));
+
+      gum::NodeSet desc1 = g.descendants(1);
+      CHECK_EQ(desc1.size(), 2U);
+      CHECK(desc1.contains(3));
+      CHECK(desc1.contains(4));
+
+      // family = {self} ∪ parents(self)
+      gum::NodeSet fam0 = g.family(0);
+      CHECK_EQ(fam0.size(), 1U);
+      CHECK(fam0.contains(0));
+
+      gum::NodeSet fam3 = g.family(3);
+      CHECK_EQ(fam3.size(), 3U);
+      CHECK(fam3.contains(1));
+      CHECK(fam3.contains(2));
+      CHECK(fam3.contains(3));
+
+      // family of a NodeSet = union of individual families
+      gum::NodeSet ids{1, 3};
+      gum::NodeSet fam13 = g.family(ids);
+      CHECK_EQ(fam13.size(), 4U);   // {0,1} ∪ {1,2,3}
+      CHECK(fam13.contains(0));
+      CHECK(fam13.contains(1));
+      CHECK(fam13.contains(2));
+      CHECK(fam13.contains(3));
+    }
+
+    static void testConnectedComponents() {
+      // 0→1→2 and 3→4: two weakly connected components; 5: isolated
+      gum::DiGraph g;
+      g.addNodes(6);
+      g.addArc(0, 1);
+      g.addArc(1, 2);
+      g.addArc(3, 4);
+
+      auto cc = g.connectedComponents();
+      CHECK_EQ(cc.size(), 6U);
+
+      CHECK_EQ(cc[0], cc[1]);
+      CHECK_EQ(cc[1], cc[2]);
+      CHECK_NE(cc[0], cc[3]);
+      CHECK_EQ(cc[3], cc[4]);
+      CHECK_NE(cc[5], cc[0]);
+      CHECK_NE(cc[5], cc[3]);
+
+      // a single-node graph has one component
+      gum::DiGraph g2;
+      g2.addNode();
+      auto cc2 = g2.connectedComponents();
+      CHECK_EQ(cc2.size(), 1U);
+    }
+
+    static void testTopologicalOrder() {
+      // 0 -> 1 -> 3
+      //  \-> 2 -> 3 -> 4
+      gum::DiGraph g;
+      g.addNodes(5);
+      g.addArc(0, 1);
+      g.addArc(0, 2);
+      g.addArc(1, 3);
+      g.addArc(2, 3);
+      g.addArc(3, 4);
+
+      auto order = g.topologicalOrder();
+      CHECK_EQ(order.size(), 5U);
+
+      // each node must appear exactly once
+      for (gum::NodeId n = 0; n < 5; ++n)
+        CHECK(order.exists(n));
+
+      // every arc must go from an earlier to a later position
+      for (const auto& arc: g.arcs())
+        CHECK_LT(order.pos(arc.tail()), order.pos(arc.head()));
+
+      // empty graph returns empty sequence
+      gum::DiGraph empty;
+      CHECK_EQ(empty.topologicalOrder().size(), 0U);
+
+      // graph with a cycle must throw
+      gum::DiGraph cyclic;
+      cyclic.addNodes(3);
+      cyclic.addArc(0, 1);
+      cyclic.addArc(1, 2);
+      cyclic.addArc(2, 0);
+      CHECK_THROWS_AS(cyclic.topologicalOrder(), gum::InvalidDirectedCycle);
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -423,5 +547,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(HashMapArcs)
   GUM_TEST_ACTIF(NodeId)
   GUM_TEST_ACTIF(DirectedPaths)
+  GUM_TEST_ACTIF(AncestorsDescendants)
+  GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST_ACTIF(TopologicalOrder)
 
 }   // namespace gum_tests

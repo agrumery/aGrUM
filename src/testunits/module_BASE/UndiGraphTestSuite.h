@@ -411,7 +411,7 @@ namespace gum_tests {
       g.addEdge(2, 1);
       g.addEdge(3, 4);
 
-      auto cc = g.nodes2ConnectedComponent();
+      auto cc = g.chainComponents();
 
       CHECK_EQ(cc.size(), 6U);
       CHECK_NE(cc[0], cc[3]);
@@ -432,7 +432,7 @@ namespace gum_tests {
       g.addEdge(1, 4);
       g.addEdge(2, 5);
 
-      auto cc = g.nodes2ConnectedComponent();
+      auto cc = g.chainComponents();
 
       CHECK_EQ(cc.size(), 6U);
       CHECK_EQ(cc[0], cc[1]);
@@ -440,6 +440,110 @@ namespace gum_tests {
       CHECK_EQ(cc[0], cc[3]);
       CHECK_EQ(cc[0], cc[4]);
       CHECK_EQ(cc[0], cc[5]);
+    }
+
+    static void testHasUndirectedPath() {
+      // 0--1--2, 1--3; node 4 isolated
+      gum::UndiGraph g;
+      g.addNodes(5);
+      g.addEdge(0, 1);
+      g.addEdge(1, 2);
+      g.addEdge(1, 3);
+
+      CHECK(g.hasUndirectedPath(0, 3));
+      CHECK(g.hasUndirectedPath(3, 0));
+      CHECK(g.hasUndirectedPath(0, 2));
+      CHECK(!g.hasUndirectedPath(0, 4));
+      CHECK(!g.hasUndirectedPath(4, 0));
+
+      // hasUndirectedPath(n1, n2, except) — single path 0--1--2--3
+      gum::UndiGraph chain;
+      chain.addNodes(4);
+      chain.addEdge(0, 1);
+      chain.addEdge(1, 2);
+      chain.addEdge(2, 3);
+
+      CHECK(chain.hasUndirectedPath(0, 3, gum::NodeSet{}));
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{2}));    // blocked at 2
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{1}));    // blocked at 1
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{3}));    // n2 in except
+
+      // bypass: 0 connected to both 1 and 2; except={1} → still reachable via 0--2--3
+      gum::UndiGraph bypass;
+      bypass.addNodes(4);
+      bypass.addEdge(0, 1);
+      bypass.addEdge(0, 2);
+      bypass.addEdge(1, 2);
+      bypass.addEdge(2, 3);
+
+      CHECK(bypass.hasUndirectedPath(0, 3, gum::NodeSet{1}));    // 0--2--3
+      CHECK(!bypass.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // no bypass past 2
+
+      // hasUndirectedPath(NodeSet, NodeSet, except)
+      // g: 0--1--2--3; 4 isolated
+      gum::NodeSet src{0}, dst{3};
+      CHECK(chain.hasUndirectedPath(src, dst, gum::NodeSet{}));
+      CHECK(!chain.hasUndirectedPath(src, dst, gum::NodeSet{1}));
+
+      // multiple sources: even though {4} is isolated, {0,4} can reach {3}
+      CHECK(chain.hasUndirectedPath(gum::NodeSet{0, 4}, dst, gum::NodeSet{}));
+    }
+
+    static void testConnectedComponents() {
+      // 0--1--2 and 3--4: two weakly connected components; 5: isolated
+      gum::UndiGraph g;
+      g.addNodes(6);
+      g.addEdge(0, 1);
+      g.addEdge(1, 2);
+      g.addEdge(3, 4);
+
+      auto cc = g.connectedComponents();
+      CHECK_EQ(cc.size(), 6U);
+      CHECK_EQ(cc[0], cc[1]);
+      CHECK_EQ(cc[1], cc[2]);
+      CHECK_NE(cc[0], cc[3]);
+      CHECK_EQ(cc[3], cc[4]);
+      CHECK_NE(cc[5], cc[0]);
+      CHECK_NE(cc[5], cc[3]);
+
+      // for UndiGraph, connectedComponents and chainComponents are equivalent
+      auto chain = g.chainComponents();
+      for (gum::NodeId n = 0; n < 6; ++n)
+        CHECK_EQ(cc[n], chain[n]);
+    }
+
+    static void testHasUndirectedCycle() {
+      // tree (path): no cycle
+      gum::UndiGraph tree;
+      tree.addNodes(4);
+      tree.addEdge(0, 1);
+      tree.addEdge(1, 2);
+      tree.addEdge(2, 3);
+      CHECK_FALSE(tree.hasUndirectedCycle());
+
+      // add back-edge to close the cycle
+      tree.addEdge(0, 3);
+      CHECK(tree.hasUndirectedCycle());
+
+      // disconnected: two separate paths, no cycle
+      gum::UndiGraph dis;
+      dis.addNodes(6);
+      dis.addEdge(0, 1);
+      dis.addEdge(1, 2);
+      dis.addEdge(3, 4);
+      dis.addEdge(4, 5);
+      CHECK_FALSE(dis.hasUndirectedCycle());
+
+      // cycle in one component only
+      dis.addEdge(3, 5);
+      CHECK(dis.hasUndirectedCycle());
+
+      // empty and single-node graphs have no cycle
+      gum::UndiGraph empty;
+      CHECK_FALSE(empty.hasUndirectedCycle());
+      gum::UndiGraph single;
+      single.addNode();
+      CHECK_FALSE(single.hasUndirectedCycle());
     }
   };
 
@@ -466,4 +570,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(UndirectedPaths)
   GUM_TEST_ACTIF(ConnexComponents)
   GUM_TEST_ACTIF(ConnexComponents2)
+  GUM_TEST_ACTIF(HasUndirectedPath)
+  GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST_ACTIF(HasUndirectedCycle)
 }   // namespace gum_tests

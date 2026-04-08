@@ -620,6 +620,67 @@ namespace gum_tests {
       CHECK(moral.existsEdge(id0, id7));
     }
 
+    // P1→X--Y←P2  (0=P1, 1=X, 2=Y, 3=P2)
+    // Chain component {X,Y}: parents = {P1,P2} → married P1--P2.
+    // Key PDAG difference vs DAG: in DAG X→Y←P2 the marriage would be X--P2,
+    // not P1--P2.
+    static void testMoralGraphChainComponent() {
+      gum::PDAG g;
+      g.addNodes(4);
+      g.addArc(0, 1);    // P1→X
+      g.addEdge(1, 2);   // X--Y
+      g.addArc(3, 2);    // P2→Y
+
+      gum::UndiGraph m = g.moralGraph();
+      CHECK_EQ(m.size(), 4U);
+      CHECK(m.existsEdge(0, 1));    // arc P1→X → edge
+      CHECK(m.existsEdge(1, 2));    // edge X--Y preserved
+      CHECK(m.existsEdge(2, 3));    // arc P2→Y → edge
+      CHECK(m.existsEdge(0, 3));    // chain-component marriage: P1--P2
+      CHECK_EQ(m.sizeEdges(), 4U);  // no spurious edges
+      // X is inside the chain component, not a parent — must NOT be married with P2
+      CHECK(!m.existsEdge(1, 3));
+    }
+
+    // A--B--C→D  (0=A, 1=B, 2=C, 3=D)
+    // moralizedAncestralGraph({D}) must follow the edge chain C--B--A.
+    static void testMoralizedAncestralGraphEdgeFollowing() {
+      gum::PDAG g;
+      g.addNodes(4);
+      g.addEdge(0, 1);   // A--B
+      g.addEdge(1, 2);   // B--C
+      g.addArc(2, 3);    // C→D
+
+      // Starting from D, following arc C→D backward gives C, then edges C--B, B--A.
+      auto m = g.moralizedAncestralGraph(gum::NodeSet{3});
+      CHECK_EQ(m.size(), 4U);
+      CHECK(m.existsNode(0));   // A included via edge chain
+      CHECK(m.existsNode(1));   // B included
+      CHECK(m.existsNode(2));   // C included
+      CHECK(m.existsNode(3));   // D (query)
+
+      // chain component {A,B,C}: no parents → no marriage edges
+      // only arc C→D becomes edge C--D
+      CHECK(m.existsEdge(2, 3));
+      CHECK(m.existsEdge(0, 1));
+      CHECK(m.existsEdge(1, 2));
+      CHECK_EQ(m.sizeEdges(), 3U);
+
+      // moralizedAncestralGraph({D}) in a pure DAG A→B→C→D: same size,
+      // but follows arcs only — A is still included via arcs.
+      // The difference shows when a node is reachable only via an undirected edge:
+      gum::PDAG g2;
+      g2.addNodes(3);
+      g2.addEdge(0, 1);   // A--B (no arc involving A)
+      g2.addArc(1, 2);    // B→C
+
+      // A has no arc to B — only an undirected edge.
+      // moralizedAncestralGraph({C}) must still include A via the edge B--A.
+      auto m2 = g2.moralizedAncestralGraph(gum::NodeSet{2});
+      CHECK_EQ(m2.size(), 3U);
+      CHECK(m2.existsNode(0));   // A included despite no arc
+    }
+
     static void testcSeparationBugFromLouisDerumaux() {
       auto p = gum::PDAG();
 
@@ -697,6 +758,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(MonoCycle)
   GUM_TEST_ACTIF(cSeparationFromKennethLee)
   GUM_TEST_ACTIF(MoralGraphFromLouisDerumaux)
+  GUM_TEST_ACTIF(MoralGraphChainComponent)
+  GUM_TEST_ACTIF(MoralizedAncestralGraphEdgeFollowing)
   GUM_TEST_ACTIF(cSeparationBugFromLouisDerumaux)
 
 }   // namespace gum_tests

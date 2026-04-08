@@ -401,6 +401,114 @@ namespace gum_tests {
       auto     x = graph.addNode();
       CHECK_THROWS_AS(graph.addArc(x, x), const gum::Exception&);
     }
+
+    // Classic BN structure:  0→2←1, 2→3
+    //   parents(2) = {0,1}  →  moral edge {0,1}
+    static gum::DAG makeDiamond() {
+      gum::DAG g;
+      g.addNodes(4);
+      g.addArc(0, 2);
+      g.addArc(1, 2);
+      g.addArc(2, 3);
+      return g;
+    }
+
+    static void testMoralGraph() {
+      gum::DAG g = makeDiamond();
+      // 0→2←1, 2→3
+      gum::UndiGraph m = g.moralGraph();
+
+      CHECK_EQ(m.size(), 4U);
+      // arcs → edges
+      CHECK(m.existsEdge(0, 2));
+      CHECK(m.existsEdge(1, 2));
+      CHECK(m.existsEdge(2, 3));
+      // parents of 2 are married
+      CHECK(m.existsEdge(0, 1));
+      // no spurious edges
+      CHECK_EQ(m.sizeEdges(), 4U);
+    }
+
+    static void testMoralizedAncestralGraph() {
+      gum::DAG g = makeDiamond();
+      // 0→2←1, 2→3
+
+      // ancestral graph of {3} = all 4 nodes → same moral graph
+      gum::UndiGraph m3 = g.moralizedAncestralGraph(gum::NodeSet{3});
+      CHECK_EQ(m3.size(), 4U);
+      CHECK(m3.existsEdge(0, 1));   // parents of 2 married
+
+      // ancestral graph of {2} = {0,1,2} → no node 3
+      gum::UndiGraph m2 = g.moralizedAncestralGraph(gum::NodeSet{2});
+      CHECK_EQ(m2.size(), 3U);
+      CHECK(!m2.existsNode(3));
+      CHECK(m2.existsEdge(0, 2));
+      CHECK(m2.existsEdge(1, 2));
+      CHECK(m2.existsEdge(0, 1));
+      CHECK_EQ(m2.sizeEdges(), 3U);
+
+      // ancestral graph of a root = just that node
+      gum::UndiGraph m0 = g.moralizedAncestralGraph(gum::NodeSet{0});
+      CHECK_EQ(m0.size(), 1U);
+      CHECK_EQ(m0.sizeEdges(), 0U);
+    }
+
+    static void testDSeparation() {
+      // --- Chain: 0→1→2 ---
+      gum::DAG chain;
+      chain.addNodes(3);
+      chain.addArc(0, 1);
+      chain.addArc(1, 2);
+
+      // 0 and 2 connected (path 0→1→2 open)
+      CHECK_FALSE(chain.dSeparation(0, 2, gum::NodeSet{}));
+      // conditioning on 1 blocks the chain
+      CHECK(chain.dSeparation(0, 2, gum::NodeSet{1}));
+      // adjacent nodes never d-sep without conditioning on a separator
+      CHECK_FALSE(chain.dSeparation(0, 1, gum::NodeSet{}));
+
+      // --- Fork: 0←1→2 ---
+      gum::DAG fork;
+      fork.addNodes(3);
+      fork.addArc(1, 0);
+      fork.addArc(1, 2);
+
+      CHECK_FALSE(fork.dSeparation(0, 2, gum::NodeSet{}));   // common cause
+      CHECK(fork.dSeparation(0, 2, gum::NodeSet{1}));         // conditioning blocks
+
+      // --- Collider: 0→1←2 ---
+      gum::DAG collider;
+      collider.addNodes(3);
+      collider.addArc(0, 1);
+      collider.addArc(2, 1);
+
+      // d-sep without evidence: collider inactive
+      CHECK(collider.dSeparation(0, 2, gum::NodeSet{}));
+      // conditioning on collider activates it
+      CHECK_FALSE(collider.dSeparation(0, 2, gum::NodeSet{1}));
+
+      // --- Set-valued overload ---
+      // 0→2←1, 2→3, 2→4
+      gum::DAG g;
+      g.addNodes(5);
+      g.addArc(0, 2);
+      g.addArc(1, 2);
+      g.addArc(2, 3);
+      g.addArc(2, 4);
+
+      // {0} d-sep from {1} given {} (no common path except via collider 2)
+      CHECK(g.dSeparation(gum::NodeSet{0}, gum::NodeSet{1}, gum::NodeSet{}));
+      // conditioning on 2 marries 0 and 1
+      CHECK_FALSE(g.dSeparation(gum::NodeSet{0}, gum::NodeSet{1}, gum::NodeSet{2}));
+      // {3} and {4} connected through 2 when not conditioning
+      CHECK_FALSE(g.dSeparation(gum::NodeSet{3}, gum::NodeSet{4}, gum::NodeSet{}));
+      // conditioning on 2 blocks 3 from 4
+      CHECK(g.dSeparation(gum::NodeSet{3}, gum::NodeSet{4}, gum::NodeSet{2}));
+
+      // X and Y must be disjoint
+      CHECK_THROWS_AS(g.dSeparation(gum::NodeSet{0, 1}, gum::NodeSet{1, 2}, gum::NodeSet{}),
+                      const gum::Exception&);
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -425,4 +533,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(CopyOperator)
   GUM_TEST_ACTIF(Family)
   GUM_TEST_ACTIF(MonoCycle)
+  GUM_TEST_ACTIF(MoralGraph)
+  GUM_TEST_ACTIF(MoralizedAncestralGraph)
+  GUM_TEST_ACTIF(DSeparation)
 }   // namespace gum_tests

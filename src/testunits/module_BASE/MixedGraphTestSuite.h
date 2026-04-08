@@ -542,6 +542,131 @@ namespace gum_tests {
       CHECK_NE(g2, graph);
       CHECK_NE(g3, graph);
     }
+
+    // Build the standard test graph locally (id1=0,id2=1,id3=2,id4=3,id5=4)
+    // Edges: 0--2, 2--4, 1--3   Arcs: 0→3, 3→4, 4→1
+    static gum::MixedGraph makeTestGraph() {
+      gum::MixedGraph g;
+      g.addNodes(5);
+      g.addEdge(0, 2);
+      g.addEdge(2, 4);
+      g.addEdge(1, 3);
+      g.addArc(0, 3);
+      g.addArc(3, 4);
+      g.addArc(4, 1);
+      return g;
+    }
+
+    static void testBoundaryAndChainComponent() {
+      gum::MixedGraph graph = makeTestGraph();
+      // Edges: 0--2, 2--4, 1--3   Arcs: 0→3, 3→4, 4→1
+
+      // boundary(0) = neighbours(0) ∪ parents(0) ∪ children(0) = {2}∪{}∪{3}
+      gum::NodeSet b0 = graph.boundary(0);
+      CHECK_EQ(b0.size(), 2U);
+      CHECK(b0.contains(2));
+      CHECK(b0.contains(3));
+
+      // boundary(3) = {1}∪{0}∪{4}
+      gum::NodeSet b3 = graph.boundary(3);
+      CHECK_EQ(b3.size(), 3U);
+      CHECK(b3.contains(1));
+      CHECK(b3.contains(0));
+      CHECK(b3.contains(4));
+
+      // chainComponent: connected via edges only
+      // 0--2--4 form one chain component, 1--3 another
+      gum::NodeSet cc0 = graph.chainComponent(0);
+      CHECK_EQ(cc0.size(), 3U);
+      CHECK(cc0.contains(0));
+      CHECK(cc0.contains(2));
+      CHECK(cc0.contains(4));
+      CHECK(!cc0.contains(1));
+
+      gum::NodeSet cc1 = graph.chainComponent(1);
+      CHECK_EQ(cc1.size(), 2U);
+      CHECK(cc1.contains(1));
+      CHECK(cc1.contains(3));
+    }
+
+    static void testChainComponents() {
+      gum::MixedGraph graph = makeTestGraph();
+      // Chain components: {0,2,4} and {1,3}
+
+      auto cc = graph.chainComponents();
+      CHECK_EQ(cc.size(), 5U);
+      CHECK_EQ(cc[0], cc[2]);   // 0 and 2 same
+      CHECK_EQ(cc[2], cc[4]);   // 2 and 4 same
+      CHECK_EQ(cc[1], cc[3]);   // 1 and 3 same
+      CHECK_NE(cc[0], cc[1]);   // {0,2,4} ≠ {1,3}
+    }
+
+    static void testConnectedComponents() {
+      gum::MixedGraph graph = makeTestGraph();
+      // Edges: 0--2, 2--4, 1--3   Arcs: 0→3, 3→4, 4→1
+      // Weakly connected: 0→3--1 and 0--2--4→1 tie all nodes together
+
+      auto cc = graph.connectedComponents();
+      CHECK_EQ(cc.size(), 5U);
+      CHECK_EQ(cc[0], cc[1]);
+      CHECK_EQ(cc[0], cc[2]);
+      CHECK_EQ(cc[0], cc[3]);
+      CHECK_EQ(cc[0], cc[4]);
+
+      // connectedComponents ≠ chainComponents on mixed graph
+      auto chain = graph.chainComponents();
+      CHECK_NE(chain[0], chain[1]);   // different chain components, same connected component
+
+      // Isolated node → own weakly connected component
+      gum::MixedGraph g2;
+      g2.addNodes(3);
+      g2.addArc(0, 1);
+      // node 2 is isolated
+      auto cc2 = g2.connectedComponents();
+      CHECK_EQ(cc2[0], cc2[1]);
+      CHECK_NE(cc2[0], cc2[2]);
+    }
+
+    static void testMixedPaths() {
+      gum::MixedGraph graph = makeTestGraph();
+      // Edges: 0--2, 2--4, 1--3   Arcs: 0→3, 3→4, 4→1
+
+      // mixedOrientedPath: arcs forward, edges both ways
+      // 0→3--1 (arc 0→3, edge 3--1)
+      auto path01 = graph.mixedOrientedPath(0, 1);
+      CHECK(!path01.empty());
+      CHECK_EQ(path01.front(), static_cast< gum::NodeId >(0));
+      CHECK_EQ(path01.back(), static_cast< gum::NodeId >(1));
+
+      CHECK(graph.hasMixedOrientedPath(0, 1));
+
+      // Simple graph: only arc 0→1, node 2 isolated
+      gum::MixedGraph g;
+      g.addNodes(3);
+      g.addArc(0, 1);
+
+      CHECK(g.hasMixedOrientedPath(0, 1));
+      // cannot traverse arc backward in mixedOrientedPath
+      CHECK(!g.hasMixedOrientedPath(1, 0));
+      CHECK(g.mixedOrientedPath(1, 0).empty());
+      // isolated node
+      CHECK(!g.hasMixedOrientedPath(0, 2));
+      CHECK(g.mixedOrientedPath(0, 2).empty());
+
+      // mixedUnorientedPath: arcs and edges traversable in both directions
+      // 1→0 now possible by going backward on arc
+      auto upath10 = g.mixedUnorientedPath(1, 0);
+      CHECK(!upath10.empty());
+      CHECK_EQ(upath10.front(), static_cast< gum::NodeId >(1));
+      CHECK_EQ(upath10.back(), static_cast< gum::NodeId >(0));
+
+      // isolated node still unreachable
+      CHECK(g.mixedUnorientedPath(0, 2).empty());
+
+      // on the original graph, all nodes are mutually reachable via unoriented path
+      CHECK(!graph.mixedUnorientedPath(1, 0).empty());
+      CHECK(!graph.mixedUnorientedPath(4, 2).empty());
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -572,4 +697,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ListMapArcs)
   GUM_TEST_ACTIF(HashMapArcs)
   GUM_TEST_ACTIF(CopyOperator)
+  GUM_TEST_ACTIF(BoundaryAndChainComponent)
+  GUM_TEST_ACTIF(ChainComponents)
+  GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST_ACTIF(MixedPaths)
 }   // namespace gum_tests
