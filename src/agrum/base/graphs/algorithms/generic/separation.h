@@ -49,16 +49,14 @@
  *   GUM_DiGraphable    — dSeparated (DAGs)
  *   GUM_MixedGraphable — cSeparated (PDAGs / chain graphs)
  *
- * Both use the same three-step algorithm (Pearl 1988 / Lauritzen 1990):
- *   1. Moralize the ancestral subgraph of X ∪ Y ∪ Z.
+ * **dSeparated** uses the Bayes Ball algorithm (Shachter 1998, O(n+e)):
+ *   X ⊥ Y | Z  iff  Y ∉ requisiteNodes(g, {X}, Z).
+ *
+ * **cSeparated** uses the moralization-based algorithm (Pearl 1988):
+ *   1. Moralize the ancestral subgraph of X ∪ Y ∪ Z (following arcs and
+ *      edges, marrying co-parents per chain component).
  *   2. Remove all nodes of Z.
  *   3. X and Y are separated iff they are disconnected in the result.
- *
- * The difference lies in step 1:
- *   - d-separation: ancestral subgraph follows arcs only; moralization
- *     marries co-parents per individual node.
- *   - c-separation: ancestral subgraph follows arcs *and* edges; moralization
- *     marries co-parents per *chain component* (Lauritzen & Richardson 2002).
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
@@ -69,6 +67,7 @@
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/graphs/graphConcepts.h>
 #include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 
 namespace gum::graph {
@@ -76,35 +75,35 @@ namespace gum::graph {
   /**
    * @brief Returns true iff @p X and @p Y are d-separated by @p Z in @p g.
    *
+   * Implemented via the Bayes Ball algorithm (O(n+e)): X ⊥ Y | Z iff Y is
+   * not d-connected to X given Z (i.e. Y ∉ requisiteNodes(g, {X}, Z)).
+   *
    * @tparam G Any GUM_DiGraphable graph (typically a DAG).
    * @param g The directed graph.
    * @param X Source node.
    * @param Y Target node.
-   * @param Z Conditioning set (must not contain X or Y).
+   * @param Z Conditioning set (hard evidence).
    * @return true if X ⊥ Y | Z in the d-separation sense.
    */
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
-    NodeSet query{Z};
-    query.insert(X);
-    query.insert(Y);
-    auto moral = moralizedAncestralGraph(g, query);
-    for (const auto node: Z)
-      if (moral.existsNode(node)) moral.eraseNode(node);
-    return !moral.hasUndirectedPath(X, Y);
+    NodeSet qX;
+    qX.insert(X);
+    return !graph::dConnected(g, qX, Z).exists(Y);
   }
 
   /**
-   * @brief Returns true iff @p X and @p Y are d-separated by @p Z in @p g.
+   * @brief Returns true iff every node in @p X is d-separated from every
+   *        node in @p Y by @p Z in @p g.
    *
-   * Set-valued version: d-separation holds iff every node in @p X is
-   * disconnected from every node in @p Y after moralization and removal of Z.
+   * Implemented via the Bayes Ball algorithm (O(n+e)): X ⊥ Y | Z iff
+   * requisiteNodes(g, X, Z) and Y are disjoint.
    *
    * @tparam G Any GUM_DiGraphable graph (typically a DAG).
    * @param g The directed graph.
    * @param X Source node set (must be disjoint from Y).
    * @param Y Target node set (must be disjoint from X).
-   * @param Z Conditioning set.
+   * @param Z Conditioning set (hard evidence).
    * @return true if X ⊥ Y | Z in the d-separation sense.
    * @throw InvalidArgument if X and Y are not disjoint.
    */
@@ -112,23 +111,7 @@ namespace gum::graph {
   bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
     if (!(X * Y).empty())
       GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
-
-    NodeSet query{Z};
-    query += X;
-    query += Y;
-    auto moral = moralizedAncestralGraph(g, query);
-    for (const auto node: Z)
-      if (moral.existsNode(node)) moral.eraseNode(node);
-
-    const auto cc = moral.chainComponents();
-
-    NodeSet Xcc, Ycc;
-    for (const auto node: X)
-      if (moral.existsNode(node)) Xcc.insert(cc[node]);
-    for (const auto node: Y)
-      if (moral.existsNode(node)) Ycc.insert(cc[node]);
-
-    return (Xcc * Ycc).empty();
+    return (graph::dConnected(g, X, Z) * Y).empty();
   }
 
   /**

@@ -48,6 +48,7 @@
 
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -453,6 +454,93 @@ namespace gum_tests {
       CHECK_EQ(m0.sizeEdges(), 0U);
     }
 
+    static void testRequisiteNodes() {
+      // requisiteNodes uses Shachter's semantics: a node is requisite iff the
+      // ball visits it from *below* (upward) or it activates a v-structure.
+      // This is a strict SUBSET of the d-connected nodes.
+
+      // --- Collider: 0→1←2 ---
+      // No evidence: ball from {0} goes downward through 1 (no activation)
+      // → only {0} is requisite (never visited from below)
+      gum::DAG collider;
+      collider.addNodes(3);
+      collider.addArc(0, 1);
+      collider.addArc(2, 1);
+
+      gum::NodeSet req0 = gum::graph::requisiteNodes(collider, gum::NodeSet{0});
+      CHECK(req0.exists(0));
+      CHECK_FALSE(req0.exists(1));
+      CHECK_FALSE(req0.exists(2));
+
+      // Hard evidence on 1: activates collider → ball goes up to parents {0,2}
+      // → 1 and 2 are visited from below (upward) → requisite = {0, 1, 2}
+      gum::NodeSet req0_zhard
+          = gum::graph::requisiteNodes(collider, gum::NodeSet{0}, gum::NodeSet{1});
+      CHECK(req0_zhard.exists(0));
+      CHECK(req0_zhard.exists(1));
+      CHECK(req0_zhard.exists(2));
+
+      // Soft evidence on 1: same collider activation as hard, but 1 not blocked
+      gum::NodeSet req0_zsoft
+          = gum::graph::requisiteNodes(collider, gum::NodeSet{0}, gum::NodeSet{}, gum::NodeSet{1});
+      CHECK(req0_zsoft.exists(0));
+      CHECK(req0_zsoft.exists(1));
+      CHECK(req0_zsoft.exists(2));
+
+      // --- Chain: 0→1→2 ---
+      // No evidence: ball from {0} only goes down (never up through 1 or 2)
+      // → only {0} is requisite
+      gum::DAG chain;
+      chain.addNodes(3);
+      chain.addArc(0, 1);
+      chain.addArc(1, 2);
+
+      gum::NodeSet req_chain_open = gum::graph::requisiteNodes(chain, gum::NodeSet{0});
+      CHECK(req_chain_open.exists(0));
+      CHECK_FALSE(req_chain_open.exists(1));
+      CHECK_FALSE(req_chain_open.exists(2));
+
+      // Hard evidence on 1: blocks chain → ball visits 1 from below (colider
+      // path: 0 goes down to 1, 1 in Zhard → continue=true → only 1 in top)
+      // Actually: from_child=false at 1, Zhard={1} → is_hard=true,
+      //   is_ev=true → top marks 1 as requisite, propagates up to 0 (already seen)
+      //   but !is_hard=false → skip downward → 2 not reached
+      gum::NodeSet req_chain_blocked
+          = gum::graph::requisiteNodes(chain, gum::NodeSet{0}, gum::NodeSet{1});
+      CHECK(req_chain_blocked.exists(0));
+      CHECK(req_chain_blocked.exists(1));
+      CHECK_FALSE(req_chain_blocked.exists(2));
+
+      // Soft evidence on 1: activates collider (up through 0) but does NOT
+      // block downward pass → 1 is requisite (via collider), 2 is visited from
+      // parent but NOT requisite
+      gum::NodeSet req_chain_soft
+          = gum::graph::requisiteNodes(chain, gum::NodeSet{0}, gum::NodeSet{}, gum::NodeSet{1});
+      CHECK(req_chain_soft.exists(0));
+      CHECK(req_chain_soft.exists(1));
+      CHECK_FALSE(req_chain_soft.exists(2));
+
+      // --- dConnected covers the full d-connected set ---
+      // Chain: 0→1→2, dConnected({0}, {}) = {0, 1, 2}
+      gum::NodeSet dc = gum::graph::dConnected(chain, gum::NodeSet{0});
+      CHECK(dc.exists(0));
+      CHECK(dc.exists(1));
+      CHECK(dc.exists(2));
+
+      // Chain: dConnected({0}, {1}) blocks at 1 → only {0, 1}
+      gum::NodeSet dc_blocked = gum::graph::dConnected(chain, gum::NodeSet{0}, gum::NodeSet{1});
+      CHECK(dc_blocked.exists(0));
+      CHECK(dc_blocked.exists(1));
+      CHECK_FALSE(dc_blocked.exists(2));
+
+      // Soft evidence on 1 does NOT block → {0, 1, 2}
+      gum::NodeSet dc_soft
+          = gum::graph::dConnected(chain, gum::NodeSet{0}, gum::NodeSet{}, gum::NodeSet{1});
+      CHECK(dc_soft.exists(0));
+      CHECK(dc_soft.exists(1));
+      CHECK(dc_soft.exists(2));
+    }
+
     static void testDSeparation() {
       // --- Chain: 0→1→2 ---
       gum::DAG chain;
@@ -535,5 +623,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(MonoCycle)
   GUM_TEST_ACTIF(MoralGraph)
   GUM_TEST_ACTIF(MoralizedAncestralGraph)
+  GUM_TEST_ACTIF(RequisiteNodes)
   GUM_TEST_ACTIF(DSeparation)
 }   // namespace gum_tests
