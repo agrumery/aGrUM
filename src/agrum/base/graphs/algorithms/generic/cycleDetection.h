@@ -85,8 +85,9 @@ namespace gum::graph {
     border.reserve(g.size() / 2);
 
     for (const auto node: g.nodes()) {
-      indegree.insert(node, g.parents(node).size());
-      if (g.parents(node).empty()) border.push_back(node);
+      const auto& par = g.parents(node);
+      indegree.insert(node, par.size());
+      if (par.empty()) border.push_back(node);
     }
 
     if (border.empty())
@@ -102,10 +103,11 @@ namespace gum::graph {
       result.insert(root);
 
       for (const auto child: g.children(root)) {
-        if (indegree[child] == 1) border.push_back(child);
-        if (indegree[child] == 0)
+        const Size deg = indegree[child];
+        if (deg == 0)
           GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
-        indegree[child]--;
+        if (deg == 1) border.push_back(child);
+        indegree[child] = deg - 1;
       }
     }
 

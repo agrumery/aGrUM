@@ -70,6 +70,17 @@
 
 namespace gum::graph {
 
+  /// @cond INTERNAL
+  /// Add an edge between every pair of nodes in @p parents in @p g.
+  inline void _marryParents_(const NodeSet& parents, UndiGraph& g) {
+    for (auto it1 = parents.begin(); it1 != parents.end(); ++it1) {
+      auto it2 = it1;
+      for (++it2; it2 != parents.end(); ++it2)
+        g.addEdge(*it1, *it2);
+    }
+  }
+  /// @endcond
+
   /**
    * @brief Returns the moral graph of @p g.
    *
@@ -118,11 +129,7 @@ namespace gum::graph {
           frontier += g.neighbours(nei) - already;
         }
 
-        for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-          auto it2 = it1;
-          for (++it2; it2 != par.end(); ++it2)
-            moral.addEdge(*it1, *it2);
-        }
+        _marryParents_(par, moral);
       }
     } else {
       // --- directed graph: arcs → edges, marry per node ---
@@ -130,11 +137,7 @@ namespace gum::graph {
         const auto& par = g.parents(node);
         for (const auto p: par)
           moral.addEdge(node, p);
-        for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-          auto it2 = it1;
-          for (++it2; it2 != par.end(); ++it2)
-            moral.addEdge(*it1, *it2);
-        }
+        _marryParents_(par, moral);
       }
     }
     return moral;
@@ -202,12 +205,9 @@ namespace gum::graph {
 
       for (const auto node: res.nodes()) {
         const auto& par = g.parents(node);
-        for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
-          res.addEdge(node, *it1);
-          auto it2 = it1;
-          for (++it2; it2 != par.end(); ++it2)
-            res.addEdge(*it1, *it2);
-        }
+        for (const auto p: par)
+          res.addEdge(node, p);
+        _marryParents_(par, res);
       }
       return res;
     }

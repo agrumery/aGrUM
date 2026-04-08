@@ -78,36 +78,19 @@
 
 namespace gum::graph {
 
+  /// @cond INTERNAL
   /**
-   * @brief Returns the Shachter-requisite nodes for @p query given evidence.
-   *
-   * Implements Shachter's Bayes Ball algorithm on any GUM_DiGraphable graph.
-   * A node is *requisite* if it lies on an active path that arrives at a query
-   * node from *below* (upward visit), or if it is evidence that activates a
-   * v-structure (collider activation, downward visit).  This is the minimal
-   * set of nodes whose distributions are needed to compute the posterior of
-   * the query.
-   *
-   * **This is NOT the full d-connected set.**  Nodes that are d-connected to
-   * the query but only reachable via a downward (non-evidence) pass are
-   * included in the traversal but not in the result.  Use @ref dConnected
-   * when you need the full set of d-connected nodes (e.g. for d-separation).
-   *
-   * @tparam G Any directed graph satisfying GUM_DiGraphable (DAG, DiGraph, …).
-   * @param g        The directed graph.
-   * @param query    Source nodes from which the ball is launched.
-   * @param Zhard    Hard-evidence nodes: block upward propagation; do NOT
-   *                 activate colliders for downward propagation.
-   * @param Zsoft    Soft-evidence nodes: activate colliders (upward) but do
-   *                 not block downward propagation.
-   * @return NodeSet of Shachter-requisite nodes.
+   * Core Bayes Ball traversal.  The template parameter @p CollectAll selects
+   * the collection policy at compile time (no runtime branching):
+   *   - false → Shachter-requisite semantics (requisiteNodes)
+   *   - true  → full d-connected set semantics (dConnected)
    */
-  template < GUM_DiGraphable G >
-  NodeSet requisiteNodes(const G&       g,
-                         const NodeSet& query,
-                         const NodeSet& Zhard = NodeSet(),
-                         const NodeSet& Zsoft = NodeSet()) {
-    NodeSet requisite;
+  template < GUM_DiGraphable G, bool CollectAll >
+  NodeSet _bayesBall_(const G&       g,
+                      const NodeSet& query,
+                      const NodeSet& Zhard,
+                      const NodeSet& Zsoft) {
+    NodeSet result;
 
     NodeProperty< std::pair< bool, bool > > marks(g.size());
     const std::pair< bool, bool >           empty_mark(false, false);
@@ -124,8 +107,8 @@ namespace gum::graph {
       if (!marks.exists(node)) marks.insert(node, empty_mark);
 
       if (from_child) {
-        requisite.insert(node);
-        if (Zhard.exists(node)) continue;
+        result.insert(node);               // always requisite on upward visit
+        if (Zhard.exists(node)) continue;  // hard evidence blocks upward
 
         if (!marks[node].first) {
           marks[node].first = true;
@@ -139,12 +122,14 @@ namespace gum::graph {
         }
 
       } else {
+        if constexpr (CollectAll) result.insert(node);  // dConnected: all visits
+
         const bool is_hard = Zhard.exists(node);
         const bool is_ev   = is_hard || Zsoft.exists(node);
 
         if (is_ev && !marks[node].first) {
           marks[node].first = true;
-          requisite.insert(node);
+          if constexpr (!CollectAll) result.insert(node);  // requisiteNodes: collider only
           for (const auto par: g.parents(node))
             to_visit.insert(std::pair< NodeId, bool >(par, true));
         }
@@ -156,17 +141,44 @@ namespace gum::graph {
       }
     }
 
-    return requisite;
+    return result;
+  }
+  /// @endcond
+
+  /**
+   * @brief Returns the Shachter-requisite nodes for @p query given evidence.
+   *
+   * A node is *requisite* if it lies on an active path that arrives at a query
+   * node from *below* (upward visit), or if it is evidence that activates a
+   * v-structure (collider activation, downward visit).  This is the minimal
+   * set of nodes whose distributions are needed to compute the posterior of
+   * the query.
+   *
+   * **This is NOT the full d-connected set.**  Use @ref dConnected when you
+   * need all d-connected nodes (e.g. for d-separation testing).
+   *
+   * @tparam G Any directed graph satisfying GUM_DiGraphable (DAG, DiGraph, …).
+   * @param g        The directed graph.
+   * @param query    Source nodes from which the ball is launched.
+   * @param Zhard    Hard-evidence nodes: block upward propagation; activate
+   *                 colliders on downward passes.
+   * @param Zsoft    Soft-evidence nodes: activate colliders without blocking.
+   * @return NodeSet of Shachter-requisite nodes.
+   */
+  template < GUM_DiGraphable G >
+  NodeSet requisiteNodes(const G&       g,
+                         const NodeSet& query,
+                         const NodeSet& Zhard = NodeSet(),
+                         const NodeSet& Zsoft = NodeSet()) {
+    return _bayesBall_< G, false >(g, query, Zhard, Zsoft);
   }
 
   /**
    * @brief Returns all nodes d-connected to @p query given evidence.
    *
-   * Runs the same Bayes Ball traversal as @ref requisiteNodes but adds a node
-   * to the result whenever it is *visited* from any direction — not only on
-   * upward (from-child) passes.  This yields the full set of nodes reachable
-   * via active trails from the query given @p Zhard (and @p Zsoft), which is
-   * exactly what is needed for d-separation testing:
+   * Runs the Bayes Ball traversal and collects every visited node (upward
+   * or downward), yielding the full d-connected set.  Suitable for
+   * d-separation testing:
    *
    *   X ⊥ Y | Z  iff  Y ∉ dConnected(g, {X}, Z)
    *
@@ -182,57 +194,7 @@ namespace gum::graph {
                      const NodeSet& query,
                      const NodeSet& Zhard = NodeSet(),
                      const NodeSet& Zsoft = NodeSet()) {
-    NodeSet visited;
-
-    NodeProperty< std::pair< bool, bool > > marks(g.size());
-    const std::pair< bool, bool >           empty_mark(false, false);
-
-    List< std::pair< NodeId, bool > > to_visit;
-    for (const auto node: query)
-      to_visit.insert(std::pair< NodeId, bool >(node, true));
-
-    while (!to_visit.empty()) {
-      const NodeId node       = to_visit.front().first;
-      const bool   from_child = to_visit.front().second;
-      to_visit.popFront();
-
-      if (!marks.exists(node)) marks.insert(node, empty_mark);
-
-      // Every visit (upward or downward) means the node is d-connected.
-      visited.insert(node);
-
-      if (from_child) {
-        if (Zhard.exists(node)) continue;
-
-        if (!marks[node].first) {
-          marks[node].first = true;
-          for (const auto par: g.parents(node))
-            to_visit.insert(std::pair< NodeId, bool >(par, true));
-        }
-        if (!marks[node].second) {
-          marks[node].second = true;
-          for (const auto chi: g.children(node))
-            to_visit.insert(std::pair< NodeId, bool >(chi, false));
-        }
-
-      } else {
-        const bool is_hard = Zhard.exists(node);
-        const bool is_ev   = is_hard || Zsoft.exists(node);
-
-        if (is_ev && !marks[node].first) {
-          marks[node].first = true;
-          for (const auto par: g.parents(node))
-            to_visit.insert(std::pair< NodeId, bool >(par, true));
-        }
-        if (!is_hard && !marks[node].second) {
-          marks[node].second = true;
-          for (const auto chi: g.children(node))
-            to_visit.insert(std::pair< NodeId, bool >(chi, false));
-        }
-      }
-    }
-
-    return visited;
+    return _bayesBall_< G, true >(g, query, Zhard, Zsoft);
   }
 
 }   // namespace gum::graph
