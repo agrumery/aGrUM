@@ -145,6 +145,101 @@ class TestGraph(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidNode):
       ug.addEdge(6, 7)
 
+  def _testConnectedComponents(self, g, add_arc=None, add_edge=None):
+    """
+    Helper: tests connectedComponents / connectedComponentsList / connectedComponentsCount
+    on any graph supporting both arc-like or edge-like connections.
+    add_arc(g, u, v)  -- callable that adds a directed or undirected arc/edge
+    add_edge(g, u, v) -- callable that adds an undirected edge (or same as add_arc)
+    """
+    if add_arc is None:
+      add_arc = lambda g, u, v: g.addArc(u, v)
+    if add_edge is None:
+      add_edge = add_arc
+
+    # Empty graph: no nodes → no components
+    self.assertEqual(g.connectedComponents(), {})
+    self.assertEqual(g.connectedComponentsList(), {})
+    self.assertEqual(g.connectedComponentsCount(), 0)
+
+    # Single node: one component
+    g.addNodeWithId(0)
+    cc = g.connectedComponents()
+    self.assertEqual(set(cc.keys()), {0})
+    self.assertEqual(len(set(cc.values())), 1)
+    self.assertEqual(g.connectedComponentsCount(), 1)
+    ccl = g.connectedComponentsList()
+    self.assertEqual(len(ccl), 1)
+    self.assertEqual(set(list(ccl.values())[0]), {0})
+
+    # Three isolated nodes: three components
+    g.addNodeWithId(1)
+    g.addNodeWithId(2)
+    self.assertEqual(g.connectedComponentsCount(), 3)
+    cc = g.connectedComponents()
+    self.assertEqual(set(cc.keys()), {0, 1, 2})
+    # all three roots are distinct
+    self.assertEqual(len(set(cc.values())), 3)
+
+    # Connect 0 and 1: two components remain
+    add_edge(g, 0, 1)
+    self.assertEqual(g.connectedComponentsCount(), 2)
+    cc = g.connectedComponents()
+    self.assertEqual(cc[0], cc[1])   # 0 and 1 share a root
+    self.assertNotEqual(cc[0], cc[2])
+
+    # Connect 1 and 2: one component
+    add_edge(g, 1, 2)
+    self.assertEqual(g.connectedComponentsCount(), 1)
+    cc = g.connectedComponents()
+    self.assertEqual(cc[0], cc[1])
+    self.assertEqual(cc[1], cc[2])
+
+    # connectedComponentsList: one root, all three nodes in its set
+    ccl = g.connectedComponentsList()
+    self.assertEqual(len(ccl), 1)
+    self.assertEqual(set(list(ccl.values())[0]), {0, 1, 2})
+
+  def testConnectedComponentsUndiGraph(self):
+    self._testConnectedComponents(
+      gum.UndiGraph(),
+      add_edge=lambda g, u, v: g.addEdge(u, v),
+    )
+
+  def testConnectedComponentsDiGraph(self):
+    # DiGraph uses weak connectivity (follows arcs in both directions)
+    self._testConnectedComponents(
+      gum.DiGraph(),
+      add_edge=lambda g, u, v: g.addArc(u, v),
+    )
+
+  def testConnectedComponentsDAG(self):
+    self._testConnectedComponents(
+      gum.DAG(),
+      add_edge=lambda g, u, v: g.addArc(u, v),
+    )
+
+  def testConnectedComponentsMixedGraph(self):
+    # MixedGraph: test with undirected edges
+    self._testConnectedComponents(
+      gum.MixedGraph(),
+      add_edge=lambda g, u, v: g.addEdge(u, v),
+    )
+    # MixedGraph: test also with arcs
+    mg = gum.MixedGraph()
+    mg.addNodeWithId(0)
+    mg.addNodeWithId(1)
+    mg.addNodeWithId(2)
+    self.assertEqual(mg.connectedComponentsCount(), 3)
+    mg.addArc(0, 1)
+    self.assertEqual(mg.connectedComponentsCount(), 2)
+    mg.addEdge(1, 2)
+    self.assertEqual(mg.connectedComponentsCount(), 1)
+    # Mixed: arc 0→1 and edge 1--2: all in one component
+    ccl = mg.connectedComponentsList()
+    self.assertEqual(len(ccl), 1)
+    self.assertEqual(set(list(ccl.values())[0]), {0, 1, 2})
+
   def testAdjancecyMatrix(self):
     mg = gum.MixedGraph()
     mg.addNodes(4)
