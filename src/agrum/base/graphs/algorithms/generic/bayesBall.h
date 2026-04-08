@@ -105,8 +105,8 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   NodeSet requisiteNodes(const G&       g,
                          const NodeSet& query,
-                         const NodeSet& Zhard = {},
-                         const NodeSet& Zsoft = {}) {
+                         const NodeSet& Zhard = NodeSet(),
+                         const NodeSet& Zsoft = NodeSet()) {
     NodeSet requisite;
 
     NodeProperty< std::pair< bool, bool > > marks(g.size());
@@ -180,8 +180,8 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   NodeSet dConnected(const G&       g,
                      const NodeSet& query,
-                     const NodeSet& Zhard = {},
-                     const NodeSet& Zsoft = {}) {
+                     const NodeSet& Zhard = NodeSet(),
+                     const NodeSet& Zsoft = NodeSet()) {
     NodeSet visited;
 
     NodeProperty< std::pair< bool, bool > > marks(g.size());
