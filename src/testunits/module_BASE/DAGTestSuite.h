@@ -47,6 +47,7 @@
 #include <gumtest/utils.h>
 
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 
@@ -597,6 +598,60 @@ namespace gum_tests {
       CHECK_THROWS_AS(g.dSeparation(gum::NodeSet{0, 1}, gum::NodeSet{1, 2}, gum::NodeSet{}),
                       const gum::Exception&);
     }
+
+    static void testMinimalCondSet() {
+      // --- Chain: 0→1→2 ---
+      gum::DAG chain;
+      chain.addNodes(3);
+      chain.addArc(0, 1);
+      chain.addArc(1, 2);
+
+      // target=2, soids={0,1}: conditioning on 1 is enough — 0 irrelevant
+      CHECK_EQ(chain.minimalCondSet(2, gum::NodeSet{0, 1}), gum::NodeSet{1});
+      // target=2, soids={0}: have to use 0 (only candidate)
+      CHECK_EQ(chain.minimalCondSet(2, gum::NodeSet{0}), gum::NodeSet{0});
+      // target already in soids → return {target}
+      CHECK_EQ(chain.minimalCondSet(1, gum::NodeSet{0, 1}), gum::NodeSet{1});
+      // empty soids → empty result
+      CHECK(chain.minimalCondSet(2, gum::NodeSet{}).empty());
+
+      // --- Fork: 1→0, 1→2 ---
+      gum::DAG fork;
+      fork.addNodes(3);
+      fork.addArc(1, 0);
+      fork.addArc(1, 2);
+
+      // target=0, soids={1,2}: 1 is the direct parent; 2 unreachable from target via soids
+      CHECK_EQ(fork.minimalCondSet(0, gum::NodeSet{1, 2}), gum::NodeSet{1});
+      // target=2, soids={0,1}: symmetric
+      CHECK_EQ(fork.minimalCondSet(2, gum::NodeSet{0, 1}), gum::NodeSet{1});
+
+      // --- Collider: 0→1←2 ---
+      gum::DAG collider;
+      collider.addNodes(3);
+      collider.addArc(0, 1);
+      collider.addArc(2, 1);
+
+      // target=1, soids={0,2}: both parents needed
+      CHECK_EQ(collider.minimalCondSet(1, gum::NodeSet{0, 2}), (gum::NodeSet{0, 2}));
+
+      // --- Multiple targets ---
+      // Chain 0→1→2→3: targets={0,3}, soids={1,2}
+      gum::DAG long_chain;
+      long_chain.addNodes(4);
+      long_chain.addArc(0, 1);
+      long_chain.addArc(1, 2);
+      long_chain.addArc(2, 3);
+
+      auto mcs = long_chain.minimalCondSet(gum::NodeSet{0, 3}, gum::NodeSet{1, 2});
+      CHECK(mcs.contains(1));   // needed for target=0 (via child 1)
+      CHECK(mcs.contains(2));   // needed for target=3 (via parent 2)
+
+      // --- generic free function produces same result ---
+      CHECK_EQ(gum::graph::minimalCondSet(chain, 2, gum::NodeSet{0, 1}), gum::NodeSet{1});
+      CHECK_EQ(gum::graph::minimalCondSet(chain, gum::NodeSet{0, 2}, gum::NodeSet{1}),
+               gum::NodeSet{1});
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -625,4 +680,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(MoralizedAncestralGraph)
   GUM_TEST_ACTIF(RequisiteNodes)
   GUM_TEST_ACTIF(DSeparation)
+  GUM_TEST_ACTIF(MinimalCondSet)
 }   // namespace gum_tests

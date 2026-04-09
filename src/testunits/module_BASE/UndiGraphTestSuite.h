@@ -46,6 +46,7 @@
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
 
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/undiGraph.h>
 
@@ -550,6 +551,36 @@ namespace gum_tests {
       single.addNode();
       CHECK_FALSE(single.hasUndirectedCycle());
     }
+
+    static void testAreConnected() {
+      // graph: 0--1--2   3--4   5 (isolated)
+      gum::UndiGraph g;
+      g.addNodes(6);
+      g.addEdge(0, 1);
+      g.addEdge(1, 2);
+      g.addEdge(3, 4);
+
+      // empty set → false
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{}, gum::NodeSet{0}));
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{}));
+
+      // shared node → true (trivial)
+      CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 1}, gum::NodeSet{1, 2}));
+
+      // connected via path
+      CHECK(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{2}));
+      CHECK(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{4}));
+
+      // different components → false
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{3}));
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{5}));
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{5}));
+
+      // multi-source: {0,3} vs {2} — 0 can reach 2
+      CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 3}, gum::NodeSet{2}));
+      // multi-source: {3,5} vs {2} — neither can reach 2
+      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3, 5}, gum::NodeSet{2}));
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -578,4 +609,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(HasUndirectedPath)
   GUM_TEST_ACTIF(ConnectedComponents)
   GUM_TEST_ACTIF(HasUndirectedCycle)
+  GUM_TEST_ACTIF(AreConnected)
 }   // namespace gum_tests

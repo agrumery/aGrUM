@@ -14,7 +14,7 @@
  *    - the MIT license (MIT),                                              *
  *    - or both in dual license, as here.                                   *
  *                                                                          *
- *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3imit.html)    *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
  *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
@@ -89,55 +89,45 @@ namespace gum::graph {
 
     DAG mb;
 
-    // Adds node n and its parents/children/co-parents to mb.
-    // Returns true if any new node was inserted.
-    auto build = [&](NodeId n) -> bool {
-      bool changed = false;
-
-      if (!mb.existsNode(n)) {
-        mb.addNodeWithId(n);
-        changed = true;
-      }
-
+    // Expands node n: adds parents, children, co-parents to mb and collects
+    // any newly inserted node into next_frontier.
+    // Guards on existsArc avoid re-triggering DAG::hasDirectedPath on arcs
+    // already present (happens for level > 1 when the same arc is reachable
+    // from both endpoints).
+    auto step = [&](NodeId n, NodeSet& next_frontier) {
       for (const auto par: g.parents(n)) {
         if (!mb.existsNode(par)) {
           mb.addNodeWithId(par);
-          changed = true;
+          next_frontier.insert(par);
         }
-        mb.addArc(par, n);
+        if (!mb.existsArc(par, n)) mb.addArc(par, n);
       }
-
       for (const auto chi: g.children(n)) {
         if (!mb.existsNode(chi)) {
           mb.addNodeWithId(chi);
-          changed = true;
+          next_frontier.insert(chi);
         }
-        mb.addArc(n, chi);
-
+        if (!mb.existsArc(n, chi)) mb.addArc(n, chi);
         for (const auto opar: g.parents(chi)) {
           if (opar == n) continue;
           if (!mb.existsNode(opar)) {
             mb.addNodeWithId(opar);
-            changed = true;
+            next_frontier.insert(opar);
           }
-          mb.addArc(opar, chi);
+          if (!mb.existsArc(opar, chi)) mb.addArc(opar, chi);
         }
       }
-
-      return changed;
     };
 
-    NodeSet processed{node};
-    build(node);
+    mb.addNodeWithId(node);
+    NodeSet frontier;
+    step(node, frontier);
 
-    for (int lv = 1; lv < level; ++lv) {
-      const NodeSet todo = mb.nodes().asNodeSet() - processed;
-      bool          any  = false;
-      for (const auto n: todo) {
-        processed.insert(n);
-        if (build(n)) any = true;
-      }
-      if (!any) break;
+    for (int lv = 1; lv < level && !frontier.empty(); ++lv) {
+      NodeSet next;
+      for (const auto n: frontier)
+        step(n, next);
+      frontier = std::move(next);
     }
 
     return mb;
