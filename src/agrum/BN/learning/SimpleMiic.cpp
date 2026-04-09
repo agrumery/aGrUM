@@ -731,7 +731,7 @@ namespace gum {
       // R3
       int nbr = 0;
       for (const auto p: graph.parents(xj)) {
-        if (!graph.mixedOrientedPath(xi, p).empty()) {
+        if (graph.mixedOrientedPath(xi, p).has_value()) {
           nbr += 1;
           if (nbr == 2) {
             // GUM_TRACE("R3(" << xi << "-" << xj << ")")

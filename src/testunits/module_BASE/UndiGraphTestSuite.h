@@ -385,22 +385,27 @@ namespace gum_tests {
       gum::NodeId    id7   = graph.addNode();
       graph.addEdge(id6, id7);
 
-      std::vector< gum::NodeId > path = graph.undirectedPath(0, 1);
+      auto path_opt = graph.undirectedPath(0, 1);
+      CHECK(path_opt.has_value());
+      const auto& path = *path_opt;
       CHECK_EQ(path.size(), 3U);
       CHECK_EQ(path[0], 0U);
       CHECK_EQ(path[1], 3U);
       CHECK_EQ(path[2], 1U);
 
-      std::vector< gum::NodeId > path2 = graph.undirectedPath(1, 2);
+      auto path2_opt = graph.undirectedPath(1, 2);
+      CHECK(path2_opt.has_value());
+      const auto& path2 = *path2_opt;
       CHECK_EQ(path2.size(), 3U);
       CHECK_EQ(path2[0], 1U);
       CHECK_EQ(path2[1], 4U);
       CHECK_EQ(path2[2], 2U);
 
-      std::vector< gum::NodeId > path3 = graph.undirectedPath(5, 6);
-      CHECK_EQ(path3.size(), 2U);
+      auto path3_opt = graph.undirectedPath(5, 6);
+      CHECK(path3_opt.has_value());
+      CHECK_EQ(path3_opt->size(), 2U);
 
-      CHECK_THROWS_AS(graph.undirectedPath(1, 5), const gum::NotFound&);
+      CHECK_FALSE(graph.undirectedPath(1, 5).has_value());
     }
 
     static void testConnexComponents() {

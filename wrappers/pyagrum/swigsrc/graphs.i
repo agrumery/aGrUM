@@ -245,10 +245,10 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
   gum::NodeSet boundary(gum::NodeId id) const {
     return self->boundary(id);
   };
-  std::vector<gum::NodeId> mixedOrientedPath(NodeId node1, NodeId node2) const {
+  std::optional<std::vector<gum::NodeId>> mixedOrientedPath(NodeId node1, NodeId node2) const {
     return self->mixedOrientedPath(node1,node2);
   };
-  std::vector<gum::NodeId> mixedUnorientedPath(NodeId node1, NodeId node2) const {
+  std::optional<std::vector<gum::NodeId>> mixedUnorientedPath(NodeId node1, NodeId node2) const {
     return self->mixedUnorientedPath(node1,node2);
   };
 

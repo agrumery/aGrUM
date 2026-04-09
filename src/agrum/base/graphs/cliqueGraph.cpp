@@ -104,7 +104,9 @@ namespace gum {
   std::vector< NodeId > CliqueGraph::containerPath(const NodeId node1, const NodeId node2) const {
     // get a path from a  _clique_ containing node1 to a  _clique_ containing
     // node2
-    std::vector< NodeId > path = undirectedPath(container(node1), container(node2));
+    auto opt = undirectedPath(container(node1), container(node2));
+    if (!opt) GUM_ERROR(NotFound, "no path between cliques containing the given nodes")
+    std::vector< NodeId > path = std::move(*opt);
 
     // it may happen that the path contains several nodes containing node1 and
     // node2. Hence we shall remove the superfluous nodes

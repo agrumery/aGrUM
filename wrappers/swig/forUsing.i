@@ -235,10 +235,10 @@ ADD_ARCGRAPHPART_API(gum::PDAG)
   NodeSet boundary(NodeId id) const {
     return self->boundary(id);
   }
-  std::vector< NodeId > mixedOrientedPath(NodeId node1, NodeId node2) const {
+  std::optional< std::vector< NodeId > > mixedOrientedPath(NodeId node1, NodeId node2) const {
     return self->mixedOrientedPath(node1,node2);
   }
-  std::vector< NodeId > mixedUnorientedPath(NodeId node1, NodeId node2) const {
+  std::optional< std::vector< NodeId > > mixedUnorientedPath(NodeId node1, NodeId node2) const {
     return self->mixedUnorientedPath(node1,node2);
   }
 }

@@ -634,9 +634,9 @@ namespace gum_tests {
       // mixedOrientedPath: arcs forward, edges both ways
       // 0→3--1 (arc 0→3, edge 3--1)
       auto path01 = graph.mixedOrientedPath(0, 1);
-      CHECK(!path01.empty());
-      CHECK_EQ(path01.front(), static_cast< gum::NodeId >(0));
-      CHECK_EQ(path01.back(), static_cast< gum::NodeId >(1));
+      CHECK(path01.has_value());
+      CHECK_EQ(path01->front(), static_cast< gum::NodeId >(0));
+      CHECK_EQ(path01->back(), static_cast< gum::NodeId >(1));
 
       CHECK(graph.hasMixedOrientedPath(0, 1));
 
@@ -648,24 +648,24 @@ namespace gum_tests {
       CHECK(g.hasMixedOrientedPath(0, 1));
       // cannot traverse arc backward in mixedOrientedPath
       CHECK(!g.hasMixedOrientedPath(1, 0));
-      CHECK(g.mixedOrientedPath(1, 0).empty());
+      CHECK_FALSE(g.mixedOrientedPath(1, 0).has_value());
       // isolated node
       CHECK(!g.hasMixedOrientedPath(0, 2));
-      CHECK(g.mixedOrientedPath(0, 2).empty());
+      CHECK_FALSE(g.mixedOrientedPath(0, 2).has_value());
 
       // mixedUnorientedPath: arcs and edges traversable in both directions
       // 1→0 now possible by going backward on arc
       auto upath10 = g.mixedUnorientedPath(1, 0);
-      CHECK(!upath10.empty());
-      CHECK_EQ(upath10.front(), static_cast< gum::NodeId >(1));
-      CHECK_EQ(upath10.back(), static_cast< gum::NodeId >(0));
+      CHECK(upath10.has_value());
+      CHECK_EQ(upath10->front(), static_cast< gum::NodeId >(1));
+      CHECK_EQ(upath10->back(), static_cast< gum::NodeId >(0));
 
       // isolated node still unreachable
-      CHECK(g.mixedUnorientedPath(0, 2).empty());
+      CHECK_FALSE(g.mixedUnorientedPath(0, 2).has_value());
 
       // on the original graph, all nodes are mutually reachable via unoriented path
-      CHECK(!graph.mixedUnorientedPath(1, 0).empty());
-      CHECK(!graph.mixedUnorientedPath(4, 2).empty());
+      CHECK(graph.mixedUnorientedPath(1, 0).has_value());
+      CHECK(graph.mixedUnorientedPath(4, 2).has_value());
     }
   };
 

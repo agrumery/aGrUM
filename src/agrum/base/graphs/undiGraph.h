@@ -48,6 +48,7 @@
 #define GUM_UNDIGRAPH_H
 
 #include <iostream>
+#include <optional>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -222,9 +223,8 @@ namespace gum {
     /// returns a property {node:id of weakly connected component}
     NodeProperty< NodeId > connectedComponents() const;
 
-    /// returns a shortest undirected path from node1 to node2
-    /** @throw NotFound if no path exists */
-    std::vector< NodeId > undirectedPath(NodeId node1, NodeId node2) const;
+    /// returns a shortest undirected path from node1 to node2, or std::nullopt if none
+    std::optional< std::vector< NodeId > > undirectedPath(NodeId node1, NodeId node2) const;
 
     /// returns true if n1 and n2 are connected by an undirected path
     bool hasUndirectedPath(NodeId n1, NodeId n2) const;

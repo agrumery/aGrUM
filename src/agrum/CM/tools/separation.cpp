@@ -52,6 +52,7 @@
 
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/CM/tools/separation.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 
 #include <unordered_set>
 
@@ -214,35 +215,7 @@ namespace gum {
    */
   bool
       Separation::anyUndirectedConnection(const UndiGraph& ug, const NodeSet& A, const NodeSet& B) {
-    GUM_ASSERT(!A.empty() && !B.empty());
-    GUM_ASSERT(ug.nodes().asNodeSet().isSupersetOrEqual(A + B));
-
-    // early exit if A and B share a node
-    if (!(A * B).empty()) { return true; }
-
-    // DFS seeded with all nodes of A at once
-    NodeSet               visited;
-    std::vector< NodeId > stack;
-    stack.reserve(ug.sizeNodes());
-
-    for (const auto s: A) {
-      visited.insert(s);
-      stack.push_back(s);
-    }
-
-    while (!stack.empty()) {
-      const NodeId u = stack.back();
-      stack.pop_back();
-
-      for (const auto v: ug.neighbours(u)) {
-        if (visited.exists(v)) continue;
-        if (B.contains(v)) return true;
-        visited.insert(v);
-        stack.push_back(v);
-      }
-    }
-
-    return false;
+    return graph::areConnected(ug, A, B);
   }
 
 }   // namespace gum

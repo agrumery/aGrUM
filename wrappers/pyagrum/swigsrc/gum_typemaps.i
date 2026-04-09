@@ -360,6 +360,25 @@
   $result = PyAgrumHelper::PyListFromNodeVect(*$1);
 }
 
+// std::optional<std::vector<gum::NodeId>> -> Python list[int] | None
+// Note: SWIG expands the allocator in nested templates, so both forms must be covered.
+%typemap(out) std::optional< std::vector< gum::NodeId > > {
+  if ($1.has_value()) {
+    $result = PyAgrumHelper::PyListFromNodeVect($1.value());
+  } else {
+    $result = Py_None;
+    Py_INCREF(Py_None);
+  }
+}
+%typemap(out) std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > {
+  if ($1.has_value()) {
+    $result = PyAgrumHelper::PyListFromNodeVect($1.value());
+  } else {
+    $result = Py_None;
+    Py_INCREF(Py_None);
+  }
+}
+
 // Conversion C++ gum::Set<std::string> vers Python set[str]
 %typemap(out) gum::Set<std::string> {
   $result = PyAgrumHelper::PySetFromStringSet($1);

@@ -196,6 +196,43 @@ namespace gum::graph {
     return res;
   }
 
+  /**
+   * @brief Returns true iff some node in @p A can reach some node in @p B
+   *        via undirected edges.
+   *
+   * Returns false immediately if @p A or @p B is empty, or if both sets
+   * share at least one node (trivially connected).
+   *
+   * @tparam G Any GUM_UndiGraphable graph.
+   * @param g The undirected (or mixed) graph — only edges are traversed.
+   * @param A First node set.
+   * @param B Second node set.
+   * @return `true` iff there exists an undirected path between some `a ∈ A`
+   *         and some `b ∈ B` in @p g.
+   */
+  template < GUM_UndiGraphable G >
+  bool areConnected(const G& g, const NodeSet& A, const NodeSet& B) {
+    if (A.empty() || B.empty()) return false;
+    if (!(A * B).empty()) return true;
+
+    NodeSet visited;
+    NodeSet frontier = A;
+    for (const auto s: A)
+      visited.insert(s);
+
+    while (!frontier.empty()) {
+      const NodeId u = *frontier.begin();
+      frontier.erase(u);
+      for (const auto v: g.neighbours(u)) {
+        if (visited.exists(v)) continue;
+        if (B.contains(v)) return true;
+        visited.insert(v);
+        frontier.insert(v);
+      }
+    }
+    return false;
+  }
+
   // =========================================================================
   // Mixed graphs (GUM_MixedGraphable)
   // =========================================================================

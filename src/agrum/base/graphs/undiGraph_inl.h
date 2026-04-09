@@ -101,7 +101,7 @@ namespace gum {
     return EdgeGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE std::vector< NodeId > UndiGraph::undirectedPath(NodeId node1, NodeId node2) const {
+  INLINE std::optional< std::vector< NodeId > > UndiGraph::undirectedPath(NodeId node1, NodeId node2) const {
     return graph::undirectedPath(*this, node1, node2);
   }
 

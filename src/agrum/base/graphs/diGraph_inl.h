@@ -106,11 +106,11 @@ namespace gum {
 
   // INLINE bool DiGraph::operator!=(const DiGraph& p) const { return !operator==(p); }
 
-  INLINE std::vector< NodeId > DiGraph::directedPath(NodeId node1, NodeId node2) const {
+  INLINE std::optional< std::vector< NodeId > > DiGraph::directedPath(NodeId node1, NodeId node2) const {
     return graph::directedPath(*this, node1, node2);
   }
 
-  INLINE std::vector< NodeId > DiGraph::directedUnorientedPath(NodeId node1, NodeId node2) const {
+  INLINE std::optional< std::vector< NodeId > > DiGraph::directedUnorientedPath(NodeId node1, NodeId node2) const {
     return graph::directedUnorientedPath(*this, node1, node2);
   }
 

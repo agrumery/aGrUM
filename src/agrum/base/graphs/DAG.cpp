@@ -46,6 +46,7 @@
  *
  */
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
 
@@ -84,65 +85,11 @@ namespace gum {
     return graph::dSeparated(*this, X, Y, Z);
   }
 
-  // visit the nodes and add some of node from soids in minimal
-  void DAG::_minimalCondSetVisitUp_(NodeId         node,
-                                    const NodeSet& soids,
-                                    NodeSet&       minimal,
-                                    NodeSet&       alreadyVisitedUp,
-                                    NodeSet&       alreadyVisitedDn) const {
-    if (alreadyVisitedUp.contains(node)) return;
-    alreadyVisitedUp << node;
-
-    if (soids.contains(node)) {
-      minimal << node;
-    } else {
-      for (auto fath: parents(node))
-        _minimalCondSetVisitUp_(fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-      for (auto chil: children(node))
-        _minimalCondSetVisitDn_(chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-    }
-  }
-
-  // visit the nodes and add some of node from soids in minimal
-  void DAG::_minimalCondSetVisitDn_(NodeId         node,
-                                    const NodeSet& soids,
-                                    NodeSet&       minimal,
-                                    NodeSet&       alreadyVisitedUp,
-                                    NodeSet&       alreadyVisitedDn) const {
-    if (alreadyVisitedDn.contains(node)) return;
-    alreadyVisitedDn << node;
-
-    if (soids.contains(node)) {
-      minimal << node;
-      for (auto fath: parents(node))
-        _minimalCondSetVisitUp_(fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-    } else {
-      for (auto chil: children(node))
-        _minimalCondSetVisitDn_(chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn);
-    }
-  }
-
   NodeSet DAG::minimalCondSet(NodeId target, const NodeSet& soids) const {
-    if (soids.contains(target)) return NodeSet({target});
-
-    NodeSet res;
-    NodeSet alreadyVisitedUp;
-    NodeSet alreadyVisitedDn;
-    alreadyVisitedDn << target;
-    alreadyVisitedUp << target;
-
-    for (auto fath: parents(target))
-      _minimalCondSetVisitUp_(fath, soids, res, alreadyVisitedUp, alreadyVisitedDn);
-    for (auto chil: children(target))
-      _minimalCondSetVisitDn_(chil, soids, res, alreadyVisitedUp, alreadyVisitedDn);
-    return res;
+    return graph::minimalCondSet(*this, target, soids);
   }
 
   NodeSet DAG::minimalCondSet(const NodeSet& targets, const NodeSet& soids) const {
-    NodeSet res;
-    for (auto node: targets) {
-      res += minimalCondSet(node, soids);
-    }
-    return res;
+    return graph::minimalCondSet(*this, targets, soids);
   }
 } /* namespace gum */

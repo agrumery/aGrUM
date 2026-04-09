@@ -56,24 +56,10 @@ namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) : _model_(m), _node_(id) {
     if (level < 1) GUM_ERROR(InvalidArgument, "Argument level(=" << level << ") must be >0.")
 
-    NodeSet done;
-    _buildMarkovBlanket_(_node_);
-    done.insert(_node_);
+    _mb_ = graph::markovBlanket(m.dag(), id, level);
 
-    while (level > 1) {
-      level--;
-      auto todo        = _mb_.nodes().asNodeSet() - done;
-      bool anythingnew = false;
-      for (NodeId n: todo) {
-        done.insert(n);
-        if (_buildMarkovBlanket_(n)) anythingnew = true;
-      }
-      if (!anythingnew) break;
-    }
-
-    // we add now some arcs that are between the nodes in  _mb_ but are not part of
-    // the last ones.
-    // For instance, an arc between a parent and a parent of children
+    // Add arcs that exist in the model between MB nodes but are not part of
+    // the canonical MB definition (e.g. arc between a parent and a co-parent).
     for (const auto node: _mb_.nodes()) {
       for (const auto child: _model_.children(node)) {
         if (_mb_.existsNode(child) && !_mb_.existsArc(Arc(node, child))) {
@@ -88,44 +74,6 @@ namespace gum {
       MarkovBlanket(m, m.idFromName(name), level) {}
 
   MarkovBlanket::~MarkovBlanket() {}
-
-  bool MarkovBlanket::_buildMarkovBlanket_(const NodeId node) {
-    bool change = false;
-    if (!_model_.nodes().exists(node))
-      GUM_ERROR(InvalidArgument, "Node " << node << " does not exist.")
-
-    if (!_mb_.nodes().exists(node)) {
-      _mb_.addNodeWithId(node);
-      change = true;
-    }
-
-    for (const auto& parent: _model_.parents(node)) {
-      if (!_mb_.nodes().exists(parent)) {
-        _mb_.addNodeWithId(parent);
-        change = true;
-      }
-      _mb_.addArc(parent, node);
-    }
-
-    for (const auto& child: _model_.children(node)) {
-      if (!_mb_.nodes().exists(child)) {
-        _mb_.addNodeWithId(child);
-        change = true;
-      }
-      _mb_.addArc(node, child);
-      for (const auto& opar: _model_.parents(child)) {
-        if (opar != node) {
-          if (!_mb_.nodes().exists(opar)) {
-            _mb_.addNodeWithId(opar);
-            change = true;
-          }
-          _mb_.addArc(opar, child);
-        }
-      }
-    }
-
-    return change;
-  }
 
   bool MarkovBlanket::hasSameStructure(const DAGmodel& other) const {
     if (size() != other.size()) return false;

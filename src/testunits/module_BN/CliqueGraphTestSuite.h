@@ -647,13 +647,9 @@ namespace gum_tests {
       gum::CliqueGraph graph;
       fillG2(graph);
 
-      std::vector< gum::NodeId > vec;
-
-      try {
-        vec = graph.undirectedPath(1, 4);
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vec = graph.undirectedPath(1, 4));
+      auto opt = graph.undirectedPath(1, 4);
+      CHECK(opt.has_value());
+      std::vector< gum::NodeId > vec = *opt;
 
       /** Paths from A to D goes threw 3 or 4 cliques.*/
       CHECK(((vec.size() == 3) || (vec.size() == 4)));
@@ -674,14 +670,16 @@ namespace gum_tests {
           graph.eraseEdge(gum::Edge(3, 4));
         }
 
-        GUM_CHECK_ASSERT_THROWS_NOTHING(vec = graph.undirectedPath(1, 4));
+        auto opt2 = graph.undirectedPath(1, 4);
+        CHECK(opt2.has_value());
+        vec = *opt2;
 
         /** Now can only have 3 nodes in the path. */
         CHECK_EQ(vec.size(), static_cast< gum::Size >(3));
 
         graph.eraseEdge(gum::Edge(2, 3));
 
-        CHECK_NOTHROW(vec = graph.undirectedPath(1, 4));
+        CHECK_NOTHROW(graph.undirectedPath(1, 4));
       }
     }
 

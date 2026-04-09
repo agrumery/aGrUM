@@ -116,7 +116,7 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        CHECK_THROWS_AS(dag.directedPath(node, node), const gum::NotFound&);
+        CHECK_FALSE(dag.directedPath(node, node).has_value());
       }
 
       if (id != 0) delete id;
@@ -143,7 +143,7 @@ namespace gum_tests {
       const gum::DAG&            dag = id->dag();
 
       for (const auto node: dag.nodes()) {
-        CHECK_THROWS_AS(dag.directedPath(node, node), const gum::NotFound&);
+        CHECK_FALSE(dag.directedPath(node, node).has_value());
       }
 
       if (id != 0) delete id;

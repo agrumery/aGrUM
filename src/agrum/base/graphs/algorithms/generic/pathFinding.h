@@ -58,6 +58,7 @@
 #ifndef GUM_GRAPH_PATH_FINDING_H
 #define GUM_GRAPH_PATH_FINDING_H
 
+#include <optional>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -86,11 +87,11 @@ namespace gum::graph {
   /**
    * @brief Shortest directed path from @p n1 to @p n2 (BFS, arc direction).
    *
-   * Returns the sequence of nodes [n1, …, n2].
-   * Throws GUM_ERROR(NotFound) if no directed path exists.
+   * Returns the sequence of nodes [n1, …, n2], or std::nullopt if no directed
+   * path exists.
    */
   template < GUM_DiGraphable G >
-  std::vector< NodeId > directedPath(const G& g, NodeId n1, NodeId n2) {
+  std::optional< std::vector< NodeId > > directedPath(const G& g, NodeId n1, NodeId n2) {
     List< NodeId > fifo;
     fifo.pushBack(n2);
     NodeProperty< NodeId > mark;
@@ -107,17 +108,17 @@ namespace gum::graph {
       }
     }
 
-    GUM_ERROR(NotFound, "no directed path found")
+    return std::nullopt;
   }
 
   /**
    * @brief Shortest path from @p n1 to @p n2 ignoring arc orientation (BFS).
    *
    * Traverses both parents and children — shortest path in the skeleton.
-   * Throws GUM_ERROR(NotFound) if no path exists.
+   * Returns std::nullopt if no path exists.
    */
   template < GUM_DiGraphable G >
-  std::vector< NodeId > directedUnorientedPath(const G& g, NodeId n1, NodeId n2) {
+  std::optional< std::vector< NodeId > > directedUnorientedPath(const G& g, NodeId n1, NodeId n2) {
     List< NodeId > fifo;
     fifo.pushBack(n2);
     NodeProperty< NodeId > mark;
@@ -140,7 +141,7 @@ namespace gum::graph {
         if (tryVisit(n, current)) return detail::reconstructPath(mark, n1, n2);
     }
 
-    GUM_ERROR(NotFound, "no path found")
+    return std::nullopt;
   }
 
   /**
@@ -178,11 +179,11 @@ namespace gum::graph {
   /**
    * @brief Shortest undirected path from @p n1 to @p n2 (BFS).
    *
-   * Returns the sequence of nodes [n1, …, n2].
-   * Throws GUM_ERROR(NotFound) if no path exists.
+   * Returns the sequence of nodes [n1, …, n2], or std::nullopt if no path
+   * exists.
    */
   template < GUM_UndiGraphable G >
-  std::vector< NodeId > undirectedPath(const G& g, NodeId n1, NodeId n2) {
+  std::optional< std::vector< NodeId > > undirectedPath(const G& g, NodeId n1, NodeId n2) {
     List< NodeId > fifo;
     fifo.pushBack(n2);
     NodeProperty< NodeId > mark;
@@ -199,7 +200,7 @@ namespace gum::graph {
       }
     }
 
-    GUM_ERROR(NotFound, "no path found")
+    return std::nullopt;
   }
 
   /**
@@ -277,10 +278,10 @@ namespace gum::graph {
    * @brief Shortest mixed-oriented path from @p n1 to @p n2.
    *
    * Follows arcs forward and edges in both directions.
-   * Returns an empty vector if no such path exists (does not throw).
+   * Returns std::nullopt if no such path exists.
    */
   template < GUM_MixedGraphable G >
-  std::vector< NodeId > mixedOrientedPath(const G& g, NodeId n1, NodeId n2) {
+  std::optional< std::vector< NodeId > > mixedOrientedPath(const G& g, NodeId n1, NodeId n2) {
     List< NodeId > fifo;
     fifo.pushBack(n2);
     NodeProperty< NodeId > mark;
@@ -303,7 +304,7 @@ namespace gum::graph {
         if (tryVisit(n, current)) return detail::reconstructPath(mark, n1, n2);
     }
 
-    return {};
+    return std::nullopt;
   }
 
   /**
@@ -311,17 +312,17 @@ namespace gum::graph {
    */
   template < GUM_MixedGraphable G >
   bool hasMixedOrientedPath(const G& g, NodeId n1, NodeId n2) {
-    return !mixedOrientedPath(g, n1, n2).empty();
+    return mixedOrientedPath(g, n1, n2).has_value();
   }
 
   /**
    * @brief Shortest path ignoring all orientations in a mixed graph.
    *
    * Traverses edges (both directions), parents, and children.
-   * Returns an empty vector if no path exists (does not throw).
+   * Returns std::nullopt if no path exists.
    */
   template < GUM_MixedGraphable G >
-  std::vector< NodeId > mixedUnorientedPath(const G& g, NodeId n1, NodeId n2) {
+  std::optional< std::vector< NodeId > > mixedUnorientedPath(const G& g, NodeId n1, NodeId n2) {
     List< NodeId > fifo;
     fifo.pushBack(n2);
     NodeProperty< NodeId > mark;
@@ -346,7 +347,7 @@ namespace gum::graph {
         if (tryVisit(n, current)) return detail::reconstructPath(mark, n1, n2);
     }
 
-    return {};
+    return std::nullopt;
   }
 
 }   // namespace gum::graph

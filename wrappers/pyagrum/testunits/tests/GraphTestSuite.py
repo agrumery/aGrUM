@@ -85,13 +85,13 @@ class TestGraph(pyAgrumTestCase):
   def testPath(self):
     mg = gum.MixedGraph()
     mg.addNodes(5)
-    self.assertEqual(mg.mixedUnorientedPath(1, 4), [])
-    self.assertEqual(mg.mixedOrientedPath(1, 4), [])
+    self.assertIsNone(mg.mixedUnorientedPath(1, 4))
+    self.assertIsNone(mg.mixedOrientedPath(1, 4))
     mg.addArc(0, 1)
     mg.addEdge(1, 2)
     mg.addArc(3, 2)
     self.assertEqual(mg.mixedUnorientedPath(0, 3), [0, 1, 2, 3])
-    self.assertEqual(mg.mixedOrientedPath(0, 3), [])
+    self.assertIsNone(mg.mixedOrientedPath(0, 3))
     self.assertEqual(mg.mixedOrientedPath(0, 2), [0, 1, 2])
 
   def testConstructorFromDG(self):

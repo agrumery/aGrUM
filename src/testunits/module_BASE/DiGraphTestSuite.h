@@ -379,7 +379,9 @@ namespace gum_tests {
       try {
         gum::DiGraph graph = buildGraph();
 
-        std::vector< gum::NodeId > path = graph.directedPath(0, 1);
+        auto path_opt = graph.directedPath(0, 1);
+        CHECK(path_opt.has_value());
+        const auto& path = *path_opt;
         CHECK_EQ(path.size(), 4U);
         CHECK_EQ(path[0], 0U);
         CHECK_EQ(path[1], 3U);
@@ -391,9 +393,11 @@ namespace gum_tests {
         CHECK_EQ(graph.hasDirectedPath(0, 4), true);
         CHECK_EQ(graph.hasDirectedPath(1, 1), true);
 
-        CHECK_THROWS_AS(graph.directedPath(1, 2), const gum::NotFound&);
+        CHECK_FALSE(graph.directedPath(1, 2).has_value());
 
-        std::vector< gum::NodeId > path2 = graph.directedUnorientedPath(1, 2);
+        auto path2_opt = graph.directedUnorientedPath(1, 2);
+        CHECK(path2_opt.has_value());
+        const auto& path2 = *path2_opt;
         CHECK_EQ(path2.size(), 3U);
         CHECK_EQ(path2[0], 1U);
         CHECK_EQ(path2[1], 4U);

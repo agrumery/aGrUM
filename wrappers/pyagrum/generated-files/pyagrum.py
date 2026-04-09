@@ -3024,7 +3024,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_connectedComponents(self)
 
-    def undirectedPath(self, node1: int, node2: int) -> list[int]:
+    def undirectedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         return _pyagrum.UndiGraph_undirectedPath(self, node1, node2)
 
     def hasUndirectedPath(self, *args) -> bool:
@@ -3448,10 +3448,10 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_hasDirectedPath(self, _from, to)
 
-    def directedPath(self, node1: int, node2: int) -> list[int]:
+    def directedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         return _pyagrum.DiGraph_directedPath(self, node1, node2)
 
-    def directedUnorientedPath(self, node1: int, node2: int) -> list[int]:
+    def directedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         return _pyagrum.DiGraph_directedUnorientedPath(self, node1, node2)
 
     def family(self, *args) -> list[int]:
@@ -4312,7 +4312,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> list[int]:
+    def mixedOrientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         r"""
 
         Parameters
@@ -4330,7 +4330,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int]:
+    def mixedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         r"""
 
         Parameters
@@ -4778,7 +4778,7 @@ class PDAG(MixedGraph):
     def boundary(self, id: int) -> list[int]:
         return _pyagrum.PDAG_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> list[int]:
+    def mixedOrientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         r"""
 
         Parameters
@@ -4796,7 +4796,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrum.PDAG_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int]:
+    def mixedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
         r"""
 
         Parameters

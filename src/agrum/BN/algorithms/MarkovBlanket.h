@@ -50,6 +50,7 @@
 #define GUM_MARKOVBLANKET_H
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
+#include <agrum/base/graphs/algorithms/generic/markovBlanket.h>
 
 namespace gum {
 
@@ -117,8 +118,6 @@ namespace gum {
     bool hasSameStructure(const DAGmodel& other) const;
 
     private:
-    bool _buildMarkovBlanket_(const NodeId id);
-
     const DAGmodel& _model_;
     DAG             _mb_;
     const NodeId    _node_;

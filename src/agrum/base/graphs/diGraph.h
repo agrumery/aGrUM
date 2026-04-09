@@ -48,6 +48,7 @@
 #define GUM_DIGRAPH_H
 
 #include <iostream>
+#include <optional>
 #include <sstream>
 #include <utility>
 
@@ -237,13 +238,12 @@ namespace gum {
      */
     bool hasDirectedPath(NodeId from, NodeId to);
 
-    /// returns a directed path from node1 to node2
-    /** @throw NotFound if no directed path exists */
-    std::vector< NodeId > directedPath(NodeId node1, NodeId node2) const;
+    /// returns a directed path from node1 to node2, or std::nullopt if none
+    std::optional< std::vector< NodeId > > directedPath(NodeId node1, NodeId node2) const;
 
-    /// returns a shortest path from node1 to node2 ignoring arc orientation
-    /** @throw NotFound if no path exists */
-    std::vector< NodeId > directedUnorientedPath(NodeId node1, NodeId node2) const;
+    /// returns a shortest path from node1 to node2 ignoring arc orientation,
+    /// or std::nullopt if none
+    std::optional< std::vector< NodeId > > directedUnorientedPath(NodeId node1, NodeId node2) const;
 
     /// returns the set of all ancestors of id (nodes from which id is reachable)
     NodeSet ancestors(NodeId id) const;
