@@ -101,7 +101,7 @@ namespace gum {
      * Writes a Bayesian network in the output stream using the BN format.
      *
      * @param output The output stream.
-     * @param bn The Bayesian network writen in output.
+     * @param bn The Bayesian network written to output.
      * @throws IOError Raised if and I/O error occurs.
      */
     void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;

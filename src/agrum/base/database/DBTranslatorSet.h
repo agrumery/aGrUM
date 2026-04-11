@@ -105,7 +105,7 @@ namespace gum {
      * // translator0 has been inserted into the translator set at position pos0.
      * // pos0 = 0 because translators are sorted by increasing column order in
      * // the translator set. So, now, in the set, the first translator is
-     * // translator0 and the the second one is translator1.
+     * // translator0 and the second one is translator1.
      *
      * gum::learning::DBTranslator4LabelizedVariable<> translator2;
      * std::size_t pos2 = set.insertTranslator ( translator2, 2 );

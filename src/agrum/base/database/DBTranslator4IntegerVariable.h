@@ -73,7 +73,7 @@ namespace gum {
      *
      * A DBTranslator4IntegerVariable is a translator that contains and
      * exploits a IntegerVariable for translations. Each time a string needs
-     * be translated, we ask the IntegerVariable which index contains the the number
+     * be translated, we ask the IntegerVariable which index contains the number
      * represented by the string. The DBTranslatedValue corresponding to the translation
      * of the string contains in its discr_val field this number.
      *

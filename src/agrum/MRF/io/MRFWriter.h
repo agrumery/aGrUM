@@ -70,7 +70,7 @@ namespace gum {
   /**
    * @class MRFWriter
    * @headerfile MRFWriter.h <agrum/MRF/io/MRFWriter.h>
-   * @brief Pure virtual class for writting a MRF to a file.
+   * @brief Pure virtual class for writing a MRF to a file.
    * @ingroup mn_io
    *
    * Every class used to write the content of a Markov random field in a stream, or
@@ -91,10 +91,10 @@ namespace gum {
     virtual ~MRFWriter();
 
     /**
-     * Writes a Markov random field in the ouput stream.
+     * Writes a Markov random field to the output stream.
      *
      * @param output The output stream.
-     * @param MN The Markov random field writed in output.
+     * @param MN The Markov random field written to the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     virtual void write(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& MN) = 0;
@@ -105,7 +105,7 @@ namespace gum {
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the Markov random field.
-     * @param MN The Markov random field writen in the file.
+     * @param MN The Markov random field written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& MN) = 0;
@@ -119,4 +119,4 @@ namespace gum {
 
 #include <agrum/MRF/io/MRFWriter_tpl.h>
 
-#endif   // GUM_%N_WRITER_H
+#endif   // GUM_MN_WRITER_H

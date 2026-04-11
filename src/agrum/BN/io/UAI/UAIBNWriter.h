@@ -65,7 +65,7 @@ namespace gum {
   /**
    * @class UAIBNWriter UAIBNWriter.h <agrum/BN/io/UAI/UAIBNWriter.h>
    * @ingroup bn_io
-   * @brief Writes an bayes net in a text file with UAI format
+   * @brief Writes a Bayes net in a text file with UAI format
    *
    * This class export a bayes net into an text file, using UAI format
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
@@ -97,21 +97,21 @@ namespace gum {
 
     protected:
     /**
-     * Writes an bayes net in the given ouput stream.
+     * Writes a Bayes net in the given output stream.
      *
      * @param output The output stream.
-     * @param bn The bayes net writen in the stream.
+     * @param bn The bayes net written to the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
-     * Writes an bayes net in the file referenced by filePath.
+     * Writes a Bayes net in the file referenced by filePath.
      * If the file doesn't exists, it is created.
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the bayes net.
-     * @param bn The bayes net writen in the file.
+     * @param bn The bayes net written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) final;

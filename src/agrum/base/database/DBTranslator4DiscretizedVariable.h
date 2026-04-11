@@ -69,7 +69,7 @@ namespace gum {
      * A DBTranslator4DiscretizedVariable is a translator that contains and
      * exploits a DiscretizedVariable for translations. Each time a string needs
      * be translated, we ask the DiscretizedVariable which discretization
-     * interval contains the the number represented by the string. The
+     * interval contains the number represented by the string. The
      * DBTranslatedValue corresponding to the translation of the string
      * contains in its discr_val field the index of this discretization interval.
      *

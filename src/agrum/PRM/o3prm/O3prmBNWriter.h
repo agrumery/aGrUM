@@ -43,7 +43,7 @@
  * @file
  * @brief Definition file for BIF XML exportation class
  *
- * Writes an bayes net in XML files with BIF format
+ * Writes a Bayes net in XML files with BIF format
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
  * GONZALES(_at_AMU)
@@ -68,7 +68,7 @@ namespace gum {
    * @class O3prmBNWriter O3prmBNWriter.h
    *<agrum/PRM/o3prm/O3prmBNWriter.h>
    * @ingroup bn_io
-   * @brief Writes an bayes net in a text file with O3PRM format
+   * @brief Writes a Bayes net in a text file with O3PRM format
    *
    * This class export a bayes net into an text file, using O3PRM format
    *
@@ -95,16 +95,16 @@ namespace gum {
 
     protected:
     /**
-     * Writes an bayes net in the given ouput stream.
+     * Writes a Bayes net in the given output stream.
      *
      * @param output The output stream.
-     * @param bn The bayes net writen in the stream.
+     * @param bn The bayes net written to the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
-     * Writes an bayes net in the file referenced by filePath.
+     * Writes a Bayes net in the file referenced by filePath.
      * If the file doesn't exists, it is created.
      * If the file exists, it's content will be erased.
      *

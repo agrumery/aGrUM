@@ -151,7 +151,7 @@ namespace gum {
     /// returns a string corresponding to the ith value of the domain
     std::string label(Idx index) const override;
 
-    /// get a integer representation of the value at a given index
+    /// get an integer representation of the value at a given index
     double numerical(Idx index) const override;
 
     /// Returns the domain as a string

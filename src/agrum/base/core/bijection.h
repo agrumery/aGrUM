@@ -1357,7 +1357,7 @@ namespace gum {
      * this method makes the iterator point to
      * gum::BijectionIteratorSafe::end().
      *
-     * @param nb The number of steps by wich the iterator moves.
+     * @param nb The number of steps by which the iterator moves.
      * @return Returns this gum::BijectionIteratorSafe.
      */
     BijectionIteratorSafe< T1, T2 >& operator+=(Size nb) noexcept;
@@ -1370,7 +1370,7 @@ namespace gum {
      * the bijection, then the resulting iterator points to
      * gum::BijectionIteratorSafe::end().
      *
-     * @param nb The number of steps by wich the iterator moves.
+     * @param nb The number of steps by which the iterator moves.
      * @return Returns this gum::BijectionIteratorSafe.
      */
     BijectionIteratorSafe< T1, T2 > operator+(Size nb) noexcept;
@@ -1554,7 +1554,7 @@ namespace gum {
      * fewer elements to parse to reach the end of the bijection, then this
      * method makes the iterator point to gum::Bijection::end().
      *
-     * @param nb The number of steps by wich the iterator moves.
+     * @param nb The number of steps by which the iterator moves.
      * @return Returns this gum::BijectionIterator.
      */
     BijectionIterator< T1, T2 >& operator+=(Size nb) noexcept;

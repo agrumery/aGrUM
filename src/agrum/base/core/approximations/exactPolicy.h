@@ -97,7 +97,7 @@ namespace gum {
     void combineAdd(const ApproximationPolicy< GUM_ELEMENT >* ap);
 
     /**
-     * @brief Combine using substraction with the given
+     * @brief Combine using subtraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */

@@ -147,7 +147,7 @@ namespace gum {
           } else if (!tail_head && !head_tail) {
             // Choose an arbitrary orientation and erase the corresponding arc
             // mg.eraseArc(Arc(arc.head(), arc.tail()));
-            mg.eraseArc(_critereMinParents_(mg, arc.tail(), arc.head()));
+            mg.eraseArc(_selectArcToEraseByMinParents_(mg, arc.tail(), arc.head()));
             withdrawFlag_arc = true;
           }
 
@@ -233,7 +233,7 @@ namespace gum {
   }
 
   gum::Arc
-      MeekRules::_critereMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
+      MeekRules::_selectArcToEraseByMinParents_(const gum::MixedGraph& graph, gum::NodeId x, gum::NodeId y) {
     // If the number of parents of x is less than the number of parents of y.
     if (graph.parents(x).size() < graph.parents(y).size()) {
       // If the number of parents of x is less than the number of parents of y.

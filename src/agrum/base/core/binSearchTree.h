@@ -354,7 +354,7 @@ namespace gum {
     /**
      * @brief Returns the smallest node w.r.t. order Cmp in the subtree rooted
      * at node.
-     * @param node The root for looking for the the smallest node.
+     * @param node The root for looking for the smallest node.
      * @return Returns the smallest node.
      */
     Node* minNode_(Node* node) const;
@@ -362,7 +362,7 @@ namespace gum {
     /**
      * @brief Returns the greatest node w.r.t. order Cmp in the subtree rooted
      * at node.
-     * @param node The root for looking for the the greatest node.
+     * @param node The root for looking for the greatest node.
      * @return Returns the greatest node.
      */
     Node* maxNode_(Node* node) const;

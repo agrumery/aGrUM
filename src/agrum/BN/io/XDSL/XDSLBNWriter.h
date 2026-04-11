@@ -43,7 +43,7 @@
  * @file
  * @brief Definition file for XDSL XML exportation class
  *
- * Writes an bayes net in XML files with XDSL format
+ * Writes a Bayes net in XML files with XDSL format
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
  * GONZALES(_at_AMU)
@@ -69,7 +69,7 @@ namespace gum {
    * @class XDSLBNWriter XDSLBNWriter.h
    *<agrum/BN/io/XDSLXML/XDSLBNWriter.h>
    * @ingroup bn_io
-   * @brief Writes an bayes net in a XML file with XDSL format
+   * @brief Writes a Bayes net in a XML file with XDSL format
    *
    * This class export a bayes net into an XML files, using XDSL format
    *
@@ -101,21 +101,21 @@ namespace gum {
 
     protected:
     /**
-     * Writes an bayes net in the given ouput stream.
+     * Writes a Bayes net in the given output stream.
      *
      * @param output The output stream.
-     * @param bn The bayes net writen in the stream.
+     * @param bn The bayes net written to the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
-     * Writes an bayes net in the file referenced by filePath.
+     * Writes a Bayes net in the file referenced by filePath.
      * If the file doesn't exists, it is created.
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the bayes net.
-     * @param bn The bayes net writen in the file.
+     * @param bn The bayes net written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) final;

@@ -64,7 +64,7 @@ namespace gum {
      *
      * This class is a dummy DBRowGenerator that can be essentially used for
      * debugging purposes. The DBRowGeneratorIdentity class is designed to
-     * take as input DBRow instances via its method setInputRow and to ouput
+     * take as input DBRow instances via its method setInputRow and to output
      * them without any additional processing via its method generate. See
      * class DBRowGenerator for further details on how DBRowGenerator works.
      *
@@ -139,7 +139,7 @@ namespace gum {
 
       /// @{
 
-      /// generates one ouput DBRow for each DBRow passed to method setInputRow
+      /// generates one output DBRow for each DBRow passed to method setInputRow
       virtual const DBRow< DBTranslatedValue >& generate() final;
 
       /// @}

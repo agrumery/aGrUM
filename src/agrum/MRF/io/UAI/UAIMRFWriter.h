@@ -94,10 +94,10 @@ namespace gum {
     /// @}
 
     /**
-     * Writes an Markov net in the given ouput stream.
+     * Writes a Markov net to the given output stream.
      *
      * @param output The output stream.
-     * @param MN The Markov net writen in the stream.
+     * @param MN The Markov net written to the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
     void write(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& MN) final;
@@ -108,7 +108,7 @@ namespace gum {
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the Markov net.
-     * @param MN The Markov net writen in the file.
+     * @param MN The Markov net written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& MN) final;

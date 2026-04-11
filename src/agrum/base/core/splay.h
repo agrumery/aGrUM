@@ -178,7 +178,7 @@ namespace gum {
     SplayBinaryNode< Element >* zig();
 
     /**
-     * @brief A left rotation, the node must hava a father.
+     * @brief A left rotation, the node must have a father.
      * @return Returns a pointer to the root of the sub-tree after rotation.
      */
     SplayBinaryNode< Element >* zag();

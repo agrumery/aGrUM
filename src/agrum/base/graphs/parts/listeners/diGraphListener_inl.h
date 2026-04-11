@@ -42,7 +42,7 @@
 
 
 /** @file
- * @brief Inline implementation fo base classes for oriented graphs listener
+ * @brief Inline implementation for base classes for oriented graphs listener
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */

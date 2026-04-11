@@ -173,7 +173,7 @@ namespace gum {
 
       /**
        * @deprecated
-       * @brief The number of time steps of this network (only usefull for
+       * @brief The number of time steps of this network (only useful for
        * dynamic
        * networks). */
       int timeSteps_;
@@ -297,7 +297,7 @@ namespace gum {
       VarMod2BNsMap< GUM_SCALAR >* getVarMod2BNsMap();
 
       /**
-       * Get this creadal network.
+       * Get this credal network.
        * @return A constant reference to this CredalNet.
        */
       const CredalNet< GUM_SCALAR >& credalNet() const;
@@ -317,7 +317,7 @@ namespace gum {
       /**
        * @param repetitive \c True if repetitive independence is to be used,
        * false
-       * otherwise. Only usefull with dynamic networks.
+       * otherwise. Only useful with dynamic networks.
        */
       void setRepetitiveInd(const bool repetitive);
 

@@ -245,7 +245,7 @@ namespace gum {
        * in the IdCondSet, i.e., when its value increases by 1, the offset in the
        * output vector also increases by 1. The second dimension is that of the
        * second variable in the IdCondSet, i.e., when its value increases by 1, the
-       * offset in the ouput vector increases by the domain size of the first
+       * offset in the output vector increases by the domain size of the first
        * variable. For the third variable, the offset corresponds to the product
        * of the domain sizes of the first two variables, and so on.
        * @warning The vector returned by the function may differ from one

@@ -163,8 +163,8 @@ namespace gum {
     const gum::VariableSet& allVariables() const;
 
     /**
-     * @brief Returns the number of MultiDimContainer in in this bukcet.
-     * @return Returns the number of MultiDimContainer in in this bukcet.
+     * @brief Returns the number of MultiDimContainer in this bucket.
+     * @return Returns the number of MultiDimContainer in this bucket.
      */
     Size bucketSize() const;
 

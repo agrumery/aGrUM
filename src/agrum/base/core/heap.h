@@ -352,7 +352,7 @@ namespace gum {
     Size capacity() const noexcept;
 
     /**
-     * @brief Changes the size of the the internal structure storing the heap.
+     * @brief Changes the size of the internal structure storing the heap.
      *
      * If the new size does not enable the heap to contain the elements it
      * currently contains, then the resizing does not occur.

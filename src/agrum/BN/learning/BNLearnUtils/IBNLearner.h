@@ -596,7 +596,7 @@ namespace gum::learning {
     /**
      * Return the pseudo-counts of NodeIds vars in the base in a raw array
      * @param vars a vector of
-     * @return a a std::vector<double> containing the contingency table
+     * @return a std::vector<double> containing the contingency table
      */
     std::vector< double > rawPseudoCount(const std::vector< NodeId >& vars);
 

@@ -52,7 +52,7 @@ public:
   // percent goes from 0 to 100 (whenLoading is called at most once for each
 integer
 between 0 and 100
-    // percent=200 recieved when End Of File.
+    // percent=200 received when End Of File.
  }
 };
 // END OF OPTIONAL LISTENER
@@ -110,7 +110,7 @@ namespace gum {
     void whenLoading(const void *buffer,int percent) {
     // percent goes from 0 to 100 (whenLoading is called at most once for each
   integer between 0 and 100
-      // percent=200 recieved when End Of File.
+      // percent=200 received when End Of File.
    }
   };
   // END OF OPTIONAL LISTENER

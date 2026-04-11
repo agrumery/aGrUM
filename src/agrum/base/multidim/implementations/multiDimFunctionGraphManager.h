@@ -275,7 +275,7 @@ namespace gum {
      * has the same child for every variable value. If no node is a match, this
      * node is added to the graph.
      *
-     * @warning : will free by itslef sonsMap if a match exists.
+     * @warning : will free by itself sonsMap if a match exists.
      *
      * @param var The node to add in the graph.
      * @param sonsMap The node sons.

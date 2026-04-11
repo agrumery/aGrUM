@@ -998,7 +998,7 @@ namespace gum {
       // ======================================================================
       /// @{
 
-      /// Adds a instance to the current model.
+      /// Adds an instance to the current model.
       void _addInstance_(PRMClass< GUM_SCALAR >* type, std::string_view name);
 
       // Builds all PRMSlotChain<GUM_SCALAR><PRMInstance<GUM_SCALAR>> in the

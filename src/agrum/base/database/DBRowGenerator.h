@@ -276,7 +276,7 @@ namespace gum {
        * generate. */
       void decreaseRemainingRows();
 
-      /// resets the generator. There are therefore no more ouput row to generate
+      /// resets the generator. There are therefore no more output row to generate
       virtual void reset();
 
       /** @brief sets the columns of interest: the output DBRow needs only

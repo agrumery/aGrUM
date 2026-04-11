@@ -218,7 +218,7 @@ namespace gum {
      * arc/edge set
      *
      * This function returns, if any, a path from node1 to node2, using edges
-     * and/or arcs (wrt the direction of th arcs)
+     * and/or arcs (wrt the direction of the arcs)
      * @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
      * if no path can be found between the two nodes, returns std::nullopt */
@@ -234,7 +234,7 @@ namespace gum {
 
     /// returns a mixed/directed path from node1 to node2 in the arc/edge set
     /** This function returns, if any, a path from node1 to node2, using edges
-     * and/or arcs (not necessarily following the direction of th arcs)
+     * and/or arcs (not necessarily following the direction of the arcs)
      * @param node1 the id from which the path begins
      * @param node2 the id to which the path ends
      * if no path can be found between the two nodes, returns std::nullopt. */

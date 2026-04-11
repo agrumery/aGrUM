@@ -325,7 +325,7 @@ namespace gum {
     /**
      * @brief Returns the top ancestor of the current tree.
      *
-     * If the current node has no parent, the the method returns this.
+     * If the current node has no parent, the method returns this.
      *
      * @return Returns the top ancestor of the current tree.
      */

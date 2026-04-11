@@ -218,7 +218,7 @@ namespace gum {
       /// Returns an iterator over the instances in this system.
       iterator begin();
 
-      /// Returns a iterator at the end of the set of PRMInstance
+      /// Returns an iterator at the end of the set of PRMInstance
       /// in this PRMSystem.
       const iterator& end();
 

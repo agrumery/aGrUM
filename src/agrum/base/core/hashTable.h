@@ -1225,7 +1225,7 @@ namespace gum {
      * encountered is returned. The method runs in constant time.
      * In case of not found key, (key,default_value) is inserted in *this.
      *
-     * @param key The key for wich we want the value.
+     * @param key The key for which we want the value.
      * @param default_value The default value to return if key does not match
      * any value.
      * @return Returns a reference on the element the key of which is passed in
@@ -1241,7 +1241,7 @@ namespace gum {
      * encountered is returned. The method runs in constant time.  In case of
      * not found key, (key,default_value) is inserted in *this.
      *
-     * @param key The key for wich we want the value.
+     * @param key The key for which we want the value.
      * @param default_value The default value to return if key does not match
      * any value.
      * @return Returns a reference on the element the key of which is passed in

@@ -42,7 +42,7 @@
 
 
 /** @file
- * @brief Inline implementation fo base classes for mixed graphs listener
+ * @brief Inline implementation for base classes for mixed graphs listener
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */

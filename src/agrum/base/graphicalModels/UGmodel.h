@@ -171,7 +171,7 @@ namespace gum {
     /// Each node maps to the id of its component root.
     NodeProperty< NodeId > connectedComponents() const;
 
-    /// returns the the node as a NodeSet (in mixed graph : family is the node and its parents
+    /// returns the node as a NodeSet (in mixed graph : family is the node and its parents
     /**
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with

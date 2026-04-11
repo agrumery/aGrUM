@@ -188,7 +188,7 @@ namespace gum {
 
     private:
     /**
-     * function to holding the the specification wanted for the Bayesian markov.
+     * function to holding the specification wanted for the Bayesian network.
      * @return boolean state that verify the conditions
      */
 

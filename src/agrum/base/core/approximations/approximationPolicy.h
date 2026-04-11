@@ -103,7 +103,7 @@ namespace gum {
     virtual void combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
-     * @brief Combine using substraction with the given
+     * @brief Combine using subtraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */

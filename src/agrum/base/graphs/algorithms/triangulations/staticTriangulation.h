@@ -326,7 +326,7 @@ namespace gum {
     /// computes the junction tree of the maximal prime subgraphs
     void _computeMaxPrimeJunctionTree_();
 
-    /// removes redondant fill-ins and compute proper elimination cliques and
+    /// removes redundant fill-ins and compute proper elimination cliques and
     /// order
     void _computeRecursiveThinning_();
 

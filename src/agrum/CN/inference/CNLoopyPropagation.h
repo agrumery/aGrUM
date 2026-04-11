@@ -111,7 +111,7 @@ namespace gum {
 
       /**
        * %Set the inference type.
-       * @param inft The choosen \c InferenceType.
+       * @param inft The chosen \c InferenceType.
        */
       void inferenceType(InferenceType inft);
 
@@ -220,7 +220,7 @@ namespace gum {
        * Used by msgL_. Compute the numerators & denominators for the given
        * parent's
        * message and likelihood (children's messages). Marginalisation.
-       * @param combi_msg_p The parent's choosen message.
+       * @param combi_msg_p The parent's chosen message.
        * @param id The constant id of the node sending the message.
        * @param msg_l_min The reference to the current lower value of the
        * message to
@@ -291,7 +291,7 @@ namespace gum {
 
       /**
        * Used by msgP_. Marginalisation.
-       * @param combi_msg_p The parent's choosen message.
+       * @param combi_msg_p The parent's chosen message.
        * @param id The constant id of the node sending the message.
        * @param msg_p_min The reference to the current lower value of the
        * message to
@@ -381,7 +381,7 @@ namespace gum {
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       using _infE_ = InferenceEngine< GUM_SCALAR >;
 
-      /** The choosen inference type. nodeToNeighbours by Default. */
+      /** The chosen inference type. nodeToNeighbours by Default. */
       InferenceType _inferenceType_;
 
       /** A pointer to the CredalNet to be used. */

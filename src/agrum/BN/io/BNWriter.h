@@ -118,7 +118,7 @@ namespace gum {
      *
      *
      * @param filePath The path to the file used to write the Bayesian network.
-     * @param bn The Bayesian network writen in the file.
+     * @param bn The Bayesian network written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     void write(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn);
@@ -142,7 +142,7 @@ namespace gum {
      * If the file exists, it's content will be erased.
      *
      * @param filePath The path to the file used to write the Bayesian network.
-     * @param bn The Bayesian network writen in the file.
+     * @param bn The Bayesian network written to the file.
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) = 0;

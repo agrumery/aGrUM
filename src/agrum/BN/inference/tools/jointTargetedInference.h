@@ -194,7 +194,7 @@ namespace gum {
     /// @}
 
     /**
-     * Create a gum::Tensor for P(joint targets|evs) (for all instanciation of
+     * Create a gum::Tensor for P(joint targets|evs) (for all instantiation of
      * targets
      * and evs)
      *
@@ -207,7 +207,7 @@ namespace gum {
     Tensor< GUM_SCALAR > evidenceJointImpact(const NodeSet& targets, const NodeSet& evs);
 
     /**
-     * Create a gum::Tensor for P(joint targets|evs) (for all instanciation of
+     * Create a gum::Tensor for P(joint targets|evs) (for all instantiation of
      * targets
      * and evs)
      *

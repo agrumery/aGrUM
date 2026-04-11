@@ -78,7 +78,7 @@ namespace gum {
    * array.
    * - the tuple of variables in the Instantiation is not related to a
    * multidimensional array and we can loop over the possible values of the
-   * tuple without looping over values fo any array.
+   * tuple without looping over values for any array.
    *
    * An Instantiation can be associated/deassociated to a given
    * multidimensional array using the
@@ -461,7 +461,7 @@ namespace gum {
      *
      * If no variables in i matches, then no value is changed.
      *
-     * @warning Variables has to be "the same". Therefore chgValIn is usefull
+     * @warning Variables has to be "the same". Therefore chgValIn is useful
      * in a same domain variables (for instance a BN). However two identical
      * variables will not be recognized as same (for instance between 2 BNs).
      *

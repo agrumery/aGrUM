@@ -119,7 +119,7 @@ namespace gum {
     /// Computes and returns the posterior of a node.
     /**
      * @returns a const ref to the posterior probability of the node.
-     * @param nodeName the anme of the node for which we need a posterior
+     * @param nodeName the name of the node for which we need a posterior
      * probability
      *
      * @warning for efficiency reasons, the tensor is stored into the
@@ -207,7 +207,7 @@ namespace gum {
 
 
     /**
-     * Create a gum::Tensor for P(target|evs) (for all instanciation of target
+     * Create a gum::Tensor for P(target|evs) (for all instantiation of target
      * and evs)
      *
      * @warning If some evs are d-separated, they are not included in the Tensor
@@ -220,7 +220,7 @@ namespace gum {
     Tensor< GUM_SCALAR > evidenceImpact(NodeId target, const NodeSet& evs);
 
     /**
-     * Create a gum::Tensor for P(target|evs) (for all instanciation of target
+     * Create a gum::Tensor for P(target|evs) (for all instantiation of target
      * and evs)
      *
      * @warning If some evs are d-separated, they are not included in the Tensor

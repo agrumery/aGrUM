@@ -137,9 +137,9 @@ namespace gum {
       rejection sampling process may be very slow (or even infinite). In that case, the timeout is
       mandatory.
 
-      @parameter nbSamples: the size of the filtered database.
-      @parameter evs: the evidence.
-      @parameter timeout: the maximum time in seconds to wait for the generation of the samples. If
+      @param nbSamples the size of the filtered database.
+      @param evs the evidence.
+      @param timeout the maximum time in seconds to wait for the generation of the samples. If
       the timeout is reached, the function returns the log2likelihood of the generated samples. if
       timeout=0, no timeout are watched and the function may run indefinitely.
       */

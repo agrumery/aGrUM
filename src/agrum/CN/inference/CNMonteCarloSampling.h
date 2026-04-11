@@ -67,7 +67,7 @@ namespace gum {
      * @tparam GUM_SCALAR A floating type ( float, double, long double ... ).
      * @tparam BNInferenceEngine A IBayesNet inference engine such as
      *LazyPropagation
-     *( recommanded ).
+     *( recommended ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      *
      * @warning p(e) must be available ( by a call to

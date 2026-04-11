@@ -41,7 +41,7 @@
 
 /**
  * @file
- * @brief Headers of SVED (Structured Value Elimination with d-seperation).
+ * @brief Headers of SVED (Structured Value Elimination with d-separation).
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */

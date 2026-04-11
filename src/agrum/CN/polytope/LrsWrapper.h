@@ -298,7 +298,7 @@ namespace gum {
        * @warning Probabilistic polytopes are not full dimensional : they lie in
        *the
        *simplex' hyper plane,
-       * therefor a pseudo-volume will be computed by projecting the polytope.
+       * therefore a pseudo-volume will be computed by projecting the polytope.
        *The
        *projection used is the
        * lexicographically smallest coordinate subspace.
@@ -353,7 +353,7 @@ namespace gum {
        *
        * Reset wrapper state \c  _state_ to it's previous state and clear output
        *matrix \c  _output_.
-       * Keeps the cardinality \c  _card_ of the variable and therefor the input
+       * Keeps the cardinality \c  _card_ of the variable and therefore the input
        *matrix \c  _intput_ structure.
        */
       void nextHInput();
@@ -426,7 +426,7 @@ namespace gum {
        * @warning Probabilistic polytopes are not full dimensional : they lie in
        *the
        *simplex' hyper plane,
-       * therefor a pseudo-volume will be computed by projecting the polytope.
+       * therefore a pseudo-volume will be computed by projecting the polytope.
        *The
        *projection used is the
        * lexicographically smallest coordinate subspace.

@@ -195,8 +195,8 @@ namespace gum {
     /**
      * @brief Add a variable to the gum::MarkovRandomField.
      *
-     * Add a gum::DiscreteVariable, it's associated gum::NodeId
-     *opera
+     * Add a gum::DiscreteVariable, its associated gum::NodeId and its
+     * gum::Tensor to the gum::MarkovRandomField.
      * The variable is added by copy to the gum::MarkovRandomField.
      * The variable's gum::Tensor implementation will be a
      * gum::MultiDimArray.

@@ -1077,7 +1077,7 @@ namespace gum {
     /**
      * @brief Difference between two sequences as a Set<Key> = this \ seq.
      *
-     * @param seq The gum::Sequence to substract of this.
+     * @param seq The gum::Sequence to subtract of this.
      * @return Returns the set difference : *this \ seq.
      */
     Set< Key > diffSet(const Sequence< Key >& seq) const;

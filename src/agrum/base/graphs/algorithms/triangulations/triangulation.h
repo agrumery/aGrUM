@@ -126,7 +126,7 @@ namespace gum {
     virtual const CliqueGraph& junctionTree() = 0;
 
     /// returns the max of log10DomainSize of the cliques in the junction tree.
-    /** This is usefull for instance to estimate the complexity (both in space
+    /** This is useful for instance to estimate the complexity (both in space
      * and in time) of the inference that will use the junction tree.
      *
      * This method is not 'const' since it can be called before building any

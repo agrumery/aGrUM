@@ -67,7 +67,7 @@ namespace gum {
    * Actions are randomly chosen among all actions available
    * @ingroup fmdp_group
    *
-   * Does nothing more for decison making
+   * Does nothing more for decision making
    * But count how many times every visited states have been visited
    *
    */

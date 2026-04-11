@@ -293,9 +293,9 @@ namespace gum {
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|
-      /**@param graph graph in which to find the triples
-       *@param I mutual information object to compute the scores
-       *@param sep_set hashtable storing the separation sets for pairs of variables
+      /** @param graph the graph in which to find the triples
+       *  @param mutualInformation mutual information object to compute the scores
+       *  @param sepSet hashtable storing the separation sets for pairs of variables
        */
       std::vector< Ranking > unshieldedTriples_(
           const MixedGraph&                                                      graph,
@@ -304,10 +304,10 @@ namespace gum {
 
       /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
-      /**@param graph graph in which to find the triples
-       *@param I mutual information object to compute the scores
-       *@param sep_set hashtable storing the separation sets for pairs of variables
-       * @param marks hashtable containing the orientation marks for edges
+      /** @param graph the graph in which to find the triples
+       *  @param mutualInformation mutual information object to compute the scores
+       *  @param sepSet hashtable storing the separation sets for pairs of variables
+       *  @param marks hashtable containing the orientation marks for edges
        */
       std::vector< ProbabilisticRanking > unshieldedTriplesMiic_(
           const MixedGraph&                                                      graph,
@@ -315,9 +315,9 @@ namespace gum {
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet,
           HashTable< std::pair< NodeId, NodeId >, char >&                        marks);
 
-      /// Gets the orientation probabilities like MIIC for the orientation phase
-      /**@param graph graph in which to find the triples
-       *@param proba_triples probabilities for the different triples to update
+      /// Updates orientation probabilities for the remaining unoriented triples.
+      /** @param graph the graph in which to find the triples
+       *  @param probaTriples probabilities for the different triples to update
        */
       std::vector< ProbabilisticRanking >
           updateProbaTriples_(const MixedGraph&                   graph,
@@ -351,7 +351,7 @@ namespace gum {
       /// size of the database
       Size _size_;
 
-      /// Storing the propabilities for each arc set in the graph
+      /// Storing the probabilities for each arc in the graph
       ArcProperty< double > _arcProbas_;
 
       /// Initial marks for the orientation phase, used to convey constraints
@@ -363,12 +363,10 @@ namespace gum {
       /// Graph that contains the forbidden arcs
       gum::DiGraph _forbiddenGraph_;
 
-      /** @brief checks for directed paths in a graph, considering double arcs like
-       * edges, not considering arc as a directed path.
-       * @param graph MixedGraph in which to search the path
+      /** @brief Checks for directed paths in a graph, treating double arcs as undirected edges.
+       * @param graph the mixed graph to search
        * @param n1 tail of the path
        * @param n2 head of the path
-       * @param countArc bool to know if we
        */
       static bool _existsNonTrivialDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
 

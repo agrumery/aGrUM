@@ -43,7 +43,7 @@
  * @file
  * @brief classe for import of bayes net from a XML file written with BIF Format
  *
- * Read an bayes net from a XML file with BIF format
+ * Read a Bayesian network from a XML file with BIF format
  *
  * how to use it :
  * @code
@@ -54,7 +54,7 @@ public:
   // percent goes from 0 to 100 (whenLoading is called at most once for each
 integer
 between 0 and 100
-    // percent=200 recieved when End Of File.
+    // percent=200 received when End Of File.
  }
 };
 // END OF OPTIONAL LISTENER
@@ -111,9 +111,9 @@ namespace gum {
    * @class BIFXMLBNReader BIFXMLBNReader.h
    *<agrum/BN/io/BIFXML/BIFXMLBNReader.h>
    * @ingroup bn_io
-   * @brief Read an bayes net from an XML file with BIF format.
+   * @brief Read a Bayesian network from an XML file with BIF format.
    *
-   * This class import an bayes net from an XML files using BIF format
+   * This class import a Bayesian network from an XML files using BIF format
    * See
    *http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
    * for information about this format.

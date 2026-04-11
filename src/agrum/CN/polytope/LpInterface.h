@@ -379,7 +379,7 @@ namespace gum {
 
         /**
          * @brief Compound assignment operator \c -= with a variable.
-         * @param rhs the constant reference to the variable to substract from
+         * @param rhs the constant reference to the variable to subtract from
          * the
          * calling expression.
          * @return The reference of the calling expression.
@@ -388,7 +388,7 @@ namespace gum {
 
         /**
          * @brief Compound assignment operator \c -= with another expression.
-         * @param rhs the constant reference to the expression to substract from
+         * @param rhs the constant reference to the expression to subtract from
          * the
          * calling expression.
          * @return The reference of the calling expression.
@@ -398,7 +398,7 @@ namespace gum {
         /**
          * @brief Compound assignment operator \c -= with a salar.
          * @tparam SCALAR A scalar type ( integer or float ( any precision ) ).
-         * @param rhs the constant reference to the scalar to substract from the
+         * @param rhs the constant reference to the scalar to subtract from the
          * calling expression.
          * @return The reference of the calling expression.
          */

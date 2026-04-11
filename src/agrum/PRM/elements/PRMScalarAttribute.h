@@ -75,7 +75,7 @@ namespace gum {
      * gum::Class.
      *
      * Built-in copies (copy constructor and copy operator) are illegal due to
-     * various problems raised by redondant information.
+     * various problems raised by redundant information.
      *
      * @see PRM PRMFactory Class PRMClassElement PRMType Tensor
      * @ingroup prm_group

@@ -226,7 +226,7 @@ namespace gum {
        *!
        *
        * @note we forget the master ref of \c ins to check variable order in the
-       *instantiation ( to get index ), therefor we pass it by value
+       *instantiation ( to get index ), therefore we pass it by value
        */
       void setCPT(const NodeId&                                   id,
                   Instantiation                                   ins,
@@ -285,7 +285,7 @@ namespace gum {
        * @warning : DOES change the \c BayesNet (s) associated to this credal
        *net !
        * @note we forget the master ref of \c ins to check variable order in the
-       *instantiation ( to get index ), therefor we pass it by value
+       *instantiation ( to get index ), therefore we pass it by value
        */
       void fillConstraint(const NodeId&                    id,
                           Instantiation                    ins,
@@ -293,7 +293,7 @@ namespace gum {
                           const std::vector< GUM_SCALAR >& upper);
 
       /**
-       * @brief %Get an \c Instantiation from a node id, usefull to fill the
+       * @brief %Get an \c Instantiation from a node id, useful to fill the
        * constraints of the network
        * @param id The \c NodeId we want an instantiation from
        * @return The instantiation
@@ -474,16 +474,16 @@ namespace gum {
           credalNet_srcCpt() const;
 
       /**
-       * @param id The constant reference to the choosen NodeId
-       * @return Returns the type of the choosen node in the ( up-to-date )
+       * @param id The constant reference to the chosen NodeId
+       * @return Returns the type of the chosen node in the ( up-to-date )
        * CredalNet
        *  _current_bn_ if any,  _src_bn_ otherwise.
        */
       NodeType currentNodeType(const NodeId& id) const;
 
       /**
-       * @param id The constant reference to the choosen NodeId
-       * @return Returns the type of the choosen node in the ( up-to-date )
+       * @param id The constant reference to the chosen NodeId
+       * @return Returns the type of the chosen node in the ( up-to-date )
        * CredalNet
        * in  _src_bn_.
        */

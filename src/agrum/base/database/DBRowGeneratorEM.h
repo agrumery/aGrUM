@@ -144,7 +144,7 @@ namespace gum {
 
       /// @{
 
-      /// generates one ouput DBRow for each DBRow passed to method setInputRow
+      /// generates one output DBRow for each DBRow passed to method setInputRow
       virtual const DBRow< DBTranslatedValue >& generate() override final;
 
       /// assign a new Bayes net to the generator
