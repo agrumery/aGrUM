@@ -9266,6 +9266,25 @@ def fastGraph(msg:str):
   return m
 
 
+import os.path as ospath
+
+def _gum_pickle_load(filename):
+  """Load a model from a pickle file."""
+  import pickle
+  with open(filename, "rb") as f:
+    return pickle.load(f)
+
+def _gum_pickle_save(model, filename):
+  """Save a model to a pickle file."""
+  import pickle
+  with open(filename, "wb") as f:
+    pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
+
+def _gum_set_name_property(model, filename):
+  """Set the 'name' property from the filename stem if not already set."""
+  model.setProperty("name", model.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+
+
 
 ####################################################################################
 def Potential(*args, **kwargs):
@@ -26010,7 +26029,6 @@ class BNLearner(object):
 _pyagrum.BNLearner_swigregister(BNLearner)
 
 from typing import List
-import os.path as ospath
 import warnings
 
 def availableBNExts():
@@ -26076,6 +26094,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   """
   bn = BayesNet()
 
+  warns = ""
   extension = filename.split('.')[-1].upper()
   if extension == "BIF":
     warns = bn.loadBIF(filename, listeners)
@@ -26093,9 +26112,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   elif extension == "UAI":
     warns = bn.loadUAI(filename, listeners)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      bn = pickle.load(f)
+    bn = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -26103,7 +26120,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   if verbose:
     warnings.warn(warns)
 
-  bn.setProperty("name", bn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(bn, filename)
   return bn
 
 
@@ -26145,9 +26162,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   elif extension == "O3PRM":
     bn.saveO3PRM(filename, allowModificationWhenSaving)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(bn, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(bn, filename)
   else:
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -29237,8 +29252,6 @@ def about():
     """)
 
 
-import os.path as ospath
-
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
@@ -29274,13 +29287,11 @@ def loadID(filename):
     if not res:
       raise IOError(f"Error(s) in {filename}")
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      diag = pickle.load(f)
+    diag = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
-  diag.setProperty("name", diag.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(diag, filename)
   return diag
 
 
@@ -29300,9 +29311,7 @@ def saveID(infdiag, filename):
   if extension in {"BIFXML", "XMLBIF", "XML"}:
     infdiag.saveBIFXML(filename)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(infdiag, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(infdiag, filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
@@ -30840,8 +30849,6 @@ class ShaferShenoyMRFInference(object):
 # Register ShaferShenoyMRFInference in _pyagrum:
 _pyagrum.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
 
-import warnings
-
 def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
@@ -30902,21 +30909,20 @@ def loadMRF(filename, listeners=None, verbose=False):
   """
   mn = MarkovRandomField()
 
+  warns = ""
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
     warns = mn.loadUAI(filename, listeners)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      mn = pickle.load(f)
+    mn = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')
-    [-1] + " unknown. Please use among " + availableBNExts())
+    [-1] + " unknown. Please use among " + availableMRFExts())
 
   if verbose:
-    print(warns)
+    warnings.warn(warns)
 
-  mn.setProperty("name", mn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(mn, filename)
   return mn
 
 
@@ -30936,11 +30942,9 @@ def saveMRF(mn, filename):
   if extension == "UAI":
     mn.saveUAI(filename)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(mn, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(mn, filename)
   else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMNExts())
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
 
 def fastMRF(structure, domain="[2]"):
   """

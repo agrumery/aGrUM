@@ -45,8 +45,6 @@
 
 
 %pythoncode %{
-import os.path as ospath
-
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
@@ -82,13 +80,11 @@ def loadID(filename):
     if not res:
       raise IOError(f"Error(s) in {filename}")
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      diag = pickle.load(f)
+    diag = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
-  diag.setProperty("name", diag.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(diag, filename)
   return diag
 
 
@@ -108,9 +104,7 @@ def saveID(infdiag, filename):
   if extension in {"BIFXML", "XMLBIF", "XML"}:
     infdiag.saveBIFXML(filename)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(infdiag, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(infdiag, filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 

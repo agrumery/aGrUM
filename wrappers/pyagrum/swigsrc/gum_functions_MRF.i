@@ -39,8 +39,6 @@
  ****************************************************************************/
 
 %pythoncode %{
-import warnings
-
 def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
@@ -101,21 +99,20 @@ def loadMRF(filename, listeners=None, verbose=False):
   """
   mn = MarkovRandomField()
 
+  warns = ""
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
     warns = mn.loadUAI(filename, listeners)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      mn = pickle.load(f)
+    mn = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')
-    [-1] + " unknown. Please use among " + availableBNExts())
+    [-1] + " unknown. Please use among " + availableMRFExts())
 
   if verbose:
-    print(warns)
+    warnings.warn(warns)
 
-  mn.setProperty("name", mn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(mn, filename)
   return mn
 
 
@@ -135,11 +132,9 @@ def saveMRF(mn, filename):
   if extension == "UAI":
     mn.saveUAI(filename)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(mn, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(mn, filename)
   else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMNExts())
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
 
 def fastMRF(structure, domain="[2]"):
   """

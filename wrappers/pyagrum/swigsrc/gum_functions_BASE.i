@@ -176,6 +176,26 @@ def fastGraph(msg:str):
 %}
 
 %pythoncode %{
+import os.path as ospath
+
+def _gum_pickle_load(filename):
+  """Load a model from a pickle file."""
+  import pickle
+  with open(filename, "rb") as f:
+    return pickle.load(f)
+
+def _gum_pickle_save(model, filename):
+  """Save a model to a pickle file."""
+  import pickle
+  with open(filename, "wb") as f:
+    pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
+
+def _gum_set_name_property(model, filename):
+  """Set the 'name' property from the filename stem if not already set."""
+  model.setProperty("name", model.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+%}
+
+%pythoncode %{
 
 ####################################################################################
 def Potential(*args, **kwargs):

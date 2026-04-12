@@ -46,7 +46,6 @@
 
 %pythoncode %{
 from typing import List
-import os.path as ospath
 import warnings
 
 def availableBNExts():
@@ -112,6 +111,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   """
   bn = BayesNet()
 
+  warns = ""
   extension = filename.split('.')[-1].upper()
   if extension == "BIF":
     warns = bn.loadBIF(filename, listeners)
@@ -129,9 +129,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   elif extension == "UAI":
     warns = bn.loadUAI(filename, listeners)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "rb") as f:
-      bn = pickle.load(f)
+    bn = _gum_pickle_load(filename)
   else:
     raise InvalidArgument("extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
@@ -139,7 +137,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   if verbose:
     warnings.warn(warns)
 
-  bn.setProperty("name", bn.propertyWithDefault("name", ospath.splitext(ospath.basename(filename))[0]))
+  _gum_set_name_property(bn, filename)
   return bn
 
 
@@ -181,9 +179,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   elif extension == "O3PRM":
     bn.saveO3PRM(filename, allowModificationWhenSaving)
   elif extension == "PKL":
-    import pickle
-    with open(filename, "wb") as f:
-      pickle.dump(bn, f, pickle.HIGHEST_PROTOCOL)
+    _gum_pickle_save(bn, filename)
   else:
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
