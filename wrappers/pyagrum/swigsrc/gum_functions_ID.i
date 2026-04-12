@@ -105,14 +105,14 @@ def saveID(infdiag, filename):
   """
   extension = filename.split('.')[-1].upper()
 
-  if extension in {"BIFXML", "BIFXML", "XML"}:
+  if extension in {"BIFXML", "XMLBIF", "XML"}:
     infdiag.saveBIFXML(filename)
   elif extension == "PKL":
     import pickle
     with open(filename, "wb") as f:
       pickle.dump(infdiag, f, pickle.HIGHEST_PROTOCOL)
   else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableBNExts())
+    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
 
 def fastID(structure, domain="[2]"):

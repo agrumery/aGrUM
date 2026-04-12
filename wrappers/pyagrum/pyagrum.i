@@ -43,9 +43,9 @@
 
 %module(package="pyagrum", docstring="pyagrum module", directors="1") pyagrum
 
-///////////////////////////////////
-/////// base submodule ////////////
-///////////////////////////////////
+/////////////////////////////////
+/////// Documentation ///////////
+/////////////////////////////////
 %include "docs.i"
 
 // 302 : Identifier 'name' redefined (ignored).
@@ -70,6 +70,9 @@
 %feature("python:annotations", "c");  // Turn on function annotations and variable annotations globally
 %feature("python:annotations:novar"); // Turn off variable annotations globally
 
+/////////////////////////////////
+/////// STL + numpy setup ///////
+/////////////////////////////////
 %include "std_vector.i"
 %include "std_string.i"
 %include "std_string_view.i"
@@ -90,16 +93,17 @@ static int _pyagrum_import_numpy(void) {
   _pyagrum_import_numpy();
 %}
 
-//////////////////////////////////////////////////////////////////
-/* declaration of code modifiers for 'pythonification' of aGrUM */
-//////////////////////////////////////////////////////////////////
+/////////////////////////////////
+/////// Pythonification /////////
+/////////////////////////////////
 %include "exceptions.i"
 %include "pythonize.i"
-
 %include "gum_typemaps.i"
 
 
-/* declaration of code enhancers for pyAgrum */
+/////////////////////////////////
+/////// BASE submodule //////////
+/////////////////////////////////
 %include "pgm.i"
 
 %include "core.i"
@@ -112,7 +116,6 @@ static int _pyagrum_import_numpy(void) {
 
 %include "MeekRules.i"
 
-
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BASE.i"
 
@@ -122,7 +125,17 @@ static int _pyagrum_import_numpy(void) {
 /////// BN submodule ////////////
 /////////////////////////////////
 
-%include "pylisteners.i"
+%{
+#include "extensions/PythonBNListener.h"
+#include "extensions/PythonLoadListener.h"
+#include "extensions/PythonApproximationListener.h"
+#include "extensions/PythonDatabaseGeneratorListener.h"
+%}
+
+%include "extensions/PythonBNListener.h"
+%include "extensions/PythonLoadListener.h"
+%include "extensions/PythonApproximationListener.h"
+%include "extensions/PythonDatabaseGeneratorListener.h"
 
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
@@ -155,7 +168,6 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 /////////////////////////////////
 /////// CN submodule ////////////
 /////////////////////////////////
-%include "credalnet.i"
 %include "CNinference.i"
 
 /* extraction of the API for all wrappers */
@@ -183,6 +195,8 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_MRF.i"
+// after_templates MUST come after aGrUM_wrap_MRF.i: %extend on template
+// specializations (gum::MarkovRandomField<double>) requires prior %template.
 %include "markovRandomField_after_templates.i"
 
 %include "gum_functions_MRF.i"
@@ -192,5 +206,6 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 /////////////////////////////////
 %include "causal.i"
 %include "aGrUM_wrap_CM.i"
+// after_templates MUST come after aGrUM_wrap_CM.i: %extend on template
+// specializations (gum::CausalModel<double>, gum::CausalImpact<double>) requires prior %template.
 %include "causal_after_templates.i"
-%include "gum_functions_causal.i"
