@@ -84,7 +84,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
   ----------
   bn: pyagrum.BayesNet
     the BN
-  evs : Dict[str,str|int|List[float]]
+  evs : dict[str,str|int|list[float]]
     map of evidence
   size: str|int
     size of the graph
@@ -95,7 +95,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
 
   Returns
   -------
-  dot.Dot | Tuple[dot.Dot,float,float,float,float]
+  dot.Dot | tuple[dot.Dot,float,float,float,float]
     graph as a dot representation and if asked, min_information_value, max_information_value, min_mutual_information_value, max_mutual_information_value
   """
   if size is None:
@@ -155,7 +155,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   ----------
   bn: pyagrum.BayesNet
     the model
-  evs: Dict[str|int,str|int|List[float]]
+  evs: dict[str|int,str|int|list[float]]
     the observations
   size: int|str
     size of the rendered graph
@@ -220,7 +220,7 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap) -> str:
   ----------
   bn: pyagrum.BayesNet
     the model
-  evs: Dict[str|int,str|int|List[float]]
+  evs: dict[str|int,str|int|list[float]]
     the observations
   size: int|str
     size of the rendered graph
@@ -249,7 +249,7 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
   ----------
   bn: pyagrum.BayesNet
     the model
-  evs: Dict[str|int,str|int|List[float]]
+  evs: dict[str|int,str|int|list[float]]
     the observations
   size: int|str
     size of the rendered graph

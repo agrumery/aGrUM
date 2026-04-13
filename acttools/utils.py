@@ -40,8 +40,7 @@
 
 import os
 import sys
-from os.path import isdir
-import glob
+from pathlib import Path
 from collections.abc import Iterator
 
 try:
@@ -102,22 +101,7 @@ def printutf8(s: str, end="\n"):
 
 
 def colFormat(v: str, col: str) -> str:
-  result = col
-  inside = False
-  i = 0
-  while i < len(v):
-    if v[i : i + 2] == "[[" and not inside:
-      result += cfg.C_VALUE
-      inside = True
-      i += 2
-    elif v[i : i + 2] == "]]" and inside:
-      result += col
-      inside = False
-      i += 2
-    else:
-      result += v[i]
-      i += 1
-  return result
+  return col + v.replace("[[", cfg.C_VALUE).replace("]]", col)
 
 
 def trace(current: dict[str, str | bool], cde: str):
@@ -171,14 +155,7 @@ def cross_platform_rel_path(x: str, y: str) -> str:
 
 
 def recglob(path: str, mask: str) -> Iterator[str]:
-  for item in glob.glob(path + "/*"):
-    if isdir(item):
-      for item in recglob(item, mask):
-        yield item
-
-  for item in glob.glob(path + "/" + mask):
-    if not isdir(item):
-      yield item
+  yield from (str(p) for p in Path(path).glob(f"**/{mask}") if p.is_file())
 
 
 def srcPyNotebooks() -> Iterator[str]:
@@ -186,22 +163,15 @@ def srcPyNotebooks() -> Iterator[str]:
 
 
 def srcPyAgrum() -> Iterator[str]:
-  for i in recglob("wrappers/pyagrum/testunits", "*.py"):
-    yield i
-  for i in recglob("wrappers/pyagrum/cmake", "*.py"):
-    yield i
-  for i in recglob("wrappers/pyagrum/pyLibs", "*.py"):
-    yield i
-  for i in recglob("acttools", "*.py"):
-    yield i
+  for path in ("wrappers/pyagrum/testunits", "wrappers/pyagrum/cmake",
+               "wrappers/pyagrum/pyLibs", "acttools"):
+    yield from recglob(path, "*.py")
   yield "act"
 
 
 def srcPyIpynbAgrum() -> Iterator[str]:
-  for i in srcPyNotebooks():
-    yield i
-  for i in srcPyAgrum():
-    yield i
+  yield from srcPyNotebooks()
+  yield from srcPyAgrum()
 
 
 def srcCmakeAgrum() -> Iterator[str]:
@@ -209,18 +179,12 @@ def srcCmakeAgrum() -> Iterator[str]:
 
 
 def srcAgrum() -> Iterator[str]:
-  for i in recglob("src/", "*.h"):
-    yield i
-  for i in recglob("src/", "*.cpp"):
-    yield i
-  for i in recglob("src/docs", "*.dox"):
-    yield i
-  for i in recglob("src/testunits", "*TestSuite.h"):
-    yield i
+  yield from recglob("src/", "*.h")
+  yield from recglob("src/", "*.cpp")
+  yield from recglob("src/docs", "*.dox")
+  yield from recglob("src/testunits", "*TestSuite.h")
 
 
 def srcGeneratorAgrum() -> Iterator[str]:
-  for i in recglob("wrappers/", "*.i"):
-    yield i
-  for i in recglob("src/", "*.atg"):
-    yield i
+  yield from recglob("wrappers/", "*.i")
+  yield from recglob("src/", "*.atg")

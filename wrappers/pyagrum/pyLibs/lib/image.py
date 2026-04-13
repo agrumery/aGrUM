@@ -210,19 +210,19 @@ def prepareShowInference(
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.Inference
       inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
-  evs: Dict[str,str|int]
+  evs: dict[str,str|int]
       map of evidence
   targets: Set[str|int]
       set of targets
   size: str
       size of the rendered graph
-  nodeColor: Dict[int,float]
+  nodeColor: dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  arcWidth: Dict[(int,int),float]
+  arcWidth: dict[(int,int),float]
       a arcMap of values to be shown as width of arcs
-  arcColor: Dict[(int,int),float]
+  arcColor: dict[(int,int),float]
       a arcMap of values (between 0 and 1) to be shown as color of arcs
   cmapNode: matplotlib.colors.ColorMap
       color map to show the color of nodes and arcs
@@ -399,19 +399,19 @@ def exportInference(model, filename: str = None, **kwargs):
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.Inference
       inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
-  evs: Dict[str,str|int]
+  evs: dict[str,str|int]
       map of evidence
   targets: Set[str|int]
       set of targets
   size: str
       size of the rendered graph
-  nodeColor: Dict[int,float]
+  nodeColor: dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
       a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  arcWidth: Dict[(int,int),float]
+  arcWidth: dict[(int,int),float]
       a arcMap of values to be shown as width of arcs
-  arcColor: Dict[(int,int),float]
+  arcColor: dict[(int,int),float]
       a arcMap of values (between 0 and 1) to be shown as color of arcs
   cmap: matplotlib.colors.ColorMap
       color map to show the color of nodes and arcs

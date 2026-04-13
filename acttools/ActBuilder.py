@@ -39,11 +39,37 @@
 ############################################################################
 
 import multiprocessing
+import os
 import platform
 from subprocess import PIPE, Popen, STDOUT
 
 from .configuration import cfg
 from .utils import *
+
+_MSVC_FLAGS: dict[str, str] = {
+  "mvsc22":    '-G "Visual Studio 17 2022" -A x64',
+  "mvsc22_32": '-G "Visual Studio 17 2022" -A Win32',
+  "mvsc19":    '-G "Visual Studio 16 2019" -A x64',
+  "mvsc19_32": '-G "Visual Studio 16 2019" -A Win32',
+  "mvsc17":    '-G "Visual Studio 15 2017 Win64"',
+  "mvsc17_32": '-G "Visual Studio 15 2017"',
+  "mvsc15":    '-G "Visual Studio 14 2015 Win64"',
+  "mvsc15_32": '-G "Visual Studio 14 2015"',
+  "mingw64":   '-G "MinGW Makefiles"',
+}
+
+
+def cmake_compiler_flags(current: dict) -> str:
+  """Return the cmake flags for the compiler specified in current."""
+  compiler = current["compiler"]
+  if compiler in _MSVC_FLAGS:
+    return " " + _MSVC_FLAGS[compiler]
+  if compiler == "clang":
+    base = os.path.join(current["clangpath"], "clang") if current["clangpath"] else "clang"
+    return f" -DCMAKE_C_COMPILER={base} -DCMAKE_CXX_COMPILER={base}++"
+  # gcc (default)
+  base = os.path.join(current["gccpath"], "g") if current["gccpath"] else "g"
+  return f" -DCMAKE_C_COMPILER={base}cc -DCMAKE_CXX_COMPILER={base}++"
 
 
 class ActBuilder:

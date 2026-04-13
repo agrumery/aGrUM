@@ -60,7 +60,7 @@ class IMixtureLearner:
         Learner to update.
     algorithm : str
         Algorithm to use.
-    order : List[str or int]
+    order : list[str or int]
         Order for K2 algorithm.
     tabu_size : int
         size for local search with tabu list.
@@ -157,11 +157,11 @@ class BNMLearner(IMixtureLearner):
 
   Parameters
   ----------
-  weights : List[float]
+  weights : list[float]
       Weights of each sample of the database.
-  source : List[str] | List[pandas.DataFrame]
+  source : list[str] | list[pandas.DataFrame]
       Samples to learn from (csv format for now).
-  states : List["state"]
+  states : list["state"]
       List of learners state.
   template : pyagrum.BayesNet | Optional
           BN to use to find modalities.

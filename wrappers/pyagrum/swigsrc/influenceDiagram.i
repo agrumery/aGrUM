@@ -84,7 +84,7 @@ def addVariables(self,listFastVariables,default_nbr_mod=2):
 
    Parameters
    ----------
-   listFastVariables: List[str]
+   listFastVariables: list[str]
      the list of variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
    default_nbr_mod: int
      the number of modalities for the variable if not specified in the fast description. Note that default_nbr_mod=1 is
@@ -92,7 +92,7 @@ def addVariables(self,listFastVariables,default_nbr_mod=2):
 
    Returns
    -------
-   List[int]
+   list[int]
      the list of created ids.
    """
    return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
@@ -103,7 +103,7 @@ def addArcs(self,listArcs):
 
   Parameters
   ----------
-  listArcs : List[Tuple[int,int]]
+  listArcs : list[tuple[int,int]]
     the list of arcs
   """
   for arc in listArcs:

@@ -235,7 +235,7 @@ def _DFNames(X: pandas.DataFrame):
 
   Returns
   -------
-      Dict[str,int]
+      dict[str,int]
           Dictionary of variable's name and his index
   """
   res = dict()
@@ -260,7 +260,7 @@ def _listIdtoName(bn: pyagrum.BayesNet, liste: list[int]):
 
   Returns
   -------
-      List[str]
+      list[str]
           List of names
   """
   return [bn.variable(i).name() for i in liste]

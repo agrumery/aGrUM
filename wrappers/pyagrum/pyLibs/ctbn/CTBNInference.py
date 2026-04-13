@@ -369,7 +369,7 @@ class ForwardSamplingInference(CTBNInference):
     ]
 
     def runMakeSample(task: int):
-      res = self.makeSample(posteriorsList[task], timeHorizon, burnIn)
+      res = self.makeSample(posteriorslist[task], timeHorizon, burnIn)
       return res
 
     with ProcessPoolExecutor(max_workers=1000) as executor:
@@ -380,7 +380,7 @@ class ForwardSamplingInference(CTBNInference):
     for nam in self._model.names():
       self._posteriors[nam].fillWith(0)
       for i in range(nbTrajectories):
-        self._posteriors[nam] += posteriorsList[i][nam]
+        self._posteriors[nam] += posteriorslist[i][nam]
       self._posteriors[nam].normalize()
 
   def averageInference(self, nbTrajectories: int = 5, timeHorizon: float = 5000, burnIn: int = 100):
@@ -402,12 +402,12 @@ class ForwardSamplingInference(CTBNInference):
     ]
 
     for i in range(nbTrajectories):
-      self.makeSample(posteriorsList[i], timeHorizon, burnIn)
+      self.makeSample(posteriorslist[i], timeHorizon, burnIn)
 
     for nam in self._model.names():
       self._posteriors[nam].fillWith(0)
       for i in range(nbTrajectories):
-        self._posteriors[nam] += posteriorsList[i][nam]
+        self._posteriors[nam] += posteriorslist[i][nam]
       self._posteriors[nam].normalize()
 
   def posterior(self, name: str) -> "pyagrum.Tensor":

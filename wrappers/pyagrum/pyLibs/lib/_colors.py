@@ -211,7 +211,7 @@ def hex2rgb(vstr: str) -> list[int]:
     the rbg string  or an html color
   Returns
   -------
-  List[int]
+  list[int]
     the list [r,g,b]
   """
   if vstr.startswith("#"):
@@ -233,12 +233,12 @@ def hextuple2rgb(vtuple: list[str]) -> list[int]:
 
   Parameters
   ----------
-  vtuple : Tuple[str,str,str]
+  vtuple : tuple[str,str,str]
     the Tuple of hexa values
 
   Returns
   -------
-  List[int,int,int]
+  list[int,int,int]
     the list [r,g,b]
   """
   return [int(v, 16) for v in vtuple]

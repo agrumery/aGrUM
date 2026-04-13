@@ -312,62 +312,57 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
   return nbrError
 
 
-def _check_ruff_format(details: bool, correction: bool) -> int:
+def _check_code_format(sources, tool_path, tool_name, check_cmd_fn, fix_cmd_fn,
+                        exceptions, details, correction, fix_stderr_visible=False) -> int:
   nbrError = 0
-  if cfg.ruff is None:
-    warn("No correct [[ruff]] tool has been found.")
-  else:
-    exceptions = {
-      "/apps/",
-      "/notebooks-archives/",
-      "/generated-files/",
-      "Untitled*.ipynb",
-      "wrappers/pyagrum/cmake",
-    }
-    with open(os.devnull, "w") as blackhole:
-      for src in srcPyIpynbAgrum():
-        if any(subs in src for subs in exceptions):
-          continue
-
-        line = cfg.ruff + " format --check " + src
-        if call(line, shell=True, stderr=blackhole, stdout=blackhole) == 1:
-          nbrError += 1
-          if correction:
-            line = cfg.ruff + " format " + src
-            call(line, shell=True, stderr=blackhole, stdout=blackhole)
-            notif(f"[[{src.split('/')[-1]}]] : [[(✓)]]")
+  if tool_path is None:
+    warn(f"No correct [[{tool_name}]] tool has been found.")
+    return 0
+  with open(os.devnull, "w") as blackhole:
+    for src in sources:
+      if any(s in src for s in exceptions):
+        continue
+      if call(check_cmd_fn(tool_path, src), shell=True, stderr=blackhole, stdout=blackhole) == 1:
+        nbrError += 1
+        if correction:
+          if fix_stderr_visible:
+            call(fix_cmd_fn(tool_path, src), shell=True)
           else:
-            notif(f"[[{src}]] : Failed")
+            call(fix_cmd_fn(tool_path, src), shell=True, stderr=blackhole, stdout=blackhole)
+          notif(f"[[{src.split('/')[-1]}]] : [[(✓)]]")
         else:
-          notif_oneline(f"[[{src.split('/')[-1]}]] OK")
-
+          notif(f"err [[{src}]]")
+      else:
+        notif_oneline(f"[[{src.split('/')[-1]}]] OK")
   return nbrError
+
+
+def _check_ruff_format(details: bool, correction: bool) -> int:
+  return _check_code_format(
+    sources=srcPyIpynbAgrum(),
+    tool_path=cfg.ruff,
+    tool_name="ruff",
+    check_cmd_fn=lambda t, s: f"{t} format --check {s}",
+    fix_cmd_fn=lambda t, s: f"{t} format {s}",
+    exceptions={"/apps/", "/notebooks-archives/", "/generated-files/",
+                "Untitled*.ipynb", "wrappers/pyagrum/cmake"},
+    details=details,
+    correction=correction,
+  )
 
 
 def _check_clang_format(details: bool, correction: bool) -> int:
-  nbrError = 0
-  if cfg.clangformat is None:
-    warn("No correct [[clang-format]] tool has been found.")
-  else:
-    with open(os.devnull, "w") as blackhole:
-      for src in srcAgrum():
-        exceptions = {f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"}
-        if any(subs in src for subs in exceptions):
-          continue
-
-        line = cfg.clangformat + " " + src + " | cmp " + src + " -"
-        if call(line, shell=True, stderr=blackhole, stdout=blackhole) == 1:
-          nbrError += 1
-          if correction:
-            line = cfg.clangformat + " -i " + src
-            call(line, shell=True)
-            notif(f"Incorrect format [[{src:80}]] : [[(✓)]]")
-          else:
-            notif(f"err [[{src}]]")
-        else:
-          notif_oneline(f"[[{src.split('/')[-1]}]] OK")
-
-  return nbrError
+  return _check_code_format(
+    sources=srcAgrum(),
+    tool_path=cfg.clangformat,
+    tool_name="clang-format",
+    check_cmd_fn=lambda t, s: f"{t} {s} | cmp {s} -",
+    fix_cmd_fn=lambda t, s: f"{t} -i {s}",
+    exceptions={f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"},
+    details=details,
+    correction=correction,
+    fix_stderr_visible=True,
+  )
 
 
 def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
@@ -409,8 +404,6 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
         code += line
 
     err = 0
-    if filename.endswith("bdd.h"):
-      print(f"{base=} {licence=}")
     if licence.strip() != _template_cpp_license.strip():
       err = 1
       res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (1)"

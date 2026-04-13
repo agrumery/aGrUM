@@ -107,6 +107,13 @@ set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}/raw)
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files")
 file(MAKE_DIRECTORY ${CMAKE_SWIG_OUTDIR})
 
+# LTO support — evaluated once at file scope so the result is available inside the macro
+include(CheckIPOSupported)
+check_ipo_supported(RESULT _AGRUM_IPO_SUPPORTED OUTPUT _AGRUM_IPO_OUTPUT)
+if(NOT _AGRUM_IPO_SUPPORTED)
+  message(STATUS "pyAgrum: LTO not supported by this toolchain (${_AGRUM_IPO_OUTPUT})")
+endif()
+
 macro(gum_add_python_module MODULENAME)
   string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
 
@@ -192,6 +199,23 @@ macro(gum_add_python_module MODULENAME)
     target_compile_options(${_PYAGRUMLIB} PRIVATE ${SWIG_COMPILE_FLAGS})
   endif()
   set_target_properties(${_PYAGRUMLIB} PROPERTIES UNITY_BUILD OFF)
+
+  # LTO: eliminates dead code across translation units at link time
+  if(_AGRUM_IPO_SUPPORTED)
+    set_property(TARGET ${_PYAGRUMLIB} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+  endif()
+
+  # Dead-strip: drop unreachable functions/data at link time
+  #   macOS: -dead_strip works natively on Mach-O without per-section flags
+  #   Linux: requires -ffunction-sections/-fdata-sections on all TUs (set in CompilOptions)
+  #   MSVC:  /OPT:REF removes unreferenced COMDATs; /OPT:ICF folds identical ones
+  if(APPLE)
+    target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,-dead_strip)
+  elseif(MSVC)
+    target_link_options(${_PYAGRUMLIB} PRIVATE /OPT:REF /OPT:ICF)
+  elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--gc-sections)
+  endif()
 
   install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
   install(TARGETS ${_PYAGRUMLIB} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)

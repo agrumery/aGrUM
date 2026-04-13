@@ -30,14 +30,15 @@ namespace gum {
       while (getline(*_instream_, _line_)) {
         _nbLine_++;
 
-        if (_line_.size() == std::size_t(0)) continue;
+        if (_line_.size() == static_cast< std::size_t >(0)) { continue; }
 
         // fast recognition of commented or empty lines lines
-        std::size_t lastPos = _line_.find_first_not_of(_spaces_, std::size_t(0));
+        const std::size_t lastPos
+            = _line_.find_first_not_of(_spaces_, static_cast< std::size_t >(0));
 
-        if (lastPos == std::string::npos) continue;
+        if (lastPos == std::string::npos) { continue; }
 
-        if (_line_.at(lastPos) == _commentMarker_) continue;
+        if (_line_.at(lastPos) == _commentMarker_) { continue; }
 
         _tokenize_(_line_);
         return true;
@@ -46,27 +47,30 @@ namespace gum {
       return false;
     }
 
-
     // search for quote taking into account the '\'...
-    INLINE std::size_t CSVParser::_correspondingQuoteMarker_(std::string_view str,
-                                                             std::size_t      pos) const {
-      std::size_t res = pos, before;
+    INLINE std::size_t CSVParser::_correspondingQuoteMarker_(const std::string_view str,
+                                                             const std::size_t      pos) const {
+      auto res = pos;
 
       while (true) {
         res = str.find_first_of(_quoteMarker_, res + 1);
 
-        if (res == std::string::npos) return res;   // no quote found
+        if (res == std::string::npos) {
+          return res;   // no quote found
+        }
 
-        before = str.find_last_not_of('\\', res - 1);
+        const std::size_t before = str.find_last_not_of('\\', res - 1);
 
-        if (before == std::string::npos) return res;   // quote found, it is the good one
+        if (before == std::string::npos) {
+          return res;   // quote found, it is the good one
+        }
 
-        if ((res - before) % 2 == 1)
+        if ((res - before) % 2 == 1) {
           return res;   // the quote is the good one, even if there are some '\'
-                        // before
+        }
+        // before
       }
     }
-
 
     // returns the current parsed line
     INLINE const std::vector< std::string >& CSVParser::current() const {
@@ -74,7 +78,6 @@ namespace gum {
 
       return _data_;
     }
-
 
     // returns the current nbLine of parser line
     INLINE std::size_t CSVParser::nbLine() const {

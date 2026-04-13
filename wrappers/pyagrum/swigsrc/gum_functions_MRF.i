@@ -57,7 +57,7 @@ def loadMRF(filename, listeners=None, verbose=False):
   ----------
   filename: str
     the name of the input file
-  listeners: List[Object]
+  listeners: list[Object]
     list of functions to execute
   verbose: bool
     whether to print or not warning messages
@@ -178,7 +178,7 @@ def getPosterior(model, *, target, evs=None):
     The probabilistic Graphical Model
   target: string or int
     variable name or id (forced keyword argument)
-  evs:  Dict[name|id:val, name|id : List[ val1, val2 ], ...]. (optional forced keyword argument)
+  evs:  dict[name|id:val, name|id : list[ val1, val2 ], ...]. (optional forced keyword argument)
     the (hard and soft) evidence
 
   Returns

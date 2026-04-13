@@ -130,10 +130,10 @@ class DiscreteTypeProcessor:
   """
 
   def __init__(
-    self,
-    defaultDiscretizationMethod="quantile",
-    defaultNumberOfBins=10,
-    discretizationThreshold=25,
+     self,
+     defaultDiscretizationMethod="quantile",
+     defaultNumberOfBins=10,
+     discretizationThreshold=25,
   ):
     """
     Initializes the DiscreteTypeProcessor object.
@@ -373,7 +373,7 @@ class DiscreteTypeProcessor:
             Contains the data that should be discretized
     Returns
     -------
-        List[float]
+        list[float]
           the edges of the bins the algorithm has chosen.
     """
 
@@ -448,7 +448,7 @@ class DiscreteTypeProcessor:
             Contains the possible values of y.
     Returns
     -------
-        List[float]
+        list[float]
          a list of the edges of the bins that are chosen by this algorithm
     """
     xAndY = numpy.concatenate((X, y), axis=1)
@@ -548,10 +548,10 @@ class DiscreteTypeProcessor:
         ]
 
         currentValues["rightSubintervalClass0"] = (
-          Class0ByLargeInterval[position] - currentValues["leftSubintervalClass0"]
+           Class0ByLargeInterval[position] - currentValues["leftSubintervalClass0"]
         )
         currentValues["rightSubintervalClass1"] = (
-          Class1ByLargeInterval[position] - currentValues["leftSubintervalClass1"]
+           Class1ByLargeInterval[position] - currentValues["leftSubintervalClass1"]
         )
         NRightInterval = currentValues["rightSubintervalClass0"] + currentValues["rightSubintervalClass1"]
 
@@ -651,11 +651,11 @@ class DiscreteTypeProcessor:
           position += 1
           if Class0ByLargeInterval[position] > Class1ByLargeInterval[position]:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[position], 2) / (
-              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
+               Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
             )
           else:
             oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[position], 2) / (
-              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
+               Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
             )
           currentSumClass0 = 0
           currentSumClass1 = 0
@@ -699,11 +699,11 @@ class DiscreteTypeProcessor:
         k = k + 1
         if Class0ByLargeInterval[0] > Class1ByLargeInterval[0]:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[0], 2) / (
-            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
+             Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
           )
         else:
           oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[0], 2) / (
-            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
+             Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
           )
 
       else:
@@ -736,7 +736,7 @@ class DiscreteTypeProcessor:
             automatically calculated.
     Returns
     -------
-        List[float]
+        list[float]
           a list of the edges of the bins that are chosen by this algorithm
     """
     Xsorted = X[X.argsort(axis=None)]
@@ -788,8 +788,8 @@ class DiscreteTypeProcessor:
         for eprime in range(k - 1, e):
           if binCount[e] > binCount[eprime]:
             temp = Bkminus1[eprime] - (binCount[e] - binCount[eprime]) * (
-              math.log(2 * epsilon * (binCount[e] - binCount[eprime]))
-              - math.log(n * (candidateCutPoints[e] - candidateCutPoints[eprime]))
+               math.log(2 * epsilon * (binCount[e] - binCount[eprime]))
+               - math.log(n * (candidateCutPoints[e] - candidateCutPoints[eprime]))
             )
           else:
             temp = Bkminus1[eprime]
@@ -852,12 +852,12 @@ class DiscreteTypeProcessor:
     n = len(X)
 
     if (
-      variableName not in self.discretizationParametersDictionary
+       variableName not in self.discretizationParametersDictionary
     ):  # The user has not manually set the discretization parameters for this variable
       if (
-        isNumeric
-        and 1 <= self.discretizationThreshold < len(foundValuesX)
-        or (self.discretizationThreshold < 1 and len(foundValuesX) / len(X) > self.discretizationThreshold)
+         isNumeric
+         and 1 <= self.discretizationThreshold < len(foundValuesX)
+         or (self.discretizationThreshold < 1 and len(foundValuesX) / len(X) > self.discretizationThreshold)
       ):
         self.discretizationParametersDictionary[variableName] = {}
         self.discretizationParametersDictionary[variableName]["method"] = self.defaultMethod
@@ -972,7 +972,7 @@ class DiscreteTypeProcessor:
           + " bins for the variable "
           + str(variableName)
           + "gave only 1 bin. Try increasing the number of bins used by this variable using "
-          "setDiscretizationParameters to avoid this error"
+            "setDiscretizationParameters to avoid this error"
         )
 
       self.totalNumberOfBins += len(binEdges) - 1
@@ -986,14 +986,14 @@ class DiscreteTypeProcessor:
 
   @staticmethod
   def _divideIntervalMDLP(
-    minimalValues,
-    shannonEntropyByLargeInterval,
-    Class0ByLargeInterval,
-    Class1ByLargeInterval,
-    continueDividingInterval,
-    totalCountByLargeInterval,
-    position,
-    binEdgesIndex,
+     minimalValues,
+     shannonEntropyByLargeInterval,
+     Class0ByLargeInterval,
+     Class1ByLargeInterval,
+     continueDividingInterval,
+     totalCountByLargeInterval,
+     position,
+     binEdgesIndex,
   ):
     shannonEntropy = shannonEntropyByLargeInterval[position]
 
@@ -1003,14 +1003,14 @@ class DiscreteTypeProcessor:
     # the number of classes in the interval is equal to 1, then the shannon entropy will be 0 so the product of the 2
     # will be 0.
     deltaS = math.log2(7) - (
-      2 * shannonEntropy
-      - 2 * minimalValues["leftSubintervalShannonEntropy"]
-      - 2 * minimalValues["rightSubintervalShannonEntropy"]
+       2 * shannonEntropy
+       - 2 * minimalValues["leftSubintervalShannonEntropy"]
+       - 2 * minimalValues["rightSubintervalShannonEntropy"]
     )
 
     if (
-      gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]
-      or len(Class0ByLargeInterval) == 1
+       gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]
+       or len(Class0ByLargeInterval) == 1
     ):
       binEdgesIndex.insert(position, minimalValues["boundaryIndex"])
 
@@ -1026,7 +1026,7 @@ class DiscreteTypeProcessor:
       Class0ByLargeInterval[position] = minimalValues["leftSubintervalClass0"]
       Class1ByLargeInterval[position] = minimalValues["leftSubintervalClass1"]
       totalCountByLargeInterval[position] = (
-        minimalValues["leftSubintervalClass0"] + minimalValues["leftSubintervalClass1"]
+         minimalValues["leftSubintervalClass0"] + minimalValues["leftSubintervalClass1"]
       )
       shannonEntropyByLargeInterval[position] = minimalValues["leftSubintervalShannonEntropy"]
 

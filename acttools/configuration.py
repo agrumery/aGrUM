@@ -45,6 +45,7 @@ Specification of options and default values for the configuration of act
 import sys
 import os
 import re
+import shutil
 from argparse import ArgumentParser
 from subprocess import PIPE, Popen
 from typing import Any
@@ -99,13 +100,10 @@ def cmdline(command: str) -> str:
 
 
 def is_tool(prog: str, longpath=False) -> str | None:
-  progw = prog + ".exe"
-  for dirname in os.environ["PATH"].split(os.pathsep):
-    if os.path.exists(os.path.join(dirname, prog)):
-      return prog if not longpath else '"' + os.path.join(dirname, prog) + '"'
-    if os.path.exists(os.path.join(dirname, progw)):
-      return progw if not longpath else '"' + os.path.join(dirname, progw) + '"'
-  return None
+  found = shutil.which(prog) or shutil.which(prog + ".exe")
+  if found is None:
+    return None
+  return f'"{found}"' if longpath else os.path.basename(found)
 
 
 def check_tools() -> tuple[str, str, str, str, str, str, str]:

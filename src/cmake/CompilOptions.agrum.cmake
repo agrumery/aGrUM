@@ -71,4 +71,18 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     check_cxx_compiler_flag("-fno-assume-unique-vtables" _AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
 endif ()
 
+# Emit one section per function/variable so the linker can dead-strip unused code.
+#   Linux: -ffunction-sections/-fdata-sections (used with --gc-sections on _pyagrum target)
+#   MSVC:  /Gy enables function-level linking (used with /OPT:REF on _pyagrum target)
+if (NOT CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Gy")
+    elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        check_cxx_compiler_flag("-ffunction-sections" _AGRUM_SUPPORT_FUNCTION_SECTIONS)
+        if (_AGRUM_SUPPORT_FUNCTION_SECTIONS)
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections -fdata-sections")
+        endif ()
+    endif ()
+endif ()
+
 set(CMAKE_CXX_FLAGS "${AGRUM_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")

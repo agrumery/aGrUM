@@ -105,7 +105,7 @@ class IMixtureInference:
 
     Returns
     -------
-    List[pyagrum.Tensor]
+    list[pyagrum.Tensor]
         List of (not normalized) posteriors of variable ``name`` for each BN in the model, excluding reference BN.
     """
     return {ie._model.property("name"): pyagrum.Tensor(ie.posterior(name)) for ie in self._inferences}
@@ -222,7 +222,7 @@ class BootstrapMixtureInference(IMixtureInference):
 
     Returns
     -------
-    Tuple[pyagrum.Tensor, pyagrum.Tensor]
+    tuple[pyagrum.Tensor, pyagrum.Tensor]
         Two tensors to store the quantile values. Each tensor stores the quantile for each state of the variable.
         The values considered are those of the BNs in the Mixture (excluding reference BN).
 

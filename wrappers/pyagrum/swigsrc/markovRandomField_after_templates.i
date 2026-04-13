@@ -83,7 +83,7 @@ def addVariables(self,listFastVariables,default_nbr_mod=2):
 
    Parameters
    ----------
-   listFastVariables: List[str]
+   listFastVariables: list[str]
      the list of variables in 'fast' syntax.
    default_nbr_mod: int
      the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
@@ -91,7 +91,7 @@ def addVariables(self,listFastVariables,default_nbr_mod=2):
 
    Returns
    -------
-   List[int]
+   list[int]
      the list of created ids.
    """
    return [self.add(descr,default_nbr_mod) for descr in listFastVariables]

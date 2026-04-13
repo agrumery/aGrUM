@@ -56,7 +56,7 @@ class ActBuilderDocSphinx(ActBuilder):
       self.run_start("Compiling pyAgrum")
       buildcurrent = self.current.copy()
       buildcurrent["action"] = "lib"
-      buildcurrent["taret"] = "pyAgrum"
+      buildcurrent["target"] = "pyAgrum"
       buildcurrent["mode"] = "Release"
       from .ActBuilderPyAgrum import ActBuilderPyAgrum
 

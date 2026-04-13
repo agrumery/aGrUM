@@ -75,19 +75,19 @@ def MRF2UGdot(
     The Markov random field
   size : int |str
     Size of the rendered graph
-  nodeColor : Dict[int,float]
+  nodeColor : dict[int,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  edgeWidth : Dict[Tuple(int,int),float]
+  edgeWidth : dict[Tuple(int,int),float]
     a edgeMap of values to be shown as width of edges
-  edgeLabel: Dict[Tuple(int,int),str]
+  edgeLabel: dict[Tuple(int,int),str]
     an edgeMap of labels to be shown next to edges
-  edgeColor: Dict[Tuple(int,int),float]
+  edgeColor: dict[Tuple(int,int),float]
     a edgeMap of values to be shown as color of edges
   cmapNode : matplotlib.color.colormap
     color map to show the vals of Nodes
   cmapEdge : matplotlib.color.colormap
     color map to show the vals of Edges.
-  showMsg : Dict[int,str]
+  showMsg : dict[int,str]
      a nodeMap of values to be shown as tooltip
 
   Returns
@@ -171,13 +171,13 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
     the model
   size: float|str
     the size of the rendered graph
-  nodeColor: Dict[str,float]
+  nodeColor: dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   factorColor:
     a function returning a value (between 0 and 1) to be shown as a color of factor.
   cmapNode: matplotlib.colors.Colormap
     colormap for nodes
-  showMsg: Dict[str,str]
+  showMsg: dict[str,str]
     a nodeMap of values to be shown as tooltip
 
   Returns

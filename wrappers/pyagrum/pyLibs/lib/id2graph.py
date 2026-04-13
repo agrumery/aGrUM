@@ -146,7 +146,7 @@ def LIMIDinference2dot(diag, size, engine, evs, targets):
     the size of the rendered graph
   engine: pyagrum.InfluenceDiagramInference
     the inference algorithm used. If None, ShaferShenoyLIMIDInference will be used
-  evs: Dict[str,str|int|List[float]]
+  evs: dict[str,str|int|list[float]]
     the evidence
   targets: Set[str]
     set of targetted variable. If targets={} then each node is a target

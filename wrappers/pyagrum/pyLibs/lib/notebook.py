@@ -665,7 +665,7 @@ def getPosterior(bn, evs, target):
   ----------
   bn: "pyagrum.BayesNet"
     the BayesNet
-  evs: Dict[str|int:int|str|List[float]]
+  evs: dict[str|int:int|str|list[float]]
     map of evidence
   target: str|int
     name of target variable
@@ -687,7 +687,7 @@ def showPosterior(bn, evs, target):
   ----------
   bn: "pyagrum.BayesNet"
     the BayesNet
-  evs: Dict[str|int:int|str|List[float]]
+  evs: dict[str|int:int|str|list[float]]
     map of evidence
   target: str|int
     name of target variable
@@ -771,15 +771,15 @@ def showMRF(
    'graph' | 'factorgraph’ | None (default)
   size : str
    size (for graphviz) of the rendered graph
-  nodeColor: Dict[int,float]
+  nodeColor: dict[int,float]
    a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
    a function returning a value (between 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
-  edgeWidth: Dict[Tuple[int,int],float]
+  edgeWidth: dict[tuple[int,int],float]
    a edgeMap of values to be shown as width of edges  (used when view='graph')
-  edgeColor: Dict[int,float]
+  edgeColor: dict[int,float]
    a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
-  cmapNode: Dict[Tuple[int,int],float]
+  cmapNode: dict[tuple[int,int],float]
    color map to show the colors (if cmapEdge is None, this color map is used also for edges)
   cmapEdge: "matplotlib.ColorMap"
    color map to show the edge color if distinction is needed
@@ -968,13 +968,13 @@ def getMRF(
     'graph' | 'factorgraph’ | None (default)
   size: str
     size (for graphviz) of the rendered graph
-  nodeColor: Dict[str,float]
+  nodeColor: dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[str,float]
+  factorColor: dict[str,float]
     a function returning a value (beeween 0 and 1) to be shown as a color of factor. (used when view='factorgraph')
-  edgeWidth: Dict[Tuple[str,str],float]
+  edgeWidth: dict[tuple[str,str],float]
     a edgeMap of values to be shown as width of edges  (used when view='graph')
-  edgeColor: Dict[Tuple[str,str],float]
+  edgeColor: dict[tuple[str,str],float]
     a edgeMap of values (between 0 and 1) to be shown as color of edges (used when view='graph')
   cmapNode: matplotlib.ColorMap
     color map to show the colors (if cmapEdge is None, cmapNode is used for edges)
@@ -1114,19 +1114,19 @@ def showInference(model, **kwargs):
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
   engine: pyagrum.Inference
     inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
-  evs: Dict[int|str,int|str|List[float]]
+  evs: dict[int|str,int|str|list[float]]
     map of evidence
   targets: Set[str]
     set of targets
   size: string
     size (for graphviz) of the rendered graph
-  nodeColor: Dict[str,float]
+  nodeColor: dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
     a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  arcWidth: : Dict[(str,str),float]
+  arcWidth: : dict[(str,str),float]
     an arcMap of values to be shown as width of arcs
-  arcColor: : Dict[(str,str),float]
+  arcColor: : dict[(str,str),float]
     a arcMap of values (between 0 and 1) to be shown as color of arcs
   cmapNode: matplotlib.ColorMap
      map to show the color of nodes and arcs
@@ -1159,19 +1159,19 @@ def getInference(model, **kwargs):
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
   engine: pyagrum.Inference
     inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
-  evs: Dict[int|str,int|str|List[float]]
+  evs: dict[int|str,int|str|list[float]]
     map of evidence
   targets: Set[str]
     set of targets
   size: string
     size (for graphviz) of the rendered graph
-  nodeColor: Dict[str,float]
+  nodeColor: dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
     a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  arcWidth: : Dict[(str,str),float]
+  arcWidth: : dict[(str,str),float]
     an arcMap of values to be shown as width of arcs
-  arcColor: : Dict[(str,str),float]
+  arcColor: : dict[(str,str),float]
     a arcMap of values (between 0 and 1) to be shown as color of arcs
   cmapNode: matplotlib.ColorMap
      map to show the color of nodes and arcs
@@ -1208,7 +1208,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
    number of digits to show
   withColors: Boolean
    background color for proba cells or not
-  varnames: Dict[str,str]
+  varnames: dict[str,str]
    a mapping that gives the aliases for variables name in the table
   asString: Boolean
    display the table or a HTML string
@@ -1406,7 +1406,7 @@ def showTensor(pot, digits=None, withColors=None, varnames=None):
     number of digits to show
   withColors : bool
     background color for proba cells or not
-  varnames : List[str]
+  varnames : list[str]
     the aliases for variables name in the table
   """
   if withColors is None:
@@ -1437,7 +1437,7 @@ def getTensor(pot, digits=None, withColors=None, varnames=None):
     number of digits to show
   withColors : bool
     background for proba cells or not
-  varnames : List[str]
+  varnames : list[str]
     the aliases for variables name in the table
 
   Returns
@@ -1469,7 +1469,7 @@ def getSideBySide(*args, **kwargs):
   ----------
   args: str
     HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  captions: List[str], optional
+  captions: list[str], optional
     list of captions
   valign: str
     vertical position in the row (top|middle|bottom, middle by default)
@@ -1530,7 +1530,7 @@ def sideBySide(*args, **kwargs):
   ----------
   args: str
     HMTL fragments as string arg, arg._repr_html_() or str(arg)
-  captions: List[str], optional
+  captions: list[str], optional
     list of captions
   valign: str
     vertical position in the row (top|middle|bottom, middle by default)
@@ -1695,13 +1695,13 @@ def show(model, **kwargs):
 
   size: str
     size (for graphviz) to represent the graphical model (no effect for Tensor)
-  nodeColor: Dict[str,float]
+  nodeColor: dict[str,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
-  factorColor: Dict[int,float]
+  factorColor: dict[int,float]
     a nodeMap of values (between 0 and 1) to be shown as color of factors (in MarkovRandomField representation)
-  arcWidth: : Dict[(str,str),float]
+  arcWidth: : dict[(str,str),float]
     an arcMap of values to be shown as width of arcs
-  arcColor: : Dict[(str,str),float]
+  arcColor: : dict[(str,str),float]
     a arcMap of values (between 0 and 1) to be shown as color of arcs
   cmapNode: matplotlib.ColorMap
      map to show the color of nodes and arcs
@@ -1837,7 +1837,7 @@ def showCausalImpact(
   on: str | NameSet,
   doing: str | NameSet,
   knowing: Optional[NameSet] = None,
-  values: Optional[Dict[str, int]] = None,
+  values: Optional[dict[str, int]] = None,
 ):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation
@@ -1852,7 +1852,7 @@ def showCausalImpact(
     the interventions
   knowing: str | Set[str]
     the observations
-  values: Dict[str,int] default=None
+  values: dict[str,int] default=None
     value for certain variables
   """
   html = getCausalImpact(model, on, doing, knowing, values)

@@ -152,7 +152,7 @@ class ShapValues:
 
     Returns
     -------
-    Dict[str, float]
+    dict[str, float]
         A dictionary containing the importances of each variable in the input data.
     """
     explainer = ConditionalShapValues(self.bn, self.target, self.logit)
@@ -183,7 +183,7 @@ class ShapValues:
 
     Returns
     -------
-    Dict[str, float]
+    dict[str, float]
         A dictionary containing the importances of each variable in the input data.
     """
     explainer = MarginalShapValues(self.bn, self.target, None, sample_size, self.logit)
@@ -216,7 +216,7 @@ class ShapValues:
 
     Returns
     -------
-    Dict[str, float]
+    dict[str, float]
         A dictionary containing the importances of each variable in the input data.
     """
     explainer = CausalShapValues(self.bn, self.target, None, sample_size, self.logit)

@@ -41,7 +41,8 @@
 from typing import List
 
 from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
-import concurrent
+import concurrent.futures
+import logging
 import nbformat
 import random
 import time
@@ -57,14 +58,23 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 os.environ["PYDEVD_DISABLE_FILE_VALIDATION"] = "1"
 
+# Width reserved for the notebook name in the live display.
+_NB_NAME_WIDTH = 44
+
+# Loggers that are noisy during headless notebook execution.
+_NOISY_LOGGERS = ("nbconvert", "jupyter_client", "jupyter_core", "traitlets")
+
 
 def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
-  err = 0
-  res = "ok"
+  # Silence noisy loggers — we are in a worker subprocess.
+  for name in _NOISY_LOGGERS:
+    logging.getLogger(name).setLevel(logging.CRITICAL)
 
+  err = 0
+  MAX_KERNEL_RETRIES = 3
   starttime = time.time()
   try:
-    while True:
+    for attempt in range(MAX_KERNEL_RETRIES):
       try:
         ep = ExecutePreprocessor(timeout=5000, kernel_name="python3")
         ep.log_output = False
@@ -82,11 +92,22 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
             }
           ),
         )
-        ep.preprocess(nb, {"metadata": {"path": "../doc/sphinx/notebooks/"}})
+        # Redirect worker stdout/stderr to /dev/null so that any remaining
+        # chatter from the kernel or nbconvert does not pollute the display.
+        with open(os.devnull, "w") as _devnull:
+          _saved = sys.stdout, sys.stderr
+          sys.stdout = sys.stderr = _devnull
+          try:
+            ep.preprocess(nb, {"metadata": {"path": "../doc/sphinx/notebooks/"}})
+          finally:
+            sys.stdout, sys.stderr = _saved
         break
       except RuntimeError as e:
-        if str(e) == "Kernel died before replying to kernel_info" or str(e) == "Kernel didn't respond in 60 seconds":
-          time.sleep(random.randint(5, 10) / 10.0)
+        if str(e) in {"Kernel died before replying to kernel_info", "Kernel didn't respond in 60 seconds"}:
+          if attempt < MAX_KERNEL_RETRIES - 1:
+            time.sleep(random.randint(5, 10) / 10.0)
+          else:
+            raise CellExecutionError(traceback=str(e.__traceback__), ename=str(e), evalue="")
         else:
           raise CellExecutionError(traceback=str(e.__traceback__), ename=str(e), evalue="")
   except CellExecutionError:
@@ -95,18 +116,16 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
     with open(errorfilename, "w") as errfn:
       traceback.print_exc(file=errfn)
 
-    # Strip the timestamp prefix (YYYYMMDD_HHMM_) to show just the notebook name.
-    _bn = os.path.basename(errorfilename)
-    _parts = _bn.split("_", 2)
-    res = (_parts[2] if len(_parts) == 3 else _bn) + " [ERROR]"
-
   duration = time.time() - starttime
-  res = f"[ {duration:8.2f}s ] {os.path.basename(notebook_filename)[0:40]:40} {res}"
-
-  return err, res, duration
+  return err, os.path.basename(notebook_filename), duration
 
 
-def runNotebooks(lonb: List[str] = None):
+def _nb_line(icon: str, dur_str: str, name: str) -> str:
+  """Format one notebook status line for the live display."""
+  return f"  {icon} [{dur_str}] {name[: _NB_NAME_WIDTH]:{_NB_NAME_WIDTH}}"
+
+
+def runNotebooks(lonb: list[str] = None):
   # 80-Applications_ipywidgets.ipynb requires ipywidgets and a live kernel display;
   # it cannot run headlessly under nbconvert.
   excludes = {"80-Applications_ipywidgets.ipynb"}
@@ -135,35 +154,39 @@ def runNotebooks(lonb: List[str] = None):
   _results: dict[int, tuple[int, str, float]] = {}
   _display_count = 0
 
+  _SEP = "─" * (_NB_NAME_WIDTH + 16)
   futures = []
 
   def done(fn):
     nonlocal _display_count
     _results[id(fn)] = fn.result()
 
+    # Move cursor up to overwrite previous block (separator + one line per
+    # future + separator = 2 + len(futures) lines), then erase to end.
     if _display_count > 0:
-      print(f"\033[{3 + len(futures)}A")
+      sys.stdout.write(f"\033[{2 + len(futures)}A\033[J")
+      sys.stdout.flush()
     _display_count += 1
 
-    print("=" * 58)
+    print(_SEP)
     for f in futures:
       if id(f) in _results:
-        _, res, _ = _results[id(f)]
-        print(res)
+        e, name, dur = _results[id(f)]
+        icon = "💥" if e else "✅"
+        print(_nb_line(icon, f"{dur:7.2f}s", name))
+      elif f.running():
+        print(_nb_line("⏳", " ...... ", os.path.basename(f.filename)))
       else:
-        state = "..." if f.running() else "zzz"
-        print(f"[ ......... ] {os.path.basename(f.filename)[0:40]:40} {state}]")
-    print("=" * 58)
+        print(_nb_line("💤", "        ", os.path.basename(f.filename)))
+    print(_SEP)
 
-  executor = concurrent.futures.ProcessPoolExecutor(None)
-  for notebook_filename in lonb:
-    fut = executor.submit(processNotebook, notebook_filename)
-    fut.add_done_callback(done)
-    fut.filename = notebook_filename
-    futures.append(fut)
-  concurrent.futures.wait(futures)
-
-  time.sleep(1)
+  with concurrent.futures.ProcessPoolExecutor() as executor:
+    for notebook_filename in lonb:
+      fut = executor.submit(processNotebook, notebook_filename)
+      fut.add_done_callback(done)
+      fut.filename = notebook_filename
+      futures.append(fut)
+    concurrent.futures.wait(futures)
 
   errs = 0
   total_time = 0

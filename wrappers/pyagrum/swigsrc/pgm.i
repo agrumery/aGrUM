@@ -74,7 +74,7 @@
 
     Yield
     -----
-    Tuple[int,str]
+    tuple[int,str]
       The index of the variable and its name
     """
     for i in self.nodes():

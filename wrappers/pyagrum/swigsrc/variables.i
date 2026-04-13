@@ -57,7 +57,7 @@
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the label and its value
       """
       for i in range(self.domainSize()):

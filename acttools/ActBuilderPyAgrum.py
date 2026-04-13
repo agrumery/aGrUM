@@ -47,7 +47,7 @@ import time
 from .configuration import cfg
 from .utils import *
 
-from .ActBuilder import ActBuilder
+from .ActBuilder import ActBuilder, cmake_compiler_flags
 
 
 def _load_pyagrum_test_modules() -> set[str]:
@@ -157,37 +157,7 @@ class ActBuilderPyAgrum(ActBuilder):
 
     line += f' -DPython_EXECUTABLE="{self.current["python3target"]}"'
 
-    match self.current["compiler"]:
-      case "mvsc22":
-        line += ' -G "Visual Studio 17 2022" -A x64'
-      case "mvsc22_32":
-        line += ' -G "Visual Studio 17 2022" -A Win32'
-      case "mvsc19":
-        line += ' -G "Visual Studio 16 2019" -A x64'
-      case "mvsc19_32":
-        line += ' -G "Visual Studio 16 2019" -A Win32'
-      case "mvsc17":
-        line += ' -G "Visual Studio 15 2017 Win64"'
-      case "mvsc17_32":
-        line += ' -G "Visual Studio 15 2017"'
-      case "mvsc15":
-        line += ' -G "Visual Studio 14 2015 Win64"'
-      case "mvsc15_32":
-        line += ' -G "Visual Studio 14 2015"'
-      case "mingw64":
-        line += ' -G "MinGW Makefiles"'
-      case "clang":
-        if self.current["clangpath"] != "":
-          clangp = os.path.join(self.current["clangpath"], "clang")
-        else:
-          clangp = "clang"
-        line += f" -DCMAKE_C_COMPILER={clangp} -DCMAKE_CXX_COMPILER={clangp}++"
-      case _:  # gcc
-        if self.current["gccpath"] != "":
-          gccp = os.path.join(self.current["gccpath"], "g")
-        else:
-          gccp = "g"
-        line += f" -DCMAKE_C_COMPILER={gccp}cc -DCMAKE_CXX_COMPILER={gccp}++"
+    line += cmake_compiler_flags(self.current)
 
     if self.current["threads"] == "omp":
       line += " -DCMAKE_GUM_THREADS=omp"
@@ -265,10 +235,23 @@ class ActBuilderPyAgrum(ActBuilder):
     return line
 
   def _cmake_needed(self) -> bool:
-    """Return True if cmake must run: cache absent or any CMakeLists.txt/.cmake in the source tree is newer than the cache."""
+    """Return True if cmake must run: cache absent, install prefix changed, or any CMakeLists.txt/.cmake in the source tree is newer than the cache."""
     cache = "CMakeCache.txt"
     if not os.path.exists(cache):
       return True
+    # If the destination changed (e.g. wheel/pipinstall uses a fresh tmp dir),
+    # cmake must re-run so CMAKE_INSTALL_PREFIX is updated before make install.
+    if "destination" in self.current:
+      try:
+        with open(cache) as f:
+          for line in f:
+            if line.startswith("CMAKE_INSTALL_PREFIX:PATH="):
+              cached_prefix = line.strip().split("=", 1)[1]
+              if os.path.normpath(cached_prefix) != os.path.normpath(self.current["destination"]):
+                return True
+              break
+      except OSError:
+        return True
     cache_mtime = os.path.getmtime(cache)
     source_root = os.path.normpath(os.path.join("..", "..", ".."))
     # The build tree lives at <source_root>/build/ — exclude it to avoid false

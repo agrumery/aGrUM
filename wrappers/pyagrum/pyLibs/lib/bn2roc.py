@@ -335,7 +335,7 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
 
   Returns
   -------
-    List[Tuple[int,int]]
+    list[tuple[int,int]]
       the list of points (FalsePositifRate,TruePositifRate)
   """
   if type(datasrc) is not str:
@@ -399,7 +399,7 @@ def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits
 
   Returns
   -------
-    List[Tuple[float,float]]
+    list[tuple[float,float]]
       the list of points (precision,recall)
   """
   if type(datasrc) is not str:

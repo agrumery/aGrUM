@@ -58,7 +58,7 @@ def _independenceListForPairs(bn, target=None):
 
   Returns
   -------
-  List[(str,str,List[str])]
+  list[(str,str,list[str])]
     A list of independence found in the structure of BN.
   """
 

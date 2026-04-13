@@ -68,7 +68,7 @@ class IMixture:
     """
     Returns
     -------
-    List[str]
+    list[str]
         The list of names of the BNs in the model (reference BN not included).
     """
     return list(self._bns.keys()).copy()
@@ -131,7 +131,7 @@ class IMixture:
     """
     Returns
     -------
-    Dict[str, float]
+    dict[str, float]
         The weights of all the BNs in the model.
     """
     return self._weights.copy()
@@ -270,7 +270,7 @@ class IMixture:
     """
     Returns
     -------
-    List[pyagrum.BayesNet]
+    list[pyagrum.BayesNet]
         A list containing a copy of all BNs in the model.
     """
     return [self.BN(name) for name in self.names()]

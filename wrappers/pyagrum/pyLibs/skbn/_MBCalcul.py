@@ -134,7 +134,7 @@ def _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, targe
           test data
       local_inst: pyagrum.Tensor
           Instantiation of the Markov Blanket EXCEPT the target
-      dictName: Dict[str : int]
+      dictName: dict[str : int]
           dictionary of the name of a variable and his column in the data base
       MarkovBlanket: pyagrum.BayesNet
           Markov Blanket to work on
@@ -169,7 +169,7 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
           test data
       local_inst: pyagrum.Tensor
           Instantiation of the Markov Blanket EXCEPT the target
-      dictName: Dict[str : int]
+      dictName: dict[str : int]
           dictionary of the name of a variable and his column in the data base
       MarkovBlanket: pyagrum.BayesNet
           Markov Blanket to work on
@@ -177,7 +177,7 @@ def _calcul_most_probable_for_nary_class(row, local_inst, dictName, MarkovBlanke
           Name of the target
   Returns
   -------
-      Tuple[int,proba]:
+      tuple[int,proba]:
           the value and the probability of the most probable class
   """
   p = _calcul_proba_for_nary_class(row, local_inst, dictName, MarkovBlanket, target)

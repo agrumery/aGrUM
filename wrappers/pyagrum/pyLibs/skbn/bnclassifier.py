@@ -642,7 +642,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
             test data, can be either dataFrame, matrix or name of a csv file
       the data
-    dictName: Dict[str,int]
+    dictName: dict[str,int]
       dictionary of the name of a variable and his column in the database
     with_labels: bool
       whether `data` contains the labels themselves or their ids.
@@ -673,7 +673,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
     X: {array-like, sparse matrix} of shape (n_samples, n_features) or str
             test data, can be either dataFrame, matrix or name of a csv file
       the datas
-    dictName: Dict[str,int]
+    dictName: dict[str,int]
       dictionary of the name of a variable and his column in the database
 
     Returns
@@ -825,7 +825,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           labelIndex = 0
           labelList = targetVariable.labels()
           while labelIndex < len(labelList):
-            if labelList[labelIndex] == self.label:
+            if labellist[labelIndex] == self.label:
               break
             labelIndex += 1
           y = y == labelIndex

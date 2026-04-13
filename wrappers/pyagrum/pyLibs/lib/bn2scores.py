@@ -64,7 +64,7 @@ def checkCompatibility(bn, fields, csv_name):
   ----------
   bn: pyagrum.BayesNet
     the model
-  fields: Dict[str,int]
+  fields: dict[str,int]
     Dict of name,position in the file
   csv_name: str
     name of the csv file
@@ -76,7 +76,7 @@ def checkCompatibility(bn, fields, csv_name):
 
   Returns
   -------
-  Dict[int,str]
+  dict[int,str]
     return a dictionary of position for BN variables in fields
   """
   res = {}
@@ -105,7 +105,7 @@ def computeScores(bn_name, csv_name, visible=False, dialect=None):
 
   Returns
   -------
-  Tuple[float,Dict[str,float]]
+  tuple[float,dict[str,float]]
     percentDatabaseUsed,scores
   """
   if isinstance(bn_name, str):

@@ -637,7 +637,7 @@ if len(args)>1:
 
         Yield
         -----
-        Tuple[pyagrum.Instantiation,float]
+        tuple[pyagrum.Instantiation,float]
           The instantiation and the value in the Tensor
         """
         for i in self.loopIn():

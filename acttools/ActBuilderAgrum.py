@@ -38,13 +38,14 @@
 #                                                                          #
 ############################################################################
 
+import glob
 import os
 import platform
 import time
 
 from .utils import *
 
-from .ActBuilder import ActBuilder
+from .ActBuilder import ActBuilder, cmake_compiler_flags
 
 
 def test_name(filename: str) -> str:
@@ -210,37 +211,7 @@ class ActBuilderAgrum(ActBuilder):
     else:
       line += " -DUSE_PROFILE=OFF"
 
-    match self.current["compiler"]:
-      case "mvsc22":
-        line += ' -A x64 -G "Visual Studio 17 2022"'
-      case "mvsc22_32":
-        line += ' -A Win32 -G "Visual Studio 17 2022"'
-      case "mvsc19":
-        line += ' -A x64 -G "Visual Studio 16 2019"'
-      case "mvsc19_32":
-        line += ' -A Win32 -G "Visual Studio 16 2019"'
-      case "mvsc17":
-        line += ' -G "Visual Studio 15 2017 Win64"'
-      case "mvsc17_32":
-        line += ' -G "Visual Studio 15 2017"'
-      case "mvsc15":
-        line += ' -G "Visual Studio 14 2015 Win64"'
-      case "mvsc15_32":
-        line += ' -G "Visual Studio 14 2015"'
-      case "mingw64":
-        line += ' -G "MinGW Makefiles"'
-      case "clang":
-        if self.current["clangpath"] != "":
-          clangp = os.path.join(self.current["clangpath"], "clang")
-        else:
-          clangp = "clang"
-        line += f" -DCMAKE_C_COMPILER={clangp} -DCMAKE_CXX_COMPILER={clangp}++"
-      case _:  # gcc
-        if self.current["gccpath"] != "":
-          gccp = os.path.join(self.current["gccpath"], "g")
-        else:
-          gccp = "g"
-        line += f" -DCMAKE_C_COMPILER={gccp}cc -DCMAKE_CXX_COMPILER={gccp}++"
+    line += cmake_compiler_flags(self.current)
 
     return line.replace("\\", "/")  # ensure we have unix style paths
 

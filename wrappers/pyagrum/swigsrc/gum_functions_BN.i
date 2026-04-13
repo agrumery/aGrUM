@@ -62,13 +62,13 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   ----------
   filename: str
       the name of the input file
-  listeners: List[object]
+  listeners: list[object]
       list of functions to execute when listening
   verbose: bool
       whether to print or not warning messages
   system: str
       (for O3PRM) name of the system to flatten in a BN
-  classpath: List[str]
+  classpath: list[str]
       (for O3PRM) list of folders containing classes
 
   Returns
@@ -230,7 +230,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
 
   Returns
   -------
-  float|Tuple[pandas.DataFrame,float]
+  float|tuple[pandas.DataFrame,float]
     the log2-likelihood of the generated base or if name_out is None, the couple (generated pandas.DataFrame,log2-likelihood)
   """
   genere = BNDatabaseGenerator(bn)
@@ -264,7 +264,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
     return genere.to_pandas(with_labels), ll
 
 
-def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
+def randomBN(*, n: int = 5, names: list[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
   """
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
@@ -288,7 +288,7 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
   ----------
   n : int
       number of nodes
-  names: List[str]
+  names: list[str]
       list of names
   ratio_arc: float
       number of arcs = n * ratio_arc
@@ -340,9 +340,9 @@ def mutilateBN(bn, intervention=None, observation=None):
   ----------
   bn : pyagrum.pyagrum.BayesNet
     A bayesian network
-  intervention : Dict[str,List[str|float|int]]
+  intervention : dict[str,list[str|float|int]]
     set of variables on which we intervene to force the value
-  observation : Dict[str,List[str|float|int]]
+  observation : dict[str,list[str|float|int]]
     set of variables whose value is observed
 
   Returns

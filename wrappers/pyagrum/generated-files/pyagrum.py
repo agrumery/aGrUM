@@ -1230,7 +1230,7 @@ class DiscreteVariable(Variable):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the label and its value
       """
       for i in range(self.domainSize()):
@@ -8775,7 +8775,7 @@ class Tensor(object):
 
         Yield
         -----
-        Tuple[pyagrum.Instantiation,float]
+        tuple[pyagrum.Instantiation,float]
           The instantiation and the value in the Tensor
         """
         for i in self.loopIn():
@@ -11388,7 +11388,7 @@ class IBayesNet(DAGmodel):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -12464,7 +12464,7 @@ class BayesNet(IBayesNet):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -12670,7 +12670,7 @@ class BayesNet(IBayesNet):
 
        Parameters
        ----------
-       listFastVariables: List[str]
+       listFastVariables: list[str]
          the list of variables in 'fast' syntax.
        default_nbr_mod: int
          the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
@@ -12678,7 +12678,7 @@ class BayesNet(IBayesNet):
 
        Returns
        -------
-       List[int]
+       list[int]
          the list of created ids.
        """
        return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
@@ -12689,7 +12689,7 @@ class BayesNet(IBayesNet):
 
       Parameters
       ----------
-      listArcs : List[Tuple[int|str,int|str]]
+      listArcs : list[tuple[int|str,int|str]]
         the list of arcs
       """
       self.beginTopologyTransformation()
@@ -13540,7 +13540,7 @@ class BayesNetFragment(IBayesNet, ):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -13746,7 +13746,7 @@ class BayesNetFragment(IBayesNet, ):
 
        Parameters
        ----------
-       listFastVariables: List[str]
+       listFastVariables: list[str]
          the list of variables in 'fast' syntax.
        default_nbr_mod: int
          the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
@@ -13754,7 +13754,7 @@ class BayesNetFragment(IBayesNet, ):
 
        Returns
        -------
-       List[int]
+       list[int]
          the list of created ids.
        """
        return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
@@ -13765,7 +13765,7 @@ class BayesNetFragment(IBayesNet, ):
 
       Parameters
       ----------
-      listArcs : List[Tuple[int|str,int|str]]
+      listArcs : list[tuple[int|str,int|str]]
         the list of arcs
       """
       self.beginTopologyTransformation()
@@ -14396,7 +14396,7 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -14430,7 +14430,7 @@ class LazyPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -15235,7 +15235,7 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -15269,7 +15269,7 @@ class ShaferShenoyInference(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -16029,7 +16029,7 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -16063,7 +16063,7 @@ class VariableElimination(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -16998,7 +16998,7 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -17032,7 +17032,7 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -17773,7 +17773,7 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -17807,7 +17807,7 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -18548,7 +18548,7 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -18582,7 +18582,7 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -19323,7 +19323,7 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -19357,7 +19357,7 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -20112,7 +20112,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -20146,7 +20146,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -20901,7 +20901,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -20935,7 +20935,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -21756,7 +21756,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -21790,7 +21790,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -22545,7 +22545,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -22579,7 +22579,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -23295,7 +23295,7 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -23329,7 +23329,7 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
           a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
         Raises
@@ -26043,13 +26043,13 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   ----------
   filename: str
       the name of the input file
-  listeners: List[object]
+  listeners: list[object]
       list of functions to execute when listening
   verbose: bool
       whether to print or not warning messages
   system: str
       (for O3PRM) name of the system to flatten in a BN
-  classpath: List[str]
+  classpath: list[str]
       (for O3PRM) list of folders containing classes
 
   Returns
@@ -26211,7 +26211,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
 
   Returns
   -------
-  float|Tuple[pandas.DataFrame,float]
+  float|tuple[pandas.DataFrame,float]
     the log2-likelihood of the generated base or if name_out is None, the couple (generated pandas.DataFrame,log2-likelihood)
   """
   genere = BNDatabaseGenerator(bn)
@@ -26245,7 +26245,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
     return genere.to_pandas(with_labels), ll
 
 
-def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
+def randomBN(*, n: int = 5, names: list[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
   """
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
@@ -26269,7 +26269,7 @@ def randomBN(*, n: int = 5, names: List[str] = None, ratio_arc: float = 1.2, dom
   ----------
   n : int
       number of nodes
-  names: List[str]
+  names: list[str]
       list of names
   ratio_arc: float
       number of arcs = n * ratio_arc
@@ -26321,9 +26321,9 @@ def mutilateBN(bn, intervention=None, observation=None):
   ----------
   bn : pyagrum.pyagrum.BayesNet
     A bayesian network
-  intervention : Dict[str,List[str|float|int]]
+  intervention : dict[str,list[str|float|int]]
     set of variables on which we intervene to force the value
-  observation : Dict[str,List[str|float|int]]
+  observation : dict[str,list[str|float|int]]
     set of variables whose value is observed
 
   Returns
@@ -27292,7 +27292,7 @@ class CNMonteCarloSampling(object):
 
       Parameters
       ----------
-      evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+      evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
        a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
       Raises
@@ -27733,7 +27733,7 @@ class CNLoopyPropagation(object):
 
       Parameters
       ----------
-      evidces : Dict[str,Union[int,str,List[float]]] or List[pyagrum.Tensor]
+      evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
        a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
 
       Raises
@@ -28317,7 +28317,7 @@ class InfluenceDiagram(DAGmodel):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -28556,7 +28556,7 @@ class InfluenceDiagram(DAGmodel):
 
        Parameters
        ----------
-       listFastVariables: List[str]
+       listFastVariables: list[str]
          the list of variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
        default_nbr_mod: int
          the number of modalities for the variable if not specified in the fast description. Note that default_nbr_mod=1 is
@@ -28564,7 +28564,7 @@ class InfluenceDiagram(DAGmodel):
 
        Returns
        -------
-       List[int]
+       list[int]
          the list of created ids.
        """
        return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
@@ -28575,7 +28575,7 @@ class InfluenceDiagram(DAGmodel):
 
       Parameters
       ----------
-      listArcs : List[Tuple[int,int]]
+      listArcs : list[tuple[int,int]]
         the list of arcs
       """
       for arc in listArcs:
@@ -29401,7 +29401,7 @@ class IMarkovRandomField(UGmodel):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -29774,7 +29774,7 @@ class MarkovRandomField(IMarkovRandomField):
 
       Yield
       -----
-      Tuple[int,str]
+      tuple[int,str]
         The index of the variable and its name
       """
       for i in self.nodes():
@@ -30033,7 +30033,7 @@ class MarkovRandomField(IMarkovRandomField):
 
        Parameters
        ----------
-       listFastVariables: List[str]
+       listFastVariables: list[str]
          the list of variables in 'fast' syntax.
        default_nbr_mod: int
          the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
@@ -30041,7 +30041,7 @@ class MarkovRandomField(IMarkovRandomField):
 
        Returns
        -------
-       List[int]
+       list[int]
          the list of created ids.
        """
        return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
@@ -30864,7 +30864,7 @@ def loadMRF(filename, listeners=None, verbose=False):
   ----------
   filename: str
     the name of the input file
-  listeners: List[Object]
+  listeners: list[Object]
     list of functions to execute
   verbose: bool
     whether to print or not warning messages
@@ -30985,7 +30985,7 @@ def getPosterior(model, *, target, evs=None):
     The probabilistic Graphical Model
   target: string or int
     variable name or id (forced keyword argument)
-  evs:  Dict[name|id:val, name|id : List[ val1, val2 ], ...]. (optional forced keyword argument)
+  evs:  dict[name|id:val, name|id : list[ val1, val2 ], ...]. (optional forced keyword argument)
     the (hard and soft) evidence
 
   Returns

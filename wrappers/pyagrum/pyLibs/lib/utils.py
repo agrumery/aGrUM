@@ -78,7 +78,7 @@ def dot_layout(g: dot.Dot) -> dict[str, DotPoint]:
 
   Returns
   -------
-  Dict[str,Tuple[float, float]]
+  dict[str,tuple[float, float]]
      the layout i.e. the position of each node, identified by their name.
   """
   return {
@@ -97,7 +97,7 @@ def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]):
   g : pydot.Dot
     the graph
 
-  layout : Dict[str,Tuple[float, float]]
+  layout : dict[str,tuple[float, float]]
      the layout i.e. the position of each node, identified by their name.
   """
   g.set_layout("fdp")  # force directed placement

@@ -167,15 +167,23 @@ namespace gum {
 
     if (i >= _ticks_.size() - 1) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
 
-    if ((i == 0) && _is_empirical) ss << "(";
-    else ss << "[";
+    if ((i == 0) && _is_empirical) {
+      ss << "(";
+    } else {
+      ss << "[";
+    }
 
     ss << std::format("{};{}", _ticks_[i], _ticks_[i + 1]);
 
     if (i == _ticks_.size() - 2) {
-      if (_is_empirical) ss << ")";
-      else ss << "]";
-    } else ss << "[";
+      if (_is_empirical) {
+        ss << ")";
+      } else {
+        ss << "]";
+      }
+    } else {
+      ss << "[";
+    }
 
     return ss.str();
   }
@@ -238,9 +246,10 @@ namespace gum {
       }
 
       if (const auto size = _ticks_.size(); target > _ticks_[size - 1]) {
-        if (target - _ticks_[size - 1] < 1e-10) return size - 2;
-        if (_is_empirical) return size - 2;
-        else
+        if (target - _ticks_[size - 1] < 1e-10) { return size - 2; }
+        if (_is_empirical) {
+          return size - 2;
+        } else
           GUM_ERROR(OutOfBounds,
                     "more than last range (> " << _ticks_[size - 1] << ") for " << target << " in "
                                                << *this << ":" << target - _ticks_[size - 1])
@@ -280,7 +289,7 @@ namespace gum {
   INLINE bool DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a ContinuousVariable
     const auto& cv = static_cast< const DiscretizedVariable< T_TICKS >& >(aRV);
-    if (domainSize() != cv.domainSize()) return false;
+    if (domainSize() != cv.domainSize()) { return false; }
     return cv._ticks_ == _ticks_ && cv._is_empirical == _is_empirical;
   }
 

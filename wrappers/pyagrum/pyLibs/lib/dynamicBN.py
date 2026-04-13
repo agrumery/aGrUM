@@ -131,7 +131,7 @@ def getTimeSlicesRange(dbn):
 
   Returns
   ------
-  Dict[str,List[T[str,str]]]
+  dict[str,list[T[str,str]]]
     all the timeslice of a dbn : ['0','t'] for a classic 2TBN, range(T) for a classic unrolled BN
   """
   timeslices = {}
