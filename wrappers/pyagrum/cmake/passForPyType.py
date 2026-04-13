@@ -132,7 +132,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ('HashTable< std::string,std::string >', "dict[str, str]"),
   ('HashTable< gum::Counterfactual< double >::VarName,gum::Counterfactual< double >::ValName > const &', "dict[str,str]"),
   ('gum::Set< std::string >', "set[str]"),
-  # ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'list[tuple[int,int]]'),
+  ("std::vector< gum::Arc,std::allocator< gum::Arc > >", 'list[tuple[int,int]]'),
   ("std::tuple< gum::CausalImpact< double >,gum::Tensor< double >,std::string >",'tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]'),
   ("gum::NodeProperty< gum::NodeId >", "dict[int,int]"),
   ("std::optional< gum::NodeSet >", "list[int] | None"),

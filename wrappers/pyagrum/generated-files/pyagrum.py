@@ -5303,7 +5303,7 @@ class MeekRules(object):
         """
         return _pyagrum.MeekRules_propagateToDAG(self, mg)
 
-    def choices(self) -> object:
+    def choices(self) -> list[tuple[int,int]]:
         r"""
 
         Returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG` or `pyagrum.MeekRules.progagatesToDAG`.
@@ -9717,9 +9717,6 @@ class InformationTheory(object):
 
 # Register InformationTheory in _pyagrum:
 _pyagrum.InformationTheory_swigregister(InformationTheory)
-
-import warnings
-
 class PRMexplorer(object):
     r"""
 
@@ -24319,6 +24316,7 @@ class BNLearner(object):
         val = _pyagrum.BNLearner_learnParameters(self, *args)
 
         if self._EM_warning():
+            import warnings
             warnings.warn("\nthe learnParameters's EM algorithm has completed prematurely due to a likelihood divergence\n", UserWarning)
 
 
@@ -26028,7 +26026,6 @@ class BNLearner(object):
 # Register BNLearner in _pyagrum:
 _pyagrum.BNLearner_swigregister(BNLearner)
 
-from typing import List
 import warnings
 
 def availableBNExts():
