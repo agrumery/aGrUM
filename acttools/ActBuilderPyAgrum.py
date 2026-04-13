@@ -264,6 +264,24 @@ class ActBuilderPyAgrum(ActBuilder):
 
     return line
 
+  def _cmake_needed(self) -> bool:
+    """Return True if cmake must run: cache absent or any CMakeLists.txt/.cmake in the source tree is newer than the cache."""
+    cache = "CMakeCache.txt"
+    if not os.path.exists(cache):
+      return True
+    cache_mtime = os.path.getmtime(cache)
+    source_root = os.path.normpath(os.path.join("..", "..", ".."))
+    # The build tree lives at <source_root>/build/ — exclude it to avoid false
+    # positives from .cmake files that cmake itself writes into the build tree.
+    build_prefix = os.path.join(source_root, "build") + os.sep
+    for pattern in ("CMakeLists.txt", "*.cmake"):
+      for cmake_file in glob.glob(os.path.join(source_root, "**", pattern), recursive=True):
+        if os.path.normpath(cmake_file).startswith(build_prefix):
+          continue
+        if os.path.getmtime(cmake_file) > cache_mtime:
+          return True
+    return False
+
   def build(self):
     prefix = "build ⮕ " + self.current["mode"] + " ⮕ "
     self.run_start(prefix)
@@ -276,9 +294,12 @@ class ActBuilderPyAgrum(ActBuilder):
     gc = gm = gb = 0
     t0 = time.time()
     if self.current["build"] == "all":
-      self.run_start(prefix + "cmake")
-      cmake_cde = self.build_cmake()
-      err = err or 0 != self.execFromLine(cmake_cde, checkRC=False)
+      if self._cmake_needed():
+        self.run_start(prefix + "cmake")
+        cmake_cde = self.build_cmake()
+        err = err or 0 != self.execFromLine(cmake_cde, checkRC=False)
+      else:
+        self.run_start(prefix + "cmake (skipped — cache up to date)")
     t1 = time.time()
     if self.current["force_swig"]:
       self.run_start(prefix + "force-swig (touching .i files)")

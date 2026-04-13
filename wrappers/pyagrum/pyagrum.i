@@ -106,15 +106,12 @@ static int _pyagrum_import_numpy(void) {
 /////////////////////////////////
 %include "pgm.i"
 
-%include "core.i"
 %include "variables.i"
 %include "instantiation.i"
 
 %include "tensor.i"
 
 %include "graphs.i"
-
-%include "MeekRules.i"
 
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BASE.i"

@@ -59,9 +59,6 @@
 
 
 
-%pythoncode {
-    import warnings
-};
 
 %pythonprepend gum::learning::BNLearner<double>::BNLearner %{
   if type(args[0]) is not str:
@@ -251,5 +248,6 @@ def learnEssentialGraph(self):
 
 %pythonappend gum::learning::BNLearner<double>::learnParameters %{
   if self._EM_warning():
+      import warnings
       warnings.warn("\nthe learnParameters's EM algorithm has completed prematurely due to a likelihood divergence\n", UserWarning)
 %}

@@ -204,6 +204,29 @@ class JTInferenceTestCase(pyAgrumTestCase):
     expected = [1 - 0.3577, 0.3577]
     self.assertListsAlmostEqual(result.tolist(), expected, places=4)
 
+  def testEvidenceNodes(self):
+    ie = self._getInference(self.bn)
+    self.assertEqual(ie.hardEvidenceNodes(), set())
+    self.assertEqual(ie.softEvidenceNodes(), set())
+
+    ie.addEvidence(self.s, 1)  # hard evidence
+    ie.addEvidence(self.w, [0.2, 0.8])  # soft evidence
+    self.assertEqual(ie.hardEvidenceNodes(), {self.s})
+    self.assertEqual(ie.softEvidenceNodes(), {self.w})
+
+    ie.eraseEvidence(self.s)
+    self.assertEqual(ie.hardEvidenceNodes(), set())
+    self.assertEqual(ie.softEvidenceNodes(), {self.w})
+
+  def testTargets(self):
+    ie = self._getInference(self.bn)
+    # by default all nodes are targets
+    self.assertEqual(ie.targets(), {self.c, self.r, self.s, self.w})
+
+    ie.eraseAllTargets()
+    ie.addTarget(self.r)
+    self.assertEqual(ie.targets(), {self.r})
+
 
 class LazyPropagationTestCase(JTInferenceTestCase):
   def _getInference(self, bn):

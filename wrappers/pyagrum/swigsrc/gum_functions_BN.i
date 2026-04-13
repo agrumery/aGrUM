@@ -45,7 +45,6 @@
 
 
 %pythoncode %{
-from typing import List
 import warnings
 
 def availableBNExts():

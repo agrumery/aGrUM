@@ -158,14 +158,15 @@ def setTargets(self, targets):
     void setTargets(PyObject* targets) {}
 
     PyObject* hardEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
     }
     PyObject* softEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
     }
-    PyObject* targets() {
-      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+    PyObject* targets() const {
+      return PyAgrumHelper::PySetFromNodeSet(self->targets());
     }
+
     Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
       gum::NodeSet soe;

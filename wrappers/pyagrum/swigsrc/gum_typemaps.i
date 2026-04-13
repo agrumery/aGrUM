@@ -204,6 +204,14 @@
   $result = PyAgrumHelper::PySetFromArcSet(*$1);
 }
 
+// std::vector<gum::Arc> -> Python list[tuple[int,int]]
+%typemap(out) std::vector<gum::Arc> {
+  $result = PyAgrumHelper::PyListFromArcVect($1);
+}
+%typemap(out) const std::vector<gum::Arc>& {
+  $result = PyAgrumHelper::PyListFromArcVect(*$1);
+}
+
 // gum::EdgeSet -> Python set[tuple[int,int]]
 %typemap(out) gum::EdgeSet {
   $result = PyAgrumHelper::PySetFromEdgeSet($1);
