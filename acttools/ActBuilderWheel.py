@@ -112,6 +112,7 @@ def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
   dist_info = join(install_dir, dist_info_dir)
   update_wheel_file(dist_info, stable_abi_off, minimal_python_api)
   clean_up(install_dir)
+  strip_so_files(install_dir)
 
   if nightly:
     update_metadata(join(install_dir, dist_info), version)
@@ -207,6 +208,38 @@ def clean_up(install_dir):
       remove(join(install_dir, f))
     except:
       warn(f"Could not remove dir: {join(install_dir, f)}")
+
+
+def _strip_flags() -> list[str] | None:
+  system = platform.system()
+  if system == "Darwin":
+    return ["-S", "-x"]
+  if system == "Linux":
+    return ["--strip-unneeded"]
+  return None
+
+
+def strip_so_files(install_dir):
+  """Strip shared libraries in install_dir using the best safe flags for the platform.
+
+  Keeps dynamic symbols required by dlopen; skipped on Windows.
+  """
+  flags = _strip_flags()
+  if flags is None:
+    return
+  extensions = (".so", ".dylib", ".pyd")
+  for root, _dirs, files in walk(install_dir):
+    for f in files:
+      if any(f.endswith(ext) for ext in extensions) or ".so." in f:
+        path = join(root, f)
+        before = os.path.getsize(path)
+        result = subprocess.run(["strip", *flags, path], capture_output=True)
+        if result.returncode != 0:
+          warn(f"strip failed for {path}: {result.stderr.decode().strip()}")
+        else:
+          after = os.path.getsize(path)
+          if after < before:
+            notif(f"strip {f}: {before // 1024} KB → {after // 1024} KB (saved {(before - after) // 1024} KB)")
 
 
 def write_record_file(install_dir, version, nightly=False):
