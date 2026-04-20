@@ -123,6 +123,24 @@ Coco/R itself) does not fall under the GNU General Public License.
 #  define MIN_BUFFER_LENGTH 1024
 #  define MAX_BUFFER_LENGTH COCO_LARGE_BUFFER_SIZE
 
+// MappedBuffer system headers — must be included outside any namespace to avoid
+// polluting gum:: with syscall() and related POSIX symbols (GCC 14 RHEL issue).
+#  if defined(_WIN32)
+#    ifndef NOGDI
+#      define NOGDI
+#      include <windows.h>
+#      undef NOGDI
+#    else
+#      include <windows.h>
+#    endif
+#  else
+#    include <fcntl.h>
+#    include <unistd.h>
+
+#    include <sys/mman.h>
+#    include <sys/stat.h>
+#  endif
+
 namespace gum {
 
   /// string handling, wide character
@@ -308,21 +326,7 @@ namespace gum {
   // MappedBuffer - For large files (>= COCO_MMAP_FILE_THRESHOLD)
   // ==========================================================================
   // Uses memory-mapped I/O for efficient access to very large files.
-#  if defined(_WIN32)
-#    ifndef NOGDI
-#      define NOGDI
-#      include <windows.h>
-#      undef NOGDI
-#    else
-#      include <windows.h>
-#    endif
-#  else
-#    include <fcntl.h>
-#    include <unistd.h>
-
-#    include <sys/mman.h>
-#    include <sys/stat.h>
-#  endif
+  // (System headers for mmap/fcntl/unistd are included above, outside namespace gum.)
 
   class MappedBuffer: public Buffer {
     private:
