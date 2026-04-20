@@ -80,6 +80,10 @@ namespace gum {
                  std::string_view                 filename,
                  bool                             binary = false);
 
+    /// Constructor for string-based parsing only (no file).
+    /// Use exclusively with proceedFromString(); calling proceed() will fail.
+    explicit GumMRFReader(MarkovRandomField< GUM_SCALAR >* mrf);
+
     ~GumMRFReader() override;
 
     /**
@@ -88,11 +92,16 @@ namespace gum {
      */
     Size proceed() override;
 
+    /// Parse a jgum JSON string directly (no file I/O).
+    /// @return the number of detected errors
+    Size proceedFromString(std::string_view content);
+
     void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
     void showErrorCounts(std::ostream& stream = std::cerr) const;
 
     private:
-    static std::vector< uint8_t > _readVector_(std::istream& is);
+    template < typename JsonType >
+    Size _proceedFromJson_(const JsonType& content);
 
     MarkovRandomField< GUM_SCALAR >* _mrf_;
     std::string                      _streamName_;

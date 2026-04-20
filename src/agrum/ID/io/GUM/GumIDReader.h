@@ -79,19 +79,28 @@ namespace gum {
                 std::string_view                filename,
                 bool                            binary = false);
 
+    /// Constructor for string-based parsing only (no file).
+    /// Use exclusively with proceedFromString(); calling proceed() will fail.
+    explicit GumIDReader(InfluenceDiagram< GUM_SCALAR >* id);
+
     ~GumIDReader() override;
 
     /**
      * Parses the file and populates the InfluenceDiagram.
-     * Must be called exactly once.
+     * @return the number of detected errors (0 if successful).
      */
-    void proceed() override;
+    Size proceed() override;
+
+    /// Parse a jgum JSON string directly (no file I/O).
+    /// @return the number of detected errors
+    Size proceedFromString(std::string_view content);
 
     void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
     void showErrorCounts(std::ostream& stream = std::cerr) const;
 
     private:
-    static std::vector< uint8_t > _readVector_(std::istream& is);
+    template < typename JsonType >
+    Size _proceedFromJson_(const JsonType& content);
 
     InfluenceDiagram< GUM_SCALAR >* _id_;
     std::string                     _streamName_;

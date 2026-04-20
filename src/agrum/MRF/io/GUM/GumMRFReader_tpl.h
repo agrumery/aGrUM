@@ -14,7 +14,7 @@
  *    - the MIT license (MIT),                                              *
  *    - or both in dual license, as here.                                   *
  *                                                                          *
- *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3imit.html)    *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
  *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
@@ -45,6 +45,7 @@
 #  include <agrum/MRF/io/GUM/GumMRFReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
+#  include <agrum/base/io/GumBinaryIO.h>
 using json = nlohmann::json;
 
 namespace gum {
@@ -61,34 +62,28 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  GumMRFReader< GUM_SCALAR >::GumMRFReader(MarkovRandomField< GUM_SCALAR >* mrf) :
+      MRFReader< GUM_SCALAR >(mrf, "") {
+    GUM_CONSTRUCTOR(GumMRFReader)
+    _mrf_        = mrf;
+    _streamName_ = "";
+    _parseDone_  = false;
+    _binary_     = false;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   GumMRFReader< GUM_SCALAR >::~GumMRFReader() {
     GUM_DESTRUCTOR(GumMRFReader)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Size GumMRFReader< GUM_SCALAR >::proceed() {
-    if (_parseDone_) { return 0; }
-
+  template < typename JsonType >
+  Size GumMRFReader< GUM_SCALAR >::_proceedFromJson_(const JsonType& content) {
     Size nberrors = 0;
 
-    std::ifstream file(_streamName_, _binary_ ? std::ios::binary : std::ios::in);
-    if (!file.is_open()) {
-      addException("No such file " + _streamName_, _streamName_);
-      return ++nberrors;
-    }
-
-    const auto content
-        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
-    file.close();
-
-    if (content.is_discarded()) {
-      addException("Error parsing file", _streamName_);
-      return ++nberrors;
-    }
-
-    if (content.contains("type") && content["type"].get< std::string >() != "MRF") {
+    if (content.contains("type") && content["type"].template get< std::string >() != "MRF") {
       addError("Invalid GUM file format: expected 'MRF' type, got '"
-                   + content["type"].get< std::string >() + "'",
+                   + content["type"].template get< std::string >() + "'",
                _streamName_,
                0,
                0);
@@ -106,25 +101,27 @@ namespace gum {
     auto& mrf = *_mrf_;
 
     // add nodes
-    for (const auto& node: content["nodes"]) { mrf.add(node.get< std::string >()); }
+    for (const auto& node: content["nodes"]) {
+      mrf.add(node.template get< std::string >());
+    }
 
     // add factor topology
     mrf.beginTopologyTransformation();
     for (const auto& factor: content["factors"]) {
-      mrf.addFactor(factor["vars"].get< std::vector< std::string > >());
+      mrf.addFactor(factor["vars"].template get< std::vector< std::string > >());
     }
     mrf.endTopologyTransformation();
 
     // fill factor values
     for (const auto& factor: content["factors"]) {
-      const auto varnames = factor["vars"].get< std::vector< std::string > >();
-      mrf.factor(varnames).fillWith(factor["values"].get< std::vector< double > >());
+      const auto varnames = factor["vars"].template get< std::vector< std::string > >();
+      mrf.factor(varnames).fillWith(factor["values"].template get< std::vector< double > >());
     }
 
     // properties
     if (content.contains("properties")) {
       for (const auto& prop: content["properties"].items()) {
-        mrf.setProperty(prop.key(), prop.value().get< std::string >());
+        mrf.setProperty(prop.key(), prop.value().template get< std::string >());
       }
     }
 
@@ -133,12 +130,40 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::vector< uint8_t > GumMRFReader< GUM_SCALAR >::_readVector_(std::istream& is) {
-    uint64_t size = 0;
-    is.read(reinterpret_cast< char* >(&size), sizeof(size));
-    std::vector< uint8_t > vec(size);
-    is.read(reinterpret_cast< char* >(vec.data()), size);
-    return vec;
+  Size GumMRFReader< GUM_SCALAR >::proceed() {
+    if (_parseDone_) { return 0; }
+    if (_streamName_.empty()) {
+      GUM_ERROR(OperationNotAllowed,
+                "GumMRFReader was constructed without a filename: use proceedFromString() instead of proceed()")
+    }
+    Size nberrors = 0;
+
+    std::ifstream file(_streamName_, _binary_ ? std::ios::binary : std::ios::in);
+    if (!file.is_open()) {
+      addException("No such file " + _streamName_, _streamName_);
+      return ++nberrors;
+    }
+
+    const auto content
+        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+    file.close();
+
+    if (content.is_discarded()) {
+      addException("Error parsing file", _streamName_);
+      return ++nberrors;
+    }
+    return _proceedFromJson_(content);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  Size GumMRFReader< GUM_SCALAR >::proceedFromString(std::string_view content) {
+    if (_parseDone_) { return 0; }
+    const auto j = json::parse(content, nullptr, false);
+    if (j.is_discarded()) {
+      addException("Invalid JSON string", _streamName_);
+      return 1;
+    }
+    return _proceedFromJson_(j);
   }
 
   template < GUM_Numeric GUM_SCALAR >

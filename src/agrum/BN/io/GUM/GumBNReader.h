@@ -69,14 +69,22 @@ namespace gum {
      */
     GumBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename, bool binary = false);
 
+    /// Constructor for string-based parsing only (no file).
+    /// Use exclusively with proceedFromString(); calling proceed() will fail.
+    explicit GumBNReader(BayesNet< GUM_SCALAR >* bn);
+
     /**
      * Default destructor.
      */
     ~GumBNReader() override;
 
-    /// parse.
+    /// Parse the file given at construction.
     /// @return the number of detected errors
     Size proceed() final;
+
+    /// Parse a jgum JSON string directly (no file I/O).
+    /// @return the number of detected errors
+    Size proceedFromString(std::string_view content);
 
     void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
 
@@ -84,7 +92,9 @@ namespace gum {
 
 
     private:
-    static std::vector< uint8_t > _readVector_(std::istream& is);
+    // Forward declaration: json is defined in the _tpl.h translation unit.
+    template < typename JsonType >
+    Size _proceedFromJson_(const JsonType& content);
 
     BayesNet< GUM_SCALAR >* _bn_;
     std::string             _streamName_;

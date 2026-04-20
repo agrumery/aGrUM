@@ -45,6 +45,7 @@
 #  include <agrum/ID/io/GUM/GumIDReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
+#  include <agrum/base/io/GumBinaryIO.h>
 using json = nlohmann::json;
 
 namespace gum {
@@ -61,36 +62,32 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  GumIDReader< GUM_SCALAR >::GumIDReader(InfluenceDiagram< GUM_SCALAR >* id) :
+      IDReader< GUM_SCALAR >(id, "") {
+    GUM_CONSTRUCTOR(GumIDReader)
+    _id_         = id;
+    _streamName_ = "";
+    _parseDone_  = false;
+    _binary_     = false;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   GumIDReader< GUM_SCALAR >::~GumIDReader() {
     GUM_DESTRUCTOR(GumIDReader)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void GumIDReader< GUM_SCALAR >::proceed() {
-    if (_parseDone_) { return; }
+  template < typename JsonType >
+  Size GumIDReader< GUM_SCALAR >::_proceedFromJson_(const JsonType& content) {
+    Size nberrors = 0;
 
-    std::ifstream file(_streamName_, _binary_ ? std::ios::binary : std::ios::in);
-    if (!file.is_open()) {
-      addException("No such file " + _streamName_, _streamName_);
-      return;
-    }
-
-    const auto content
-        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
-    file.close();
-
-    if (content.is_discarded()) {
-      addException("Error parsing file", _streamName_);
-      return;
-    }
-
-    if (content.contains("type") && content["type"].get< std::string >() != "ID") {
+    if (content.contains("type") && content["type"].template get< std::string >() != "ID") {
       addError("Invalid GUM file format: expected 'ID' type, got '"
-                   + content["type"].get< std::string >() + "'",
+                   + content["type"].template get< std::string >() + "'",
                _streamName_,
                0,
                0);
-      return;
+      return ++nberrors;
     }
 
     if (!content.contains("chance") || !content.contains("utility")
@@ -100,59 +97,94 @@ namespace gum {
           _streamName_,
           0,
           0);
-      return;
+      return ++nberrors;
     }
 
     auto& id = *_id_;
 
     // add chance nodes
-    for (const auto& node: content["chance"]) { id.addChanceNode(node.get< std::string >()); }
+    for (const auto& node: content["chance"]) {
+      id.addChanceNode(node.template get< std::string >());
+    }
     // add utility nodes
-    for (const auto& node: content["utility"]) { id.addUtilityNode(node.get< std::string >()); }
+    for (const auto& node: content["utility"]) {
+      id.addUtilityNode(node.template get< std::string >());
+    }
     // add decision nodes
-    for (const auto& node: content["decision"]) { id.addDecisionNode(node.get< std::string >()); }
+    for (const auto& node: content["decision"]) {
+      id.addDecisionNode(node.template get< std::string >());
+    }
 
     // add arcs
     id.beginTopologyTransformation();
     for (const auto& entry: content["parents"].items()) {
       const auto& nodeName = entry.key();
-      for (const auto& p: entry.value()) { id.addArc(p.get< std::string >(), nodeName); }
+      for (const auto& p: entry.value()) {
+        id.addArc(p.template get< std::string >(), nodeName);
+      }
     }
     id.endTopologyTransformation();
 
     // fill CPTs for chance nodes
     if (content.contains("cpt")) {
       for (const auto& entry: content["cpt"].items()) {
-        const auto& nodeName = entry.key();
-        id.cpt(nodeName).fillWith(entry.value().get< std::vector< double > >());
+        id.cpt(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
       }
     }
 
     // fill utility tables
     if (content.contains("reward")) {
       for (const auto& entry: content["reward"].items()) {
-        const auto& nodeName = entry.key();
-        id.utility(nodeName).fillWith(entry.value().get< std::vector< double > >());
+        id.utility(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
       }
     }
 
     // properties
     if (content.contains("properties")) {
       for (const auto& prop: content["properties"].items()) {
-        id.setProperty(prop.key(), prop.value().get< std::string >());
+        id.setProperty(prop.key(), prop.value().template get< std::string >());
       }
     }
 
     _parseDone_ = true;
+    return nberrors;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::vector< uint8_t > GumIDReader< GUM_SCALAR >::_readVector_(std::istream& is) {
-    uint64_t size = 0;
-    is.read(reinterpret_cast< char* >(&size), sizeof(size));
-    std::vector< uint8_t > vec(size);
-    is.read(reinterpret_cast< char* >(vec.data()), size);
-    return vec;
+  Size GumIDReader< GUM_SCALAR >::proceed() {
+    if (_parseDone_) { return 0; }
+    if (_streamName_.empty()) {
+      GUM_ERROR(OperationNotAllowed,
+                "GumIDReader was constructed without a filename: use proceedFromString() instead of proceed()")
+    }
+    Size nberrors = 0;
+
+    std::ifstream file(_streamName_, _binary_ ? std::ios::binary : std::ios::in);
+    if (!file.is_open()) {
+      addException("No such file " + _streamName_, _streamName_);
+      return ++nberrors;
+    }
+
+    const auto content
+        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+    file.close();
+
+    if (content.is_discarded()) {
+      addException("Error parsing file", _streamName_);
+      return ++nberrors;
+    }
+    return _proceedFromJson_(content);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  Size GumIDReader< GUM_SCALAR >::proceedFromString(std::string_view content) {
+    if (_parseDone_) { return 0; }
+    const auto j = json::parse(content, nullptr, false);
+    if (j.is_discarded()) {
+      addException("Invalid JSON string", _streamName_);
+      return 1;
+    }
+    return _proceedFromJson_(j);
   }
 
   template < GUM_Numeric GUM_SCALAR >
