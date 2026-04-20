@@ -3024,7 +3024,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_connectedComponents(self)
 
-    def undirectedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def undirectedPath(self, node1: int, node2: int) -> list[int] | None:
         return _pyagrum.UndiGraph_undirectedPath(self, node1, node2)
 
     def hasUndirectedPath(self, *args) -> bool:
@@ -3448,10 +3448,10 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_hasDirectedPath(self, _from, to)
 
-    def directedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def directedPath(self, node1: int, node2: int) -> list[int] | None:
         return _pyagrum.DiGraph_directedPath(self, node1, node2)
 
-    def directedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def directedUnorientedPath(self, node1: int, node2: int) -> list[int] | None:
         return _pyagrum.DiGraph_directedUnorientedPath(self, node1, node2)
 
     def family(self, *args) -> list[int]:
@@ -4312,7 +4312,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def mixedOrientedPath(self, node1: int, node2: int) -> list[int] | None:
         r"""
 
         Parameters
@@ -4330,7 +4330,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int] | None:
         r"""
 
         Parameters
@@ -4778,7 +4778,7 @@ class PDAG(MixedGraph):
     def boundary(self, id: int) -> list[int]:
         return _pyagrum.PDAG_boundary(self, id)
 
-    def mixedOrientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def mixedOrientedPath(self, node1: int, node2: int) -> list[int] | None:
         r"""
 
         Parameters
@@ -4796,7 +4796,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrum.PDAG_mixedOrientedPath(self, node1, node2)
 
-    def mixedUnorientedPath(self, node1: int, node2: int) -> "std::optional< list[int] >":
+    def mixedUnorientedPath(self, node1: int, node2: int) -> list[int] | None:
         r"""
 
         Parameters
@@ -12738,15 +12738,98 @@ class BayesNet(IBayesNet):
 
 
     def loadGUM(self, name: str, l: object=None, binary: bool=False) -> None:
+        r"""
+
+        Load a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Parameters
+        ----------
+        name : str
+            the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
+        binary : bool
+            if True, read as bgum (msgpack) regardless of extension (default: False)
+
+        Raises
+        ------
+        pyagrum.IOError
+            If file not found
+        pyagrum.FatalError
+            If file content is not valid
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.BayesNet_loadGUM(self, name, l, binary)
 
     def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+        r"""
+
+        Save the BayesNet in a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        name : str
+            the file's path
+        binary : bool
+            if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
+        indent : int
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.BayesNet_saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
+        r"""
+
+        Serialize the BayesNet to a jgum JSON string.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        indent : int
+            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+
+        Returns
+        -------
+        str
+            a JSON string representing the BayesNet in jgum format
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.BayesNet_saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
+        r"""
+
+        Deserialize a BayesNet from a jgum JSON string.
+
+        Parameters
+        ----------
+        content : str
+            a JSON string in jgum format
+
+        Raises
+        ------
+        pyagrum.FatalError
+            If the string is not valid jgum JSON or the type field does not match ``"BN"``
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.BayesNet_loadGUMstring(self, content)
 
     def loadBIF(self, name: str, l: object=None) -> str:
@@ -26066,6 +26149,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
 
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
 
+      jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
+
   Examples
   --------
   >>> import pyagrum as gum
@@ -26146,6 +26231,8 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   Notes
   ----
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
+
+      jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
   if allowModificationWhenSaving is None:
     allowModificationWhenSaving = pyagrum.config.asBool["core", "allow_modification_when_saving"]
@@ -28530,15 +28617,98 @@ class InfluenceDiagram(DAGmodel):
         return _pyagrum.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
 
     def loadGUM(self, name: str, binary: bool=False) -> None:
+        r"""
+
+        Load a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Parameters
+        ----------
+        name : str
+            the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
+        binary : bool
+            if True, read as bgum (msgpack) regardless of extension (default: False)
+
+        Raises
+        ------
+        pyagrum.IOError
+            If file not found
+        pyagrum.FatalError
+            If file content is not valid
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.InfluenceDiagram_loadGUM(self, name, binary)
 
     def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+        r"""
+
+        Save the InfluenceDiagram in a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        name : str
+            the file's path
+        binary : bool
+            if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
+        indent : int
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.InfluenceDiagram_saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
+        r"""
+
+        Serialize the InfluenceDiagram to a jgum JSON string.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        indent : int
+            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+
+        Returns
+        -------
+        str
+            a JSON string representing the InfluenceDiagram in jgum format
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.InfluenceDiagram_saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
+        r"""
+
+        Deserialize an InfluenceDiagram from a jgum JSON string.
+
+        Parameters
+        ----------
+        content : str
+            a JSON string in jgum format
+
+        Raises
+        ------
+        pyagrum.FatalError
+            If the string is not valid jgum JSON or the type field does not match ``"ID"``
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.InfluenceDiagram_loadGUMstring(self, content)
 
     def loadBIFXML(self, *args) -> bool:
@@ -29270,6 +29440,12 @@ def loadID(filename):
   -------
   pyagrum.InfluenceDiagram
     the InfluenceDiagram
+
+  Notes
+  -----
+  pkl suffix is used to load a pickled InfluenceDiagram. In this case, options are ignored.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 
@@ -29305,6 +29481,12 @@ def saveID(infdiag, filename):
     the Influence Diagram to save
   filename : str
     the name of the output file
+
+  Notes
+  -----
+  pkl suffix is used to save an InfluenceDiagram using pickle.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 
@@ -29914,15 +30096,98 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_isIndependent(self, *args)
 
     def loadGUM(self, name: str, binary: bool=False) -> None:
+        r"""
+
+        Load a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Parameters
+        ----------
+        name : str
+            the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
+        binary : bool
+            if True, read as bgum (msgpack) regardless of extension (default: False)
+
+        Raises
+        ------
+        pyagrum.IOError
+            If file not found
+        pyagrum.FatalError
+            If file content is not valid
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.MarkovRandomField_loadGUM(self, name, binary)
 
     def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+        r"""
+
+        Save the MarkovRandomField in a jgum (JSON) or bgum (binary/msgpack) file.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        name : str
+            the file's path
+        binary : bool
+            if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
+        indent : int
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.MarkovRandomField_saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
+        r"""
+
+        Serialize the MarkovRandomField to a jgum JSON string.
+
+        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+        Parameters
+        ----------
+        indent : int
+            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+
+        Returns
+        -------
+        str
+            a JSON string representing the MarkovRandomField in jgum format
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.MarkovRandomField_saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
+        r"""
+
+        Deserialize a MarkovRandomField from a jgum JSON string.
+
+        Parameters
+        ----------
+        content : str
+            a JSON string in jgum format
+
+        Raises
+        ------
+        pyagrum.FatalError
+            If the string is not valid jgum JSON or the type field does not match ``"MRF"``
+
+        See Also
+        --------
+        :ref:`jgum-bgum-format` : complete format reference
+
+        """
         return _pyagrum.MarkovRandomField_loadGUMstring(self, content)
 
     def loadUAI(self, *args) -> str:
@@ -30881,7 +31146,9 @@ def loadMRF(filename, listeners=None, verbose=False):
 
   Listeners could be added in order to monitor its loading.
 
-  pkl suffix is used to save a BN using pickle. In this case, options are ignored.
+  pkl suffix is used to load a pickled MRF. In this case, options are ignored.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
 
   Examples
   --------
@@ -30938,10 +31205,16 @@ def saveMRF(mn, filename):
 
   Parameters
   ----------
-  mn : pyagrum.MarkovRandomField)
+  mn : pyagrum.MarkovRandomField
     the MRF to save
   filename : str
     the name of the output file
+
+  Notes
+  -----
+  pkl suffix is used to save a MRF using pickle.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 

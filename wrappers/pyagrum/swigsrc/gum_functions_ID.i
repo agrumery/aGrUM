@@ -69,6 +69,12 @@ def loadID(filename):
   -------
   pyagrum.InfluenceDiagram
     the InfluenceDiagram
+
+  Notes
+  -----
+  pkl suffix is used to load a pickled InfluenceDiagram. In this case, options are ignored.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 
@@ -104,6 +110,12 @@ def saveID(infdiag, filename):
     the Influence Diagram to save
   filename : str
     the name of the output file
+
+  Notes
+  -----
+  pkl suffix is used to save an InfluenceDiagram using pickle.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 

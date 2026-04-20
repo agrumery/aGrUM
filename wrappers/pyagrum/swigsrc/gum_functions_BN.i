@@ -82,6 +82,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
 
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
 
+      jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
+
   Examples
   --------
   >>> import pyagrum as gum
@@ -162,6 +164,8 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   Notes
   ----
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
+
+      jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
   if allowModificationWhenSaving is None:
     allowModificationWhenSaving = pyagrum.config.asBool["core", "allow_modification_when_saving"]

@@ -69,7 +69,9 @@ def loadMRF(filename, listeners=None, verbose=False):
 
   Listeners could be added in order to monitor its loading.
 
-  pkl suffix is used to save a BN using pickle. In this case, options are ignored.
+  pkl suffix is used to load a pickled MRF. In this case, options are ignored.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
 
   Examples
   --------
@@ -126,10 +128,16 @@ def saveMRF(mn, filename):
 
   Parameters
   ----------
-  mn : pyagrum.MarkovRandomField)
+  mn : pyagrum.MarkovRandomField
     the MRF to save
   filename : str
     the name of the output file
+
+  Notes
+  -----
+  pkl suffix is used to save a MRF using pickle.
+
+  jgum/bgum suffixes use the native aGrUM JSON/binary format.
   """
   extension = filename.split('.')[-1].upper()
 

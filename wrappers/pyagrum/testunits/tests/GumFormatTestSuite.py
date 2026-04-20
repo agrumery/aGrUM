@@ -72,6 +72,13 @@ class TestGumFormat(pyAgrumTestCase):
     bn2.loadGUMstring(s)
     self.assertEqual(bn, bn2)
 
+  def testBN_empty_roundtrip(self):
+    bn = gum.BayesNet()
+    s = bn.saveGUMstring()
+    bn2 = gum.BayesNet()
+    bn2.loadGUMstring(s)
+    self.assertEqual(bn2.size(), 0)
+
   def testBN_properties_preserved(self):
     bn = gum.fastBN("A->B->C")
     bn.setProperty("author", "test")

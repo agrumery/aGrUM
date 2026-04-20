@@ -994,3 +994,87 @@ Returns
 pyagrum.Tensor
   The representation of the evidence as a pyagrum.Tensor.
 "
+
+%feature("docstring") gum::BayesNet::loadGUM
+"
+Load a jgum (JSON) or bgum (binary/msgpack) file.
+
+Parameters
+----------
+name : str
+    the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
+binary : bool
+    if True, read as bgum (msgpack) regardless of extension (default: False)
+
+Raises
+------
+pyagrum.IOError
+    If file not found
+pyagrum.FatalError
+    If file content is not valid
+
+See Also
+--------
+:ref:`jgum-bgum-format` : complete format reference
+"
+
+%feature("docstring") gum::BayesNet::saveGUM
+"
+Save the BayesNet in a jgum (JSON) or bgum (binary/msgpack) file.
+
+Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+Parameters
+----------
+name : str
+    the file's path
+binary : bool
+    if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
+indent : int
+    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+
+See Also
+--------
+:ref:`jgum-bgum-format` : complete format reference
+"
+
+%feature("docstring") gum::BayesNet::saveGUMstring
+"
+Serialize the BayesNet to a jgum JSON string.
+
+Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
+
+Parameters
+----------
+indent : int
+    indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+
+Returns
+-------
+str
+    a JSON string representing the BayesNet in jgum format
+
+See Also
+--------
+:ref:`jgum-bgum-format` : complete format reference
+"
+
+%feature("docstring") gum::BayesNet::loadGUMstring
+"
+Deserialize a BayesNet from a jgum JSON string.
+
+Parameters
+----------
+content : str
+    a JSON string in jgum format
+
+Raises
+------
+pyagrum.FatalError
+    If the string is not valid jgum JSON or the type field does not match ``\"BN\"``
+
+See Also
+--------
+:ref:`jgum-bgum-format` : complete format reference
+"
+
