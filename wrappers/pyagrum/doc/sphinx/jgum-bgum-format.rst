@@ -14,7 +14,7 @@ All three model types — :class:`~pyagrum.BayesNet`, :class:`~pyagrum.Influence
    The ``"properties"`` section carries metadata automatically managed by pyAgrum:
    ``software`` (library version), ``creation`` (ISO timestamp of first write),
    and ``lastModification`` (ISO timestamp of last write).
-   User-defined properties set via :meth:`~pyagrum.BayesNet.setProperty` are also persisted.
+   User-defined properties set via ``setProperty()`` are also persisted.
 
 .. seealso::
    :ref:`json-format` in the BN I/O guide for a usage-oriented overview.
@@ -57,12 +57,12 @@ Fields
 ~~~~~~
 
 ``nodes``
-  Array of variable descriptions in :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`.
+  Array of variable descriptions in :ref:`fast syntax <quick-specification-of-randomly-parameterized-graphical-models>`.
   Always present, even for an empty network.
 
 ``parents``
   Object mapping each variable name to an ordered list of its parent names.
-  The order matches the CPT axis order (axis 0 is the variable itself, axes 1… are its parents).
+  The order matches the CPT axis order (axis 0 is the variable itself, axes 1... are its parents).
   Always present, even for variables with no parents (empty array).
 
 ``cpt``
