@@ -81,3 +81,8 @@ The following formats are supported but may not preserve all model features:
 - **UAI** (`.uai`): Very Simple Format for Bayesian networks and Markov networks with limitations
 - **BIF** (`.bif`): Format for Bayesian networks with limitations
 - etc. (see :func:`pyagrum.availableBNExts()` for a complete list).
+
+.. seealso::
+
+   :ref:`jgum-bgum-format`
+      Complete JSON/binary format specification covering BN, InfluenceDiagram and MarkovRandomField.

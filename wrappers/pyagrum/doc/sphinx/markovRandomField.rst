@@ -23,6 +23,19 @@ Moreover, inference algorithms can also use this graph to speed up the computati
 
 * `Tutorial on Markov random field <notebooks/23-Models_MarkovRandomField.ipynb>`_
 
+**Input / Output**
+
+Markov random fields can be saved and loaded using the native :ref:`jgum-bgum-format` (recommended) or the UAI format.
+
+.. code-block:: python
+
+   import pyagrum as gum
+
+   mrf = gum.fastMRF("A--B--C;D--A")
+   gum.saveMRF(mrf, "model.jgum")   # jgum (JSON)
+   gum.saveMRF(mrf, "model.bgum")   # bgum (binary)
+   mrf2 = gum.loadMRF("model.jgum")
+
 **Reference**
 
 .. toctree::

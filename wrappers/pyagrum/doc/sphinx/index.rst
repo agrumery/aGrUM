@@ -113,6 +113,7 @@ Reference manual
 
   random
   fastSyntax
+  jgum-bgum-format
   functions
   listeners
   exceptions

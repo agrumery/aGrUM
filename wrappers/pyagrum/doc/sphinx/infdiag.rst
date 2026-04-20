@@ -13,6 +13,19 @@ PyAgrum's so-called influence diagram represents both influence diagrams and LIM
 
 * `Tutorial on Influence Diagram <notebooks/21-Models_InfluenceDiagram.ipynb>`_
 
+**Input / Output**
+
+Influence diagrams can be saved and loaded using the native :ref:`jgum-bgum-format` (recommended) or the BIFXML format.
+
+.. code-block:: python
+
+   import pyagrum as gum
+
+   id_ = gum.fastID("A->C->*D->$U;A->$U")
+   gum.saveID(id_, "model.jgum")   # jgum (JSON)
+   gum.saveID(id_, "model.bgum")   # bgum (binary)
+   id2 = gum.loadID("model.jgum")
+
 **Reference**
 
 .. toctree::
