@@ -180,6 +180,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     True,
   )
   ExplainCausalTest = _try_import("ExplainCausalTest", _pd, "[pyAgrum] ExplainCausalTest needs pandas")
+  GumFormatTestSuite = _try_import(
+    "GumFormatTestSuite",
+    True,
+  )
   GraphTestSuite = _try_import(
     "GraphTestSuite",
     True,
@@ -331,6 +335,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         EssentialGraphTestSuite,
         EvidenceTestSuite,
         GraphTestSuite,
+        GumFormatTestSuite,
         ICIModelsForBNTestSuite,
         ImportTestSuite,
         InfluenceDiagramTestSuite,
