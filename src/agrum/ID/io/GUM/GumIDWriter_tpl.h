@@ -45,6 +45,7 @@
 #  include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
+#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -71,7 +72,10 @@ namespace gum {
     content["type"]           = "ID";
     content["GumJsonVersion"] = "1.0";
 
-    // classify nodes by type
+    // classify nodes by type (always write all three arrays, even if empty)
+    content["chance"]   = ordered_json::array();
+    content["utility"]  = ordered_json::array();
+    content["decision"] = ordered_json::array();
     for (const auto& node: id.nodes()) {
       const auto fast = id.variable(node).toFast();
       if (id.isChanceNode(node)) {
@@ -157,13 +161,6 @@ namespace gum {
     return oss.str();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
-                                                       const std::vector< uint8_t >& vec) {
-    uint64_t size = vec.size();
-    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
-    os.write(reinterpret_cast< const char* >(vec.data()), size);
-  }
 } // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

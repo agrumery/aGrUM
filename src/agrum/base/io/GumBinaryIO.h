@@ -40,102 +40,54 @@
 
 /**
  * @file
- * @brief Definition of class for GUM (json) file output for Influence Diagrams.
+ * @brief Shared binary I/O helpers for GUM (jgum/bgum) serialization.
+ *
+ * Provides inline helpers to read/write a length-prefixed byte vector used by
+ * the msgpack binary format (.bgum).  Defined here once to avoid duplication
+ * across GumBNReader/Writer, GumIDReader/Writer and GumMRFReader/Writer.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_ID_GUM_WRITER_H
-#define GUM_ID_GUM_WRITER_H
+#ifndef GUM_BINARY_IO_H
+#define GUM_BINARY_IO_H
 
 #include <cstdint>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
+#include <istream>
+#include <ostream>
 #include <vector>
 
-#include <agrum/agrum.h>
-
-#include <agrum/ID/io/IDWriter.h>
-
 namespace gum {
+
   /**
-   * @class GumIDWriter
-   * @headerfile GumIDWriter.h <agrum/ID/io/GUM/GumIDWriter.h>
-   * @brief Writes an InfluenceDiagram in the GUM json format.
-   * @ingroup id_io
+   * Reads a length-prefixed byte vector from a binary stream (bgum format).
    *
-   * Supports both text (.jgum) and binary msgpack (.bgum) output.
+   * The first 8 bytes encode the payload length as a little-endian uint64_t,
+   * followed by that many payload bytes.
+   *
+   * @param is The input binary stream.
+   * @return   The payload bytes.
    */
-  template < GUM_Numeric GUM_SCALAR >
-  class GumIDWriter: public IDWriter< GUM_SCALAR > {
-    public:
-    // ==========================================================================
-    /// @name Constructor & destructor
-    // ==========================================================================
-    /// @{
+  inline std::vector< uint8_t > _readVector_(std::istream& is) {
+    uint64_t size = 0;
+    is.read(reinterpret_cast< char* >(&size), sizeof(size));
+    std::vector< uint8_t > vec(size);
+    is.read(reinterpret_cast< char* >(vec.data()), size);
+    return vec;
+  }
 
-    /**
-     * Default constructor.
-     *
-     * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
-     * @param indent Indentation level for text output. -1 produces compact output.
-     */
-    GumIDWriter(bool binary = false, int indent = -1);
+  /**
+   * Writes a length-prefixed byte vector to a binary stream (bgum format).
+   *
+   * @param os  The output binary stream.
+   * @param vec The payload bytes to write.
+   */
+  inline void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec) {
+    uint64_t size = vec.size();
+    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
+    os.write(reinterpret_cast< const char* >(vec.data()), size);
+  }
 
-    ~GumIDWriter() override;
-
-    GumIDWriter(const GumIDWriter&)                = delete;
-    GumIDWriter(GumIDWriter&&) noexcept            = delete;
-    GumIDWriter& operator=(const GumIDWriter&)     = delete;
-    GumIDWriter& operator=(GumIDWriter&&) noexcept = delete;
-
-    /// @}
-
-    /**
-     * Serializes an InfluenceDiagram to a string in GUM json format.
-     */
-    std::string toString(const InfluenceDiagram< GUM_SCALAR >& id);
-
-    /**
-     * Writes an InfluenceDiagram to the output stream.
-     *
-     * @param output The output stream.
-     * @param id The InfluenceDiagram to write.
-     * @throws IOError if the stream is not writable.
-     */
-    void write(std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& id) override;
-
-    /**
-     * Writes an InfluenceDiagram to the file at filePath, updating metadata first.
-     *
-     * @param filePath Path to the output file (created or overwritten).
-     * @param id The InfluenceDiagram to write (non-const to allow metadata update).
-     * @throws IOError if an I/O error occurs.
-     */
-    void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& id) override;
-
-    /**
-     * Writes an InfluenceDiagram to the file at filePath (const variant, no metadata update).
-     *
-     * @param filePath Path to the output file (created or overwritten).
-     * @param id The InfluenceDiagram to write.
-     * @throws IOError if an I/O error occurs.
-     */
-    void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& id) override;
-
-    private:
-    bool _binary_;
-    int  _indent_;
-  };
-
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumIDWriter< double >;
-#endif
 } /* namespace gum */
 
-#include <agrum/ID/io/GUM/GumIDWriter_tpl.h>
-
-#endif   // GUM_ID_GUM_WRITER_H
+#endif   // GUM_BINARY_IO_H

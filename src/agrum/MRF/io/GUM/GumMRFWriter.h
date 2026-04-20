@@ -129,8 +129,6 @@ namespace gum {
     void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& mrf) override;
 
     private:
-    static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
-
     bool _binary_;
     int  _indent_;
   };

@@ -127,8 +127,6 @@ namespace gum {
     void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
-    static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
-
     bool _binary_;   ///< If true, the output will be in binary format, otherwise in text format.
     int  _indent_;   ///< The indentation level for the output.
   };

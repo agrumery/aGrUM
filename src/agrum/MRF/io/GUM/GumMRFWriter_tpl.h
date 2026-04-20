@@ -45,6 +45,7 @@
 #  include <agrum/MRF/io/GUM/GumMRFWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
+#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -71,10 +72,13 @@ namespace gum {
     content["type"]           = "MRF";
     content["GumJsonVersion"] = "1.0";
 
-    // nodes
+    // nodes (always written, even if empty)
+    content["nodes"] = ordered_json::array();
     for (const auto& node: mrf.nodes()) { content["nodes"].push_back(mrf.variable(node).toFast()); }
 
     // factors: each factor as an inline object {"vars": [...], "values": [...]}
+    // always written, even if empty, so the section is always present
+    content["factors"] = ordered_json::array();
     for (const auto& [nodeSet, tensor_ptr]: mrf.factors()) {
       ordered_json factor;
       // variable names in tensor axis order (deterministic, matches fillWith order)
@@ -127,13 +131,6 @@ namespace gum {
     return oss.str();
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumMRFWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
-                                                        const std::vector< uint8_t >& vec) {
-    uint64_t size = vec.size();
-    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
-    os.write(reinterpret_cast< const char* >(vec.data()), size);
-  }
 } // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

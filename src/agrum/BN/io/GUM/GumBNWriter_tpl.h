@@ -45,6 +45,7 @@
 #  include <agrum/BN/io/GUM/GumBNWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
+#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -53,11 +54,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
     BNWriter< GUM_SCALAR >() {
-    _indent_ = indent;
     _binary_ = binary;
-    if (_indent_ < -1) {
-      _indent_ = -1; // no indentation
-    }
+    _indent_ = (indent < -1) ? -1 : indent;
     GUM_CONSTRUCTOR(GumBNWriter);
   }
 
@@ -82,15 +80,14 @@ namespace gum {
 
     // add variables
     for (const auto& node: bn.nodes()) { content["nodes"].push_back(bn.variable(node).toFast()); }
-    // add parents
+    // add parents (always written, even empty, so the section always exists)
+    content["parents"] = ordered_json::object();
     for (const auto& node: bn.nodes()) {
-      ordered_json parentList;
-      const auto&  cpt = bn.cpt(node);
-      if (cpt.nbrDim() > 1) {
-        for (Idx i = 1; i < cpt.nbrDim(); i++)
-          parentList.push_back(cpt.variable(i).name());
-        content["parents"][bn.variable(node).name()] = parentList;
-      }
+      ordered_json parentList = ordered_json::array();
+      const auto&  cpt        = bn.cpt(node);
+      for (Idx i = 1; i < cpt.nbrDim(); i++)
+        parentList.push_back(cpt.variable(i).name());
+      content["parents"][bn.variable(node).name()] = parentList;
     }
     // add cpts
     for (const auto& node: bn.nodes()) {
@@ -135,12 +132,5 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
-                                                       const std::vector< uint8_t >& vec) {
-    uint64_t size = vec.size();
-    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
-    os.write(reinterpret_cast< const char* >(vec.data()), size);
-  }
 } // namespace gum
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
