@@ -213,6 +213,25 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   }
 
+  std::string saveGUMstring(int indent=2) {
+    gum::GumBNWriter<GUM_SCALAR> writer(false,indent);
+    self->updateMetaData();
+    return writer.toString(*self);
+  }
+
+  void loadGUMstring(const std::string& content) {
+    std::stringstream stream;
+    try {
+      gum::GumBNReader<GUM_SCALAR> reader(self);
+      auto nbErr=reader.proceedFromString(content);
+      reader.showElegantErrorsAndWarnings(stream);
+      if (nbErr>0) {
+        reader.showErrorCounts(stream);
+        GUM_ERROR(gum::FatalError,stream.str())
+      }
+    } catch (gum::IOError& e) { throw(e); }
+  }
+
   std::string loadBIF(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;
@@ -433,26 +452,11 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
   %pythoncode {
 def __getstate__(self):
     _gum_add_properties_while_getstate_(self)
-    state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
-           "parents":{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()},
-           "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes()},
-           "properties":{k:self.property(k) for k in self.properties()}
-          }
-    return state
+    return self.saveGUMstring()
 
 def __setstate__(self,state):
     self.__init__()
-    for fastvar in state['nodes']:
-        self.add(fastvar)
-    self.beginTopologyTransformation()
-    for son in state['parents']:
-        for father in state['parents'][son]:
-            self.addArc(father,son)
-    self.endTopologyTransformation()
-    for node in state['cpt']:
-        self.cpt(node).fillWith(state['cpt'][node])
-    for prop in state['properties']:
-        self.setProperty(prop,state['properties'][prop])
+    self.loadGUMstring(state)
     return self
 
 def toFast(self, filename: str = None) -> str:

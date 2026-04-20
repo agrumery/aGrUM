@@ -47,7 +47,7 @@ def availableMRFExts():
   str
     a string which lists all suffixes for supported MRF file formats.
   """
-  return "uai|pkl"
+  return "uai|jgum|bgum|pkl"
 
 
 def loadMRF(filename, listeners=None, verbose=False):
@@ -103,6 +103,10 @@ def loadMRF(filename, listeners=None, verbose=False):
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
     warns = mn.loadUAI(filename, listeners)
+  elif extension == "JGUM":
+    mn.loadGUM(filename)
+  elif extension == "BGUM":
+    mn.loadGUM(filename, binary=True)
   elif extension == "PKL":
     mn = _gum_pickle_load(filename)
   else:
@@ -131,6 +135,10 @@ def saveMRF(mn, filename):
 
   if extension == "UAI":
     mn.saveUAI(filename)
+  elif extension == "JGUM":
+    mn.saveGUM(filename)
+  elif extension == "BGUM":
+    mn.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(mn, filename)
   else:

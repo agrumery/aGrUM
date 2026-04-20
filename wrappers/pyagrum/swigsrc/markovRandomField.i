@@ -93,6 +93,43 @@ IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
 
 
 %extend gum::MarkovRandomField {
+  void loadGUM(std::string name, bool binary=false) {
+    std::stringstream stream;
+    try {
+      gum::GumMRFReader<GUM_SCALAR> reader(self,name,binary);
+      auto nbErr=reader.proceed();
+      reader.showElegantErrorsAndWarnings(stream);
+      if (nbErr>0) {
+        reader.showErrorCounts(stream);
+        GUM_ERROR(gum::FatalError,stream.str())
+      }
+    } catch (gum::IOError& e) { throw(e); }
+  }
+
+  void saveGUM(std::string name, bool binary=false, int indent=2) {
+    gum::GumMRFWriter<GUM_SCALAR> writer(binary,indent);
+    writer.write(name,*self);
+  }
+
+  std::string saveGUMstring(int indent=2) {
+    gum::GumMRFWriter<GUM_SCALAR> writer(false,indent);
+    self->updateMetaData();
+    return writer.toString(*self);
+  }
+
+  void loadGUMstring(const std::string& content) {
+    std::stringstream stream;
+    try {
+      gum::GumMRFReader<GUM_SCALAR> reader(self);
+      auto nbErr=reader.proceedFromString(content);
+      reader.showElegantErrorsAndWarnings(stream);
+      if (nbErr>0) {
+        reader.showErrorCounts(stream);
+        GUM_ERROR(gum::FatalError,stream.str())
+      }
+    } catch (gum::IOError& e) { throw(e); }
+  }
+
    std::string loadUAI(std::string name, PyObject *l=(PyObject*)0)
    {
      std::stringstream stream;
@@ -127,25 +164,11 @@ IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
   %pythoncode {
 def __getstate__(self):
     _gum_add_properties_while_getstate_(self)
-    state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
-           "factors":[[n for n in self.factor(factor).names] for factor in self.factors()],
-           "potential":{"-".join(self.factor(factor).names):self.factor(factor)[:].flatten().tolist() for factor in self.factors()},
-           "properties":{k:self.property(k) for k in self.properties()}
-          }
-    return state
+    return self.saveGUMstring()
 
 def __setstate__(self,state):
     self.__init__()
-    for fastvar in state['nodes']:
-        self.add(fastvar)
-    self.beginTopologyTransformation()
-    for factor in state['factors']:
-         self.addFactor(factor)
-    self.endTopologyTransformation()
-    for cliq in state['potential']:
-        self.factor(cliq.split("-")).fillWith(state['potential'][cliq])
-    for prop in state['properties']:
-        self.setProperty(prop,state['properties'][prop])
+    self.loadGUMstring(state)
     return self
 
 def toFast(self, filename: str = None) -> str:

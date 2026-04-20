@@ -127,6 +127,10 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
                          opts.get('classpath', ''), listeners)
   elif extension == "UAI":
     warns = bn.loadUAI(filename, listeners)
+  elif extension == "JGUM":
+    bn.loadGUM(filename)
+  elif extension == "BGUM":
+    bn.loadGUM(filename, binary=True)
   elif extension == "PKL":
     bn = _gum_pickle_load(filename)
   else:
@@ -178,6 +182,10 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     bn.saveUAI(filename, allowModificationWhenSaving)
   elif extension == "O3PRM":
     bn.saveO3PRM(filename, allowModificationWhenSaving)
+  elif extension == "JGUM":
+    bn.saveGUM(filename)
+  elif extension == "BGUM":
+    bn.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(bn, filename)
   else:

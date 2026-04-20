@@ -12743,6 +12743,12 @@ class BayesNet(IBayesNet):
     def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         return _pyagrum.BayesNet_saveGUM(self, name, binary, indent)
 
+    def saveGUMstring(self, indent: int=2) -> str:
+        return _pyagrum.BayesNet_saveGUMstring(self, indent)
+
+    def loadGUMstring(self, content: str) -> None:
+        return _pyagrum.BayesNet_loadGUMstring(self, content)
+
     def loadBIF(self, name: str, l: object=None) -> str:
         r"""
 
@@ -13026,26 +13032,11 @@ class BayesNet(IBayesNet):
 
     def __getstate__(self):
         _gum_add_properties_while_getstate_(self)
-        state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
-               "parents":{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()},
-               "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes()},
-               "properties":{k:self.property(k) for k in self.properties()}
-              }
-        return state
+        return self.saveGUMstring()
 
     def __setstate__(self,state):
         self.__init__()
-        for fastvar in state['nodes']:
-            self.add(fastvar)
-        self.beginTopologyTransformation()
-        for son in state['parents']:
-            for father in state['parents'][son]:
-                self.addArc(father,son)
-        self.endTopologyTransformation()
-        for node in state['cpt']:
-            self.cpt(node).fillWith(state['cpt'][node])
-        for prop in state['properties']:
-            self.setProperty(prop,state['properties'][prop])
+        self.loadGUMstring(state)
         return self
 
     def toFast(self, filename: str = None) -> str:
@@ -26120,6 +26111,10 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
                          opts.get('classpath', ''), listeners)
   elif extension == "UAI":
     warns = bn.loadUAI(filename, listeners)
+  elif extension == "JGUM":
+    bn.loadGUM(filename)
+  elif extension == "BGUM":
+    bn.loadGUM(filename, binary=True)
   elif extension == "PKL":
     bn = _gum_pickle_load(filename)
   else:
@@ -26171,6 +26166,10 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     bn.saveUAI(filename, allowModificationWhenSaving)
   elif extension == "O3PRM":
     bn.saveO3PRM(filename, allowModificationWhenSaving)
+  elif extension == "JGUM":
+    bn.saveGUM(filename)
+  elif extension == "BGUM":
+    bn.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(bn, filename)
   else:
@@ -28530,6 +28529,18 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
 
+    def loadGUM(self, name: str, binary: bool=False) -> None:
+        return _pyagrum.InfluenceDiagram_loadGUM(self, name, binary)
+
+    def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+        return _pyagrum.InfluenceDiagram_saveGUM(self, name, binary, indent)
+
+    def saveGUMstring(self, indent: int=2) -> str:
+        return _pyagrum.InfluenceDiagram_saveGUMstring(self, indent)
+
+    def loadGUMstring(self, content: str) -> None:
+        return _pyagrum.InfluenceDiagram_loadGUMstring(self, content)
+
     def loadBIFXML(self, *args) -> bool:
         r"""
 
@@ -28631,38 +28642,11 @@ class InfluenceDiagram(DAGmodel):
 
     def __getstate__(self):
         _gum_add_properties_while_getstate_(self)
-        state={
-              "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
-              "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
-              "decision":[self.variable(i).toFast() for i in self.nodes() if self.isDecisionNode(i)],
-              "parents":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
-                     **{self.variable(i).name():list(self.utility(i).names)[1:] for i in self.nodes()  if self.isUtilityNode(i)},
-                     **{self.variable(i).name():[self.variable(j).name() for j in self.parents(i)] for i in self.nodes() if self.isDecisionNode(i)}},
-              "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes() if self.isChanceNode(i)},
-              "reward":{self.variable(i).name():self.utility(i)[:].flatten().tolist() for i in self.nodes() if self.isUtilityNode(i)},
-              "properties":{k:self.property(k) for k in self.properties()}
-        }
-        return state
+        return self.saveGUMstring()
 
     def __setstate__(self,state):
         self.__init__()
-        for fastvar in state['chance']:
-            self.addChanceNode(fastvar)
-        for fastvar in state['utility']:
-            self.addUtilityNode(fastvar)
-        for fastvar in state['decision']:
-            self.addDecisionNode(fastvar)
-        self.beginTopologyTransformation()
-        for son in state['parents']:
-            for father in state['parents'][son]:
-                self.addArc(father,son)
-        self.endTopologyTransformation()
-        for node in state['cpt']:
-            self.cpt(node).fillWith(state['cpt'][node])
-        for node in state['reward']:
-            self.utility(node).fillWith(state['reward'][node])
-        for prop in state['properties']:
-            self.setProperty(prop,state['properties'][prop])
+        self.loadGUMstring(state)
         return self
 
 
@@ -29270,7 +29254,7 @@ def availableIDExts():
   str
     a string which lists all suffixes for supported ID file formats.
   """
-  return "xmlbif|bifxml|xml|pkl"
+  return "xmlbif|bifxml|xml|jgum|bgum|pkl"
 
 
 def loadID(filename):
@@ -29296,6 +29280,12 @@ def loadID(filename):
 
     if not res:
       raise IOError(f"Error(s) in {filename}")
+  elif extension == "JGUM":
+    diag = pyagrum.InfluenceDiagram()
+    diag.loadGUM(filename)
+  elif extension == "BGUM":
+    diag = pyagrum.InfluenceDiagram()
+    diag.loadGUM(filename, binary=True)
   elif extension == "PKL":
     diag = _gum_pickle_load(filename)
   else:
@@ -29320,6 +29310,10 @@ def saveID(infdiag, filename):
 
   if extension in {"BIFXML", "XMLBIF", "XML"}:
     infdiag.saveBIFXML(filename)
+  elif extension == "JGUM":
+    infdiag.saveGUM(filename)
+  elif extension == "BGUM":
+    infdiag.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(infdiag, filename)
   else:
@@ -29919,6 +29913,18 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_isIndependent(self, *args)
 
+    def loadGUM(self, name: str, binary: bool=False) -> None:
+        return _pyagrum.MarkovRandomField_loadGUM(self, name, binary)
+
+    def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+        return _pyagrum.MarkovRandomField_saveGUM(self, name, binary, indent)
+
+    def saveGUMstring(self, indent: int=2) -> str:
+        return _pyagrum.MarkovRandomField_saveGUMstring(self, indent)
+
+    def loadGUMstring(self, content: str) -> None:
+        return _pyagrum.MarkovRandomField_loadGUMstring(self, content)
+
     def loadUAI(self, *args) -> str:
         r"""
 
@@ -29956,25 +29962,11 @@ class MarkovRandomField(IMarkovRandomField):
 
     def __getstate__(self):
         _gum_add_properties_while_getstate_(self)
-        state={"nodes":[self.variable(i).toFast() for i in self.nodes()],
-               "factors":[[n for n in self.factor(factor).names] for factor in self.factors()],
-               "potential":{"-".join(self.factor(factor).names):self.factor(factor)[:].flatten().tolist() for factor in self.factors()},
-               "properties":{k:self.property(k) for k in self.properties()}
-              }
-        return state
+        return self.saveGUMstring()
 
     def __setstate__(self,state):
         self.__init__()
-        for fastvar in state['nodes']:
-            self.add(fastvar)
-        self.beginTopologyTransformation()
-        for factor in state['factors']:
-             self.addFactor(factor)
-        self.endTopologyTransformation()
-        for cliq in state['potential']:
-            self.factor(cliq.split("-")).fillWith(state['potential'][cliq])
-        for prop in state['properties']:
-            self.setProperty(prop,state['properties'][prop])
+        self.loadGUMstring(state)
         return self
 
     def toFast(self, filename: str = None) -> str:
@@ -30867,7 +30859,7 @@ def availableMRFExts():
   str
     a string which lists all suffixes for supported MRF file formats.
   """
-  return "uai|pkl"
+  return "uai|jgum|bgum|pkl"
 
 
 def loadMRF(filename, listeners=None, verbose=False):
@@ -30923,6 +30915,10 @@ def loadMRF(filename, listeners=None, verbose=False):
   extension = filename.split('.')[-1].upper()
   if extension == "UAI":
     warns = mn.loadUAI(filename, listeners)
+  elif extension == "JGUM":
+    mn.loadGUM(filename)
+  elif extension == "BGUM":
+    mn.loadGUM(filename, binary=True)
   elif extension == "PKL":
     mn = _gum_pickle_load(filename)
   else:
@@ -30951,6 +30947,10 @@ def saveMRF(mn, filename):
 
   if extension == "UAI":
     mn.saveUAI(filename)
+  elif extension == "JGUM":
+    mn.saveGUM(filename)
+  elif extension == "BGUM":
+    mn.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(mn, filename)
   else:

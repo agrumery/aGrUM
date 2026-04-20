@@ -53,7 +53,7 @@ def availableIDExts():
   str
     a string which lists all suffixes for supported ID file formats.
   """
-  return "xmlbif|bifxml|xml|pkl"
+  return "xmlbif|bifxml|xml|jgum|bgum|pkl"
 
 
 def loadID(filename):
@@ -79,6 +79,12 @@ def loadID(filename):
 
     if not res:
       raise IOError(f"Error(s) in {filename}")
+  elif extension == "JGUM":
+    diag = pyagrum.InfluenceDiagram()
+    diag.loadGUM(filename)
+  elif extension == "BGUM":
+    diag = pyagrum.InfluenceDiagram()
+    diag.loadGUM(filename, binary=True)
   elif extension == "PKL":
     diag = _gum_pickle_load(filename)
   else:
@@ -103,6 +109,10 @@ def saveID(infdiag, filename):
 
   if extension in {"BIFXML", "XMLBIF", "XML"}:
     infdiag.saveBIFXML(filename)
+  elif extension == "JGUM":
+    infdiag.saveGUM(filename)
+  elif extension == "BGUM":
+    infdiag.saveGUM(filename, binary=True)
   elif extension == "PKL":
     _gum_pickle_save(infdiag, filename)
   else:

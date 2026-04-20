@@ -60,6 +60,43 @@
 IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);
 
 %extend gum::InfluenceDiagram {
+  void loadGUM(std::string name, bool binary=false) {
+    std::stringstream stream;
+    try {
+      gum::GumIDReader<GUM_SCALAR> reader(self,name,binary);
+      auto nbErr=reader.proceed();
+      reader.showElegantErrorsAndWarnings(stream);
+      if (nbErr>0) {
+        reader.showErrorCounts(stream);
+        GUM_ERROR(gum::FatalError,stream.str())
+      }
+    } catch (gum::IOError& e) { throw(e); }
+  }
+
+  void saveGUM(std::string name, bool binary=false, int indent=2) {
+    gum::GumIDWriter<GUM_SCALAR> writer(binary,indent);
+    writer.write(name,*self);
+  }
+
+  std::string saveGUMstring(int indent=2) {
+    gum::GumIDWriter<GUM_SCALAR> writer(false,indent);
+    self->updateMetaData();
+    return writer.toString(*self);
+  }
+
+  void loadGUMstring(const std::string& content) {
+    std::stringstream stream;
+    try {
+      gum::GumIDReader<GUM_SCALAR> reader(self);
+      auto nbErr=reader.proceedFromString(content);
+      reader.showElegantErrorsAndWarnings(stream);
+      if (nbErr>0) {
+        reader.showErrorCounts(stream);
+        GUM_ERROR(gum::FatalError,stream.str())
+      }
+    } catch (gum::IOError& e) { throw(e); }
+  }
+
    bool loadBIFXML(std::string name, PyObject *l=(PyObject*)0) {
     try {
         gum::BIFXMLIDReader<GUM_SCALAR> reader(self,name);
@@ -146,38 +183,11 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
 
 def __getstate__(self):
     _gum_add_properties_while_getstate_(self)
-    state={
-          "chance":[self.variable(i).toFast() for i in self.nodes() if self.isChanceNode(i)],
-          "utility":[self.variable(i).toFast() for i in self.nodes() if self.isUtilityNode(i)],
-          "decision":[self.variable(i).toFast() for i in self.nodes() if self.isDecisionNode(i)],
-          "parents":{**{self.variable(i).name():list(self.cpt(i).names)[1:] for i in self.nodes()  if self.isChanceNode(i)},
-                 **{self.variable(i).name():list(self.utility(i).names)[1:] for i in self.nodes()  if self.isUtilityNode(i)},
-                 **{self.variable(i).name():[self.variable(j).name() for j in self.parents(i)] for i in self.nodes() if self.isDecisionNode(i)}},
-          "cpt":{self.variable(i).name():self.cpt(i)[:].flatten().tolist() for i in self.nodes() if self.isChanceNode(i)},
-          "reward":{self.variable(i).name():self.utility(i)[:].flatten().tolist() for i in self.nodes() if self.isUtilityNode(i)},
-          "properties":{k:self.property(k) for k in self.properties()}
-    }
-    return state
+    return self.saveGUMstring()
 
 def __setstate__(self,state):
     self.__init__()
-    for fastvar in state['chance']:
-        self.addChanceNode(fastvar)
-    for fastvar in state['utility']:
-        self.addUtilityNode(fastvar)
-    for fastvar in state['decision']:
-        self.addDecisionNode(fastvar)
-    self.beginTopologyTransformation()
-    for son in state['parents']:
-        for father in state['parents'][son]:
-            self.addArc(father,son)
-    self.endTopologyTransformation()
-    for node in state['cpt']:
-        self.cpt(node).fillWith(state['cpt'][node])
-    for node in state['reward']:
-        self.utility(node).fillWith(state['reward'][node])
-    for prop in state['properties']:
-        self.setProperty(prop,state['properties'][prop])
+    self.loadGUMstring(state)
     return self
 
 
