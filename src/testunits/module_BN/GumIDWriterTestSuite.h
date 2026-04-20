@@ -134,6 +134,19 @@ namespace gum_tests {
       _checkMetaData_(true);
     }
 
+    static void testSingleVariable() {
+      // ID with a single chance node and no arcs
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("A[2]");
+      gum::GumIDWriter< double > writer(false, 2);
+      const std::string          str = writer.toString(id);
+
+      gum::InfluenceDiagram< double > id2;
+      gum::GumIDReader< double >      reader(&id2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(id2, id);
+      CHECK_EQ(id2.size(), 1u);
+    }
+
     static void testToString() {
       auto                       id = gum::InfluenceDiagram< double >::fastPrototype("A->*D->$U");
       gum::GumIDWriter< double > writer(false, 2);
@@ -154,5 +167,6 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
+  GUM_TEST_ACTIF(SingleVariable)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests

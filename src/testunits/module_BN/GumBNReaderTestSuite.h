@@ -48,6 +48,7 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
+#include <agrum/BN/io/GUM/GumBNWriter.h>
 
 #include <agrum/base/external/json/json.hpp>
 
@@ -243,6 +244,24 @@ namespace gum_tests {
       CHECK_EQ(bn.properties().size(), 0u);
       CHECK_EQ(bn2.properties().size(), 3u);
     }
+
+    static void testProceedWithoutFilename() {
+      gum::BayesNet< double > bn;
+      auto reader = gum::GumBNReader< double >(&bn);
+      CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
+    }
+
+    static void testProceedFromString() {
+      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+      gum::GumBNWriter< double > writer(false, 2);
+      const std::string          str = writer.toString(bn);
+
+      gum::BayesNet< double > bn2;
+      auto reader = gum::GumBNReader< double >(&bn2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(bn2, bn);
+    }
+
   };
 
   GUM_TEST_ACTIF(FirstTest)
@@ -251,4 +270,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(GetCPTs)
   GUM_TEST_ACTIF(Existence)
   GUM_TEST_ACTIF(BuildingBayesNetFromJson)
+  GUM_TEST_ACTIF(ProceedWithoutFilename)
+  GUM_TEST_ACTIF(ProceedFromString)
 } // namespace gum_tests

@@ -45,6 +45,7 @@
 
 #include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/MRF/io/GUM/GumMRFReader.h>
+#include <agrum/MRF/io/GUM/GumMRFWriter.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -88,7 +89,34 @@ namespace gum_tests {
       CHECK(mrf.existsProperty("software"));
       CHECK_EQ(mrf.property("software"), "aGrUM test");
     }
+
+    static void testProceedWithoutFilename() {
+      gum::MarkovRandomField< double > mrf;
+      auto reader = gum::GumMRFReader< double >(&mrf);
+      CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
+    }
+
+    static void testProceedFromString() {
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("A[2]");
+      mrf.add("B[2]");
+      mrf.add("C[2]");
+      mrf.addFactor({"A", "B"});
+      mrf.addFactor({"B", "C"});
+      mrf.factor({"A", "B"}).fillWith({0.5, 0.2, 0.3, 0.8});
+      mrf.factor({"B", "C"}).fillWith({0.9, 0.1, 0.4, 0.6});
+
+      gum::GumMRFWriter< double > writer(false, 2);
+      const std::string           str = writer.toString(mrf);
+
+      gum::MarkovRandomField< double > mrf2;
+      auto reader = gum::GumMRFReader< double >(&mrf2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(mrf2, mrf);
+    }
   };
 
   GUM_TEST_ACTIF(BuildingMRFFromJson)
+  GUM_TEST_ACTIF(ProceedWithoutFilename)
+  GUM_TEST_ACTIF(ProceedFromString)
 }   // namespace gum_tests

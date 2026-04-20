@@ -158,6 +158,19 @@ namespace gum_tests {
       _withBigFiles_(true);
     }
 
+    static void testSingleVariable() {
+      // BN with a single node and no arcs — "parents" section must still exist in JSON
+      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
+      gum::GumBNWriter< double > writer(false, 2);
+      const std::string          str = writer.toString(bn);
+
+      gum::BayesNet< double > bn2;
+      auto reader = gum::GumBNReader< double >(&bn2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(bn2, bn);
+      CHECK_EQ(bn2.size(), 1u);
+    }
+
     static void testToString() {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       gum::GumBNWriter< double > writer(false, 2);
@@ -178,5 +191,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
   GUM_TEST_ACTIF(WithBigFiles)
+  GUM_TEST_ACTIF(SingleVariable)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests

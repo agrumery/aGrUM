@@ -47,6 +47,7 @@
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/GUM/GumIDReader.h>
+#include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -106,7 +107,27 @@ namespace gum_tests {
       CHECK(id.existsProperty("software"));
       CHECK_EQ(id.property("software"), "aGrUM test");
     }
+
+    static void testProceedWithoutFilename() {
+      gum::InfluenceDiagram< double > id;
+      auto reader = gum::GumIDReader< double >(&id);
+      CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
+    }
+
+    static void testProceedFromString() {
+      // A -> C -> *D -> $U, A -> $U  (chance A, chance C, decision D, utility U)
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
+      gum::GumIDWriter< double > writer(false, 2);
+      const std::string          str = writer.toString(id);
+
+      gum::InfluenceDiagram< double > id2;
+      gum::GumIDReader< double >      reader(&id2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(id2, id);
+    }
   };
 
   GUM_TEST_ACTIF(BuildingIDFromJson)
+  GUM_TEST_ACTIF(ProceedWithoutFilename)
+  GUM_TEST_ACTIF(ProceedFromString)
 }   // namespace gum_tests

@@ -142,6 +142,39 @@ namespace gum_tests {
       _checkMetaData_(true);
     }
 
+    static void testNoFactors() {
+      // MRF with nodes but zero factors — "factors" section must still exist in JSON
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("A[2]");
+      mrf.add("B[2]");
+
+      gum::GumMRFWriter< double > writer(false, 2);
+      const std::string           str = writer.toString(mrf);
+
+      gum::MarkovRandomField< double > mrf2;
+      auto reader = gum::GumMRFReader< double >(&mrf2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(mrf2.size(), 2u);
+      CHECK_EQ(mrf2.factors().size(), 0u);
+    }
+
+    static void testSingleVariable() {
+      // MRF with a single node and a unary factor — no edges
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("A[2]");
+      mrf.addFactor({"A"});
+      mrf.factor({"A"}).fillWith({0.3, 0.7});
+
+      gum::GumMRFWriter< double > writer(false, 2);
+      const std::string           str = writer.toString(mrf);
+
+      gum::MarkovRandomField< double > mrf2;
+      auto reader = gum::GumMRFReader< double >(&mrf2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(mrf2, mrf);
+      CHECK_EQ(mrf2.size(), 1u);
+    }
+
     static void testToString() {
       auto mrf = _buildSimpleMRF_();
       gum::GumMRFWriter< double > writer(false, 2);
@@ -161,5 +194,7 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
+  GUM_TEST_ACTIF(NoFactors)
+  GUM_TEST_ACTIF(SingleVariable)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests
