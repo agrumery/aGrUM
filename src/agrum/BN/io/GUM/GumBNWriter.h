@@ -75,7 +75,7 @@ namespace gum {
    * the GUM json format.
    *
    */
-  template < typename GUM_SCALAR >
+  template < GUM_Numeric GUM_SCALAR >
   class GumBNWriter: public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
@@ -124,7 +124,7 @@ namespace gum {
      * @param bn The Bayesian network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    void _doWrite(const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) final;
+    void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);

@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -38,66 +38,75 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <iostream>
+#include <sstream>
+#include <string>
 
-#ifndef GUMREADER_H
-#define GUMREADER_H
-#include <agrum/base/core/errorsContainer.h>
-#include <agrum/BN/io/BNReader.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
-namespace gum {
-  /**
-   * @class BNGumReader
-   * @headerfile BNGumReader.h <agrum/BN/io/GUM/BNGumReader.h>
-   * @ingroup bn_io
-   * @brief Class for reading a Bayesian network from a GUM (json) file.
-   *
-   * This class is used to read a Bayesian network from a GUM file format.
-   */
-  template < GUM_Numeric GUM_SCALAR >
-  class GumBNReader: public BNReader< GUM_SCALAR >, ErrorsContainer {
+#include <agrum/ID/influenceDiagram.h>
+#include <agrum/ID/io/GUM/GumIDReader.h>
+
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GumIDReader
+#define GUM_CURRENT_MODULE BN
+
+namespace gum_tests {
+  struct GumIDReaderTestSuite {
     public:
-    /**
-     * Constructor
-     * A reader is defined for reading a defined file. Hence the 2 args of the
-     * constructor.
-     * Note that the BN has to be built outside the reader. There is no
-     * delegation to create/destroy the BN from inside the reader.
-     *
-     * @param bn The BayesNet to fill with the read data.
-     * @param filename The name of the file to read.
-     * @param binary If true, the input is in binary format, otherwise in text format
-     */
-    GumBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename, bool binary = false);
+    static void testBuildingIDFromJson() {
+      // Read minimal.id.jgum which has: chance A[2], C[2]; utility U[1]; decision D[2]
+      // parents: A->{}, C->{A}, D->{}, U->{C,D}
+      const std::string               filename = GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum");
+      gum::InfluenceDiagram< double > id;
+      gum::GumIDReader< double >      reader(&id, filename);
+      reader.proceed();
+      CHECK_EQ(reader.count(), 0u);
 
-    /**
-     * Default destructor.
-     */
-    ~GumBNReader() override;
+      CHECK_EQ(id.size(), 4u);
+      CHECK_EQ(id.chanceNodeSize(), 2u);
+      CHECK_EQ(id.utilityNodeSize(), 1u);
+      CHECK_EQ(id.decisionNodeSize(), 1u);
 
-    /// parse.
-    /// @return the number of detected errors
-    Size proceed() final;
+      CHECK(id.isChanceNode(id.idFromName("A")));
+      CHECK(id.isChanceNode(id.idFromName("C")));
+      CHECK(id.isUtilityNode(id.idFromName("U")));
+      CHECK(id.isDecisionNode(id.idFromName("D")));
 
-    void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
+      CHECK_EQ(id.variable("A").domainSize(), 2u);
+      CHECK_EQ(id.variable("C").domainSize(), 2u);
+      CHECK_EQ(id.variable("D").domainSize(), 2u);
+      CHECK_EQ(id.variable("U").domainSize(), 1u);
 
-    void showErrorCounts(std::ostream& stream = std::cerr) const;
+      CHECK_EQ(id.parents(id.idFromName("A")).size(), 0u);
+      CHECK_EQ(id.parents(id.idFromName("D")).size(), 0u);
+      CHECK(id.existsArc("A", "C"));
+      CHECK(id.existsArc("C", "U"));
+      CHECK(id.existsArc("D", "U"));
 
+      // CPT values for A: [0.4, 0.6]
+      const auto& cptA = id.cpt("A");
+      CHECK_EQ(cptA.domainSize(), 2u);
+      gum::Instantiation IA(cptA);
+      IA.setFirst();
+      CHECK_EQ(cptA[IA], doctest::Approx(0.4));
+      ++IA;
+      CHECK_EQ(cptA[IA], doctest::Approx(0.6));
 
-    private:
-    static std::vector< uint8_t > _readVector_(std::istream& is);
+      // utility values for U: [10.0, -5.0, 20.0, 5.0]
+      const auto& utU = id.utility("U");
+      CHECK_EQ(utU.domainSize(), 4u);
+      gum::Instantiation IU(utU);
+      IU.setFirst();
+      CHECK_EQ(utU[IU], doctest::Approx(10.0));
 
-    BayesNet< GUM_SCALAR >* _bn_;
-    std::string             _streamName_;
-    bool                    _parseDone_;
-    bool _binary_;   ///< If true, the input is in binary format, otherwise in text format.
+      // properties from file
+      CHECK(id.existsProperty("software"));
+      CHECK_EQ(id.property("software"), "aGrUM test");
+    }
   };
 
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumBNReader< double >;
-#endif
-} /* namespace gum */
-
-#include <agrum/BN/io/GUM/GumBNReader_tpl.h>
-
-#endif   // GUM_BN_READER_H
+  GUM_TEST_ACTIF(BuildingIDFromJson)
+}   // namespace gum_tests

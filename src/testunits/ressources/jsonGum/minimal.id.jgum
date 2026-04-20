@@ -1,0 +1,32 @@
+{
+  "type": "ID",
+  "GumJsonVersion": "1.0",
+  "chance": [
+    "A[2]",
+    "C[2]"
+  ],
+  "utility": [
+    "U[1]"
+  ],
+  "decision": [
+    "D[2]"
+  ],
+  "parents": {
+    "A": [],
+    "C": ["A"],
+    "D": [],
+    "U": ["C", "D"]
+  },
+  "cpt": {
+    "A": [0.4, 0.6],
+    "C": [0.8, 0.2, 0.3, 0.7]
+  },
+  "reward": {
+    "U": [10.0, -5.0, 20.0, 5.0]
+  },
+  "properties": {
+    "creation": "2025-01-01 00:00:00",
+    "lastModification": "2025-01-01 00:00:00",
+    "software": "aGrUM test"
+  }
+}

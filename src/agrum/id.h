@@ -49,5 +49,7 @@
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDReader.h>
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>
+#include <agrum/ID/io/GUM/GumIDReader.h>
+#include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #endif   // GUM_ID_H

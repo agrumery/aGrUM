@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,114 +37,104 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#include <chrono>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <thread>
 
-#include <agrum/base/core/timer.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
-#include <agrum/BN/io/GUM/GumBNReader.h>
-#include <agrum/BN/io/GUM/GumBNWriter.h>
+#include <agrum/MRF/MarkovRandomField.h>
+#include <agrum/MRF/io/GUM/GumMRFReader.h>
+#include <agrum/MRF/io/GUM/GumMRFWriter.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
-#define GUM_CURRENT_SUITE  GumBNWriter
+#define GUM_CURRENT_SUITE  GumMRFWriter
 #define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
-  struct GumBNWriterTestSuite {
+  struct GumMRFWriterTestSuite {
     private:
-    static void _simpleTextForWriter_(bool isbinary) {
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bgum")
-                                 : GET_RESSOURCES_PATH("outputs/test.jgum");
+    static gum::MarkovRandomField< double > _buildSimpleMRF_() {
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("A[2]");
+      mrf.add("B[2]");
+      mrf.add("C[2]");
+      mrf.addFactor({"A", "B"});
+      mrf.addFactor({"B", "C"});
+      mrf.factor({"A", "B"}).fillWith({0.5, 0.2, 0.3, 0.8});
+      mrf.factor({"B", "C"}).fillWith({0.9, 0.1, 0.4, 0.6});
+      return mrf;
+    }
+
+    static void _simpleTestForWriter_(bool isbinary) {
+      auto mrf = _buildSimpleMRF_();
+      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bmrf")
+                                 : GET_RESSOURCES_PATH("outputs/test.jmrf");
 
       GUM_CHECK_ASSERT_THROWS_NOTHING({
-        gum::GumBNWriter< double > writer(isbinary);
-        writer.write(path, bn);
+        gum::GumMRFWriter< double > writer(isbinary);
+        writer.write(path, mrf);
       });
 
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2, path, isbinary);
+      gum::MarkovRandomField< double > mrf2;
+      auto                             reader = gum::GumMRFReader< double >(&mrf2, path, isbinary);
       CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(bn2, bn);
+      CHECK_EQ(mrf2, mrf);
     }
 
     static void _checkMetaData_(bool isbinary) {
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bgum")
-                                 : GET_RESSOURCES_PATH("outputs/test.jgum");
+      auto mrf = _buildSimpleMRF_();
+      const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bmrf")
+                                 : GET_RESSOURCES_PATH("outputs/test.jmrf");
 
       CHECK_NOTHROW({
-        gum::GumBNWriter< double > writer(isbinary, 2);
-        writer.write(path, bn);
+        gum::GumMRFWriter< double > writer(isbinary, 2);
+        writer.write(path, mrf);
       });
-      {
-        gum::BayesNet< double > bn2;
-        auto                    reader = gum::GumBNReader< double >(&bn2, path, isbinary);
-        CHECK_EQ(reader.proceed(), 0u);
-        CHECK_EQ(bn2, bn);
 
-        CHECK(bn2.existsProperty("software"));
-        CHECK_EQ(bn2.property("software"), "aGrUM " GUM_VERSION);
-        CHECK(bn2.existsProperty("creation"));
-        CHECK(bn2.existsProperty("lastModification"));
-        // creation == lastModification since file was just created
-        CHECK_EQ(bn2.property("creation"), bn2.property("lastModification"));
+      {
+        gum::MarkovRandomField< double > mrf2;
+        auto reader = gum::GumMRFReader< double >(&mrf2, path, isbinary);
+        CHECK_EQ(reader.proceed(), 0u);
+        CHECK_EQ(mrf2, mrf);
+
+        CHECK(mrf2.existsProperty("software"));
+        CHECK_EQ(mrf2.property("software"), "aGrUM " GUM_VERSION);
+        CHECK(mrf2.existsProperty("creation"));
+        CHECK(mrf2.existsProperty("lastModification"));
+        CHECK_EQ(mrf2.property("creation"), mrf2.property("lastModification"));
       }
 
-      // slight delay to ensure timestamps differ on second write
       std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
       {
         CHECK_NOTHROW({
-          gum::GumBNWriter< double > writer(isbinary, 2);
-          writer.write(path, bn);   // overwrite the file
+          gum::GumMRFWriter< double > writer(isbinary, 2);
+          writer.write(path, mrf);
         });
 
-        gum::BayesNet< double > bn2;
-        auto                    reader = gum::GumBNReader< double >(&bn2, path, isbinary);
+        gum::MarkovRandomField< double > mrf2;
+        auto reader = gum::GumMRFReader< double >(&mrf2, path, isbinary);
         CHECK_EQ(reader.proceed(), 0u);
-        CHECK_EQ(bn2, bn);
+        CHECK_EQ(mrf2, mrf);
 
-        CHECK(bn2.existsProperty("software"));
-        CHECK_EQ(bn2.property("software"), "aGrUM " GUM_VERSION);
-        CHECK(bn2.existsProperty("creation"));
-        CHECK(bn2.existsProperty("lastModification"));
-        // creation != lastModification because of the sleep above
-        CHECK_NE(bn2.property("creation"), bn2.property("lastModification"));
+        CHECK(mrf2.existsProperty("software"));
+        CHECK_EQ(mrf2.property("software"), "aGrUM " GUM_VERSION);
+        CHECK(mrf2.existsProperty("creation"));
+        CHECK(mrf2.existsProperty("lastModification"));
+        CHECK_NE(mrf2.property("creation"), mrf2.property("lastModification"));
       }
-    }
-
-    static void _withBigFiles_(bool isbinary, int indent = 0) {
-      const auto src    = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
-      const auto dstxml = GET_RESSOURCES_PATH("outputs/Diabetes.bifxml");
-      const auto dst    = isbinary ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
-                                   : ((indent < 0) ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
-                                                   : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));
-
-      gum::BayesNet< double > bn;
-
-      gum::BIFXMLBNReader< double > reader(&bn, src);
-      CHECK_EQ(reader.proceed(), 0u);
-
-      gum::GumBNWriter< double > writer(isbinary, indent);
-      writer.write(dst, bn);
-
-      gum::BayesNet< double > bn2;
-      auto                    reader2 = gum::GumBNReader< double >(&bn2, dst, isbinary);
-      CHECK_EQ(reader2.proceed(), 0u);
-
-      CHECK_EQ(bn2, bn);
     }
 
     public:
     static void testSimpleTestForWriter() {
-      _simpleTextForWriter_(false);
-      _simpleTextForWriter_(true);
+      _simpleTestForWriter_(false);
+      _simpleTestForWriter_(true);
     }
 
     static void testCheckMetaData() {
@@ -152,31 +142,24 @@ namespace gum_tests {
       _checkMetaData_(true);
     }
 
-    static void testWithBigFiles() {
-      _withBigFiles_(false, -1);
-      _withBigFiles_(false, 2);
-      _withBigFiles_(true);
-    }
-
     static void testToString() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      gum::GumBNWriter< double > writer(false, 2);
-      std::string                str = writer.toString(bn);
+      auto mrf = _buildSimpleMRF_();
+      gum::GumMRFWriter< double > writer(false, 2);
+      std::string                 str = writer.toString(mrf);
 
       std::string   tempFileName = std::tmpnam(nullptr);
       std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
       tempFile << str;
       tempFile.close();
 
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2, tempFileName, false);
+      gum::MarkovRandomField< double > mrf2;
+      auto reader = gum::GumMRFReader< double >(&mrf2, tempFileName, false);
       CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(bn2, bn);
+      CHECK_EQ(mrf2, mrf);
     }
   };
 
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
-  GUM_TEST_ACTIF(WithBigFiles)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests

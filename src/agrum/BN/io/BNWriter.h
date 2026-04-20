@@ -117,10 +117,10 @@ namespace gum {
      *
      *
      * @param filePath The path to the file used to write the Bayesian network.
-     * @param bn The Bayesian network written to the file.
+     * @param bn The Bayesian network written to the file (not const since updateMetaData).
      * @throw IOError Raised if an I/O error occurs.
      */
-    void write(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn);
+    void write(std::string_view filePath, IBayesNet< GUM_SCALAR >& bn);
 
     GUM_NODISCARD bool isModificationAllowed() const;
     void               setAllowModification(bool am);

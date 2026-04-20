@@ -109,6 +109,22 @@ namespace gum {
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& MN) = 0;
+
+    /**
+     * Writes a Markov random field in the file referenced by filePath, updating
+     * metadata (software, creation, lastModification) before writing.
+     * If the file doesn't exists, it is created.
+     * If the file exists, it's content will be erased.
+     *
+     * Default implementation delegates to the const overload.
+     *
+     * @param filePath The path to the file used to write the Markov random field.
+     * @param MN The Markov random field written to the file (non-const to allow metadata update).
+     * @throw IOError Raised if an I/O error occurs.
+     */
+    virtual void write(std::string_view filePath, IMarkovRandomField< GUM_SCALAR >& MN) {
+      write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(MN));
+    }
   };
 
 

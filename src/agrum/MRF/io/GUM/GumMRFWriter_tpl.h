@@ -38,114 +38,102 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
 
-
-/** @file
- * @brief Templates implementation of bns/io/gumBNWriter.h classes.
- *
- * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
- */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <regex>
+// to ease parsing in IDE
+#  include <agrum/MRF/io/GUM/GumMRFWriter.h>
+
+#  include <agrum/base/external/json/json.hpp>
+using json         = nlohmann::json;
+using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
-  /* =========================================================================*/
-  /* ===                           GUM_BN_WRITER === */
-  /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BNWriter< GUM_SCALAR >::BNWriter() {
-    GUM_CONSTRUCTOR(BNWriter);
+  INLINE GumMRFWriter< GUM_SCALAR >::GumMRFWriter(bool binary, int indent) :
+      MRFWriter< GUM_SCALAR >() {
+    _binary_ = binary;
+    _indent_ = (indent < -1) ? -1 : indent;
+    GUM_CONSTRUCTOR(GumMRFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BNWriter< GUM_SCALAR >::~BNWriter() {
-    GUM_DESTRUCTOR(BNWriter);
+  INLINE GumMRFWriter< GUM_SCALAR >::~GumMRFWriter() {
+    GUM_DESTRUCTOR(GumMRFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BNWriter< GUM_SCALAR >::isModificationAllowed() const {
-    return _allowModification_;
-  }
+  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
+                                                const IMarkovRandomField< GUM_SCALAR >& mrf) {
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
-  template < GUM_Numeric GUM_SCALAR >
-  INLINE void BNWriter< GUM_SCALAR >::setAllowModification(bool am) {
-    _allowModification_ = am;
-  }
+    ordered_json content;
+    content["type"]           = "MRF";
+    content["GumJsonVersion"] = "1.0";
 
-  template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::write(std::ostream& output, IBayesNet< GUM_SCALAR >& bn) {
-    _syntacticalCheck(bn);
-    _doWrite(output, bn);
-  }
+    // nodes
+    for (const auto& node: mrf.nodes()) { content["nodes"].push_back(mrf.variable(node).toFast()); }
 
-  template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::write(std::string_view filePath, IBayesNet< GUM_SCALAR >& bn) {
-    _syntacticalCheck(bn);
-    bn.updateMetaData();
-    _doWrite(filePath, bn);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::_syntacticalCheck(const IBayesNet< GUM_SCALAR >& bn) {
-    // no check by default
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  void BNWriter< GUM_SCALAR >::_validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn) {
-    if (_allowModification_)
-      return; // we do anything if the names will be modified when saved ...
-
-    for (const auto& nod: bn.nodes()) {
-      auto&       v       = bn.variable(nod);
-      std::string valid_n = _buildNameWithOnlyValidChars(v.name());
-      if (v.name() != valid_n)
-        GUM_ERROR(FatalError,
-                "The variable name '" << v.name() << "' contains invalid characters ('" << valid_n
-                << "').")
-      for (const auto& lab: v.labels()) {
-        std::string valid_l = _buildNameWithOnlyValidChars(lab);
-        if (lab != valid_l)
-          GUM_ERROR(FatalError,
-                  "The variable  '" << v << "' contains label '" << lab
-                  << "' with invalid characters ('" << valid_l << "').")
+    // factors: each factor as an inline object {"vars": [...], "values": [...]}
+    for (const auto& [nodeSet, tensor_ptr]: mrf.factors()) {
+      ordered_json factor;
+      // variable names in tensor axis order (deterministic, matches fillWith order)
+      for (Idx i = 0; i < tensor_ptr->nbrDim(); i++) {
+        factor["vars"].push_back(tensor_ptr->variable(i).name());
       }
+      // flattened values
+      json          vals;
+      Instantiation I(*tensor_ptr);
+      for (I.setFirst(); !I.end(); ++I) { vals.push_back((*tensor_ptr)[I]); }
+      factor["values"] = vals;
+      content["factors"].push_back(factor);
+    }
+
+    // properties
+    for (const auto& prop: mrf.properties()) { content["properties"][prop] = mrf.property(prop); }
+
+    if (_binary_) {
+      _writeVector_(output, json::to_msgpack(content));
+    } else {
+      output << content.dump(_indent_);
+    }
+
+    if (output.fail()) {
+      GUM_ERROR(IOError, "Writing in the ostream failed. Check if the stream is writable.")
     }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::_onlyValidCharsInName(std::string_view name) {
-    if (!_allowModification_)
-      return std::string{name};   // we do anything if the names will be modified when saved ...
-    return _buildNameWithOnlyValidChars(name);
+  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
+                                                IMarkovRandomField< GUM_SCALAR >& mrf) {
+    mrf.updateMetaData();
+    write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(mrf));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::_buildNameWithOnlyValidChars(std::string_view name) {
-    std::string pat = "[^_a-z0-9]+";
-    std::regex  reg(pat, std::regex::icase);
-    std::smatch sm;
-
-    std::string out{name};
-    while (std::regex_search(out, sm, reg)) {
-      out = std::regex_replace(out, reg, "_");
-    }
-    // first char can not be a digit
-    if (std::isdigit(out[0]))
-      // we allow name containing only an int
-      if (out.find_first_not_of("0123456789") != std::string::npos) out = "_" + out;
-
-    return out;
+  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
+                                                const IMarkovRandomField< GUM_SCALAR >& mrf) {
+    std::ofstream output(std::string(filePath), std::ios_base::trunc);
+    write(output, mrf);
+    output.close();
+    if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
-
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BNWriter< GUM_SCALAR >::toString(const IBayesNet< GUM_SCALAR >& bn) {
-    std::stringstream ss;
-    _doWrite(ss, bn);
-    return ss.str();
+  INLINE std::string
+      GumMRFWriter< GUM_SCALAR >::toString(const IMarkovRandomField< GUM_SCALAR >& mrf) {
+    std::ostringstream oss;
+    write(oss, mrf);
+    return oss.str();
   }
-} /* namespace gum */
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void GumMRFWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
+                                                        const std::vector< uint8_t >& vec) {
+    uint64_t size = vec.size();
+    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
+    os.write(reinterpret_cast< const char* >(vec.data()), size);
+  }
+} // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

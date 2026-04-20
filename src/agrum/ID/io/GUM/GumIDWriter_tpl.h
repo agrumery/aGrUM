@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -42,74 +42,91 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
-#  include <agrum/BN/io/GUM/GumBNWriter.h>
+#  include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
-  // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
-    BNWriter< GUM_SCALAR >() {
-    _indent_ = indent;
+  INLINE GumIDWriter< GUM_SCALAR >::GumIDWriter(bool binary, int indent) :
+      IDWriter< GUM_SCALAR >() {
     _binary_ = binary;
-    if (_indent_ < -1) {
-      _indent_ = -1; // no indentation
-    }
-    GUM_CONSTRUCTOR(GumBNWriter);
+    _indent_ = (indent < -1) ? -1 : indent;
+    GUM_CONSTRUCTOR(GumIDWriter);
   }
 
-  // Default destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() { GUM_DESTRUCTOR(GumBNWriter); }
+  INLINE GumIDWriter< GUM_SCALAR >::~GumIDWriter() {
+    GUM_DESTRUCTOR(GumIDWriter);
+  }
 
-  //
-  // Writes a Bayesian network in the output stream using the BN format.
-  //
-  // @param ouput The output stream.
-  // @param bn The Bayesian network writen in output.
-  // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
-    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.");
+  INLINE void GumIDWriter< GUM_SCALAR >::write(std::ostream&                       output,
+                                               const InfluenceDiagram< GUM_SCALAR >& id) {
+    if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     ordered_json content;
-    content["type"]           = "BN";
+    content["type"]           = "ID";
     content["GumJsonVersion"] = "1.0";
 
-    // add variables
-    for (const auto& node: bn.nodes()) { content["nodes"].push_back(bn.variable(node).toFast()); }
-    // add parents
-    for (const auto& node: bn.nodes()) {
-      ordered_json parentList;
-      const auto&  cpt = bn.cpt(node);
-      if (cpt.nbrDim() > 1) {
-        for (Idx i = 1; i < cpt.nbrDim(); i++)
-          parentList.push_back(cpt.variable(i).name());
-        content["parents"][bn.variable(node).name()] = parentList;
+    // classify nodes by type
+    for (const auto& node: id.nodes()) {
+      const auto fast = id.variable(node).toFast();
+      if (id.isChanceNode(node)) {
+        content["chance"].push_back(fast);
+      } else if (id.isUtilityNode(node)) {
+        content["utility"].push_back(fast);
+      } else {
+        content["decision"].push_back(fast);
       }
     }
-    // add cpts
-    for (const auto& node: bn.nodes()) {
-      json          cptValues;
-      const auto&   cpt = bn.cpt(node);
-      Instantiation I(cpt);
-      for (I.setFirst(); !I.end(); ++I) { cptValues.push_back(cpt[I]); }
-      content["cpt"][bn.variable(node).name()] = cptValues;
-    }
-    // add properties
-    for (const auto& prop: bn.properties()) { content["properties"][prop] = bn.property(prop); }
 
-    // write the content in the output stream
+    // parents for every node (all types)
+    for (const auto& node: id.nodes()) {
+      ordered_json  parentList;
+      const auto&   name = id.variable(node).name();
+      if (id.isChanceNode(node)) {
+        const auto& cpt = id.cpt(node);
+        for (Idx i = 1; i < cpt.nbrDim(); i++) parentList.push_back(cpt.variable(i).name());
+      } else if (id.isUtilityNode(node)) {
+        const auto& ut = id.utility(node);
+        for (Idx i = 1; i < ut.nbrDim(); i++) parentList.push_back(ut.variable(i).name());
+      } else {
+        // decision node: parents from the DAG
+        for (const auto& p: id.parents(node)) parentList.push_back(id.variable(p).name());
+      }
+      content["parents"][name] = parentList;
+    }
+
+    // CPT values for chance nodes
+    for (const auto& node: id.nodes()) {
+      if (!id.isChanceNode(node)) continue;
+      json          vals;
+      const auto&   cpt = id.cpt(node);
+      Instantiation I(cpt);
+      for (I.setFirst(); !I.end(); ++I) vals.push_back(cpt[I]);
+      content["cpt"][id.variable(node).name()] = vals;
+    }
+
+    // reward values for utility nodes
+    for (const auto& node: id.nodes()) {
+      if (!id.isUtilityNode(node)) continue;
+      json          vals;
+      const auto&   ut = id.utility(node);
+      Instantiation I(ut);
+      for (I.setFirst(); !I.end(); ++I) vals.push_back(ut[I]);
+      content["reward"][id.variable(node).name()] = vals;
+    }
+
+    // properties
+    for (const auto& prop: id.properties()) content["properties"][prop] = id.property(prop);
+
     if (_binary_) {
-      // binary mode
       _writeVector_(output, json::to_msgpack(content));
     } else {
-      // text mode
-      output << content.dump(_indent_); // pretty print with 2 spaces indentation
+      output << content.dump(_indent_);
     }
 
     if (output.fail()) {
@@ -117,30 +134,36 @@ namespace gum {
     }
   }
 
-  // Writes a Bayesian network in the referenced file using the BN format.
-  // If the file doesn't exists, it is created.
-  // If the file exists, it's content will be erased.
-  //
-  // @param filePath The path to the file used to write the Bayesian network.
-  // @param bn The Bayesian network writed in the file.
-  // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
+  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
+                                               InfluenceDiagram< GUM_SCALAR >&       id) {
+    id.updateMetaData();
+    write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(id));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
+                                               const InfluenceDiagram< GUM_SCALAR >& id) {
     std::ofstream output(std::string(filePath), std::ios_base::trunc);
-
-    _doWrite(output, bn);
-
+    write(output, id);
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
+  INLINE std::string GumIDWriter< GUM_SCALAR >::toString(const InfluenceDiagram< GUM_SCALAR >& id) {
+    std::ostringstream oss;
+    write(oss, id);
+    return oss.str();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void GumIDWriter< GUM_SCALAR >::_writeVector_(std::ostream&                 os,
                                                        const std::vector< uint8_t >& vec) {
     uint64_t size = vec.size();
     os.write(reinterpret_cast< const char* >(&size), sizeof(size));
     os.write(reinterpret_cast< const char* >(vec.data()), size);
   }
 } // namespace gum
+
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

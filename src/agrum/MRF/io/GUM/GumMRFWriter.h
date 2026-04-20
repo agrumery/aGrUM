@@ -38,92 +38,109 @@
  *                                                                          *
  ****************************************************************************/
 
-
 /**
  * @file
- * @brief Head of abstract classe for export of influence diagram
+ * @brief Definition of class for GUM (json) file output for Markov Random Fields.
  *
- * All classes used to export ID must inherit from IDWriter
- *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
- * GONZALES(_at_AMU)
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_ID_WRITER_H
-#define GUM_ID_WRITER_H
 
-#include <filesystem>
+#ifndef GUM_MRF_GUM_WRITER_H
+#define GUM_MRF_GUM_WRITER_H
+
+#include <cstdint>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <vector>
 
 #include <agrum/agrum.h>
 
-#include <agrum/ID/influenceDiagram.h>
-
-#include <string_view>
+#include <agrum/MRF/io/MRFWriter.h>
 
 namespace gum {
-
   /**
-   * @class IDWriter
-   * @brief Pure virtual class for exporting an ID.
-   * @ingroup id_group
+   * @class GumMRFWriter
+   * @headerfile GumMRFWriter.h <agrum/MRF/io/GUM/GumMRFWriter.h>
+   * @brief Writes a MarkovRandomField in the GUM json format.
+   * @ingroup mn_io
    *
-   * All classes used to write an influence diagram in a stream or
-   * a file must inherit from this class
+   * Each factor is serialized as an inline object {"vars": [...], "values": [...]},
+   * avoiding any key-separator ambiguity with variable names.
+   *
+   * Supports both text (.jgum) and binary msgpack (.bgum) output.
    */
   template < GUM_Numeric GUM_SCALAR >
-
-  class IDWriter {
+  class GumMRFWriter: public MRFWriter< GUM_SCALAR > {
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor
+    // ==========================================================================
+    /// @{
+
     /**
      * Default constructor.
+     *
+     * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
+     * @param indent Indentation level for text output. -1 produces compact output.
      */
-    IDWriter();
+    GumMRFWriter(bool binary = false, int indent = -1);
+
+    ~GumMRFWriter() override;
+
+    GumMRFWriter(const GumMRFWriter&)                = delete;
+    GumMRFWriter(GumMRFWriter&&) noexcept            = delete;
+    GumMRFWriter& operator=(const GumMRFWriter&)     = delete;
+    GumMRFWriter& operator=(GumMRFWriter&&) noexcept = delete;
+
+    /// @}
 
     /**
-     * Default destructor.
+     * Serializes a MarkovRandomField to a string in GUM json format.
      */
-    virtual ~IDWriter();
+    std::string toString(const IMarkovRandomField< GUM_SCALAR >& mrf);
 
     /**
-     * Writes an influence diagram in the given output stream.
+     * Writes a MarkovRandomField to the output stream.
      *
      * @param output The output stream.
-     * @param infdiag The influence diagram written to the stream.
-     * @throws IOError Raised if an I/O error occurs.
+     * @param mrf The MarkovRandomField to write.
+     * @throws IOError if the stream is not writable.
      */
-    virtual void write(std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
+    void write(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& mrf) override;
 
     /**
-     * Writes an Influence Diagram in the file referenced by filePath.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
+     * Writes a MarkovRandomField to the file at filePath, updating metadata first.
      *
-     * @param filePath The path to the file used to write the Influence Diagram.
-     * @param infdiag The Influence Diagram written to the file.
-     * @throw IOError Raised if an I/O error occurs.
+     * @param filePath Path to the output file (created or overwritten).
+     * @param mrf The MarkovRandomField to write (non-const to allow metadata update).
+     * @throws IOError if an I/O error occurs.
      */
-    virtual void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& infdiag)
-        = 0;
+    void write(std::string_view filePath, IMarkovRandomField< GUM_SCALAR >& mrf) override;
 
     /**
-     * Writes an Influence Diagram in the file referenced by filePath, updating
-     * metadata (software, creation, lastModification) before writing.
-     * If the file doesn't exists, it is created.
-     * If the file exists, it's content will be erased.
+     * Writes a MarkovRandomField to the file at filePath (const variant, no metadata update).
      *
-     * Default implementation delegates to the const overload.
-     *
-     * @param filePath The path to the file used to write the Influence Diagram.
-     * @param infdiag The Influence Diagram written to the file (non-const to allow metadata update).
-     * @throw IOError Raised if an I/O error occurs.
+     * @param filePath Path to the output file (created or overwritten).
+     * @param mrf The MarkovRandomField to write.
+     * @throws IOError if an I/O error occurs.
      */
-    virtual void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& infdiag) {
-      write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(infdiag));
-    }
+    void write(std::string_view filePath, const IMarkovRandomField< GUM_SCALAR >& mrf) override;
+
+    private:
+    static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+
+    bool _binary_;
+    int  _indent_;
   };
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class GumMRFWriter< double >;
+#endif
 } /* namespace gum */
 
-#include "IDWriter_tpl.h"
+#include <agrum/MRF/io/GUM/GumMRFWriter_tpl.h>
 
-#endif   // GUM_ID_WRITER_H
+#endif   // GUM_MRF_GUM_WRITER_H

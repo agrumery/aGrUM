@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -38,66 +38,106 @@
  *                                                                          *
  ****************************************************************************/
 
+/**
+ * @file
+ * @brief Definition of class for GUM (json) file output for Influence Diagrams.
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
 
-#ifndef GUMREADER_H
-#define GUMREADER_H
-#include <agrum/base/core/errorsContainer.h>
-#include <agrum/BN/io/BNReader.h>
+#ifndef GUM_ID_GUM_WRITER_H
+#define GUM_ID_GUM_WRITER_H
+
+#include <cstdint>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include <agrum/agrum.h>
+
+#include <agrum/ID/io/IDWriter.h>
 
 namespace gum {
   /**
-   * @class BNGumReader
-   * @headerfile BNGumReader.h <agrum/BN/io/GUM/BNGumReader.h>
-   * @ingroup bn_io
-   * @brief Class for reading a Bayesian network from a GUM (json) file.
+   * @class GumIDWriter
+   * @headerfile GumIDWriter.h <agrum/ID/io/GUM/GumIDWriter.h>
+   * @brief Writes an InfluenceDiagram in the GUM json format.
+   * @ingroup id_io
    *
-   * This class is used to read a Bayesian network from a GUM file format.
+   * Supports both text (.jgum) and binary msgpack (.bgum) output.
    */
   template < GUM_Numeric GUM_SCALAR >
-  class GumBNReader: public BNReader< GUM_SCALAR >, ErrorsContainer {
+  class GumIDWriter: public IDWriter< GUM_SCALAR > {
     public:
+    // ==========================================================================
+    /// @name Constructor & destructor
+    // ==========================================================================
+    /// @{
+
     /**
-     * Constructor
-     * A reader is defined for reading a defined file. Hence the 2 args of the
-     * constructor.
-     * Note that the BN has to be built outside the reader. There is no
-     * delegation to create/destroy the BN from inside the reader.
+     * Default constructor.
      *
-     * @param bn The BayesNet to fill with the read data.
-     * @param filename The name of the file to read.
-     * @param binary If true, the input is in binary format, otherwise in text format
+     * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
+     * @param indent Indentation level for text output. -1 produces compact output.
      */
-    GumBNReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename, bool binary = false);
+    GumIDWriter(bool binary = false, int indent = -1);
+
+    ~GumIDWriter() override;
+
+    GumIDWriter(const GumIDWriter&)                = delete;
+    GumIDWriter(GumIDWriter&&) noexcept            = delete;
+    GumIDWriter& operator=(const GumIDWriter&)     = delete;
+    GumIDWriter& operator=(GumIDWriter&&) noexcept = delete;
+
+    /// @}
 
     /**
-     * Default destructor.
+     * Serializes an InfluenceDiagram to a string in GUM json format.
      */
-    ~GumBNReader() override;
+    std::string toString(const InfluenceDiagram< GUM_SCALAR >& id);
 
-    /// parse.
-    /// @return the number of detected errors
-    Size proceed() final;
+    /**
+     * Writes an InfluenceDiagram to the output stream.
+     *
+     * @param output The output stream.
+     * @param id The InfluenceDiagram to write.
+     * @throws IOError if the stream is not writable.
+     */
+    void write(std::ostream& output, const InfluenceDiagram< GUM_SCALAR >& id) override;
 
-    void showElegantErrorsAndWarnings(std::ostream& stream = std::cerr) const;
+    /**
+     * Writes an InfluenceDiagram to the file at filePath, updating metadata first.
+     *
+     * @param filePath Path to the output file (created or overwritten).
+     * @param id The InfluenceDiagram to write (non-const to allow metadata update).
+     * @throws IOError if an I/O error occurs.
+     */
+    void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& id) override;
 
-    void showErrorCounts(std::ostream& stream = std::cerr) const;
-
+    /**
+     * Writes an InfluenceDiagram to the file at filePath (const variant, no metadata update).
+     *
+     * @param filePath Path to the output file (created or overwritten).
+     * @param id The InfluenceDiagram to write.
+     * @throws IOError if an I/O error occurs.
+     */
+    void write(std::string_view filePath, const InfluenceDiagram< GUM_SCALAR >& id) override;
 
     private:
-    static std::vector< uint8_t > _readVector_(std::istream& is);
+    static void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
 
-    BayesNet< GUM_SCALAR >* _bn_;
-    std::string             _streamName_;
-    bool                    _parseDone_;
-    bool _binary_;   ///< If true, the input is in binary format, otherwise in text format.
+    bool _binary_;
+    int  _indent_;
   };
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumBNReader< double >;
+  extern template class GumIDWriter< double >;
 #endif
 } /* namespace gum */
 
-#include <agrum/BN/io/GUM/GumBNReader_tpl.h>
+#include <agrum/ID/io/GUM/GumIDWriter_tpl.h>
 
-#endif   // GUM_BN_READER_H
+#endif   // GUM_ID_GUM_WRITER_H

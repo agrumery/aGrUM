@@ -53,9 +53,15 @@
 
 using json = nlohmann::json;
 
+#undef GUM_CURRENT_SUITE
+#undef GUM_CURRENT_MODULE
+#define GUM_CURRENT_SUITE  GumBNReader
+#define GUM_CURRENT_MODULE BN
+
 namespace gum_tests {
-  GUM_TESTSUITE(BNGumReader) {
-    const std::string jsondemo{R"(
+  struct GumBNReaderTestSuite {
+    static const std::string& jsondemo() {
+      static const std::string s{R"(
 {
   "nodes": [
     "A{yes|maybe|no}",
@@ -146,67 +152,61 @@ namespace gum_tests {
     ]
   }
 })"};
+      return s;
+    }
 
-    /*,
-      "properties": {
-        "creation": "2025-07-29 09:31:09",
-        "lastModification": "2025-07-29 09:31:09",
-        "version": "aGrUM 2.2.0"
-      }*/
-
-    public
-    :
-    GUM_ACTIVE_TEST(FirstTest) {
-      const auto ref = json::parse(jsondemo);
+    public:
+    static void testFirstTest() {
+      const auto ref = json::parse(jsondemo());
       const auto k   = json::parse(ref.dump());
-      TS_ASSERT_EQUALS(ref, k)
+      CHECK_EQ(ref, k);
     }
 
-    GUM_ACTIVE_TEST(getNames) {
-      const auto  ref = json::parse(jsondemo);
+    static void testGetNames() {
+      const auto  ref = json::parse(jsondemo());
       const auto& k   = ref["nodes"];
-      TS_ASSERT_EQUALS(k.size(), 3u);
-      TS_ASSERT_EQUALS(k[0], "A{yes|maybe|no}");
-      TS_ASSERT_EQUALS(k[1], "B[3,7]");
-      TS_ASSERT_EQUALS(k[2], "C[1.3,1.6,1.9,2.2,2.5]");
+      CHECK_EQ(k.size(), 3u);
+      CHECK_EQ(k[0], "A{yes|maybe|no}");
+      CHECK_EQ(k[1], "B[3,7]");
+      CHECK_EQ(k[2], "C[1.3,1.6,1.9,2.2,2.5]");
     }
 
-    GUM_ACTIVE_TEST(getParents) {
-      const auto  ref = json::parse(jsondemo);
+    static void testGetParents() {
+      const auto  ref = json::parse(jsondemo());
       const auto& k   = ref["parents"];
-      TS_ASSERT_EQUALS(k.size(), 3u);
-      TS_ASSERT_EQUALS(k["A"].size(), 0u);
-      TS_ASSERT_EQUALS(k["B"].size(), 2u);
-      TS_ASSERT_EQUALS(k["B"][0], "A");
-      TS_ASSERT_EQUALS(k["B"][1], "C");
-      TS_ASSERT_EQUALS(k["C"].size(), 0u);
+      CHECK_EQ(k.size(), 3u);
+      CHECK_EQ(k["A"].size(), 0u);
+      CHECK_EQ(k["B"].size(), 2u);
+      CHECK_EQ(k["B"][0], "A");
+      CHECK_EQ(k["B"][1], "C");
+      CHECK_EQ(k["C"].size(), 0u);
     }
 
-    GUM_ACTIVE_TEST(getCPTs) {
-      const auto  ref = json::parse(jsondemo);
+    static void testGetCPTs() {
+      const auto  ref = json::parse(jsondemo());
       const auto& k   = ref["cpt"];
-      TS_ASSERT_EQUALS(k.size(), 3u);
-      TS_ASSERT_EQUALS(k["A"].size(), 3u);
-      TS_ASSERT_EQUALS(k["A"][0], 0.16257016307560487);
-      TS_ASSERT_EQUALS(k["B"].size(), 60u);
-      TS_ASSERT_EQUALS(k["B"][59], 0.16353655177517026);
-      TS_ASSERT_EQUALS(k["C"].size(), 4u);
-      TS_ASSERT_EQUALS(k["C"][0], 0.018974912112612926);
+      CHECK_EQ(k.size(), 3u);
+      CHECK_EQ(k["A"].size(), 3u);
+      CHECK_EQ(k["A"][0], 0.16257016307560487);
+      CHECK_EQ(k["B"].size(), 60u);
+      CHECK_EQ(k["B"][59], 0.16353655177517026);
+      CHECK_EQ(k["C"].size(), 4u);
+      CHECK_EQ(k["C"][0], 0.018974912112612926);
     }
 
-    GUM_ACTIVE_TEST(testExistence) {
-      const auto ref = json::parse(jsondemo);
-      TS_ASSERT(ref.contains("nodes"));
-      TS_ASSERT(ref.contains("parents"));
-      TS_ASSERT(ref.contains("cpt"));
-      TS_ASSERT(!ref.contains("utility"));
+    static void testExistence() {
+      const auto ref = json::parse(jsondemo());
+      CHECK(ref.contains("nodes"));
+      CHECK(ref.contains("parents"));
+      CHECK(ref.contains("cpt"));
+      CHECK_FALSE(ref.contains("utility"));
     }
 
-    GUM_ACTIVE_TEST(BuildingBayesNetFromJson) {
-      const auto              ref = json::parse(jsondemo);
+    static void testBuildingBayesNetFromJson() {
+      const auto              ref = json::parse(jsondemo());
       gum::BayesNet< double > bn;
       // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) { const auto n = bn.add(node.get< std::string >()); }
+      for (const auto& node: ref["nodes"]) { bn.add(node.get< std::string >()); }
       // iterate on parents in json
       for (const auto& parent: ref["parents"].items()) {
         const auto& nodeName = parent.key();
@@ -227,21 +227,28 @@ namespace gum_tests {
 
       auto reader = gum::GumBNReader< double >(&bn2, filename);
 
-      TS_ASSERT_EQUALS(reader.proceed(), 0u);
-      TS_ASSERT_EQUALS(bn2.size(), 3u);
-      TS_ASSERT_EQUALS(bn2.variable(0).toFast(), "A{yes|maybe|no}");
-      TS_ASSERT_EQUALS(bn2.variable(1).toFast(), "B[3,7]");
-      TS_ASSERT_EQUALS(bn2.variable(2).toFast(), "C[1.3,1.6,1.9,2.2,2.5]");
-      TS_ASSERT_EQUALS(bn2.parents(0).size(), 0u);
-      TS_ASSERT_EQUALS(bn2.parents(1).size(), 2u);
-      TS_ASSERT_EQUALS(bn2.parents(2).size(), 0u);
-      TS_ASSERT(bn2.existsArc("A", "B"));
-      TS_ASSERT(bn2.existsArc("C", "B"));
+      CHECK_EQ(reader.proceed(), 0u);
+      CHECK_EQ(bn2.size(), 3u);
+      CHECK_EQ(bn2.variable(0).toFast(), "A{yes|maybe|no}");
+      CHECK_EQ(bn2.variable(1).toFast(), "B[3,7]");
+      CHECK_EQ(bn2.variable(2).toFast(), "C[1.3,1.6,1.9,2.2,2.5]");
+      CHECK_EQ(bn2.parents(0).size(), 0u);
+      CHECK_EQ(bn2.parents(1).size(), 2u);
+      CHECK_EQ(bn2.parents(2).size(), 0u);
+      CHECK(bn2.existsArc("A", "B"));
+      CHECK(bn2.existsArc("C", "B"));
 
-      TS_ASSERT_EQUALS(bn2, bn);
+      CHECK_EQ(bn2, bn);
 
-      TS_ASSERT_EQUALS(bn.properties().size(), 0u);
-      TS_ASSERT_EQUALS(bn2.properties().size(), 3u);
+      CHECK_EQ(bn.properties().size(), 0u);
+      CHECK_EQ(bn2.properties().size(), 3u);
     }
   };
+
+  GUM_TEST_ACTIF(FirstTest)
+  GUM_TEST_ACTIF(GetNames)
+  GUM_TEST_ACTIF(GetParents)
+  GUM_TEST_ACTIF(GetCPTs)
+  GUM_TEST_ACTIF(Existence)
+  GUM_TEST_ACTIF(BuildingBayesNetFromJson)
 } // namespace gum_tests
