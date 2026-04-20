@@ -78,7 +78,8 @@ namespace gum {
     content["type"]           = "BN";
     content["GumJsonVersion"] = "1.0";
 
-    // add variables
+    // add variables (always written, even empty, so the section always exists)
+    content["nodes"] = ordered_json::array();
     for (const auto& node: bn.nodes()) { content["nodes"].push_back(bn.variable(node).toFast()); }
     // add parents (always written, even empty, so the section always exists)
     content["parents"] = ordered_json::object();
@@ -89,7 +90,8 @@ namespace gum {
         parentList.push_back(cpt.variable(i).name());
       content["parents"][bn.variable(node).name()] = parentList;
     }
-    // add cpts
+    // add cpts (always written, even empty, so the section always exists)
+    content["cpt"] = ordered_json::object();
     for (const auto& node: bn.nodes()) {
       json          cptValues;
       const auto&   cpt = bn.cpt(node);

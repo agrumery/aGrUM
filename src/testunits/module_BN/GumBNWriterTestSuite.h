@@ -171,6 +171,18 @@ namespace gum_tests {
       CHECK_EQ(bn2.size(), 1u);
     }
 
+    static void testEmptyBN() {
+      // BN with no nodes — "nodes", "parents", "cpt" sections must still exist in JSON
+      gum::BayesNet< double >    bn;
+      gum::GumBNWriter< double > writer(false, 2);
+      const std::string          str = writer.toString(bn);
+
+      gum::BayesNet< double > bn2;
+      auto                    reader = gum::GumBNReader< double >(&bn2);
+      CHECK_EQ(reader.proceedFromString(str), 0u);
+      CHECK_EQ(bn2.size(), 0u);
+    }
+
     static void testToString() {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       gum::GumBNWriter< double > writer(false, 2);
@@ -192,5 +204,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(CheckMetaData)
   GUM_TEST_ACTIF(WithBigFiles)
   GUM_TEST_ACTIF(SingleVariable)
+  GUM_TEST_ACTIF(EmptyBN)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests

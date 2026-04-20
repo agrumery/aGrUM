@@ -105,18 +105,23 @@ namespace gum {
       mrf.add(node.template get< std::string >());
     }
 
-    // add factor topology
-    mrf.beginTopologyTransformation();
+    // parse all factor data once, then add topology, then fill values
+    struct FactorData {
+      std::vector< std::string > varnames;
+      std::vector< double >      values;
+    };
+    std::vector< FactorData > factors;
+    factors.reserve(content["factors"].size());
     for (const auto& factor: content["factors"]) {
-      mrf.addFactor(factor["vars"].template get< std::vector< std::string > >());
+      factors.push_back({factor["vars"].template get< std::vector< std::string > >(),
+                         factor["values"].template get< std::vector< double > >()});
     }
+
+    mrf.beginTopologyTransformation();
+    for (const auto& fd: factors) mrf.addFactor(fd.varnames);
     mrf.endTopologyTransformation();
 
-    // fill factor values
-    for (const auto& factor: content["factors"]) {
-      const auto varnames = factor["vars"].template get< std::vector< std::string > >();
-      mrf.factor(varnames).fillWith(factor["values"].template get< std::vector< double > >());
-    }
+    for (const auto& fd: factors) mrf.factor(fd.varnames).fillWith(fd.values);
 
     // properties
     if (content.contains("properties")) {
