@@ -140,7 +140,7 @@ namespace gum {
      * creation of class
      * @return Returns the number of error during the parsing (0 if none).
      */
-    virtual void proceed();
+    virtual Size proceed();
 
     /**
      * Signaler used to indicates how many percent of the Xml files have been

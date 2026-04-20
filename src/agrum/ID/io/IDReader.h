@@ -93,7 +93,7 @@ namespace gum {
      * creation of class
      * @return Returns the number of error during the parsing (0 if none).
      */
-    virtual void proceed() = 0;
+    virtual Size proceed() = 0;
   };
 
 } /* namespace gum */

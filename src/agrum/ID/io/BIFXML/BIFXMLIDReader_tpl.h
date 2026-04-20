@@ -81,7 +81,7 @@ namespace gum {
    * @return Returns the number of error during the parsing (0 if none).
    */
   template < GUM_Numeric GUM_SCALAR >
-  void BIFXMLIDReader< GUM_SCALAR >::proceed() {
+  Size BIFXMLIDReader< GUM_SCALAR >::proceed() {
     try {
       // Loading file
       std::string status = "Loading File ...";
@@ -121,6 +121,7 @@ namespace gum {
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
     } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
+    return 0;
   }
 
   template < GUM_Numeric GUM_SCALAR >
