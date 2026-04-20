@@ -114,6 +114,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   # complicated std types (generated from _VEC_RULES)
   *_VEC_RULES,
   # containers
+  ("std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > >","list[int] | None"),
   ("std::pair< gum::Instantiation,double >", 'tuple["pyagrum.Instantiation",float]'),
   ("std::unique_ptr< gum::DiscreteVariable >", "pyagrum.DiscreteVariable"),
   # ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'list[int]'),
