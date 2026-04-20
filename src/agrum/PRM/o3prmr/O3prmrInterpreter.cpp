@@ -646,7 +646,7 @@ namespace gum {
 
           // Add o3prm errors and warnings to o3prmr errors
           for (; previousO3prmError < m_reader->errorsContainer().count(); previousO3prmError++) {
-            m_errors._add(m_reader->errorsContainer().error(previousO3prmError));
+            m_errors.add(m_reader->errorsContainer().error(previousO3prmError));
           }
 
           return errors() == previousO3prmrError;
@@ -896,7 +896,7 @@ namespace gum {
       Size O3prmrInterpreter::warnings() const { return m_errors.warning_count; }
 
       ///
-      _ParseError O3prmrInterpreter::error(Idx i) const {
+      ParseError O3prmrInterpreter::error(Idx i) const {
         if (i >= count()) throw "Index out of bound.";
 
         return m_errors.error(i);

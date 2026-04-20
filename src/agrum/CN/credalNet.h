@@ -418,7 +418,7 @@ namespace gum {
        *j)
        *\f$.
        */
-      void saveBNsMinMax(std::string_view min_path, std::string_view max_path) const;
+      void saveBNsMinMax(std::string_view min_path, std::string_view max_path);
 
       // PH void vacants ( int &result ) const;
       // PH void notVacants ( int &result ) const;

@@ -75,7 +75,7 @@ namespace gum {
                          Idx              col) :
       is_error(is_error), line(line), column(col), msg(msg), filename(filename), code(code) {}
 
-  _ParseError::_ParseError(const _ParseError& err) {
+  ParseError::ParseError(const ParseError& err) {
     is_error = err.is_error;
     line     = err.line;
     column   = err.column;     // default 0
@@ -84,7 +84,7 @@ namespace gum {
     code     = err.code;       // default ""
   }
 
-  _ParseError _ParseError::operator=(const _ParseError& err) {
+  ParseError ParseError::operator=(const ParseError& err) {
     if (this != &err) {
       is_error = err.is_error;
       line     = err.line;
@@ -98,7 +98,7 @@ namespace gum {
   }
 
   ///
-  std::string _ParseError::toString() const {
+  std::string ParseError::toString() const {
     std::ostringstream s;
 
     if (!filename.empty()) s << filename << ":";
@@ -113,7 +113,7 @@ namespace gum {
   }
 
   ///
-  std::string _ParseError::toElegantString() const {
+  std::string ParseError::toElegantString() const {
     if (code.empty()) {
       std::ifstream ifs(filename.c_str());
 
@@ -130,12 +130,12 @@ namespace gum {
     return s.str();
   }
 
-  _ParseError ErrorsContainer::error(Idx i) const {
+  ParseError ErrorsContainer::error(Idx i) const {
     if (count() > i) return errors[i];   // May throw an error if i >= count().
     else { GUM_ERROR(OutOfBounds, "Index out of bound.") }
   }
 
-  _ParseError ErrorsContainer::last() const {
+  ParseError ErrorsContainer::last() const {
     if (count() > 0) return errors[count() - 1];
     else { GUM_ERROR(OutOfBounds, "Index out of bound.") }
   }

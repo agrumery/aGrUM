@@ -925,7 +925,7 @@ namespace gum {
      */
     template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::saveBNsMinMax(std::string_view min_path,
-                                                std::string_view max_path) const {
+                                                std::string_view max_path) {
       BIFWriter< GUM_SCALAR > writer;
 
       std::string   minfilename(min_path);   //"min.bif";

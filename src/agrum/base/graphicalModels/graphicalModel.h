@@ -116,7 +116,7 @@ namespace gum {
     /**
      * check wether a property exists in this GraphicalModel
      */
-    bool existsProperty(const std::string& name) const;
+    bool existsProperty(std::string_view name) const;
 
     /**
      * update the meta data of this Graphical Model (version, creation date, last modification date)

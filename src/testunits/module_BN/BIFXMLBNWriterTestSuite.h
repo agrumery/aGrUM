@@ -43,16 +43,14 @@
 
 #include <iostream>
 #include <string>
-#include <sys/stat.h>
-
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
 
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 
 #include <sys/stat.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -85,7 +83,7 @@ namespace gum_tests {
     }
 
     static void testWriter_file() {
-      const auto bn = gum::BayesNet< double >::fastPrototype(
+      auto bn = gum::BayesNet< double >::fastPrototype(
           "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
       const std::string file = GET_RESSOURCES_PATH("outputs/BNBIFXMLWriter_file1.bifxml");
       gum::BIFXMLBNWriter< double > writer;

@@ -44,18 +44,18 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/base/variables/allDiscreteVariables.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#include <agrum/base/variables/allDiscreteVariables.h>
-
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
-#define GUM_CURRENT_SUITE  AllVariables
+#define GUM_CURRENT_SUITE  AllDiscreteVariables
 #define GUM_CURRENT_MODULE GUMBASE
 
 namespace gum_tests {
-  struct AllVariablesTestSuite {
+  struct AllDiscreteVariablesTestSuite {
     public:
     static void testCreationRange() {
       try {
