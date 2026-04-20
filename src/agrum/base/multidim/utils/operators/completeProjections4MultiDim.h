@@ -50,6 +50,12 @@
 #ifndef GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H
 #define GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H
 
+// Workaround for GCC 14 on RHEL: atomic_wait.h uses syscall() without including
+// <sys/syscall.h>; <unistd.h> must be included first to declare syscall.
+#if !defined(_WIN32) && !defined(_WIN64)
+#  include <unistd.h>
+#endif
+
 #include <atomic>
 #include <mutex>
 
