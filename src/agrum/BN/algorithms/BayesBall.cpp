@@ -44,8 +44,8 @@
  * @brief Implementation of the BayesBall class.
  */
 
-#include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
+#include <agrum/BN/algorithms/BayesBall.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/BayesBall_inl.h>

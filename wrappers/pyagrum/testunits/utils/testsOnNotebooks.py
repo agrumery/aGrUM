@@ -122,7 +122,7 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
 
 def _nb_line(icon: str, dur_str: str, name: str) -> str:
   """Format one notebook status line for the live display."""
-  return f"  {icon} [{dur_str}] {name[: _NB_NAME_WIDTH]:{_NB_NAME_WIDTH}}"
+  return f"  {icon} [{dur_str}] {name[:_NB_NAME_WIDTH]:{_NB_NAME_WIDTH}}"
 
 
 def runNotebooks(lonb: list[str] = None):

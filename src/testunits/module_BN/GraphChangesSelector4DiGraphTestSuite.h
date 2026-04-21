@@ -44,9 +44,6 @@
 #include <iostream>
 #include <sstream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
@@ -56,6 +53,8 @@
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

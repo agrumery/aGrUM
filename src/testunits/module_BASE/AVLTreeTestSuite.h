@@ -44,11 +44,11 @@
 #include <algorithm>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/AVLTree.h>
 #include <agrum/base/core/heap.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

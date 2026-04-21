@@ -41,13 +41,13 @@
 #pragma once
 
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/PRM/inference/structuredBayesBall.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

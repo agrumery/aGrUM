@@ -43,14 +43,13 @@
 
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/exceptions.h>
 #include <agrum/PRM/elements/PRMClass.h>
 #include <agrum/PRM/elements/PRMType.h>
 
 #include <module_PRM/ClassElementTestSuiteAbstract.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

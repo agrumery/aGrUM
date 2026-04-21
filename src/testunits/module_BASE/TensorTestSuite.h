@@ -41,9 +41,6 @@
 #pragma once
 
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
@@ -52,6 +49,9 @@
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

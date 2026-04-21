@@ -43,9 +43,6 @@
 
 #include <sstream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/multidim/implementations/multiDimBucket.h>
 #include <agrum/base/multidim/instantiation.h>
 #include <agrum/base/multidim/utils/operators/operators4MultiDim.h>
@@ -53,6 +50,9 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

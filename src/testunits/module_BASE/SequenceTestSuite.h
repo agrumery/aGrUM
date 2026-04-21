@@ -43,10 +43,10 @@
 
 #include <string>
 
+#include <agrum/base/core/sequence.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/core/sequence.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

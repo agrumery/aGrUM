@@ -42,18 +42,17 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/ID/io/GUM/GumIDReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json = nlohmann::json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GumIDReader< GUM_SCALAR >::GumIDReader(InfluenceDiagram< GUM_SCALAR >* id,
                                          std::string_view                filename,
-                                         bool                            binary) :
-      IDReader< GUM_SCALAR >(id, filename) {
+                                         bool binary) : IDReader< GUM_SCALAR >(id, filename) {
     GUM_CONSTRUCTOR(GumIDReader)
     _id_         = id;
     _streamName_ = filename;
@@ -90,8 +89,8 @@ namespace gum {
       return ++nberrors;
     }
 
-    if (!content.contains("chance") || !content.contains("utility")
-        || !content.contains("decision") || !content.contains("parents")) {
+    if (!content.contains("chance") || !content.contains("utility") || !content.contains("decision")
+        || !content.contains("parents")) {
       addError(
           "Invalid GUM file format: missing 'chance', 'utility', 'decision' or 'parents' sections",
           _streamName_,
@@ -155,7 +154,8 @@ namespace gum {
     if (_parseDone_) { return 0; }
     if (_streamName_.empty()) {
       GUM_ERROR(OperationNotAllowed,
-                "GumIDReader was constructed without a filename: use proceedFromString() instead of proceed()")
+                "GumIDReader was constructed without a filename: use proceedFromString() instead "
+                "of proceed()")
     }
     Size nberrors = 0;
 

@@ -75,9 +75,7 @@ namespace gum {
      * @param filename Path to the file to read.
      * @param binary   If true, the file is in msgpack binary format.
      */
-    GumIDReader(InfluenceDiagram< GUM_SCALAR >* id,
-                std::string_view                filename,
-                bool                            binary = false);
+    GumIDReader(InfluenceDiagram< GUM_SCALAR >* id, std::string_view filename, bool binary = false);
 
     /// Constructor for string-based parsing only (no file).
     /// Use exclusively with proceedFromString(); calling proceed() will fail.

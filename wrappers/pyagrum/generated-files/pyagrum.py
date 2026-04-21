@@ -9164,18 +9164,6 @@ except FileNotFoundError:
   pass
 
 
-def _gum_add_properties_while_getstate_(model):
-  if not hasattr(model, "setProperty"):
-    return
-
-  if config.asBool["Pickle", "add_version"]:
-    model.setProperty("version", f"pyAgrum {pyagrum.__version__}")
-  if config.asBool["Pickle", "add_date"]:
-    from datetime import datetime
-    model.setProperty("creation", model.propertyWithDefault("creation", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z")))
-    model.setProperty("lastModification", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z"))
-
-
 def log2(p):
   """Compute p.log2() in a new Tensor without modifying p
 
@@ -13114,7 +13102,6 @@ class BayesNet(IBayesNet):
         return _pyagrum.BayesNet_contextualize(self, *args)
 
     def __getstate__(self):
-        _gum_add_properties_while_getstate_(self)
         return self.saveGUMstring()
 
     def __setstate__(self,state):
@@ -28811,7 +28798,6 @@ class InfluenceDiagram(DAGmodel):
 
 
     def __getstate__(self):
-        _gum_add_properties_while_getstate_(self)
         return self.saveGUMstring()
 
     def __setstate__(self,state):
@@ -30226,7 +30212,6 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_saveUAI(self, name)
 
     def __getstate__(self):
-        _gum_add_properties_while_getstate_(self)
         return self.saveGUMstring()
 
     def __setstate__(self,state):

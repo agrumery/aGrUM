@@ -317,7 +317,6 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
         {model2.variable(i).name() for i in model2.neighbours(n)},
       )
 
-
   def testConnectedComponents(self):
     # A--B connected, C--D connected, E isolated: 3 components
     mrf = gum.fastMRF("A--B;C--D;E")

@@ -41,10 +41,10 @@
 #pragma once
 
 
+#include <agrum/base/graphs/parts/nodeGraphPart.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/graphs/parts/nodeGraphPart.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

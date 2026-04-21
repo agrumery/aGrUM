@@ -47,13 +47,13 @@
 #include <string>
 #include <vector>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 #include <agrum/BN/learning/BNLearner.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

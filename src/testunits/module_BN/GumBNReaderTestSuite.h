@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -43,14 +43,13 @@
 #include <sstream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
 #include <agrum/BN/io/GUM/GumBNWriter.h>
 
 #include <agrum/base/external/json/json.hpp>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 using json = nlohmann::json;
 
@@ -207,7 +206,9 @@ namespace gum_tests {
       const auto              ref = json::parse(jsondemo());
       gum::BayesNet< double > bn;
       // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) { bn.add(node.get< std::string >()); }
+      for (const auto& node: ref["nodes"]) {
+        bn.add(node.get< std::string >());
+      }
       // iterate on parents in json
       for (const auto& parent: ref["parents"].items()) {
         const auto& nodeName = parent.key();
@@ -247,7 +248,7 @@ namespace gum_tests {
 
     static void testProceedWithoutFilename() {
       gum::BayesNet< double > bn;
-      auto reader = gum::GumBNReader< double >(&bn);
+      auto                    reader = gum::GumBNReader< double >(&bn);
       CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
     }
 
@@ -257,11 +258,10 @@ namespace gum_tests {
       const std::string          str = writer.toString(bn);
 
       gum::BayesNet< double > bn2;
-      auto reader = gum::GumBNReader< double >(&bn2);
+      auto                    reader = gum::GumBNReader< double >(&bn2);
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(bn2, bn);
     }
-
   };
 
   GUM_TEST_ACTIF(FirstTest)
@@ -272,4 +272,4 @@ namespace gum_tests {
   GUM_TEST_ACTIF(BuildingBayesNetFromJson)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
-} // namespace gum_tests
+}   // namespace gum_tests

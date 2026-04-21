@@ -43,10 +43,10 @@
 
 #include <iostream>
 
+#include <agrum/base/stattests/scoringCache.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/stattests/scoringCache.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

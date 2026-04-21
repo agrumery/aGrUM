@@ -44,15 +44,14 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/MRF/io/UAI/UAIMRFReader.h>
 #include <agrum/MRF/io/UAI/UAIMRFWriter.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
 #include <sys/stat.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

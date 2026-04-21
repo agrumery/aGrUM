@@ -42,18 +42,17 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/MRF/io/GUM/GumMRFReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json = nlohmann::json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GumMRFReader< GUM_SCALAR >::GumMRFReader(MarkovRandomField< GUM_SCALAR >* mrf,
                                            std::string_view                 filename,
-                                           bool                             binary) :
-      MRFReader< GUM_SCALAR >(mrf, filename) {
+                                           bool binary) : MRFReader< GUM_SCALAR >(mrf, filename) {
     GUM_CONSTRUCTOR(GumMRFReader)
     _mrf_        = mrf;
     _streamName_ = filename;
@@ -110,6 +109,7 @@ namespace gum {
       std::vector< std::string > varnames;
       std::vector< double >      values;
     };
+
     std::vector< FactorData > factors;
     factors.reserve(content["factors"].size());
     for (const auto& factor: content["factors"]) {
@@ -118,10 +118,12 @@ namespace gum {
     }
 
     mrf.beginTopologyTransformation();
-    for (const auto& fd: factors) mrf.addFactor(fd.varnames);
+    for (const auto& fd: factors)
+      mrf.addFactor(fd.varnames);
     mrf.endTopologyTransformation();
 
-    for (const auto& fd: factors) mrf.factor(fd.varnames).fillWith(fd.values);
+    for (const auto& fd: factors)
+      mrf.factor(fd.varnames).fillWith(fd.values);
 
     // properties
     if (content.contains("properties")) {
@@ -139,7 +141,8 @@ namespace gum {
     if (_parseDone_) { return 0; }
     if (_streamName_.empty()) {
       GUM_ERROR(OperationNotAllowed,
-                "GumMRFReader was constructed without a filename: use proceedFromString() instead of proceed()")
+                "GumMRFReader was constructed without a filename: use proceedFromString() instead "
+                "of proceed()")
     }
     Size nberrors = 0;
 

@@ -50,9 +50,9 @@
 #include <algorithm>
 #include <vector>
 
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/CM/tools/separation.h>
-#include <agrum/base/graphs/algorithms/generic/reachability.h>
 
 #include <unordered_set>
 

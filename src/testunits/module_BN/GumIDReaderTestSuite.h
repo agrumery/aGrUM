@@ -42,12 +42,12 @@
 #include <sstream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/io/GUM/GumIDReader.h>
 #include <agrum/ID/io/GUM/GumIDWriter.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -110,7 +110,7 @@ namespace gum_tests {
 
     static void testProceedWithoutFilename() {
       gum::InfluenceDiagram< double > id;
-      auto reader = gum::GumIDReader< double >(&id);
+      auto                            reader = gum::GumIDReader< double >(&id);
       CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
     }
 

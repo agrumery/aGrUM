@@ -47,14 +47,14 @@
 #include <string>
 #include <vector>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/variables/discreteVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -954,8 +954,8 @@ namespace gum_tests {
       CHECK_EQ(roots.size(), gum::Size(3));
 
       // Fully connected: 1 component
-      auto id2 = gum::InfluenceDiagram< double >::fastPrototype("A->B->$C<-*D");
-      auto cc2  = id2.connectedComponents();
+      auto         id2 = gum::InfluenceDiagram< double >::fastPrototype("A->B->$C<-*D");
+      auto         cc2 = id2.connectedComponents();
       gum::NodeSet roots2;
       for (const auto& [node, root]: cc2)
         roots2.insert(root);

@@ -42,10 +42,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -64,7 +64,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::write(std::ostream&                       output,
+  INLINE void GumIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
                                                const InfluenceDiagram< GUM_SCALAR >& id) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
@@ -90,17 +90,20 @@ namespace gum {
     // parents for every node (all types)
     content["parents"] = ordered_json::object();
     for (const auto& node: id.nodes()) {
-      ordered_json  parentList = ordered_json::array();
-      const auto&   name = id.variable(node).name();
+      ordered_json parentList = ordered_json::array();
+      const auto&  name       = id.variable(node).name();
       if (id.isChanceNode(node)) {
         const auto& cpt = id.cpt(node);
-        for (Idx i = 1; i < cpt.nbrDim(); i++) parentList.push_back(cpt.variable(i).name());
+        for (Idx i = 1; i < cpt.nbrDim(); i++)
+          parentList.push_back(cpt.variable(i).name());
       } else if (id.isUtilityNode(node)) {
         const auto& ut = id.utility(node);
-        for (Idx i = 1; i < ut.nbrDim(); i++) parentList.push_back(ut.variable(i).name());
+        for (Idx i = 1; i < ut.nbrDim(); i++)
+          parentList.push_back(ut.variable(i).name());
       } else {
         // decision node: parents from the DAG
-        for (const auto& p: id.parents(node)) parentList.push_back(id.variable(p).name());
+        for (const auto& p: id.parents(node))
+          parentList.push_back(id.variable(p).name());
       }
       content["parents"][name] = parentList;
     }
@@ -111,7 +114,8 @@ namespace gum {
       json          vals;
       const auto&   cpt = id.cpt(node);
       Instantiation I(cpt);
-      for (I.setFirst(); !I.end(); ++I) vals.push_back(cpt[I]);
+      for (I.setFirst(); !I.end(); ++I)
+        vals.push_back(cpt[I]);
       content["cpt"][id.variable(node).name()] = vals;
     }
 
@@ -121,12 +125,14 @@ namespace gum {
       json          vals;
       const auto&   ut = id.utility(node);
       Instantiation I(ut);
-      for (I.setFirst(); !I.end(); ++I) vals.push_back(ut[I]);
+      for (I.setFirst(); !I.end(); ++I)
+        vals.push_back(ut[I]);
       content["reward"][id.variable(node).name()] = vals;
     }
 
     // properties
-    for (const auto& prop: id.properties()) content["properties"][prop] = id.property(prop);
+    for (const auto& prop: id.properties())
+      content["properties"][prop] = id.property(prop);
 
     if (_binary_) {
       _writeVector_(output, json::to_msgpack(content));
@@ -140,8 +146,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
-                                               InfluenceDiagram< GUM_SCALAR >&       id) {
+  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                filePath,
+                                               InfluenceDiagram< GUM_SCALAR >& id) {
     id.updateMetaData();
     write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(id));
   }
@@ -150,7 +156,8 @@ namespace gum {
   INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
                                                const InfluenceDiagram< GUM_SCALAR >& id) {
     std::ofstream output(std::string(filePath),
-                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary)
+                                  : std::ios_base::trunc);
     write(output, id);
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
@@ -163,6 +170,6 @@ namespace gum {
     return oss.str();
   }
 
-} // namespace gum
+}   // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

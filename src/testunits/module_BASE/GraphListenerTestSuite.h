@@ -43,9 +43,6 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
@@ -53,6 +50,9 @@
 #include <agrum/base/graphs/parts/listeners/mixedGraphListener.h>
 #include <agrum/base/graphs/parts/listeners/undiGraphListener.h>
 #include <agrum/base/graphs/undiGraph.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

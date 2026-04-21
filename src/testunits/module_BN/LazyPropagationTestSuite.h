@@ -44,9 +44,6 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -55,6 +52,9 @@
 #include <agrum/BN/inference/tools/relevantTensorsFinderType.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 
 #undef GUM_CURRENT_SUITE
@@ -1084,8 +1084,8 @@ namespace gum_tests {
       ie.addEvidence("B", 0);
       gum::NodeSet sjoint{bn.idFromName("A"), bn.idFromName("B"), bn.idFromName("D")};
       gum::Set     xjoint{&bn.variableFromName("A"),
-                      &bn.variableFromName("B"),
-                      &bn.variableFromName("D")};
+                          &bn.variableFromName("B"),
+                          &bn.variableFromName("D")};
 
       gum::Tensor< double > ev_potB;
       const auto&           varB = bn.variableFromName("B");

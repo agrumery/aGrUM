@@ -63,14 +63,14 @@
 #include <agrum/BN/inference/tools/BayesNetInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/inference/weightedSampling.h>
-#include <agrum/BN/io/GUM/GumBNReader.h>
-#include <agrum/BN/io/GUM/GumBNWriter.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
 #include <agrum/BN/io/DSL/DSLWriter.h>
+#include <agrum/BN/io/GUM/GumBNReader.h>
+#include <agrum/BN/io/GUM/GumBNWriter.h>
 #include <agrum/BN/io/net/netReader.h>
 #include <agrum/BN/io/net/netWriter.h>
 #include <agrum/BN/io/UAI/UAIBNReader.h>

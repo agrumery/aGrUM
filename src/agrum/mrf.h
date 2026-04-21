@@ -45,10 +45,10 @@
 #include <agrum/bn.h>
 #include <agrum/MRF/IMarkovRandomField.h>
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
-#include <agrum/MRF/io/UAI/UAIMRFReader.h>
-#include <agrum/MRF/io/UAI/UAIMRFWriter.h>
 #include <agrum/MRF/io/GUM/GumMRFReader.h>
 #include <agrum/MRF/io/GUM/GumMRFWriter.h>
+#include <agrum/MRF/io/UAI/UAIMRFReader.h>
+#include <agrum/MRF/io/UAI/UAIMRFWriter.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
 #endif   // GUM_MRF_H

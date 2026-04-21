@@ -43,11 +43,11 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/PDAG.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -397,7 +397,9 @@ namespace gum_tests {
       CHECK_EQ(arclist.size(), graph.sizeArcs());
       gum::Size arcCount = graph.sizeArcs();
 
-      for (const auto& arc: arclist) { graph.eraseArc(arc); }
+      for (const auto& arc: arclist) {
+        graph.eraseArc(arc);
+      }
 
       CHECK(graph.emptyArcs());
 
@@ -412,7 +414,9 @@ namespace gum_tests {
       CHECK_EQ(edgelist.size(), graph.sizeEdges());
       gum::Size edgeCount = graph.sizeEdges();
 
-      for (const auto& edge: edgelist) { graph.eraseEdge(edge); }
+      for (const auto& edge: edgelist) {
+        graph.eraseEdge(edge);
+      }
 
       CHECK(graph.emptyEdges());
 
@@ -629,11 +633,11 @@ namespace gum_tests {
 
       gum::UndiGraph m = g.moralGraph();
       CHECK_EQ(m.size(), 4U);
-      CHECK(m.existsEdge(0, 1));    // arc P1→X → edge
-      CHECK(m.existsEdge(1, 2));    // edge X--Y preserved
-      CHECK(m.existsEdge(2, 3));    // arc P2→Y → edge
-      CHECK(m.existsEdge(0, 3));    // chain-component marriage: P1--P2
-      CHECK_EQ(m.sizeEdges(), 4U);  // no spurious edges
+      CHECK(m.existsEdge(0, 1));     // arc P1→X → edge
+      CHECK(m.existsEdge(1, 2));     // edge X--Y preserved
+      CHECK(m.existsEdge(2, 3));     // arc P2→Y → edge
+      CHECK(m.existsEdge(0, 3));     // chain-component marriage: P1--P2
+      CHECK_EQ(m.sizeEdges(), 4U);   // no spurious edges
       // X is inside the chain component, not a parent — must NOT be married with P2
       CHECK(!m.existsEdge(1, 3));
     }

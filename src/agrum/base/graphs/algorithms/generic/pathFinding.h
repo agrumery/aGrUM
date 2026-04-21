@@ -62,16 +62,15 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 
   namespace detail {
     /// Reconstruct the BFS path [n1 … n2] from the predecessor mark table.
-    inline std::vector< NodeId > reconstructPath(const NodeProperty< NodeId >& mark,
-                                                  NodeId                        n1,
-                                                  NodeId                        n2) {
+    inline std::vector< NodeId >
+        reconstructPath(const NodeProperty< NodeId >& mark, NodeId n1, NodeId n2) {
       std::vector< NodeId > v;
       for (NodeId cur = n1; cur != n2; cur = mark[cur])
         v.push_back(cur);
@@ -251,10 +250,7 @@ namespace gum::graph {
    *        to any node in @p n2, avoiding nodes in @p except.
    */
   template < GUM_UndiGraphable G >
-  bool hasUndirectedPath(const G& g,
-                         const NodeSet& n1,
-                         const NodeSet& n2,
-                         const NodeSet& except) {
+  bool hasUndirectedPath(const G& g, const NodeSet& n1, const NodeSet& n2, const NodeSet& except) {
     NodeSet visited;
     NodeSet frontier(n1);
 

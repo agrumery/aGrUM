@@ -43,13 +43,13 @@
 
 #include <iostream>
 
+#include <agrum/base/graphs/algorithms/generic/bayesBall.h>
+#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/graphElements.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/graphs/DAG.h>
-#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
-#include <agrum/base/graphs/graphElements.h>
-#include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -563,7 +563,7 @@ namespace gum_tests {
       fork.addArc(1, 2);
 
       CHECK_FALSE(fork.dSeparation(0, 2, gum::NodeSet{}));   // common cause
-      CHECK(fork.dSeparation(0, 2, gum::NodeSet{1}));         // conditioning blocks
+      CHECK(fork.dSeparation(0, 2, gum::NodeSet{1}));        // conditioning blocks
 
       // --- Collider: 0→1←2 ---
       gum::DAG collider;

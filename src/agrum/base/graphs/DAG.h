@@ -219,7 +219,6 @@ namespace gum {
      * i.e. P(targets| soids)=P(targets|@return)
      */
     NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
-
   };
 
 } /* namespace gum */

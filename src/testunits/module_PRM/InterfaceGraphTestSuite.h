@@ -43,12 +43,12 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/gspan/interfaceGraph.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

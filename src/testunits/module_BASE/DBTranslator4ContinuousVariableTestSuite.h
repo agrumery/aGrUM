@@ -44,10 +44,10 @@
 #include <iostream>
 #include <string>
 
+#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/database/DBTranslator4ContinuousVariable.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

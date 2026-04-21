@@ -43,13 +43,12 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 
 #include <ressources/include/simpleDebugGenerator.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

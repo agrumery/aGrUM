@@ -43,13 +43,13 @@
 
 #include <sstream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/multidim/aggregators/min.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/multidim/implementations/multiDimSparse.h>
 #include <agrum/base/variables/rangeVariable.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

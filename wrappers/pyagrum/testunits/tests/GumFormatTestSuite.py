@@ -17,8 +17,8 @@
 #   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
 #                                                                          #
 #   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
-#   useful, but WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,      #
-#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
 #   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
 #   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
 #   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
@@ -190,7 +190,6 @@ class TestGumFormat(pyAgrumTestCase):
     self.assertEqual(mrf, mrf2)
     self.assertEqual(mrf2.property("tag"), "pickle_test")
 
-
   # ── Error handling ────────────────────────────────────────────────────────
 
   def testBN_loadGUMstring_invalid_json(self):
@@ -211,21 +210,21 @@ class TestGumFormat(pyAgrumTestCase):
   def testBN_loadGUMstring_wrong_type(self):
     # JSON valid but wrong model type should raise
     id_ = gum.fastID("A->*D->$U")
-    s = id_.saveGUMstring()   # produces type="ID"
+    s = id_.saveGUMstring()  # produces type="ID"
     bn = gum.BayesNet()
     with self.assertRaises(Exception):
       bn.loadGUMstring(s)
 
   def testID_loadGUMstring_wrong_type(self):
     bn = gum.fastBN("A->B->C")
-    s = bn.saveGUMstring()   # produces type="BN"
+    s = bn.saveGUMstring()  # produces type="BN"
     id_ = gum.InfluenceDiagram()
     with self.assertRaises(Exception):
       id_.loadGUMstring(s)
 
   def testMRF_loadGUMstring_wrong_type(self):
     bn = gum.fastBN("A->B->C")
-    s = bn.saveGUMstring()   # produces type="BN"
+    s = bn.saveGUMstring()  # produces type="BN"
     mrf = gum.MarkovRandomField()
     with self.assertRaises(Exception):
       mrf.loadGUMstring(s)

@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -63,10 +63,9 @@
 #define GUM_GRAPH_MORALIZATION_H
 
 #include <agrum/agrum.h>
-#include <agrum/base/graphs/graphConcepts.h>
+
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
-#include <agrum/base/graphs/undiGraph.h>
 
 namespace gum::graph {
 
@@ -79,6 +78,7 @@ namespace gum::graph {
         g.addEdge(*it1, *it2);
     }
   }
+
   /// @endcond
 
   /**
@@ -125,7 +125,7 @@ namespace gum::graph {
           const NodeId nei = frontier.popFirst();
           if (already.contains(nei)) continue;
           already.insert(nei);
-          par      += g.parents(nei);
+          par += g.parents(nei);
           frontier += g.neighbours(nei) - already;
         }
 

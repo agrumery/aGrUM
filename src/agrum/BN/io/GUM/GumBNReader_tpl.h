@@ -42,16 +42,16 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/BN/io/GUM/GumBNReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json = nlohmann::json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GumBNReader< GUM_SCALAR >::GumBNReader(BayesNet< GUM_SCALAR >* bn,
-                                         std::string_view filename,
+                                         std::string_view        filename,
                                          bool binary) : BNReader< GUM_SCALAR >(bn, filename) {
     GUM_CONSTRUCTOR(GumBNReader)
     _bn_         = bn;
@@ -130,7 +130,8 @@ namespace gum {
     if (_parseDone_) { return 0; }
     if (_streamName_.empty()) {
       GUM_ERROR(OperationNotAllowed,
-                "GumBNReader was constructed without a filename: use proceedFromString() instead of proceed()")
+                "GumBNReader was constructed without a filename: use proceedFromString() instead "
+                "of proceed()")
     }
     Size nberrors = 0;
 

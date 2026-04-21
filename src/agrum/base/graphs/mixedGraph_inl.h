@@ -100,15 +100,14 @@ namespace gum {
         && NodeGraphPart::operator==(g);
   }
 
-  INLINE NodeSet MixedGraph::boundary(NodeId node) const {
-    return graph::boundary(*this, node);
-  }
+  INLINE NodeSet MixedGraph::boundary(NodeId node) const { return graph::boundary(*this, node); }
 
   INLINE NodeSet MixedGraph::chainComponent(NodeId node) const {
     return graph::chainComponent(*this, node);
   }
 
-  INLINE std::optional< std::vector< NodeId > > MixedGraph::mixedOrientedPath(NodeId n1, NodeId n2) const {
+  INLINE std::optional< std::vector< NodeId > > MixedGraph::mixedOrientedPath(NodeId n1,
+                                                                              NodeId n2) const {
     return graph::mixedOrientedPath(*this, n1, n2);
   }
 
@@ -116,7 +115,8 @@ namespace gum {
     return graph::hasMixedOrientedPath(*this, n1, n2);
   }
 
-  INLINE std::optional< std::vector< NodeId > > MixedGraph::mixedUnorientedPath(NodeId n1, NodeId n2) const {
+  INLINE std::optional< std::vector< NodeId > > MixedGraph::mixedUnorientedPath(NodeId n1,
+                                                                                NodeId n2) const {
     return graph::mixedUnorientedPath(*this, n1, n2);
   }
 

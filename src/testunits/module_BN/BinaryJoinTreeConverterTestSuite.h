@@ -44,10 +44,10 @@
 #include <iostream>
 #include <vector>
 
+#include <agrum/base/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

@@ -101,7 +101,8 @@ namespace gum {
     return EdgeGraphPart::operator==(p) && NodeGraphPart::operator==(p);
   }
 
-  INLINE std::optional< std::vector< NodeId > > UndiGraph::undirectedPath(NodeId node1, NodeId node2) const {
+  INLINE std::optional< std::vector< NodeId > > UndiGraph::undirectedPath(NodeId node1,
+                                                                          NodeId node2) const {
     return graph::undirectedPath(*this, node1, node2);
   }
 
@@ -114,8 +115,8 @@ namespace gum {
   }
 
   INLINE bool UndiGraph::hasUndirectedPath(const NodeSet& n1,
-                                            const NodeSet& n2,
-                                            const NodeSet& except) const {
+                                           const NodeSet& n2,
+                                           const NodeSet& except) const {
     return graph::hasUndirectedPath(*this, n1, n2, except);
   }
 
@@ -127,8 +128,6 @@ namespace gum {
     return graph::connectedComponents(*this);
   }
 
-  INLINE bool UndiGraph::hasUndirectedCycle() const {
-    return graph::hasUndirectedCycle(*this);
-  }
+  INLINE bool UndiGraph::hasUndirectedCycle() const { return graph::hasUndirectedCycle(*this); }
 
 } /* namespace gum */

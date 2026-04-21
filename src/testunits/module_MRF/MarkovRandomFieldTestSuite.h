@@ -45,14 +45,14 @@
 #include <string>
 #include <vector>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 #include <agrum/MRF/MarkovRandomField.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -419,8 +419,8 @@ namespace gum_tests {
       CHECK_EQ(roots.size(), gum::Size(3));
 
       // Fully connected: 1 component
-      auto mrf2 = gum::MarkovRandomField< double >::fastPrototype("A--B--C--D--E");
-      auto cc2  = mrf2.connectedComponents();
+      auto         mrf2 = gum::MarkovRandomField< double >::fastPrototype("A--B--C--D--E");
+      auto         cc2  = mrf2.connectedComponents();
       gum::NodeSet roots2;
       for (const auto& [node, root]: cc2)
         roots2.insert(root);

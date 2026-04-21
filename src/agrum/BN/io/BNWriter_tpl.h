@@ -95,21 +95,21 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void BNWriter< GUM_SCALAR >::_validCharInNamesCheck(const IBayesNet< GUM_SCALAR >& bn) {
     if (_allowModification_)
-      return; // we do anything if the names will be modified when saved ...
+      return;   // we do anything if the names will be modified when saved ...
 
     for (const auto& nod: bn.nodes()) {
       auto&       v       = bn.variable(nod);
       std::string valid_n = _buildNameWithOnlyValidChars(v.name());
       if (v.name() != valid_n)
         GUM_ERROR(FatalError,
-                "The variable name '" << v.name() << "' contains invalid characters ('" << valid_n
-                << "').")
+                  "The variable name '" << v.name() << "' contains invalid characters ('" << valid_n
+                                        << "').")
       for (const auto& lab: v.labels()) {
         std::string valid_l = _buildNameWithOnlyValidChars(lab);
         if (lab != valid_l)
           GUM_ERROR(FatalError,
-                  "The variable  '" << v << "' contains label '" << lab
-                  << "' with invalid characters ('" << valid_l << "').")
+                    "The variable  '" << v << "' contains label '" << lab
+                                      << "' with invalid characters ('" << valid_l << "').")
       }
     }
   }
@@ -138,7 +138,6 @@ namespace gum {
 
     return out;
   }
-
 
   template < GUM_Numeric GUM_SCALAR >
   std::string BNWriter< GUM_SCALAR >::toString(const IBayesNet< GUM_SCALAR >& bn) {

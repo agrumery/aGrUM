@@ -44,10 +44,10 @@
 #include <iostream>
 #include <string>
 
+#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

@@ -115,7 +115,8 @@ namespace gum {
      * Default implementation delegates to the const overload.
      *
      * @param filePath The path to the file used to write the Influence Diagram.
-     * @param infdiag The Influence Diagram written to the file (non-const to allow metadata update).
+     * @param infdiag The Influence Diagram written to the file (non-const to allow metadata
+     * update).
      * @throw IOError Raised if an I/O error occurs.
      */
     virtual void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& infdiag) {

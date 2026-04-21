@@ -106,7 +106,6 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertEqual(eg.nameFromId(3), "Y")
     self.assertEqual(eg.nameFromId(4), "W")
 
-
   def testConnectedComponents(self):
     # BN with two disconnected components: A->B and C->D
     bn = gum.fastBN("A->B;C->D")

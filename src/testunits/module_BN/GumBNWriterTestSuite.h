@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -123,9 +124,9 @@ namespace gum_tests {
     static void _withBigFiles_(bool isbinary, int indent = 0) {
       const auto src    = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
       const auto dstxml = GET_RESSOURCES_PATH("outputs/Diabetes.bifxml");
-      const auto dst    = isbinary ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
-                                   : ((indent < 0) ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
-                                                   : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));
+      const auto dst = isbinary ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
+                                : ((indent < 0) ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
+                                                : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));
 
       gum::BayesNet< double > bn;
 
@@ -183,12 +184,12 @@ namespace gum_tests {
 
     static void testSingleVariable() {
       // BN with a single node and no arcs — "parents" section must still exist in JSON
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
+      auto                       bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
       gum::GumBNWriter< double > writer(false, 2);
       const std::string          str = writer.toString(bn);
 
       gum::BayesNet< double > bn2;
-      auto reader = gum::GumBNReader< double >(&bn2);
+      auto                    reader = gum::GumBNReader< double >(&bn2);
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(bn2, bn);
       CHECK_EQ(bn2.size(), 1u);

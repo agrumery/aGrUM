@@ -41,10 +41,9 @@
 #pragma once
 
 
+#include <agrum/base/core/utils_string.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/core/utils_string.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

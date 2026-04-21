@@ -73,8 +73,8 @@ namespace gum {
   template < typename T >
   concept GUM_NodeGraphable = requires(const T g, NodeId id) {
     { g.existsNode(id) } -> std::convertible_to< bool >;
-    { g.size() }         -> std::convertible_to< Size >;
-    { g.empty() }        -> std::convertible_to< bool >;
+    { g.size() } -> std::convertible_to< Size >;
+    { g.empty() } -> std::convertible_to< bool >;
   };
 
   /**
@@ -84,12 +84,11 @@ namespace gum {
    * PDAG.  Refines GUM_NodeGraphable.
    */
   template < typename T >
-  concept GUM_DiGraphable = GUM_NodeGraphable< T >
-      && requires(const T g, NodeId u, NodeId v) {
-           { g.existsArc(u, v) } -> std::convertible_to< bool >;
-           { g.parents(u) }      -> std::convertible_to< const NodeSet& >;
-           { g.children(u) }     -> std::convertible_to< const NodeSet& >;
-         };
+  concept GUM_DiGraphable = GUM_NodeGraphable< T > && requires(const T g, NodeId u, NodeId v) {
+    { g.existsArc(u, v) } -> std::convertible_to< bool >;
+    { g.parents(u) } -> std::convertible_to< const NodeSet& >;
+    { g.children(u) } -> std::convertible_to< const NodeSet& >;
+  };
 
   /**
    * @brief Concept for undirected graphs (edges with neighbours).
@@ -98,11 +97,10 @@ namespace gum {
    * MixedGraph / PDAG.  Refines GUM_NodeGraphable.
    */
   template < typename T >
-  concept GUM_UndiGraphable = GUM_NodeGraphable< T >
-      && requires(const T g, NodeId u, NodeId v) {
-           { g.existsEdge(u, v) } -> std::convertible_to< bool >;
-           { g.neighbours(u) }    -> std::convertible_to< const NodeSet& >;
-         };
+  concept GUM_UndiGraphable = GUM_NodeGraphable< T > && requires(const T g, NodeId u, NodeId v) {
+    { g.existsEdge(u, v) } -> std::convertible_to< bool >;
+    { g.neighbours(u) } -> std::convertible_to< const NodeSet& >;
+  };
 
   /**
    * @brief Concept for mixed graphs (both arcs and edges).

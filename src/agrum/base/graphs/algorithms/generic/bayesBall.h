@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -73,8 +73,8 @@
 #include <utility>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 
@@ -86,10 +86,8 @@ namespace gum::graph {
    *   - true  → full d-connected set semantics (dConnected)
    */
   template < GUM_DiGraphable G, bool CollectAll >
-  NodeSet _bayesBall_(const G&       g,
-                      const NodeSet& query,
-                      const NodeSet& Zhard,
-                      const NodeSet& Zsoft) {
+  NodeSet
+      _bayesBall_(const G& g, const NodeSet& query, const NodeSet& Zhard, const NodeSet& Zsoft) {
     NodeSet result;
 
     NodeProperty< std::pair< bool, bool > > marks(g.size());
@@ -107,8 +105,8 @@ namespace gum::graph {
       if (!marks.exists(node)) marks.insert(node, empty_mark);
 
       if (from_child) {
-        result.insert(node);               // always requisite on upward visit
-        if (Zhard.exists(node)) continue;  // hard evidence blocks upward
+        result.insert(node);                // always requisite on upward visit
+        if (Zhard.exists(node)) continue;   // hard evidence blocks upward
 
         if (!marks[node].first) {
           marks[node].first = true;
@@ -122,14 +120,14 @@ namespace gum::graph {
         }
 
       } else {
-        if constexpr (CollectAll) result.insert(node);  // dConnected: all visits
+        if constexpr (CollectAll) result.insert(node);   // dConnected: all visits
 
         const bool is_hard = Zhard.exists(node);
         const bool is_ev   = is_hard || Zsoft.exists(node);
 
         if (is_ev && !marks[node].first) {
           marks[node].first = true;
-          if constexpr (!CollectAll) result.insert(node);  // requisiteNodes: collider only
+          if constexpr (!CollectAll) result.insert(node);   // requisiteNodes: collider only
           for (const auto par: g.parents(node))
             to_visit.insert(std::pair< NodeId, bool >(par, true));
         }
@@ -143,6 +141,7 @@ namespace gum::graph {
 
     return result;
   }
+
   /// @endcond
 
   /**

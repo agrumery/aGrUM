@@ -76,8 +76,8 @@ namespace gum {
   }
 
   void GraphicalModel::updateMetaData() {
-    auto const time
-        = std::chrono::time_point_cast< std::chrono::milliseconds >(std::chrono::system_clock::now());
+    auto const time = std::chrono::time_point_cast< std::chrono::milliseconds >(
+        std::chrono::system_clock::now());
     auto const currentdate = std::format("{:%Y-%m-%d %T}", time);
 
     if (!_propertiesMap_.exists("software")) {

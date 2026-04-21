@@ -46,9 +46,6 @@
 #include <string>
 // #include <experimental/filesystem>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>
@@ -63,6 +60,8 @@
 #include <agrum/PRM/PRM.h>
 
 #include <agrum/base/core/math/math_utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

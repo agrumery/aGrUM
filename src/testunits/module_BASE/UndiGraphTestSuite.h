@@ -43,12 +43,12 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/undiGraph.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -470,9 +470,9 @@ namespace gum_tests {
       chain.addEdge(2, 3);
 
       CHECK(chain.hasUndirectedPath(0, 3, gum::NodeSet{}));
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{2}));    // blocked at 2
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{1}));    // blocked at 1
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{3}));    // n2 in except
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // blocked at 2
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{1}));   // blocked at 1
+      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{3}));   // n2 in except
 
       // bypass: 0 connected to both 1 and 2; except={1} → still reachable via 0--2--3
       gum::UndiGraph bypass;

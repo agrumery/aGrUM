@@ -45,9 +45,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
-#include <agrum/base/graphs/PDAG.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>

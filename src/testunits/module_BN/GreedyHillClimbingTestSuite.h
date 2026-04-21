@@ -43,9 +43,6 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/database/databaseTable.h>
@@ -73,6 +70,8 @@
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

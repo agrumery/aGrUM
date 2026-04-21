@@ -44,9 +44,6 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -57,6 +54,9 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <gumtest/AgrumApproximationUtils.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

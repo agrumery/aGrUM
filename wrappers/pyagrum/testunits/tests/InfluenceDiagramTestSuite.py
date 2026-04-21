@@ -210,7 +210,6 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
         {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n)}
       )
 
-
   def testConnectedComponents(self):
     # A->B connected, *C isolated decision, $D isolated utility: 3 components
     id_ = gum.fastID("A->B;*C;$D")

@@ -41,12 +41,12 @@
 #pragma once
 
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/PRMFactory.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

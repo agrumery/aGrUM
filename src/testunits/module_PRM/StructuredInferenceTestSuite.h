@@ -41,15 +41,15 @@
 #pragma once
 
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
 #include <agrum/PRM/generator/layerGenerator.h>
 #include <agrum/PRM/gspan/DFSTree.h>
 #include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/structuredInference.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

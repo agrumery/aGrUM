@@ -67,7 +67,8 @@ from .ActBuilder import ActBuilder
 def _git_commit_timestamp() -> str:
   return subprocess.run(
     ["git", "log", "-1", "--format=%at"],
-    capture_output=True, text=True,
+    capture_output=True,
+    text=True,
   ).stdout.strip()
 
 
@@ -100,7 +101,7 @@ def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
 
   if nightly:
     commit_time = _git_commit_timestamp()
-    today = datetime.today().strftime('%Y%m%d')
+    today = datetime.today().strftime("%Y%m%d")
     dist_info_dir = f"pyagrum_nightly-{version}.dev{today}{commit_time}.dist-info"
     rename(
       join(install_dir, f"pyagrum-{version}.dist-info"),

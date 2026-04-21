@@ -45,10 +45,10 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
-#include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
+#include <agrum/base/graphs/DAG.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>

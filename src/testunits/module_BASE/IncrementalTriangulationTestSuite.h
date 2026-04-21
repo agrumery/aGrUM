@@ -45,11 +45,11 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/base/graphs/algorithms/triangulations/incrementalTriangulation.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

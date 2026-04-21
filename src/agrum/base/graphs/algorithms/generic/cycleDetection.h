@@ -58,9 +58,9 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/core/sequence.h>
 #include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 
@@ -80,7 +80,7 @@ namespace gum::graph {
   Sequence< NodeId > topologicalOrder(const G& g) {
     if (g.empty()) return {};
 
-    NodeProperty< Size > indegree;
+    NodeProperty< Size >  indegree;
     std::vector< NodeId > border;
     border.reserve(g.size() / 2);
 

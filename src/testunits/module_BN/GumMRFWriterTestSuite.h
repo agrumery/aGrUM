@@ -44,9 +44,9 @@
 #include <string>
 #include <thread>
 
-#include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/MRF/io/GUM/GumMRFReader.h>
 #include <agrum/MRF/io/GUM/GumMRFWriter.h>
+#include <agrum/MRF/MarkovRandomField.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -72,7 +72,7 @@ namespace gum_tests {
     }
 
     static void _simpleTestForWriter_(bool isbinary) {
-      auto mrf = _buildSimpleMRF_();
+      auto       mrf  = _buildSimpleMRF_();
       const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bmrf")
                                  : GET_RESSOURCES_PATH("outputs/test.jmrf");
 
@@ -88,7 +88,7 @@ namespace gum_tests {
     }
 
     static void _checkMetaData_(bool isbinary) {
-      auto mrf = _buildSimpleMRF_();
+      auto       mrf  = _buildSimpleMRF_();
       const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bmrf")
                                  : GET_RESSOURCES_PATH("outputs/test.jmrf");
 
@@ -146,7 +146,7 @@ namespace gum_tests {
       // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
       // If the file is opened in text mode on Windows, the CRLF translation corrupts
       // the binary payload and the size prefix no longer matches the actual data.
-      auto mrf    = _buildSimpleMRF_();
+      auto       mrf  = _buildSimpleMRF_();
       const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bmrf");
 
       gum::GumMRFWriter< double > writer(true);
@@ -174,7 +174,7 @@ namespace gum_tests {
       const std::string           str = writer.toString(mrf);
 
       gum::MarkovRandomField< double > mrf2;
-      auto reader = gum::GumMRFReader< double >(&mrf2);
+      auto                             reader = gum::GumMRFReader< double >(&mrf2);
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(mrf2.size(), 2u);
       CHECK_EQ(mrf2.factors().size(), 0u);
@@ -191,14 +191,14 @@ namespace gum_tests {
       const std::string           str = writer.toString(mrf);
 
       gum::MarkovRandomField< double > mrf2;
-      auto reader = gum::GumMRFReader< double >(&mrf2);
+      auto                             reader = gum::GumMRFReader< double >(&mrf2);
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(mrf2, mrf);
       CHECK_EQ(mrf2.size(), 1u);
     }
 
     static void testToString() {
-      auto mrf = _buildSimpleMRF_();
+      auto                        mrf = _buildSimpleMRF_();
       gum::GumMRFWriter< double > writer(false, 2);
       std::string                 str = writer.toString(mrf);
 

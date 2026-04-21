@@ -47,15 +47,15 @@ from .configuration import cfg
 from .utils import *
 
 _MSVC_FLAGS: dict[str, str] = {
-  "mvsc22":    '-G "Visual Studio 17 2022" -A x64',
+  "mvsc22": '-G "Visual Studio 17 2022" -A x64',
   "mvsc22_32": '-G "Visual Studio 17 2022" -A Win32',
-  "mvsc19":    '-G "Visual Studio 16 2019" -A x64',
+  "mvsc19": '-G "Visual Studio 16 2019" -A x64',
   "mvsc19_32": '-G "Visual Studio 16 2019" -A Win32',
-  "mvsc17":    '-G "Visual Studio 15 2017 Win64"',
+  "mvsc17": '-G "Visual Studio 15 2017 Win64"',
   "mvsc17_32": '-G "Visual Studio 15 2017"',
-  "mvsc15":    '-G "Visual Studio 14 2015 Win64"',
+  "mvsc15": '-G "Visual Studio 14 2015 Win64"',
   "mvsc15_32": '-G "Visual Studio 14 2015"',
-  "mingw64":   '-G "MinGW Makefiles"',
+  "mingw64": '-G "MinGW Makefiles"',
 }
 
 

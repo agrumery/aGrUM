@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -64,11 +64,11 @@
 #define GUM_GRAPH_SEPARATION_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/core/exceptions.h>
-#include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 
@@ -109,8 +109,7 @@ namespace gum::graph {
    */
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
-    if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
+    if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
     return (graph::dConnected(g, X, Z) * Y).empty();
   }
 
@@ -160,8 +159,7 @@ namespace gum::graph {
    */
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
-    if (!(X * Y).empty())
-      GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
+    if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
 
     NodeSet query{Z};
     query += X;

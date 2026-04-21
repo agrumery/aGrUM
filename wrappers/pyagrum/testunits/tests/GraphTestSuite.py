@@ -185,7 +185,7 @@ class TestGraph(pyAgrumTestCase):
     add_edge(g, 0, 1)
     self.assertEqual(g.connectedComponentsCount(), 2)
     cc = g.connectedComponents()
-    self.assertEqual(cc[0], cc[1])   # 0 and 1 share a root
+    self.assertEqual(cc[0], cc[1])  # 0 and 1 share a root
     self.assertNotEqual(cc[0], cc[2])
 
     # Connect 1 and 2: one component

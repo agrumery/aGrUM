@@ -45,13 +45,13 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/threads/threadExecutor.h>
 #include <agrum/base/core/threads/threads.h>
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/polytope/LpInterface.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

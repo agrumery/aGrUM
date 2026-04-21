@@ -45,10 +45,10 @@
 #include <iostream>
 #include <string>
 
+#include <agrum/CN/polytope/LpInterface.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/CN/polytope/LpInterface.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

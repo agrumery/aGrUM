@@ -46,10 +46,10 @@
 #include <list>
 #include <vector>
 
+#include <agrum/base/core/list.h>
+
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
-#include <agrum/base/core/list.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

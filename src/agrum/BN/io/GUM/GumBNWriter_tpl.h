@@ -1,7 +1,7 @@
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
- *   Copyright (c) 2005-2025 by                                             *
+ *   Copyright (c) 2005-2026 by                                             *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *                                                                          *
@@ -27,7 +27,7 @@
  *                                                                          *
  *   See LICENCES for more details.                                         *
  *                                                                          *
- *   SPDX-FileCopyrightText: Copyright 2005-2025                            *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
  *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
  *       - Christophe GONZALES(_at_AMU)                                     *
  *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
@@ -42,10 +42,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/BN/io/GUM/GumBNWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -53,7 +53,7 @@ namespace gum {
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
   INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
-    BNWriter< GUM_SCALAR >() {
+      BNWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
     GUM_CONSTRUCTOR(GumBNWriter);
@@ -61,7 +61,9 @@ namespace gum {
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() { GUM_DESTRUCTOR(GumBNWriter); }
+  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() {
+    GUM_DESTRUCTOR(GumBNWriter);
+  }
 
   //
   // Writes a Bayesian network in the output stream using the BN format.
@@ -80,7 +82,9 @@ namespace gum {
 
     // add variables (always written, even empty, so the section always exists)
     content["nodes"] = ordered_json::array();
-    for (const auto& node: bn.nodes()) { content["nodes"].push_back(bn.variable(node).toFast()); }
+    for (const auto& node: bn.nodes()) {
+      content["nodes"].push_back(bn.variable(node).toFast());
+    }
     // add parents (always written, even empty, so the section always exists)
     content["parents"] = ordered_json::object();
     for (const auto& node: bn.nodes()) {
@@ -96,11 +100,15 @@ namespace gum {
       json          cptValues;
       const auto&   cpt = bn.cpt(node);
       Instantiation I(cpt);
-      for (I.setFirst(); !I.end(); ++I) { cptValues.push_back(cpt[I]); }
+      for (I.setFirst(); !I.end(); ++I) {
+        cptValues.push_back(cpt[I]);
+      }
       content["cpt"][bn.variable(node).name()] = cptValues;
     }
     // add properties
-    for (const auto& prop: bn.properties()) { content["properties"][prop] = bn.property(prop); }
+    for (const auto& prop: bn.properties()) {
+      content["properties"][prop] = bn.property(prop);
+    }
 
     // write the content in the output stream
     if (_binary_) {
@@ -108,7 +116,7 @@ namespace gum {
       _writeVector_(output, json::to_msgpack(content));
     } else {
       // text mode
-      output << content.dump(_indent_); // pretty print with 2 spaces indentation
+      output << content.dump(_indent_);   // pretty print with 2 spaces indentation
     }
 
     if (output.fail()) {
@@ -127,7 +135,8 @@ namespace gum {
   INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::string(filePath),
-                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary)
+                                  : std::ios_base::trunc);
 
     _doWrite(output, bn);
 
@@ -135,5 +144,5 @@ namespace gum {
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
   }
 
-} // namespace gum
+}   // namespace gum
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

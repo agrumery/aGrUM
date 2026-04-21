@@ -40,12 +40,12 @@
 
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
-#include <agrum/MRF/MarkovRandomField.h>
 #include <agrum/MRF/io/GUM/GumMRFReader.h>
 #include <agrum/MRF/io/GUM/GumMRFWriter.h>
+#include <agrum/MRF/MarkovRandomField.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -59,7 +59,7 @@ namespace gum_tests {
       // Read minimal.mrf.jgum: nodes A[2], B[2], C[2], factors {A,B} and {B,C}
       const std::string                filename = GET_RESSOURCES_PATH("jsonGum/minimal.mrf.jgum");
       gum::MarkovRandomField< double > mrf;
-      auto reader = gum::GumMRFReader< double >(&mrf, filename);
+      auto                             reader = gum::GumMRFReader< double >(&mrf, filename);
       CHECK_EQ(reader.proceed(), 0u);
 
       CHECK_EQ(mrf.size(), 3u);
@@ -92,7 +92,7 @@ namespace gum_tests {
 
     static void testProceedWithoutFilename() {
       gum::MarkovRandomField< double > mrf;
-      auto reader = gum::GumMRFReader< double >(&mrf);
+      auto                             reader = gum::GumMRFReader< double >(&mrf);
       CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
     }
 
@@ -110,7 +110,7 @@ namespace gum_tests {
       const std::string           str = writer.toString(mrf);
 
       gum::MarkovRandomField< double > mrf2;
-      auto reader = gum::GumMRFReader< double >(&mrf2);
+      auto                             reader = gum::GumMRFReader< double >(&mrf2);
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(mrf2, mrf);
     }

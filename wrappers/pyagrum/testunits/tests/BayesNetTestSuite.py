@@ -135,7 +135,7 @@ class TestInsertions(BayesNetTestCase):
 
     i = 1
     for id_a in idList[:-1]:
-      for id_b in idList[i: len(idList)]:
+      for id_b in idList[i : len(idList)]:
         self.assertNotEqual(id_a, id_b)
       i += 1
 

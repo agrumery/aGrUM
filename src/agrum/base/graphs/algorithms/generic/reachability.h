@@ -57,8 +57,8 @@
 #define GUM_GRAPH_REACHABILITY_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 
@@ -136,7 +136,7 @@ namespace gum::graph {
   template < GUM_UndiGraphable G >
   NodeProperty< NodeId > chainComponents(const G& g) {
     NodeProperty< NodeId > res;
-    NodeId numCC = 0;
+    NodeId                 numCC = 0;
 
     for (const auto node: g.nodes()) {
       if (res.exists(node)) continue;
@@ -168,7 +168,7 @@ namespace gum::graph {
   template < GUM_NodeGraphable G >
   NodeProperty< NodeId > connectedComponents(const G& g) {
     NodeProperty< NodeId > res;
-    NodeId numCC = 0;
+    NodeId                 numCC = 0;
 
     for (const auto node: g.nodes()) {
       if (res.exists(node)) continue;

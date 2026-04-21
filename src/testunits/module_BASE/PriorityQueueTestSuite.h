@@ -43,13 +43,13 @@
 
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/core/hashFunc.h>
 #include <agrum/base/core/multiPriorityQueue.h>
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/set.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

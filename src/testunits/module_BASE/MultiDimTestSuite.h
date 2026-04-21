@@ -43,12 +43,12 @@
 
 #include <sstream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/multidim/instantiation.h>
 #include <agrum/base/variables/labelizedVariable.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

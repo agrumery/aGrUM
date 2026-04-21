@@ -57,8 +57,8 @@
 #define GUM_GRAPH_MINIMAL_CONDITIONING_SET_H
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/graphs/graphConcepts.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 

@@ -44,9 +44,6 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -54,6 +51,8 @@
 #include "agrum/base/variables/discreteVariable.h"
 
 #include <agrum/base/core/math/math_utils.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
@@ -126,7 +125,7 @@ namespace gum_tests {
 
         for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1") node_1 = node;
-          else node_2                                    = node;
+          else node_2 = node;
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 
@@ -179,7 +178,7 @@ namespace gum_tests {
 
         for (const auto node: net->nodes())
           if (net->variable(node).name() == "n1") node_1 = node;
-          else node_2                                    = node;
+          else node_2 = node;
 
         const gum::DiscreteVariable& var_1 = net->variable(node_1);
 

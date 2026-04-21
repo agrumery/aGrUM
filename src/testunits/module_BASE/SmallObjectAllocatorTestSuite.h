@@ -45,13 +45,13 @@
 #include <iostream>
 #include <string>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-
 #include <agrum/base/core/smallobjectallocator/fixedAllocator.h>
 #include <agrum/base/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/base/core/timer.h>
 
 #include "utils.h"
+
+#include <testunits/gumtest/AgrumTestSuite.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

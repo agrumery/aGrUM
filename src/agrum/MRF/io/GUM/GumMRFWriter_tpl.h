@@ -42,10 +42,10 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE
+#  include <agrum/base/io/GumBinaryIO.h>
 #  include <agrum/MRF/io/GUM/GumMRFWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
-#  include <agrum/base/io/GumBinaryIO.h>
 using json         = nlohmann::json;
 using ordered_json = nlohmann::ordered_json;
 
@@ -74,7 +74,9 @@ namespace gum {
 
     // nodes (always written, even if empty)
     content["nodes"] = ordered_json::array();
-    for (const auto& node: mrf.nodes()) { content["nodes"].push_back(mrf.variable(node).toFast()); }
+    for (const auto& node: mrf.nodes()) {
+      content["nodes"].push_back(mrf.variable(node).toFast());
+    }
 
     // factors: each factor as an inline object {"vars": [...], "values": [...]}
     // always written, even if empty, so the section is always present
@@ -88,13 +90,17 @@ namespace gum {
       // flattened values
       json          vals;
       Instantiation I(*tensor_ptr);
-      for (I.setFirst(); !I.end(); ++I) { vals.push_back((*tensor_ptr)[I]); }
+      for (I.setFirst(); !I.end(); ++I) {
+        vals.push_back((*tensor_ptr)[I]);
+      }
       factor["values"] = vals;
       content["factors"].push_back(factor);
     }
 
     // properties
-    for (const auto& prop: mrf.properties()) { content["properties"][prop] = mrf.property(prop); }
+    for (const auto& prop: mrf.properties()) {
+      content["properties"][prop] = mrf.property(prop);
+    }
 
     if (_binary_) {
       _writeVector_(output, json::to_msgpack(content));
@@ -118,7 +124,8 @@ namespace gum {
   INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& mrf) {
     std::ofstream output(std::string(filePath),
-                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary)
+                                  : std::ios_base::trunc);
     write(output, mrf);
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
@@ -126,12 +133,12 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE std::string
-      GumMRFWriter< GUM_SCALAR >::toString(const IMarkovRandomField< GUM_SCALAR >& mrf) {
+         GumMRFWriter< GUM_SCALAR >::toString(const IMarkovRandomField< GUM_SCALAR >& mrf) {
     std::ostringstream oss;
     write(oss, mrf);
     return oss.str();
   }
 
-} // namespace gum
+}   // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

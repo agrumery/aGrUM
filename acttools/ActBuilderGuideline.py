@@ -312,8 +312,9 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
   return nbrError
 
 
-def _check_code_format(sources, tool_path, tool_name, check_cmd_fn, fix_cmd_fn,
-                        exceptions, details, correction, fix_stderr_visible=False) -> int:
+def _check_code_format(
+  sources, tool_path, tool_name, check_cmd_fn, fix_cmd_fn, exceptions, details, correction, fix_stderr_visible=False
+) -> int:
   nbrError = 0
   if tool_path is None:
     warn(f"No correct [[{tool_name}]] tool has been found.")
@@ -344,8 +345,7 @@ def _check_ruff_format(details: bool, correction: bool) -> int:
     tool_name="ruff",
     check_cmd_fn=lambda t, s: f"{t} format --check {s}",
     fix_cmd_fn=lambda t, s: f"{t} format {s}",
-    exceptions={"/apps/", "/notebooks-archives/", "/generated-files/",
-                "Untitled*.ipynb", "wrappers/pyagrum/cmake"},
+    exceptions={"/apps/", "/notebooks-archives/", "/generated-files/", "Untitled*.ipynb", "wrappers/pyagrum/cmake"},
     details=details,
     correction=correction,
   )

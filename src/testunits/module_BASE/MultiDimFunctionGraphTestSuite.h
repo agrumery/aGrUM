@@ -48,9 +48,9 @@
 #include <sstream>
 #include <vector>
 // =========================================================================
-#include <testunits/gumtest/AgrumTestSuite.h>
-
 #include "utils.h"
+
+#include <testunits/gumtest/AgrumTestSuite.h>
 // =========================================================================
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>

@@ -41,9 +41,6 @@
 #pragma once
 
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/config.h>
 
 #include <agrum/base/core/timer.h>
@@ -51,6 +48,8 @@
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
 
 #include <agrum/base/core/utils_random.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

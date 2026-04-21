@@ -61,7 +61,7 @@ namespace gum_tests {
     private:
     static void _simpleTestForWriter_(bool isbinary) {
       // A -> C -> *D -> $U, A -> $U  (chance A, chance C, decision D, utility U)
-      auto id   = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
+      auto       id   = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
       const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bid")
                                  : GET_RESSOURCES_PATH("outputs/test.jid");
 
@@ -78,7 +78,7 @@ namespace gum_tests {
     }
 
     static void _checkMetaData_(bool isbinary) {
-      auto id   = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
+      auto       id   = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
       const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bid")
                                  : GET_RESSOURCES_PATH("outputs/test.jid");
 
@@ -138,7 +138,7 @@ namespace gum_tests {
       // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
       // If the file is opened in text mode on Windows, the CRLF translation corrupts
       // the binary payload and the size prefix no longer matches the actual data.
-      auto id     = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
+      auto       id   = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
       const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bid");
 
       gum::GumIDWriter< double > writer(true);
@@ -160,7 +160,7 @@ namespace gum_tests {
       // ID with only isolated nodes (no arcs) — every node has an empty parent list.
       // Before the fix, parentList was default-initialised to null instead of [],
       // producing invalid msgpack when serialised in binary mode.
-      auto id = gum::InfluenceDiagram< double >::fastPrototype("A[2];*D[2];$U");
+      auto       id   = gum::InfluenceDiagram< double >::fastPrototype("A[2];*D[2];$U");
       const auto path = GET_RESSOURCES_PATH("outputs/test_allroots.bid");
 
       gum::GumIDWriter< double > writer(true);
@@ -175,7 +175,7 @@ namespace gum_tests {
 
     static void testSingleVariable() {
       // ID with a single chance node and no arcs
-      auto id = gum::InfluenceDiagram< double >::fastPrototype("A[2]");
+      auto                       id = gum::InfluenceDiagram< double >::fastPrototype("A[2]");
       gum::GumIDWriter< double > writer(false, 2);
       const std::string          str = writer.toString(id);
 

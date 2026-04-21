@@ -43,15 +43,15 @@
 
 #include <iostream>
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
-
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/PDAG.h>
 #include <agrum/base/graphs/undiGraph.h>
 #include <agrum/BN/algorithms/structuralComparator.h>
 #include <agrum/BN/BayesNet.h>
+
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE

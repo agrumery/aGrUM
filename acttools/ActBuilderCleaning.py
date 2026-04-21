@@ -49,48 +49,48 @@ from .ActBuilder import ActBuilder, warn
 
 
 class ActBuilderCleaning(ActBuilder):
-    def __init__(self, current: dict[str, str | bool]):
-        super().__init__(current)
+  def __init__(self, current: dict[str, str | bool]):
+    super().__init__(current)
 
-    def check_consistency(self):
-        return True
+  def check_consistency(self):
+    return True
 
-    def rectouch(self, suf: str) -> int:
-        n = 0
-        now = time.time()
-        for fichier in glob.glob(os.path.join(".", "**", f"*.{suf}"), recursive=True):
-            if not self.current["dry_run"]:
-                os.utime(fichier, (now, now))
-            notif(f"  + touched : {fichier}")
-            n += 1
-        return n
+  def rectouch(self, suf: str) -> int:
+    n = 0
+    now = time.time()
+    for fichier in glob.glob(os.path.join(".", "**", f"*.{suf}"), recursive=True):
+      if not self.current["dry_run"]:
+        os.utime(fichier, (now, now))
+      notif(f"  + touched : {fichier}")
+      n += 1
+    return n
 
-    def build(self) -> bool:
-        ops = 0
-        self.run_start()
-        # for all files beginning with cmake-build
-        for fichier in glob.glob(os.path.join(".", "cmake-build-*")):
-            if os.path.isdir(fichier):
-                notif(f"Removing {fichier}")
-                if not self.current["dry_run"]:
-                    shutil.rmtree(fichier)
-                ops += 1
-        if os.path.isdir("build"):
-            notif("Removing build")
-            if not self.current["dry_run"]:
-                shutil.rmtree("build")
-            ops += 1
-        if self.current["action"] == "purge":
-            self.run_start("purging atg files")
-            ops += self.rectouch("atg")
-            self.run_start("purging swig-generetard files")
-            ops += self.rectouch("i")
+  def build(self) -> bool:
+    ops = 0
+    self.run_start()
+    # for all files beginning with cmake-build
+    for fichier in glob.glob(os.path.join(".", "cmake-build-*")):
+      if os.path.isdir(fichier):
+        notif(f"Removing {fichier}")
+        if not self.current["dry_run"]:
+          shutil.rmtree(fichier)
+        ops += 1
+    if os.path.isdir("build"):
+      notif("Removing build")
+      if not self.current["dry_run"]:
+        shutil.rmtree("build")
+      ops += 1
+    if self.current["action"] == "purge":
+      self.run_start("purging atg files")
+      ops += self.rectouch("atg")
+      self.run_start("purging swig-generetard files")
+      ops += self.rectouch("i")
 
-        if ops > 0:
-            self.run_done(f"{ops} files/folders cleaned")
-        else:
-            warn("nothing to do")
-            self.run_failed()
-        # find all atg files and touch them
+    if ops > 0:
+      self.run_done(f"{ops} files/folders cleaned")
+    else:
+      warn("nothing to do")
+      self.run_failed()
+    # find all atg files and touch them
 
-        return True
+    return True

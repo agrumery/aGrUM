@@ -163,8 +163,7 @@ def srcPyNotebooks() -> Iterator[str]:
 
 
 def srcPyAgrum() -> Iterator[str]:
-  for path in ("wrappers/pyagrum/testunits", "wrappers/pyagrum/cmake",
-               "wrappers/pyagrum/pyLibs", "acttools"):
+  for path in ("wrappers/pyagrum/testunits", "wrappers/pyagrum/cmake", "wrappers/pyagrum/pyLibs", "acttools"):
     yield from recglob(path, "*.py")
   yield "act"
 
