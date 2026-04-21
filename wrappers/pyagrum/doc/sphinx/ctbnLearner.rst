@@ -52,7 +52,7 @@ The independence test used is based on Fisher and chi2 tests to compare exponent
     :undoc-members:
     :show-inheritance:
 
-Bibliography for CTNB
+Bibliography for CTBN
 ---------------------
 
 .. bibliography::

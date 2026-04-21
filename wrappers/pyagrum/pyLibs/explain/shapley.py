@@ -73,8 +73,10 @@ class ShapValues:
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
-    ValueError : If target is not a valid node id in the Bayesian Network.
+    TypeError
+        If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
+    ValueError
+        If target is not a valid node id in the Bayesian Network.
     """
     if not isinstance(bn, pyagrum.BayesNet):
       raise TypeError(f"bn must be a pyagrum.BayesNet instance, but got {type(bn)}")

@@ -73,8 +73,10 @@ class CausalShallValues(ShallValues, CausalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple.
-    ValueError : If background data does not contain all variables present in the Bayesian Network or if
+    TypeError
+        If bn is not a pyagrum.BayesNet instance, background is not a tuple.
+    ValueError
+        If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
     """
 

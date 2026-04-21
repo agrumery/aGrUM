@@ -42,7 +42,32 @@ from collections.abc import MutableMapping
 
 
 class Explanation(MutableMapping):
+  """Structured container for the result of a Shap/Shall explanation.
+
+  Acts as a mapping from feature names to their attribution values, and also
+  carries the auxiliary data produced during the computation.
+  """
+
   def __init__(self, values, importances, feature_names, data, baseline, func, values_type) -> None:
+    """
+    Parameters
+    ----------
+    values : dict
+        Mapping from feature names to attribution values.
+    importances : dict
+        Global feature importances (aggregated across all instances).
+    feature_names : list[str]
+        Ordered list of feature names corresponding to the attribution values.
+    data : object
+        The input data used to compute the explanation.
+    baseline : float or array-like
+        The baseline (reference) prediction used as the starting point for
+        attribution computation.
+    func : callable
+        The prediction function that was explained.
+    values_type : str
+        Type of attribution values (e.g. ``"shap"`` or ``"shall"``).
+    """
     self._values = values
     self.importances = importances
     self.feature_names = feature_names

@@ -79,7 +79,8 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict =
 
   Raises
   ------
-  TypeError : If `explanation` is not an Explanation object or if `y` is not an integer.
+  TypeError
+      If `explanation` is not an Explanation object or if `y` is not an integer.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.
   """
 

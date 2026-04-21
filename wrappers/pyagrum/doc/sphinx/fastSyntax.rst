@@ -22,6 +22,8 @@ The type of the (discrete) random variables can be specifiy with different synta
 
 .. autofunction:: pyagrum.fastVariable
 
+.. _quick-specification-of-randomly-parameterized-graphical-models:
+
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 

@@ -1,37 +1,46 @@
 Abstract Syntax Tree for Do-Calculus
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=====================================
 
-The pyCausal package compute every causal query into an Abstract Syntax Tree (CausalFormula) that represents the exact computations to be done in order to answer to the probabilistic causal query.
+The causal module computes every causal query as an Abstract Syntax Tree (AST) that represents
+the exact probabilistic computations needed to answer a causal query.
 
-The different types of node in an CausalFormula are presented below and are organized as a hierarchy of classes from :class:`pyagrum.causal.ASTtree`.
+The AST is an internal C++ data structure built by the do-calculus identification algorithm.
+It is organised as a hierarchy of node types:
 
-.. inheritance-diagram:: pyagrum.causal.ASTplus pyagrum.causal.ASTminus pyagrum.causal.ASTdiv pyagrum.causal.ASTmult pyagrum.causal.ASTsum pyagrum.causal.ASTjointProba pyagrum.causal.ASTposteriorProba
-    :top-classes: pyagrum.causal.ASTtree
+- **Leaf nodes**: joint probability :math:`P(X,Y,\ldots)` and posterior probability :math:`P(X \mid Y,\ldots)`
+- **Binary operations**: :math:`+`, :math:`-`, :math:`\times`, :math:`\div`
+- **Sum-out node**: marginalisation over a set of variables
 
+Accessing the AST
+-----------------
 
-Internal node structure
-#######################
+:func:`pyagrum.causalImpact` returns a tuple ``(formula, tensor, explanation)`` where ``formula``
+is a :class:`pyagrum.CausalImpact` object carrying the identified AST. From it you can:
 
-.. autoclass:: pyagrum.causal.ASTtree
+.. code-block:: python
 
-.. autoclass:: pyagrum.causal.ASTBinaryOp
+   import pyagrum as gum
+   import pyagrum.causal as csl
 
-Basic Binary Operations
-#######################
+   bn = gum.fastBN("X->Y->Z;X->Z")
+   cm = csl.CausalModel(bn)
 
-.. autoclass:: pyagrum.causal.ASTplus
+   formula, tensor, explanation = gum.causalImpact(cm, on="Z", doing="X")
 
-.. autoclass:: pyagrum.causal.ASTminus
+   # Render the identified formula as a LaTeX string
+   print(formula.toLatex())
 
-.. autoclass:: pyagrum.causal.ASTdiv
+   # Inspect the AST as a nested dict
+   print(formula.toDict())
 
-.. autoclass:: pyagrum.causal.ASTmult
+   # Pretty-print the AST in the terminal
+   formula.print_ast()
 
-Complex operations
-##################
+.. note::
+   The AST node classes are internal to the C++ library and are not directly exposed in
+   the Python API. Use :func:`pyagrum.causalImpact` to obtain and inspect a causal formula.
 
-.. autoclass:: pyagrum.causal.ASTsum
+.. seealso::
 
-.. autoclass:: pyagrum.causal.ASTjointProba
-
-.. autoclass:: pyagrum.causal.ASTposteriorProba
+   :doc:`CausalInference`
+      :func:`pyagrum.causalImpact` and :class:`pyagrum.CausalImpact` — the entry point for obtaining an AST.

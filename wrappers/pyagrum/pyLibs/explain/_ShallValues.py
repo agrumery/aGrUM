@@ -73,8 +73,10 @@ class ShallValues(Explainer):
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple.
-    ValueError : If background data does not contain all variables present in the Bayesian Network or if
+    TypeError
+        If bn is not a pyagrum.BayesNet instance, background is not a tuple.
+    ValueError
+        If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
     """
 
@@ -166,8 +168,10 @@ class ShallValues(Explainer):
 
     Raises
     ------
-    TypeError : If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
-    ValueError : If N is less than 2 when data is None, or if the provided data does not contain all variables present in the initialized Bayesian Network.
+    TypeError
+        If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
+    ValueError
+        If N is less than 2 when data is None, or if the provided data does not contain all variables present in the initialized Bayesian Network.
     """
 
     # Note : elements (like in ShapValues are no longer needed since partial explanation is impossible)

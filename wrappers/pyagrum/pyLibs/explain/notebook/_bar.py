@@ -66,7 +66,8 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
 
   Raises
   ------
-  TypeError : If `explanation` is not an Explanation object or if `y` is not an integer or None.
+  TypeError
+      If `explanation` is not an Explanation object or if `y` is not an integer or None.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.
   """
 

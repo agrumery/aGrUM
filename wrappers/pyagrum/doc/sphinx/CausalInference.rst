@@ -1,25 +1,17 @@
 Causal Inference (a.k.a. do-calculus)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Obtaining and evaluating a CausalFormula is done using one these functions :
+The main entry point for causal inference is :func:`pyagrum.causalImpact`, which computes the
+causal effect of an intervention :math:`do(X=x)` on a target variable :math:`Y` within a
+:class:`pyagrum.CausalModel`, using do-calculus identification.
 
-.. autofunction:: pyagrum.causal.causalImpact
+.. autofunction:: pyagrum.causalImpact
 
-.. autofunction:: pyagrum.causal.doCalculusWithObservation
+.. autoclass:: pyagrum.CausalImpact
 
-.. autofunction:: pyagrum.causal.identifyingIntervention
+Counterfactual reasoning
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Other functions for causal inference
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. autofunction:: pyagrum.counterfactual
 
-`CausalFormula` is the class that represents a causal query within a causal model. It mainly consists of:
-
-- a reference to the associated :class:`pyagrum.CausalModel`,
-- three sets of variable names representing the groups in the query $P(set1 | do(set2), know(set3))$,
-- and an abstract syntax tree (AST) used to compute or display the query.
-
-.. autoclass:: pyagrum.causal.CausalFormula
-
-.. autofunction:: pyagrum.causal.backdoor_generator
-
-.. autofunction:: pyagrum.causal.frontdoor_generator
+.. autofunction:: pyagrum.counterfactualModel

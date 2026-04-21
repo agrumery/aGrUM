@@ -102,8 +102,8 @@ Python usage
 Influence Diagram (``"ID"``)
 -----------------------------
 
-Structure
-~~~~~~~~~
+ID Structure
+~~~~~~~~~~~~
 
 .. code-block:: json
 
@@ -129,8 +129,8 @@ Structure
      "properties": {}
    }
 
-Fields
-~~~~~~
+ID Fields
+~~~~~~~~~
 
 ``chance`` / ``utility`` / ``decision``
   Three arrays of variable descriptions (fast syntax), one per node type.
@@ -150,8 +150,8 @@ Fields
 ``properties`` *(optional)*
   Key/value pairs of string metadata.
 
-Python usage
-~~~~~~~~~~~~
+ID Python usage
+~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -170,8 +170,8 @@ Python usage
 Markov Random Field (``"MRF"``)
 --------------------------------
 
-Structure
-~~~~~~~~~
+MRF Structure
+~~~~~~~~~~~~~
 
 .. code-block:: json
 
@@ -186,8 +186,8 @@ Structure
      "properties": {}
    }
 
-Fields
-~~~~~~
+MRF Fields
+~~~~~~~~~~
 
 ``nodes``
   Array of variable descriptions in fast syntax.
@@ -206,8 +206,8 @@ Fields
 ``properties`` *(optional)*
   Key/value pairs of string metadata.
 
-Python usage
-~~~~~~~~~~~~
+MRF Python usage
+~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 

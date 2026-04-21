@@ -76,8 +76,10 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
-    ValueError : If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
+    TypeError
+        If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
+    ValueError
+        If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
     super().__init__(bn, target, logit)
     self._mb = self._markov_blanket()

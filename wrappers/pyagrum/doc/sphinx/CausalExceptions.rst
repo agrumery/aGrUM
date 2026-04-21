@@ -1,8 +1,10 @@
-Exceptions
-----------
+Causal Exceptions
+-----------------
 
-.. autoclass:: pyagrum.causal.HedgeException
-   :exclude-members: with_traceback
+This exception is raised by the causal inference engine when a causal effect cannot be identified
+due to a hedge in the causal graph (see :class:`pyagrum.HedgeException`).
 
-.. autoclass:: pyagrum.causal.UnidentifiableException
-   :exclude-members: with_traceback
+.. seealso::
+
+   :doc:`exceptions`
+      Full list of pyAgrum exceptions.

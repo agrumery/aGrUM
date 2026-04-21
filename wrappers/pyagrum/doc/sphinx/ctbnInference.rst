@@ -1,4 +1,4 @@
-Inference in CTNB
+Inference in CTBN
 ^^^^^^^^^^^^^^^^^
 
 Exact Inference in CTBN

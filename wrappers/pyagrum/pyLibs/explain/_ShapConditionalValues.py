@@ -63,8 +63,10 @@ class ConditionalShapValues(ShapleyValues):
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet or target is not an integer or string.
-    ValueError : If target is not a valid node id in the Bayesian Network.
+    TypeError
+        If bn is not a pyagrum.BayesNet or target is not an integer or string.
+    ValueError
+        If target is not a valid node id in the Bayesian Network.
     """
     super().__init__(bn, target, logit)  # Initializes the ShapleyValues class.
     self.baseline = self.func(self.ie.posterior(self.target).toarray())  # Sets the baseline probability.

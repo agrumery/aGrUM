@@ -63,8 +63,8 @@ Class BNLearner
       - `eraseNoChildrenNode <#pyagrum.BNLearner.eraseNoChildrenNode>`_
       - `eraseNoParentNode <#pyagrum.BNLearner.eraseNoParentNode>`_
     * - `erasePossibleEdge <#pyagrum.BNLearner.erasePossibleEdge>`_
-      - `setForbiddenArcs <#pyagrum.BNLearner.setForbiddenArcs>`_
-      - `setMandatoryArcs <#pyagrum.BNLearner.setMandatoryArcs>`_
+      -
+      -
     * - `setMaxIndegree <#pyagrum.BNLearner.setMaxIndegree>`_
       - `setSliceOrder <#pyagrum.BNLearner.setSliceOrder>`_
       -
@@ -105,8 +105,8 @@ Class BNLearner
     * - `EMMaxIter <#pyagrum.BNLearner.EMMaxIter>`_
       - `EMMaxTime <#pyagrum.BNLearner.EMMaxTime>`_
       - `EMMinEpsilonRate <#pyagrum.BNLearner.EMMinEpsilonRate>`_
-    * - `EMState <#pyagrum.BNLearner.EMState>`_
-      - `EMStateAsInt <#pyagrum.BNLearner.EMStateAsInt>`_
+    * - `EMStateApproximationScheme <#pyagrum.BNLearner.EMStateApproximationScheme>`_
+      - `EMStateMessage <#pyagrum.BNLearner.EMStateMessage>`_
       - `EMVerbosity <#pyagrum.BNLearner.EMVerbosity>`_
     * - `EMenableEpsilon <#pyagrum.BNLearner.EMenableEpsilon>`_
       - `EMenableMaxIter <#pyagrum.BNLearner.EMenableMaxIter>`_

@@ -71,5 +71,56 @@ Listeners could also be added when structural modification are made in a pyagrum
 ApproximationSchemeListener
 ---------------------------
 
+A listener can be attached to any approximation-based inference engine (loopy propagation, sampling, etc.)
+to monitor its progress step by step.
+
+>>> import pyagrum as gum
+>>>
+>>> bn = gum.fastBN("A->B->C;A->C")
+>>> ie = gum.LoopyBeliefPropagation(bn)
+>>>
+>>> listen = gum.PythonApproximationListener(ie)
+>>>
+>>> def on_progress(step, error, duration):
+>>>     print(f"step {step:4d} | error={error:.2e} | {duration:.3f}s")
+>>>
+>>> def on_stop(message):
+>>>     print(f"Stopped: {message}")
+>>>
+>>> listen.setWhenProgress(on_progress)
+>>> listen.setWhenStop(on_stop)
+>>>
+>>> ie.makeInference()
+>>> # step    1 | error=3.14e-01 | 0.001s
+>>> # step    2 | error=1.02e-02 | 0.002s
+>>> # ...
+>>> # Stopped: stopped with epsilon=1e-06
+
 DatabaseGenerationListener
 --------------------------
+
+A listener can be attached to a :class:`pyagrum.BNDatabaseGenerator` to monitor the progress of
+database generation.
+
+>>> import pyagrum as gum
+>>>
+>>> bn = gum.fastBN("A->B->C;A->C")
+>>> gen = gum.BNDatabaseGenerator(bn)
+>>>
+>>> listen = gum.PythonDatabaseGeneratorListener(gen)
+>>>
+>>> def on_progress(step, duration):
+>>>     if step % 100 == 0:
+>>>         print(f"Generated {step} samples in {duration:.3f}s")
+>>>
+>>> def on_stop(message):
+>>>     print(f"Done: {message}")
+>>>
+>>> listen.setWhenProgress(on_progress)
+>>> listen.setWhenStop(on_stop)
+>>>
+>>> gen.drawSamples(500)
+>>> # Generated 100 samples in 0.012s
+>>> # Generated 200 samples in 0.023s
+>>> # ...
+>>> # Done: generation completed

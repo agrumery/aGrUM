@@ -1,4 +1,4 @@
-Graphical tools for CTNB
+Graphical tools for CTBN
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: _static/ctbn_plot.png

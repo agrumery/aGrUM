@@ -21,4 +21,18 @@ large ones.
 Moreover, inference algorithms can also use this graph to speed up
 the computations. Finally, the Bayesian networks can be learnt from data.
 
+.. seealso::
+
+   :doc:`BNinput-output`
+      Supported file formats for saving and loading Bayesian networks.
+
+   :doc:`BNInference`
+      Exact and approximated inference algorithms.
+
+   :doc:`BNLearning`
+      Learning Bayesian network structure and parameters from data.
+
+   :doc:`BNTools`
+      Utility tools: comparison, information theory, random generation, etc.
+
 .. autoclass:: pyagrum.BayesNet

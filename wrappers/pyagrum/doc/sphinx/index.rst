@@ -71,10 +71,12 @@ Reference manual
   :caption: 3- Causality
   :maxdepth: 2
 
-  Causal
   CausalModel
   CausalInference
   CausalEffectEstimation
+  CausalNotebook
+  CausalExceptions
+  CausalAST
 
 
 .. toctree::
@@ -95,14 +97,14 @@ Reference manual
   bnmixture
 
 .. toctree::
-  :caption: 6- pyagrum.lib modules
+  :caption: 6- pyagrum's modules
   :maxdepth: 2
   :titlesonly:
 
+  explain
   lib.notebook
   lib.discreteTypeProcessor
   lib.image
-  lib.explain
   lib.dBN
   pyAgrum.lib
 

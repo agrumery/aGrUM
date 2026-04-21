@@ -21,6 +21,7 @@ JGUM and BGUM formats are JSON-based formats that ensure complete preservation o
   - JGUM is a text-based format that is human-readable and easy to debug.
 
 .. code-block:: python
+
     import pyagrum as gum
 
     # Save to JGUM/BGUM
@@ -40,6 +41,7 @@ BIFXML (complete preservation)
 The BIFXML format is recommended for interoperability with other Bayesian network tools. It preserves all features and attributes of the model.
 
 .. code-block:: python
+
     import pyagrum as gum
 
     # Save to BIFXML
@@ -56,6 +58,7 @@ Pickle (Alternative for complete preservation)
 The Python ``pickle`` format is also supported for complete preservation.
 
 .. code-block:: python
+
     import pyagrum as gum
     import pickle
 

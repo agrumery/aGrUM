@@ -71,8 +71,10 @@ class ShapleyValues(Explainer):
 
     Raises
     ------
-    TypeError : If bn is not a pyagrum.BayesNet or target is not an integer or string.
-    ValueError : If target is not a valid node id in the Bayesian Network.
+    TypeError
+        If bn is not a pyagrum.BayesNet or target is not an integer or string.
+    ValueError
+        If target is not a valid node id in the Bayesian Network.
     """
     super().__init__(bn)
     if isinstance(target, str):
@@ -136,8 +138,10 @@ class ShapleyValues(Explainer):
 
     Raises
     ------
-    TypeError : If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
-    ValueError : If N is less than 2 when data is None.
+    TypeError
+        If the first element of data is not a pd.DataFrame, pd.Series or dict, or if N is not an integer when data is None.
+    ValueError
+        If N is less than 2 when data is None.
     """
     if data is None:
       if not isinstance(N, int):
