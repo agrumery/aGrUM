@@ -111,13 +111,12 @@ class TestPickler(pyAgrumTestCase):
 
   def testProperties(self):
     model = gum.randomBN(n=30, ratio_arc=1.3, domain_size=5)
-    gum.config.asBool["Pickle", "add_version"] = True
 
     filename = self.agrumSrcDir("pickled.pkl")
     gum.saveBN(model, filename)
 
     model2 = gum.loadBN(filename)
-    self.assertEqual(model2.property("version"), f"pyAgrum {gum.__version__}")
+    self.assertIn("software", model2.properties())
     self.assertIn("creation", model2.properties())
     self.assertIn("lastModification", model2.properties())
 

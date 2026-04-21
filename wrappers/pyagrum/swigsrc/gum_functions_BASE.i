@@ -67,18 +67,6 @@ except FileNotFoundError:
   pass
 
 
-def _gum_add_properties_while_getstate_(model):
-  if not hasattr(model, "setProperty"):
-    return
-
-  if config.asBool["Pickle", "add_version"]:
-    model.setProperty("version", f"pyAgrum {pyagrum.__version__}")
-  if config.asBool["Pickle", "add_date"]:
-    from datetime import datetime
-    model.setProperty("creation", model.propertyWithDefault("creation", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z")))
-    model.setProperty("lastModification", datetime.now().strftime("%Y-%m-%d %H:%M:%S%z"))
-
-
 def log2(p):
   """Compute p.log2() in a new Tensor without modifying p
 

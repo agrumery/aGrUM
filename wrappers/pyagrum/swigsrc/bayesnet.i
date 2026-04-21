@@ -451,7 +451,6 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
   %pythoncode {
 def __getstate__(self):
-    _gum_add_properties_while_getstate_(self)
     return self.saveGUMstring()
 
 def __setstate__(self,state):
