@@ -69,6 +69,8 @@ wrappers/pyagrum/testunits/tests/resources/dataW.csv
 wrappers/pyagrum/testunits/tests/resources/trajectory*.csv
 wrappers/pyagrum/testunits/tests/resources/pickled.pkl
 wrappers/pyagrum/testunits/tests/resources/o3prm/BNO3PRMIO_file.o3prm
+wrappers/pyagrum/testunits/tests/resources/test_*.bgum
+wrappers/pyagrum/testunits/tests/resources/test_*.jgum
 wrappers/pyagrum/doc/sphinx/notebooks/res/titanic/*.png
 apps/pyagrum/doc/sphinx/notebooks/*.png
 apps/pyagrum/doc/sphinx/notebooks/WaterSprinkler.*
