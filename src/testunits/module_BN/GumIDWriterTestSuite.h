@@ -134,6 +134,45 @@ namespace gum_tests {
       _checkMetaData_(true);
     }
 
+    static void testBinaryFileIntegrity() {
+      // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
+      // If the file is opened in text mode on Windows, the CRLF translation corrupts
+      // the binary payload and the size prefix no longer matches the actual data.
+      auto id     = gum::InfluenceDiagram< double >::fastPrototype("A->C->*D->$U;A->$U");
+      const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bid");
+
+      gum::GumIDWriter< double > writer(true);
+      writer.write(path, id);
+
+      std::ifstream file(path, std::ios::binary | std::ios::ate);
+      CHECK(file.is_open());
+      const auto fileSize = static_cast< uint64_t >(file.tellg());
+      file.seekg(0);
+      uint64_t payloadSize = 0;
+      file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
+      file.close();
+
+      // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
+      CHECK_EQ(fileSize, payloadSize + 8u);
+    }
+
+    static void testAllRootNodesInBinary() {
+      // ID with only isolated nodes (no arcs) — every node has an empty parent list.
+      // Before the fix, parentList was default-initialised to null instead of [],
+      // producing invalid msgpack when serialised in binary mode.
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("A[2];*D[2];$U");
+      const auto path = GET_RESSOURCES_PATH("outputs/test_allroots.bid");
+
+      gum::GumIDWriter< double > writer(true);
+      writer.write(path, id);
+
+      gum::InfluenceDiagram< double > id2;
+      gum::GumIDReader< double >      reader(&id2, path, true);
+      reader.proceed();
+      CHECK_EQ(reader.count(), 0u);
+      CHECK_EQ(id2.size(), id.size());
+    }
+
     static void testSingleVariable() {
       // ID with a single chance node and no arcs
       auto id = gum::InfluenceDiagram< double >::fastPrototype("A[2]");
@@ -167,6 +206,8 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
+  GUM_TEST_ACTIF(BinaryFileIntegrity)
+  GUM_TEST_ACTIF(AllRootNodesInBinary)
   GUM_TEST_ACTIF(SingleVariable)
   GUM_TEST_ACTIF(ToString)
 }   // namespace gum_tests

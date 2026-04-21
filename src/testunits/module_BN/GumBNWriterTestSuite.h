@@ -37,6 +37,7 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -158,6 +159,28 @@ namespace gum_tests {
       _withBigFiles_(true);
     }
 
+    static void testBinaryFileIntegrity() {
+      // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
+      // If the file is opened in text mode on Windows, the CRLF translation corrupts
+      // the binary payload and the size prefix no longer matches the actual data.
+      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+      const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bgum");
+
+      gum::GumBNWriter< double > writer(true);
+      writer.write(path, bn);
+
+      std::ifstream file(path, std::ios::binary | std::ios::ate);
+      CHECK(file.is_open());
+      const auto fileSize = static_cast< uint64_t >(file.tellg());
+      file.seekg(0);
+      uint64_t payloadSize = 0;
+      file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
+      file.close();
+
+      // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
+      CHECK_EQ(fileSize, payloadSize + 8u);
+    }
+
     static void testSingleVariable() {
       // BN with a single node and no arcs — "parents" section must still exist in JSON
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
@@ -203,6 +226,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(SimpleTestForWriter)
   GUM_TEST_ACTIF(CheckMetaData)
   GUM_TEST_ACTIF(WithBigFiles)
+  GUM_TEST_ACTIF(BinaryFileIntegrity)
   GUM_TEST_ACTIF(SingleVariable)
   GUM_TEST_ACTIF(EmptyBN)
   GUM_TEST_ACTIF(ToString)

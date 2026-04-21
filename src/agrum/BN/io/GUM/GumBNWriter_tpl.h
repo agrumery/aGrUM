@@ -126,7 +126,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
-    std::ofstream output(std::string(filePath), std::ios_base::trunc);
+    std::ofstream output(std::string(filePath),
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
 
     _doWrite(output, bn);
 

@@ -117,7 +117,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& mrf) {
-    std::ofstream output(std::string(filePath), std::ios_base::trunc);
+    std::ofstream output(std::string(filePath),
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
     write(output, mrf);
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }

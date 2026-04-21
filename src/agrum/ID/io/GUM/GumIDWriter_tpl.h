@@ -88,8 +88,9 @@ namespace gum {
     }
 
     // parents for every node (all types)
+    content["parents"] = ordered_json::object();
     for (const auto& node: id.nodes()) {
-      ordered_json  parentList;
+      ordered_json  parentList = ordered_json::array();
       const auto&   name = id.variable(node).name();
       if (id.isChanceNode(node)) {
         const auto& cpt = id.cpt(node);
@@ -148,7 +149,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
                                                const InfluenceDiagram< GUM_SCALAR >& id) {
-    std::ofstream output(std::string(filePath), std::ios_base::trunc);
+    std::ofstream output(std::string(filePath),
+                         _binary_ ? (std::ios_base::trunc | std::ios::binary) : std::ios_base::trunc);
     write(output, id);
     output.close();
     if (output.fail()) { GUM_ERROR(IOError, "Writing in the ostream failed.") }
