@@ -185,13 +185,13 @@ tail : int | str
 %feature("docstring") gum::MarkovRandomField::fastPrototype
 "
 Create a Markov random field with a modified dot-like syntax which specifies:
-    - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
+    - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
     - the type of the variables with different syntax (cf documentation).
 
 Examples
 --------
 >>> import pyagrum as gum
->>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+>>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
 Parameters
 ----------
