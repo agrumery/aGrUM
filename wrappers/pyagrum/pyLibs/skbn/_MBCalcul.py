@@ -42,7 +42,7 @@ import pyagrum
 from ._utils import _listIdtoName as listIdtoName
 
 
-def compileMarkovBlanket(bn, target):
+def compileMarkovBlanket(bn, target) -> pyagrum.BayesNet:
   """
   Create a Bayesian network with the children, their parents and the parents of the node target
 

@@ -590,7 +590,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   # ------------------method Markov Blanket and predict---------------------
 
-  def predict(self, X, with_labels=True):
+  def predict(self, X, with_labels=True) -> numpy.ndarray:
     """
     Predicts the most likely class for each row of input data, with bn's Markov Blanket
 
@@ -717,7 +717,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   # ------------------interaction with sklearn, pour ROC et Precision-Recall ---------------------
 
-  def predict_proba(self, X):
+  def predict_proba(self, X) -> numpy.ndarray:
     """
     Predicts the probability of classes for each row of input data, with bn's Markov Blanket
 
@@ -783,7 +783,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
   # ------------------ BNClassifier compatible from pyagrum to sklearn ---------------------
 
-  def XYfromCSV(self, filename, with_labels=True, target=None):
+  def XYfromCSV(self, filename, with_labels=True, target=None) -> tuple[pandas.DataFrame, pandas.DataFrame]:
     """
     Reads the data from a csv file and separates it into an X matrix and a y column vector.
 
@@ -840,7 +840,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
 
     return X, y
 
-  def preparedData(self, X=None, y=None, data=None):
+  def preparedData(self, X=None, y=None, data=None) -> pandas.DataFrame:
     """
     Given an X and a y (or a data source : filename or pandas.DataFrame),
     returns a pandas.Dataframe with the prepared (especially discretized) values of the base

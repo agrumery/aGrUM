@@ -40,6 +40,8 @@
 
 import warnings
 
+import pandas
+
 # ShapValues
 from pyagrum.explain import CausalShapValues, ConditionalShapValues, Explanation, MarginalShapValues
 
@@ -127,13 +129,13 @@ class ShapValues:
 
   def conditional(
     self,
-    df,
+    df: pandas.DataFrame,
     y: int = 1,
     plot: bool = False,
     plot_importance: bool = False,
     percentage: bool = False,
     filename: str = None,
-  ):
+  ) -> dict[str, float]:
     """
     Computes the conditional Shapley values for each variable.
 
@@ -163,8 +165,15 @@ class ShapValues:
     return explanation.importances[y]
 
   def marginal(
-    self, df, y=1, sample_size=200, plot=False, plot_importance=False, percentage: bool = False, filename: str = None
-  ):
+    self,
+    df: pandas.DataFrame,
+    y: int = 1,
+    sample_size: int = 200,
+    plot: bool = False,
+    plot_importance: bool = False,
+    percentage: bool = False,
+    filename: str = None,
+  ) -> dict[str, float]:
     """
     Computes the marginal Shapley values for each variable.
 
@@ -194,8 +203,15 @@ class ShapValues:
     return explanation.importances[y]
 
   def causal(
-    self, df, y=1, sample_size=200, plot=False, plot_importance=False, percentage: bool = False, filename: str = None
-  ):
+    self,
+    df: pandas.DataFrame,
+    y: int = 1,
+    sample_size: int = 200,
+    plot: bool = False,
+    plot_importance: bool = False,
+    percentage: bool = False,
+    filename: str = None,
+  ) -> dict[str, float]:
     """
     Computes the causal Shapley values for each variable.
 

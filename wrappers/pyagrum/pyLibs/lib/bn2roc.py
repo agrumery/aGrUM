@@ -314,7 +314,7 @@ def _computeROC_PR(values, totalP, totalN, beta):
   )
 
 
-def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
+def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10) -> list[tuple[float, float]]:
   """
   Compute the points of the ROC curve
 
@@ -378,7 +378,7 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   return pointsROC
 
 
-def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10):
+def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10) -> list[tuple[float, float]]:
   """
   Compute the points of the PR curve
 
@@ -640,7 +640,7 @@ def showROC_PR(
   show_PR=True,
   significant_digits=10,
   bgcolor=None,
-):
+) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -819,7 +819,7 @@ def showROC_PR(
 
 def showROC(
   bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True, significant_digits=10
-):
+) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
@@ -872,7 +872,7 @@ def showPR(
   save_fig=False,
   with_labels=True,
   significant_digits=10,
-):
+) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
 
