@@ -119,7 +119,7 @@ def realNameFrom2TBNname(name, ts):
   return f"{name[:-1]}{ts}" if not _isInNoTimeSlice(name) else name
 
 
-def getTimeSlicesRange(dbn):
+def getTimeSlicesRange(dbn) -> dict[str, list[tuple[str, str]]]:
   """
   get the range and (name,radical) of each variables
 
@@ -147,7 +147,7 @@ def getTimeSlicesRange(dbn):
   return timeslices
 
 
-def is2TBN(bn):
+def is2TBN(bn) -> tuple[bool, str]:
   """
   Check if bn is a 2 TimeSlice Bayesian network
 
@@ -181,7 +181,7 @@ def is2TBN(bn):
   return True, ""
 
 
-def _TimeSlicesToDot(dbn):
+def _TimeSlicesToDot(dbn) -> dot.Dot:
   """
   Try to correctly represent dBN and 2TBN in dot format
 
@@ -249,7 +249,7 @@ def showTimeSlices(dbn, size=None):
   showGraph(_TimeSlicesToDot(dbn), size)
 
 
-def getTimeSlices(dbn, size=None):
+def getTimeSlices(dbn, size=None) -> str:
   """
   Try to correctly represent dBN and 2TBN as an HTML string
 
@@ -270,7 +270,7 @@ def getTimeSlices(dbn, size=None):
   return getGraph(_TimeSlicesToDot(dbn), size)
 
 
-def unroll2TBN(dbn, nbr):
+def unroll2TBN(dbn, nbr) -> pyagrum.BayesNet:
   """
   unroll a 2TBN given the nbr of timeslices
 

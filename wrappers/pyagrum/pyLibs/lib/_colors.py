@@ -44,6 +44,7 @@ Color manipulations for pyagrum.lib module
 
 import matplotlib as mpl
 import matplotlib.colors
+import pydot as dot
 
 import pyagrum
 from pyagrum.lib.utils import getBlackInTheme
@@ -348,7 +349,7 @@ def proba2fgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   return rgb2brightness(a, b, c)
 
 
-def fontFromMatplotlib():
+def fontFromMatplotlib() -> tuple[str, float]:
   """
   Find the font name and the font size ysed by matplotlib
 
@@ -362,7 +363,7 @@ def fontFromMatplotlib():
   return family, mpl.rcParams["font.size"]
 
 
-def prepareDot(dotgraph, **kwargs):
+def prepareDot(dotgraph: dot.Dot, **kwargs) -> dot.Dot:
   if "size" in kwargs and kwargs["size"] is not None:
     dotgraph.set_size(kwargs["size"])
 

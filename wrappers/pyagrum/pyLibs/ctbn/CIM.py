@@ -164,7 +164,7 @@ class CIM:
     """
     return CIM(self._pot.extract(ctxt))
 
-  def asTensor(self):
+  def asTensor(self) -> "pyagrum.Tensor":
     """
 
     Returns
@@ -228,7 +228,7 @@ class CIM:
         return v
     return None
 
-  def instantiation(self):
+  def instantiation(self) -> pyagrum.Instantiation:
     """
     Returns
     -------
@@ -237,7 +237,7 @@ class CIM:
     """
     return pyagrum.Instantiation(self._pot)
 
-  def _recordVars(self):
+  def _recordVars(self) -> None:
     self._parents = set()
     self._bases = set()
     for v in self.variablesSequence():
@@ -376,7 +376,7 @@ class CIM:
 
     return numpy.array(res)
 
-  def fromMatrix(self, mat):
+  def fromMatrix(self, mat) -> None:
     """
     Fills the CIM with matrix ``mat``.
 

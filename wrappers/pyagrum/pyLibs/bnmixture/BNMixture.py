@@ -82,7 +82,7 @@ class IMixture:
     """
     return len(self._bns)
 
-  def setWeight(self, name: str, w: float):
+  def setWeight(self, name: str, w: float) -> None:
     """
     Changes the weight of a BN in the model.
 
@@ -136,7 +136,7 @@ class IMixture:
     """
     return self._weights.copy()
 
-  def add(self, name: str, bn: pyagrum.BayesNet, w: float = 1):
+  def add(self, name: str, bn: pyagrum.BayesNet, w: float = 1) -> None:
     """
     Adds a BN to the model. If the model doesn't have a reference BN when trying to add an element,
     the BN (before adding new element) with highest weight becomes the new reference.
@@ -199,7 +199,7 @@ class IMixture:
     else:
       raise pyagrum.ArgumentError("name already exists for different bn")
 
-  def remove(self, name: str):
+  def remove(self, name: str) -> None:
     """
     Removes a BN from the model.
 
@@ -224,7 +224,7 @@ class IMixture:
     """
     return round(sum(self._weights.values()), 14) == 1
 
-  def normalize(self):
+  def normalize(self) -> None:
     """
     Normalizes the weights.
     """
@@ -284,7 +284,7 @@ class IMixture:
     """
     return {name for name in self.names() if self.weight(name) == 0}
 
-  def existsArc(self, a, b):
+  def existsArc(self, a, b) -> int:
     """
     Counts the number of time arc ``a`` -> ``b`` appears among all BNs in the model.
 
@@ -306,7 +306,7 @@ class IMixture:
         count += 1
     return count
 
-  def variable(self, name: str):
+  def variable(self, name: str) -> pyagrum.DiscreteVariable:
     """
     Parameters
     ----------
@@ -322,7 +322,7 @@ class IMixture:
       raise pyagrum.NotFound("Reference BN is None")
     return self._refBN.variable(name)
 
-  def saveBIF(self, fname: str):
+  def saveBIF(self, fname: str) -> None:
     """
     Saves a Mixture in BIF format and zip it.
 
@@ -355,7 +355,7 @@ class BNMixture(IMixture):
     self._refBN = None
     self._refName = "refBN"
 
-  def updateRef(self):
+  def updateRef(self) -> None:
     """
     Updates the reference BN. The new reference BN is the one with maximum weight.
     """

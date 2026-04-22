@@ -171,7 +171,7 @@ class CTBN:
 
     return (n1, n2)
 
-  def eraseArc(self, val1: str | int, val2: str | int):
+  def eraseArc(self, val1: str | int, val2: str | int) -> None:
     """
     Erases an arc from the graph.
 
@@ -405,7 +405,7 @@ class CTBN:
     """
     return self._cim[self._nameOrId(val)]
 
-  def completeInstantiation(self):
+  def completeInstantiation(self) -> pyagrum.Instantiation:
     """
     Returns
     -------
@@ -417,7 +417,7 @@ class CTBN:
       res.add(self.variable(nod))
     return res
 
-  def fullInstantiation(self):
+  def fullInstantiation(self) -> pyagrum.Instantiation:
     """
     Returns
     -------
@@ -432,7 +432,7 @@ class CTBN:
       res.add(self.CIM(nod).variable(1))  # v_j
     return res
 
-  def toDot(self):
+  def toDot(self) -> str:
     """
     Create a display of the graph representating the CTBN.
 

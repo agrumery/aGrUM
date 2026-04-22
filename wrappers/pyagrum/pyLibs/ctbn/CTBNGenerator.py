@@ -49,7 +49,7 @@ This file is used to generate random CTBNs using Prufer code
 """
 
 
-def directTree(graph: pyagrum.MixedGraph, root: int):
+def directTree(graph: pyagrum.MixedGraph, root: int) -> None:
   """
   Direct a undirected tree.
 
@@ -67,7 +67,7 @@ def directTree(graph: pyagrum.MixedGraph, root: int):
     directTree(graph, i)
 
 
-def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]):
+def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]) -> None:
   """
   Fills the ``ctbn``'s CIMs with random values in ``valueRange``.
   Note : as diagonal coefficents are the negative sum of the coefficients one the line,

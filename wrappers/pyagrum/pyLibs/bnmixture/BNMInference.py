@@ -77,7 +77,7 @@ class IMixtureInference:
     self._inferences = []
     raise NotImplementedError("Interface should not be initialized !")
 
-  def setEvidence(self, evs):
+  def setEvidence(self, evs) -> None:
     """
     Erases all the evidences and apply addEvidence(key,value) for every pairs in ``evs``. Does this for every BN in the model, excluding reference BN.
 
@@ -89,14 +89,14 @@ class IMixtureInference:
     for ie in self._inferences:
       ie.setEvidence(evs)
 
-  def makeInference(self):
+  def makeInference(self) -> None:
     """
     Compute inference for all BNs in the model, excluding reference BN.
     """
     for ie in self._inferences:
       ie.makeInference()
 
-  def _posteriors(self, name: str):
+  def _posteriors(self, name: str) -> dict[str, pyagrum.Tensor]:
     """
     Parameters
     ----------
@@ -179,7 +179,7 @@ class BootstrapMixtureInference(IMixtureInference):
     self._ref_inference = self._engine(pyagrum.BayesNet(self._bnm._refBN))
     self._inferences = [self._engine(bn) for bn in self._bnm.BNs()]
 
-  def setEvidence(self, evs):
+  def setEvidence(self, evs) -> None:
     """
     Erases all the evidences and apply addEvidence(key,value) for every pairs in ``evs``. Does this for every BN in the model, including reference BN.
 
@@ -191,7 +191,7 @@ class BootstrapMixtureInference(IMixtureInference):
     self._ref_inference.setEvidence(evs)
     super().setEvidence(evs)
 
-  def makeInference(self):
+  def makeInference(self) -> None:
     """
     Compute inference for all BNs (including reference BN) in the model.
     """

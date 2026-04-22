@@ -48,7 +48,7 @@ import math
 import pyagrum
 
 
-def lines_count(filename):
+def lines_count(filename) -> int:
   """count lines in a file"""
   with open(filename) as f:
     count = sum(1 for _ in f)
@@ -56,7 +56,7 @@ def lines_count(filename):
   return count
 
 
-def checkCompatibility(bn, fields, csv_name):
+def checkCompatibility(bn, fields, csv_name) -> dict[int, int]:
   """
   check if the variables of the bn are in the fields
 
@@ -88,7 +88,7 @@ def checkCompatibility(bn, fields, csv_name):
   return res
 
 
-def computeScores(bn_name, csv_name, visible=False, dialect=None):
+def computeScores(bn_name, csv_name, visible=False, dialect=None) -> tuple[float, dict[str, float]]:
   """
   Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv
 

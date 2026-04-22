@@ -49,17 +49,17 @@ import pyagrum
 from collections import namedtuple
 
 
-def setDarkTheme():
+def setDarkTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in dark theme"""
   pyagrum.config["notebook", "default_arc_color"] = "#AAAAAA"
 
 
-def setLightTheme():
+def setLightTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in light theme"""
   pyagrum.config["notebook", "default_arc_color"] = "#4A4A4A"
 
 
-def getBlackInTheme():
+def getBlackInTheme() -> str:
   """return the color used for arc and text in graphs"""
   return pyagrum.config["notebook", "default_arc_color"]
 
@@ -88,7 +88,7 @@ def dot_layout(g: dot.Dot) -> dict[str, DotPoint]:
   }
 
 
-def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]):
+def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]) -> None:
   """
   apply a layout to a dot graph
 
@@ -162,7 +162,7 @@ async def async_html2image(htmlcontent: str, filename: str):
 
 
 # make a version of async_html2image that is not asynchronous, for backward compatibility and ease of use (but it will block the execution while the image is being created)
-def html2image(htmlcontent: str, filename: str):
+def html2image(htmlcontent: str, filename: str) -> None:
   """
   convert an html content to an image. The format is determined by the extension of the filename.
   This function is synchronous and uses playwright. To install playwright, use `pip install playwright` and then `playwright install`.
