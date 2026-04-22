@@ -58,9 +58,9 @@ class CLG:
   _graph: pyagrum.DAG
   _id2var: dict[int, GaussianVariable]
   _name2id: dict[str, int]
-  _arc2coef: dict[tuple[int, int], float or int]
+  _arc2coef: dict[tuple[int, int], float | int]
 
-  def __init__(self, clg=None):
+  def __init__(self, clg: "CLG | None" = None) -> None:
     self._graph = pyagrum.DAG()
     self._id2var = {}
     self._name2id = {}
@@ -69,7 +69,7 @@ class CLG:
     if clg:
       self.copy(clg)
 
-  def copy(self, clg):
+  def copy(self, clg: "CLG") -> None:
     for _, variable in clg._id2var.items():
       new_variable = GaussianVariable(name=variable.name(), mu=variable.mu(), sigma=variable.sigma())
       self.add(new_variable)
@@ -87,7 +87,7 @@ class CLG:
   def __repr__(self):
     return str(self)
 
-  def add(self, var):
+  def add(self, var: GaussianVariable) -> int:
     """
     Add a new variable to the CLG.
 
@@ -125,7 +125,7 @@ class CLG:
 
     return n
 
-  def setMu(self, node, mu):
+  def setMu(self, node: int, mu: float) -> None:
     """
     Set the mean of a variable.
 
@@ -143,7 +143,7 @@ class CLG:
     """
     self._id2var[node].setMu(mu)
 
-  def setSigma(self, node, sigma):
+  def setSigma(self, node: int, sigma: float) -> None:
     """
     Set the standard deviation of a variable.
 
@@ -161,7 +161,7 @@ class CLG:
     """
     self._id2var[node].setSigma(sigma)
 
-  def nameOrId(self, val):
+  def nameOrId(self, val: int | str) -> int:
     """
     Return the int from the name or the int.
 
@@ -177,7 +177,7 @@ class CLG:
     """
     return val if isinstance(val, int) else self._name2id[val]
 
-  def addArc(self, val1, val2, coef=1):
+  def addArc(self, val1: int | str, val2: int | str, coef: float | int = 1) -> tuple[int, int]:
     """
     Add an arc val->val2 with a coefficient coef to the CLG.
 
@@ -213,7 +213,7 @@ class CLG:
 
     return (n1, n2)
 
-  def existsArc(self, val1, val2):
+  def existsArc(self, val1: int | str, val2: int | str) -> bool:
     """
     Check if an arc val->val2 exists.
 
@@ -239,7 +239,7 @@ class CLG:
 
     return self._graph.existsArc(n1, n2)
 
-  def setCoef(self, val1, val2, coef):
+  def setCoef(self, val1: int | str, val2: int | str, coef: float | int) -> None:
     """
     Set the coefficient of an arc val1->val2.
 
@@ -272,7 +272,7 @@ class CLG:
 
     self._arc2coef[(n1, n2)] = coef
 
-  def dag(self):
+  def dag(self) -> pyagrum.DAG:
     """
     Return the graph of the CLG (which is a DAG).
 
@@ -283,13 +283,13 @@ class CLG:
     """
     return self._graph
 
-  def eraseArc(self, val1, val2):
+  def eraseArc(self, val1: int, val2: int) -> None:
     """
     Erase the arc val->val2.
     """
     self._graph.eraseArc(val1, val2)
 
-  def name(self, node):
+  def name(self, node: int) -> str:
     """
     Return the associated name of the variable.
 
@@ -310,7 +310,7 @@ class CLG:
     """
     return self._id2var[node].name()
 
-  def idFromName(self, name):
+  def idFromName(self, name: str) -> int:
     """
     Return the int from the name.
 
@@ -331,7 +331,7 @@ class CLG:
     """
     return self._name2id[name]
 
-  def variable(self, val):
+  def variable(self, val: int | str) -> GaussianVariable:
     """
     Return the variable from the int or from the name.
 
@@ -352,7 +352,7 @@ class CLG:
     """
     return self._id2var[self.nameOrId(val)]
 
-  def variables(self):
+  def variables(self) -> list[GaussianVariable]:
     """
     Return the list of the variables in the CLG.
 
@@ -363,7 +363,7 @@ class CLG:
     """
     return [self.variable(i) for i in self.nodes()]
 
-  def nodes(self):
+  def nodes(self) -> list[int]:
     """
     Return the list of NodeIds in the CLG.
 
@@ -374,7 +374,7 @@ class CLG:
     """
     return list(self._id2var.keys())
 
-  def names(self):
+  def names(self) -> list[str]:
     """
     Return the list of names in the CLG.
 
@@ -385,7 +385,7 @@ class CLG:
     """
     return list(self._name2id.keys())
 
-  def arcs(self):
+  def arcs(self) -> list[tuple[int, int]]:
     """
     Return the list of arcs in the CLG.
 
@@ -396,7 +396,7 @@ class CLG:
     """
     return self._graph.arcs()
 
-  def coefArc(self, val1, val2):
+  def coefArc(self, val1: int | str, val2: int | str) -> float | int:
     """
     Return the coefficient of the arc val1->val2.
 
@@ -427,7 +427,7 @@ class CLG:
 
     return self._arc2coef[(n1, n2)]
 
-  def parents(self, val):
+  def parents(self, val: int | str) -> set[int]:
     """
     Return the list of parent ids from the name or the id of a node.
 
@@ -443,7 +443,7 @@ class CLG:
     """
     return self._graph.parents(self.nameOrId(val))
 
-  def parent_names(self, val):
+  def parent_names(self, val: int | str) -> list[str]:
     """
     Return the list of parents names from the name or the id of a node.
 
@@ -459,7 +459,7 @@ class CLG:
     """
     return [self.name(n) for n in self.parents(val)]
 
-  def children(self, val):
+  def children(self, val: int | str) -> set[int]:
     """
     Return the list of children ids from the name or the id of a node.
 
@@ -475,7 +475,7 @@ class CLG:
     """
     return self._graph.children(self.nameOrId(val))
 
-  def children_names(self, val):
+  def children_names(self, val: int | str) -> list[str]:
     """
     Return the list of children names from the name or the id of a node.
 
@@ -491,7 +491,7 @@ class CLG:
     """
     return [self.name(n) for n in self.children(val)]
 
-  def topologicalOrder(self):
+  def topologicalOrder(self) -> list[int]:
     """
     Return the topological order of the CLG.
 
@@ -502,7 +502,7 @@ class CLG:
     """
     return self._graph.topologicalOrder()
 
-  def dag2dict(self):
+  def dag2dict(self) -> dict[int, set[int]]:
     """
     Return a dictionary representing the DAG of the CLG.
 
@@ -520,7 +520,7 @@ class CLG:
 
     return C
 
-  def logLikelihood(self, data):
+  def logLikelihood(self, data: str) -> float:
     """
     Return the log-likelihood of the data.
 
@@ -558,7 +558,7 @@ class CLG:
 
     return log_likelihood
 
-  def CompareStructure(self, clg_to_compare):
+  def CompareStructure(self, clg_to_compare: "CLG") -> float:
     """
     We use the f-score to compare the causal structure of the two CLGs.
     We create two BNs with the same structure as the two CLGs and then compare the two BNs.
@@ -599,7 +599,7 @@ class CLG:
     return cmp.scores()["fscore"]
 
 
-def randomCLG(nb_variables, names, MuMax=5, MuMin=-5, SigmaMax=10, SigmaMin=1, ArcCoefMax=10, ArcCoefMin=5):
+def randomCLG(nb_variables: int, names: list[str], MuMax: float = 5, MuMin: float = -5, SigmaMax: float = 10, SigmaMin: float = 1, ArcCoefMax: float = 10, ArcCoefMin: float = 5) -> CLG:
   """
   This function generates a random CLG with nb_variables variables.
 

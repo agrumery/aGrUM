@@ -48,7 +48,7 @@ from numpy.linalg import det
 
 
 class CanonicalForm:
-  def __init__(self, scope=[], K=[], h=[], g=0):
+  def __init__(self, scope: list[int] = [], K: list | np.ndarray = [], h: list | np.ndarray = [], g: float | int = 0) -> None:
     # Expecting a list of int corresponding to the id of the variables in the CLG.
     self._scope = scope
     self._size = len(self._scope)
@@ -72,7 +72,7 @@ class CanonicalForm:
   def __contains__(self, item):
     return item in self._scope
 
-  def scope(self):
+  def scope(self) -> list[int]:
     """
     Return the scope of the canonical form.
 
@@ -84,7 +84,7 @@ class CanonicalForm:
     return self._scope
 
   @classmethod
-  def fromCLG(cls, variable, parents, mu, sigma, B):
+  def fromCLG(cls, variable: int, parents: list[int], mu: float, sigma: float, B: list[float]) -> "CanonicalForm":
     """
     Factory to construct a canonical form from a conditional linear gaussian.
 
@@ -131,7 +131,7 @@ class CanonicalForm:
 
     return cf
 
-  def toGaussian(self):
+  def toGaussian(self) -> tuple[list[int], np.ndarray, np.ndarray]:
     """
     Gives the parameters of the gaussian associated to the canonical form.
 
@@ -149,7 +149,7 @@ class CanonicalForm:
     return self._scope, mu, Sigma
 
   @staticmethod
-  def _permute_matrix(matrix, permutation):
+  def _permute_matrix(matrix: np.ndarray, permutation: list[int]) -> np.ndarray:
     """
     Permutes a matrix given a permutation.
 
@@ -171,7 +171,7 @@ class CanonicalForm:
     return matrix
 
   @staticmethod
-  def _permute_vector(vector, permutation):
+  def _permute_vector(vector: np.ndarray, permutation: list[int]) -> np.ndarray:
     """
     Permutes a vector given a permutation.
 
@@ -203,7 +203,7 @@ class CanonicalForm:
       self._scope = sorted_scope
     return
 
-  def augment(self, variables):
+  def augment(self, variables: list[int]) -> "CanonicalForm":
     """
     Augment the scope of the canonical form with variables.
 
@@ -252,7 +252,7 @@ class CanonicalForm:
 
     return CanonicalForm(new_scope, augmented_K, augmented_h, self._g)
 
-  def __mul__(self, other):
+  def __mul__(self, other: "CanonicalForm") -> "CanonicalForm":
     """
     Multiplies two canonical forms.
 
@@ -280,7 +280,7 @@ class CanonicalForm:
 
     return CanonicalForm(scope, K, h, g)
 
-  def __truediv__(self, other):
+  def __truediv__(self, other: "CanonicalForm") -> "CanonicalForm":
     """
     Divides two canonical forms.
 
@@ -307,7 +307,7 @@ class CanonicalForm:
 
     return CanonicalForm(scope, K, h, g)
 
-  def __eq__(self, other):
+  def __eq__(self, other: object) -> bool:
     if isinstance(other, CanonicalForm):
       return (
         self._scope == other._scope
@@ -318,7 +318,7 @@ class CanonicalForm:
 
     return False
 
-  def marginalize(self, variables):
+  def marginalize(self, variables: list[int]) -> "CanonicalForm":
     """
     Marginalize the variables from the canonical form.
 
@@ -361,7 +361,7 @@ class CanonicalForm:
 
     return CanonicalForm(new_scope, K, h, g[0][0])
 
-  def reduce(self, evidences):
+  def reduce(self, evidences: dict[int, float]) -> "CanonicalForm":
     """
     Reduce the canonical form given a set of evidences.
 

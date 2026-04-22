@@ -44,6 +44,7 @@ Using Rademacher Average to guarantee FWER (Family Wise Error Rate) in the indep
 """
 
 import warnings
+from collections.abc import Generator
 
 import pandas as pd
 import numpy as np
@@ -103,7 +104,7 @@ class CLGLearner:
     self._fwer_delta = fwer_delta
     self._SD = None
 
-  def Pearson_coeff(self, X, Y, Z):
+  def Pearson_coeff(self, X: int, Y: int, Z: set[int]) -> None:
     """
     Estimate Pearson's linear correlation(using linear regression when Z is not empty).
 
@@ -149,7 +150,7 @@ class CLGLearner:
     self.r_XYZ[tuple((frozenset({X, Y}), frozenset(Z)))] = r
 
   @staticmethod
-  def generate_XYZ(l):
+  def generate_XYZ(l: list[int]) -> Generator[tuple[int, int, set[int]], None, None]:
     """
     Find all the possible combinations of X, Y and Z.
 
@@ -238,7 +239,7 @@ class CLGLearner:
 
     return SD
 
-  def test_indep(self, X, Y, Z):
+  def test_indep(self, X: int, Y: int, Z: set[int]) -> bool:
     """
     Perform a standard statistical test and use Bonferroni correction to correct for multiple hypothesis testing.
 
@@ -267,7 +268,7 @@ class CLGLearner:
       return False  # X and Y are dep
 
   @staticmethod
-  def generate_subsets(S: set[int]):
+  def generate_subsets(S: set[int]) -> Generator[set[int], None, None]:
     """
     Generator that iterates on all all the subsets of S (from the smallest to the biggest).
 
@@ -281,7 +282,7 @@ class CLGLearner:
       for z in itertools.combinations(l, i):
         yield set(z)
 
-  def RAveL_PC(self, T):
+  def RAveL_PC(self, T: int) -> set[int]:
     """
     Find the Parent-Children of variable T with FWER lower than Delta.
 
@@ -329,7 +330,7 @@ class CLGLearner:
 
     return MB
 
-  def Repeat_II(self, order, C, l, verbose=False):
+  def Repeat_II(self, order: list[int], C: dict[int, set[int]], l: int, verbose: bool = False) -> bool:
     """
     This function is the second part of the Step1 of PC algorithm.
 
@@ -382,7 +383,7 @@ class CLGLearner:
 
     return found_edge
 
-  def Adjacency_search(self, order, verbose=False):
+  def Adjacency_search(self, order: list[int], verbose: bool = False) -> tuple[dict[int, set[int]], dict[tuple[int, int], set[int]]]:
     """
     This function is the first step of PC-algo: Adjacency Search.
     Apply indep_test() to the first step of PC-algo for Adjacency Search.
@@ -459,7 +460,7 @@ class CLGLearner:
       if all_satisfied(V, order, C, l):
         return C, self.sepset
 
-  def three_rules(self, C, verbose=False):
+  def three_rules(self, C: dict[int, set[int]], verbose: bool = False) -> dict[int, set[int]]:
     """
     This function is the third step of PC-algo.
     Orient as many of the remaining undirected edges as possible by repeatedly application of the three rules.
@@ -539,7 +540,7 @@ class CLGLearner:
 
     return C
 
-  def Step4(self, C, verbose=False):
+  def Step4(self, C: dict[int, set[int]], verbose: bool = False) -> tuple[dict[int, set[int]], bool]:
     """
     This function is the fourth step of PC-algo.
     Orient the remaining undirected edge by comparing variances of two nodes.
@@ -574,7 +575,7 @@ class CLGLearner:
 
     return C, new_oriented
 
-  def PC_algorithm(self, order, verbose=False):
+  def PC_algorithm(self, order: list[int], verbose: bool = False) -> dict[int, set[int]]:
     """
     This function is an advanced version of PC-algo.
     We use Indep_test_Rademacher() to replace indep_test() in PC-algo.
@@ -640,7 +641,7 @@ class CLGLearner:
     # Return the final DAG skeleton
     return C
 
-  def estimate_parameters(self, C):
+  def estimate_parameters(self, C: dict[int, set[int]]) -> tuple[dict[int, float], dict[int, float], dict[tuple[int, int], float]]:
     """
     This function is used to estimate the parameters of the CLG model.
 
@@ -718,7 +719,7 @@ class CLGLearner:
 
     return id2mu, id2sigma, arc2coef
 
-  def learnCLG(self):
+  def learnCLG(self) -> CLG:
     """
     First use PC algorithm to learn the skeleton of the CLG model.
     Then estimate the parameters of the CLG model.
@@ -750,7 +751,7 @@ class CLGLearner:
 
     return learned_clg
 
-  def fitParameters(self, clg):
+  def fitParameters(self, clg: CLG) -> None:
     """
     In this function, we fit the parameters of the CLG model.
 

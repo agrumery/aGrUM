@@ -186,7 +186,7 @@ class GraphicalBNComparator:
         return res
     return "OK"
 
-  def equivalentBNs(self):
+  def equivalentBNs(self) -> str:
     """
     Check if the 2 BNs are equivalent :
 
@@ -212,7 +212,7 @@ class GraphicalBNComparator:
     ret = self._compareBNCPT()
     return ret
 
-  def dotDiff(self):
+  def dotDiff(self) -> dot.Dot:
     """Return a pydot graph that compares the arcs of _bn1 (reference) with those of self._bn2.
     full black line: the arc is common for both
     full red line: the arc is common but inverted in _bn2
@@ -230,7 +230,7 @@ class GraphicalBNComparator:
     """
     return graphDiff(self._bn1, self._bn2)
 
-  def skeletonScores(self):
+  def skeletonScores(self) -> dict[str, float]:
     """
     Compute Precision, Recall, F-score for skeletons of self._bn2 compared to self._bn1
 
@@ -296,7 +296,7 @@ class GraphicalBNComparator:
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
-  def scores(self):
+  def scores(self) -> dict[str, float]:
     """
     Compute Precision, Recall, F-score for self._bn2 compared to self._bn1
 
@@ -361,7 +361,7 @@ class GraphicalBNComparator:
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
-  def hamming(self):
+  def hamming(self) -> dict[float, float]:
     """
     Compute hamming and structural hamming distance
 
@@ -433,7 +433,7 @@ class GraphicalBNComparator:
     return hamming_dico
 
 
-def graphDiff(bnref, bncmp, noStyle=False):
+def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
   """Return a pydot graph that compares the arcs of bnref to bncmp.
   graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
 
@@ -554,7 +554,7 @@ def graphDiff(bnref, bncmp, noStyle=False):
   return res
 
 
-def graphDiffLegend():
+def graphDiffLegend() -> dot.Dot | None:
   try:
     # pydot is optional
     # pylint: disable=import-outside-toplevel

@@ -60,7 +60,7 @@ from pyagrum.lib.utils import getBlackInTheme
 
 def BN2dot(
   bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
-):
+) -> dot.Dot:
   """
   create a pydot representation of the BN
 
@@ -172,7 +172,7 @@ def BNinference2dot(
   cmapNode=None,
   cmapArc=None,
   dag=None,
-):
+) -> dot.Dot:
   """
   create a pydot representation of an inference in a BN
 

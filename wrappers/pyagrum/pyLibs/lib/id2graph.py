@@ -55,7 +55,7 @@ import pyagrum.lib._colors as gumcols
 from pyagrum.lib.proba_histogram import saveFigProba
 
 
-def ID2dot(diag, size=None):
+def ID2dot(diag, size=None) -> dot.Dot:
   """
   create a pydot representation of the influence diagram
 
@@ -134,7 +134,7 @@ def ID2dot(diag, size=None):
   return g
 
 
-def LIMIDinference2dot(diag, size, engine, evs, targets):
+def LIMIDinference2dot(diag, size, engine, evs, targets) -> dot.Dot:
   """
   create a pydot representation of an inference in a influence diagram
 

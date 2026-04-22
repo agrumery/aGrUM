@@ -65,7 +65,7 @@ def MRF2UGdot(
   cmapNode=None,
   cmapEdge=None,
   showMsg=None,
-):
+) -> dot.Dot:
   """
   Create a pydot representation of the Markov random field as an undirected graph
 
@@ -161,7 +161,7 @@ def MRF2UGdot(
   return graph
 
 
-def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None):
+def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None) -> dot.Dot:
   """
   Create a pydot representation of the Markov random field as a factor graph
 
@@ -253,7 +253,7 @@ def MRFinference2UGdot(
   cmapNode=None,
   cmapArc=None,
   view=None,
-):
+) -> dot.Dot:
   """
   Create a pydot representation of an inference in a MRF as an undirected graph.
 
@@ -382,7 +382,7 @@ def MRFinference2UGdot(
 
 def MRFinference2FactorGraphdot(
   mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None, cmapNode=None
-):
+) -> dot.Dot:
   """
   Create a pydot representation of an inference in a MRF as a factor graph.
 

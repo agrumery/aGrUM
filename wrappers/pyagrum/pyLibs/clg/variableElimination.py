@@ -47,16 +47,17 @@ import math
 import numpy as np
 from pyagrum import JunctionTreeGenerator
 from .canonicalForm import CanonicalForm
+from .CLG import CLG
 from .GaussianVariable import GaussianVariable
 
 
 class CLGVariableElimination:
-  def __init__(self, clg):
+  def __init__(self, clg: CLG) -> None:
     self._clg = clg
     self._evidence = {}
     self._cf_dict = self._constructCanonicalForms()
 
-  def updateEvidence(self, evidence):
+  def updateEvidence(self, evidence: dict[str, float]) -> None:
     """
     Update evidences.
 
@@ -67,7 +68,7 @@ class CLGVariableElimination:
     """
     self._evidence.update(evidence)
 
-  def hasEvidence(self, variable):
+  def hasEvidence(self, variable: str) -> bool:
     """
     Check if a variable has an evidence.
 
@@ -83,7 +84,7 @@ class CLGVariableElimination:
     """
     return variable in self._evidence
 
-  def eraseEvidence(self, variable):
+  def eraseEvidence(self, variable: str) -> None:
     """
     Remove the evidence corresponding to the variable name.
 
@@ -94,7 +95,7 @@ class CLGVariableElimination:
     """
     del self._evidence[variable]
 
-  def eraseAllEvidence(self):
+  def eraseAllEvidence(self) -> None:
     """
     Remove all the evidences.
 
@@ -105,7 +106,7 @@ class CLGVariableElimination:
     """
     self._evidence = {}
 
-  def nbrEvidence(self):
+  def nbrEvidence(self) -> int:
     """
     Returns the number of evidence.
 
@@ -116,7 +117,7 @@ class CLGVariableElimination:
     """
     return len(self._evidence)
 
-  def canonicalPosterior(self, variables, normalized=True):
+  def canonicalPosterior(self, variables: list[str] | str, normalized: bool = True) -> CanonicalForm:
     """
     Returns the posterior density as a canonical form.
 
@@ -184,7 +185,7 @@ class CLGVariableElimination:
 
     return GaussianVariable(variable, t_mu[0][0], math.sqrt(t_var[0][0]))
 
-  def _constructCanonicalForms(self):
+  def _constructCanonicalForms(self) -> dict[int, CanonicalForm]:
     """
     Construct the canonical forms associated with the CLG.
     """
@@ -203,7 +204,7 @@ class CLGVariableElimination:
       cf_dict[node] = cf
     return cf_dict
 
-  def _sum_product_ve(self, elimination_order, cf_list, evidence):
+  def _sum_product_ve(self, elimination_order: list[int], cf_list: list[CanonicalForm], evidence: dict[str, float]) -> list[CanonicalForm]:
     """
     The variable elimination algorithm for CLG.
 
@@ -236,7 +237,7 @@ class CLGVariableElimination:
 
     return cf_list
 
-  def _sum_product_eliminate_var(self, cf_list, variable):
+  def _sum_product_eliminate_var(self, cf_list: list[CanonicalForm], variable: int) -> list[CanonicalForm]:
     """
     Remove a variable from a set of canonical forms.
 

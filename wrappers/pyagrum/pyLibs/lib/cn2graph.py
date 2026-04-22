@@ -58,7 +58,7 @@ from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
 def CN2dot(
   cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
-):
+) -> dot.Dot:
   """
   create a pydot representation of the Credal Network
 
@@ -177,7 +177,7 @@ def CNinference2dot(
   cmapNode=None,
   cmapArc=None,
   dag=None,
-):
+) -> dot.Dot:
   """
   create a pydot representation of an inference in a BN
 

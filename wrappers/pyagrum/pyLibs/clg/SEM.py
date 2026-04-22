@@ -89,7 +89,7 @@ class SEM:
     warnings.warn("SEM has not to be instantiated.")
 
   @staticmethod
-  def _check_token(s, pos, pattern):
+  def _check_token(s: str, pos: int, pattern: re.Pattern[str]) -> tuple[str, int] | tuple[None, None]:
     """
     Check if the string s[pos:] matches the pattern.
     If it does, return the match and the position of the next character.
@@ -116,7 +116,7 @@ class SEM:
       return res.group(1), res.end()
 
   @staticmethod
-  def _parse_line(s: str):
+  def _parse_line(s: str) -> tuple[str, dict[str, float], float]:
     """
     This function parses a line of a SEM.
 
@@ -278,7 +278,7 @@ class SEM:
     return lines
 
   @staticmethod
-  def saveCLG(clg: CLG, filename: str):
+  def saveCLG(clg: CLG, filename: str) -> None:
     """
     Save the CLG as a SEM to a file.
 

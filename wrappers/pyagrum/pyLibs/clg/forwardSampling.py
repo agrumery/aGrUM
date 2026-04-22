@@ -50,11 +50,11 @@ from .CLG import CLG
 
 
 class ForwardSampling:
-  def __init__(self, model: CLG):
+  def __init__(self, model: CLG) -> None:
     self._model = model
     self._id2samples = {}
 
-  def makeSample(self, N, seed: int = None):
+  def makeSample(self, N: int, seed: int | None = None) -> "ForwardSampling":
     """
     Make N samples using forward sampling.
 
@@ -82,7 +82,7 @@ class ForwardSampling:
 
     return self
 
-  def toarray(self, val=None):
+  def toarray(self, val: int | str | None = None) -> np.ndarray:
     """
     Return the samples of variable <val>.
 
@@ -101,7 +101,7 @@ class ForwardSampling:
     else:
       return self._id2samples[self._model.nameOrId(val)]
 
-  def mean_sample(self, val):
+  def mean_sample(self, val: int | str | None) -> float | dict[str, float]:
     """
     Figure out the mean of variable <val> in the samples
 
@@ -120,7 +120,7 @@ class ForwardSampling:
     else:
       return self._id2samples[self._model.nameOrId(val)].mean()
 
-  def variance_sample(self, val):
+  def variance_sample(self, val: int | str | None) -> float | dict[str, float]:
     """
     Figure out the variance of variable <val> in the samples.
 
@@ -139,7 +139,7 @@ class ForwardSampling:
     else:
       return self._id2samples[self._model.nameOrId(val)].var()
 
-  def stddev_sample(self, val):
+  def stddev_sample(self, val: int | str | None) -> float | dict[str, float]:
     """
     Figure out the standard deviation of variable <val> in the samples.
 
@@ -158,7 +158,7 @@ class ForwardSampling:
     else:
       return self._id2samples[self._model.nameOrId(val)].std()
 
-  def covariance_sample(self, vals=None):
+  def covariance_sample(self, vals: list[int | str] | None = None) -> np.ndarray:
     """
     Computes the covariance between variables in <vals>.
 
@@ -179,7 +179,7 @@ class ForwardSampling:
 
     return np.cov(samples)
 
-  def topandas(self):
+  def topandas(self) -> pd.DataFrame:
     """
     Convert the samples to pandas dataframe.
 
@@ -190,7 +190,7 @@ class ForwardSampling:
     """
     return pd.DataFrame({self._model.name(node): self._id2samples[node] for node in self._model.nodes()})
 
-  def tocsv(self, sample_name: str):
+  def tocsv(self, sample_name: str) -> None:
     """
     Convert the samples to csv.
 
