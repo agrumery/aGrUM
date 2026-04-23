@@ -132,7 +132,7 @@ from .pyagrum import availableBNExts, loadBN, saveBN
 from .pyagrum import randomBN, generateSample
 from .pyagrum import mutilateBN
 from .pyagrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .pyagrum import ExactBNdistance, GibbsBNdistance, StructuralComparator
+from .pyagrum import ExactBNdistance, GibbsBNdistance, StructuralMetrics
 from .pyagrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyagrum import (
   LoopyBeliefPropagation,

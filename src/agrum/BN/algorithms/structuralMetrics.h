@@ -47,20 +47,20 @@
  *
  * @author Quentin FALCAND and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
-#define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
+#ifndef GUM_LEARNING_STRUCTURAL_METRICS_H
+#define GUM_LEARNING_STRUCTURAL_METRICS_H
 
 #include <agrum/base/graphs/PDAG.h>
 #include <agrum/BN/BayesNet.h>
 
 namespace gum {
 
-  /** @class StructuralComparator
+  /** @class StructuralMetrics
    * @brief A class for comparing graphs based on their structures
    *
    * @ingroup bn_group
    */
-  class StructuralComparator {
+  class StructuralMetrics {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors
@@ -68,10 +68,10 @@ namespace gum {
     /// @{
 
     /// default constructor
-    StructuralComparator();
+    StructuralMetrics();
 
     /// destructor
-    ~StructuralComparator();
+    ~StructuralMetrics();
 
     /// @}
 
@@ -99,11 +99,13 @@ namespace gum {
     double precision_skeleton() const;
     double recall_skeleton() const;
     double f_score_skeleton() const;
+    double shd_skeleton() const;
 
     /// Measures for the graphs
     double precision() const;
     double recall() const;
     double f_score() const;
+    double shd() const;
     /// @}
 
     private:
@@ -133,6 +135,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/BN/algorithms/structuralComparator_tpl.h>
+#include <agrum/BN/algorithms/structuralMetrics_tpl.h>
 
-#endif /* GUM_LEARNING_STRUCTURAL_COMPARATOR_H */
+#endif /* GUM_LEARNING_STRUCTURAL_METRICS_H */

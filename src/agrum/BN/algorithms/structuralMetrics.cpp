@@ -39,18 +39,18 @@
  ****************************************************************************/
 
 
-#include <agrum/BN/algorithms/structuralComparator.h>
+#include <agrum/BN/algorithms/structuralMetrics.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  StructuralComparator::StructuralComparator() { GUM_CONSTRUCTOR(StructuralComparator); }
+  StructuralMetrics::StructuralMetrics() { GUM_CONSTRUCTOR(StructuralMetrics); }
 
   /// destructor
-  StructuralComparator::~StructuralComparator() { GUM_DESTRUCTOR(StructuralComparator); }
+  StructuralMetrics::~StructuralMetrics() { GUM_DESTRUCTOR(StructuralMetrics); }
 
-  void StructuralComparator::compare(const DiGraph& ref, const DiGraph& test) {
+  void StructuralMetrics::compare(const DiGraph& ref, const DiGraph& test) {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
@@ -88,7 +88,7 @@ namespace gum {
                 - _wrong_none_arc_;
   }
 
-  void StructuralComparator::compare(const UndiGraph& ref, const UndiGraph& test) {
+  void StructuralMetrics::compare(const UndiGraph& ref, const UndiGraph& test) {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
@@ -124,7 +124,7 @@ namespace gum {
         = ref.size() * (ref.size() - 1) / 2 - _true_edge_ - _wrong_edge_none_ - _wrong_none_edge_;
   }
 
-  void StructuralComparator::compare(const PDAG& ref, const PDAG& test) {
+  void StructuralMetrics::compare(const PDAG& ref, const PDAG& test) {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
@@ -183,7 +183,7 @@ namespace gum {
                 - _wrong_none_arc_;
   }
 
-  double StructuralComparator::precision_skeleton() const {
+  double StructuralMetrics::precision_skeleton() const {
     double tp, fp, precision;
     tp        = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
     fp        = _wrong_arc_none_ + _wrong_edge_none_;
@@ -191,7 +191,7 @@ namespace gum {
     return precision;
   }
 
-  double StructuralComparator::recall_skeleton() const {
+  double StructuralMetrics::recall_skeleton() const {
     double tp, fn, recall;
     tp     = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
     fn     = _wrong_none_arc_ + _wrong_none_edge_;
@@ -199,7 +199,7 @@ namespace gum {
     return recall;
   }
 
-  double StructuralComparator::f_score_skeleton() const {
+  double StructuralMetrics::f_score_skeleton() const {
     double tp, fp, fn, precision, recall, f_score;
     tp = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
     fp = _wrong_arc_none_ + _wrong_edge_none_;
@@ -211,7 +211,15 @@ namespace gum {
     return f_score;
   }
 
-  double StructuralComparator::precision() const {
+  double StructuralMetrics::shd_skeleton() const {
+    double missing, extra, shd;
+    missing = _wrong_none_arc_ + _wrong_none_edge_;
+    extra   = _wrong_arc_none_ + _wrong_edge_none_;
+    shd     = missing + extra;
+    return shd;
+  }
+
+  double StructuralMetrics::precision() const {
     double tp, fp, precision;
     tp        = _true_arc_ + _true_edge_;
     fp        = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
@@ -220,7 +228,7 @@ namespace gum {
     return precision;
   }
 
-  double StructuralComparator::recall() const {
+  double StructuralMetrics::recall() const {
     double tp, fn, recall;
     tp     = _true_arc_ + _true_edge_;
     fn     = _wrong_none_arc_ + _wrong_none_edge_;
@@ -228,7 +236,7 @@ namespace gum {
     return recall;
   }
 
-  double StructuralComparator::f_score() const {
+  double StructuralMetrics::f_score() const {
     double tp, fp, fn, precision, recall, f_score;
     tp = _true_arc_ + _true_edge_;
     fp = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
@@ -240,6 +248,14 @@ namespace gum {
 
     f_score = 2 * precision * recall / (precision + recall);
     return f_score;
+  }
+
+  double StructuralMetrics::shd() const {
+    double missing, extra, shd;
+    missing = _wrong_none_arc_ + _wrong_none_edge_;
+    extra   = _wrong_arc_none_ + _wrong_edge_none_;
+    shd     = missing + extra + _wrong_edge_arc_ + _wrong_arc_edge_ + _misoriented_arc_;
+    return shd;
   }
 
 } /* namespace gum */

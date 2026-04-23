@@ -47,7 +47,7 @@
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/PDAG.h>
 #include <agrum/base/graphs/undiGraph.h>
-#include <agrum/BN/algorithms/structuralComparator.h>
+#include <agrum/BN/algorithms/structuralMetrics.h>
 #include <agrum/BN/BayesNet.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -55,15 +55,15 @@
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
-#define GUM_CURRENT_SUITE  StructuralComparator
+#define GUM_CURRENT_SUITE  StructuralMetrics
 #define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
 
-  struct StructuralComparatorTestSuite {
+  struct StructuralMetricsTestSuite {
     public:
     static void test_graph() {
-      gum::StructuralComparator comp;
+      gum::StructuralMetrics comp;
 
       gum::DiGraph   dig1, dig2;
       gum::UndiGraph undig1, undig2;
@@ -96,6 +96,7 @@ namespace gum_tests {
       CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
       CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.shd_skeleton()) == 1);
 
       undig1.addNodeWithId(1);
       undig1.addNodeWithId(2);
@@ -111,6 +112,7 @@ namespace gum_tests {
       CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
       CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.shd_skeleton()) == 1);
 
       // creating complete graph
       gum::PDAG graph;
@@ -150,10 +152,12 @@ namespace gum_tests {
       CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.4444).epsilon(1e-3));
       CHECK((comp.precision()) == doctest::Approx(0).epsilon(1e-3));
+      CHECK((comp.shd_skeleton()) == 20);
+      CHECK((comp.shd()) == 28);
     }   // namespace gum_tests
 
     static void test_bn() {
-      gum::StructuralComparator comp;
+      gum::StructuralMetrics comp;
 
       gum::BayesNet< double > bn1, bn2;
       bn1 = bn1.fastPrototype("0->1;0->2");
@@ -163,13 +167,20 @@ namespace gum_tests {
       CHECK((comp.precision_skeleton()) == doctest::Approx(0.666).epsilon(1e-3));
       CHECK((comp.recall_skeleton()) == doctest::Approx(1).epsilon(1e-3));
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.shd_skeleton()) == 1);
       CHECK((comp.precision()) == doctest::Approx(0.666).epsilon(1e-3));
       CHECK((comp.recall()) == doctest::Approx(1).epsilon(1e-3));
       CHECK((comp.f_score()) == doctest::Approx(0.8).epsilon(1e-3));
+      CHECK((comp.shd()) == 1);
 
       // creating asia
       gum::BayesNet< double > asia;
-      asia = asia.fastPrototype("3->4->5->7;0->1->5->6;0->2->6");
+      // asia = asia.fastPrototype("3->4->5->7;0->1->5->6;0->2->6");
+      // apparition order leads to : id of "3" is 0, if of "4" is 1, etc.
+      // it's hard to check the shd between this graph and another created directly with the ids.
+      // hence we redefine it in the correct order of apparition:
+      asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5;2->6;5->7"); // now labels match ids
+
       // asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5->6;2->6");
       // bn1 = bn1.fastPrototype("3->4;7->5->6;5->4->1->0->2->6;5->1");
 
@@ -188,6 +199,7 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(comp.compare(mg, asia));
 
+      /* Tests for asia = asia.fastPrototype("3->4->5->7;0->1->5->6;0->2->6")
       comp.compare(asia, mg);
       CHECK((comp.precision()) == doctest::Approx(0.5).epsilon(1e-3));
       CHECK((comp.recall()) == doctest::Approx(0.8).epsilon(1e-3));
@@ -195,6 +207,18 @@ namespace gum_tests {
       CHECK((comp.precision_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
       CHECK((comp.recall_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.875).epsilon(1e-3));
+      */
+
+      comp.compare(asia, mg);
+
+      CHECK((comp.precision()) == doctest::Approx(0.25).epsilon(1e-3));
+      CHECK((comp.recall()) == doctest::Approx(0.333).epsilon(1e-3));
+      CHECK((comp.f_score()) == doctest::Approx(0.285714).epsilon(1e-3));
+      CHECK((comp.shd()) == 10);
+      CHECK((comp.precision_skeleton()) == doctest::Approx(0.5).epsilon(1e-3));
+      CHECK((comp.recall_skeleton()) == doctest::Approx(0.5).epsilon(1e-3));
+      CHECK((comp.f_score_skeleton()) == doctest::Approx(0.5).epsilon(1e-3));
+      CHECK((comp.shd_skeleton()) == 8);
     }
   };
 

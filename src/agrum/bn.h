@@ -48,7 +48,7 @@
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
-#include <agrum/BN/algorithms/structuralComparator.h>
+#include <agrum/BN/algorithms/structuralMetrics.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>

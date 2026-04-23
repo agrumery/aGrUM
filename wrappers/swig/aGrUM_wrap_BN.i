@@ -63,7 +63,7 @@
 
 %include <agrum/BN/algorithms/essentialGraph.h>
 %include <agrum/BN/algorithms/MarkovBlanket.h>
-%include <agrum/BN/algorithms/structuralComparator.h>
+%include <agrum/BN/algorithms/structuralMetrics.h>
 
 %import <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/base/core/approximations/approximationScheme.h>

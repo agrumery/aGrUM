@@ -38,43 +38,82 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/base/graphs/PDAG.h>
-#  include <agrum/BN/algorithms/essentialGraph.h>
 
-namespace gum {
 
-  template < typename GS1, typename GS2 >
-  void StructuralComparator::compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test) {
-    if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
-    for (const NodeId node: ref.dag().asNodeSet()) {
-      if (!test.dag().existsNode(node)) {
-        GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
-      }
-    }
-    PDAG ref_eg  = EssentialGraph(ref).pdag();
-    auto eg      = EssentialGraph(test);
-    PDAG test_eg = eg.pdag();
 
-    this->compare(ref_eg, test_eg);
-  }
+%feature("docstring") gum::StructuralMetrics::compare
+"
+Use to compare the edges/arcs of two structure of the same type and same sizes (either DiGraph, UndiGraph or MixedGraph).
 
-  template < GUM_Numeric GUM_SCALAR >
-  void StructuralComparator::compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test) {
-    PDAG ref_eg = EssentialGraph(ref).pdag();
-    this->compare(ref_eg, test);
-  }
+Could be use to compare a BN and its learned version.
 
-  template < GUM_Numeric GUM_SCALAR >
-  void StructuralComparator::compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test) {
-    PDAG test_eg = EssentialGraph(test).pdag();
+Parameters
+----------
+ref :
+    the structure of reference
+test :
+    the structure we want to test
+"
 
-    this->compare(ref, test_eg);
-  }
-} /* namespace gum */
+%feature("docstring") gum::StructuralMetrics::precision_skeleton
+"
+Rate of true postive over labelized edges.
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+Returns
+-------
+float
+    the precision of the tested graph skeleton
+"
+
+%feature("docstring") gum::StructuralMetrics::recall_skeleton
+"
+Rate of true postive over labelized edges.
+
+Returns
+-------
+float
+    the recall of the tested graph skeleton
+"
+
+%feature("docstring") gum::StructuralMetrics::f_score_skeleton
+"
+Harmonic mean between recall and precision.
+
+Returns
+-------
+float
+    the tarmonic mean of the tested graph skeleton
+"
+
+%feature("docstring") gum::StructuralMetrics::precision
+"
+Rate of true postive over postively labelized arcs/edges.
+
+Returns
+-------
+float
+    the precision of the tested graph
+"
+
+%feature("docstring") gum::StructuralMetrics::recall
+"
+Rate of true postive over labelized arcs/edges.
+
+Returns
+-------
+float
+    the recall of the tested graph
+"
+
+%feature("docstring") gum::StructuralMetrics::f_score
+"
+Harmonic mean between recall and precision.
+
+Returns
+-------
+float
+    the harmonic mean of the tested graph
+"

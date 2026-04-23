@@ -79,7 +79,7 @@
 %include "doc_IDGenerator.i"
 %include "doc_BNGenerator.i"
 
-%include "doc_StructuralComparator.i"
+%include "doc_StructuralMetrics.i"
 
 %include "doc_PythonLoadListener.i"
 %include "doc_PythonBNListener.i"
