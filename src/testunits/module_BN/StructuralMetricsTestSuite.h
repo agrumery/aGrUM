@@ -220,9 +220,129 @@ namespace gum_tests {
       CHECK((comp.f_score_skeleton()) == doctest::Approx(0.5).epsilon(1e-3));
       CHECK((comp.shd_skeleton()) == 8);
     }
+
+    static void test_sid_identity() {
+      // SID(G, G) = 0 trivially
+      gum::DAG g;
+      for (gum::NodeId i = 0; i < 4; ++i) g.addNodeWithId(i);
+      g.addArc(0, 1);
+      g.addArc(0, 2);
+      g.addArc(1, 3);
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, g) == 0);
+    }
+
+    static void test_sid_subgraph_zero() {
+      // Proposition 7 : G ⊆ H ⇒ SID(G, H) = 0
+      gum::DAG g, h;
+      for (gum::NodeId i = 0; i < 3; ++i) {
+        g.addNodeWithId(i);
+        h.addNodeWithId(i);
+      }
+      g.addArc(0, 1);
+      h.addArc(0, 1);
+      h.addArc(0, 2);   // arc en plus dans h
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h) == 0);
+    }
+
+    static void test_sid_empty_target() {
+      // G : 0 → 1, H : ∅. Seule la paire (1, 0) est une erreur.
+      gum::DAG g, h;
+      for (gum::NodeId i = 0; i < 2; ++i) {
+        g.addNodeWithId(i);
+        h.addNodeWithId(i);
+      }
+      g.addArc(0, 1);
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h) == 1);
+    }
+
+    static void test_sid_reversed_arc() {
+      // G : 0 → 1, H : 1 → 0. SHD = 1, SID = 2 (borne sharp 2(p-1) = 2).
+      gum::DAG g, h;
+      for (gum::NodeId i = 0; i < 2; ++i) {
+        g.addNodeWithId(i);
+        h.addNodeWithId(i);
+      }
+      g.addArc(0, 1);
+      h.addArc(1, 0);
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h) == 2);
+    }
+
+    static void test_sid_asymmetry() {
+      // Asymétrie : SID(G, ∅) > 0 mais SID(∅, G) = 0 (Prop 7, ∅ ⊆ G).
+      // G : chaîne 0 → 1 → 2.
+      gum::DAG g, empty;
+      for (gum::NodeId i = 0; i < 3; ++i) {
+        g.addNodeWithId(i);
+        empty.addNodeWithId(i);
+      }
+      g.addArc(0, 1);
+      g.addArc(1, 2);
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, empty) == 3);
+      CHECK(comp.sid(empty, g) == 0);
+    }
+
+    static void test_sid_paper_figure2_h1() {
+      // Peters & Bühlmann 2015, Figure 2 : G vs H_1.
+      // Nœuds : 0=X_1, 1=X_2, 2=Y_1, 3=Y_2, 4=Y_3.
+      // G : X_1 → X_2 ; X_1 et X_2 parents de chaque Y_j.
+      gum::DAG g;
+      for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
+      g.addArc(0, 1);
+      for (gum::NodeId y = 2; y <= 4; ++y) {
+        g.addArc(0, y);
+        g.addArc(1, y);
+      }
+
+      // H_1 = G + (Y_1 → Y_2), donc G ⊆ H_1.
+      gum::DAG h1 = g;
+      h1.addArc(2, 3);
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h1) == 0);   // par Prop 7
+    }
+
+    static void test_sid_paper_figure2_h2() {
+      // Peters & Bühlmann 2015, Figure 2 : G vs H_2 (arc X_1 → X_2 inversé).
+      gum::DAG g;
+      for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
+      g.addArc(0, 1);
+      for (gum::NodeId y = 2; y <= 4; ++y) {
+        g.addArc(0, y);
+        g.addArc(1, y);
+      }
+
+      // H_2 : même chose mais X_2 → X_1 au lieu de X_1 → X_2.
+      gum::DAG h2;
+      for (gum::NodeId i = 0; i < 5; ++i) h2.addNodeWithId(i);
+      h2.addArc(1, 0);   // arc inversé
+      for (gum::NodeId y = 2; y <= 4; ++y) {
+        h2.addArc(0, y);
+        h2.addArc(1, y);
+      }
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h2) == 8);   // résultat du papier
+    }
   };
 
   GUM_TEST_ACTIF(_graph)
   GUM_TEST_ACTIF(_bn)
+  GUM_TEST_ACTIF(_sid_identity)
+  GUM_TEST_ACTIF(_sid_subgraph_zero)
+  GUM_TEST_ACTIF(_sid_empty_target)
+  GUM_TEST_ACTIF(_sid_reversed_arc)
+  GUM_TEST_ACTIF(_sid_asymmetry)
+  GUM_TEST_ACTIF(_sid_paper_figure2_h1)
+  GUM_TEST_ACTIF(_sid_paper_figure2_h2)
 
 } /* namespace gum_tests */

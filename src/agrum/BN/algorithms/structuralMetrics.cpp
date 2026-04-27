@@ -258,6 +258,90 @@ namespace gum {
     return shd;
   }
 
+  double StructuralMetrics::sid(const DAG& ref, const DAG& test) const {
+    // Validate node sets match.
+    if (ref.size() != test.size()) {
+      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
+    }
+    for (const NodeId node: ref.asNodeSet()) {
+      if (!test.existsNode(node)) {
+        GUM_ERROR(InvalidNode, "test does not contain all nodes from ref")
+      }
+    }
+
+    // Pre-compute (strict) descendants in ref. DE[i] does NOT include i itself.
+    NodeProperty< NodeSet > DE;
+    for (const NodeId i: ref.asNodeSet()) { DE.insert(i, ref.descendants(i)); }
+
+    // Working copy of ref for the back-door mutation (mutate / restore per pair).
+    DAG G = ref;
+
+    double errors = 0.0;
+
+    for (const NodeId i: ref.asNodeSet()) {
+      const NodeSet& paG = ref.parents(i);
+      const NodeSet& paH = test.parents(i);
+
+      if (paG == paH) continue;
+
+      for (const NodeId j: ref.asNodeSet()) {
+        if (j == i) continue;
+
+        const bool ijGNull = !DE[i].contains(j);
+        const bool ijHNull = paH.contains(j);
+
+        // Case 1 : H wrongly predicts a null effect.
+        if (!ijGNull && ijHNull) {
+          errors += 1;
+          continue;
+        }
+        // Case 2 : both predict null effect → OK.
+        if (ijGNull && ijHNull) { continue; }
+
+        // Part (2a) of Lemma 5 : no child c of i on a directed path to j
+        //                       can be in paH nor have descendants in paH.
+        bool violated_2a = false;
+        for (const NodeId c: ref.children(i)) {
+          if (c == j || DE[c].contains(j)) {
+            // c is on a directed path i → ... → j (reflexive case if c == j)
+            if (paH.contains(c)) {
+              violated_2a = true;
+              break;
+            }
+            for (const NodeId z: paH) {
+              if (DE[c].contains(z)) {
+                violated_2a = true;
+                break;
+              }
+            }
+            if (violated_2a) break;
+          }
+        }
+        if (violated_2a) {
+          errors += 1;
+          continue;
+        }
+
+        // Part (2b) : test d-separation in the mutated G,
+        //            with arcs i → c removed for every c on a directed path to j.
+        std::vector< NodeId > arcs_removed;
+        for (const NodeId c: ref.children(i)) {
+          if (c == j || DE[c].contains(j)) {
+            G.eraseArc(Arc(i, c));
+            arcs_removed.push_back(c);
+          }
+        }
+
+        if (!G.dSeparation(i, j, paH)) { errors += 1; }
+
+        // Restore the removed arcs so that G is back to ref's structure.
+        for (const NodeId c: arcs_removed) { G.addArc(i, c); }
+      }
+    }
+
+    return errors;
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

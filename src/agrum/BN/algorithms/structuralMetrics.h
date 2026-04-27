@@ -106,6 +106,23 @@ namespace gum {
     double recall() const;
     double f_score() const;
     double shd() const;
+
+    /**
+     * @brief Structural Intervention Distance (SID) between two DAGs.
+     *
+     * Counts ordered pairs (i, j), i ≠ j, for which the parent-adjustment
+     * formula in @c test gives a wrong intervention distribution relative
+     * to @c ref. The check follows Lemma 5 / Algorithm 1 of Peters &
+     * Bühlmann (2015).
+     *
+     * @note SID is not symmetric: SID(G, H) ≠ SID(H, G) in general.
+     * @note SID(G, G) = 0. SID(G, H) = 0 iff G is a subgraph of H.
+     *
+     * @param ref The reference DAG (ground truth).
+     * @param test The DAG whose adjustment-set predictions are evaluated.
+     * @return The number of incorrectly-inferred intervention distributions.
+     */
+    double sid(const DAG& ref, const DAG& test) const;
     /// @}
 
     private:
