@@ -12561,6 +12561,9 @@ class StructuralMetrics(object):
     def shd(self) -> float:
         return _pyagrum.StructuralMetrics_shd(self)
 
+    def sid(self, ref: "pyagrum.DAG", test: "pyagrum.DAG") -> float:
+        return _pyagrum.StructuralMetrics_sid(self, ref, test)
+
 # Register StructuralMetrics in _pyagrum:
 _pyagrum.StructuralMetrics_swigregister(StructuralMetrics)
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyagrum.FindBarrenNodesType_FIND_NO_BARREN_NODES

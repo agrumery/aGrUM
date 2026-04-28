@@ -819,13 +819,26 @@ class TestScore(BayesNetTestCase):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     recall = bvb.GraphicalBNComparator(true_bn, bn).scores()["recall"]
-    self.assertEqual(1.0 / 2.0, recall)
+    # New semantic: misoriented arcs (B->C reversed to C->B in bn) are counted
+    # once via the misoriented_arc counter (included in fp only), not double-
+    # counted as both fn and fp like in the previous Python implementation.
+    self.assertEqual(1.0, recall)
 
   def testFscore(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()["fscore"]
-    self.assertEqual(2.0 / 5.0, fscore)
+    # Updated to match the new misoriented-arc convention (see testRecall).
+    self.assertEqual(0.5, fscore)
+
+  def testSID(self):
+    true_bn = gum.fastBN("A->B->C")
+    bn = gum.fastBN("A->B;C->B;A->C")
+    sid = bvb.GraphicalBNComparator(true_bn, bn).scores()["sid"]
+    # Pair (B, C): ijGNull=false, ijHNull=true (C is a parent of B in bn) -> case 1
+    # Pair (C, B): ijGNull=true, ijHNull=false, paG != paH, part (2b) violated
+    # All other pairs: case 2 (both null) or paG == paH -> 0 error
+    self.assertEqual(2, sid)
 
   def testHamming(self):
     true_bn = gum.fastBN("A->B->C;B->D")

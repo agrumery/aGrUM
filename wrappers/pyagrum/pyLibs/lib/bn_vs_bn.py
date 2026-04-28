@@ -186,6 +186,22 @@ class GraphicalBNComparator:
         return res
     return "OK"
 
+  def _bn2_aligned_with_bn1_ids(self):
+    """
+    Return a BayesNet with self._bn1's variables and NodeIds, but self._bn2's
+    arc structure. Used to align NodeIds before delegating structural comparisons
+    to pyagrum.StructuralMetrics, since aGrUM C++ comparisons match nodes by ID,
+    not by name.
+    """
+    aligned = pyagrum.BayesNet()
+    for nid in self._bn1.nodes():
+      aligned.add(self._bn1.variable(nid), nid)
+    for tail, head in self._bn2.arcs():
+      ttail = self._bn1.idFromName(self._bn2.variable(tail).name())
+      thead = self._bn1.idFromName(self._bn2.variable(head).name())
+      aligned.addArc(ttail, thead)
+    return aligned
+
   def equivalentBNs(self) -> str:
     """
     Check if the 2 BNs are equivalent :
@@ -232,205 +248,120 @@ class GraphicalBNComparator:
 
   def skeletonScores(self) -> dict[str, float]:
     """
-    Compute Precision, Recall, F-score for skeletons of self._bn2 compared to self._bn1
+    Compute Precision, Recall, F-score and dist2opt for the skeleton of
+    self._bn2 compared to self._bn1 (orientations are ignored).
 
-    precision and recall are computed considering BN1 as the reference
+    precision and recall are computed considering BN1 as the reference.
 
-    Fscor is 2*(recall* precision)/(recall+precision) and is the weighted average of Precision and Recall.
+    Fscore is 2*(recall*precision)/(recall+precision) and is the weighted average
+    of Precision and Recall.
 
-    dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the euclidian distance to the ideal point (precision=1, recall=1)
+    dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the
+    euclidian distance to the ideal point (precision=1, recall=1).
+
+    Note
+    ----
+    Now delegates to pyagrum.StructuralMetrics (aGrUM C++). The skeleton metrics
+    are independent of orientation, so the values match the previous Python
+    implementation exactly. The 'count' field (tp/tn/fp/fn) returned in previous
+    versions is no longer provided.
 
     Returns
     -------
     dict[str,double]
-      A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
+      A dictionary containing 'precision', 'recall', 'fscore', 'dist2opt'.
     """
-    # t: True, f: False, p: Positive, n: Negative
-    count = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
+    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
+    comp = pyagrum.StructuralMetrics()
+    comp.compare(self._bn1.dag(), aligned_bn2.dag())
 
-    # We look at all combination
-    listVariables = self._bn1.names()
-
-    # Loop on pairs of variables
-    for head, tail in combinations(listVariables, 2):
-      idHead_1 = self._bn1.idFromName(head)
-      idTail_1 = self._bn1.idFromName(tail)
-
-      idHead_2 = self._bn2.idFromName(head)
-      idTail_2 = self._bn2.idFromName(tail)
-
-      if self._bn1.dag().existsArc(idHead_1, idTail_1) or self._bn1.dag().existsArc(
-        idTail_1, idHead_1
-      ):  # Check edge node1-node2
-        if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # if edge:
-          count["tp"] += 1
-        else:  # If no edge:
-          count["fn"] += 1
-      else:  # Check if no edge
-        if self._bn2.dag().existsArc(idHead_2, idTail_2) or self._bn2.dag().existsArc(idTail_2, idHead_2):  # If edge
-          count["fp"] += 1
-        else:  # If no arc
-          count["tn"] += 1
-
-    # Compute the scores
-    if count["tp"] + count["fn"] != 0:
-      recall = (1.0 * count["tp"]) / (count["tp"] + count["fn"])
-    else:
-      recall = 0.0
-
-    if count["tp"] + count["fp"] != 0:
-      precision = (1.0 * count["tp"]) / (count["tp"] + count["fp"])
-    else:
-      precision = 0.0
-
-    if precision + recall != 0.0:
-      Fscore = (2 * recall * precision) / (recall + precision)
-    else:
-      Fscore = 0.0
+    precision = comp.precision_skeleton()
+    recall = comp.recall_skeleton()
+    fscore = comp.f_score_skeleton()
 
     return {
-      "count": count,
       "recall": recall,
       "precision": precision,
-      "fscore": Fscore,
+      "fscore": fscore,
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
   def scores(self) -> dict[str, float]:
     """
-    Compute Precision, Recall, F-score for self._bn2 compared to self._bn1
+    Compute Precision, Recall, F-score, dist2opt and SID for self._bn2 compared
+    to self._bn1 at the DAG level.
 
-    precision and recall are computed considering BN1 as the reference
+    precision and recall are computed considering BN1 as the reference.
 
-    Fscore is 2*(recall* precision)/(recall+precision) and is the weighted average of Precision and Recall.
+    Fscore is 2*(recall*precision)/(recall+precision) and is the weighted average
+    of Precision and Recall.
 
-    dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the euclidian distance to the ideal point (precision=1, recall=1)
+    dist2opt=square root of (1-precision)^2+(1-recall)^2 and represents the
+    euclidian distance to the ideal point (precision=1, recall=1).
+
+    SID (Structural Intervention Distance, Peters & Bühlmann 2015) counts the
+    number of ordered pairs (i, j) for which the parent-adjustment formula in
+    self._bn2 gives a wrong intervention distribution relative to self._bn1.
+
+    Note
+    ----
+    The metrics are now computed by pyagrum.StructuralMetrics (aGrUM C++).
+    Misoriented arcs are counted once via the dedicated misoriented counter
+    instead of being double-counted as both a missing arc (fn) and an extra
+    arc (fp). The 'count' field (tp/tn/fp/fn) returned in previous versions
+    is no longer provided.
 
     Returns
     -------
     dict[str,double]
-      A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
+      A dictionary containing 'precision', 'recall', 'fscore', 'dist2opt', 'sid'.
     """
-    # t: True, f: False, p: Positive, n: Negative
-    count = {"tp": 0, "tn": 0, "fp": 0, "fn": 0}
+    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
+    comp = pyagrum.StructuralMetrics()
+    comp.compare(self._bn1.dag(), aligned_bn2.dag())
 
-    # We look at all combination
-    listVariables = self._bn1.names()
-
-    # Loop on oriented pairs of variables
-    for head, tail in product(listVariables, listVariables):
-      if head != tail:
-        idHead_1 = self._bn1.idFromName(head)
-        idTail_1 = self._bn1.idFromName(tail)
-
-        idHead_2 = self._bn2.idFromName(head)
-        idTail_2 = self._bn2.idFromName(tail)
-
-        if self._bn1.dag().existsArc(idHead_1, idTail_1):  # Check arcs head->tail
-          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # if arc:
-            count["tp"] += 1
-          else:  # If no arc:
-            count["fn"] += 1
-        else:  # Check if no arc
-          if self._bn2.dag().existsArc(idHead_2, idTail_2):  # If arc
-            count["fp"] += 1
-          else:  # If no arc
-            count["tn"] += 1
-
-    # Compute the scores
-    if count["tp"] + count["fn"] != 0:
-      recall = (1.0 * count["tp"]) / (count["tp"] + count["fn"])
-    else:
-      recall = 0.0
-
-    if count["tp"] + count["fp"] != 0:
-      precision = (1.0 * count["tp"]) / (count["tp"] + count["fp"])
-    else:
-      precision = 0.0
-
-    if precision + recall != 0.0:
-      Fscore = (2 * recall * precision) / (recall + precision)
-    else:
-      Fscore = 0.0
+    precision = comp.precision()
+    recall = comp.recall()
+    fscore = comp.f_score()
 
     return {
-      "count": count,
       "recall": recall,
       "precision": precision,
-      "fscore": Fscore,
+      "fscore": fscore,
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
+      "sid": int(comp.sid(self._bn1.dag(), aligned_bn2.dag())),
     }
 
   def hamming(self) -> dict[float, float]:
     """
-    Compute hamming and structural hamming distance
+    Compute hamming and structural hamming distance.
 
-    Hamming distance is the difference of edges comparing the 2 skeletons, and Structural Hamming difference is the
-    difference comparing the cpdags,	including the arcs' orientation.
+    Hamming distance is the difference of edges comparing the 2 skeletons (CPDAGs),
+    and Structural Hamming distance is the difference comparing the CPDAGs
+    including the arcs' orientation.
+
+    Note
+    ----
+    Now delegates to pyagrum.StructuralMetrics (aGrUM C++). The essential graphs
+    (CPDAGs) are still built in Python via pyagrum.EssentialGraph (since the
+    BayesNet overload of compare is not exposed via SWIG), then the actual
+    counting happens in C++ via compare(PDAG, PDAG).
 
     Returns
     -------
-    dict[double,double]
-      A dictionary containing PURE_HAMMING,STRUCTURAL_HAMMING
+    dict[str,int]
+      A dictionary containing PURE_HAMMING and STRUCTURAL_HAMMING.
     """
-    # convert graphs to cpdags
+    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
     cpdag1 = pyagrum.EssentialGraph(self._bn1).pdag()
-    cpdag2 = pyagrum.EssentialGraph(self._bn2).pdag()
+    cpdag2 = pyagrum.EssentialGraph(aligned_bn2).pdag()
 
-    # We look at all combinations
-    listVariables = self._bn1.names()
-    hamming_dico = {PURE_HAMMING: 0, STRUCTURAL_HAMMING: 0}
-
-    for head, tail in combinations(listVariables, 2):
-      idHead_1 = self._bn1.idFromName(head)
-      idTail_1 = self._bn1.idFromName(tail)
-
-      idHead_2 = self._bn2.idFromName(head)
-      idTail_2 = self._bn2.idFromName(tail)
-
-      if cpdag1.existsArc(idHead_1, idTail_1):  # Check arcs head->tail
-        if cpdag2.existsArc(idTail_2, idHead_2) or cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif (
-          not cpdag2.existsArc(idTail_2, idHead_2)
-          and not cpdag2.existsArc(idHead_2, idTail_2)
-          and not cpdag2.existsEdge(idTail_2, idHead_2)
-        ):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-          hamming_dico[PURE_HAMMING] += 1
-
-      elif cpdag1.existsArc(idTail_1, idHead_1):  # Check arcs tail->head
-        if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsEdge(idTail_2, idHead_2):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif (
-          not cpdag2.existsArc(idTail_2, idHead_2)
-          and not cpdag2.existsArc(idHead_2, idTail_2)
-          and not cpdag2.existsEdge(idTail_2, idHead_2)
-        ):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-          hamming_dico[PURE_HAMMING] += 1
-
-      elif cpdag1.existsEdge(idTail_1, idHead_1):  # Check edge
-        if cpdag2.existsArc(idHead_2, idTail_2) or cpdag2.existsArc(idTail_2, idHead_2):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-        elif (
-          not cpdag2.existsArc(idTail_2, idHead_2)
-          and not cpdag2.existsArc(idHead_2, idTail_2)
-          and not cpdag2.existsEdge(idTail_2, idHead_2)
-        ):
-          hamming_dico[STRUCTURAL_HAMMING] += 1
-          hamming_dico[PURE_HAMMING] += 1
-          # check no edge or arc on the ref graph, and yes on the other graph
-
-      elif (
-        cpdag2.existsArc(idHead_2, idTail_2)
-        or cpdag2.existsEdge(idHead_2, idTail_2)
-        or cpdag2.existsArc(idTail_2, idHead_2)
-      ):
-        hamming_dico[STRUCTURAL_HAMMING] += 1
-        hamming_dico[PURE_HAMMING] += 1
-
-    return hamming_dico
+    comp = pyagrum.StructuralMetrics()
+    comp.compare(cpdag1, cpdag2)
+    return {
+      PURE_HAMMING: int(comp.shd_skeleton()),
+      STRUCTURAL_HAMMING: int(comp.shd()),
+    }
 
 
 def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
