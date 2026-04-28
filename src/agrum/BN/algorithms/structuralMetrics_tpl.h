@@ -75,6 +75,12 @@ namespace gum {
 
     this->compare(ref, test_eg);
   }
+
+  template < typename GS1, typename GS2 >
+  double StructuralMetrics::sid(const BayesNet< GS1 >& ref,
+                                const BayesNet< GS2 >& test) const {
+    return this->sid(ref.dag(), test.dag());
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

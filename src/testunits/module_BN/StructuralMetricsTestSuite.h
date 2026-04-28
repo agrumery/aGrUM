@@ -234,7 +234,7 @@ namespace gum_tests {
     }
 
     static void test_sid_subgraph_zero() {
-      // Proposition 7 : G ⊆ H ⇒ SID(G, H) = 0
+      // Proposition 7: G ⊆ H ⇒ SID(G, H) = 0
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 3; ++i) {
         g.addNodeWithId(i);
@@ -242,14 +242,14 @@ namespace gum_tests {
       }
       g.addArc(0, 1);
       h.addArc(0, 1);
-      h.addArc(0, 2);   // arc en plus dans h
+      h.addArc(0, 2);   // extra arc in h
 
       gum::StructuralMetrics comp;
       CHECK(comp.sid(g, h) == 0);
     }
 
     static void test_sid_empty_target() {
-      // G : 0 → 1, H : ∅. Seule la paire (1, 0) est une erreur.
+      // G: 0 → 1, H: ∅. Only the pair (1, 0) is an error.
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 2; ++i) {
         g.addNodeWithId(i);
@@ -262,7 +262,7 @@ namespace gum_tests {
     }
 
     static void test_sid_reversed_arc() {
-      // G : 0 → 1, H : 1 → 0. SHD = 1, SID = 2 (borne sharp 2(p-1) = 2).
+      // G: 0 → 1, H: 1 → 0. SHD = 1, SID = 2 (sharp bound 2(p-1) = 2).
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 2; ++i) {
         g.addNodeWithId(i);
@@ -276,8 +276,8 @@ namespace gum_tests {
     }
 
     static void test_sid_asymmetry() {
-      // Asymétrie : SID(G, ∅) > 0 mais SID(∅, G) = 0 (Prop 7, ∅ ⊆ G).
-      // G : chaîne 0 → 1 → 2.
+      // Asymmetry: SID(G, ∅) > 0 but SID(∅, G) = 0 (Prop 7, ∅ ⊆ G).
+      // G: chain 0 → 1 → 2.
       gum::DAG g, empty;
       for (gum::NodeId i = 0; i < 3; ++i) {
         g.addNodeWithId(i);
@@ -292,9 +292,9 @@ namespace gum_tests {
     }
 
     static void test_sid_paper_figure2_h1() {
-      // Peters & Bühlmann 2015, Figure 2 : G vs H_1.
-      // Nœuds : 0=X_1, 1=X_2, 2=Y_1, 3=Y_2, 4=Y_3.
-      // G : X_1 → X_2 ; X_1 et X_2 parents de chaque Y_j.
+      // Peters & Bühlmann 2015, Figure 2: G vs H_1.
+      // Nodes: 0=X_1, 1=X_2, 2=Y_1, 3=Y_2, 4=Y_3.
+      // G: X_1 → X_2; X_1 and X_2 are parents of each Y_j.
       gum::DAG g;
       for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
       g.addArc(0, 1);
@@ -303,16 +303,16 @@ namespace gum_tests {
         g.addArc(1, y);
       }
 
-      // H_1 = G + (Y_1 → Y_2), donc G ⊆ H_1.
+      // H_1 = G + (Y_1 → Y_2), so G ⊆ H_1.
       gum::DAG h1 = g;
       h1.addArc(2, 3);
 
       gum::StructuralMetrics comp;
-      CHECK(comp.sid(g, h1) == 0);   // par Prop 7
+      CHECK(comp.sid(g, h1) == 0);   // by Prop 7
     }
 
     static void test_sid_paper_figure2_h2() {
-      // Peters & Bühlmann 2015, Figure 2 : G vs H_2 (arc X_1 → X_2 inversé).
+      // Peters & Bühlmann 2015, Figure 2: G vs H_2 (arc X_1 → X_2 reversed).
       gum::DAG g;
       for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
       g.addArc(0, 1);
@@ -321,17 +321,37 @@ namespace gum_tests {
         g.addArc(1, y);
       }
 
-      // H_2 : même chose mais X_2 → X_1 au lieu de X_1 → X_2.
+      // H_2: same as G but X_2 → X_1 instead of X_1 → X_2.
       gum::DAG h2;
       for (gum::NodeId i = 0; i < 5; ++i) h2.addNodeWithId(i);
-      h2.addArc(1, 0);   // arc inversé
+      h2.addArc(1, 0);   // reversed arc
       for (gum::NodeId y = 2; y <= 4; ++y) {
         h2.addArc(0, y);
         h2.addArc(1, y);
       }
 
       gum::StructuralMetrics comp;
-      CHECK(comp.sid(g, h2) == 8);   // résultat du papier
+      CHECK(comp.sid(g, h2) == 8);   // result from the paper
+    }
+
+    static void test_sid_bn_overload() {
+      // Check the sid(BayesNet, BayesNet) overload: it must give the same
+      // result as the DAG version by directly using bn.dag().
+      // We build h2 by copying g and then modifying it, to ensure NodeIds
+      // are aligned (otherwise fastPrototype permutes them according to the
+      // order of label appearance).
+      gum::BayesNet< double > g;
+      g = g.fastPrototype("0->1;0->2;1->2;0->3;1->3;0->4;1->4");
+
+      gum::BayesNet< double > h2 = g;
+      const gum::NodeId X1 = g.idFromName("0");
+      const gum::NodeId X2 = g.idFromName("1");
+      h2.eraseArc(X1, X2);   // remove X_1 → X_2
+      h2.addArc(X2, X1);     // add X_2 → X_1
+
+      gum::StructuralMetrics comp;
+      CHECK(comp.sid(g, h2) == 8);
+      CHECK(comp.sid(g, g) == 0);
     }
   };
 
@@ -344,5 +364,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_sid_asymmetry)
   GUM_TEST_ACTIF(_sid_paper_figure2_h1)
   GUM_TEST_ACTIF(_sid_paper_figure2_h2)
+  GUM_TEST_ACTIF(_sid_bn_overload)
 
 } /* namespace gum_tests */
