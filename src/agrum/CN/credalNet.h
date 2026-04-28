@@ -204,7 +204,7 @@ namespace gum {
        *!
        */
       void setCPT(const NodeId&                                   id,
-                  Size&                                           entry,
+                  const Size&                                     entry,
                   const std::vector< std::vector< GUM_SCALAR > >& cpt);
 
       /**
@@ -440,7 +440,7 @@ namespace gum {
        *and
        *\f$ \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      void computeBinaryCPTMinMax();   // REDO THIS IN PRIVATE !!!
+      void computeBinaryCPTMinMax();
 
       /// @name Getters and setters
       /// @{

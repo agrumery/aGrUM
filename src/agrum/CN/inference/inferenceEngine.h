@@ -207,7 +207,7 @@ namespace gum {
        * computes Vector threadRanges_, that assigns some part of marginalMin_
        * and marginalMax_ to the threads
        */
-      void displatchMarginalsToThreads_();
+      void dispatchMarginalsToThreads_();
 
       /**
        * Initialize credal set vertices with empty sets.

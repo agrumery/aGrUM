@@ -104,6 +104,10 @@ namespace gum {
       /** Starts the inference. */
       void makeInference();
 
+      void insertEvidenceFile(std::string_view path) override {
+        InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
+      }
+
       /// @}
 
       /// @name Getters and setters
@@ -391,11 +395,6 @@ namespace gum {
       const IBayesNet< GUM_SCALAR >* _bnet_;
 
       // cnfunc getCN = &infE::getCN;
-
-      public:
-      virtual void insertEvidenceFile(std::string_view path) {
-        InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
-      }
     };
 
 

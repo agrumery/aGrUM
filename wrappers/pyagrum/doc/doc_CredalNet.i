@@ -130,7 +130,7 @@ keepZeroes : bool
     used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
 "
 
-%feature("docstring") gum::credal::CredalNet::computeCPTMinMax
+%feature("docstring") gum::credal::CredalNet::computeBinaryCPTMinMax
 "
 Used with binary networks to speed-up L2U inference.
 

@@ -130,7 +130,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::setCPT(const NodeId&                                   id,
-                                         Size&                                           entry,
+                                         const Size&                                     entry,
                                          const std::vector< std::vector< GUM_SCALAR > >& cpt) {
       const Tensor< GUM_SCALAR >* const tensor(&_src_bn_.cpt(id));
 

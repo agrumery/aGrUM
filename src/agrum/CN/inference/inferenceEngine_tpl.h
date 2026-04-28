@@ -661,7 +661,7 @@ namespace gum {
 
       // now that we know the sizes of marginalMin_ and marginalMax_, we can
       // dispatch their processes to the threads
-      displatchMarginalsToThreads_();
+      dispatchMarginalsToThreads_();
     }
 
     template < GUM_Numeric GUM_SCALAR >
@@ -1095,7 +1095,7 @@ namespace gum {
 
 
     template < GUM_Numeric GUM_SCALAR >
-    void InferenceEngine< GUM_SCALAR >::displatchMarginalsToThreads_() {
+    void InferenceEngine< GUM_SCALAR >::dispatchMarginalsToThreads_() {
       // we compute the number of elements in the 2 loops (over i,j in marginalMin_[i][j])
       Size       nb_elements      = 0;
       const auto marginalMin_size = this->marginalMin_.size();
