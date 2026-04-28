@@ -1623,7 +1623,6 @@ namespace gum {
           p = strtok(nullptr, " ");
         }   // end of : for all tokens
 
-        delete[] p;
         delete[] cstr;
 
         // compute is_redund using multiple threads:

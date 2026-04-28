@@ -366,7 +366,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::V2H() {
-      if (!_state_ == _states_::V2Hready)
+      if (_state_ != _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::V2H : fillV has "
                   "not been called with all vertices, current "
@@ -376,7 +376,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void LRSWrapper< GUM_SCALAR >::computeVolume() {
-      if (!_state_ == _states_::V2Hready)
+      if (_state_ != _states_::V2Hready)
         GUM_ERROR(OperationNotAllowed,
                   "LRSWrapper< GUM_SCALAR >::computeVolume : "
                   "volume is only for V-representation or "
