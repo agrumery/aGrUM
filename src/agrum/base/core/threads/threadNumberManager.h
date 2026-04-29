@@ -45,8 +45,8 @@
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef AGRUM_THREAD_NUMBER_MANAGER_H
-#define AGRUM_THREAD_NUMBER_MANAGER_H
+#ifndef GUM_THREAD_NUMBER_MANAGER_H
+#define GUM_THREAD_NUMBER_MANAGER_H
 
 #include <agrum/agrum.h>
 
@@ -133,4 +133,4 @@ namespace gum {
 #  include <agrum/base/core/threads/threadNumberManager_inl.h>
 #endif   /* GUM_NO_INLINE */
 
-#endif   // AGRUM_THREAD_NUMBER_MANAGER_H
+#endif   // GUM_THREAD_NUMBER_MANAGER_H

@@ -49,8 +49,8 @@
  */
 
 
-#ifndef UAIBNREADER_H
-#define UAIBNREADER_H
+#ifndef GUM_UAI_BN_READER_H
+#define GUM_UAI_BN_READER_H
 
 #include <iostream>
 #include <string>
@@ -176,4 +176,4 @@ namespace gum {
 
 #include "UAIBNReader_tpl.h"
 
-#endif   // UAIBNREADER_H
+#endif   // GUM_UAI_BN_READER_H

@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef __INFERENCE_ENGINE__H__
-#define __INFERENCE_ENGINE__H__
+#ifndef GUM_INFERENCE_ENGINE_H
+#define GUM_INFERENCE_ENGINE_H
 
 /**
  * @file

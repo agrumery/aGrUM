@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef DSLWRITER_H
-#define DSLWRITER_H
+#ifndef GUM_DSL_WRITER_H
+#define GUM_DSL_WRITER_H
 
 #include <fstream>
 #include <iostream>
@@ -131,4 +131,4 @@ namespace gum {
 
 #include "DSLWriter_tpl.h"
 
-#endif   // DSLWRITER_H
+#endif   // GUM_DSL_WRITER_H

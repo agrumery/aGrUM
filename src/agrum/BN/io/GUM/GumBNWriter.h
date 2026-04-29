@@ -49,8 +49,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_BN_WRITER_H
-#define GUM_BN_WRITER_H
+#ifndef GUM_GUM_BN_WRITER_H
+#define GUM_GUM_BN_WRITER_H
 
 #include <cstdint>
 #include <fstream>
@@ -140,4 +140,4 @@ namespace gum {
 
 #include <agrum/BN/io/GUM/GumBNWriter_tpl.h>
 
-#endif /* GUM_BN_WRITER_H */
+#endif /* GUM_GUM_BN_WRITER_H */

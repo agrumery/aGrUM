@@ -18,6 +18,8 @@
  *
  */
 
+#pragma once
+
 /** @file
  * @brief The class for parsing DatabaseTable rows and generating output rows
  *

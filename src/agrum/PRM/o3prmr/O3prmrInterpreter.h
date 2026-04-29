@@ -46,8 +46,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#ifndef SKOORINTERPRETER_H
-#define SKOORINTERPRETER_H
+#ifndef GUM_O3PRMR_INTERPRETER_H
+#define GUM_O3PRMR_INTERPRETER_H
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <agrum/PRM/o3prm/O3prmReader.h>
@@ -205,4 +205,4 @@ namespace gum {
   }   // namespace prm
 }   // namespace gum
 
-#endif   // GUM_SKOORINTERPRETER_H
+#endif   // GUM_GUM_O3PRMR_INTERPRETER_H

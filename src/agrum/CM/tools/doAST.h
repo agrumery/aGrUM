@@ -44,8 +44,8 @@
  *        used in do-Calculus.
  */
 
-#ifndef DO_AST_H
-#define DO_AST_H
+#ifndef GUM_DO_AST_H
+#define GUM_DO_AST_H
 
 #include <map>
 #include <memory>
@@ -472,4 +472,4 @@ namespace gum {
 
 #include <agrum/CM/tools/doAST_tpl.h>
 
-#endif   // DO_AST_H
+#endif   // GUM_DO_AST_H

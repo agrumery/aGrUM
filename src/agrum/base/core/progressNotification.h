@@ -47,8 +47,8 @@
  *
  */
 
-#ifndef AGRUM_PROGRESSNOTIFICATION_H
-#define AGRUM_PROGRESSNOTIFICATION_H
+#ifndef GUM_PROGRESSNOTIFICATION_H
+#define GUM_PROGRESSNOTIFICATION_H
 
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/core/timer.h>
@@ -121,4 +121,4 @@ namespace gum {
     ProgressNotifier& _notif_;
   };
 }   // namespace gum
-#endif   // AGRUM_PROGRESSNOTIFICATION_H
+#endif   // GUM_PROGRESSNOTIFICATION_H

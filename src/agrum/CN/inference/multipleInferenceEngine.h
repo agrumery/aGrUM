@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef __MULTIPLE_INFERENCE_ENGINES__H__
-#define __MULTIPLE_INFERENCE_ENGINES__H__
+#ifndef GUM_MULTIPLE_INFERENCE_ENGINE_H
+#define GUM_MULTIPLE_INFERENCE_ENGINE_H
 
 /**
  * @file

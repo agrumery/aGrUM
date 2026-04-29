@@ -45,8 +45,8 @@
  * @author Mahdi Hadj Ali and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef AGRUM_MEEKRULES_H
-#define AGRUM_MEEKRULES_H
+#ifndef GUM_MEEKRULES_H
+#define GUM_MEEKRULES_H
 
 #include <agrum/base/graphs/PDAG.h>
 
@@ -168,4 +168,4 @@ namespace gum {
 }   // namespace gum
 
 
-#endif   // AGRUM_MEEKRULES_H
+#endif   // GUM_MEEKRULES_H

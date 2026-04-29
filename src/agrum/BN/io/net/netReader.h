@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef NETREADER_H
-#define NETREADER_H
+#ifndef GUM_NET_READER_H
+#define GUM_NET_READER_H
 
 #include <iostream>
 #include <string>
@@ -158,4 +158,4 @@ namespace gum {
 
 #include "netReader_tpl.h"
 
-#endif   // NETREADER_H
+#endif   // GUM_NET_READER_H

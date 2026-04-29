@@ -46,8 +46,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
-#ifndef __CN_LOOPY_PROPAGATION__H__
-#define __CN_LOOPY_PROPAGATION__H__
+#ifndef GUM_CN_LOOPY_PROPAGATION_H
+#define GUM_CN_LOOPY_PROPAGATION_H
 
 #include <cstdlib>
 #include <ctime>

@@ -46,8 +46,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef __VAR_MOD_2_BNS_MAP__H__
-#define __VAR_MOD_2_BNS_MAP__H__
+#ifndef GUM_VAR_MOD_2_BNS_MAP_H
+#define GUM_VAR_MOD_2_BNS_MAP_H
 
 #include <list>
 

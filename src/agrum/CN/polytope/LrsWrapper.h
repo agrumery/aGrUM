@@ -47,8 +47,8 @@
  * easy use of lrs lib
  */
 
-#ifndef __LRSWrapper_WRAPPER__H__
-#define __LRSWrapper_WRAPPER__H__
+#ifndef GUM_LRS_WRAPPER_H
+#define GUM_LRS_WRAPPER_H
 
 #include <chrono>
 #include <cstdio>

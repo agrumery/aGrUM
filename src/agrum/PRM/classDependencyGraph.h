@@ -46,8 +46,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_ClassDependencyGraph_H
-#define GUM_ClassDependencyGraph_H
+#ifndef GUM_CLASS_DEPENDENCY_GRAPH_H
+#define GUM_CLASS_DEPENDENCY_GRAPH_H
 
 #include <agrum/PRM/PRM.h>
 
@@ -170,4 +170,4 @@ namespace gum {
 
 #include <agrum/PRM/classDependencyGraph_tpl.h>
 
-#endif /* GUM_ClassDependencyGraph_H */
+#endif /* GUM_CLASS_DEPENDENCY_GRAPH_H */

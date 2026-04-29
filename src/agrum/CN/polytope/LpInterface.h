@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef __LP_INTERFACE__H__
-#define __LP_INTERFACE__H__
+#ifndef GUM_LP_INTERFACE_H
+#define GUM_LP_INTERFACE_H
 
 /**
  * @file

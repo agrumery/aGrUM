@@ -45,8 +45,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#ifndef AGRUM_THREADEXECUTOR_BASE_H
-#define AGRUM_THREADEXECUTOR_BASE_H
+#ifndef GUM_THREADEXECUTOR_BASE_H
+#define GUM_THREADEXECUTOR_BASE_H
 
 #include <atomic>
 
@@ -86,4 +86,4 @@ namespace gum {
 #endif   /* GUM_NO_INLINE */
 
 
-#endif   // AGRUM_THREADEXECUTOR_BASE_H
+#endif   // GUM_THREADEXECUTOR_BASE_H

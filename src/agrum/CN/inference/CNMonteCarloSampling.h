@@ -46,8 +46,8 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
-#ifndef __CN_MC_SAMPLING__H__
-#define __CN_MC_SAMPLING__H__
+#ifndef GUM_CN_MONTE_CARLO_SAMPLING_H
+#define GUM_CN_MONTE_CARLO_SAMPLING_H
 
 #include <limits>
 #include <thread>

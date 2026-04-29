@@ -46,8 +46,8 @@
  * @author Ariele MAESANO and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
-#define GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR
+#ifndef GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR_H
+#define GUM_MAX_PARENTS_MC_BAYES_NET_GENERATOR_H
 
 #include <fstream>
 #include <iostream>

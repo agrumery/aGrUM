@@ -81,8 +81,8 @@ between 0 and 100
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef BIF_READER_H
-#define BIF_READER_H
+#ifndef GUM_BIF_READER_H
+#define GUM_BIF_READER_H
 
 #include <fstream>
 #include <iostream>
@@ -212,4 +212,4 @@ namespace gum {
 
 #include <agrum/BN/io/BIF/BIFReader_tpl.h>
 
-#endif   // BIF_READER_H
+#endif   // GUM_BIF_READER_H

@@ -48,8 +48,8 @@
  * GONZALES(_at_AMU)
  */
 
-#ifndef O4DGCONTEXT_H
-#define O4DGCONTEXT_H
+#ifndef GUM_O4DG_CONTEXT_H
+#define GUM_O4DG_CONTEXT_H
 
 #include <agrum/agrum.h>
 
@@ -161,4 +161,4 @@ namespace gum {
 #  include <agrum/base/multidim/utils/FunctionGraphUtilities/operators/o4DGContext_inl.h>
 #endif   /* GUM_NO_INLINE */
 
-#endif   // O4DGCONTEXT_H
+#endif   // GUM_O4DG_CONTEXT_H

@@ -49,8 +49,8 @@
  */
 
 
-#ifndef UAI_MRF_WRITER
-#define UAI_MRF_WRITER
+#ifndef GUM_UAI_MRF_WRITER_H
+#define GUM_UAI_MRF_WRITER_H
 
 #include <fstream>
 #include <iostream>
@@ -131,4 +131,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/MRF/io/UAI/UAIMRFWriter_tpl.h>
-#endif   // UAI_MRF_WRITER
+#endif   // GUM_UAI_MRF_WRITER_H

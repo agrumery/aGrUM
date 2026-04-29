@@ -39,6 +39,8 @@
  ****************************************************************************/
 
 
+#pragma once
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE

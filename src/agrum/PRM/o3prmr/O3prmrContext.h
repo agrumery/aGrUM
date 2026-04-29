@@ -46,8 +46,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#ifndef SKOORSYNTAXTREE_H
-#define SKOORSYNTAXTREE_H
+#ifndef GUM_O3PRMR_CONTEXT_H
+#define GUM_O3PRMR_CONTEXT_H
 
 #include <map>
 #include <string>
@@ -323,4 +323,4 @@ namespace gum {
 
 #include <agrum/PRM/o3prmr/O3prmrContext_tpl.h>
 
-#endif   // SKOORSYNTAXTREE_H
+#endif   // GUM_O3PRMR_CONTEXT_H

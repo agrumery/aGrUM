@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef DSLREADER_H
-#define DSLREADER_H
+#ifndef GUM_DSL_READER_H
+#define GUM_DSL_READER_H
 
 #include <iostream>
 #include <string>
@@ -157,4 +157,4 @@ namespace gum {
 
 #include "DSLReader_tpl.h"
 
-#endif   // DSLREADER_H
+#endif   // GUM_DSL_READER_H

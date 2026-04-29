@@ -46,8 +46,8 @@
  * @author Gaspard DUCAMP
  */
 
-#ifndef AGRUM_AGGREGATORDECOMPOSITION_H
-#define AGRUM_AGGREGATORDECOMPOSITION_H
+#ifndef GUM_AGGREGATORDECOMPOSITION_H
+#define GUM_AGGREGATORDECOMPOSITION_H
 
 #include <ctime>
 
@@ -120,4 +120,4 @@ namespace gum {
 
 #include <agrum/BN/inference/tools/aggregatorDecomposition_tpl.h>
 
-#endif   // AGRUM_AGGREGATORDECOMPOSITION_H
+#endif   // GUM_AGGREGATORDECOMPOSITION_H

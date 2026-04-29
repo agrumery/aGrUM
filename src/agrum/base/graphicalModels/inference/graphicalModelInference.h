@@ -46,8 +46,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
-#ifndef AGRUM_GRAPHICALMODELINFERENCE_H
-#define AGRUM_GRAPHICALMODELINFERENCE_H
+#ifndef GUM_GRAPHICALMODELINFERENCE_H
+#define GUM_GRAPHICALMODELINFERENCE_H
 
 
 #include <agrum/agrum.h>
@@ -546,4 +546,4 @@ namespace gum {
 #include <agrum/base/graphicalModels/inference/graphicalModelInference_tpl.h>
 
 
-#endif   // AGRUM_GRAPHICALMODELINFERENCE_H
+#endif   // GUM_GRAPHICALMODELINFERENCE_H

@@ -48,8 +48,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#ifndef UAI_MRF_READER_H
-#define UAI_MRF_READER_H
+#ifndef GUM_UAI_MRF_READER_H
+#define GUM_UAI_MRF_READER_H
 
 #include <iostream>
 #include <string>
@@ -175,4 +175,4 @@ namespace gum {
 
 #include "UAIMRFReader_tpl.h"
 
-#endif   // UAI_MRF_READER_H
+#endif   // GUM_UAI_MRF_READER_H

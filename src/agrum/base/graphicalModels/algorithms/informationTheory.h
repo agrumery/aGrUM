@@ -47,8 +47,8 @@
  *
  */
 
-#ifndef GUM_INFORMATION_THEORY
-#define GUM_INFORMATION_THEORY
+#ifndef GUM_INFORMATION_THEORY_H
+#define GUM_INFORMATION_THEORY_H
 #include <concepts>
 #include <functional>
 
@@ -136,4 +136,4 @@ namespace gum {
 }   // namespace gum
 
 #include <agrum/base/graphicalModels/algorithms/informationTheory_tpl.h>
-#endif   // GUM_INFORMATION_THEORY
+#endif   // GUM_INFORMATION_THEORY_H

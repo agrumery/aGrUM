@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef GUMREADER_H
-#define GUMREADER_H
+#ifndef GUM_BN_GUM_READER_H
+#define GUM_BN_GUM_READER_H
 #include <agrum/base/core/errorsContainer.h>
 #include <agrum/BN/io/BNReader.h>
 

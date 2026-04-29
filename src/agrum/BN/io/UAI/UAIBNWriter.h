@@ -48,8 +48,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#ifndef UAI_BN_WRITER_H
-#define UAI_BN_WRITER_H
+#ifndef GUM_UAI_BN_WRITER_H
+#define GUM_UAI_BN_WRITER_H
 
 
 #include <fstream>
@@ -133,4 +133,4 @@ namespace gum {
 } /* namespace gum */
 
 #include <agrum/BN/io/UAI/UAIBNWriter_tpl.h>
-#endif   // UAI_BN_WRITER_H
+#endif   // GUM_UAI_BN_WRITER_H

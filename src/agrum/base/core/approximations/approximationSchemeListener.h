@@ -46,8 +46,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef APPROXIMATIONSCHEMELISTENER_H
-#define APPROXIMATIONSCHEMELISTENER_H
+#ifndef GUM_APPROXIMATION_SCHEME_LISTENER_H
+#define GUM_APPROXIMATION_SCHEME_LISTENER_H
 
 #include <agrum/agrum.h>
 
@@ -115,4 +115,4 @@ namespace gum {
   };
 }   // namespace gum
 
-#endif   // APPROXIMATIONSCHEMELISTENER_H
+#endif   // GUM_APPROXIMATION_SCHEME_LISTENER_H

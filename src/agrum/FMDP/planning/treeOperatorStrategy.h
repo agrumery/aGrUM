@@ -47,8 +47,8 @@
  */
 
 // =========================================================================
-#ifndef GUM_TreeOperatorStrategy_H
-#define GUM_TreeOperatorStrategy_H
+#ifndef GUM_TREE_OPERATOR_STRATEGY_H
+#define GUM_TREE_OPERATOR_STRATEGY_H
 // =========================================================================
 #include <agrum/FMDP/planning/IOperatorStrategy.h>
 
@@ -180,4 +180,4 @@ namespace gum {
 
 #include <agrum/FMDP/planning/treeOperatorStrategy_tpl.h>
 
-#endif   // GUM_TreeOperatorStrategy_H
+#endif   // GUM_TREE_OPERATOR_STRATEGY_H

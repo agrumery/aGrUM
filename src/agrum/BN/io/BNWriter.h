@@ -49,8 +49,8 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef BN_WRITER_H
-#define BN_WRITER_H
+#ifndef GUM_BN_WRITER_H
+#define GUM_BN_WRITER_H
 
 #include <filesystem>
 #include <iostream>
@@ -175,4 +175,4 @@ namespace gum {
 
 #include <agrum/BN/io/BNWriter_tpl.h>
 
-#endif   // BN_WRITER_H
+#endif   // GUM_BN_WRITER_H

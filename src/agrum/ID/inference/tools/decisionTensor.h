@@ -46,8 +46,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe Gonzalez(@
  */
-#ifndef AGRUM_DECISIONTENSOR_H
-#define AGRUM_DECISIONTENSOR_H
+#ifndef GUM_DECISIONTENSOR_H
+#define GUM_DECISIONTENSOR_H
 
 #include <agrum/base/multidim/tensor.h>
 
@@ -207,4 +207,4 @@ namespace gum {
   }
 }   // namespace gum
 
-#endif   // AGRUM_DECISIONTENSOR_H
+#endif   // GUM_DECISIONTENSOR_H

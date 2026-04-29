@@ -45,8 +45,8 @@
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
 
-#ifndef AGRUM_ITHREAD_NUMBER_MANAGER_H
-#define AGRUM_ITHREAD_NUMBER_MANAGER_H
+#ifndef GUM_ITHREAD_NUMBER_MANAGER_H
+#define GUM_ITHREAD_NUMBER_MANAGER_H
 
 #include <agrum/agrum.h>
 
@@ -69,4 +69,4 @@ namespace gum {
 
 }   // namespace gum
 
-#endif   // AGRUM_ITHREAD_NUMBER_MANAGER_H
+#endif   // GUM_ITHREAD_NUMBER_MANAGER_H

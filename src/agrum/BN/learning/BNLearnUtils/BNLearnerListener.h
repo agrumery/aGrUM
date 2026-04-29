@@ -65,8 +65,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#ifndef BNLEARNERLISTENER_H
-#define BNLEARNERLISTENER_H
+#ifndef GUM_BN_LEARNER_LISTENER_H
+#define GUM_BN_LEARNER_LISTENER_H
 
 #include <agrum/agrum.h>
 
@@ -104,4 +104,4 @@ namespace gum {
   }   // namespace learning
 }   // namespace gum
 
-#endif   // BNLEARNERLISTENER_H
+#endif   // GUM_BN_LEARNER_LISTENER_H

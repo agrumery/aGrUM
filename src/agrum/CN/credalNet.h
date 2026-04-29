@@ -39,8 +39,8 @@
  ****************************************************************************/
 
 
-#ifndef __CREDAL_NET__H__
-#define __CREDAL_NET__H__
+#ifndef GUM_CREDAL_NET_H
+#define GUM_CREDAL_NET_H
 
 /**
  * @file
@@ -715,4 +715,4 @@ namespace gum {
 
 #include <agrum/CN/credalNet_tpl.h>
 
-#endif   //  __CREDAL_NET__H__
+#endif   //  GUM_CREDAL_NET_H

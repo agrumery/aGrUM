@@ -83,8 +83,8 @@
  */
 
 // ======================================================================================================
-#ifndef FMDP_DAT_READER_H
-#define FMDP_DAT_READER_H
+#ifndef GUM_FMDP_DAT_READER_H
+#define GUM_FMDP_DAT_READER_H
 // ======================================================================================================
 #include <fstream>
 #include <iostream>
@@ -181,4 +181,4 @@ namespace gum {
 
 #include <agrum/FMDP/io/dat/fmdpDatReader_tpl.h>
 
-#endif   // FMDP_DAT_READER_H
+#endif   // GUM_FMDP_DAT_READER_H

@@ -84,8 +84,8 @@
  *
  */
 
-#ifndef GUM_BN_DATABASE_GENERATOR
-#define GUM_BN_DATABASE_GENERATOR
+#ifndef GUM_BN_DATABASE_GENERATOR_H
+#define GUM_BN_DATABASE_GENERATOR_H
 
 #include <filesystem>
 #include <fstream>

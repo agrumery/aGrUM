@@ -46,8 +46,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Ariele-Paolo MAESANO
  */
 
-#ifndef GUM_MC_BAYES_NET_GENERATOR
-#define GUM_MC_BAYES_NET_GENERATOR
+#ifndef GUM_MC_BAYES_NET_GENERATOR_H
+#define GUM_MC_BAYES_NET_GENERATOR_H
 
 #define NB_INIT_ITERATIONS 5000
 
