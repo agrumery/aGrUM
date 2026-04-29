@@ -101,7 +101,7 @@ namespace gum {
       std::hash< std::vector< bool > > vectHash_;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet< GUM_SCALAR >* cnet;
+      const CredalNet< GUM_SCALAR >* cnet_;
 
       public:
       /// @name Constructors / Destructors

@@ -553,7 +553,7 @@ namespace gum::credal {
 
   template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::makeInference() {
-    if (InferenceUpToDate_) { return; }
+    if (inference_up_to_date_) { return; }
 
     initialize_();
 
@@ -572,7 +572,7 @@ namespace gum::credal {
 
     computeExpectations_();
 
-    InferenceUpToDate_ = true;
+    inference_up_to_date_ = true;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -588,7 +588,7 @@ namespace gum::credal {
     NodesP_min_.clear();
     NodesP_max_.clear();
 
-    InferenceUpToDate_ = false;
+    inference_up_to_date_ = false;
 
     if (!msg_l_sent_.empty()) {
       for (auto node: _bnet_->nodes()) {
@@ -600,8 +600,8 @@ namespace gum::credal {
     update_l_.clear();
     update_p_.clear();
 
-    active_nodes_set.clear();
-    next_active_nodes_set.clear();
+    active_nodes_set_.clear();
+    next_active_nodes_set_.clear();
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -621,7 +621,7 @@ namespace gum::credal {
           GUM_ERROR(OperationNotAllowed, "CNLoopyPropagation can only handle HARD evidences")
         }
 
-        active_nodes_set.insert(node);
+        active_nodes_set_.insert(node);
         update_l_.set(node, true);
         update_p_.set(node, true);
 
@@ -647,13 +647,13 @@ namespace gum::credal {
       NodeSet enf_ = graphe.children(node);
 
       if (par_.empty()) {
-        active_nodes_set.insert(node);
+        active_nodes_set_.insert(node);
         update_p_.set(node, true);
         update_l_.set(node, true);
       }
 
       if (enf_.empty()) {
-        active_nodes_set.insert(node);
+        active_nodes_set_.insert(node);
         update_p_.set(node, true);
         update_l_.set(node, true);
       }
@@ -735,7 +735,7 @@ namespace gum::credal {
     _infE_::continueApproximationScheme(1.);
 
     do {
-      for (auto node: active_nodes_set) {
+      for (auto node: active_nodes_set_) {
         for (auto chil: graphe.children(node)) {
           if (_cn_->currentNodeType(chil) == CredalNet< GUM_SCALAR >::NodeType::Indic) { continue; }
 
@@ -753,11 +753,11 @@ namespace gum::credal {
 
       _infE_::updateApproximationScheme();
 
-      active_nodes_set.clear();
-      active_nodes_set = next_active_nodes_set;
-      next_active_nodes_set.clear();
+      active_nodes_set_.clear();
+      active_nodes_set_ = next_active_nodes_set_;
+      next_active_nodes_set_.clear();
 
-    } while (_infE_::continueApproximationScheme(eps) && active_nodes_set.size() > 0);
+    } while (_infE_::continueApproximationScheme(eps) && active_nodes_set_.size() > 0);
 
     _infE_::stopApproximationScheme();   // just to be sure of the
     // approximationScheme has been notified of
@@ -1022,7 +1022,7 @@ namespace gum::credal {
 
       if (update) {
         update_l_.set(X, true);
-        next_active_nodes_set.insert(X);
+        next_active_nodes_set_.insert(X);
       }
 
     }   // end of update_p || update_l
@@ -1227,7 +1227,7 @@ namespace gum::credal {
 
       if (update) {
         update_p_.set(demanding_child, true);
-        next_active_nodes_set.insert(demanding_child);
+        next_active_nodes_set_.insert(demanding_child);
       }
 
     }   // end of : update_l || update_p
@@ -1505,14 +1505,14 @@ namespace gum::credal {
     _bnet_ = &credalNet.current_bn();
 
     _inferenceType_    = InferenceType::nodeToNeighbours;
-    InferenceUpToDate_ = false;
+    inference_up_to_date_ = false;
 
     GUM_CONSTRUCTOR(CNLoopyPropagation)
   }
 
   template < GUM_Numeric GUM_SCALAR >
   CNLoopyPropagation< GUM_SCALAR >::~CNLoopyPropagation() {
-    InferenceUpToDate_ = false;
+    inference_up_to_date_ = false;
 
     if (!msg_l_sent_.empty()) {
       for (auto node: _bnet_->nodes()) {

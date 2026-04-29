@@ -48,7 +48,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     VarMod2BNsMap< GUM_SCALAR >::VarMod2BNsMap() {
-      cnet = nullptr;
+      cnet_ = nullptr;
 
       GUM_CONSTRUCTOR(VarMod2BNsMap);
     }
@@ -84,7 +84,7 @@ namespace gum {
         }
       }
 
-      cnet = &cn;
+      cnet_ = &cn;
     }
 
     template < GUM_Numeric GUM_SCALAR >
@@ -227,7 +227,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     std::vector< std::vector< std::vector< std::vector< bool > > > >
         VarMod2BNsMap< GUM_SCALAR >::getFullBNOptsFromKey(const std::vector< Size >& key) {
-      if (cnet == nullptr)
+      if (cnet_ == nullptr)
         GUM_ERROR(OperationNotAllowed,
                   "No CredalNet associated to me ! Can't get FullBNOptsFromKey : " << key);
 

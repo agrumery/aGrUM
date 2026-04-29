@@ -344,11 +344,11 @@ namespace gum {
       NodeProperty< bool > update_l_;
 
       /** The current node-set to iterate through at this current step. */
-      NodeSet active_nodes_set;
+      NodeSet active_nodes_set_;
       /** The next node-set, i.e. the nodes that will send messages at the next
        * step.
        */
-      NodeSet next_active_nodes_set;
+      NodeSet next_active_nodes_set_;
 
       /** Used to keep track of one's messages sent to it's parents. */
       NodeProperty< NodeSet* > msg_l_sent_;
@@ -379,7 +379,7 @@ namespace gum {
 
       /** \c TRUE if inference has already been performed, \c FALSE otherwise.
        */
-      bool InferenceUpToDate_;
+      bool inference_up_to_date_;
 
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
