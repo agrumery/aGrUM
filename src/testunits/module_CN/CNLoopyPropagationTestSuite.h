@@ -56,7 +56,7 @@
 
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
-#define GUM_CURRENT_SUITE  CNLooopyPropagation
+#define GUM_CURRENT_SUITE  CNLoopyPropagation
 #define GUM_CURRENT_MODULE CN
 
 /**
@@ -72,29 +72,29 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class L2UListener: public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
-    std::string __msg;
+    int         nbr_;
+    std::string msg_;
 
     public:
     explicit L2UListener(gum::ApproximationScheme& aS) :
-        gum::ApproximationSchemeListener(aS), __nbr(0), __msg("") {}
+        gum::ApproximationSchemeListener(aS), nbr_(0), msg_("") {}
 
     void whenProgress(const void*     buffer,
                       const gum::Size a,
                       const double    b,
                       const double    c) override {
-      __nbr++;
+      nbr_++;
     }
 
-    void whenStop(const void* buffer, std::string_view s) override { __msg = s; }
+    void whenStop(const void* buffer, std::string_view s) override { msg_ = s; }
 
-    int nbr() const { return __nbr; }
+    int nbr() const { return nbr_; }
 
-    std::string msg() const { return __msg; }
+    std::string msg() const { return msg_; }
   };   // end of : class l2uListener
 
   ////////////////////////////////////////////////////////////////
-  struct CNLooopyPropagationTestSuite {
+  struct CNLoopyPropagationTestSuite {
     public:
     gum::credal::CredalNet< double >* cn;
 
@@ -193,11 +193,15 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto pmin = lp.marginalMin(node);
-          auto pmax = lp.marginalMax(node);
-
-          // double e_inf = lp.expectationMin ( node_idIt );
-          // double e_sup = lp.expectationMax ( node_idIt );
+          auto tmin = lp.marginalMin(node);
+          auto tmax = lp.marginalMax(node);
+          for (gum::Instantiation i(tmin); !i.end(); ++i) {
+            CHECK(tmin.get(i) >= 0.0);
+            CHECK(tmin.get(i) <= 1.0);
+            CHECK(tmax.get(i) >= 0.0);
+            CHECK(tmax.get(i) <= 1.0);
+            CHECK(tmin.get(i) <= tmax.get(i));
+          }
         }
       } catch (gum::Exception&) { CHECK(false); }
 
@@ -236,10 +240,15 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto inf(lp.marginalMin(node));
-          auto sup(lp.marginalMax(node));
-          // double e_inf = lp.expectationMin ( node_idIt );
-          // double e_sup = lp.expectationMax ( node_idIt );
+          auto tmin(lp.marginalMin(node));
+          auto tmax(lp.marginalMax(node));
+          for (gum::Instantiation i(tmin); !i.end(); ++i) {
+            CHECK(tmin.get(i) >= 0.0);
+            CHECK(tmin.get(i) <= 1.0);
+            CHECK(tmax.get(i) >= 0.0);
+            CHECK(tmax.get(i) <= 1.0);
+            CHECK(tmin.get(i) <= tmax.get(i));
+          }
         }
       } catch (gum::Exception&) { CHECK(false); }
 
@@ -315,8 +324,15 @@ namespace gum_tests {
 
       try {
         for (const auto node: cn->current_bn().nodes()) {
-          auto inf(lp.marginalMin(node));
-          auto sup(lp.marginalMax(node));
+          auto tmin(lp.marginalMin(node));
+          auto tmax(lp.marginalMax(node));
+          for (gum::Instantiation i(tmin); !i.end(); ++i) {
+            CHECK(tmin.get(i) >= 0.0);
+            CHECK(tmin.get(i) <= 1.0);
+            CHECK(tmax.get(i) >= 0.0);
+            CHECK(tmax.get(i) <= 1.0);
+            CHECK(tmin.get(i) <= tmax.get(i));
+          }
         }
       } catch (gum::Exception&) { CHECK(false); }
 
