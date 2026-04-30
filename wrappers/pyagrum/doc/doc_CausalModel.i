@@ -182,7 +182,7 @@ set of int or None
 
 See Also
 --------
-pyagrum.causal.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
+pyagrum.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
 "
 
 %feature("docstring") gum::CausalModel::frontDoor
@@ -210,7 +210,7 @@ set of int or None
 
 See Also
 --------
-pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
+pyagrum.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 "
 
 %feature("docstring") gum::CausalModel::observationalBN
@@ -220,7 +220,7 @@ Return the observational Bayesian network underlying the causal model.
 Warnings
 --------
 Do not use this BN for causal inference. It represents the observational
-distribution only. Use :func:`pyagrum.causal.causalImpact` for
+distribution only. Use :func:`pyagrum.causalImpact` for
 interventional queries.
 
 Returns
@@ -358,14 +358,14 @@ portion of the causal DAG and latent structure.
 
 Parameters
 ----------
-cm : pyagrum.causal.CausalModel
+cm : pyagrum.CausalModel
     The original causal model.
 subset : set of int
     NodeIds of the observed variables to keep.
 
 Returns
 -------
-pyagrum.causal.CausalModel
+pyagrum.CausalModel
     The induced causal sub-model.
 "
 

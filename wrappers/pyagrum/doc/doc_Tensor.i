@@ -53,11 +53,11 @@ Tensor() -> Tensor
 
 Tensor(src) -> Tensor
     Parameters:
-        - **src** (* pyagrum.Tensor *) -- the Tensor to copy
+        - **src** (*pyagrum.Tensor*) -- the Tensor to copy
 
 Tensor(v1,v2, ...) -> Tensor
     Parameters:
-        - v1,v2... (* pyagrum.DiscreteVariable *) -- the variables to be added to the tensor
+        - v1,v2... (*pyagrum.DiscreteVariable*) -- the variables to be added to the tensor
 "
 
 %feature("docstring") gum::Tensor::KL

@@ -1782,9 +1782,9 @@ def showCausalModel(cm: pyagrum.CausalModel, size=None):
 
 def getCausalImpact(
   model: pyagrum.CausalModel,
-  on: str | pyagrum.NameSet,
-  doing: str | pyagrum.NameSet,
-  knowing: None | pyagrum.NameSet = None,
+  on: str | set[str],
+  doing: str | set[str],
+  knowing: None | set[str] = None,
   values: None | dict[str, int] = None,
 ):
   """
@@ -1834,10 +1834,10 @@ def getCausalImpact(
 
 def showCausalImpact(
   model: pyagrum.CausalModel,
-  on: str | NameSet,
-  doing: str | NameSet,
-  knowing: Optional[NameSet] = None,
-  values: Optional[dict[str, int]] = None,
+  on: str | set[str],
+  doing: str | set[str],
+  knowing: None | set[str] = None,
+  values: None | dict[str, int] = None,
 ):
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation

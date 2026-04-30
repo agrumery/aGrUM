@@ -73,10 +73,9 @@ Reference manual
 
   CausalModel
   CausalInference
-  CausalEffectEstimation
   CausalNotebook
-  CausalExceptions
   CausalAST
+  CausalEffectEstimation
 
 
 .. toctree::

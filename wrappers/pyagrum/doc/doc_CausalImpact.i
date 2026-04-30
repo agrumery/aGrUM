@@ -53,12 +53,12 @@ general do-calculus (ID algorithm).
 
 Notes
 -----
-You may prefer to use the high-level function :func:`pyagrum.causal.causalImpact`
+You may prefer to use the high-level function :func:`pyagrum.causalImpact`
 instead of constructing a CausalImpact object directly.
 
-CausalImpact(cm, *, on, doing, knowing=None) -> CausalImpact
+CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
     Parameters:
-        - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
+        - **cm** (*pyagrum.CausalModel*) -- the causal model.
         - **on** (*str or set of str*) -- target variable(s) of the query.
           A single string is automatically converted to a one-element set.
           Keyword-only.
@@ -195,7 +195,7 @@ Return the causal model associated with this query.
 
 Returns
 -------
-pyagrum.causal.CausalModel
+pyagrum.CausalModel
     The causal model.
 "
 

@@ -603,7 +603,22 @@ def check_config(app):
 googleanalytics_id = "G-J6JL8NQP91"
 
 
+def _strip_skip_website_markers(app, docname, source):
+  """Remove .. SKIP WEBSITE / .. END SKIP WEBSITE comment markers so that
+  their indented content is visible to Sphinx (RTD build).
+  webbuild.py handles stripping the *content* for the website build."""
+  lines = source[0].splitlines(keepends=True)
+  out = []
+  for line in lines:
+    stripped = line.strip()
+    if stripped in (".. SKIP WEBSITE", ".. END SKIP WEBSITE"):
+      continue
+    out.append(line)
+  source[0] = "".join(out)
+
+
 def setup(app):
+  app.connect("source-read", _strip_skip_website_markers)
   # app.connect('autodoc-process-docstring', process_docstring)
   # app.connect('autodoc-process-signature', process_signature)
   app.connect("autodoc-skip-member", skip)

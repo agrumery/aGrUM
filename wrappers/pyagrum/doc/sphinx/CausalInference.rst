@@ -1,3 +1,6 @@
+Causal computation in pyAgrum
+==============================
+
 Causal Inference (a.k.a. do-calculus)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

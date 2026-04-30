@@ -1,5 +1,5 @@
-Causal Model
-============
+Causal Model in pyAgrum
+=======================
 
 .. figure:: _static/causal.png
     :align: center
@@ -10,14 +10,14 @@ Causality in pyAgrum primarily involves building a causal model—that is, const
 pyAgrum provides a set of tools to perform causal inference and estimate causal effects from data. This includes the ability to identify interventions, compute causal impacts, and evaluate the effects of interventions on observed variables.
 
 .. note::
-    In the figure above, the `pyagrum.causal` module can use a LaTeX special arrow (:math:`\hookrightarrow`) to compactly represent an intervention. By default, it uses the classical "do" notation. You can change this behavior using the following configuration keys:
+    The causal module can use a LaTeX special arrow (:math:`\hookrightarrow`) to compactly represent an intervention. By default, it uses the classical "do" notation. You can change this behavior using the following configuration keys:
 
     .. code-block:: python
 
             pyagrum.config["causal","latex_do_prefix"]="\hookrightarrow("
             pyagrum.config["causal","latex_do_suffix"]=")"
 
-A :class:`pyagrum.causal.CausalModel` extends a :class:`pyagrum.BayesNet` with latent (hidden) variables
+A :class:`pyagrum.CausalModel` extends a :class:`pyagrum.BayesNet` with latent (hidden) variables
 and explicit causal assumptions. It is the entry point for do-calculus reasoning and causal effect
 identification.
 
@@ -26,4 +26,4 @@ identification.
    :doc:`CausalInference`
       Functions for computing causal impacts and applying do-calculus.
 
-.. autoclass:: pyagrum.causal.CausalModel
+.. autoclass:: pyagrum.CausalModel

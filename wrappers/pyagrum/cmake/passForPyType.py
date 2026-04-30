@@ -244,10 +244,11 @@ _RULES_PYTHON_RAW: list[tuple] = [
     ("std::size_t", "int"),
     ("object_type", "object"),
     # remove type decorators (const, &, etc.) ... to be treated as complete word : \b
-    ("\\bbool\\b", "bool"),
-    ("\\bsize_t\\b", "int"),
-    ("\\bint\\b", "int"),
-    ("\\bunsigned int\\b", "int"),
+    # type_only=True: avoid consuming RST emphasis closing * in docstring text (e.g. (*bool*))
+    ("\\bbool\\b", "bool", True),
+    ("\\bsize_t\\b", "int", True),
+    ("\\bint\\b", "int", True),
+    ("\\bunsigned int\\b", "int", True),
     # type_only=True: only apply on lines with type annotation markers (-> or def)
     # to avoid replacing English words ("as long as", "double the size", etc.)
     ("\\blong\\b", "int", True),

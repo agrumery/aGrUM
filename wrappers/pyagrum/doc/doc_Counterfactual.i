@@ -59,12 +59,12 @@ The computation follows the three-step algorithm from Pearl (2018),
 
 Notes
 -----
-Prefer using the high-level function :func:`pyagrum.causal.counterfactual`
+Prefer using the high-level function :func:`pyagrum.counterfactual`
 instead of constructing a Counterfactual object directly.
 
 Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
     Parameters:
-        - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
+        - **cm** (*pyagrum.CausalModel*) -- the causal model.
         - **on** (*set of str or set of int*) -- target variables of the
           counterfactual query.
         - **whatif** (*set of str or set of int*) -- variables whose values
@@ -96,7 +96,7 @@ prior distributions in a copy of the model with those posteriors.
 
 Parameters
 ----------
-cm : pyagrum.causal.CausalModel
+cm : pyagrum.CausalModel
     The original causal model.
 profile : dict of str → str
     The factual observation as ``{variable_name: value_name}``.
@@ -106,12 +106,12 @@ whatif : set of str
 
 Returns
 -------
-pyagrum.causal.CausalModel
+pyagrum.CausalModel
     The twin causal model ready for the prediction step.
 
 See Also
 --------
-pyagrum.causal.counterfactualModel : high-level function wrapper.
+pyagrum.counterfactualModel : high-level function wrapper.
 "
 
 %feature("docstring") gum::Counterfactual::run
@@ -128,7 +128,7 @@ Return the original causal model.
 
 Returns
 -------
-pyagrum.causal.CausalModel
+pyagrum.CausalModel
     The original causal model passed to the constructor.
 "
 
@@ -141,7 +141,7 @@ priors for parentless nodes (based on the observed profile).
 
 Returns
 -------
-pyagrum.causal.CausalModel
+pyagrum.CausalModel
     The twin model.
 "
 
@@ -153,7 +153,7 @@ The formula is evaluated on the twin model.
 
 Returns
 -------
-pyagrum.causal.CausalImpact
+pyagrum.CausalImpact
     The identified causal impact on the twin model.
 "
 

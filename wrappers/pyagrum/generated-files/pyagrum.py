@@ -6674,7 +6674,7 @@ class ApproximationScheme(object):
 
     ApproximationScheme(verbosity=False) -> ApproximationScheme
         Parameters:
-          - **verbosity** (*bool) -- to keep (or not) tracks of the learning process (history of epsilons)
+          - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
 
     """
 
@@ -7125,7 +7125,7 @@ class DiscretizedVariable(IDiscretizedVariable):
             - **aName** (*str*) -- the name of the variable
             - **aDesc** (*str*) -- the description of the variable
             - **ticks** (*list[double]*) -- the list of ticks to add
-            - **is_empirical** (*bool) -- if False, raise an error if a value is out of bound.
+            - **is_empirical** (*bool*) -- if False, raise an error if a value is out of bound.
 
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
@@ -7463,11 +7463,11 @@ class Tensor(object):
 
     Tensor(src) -> Tensor
         Parameters:
-            - **src** (* pyagrum.Tensor *) -- the Tensor to copy
+            - **src** (*pyagrum.Tensor*) -- the Tensor to copy
 
     Tensor(v1,v2, ...) -> Tensor
         Parameters:
-            - v1,v2... (* pyagrum.DiscreteVariable *) -- the variables to be added to the tensor
+            - v1,v2... (*pyagrum.DiscreteVariable*) -- the variables to be added to the tensor
 
     """
 
@@ -9185,7 +9185,7 @@ def fastGraph(msg:str):
 
   Warnings
   --------
-    The choice of "-" for edges is unambiguous because "-" is not a valid character for a node id (int).
+    The choice of "-" for edges is unambiguous because "-" is not a valid character for a node id (unsigned int).
     Moreover, "--" is already used by `pyagrum.fastMRF` to specify factors.
 
   Parameters
@@ -9197,7 +9197,7 @@ def fastGraph(msg:str):
   -------
     pyagrum.DiGraph ou pyagrum.UndiGraph ou pyagrum.MixedGraph
   """
-# regexp to recognize strings with only int, ";", "-" followed by ">" or ">"
+# regexp to recognize strings with only unsigned int, ";", "-" followed by ">" or ">"
 
 
   import re
@@ -26822,6 +26822,13 @@ class CredalNet(object):
         return _pyagrum.CredalNet_saveBNsMinMax(self, min_path, max_path)
 
     def computeBinaryCPTMinMax(self) -> None:
+        r"""
+
+        Used with binary networks to speed-up L2U inference.
+
+        Store the lower and upper probabilities of each node X over the 'True' modality.
+
+        """
         return _pyagrum.CredalNet_computeBinaryCPTMinMax(self)
 
     def src_bn(self) -> "pyagrum.BayesNet":
@@ -27432,6 +27439,19 @@ class CNLoopyPropagation(object):
         """
         return _pyagrum.CNLoopyPropagation_makeInference(self)
 
+    def insertEvidenceFile(self, path: str) -> None:
+        r"""
+
+        Insert evidence from file.
+
+        Parameters
+        ----------
+        path : str
+            the path to the evidence file.
+
+        """
+        return _pyagrum.CNLoopyPropagation_insertEvidenceFile(self, path)
+
     def inferenceType(self, *args) -> int:
         r"""
 
@@ -27464,19 +27484,6 @@ class CNLoopyPropagation(object):
 
 
     __swig_destroy__ = _pyagrum.delete_CNLoopyPropagation
-
-    def insertEvidenceFile(self, path: str) -> None:
-        r"""
-
-        Insert evidence from file.
-
-        Parameters
-        ----------
-        path : str
-            the path to the evidence file.
-
-        """
-        return _pyagrum.CNLoopyPropagation_insertEvidenceFile(self, path)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -29718,13 +29725,13 @@ class MarkovRandomField(IMarkovRandomField):
         r"""
 
         Create a Markov random field with a modified dot-like syntax which specifies:
-            - the structure ``a-b-c;b-d-e;``. The substring ``a-b-c`` indicates a factor with the scope (a,b,c).
+            - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
             - the type of the variables with different syntax (cf documentation).
 
         Examples
         --------
         >>> import pyagrum as gum
-        >>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]-C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+        >>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
         Parameters
         ----------
@@ -31443,8 +31450,8 @@ class DoorCriteria(object):
     Notes
     -----
     High-level search for a single valid set is available via
-    :meth:`pyagrum.causal.CausalModel.backDoor` and
-    :meth:`pyagrum.causal.CausalModel.frontDoor`.
+    :meth:`pyagrum.CausalModel.backDoor` and
+    :meth:`pyagrum.CausalModel.frontDoor`.
 
     Examples
     --------
@@ -31737,7 +31744,7 @@ class CausalModel(object):
               variables. Each entry is a pair ``(name, children)`` where ``name``
               is the latent variable name and ``children`` is the list of observed
               variable names it affects.
-            - **assumeNonSpurious** (*bool) -- if True, existing arcs between the children
+            - **assumeNonSpurious** (*bool*) -- if True, existing arcs between the children
               of each latent variable are preserved. Default is False (arcs between
               affected children are removed as they are assumed to be explained by
               the latent confounder).
@@ -31881,7 +31888,7 @@ class CausalModel(object):
 
         See Also
         --------
-        pyagrum.causal.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
+        pyagrum.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
 
         """
         return _pyagrum.CausalModel_backDoor(self, *args)
@@ -31912,7 +31919,7 @@ class CausalModel(object):
 
         See Also
         --------
-        pyagrum.causal.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
+        pyagrum.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 
         """
         return _pyagrum.CausalModel_frontDoor(self, *args)
@@ -31927,14 +31934,14 @@ class CausalModel(object):
 
         Parameters
         ----------
-        cm : pyagrum.causal.CausalModel
+        cm : pyagrum.CausalModel
             The original causal model.
         subset : set of int
             NodeIds of the observed variables to keep.
 
         Returns
         -------
-        pyagrum.causal.CausalModel
+        pyagrum.CausalModel
             The induced causal sub-model.
 
         """
@@ -31983,7 +31990,7 @@ class CausalModel(object):
         Warnings
         --------
         Do not use this BN for causal inference. It represents the observational
-        distribution only. Use :func:`pyagrum.causal.causalImpact` for
+        distribution only. Use :func:`pyagrum.causalImpact` for
         interventional queries.
 
         Returns
@@ -32164,12 +32171,12 @@ class CausalImpact(object):
 
     Notes
     -----
-    You may prefer to use the high-level function :func:`pyagrum.causal.causalImpact`
+    You may prefer to use the high-level function :func:`pyagrum.causalImpact`
     instead of constructing a CausalImpact object directly.
 
-    CausalImpact(cm, *, on, doing, knowing=None) -> CausalImpact
+    CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
         Parameters:
-            - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
+            - **cm** (*pyagrum.CausalModel*) -- the causal model.
             - **on** (*str or set of str*) -- target variable(s) of the query.
               A single string is automatically converted to a one-element set.
               Keyword-only.
@@ -32279,7 +32286,7 @@ class CausalImpact(object):
 
         Returns
         -------
-        pyagrum.causal.CausalModel
+        pyagrum.CausalModel
             The causal model.
 
         """
@@ -32497,15 +32504,15 @@ class Counterfactual(object):
 
     Notes
     -----
-    Prefer using the high-level function :func:`pyagrum.causal.counterfactual`
+    Prefer using the high-level function :func:`pyagrum.counterfactual`
     instead of constructing a Counterfactual object directly.
 
     Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
         Parameters:
-            - **cm** (*pyagrum.causal.CausalModel*) -- the causal model.
-            - **on** (*set of str or set of int) -- target variables of the
+            - **cm** (*pyagrum.CausalModel*) -- the causal model.
+            - **on** (*set of str or set of int*) -- target variables of the
               counterfactual query.
-            - **whatif** (*set of str or set of int) -- variables whose values
+            - **whatif** (*set of str or set of int*) -- variables whose values
               are changed in the counterfactual scenario.
             - **profile** (*dict of str → str*) -- the factual observation,
               given as ``{variable_name: value_name}``. Default is empty.
@@ -32543,7 +32550,7 @@ class Counterfactual(object):
 
         Parameters
         ----------
-        cm : pyagrum.causal.CausalModel
+        cm : pyagrum.CausalModel
             The original causal model.
         profile : dict of str → str
             The factual observation as ``{variable_name: value_name}``.
@@ -32553,12 +32560,12 @@ class Counterfactual(object):
 
         Returns
         -------
-        pyagrum.causal.CausalModel
+        pyagrum.CausalModel
             The twin causal model ready for the prediction step.
 
         See Also
         --------
-        pyagrum.causal.counterfactualModel : high-level function wrapper.
+        pyagrum.counterfactualModel : high-level function wrapper.
 
         """
         return _pyagrum.Counterfactual_counterFactualModel(*args)
@@ -32581,7 +32588,7 @@ class Counterfactual(object):
 
         Returns
         -------
-        pyagrum.causal.CausalModel
+        pyagrum.CausalModel
             The original causal model passed to the constructor.
 
         """
@@ -32597,7 +32604,7 @@ class Counterfactual(object):
 
         Returns
         -------
-        pyagrum.causal.CausalModel
+        pyagrum.CausalModel
             The twin model.
 
         """
@@ -32612,7 +32619,7 @@ class Counterfactual(object):
 
         Returns
         -------
-        pyagrum.causal.CausalImpact
+        pyagrum.CausalImpact
             The identified causal impact on the twin model.
 
         """

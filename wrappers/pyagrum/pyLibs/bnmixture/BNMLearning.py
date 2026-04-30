@@ -150,7 +150,7 @@ class BNMLearner(IMixtureLearner):
   -----
 
   - How is memory handled? First, to reduce memory consumption, only one BNLearner is instancied at most at a given time. Their are more improvements if ``source`` contains files.
-  In that case, dataframes are loaded one at a time to reduce memory consumption. Otherwise all DataFrames are stored together.
+    In that case, dataframes are loaded one at a time to reduce memory consumption. Otherwise all DataFrames are stored together.
 
   - We create a reference learner using the source with maximum weight.
 
@@ -258,7 +258,7 @@ class BNMBootstrapLearner(IMixtureLearner):
   - How is memory handled? First, to reduce memory consumption, only one BNLearner is instancied at most at a given time.
 
   - To keep one BNLearner at a time, we create a reference learner. To apply a method for the learning algorithm of all bootstraped BNs,
-  "use" methods modify the reference learner. Then the other learners make use of ``BNLearner.copyState`` to update themself according to the reference learner.
+    "use" methods modify the reference learner. Then the other learners make use of ``BNLearner.copyState`` to update themself according to the reference learner.
 
 
   Parameters

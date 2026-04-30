@@ -20,10 +20,9 @@ is a :class:`pyagrum.CausalImpact` object carrying the identified AST. From it y
 .. code-block:: python
 
    import pyagrum as gum
-   import pyagrum.causal as csl
 
    bn = gum.fastBN("X->Y->Z;X->Z")
-   cm = csl.CausalModel(bn)
+   cm = gum.CausalModel(bn)
 
    formula, tensor, explanation = gum.causalImpact(cm, on="Z", doing="X")
 

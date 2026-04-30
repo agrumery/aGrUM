@@ -56,8 +56,8 @@ Z to Y are blocked by X.
 Notes
 -----
 High-level search for a single valid set is available via
-:meth:`pyagrum.causal.CausalModel.backDoor` and
-:meth:`pyagrum.causal.CausalModel.frontDoor`.
+:meth:`pyagrum.CausalModel.backDoor` and
+:meth:`pyagrum.CausalModel.frontDoor`.
 
 Examples
 --------
