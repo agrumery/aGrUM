@@ -568,15 +568,7 @@ if len(args)>1:
           return self.get(inst)
 
       if loopvars.nbrDim()==self.nbrDim():
-        content=[]
-
-        inst=Instantiation(self)
-        while not inst.end():
-            content.append(self.get(inst))
-            inst.inc()
-        tab=numpy.array(content,dtype=numpy.float64)
-        tab.shape=tuple(reversed(self.shape))
-        return tab
+        return self.as_nparray()
 
       names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
       tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
@@ -597,6 +589,12 @@ if len(args)>1:
 
       if loopvars.nbrDim()==0:
           self.set(inst,value)
+          return
+
+      if loopvars.nbrDim() == self.nbrDim() and not isinstance(value, dict):
+          if isinstance(value, list):
+              value = numpy.array(value, dtype=numpy.float64)
+          self.fillWith(value)
           return
 
       if isinstance(value,Number):
