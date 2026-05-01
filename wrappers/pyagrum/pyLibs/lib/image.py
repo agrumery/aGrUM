@@ -45,6 +45,7 @@ tools for exporting model and inference as image
 import os
 import tempfile
 import re
+from typing import Any
 import matplotlib.image as mpimg
 import pydot as dot
 
@@ -58,7 +59,7 @@ import pyagrum.lib._colors as gumcols
 import pyagrum.lib.utils as gutils
 
 
-def export(obj, filename: str = None, **kwargs):
+def export(obj: Any, filename: str | None = None, **kwargs) -> Any:
   """
   export a graphical model or an inference or an obj with _repr_html as an image
 
@@ -99,7 +100,7 @@ def export(obj, filename: str = None, **kwargs):
   )
 
 
-def exportHTML(htmlobj: str, filename: str = None):
+def exportHTML(htmlobj: str, filename: str | None = None) -> None:
   """
   export an obj with _repr_html as an image
 
@@ -126,7 +127,7 @@ def exportHTML(htmlobj: str, filename: str = None):
   gutils.html2image(htmlobj, filename)
 
 
-def exportModel(model, filename: str = None, **kwargs):
+def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   """
   export the graphical representation of the model in filename (png, pdf,etc.)
 
@@ -185,20 +186,20 @@ def exportModel(model, filename: str = None, **kwargs):
 
 
 def prepareShowInference(
-  model,
-  engine=None,
-  evs=None,
-  targets=None,
-  size=None,
-  nodeColor=None,
-  factorColor=None,
-  arcWidth=None,
-  arcColor=None,
-  cmapNode=None,
-  cmapArc=None,
-  graph=None,
-  view=None,
-):
+  model: Any,
+  engine: Any | None = None,
+  evs: dict | None = None,
+  targets: set | None = None,
+  size: str | None = None,
+  nodeColor: dict | None = None,
+  factorColor: dict | None = None,
+  arcWidth: dict | None = None,
+  arcColor: dict | None = None,
+  cmapNode: Any | None = None,
+  cmapArc: Any | None = None,
+  graph: Any | None = None,
+  view: str | None = None,
+) -> dot.Dot:
   """
   Transform an inference for a model in a dot representation
 
@@ -320,7 +321,7 @@ def prepareShowInference(
   raise pyagrum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram)")
 
 
-def prepareLinksForSVG(mainSvg):
+def prepareLinksForSVG(mainSvg: str) -> str:
   """
   Inlining links in svg
 
@@ -371,7 +372,7 @@ def prepareLinksForSVG(mainSvg):
   return mainSvg
 
 
-def dot_as_svg_string(gr, size):
+def dot_as_svg_string(gr: dot.Dot, size: str | None) -> str:
   """
   repr a pydot graph in a notebook
 
@@ -387,7 +388,7 @@ def dot_as_svg_string(gr, size):
   return gsvg
 
 
-def exportInference(model, filename: str = None, **kwargs):
+def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
   """
   the graphical representation of an inference in a notebook
 

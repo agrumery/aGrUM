@@ -204,7 +204,9 @@ class CLGVariableElimination:
       cf_dict[node] = cf
     return cf_dict
 
-  def _sum_product_ve(self, elimination_order: list[int], cf_list: list[CanonicalForm], evidence: dict[str, float]) -> list[CanonicalForm]:
+  def _sum_product_ve(
+    self, elimination_order: list[int], cf_list: list[CanonicalForm], evidence: dict[str, float]
+  ) -> list[CanonicalForm]:
     """
     The variable elimination algorithm for CLG.
 

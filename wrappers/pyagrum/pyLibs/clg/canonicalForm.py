@@ -48,7 +48,9 @@ from numpy.linalg import det
 
 
 class CanonicalForm:
-  def __init__(self, scope: list[int] = [], K: list | np.ndarray = [], h: list | np.ndarray = [], g: float | int = 0) -> None:
+  def __init__(
+    self, scope: list[int] = [], K: list | np.ndarray = [], h: list | np.ndarray = [], g: float | int = 0
+  ) -> None:
     # Expecting a list of int corresponding to the id of the variables in the CLG.
     self._scope = scope
     self._size = len(self._scope)

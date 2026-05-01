@@ -599,7 +599,16 @@ class CLG:
     return cmp.scores()["fscore"]
 
 
-def randomCLG(nb_variables: int, names: list[str], MuMax: float = 5, MuMin: float = -5, SigmaMax: float = 10, SigmaMin: float = 1, ArcCoefMax: float = 10, ArcCoefMin: float = 5) -> CLG:
+def randomCLG(
+  nb_variables: int,
+  names: list[str],
+  MuMax: float = 5,
+  MuMin: float = -5,
+  SigmaMax: float = 10,
+  SigmaMin: float = 1,
+  ArcCoefMax: float = 10,
+  ArcCoefMin: float = 5,
+) -> CLG:
   """
   This function generates a random CLG with nb_variables variables.
 

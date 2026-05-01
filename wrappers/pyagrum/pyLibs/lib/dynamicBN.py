@@ -109,7 +109,7 @@ def _isInNoTimeSlice(name):
   return name[-1] not in ["0", "t"]
 
 
-def realNameFrom2TBNname(name, ts):
+def realNameFrom2TBNname(name: str, ts: int) -> str:
   """
   Returns
   -------
@@ -119,7 +119,7 @@ def realNameFrom2TBNname(name, ts):
   return f"{name[:-1]}{ts}" if not _isInNoTimeSlice(name) else name
 
 
-def getTimeSlicesRange(dbn) -> dict[str, list[tuple[str, str]]]:
+def getTimeSlicesRange(dbn: pyagrum.BayesNet) -> dict[str, list[tuple[str, str]]]:
   """
   get the range and (name,radical) of each variables
 
@@ -147,7 +147,7 @@ def getTimeSlicesRange(dbn) -> dict[str, list[tuple[str, str]]]:
   return timeslices
 
 
-def is2TBN(bn) -> tuple[bool, str]:
+def is2TBN(bn: pyagrum.BayesNet) -> tuple[bool, str]:
   """
   Check if bn is a 2 TimeSlice Bayesian network
 
@@ -227,7 +227,7 @@ def _TimeSlicesToDot(dbn) -> dot.Dot:
   return g
 
 
-def showTimeSlices(dbn, size=None):
+def showTimeSlices(dbn: pyagrum.BayesNet, size: str | None = None) -> None:
   """
   Try to correctly display dBN and 2TBN
 
@@ -249,7 +249,7 @@ def showTimeSlices(dbn, size=None):
   showGraph(_TimeSlicesToDot(dbn), size)
 
 
-def getTimeSlices(dbn, size=None) -> str:
+def getTimeSlices(dbn: pyagrum.BayesNet, size: str | None = None) -> str:
   """
   Try to correctly represent dBN and 2TBN as an HTML string
 
@@ -270,7 +270,7 @@ def getTimeSlices(dbn, size=None) -> str:
   return getGraph(_TimeSlicesToDot(dbn), size)
 
 
-def unroll2TBN(dbn, nbr) -> pyagrum.BayesNet:
+def unroll2TBN(dbn: pyagrum.BayesNet, nbr: int) -> pyagrum.BayesNet:
   """
   unroll a 2TBN given the nbr of timeslices
 
@@ -346,7 +346,9 @@ def unroll2TBN(dbn, nbr) -> pyagrum.BayesNet:
   return bn
 
 
-def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
+def plotFollowUnrolled(
+  lovars: list[str], dbn: pyagrum.BayesNet, T: int, evs: dict, vars_title: list[str] | None = None
+) -> None:
   """
   Plot the dynamic evolution of a list of vars with a dBN.
 
@@ -402,7 +404,7 @@ def plotFollowUnrolled(lovars, dbn, T, evs, vars_title=None):
     plt.show()
 
 
-def plotFollow(lovars, twoTdbn, T, evs):
+def plotFollow(lovars: list[str], twoTdbn: pyagrum.BayesNet, T: int, evs: dict) -> None:
   """
   Plot modifications of variables in a 2TBN knowing the size of the time window (T) and the evidence on the sequence.
 

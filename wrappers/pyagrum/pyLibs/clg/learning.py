@@ -383,7 +383,9 @@ class CLGLearner:
 
     return found_edge
 
-  def Adjacency_search(self, order: list[int], verbose: bool = False) -> tuple[dict[int, set[int]], dict[tuple[int, int], set[int]]]:
+  def Adjacency_search(
+    self, order: list[int], verbose: bool = False
+  ) -> tuple[dict[int, set[int]], dict[tuple[int, int], set[int]]]:
     """
     This function is the first step of PC-algo: Adjacency Search.
     Apply indep_test() to the first step of PC-algo for Adjacency Search.
@@ -641,7 +643,9 @@ class CLGLearner:
     # Return the final DAG skeleton
     return C
 
-  def estimate_parameters(self, C: dict[int, set[int]]) -> tuple[dict[int, float], dict[int, float], dict[tuple[int, int], float]]:
+  def estimate_parameters(
+    self, C: dict[int, set[int]]
+  ) -> tuple[dict[int, float], dict[int, float], dict[tuple[int, int], float]]:
     """
     This function is used to estimate the parameters of the CLG model.
 

@@ -48,6 +48,7 @@ import hashlib
 
 from tempfile import mkdtemp
 
+import matplotlib.colors
 import matplotlib.pyplot as plt
 import pydot as dot
 
@@ -57,7 +58,15 @@ from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
 
 def CN2dot(
-  cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+  cn: pyagrum.CredalNet,
+  size: str | None = None,
+  nodeColor: dict[tuple[int, int], float] | None = None,
+  arcWidth: dict[tuple[int, int], float] | None = None,
+  arcLabel: dict[tuple[int, int], str] | None = None,
+  arcColor: dict[tuple[int, int], float] | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+  showMsg: dict | None = None,
 ) -> dot.Dot:
   """
   create a pydot representation of the Credal Network
@@ -166,17 +175,17 @@ def CN2dot(
 
 
 def CNinference2dot(
-  cn,
-  size=None,
-  engine=None,
-  evs=None,
-  targets=None,
-  nodeColor=None,
-  arcWidth=None,
-  arcColor=None,
-  cmapNode=None,
-  cmapArc=None,
-  dag=None,
+  cn: pyagrum.CredalNet,
+  size: str | None = None,
+  engine: pyagrum.Inference | None = None,
+  evs: dict | None = None,
+  targets: set | None = None,
+  nodeColor: dict | None = None,
+  arcWidth: dict | None = None,
+  arcColor: dict | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+  dag: pyagrum.DAG | None = None,
 ) -> dot.Dot:
   """
   create a pydot representation of an inference in a BN

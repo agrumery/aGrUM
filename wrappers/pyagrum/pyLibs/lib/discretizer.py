@@ -43,9 +43,13 @@ This module contains the deprecated Discretizer class. See the new DiscreteTypeP
 """
 
 import warnings
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+  from .discreteTypeProcessor import DiscreteTypeProcessor
 
 
-def Discretizer(*args, **kwargs):
+def Discretizer(*args: Any, **kwargs: Any) -> "DiscreteTypeProcessor":
   """
   Warnings
   ------

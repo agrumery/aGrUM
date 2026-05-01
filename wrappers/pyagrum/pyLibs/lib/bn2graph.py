@@ -48,6 +48,7 @@ import hashlib
 
 from tempfile import mkdtemp
 
+import matplotlib.colors
 import matplotlib.pyplot as plt
 import pydot as dot
 
@@ -59,7 +60,15 @@ from pyagrum.lib.utils import getBlackInTheme
 
 
 def BN2dot(
-  bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
+  bn: pyagrum.BayesNet,
+  size: str | None = None,
+  nodeColor: dict[tuple[int, int], float] | None = None,
+  arcWidth: dict[tuple[int, int], float] | None = None,
+  arcLabel: dict[tuple[int, int], str] | None = None,
+  arcColor: dict[tuple[int, int], float] | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+  showMsg: dict | None = None,
 ) -> dot.Dot:
   """
   create a pydot representation of the BN
@@ -161,17 +170,17 @@ def BN2dot(
 
 
 def BNinference2dot(
-  bn,
-  size=None,
-  engine=None,
-  evs=None,
-  targets=None,
-  nodeColor=None,
-  arcWidth=None,
-  arcColor=None,
-  cmapNode=None,
-  cmapArc=None,
-  dag=None,
+  bn: pyagrum.BayesNet,
+  size: str | None = None,
+  engine: pyagrum.Inference | None = None,
+  evs: dict | None = None,
+  targets: set | None = None,
+  nodeColor: dict | None = None,
+  arcWidth: dict | None = None,
+  arcColor: dict | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+  dag: pyagrum.DAG | None = None,
 ) -> dot.Dot:
   """
   create a pydot representation of an inference in a BN

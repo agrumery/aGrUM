@@ -44,6 +44,7 @@ tools for BN analysis in ipython (and spyder)
 
 import IPython.display
 import matplotlib as mpl
+import matplotlib.colors
 import matplotlib.pyplot as plt
 import numpy as np
 import pydot as dot
@@ -67,7 +68,7 @@ except NameError:
   ) from None
 
 
-def configuration():
+def configuration() -> None:
   """
   Display the collection of dependance and versions
   """
@@ -87,7 +88,7 @@ def configuration():
     print(f"{name} : {packages[name]}")
 
 
-def showGraph(gr, size=None):
+def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   """
   show a pydot graph in a notebook
 
@@ -105,12 +106,12 @@ def showGraph(gr, size=None):
   display(Image(gr.create_png()))
 
 
-def _from_dotstring(dotstring):
+def _from_dotstring(dotstring: str) -> dot.Dot:
   g = dot.graph_from_dot_data(dotstring)[0]
   return g
 
 
-def showDot(dotstring, size=None):
+def showDot(dotstring: str, size: float | str | None = None) -> None:
   """
   show a dot string as a graph
 
@@ -124,7 +125,7 @@ def showDot(dotstring, size=None):
   showGraph(_from_dotstring(dotstring), size)
 
 
-def showBNDiff(bn1, bn2, size=None):
+def showBNDiff(bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str | None = None) -> None:
   """
   Show a graphical diff between the arcs of bn1 (reference) with those of bn2.
 
@@ -148,7 +149,7 @@ def showBNDiff(bn1, bn2, size=None):
   showGraph(cmp.dotDiff(), size)
 
 
-def showJunctionTree(bn, withNames=True, size=None):
+def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> None:
   """
   Show a junction tree.
 
@@ -169,7 +170,15 @@ def showJunctionTree(bn, withNames=True, size=None):
     return showDot(jt.toDot(), size)
 
 
-def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=None, cmapArc=None):
+def showBN(
+  bn: pyagrum.BayesNet,
+  size: float | str | None = None,
+  nodeColor: dict | None = None,
+  arcWidth: dict | None = None,
+  arcColor: dict | None = None,
+  cmap: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+) -> None:
   """
   Show a Bayesian network.
 
@@ -195,7 +204,7 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmap=Non
   return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def showProba(p, scale=1.0):
+def showProba(p: pyagrum.Tensor, scale: float = 1.0) -> None:
   """
   Show a mono-dim Tensor.
 
@@ -212,7 +221,7 @@ def showProba(p, scale=1.0):
   plt.show()
 
 
-def showPosterior(bn, evs, target):
+def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
   """
   Shortcut for showProba(pyagrum.getPosterior(bn, evs, target)).
 
@@ -229,8 +238,16 @@ def showPosterior(bn, evs, target):
 
 
 def showMRF(
-  mrf, view=None, size=None, nodeColor=None, factorColor=None, edgeWidth=None, edgeColor=None, cmap=None, cmapEdge=None
-):
+  mrf: pyagrum.MarkovRandomField,
+  view: str | None = None,
+  size: float | str | None = None,
+  nodeColor: dict | None = None,
+  factorColor: dict | None = None,
+  edgeWidth: dict | None = None,
+  edgeColor: dict | None = None,
+  cmap: matplotlib.colors.Colormap | None = None,
+  cmapEdge: matplotlib.colors.Colormap | None = None,
+) -> None:
   """
   Show a Markov random field.
 
@@ -278,7 +295,7 @@ def showMRF(
   return showGraph(dottxt, size)
 
 
-def showInfluenceDiagram(diag, size=None):
+def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None = None) -> None:
   """
   Show an influence diagram as a graph.
 
@@ -314,7 +331,7 @@ def showInference(
   cmapArc=None,
   graph=None,
   view=None,
-):
+) -> None:
   import warnings
 
   warnings.warn(
@@ -322,11 +339,14 @@ def showInference(
   )
 
 
-def showTensor(p):
+def showTensor(p: pyagrum.Tensor) -> None:
   print(p)
 
 
-def show(model, size=None):
+def show(
+  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.Tensor,
+  size: float | str | None = None,
+) -> None:
   """
   Propose a (visual) representation of a model in ipython console.
 

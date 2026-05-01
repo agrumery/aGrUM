@@ -375,7 +375,9 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
   return fig
 
 
-def proba2histo(p, scale=None, util=None, txtcolor="Black") -> matplotlib.figure.Figure:
+def proba2histo(
+  p: pyagrum.Tensor, scale: float | None = None, util: pyagrum.Tensor | None = None, txtcolor: str = "Black"
+) -> matplotlib.figure.Figure:
   """
   compute the representation of a histogram for a mono-dim Tensor
 
@@ -420,7 +422,13 @@ def proba2histo(p, scale=None, util=None, txtcolor="Black") -> matplotlib.figure
   return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
 
 
-def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black") -> None:
+def saveFigProba(
+  p: pyagrum.Tensor,
+  filename: str,
+  util: pyagrum.Tensor | None = None,
+  bgcolor: str | None = None,
+  txtcolor: str = "Black",
+) -> None:
   """
   save a figure  which is the representation of a histogram for a mono-dim Tensor
 
@@ -456,7 +464,9 @@ def saveFigProba(p, filename, util=None, bgcolor=None, txtcolor="Black") -> None
   plt.close(fig)
 
 
-def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black") -> matplotlib.figure.Figure:
+def probaMinMaxH(
+  pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.0, txtcolor: str = "black"
+) -> matplotlib.figure.Figure:
   """
   compute the representation of a horizontal histogram for a mono-dim Tensor
 
@@ -519,7 +529,9 @@ def probaMinMaxH(pmin, pmax, scale=1.0, txtcolor="black") -> matplotlib.figure.F
   return fig
 
 
-def saveFigProbaMinMax(pmin, pmax, filename, bgcolor=None, txtcolor="Black") -> None:
+def saveFigProbaMinMax(
+  pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, filename: str, bgcolor: str | None = None, txtcolor: str = "Black"
+) -> None:
   """
   save a figure  which is the representation of a histogram for a bi-Tensor (min,max)
 

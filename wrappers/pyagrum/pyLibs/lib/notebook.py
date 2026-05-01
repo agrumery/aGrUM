@@ -92,10 +92,10 @@ class FlowLayout:
   based on : https://stackoverflow.com/questions/21754976/ipython-notebook-arrange-plots-horizontally
   """
 
-  def __init__(self):
+  def __init__(self) -> None:
     self.clear()
 
-  def clear(self):
+  def clear(self) -> "FlowLayout":
     """
     clear the flow
     """
@@ -114,12 +114,12 @@ class FlowLayout:
       """
     return self
 
-  def _getCaption(self, caption):
+  def _getCaption(self, caption: str) -> str:
     if caption == "":
       return ""
     return f"<br><center><small><em>{caption}</em></small></center>"
 
-  def add_html(self, html, caption=None, title=None):
+  def add_html(self, html: str, caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
     add an html element in the row (title is an obsolete parameter)
     """
@@ -135,14 +135,14 @@ class FlowLayout:
     self.sHtml += f'<div class="floating-box">{html}{self._getCaption(cap)}</div>'
     return self
 
-  def add_separator(self, size=3):
+  def add_separator(self, size: int = 3) -> "FlowLayout":
     """
     add a (poor) separation between elements in a row
     """
     self.add_html("&nbsp;" * size)
     return self
 
-  def add_plot(self, oAxes, caption=None, title=None):
+  def add_plot(self, oAxes: "mpl.axes.Axes", caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
     Add a PNG representation of a Matplotlib Axes object
     (title is an obsolete parameter)
@@ -168,27 +168,27 @@ class FlowLayout:
     plt.close()
     return self
 
-  def new_line(self):
+  def new_line(self) -> "FlowLayout":
     """
     add a breakline (a new row)
     """
     self.sHtml += "<br/>"
     return self
 
-  def html(self):
+  def html(self) -> "IPython.display.HTML":
     """
     Returns its content as HTML object
     """
     return IPython.display.HTML(self.sHtml)
 
-  def display(self):
+  def display(self) -> None:
     """
     Display the accumulated HTML
     """
     IPython.display.display(self.html())
     self.clear()
 
-  def add(self, obj, caption=None, title=None):
+  def add(self, obj, caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
     add an element in the row by trying to treat it as plot or html if possible.
     (title is an obsolete parameter)
@@ -211,7 +211,7 @@ class FlowLayout:
 
     return self
 
-  def row(self, *args, captions=None):
+  def row(self, *args, captions: list[str] | None = None) -> "FlowLayout":
     """
     Create a row with flow with the same syntax as `pyagrum.lib.notebook.sideBySide`.
     """
@@ -223,14 +223,14 @@ class FlowLayout:
         self.add(arg, captions[i])
     return self
 
-  def _repr_html_(self):
+  def _repr_html_(self) -> str:
     return self.html().data
 
 
 flow = FlowLayout()
 
 
-def configuration():
+def configuration() -> None:
   """
   Display the collection of dependance and versions
   """
@@ -257,7 +257,7 @@ def configuration():
   IPython.display.display(IPython.display.HTML(res))
 
 
-def _reprGraph(gr, size, asString, graph_format=None):
+def _reprGraph(gr: dot.Dot, size: float | str | None, asString: bool, graph_format: str | None = None) -> str | None:
   """
   repr a pydot graph in a notebook
 
@@ -296,7 +296,7 @@ def _reprGraph(gr, size, asString, graph_format=None):
       IPython.core.display.display_png(i)
 
 
-def showGraph(gr: dot.Dot, size=None):
+def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   """
   show a pydot graph in a notebook
 
@@ -313,7 +313,7 @@ def showGraph(gr: dot.Dot, size=None):
   return _reprGraph(gr, size, asString=False)
 
 
-def getGraph(gr: dot.Dot, size=None) -> str:
+def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
   """
   get an HTML representation of a pydot graph
 
@@ -335,12 +335,12 @@ def getGraph(gr: dot.Dot, size=None) -> str:
   return _reprGraph(gr, size, asString=True)
 
 
-def _from_dotstring(dotstring):
+def _from_dotstring(dotstring: str) -> dot.Dot:
   g = dot.graph_from_dot_data(dotstring)[0]
   return g
 
 
-def showDot(dotstring: str, size=None):
+def showDot(dotstring: str, size: float | str | None = None) -> None:
   """
   show a dot string as a graph
 
@@ -356,7 +356,7 @@ def showDot(dotstring: str, size=None):
   showGraph(_from_dotstring(dotstring), size)
 
 
-def getDot(dotstring: str, size=None) -> str:
+def getDot(dotstring: str, size: float | str | None = None) -> str:
   """
   get an HTML representation of a dot string
 
@@ -377,7 +377,9 @@ def getDot(dotstring: str, size=None) -> str:
   return getGraph(_from_dotstring(dotstring), size)
 
 
-def getBNDiff(bn1, bn2, size=None, noStyle=False):
+def getBNDiff(
+  bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str | None = None, noStyle: bool = False
+) -> str:
   """
   get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
@@ -409,7 +411,9 @@ def getBNDiff(bn1, bn2, size=None, noStyle=False):
   return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
 
-def showBNDiff(bn1, bn2, size=None, noStyle=False):
+def showBNDiff(
+  bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str | None = None, noStyle: bool = False
+) -> None:
   """
   show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
@@ -437,14 +441,14 @@ def showBNDiff(bn1, bn2, size=None, noStyle=False):
 
 
 def getJunctionTreeMap(
-  bn,
-  size: str = None,
-  scaleClique: float = None,
-  scaleSep: float = None,
-  lenEdge: float = None,
-  colorClique: str = None,
-  colorSep: str = None,
-):
+  bn: pyagrum.BayesNet,
+  size: str | None = None,
+  scaleClique: float | None = None,
+  scaleSep: float | None = None,
+  lenEdge: float | None = None,
+  colorClique: str | None = None,
+  colorSep: str | None = None,
+) -> str:
   """
   Return a representation of the map of the junction tree of a Bayesian network
 
@@ -472,14 +476,14 @@ def getJunctionTreeMap(
 
 
 def showJunctionTreeMap(
-  bn,
-  size: str = None,
-  scaleClique: float = None,
-  scaleSep: float = None,
-  lenEdge: float = None,
-  colorClique: str = None,
-  colorSep: str = None,
-):
+  bn: pyagrum.BayesNet,
+  size: str | None = None,
+  scaleClique: float | None = None,
+  scaleSep: float | None = None,
+  lenEdge: float | None = None,
+  colorClique: str | None = None,
+  colorSep: str | None = None,
+) -> None:
   """
   Show the map of the junction tree of a Bayesian network
 
@@ -506,7 +510,7 @@ def showJunctionTreeMap(
   showGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
-def showJunctionTree(bn, withNames=True, size=None):
+def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> None:
   """
   Show a junction tree of a Bayesian network
 
@@ -534,7 +538,7 @@ def showJunctionTree(bn, withNames=True, size=None):
     showDot(jt.toDot(), size)
 
 
-def getJunctionTree(bn, withNames=True, size=None):
+def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> str:
   """
   get a HTML string for a junction tree (more specifically a join tree)
 
@@ -566,7 +570,7 @@ def getJunctionTree(bn, withNames=True, size=None):
     return getDot(jt.toDot(), size)
 
 
-def showProba(p, scale=None):
+def showProba(p: pyagrum.Tensor, scale: float | None = None) -> None:
   """
   Show a mono-dim Tensor (a marginal)
 
@@ -582,7 +586,7 @@ def showProba(p, scale=None):
   plt.show()
 
 
-def _getMatplotFig(fig):
+def _getMatplotFig(fig: "mpl.figure.Figure") -> str:
   bio = io.BytesIO()  # bytes buffer for the plot
   # .canvas.print_png(bio)  # make a png of the plot in the buffer
   fig.savefig(bio, format="png", bbox_inches="tight")
@@ -594,7 +598,7 @@ def _getMatplotFig(fig):
   return res
 
 
-def getProba(p, scale=None) -> str:
+def getProba(p: pyagrum.Tensor, scale: float | None = None) -> str:
   """
   get a mono-dim Tensor as html (png/svg) image
 
@@ -617,7 +621,7 @@ def getProba(p, scale=None) -> str:
   return _getMatplotFig(fig)
 
 
-def showProbaMinMax(pmin, pmax, scale=1.0):
+def showProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.0) -> None:
   """
   Show a bi-Tensor (min,max)
 
@@ -635,7 +639,7 @@ def showProbaMinMax(pmin, pmax, scale=1.0):
   plt.show()
 
 
-def getProbaMinMax(pmin, pmax, scale=1.0) -> str:
+def getProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.0) -> str:
   """
   get a bi-Tensor (min,max) as html (png/svg) img
 
@@ -657,7 +661,7 @@ def getProbaMinMax(pmin, pmax, scale=1.0) -> str:
   return _getMatplotFig(probaMinMaxH(pmin, pmax, scale))
 
 
-def getPosterior(bn, evs, target):
+def getPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> str:
   """
   shortcut for proba2histo(pyagrum.getPosterior(bn,evs,target))
 
@@ -679,7 +683,7 @@ def getPosterior(bn, evs, target):
   return _getMatplotFig(fig)
 
 
-def showPosterior(bn, evs, target):
+def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
   """
   shortcut for showProba(pyagrum.getPosterior(bn,evs,target))
 
@@ -695,7 +699,7 @@ def showPosterior(bn, evs, target):
   showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
 
 
-def animApproximationScheme(apsc, scale=np.log10):
+def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
   """
   show an animated version of an approximation algorithm
 
@@ -729,7 +733,7 @@ def animApproximationScheme(apsc, scale=np.log10):
   h.setWhenProgress(progresser)
 
 
-def showApproximationScheme(apsc, scale=np.log10):
+def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
   """
   show the state of an approximation algorithm
 
@@ -750,16 +754,16 @@ def showApproximationScheme(apsc, scale=np.log10):
 
 
 def showMRF(
-  mrf,
-  view=None,
-  size=None,
+  mrf: pyagrum.MarkovRandomField,
+  view: str | None = None,
+  size: float | str | None = None,
   nodeColor=None,
   factorColor=None,
   edgeWidth=None,
   edgeColor=None,
   cmapNode=None,
   cmapEdge=None,
-):
+) -> None:
   """
   show a Markov random field
 
@@ -807,7 +811,7 @@ def showMRF(
   return showGraph(dottxt, size)
 
 
-def showInfluenceDiagram(diag, size=None):
+def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None = None) -> None:
   """
   show an influence diagram as a graph
 
@@ -828,7 +832,7 @@ def showInfluenceDiagram(diag, size=None):
   return showGraph(ID2dot(diag), size)
 
 
-def getInfluenceDiagram(diag, size=None):
+def getInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None = None) -> str:
   """
   get a HTML string for an influence diagram as a graph
 
@@ -850,7 +854,16 @@ def getInfluenceDiagram(diag, size=None):
   return getGraph(ID2dot(diag), size)
 
 
-def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
+def showBN(
+  bn: pyagrum.BayesNet,
+  size: float | str | None = None,
+  nodeColor=None,
+  arcWidth=None,
+  arcLabel=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+) -> None:
   """
   show a Bayesian network
 
@@ -896,7 +909,16 @@ def showBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
   )
 
 
-def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
+def showCN(
+  cn: pyagrum.CredalNet,
+  size: float | str | None = None,
+  nodeColor=None,
+  arcWidth=None,
+  arcLabel=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+) -> None:
   """
   show a credal network
 
@@ -947,16 +969,16 @@ def showCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor
 
 
 def getMRF(
-  mrf,
-  view=None,
-  size=None,
+  mrf: pyagrum.MarkovRandomField,
+  view: str | None = None,
+  size: float | str | None = None,
   nodeColor=None,
   factorColor=None,
   edgeWidth=None,
   edgeColor=None,
   cmapNode=None,
   cmapEdge=None,
-):
+) -> str:
   """
   get an HTML string for a Markov random field
 
@@ -1002,7 +1024,16 @@ def getMRF(
   return getGraph(dottxt, size)
 
 
-def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
+def getBN(
+  bn: pyagrum.BayesNet,
+  size: float | str | None = None,
+  nodeColor=None,
+  arcWidth=None,
+  arcLabel=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+) -> str:
   """
   get a HTML string for a Bayesian network
 
@@ -1053,7 +1084,16 @@ def getBN(bn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
   )
 
 
-def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=None, cmapNode=None, cmapArc=None):
+def getCN(
+  cn: pyagrum.CredalNet,
+  size: float | str | None = None,
+  nodeColor=None,
+  arcWidth=None,
+  arcLabel=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+) -> str:
   """
   get a HTML string for a credal network
 
@@ -1104,7 +1144,9 @@ def getCN(cn, size=None, nodeColor=None, arcWidth=None, arcLabel=None, arcColor=
   )
 
 
-def showInference(model, **kwargs):
+def showInference(
+  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.CredalNet, **kwargs
+) -> None:
   """
   show pydot graph for an inference in a notebook
 
@@ -1149,7 +1191,9 @@ def showInference(model, **kwargs):
   showGraph(prepareShowInference(model, **kwargs), size)
 
 
-def getInference(model, **kwargs):
+def getInference(
+  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.CredalNet, **kwargs
+) -> str:
   """
   get a HTML string for an inference in a notebook
 
@@ -1195,7 +1239,13 @@ def getInference(model, **kwargs):
   return getGraph(grinf, size)
 
 
-def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False):
+def _reprTensor(
+  pot: pyagrum.Tensor,
+  digits: int | None = None,
+  withColors: bool | None = None,
+  varnames: list[str] | None = None,
+  asString: bool = False,
+) -> str:
   """
   return a representation of a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -1351,7 +1401,7 @@ def _reprTensor(pot, digits=None, withColors=None, varnames=None, asString=False
     return IPython.display.HTML("".join(html))
 
 
-def __isKindOfProba(pot):
+def __isKindOfProba(pot: pyagrum.Tensor) -> bool:
   """
   check if pot is a joint proba or a CPT
 
@@ -1388,12 +1438,16 @@ def __isKindOfProba(pot):
   return True
 
 
-def showPotential(pot, digits=None, withColors=None, varnames=None):
+def showPotential(
+  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
+) -> None:
   warnings.warn("showPotential is deprecated since pyAgrum 2.0.0. Use showTensor instead", DeprecationWarning)
   showTensor(pot, digits, withColors, varnames)
 
 
-def showTensor(pot, digits=None, withColors=None, varnames=None):
+def showTensor(
+  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
+) -> None:
   """
   show a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -1419,12 +1473,16 @@ def showTensor(pot, digits=None, withColors=None, varnames=None):
   IPython.display.display(s)
 
 
-def getPotential(pot, digits=None, withColors=None, varnames=None):
+def getPotential(
+  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
+) -> str:
   warnings.warn("getPotential is deprecated since pyAgrum 2.0.0. Use getTensor instead", DeprecationWarning)
   return getTensor(pot, digits, withColors, varnames)
 
 
-def getTensor(pot, digits=None, withColors=None, varnames=None):
+def getTensor(
+  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
+) -> str:
   """
   return a HTML string of a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -1454,14 +1512,14 @@ def getTensor(pot, digits=None, withColors=None, varnames=None):
   return _reprTensor(pot, digits, withColors, varnames, asString=True)
 
 
-def showCPTs(bn):
+def showCPTs(bn: pyagrum.BayesNet) -> None:
   flow.clear()
   for i in bn.names():
     flow.add_html(getTensor(bn.cpt(i)))
   flow.display()
 
 
-def getSideBySide(*args, **kwargs):
+def getSideBySide(*args, **kwargs) -> str:
   """
   create an HTML table for args as string (using string, _repr_html_() or str())
 
@@ -1522,7 +1580,7 @@ def getSideBySide(*args, **kwargs):
   return s
 
 
-def sideBySide(*args, **kwargs):
+def sideBySide(*args, **kwargs) -> None:
   """
   display side by side args as HMTL fragment (using string, _repr_html_() or str())
 
@@ -1540,7 +1598,7 @@ def sideBySide(*args, **kwargs):
   IPython.display.display(IPython.display.HTML(getSideBySide(*args, **kwargs)))
 
 
-def getInferenceEngine(ie, inferenceCaption):
+def getInferenceEngine(ie, inferenceCaption: str) -> str:
   """
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
@@ -1581,7 +1639,7 @@ def getInferenceEngine(ie, inferenceCaption):
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
-def getJT(jt, size=None):
+def getJT(jt: pyagrum.JunctionTree, size: float | str | None = None) -> str:
   """
   returns the representation of a junction tree as a HTML string
 
@@ -1665,7 +1723,7 @@ def getJT(jt, size=None):
   return graph.to_string()
 
 
-def getCliqueGraph(cg, size=None):
+def getCliqueGraph(cg: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
   """get a representation for clique graph. Special case for junction tree
   (clique graph with an attribute `_engine`)
 
@@ -1684,7 +1742,7 @@ def getCliqueGraph(cg, size=None):
     return getDot(cg.toDot())
 
 
-def show(model, **kwargs):
+def show(model, **kwargs) -> None:
   """
   propose a (visual) representation of a graphical model or a graph or a Tensor in a notebook
 
@@ -1732,7 +1790,7 @@ def show(model, **kwargs):
     )
 
 
-def inspectBN(bn):
+def inspectBN(bn: pyagrum.BayesNet) -> "FlowLayout":
   """
   inspect a BN (graph and CPTs) in a notebook (using flow)
   Parameters
@@ -1743,7 +1801,7 @@ def inspectBN(bn):
   return flow
 
 
-def getCausalModel(cm: pyagrum.CausalModel, size=None) -> str:
+def getCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) -> str:
   """
   return a HTML representing the causal model
 
@@ -1764,7 +1822,7 @@ def getCausalModel(cm: pyagrum.CausalModel, size=None) -> str:
   return getDot(cm.toDot(), size)
 
 
-def showCausalModel(cm: pyagrum.CausalModel, size=None):
+def showCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) -> None:
   """
   Shows a pydot svg representation of the causal DAG
 
@@ -1784,9 +1842,9 @@ def getCausalImpact(
   model: pyagrum.CausalModel,
   on: str | set[str],
   doing: str | set[str],
-  knowing: None | set[str] = None,
-  values: None | dict[str, int] = None,
-):
+  knowing: set[str] | None = None,
+  values: dict[str, int] | None = None,
+) -> "IPython.display.HTML":
   """
   return a HTML representing of the three values defining a causal impact : formula, value, explanation
 
@@ -1836,9 +1894,9 @@ def showCausalImpact(
   model: pyagrum.CausalModel,
   on: str | set[str],
   doing: str | set[str],
-  knowing: None | set[str] = None,
-  values: None | dict[str, int] = None,
-):
+  knowing: set[str] | None = None,
+  values: dict[str, int] | None = None,
+) -> None:
   """
   display a HTML representing of the three values defining a causal impact :  formula, value, explanation
 
@@ -1859,7 +1917,7 @@ def showCausalImpact(
   IPython.display.display(html)
 
 
-def _update_config_notebooks():
+def _update_config_notebooks() -> None:
   # hook to control some parameters for notebook when config changes
   mpl.rcParams["figure.facecolor"] = pyagrum.config["notebook", "figure_facecolor"]
   set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])

@@ -131,10 +131,10 @@ class DiscreteTypeProcessor:
 
   def __init__(
     self,
-    defaultDiscretizationMethod="quantile",
-    defaultNumberOfBins=10,
-    discretizationThreshold=25,
-  ):
+    defaultDiscretizationMethod: str = "quantile",
+    defaultNumberOfBins: int | str = 10,
+    discretizationThreshold: int | float = 25,
+  ) -> None:
     """
     Initializes the DiscreteTypeProcessor object.
 
@@ -166,7 +166,7 @@ class DiscreteTypeProcessor:
 
     self.discretizationThreshold = discretizationThreshold
 
-  def clear(self, clearDiscretizationParameters=False):
+  def clear(self, clearDiscretizationParameters: bool = False) -> None:
     """
     Sets the number of continuous variables and the total number of bins created by this discretizer to 0. If
     clearDiscretizationParameters is True, also clears the the parameters for discretization the user has set for each
@@ -183,7 +183,7 @@ class DiscreteTypeProcessor:
       self.discretizationParametersDictionary = {}
 
   @pyagrum.deprecated_arg(newA="parameters", oldA="paramDiscretizationMethod", version="2.0.0")
-  def setDiscretizationParameters(self, variableName: str, method: str, parameters: Any = None):
+  def setDiscretizationParameters(self, variableName: str | None, method: str, parameters: Any = None) -> None:
     """
     Sets the discretization parameters for a variable. If variableName is None, sets the default parameters.
 
@@ -250,7 +250,7 @@ class DiscreteTypeProcessor:
       self.discretizationParametersDictionary[variableName]["method"] = method
       self.discretizationParametersDictionary[variableName]["param"] = parameters
 
-  def audit(self, X, y=None):
+  def audit(self, X: Any, y: Any = None) -> dict[str, Any]:
     """
     Audits the passed values of X and y. Guess which columns in X are already discrete and which need to
     be discretized, as well as the discretization algorithm that will be used to discretize them The parameters which

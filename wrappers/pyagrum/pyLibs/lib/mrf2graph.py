@@ -46,6 +46,7 @@ be displayed/saved as image.
 import time
 import hashlib
 
+import matplotlib.colors
 import matplotlib.pyplot as plt
 import pydot as dot
 
@@ -56,15 +57,15 @@ from .proba_histogram import saveFigProba
 
 
 def MRF2UGdot(
-  mrf,
-  size="4",
-  nodeColor=None,
-  edgeWidth=None,
-  edgeLabel=None,
-  edgeColor=None,
-  cmapNode=None,
-  cmapEdge=None,
-  showMsg=None,
+  mrf: pyagrum.MarkovRandomField,
+  size: str = "4",
+  nodeColor: dict[int, float] | None = None,
+  edgeWidth: dict[tuple[int, int], float] | None = None,
+  edgeLabel: dict[tuple[int, int], str] | None = None,
+  edgeColor: dict[tuple[int, int], float] | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapEdge: matplotlib.colors.Colormap | None = None,
+  showMsg: dict | None = None,
 ) -> dot.Dot:
   """
   Create a pydot representation of the Markov random field as an undirected graph
@@ -161,7 +162,14 @@ def MRF2UGdot(
   return graph
 
 
-def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNode=None, showMsg=None) -> dot.Dot:
+def MRF2FactorGraphdot(
+  mrf: pyagrum.MarkovRandomField,
+  size: float | str | None = None,
+  nodeColor: dict[str, float] | None = None,
+  factorColor=None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  showMsg: dict[str, str] | None = None,
+) -> dot.Dot:
   """
   Create a pydot representation of the Markov random field as a factor graph
 
@@ -241,17 +249,17 @@ def MRF2FactorGraphdot(mrf, size=None, nodeColor=None, factorColor=None, cmapNod
 
 
 def MRFinference2UGdot(
-  mrf,
-  size=None,
-  engine=None,
-  evs=None,
-  targets=None,
-  nodeColor=None,
+  mrf: pyagrum.MarkovRandomField,
+  size: str | None = None,
+  engine: pyagrum.Inference | None = None,
+  evs: dict | None = None,
+  targets: set | None = None,
+  nodeColor: dict | None = None,
   factorColor=None,
-  arcWidth=None,
-  arcColor=None,
-  cmapNode=None,
-  cmapArc=None,
+  arcWidth: dict | None = None,
+  arcColor: dict | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
   view=None,
 ) -> dot.Dot:
   """
@@ -381,7 +389,14 @@ def MRFinference2UGdot(
 
 
 def MRFinference2FactorGraphdot(
-  mrf, size=None, engine=None, evs=None, targets=None, nodeColor=None, factorColor=None, cmapNode=None
+  mrf: pyagrum.MarkovRandomField,
+  size: str | None = None,
+  engine: pyagrum.Inference | None = None,
+  evs: dict | None = None,
+  targets: set | None = None,
+  nodeColor: dict | None = None,
+  factorColor=None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
 ) -> dot.Dot:
   """
   Create a pydot representation of an inference in a MRF as a factor graph.

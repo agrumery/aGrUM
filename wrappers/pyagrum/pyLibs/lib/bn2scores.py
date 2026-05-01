@@ -44,11 +44,12 @@ The purpose of this module is to provide tools for computing different scores fr
 
 import csv
 import math
+from typing import Any
 
 import pyagrum
 
 
-def lines_count(filename) -> int:
+def lines_count(filename: str) -> int:
   """count lines in a file"""
   with open(filename) as f:
     count = sum(1 for _ in f)
@@ -56,7 +57,7 @@ def lines_count(filename) -> int:
   return count
 
 
-def checkCompatibility(bn, fields, csv_name) -> dict[int, int]:
+def checkCompatibility(bn: pyagrum.BayesNet, fields: dict[str, int], csv_name: str) -> dict[int, int]:
   """
   check if the variables of the bn are in the fields
 
@@ -88,7 +89,9 @@ def checkCompatibility(bn, fields, csv_name) -> dict[int, int]:
   return res
 
 
-def computeScores(bn_name, csv_name, visible=False, dialect=None) -> tuple[float, dict[str, float]]:
+def computeScores(
+  bn_name: pyagrum.BayesNet | str, csv_name: str, visible: bool = False, dialect: Any = None
+) -> tuple[float, dict[str, float]]:
   """
   Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv
 

@@ -43,6 +43,7 @@ The purpose of this module is to provide tools for building ROC and PR from Baye
 """
 
 import os
+from typing import Any
 
 import numpy as np
 
@@ -314,7 +315,9 @@ def _computeROC_PR(values, totalP, totalN, beta):
   )
 
 
-def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10) -> list[tuple[float, float]]:
+def getROCpoints(
+  bn: pyagrum.BayesNet, datasrc: Any, target: str, label: str, with_labels: bool = True, significant_digits: int = 10
+) -> list[tuple[float, float]]:
   """
   Compute the points of the ROC curve
 
@@ -378,7 +381,9 @@ def getROCpoints(bn, datasrc, target, label, with_labels=True, significant_digit
   return pointsROC
 
 
-def getPRpoints(bn, datasrc, target, label, with_labels=True, significant_digits=10) -> list[tuple[float, float]]:
+def getPRpoints(
+  bn: pyagrum.BayesNet, datasrc: Any, target: str, label: str, with_labels: bool = True, significant_digits: int = 10
+) -> list[tuple[float, float]]:
   """
   Compute the points of the PR curve
 
@@ -626,20 +631,20 @@ def _drawPR(points, zeTitle, fbeta_PR, beta, AUC_PR, thresholds, thresholds_to_s
 
 
 def showROC_PR(
-  bn,
-  datasrc,
-  target,
-  label,
+  bn: pyagrum.BayesNet,
+  datasrc: Any,
+  target: str,
+  label: str,
   *,
-  beta=1,
-  show_progress=True,
-  show_fig=True,
-  save_fig=False,
-  with_labels=True,
-  show_ROC=True,
-  show_PR=True,
-  significant_digits=10,
-  bgcolor=None,
+  beta: float = 1,
+  show_progress: bool = True,
+  show_fig: bool = True,
+  save_fig: bool = False,
+  with_labels: bool = True,
+  show_ROC: bool = True,
+  show_PR: bool = True,
+  significant_digits: int = 10,
+  bgcolor: str | None = None,
 ) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -818,7 +823,15 @@ def showROC_PR(
 
 
 def showROC(
-  bn, datasrc, target, label, show_progress=True, show_fig=True, save_fig=False, with_labels=True, significant_digits=10
+  bn: pyagrum.BayesNet,
+  datasrc: Any,
+  target: str,
+  label: str,
+  show_progress: bool = True,
+  show_fig: bool = True,
+  save_fig: bool = False,
+  with_labels: bool = True,
+  significant_digits: int = 10,
 ) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -861,17 +874,17 @@ def showROC(
 
 
 def showPR(
-  bn,
-  datasrc,
-  target,
-  label,
+  bn: pyagrum.BayesNet,
+  datasrc: Any,
+  target: str,
+  label: str,
   *,
-  beta=1,
-  show_progress=True,
-  show_fig=True,
-  save_fig=False,
-  with_labels=True,
-  significant_digits=10,
+  beta: float = 1,
+  show_progress: bool = True,
+  show_fig: bool = True,
+  save_fig: bool = False,
+  with_labels: bool = True,
+  significant_digits: int = 10,
 ) -> tuple[float, float, float, float]:
   """
   Compute the ROC curve and save the result in the folder of the csv file.
@@ -914,7 +927,7 @@ def showPR(
   )
 
 
-def animROC(bn, datasrc, target="Y", label="1"):
+def animROC(bn: pyagrum.BayesNet, datasrc: Any, target: str = "Y", label: str = "1") -> Any:
   """
   Interactive selection of a threshold using TPR and FPR for BN and data
 
@@ -972,7 +985,7 @@ def animROC(bn, datasrc, target="Y", label="1"):
   return interactive_plot
 
 
-def animPR(bn, datasrc, target="Y", label="1"):
+def animPR(bn: pyagrum.BayesNet, datasrc: Any, target: str = "Y", label: str = "1") -> Any:
   """
   Interactive selection of a threshold using TPR and FPR for BN and data
 
