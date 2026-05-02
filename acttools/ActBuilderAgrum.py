@@ -240,8 +240,6 @@ class ActBuilderAgrum(ActBuilder):
         line += " gumTest"
       case "install":
         line += " install"
-      case "uninstall":
-        line += " uninstall"
       case "lib":
         pass  # nothing to do
       case "doc":

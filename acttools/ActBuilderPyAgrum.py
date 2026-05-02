@@ -195,9 +195,7 @@ class ActBuilderPyAgrum(ActBuilder):
       case "test":
         pass
       case "install":
-        line += " install"
-      case "uninstall":
-        line += " uninstall"
+        line += " all install"
       case "lib":
         pass  # nothing to do
       case "doc":
@@ -235,13 +233,15 @@ class ActBuilderPyAgrum(ActBuilder):
     return line
 
   def _cmake_needed(self) -> bool:
-    """Return True if cmake must run: cache absent, install prefix changed, or any CMakeLists.txt/.cmake in the source tree is newer than the cache."""
+    """Return True if cmake must run: cache absent, install prefix changed (install only), or any CMakeLists.txt/.cmake in the source tree is newer than the cache."""
     cache = "CMakeCache.txt"
     if not os.path.exists(cache):
       return True
     # If the destination changed (e.g. wheel/pipinstall uses a fresh tmp dir),
     # cmake must re-run so CMAKE_INSTALL_PREFIX is updated before make install.
-    if "destination" in self.current:
+    # For actions that don't install files (test, lib, doc), a stale prefix is
+    # harmless — skipping cmake avoids a spurious rebuild of pyagrumPYTHON_wrap.cxx.o.
+    if "destination" in self.current and self.current.get("action") == "install":
       try:
         with open(cache) as f:
           for line in f:
@@ -253,6 +253,11 @@ class ActBuilderPyAgrum(ActBuilder):
       except OSError:
         return True
     cache_mtime = os.path.getmtime(cache)
+    # cmake.check_cache is touched on every cmake run (even when CMakeCache.txt
+    # content is unchanged), so it is a more reliable "cmake last ran" marker.
+    check_cache = os.path.join("CMakeFiles", "cmake.check_cache")
+    if os.path.exists(check_cache):
+      cache_mtime = max(cache_mtime, os.path.getmtime(check_cache))
     source_root = os.path.normpath(os.path.join("..", "..", ".."))
     # The build tree lives at <source_root>/build/ — exclude it to avoid false
     # positives from .cmake files that cmake itself writes into the build tree.
