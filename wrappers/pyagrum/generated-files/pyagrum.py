@@ -126,6 +126,7 @@ class SwigPyIterator(object):
 
 # Register SwigPyIterator in _pyagrum:
 _pyagrum.SwigPyIterator_swigregister(SwigPyIterator)
+import numpy 
 class JunctionTreeGenerator(object):
     r"""
 
@@ -3087,10 +3088,9 @@ class UndiGraph(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -3535,10 +3535,9 @@ class DiGraph(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -7723,7 +7722,6 @@ class Tensor(object):
         """
 
         if len(args)==1:
-          import numpy
           if isinstance(args[0], numpy.ndarray):
             arr = args[0]
             if arr.ndim > 1:
@@ -8475,7 +8473,6 @@ class Tensor(object):
             a reference to the modified tensor
       """
       import math
-      import numpy
       forbidden=frozenset(['__import__','__class__'])
 
       code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
@@ -8582,7 +8579,6 @@ class Tensor(object):
           If the first variable is Labelized.
       """
       import math
-      import numpy
 
       forbidden=frozenset(['__import__','__class__'])
 
@@ -8668,7 +8664,8 @@ class Tensor(object):
 
     def __prepareIndices__(self,ind):
       """
-      From an indice (dict or tuple), returns a pair of pyagrum.Instantiation to loop in a part of the Tensor.
+      From an indice (dict or tuple), returns a triple (inst, loopvars, varlist) where
+      varlist is [loopvars.variable(k-1) for k in range(loopvars.nbrDim(), 0, -1)].
       """
       from numbers import Number
 
@@ -8699,23 +8696,26 @@ class Tensor(object):
                   loopvars.erase(nam)
       else:
           raise ValueError("No subscript using '"+str(i)+"'")
-      return inst,loopvars
+      varlist=[loopvars.variable(k-1) for k in range(loopvars.nbrDim(),0,-1)]
+      return inst,loopvars,varlist
 
     def __getitem__(self, id):
-      import numpy
       if isinstance(id,Instantiation):
           return self.get(id)
 
-      inst,loopvars=self.__prepareIndices__(id)
+      inst,loopvars,varlist=self.__prepareIndices__(id)
 
       if loopvars.nbrDim()==0:
           return self.get(inst)
 
       if loopvars.nbrDim()==self.nbrDim():
-        return self.as_nparray()
+        try:
+          return self.as_nparray()
+        except RuntimeError:
+          pass
 
-      names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
-      tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
+      names=[v.name() for v in varlist]
+      tab=numpy.zeros(tuple(v.domainSize() for v in varlist))
       while not inst.end():
           indice=[inst.val(name) for name in names]
           tab[tuple(indice)]=self.get(inst)
@@ -8724,12 +8724,11 @@ class Tensor(object):
 
     def __setitem__(self, id, value):
       from numbers import Number
-      import numpy
       if isinstance(id,Instantiation):
           self.set(id,value)
           return
 
-      inst,loopvars=self.__prepareIndices__(id)
+      inst,loopvars,varlist=self.__prepareIndices__(id)
 
       if loopvars.nbrDim()==0:
           self.set(inst,value)
@@ -8747,7 +8746,7 @@ class Tensor(object):
             inst.incIn(loopvars)
       else:
         if isinstance(value,list):
-            value=numpy.array(value)
+            value=numpy.array(value, dtype=numpy.float64)
         elif isinstance(value,dict):
             if loopvars.nbrDim()>1:
                 raise ArgumentError("The value can be a dict only when specifying 1D-marginal.")
@@ -8763,11 +8762,11 @@ class Tensor(object):
             if not isinstance(value,numpy.ndarray):
                 raise ArgumentError(f"{value} is not a correct value for a tensor.")
 
-        shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
+        shape=tuple(v.domainSize() for v in varlist)
         if value.shape!=shape:
           raise IndexError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
 
-        names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
+        names=[v.name() for v in varlist]
         while not inst.end():
             indice = tuple([inst.val(name) for name in names])
             self.set(inst,float(value[indice]))
@@ -10449,10 +10448,9 @@ class EssentialGraph(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -10580,10 +10578,9 @@ class EssentialGraph(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -10743,10 +10740,9 @@ class MarkovBlanket(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -10847,10 +10843,9 @@ class MarkovBlanket(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -11446,10 +11441,9 @@ class IBayesNet(DAGmodel):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -12522,10 +12516,9 @@ class BayesNet(IBayesNet):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -13677,10 +13670,9 @@ class BayesNetFragment(IBayesNet, ):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -28474,10 +28466,9 @@ class InfluenceDiagram(DAGmodel):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -29639,10 +29630,9 @@ class IMarkovRandomField(UGmodel):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):
@@ -30012,10 +30002,9 @@ class MarkovRandomField(IMarkovRandomField):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
-      import numpy as np
       nodes=self.nodes()
       n=self.size()
-      am=np.zeros((n,n)).astype(int)
+      am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
           if hasattr(self,'children'):

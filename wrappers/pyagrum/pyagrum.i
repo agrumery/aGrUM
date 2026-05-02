@@ -109,6 +109,7 @@ static int _pyagrum_import_numpy(void) {
 %include "variables.i"
 %include "instantiation.i"
 
+%pythoncode %{ import numpy %}
 %include "tensor.i"
 
 %include "graphs.i"

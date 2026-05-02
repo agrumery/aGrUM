@@ -120,10 +120,9 @@
       adjacency matrix (as numpy.ndarray) with nodeId as key.
 
     """
-    import numpy as np
     nodes=self.nodes()
     n=self.size()
-    am=np.zeros((n,n)).astype(int)
+    am=numpy.zeros((n,n)).astype(int)
 
     for node in nodes:
         if hasattr(self,'children'):

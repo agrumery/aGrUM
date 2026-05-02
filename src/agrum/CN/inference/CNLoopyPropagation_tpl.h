@@ -1504,7 +1504,7 @@ namespace gum::credal {
     _cn_   = &credalNet;
     _bnet_ = &credalNet.current_bn();
 
-    _inferenceType_    = InferenceType::nodeToNeighbours;
+    _inferenceType_       = InferenceType::nodeToNeighbours;
     inference_up_to_date_ = false;
 
     GUM_CONSTRUCTOR(CNLoopyPropagation)

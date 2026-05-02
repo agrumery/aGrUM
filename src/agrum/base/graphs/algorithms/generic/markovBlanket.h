@@ -59,7 +59,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphs/DAG.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 

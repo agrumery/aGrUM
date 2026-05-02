@@ -89,6 +89,7 @@ namespace gum {
     };
 
     IBayesNetFactory() : _verbose_(false) {}
+
     // just to make some compilers happy
     virtual ~IBayesNetFactory() = default;
 

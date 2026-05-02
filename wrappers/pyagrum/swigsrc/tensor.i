@@ -93,7 +93,6 @@ CHANGE_THEN_RETURN_SELF(translate)
 CHANGE_THEN_RETURN_SELF(fillWith)
 %pythonprepend gum::Tensor<double>::fillWith %{
 if len(args)==1:
-  import numpy
   if isinstance(args[0], numpy.ndarray):
     arr = args[0]
     if arr.ndim > 1:
@@ -125,6 +124,15 @@ if len(args)>1:
 
 %rename ("$ignore", fullname=1) gum::Tensor<double>::argmin() const;
 %rename ("$ignore", fullname=1) gum::Tensor<double>::argmax() const;
+
+%define PYTHONIZED_MARGINALS(methodname)
+    Tensor<double>
+    methodname( PyObject* varnames ) const {
+      gum::Set<const gum::DiscreteVariable*> s;
+      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames);
+      return self->methodname(s);
+    }
+%enddef
 
 %extend gum::Tensor<double> {
   PyObject *expectedValue(PyObject* pyfunc) const {
@@ -160,61 +168,14 @@ if len(args)>1:
     }
   }
 
-    Tensor<double>
-    sumOut( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->sumOut(s);
-    }
-
-    Tensor<double>
-    prodOut( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->prodOut(s);
-    }
-
-    Tensor<double>
-    maxOut( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->maxOut(s);
-    }
-
-    Tensor<double>
-    minOut( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->minOut(s);
-    }
-
-    Tensor<double>
-    sumIn( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->sumIn(s);
-    }
-
-    Tensor<double>
-    prodIn( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->prodIn(s);
-    }
-
-    Tensor<double>
-    maxIn( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->maxIn(s);
-    }
-
-    Tensor<double>
-    minIn( PyObject* varnames ) const {
-      gum::Set<const gum::DiscreteVariable*> s;
-      PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
-      return self->minIn(s);
-    }
+    PYTHONIZED_MARGINALS(sumOut)
+    PYTHONIZED_MARGINALS(prodOut)
+    PYTHONIZED_MARGINALS(maxOut)
+    PYTHONIZED_MARGINALS(minOut)
+    PYTHONIZED_MARGINALS(sumIn)
+    PYTHONIZED_MARGINALS(prodIn)
+    PYTHONIZED_MARGINALS(maxIn)
+    PYTHONIZED_MARGINALS(minIn)
 
     PyObject* argmin() {
       const auto [argmi,mi] = self->argmin();
@@ -331,7 +292,6 @@ if len(args)>1:
             a reference to the modified tensor
       """
       import math
-      import numpy
       forbidden=frozenset(['__import__','__class__'])
 
       code=float(s_fn) if isinstance(s_fn, (int, float)) else compile(s_fn,"<string>","eval")
@@ -438,7 +398,6 @@ if len(args)>1:
           If the first variable is Labelized.
       """
       import math
-      import numpy
 
       forbidden=frozenset(['__import__','__class__'])
 
@@ -524,7 +483,8 @@ if len(args)>1:
 
     def __prepareIndices__(self,ind):
       """
-      From an indice (dict or tuple), returns a pair of pyagrum.Instantiation to loop in a part of the Tensor.
+      From an indice (dict or tuple), returns a triple (inst, loopvars, varlist) where
+      varlist is [loopvars.variable(k-1) for k in range(loopvars.nbrDim(), 0, -1)].
       """
       from numbers import Number
 
@@ -555,23 +515,26 @@ if len(args)>1:
                   loopvars.erase(nam)
       else:
           raise ValueError("No subscript using '"+str(i)+"'")
-      return inst,loopvars
+      varlist=[loopvars.variable(k-1) for k in range(loopvars.nbrDim(),0,-1)]
+      return inst,loopvars,varlist
 
     def __getitem__(self, id):
-      import numpy
       if isinstance(id,Instantiation):
           return self.get(id)
 
-      inst,loopvars=self.__prepareIndices__(id)
+      inst,loopvars,varlist=self.__prepareIndices__(id)
 
       if loopvars.nbrDim()==0:
           return self.get(inst)
 
       if loopvars.nbrDim()==self.nbrDim():
-        return self.as_nparray()
+        try:
+          return self.as_nparray()
+        except RuntimeError:
+          pass
 
-      names=[loopvars.variable(i-1).name() for i in range(loopvars.nbrDim(),0,-1)]
-      tab=numpy.zeros(tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)]))
+      names=[v.name() for v in varlist]
+      tab=numpy.zeros(tuple(v.domainSize() for v in varlist))
       while not inst.end():
           indice=[inst.val(name) for name in names]
           tab[tuple(indice)]=self.get(inst)
@@ -580,12 +543,11 @@ if len(args)>1:
 
     def __setitem__(self, id, value):
       from numbers import Number
-      import numpy
       if isinstance(id,Instantiation):
           self.set(id,value)
           return
 
-      inst,loopvars=self.__prepareIndices__(id)
+      inst,loopvars,varlist=self.__prepareIndices__(id)
 
       if loopvars.nbrDim()==0:
           self.set(inst,value)
@@ -603,7 +565,7 @@ if len(args)>1:
             inst.incIn(loopvars)
       else:
         if isinstance(value,list):
-            value=numpy.array(value)
+            value=numpy.array(value, dtype=numpy.float64)
         elif isinstance(value,dict):
             if loopvars.nbrDim()>1:
                 raise ArgumentError("The value can be a dict only when specifying 1D-marginal.")
@@ -619,11 +581,11 @@ if len(args)>1:
             if not isinstance(value,numpy.ndarray):
                 raise ArgumentError(f"{value} is not a correct value for a tensor.")
 
-        shape=tuple([loopvars.variable(i-1).domainSize() for i in range(loopvars.nbrDim(),0,-1)])
+        shape=tuple(v.domainSize() for v in varlist)
         if value.shape!=shape:
           raise IndexError("Shape of '"+str(value)+"' is not '"+str(shape)+"'")
 
-        names = [loopvars.variable(i - 1).name() for i in range(loopvars.nbrDim(), 0, -1)]
+        names=[v.name() for v in varlist]
         while not inst.end():
             indice = tuple([inst.val(name) for name in names])
             self.set(inst,float(value[indice]))

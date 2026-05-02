@@ -68,7 +68,6 @@
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
-#include <agrum/base/graphs/graphElements.h>
 
 namespace gum::graph {
 

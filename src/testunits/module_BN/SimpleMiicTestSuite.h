@@ -86,6 +86,7 @@ namespace gum_tests {
   class FilterListenerForSimpleMiic: public gum::Listener {
     public:
     gum::Size filter{0};
+
     FilterListenerForSimpleMiic() {}
 
     void whenStructuralModification(const void* src,

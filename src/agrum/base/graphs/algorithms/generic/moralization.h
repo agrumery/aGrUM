@@ -64,7 +64,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
 
 namespace gum::graph {
