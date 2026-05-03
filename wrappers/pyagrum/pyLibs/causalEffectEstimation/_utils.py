@@ -257,7 +257,7 @@ def generalizedFrontDoor(
   )
   mediators = {obn.variable(m).name() for m in mediators}
 
-  confounders = set()
+  confounders: set[str] = set()
 
   for m in mediators:
     backdoor_T_M = causal_model.backDoor(intervention, m)
@@ -322,7 +322,7 @@ def _findPath(
       The path from node `a` to `b`.
   """
 
-  stack = deque()
+  stack: deque[tuple[int, list[int]]] = deque()
   stack.append((a, [a]))
   visited = set()
 
@@ -435,7 +435,7 @@ def _ancestralInstrument(causal_model: pyagrum.CausalModel, t: int, y: int, z: i
 
 def instrumentalVariable(
   causal_model: pyagrum.CausalModel, intervention: str, outcome: str
-) -> tuple[set[str], set[str]]:
+) -> tuple[str, set[str]] | tuple[None, None]:
   """
   Identifies the instrumental variables and covariates, using ancestral
   instruments.

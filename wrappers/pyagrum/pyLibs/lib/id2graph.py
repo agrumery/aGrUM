@@ -121,7 +121,9 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
       res += ";\n"
   res += "}"
 
-  g = dot.graph_from_dot_data(res)[0]
+  _graphs = dot.graph_from_dot_data(res)
+  assert _graphs is not None
+  g = _graphs[0]
 
   # workaround for some badly parsed graph (pyparsing>=3.03)
   g.del_node('"\\n"')
@@ -137,7 +139,7 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
 def LIMIDinference2dot(
   diag: pyagrum.InfluenceDiagram,
   size: float | str | None,
-  engine: pyagrum.InfluenceDiagramInference | None,
+  engine: pyagrum.IDInference | None,
   evs: dict,
   targets: set,
 ) -> dot.Dot:
@@ -150,7 +152,7 @@ def LIMIDinference2dot(
     the model
   size: float|str
     the size of the rendered graph
-  engine: pyagrum.InfluenceDiagramInference
+  engine: pyagrum.IDInference
     the inference algorithm used. If None, ShaferShenoyLIMIDInference will be used
   evs: dict[str,str|int|list[float]]
     the evidence
@@ -221,7 +223,13 @@ def LIMIDinference2dot(
     if not diag.isUtilityNode(nid):
       if len(targets) == 0 or name in targets or nid in targets:
         filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graph_format"]
-        saveFigProba(ie.posterior(name), filename, bgcolor=bgcolor, util=ie.posteriorUtility(nid), txtcolor=fgcolor)
+        saveFigProba(
+          ie.posterior(name),
+          filename,
+          bgcolor=bgcolor,
+          util=ie.posteriorUtility(nid),
+          txtcolor=fgcolor,
+        )
         dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
       else:
         dotstr += f' "{name}" [{colorattribute},shape={shape},{styleattribute}]'
@@ -252,7 +260,9 @@ def LIMIDinference2dot(
       dotstr += ";\n"
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
+  _graphs = dot.graph_from_dot_data(dotstr)
+  assert _graphs is not None
+  g = _graphs[0]
 
   if size is None:
     size = pyagrum.config["influenceDiagram", "default_id_inference_size"]

@@ -39,11 +39,14 @@
 ############################################################################
 
 
+from typing import Any
+
+
 class CustomShapleyCache:
   def __init__(self, max_capacity: int = 1000):
     if max_capacity <= 0:
       raise ValueError("max_capacity must be a positive integer.")
-    self._cache = {}  # Structure: {longueur_str: { (entier, str): valeur }}
+    self._cache: dict[int, dict[tuple[int, str], Any]] = {}  # Structure: {longueur_str: { (entier, str): valeur }}
     self._current_k_index = -1  # Pour suivre l'indice k actuel
     self._max_capacity = max_capacity  # Capacité maximale du cache en nombre d'éléments
     self._current_size = 0  # Taille actuelle du cache

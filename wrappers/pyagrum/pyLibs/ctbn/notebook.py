@@ -138,7 +138,7 @@ def CTBNinference2dot(
       the Bayesian network
     size: str
       size of the rendered graph
-    engine:  pyagrum.Inference
+    engine:  pyagrum.BNInference
       inference algorithm used. If None, LazyPropagation will be used
     targets: set
       set of targets. If targets={} then each node is a target

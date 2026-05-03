@@ -134,7 +134,7 @@ class ShapValues:
     plot: bool = False,
     plot_importance: bool = False,
     percentage: bool = False,
-    filename: str = None,
+    filename: str | None = None,
   ) -> dict[str, float]:
     """
     Computes the conditional Shapley values for each variable.
@@ -172,7 +172,7 @@ class ShapValues:
     plot: bool = False,
     plot_importance: bool = False,
     percentage: bool = False,
-    filename: str = None,
+    filename: str | None = None,
   ) -> dict[str, float]:
     """
     Computes the marginal Shapley values for each variable.
@@ -210,7 +210,7 @@ class ShapValues:
     plot: bool = False,
     plot_importance: bool = False,
     percentage: bool = False,
-    filename: str = None,
+    filename: str | None = None,
   ) -> dict[str, float]:
     """
     Computes the causal Shapley values for each variable.

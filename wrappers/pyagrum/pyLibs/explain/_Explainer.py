@@ -39,6 +39,7 @@
 ############################################################################
 
 from abc import ABC, abstractmethod
+from typing import Any
 import pyagrum
 from pyagrum.explain._FIFOCache import FIFOCache
 
@@ -81,7 +82,7 @@ class Explainer(ABC):
     return np.log(p) if p > 0 else -np.inf
 
   @staticmethod
-  def _logit(p: any):
+  def _logit(p: Any):
     # Applies the logit transformation to the probabilities.
     p = np.asarray(p)  # Guarantee p is a numpy array.
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -91,7 +92,7 @@ class Explainer(ABC):
     return result
 
   @staticmethod
-  def _identity(x: any):
+  def _identity(x: Any):
     # Returns the input as is (identity function).
     return x
 

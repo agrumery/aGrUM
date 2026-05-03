@@ -294,6 +294,7 @@ def _reprGraph(gr: dot.Dot, size: float | str | None, asString: bool, graph_form
       return f'<img style="margin:0" src="data:image/png;base64,{encodebytes(i.data).decode()}"/>'
     else:
       IPython.core.display.display_png(i)
+  return None
 
 
 def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
@@ -336,8 +337,9 @@ def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
 
 
 def _from_dotstring(dotstring: str) -> dot.Dot:
-  g = dot.graph_from_dot_data(dotstring)[0]
-  return g
+  _graphs = dot.graph_from_dot_data(dotstring)
+  assert _graphs is not None
+  return _graphs[0]
 
 
 def showDot(dotstring: str, size: float | str | None = None) -> None:
@@ -467,7 +469,7 @@ def getJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.JunctionTreeGenerator()
+  jtg = pyagrum.CliqueGraphGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
@@ -502,7 +504,7 @@ def showJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.JunctionTreeGenerator()
+  jtg = pyagrum.CliqueGraphGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
@@ -526,7 +528,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
 
-  jtg = pyagrum.JunctionTreeGenerator()
+  jtg = pyagrum.CliqueGraphGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
@@ -558,7 +560,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
   if size is None:
     size = pyagrum.config["notebook", "junctiontree_graph_size"]
 
-  jtg = pyagrum.JunctionTreeGenerator()
+  jtg = pyagrum.CliqueGraphGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
@@ -1144,9 +1146,7 @@ def getCN(
   )
 
 
-def showInference(
-  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.CredalNet, **kwargs
-) -> None:
+def showInference(model: pyagrum.PGM, **kwargs) -> None:
   """
   show pydot graph for an inference in a notebook
 
@@ -1154,7 +1154,7 @@ def showInference(
   ----------
   model: pyagrum.GraphicalModel
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
-  engine: pyagrum.Inference
+  engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
     inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: dict[int|str,int|str|list[float]]
     map of evidence
@@ -1191,9 +1191,7 @@ def showInference(
   showGraph(prepareShowInference(model, **kwargs), size)
 
 
-def getInference(
-  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.CredalNet, **kwargs
-) -> str:
+def getInference(model: pyagrum.PGM, **kwargs) -> str:
   """
   get a HTML string for an inference in a notebook
 
@@ -1201,7 +1199,7 @@ def getInference(
   ----------
   model: pyagrum.GraphicalModel
     the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
-  engine: pyagrum.Inference
+  engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
     inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: dict[int|str,int|str|list[float]]
     map of evidence
@@ -1639,13 +1637,13 @@ def getInferenceEngine(ie, inferenceCaption: str) -> str:
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
-def getJT(jt: pyagrum.JunctionTree, size: float | str | None = None) -> str:
+def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
   """
   returns the representation of a junction tree as a HTML string
 
   Parameters
   ----------
-  jt: pyagrum.JunctionTree
+  jt: pyagrum.CliqueGraph
     the junction tree
   size: str
     the size (for graphviz) of the graph
@@ -1936,11 +1934,11 @@ else:
 
   def map(
     self,
-    scaleClique: float = None,
-    scaleSep: float = None,
-    lenEdge: float = None,
-    colorClique: str = None,
-    colorSep: str = None,
+    scaleClique: float | None = None,
+    scaleSep: float | None = None,
+    lenEdge: float | None = None,
+    colorClique: str | None = None,
+    colorSep: str | None = None,
   ) -> dot.Dot:
     """
     show the map of the junction tree.

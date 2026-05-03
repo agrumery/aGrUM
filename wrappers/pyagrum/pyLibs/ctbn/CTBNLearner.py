@@ -139,6 +139,7 @@ class Learner:
           UXj = parentsIdList.copy()
           UXj.remove(Xj)
 
+          loop: list[list[int]] | combinations[tuple[int, ...]]
           if b == 0:
             loop = [[]]
           elif b <= len(UXj):

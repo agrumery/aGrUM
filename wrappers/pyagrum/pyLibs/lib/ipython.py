@@ -107,8 +107,9 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
 
 
 def _from_dotstring(dotstring: str) -> dot.Dot:
-  g = dot.graph_from_dot_data(dotstring)[0]
-  return g
+  _graphs = dot.graph_from_dot_data(dotstring)
+  assert _graphs is not None
+  return _graphs[0]
 
 
 def showDot(dotstring: str, size: float | str | None = None) -> None:
@@ -344,7 +345,7 @@ def showTensor(p: pyagrum.Tensor) -> None:
 
 
 def show(
-  model: pyagrum.BayesNet | pyagrum.MarkovRandomField | pyagrum.InfluenceDiagram | pyagrum.Tensor,
+  model: pyagrum.GraphicalModel | pyagrum.Tensor,
   size: float | str | None = None,
 ) -> None:
   """
@@ -352,7 +353,7 @@ def show(
 
   Parameters
   ----------
-  model : pyagrum.BayesNet or pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram or pyagrum.Tensor
+  model : pyagrum.GraphicalModel or pyagrum.Tensor
       The model to show.
   size : int, optional
       Size for the graphical model (no effect for Tensor).

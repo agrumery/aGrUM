@@ -43,11 +43,12 @@ configuration tool for pyAgrum
 """
 
 from configparser import ConfigParser
+from typing import Any
 import os
 
 
 class GumSingleton(type):
-  _instances = {}
+  _instances: dict[type, Any] = {}
 
   def __call__(cls, *args, **kwargs):
     if cls not in cls._instances:

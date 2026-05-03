@@ -47,7 +47,7 @@ For each function `pyagrum.lib.export.to...(model,filename)`, it is assumed that
 import sys
 
 
-def toGML(model, filename: str = None) -> None:
+def toGML(model, filename: str | None = None) -> None:
   """
   Export directed graphical models as a graph to the graph GML format (https://gephi.org/users/supported-graph-formats/gml-format/)
 

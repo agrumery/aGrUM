@@ -177,7 +177,7 @@ def CN2dot(
 def CNinference2dot(
   cn: pyagrum.CredalNet,
   size: str | None = None,
-  engine: pyagrum.Inference | None = None,
+  engine: pyagrum.CNInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
   nodeColor: dict | None = None,
@@ -196,7 +196,7 @@ def CNinference2dot(
       the credal network
     size: str
       size of the rendered graph
-    engine:  pyagrum.Inference
+    engine:  pyagrum.CNInference
       inference algorithm used. If None, LazyPropagation will be used
     evs: dict
       map of evidence
@@ -222,7 +222,7 @@ def CNinference2dot(
   if evs is None:
     evs = {}
   if targets is None:
-    targets = {}
+    targets = set()
   bn = cn.current_bn()
   if cmapNode is None:
     cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
@@ -304,7 +304,9 @@ def CNinference2dot(
 
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
+  _graphs = dot.graph_from_dot_data(dotstr)
+  assert _graphs is not None
+  g = _graphs[0]
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]

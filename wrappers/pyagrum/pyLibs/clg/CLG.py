@@ -512,7 +512,7 @@ class CLG:
       A directed graph DAG representing the causal structure.
     """
     V = self.nodes()
-    C = {v: set() for v in V}  # C is shown by a Adjacency List
+    C: dict[int, set[int]] = {v: set() for v in V}  # C is shown by a Adjacency List
 
     for node in V:
       for child in self.children(node):

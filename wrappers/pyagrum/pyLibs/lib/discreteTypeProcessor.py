@@ -157,7 +157,7 @@ class DiscreteTypeProcessor:
             this number. For example if you have entered 0.95, the variable will be treated as continuous only if more
             than 95% of its values are unique.
     """
-    self.discretizationParametersDictionary = {}
+    self.discretizationParametersDictionary: dict[str, Any] = {}
     self.numberOfContinuous = 0
     self.totalNumberOfBins = 0
     self.defaultMethod = None

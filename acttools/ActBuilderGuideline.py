@@ -44,7 +44,7 @@ from collections.abc import Iterable
 import types
 import inspect
 from datetime import datetime
-from subprocess import call
+from subprocess import call, run as subprocess_run, PIPE
 
 from .configuration import cfg
 from .utils import *
@@ -308,6 +308,8 @@ def guideline(current: dict[str, str | bool], details: bool, correction: bool) -
   nbrError += _aff_errors(_check_clang_format(details, correction), "format")
   notif("  [[(6) check for py format]]")
   nbrError += _aff_errors(_check_ruff_format(details, correction), "format")
+  notif("  [[(7) check mypy type annotations in pyLibs]]")
+  nbrError += _aff_errors(_check_mypy(details, correction), "mypy type")
 
   return nbrError
 
@@ -459,7 +461,7 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
         code += line
 
   err = 0
-  if licence != _template_py_license:
+  if not (licence.startswith(_template_py_license) and licence[len(_template_py_license) :].strip("\n") == ""):
     err = 1
     res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (2)"
     if correction:
@@ -501,7 +503,7 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
         code += line
 
   err = 0
-  if licence != _template_py_license:
+  if not (licence.startswith(_template_py_license) and licence[len(_template_py_license) :].strip("\n") == ""):
     err = 1
     res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (3"
     if correction:
@@ -509,8 +511,7 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
         dest.write(_template_py_license)
         dest.write(code)
       res = f"{res} [[(✓)]]"
-    if details or correction:
-      notif(res)
+    notif(res)
 
   return err
 
@@ -594,6 +595,44 @@ def _check_cpp_file_exists(details: bool, correction: bool) -> int:
         error("No cpp file for [[" + header + "h]] : [[added]]")
       else:
         error("No cpp file for [[" + header + "h]]")
+
+  return nbrError
+
+
+def _check_mypy(details: bool, correction: bool) -> int:
+  mypy_cmd = f"{cfg.python} -m mypy"
+
+  probe = subprocess_run(
+    f"{mypy_cmd} --version",
+    shell=True,
+    stdout=PIPE,
+    stderr=PIPE,
+  )
+  if probe.returncode != 0:
+    warn("[[mypy]] not installed in current Python environment. Skipping.")
+    return 0
+
+  result = subprocess_run(
+    f"{mypy_cmd} {cfg.pymodulesPath}",
+    shell=True,
+    stdout=PIPE,
+    stderr=PIPE,
+    text=True,
+  )
+
+  lines = result.stdout.splitlines()
+  nbrError = 0
+
+  # Summary is on last line: "Found N errors in M files (...)"
+  if lines and " error" in lines[-1]:
+    try:
+      nbrError = int(lines[-1].split()[1])
+    except (ValueError, IndexError):
+      nbrError = 0
+
+  if details and nbrError > 0:
+    for line in lines:
+      notif(line)
 
   return nbrError
 

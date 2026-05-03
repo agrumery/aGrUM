@@ -440,7 +440,7 @@ class CLGLearner:
 
     # Form the complete undirected graph C on the vertex set V
     V = list(self._V)  # set of int
-    C = {v: set() for v in V}  # C is shown by a Adjacency List
+    C: dict[int, set[int]] = {v: set() for v in V}  # C is shown by a Adjacency List
     for i in range(len(V) - 1):
       for j in range(i + 1, len(V)):
         C[V[i]].add(V[j])
@@ -664,7 +664,7 @@ class CLGLearner:
       The estimated coefficients of each arc.
     """
     # Initialization
-    parents = {}
+    parents: dict[int, set[int]] = {}
     to_estimate = []
     id2mu = {}
     id2sigma = {}

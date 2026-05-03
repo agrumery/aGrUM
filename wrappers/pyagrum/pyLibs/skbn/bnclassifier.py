@@ -825,7 +825,7 @@ class BNClassifier(sklearn.base.BaseEstimator, sklearn.base.ClassifierMixin):
           labelIndex = 0
           labelList = targetVariable.labels()
           while labelIndex < len(labelList):
-            if labellist[labelIndex] == self.label:
+            if labelList[labelIndex] == self.label:
               break
             labelIndex += 1
           y = y == labelIndex

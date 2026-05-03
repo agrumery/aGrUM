@@ -285,6 +285,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     "TensorTestSuite",
     True,
   )
+  TypeAliasesTestSuite = _try_import(
+    "TypeAliasesTestSuite",
+    True,
+  )
   VariablesTestSuite = _try_import(
     "VariablesTestSuite",
     True,
@@ -352,6 +356,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         TensorTestSuite,
         PRMexplorerTestSuite,
         SamplingTestSuite,
+        TypeAliasesTestSuite,
         VariablesTestSuite,
         WorkaroundTestSuite,
       ],

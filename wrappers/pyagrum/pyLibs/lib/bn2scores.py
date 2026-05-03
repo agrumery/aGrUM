@@ -44,7 +44,6 @@ The purpose of this module is to provide tools for computing different scores fr
 
 import csv
 import math
-from typing import Any
 
 import pyagrum
 
@@ -90,7 +89,7 @@ def checkCompatibility(bn: pyagrum.BayesNet, fields: dict[str, int], csv_name: s
 
 
 def computeScores(
-  bn_name: pyagrum.BayesNet | str, csv_name: str, visible: bool = False, dialect: Any = None
+  bn_name: pyagrum.BayesNet | str, csv_name: str, visible: bool = False, dialect: csv.Dialect | None = None
 ) -> tuple[float, dict[str, float]]:
   """
   Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv

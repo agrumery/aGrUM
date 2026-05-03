@@ -48,7 +48,7 @@ from matplotlib.colors import LinearSegmentedColormap, to_rgb
 from matplotlib.patches import Patch
 
 
-def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage: bool = False) -> plt.axis:
+def bar(explanation: Explanation, y: int | None = None, ax: plt.Axes | None = None, percentage: bool = False) -> None:
   """
   Plots a horizontal bar chart of the mean absolute SHAP/SHALL values for each feature in the explanation.
 
@@ -106,15 +106,15 @@ def bar(explanation: Explanation, y: int = None, ax: plt.Axes = None, percentage
     colors = [cmap(i / (len(explanation) - 1)) for i in range(len(explanation))]
 
     n_features = len(explanation.feature_names)
-    values = np.array([[explanation.importances[z][feat] for feat in explanation.feature_names] for z in classes])
+    mat_values = np.array([[explanation.importances[z][feat] for feat in explanation.feature_names] for z in classes])
     # Sort bars
-    indices = np.argsort(np.sum(values, axis=0))
-    values = values[:, indices]
+    indices = np.argsort(np.sum(mat_values, axis=0))
+    mat_values = mat_values[:, indices]
     features = [explanation.feature_names[i] for i in indices]
     bottom = np.zeros(n_features)
 
     for i, cls in enumerate(classes):
-      contribs = values[i]
+      contribs = mat_values[i]
       if percentage:
         total = sum(contribs)
         contribs = [(v / total) * 100 for v in contribs]

@@ -42,6 +42,8 @@
 This module implements the forward sampling algorithm for CLG
 """
 
+from typing import Any
+
 import numpy as np
 
 import pandas as pd
@@ -52,7 +54,7 @@ from .CLG import CLG
 class ForwardSampling:
   def __init__(self, model: CLG) -> None:
     self._model = model
-    self._id2samples = {}
+    self._id2samples: dict[int, Any] = {}
 
   def makeSample(self, N: int, seed: int | None = None) -> "ForwardSampling":
     """

@@ -216,10 +216,43 @@ CausalModel.causalBN = lambda s: deprecatedCausalBN(s)
 
 
 
-# type
-from typing import NewType
+# type aliases
+from typing import NewType, TypeAlias
 
-DirectedModel = BayesNet | DAG | CausalModel | InfluenceDiagram
+#: Any directed probabilistic model: BayesNet, DAG, CausalModel or InfluenceDiagram.
+DirectedModel: TypeAlias = BayesNet | DAG | CausalModel | InfluenceDiagram
+
+#: Any Bayesian Network inference engine (exact or approximate).
+#:
+#: Exact: :class:`LazyPropagation`, :class:`ShaferShenoyInference`, :class:`VariableElimination`.
+#:
+#: Sampling: :class:`GibbsSampling`, :class:`ImportanceSampling`, :class:`WeightedSampling`,
+#: :class:`MonteCarloSampling`.
+#:
+#: Loopy: :class:`LoopyBeliefPropagation`, :class:`LoopyGibbsSampling`,
+#: :class:`LoopyImportanceSampling`, :class:`LoopyWeightedSampling`, :class:`LoopyMonteCarloSampling`.
+BNInference: TypeAlias = (
+    LazyPropagation | ShaferShenoyInference | VariableElimination
+    | GibbsSampling | ImportanceSampling | WeightedSampling | MonteCarloSampling
+    | LoopyBeliefPropagation | LoopyGibbsSampling | LoopyImportanceSampling
+    | LoopyWeightedSampling | LoopyMonteCarloSampling
+)
+
+#: Markov Random Field inference engine (:class:`ShaferShenoyMRFInference`).
+MRFInference: TypeAlias = ShaferShenoyMRFInference
+
+#: Any Credal Network inference engine: :class:`CNLoopyPropagation` or :class:`CNMonteCarloSampling`.
+CNInference: TypeAlias = CNLoopyPropagation | CNMonteCarloSampling
+
+#: Influence Diagram inference engine (:class:`ShaferShenoyLIMIDInference`).
+IDInference: TypeAlias = ShaferShenoyLIMIDInference
+
+#: Any graph structure: :class:`DiGraph`, :class:`DAG`, :class:`UndiGraph` or :class:`MixedGraph`.
+Graph: TypeAlias = DiGraph | DAG | UndiGraph | MixedGraph
+
+#: Any probabilistic graphical model: :class:`BayesNet`, :class:`MarkovRandomField`,
+#: :class:`InfluenceDiagram` or :class:`CredalNet`.
+PGM: TypeAlias = BayesNet | MarkovRandomField | InfluenceDiagram | CredalNet
 
 NodeId = NewType("NodeId", int)
 NodeList = list[NodeId]

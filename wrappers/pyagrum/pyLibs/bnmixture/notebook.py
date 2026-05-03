@@ -229,7 +229,7 @@ def BNMixtureInference2dot(
       The Bayesian Net Mixture used.
   size : str
       size of the rendered graph
-  engine :  pyagrum.Inference
+  engine :  pyagrum.BNInference
       inference algorithm used. If None, LazyPropagation will be used. Note : this is an unitialized class object.
   evs : dict
       map of evidence
@@ -371,7 +371,7 @@ def BootstrapInference2dot(
       the Mixture.
   size: str
       size of the rendered graph
-  engine:  pyagrum.Inference
+  engine:  pyagrum.BNInference
       inference algorithm used. If None, LazyPropagation will be used. This is the class, not the initialized object.
   evs: dict
       map of evidence
@@ -531,7 +531,7 @@ def showBNMixtureInference(
       The Bayesian Net Mixture used.
   size : str
       size of the rendered graph
-  engine :  pyagrum.Inference
+  engine :  pyagrum.BNInference
       inference algorithm used. If None, LazyPropagation will be used. Note : this is an unitialized class object.
   evs : dict
       map of evidence
@@ -591,7 +591,7 @@ def showBootstrapMixtureInference(
       The Bayesian Net Mixture used.
   size : str
       size of the rendered graph
-  engine :  pyagrum.Inference
+  engine :  pyagrum.BNInference
       inference algorithm used. If None, LazyPropagation will be used. Note : this is an unitialized class object.
   evs : dict
       map of evidence

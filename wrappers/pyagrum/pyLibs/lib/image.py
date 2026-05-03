@@ -46,6 +46,7 @@ import os
 import tempfile
 import re
 from typing import Any
+import matplotlib.colors
 import matplotlib.image as mpimg
 import pydot as dot
 
@@ -172,11 +173,15 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   elif isinstance(model, dot.Dot):
     fig = model
   elif hasattr(model, "toDot"):
-    fig = dot.graph_from_dot_data(model.toDot())[0]
+    _graphs = dot.graph_from_dot_data(model.toDot())
+    assert _graphs is not None
+    fig = _graphs[0]
   elif isinstance(model, str):
     if not re.match(r"^\s*(strict\s+)?(graph|digraph)\b", model, re.IGNORECASE):
       raise pyagrum.InvalidArgument("Argument model is a string but not in dot format")
-    fig = dot.graph_from_dot_data(model)[0]
+    _graphs = dot.graph_from_dot_data(model)
+    assert _graphs is not None
+    fig = _graphs[0]
   else:
     raise pyagrum.InvalidArgument(
       "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string"
@@ -187,7 +192,7 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
 
 def prepareShowInference(
   model: Any,
-  engine: Any | None = None,
+  engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
   size: str | None = None,
@@ -195,9 +200,9 @@ def prepareShowInference(
   factorColor: dict | None = None,
   arcWidth: dict | None = None,
   arcColor: dict | None = None,
-  cmapNode: Any | None = None,
-  cmapArc: Any | None = None,
-  graph: Any | None = None,
+  cmapNode: matplotlib.colors.Colormap | None = None,
+  cmapArc: matplotlib.colors.Colormap | None = None,
+  graph: pyagrum.DAG | None = None,
   view: str | None = None,
 ) -> dot.Dot:
   """
@@ -209,7 +214,7 @@ def prepareShowInference(
       the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
-  engine: pyagrum.Inference
+  engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
       inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: dict[str,str|int]
       map of evidence
@@ -398,7 +403,7 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
       the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
-  engine: pyagrum.Inference
+  engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
       inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
   evs: dict[str,str|int]
       map of evidence

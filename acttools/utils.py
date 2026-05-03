@@ -113,17 +113,14 @@ def notif_oneline(s: str, pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  printutf8(
-    f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}",
-    end="                                       \r",
-  )
+  printutf8(f"\r\033[K{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}", end="\r")
 
 
 def notif(s: str = "", pref: str | None = None):
   if pref is None:
     pref = cfg.prefix_line
 
-  printutf8(f"{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}")
+  printutf8(f"\r\033[K{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}")
 
 
 def warn(s: str, pref: str | None = None):
@@ -159,7 +156,9 @@ def recglob(path: str, mask: str) -> Iterator[str]:
 
 
 def srcPyNotebooks() -> Iterator[str]:
-  yield from recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb")
+  yield from (
+    f for f in recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb") if not f.endswith("-checkpoint.ipynb")
+  )
 
 
 def srcPyAgrum() -> Iterator[str]:
@@ -174,7 +173,9 @@ def srcPyIpynbAgrum() -> Iterator[str]:
 
 
 def srcCmakeAgrum() -> Iterator[str]:
-  yield from recglob(".", "CMakeLists.txt")
+  for f in recglob(".", "CMakeLists.txt"):
+    if not f.startswith("build/") and not f.startswith("cmake-build-"):
+      yield f
 
 
 def srcAgrum() -> Iterator[str]:

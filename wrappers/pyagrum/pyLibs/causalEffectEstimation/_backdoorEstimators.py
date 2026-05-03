@@ -742,7 +742,7 @@ class IPW:
 # WORK IN PROGRESS
 
 
-def _AIPW(self, learner: any):
+def _AIPW(self, learner: Any):
   """
   (see https://scholar.harvard.edu/files/aglynn/files/AIPW.pdf)
   """

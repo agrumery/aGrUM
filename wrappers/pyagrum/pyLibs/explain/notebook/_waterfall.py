@@ -59,7 +59,7 @@ def _FMT(func: str) -> str:
   return ".2e" if func == "_identity" else ".2f"
 
 
-def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict = None):
+def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict | None = None):
   """
   Plots a waterfall chart of the SHAP/SHALL values.
 

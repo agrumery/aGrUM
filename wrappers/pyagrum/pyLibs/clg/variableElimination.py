@@ -54,7 +54,7 @@ from .GaussianVariable import GaussianVariable
 class CLGVariableElimination:
   def __init__(self, clg: CLG) -> None:
     self._clg = clg
-    self._evidence = {}
+    self._evidence: dict[str, float] = {}
     self._cf_dict = self._constructCanonicalForms()
 
   def updateEvidence(self, evidence: dict[str, float]) -> None:

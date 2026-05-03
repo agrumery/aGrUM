@@ -697,7 +697,7 @@ def showROC_PR(
       else:
         datasrc.write_csv(csvfilename, na_rep="?", index=False)
 
-      showROC_PR(
+      result = showROC_PR(
         bn,
         csvfilename,
         target,
@@ -713,7 +713,7 @@ def showROC_PR(
       )
 
       os.remove(csvfilename)
-      return
+      return result
     else:
       raise TypeError("first argument must be a string or a DataFrame")
 

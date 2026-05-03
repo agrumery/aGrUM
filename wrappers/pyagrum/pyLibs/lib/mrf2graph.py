@@ -251,7 +251,7 @@ def MRF2FactorGraphdot(
 def MRFinference2UGdot(
   mrf: pyagrum.MarkovRandomField,
   size: str | None = None,
-  engine: pyagrum.Inference | None = None,
+  engine: pyagrum.MRFInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
   nodeColor: dict | None = None,
@@ -296,7 +296,7 @@ def MRFinference2UGdot(
   if evs is None:
     evs = {}
   if targets is None:
-    targets = {}
+    targets = set()
 
   if cmapNode is None:
     cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
@@ -378,7 +378,9 @@ def MRFinference2UGdot(
     dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
+  _graphs = dot.graph_from_dot_data(dotstr)
+  assert _graphs is not None
+  g = _graphs[0]
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]
@@ -391,7 +393,7 @@ def MRFinference2UGdot(
 def MRFinference2FactorGraphdot(
   mrf: pyagrum.MarkovRandomField,
   size: str | None = None,
-  engine: pyagrum.Inference | None = None,
+  engine: pyagrum.MRFInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
   nodeColor: dict | None = None,
@@ -426,7 +428,7 @@ def MRFinference2FactorGraphdot(
   if evs is None:
     evs = {}
   if targets is None:
-    targets = {}
+    targets = set()
   if cmapNode is None:
     cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
 
@@ -503,7 +505,9 @@ def MRFinference2FactorGraphdot(
       dotstr += f' {factorname(f)}->"{mrf.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",fillcolor="{bgcol}",len="{pyagrum.config["factorgraph", "edge_length_inference"]}"];\n'
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
+  _graphs = dot.graph_from_dot_data(dotstr)
+  assert _graphs is not None
+  g = _graphs[0]
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]

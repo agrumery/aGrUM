@@ -67,7 +67,7 @@ def readTrajectoryCSV(filename: str) -> dict[int, list[tuple[float, str, str]]]:
   dict[int, list[tuple[float, str, str]]]
       The trajectories, a trajectory for every index.
   """
-  data = dict()
+  data: dict[int, list[tuple[float, str, str]]] = {}
   with open(filename, newline="") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
@@ -80,7 +80,10 @@ def readTrajectoryCSV(filename: str) -> dict[int, list[tuple[float, str, str]]]:
 
 
 def plotTrajectory(
-  v: pyagrum.DiscreteVariable, traj: list[tuple[float, str, str]], timeHorizon: float = None, plotname: str = None
+  v: pyagrum.DiscreteVariable,
+  traj: list[tuple[float, str, str]],
+  timeHorizon: float | None = None,
+  plotname: str | None = None,
 ):
   """
   Plot a variable's trajectory using matplotlib.pyplot.
@@ -133,9 +136,9 @@ def plotTrajectory(
 def plotFollowVar(
   v: pyagrum.DiscreteVariable,
   trajectories: dict[int, list[tuple[float, str, str]]],
-  timeHorizon: float = None,
-  N: int = None,
-  plotname: str = None,
+  timeHorizon: float | None = None,
+  N: int | None = None,
+  plotname: str | None = None,
 ):
   """
   Plot the evolution (the proportions of the states the variable transition into) of a variable over time.

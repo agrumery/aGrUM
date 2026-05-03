@@ -133,13 +133,13 @@ class ShallValues(Explainer):
     return self.func(self.bn.jointProbability(self.inst))
 
   @abstractmethod
-  def _shall_1dim(self, x, elements):
+  def _shall_1dim(self, x):
     # Computes the Shall values for a single instance.
     # This method should be implemented in subclasses.
     raise NotImplementedError("This method should be implemented in subclasses.")
 
   @abstractmethod
-  def _shall_ndim(self, x, elements):
+  def _shall_ndim(self, x):
     # Computes the Shall values for multiple instances.
     # This method should be implemented in subclasses.
     raise NotImplementedError("This method should be implemented in subclasses.")

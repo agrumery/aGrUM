@@ -134,7 +134,7 @@ def getTimeSlicesRange(dbn: pyagrum.BayesNet) -> dict[str, list[tuple[str, str]]
   dict[str,list[T[str,str]]]
     all the timeslice of a dbn : ['0','t'] for a classic 2TBN, range(T) for a classic unrolled BN
   """
-  timeslices = {}
+  timeslices: dict[str, list[tuple[str, str]]] = {}
 
   for i in dbn.nodes():
     n = dbn.variable(i).name()
@@ -301,10 +301,10 @@ def unroll2TBN(dbn: pyagrum.BayesNet, nbr: int) -> pyagrum.BayesNet:
       # create a clone of the variable in the new bn
       bn.add(dbn.variable(dbn_id))
     else:
-      for ts in range(1, nbr):
+      for ti in range(1, nbr):
         # create a clone of the variable in the new bn
         nid = bn.add(dbn.variable(dbn_id))
-        bn.changeVariableName(nid, realNameFrom2TBNname(name, ts))  # create the true name
+        bn.changeVariableName(nid, realNameFrom2TBNname(name, ti))  # create the true name
 
   # add parents
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
@@ -322,16 +322,16 @@ def unroll2TBN(dbn: pyagrum.BayesNet, nbr: int) -> pyagrum.BayesNet:
         else:
           if _isInFirstTimeSlice(name):
             raise TypeError("An arc from timeslice t to timeslice is impossible in dBN")
-          for ts in range(1, nbr):
-            new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
+          for ti in range(1, nbr):
+            new_name_parent = realNameFrom2TBNname(name_parent, ti)  # current TimeSlice
             bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(name))
       else:
-        for ts in range(1, nbr):
+        for ti in range(1, nbr):
           if _isInFirstTimeSlice(name_parent):
-            new_name_parent = realNameFrom2TBNname(name_parent, ts - 1)  # last TimeSlice
+            new_name_parent = realNameFrom2TBNname(name_parent, ti - 1)  # last TimeSlice
           else:
-            new_name_parent = realNameFrom2TBNname(name_parent, ts)  # current TimeSlice
-          new_name = realNameFrom2TBNname(name, ts)  # necessary current TimeSlice
+            new_name_parent = realNameFrom2TBNname(name_parent, ti)  # current TimeSlice
+          new_name = realNameFrom2TBNname(name, ti)  # necessary current TimeSlice
           bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(new_name))
 
   # tensor creation
@@ -340,8 +340,8 @@ def unroll2TBN(dbn: pyagrum.BayesNet, nbr: int) -> pyagrum.BayesNet:
     if not _isInSecondTimeSlice(name):
       bn.cpt(bn.idFromName(name))[:] = dbn.cpt(dbn_id)[:]
     else:
-      for ts in range(1, nbr):
-        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ts)))[:] = dbn.cpt(dbn_id)[:]
+      for ti in range(1, nbr):
+        bn.cpt(bn.idFromName(realNameFrom2TBNname(name, ti)))[:] = dbn.cpt(dbn_id)[:]
 
   return bn
 

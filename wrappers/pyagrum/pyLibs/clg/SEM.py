@@ -155,7 +155,7 @@ class SEM:
     if SEM._reg_variable.match(variable) is None:
       raise SyntaxError(f"{variable=} not a variable")
 
-    terms = {}
+    terms: dict[str, float] = {}
     for token in tokens:
       # get rid of "-" at the beginning of token
       if token[0] == "-":
@@ -220,8 +220,7 @@ class SEM:
 
     # parsing the canonic_form
     clg = CLG()
-    arcs = []
-    arcs = []
+    arcs: list[tuple[str, str, float]] = []
     for line in canonic_form:
       try:
         var, terms, stddev = SEM._parse_line(line)
