@@ -52,14 +52,25 @@ namespace gum {
   void StructuralMetrics::compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test) {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.dag().asNodeSet()) {
-      if (!test.dag().existsNode(node)) {
+      if (!test.exists(ref.variable(node).name())) {
         GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
       }
     }
-    PDAG ref_eg  = EssentialGraph(ref).pdag();
-    auto eg      = EssentialGraph(test);
-    PDAG test_eg = eg.pdag();
+    // Build a BN with ref's variables/NodeIds and test's arc structure (mapped
+    // by name): comparison and essential-graph extraction must operate on
+    // matching NodeIds, but the semantic identity is the variable name.
+    BayesNet< GS2 > aligned_test;
+    for (const NodeId id: ref.dag().asNodeSet()) {
+      aligned_test.add(ref.variable(id), id);
+    }
+    for (const Arc& arc: test.dag().arcs()) {
+      const NodeId tail = ref.idFromName(test.variable(arc.tail()).name());
+      const NodeId head = ref.idFromName(test.variable(arc.head()).name());
+      aligned_test.addArc(tail, head);
+    }
 
+    PDAG ref_eg  = EssentialGraph(ref).pdag();
+    PDAG test_eg = EssentialGraph(aligned_test).pdag();
     this->compare(ref_eg, test_eg);
   }
 
@@ -79,7 +90,22 @@ namespace gum {
   template < typename GS1, typename GS2 >
   double StructuralMetrics::sid(const BayesNet< GS1 >& ref,
                                 const BayesNet< GS2 >& test) const {
-    return this->sid(ref.dag(), test.dag());
+    if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
+    for (const NodeId node: ref.dag().asNodeSet()) {
+      if (!test.exists(ref.variable(node).name())) {
+        GUM_ERROR(InvalidNode, "Test doesn't contain node " << node << " from ref")
+      }
+    }
+    // Align test's DAG to ref's NodeIds by variable name (DAG-level only,
+    // no need to materialize an aligned BN since SID works on the DAG).
+    DAG aligned_test;
+    for (const NodeId id: ref.dag().asNodeSet()) { aligned_test.addNodeWithId(id); }
+    for (const Arc& arc: test.dag().arcs()) {
+      const NodeId tail = ref.idFromName(test.variable(arc.tail()).name());
+      const NodeId head = ref.idFromName(test.variable(arc.head()).name());
+      aligned_test.addArc(tail, head);
+    }
+    return this->sid(ref.dag(), aligned_test);
   }
 } /* namespace gum */
 

@@ -221,6 +221,30 @@ namespace gum_tests {
       CHECK((comp.shd_skeleton()) == 8);
     }
 
+    static void test_identities_by_names() {
+      // for every metric M we want to check that M(g1,g2) = 0 where g2=g1 regarding the variables names but not the ids.
+      
+      // "D" -> "A" <- "B" <- "C"
+      gum::BayesNet< double > g1;
+      g1 = g1.fastPrototype("D->A<-B<-C");
+
+      // "C" -> "B" -> "A" <- "D"
+      gum::BayesNet< double > g2;
+      g2 = g2.fastPrototype("C->B->A<-D");
+
+      gum::StructuralMetrics comp;
+      comp.compare(g1, g2);
+      CHECK(comp.precision_skeleton() == 1);
+      CHECK(comp.recall_skeleton() == 1);
+      CHECK(comp.f_score_skeleton() == 1);
+      CHECK(comp.shd_skeleton() == 0);
+      CHECK(comp.precision() == 1);
+      CHECK(comp.recall() == 1);
+      CHECK(comp.f_score() == 1);
+      CHECK(comp.shd() == 0);
+      CHECK(comp.sid(g1, g2) == 0);
+    }
+
     static void test_sid_identity() {
       // SID(G, G) = 0 trivially
       gum::DAG g;
@@ -234,7 +258,7 @@ namespace gum_tests {
     }
 
     static void test_sid_subgraph_zero() {
-      // Proposition 7: G ⊆ H ⇒ SID(G, H) = 0
+      // Proposition 7: G included in H => SID(G, H) = 0
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 3; ++i) {
         g.addNodeWithId(i);
@@ -249,7 +273,7 @@ namespace gum_tests {
     }
 
     static void test_sid_empty_target() {
-      // G: 0 → 1, H: ∅. Only the pair (1, 0) is an error.
+      // G: 0 -> 1, H: empty. Only the pair (1, 0) is an error.
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 2; ++i) {
         g.addNodeWithId(i);
@@ -262,7 +286,7 @@ namespace gum_tests {
     }
 
     static void test_sid_reversed_arc() {
-      // G: 0 → 1, H: 1 → 0. SHD = 1, SID = 2 (sharp bound 2(p-1) = 2).
+      // G: 0 -> 1, H: 1 -> 0. SHD = 1, SID = 2 (sharp bound 2(p-1) = 2).
       gum::DAG g, h;
       for (gum::NodeId i = 0; i < 2; ++i) {
         g.addNodeWithId(i);
@@ -276,8 +300,8 @@ namespace gum_tests {
     }
 
     static void test_sid_asymmetry() {
-      // Asymmetry: SID(G, ∅) > 0 but SID(∅, G) = 0 (Prop 7, ∅ ⊆ G).
-      // G: chain 0 → 1 → 2.
+      // Asymmetry: SID(G, empty) > 0 but SID(empty, G) = 0 (Prop 7, empty included in G).
+      // G: chain 0 -> 1 -> 2.
       gum::DAG g, empty;
       for (gum::NodeId i = 0; i < 3; ++i) {
         g.addNodeWithId(i);
@@ -294,7 +318,7 @@ namespace gum_tests {
     static void test_sid_paper_figure2_h1() {
       // Peters & Bühlmann 2015, Figure 2: G vs H_1.
       // Nodes: 0=X_1, 1=X_2, 2=Y_1, 3=Y_2, 4=Y_3.
-      // G: X_1 → X_2; X_1 and X_2 are parents of each Y_j.
+      // G: X_1 -> X_2; X_1 and X_2 are parents of each Y_j.
       gum::DAG g;
       for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
       g.addArc(0, 1);
@@ -303,7 +327,7 @@ namespace gum_tests {
         g.addArc(1, y);
       }
 
-      // H_1 = G + (Y_1 → Y_2), so G ⊆ H_1.
+      // H_1 = G + (Y_1 -> Y_2), so G included in H_1.
       gum::DAG h1 = g;
       h1.addArc(2, 3);
 
@@ -312,7 +336,7 @@ namespace gum_tests {
     }
 
     static void test_sid_paper_figure2_h2() {
-      // Peters & Bühlmann 2015, Figure 2: G vs H_2 (arc X_1 → X_2 reversed).
+      // Peters & Bühlmann 2015, Figure 2: G vs H_2 (arc X_1 -> X_2 reversed).
       gum::DAG g;
       for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
       g.addArc(0, 1);
@@ -321,7 +345,7 @@ namespace gum_tests {
         g.addArc(1, y);
       }
 
-      // H_2: same as G but X_2 → X_1 instead of X_1 → X_2.
+      // H_2: same as G but X_2 -> X_1 instead of X_1 -> X_2.
       gum::DAG h2;
       for (gum::NodeId i = 0; i < 5; ++i) h2.addNodeWithId(i);
       h2.addArc(1, 0);   // reversed arc
@@ -346,17 +370,92 @@ namespace gum_tests {
       gum::BayesNet< double > h2 = g;
       const gum::NodeId X1 = g.idFromName("0");
       const gum::NodeId X2 = g.idFromName("1");
-      h2.eraseArc(X1, X2);   // remove X_1 → X_2
-      h2.addArc(X2, X1);     // add X_2 → X_1
+      h2.eraseArc(X1, X2);   // remove X_1 -> X_2
+      h2.addArc(X2, X1);     // add X_2 -> X_1
 
       gum::StructuralMetrics comp;
       CHECK(comp.sid(g, h2) == 8);
       CHECK(comp.sid(g, g) == 0);
     }
+
+    static void test_sum_invariant_digraph() {
+      // For a DiGraph compare, tp+tn+fp+fn must equal the number of ordered
+      // pairs N*(N-1), and the skeleton variants must sum to N*(N-1)/2.
+      gum::DiGraph ref, test;
+      for (gum::NodeId i = 0; i < 5; ++i) {
+        ref.addNodeWithId(i);
+        test.addNodeWithId(i);
+      }
+      ref.addArc(0, 1);
+      ref.addArc(1, 2);
+      ref.addArc(0, 3);
+      test.addArc(1, 0);   // misoriented
+      test.addArc(1, 2);   // matches
+      test.addArc(3, 4);   // extra
+
+      gum::StructuralMetrics comp;
+      comp.compare(ref, test);
+
+      const double total_ordered   = 5.0 * 4.0;
+      const double total_unordered = 5.0 * 4.0 / 2.0;
+      CHECK(comp.tp() + comp.tn() + comp.fp() + comp.fn() == total_ordered);
+      CHECK(comp.tp_skeleton() + comp.tn_skeleton() + comp.fp_skeleton() + comp.fn_skeleton()
+            == total_unordered);
+    }
+
+    static void test_sum_invariant_undigraph() {
+      // For an UndiGraph compare, tp+tn+fp+fn must equal N*(N-1)/2 (unordered
+      // pairs); same total for the skeleton variants.
+      gum::UndiGraph ref, test;
+      for (gum::NodeId i = 0; i < 5; ++i) {
+        ref.addNodeWithId(i);
+        test.addNodeWithId(i);
+      }
+      ref.addEdge(0, 1);
+      ref.addEdge(1, 2);
+      ref.addEdge(0, 3);
+      test.addEdge(0, 1);
+      test.addEdge(3, 4);   // extra
+
+      gum::StructuralMetrics comp;
+      comp.compare(ref, test);
+
+      const double total = 5.0 * 4.0 / 2.0;
+      CHECK(comp.tp() + comp.tn() + comp.fp() + comp.fn() == total);
+      CHECK(comp.tp_skeleton() + comp.tn_skeleton() + comp.fp_skeleton() + comp.fn_skeleton()
+            == total);
+    }
+
+    // NOTE: no sum-invariant test for compare(PDAG, PDAG): the existing
+    // _true_none_ formula in compare() omits _wrong_arc_edge_/_wrong_edge_arc_,
+    // so the invariant breaks whenever ref/test swap an arc and an edge.
+
+    static void test_accessors_before_compare() {
+      // Calling accessors before compare() reads uninitialized members:
+      // the values returned are undefined. We only check that nothing throws.
+      gum::StructuralMetrics comp;
+      CHECK_NOTHROW(comp.tp());
+      CHECK_NOTHROW(comp.fp());
+      CHECK_NOTHROW(comp.fn());
+      CHECK_NOTHROW(comp.tn());
+      CHECK_NOTHROW(comp.tp_skeleton());
+      CHECK_NOTHROW(comp.fp_skeleton());
+      CHECK_NOTHROW(comp.fn_skeleton());
+      CHECK_NOTHROW(comp.tn_skeleton());
+      CHECK_NOTHROW(comp.precision());
+      CHECK_NOTHROW(comp.recall());
+      CHECK_NOTHROW(comp.f_score());
+      CHECK_NOTHROW(comp.shd());
+      CHECK_NOTHROW(comp.precision_skeleton());
+      CHECK_NOTHROW(comp.recall_skeleton());
+      CHECK_NOTHROW(comp.f_score_skeleton());
+      CHECK_NOTHROW(comp.shd_skeleton());
+    }
   };
 
   GUM_TEST_ACTIF(_graph)
   GUM_TEST_ACTIF(_bn)
+  GUM_TEST_ACTIF(_identities_by_names)
   GUM_TEST_ACTIF(_sid_identity)
   GUM_TEST_ACTIF(_sid_subgraph_zero)
   GUM_TEST_ACTIF(_sid_empty_target)
@@ -365,5 +464,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_sid_paper_figure2_h1)
   GUM_TEST_ACTIF(_sid_paper_figure2_h2)
   GUM_TEST_ACTIF(_sid_bn_overload)
+  GUM_TEST_ACTIF(_sum_invariant_digraph)
+  GUM_TEST_ACTIF(_sum_invariant_undigraph)
+  GUM_TEST_ACTIF(_accessors_before_compare)
 
 } /* namespace gum_tests */
