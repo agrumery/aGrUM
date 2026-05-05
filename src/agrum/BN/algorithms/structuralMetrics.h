@@ -96,20 +96,27 @@ namespace gum {
     void compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test);
 
     /// Measures for the skeleton, aka graph without orientations
+    double tp_skeleton() const;
+    double fp_skeleton() const;
+    double fn_skeleton() const;
+    double tn_skeleton() const;
     double precision_skeleton() const;
     double recall_skeleton() const;
     double f_score_skeleton() const;
     double shd_skeleton() const;
 
     /// Measures for the graphs
+    double tp() const;
+    double fp() const;
+    double fn() const;
+    double tn() const;
     double precision() const;
     double recall() const;
     double f_score() const;
     double shd() const;
 
-    // Causal metric for DAGs
+    // Causal measure for DAGs
     double sid(const DAG& ref, const DAG& test) const;
-
     /// SID overload comparing the DAGs of two BNs (NOT their essential graphs).
     template < typename GS1, typename GS2 >
     double sid(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test) const;
@@ -136,6 +143,9 @@ namespace gum {
     double _wrong_arc_edge_, _wrong_arc_none_, _misoriented_arc_;
     double _wrong_none_edge_, _wrong_none_arc_;
     // double  _precision_,  _recall_,  _f_score_;
+
+    /// Number of nodes in the compared graphs (set by compare()).
+    Size _size_;
   };
 
 } /* namespace gum */

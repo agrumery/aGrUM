@@ -12477,6 +12477,18 @@ class StructuralMetrics(object):
         """
         return _pyagrum.StructuralMetrics_compare(self, *args)
 
+    def tp_skeleton(self) -> float:
+        return _pyagrum.StructuralMetrics_tp_skeleton(self)
+
+    def fp_skeleton(self) -> float:
+        return _pyagrum.StructuralMetrics_fp_skeleton(self)
+
+    def fn_skeleton(self) -> float:
+        return _pyagrum.StructuralMetrics_fn_skeleton(self)
+
+    def tn_skeleton(self) -> float:
+        return _pyagrum.StructuralMetrics_tn_skeleton(self)
+
     def precision_skeleton(self) -> float:
         r"""
 
@@ -12518,6 +12530,18 @@ class StructuralMetrics(object):
 
     def shd_skeleton(self) -> float:
         return _pyagrum.StructuralMetrics_shd_skeleton(self)
+
+    def tp(self) -> float:
+        return _pyagrum.StructuralMetrics_tp(self)
+
+    def fp(self) -> float:
+        return _pyagrum.StructuralMetrics_fp(self)
+
+    def fn(self) -> float:
+        return _pyagrum.StructuralMetrics_fn(self)
+
+    def tn(self) -> float:
+        return _pyagrum.StructuralMetrics_tn(self)
 
     def precision(self) -> float:
         r"""

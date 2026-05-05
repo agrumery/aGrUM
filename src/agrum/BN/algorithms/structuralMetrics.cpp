@@ -57,6 +57,7 @@ namespace gum {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
+    _size_ = ref.size();
     // compute the orientation matrix
     // no edges so these stay null
     _true_edge_       = 0;
@@ -95,6 +96,7 @@ namespace gum {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
+    _size_ = ref.size();
     // compute the orientation matrix
     // no arcs so these stay null
     _true_arc_        = 0;
@@ -131,6 +133,7 @@ namespace gum {
         GUM_ERROR(InvalidNode, "Test doesn't contain all nodes from ref")
       }
     }
+    _size_ = ref.size();
 
     // compute the orientation matrix
     _true_arc_        = 0;
@@ -183,79 +186,75 @@ namespace gum {
                 - _wrong_none_arc_;
   }
 
+  double StructuralMetrics::tp_skeleton() const {
+    return _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
+  }
+
+  double StructuralMetrics::fp_skeleton() const {
+    return _wrong_arc_none_ + _wrong_edge_none_;
+  }
+
+  double StructuralMetrics::fn_skeleton() const {
+    return _wrong_none_arc_ + _wrong_none_edge_;
+  }
+
+  double StructuralMetrics::tn_skeleton() const {
+    // Cannot simply return _true_none_: it counts ordered pairs in compare(DiGraph,DiGraph)
+    // and unordered pairs in compare(UndiGraph/UndiGraph) and compare(PDAG/PDAG),
+    // so units are inconsistent.
+    return _size_ * (_size_ - 1) / 2.0 - tp_skeleton() - fp_skeleton() - fn_skeleton();
+  }
+
   double StructuralMetrics::precision_skeleton() const {
-    double tp, fp, precision;
-    tp        = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
-    fp        = _wrong_arc_none_ + _wrong_edge_none_;
-    precision = tp / (tp + fp);
-    return precision;
+    return tp_skeleton() / (tp_skeleton() + fp_skeleton());
   }
 
   double StructuralMetrics::recall_skeleton() const {
-    double tp, fn, recall;
-    tp     = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
-    fn     = _wrong_none_arc_ + _wrong_none_edge_;
-    recall = tp / (tp + fn);
-    return recall;
+    return tp_skeleton() / (tp_skeleton() + fn_skeleton());
   }
 
   double StructuralMetrics::f_score_skeleton() const {
-    double tp, fp, fn, precision, recall, f_score;
-    tp = _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
-    fp = _wrong_arc_none_ + _wrong_edge_none_;
-    fn = _wrong_none_arc_ + _wrong_none_edge_;
-
-    precision = tp / (tp + fp);
-    recall    = tp / (tp + fn);
-    f_score   = 2 * precision * recall / (precision + recall);
-    return f_score;
+    const double p = precision_skeleton();
+    const double r = recall_skeleton();
+    return 2 * p * r / (p + r);
   }
 
   double StructuralMetrics::shd_skeleton() const {
-    double missing, extra, shd;
-    missing = _wrong_none_arc_ + _wrong_none_edge_;
-    extra   = _wrong_arc_none_ + _wrong_edge_none_;
-    shd     = missing + extra;
-    return shd;
+    return fp_skeleton() + fn_skeleton();
+  }
+
+  double StructuralMetrics::tp() const {
+    return _true_arc_ + _true_edge_;
+  }
+
+  double StructuralMetrics::fp() const {
+    return _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_ + _misoriented_arc_;
+  }
+
+  double StructuralMetrics::fn() const {
+    return _wrong_none_arc_ + _wrong_none_edge_;
+  }
+
+  double StructuralMetrics::tn() const {
+    return _true_none_;
   }
 
   double StructuralMetrics::precision() const {
-    double tp, fp, precision;
-    tp        = _true_arc_ + _true_edge_;
-    fp        = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
-              + _misoriented_arc_;
-    precision = tp / (tp + fp);
-    return precision;
+    return tp() / (tp() + fp());
   }
 
   double StructuralMetrics::recall() const {
-    double tp, fn, recall;
-    tp     = _true_arc_ + _true_edge_;
-    fn     = _wrong_none_arc_ + _wrong_none_edge_;
-    recall = tp / (tp + fn);
-    return recall;
+    return tp() / (tp() + fn());
   }
 
   double StructuralMetrics::f_score() const {
-    double tp, fp, fn, precision, recall, f_score;
-    tp = _true_arc_ + _true_edge_;
-    fp = _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
-       + _misoriented_arc_;
-    fn = _wrong_none_arc_ + _wrong_none_edge_;
-
-    precision = tp / (tp + fp);
-    recall    = tp / (tp + fn);
-
-    f_score = 2 * precision * recall / (precision + recall);
-    return f_score;
+    const double p = precision();
+    const double r = recall();
+    return 2 * p * r / (p + r);
   }
 
   double StructuralMetrics::shd() const {
-    double missing, extra, shd;
-    missing = _wrong_none_arc_ + _wrong_none_edge_;
-    extra   = _wrong_arc_none_ + _wrong_edge_none_;
-    shd     = missing + extra + _wrong_edge_arc_ + _wrong_arc_edge_ + _misoriented_arc_;
-    return shd;
+    return fp() + fn();
   }
 
   double StructuralMetrics::sid(const DAG& ref, const DAG& test) const {
