@@ -263,23 +263,29 @@ class GraphicalBNComparator:
     ----
     Now delegates to pyagrum.StructuralMetrics (aGrUM C++). The skeleton metrics
     are independent of orientation, so the values match the previous Python
-    implementation exactly. The 'count' field (tp/tn/fp/fn) returned in previous
-    versions is no longer provided.
+    implementation exactly.
 
     Returns
     -------
     dict[str,double]
-      A dictionary containing 'precision', 'recall', 'fscore', 'dist2opt'.
+      A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
     """
     aligned_bn2 = self._bn2_aligned_with_bn1_ids()
     comp = pyagrum.StructuralMetrics()
     comp.compare(self._bn1.dag(), aligned_bn2.dag())
 
+    count = {
+      "tp": int(comp.tp_skeleton()),
+      "tn": int(comp.tn_skeleton()),
+      "fp": int(comp.fp_skeleton()),
+      "fn": int(comp.fn_skeleton()),
+    }
     precision = comp.precision_skeleton()
     recall = comp.recall_skeleton()
     fscore = comp.f_score_skeleton()
 
     return {
+      "count": count,
       "recall": recall,
       "precision": precision,
       "fscore": fscore,
@@ -306,25 +312,31 @@ class GraphicalBNComparator:
     Note
     ----
     The metrics are now computed by pyagrum.StructuralMetrics (aGrUM C++).
-    Misoriented arcs are counted once via the dedicated misoriented counter
-    instead of being double-counted as both a missing arc (fn) and an extra
-    arc (fp). The 'count' field (tp/tn/fp/fn) returned in previous versions
-    is no longer provided.
+    Misoriented arcs are counted once (in fp, not in fn) instead of being
+    double-counted as both a missing arc and an extra arc.
 
     Returns
     -------
     dict[str,double]
-      A dictionary containing 'precision', 'recall', 'fscore', 'dist2opt', 'sid'.
+      A dictionary containing 'count', 'precision', 'recall', 'fscore',
+      'dist2opt', 'sid'.
     """
     aligned_bn2 = self._bn2_aligned_with_bn1_ids()
     comp = pyagrum.StructuralMetrics()
     comp.compare(self._bn1.dag(), aligned_bn2.dag())
 
+    count = {
+      "tp": int(comp.tp()),
+      "tn": int(comp.tn()),
+      "fp": int(comp.fp()),
+      "fn": int(comp.fn()),
+    }
     precision = comp.precision()
     recall = comp.recall()
     fscore = comp.f_score()
 
     return {
+      "count": count,
       "recall": recall,
       "precision": precision,
       "fscore": fscore,
