@@ -469,7 +469,7 @@ def getJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.CliqueGraphGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
@@ -504,7 +504,7 @@ def showJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.CliqueGraphGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   if size is None:
@@ -528,7 +528,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
 
-  jtg = pyagrum.CliqueGraphGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
@@ -560,7 +560,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
   if size is None:
     size = pyagrum.config["notebook", "junctiontree_graph_size"]
 
-  jtg = pyagrum.CliqueGraphGenerator()
+  jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
 
   jt._engine = jtg
