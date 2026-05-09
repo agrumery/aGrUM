@@ -251,6 +251,7 @@ def init_params() -> None:
   cfg.modules = parse_modules_txt()
 
   cfg.non_persistent = [
+    "verbose",
     "fixed_seed",
     "stats",
     "no_fun",
@@ -267,7 +268,6 @@ def init_params() -> None:
   cfg.mains = ["action", "target", "mode"]
   cfg.specialActions = ["show", "clean", "purge", "guideline"]
   cfg.swapOptions = {
-    "verbose": {True: "verbose", False: "quiet"},
     "withSQL": {True: "withSQL", False: "withoutSQL"},
   }
   cfg.buildPath = {"Release": "release", "Debug": "debug"}
@@ -316,15 +316,7 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     help="more message on what is happening.",
     action="store_true",
     dest="verbose",
-    default=current["verbose"],
-  )
-  cfg.parser.add_argument(
-    "-q",
-    "--quiet",
-    help="please be quiet.",
-    action="store_false",
-    dest="verbose",
-    default=current["verbose"],
+    default=False,
   )
   cfg.parser.add_argument(
     "--withSQL",

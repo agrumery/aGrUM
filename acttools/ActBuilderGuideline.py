@@ -348,7 +348,10 @@ def guideline(
 
   if run_header:
     notif("  [[(2) check for ]]LGPL+MIT[[ license]]")
-    nbrError += _aff_errors(_check_LGPL_MIT_license_CPP(details, effective_correction), "missing LGPL+MIT cpp licence")
+    nbrError += _aff_errors(
+      _check_LGPL_MIT_license_CPP(details, effective_correction),
+      "missing LGPL+MIT cpp licence",
+    )
     nbrError += _aff_errors(
       _check_LGPL_MIT_license_py(details, effective_correction),
       "missing LGPL+MIT python licence",
@@ -361,7 +364,11 @@ def guideline(
   if run_deps:
     notif("  [[(4) check for deps]]")
     nbrError += _aff_errors(
-      check_gum_dependencies(graph=current["build_graph"], details=details, correction=effective_correction),
+      check_gum_dependencies(
+        graph=current["build_graph"],
+        details=details,
+        correction=effective_correction,
+      ),
       "redundant dependency",
     )
 
@@ -375,7 +382,10 @@ def guideline(
 
   if run_mypy:
     notif("  [[(7) check mypy type annotations in pyLibs]]")
-    nbrError += _aff_errors(_check_mypy(details, effective_correction, dry_run), "mypy type")
+    nbrError += _aff_errors(
+      _check_mypy(details, effective_correction, dry_run),
+      "mypy type (unrecorded in coverage)",
+    )
 
   return nbrError
 
@@ -406,13 +416,26 @@ def _check_code_format(
     for src in sources:
       if any(s in src for s in exceptions):
         continue
-      if call(check_cmd_fn(tool_path, src), shell=True, stderr=blackhole, stdout=blackhole) == 1:
+      if (
+        call(
+          check_cmd_fn(tool_path, src),
+          shell=True,
+          stderr=blackhole,
+          stdout=blackhole,
+        )
+        == 1
+      ):
         nbrError += 1
         if correction:
           if fix_stderr_visible:
             call(fix_cmd_fn(tool_path, src), shell=True)
           else:
-            call(fix_cmd_fn(tool_path, src), shell=True, stderr=blackhole, stdout=blackhole)
+            call(
+              fix_cmd_fn(tool_path, src),
+              shell=True,
+              stderr=blackhole,
+              stdout=blackhole,
+            )
           notif(f"[[{src.split('/')[-1]}]] : [[(✓)]]")
         else:
           notif(f"err [[{src}]]")
@@ -428,7 +451,13 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -
     tool_name="ruff",
     check_cmd_fn=lambda t, s: f"{t} format --check {s}",
     fix_cmd_fn=lambda t, s: f"{t} format {s}",
-    exceptions={"/apps/", "/notebooks-archives/", "/generated-files/", "Untitled*.ipynb", "wrappers/pyagrum/cmake"},
+    exceptions={
+      "/apps/",
+      "/notebooks-archives/",
+      "/generated-files/",
+      "Untitled*.ipynb",
+      "wrappers/pyagrum/cmake",
+    },
     details=details,
     correction=correction,
     dry_run=dry_run,
@@ -602,7 +631,13 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
 def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   nbrError = 0
 
-  exceptions = [f"{os.sep}mvsc{os.sep}", f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"]
+  exceptions = [
+    f"{os.sep}mvsc{os.sep}",
+    f"{os.sep}external{os.sep}",
+    "Parser",
+    "Scanner",
+    "doctest",
+  ]
   for gum_file in srcAgrum():
     if any(subs in gum_file for subs in exceptions):
       if details:
