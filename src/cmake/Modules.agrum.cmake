@@ -83,6 +83,14 @@ if (BUILD_CN OR BUILD_ALL)
     file(GLOB_RECURSE AGRUM_CN_C_SOURCES ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrsmp.c)
 endif ()
 
+# ticpp is an internal dependency used only by BN readers: exclude from BASE,
+# compile directly into BN so its symbols stay hidden and unexported.
+file(GLOB TICPP_SOURCES "${AGRUM_SOURCE_DIR}/agrum/base/external/tinyxml/ticpp/*.cpp")
+list(REMOVE_ITEM AGRUM_BASE_SOURCES ${TICPP_SOURCES})
+if (BUILD_BN OR BUILD_ALL)
+    list(APPEND AGRUM_BN_SOURCES ${TICPP_SOURCES})
+endif ()
+
 if (BUILD_ALL)
     message(STATUS "** aGrUM Notification: Building all")
 else ()

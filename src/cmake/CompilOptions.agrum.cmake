@@ -71,6 +71,21 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     check_cxx_compiler_flag("-fno-assume-unique-vtables" _AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
 endif ()
 
+# Hide all symbols by default when building as static libs (pyAgrum .so use case):
+# shrinks the export table of _pyagrum.so and allows the linker to dead-strip more.
+# Not applied for shared-library builds of aGrUM where all public symbols must be
+# visible across dylib boundaries without GUM_PUBLIC annotations.
+if (NOT MSVC AND NOT BUILD_SHARED_LIBS AND NOT CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
+    check_cxx_compiler_flag("-fvisibility=hidden" _AGRUM_SUPPORT_VISIBILITY_HIDDEN)
+    if (_AGRUM_SUPPORT_VISIBILITY_HIDDEN)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden")
+    endif ()
+endif ()
+
+if (MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
+endif ()
+
 # Emit one section per function/variable so the linker can dead-strip unused code.
 #   Linux: -ffunction-sections/-fdata-sections (used with --gc-sections on _pyagrum target)
 #   MSVC:  /Gy enables function-level linking (used with /OPT:REF on _pyagrum target)

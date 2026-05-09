@@ -83,6 +83,14 @@
 
 #define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
+#if defined(_MSC_VER)
+#  define GUM_PUBLIC __declspec(dllexport)
+#elif defined(__GNUC__) || defined(__clang__)
+#  define GUM_PUBLIC __attribute__((visibility("default")))
+#else
+#  define GUM_PUBLIC
+#endif
+
 #ifdef _MSC_VER
 
 #pragma warning(disable : 4503) // removing warning about the truncated names of type (>4096)... stupid compiler
