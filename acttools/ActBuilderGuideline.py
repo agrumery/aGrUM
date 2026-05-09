@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import re
 import sys
 from collections.abc import Iterable
 import types
@@ -272,54 +273,134 @@ class ActBuilderGuideline(ActBuilder):
   def build(self):
     self.run_start()
 
-    guideline(self.current, self.current["verbose"], self.current["correction"])
+    guideline(
+      self.current,
+      self.current["verbose"],
+      self.current["correction"],
+      self.current["dry_run"],
+      self.current["guideline_check"],
+    )
 
     self.run_done()
     return True
 
 
-def guideline(current: dict[str, str | bool], details: bool, correction: bool) -> int:
+_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "mypy"})
+
+
+def _parse_checks(spec: str) -> frozenset[str]:
+  """Parse a check specification like 'all-cpp' or 'cpp+mypy' into a set of check names."""
+  known = _GUIDELINE_ALL_CHECKS | {"all"}
+  tokens = re.split(r"([+\-])", spec.strip())
+  result: set[str] = set()
+  op = "+"
+  for tok in tokens:
+    if tok in ("+", "-"):
+      op = tok
+      continue
+    if not tok:
+      continue
+    if tok not in known:
+      raise ValueError(f"Unknown check '{tok}'. Valid: {', '.join(sorted(known))}")
+    expanded = _GUIDELINE_ALL_CHECKS if tok == "all" else {tok}
+    if op == "+":
+      result |= expanded
+    else:
+      result -= expanded
+  return frozenset(result)
+
+
+def guideline(
+  current: dict[str, str | bool],
+  details: bool,
+  correction: bool,
+  dry_run: bool = False,
+  checks: str | None = None,
+) -> int:
   def _aff_errors(nb: int, typ: str) -> int:
     if nb > 0:
       # spaces to remove others possible characters
       error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")
     return nb
 
-  notif(f"[[aGrUM {'detailed ' if details else ''}guideline {'(with correction)' if correction else ''}]]")
+  active = _parse_checks(checks if checks is not None else "all")
+  run_cpp = "cpp" in active
+  run_python = "python" in active
+  run_header = "header" in active
+  run_coverage = "coverage" in active
+  run_deps = "deps" in active
+  run_mypy = "mypy" in active
+
+  effective_correction = correction and not dry_run
+  active_checks_label = checks if checks is not None else "all"
+  notif(
+    f"[[aGrUM {'detailed ' if details else ''}guideline "
+    f"[{active_checks_label}]"
+    f"{' (with correction)' if effective_correction else ''}"
+    f"{' (dry-run)' if dry_run else ''}]]"
+  )
 
   nbrError = 0
 
-  notif("  [[(1) ]]*.cpp[[ file for every ]]*.h[[ file]]")
-  nbrError += _aff_errors(_check_cpp_file_exists(details, correction), "missing cpp file")
-  notif("  [[(2) check for ]]LGPL+MIT[[ license]]")
-  nbrError += _aff_errors(_check_LGPL_MIT_license_CPP(details, correction), "missing LGPL+MIT cpp licence")
-  nbrError += _aff_errors(
-    _check_LGPL_MIT_license_py(details, correction),
-    "missing LGPL+MIT python licence",
-  )
-  notif("  [[(3) check for missing documentation in pyAgrum]]")
-  nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
-  notif("  [[(4) check for deps]]")
-  nbrError += _aff_errors(
-    check_gum_dependencies(graph=current["build_graph"], details=details, correction=correction),
-    "redundant dependency",
-  )
-  notif("  [[(5) check for cpp format]]")
-  nbrError += _aff_errors(_check_clang_format(details, correction), "format")
-  notif("  [[(6) check for py format]]")
-  nbrError += _aff_errors(_check_ruff_format(details, correction), "format")
-  notif("  [[(7) check mypy type annotations in pyLibs]]")
-  nbrError += _aff_errors(_check_mypy(details, correction), "mypy type")
+  if run_cpp:
+    notif("  [[(1) ]]*.cpp[[ file for every ]]*.h[[ file]]")
+    nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction), "missing cpp file")
+
+  if run_header:
+    notif("  [[(2) check for ]]LGPL+MIT[[ license]]")
+    nbrError += _aff_errors(_check_LGPL_MIT_license_CPP(details, effective_correction), "missing LGPL+MIT cpp licence")
+    nbrError += _aff_errors(
+      _check_LGPL_MIT_license_py(details, effective_correction),
+      "missing LGPL+MIT python licence",
+    )
+
+  if run_coverage:
+    notif("  [[(3) check for missing documentation in pyAgrum]]")
+    nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
+
+  if run_deps:
+    notif("  [[(4) check for deps]]")
+    nbrError += _aff_errors(
+      check_gum_dependencies(graph=current["build_graph"], details=details, correction=effective_correction),
+      "redundant dependency",
+    )
+
+  if run_cpp:
+    notif("  [[(5) check for cpp format]]")
+    nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run), "format")
+
+  if run_python:
+    notif("  [[(6) check for py format]]")
+    nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run), "format")
+
+  if run_mypy:
+    notif("  [[(7) check mypy type annotations in pyLibs]]")
+    nbrError += _aff_errors(_check_mypy(details, effective_correction, dry_run), "mypy type")
 
   return nbrError
 
 
 def _check_code_format(
-  sources, tool_path, tool_name, check_cmd_fn, fix_cmd_fn, exceptions, details, correction, fix_stderr_visible=False
+  sources,
+  tool_path,
+  tool_name,
+  check_cmd_fn,
+  fix_cmd_fn,
+  exceptions,
+  details,
+  correction,
+  dry_run=False,
+  fix_stderr_visible=False,
 ) -> int:
   nbrError = 0
   if tool_path is None:
     warn(f"No correct [[{tool_name}]] tool has been found.")
+    return 0
+  if dry_run:
+    for src in sources:
+      if any(s in src for s in exceptions):
+        continue
+      notif(f"  {check_cmd_fn(tool_path, src)}")
     return 0
   with open(os.devnull, "w") as blackhole:
     for src in sources:
@@ -340,7 +421,7 @@ def _check_code_format(
   return nbrError
 
 
-def _check_ruff_format(details: bool, correction: bool) -> int:
+def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -> int:
   return _check_code_format(
     sources=srcPyIpynbAgrum(),
     tool_path=cfg.ruff,
@@ -350,10 +431,11 @@ def _check_ruff_format(details: bool, correction: bool) -> int:
     exceptions={"/apps/", "/notebooks-archives/", "/generated-files/", "Untitled*.ipynb", "wrappers/pyagrum/cmake"},
     details=details,
     correction=correction,
+    dry_run=dry_run,
   )
 
 
-def _check_clang_format(details: bool, correction: bool) -> int:
+def _check_clang_format(details: bool, correction: bool, dry_run: bool = False) -> int:
   return _check_code_format(
     sources=srcAgrum(),
     tool_path=cfg.clangformat,
@@ -363,6 +445,7 @@ def _check_clang_format(details: bool, correction: bool) -> int:
     exceptions={f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"},
     details=details,
     correction=correction,
+    dry_run=dry_run,
     fix_stderr_visible=True,
   )
 
@@ -599,8 +682,12 @@ def _check_cpp_file_exists(details: bool, correction: bool) -> int:
   return nbrError
 
 
-def _check_mypy(details: bool, correction: bool) -> int:
+def _check_mypy(details: bool, correction: bool, dry_run: bool = False) -> int:
   mypy_cmd = f"{cfg.python} -m mypy"
+
+  if dry_run:
+    notif(f"  {mypy_cmd} {cfg.pymodulesPath}")
+    return 0
 
   probe = subprocess_run(
     f"{mypy_cmd} --version",

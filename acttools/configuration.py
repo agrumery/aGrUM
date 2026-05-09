@@ -232,6 +232,7 @@ def init_params() -> None:
     "build": "all",
     "noSaveParams": False,
     "correction": False,
+    "guideline_check": "all",
     "build_graph": False,
     "profiling": False,
     "stable_abi_off": False,
@@ -259,6 +260,7 @@ def init_params() -> None:
     "coverage",
     "noSaveParams",
     "correction",
+    "guideline_check",
     "build_graph",
     "force_swig",
   ]
@@ -479,6 +481,17 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     action="store_true",
     dest="correction",
     default=False,
+  )
+  cfg.parser.add_argument(
+    "--check",
+    help=(
+      "act guideline: select checks using +/- syntax "
+      "(checks: cpp,python,header,coverage,deps,mypy,all). "
+      "Examples: --check cpp+mypy  --check all-cpp  --check all-cpp-mypy"
+    ),
+    dest="guideline_check",
+    default="all",
+    metavar="CHECKS",
   )
   cfg.parser.add_argument(
     "--build_graph",
