@@ -123,13 +123,13 @@ class CausalEffectEstimation:
 
     self._df = df
     self._causal_model = causal_model
-    self._adjustment = None
-    self._T = None  # str: Intervention (Treatement) variable
-    self._y = None  # str: Outcome variable
-    self._w = None  # str: Instrumental variable
-    self._M = None  # set[str]: Mediator variable set
-    self._X = None  # set[str]: Confounder/Covariate variable set
-    self._estimator = None  # Any: Causal estimator
+    self._adjustment: str | None = None
+    self._T: str | None = None
+    self._y: str | None = None
+    self._w: str | None = None
+    self._M: set[str] | None = None
+    self._X: set[str] | None = None
+    self._estimator: Any | None = None
 
   def __str__(self) -> str:
     """

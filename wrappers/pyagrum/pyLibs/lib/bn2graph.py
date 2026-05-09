@@ -106,8 +106,8 @@ def BN2dot(
     cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
 
   # default
-  maxarcs = 100
-  minarcs = 0
+  maxarcs = 100.0
+  minarcs = 0.0
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
@@ -132,7 +132,7 @@ def BN2dot(
 
   for a in bn.arcs():
     (n, j) = a
-    pw = 1
+    pw = 1.0
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
     col = getBlackInTheme()
     lb = ""
@@ -225,8 +225,8 @@ def BNinference2dot(
     cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
 
   # defaukt
-  maxarcs = 100
-  minarcs = 0
+  maxarcs = 100.0
+  minarcs = 0.0
 
   if arcWidth is not None:
     minarcs = min(arcWidth.values())
@@ -282,7 +282,7 @@ def BNinference2dot(
 
   for a in showdag.arcs():
     (n, j) = a
-    pw = 1
+    pw = 1.0
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
     col = getBlackInTheme()
 

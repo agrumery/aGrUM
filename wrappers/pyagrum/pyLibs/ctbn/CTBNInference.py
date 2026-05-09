@@ -297,7 +297,7 @@ class ForwardSamplingInference(CTBNInference):
         nb_events += 1  # an event means a variable changes its value
 
     # SAMPLING
-    duration = 0
+    duration = 0.0
     for name in self._model.names():
       current_state = self._model.variable(name).label(current.val(self._model.variable(name)))
       self.trajectory.append((0, name, current_state))

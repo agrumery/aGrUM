@@ -45,11 +45,7 @@ tools for BN in jupyter notebook
 import time
 import warnings
 
-# fix DeprecationWarning of base64.encodestring()
-try:
-  from base64 import encodebytes
-except ImportError:  # 3+
-  from base64 import encodestring as encodebytes
+from base64 import encodebytes
 
 import io
 import base64

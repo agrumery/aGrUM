@@ -93,7 +93,7 @@ def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]) -> None:
     I1.setFirst()
     while not I1.end():
       I2.setFirst()
-      sumCIM = 0
+      sumCIM = 0.0
       while not I2.end():
         I1.setVals(I2)
         if I1.val(v_i) != I1.val(v_j):

@@ -169,14 +169,14 @@ def plotFollowVar(
     T = timeHorizon
 
   if N is None:
-    h = 1
+    h = 1.0
   else:
     h = timeHorizon / N
 
   n = len(trajectories.keys())
   domain = sorted(v.labels())
   division = [h * i for i in range(math.ceil(T // h) + 1)]
-  count = {label: {h * i: 0 for i in range(math.ceil(T // h) + 1)} for label in domain}
+  count = {label: {h * i: 0.0 for i in range(math.ceil(T // h) + 1)} for label in domain}
   total = {h * i: 0 for i in range(math.ceil(T // h) + 1)}
 
   # Counting transitions
@@ -370,11 +370,11 @@ class Trajectory:
     data = self.data
     for i in range(len(data)):
       traj = data[i]
-      prev_duration = 0
-      duration = 0
+      prev_duration = 0.0
+      duration = 0.0
 
       # store current values at duration
-      u_values = dict()
+      u_values: dict[str, str | None] = dict()
       X_value = None
 
       # init (find initial values)
@@ -513,11 +513,11 @@ class Trajectory:
     data = self.data
     for i in range(len(data)):
       traj = data[i]
-      prev_duration = 0
-      duration = 0
+      prev_duration = 0.0
+      duration = 0.0
 
       # store current values at duration
-      u_values = dict()
+      u_values: dict[str, str | None] = dict()
       X_value = None
       Y_value = None
 

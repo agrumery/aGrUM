@@ -159,10 +159,10 @@ class SEM:
     for token in tokens:
       # get rid of "-" at the beginning of token
       if token[0] == "-":
-        coef = -1
+        coef = -1.0
         token = token[1:]
       else:
-        coef = 1
+        coef = 1.0
 
       if (m := SEM._reg_variable.match(token)) is not None:
         var = m.group(0)
@@ -226,7 +226,7 @@ class SEM:
         var, terms, stddev = SEM._parse_line(line)
       except SyntaxError as e:
         raise SyntaxError(f"In line {line}, {e.msg()}.")
-      mu = 0
+      mu = 0.0
       for parent in terms:
         if parent == "":
           mu = terms[""]

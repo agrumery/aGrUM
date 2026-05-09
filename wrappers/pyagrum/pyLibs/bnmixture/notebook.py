@@ -639,8 +639,8 @@ def _normalizedArcsWeight(bnm: BNM.IMixture):
   countArcs = {nod1: {nod2: 0.0 for nod2 in bnm._refBN.names() if nod2 != nod1} for nod1 in bnm._refBN.names()}
   sum_weight = sum(bnm._weights.values())
 
-  mi = 1
-  ma = 0
+  mi = 1.0
+  ma = 0.0
   for bn_name in bnm.names():
     bn = bnm.BN(bn_name)
     w = bnm.weight(bn_name)

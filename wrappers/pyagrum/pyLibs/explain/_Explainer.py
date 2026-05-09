@@ -151,8 +151,8 @@ class Explainer(ABC):
     length: int = len(data)
     func1: Callable = kwargs["func1"]
     func2: Callable = kwargs["func2"]
-    params1: dict[str, any] = kwargs["params1"]
-    params2: dict[str, any] = kwargs["params2"]
+    params1: dict[str, Any] = kwargs["params1"]
+    params2: dict[str, Any] = kwargs["params2"]
     # -- #
 
     val = 0.0

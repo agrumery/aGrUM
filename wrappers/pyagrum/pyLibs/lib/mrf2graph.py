@@ -103,8 +103,8 @@ def MRF2UGdot(
     cmapEdge = plt.get_cmap(pyagrum.config["notebook", "default_edge_cmap"])
 
   # default
-  maxedges = 100
-  minedges = 0
+  maxedges = 100.0
+  minedges = 0.0
 
   if edgeWidth is not None:
     minedges = min(edgeWidth.values())
@@ -129,7 +129,7 @@ def MRF2UGdot(
 
   for a in mrf.edges():
     (n, j) = a
-    pw = 1
+    pw = 1.0
     av = f"{n}&nbsp;&mdash;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
     lb = ""
@@ -363,7 +363,7 @@ def MRFinference2UGdot(
 
   for a in mrf.edges():
     (n, j) = a
-    pw = 1
+    pw = 1.0
     av = f"{n}&nbsp;&mdash;&nbsp;{j}"
     col = gumcols.getBlackInTheme()
 

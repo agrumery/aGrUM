@@ -209,11 +209,11 @@ class CLGLearner:
         a = np.mean(r)
 
     # calcul n-MCERA: n-samples Monte-Carlo Empirical Rademacher Average
-    R = 0
+    R = 0.0
     for j in range(n_sample):
       sup = -1 * np.inf
       for r in self.r_XYZ.values():
-        temp = 0
+        temp = 0.0
         for i in range(K):
           temp += sigma[j][i] * r[i]
         temp /= K
