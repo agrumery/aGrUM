@@ -14,7 +14,7 @@
 #    - the MIT license (MIT),                                              #
 #    - or both in dual license, as here.                                   #
 #                                                                          #
-#   (see https://agrum.gitlab.1io/articles/dual-licenses-lgplv3mit.html)    #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
 #                                                                          #
 #   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
 #   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
@@ -343,11 +343,11 @@ def guideline(
   nbrError = 0
 
   if run_cpp:
-    notif("  [[(1) ]]*.cpp[[ file for every ]]*.h[[ file]]")
+    notif("  [[(1-cpp) ]]*.cpp[[ file for every ]]*.h[[ file]]")
     nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction), "missing cpp file")
 
   if run_header:
-    notif("  [[(2) check for ]]LGPL+MIT[[ license]]")
+    notif("  [[(2-header) check for ]]LGPL+MIT[[ license]]")
     nbrError += _aff_errors(
       _check_LGPL_MIT_license_CPP(details, effective_correction),
       "missing LGPL+MIT cpp licence",
@@ -358,11 +358,11 @@ def guideline(
     )
 
   if run_coverage:
-    notif("  [[(3) check for missing documentation in pyAgrum]]")
+    notif("  [[(3-coverage) check for missing documentation in pyAgrum]]")
     nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
 
   if run_deps:
-    notif("  [[(4) check for deps]]")
+    notif("  [[(4-deps) check for deps]]")
     nbrError += _aff_errors(
       check_gum_dependencies(
         graph=current["build_graph"],
@@ -373,15 +373,15 @@ def guideline(
     )
 
   if run_cpp:
-    notif("  [[(5) check for cpp format]]")
+    notif("  [[(5-cpp) check for cpp format]]")
     nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run), "format")
 
   if run_python:
-    notif("  [[(6) check for py format]]")
+    notif("  [[(6-python) check for py format]]")
     nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run), "format")
 
   if run_mypy:
-    notif("  [[(7) check mypy type annotations in pyLibs]]")
+    notif("  [[(7-mypy) check mypy type annotations in pyLibs]]")
     nbrError += _aff_errors(
       _check_mypy(details, effective_correction, dry_run),
       "mypy type (unrecorded in coverage)",
