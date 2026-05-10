@@ -1,21 +1,26 @@
 variables:
-  LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
   LINUX_AARCH_IMAGE: "agrumery/manylinux_2_28_aarch64"
-  BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
+  LINUX_64_IMAGE: "agrumery/manylinux_2_28_x86_64"
+  LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_nightly_wheels_linux.sh"
   LINUX_BUILD: "wrappers/pyagrum/wheelhouse/build_linux.sh"
   LINUX_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_linux.sh"
-  LINUX_NIGHTLY_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_nightly_wheels_linux.sh"
+  LINUX_TEST: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_linux.sh"
   OSX_BUILD: "wrappers/pyagrum/wheelhouse/build_macos.sh"
   OSX_ARM_BUILD: "wrappers/pyagrum/wheelhouse/build_macos_arm.sh"
   OSX_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_macos.sh"
-  OSX_ARM_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_macos_arm.sh"
+  OSX_TEST: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_macos.sh"
+  OSX_WHEELHOUSE_ARM: "wrappers/pyagrum/wheelhouse/build_wheels_macos_arm.sh"
+  OSX_TEST_ARM: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_macos_arm.sh"
   WINDOWS_BUILD: "wrappers/pyagrum/wheelhouse/build_windows.ps1"
   WINDOWS_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_windows.ps1"
+  WINDOWS_TEST: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_windows.ps1"
+  BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
 
 stages:
   - aGrUM
   - pyAgrum
-  - wheels
+  - build-wheels
+  - test-wheels
   - deploy
 
 ################################################################################
@@ -23,14 +28,34 @@ stages:
 ################################################################################
 
 .main_template: &main_template
-  # Default stage (can be overridden)
   stage: aGrUM
   retry: 1
   rules:
-  - when: always
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - when: always
+
+.mac_win_main_template: &mac_win_main_template
+  stage: aGrUM
+  retry: 1
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+.wheel_rules: &wheel_rules
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 .extended_template: &extended_template
-  <<: *main_template
+  <<: *wheel_rules
   retry: 1
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
@@ -38,11 +63,6 @@ stages:
     expire_in: 1 week
     paths:
       - wheels/*.whl
-  rules:
-    - if: $CI_COMMIT_TAG                 # tags
-    - if: $CI_COMMIT_BRANCH == "master"  # master
-    - if: $CI_PIPELINE_SOURCE == "web"   # web trigger
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 .linux_x86_64_build_template: &linux_x86_64_build_template
   <<: *main_template
@@ -110,24 +130,19 @@ stages:
 .windows_build_script: &windows_build_script
   - powershell -File $WINDOWS_BUILD -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -CONDA_ENV $CONDA_ENV -TARGET $TARGET -COMPILER $COMPILER
 
+.windows_64_test_script: &windows_64_test_script
+  - powershell -File $WINDOWS_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
+
 ################################################################################
 #                               ON PUSH                                        #
 ################################################################################
 
-################################################################################
-# Linux x86_64 / gcc / aGrUM (C++)
-################################################################################
-
+# --- Linux x86_64 ---
 linux_agrum_x86_64:
   <<: *linux_x86_64_build_template
-  stage: aGrUM
   image: $LINUX_64_IMAGE
   script:
     - bash $LINUX_BUILD aGrUM cp310-cp310
-
-################################################################################
-# Linux x86_64 / gcc / pyAgrum (Python)
-################################################################################
 
 linux_pyagrum_x86_64_py310:
   <<: *linux_x86_64_build_template
@@ -145,20 +160,12 @@ linux_pyagrum_x86_64_py314:
   script:
     - bash $LINUX_BUILD pyAgrum cp314-cp314
 
-################################################################################
-# Linux aarch64 / gcc / aGrUM (C++)
-################################################################################
-
+# --- Linux aarch64 ---
 linux_agrum_aarch64:
   <<: *linux_aarch64_build_template
-  stage: aGrUM
   image: $LINUX_AARCH_IMAGE
   script:
     - bash $LINUX_BUILD aGrUM cp310-cp310
-
-################################################################################
-# Linux aarch64 / gcc / pyAgrum (Python)
-################################################################################
 
 linux_pyagrum_aarch64_py310:
   <<: *linux_aarch64_build_template
@@ -176,93 +183,167 @@ linux_pyagrum_aarch64_py314:
   script:
     - bash $LINUX_BUILD pyAgrum cp314-cp314
 
-################################################################################
-#                        ON MERGE, MASTER AND TAGS                             #
-################################################################################
+# --- MacOS ---
+macos_agrum:
+  <<: *mac_win_main_template
+  stage: aGrUM
+  tags: ["macos", "conda"]
+  variables: { PYTHON_VERSION: "py310", TARGET: "aGrUM" }
+  script:
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+
+macos_pyagrum_py310:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["macos", "conda"]
+  variables: { PYTHON_VERSION: "py310", TARGET: "pyAgrum" }
+  script:
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+
+macos_pyagrum_py314:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["macos", "conda"]
+  variables: { PYTHON_VERSION: "py314", TARGET: "pyAgrum" }
+  script:
+    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+
+# --- MacOS ARM ---
+macos_arm_agrum:
+  <<: *mac_win_main_template
+  stage: aGrUM
+  tags: ["aarch", "osx"]
+  variables: { PYTHON_VERSION: "py314", TARGET: "aGrUM" }
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+
+macos_arm_pyagrum_py310:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["aarch", "osx"]
+  variables: { PYTHON_VERSION: "py310", TARGET: "pyAgrum" }
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+
+macos_arm_pyagrum_py314:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["aarch", "osx"]
+  variables: { PYTHON_VERSION: "py314", TARGET: "pyAgrum" }
+  script:
+    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+
+# --- Windows ---
+windows_agrum_2019:
+  <<: *mac_win_main_template
+  stage: aGrUM
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC19_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc19" }
+  script:
+    - *windows_build_script
+
+windows_agrum_2022:
+  <<: *mac_win_main_template
+  stage: aGrUM
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc22" }
+  script:
+    - *windows_build_script
+
+windows_pyagrum_2022_py310:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py310", TARGET: "pyAgrum", COMPILER: "mvsc22" }
+  script:
+    - *windows_build_script
+
+windows_pyagrum_2022_py314:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py314", TARGET: "pyAgrum", COMPILER: "mvsc22" }
+  script:
+    - *windows_build_script
+
+windows_pyagrum_mingw_py314:
+  <<: *mac_win_main_template
+  stage: pyAgrum
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
+  script:
+    - *windows_build_script
 
 ################################################################################
-#                            WHEELS (NO TEST)                                  #
-################################################################################
-
-################################################################################
-# Linux x86_64 / gcc
+#                            BUILD WHEELS                                      #
 ################################################################################
 
 linux_x86_64_wheel_py310_sabi_off:
   <<: *linux_x86_64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
 
 linux_x86_64_wheel_py310:
   <<: *linux_x86_64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310
 
 linux_x86_64_nightly_wheel_py310:
   <<: *linux_x86_64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
 
-################################################################################
-# Linux aarch64 / gcc
-################################################################################
-
 linux_aarch64_wheel_py310_sabi_off:
   <<: *linux_aarch64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
 
 linux_aarch64_wheel_py310:
   <<: *linux_aarch64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp310-cp310
 
 linux_aarch64_nightly_wheel_py310:
   <<: *linux_aarch64_wheel_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
 
-################################################################################
-# MacOS
-################################################################################
-
 osx_wheel_py310:
   <<: *macos_build_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
     - bash $OSX_WHEELHOUSE py310
 
-################################################################################
-# MacOS / ARM
-################################################################################
-
 osx_arm_wheel_py310:
   <<: *macos_arm_build_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   script:
-    - bash $OSX_ARM_WHEELHOUSE py310
-
-################################################################################
-# Windows / MVSC
-################################################################################
+    - bash $OSX_WHEELHOUSE_ARM py310
 
 windows_wheel_py310:
   <<: *windows_build_template
-  stage: wheels
+  stage: build-wheels
   needs: []
   variables:
     PATH: $PATH_MVSC22_GUMWIN
@@ -271,171 +352,114 @@ windows_wheel_py310:
     - *windows_wheel_script
 
 ################################################################################
-#                                 BUILD                                        #
+#                            TEST WHEELS (MATRIX)                              #
 ################################################################################
 
-################################################################################
-# MacOS / clang
-################################################################################
-
-macos_agrum:
-  <<: *macos_build_template
-  stage: aGrUM
-  variables:
-    # CC: "/usr/local/opt/llvm/bin/clang"
-    # CXX: "/usr/local/opt/llvm/bin/clang++"
-    PYTHON_VERSION: "py310"
-    TARGET: "aGrUM"
+linux_pyagrum_wheel_x86_64_tests:
+  <<: *wheel_rules
+  stage: test-wheels
+  image: $LINUX_64_IMAGE
+  tags: ["linux", "docker", "manylinux1"]
+  retry: 1
+  needs: 
+    - job: linux_x86_64_wheel_py310
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["cp310", "cp311", "cp312", "cp313", "cp314"]
   script:
-    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
-macos_pyagrum_py310:
-  <<: *macos_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PYTHON_VERSION: "py310"
-    TARGET: "pyAgrum"
+linux_pyagrum_wheel_aarch64_tests:
+  <<: *wheel_rules
+  stage: test-wheels
+  image: $LINUX_AARCH_IMAGE
+  tags: ["aarch", "docker", "linux"]
+  retry: 1
+  needs: 
+    - job: linux_aarch64_wheel_py310
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["cp310", "cp311", "cp312", "cp313", "cp314"]
   script:
-    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
-macos_pyagrum_py314:
-  <<: *macos_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PYTHON_VERSION: "py314"
-    TARGET: "pyAgrum"
+macos_pyagrum_tests:
+  <<: *wheel_rules
+  stage: test-wheels
+  tags: ["macos", "python3"]
+  retry: 1
+  needs:
+    - job: osx_wheel_py310
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
   script:
-    - bash $OSX_BUILD $PYTHON_VERSION $TARGET
+    - bash $OSX_TEST $PYTHON_VERSION
 
-################################################################################
-# MacOS / ARM
-################################################################################
-
-macos_arm_agrum:
-  <<: *macos_arm_build_template
-  stage: aGrUM
-  variables:
-    PYTHON_VERSION: "py314"
-    TARGET: "aGrUM"
+macos_arm_pyagrum_tests:
+  <<: *wheel_rules
+  stage: test-wheels
+  tags: ["aarch", "pyenv", "osx"]
+  retry: 1
+  needs:
+    - job: osx_arm_wheel_py310
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
   script:
-    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
+    - bash $OSX_TEST_ARM $PYTHON_VERSION
 
-macos_arm_pyagrum_py310:
-  <<: *macos_arm_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PYTHON_VERSION: "py310"
-    TARGET: "pyAgrum"
-  script:
-    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
-
-macos_arm_pyagrum_py314:
-  <<: *macos_arm_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PYTHON_VERSION: "py314"
-    TARGET: "pyAgrum"
-  script:
-    - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
-
-################################################################################
-# Windows / MVSC
-################################################################################
-
-windows_agrum_2019:
-  <<: *windows_build_template
-  stage: aGrUM
-  variables:
-    PATH: $PATH_MVSC19_GUMWIN
-    CONDA_ENV: "py310"
-    TARGET: "aGrUM"
-    COMPILER: "mvsc19"
-  script:
-    - *windows_build_script
-
-windows_agrum_2022:
-  <<: *windows_build_template
-  stage: aGrUM
+windows_64_pyagrum_tests:
+  <<: *wheel_rules
+  stage: test-wheels
+  tags: ["gumwin"]
+  retry: 1
+  needs:
+    - job: windows_wheel_py310
+      artifacts: true
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py310"
-    TARGET: "aGrUM"
-    COMPILER: "mvsc22"
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
   script:
-    - *windows_build_script
-
-windows_pyagrum_2022_py310:
-  <<: *windows_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py310"
-    TARGET: "pyAgrum"
-    COMPILER: "mvsc22"
-  script:
-    - *windows_build_script
-
-windows_pyagrum_2022_py314:
-  <<: *windows_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py314"
-    TARGET: "pyAgrum"
-    COMPILER: "mvsc22"
-  script:
-    - *windows_build_script
+    - *windows_64_test_script
 
 ################################################################################
-# Windows / MINGW
-################################################################################
-
-windows_pyagrum_mingw_py314:
-  <<: *windows_build_template
-  stage: pyAgrum
-  needs: []
-  variables:
-    PATH: $PATH_MINGW_GUMWIN
-    CONDA_ENV: "py314-mingw"
-    TARGET: "pyAgrum"
-    COMPILER: "mingw64"
-  script:
-    - *windows_build_script
-
-################################################################################
-# Deploy  wheels
+#                                  DEPLOY                                      #
 ################################################################################
 
 linux_build:
   image: agrumery/ubuntu
-  only:
-    - tags@agrumery/aGrUM
-  tags:
-    - docker
-    - linux
+  stage: deploy
+  tags: ["docker", "linux"]
   cache:
     key: linux
     paths:
       - build/
-  stage: deploy
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - if: $CI_COMMIT_TAG =~ /^agrumery\/aGrUM/
   script:
     - apt-get install -y curl
     - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" -F "variables[DEPLOY_DOC]=TRUE"  https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
   retry: 1
 
-################################################################################
-#                                  RTD                                         #
-################################################################################
-
 build_doc:
   <<: *linux_x86_64_wheel_template
   stage: deploy
   image: agrumery/ubuntu_py310
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   script:
     - bash $BUILD_DOC

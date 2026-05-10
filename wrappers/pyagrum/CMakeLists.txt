@@ -55,12 +55,10 @@ endif()
 
 if(AGRUM_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.SABIModule NumPy REQUIRED)
-  if(NOT TARGET Python::Module)
-    add_library(Python::Module ALIAS Python::SABIModule)
-  endif()
 else()
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.Module NumPy REQUIRED)
 endif()
+
 list(APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
 
 if(AGRUM_PYTHON_SABI)
@@ -184,7 +182,12 @@ macro(gum_add_python_module MODULENAME)
 
   target_link_libraries(${_PYAGRUMLIB} PRIVATE ${LIBAGRUM})
   target_include_directories(${_PYAGRUMLIB} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${Python_NumPy_INCLUDE_DIRS})
-  target_link_libraries(${_PYAGRUMLIB} PRIVATE Python::Module)
+  
+  if(AGRUM_PYTHON_SABI AND TARGET Python::SABIModule)
+    target_link_libraries(${_PYAGRUMLIB} PRIVATE Python::SABIModule)
+  else()
+    target_link_libraries(${_PYAGRUMLIB} PRIVATE Python::Module)
+  endif()
 
   get_filename_component(PY_LIB_DIR "${Python_LIBRARIES}" DIRECTORY)
   target_link_directories(${_PYAGRUMLIB} PRIVATE ${PY_LIB_DIR})
@@ -204,7 +207,7 @@ macro(gum_add_python_module MODULENAME)
   if(_AGRUM_IPO_SUPPORTED)
     set_property(TARGET ${_PYAGRUMLIB} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
   endif()
-
+  
   # Dead-strip: drop unreachable functions/data at link time
   #   macOS: -dead_strip works natively on Mach-O without per-section flags
   #   Linux: requires -ffunction-sections/-fdata-sections on all TUs (set in CompilOptions)
@@ -319,9 +322,3 @@ install(FILES ${GUMEXPLAINNOTEBOOKS_FILES} DESTINATION ${INSTALL_PYTHONDIR}/pyag
 
 add_test(NAME python_quick COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/testunits/gumTest.py -m all -t all)
 set_tests_properties(python_quick PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}/..")
-
-# # show all cmake variables
-# get_cmake_property(_variableNames VARIABLES)
-# foreach (_variableName ${_variableNames})
-# message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
