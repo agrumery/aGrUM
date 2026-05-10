@@ -209,10 +209,27 @@ from .deprecated import deprecated_arg
 import warnings
 
 def deprecatedCausalBN(obj,*args,**kwargs):
+  """
+  Deprecated alias for ``causalDAG``. Use :meth:`CausalModel.causalDAG` instead.
+
+  .. deprecated:: 2.3.2
+  """
   warnings.warn("causalBN is deprecated since 2.3.2. Please use causalDAG.", DeprecationWarning, stacklevel=2)
   return obj.causalDAG(*args,**kwargs)
 
-CausalModel.causalBN = lambda s: deprecatedCausalBN(s)
+_causalBN_lambda = lambda s: deprecatedCausalBN(s)
+_causalBN_lambda.__doc__ = """
+Deprecated alias for ``causalDAG``. Use :meth:`causalDAG` instead.
+
+.. deprecated:: 2.3.2
+    Use :meth:`causalDAG` instead.
+
+Returns
+-------
+pyagrum.DAG
+    the causal DAG of the model
+"""
+CausalModel.causalBN = _causalBN_lambda
 
 
 

@@ -326,6 +326,26 @@
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"tick not implemented for {self}")
     def draw(self,x):
+      """
+      Draw a random float value from the x-th interval of the variable (only for pyagrum.DiscretizedVariable).
+
+      Parameters
+      ----------
+      x : int
+          the index of the interval from which to draw
+
+      Returns
+      -------
+      float
+          a random value drawn uniformly from the x-th interval
+
+      Raises
+      ------
+      NotImplementedError
+          if the variable is not a pyagrum.DiscretizedVariable
+      pyagrum.OutOfBounds
+          if x is not a valid interval index
+      """
       try:
         return self.asDiscretizedVar().draw(x)
       except pyagrum.OperationNotAllowed :

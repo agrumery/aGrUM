@@ -58,6 +58,21 @@
 // pyAgrum configuration at call time.
 %feature("shadow") gum::CausalImpact::toLatex %{
     def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
+        """
+        Return a LaTeX string representation of the causal impact formula.
+
+        Parameters
+        ----------
+        doOperatorPrefix : str, optional
+            LaTeX prefix for the do-operator. Defaults to the value in pyAgrum config.
+        doOperatorSuffix : str, optional
+            LaTeX suffix for the do-operator. Defaults to the value in pyAgrum config.
+
+        Returns
+        -------
+        str
+            LaTeX representation of the causal impact expression.
+        """
         if doOperatorPrefix is None:
             doOperatorPrefix = config["causal", "latex_do_prefix"]
         if doOperatorSuffix is None:

@@ -701,7 +701,14 @@ if len(args)>1:
 
     def toclipboard(self,**kwargs):
         """
-        Write a text representation of object to the system clipboard. This can be pasted into spreadsheet, for instance.
+        Write a text representation of the tensor to the system clipboard.
+
+        The clipboard content can be pasted into a spreadsheet application.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments passed to :meth:`pandas.DataFrame.to_clipboard`.
         """
         return self.topandas().to_clipboard()
 

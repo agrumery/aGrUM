@@ -212,7 +212,22 @@ def pseudoCount(self,vars):
     p.fillWith(self.rawPseudoCount(lv))
     return p
 
-def fitParameters(self,bn,take_into_account_score=True):
+def fitParameters(self, bn, take_into_account_score=True):
+  """
+  Fit the parameters of a BayesNet in place using this learner's database.
+
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet
+      the network whose CPTs will be filled (structure must match the database variables)
+  take_into_account_score : bool
+      if True, include the implicit prior of the structure-learning score (e.g. K2) in parameter learning
+
+  Returns
+  -------
+  pyagrum.BNLearner
+      self
+  """
   if not set(self.names()).issuperset(bn.names()):
     raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
 
