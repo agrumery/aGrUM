@@ -214,3 +214,120 @@ name : str
 value: str
   the value of the property.
 "
+
+%feature("docstring") gum::GraphicalModel::variables
+"
+Return the set of variables corresponding to a list of names or a set of node ids.
+
+Parameters
+----------
+args : list[str] or set[int]
+    variable names or node ids
+
+Returns
+-------
+pyagrum.VariableSet
+    the set of corresponding variables
+"
+
+%feature("docstring") gum::GraphicalModel::existsProperty
+"
+Check whether a property key exists in the model's metadata.
+
+Parameters
+----------
+name : str
+    the property name
+
+Returns
+-------
+bool
+    True if the property exists
+"
+
+%feature("docstring") gum::GraphicalModel::properties
+"
+Return the keys of all metadata properties of the model.
+
+Returns
+-------
+tuple[str, ...]
+    tuple of property names (use :meth:`property` to retrieve a value by key)
+"
+
+%feature("docstring") gum::GraphicalModel::updateMetaData
+"
+Update the model's built-in metadata (version, creation date, last modification date).
+
+This method is called automatically by writers before saving the model to a file.
+"
+
+%feature("docstring") gum::GraphicalModel::nodeId
+"
+Return the node id of a variable.
+
+Parameters
+----------
+var : pyagrum.DiscreteVariable
+    the variable
+
+Returns
+-------
+int
+    the node id of the variable
+
+Raises
+------
+pyagrum.NotFound
+    if the variable does not exist in the model
+"
+
+%feature("docstring") gum::GraphicalModel::variableNodeMap
+"
+Return the variable-to-node mapping of the model.
+
+Returns
+-------
+pyagrum.VariableNodeMap
+    the internal variable-to-node bijection
+"
+
+%feature("docstring") gum::GraphicalModel::idFromName
+"
+Return the node id of a variable given its name.
+
+Parameters
+----------
+name : str
+    the name of the variable
+
+Returns
+-------
+int
+    the node id of the variable
+
+Raises
+------
+pyagrum.NotFound
+    if no variable with this name exists in the model
+"
+
+%feature("docstring") gum::GraphicalModel::variableFromName
+"
+Return the variable with the given name.
+
+Parameters
+----------
+name : str
+    the name of the variable
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the variable
+
+Raises
+------
+pyagrum.NotFound
+    if no variable with this name exists in the model
+"

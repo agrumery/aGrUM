@@ -416,3 +416,55 @@ pyagrum.InfluenceDiagram
   a copy of the reduced influence Diagram (LIMID)
 
 "
+
+%feature("docstring") gum::ShaferShenoyLIMIDInference::addNoForgettingAssumption
+"
+Add a no-forgetting assumption for a list of decision variables.
+
+The no-forgetting assumption means that each decision node has access to all variables observed before it in the decision order.
+
+Parameters
+----------
+ids : list[int]
+    the list of decision node ids
+
+Raises
+------
+pyagrum.InvalidArgument
+    if a given id is not a decision node
+"
+
+%feature("docstring") gum::ShaferShenoyLIMIDInference::clear
+"
+Clear all evidence and reset the inference engine to its initial state.
+"
+
+%feature("docstring") gum::ShaferShenoyLIMIDInference::hasNoForgettingAssumption
+"
+Check whether the no-forgetting assumption has been added.
+
+Returns
+-------
+bool
+    True if the no-forgetting assumption is currently active
+"
+
+%feature("docstring") gum::ShaferShenoyLIMIDInference::reversePartialOrder
+"
+Return the reversed partial order of decision nodes used internally.
+
+Returns
+-------
+list[set[int]]
+    the reversed partial order as a list of node id sets
+"
+
+%feature("docstring") gum::ShaferShenoyLIMIDInference::softEvidenceNodes
+"
+Return the set of nodes with soft (likelihood) evidence.
+
+Returns
+-------
+set[int]
+    the set of node ids with soft evidence
+"

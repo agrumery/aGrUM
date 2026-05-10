@@ -668,3 +668,89 @@ See Also
 --------
 :ref:`jgum-bgum-format` : complete format reference
 "
+
+%feature("docstring") gum::InfluenceDiagram::idFromName
+"
+Returns a variable's id given its name in the graph.
+
+Parameters
+----------
+name : str
+    The variable's name from which the id is returned.
+
+Notes
+-----
+  A convenient shortcut for ``g.variableFromName(name)`` is ``g[name]``.
+
+Returns
+-------
+int :
+    The variable's node id.
+
+Raises
+------
+pyagrum.NotFound
+    If name does not match a variable in the graph
+"
+
+%feature("docstring") gum::InfluenceDiagram::variableFromName
+"
+Parameters
+----------
+name : str
+    a variable's name
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the variable
+
+Raises
+------
+pyagrum.IndexError
+    If the graph does not contain the variable
+"
+
+%feature("docstring") gum::InfluenceDiagram::decisionOrder
+"
+Return the sequence of decision nodes in a valid decision order.
+
+Returns
+-------
+list[int]
+    the ordered list of decision node ids
+
+Raises
+------
+pyagrum.NotFound
+    if no valid decision order exists
+"
+
+%feature("docstring") gum::InfluenceDiagram::beginTopologyTransformation
+"
+Begin a sequence of structural modifications to the influence diagram.
+
+Structural changes are batched until endTopologyTransformation is called.
+"
+
+%feature("docstring") gum::InfluenceDiagram::endTopologyTransformation
+"
+End a sequence of structural modifications and recompute internal structures.
+
+Should be called after beginTopologyTransformation when all modifications are done.
+"
+
+%feature("docstring") gum::InfluenceDiagram::clear
+"
+Clear the influence diagram, removing all nodes and arcs.
+"
+
+%feature("docstring") gum::DiscreteGraphicalModel::variableNodeMap
+"
+Return the variable-to-node mapping of the model.
+
+Returns
+-------
+pyagrum.VariableNodeMap
+    the internal variable-to-node bijection
+"

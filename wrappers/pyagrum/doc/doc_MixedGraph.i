@@ -370,3 +370,153 @@ Returns
 set
     the set of node ids.
 "
+
+%feature("docstring") gum::MixedGraph::chainComponents
+"
+Return the chain components of the graph.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+"
+
+%feature("docstring") gum::MixedGraph::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the ancestors of node `norid`.
+"
+
+%feature("docstring") gum::MixedGraph::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the descendants of node `norid`.
+"
+
+%feature("docstring") gum::MixedGraph::addArc
+"
+Add an arc from tail to head.
+
+Parameters
+----------
+tail : int
+    the id of the tail node
+head : int
+    the id of the head node
+
+Raises
+------
+pyagrum.InvalidNode
+    If head or tail does not belong to the graph nodes.
+"
+
+%feature("docstring") gum::MixedGraph::arcs
+"
+Returns the set of arcs in the graph.
+
+Returns
+-------
+set
+    the set of the arcs
+"
+
+%feature("docstring") gum::MixedGraph::chainComponent
+"
+Return the chain component containing a given node.
+
+The chain component of a node in a mixed graph is the set of nodes reachable via undirected edges from that node.
+
+Parameters
+----------
+id : int
+    the id of the node
+
+Returns
+-------
+set[int]
+    the set of node ids in the same chain component
+"
+
+%feature("docstring") gum::MixedGraph::children
+"
+Parameters
+----------
+id : int
+    the id of the parent node
+
+Returns
+-------
+Set
+    the set of all the children ids
+"
+
+%feature("docstring") gum::MixedGraph::edges
+"
+Returns
+-------
+List
+    the list of the edges
+"
+
+%feature("docstring") gum::MixedGraph::hasMixedOrientedPath
+"
+Check if there is an oriented path from node1 to node2 in the mixed graph (following arc directions).
+
+Parameters
+----------
+node1 : int
+    the id of the start node
+node2 : int
+    the id of the end node
+
+Returns
+-------
+bool
+    True if such a path exists
+"
+
+%feature("docstring") gum::MixedGraph::neighbours
+"
+Parameters
+----------
+id : int
+    the id of the checked node
+
+Returns
+-------
+Set
+    the set of node ids linked to the given node by an edge
+"
+
+%feature("docstring") gum::MixedGraph::parents
+"
+Parameters
+----------
+id : int
+    the id of the child node
+
+Returns
+-------
+Set
+    the set of parent node ids
+"

@@ -288,6 +288,67 @@ connectedComponentsList : returns a dict[int, set[int]] grouping nodes by compon
 connectedComponentsCount : returns the number of components
 "
 
+%feature("docstring") gum::UndiGraph::undirectedPath
+"
+Return a shortest undirected path between two nodes, or None if no path exists.
+
+Parameters
+----------
+node1 : int
+    id of the first node
+node2 : int
+    id of the second node
+
+Returns
+-------
+list[int] or None
+    ordered list of node ids along the path, or None if the nodes are disconnected
+"
+
+%feature("docstring") gum::UndiGraph::hasUndirectedPath
+"
+Check whether two nodes are connected by an undirected path.
+
+Parameters
+----------
+n1 : int
+    id of the first node
+n2 : int
+    id of the second node
+
+Returns
+-------
+bool
+    True if a path exists between n1 and n2
+"
+
+%feature("docstring") gum::UndiGraph::chainComponents
+"
+Return the chain components (connected components) of the graph.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+"
+
+%feature("docstring") gum::UndiGraph::completeGraph
+"
+Create a complete undirected graph with n nodes.
+
+Parameters
+----------
+n : int
+    number of nodes
+
+Returns
+-------
+UndiGraph
+    graph where every pair of distinct nodes is connected by an edge, with nodes 0..n-1
+"
+
 %feature("docstring") gum::UndiGraph::toDot
 "
 Returns

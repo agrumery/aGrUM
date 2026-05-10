@@ -178,3 +178,13 @@ Raises
 pyagrum.OutOfBounds
   If the variable does not contain the label
 "
+
+%feature("docstring") gum::RangeVariable::toFast
+"
+Return the variable description in fast syntax (e.g. ``name[min,max]``).
+
+Returns
+-------
+str
+    fast-syntax string representation
+"

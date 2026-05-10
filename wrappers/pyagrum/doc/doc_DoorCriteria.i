@@ -208,6 +208,56 @@ bool
     True if an open backdoor path from X to Y exists after conditioning on Z.
 "
 
+%feature("docstring") gum::DoorCriteria::firstBackdoor
+"
+Return the first valid backdoor adjustment set for the causal effect of X on Y.
+
+Parameters
+----------
+dag : pyagrum.DAG
+    The causal DAG.
+X : int
+    NodeId of the treatment variable.
+Y : int
+    NodeId of the outcome variable.
+excluded_nodes : set of int, optional
+    Nodes that cannot appear in any adjustment set. Default is empty.
+max_cardinality : int, optional
+    Maximum size of the adjustment set. 0 means no limit. Default is 0.
+only_minimal : bool, optional
+    If True, return only a minimal adjustment set. Default is True.
+
+Returns
+-------
+list of int or None
+    The first valid backdoor adjustment set as a list of NodeIds, or None if none exists.
+"
+
+%feature("docstring") gum::DoorCriteria::firstFrontdoor
+"
+Return the first valid frontdoor adjustment set for the causal effect of X on Y.
+
+Parameters
+----------
+dag : pyagrum.DAG
+    The causal DAG.
+X : int
+    NodeId of the treatment variable.
+Y : int
+    NodeId of the outcome variable.
+excluded_nodes : set of int, optional
+    Nodes that cannot appear in any adjustment set. Default is empty.
+max_cardinality : int, optional
+    Maximum size of the adjustment set. 0 means no limit. Default is 0.
+only_minimal : bool, optional
+    If True, return only a minimal adjustment set. Default is True.
+
+Returns
+-------
+list of int or None
+    The first valid frontdoor adjustment set as a list of NodeIds, or None if none exists.
+"
+
 // enumerateBackdoorSets and enumerateFrontdoorSets are documented in
 // causal_after_templates.i alongside their %extend %pythoncode wrappers.
 // %feature("docstring") here would be dead code: those methods are overridden

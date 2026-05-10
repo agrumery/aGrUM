@@ -48,3 +48,14 @@
 "
 
 "
+%feature("docstring") PythonLoadListener::whenLoading
+"
+Callback invoked during loading to report progress.
+
+Parameters
+----------
+filename : str
+    the file being loaded
+pct : int
+    the current loading progress percentage
+"

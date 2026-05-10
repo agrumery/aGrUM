@@ -328,3 +328,49 @@ Examples
 3  yes  2.815282  0  1  1  0
 4  yes  5.548571  1  0  1  1
 "
+
+%feature("docstring") PythonDatabaseGeneratorListener::setWhenProgress
+"
+Register a callback called at each progress step.
+
+Parameters
+----------
+pyfunc : callable
+    a function called with (step: int, duration: float) at each progress notification
+"
+
+%feature("docstring") PythonDatabaseGeneratorListener::setWhenStop
+"
+Register a callback called when the generation stops.
+
+Parameters
+----------
+pyfunc : callable
+    a function called with (message: str) when the generation is done
+"
+
+%feature("docstring") PythonDatabaseGeneratorListener::whenProgress
+"
+Callback invoked at each progress step during database generation.
+
+Parameters
+----------
+src : object
+    the source of the notification
+step : int
+    the current progress step
+duration : float
+    elapsed time in seconds
+"
+
+%feature("docstring") PythonDatabaseGeneratorListener::whenStop
+"
+Callback invoked when the database generation stops.
+
+Parameters
+----------
+src : object
+    the source of the notification
+message : str
+    a message describing the stop condition
+"

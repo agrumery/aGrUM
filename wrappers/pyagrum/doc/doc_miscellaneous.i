@@ -92,20 +92,43 @@ number : int
   the number of threads to be used
 "
 
-%feature("docstring") gum::getNumberOfLogicalProcessors
+%feature("docstring") gum::multithreading::getNumberOfLogicalProcessors
 "
+Return the number of logical processors available on the system.
+
 Returns
 -------
 int
-  the number of logical processors
+    the number of logical processors
 "
 
-%feature("docstring") gum::getMaxNumberOfThreads
+%feature("docstring") gum::multithreading::getMaxNumberOfThreads
 "
+Return the maximum number of threads available (equal to the number of logical processors by default).
+
 Returns
 -------
 int
-  the max number of threads
+    the maximum number of threads
+"
+
+%feature("docstring") gum::multithreading::getNumberOfThreads
+"
+Return the current number of threads used in parallel regions.
+
+This is equal to getMaxNumberOfThreads() unless the user has called setNumberOfThreads().
+
+Returns
+-------
+int
+    the current thread count for parallel regions
+"
+
+%feature("docstring") gum::statsObj
+"
+Print debug statistics on aGrUM objects.
+
+Only active in debug build mode (GUM_DEBUG_MODE). No output in release mode.
 "
 
 %feature("docstring") gum::randomGeneratorSeed

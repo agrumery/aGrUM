@@ -461,3 +461,13 @@ Returns
 pyagrum.BayesNet
     Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
 "
+
+%feature("docstring") gum::credal::CredalNet<double>::hasComputedBinaryCPTMinMax
+"
+Check whether the binary CPT min/max values have been computed.
+
+Returns
+-------
+bool
+    True if binary CPT min/max have been computed (via the dedicated computation method)
+"

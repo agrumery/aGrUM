@@ -289,6 +289,16 @@ gum.NotImplementedYet
   if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
 "
 
+%feature("docstring") gum::DiscreteVariable::draw
+"
+Draw a random index from the variable's domain.
+
+Returns
+-------
+int
+    the index of the drawn value
+"
+
 %feature("docstring") gum::DiscreteVariable::closestLabel
 "
 For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
@@ -306,4 +316,14 @@ Raises
 ------
 gum.InvalidArgument
   if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
+"
+
+%feature("docstring") gum::DiscreteVariable::toFast
+"
+Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+
+Returns
+-------
+str
+    fast-syntax string representation
 "

@@ -72,3 +72,30 @@ Returns
 tuple
     A tuple with the instantiation of all the variables of the Bayes net representing the Most Probable Explanation and the log2 of its posterior probability
 "
+
+%feature("docstring") gum::LazyPropagation<double>::jointMutualInformation
+"
+Compute the joint mutual information (interaction information) among a set of target variables.
+
+See https://en.wikipedia.org/wiki/Interaction_information
+
+Parameters
+----------
+targets : list[str] or set[int]
+    the target variables (names or node ids)
+
+Returns
+-------
+float
+    the joint mutual information
+"
+
+%feature("docstring") gum::LazyPropagation<double>::setTriangulation
+"
+Replace the triangulation algorithm used to build the junction tree.
+
+Parameters
+----------
+new_triangulation : pyagrum.Triangulation
+    the new triangulation algorithm
+"

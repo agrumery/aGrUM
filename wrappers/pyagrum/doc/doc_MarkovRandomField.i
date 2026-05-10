@@ -352,3 +352,358 @@ See Also
 --------
 :ref:`jgum-bgum-format` : complete format reference
 "
+
+%feature("docstring") gum::MarkovRandomField::connectedComponents
+"
+Return the connected components of the Markov random field.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+"
+
+%feature("docstring") gum::MarkovRandomField::idFromName
+"
+Returns a variable's id given its name in the graph.
+
+Parameters
+----------
+name : str
+    The variable's name from which the id is returned.
+
+Notes
+-----
+  A convenient shortcut for ``g.variableFromName(name)`` is ``g[name]``.
+
+Returns
+-------
+int :
+    The variable's node id.
+
+Raises
+------
+pyagrum.NotFound
+    If name does not match a variable in the graph
+"
+
+%feature("docstring") gum::MarkovRandomField::variableFromName
+"
+Parameters
+----------
+name : str
+    a variable's name
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the variable
+
+Raises
+------
+pyagrum.IndexError
+    If the graph does not contain the variable
+"
+
+%feature("docstring") gum::MarkovRandomField::beginTopologyTransformation
+"
+Begin a sequence of structural modifications (factor additions/deletions).
+
+Structural changes are batched until endTopologyTransformation is called, which then adjusts all factor dimensions.
+"
+
+%feature("docstring") gum::MarkovRandomField::edges
+"
+Returns
+-------
+set
+    the set of edges in the Markov random field
+"
+
+%feature("docstring") gum::MarkovRandomField::eraseFactor
+"
+Remove the factor that covers a given set of variables.
+
+Parameters
+----------
+vars : set[int] | list[str]
+    the set of variable ids or names whose factor should be removed
+"
+
+%feature("docstring") gum::MarkovRandomField::factors
+"
+Return the table of all factors in the Markov random field.
+
+Returns
+-------
+dict
+    a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
+"
+
+%feature("docstring") gum::MarkovRandomField::fromBN
+"
+Create a Markov random field from a Bayesian network.
+
+Parameters
+----------
+bn : pyagrum.BayesNet
+    the Bayesian network to convert
+
+Returns
+-------
+pyagrum.MarkovRandomField
+    a new MRF with the same variables and moralised structure
+"
+
+%feature("docstring") gum::UGmodel::graph
+"
+Return the underlying undirected graph.
+
+Returns
+-------
+pyagrum.UndiGraph
+    the underlying graph
+"
+
+%feature("docstring") gum::MarkovRandomField::minimalCondSet
+"
+Return a minimal conditioning set of a target given source nodes in the MRF.
+
+Parameters
+----------
+target : int | str | list[int|str]
+    the target node id(s) or name(s)
+soids : list[int|str]
+    the list of source node ids or names
+
+Returns
+-------
+set[int]
+    the minimal conditioning set (as node ids)
+"
+
+%feature("docstring") gum::MarkovRandomField::neighbours
+"
+Return the set of neighbours of a node.
+
+Parameters
+----------
+id : int
+    the node id
+
+Returns
+-------
+set[int]
+    the set of neighbour node ids
+"
+
+%feature("docstring") gum::MarkovRandomField::nodes
+"
+Return the set of node ids in the model.
+
+Returns
+-------
+set[int]
+    the set of node ids
+"
+
+%feature("docstring") gum::UGmodel::size
+"
+Return the number of nodes (variables) in the graphical model.
+
+Returns
+-------
+int
+    the number of nodes
+"
+
+%feature("docstring") gum::MarkovRandomField::smallestFactorFromNode
+"
+Return the id set of the smallest factor that contains the given node.
+
+Parameters
+----------
+node : int
+    the node id
+
+Returns
+-------
+set[int]
+    the id set of the smallest factor containing this node
+
+Raises
+------
+pyagrum.NotFound
+    if no factor contains this node
+"
+
+%feature("docstring") gum::MarkovRandomField::variable
+"
+Return the variable associated with a given node id.
+
+Parameters
+----------
+id : int
+    the node id
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the variable
+
+Raises
+------
+pyagrum.NotFound
+    if the node id does not exist
+"
+
+%feature("docstring") gum::UGmodel::family
+"
+Return the family of a node: the node itself plus all its neighbours.
+
+Parameters
+----------
+id : int
+    the node id
+
+Returns
+-------
+set[int]
+    the node and all its neighbours
+"
+
+%feature("docstring") gum::UGmodel::existsEdge
+"
+Check whether an edge exists between two nodes.
+
+Parameters
+----------
+n1 : int | str
+    one endpoint (id or name)
+n2 : int | str
+    the other endpoint (id or name)
+
+Returns
+-------
+bool
+    True if the edge exists
+"
+
+%feature("docstring") gum::UGmodel::hasSameStructure
+"
+Check whether this model has the same undirected structure as another UGmodel.
+
+Parameters
+----------
+other : pyagrum.MarkovRandomField
+    the model to compare with
+
+Returns
+-------
+bool
+    True if the undirected structures are identical
+"
+
+%feature("docstring") gum::UGmodel::sizeEdges
+"
+Return the number of edges in the model.
+
+Returns
+-------
+int
+    the number of edges
+"
+
+%feature("docstring") gum::UGmodel::connectedComponents
+"
+Return the connected components of the undirected model.
+
+Each node is mapped to the id of its component root.
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+"
+
+%feature("docstring") gum::IMarkovRandomField::dim
+"
+Return the dimension (total number of free parameters) of the Markov random field.
+
+Returns
+-------
+int
+    the number of free parameters
+"
+
+%feature("docstring") gum::IMarkovRandomField::maxVarDomainSize
+"
+Return the maximum domain size among all variables in the model.
+
+Returns
+-------
+int
+    the maximum domain size
+"
+
+%feature("docstring") gum::IMarkovRandomField::minParam
+"
+Return the minimum parameter value across all factors.
+
+Returns
+-------
+float
+    the minimum factor parameter
+"
+
+%feature("docstring") gum::IMarkovRandomField::maxParam
+"
+Return the maximum parameter value across all factors.
+
+Returns
+-------
+float
+    the maximum factor parameter
+"
+
+%feature("docstring") gum::IMarkovRandomField::minNonZeroParam
+"
+Return the minimum non-zero parameter value across all factors.
+
+Returns
+-------
+float
+    the minimum non-zero factor parameter
+"
+
+%feature("docstring") gum::IMarkovRandomField::maxNonOneParam
+"
+Return the maximum parameter value strictly less than 1 across all factors.
+
+Returns
+-------
+float
+    the maximum non-one factor parameter
+"
+
+%feature("docstring") gum::IMarkovRandomField::toDot
+"
+Return a Graphviz dot representation of the Markov random field.
+
+Returns
+-------
+str
+    a dot-format string
+"
+
+%feature("docstring") gum::IMarkovRandomField::toDotAsFactorGraph
+"
+Return a Graphviz dot representation of the Markov random field as a factor graph.
+
+Returns
+-------
+str
+    a dot-format string with variable nodes and factor nodes
+"

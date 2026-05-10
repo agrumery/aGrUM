@@ -137,6 +137,36 @@ str
     the domain of the variable as a string
 "
 
+%feature("docstring") gum::LabelizedVariable::posLabel
+"
+Return the position (index) of a label in the variable's domain.
+
+Parameters
+----------
+label : str
+    the label to look up
+
+Returns
+-------
+int
+    the index of the label in the domain
+
+Raises
+------
+pyagrum.NotFound
+    if the label does not exist in the domain
+"
+
+%feature("docstring") gum::LabelizedVariable::toFast
+"
+Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+
+Returns
+-------
+str
+    fast-syntax string representation
+"
+
 %feature("docstring") gum::LabelizedVariable::clone
 "
 Returns

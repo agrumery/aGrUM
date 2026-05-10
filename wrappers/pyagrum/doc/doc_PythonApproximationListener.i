@@ -67,3 +67,26 @@ Parameters
 pyfunc
     the function to execute
 "
+%feature("docstring") PythonApproximationListener::whenProgress
+"
+Callback invoked at each iteration step of the approximation algorithm.
+
+Parameters
+----------
+pct : float
+    the current progress percentage
+error : float
+    the current error estimate
+time : float
+    the elapsed time
+"
+
+%feature("docstring") PythonApproximationListener::whenStop
+"
+Callback invoked when the approximation algorithm stops.
+
+Parameters
+----------
+message : str
+    a message describing the stopping reason
+"

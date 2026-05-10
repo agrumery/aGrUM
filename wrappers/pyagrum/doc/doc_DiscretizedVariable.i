@@ -157,6 +157,36 @@ tuple :
 "
 
 
+%feature("docstring") gum::IDiscretizedVariable::isEmpirical
+"
+Check whether the variable uses relaxed (empirical) tick bounds.
+
+Returns
+-------
+bool
+    True if the variable is in empirical mode
+"
+
+%feature("docstring") gum::IDiscretizedVariable::setEmpirical
+"
+Enable or disable empirical (relaxed bounds) mode for the variable.
+
+Parameters
+----------
+state : bool
+    True to enable empirical mode, False to disable
+"
+
+%feature("docstring") gum::DiscretizedVariable::toFast
+"
+Return the variable description in fast syntax (e.g. ``name[v1:v2:v3]``).
+
+Returns
+-------
+str
+    fast-syntax string representation
+"
+
 %feature("docstring") gum::DiscretizedVariable::draw
 "
 Allow to draw a value in the i-th interval of the discretized variable.1

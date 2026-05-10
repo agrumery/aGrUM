@@ -176,6 +176,28 @@ Returns
 int
     the inference type
 "
+
+%feature("docstring") gum::credal::classname::CN
+"
+Return the credal network used by this inference engine.
+
+Returns
+-------
+pyagrum.CredalNet
+    the credal network
+"
+
+%feature("docstring") gum::credal::classname::addEvidence
+"
+Add evidence for a variable in the credal network.
+
+Parameters
+----------
+id_or_name : int | str
+    the node id or name
+val_or_label : int | str
+    the value index or label for the evidence
+"
 %enddef
 
 ADD_CNINFERENCE_DOC(CNMonteCarloSampling<double>)

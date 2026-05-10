@@ -122,6 +122,16 @@ Remove all the domain.
 "
 
 
+%feature("docstring") gum::NumericalDiscreteVariable::toFast
+"
+Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
+
+Returns
+-------
+str
+    fast-syntax string representation
+"
+
 %feature("docstring") gum::NumericalDiscreteVariable::isValue
 "
 Parameters

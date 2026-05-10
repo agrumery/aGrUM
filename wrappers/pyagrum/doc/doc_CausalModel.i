@@ -400,3 +400,23 @@ Examples
 >>> cm = gum.CausalModel(bn)
 >>> print(cm.toDot())
 "
+
+%feature("docstring") gum::CausalModel::variable
+"
+Return the variable with the given id or name (observed variables only).
+
+Parameters
+----------
+id_or_name : int | str
+    the node id or name of the variable
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the discrete variable
+
+Raises
+------
+pyagrum.NotFound
+    if the id or name does not correspond to an observed variable in the model
+"

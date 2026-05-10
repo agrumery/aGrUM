@@ -352,3 +352,40 @@ Returns
 gum.UndiGraph
   the moralized ancestral graph of the nodes
 "
+
+%feature("docstring") gum::DAGmodel::connectedComponents
+"
+Return the weakly connected components of the graph.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+
+See Also
+--------
+connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+connectedComponentsCount : returns the number of components
+"
+
+
+%feature("docstring") gum::DAGmodel::minimalCondSet
+"
+Return a minimal conditioning set of a target node (or set of nodes) given a set of source nodes in the DAG model.
+
+A minimal conditioning set is a subset of the source nodes that d-separates the targets from the remaining sources.
+
+Parameters
+----------
+target : int | str | list[int|str]
+    the target node id(s) or name(s)
+soids : list[int|str]
+    the list of source node ids or names
+
+Returns
+-------
+set[int]
+    the minimal conditioning set (as node ids)
+"

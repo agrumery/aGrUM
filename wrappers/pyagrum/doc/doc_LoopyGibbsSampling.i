@@ -52,3 +52,10 @@ LoopyGibbsSampling(bn) -> LoopyGibbsSampling
     Parameters:
         - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
 "
+
+%feature("docstring") gum::LoopySamplingInference::makeInference_
+"
+Internal implementation of the loopy sampling inference.
+
+This protected virtual method performs the actual sampling-based inference loop.
+"

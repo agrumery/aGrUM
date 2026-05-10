@@ -107,3 +107,18 @@ Returns
 list of tuple
     The list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG` or `pyagrum.MeekRules.progagatesToDAG`. Each tuple represents a `pyagrum.Edge`.
 "
+
+%feature("docstring") gum::MeekRules::propagate
+"
+Apply Meek rules R1–R4 to orient edges in a mixed graph.
+
+Parameters
+----------
+mg : pyagrum.MixedGraph
+    the mixed graph to orient (arcs and undirected edges)
+
+Returns
+-------
+pyagrum.MixedGraph
+    the partially oriented graph (may still contain undirected edges or double-headed arcs)
+"

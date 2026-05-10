@@ -206,3 +206,65 @@ Returns
 str
   the name of the variable in the model from the nodeId
 "
+
+%feature("docstring") gum::EssentialGraph::connectedComponents
+"
+Return the connected components of the essential graph.
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+Returns
+-------
+dict[int, int]
+    mapping node id → component root id
+"
+
+%feature("docstring") gum::EssentialGraph::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the ancestors of node `norid`.
+"
+
+%feature("docstring") gum::EssentialGraph::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the descendants of node `norid`.
+"
+
+%feature("docstring") gum::EssentialGraph::nodes
+"
+Return the set of node ids in the essential graph.
+
+Returns
+-------
+set[int]
+    the set of all node ids
+"
+
+%feature("docstring") gum::EssentialGraph::skeleton
+"
+Return the skeleton of the essential graph (the underlying undirected graph without arc orientations).
+
+Returns
+-------
+pyagrum.UndiGraph
+    the skeleton of the essential graph
+"

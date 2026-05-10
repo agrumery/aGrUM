@@ -1078,3 +1078,26 @@ See Also
 :ref:`jgum-bgum-format` : complete format reference
 "
 
+
+
+%feature("docstring") gum::BayesNet<double>::contextualize
+"
+Return a new Bayesian network conditioned on observations and interventions.
+
+Parameters
+----------
+observations : dict
+    a dict mapping variable names (str) or ids (int) to observed values (str or int)
+interventions : dict
+    a dict mapping variable names (str) or ids (int) to intervened values (str or int)
+
+Returns
+-------
+pyagrum.BayesNet
+    a new BayesNet representing the interventional/observational distribution
+
+Raises
+------
+pyagrum.InvalidArgument
+    if arguments are not dicts
+"

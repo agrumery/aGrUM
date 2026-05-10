@@ -77,8 +77,10 @@ Example-------
 
 %feature("docstring") InformationTheory::entropyX
 "
-    Returns  ---------  float
-    The entropy of nodeset X.
+Returns
+-------
+float
+    the entropy of nodeset X
 "
 
 %feature("docstring") InformationTheory::entropyXY
@@ -88,12 +90,12 @@ Returns
   float
     The entropy of nodeset, union of X and Y.
 "
-%feature("docstring") InformationTheory::XYgivenZ
+%feature("docstring") InformationTheory::entropyXYgivenZ
 "
 Returns
 -------
-  float
-    The conditional entropy of nodeset, union of X and Y conditionned by nodeset Z
+float
+    the conditional entropy of nodeset (X ∪ Y) conditioned by nodeset Z
 "
 
 %feature("docstring") InformationTheory::entropyXgivenY
@@ -120,7 +122,7 @@ Returns
     The conditional entropy of nodeset Y conditionned by nodeset X
 "
 
-%feature("docstring") InformationTheory::mutualInformationXY(self)
+%feature("docstring") InformationTheory::mutualInformationXY
 "
 Returns
 -------

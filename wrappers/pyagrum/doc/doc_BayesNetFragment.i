@@ -188,3 +188,79 @@ Raises
 pyagrum.OperationNotAllowed
   if the fragment is not consistent.
 "
+
+%feature("docstring") gum::BayesNetFragment::idFromName
+"
+Returns a variable's id given its name in the graph.
+
+Parameters
+----------
+name : str
+    The variable's name from which the id is returned.
+
+Notes
+-----
+  A convenient shortcut for ``g.variableFromName(name)`` is ``g[name]``.
+
+Returns
+-------
+int :
+    The variable's node id.
+
+Raises
+------
+pyagrum.NotFound
+    If name does not match a variable in the graph
+"
+
+%feature("docstring") gum::BayesNetFragment<double>::whenArcAdded
+"
+Internal callback invoked when an arc is added to the referenced BayesNet.
+
+Parameters
+----------
+src : object
+    the event source
+from : int
+    the tail node id
+to : int
+    the head node id
+"
+
+%feature("docstring") gum::BayesNetFragment<double>::whenArcDeleted
+"
+Internal callback invoked when an arc is removed from the referenced BayesNet.
+
+Parameters
+----------
+src : object
+    the event source
+from : int
+    the tail node id
+to : int
+    the head node id
+"
+
+%feature("docstring") gum::BayesNetFragment<double>::whenNodeAdded
+"
+Internal callback invoked when a node is added to the referenced BayesNet.
+
+Parameters
+----------
+src : object
+    the event source
+id : int
+    the id of the new node
+"
+
+%feature("docstring") gum::BayesNetFragment<double>::whenNodeDeleted
+"
+Internal callback invoked when a node is removed from the referenced BayesNet.
+
+Parameters
+----------
+src : object
+    the event source
+id : int
+    the id of the deleted node
+"

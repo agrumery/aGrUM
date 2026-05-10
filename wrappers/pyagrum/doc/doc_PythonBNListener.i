@@ -103,3 +103,49 @@ Parameters
 pyfunc : lambda expression
     a function (i:int) called when a node of id i and name s is removed.
 "
+
+%feature("docstring") PythonBNListener::whenArcAdded
+"
+Callback called when an arc is added to the Bayesian network.
+
+Parameters
+----------
+src : int
+    the tail node id
+dst : int
+    the head node id
+"
+
+%feature("docstring") PythonBNListener::whenArcDeleted
+"
+Callback called when an arc is removed from the Bayesian network.
+
+Parameters
+----------
+src : int
+    the tail node id
+dst : int
+    the head node id
+"
+
+%feature("docstring") PythonBNListener::whenNodeAdded
+"
+Callback called when a node is added to the Bayesian network.
+
+Parameters
+----------
+id : int
+    the id of the new node
+name : str
+    the name of the new node
+"
+
+%feature("docstring") PythonBNListener::whenNodeDeleted
+"
+Callback called when a node is removed from the Bayesian network.
+
+Parameters
+----------
+id : int
+    the id of the deleted node
+"

@@ -59,3 +59,13 @@ Returns
 int
     the indice of the line of the error
 "
+
+%feature("docstring") gum::SyntaxError::filename
+"
+Return the name of the file in which the syntax error occurred.
+
+Returns
+-------
+str
+    the name of the file containing the syntax error
+"

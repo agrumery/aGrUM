@@ -52,3 +52,38 @@ ShaferShenoyMRFInference(bn) -> ShaferShenoyMRFInference
     Parameters:
         - **mrf** (*pyagrum.MarkovRandomField*) -- a Markov random field
 "
+
+%feature("docstring") gum::ShaferShenoyMRFInference<double>::MRF
+"
+Return the Markov random field associated with this inference engine.
+
+Returns
+-------
+pyagrum.IMarkovRandomField
+    the Markov random field
+"
+
+%feature("docstring") gum::ShaferShenoyMRFInference<double>::jointMutualInformation
+"
+Compute the joint mutual information (interaction information) among a set of target variables.
+
+Parameters
+----------
+targets : list[str] or set[int]
+    the target variables (names or node ids)
+
+Returns
+-------
+float
+    the joint mutual information
+"
+
+%feature("docstring") gum::ShaferShenoyMRFInference<double>::setTriangulation
+"
+Replace the triangulation algorithm used to build the junction tree.
+
+Parameters
+----------
+new_triangulation : pyagrum.Triangulation
+    the new triangulation algorithm
+"

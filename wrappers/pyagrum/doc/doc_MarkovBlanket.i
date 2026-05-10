@@ -153,3 +153,33 @@ Returns
 bool
     True if all the named node are the same and all the named arcs are the same
 "
+
+%feature("docstring") gum::MarkovBlanket::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the ancestors of node `norid`.
+"
+
+%feature("docstring") gum::MarkovBlanket::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the descendants of node `norid`.
+"

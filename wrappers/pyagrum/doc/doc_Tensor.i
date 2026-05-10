@@ -843,5 +843,137 @@ Compute the size of the domain of the Tensor, i.e., the product of the domain si
 Returns
 -------
 int
-  the size of the domain of the Tensor (the number of values it can take) 
+  the size of the domain of the Tensor (the number of values it can take)
+"
+
+%feature("docstring") gum::Tensor::random
+"
+Fill the tensor with random values uniformly drawn from [0,1].
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::randomDistribution
+"
+Fill the tensor as a random probability distribution (values are non-negative and sum to 1).
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::randomCPT
+"
+Fill the tensor as a random conditional probability table (each conditional distribution sums to 1).
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::uniformTensor
+"
+Create a uniform tensor over a single discrete variable (all values equal to 1/domainSize).
+
+Parameters
+----------
+var : pyagrum.DiscreteVariable
+    the variable defining the domain
+
+Returns
+-------
+Tensor
+    uniform tensor over var
+"
+
+%feature("docstring") gum::Tensor::noising
+"
+Add noise to a CPT by mixing it with a random CPT: ``(1 - alpha) * self + alpha * randomCPT()``.
+
+Parameters
+----------
+alpha : float
+    noise level, must be in [0, 1]
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::sgn
+"
+Apply the sign function element-wise in place: -1 if value < 0, 0 if value == 0, 1 if value > 0.
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::new_sgn
+"
+Return a new tensor with the sign function applied element-wise: -1 if value < 0, 0 if value == 0, 1 if value > 0.
+
+Returns
+-------
+Tensor
+    new tensor
+"
+
+%feature("docstring") gum::Tensor::new_abs
+"
+Return a new tensor with the absolute value applied to each element.
+
+Returns
+-------
+Tensor
+    new tensor
+"
+
+%feature("docstring") gum::Tensor::new_sq
+"
+Return a new tensor with each element squared.
+
+Returns
+-------
+Tensor
+    new tensor
+"
+
+%feature("docstring") gum::Tensor::new_log2
+"
+Return a new tensor with the base-2 logarithm applied to each element.
+
+Returns
+-------
+Tensor
+    new tensor
+"
+
+%feature("docstring") gum::Tensor::inverse
+"
+Invert each value of the tensor in place (replace x by 1/x for each element).
+
+Returns
+-------
+Tensor
+    self (in-place modification)
+"
+
+%feature("docstring") gum::Tensor::isEvidence
+"
+Check whether the tensor represents a likelihood (soft evidence) over a single variable.
+
+A tensor is an evidence if it has exactly one variable, all values are in [0, 1], and the sum is positive.
+
+Returns
+-------
+bool
+    True if the tensor is a valid likelihood vector
 "

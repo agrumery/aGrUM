@@ -56,3 +56,30 @@ VariableElimination(bn) -> VariableElimination
     Parameters:
         - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
 "
+
+%feature("docstring") gum::VariableElimination::jointMutualInformation
+"
+Compute the joint mutual information (interaction information) among a set of target variables.
+
+See https://en.wikipedia.org/wiki/Interaction_information
+
+Parameters
+----------
+targets : list[str] or set[int]
+    the target variables (names or node ids)
+
+Returns
+-------
+float
+    the joint mutual information
+"
+
+%feature("docstring") gum::VariableElimination::setTriangulation
+"
+Replace the triangulation algorithm used to build the junction tree.
+
+Parameters
+----------
+new_triangulation : pyagrum.Triangulation
+    the new triangulation algorithm
+"

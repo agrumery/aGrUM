@@ -1046,7 +1046,7 @@ str
 "
 
 
-%feature("docstring") gum::learning::BNLearner::EMStateApproximationScheme
+%feature("docstring") gum::learning::IBNLearner::EMStateApproximationScheme
 "
 Returns an int representing the state of the EM algorithm.
 
@@ -1577,4 +1577,39 @@ Parameters
 ----------
 learner : pyagrum.BNLearner
     the BNLearner to copy state from.
+"
+
+%feature("docstring") gum::learning::IBNLearner::EMPeriodSize
+"
+Return the period size used by the EM stopping criterion check.
+
+Returns
+-------
+int
+    number of EM iterations between two stopping criterion evaluations
+"
+
+%feature("docstring") gum::learning::IBNLearner::EMsetPeriodSize
+"
+Set the period size for the EM stopping criterion check.
+
+Parameters
+----------
+p : int
+    number of iterations between two stopping criterion evaluations (must be ≥ 1)
+
+Raises
+------
+pyagrum.OutOfBounds
+    if p < 1
+"
+
+%feature("docstring") gum::learning::IBNLearner::EMStateMessage
+"
+Return a human-readable message describing the current state of the EM algorithm.
+
+Returns
+-------
+str
+    state message (same information as EMStateApproximationScheme but as text)
 "

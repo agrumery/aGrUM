@@ -324,3 +324,97 @@ Returns
 bool
     True if the directed path exists
 "
+
+%feature("docstring") gum::DiGraph::directedPath
+"
+Return a shortest directed path from node1 to node2, or None if no such path exists.
+
+Parameters
+----------
+node1 : int
+    id of the source node
+node2 : int
+    id of the destination node
+
+Returns
+-------
+list[int] or None
+    ordered list of node ids along the directed path, or None if node2 is unreachable from node1
+"
+
+%feature("docstring") gum::DiGraph::directedUnorientedPath
+"
+Return a shortest path from node1 to node2 ignoring arc orientation, or None if no path exists.
+
+Parameters
+----------
+node1 : int
+    id of the source node
+node2 : int
+    id of the destination node
+
+Returns
+-------
+list[int] or None
+    ordered list of node ids (arcs may be traversed in either direction), or None if unreachable
+"
+
+%feature("docstring") gum::DiGraph::family
+"
+Return the family of a node: the node itself plus all its parents.
+
+Parameters
+----------
+norid : int
+    id of the node
+
+Returns
+-------
+set[int]
+    {norid} ∪ parents(norid)
+"
+
+%feature("docstring") gum::DiGraph::completeGraph
+"
+Create a complete directed graph with n nodes.
+
+Parameters
+----------
+n : int
+    number of nodes
+
+Returns
+-------
+DiGraph
+    directed graph where every ordered pair (i, j) with i≠j has arc i→j, with nodes 0..n-1
+"
+
+%feature("docstring") gum::DiGraph::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the ancestors of node `norid`.
+"
+
+%feature("docstring") gum::DiGraph::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the descendants of node `norid`.
+"

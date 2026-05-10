@@ -519,3 +519,20 @@ Warnings
 --------
     OutOfBounds raised if a value cannot be found.
 "
+
+%feature("docstring") gum::Instantiation::isMutable
+"
+Check whether this Instantiation is currently a slave of another object (i.e., not mutable).
+
+Returns
+-------
+bool
+    True if the Instantiation is a slave (not independently mutable)
+"
+
+%feature("docstring") gum::Instantiation::setMutable
+"
+Detach this Instantiation from its master, making it independently mutable.
+
+After this call, the Instantiation is no longer a slave and can be freely modified.
+"

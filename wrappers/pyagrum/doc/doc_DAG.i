@@ -329,6 +329,46 @@ bool
 "
 
 
+%feature("docstring") gum::DAG::ancestors
+"
+give the set of nodeid of ancestors of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the ancestors of node `norid`.
+"
+
+%feature("docstring") gum::DAG::descendants
+"
+give the set of nodeid of descendants of a node
+
+Parameters
+----------
+norid : str|int
+  the name or the id of the node
+
+Returns
+-------
+set
+  the set of ids of the descendants of node `norid`.
+"
+
+%feature("docstring") gum::DAG::moralGraph
+"
+Returns the moral graph of the DAG, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
+
+Returns
+-------
+pyagrum.UndiGraph
+    The moral graph
+"
+
 %feature("docstring") gum::DAG::moralizedAncestralGraph
 "
 Compute the moralized ancestral graph of the nodes from the DAG.
@@ -341,4 +381,20 @@ Returns
 -------
 pyagrum.UndiGraph
   the moralized ancestral graph of the nodes from the DAG.
+"
+%feature("docstring") gum::DAG::minimalCondSet
+"
+Return a minimal conditioning set of a target given source nodes in the DAG.
+
+Parameters
+----------
+target : int | str | list[int|str]
+    the target node id(s) or name(s)
+soids : list[int|str]
+    the list of source node ids or names
+
+Returns
+-------
+set[int]
+    the minimal conditioning set (as node ids)
 "
