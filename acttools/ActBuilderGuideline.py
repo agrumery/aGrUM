@@ -14,7 +14,7 @@
 #    - the MIT license (MIT),                                              #
 #    - or both in dual license, as here.                                   #
 #                                                                          #
-#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#   (see https://agrum.gitlab.1io/articles/dual-licenses-lgplv3mit.html)    #
 #                                                                          #
 #   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
 #   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
@@ -301,7 +301,7 @@ def _parse_checks(spec: str) -> frozenset[str]:
     if not tok:
       continue
     if tok not in known:
-      raise ValueError(f"Unknown check '{tok}'. Valid: {', '.join(sorted(known))}")
+      critic(f"Unknown check '{tok}'. Valid checks : {', '.join(sorted(known))}")
     expanded = _GUIDELINE_ALL_CHECKS if tok == "all" else {tok}
     if op == "+":
       result |= expanded

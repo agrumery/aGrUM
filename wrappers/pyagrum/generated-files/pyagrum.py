@@ -838,6 +838,16 @@ class SyntaxError(IOError):
         return _pyagrum.SyntaxError_line(self)
 
     def filename(self) -> str:
+        r"""
+
+        Return the name of the file in which the syntax error occurred.
+
+        Returns
+        -------
+        str
+            the name of the file containing the syntax error
+
+        """
         return _pyagrum.SyntaxError_filename(self)
     __swig_destroy__ = _pyagrum.delete_SyntaxError
 
@@ -1147,6 +1157,16 @@ class DiscreteVariable(Variable):
         return _pyagrum.DiscreteVariable_varType(self)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.DiscreteVariable_toFast(self)
 
     def index(self, label: str) -> int:
@@ -1500,6 +1520,26 @@ class DiscreteVariable(Variable):
       except pyagrum.OperationNotAllowed:
         raise NotImplementedError(f"tick not implemented for {self}")
     def draw(self,x):
+      """
+      Draw a random float value from the x-th interval of the variable (only for pyagrum.DiscretizedVariable).
+
+      Parameters
+      ----------
+      x : int
+          the index of the interval from which to draw
+
+      Returns
+      -------
+      float
+          a random value drawn uniformly from the x-th interval
+
+      Raises
+      ------
+      NotImplementedError
+          if the variable is not a pyagrum.DiscretizedVariable
+      pyagrum.OutOfBounds
+          if x is not a valid interval index
+      """
       try:
         return self.asDiscretizedVar().draw(x)
       except pyagrum.OperationNotAllowed :
@@ -1768,6 +1808,26 @@ class LabelizedVariable(DiscreteVariable):
         return _pyagrum.LabelizedVariable_label(self, i)
 
     def posLabel(self, label: str) -> int:
+        r"""
+
+        Return the position (index) of a label in the variable's domain.
+
+        Parameters
+        ----------
+        label : str
+            the label to look up
+
+        Returns
+        -------
+        int
+            the index of the label in the domain
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the label does not exist in the domain
+
+        """
         return _pyagrum.LabelizedVariable_posLabel(self, label)
 
     def numerical(self, index: int) -> float:
@@ -1857,6 +1917,16 @@ class LabelizedVariable(DiscreteVariable):
         return _pyagrum.LabelizedVariable_stype(self)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.LabelizedVariable_toFast(self)
 
     def __repr__(self) -> str:
@@ -1952,6 +2022,16 @@ class RangeVariable(DiscreteVariable):
         return _pyagrum.RangeVariable_varType(self)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name[min,max]``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.RangeVariable_toFast(self)
 
     def label(self, index: int) -> str:
@@ -2210,6 +2290,16 @@ class IntegerVariable(DiscreteVariable):
         return _pyagrum.IntegerVariable_varType(self)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.IntegerVariable_toFast(self)
 
     def index(self, label: str) -> int:
@@ -2513,6 +2603,16 @@ class NumericalDiscreteVariable(DiscreteVariable):
         return _pyagrum.NumericalDiscreteVariable_varType(self)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.NumericalDiscreteVariable_toFast(self)
 
     def index(self, label: str) -> int:
@@ -2746,12 +2846,42 @@ class IDiscretizedVariable(DiscreteVariable):
         return _pyagrum.IDiscretizedVariable_clone(self)
 
     def isEmpirical(self) -> bool:
+        r"""
+
+        Check whether the variable uses relaxed (empirical) tick bounds.
+
+        Returns
+        -------
+        bool
+            True if the variable is in empirical mode
+
+        """
         return _pyagrum.IDiscretizedVariable_isEmpirical(self)
 
     def setEmpirical(self, state: bool) -> None:
+        r"""
+
+        Enable or disable empirical (relaxed bounds) mode for the variable.
+
+        Parameters
+        ----------
+        state : bool
+            True to enable empirical mode, False to disable
+
+        """
         return _pyagrum.IDiscretizedVariable_setEmpirical(self, state)
 
     def draw(self, indice: int) -> float:
+        r"""
+
+        Draw a random index from the variable's domain.
+
+        Returns
+        -------
+        int
+            the index of the drawn value
+
+        """
         return _pyagrum.IDiscretizedVariable_draw(self, indice)
 
 # Register IDiscretizedVariable in _pyagrum:
@@ -2935,6 +3065,21 @@ class UndiGraph(object):
 
     @staticmethod
     def completeGraph(n: int) -> "pyagrum.UndiGraph":
+        r"""
+
+        Create a complete undirected graph with n nodes.
+
+        Parameters
+        ----------
+        n : int
+            number of nodes
+
+        Returns
+        -------
+        UndiGraph
+            graph where every pair of distinct nodes is connected by an edge, with nodes 0..n-1
+
+        """
         return _pyagrum.UndiGraph_completeGraph(n)
 
     def __eq__(self, g: "pyagrum.UndiGraph") -> bool:
@@ -3002,6 +3147,18 @@ class UndiGraph(object):
         return _pyagrum.UndiGraph_partialUndiGraph(self, nodes)
 
     def chainComponents(self) -> dict[int,int]:
+        r"""
+
+        Return the chain components (connected components) of the graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        """
         return _pyagrum.UndiGraph_chainComponents(self)
 
     def connectedComponents(self) -> dict[int,int]:
@@ -3026,9 +3183,43 @@ class UndiGraph(object):
         return _pyagrum.UndiGraph_connectedComponents(self)
 
     def undirectedPath(self, node1: int, node2: int) -> list[int] | None:
+        r"""
+
+        Return a shortest undirected path between two nodes, or None if no path exists.
+
+        Parameters
+        ----------
+        node1 : int
+            id of the first node
+        node2 : int
+            id of the second node
+
+        Returns
+        -------
+        list[int] or None
+            ordered list of node ids along the path, or None if the nodes are disconnected
+
+        """
         return _pyagrum.UndiGraph_undirectedPath(self, node1, node2)
 
     def hasUndirectedPath(self, *args) -> bool:
+        r"""
+
+        Check whether two nodes are connected by an undirected path.
+
+        Parameters
+        ----------
+        n1 : int
+            id of the first node
+        n2 : int
+            id of the second node
+
+        Returns
+        -------
+        bool
+            True if a path exists between n1 and n2
+
+        """
         return _pyagrum.UndiGraph_hasUndirectedPath(self, *args)
 
     def __repr__(self) -> str:
@@ -3375,6 +3566,21 @@ class DiGraph(object):
 
     @staticmethod
     def completeGraph(n: int) -> "pyagrum.DiGraph":
+        r"""
+
+        Create a complete directed graph with n nodes.
+
+        Parameters
+        ----------
+        n : int
+            number of nodes
+
+        Returns
+        -------
+        DiGraph
+            directed graph where every ordered pair (i, j) with i≠j has arc i→j, with nodes 0..n-1
+
+        """
         return _pyagrum.DiGraph_completeGraph(n)
 
     def __eq__(self, g: "DiGraph") -> bool:
@@ -3449,12 +3655,61 @@ class DiGraph(object):
         return _pyagrum.DiGraph_hasDirectedPath(self, _from, to)
 
     def directedPath(self, node1: int, node2: int) -> list[int] | None:
+        r"""
+
+        Return a shortest directed path from node1 to node2, or None if no such path exists.
+
+        Parameters
+        ----------
+        node1 : int
+            id of the source node
+        node2 : int
+            id of the destination node
+
+        Returns
+        -------
+        list[int] or None
+            ordered list of node ids along the directed path, or None if node2 is unreachable from node1
+
+        """
         return _pyagrum.DiGraph_directedPath(self, node1, node2)
 
     def directedUnorientedPath(self, node1: int, node2: int) -> list[int] | None:
+        r"""
+
+        Return a shortest path from node1 to node2 ignoring arc orientation, or None if no path exists.
+
+        Parameters
+        ----------
+        node1 : int
+            id of the source node
+        node2 : int
+            id of the destination node
+
+        Returns
+        -------
+        list[int] or None
+            ordered list of node ids (arcs may be traversed in either direction), or None if unreachable
+
+        """
         return _pyagrum.DiGraph_directedUnorientedPath(self, node1, node2)
 
     def family(self, *args) -> list[int]:
+        r"""
+
+        Return the family of a node: the node itself plus all its parents.
+
+        Parameters
+        ----------
+        norid : int
+            id of the node
+
+        Returns
+        -------
+        set[int]
+            {norid} ∪ parents(norid)
+
+        """
         return _pyagrum.DiGraph_family(self, *args)
 
     def connectedComponents(self) -> dict[int,int]:
@@ -3652,9 +3907,39 @@ class DiGraph(object):
         return _pyagrum.DiGraph_children(self, id)
 
     def descendants(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.DiGraph_descendants(self, *args)
 
     def ancestors(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.DiGraph_ancestors(self, *args)
 
     def addNode(self) -> int:
@@ -3856,6 +4141,16 @@ class DAG(DiGraph):
     __swig_destroy__ = _pyagrum.delete_DAG
 
     def moralGraph(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns the moral graph of the DAG, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            The moral graph
+
+        """
         return _pyagrum.DAG_moralGraph(self)
 
     def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
@@ -3876,6 +4171,23 @@ class DAG(DiGraph):
         return _pyagrum.DAG_moralizedAncestralGraph(self, nodes)
 
     def minimalCondSet(self, *args) -> list[int]:
+        r"""
+
+        Return a minimal conditioning set of a target given source nodes in the DAG.
+
+        Parameters
+        ----------
+        target : int | str | list[int|str]
+            the target node id(s) or name(s)
+        soids : list[int|str]
+            the list of source node ids or names
+
+        Returns
+        -------
+        set[int]
+            the minimal conditioning set (as node ids)
+
+        """
         return _pyagrum.DAG_minimalCondSet(self, *args)
 
     def __repr__(self) -> str:
@@ -4008,9 +4320,39 @@ class DAG(DiGraph):
         return _pyagrum.DAG_children(self, id)
 
     def descendants(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.DAG_descendants(self, id)
 
     def ancestors(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.DAG_ancestors(self, id)
 
     def addArc(self, *args) -> None:
@@ -4168,6 +4510,23 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyagrum.MixedGraph_clear(self)
 
     def hasMixedOrientedPath(self, node1: int, node2: int) -> bool:
+        r"""
+
+        Check if there is an oriented path from node1 to node2 in the mixed graph (following arc directions).
+
+        Parameters
+        ----------
+        node1 : int
+            the id of the start node
+        node2 : int
+            the id of the end node
+
+        Returns
+        -------
+        bool
+            True if such a path exists
+
+        """
         return _pyagrum.MixedGraph_hasMixedOrientedPath(self, node1, node2)
 
     def toDot(self) -> str:
@@ -4182,9 +4541,38 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyagrum.MixedGraph_toDot(self)
 
     def chainComponent(self, node: int) -> list[int]:
+        r"""
+
+        Return the chain component containing a given node.
+
+        The chain component of a node in a mixed graph is the set of nodes reachable via undirected edges from that node.
+
+        Parameters
+        ----------
+        id : int
+            the id of the node
+
+        Returns
+        -------
+        set[int]
+            the set of node ids in the same chain component
+
+        """
         return _pyagrum.MixedGraph_chainComponent(self, node)
 
     def chainComponents(self) -> dict[int,int]:
+        r"""
+
+        Return the chain components of the graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        """
         return _pyagrum.MixedGraph_chainComponents(self)
 
     def connectedComponents(self) -> dict[int,int]:
@@ -4273,24 +4661,111 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def arcs(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns the set of arcs in the graph.
+
+        Returns
+        -------
+        set
+            the set of the arcs
+
+        """
         return _pyagrum.MixedGraph_arcs(self)
 
     def parents(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the child node
+
+        Returns
+        -------
+        Set
+            the set of parent node ids
+
+        """
         return _pyagrum.MixedGraph_parents(self, id)
 
     def children(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the parent node
+
+        Returns
+        -------
+        Set
+            the set of all the children ids
+
+        """
         return _pyagrum.MixedGraph_children(self, id)
 
     def descendants(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.MixedGraph_descendants(self, id)
 
     def ancestors(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.MixedGraph_ancestors(self, id)
 
     def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        List
+            the list of the edges
+
+        """
         return _pyagrum.MixedGraph_edges(self)
 
     def neighbours(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            the set of node ids linked to the given node by an edge
+
+        """
         return _pyagrum.MixedGraph_neighbours(self, id)
 
     def boundary(self, id: int) -> list[int]:
@@ -4541,6 +5016,23 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyagrum.MixedGraph_eraseNeighbours(self, n)
 
     def addArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+            the id of the tail node
+        head : int
+            the id of the head node
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+            If head or tail does not belong to the graph nodes.
+
+        """
         return _pyagrum.MixedGraph_addArc(self, n1, n2)
 
     def eraseArc(self, n1: int, n2: int) -> None:
@@ -4651,6 +5143,16 @@ class PDAG(MixedGraph):
     __swig_destroy__ = _pyagrum.delete_PDAG
 
     def moralGraph(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns the moral graph of the PDAG, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            The moral graph
+
+        """
         return _pyagrum.PDAG_moralGraph(self)
 
     def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
@@ -4671,6 +5173,23 @@ class PDAG(MixedGraph):
         return _pyagrum.PDAG_moralizedAncestralGraph(self, nodes)
 
     def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if there is a strictly oriented path from node1 to node2 (all arcs, no edges).
+
+        Parameters
+        ----------
+        node1 : int
+            the start node id
+        node2 : int
+            the end node id
+
+        Returns
+        -------
+        bool
+            True if such a path exists
+
+        """
         return _pyagrum.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
 
     def toDot(self) -> str:
@@ -4712,6 +5231,16 @@ class PDAG(MixedGraph):
         return _pyagrum.PDAG_cSeparation(self, *args)
 
     def addNodes(self, n: int) -> object:
+        r"""
+
+        Add n new nodes to the graph.
+
+        Parameters
+        ----------
+        n : int
+            the number of nodes to add
+
+        """
         return _pyagrum.PDAG_addNodes(self, n)
 
     def __iter__(self):
@@ -4754,27 +5283,129 @@ class PDAG(MixedGraph):
 
 
     def arcs(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns the set of arcs in the graph.
+
+        Returns
+        -------
+        set
+            the set of the arcs
+
+        """
         return _pyagrum.PDAG_arcs(self)
 
     def parents(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the child node
+
+        Returns
+        -------
+        Set
+            the set of parent node ids
+
+        """
         return _pyagrum.PDAG_parents(self, id)
 
     def children(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the parent node
+
+        Returns
+        -------
+        Set
+            the set of all children ids
+
+        """
         return _pyagrum.PDAG_children(self, id)
 
     def descendants(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.PDAG_descendants(self, id)
 
     def ancestors(self, id: int) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.PDAG_ancestors(self, id)
 
     def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        List
+            the list of the edges
+
+        """
         return _pyagrum.PDAG_edges(self)
 
     def neighbours(self, id: int) -> list[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            the set of node ids linked by an edge to the given node
+
+        """
         return _pyagrum.PDAG_neighbours(self, id)
 
     def boundary(self, id: int) -> list[int]:
+        r"""
+
+        Boundary of a node: neighbours (via edges), children, and parents.
+
+        Parameters
+        ----------
+        id : int
+            the id of the node
+
+        Returns
+        -------
+        set
+            the set of adjacent node ids
+
+        """
         return _pyagrum.PDAG_boundary(self, id)
 
     def mixedOrientedPath(self, node1: int, node2: int) -> list[int] | None:
@@ -4844,18 +5475,76 @@ class PDAG(MixedGraph):
 
 
     def addNode(self) -> int:
+        r"""
+
+        Add a new node to the graph and return its id.
+
+        Returns
+        -------
+        int
+            the id of the new node
+
+        """
         return _pyagrum.PDAG_addNode(self)
 
     def addNodeWithId(self, id: int) -> None:
+        r"""
+
+        Add a node with a specific id.
+
+        Parameters
+        ----------
+        id : int
+            the id of the new node
+
+        Raises
+        ------
+        pyagrum.DuplicateElement
+            if a node with this id already exists
+
+        """
         return _pyagrum.PDAG_addNodeWithId(self, id)
 
     def existsNode(self, id: int) -> bool:
+        r"""
+
+        Check whether a node exists.
+
+        Parameters
+        ----------
+        id : int
+            the node id to check
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
         return _pyagrum.PDAG_existsNode(self, id)
 
     def size(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyagrum.PDAG_size(self)
 
     def empty(self) -> bool:
+        r"""
+
+        Check if the graph has no nodes.
+
+        Returns
+        -------
+        bool
+            True if there are no nodes in the graph
+
+        """
         return _pyagrum.PDAG_empty(self)
 
     def addEdge(self, *args) -> None:
@@ -4879,18 +5568,80 @@ class PDAG(MixedGraph):
         return _pyagrum.PDAG_addEdge(self, *args)
 
     def eraseEdge(self, n1: int, n2: int) -> None:
+        r"""
+
+        Remove an edge from the graph.
+
+        Parameters
+        ----------
+        n1 : int
+            one endpoint of the edge
+        n2 : int
+            the other endpoint
+
+        Raises
+        ------
+        pyagrum.InvalidEdge
+            if the edge does not exist
+
+        """
         return _pyagrum.PDAG_eraseEdge(self, n1, n2)
 
     def existsEdge(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check whether an edge exists between two nodes.
+
+        Parameters
+        ----------
+        n1 : int
+            one endpoint
+        n2 : int
+            the other endpoint
+
+        Returns
+        -------
+        bool
+            True if the edge exists
+
+        """
         return _pyagrum.PDAG_existsEdge(self, n1, n2)
 
     def sizeEdges(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
         return _pyagrum.PDAG_sizeEdges(self)
 
     def emptyEdges(self) -> bool:
+        r"""
+
+        Check if the graph has no edges.
+
+        Returns
+        -------
+        bool
+            True if the graph contains no edges
+
+        """
         return _pyagrum.PDAG_emptyEdges(self)
 
     def eraseNeighbours(self, n: int) -> None:
+        r"""
+
+        Erase all edges adjacent to a given node.
+
+        Parameters
+        ----------
+        id : int
+            the id of the node
+
+        """
         return _pyagrum.PDAG_eraseNeighbours(self, n)
 
     def addArc(self, *args) -> None:
@@ -4917,21 +5668,93 @@ class PDAG(MixedGraph):
         return _pyagrum.PDAG_addArc(self, *args)
 
     def eraseArc(self, n1: int, n2: int) -> None:
+        r"""
+
+        Remove an arc from the graph.
+
+        Parameters
+        ----------
+        tail : int
+            the id of the tail node
+        head : int
+            the id of the head node
+
+        Raises
+        ------
+        pyagrum.InvalidArc
+            if the arc does not exist
+
+        """
         return _pyagrum.PDAG_eraseArc(self, n1, n2)
 
     def existsArc(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check whether an arc exists between two nodes.
+
+        Parameters
+        ----------
+        tail : int
+            the id of the tail node
+        head : int
+            the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc (tail, head) exists
+
+        """
         return _pyagrum.PDAG_existsArc(self, n1, n2)
 
     def eraseParents(self, n: int) -> None:
+        r"""
+
+        Erase all arcs incoming to a node from its parents.
+
+        Parameters
+        ----------
+        id : int
+            the id of the node
+
+        """
         return _pyagrum.PDAG_eraseParents(self, n)
 
     def eraseChildren(self, n: int) -> None:
+        r"""
+
+        Erase all arcs from a node to its children.
+
+        Parameters
+        ----------
+        id : int
+            the id of the node
+
+        """
         return _pyagrum.PDAG_eraseChildren(self, n)
 
     def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyagrum.PDAG_sizeArcs(self)
 
     def emptyArcs(self) -> bool:
+        r"""
+
+        Check if the graph has no arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph contains no arcs
+
+        """
         return _pyagrum.PDAG_emptyArcs(self)
 
 # Register PDAG in _pyagrum:
@@ -5262,6 +6085,21 @@ class MeekRules(object):
     __swig_destroy__ = _pyagrum.delete_MeekRules
 
     def propagate(self, mg: "MixedGraph") -> "pyagrum.MixedGraph":
+        r"""
+
+        Apply Meek rules R1–R4 to orient edges in a mixed graph.
+
+        Parameters
+        ----------
+        mg : pyagrum.MixedGraph
+            the mixed graph to orient (arcs and undirected edges)
+
+        Returns
+        -------
+        pyagrum.MixedGraph
+            the partially oriented graph (may still contain undirected edges or double-headed arcs)
+
+        """
         return _pyagrum.MeekRules_propagate(self, mg)
 
     def propagateToCPDAG(self, mg: "MixedGraph") -> "pyagrum.PDAG":
@@ -5917,9 +6755,26 @@ class Instantiation(object):
         return _pyagrum.Instantiation___str__(self)
 
     def setMutable(self) -> None:
+        r"""
+
+        Detach this Instantiation from its master, making it independently mutable.
+
+        After this call, the Instantiation is no longer a slave and can be freely modified.
+
+        """
         return _pyagrum.Instantiation_setMutable(self)
 
     def isMutable(self) -> bool:
+        r"""
+
+        Check whether this Instantiation is currently a slave of another object (i.e., not mutable).
+
+        Returns
+        -------
+        bool
+            True if the Instantiation is a slave (not independently mutable)
+
+        """
         return _pyagrum.Instantiation_isMutable(self)
 
     def todict(self, withLabels: bool=False) -> object:
@@ -6104,15 +6959,57 @@ class GraphicalModel(object):
         return _pyagrum.GraphicalModel_setProperty(self, name, value)
 
     def properties(self) -> tuple[str, ...]:
+        r"""
+
+        Return the keys of all metadata properties of the model.
+
+        Returns
+        -------
+        tuple[str, ...]
+            tuple of property names (use :meth:`property` to retrieve a value by key)
+
+        """
         return _pyagrum.GraphicalModel_properties(self)
 
     def existsProperty(self, name: str) -> bool:
+        r"""
+
+        Check whether a property key exists in the model's metadata.
+
+        Parameters
+        ----------
+        name : str
+            the property name
+
+        Returns
+        -------
+        bool
+            True if the property exists
+
+        """
         return _pyagrum.GraphicalModel_existsProperty(self, name)
 
     def updateMetaData(self) -> None:
+        r"""
+
+        Update the model's built-in metadata (version, creation date, last modification date).
+
+        This method is called automatically by writers before saving the model to a file.
+
+        """
         return _pyagrum.GraphicalModel_updateMetaData(self)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        r"""
+
+        Return the variable-to-node mapping of the model.
+
+        Returns
+        -------
+        pyagrum.VariableNodeMap
+            the internal variable-to-node bijection
+
+        """
         return _pyagrum.GraphicalModel_variableNodeMap(self)
 
     def size(self) -> int:
@@ -6199,6 +7096,21 @@ class GraphicalModel(object):
         return _pyagrum.GraphicalModel_nodeset(self, names)
 
     def variables(self, *args) -> "pyagrum.VariableSet":
+        r"""
+
+        Return the set of variables corresponding to a list of names or a set of node ids.
+
+        Parameters
+        ----------
+        args : list[str] or set[int]
+            variable names or node ids
+
+        Returns
+        -------
+        pyagrum.VariableSet
+            the set of corresponding variables
+
+        """
         return _pyagrum.GraphicalModel_variables(self, *args)
 
     def nodes(self) -> set[int]:
@@ -6221,12 +7133,72 @@ class GraphicalModel(object):
         return _pyagrum.GraphicalModel_variable(self, id)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        r"""
+
+        Return the node id of a variable.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the variable does not exist in the model
+
+        """
         return _pyagrum.GraphicalModel_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the node id of a variable given its name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.GraphicalModel_idFromName(self, name)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.GraphicalModel_variableFromName(self, name)
 
     def log10DomainSize(self) -> float:
@@ -6288,18 +7260,88 @@ class DiscreteGraphicalModel(GraphicalModel):
     __swig_destroy__ = _pyagrum.delete_DiscreteGraphicalModel
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        r"""
+
+        Return the variable-to-node mapping of the model.
+
+        Returns
+        -------
+        pyagrum.VariableNodeMap
+            the internal variable-to-node bijection
+
+        """
         return _pyagrum.DiscreteGraphicalModel_variableNodeMap(self)
 
     def variable(self, id: int) -> "pyagrum.DiscreteVariable":
         return _pyagrum.DiscreteGraphicalModel_variable(self, id)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        r"""
+
+        Return the node id of a variable.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the variable does not exist in the model
+
+        """
         return _pyagrum.DiscreteGraphicalModel_nodeId(self, var)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the node id of a variable given its name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.DiscreteGraphicalModel_idFromName(self, name)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.DiscreteGraphicalModel_variableFromName(self, name)
 
 # Register DiscreteGraphicalModel in _pyagrum:
@@ -6558,6 +7600,23 @@ class DAGmodel(DiscreteGraphicalModel):
         return _pyagrum.DAGmodel_topologicalOrder(self)
 
     def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Return the weakly connected components of the graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        See Also
+        --------
+        connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+        connectedComponentsCount : returns the number of components
+
+        """
         return _pyagrum.DAGmodel_connectedComponents(self)
 
     def hasSameStructure(self, other: "pyagrum.DAGmodel") -> bool:
@@ -6577,6 +7636,25 @@ class DAGmodel(DiscreteGraphicalModel):
         return _pyagrum.DAGmodel_hasSameStructure(self, other)
 
     def minimalCondSet(self, *args) -> list[int]:
+        r"""
+
+        Return a minimal conditioning set of a target node (or set of nodes) given a set of source nodes in the DAG model.
+
+        A minimal conditioning set is a subset of the source nodes that d-separates the targets from the remaining sources.
+
+        Parameters
+        ----------
+        target : int | str | list[int|str]
+            the target node id(s) or name(s)
+        soids : list[int|str]
+            the list of source node ids or names
+
+        Returns
+        -------
+        set[int]
+            the minimal conditioning set (as node ids)
+
+        """
         return _pyagrum.DAGmodel_minimalCondSet(self, *args)
 
 # Register DAGmodel in _pyagrum:
@@ -6590,12 +7668,42 @@ class UGmodel(DiscreteGraphicalModel):
         _pyagrum.UGmodel_swiginit(self, _pyagrum.new_UGmodel(*args))
 
     def graph(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Return the underlying undirected graph.
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            the underlying graph
+
+        """
         return _pyagrum.UGmodel_graph(self)
 
     def size(self) -> int:
+        r"""
+
+        Return the number of nodes (variables) in the graphical model.
+
+        Returns
+        -------
+        int
+            the number of nodes
+
+        """
         return _pyagrum.UGmodel_size(self)
 
     def sizeEdges(self) -> int:
+        r"""
+
+        Return the number of edges in the model.
+
+        Returns
+        -------
+        int
+            the number of edges
+
+        """
         return _pyagrum.UGmodel_sizeEdges(self)
 
     def nodes(self) -> set[int]:
@@ -6623,6 +7731,23 @@ class UGmodel(DiscreteGraphicalModel):
         return _pyagrum.UGmodel_edges(self)
 
     def existsEdge(self, *args) -> bool:
+        r"""
+
+        Check whether an edge exists between two nodes.
+
+        Parameters
+        ----------
+        n1 : int | str
+            one endpoint (id or name)
+        n2 : int | str
+            the other endpoint (id or name)
+
+        Returns
+        -------
+        bool
+            True if the edge exists
+
+        """
         return _pyagrum.UGmodel_existsEdge(self, *args)
 
     def neighbours(self, *args) -> list[int]:
@@ -6656,12 +7781,54 @@ class UGmodel(DiscreteGraphicalModel):
         return _pyagrum.UGmodel_isIndependent(self, *args)
 
     def hasSameStructure(self, other: "pyagrum.UGmodel") -> bool:
+        r"""
+
+        Check whether this model has the same undirected structure as another UGmodel.
+
+        Parameters
+        ----------
+        other : pyagrum.MarkovRandomField
+            the model to compare with
+
+        Returns
+        -------
+        bool
+            True if the undirected structures are identical
+
+        """
         return _pyagrum.UGmodel_hasSameStructure(self, other)
 
     def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Return the connected components of the undirected model.
+
+        Each node is mapped to the id of its component root.
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        """
         return _pyagrum.UGmodel_connectedComponents(self)
 
     def family(self, *args) -> list[int]:
+        r"""
+
+        Return the family of a node: the node itself plus all its neighbours.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        set[int]
+            the node and all its neighbours
+
+        """
         return _pyagrum.UGmodel_family(self, *args)
 
 # Register UGmodel in _pyagrum:
@@ -7387,6 +8554,16 @@ class DiscretizedVariable(IDiscretizedVariable):
         return _pyagrum.DiscretizedVariable_closestIndex(self, val)
 
     def toFast(self) -> str:
+        r"""
+
+        Return the variable description in fast syntax (e.g. ``name[v1:v2:v3]``).
+
+        Returns
+        -------
+        str
+            fast-syntax string representation
+
+        """
         return _pyagrum.DiscretizedVariable_toFast(self)
 
     def __repr__(self) -> str:
@@ -7495,6 +8672,21 @@ class Tensor(object):
 
     @staticmethod
     def uniformTensor(var: "pyagrum.DiscreteVariable") -> "pyagrum.Tensor":
+        r"""
+
+        Create a uniform tensor over a single discrete variable (all values equal to 1/domainSize).
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable defining the domain
+
+        Returns
+        -------
+        Tensor
+            uniform tensor over var
+
+        """
         return _pyagrum.Tensor_uniformTensor(var)
 
     def __init__(self, *args):
@@ -7517,15 +8709,60 @@ class Tensor(object):
     __swig_destroy__ = _pyagrum.delete_Tensor
 
     def random(self) -> "pyagrum.Tensor":
+        r"""
+
+        Fill the tensor with random values uniformly drawn from [0,1].
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         return _pyagrum.Tensor_random(self)
 
     def randomDistribution(self) -> "pyagrum.Tensor":
+        r"""
+
+        Fill the tensor as a random probability distribution (values are non-negative and sum to 1).
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         return _pyagrum.Tensor_randomDistribution(self)
 
     def randomCPT(self) -> "pyagrum.Tensor":
+        r"""
+
+        Fill the tensor as a random conditional probability table (each conditional distribution sums to 1).
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         return _pyagrum.Tensor_randomCPT(self)
 
     def noising(self, alpha: float) -> "pyagrum.Tensor":
+        r"""
+
+        Add noise to a CPT by mixing it with a random CPT: ``(1 - alpha) * self + alpha * randomCPT()``.
+
+        Parameters
+        ----------
+        alpha : float
+            noise level, must be in [0, 1]
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         return _pyagrum.Tensor_noising(self, alpha)
 
     def isNonZeroMap(self) -> "pyagrum.Tensor":
@@ -7799,6 +9036,16 @@ class Tensor(object):
 
 
     def sgn(self) -> "pyagrum.Tensor":
+        r"""
+
+        Apply the sign function element-wise in place: -1 if value < 0, 0 if value == 0, 1 if value > 0.
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         val = _pyagrum.Tensor_sgn(self)
 
         return self
@@ -7808,15 +9055,55 @@ class Tensor(object):
 
 
     def new_abs(self) -> "pyagrum.Tensor":
+        r"""
+
+        Return a new tensor with the absolute value applied to each element.
+
+        Returns
+        -------
+        Tensor
+            new tensor
+
+        """
         return _pyagrum.Tensor_new_abs(self)
 
     def new_sq(self) -> "pyagrum.Tensor":
+        r"""
+
+        Return a new tensor with each element squared.
+
+        Returns
+        -------
+        Tensor
+            new tensor
+
+        """
         return _pyagrum.Tensor_new_sq(self)
 
     def new_log2(self) -> "pyagrum.Tensor":
+        r"""
+
+        Return a new tensor with the base-2 logarithm applied to each element.
+
+        Returns
+        -------
+        Tensor
+            new tensor
+
+        """
         return _pyagrum.Tensor_new_log2(self)
 
     def new_sgn(self) -> "pyagrum.Tensor":
+        r"""
+
+        Return a new tensor with the sign function applied element-wise: -1 if value < 0, 0 if value == 0, 1 if value > 0.
+
+        Returns
+        -------
+        Tensor
+            new tensor
+
+        """
         return _pyagrum.Tensor_new_sgn(self)
 
     def normalize(self) -> "pyagrum.Tensor":
@@ -7934,6 +9221,16 @@ class Tensor(object):
 
 
     def inverse(self) -> "pyagrum.Tensor":
+        r"""
+
+        Invert each value of the tensor in place (replace x by 1/x for each element).
+
+        Returns
+        -------
+        Tensor
+            self (in-place modification)
+
+        """
         val = _pyagrum.Tensor_inverse(self)
 
         return self
@@ -7999,6 +9296,18 @@ class Tensor(object):
 
 
     def isEvidence(self) -> bool:
+        r"""
+
+        Check whether the tensor represents a likelihood (soft evidence) over a single variable.
+
+        A tensor is an evidence if it has exactly one variable, all values are in [0, 1], and the sum is positive.
+
+        Returns
+        -------
+        bool
+            True if the tensor is a valid likelihood vector
+
+        """
         return _pyagrum.Tensor_isEvidence(self)
 
     def __or__(self, p2: "Tensor") -> "pyagrum.Tensor":
@@ -8882,7 +10191,14 @@ class Tensor(object):
 
     def toclipboard(self,**kwargs):
         """
-        Write a text representation of object to the system clipboard. This can be pasted into spreadsheet, for instance.
+        Write a text representation of the tensor to the system clipboard.
+
+        The clipboard content can be pasted into a spreadsheet application.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments passed to :meth:`pandas.DataFrame.to_clipboard`.
         """
         return self.topandas().to_clipboard()
 
@@ -9082,7 +10398,7 @@ class Tensor(object):
         Returns
         -------
         int
-          the size of the domain of the Tensor (the number of values it can take) 
+          the size of the domain of the Tensor (the number of values it can take)
 
         """
         return _pyagrum.Tensor_domainSize(self)
@@ -9128,15 +10444,54 @@ class PairMPE(object):
 _pyagrum.PairMPE_swigregister(PairMPE)
 
 def statsObj() -> None:
+    r"""
+
+    Print debug statistics on aGrUM objects.
+
+    Only active in debug build mode (GUM_DEBUG_MODE). No output in release mode.
+
+    """
     return _pyagrum.statsObj()
 
 def getNumberOfThreads() -> int:
+    r"""
+
+    Return the current number of threads used in parallel regions.
+
+    This is equal to getMaxNumberOfThreads() unless the user has called setNumberOfThreads().
+
+    Returns
+    -------
+    int
+        the current thread count for parallel regions
+
+    """
     return _pyagrum.getNumberOfThreads()
 
 def getMaxNumberOfThreads() -> int:
+    r"""
+
+    Return the maximum number of threads available (equal to the number of logical processors by default).
+
+    Returns
+    -------
+    int
+        the maximum number of threads
+
+    """
     return _pyagrum.getMaxNumberOfThreads()
 
 def getNumberOfLogicalProcessors() -> int:
+    r"""
+
+    Return the number of logical processors available on the system.
+
+    Returns
+    -------
+    int
+        the number of logical processors
+
+    """
     return _pyagrum.getNumberOfLogicalProcessors()
 
 import warnings
@@ -9332,15 +10687,61 @@ class PythonBNListener(object):
     __swig_destroy__ = _pyagrum.delete_PythonBNListener
 
     def whenNodeAdded(self, source: object, id: int) -> None:
+        r"""
+
+        Callback called when a node is added to the Bayesian network.
+
+        Parameters
+        ----------
+        id : int
+            the id of the new node
+        name : str
+            the name of the new node
+
+        """
         return _pyagrum.PythonBNListener_whenNodeAdded(self, source, id)
 
     def whenNodeDeleted(self, arg2: object, id: int) -> None:
+        r"""
+
+        Callback called when a node is removed from the Bayesian network.
+
+        Parameters
+        ----------
+        id : int
+            the id of the deleted node
+
+        """
         return _pyagrum.PythonBNListener_whenNodeDeleted(self, arg2, id)
 
     def whenArcAdded(self, arg2: object, src: int, dst: int) -> None:
+        r"""
+
+        Callback called when an arc is added to the Bayesian network.
+
+        Parameters
+        ----------
+        src : int
+            the tail node id
+        dst : int
+            the head node id
+
+        """
         return _pyagrum.PythonBNListener_whenArcAdded(self, arg2, src, dst)
 
     def whenArcDeleted(self, arg2: object, src: int, dst: int) -> None:
+        r"""
+
+        Callback called when an arc is removed from the Bayesian network.
+
+        Parameters
+        ----------
+        src : int
+            the tail node id
+        dst : int
+            the head node id
+
+        """
         return _pyagrum.PythonBNListener_whenArcDeleted(self, arg2, src, dst)
 
     def setWhenArcAdded(self, pyfunc: object) -> None:
@@ -9402,6 +10803,18 @@ class PythonLoadListener(object):
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer: object, percent: int) -> None:
+        r"""
+
+        Callback invoked during loading to report progress.
+
+        Parameters
+        ----------
+        filename : str
+            the file being loaded
+        pct : int
+            the current loading progress percentage
+
+        """
         return _pyagrum.PythonLoadListener_whenLoading(self, buffer, percent)
 
     def setPythonListener(self, l: object) -> bool:
@@ -9447,9 +10860,33 @@ class PythonApproximationListener(object):
     __swig_destroy__ = _pyagrum.delete_PythonApproximationListener
 
     def whenProgress(self, src: object, step: int, error: float, duration: float) -> None:
+        r"""
+
+        Callback invoked at each iteration step of the approximation algorithm.
+
+        Parameters
+        ----------
+        pct : float
+            the current progress percentage
+        error : float
+            the current error estimate
+        time : float
+            the elapsed time
+
+        """
         return _pyagrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
     def whenStop(self, src: object, message: str) -> None:
+        r"""
+
+        Callback invoked when the approximation algorithm stops.
+
+        Parameters
+        ----------
+        message : str
+            a message describing the stopping reason
+
+        """
         return _pyagrum.PythonApproximationListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
@@ -9485,15 +10922,61 @@ class PythonDatabaseGeneratorListener(object):
     __swig_destroy__ = _pyagrum.delete_PythonDatabaseGeneratorListener
 
     def whenProgress(self, src: object, step: int, duration: float) -> None:
+        r"""
+
+        Callback invoked at each progress step during database generation.
+
+        Parameters
+        ----------
+        src : object
+            the source of the notification
+        step : int
+            the current progress step
+        duration : float
+            elapsed time in seconds
+
+        """
         return _pyagrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
 
     def whenStop(self, src: object, message: str) -> None:
+        r"""
+
+        Callback invoked when the database generation stops.
+
+        Parameters
+        ----------
+        src : object
+            the source of the notification
+        message : str
+            a message describing the stop condition
+
+        """
         return _pyagrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
 
     def setWhenProgress(self, pyfunc: object) -> None:
+        r"""
+
+        Register a callback called at each progress step.
+
+        Parameters
+        ----------
+        pyfunc : callable
+            a function called with (step: int, duration: float) at each progress notification
+
+        """
         return _pyagrum.PythonDatabaseGeneratorListener_setWhenProgress(self, pyfunc)
 
     def setWhenStop(self, pyfunc: object) -> None:
+        r"""
+
+        Register a callback called when the generation stops.
+
+        Parameters
+        ----------
+        pyfunc : callable
+            a function called with (message: str) when the generation is done
+
+        """
         return _pyagrum.PythonDatabaseGeneratorListener_setWhenStop(self, pyfunc)
 
 # Register PythonDatabaseGeneratorListener in _pyagrum:
@@ -9638,8 +11121,10 @@ class InformationTheory(object):
     def entropyX(self) -> float:
         r"""
 
-        Returns  ---------  float
-        The entropy of nodeset X.
+        Returns
+        -------
+        float
+            the entropy of nodeset X
 
         """
         return _pyagrum.InformationTheory_entropyX(self)
@@ -9678,6 +11163,14 @@ class InformationTheory(object):
         return _pyagrum.InformationTheory_entropyYgivenX(self)
 
     def mutualInformationXY(self) -> float:
+        r"""
+
+        Returns
+        -------
+          float
+            The mutual information between nodeset X and nodeset Y
+
+        """
         return _pyagrum.InformationTheory_mutualInformationXY(self)
 
     def variationOfInformationXY(self) -> float:
@@ -9692,6 +11185,14 @@ class InformationTheory(object):
         return _pyagrum.InformationTheory_variationOfInformationXY(self)
 
     def entropyXYgivenZ(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+            the conditional entropy of nodeset (X ∪ Y) conditioned by nodeset Z
+
+        """
         return _pyagrum.InformationTheory_entropyXYgivenZ(self)
 
     def mutualInformationXYgivenZ(self) -> float:
@@ -10368,9 +11869,31 @@ class EssentialGraph(object):
         return _pyagrum.EssentialGraph_size(self)
 
     def skeleton(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Return the skeleton of the essential graph (the underlying undirected graph without arc orientations).
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            the skeleton of the essential graph
+
+        """
         return _pyagrum.EssentialGraph_skeleton(self)
 
     def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Return the connected components of the essential graph.
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
+
+        Returns
+        -------
+        dict[int, int]
+            mapping node id → component root id
+
+        """
         return _pyagrum.EssentialGraph_connectedComponents(self)
 
     def idFromName(self, name: str) -> int:
@@ -10406,6 +11929,16 @@ class EssentialGraph(object):
         return _pyagrum.EssentialGraph_nameFromId(self, node)
 
     def nodes(self) -> set[int]:
+        r"""
+
+        Return the set of node ids in the essential graph.
+
+        Returns
+        -------
+        set[int]
+            the set of all node ids
+
+        """
         return _pyagrum.EssentialGraph_nodes(self)
 
     def connectedComponentsList(self):
@@ -10506,9 +12039,39 @@ class EssentialGraph(object):
         return _pyagrum.EssentialGraph_children(self, id)
 
     def descendants(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.EssentialGraph_descendants(self, *args)
 
     def ancestors(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.EssentialGraph_ancestors(self, *args)
 
     def edges(self) -> set[tuple[int,int]]:
@@ -10798,9 +12361,39 @@ class MarkovBlanket(object):
         return _pyagrum.MarkovBlanket_children(self, id)
 
     def descendants(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of descendants of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the descendants of node `norid`.
+
+        """
         return _pyagrum.MarkovBlanket_descendants(self, *args)
 
     def ancestors(self, *args) -> list[int]:
+        r"""
+
+        give the set of nodeid of ancestors of a node
+
+        Parameters
+        ----------
+        norid : str|int
+          the name or the id of the node
+
+        Returns
+        -------
+        set
+          the set of ids of the ancestors of node `norid`.
+
+        """
         return _pyagrum.MarkovBlanket_ancestors(self, *args)
 
     def connectedComponentsList(self):
@@ -12312,9 +13905,39 @@ class BayesNet(IBayesNet):
         return _pyagrum.BayesNet_log10DomainSize(self)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the node id of a variable given its name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.BayesNet_idFromName(self, name)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        r"""
+
+        Return the variable-to-node mapping of the model.
+
+        Returns
+        -------
+        pyagrum.VariableNodeMap
+            the internal variable-to-node bijection
+
+        """
         return _pyagrum.BayesNet_variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
@@ -12341,9 +13964,49 @@ class BayesNet(IBayesNet):
         return _pyagrum.BayesNet_variable(self, *args)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        r"""
+
+        Return the node id of a variable.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the variable does not exist in the model
+
+        """
         return _pyagrum.BayesNet_nodeId(self, var)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.BayesNet_variableFromName(self, name)
 
     def ids(self, names: tuple[str, ...]) -> object:
@@ -13090,6 +14753,28 @@ class BayesNet(IBayesNet):
         return _pyagrum.BayesNet_saveUAI(self, name, allowModificationWhenSaving)
 
     def contextualize(self, *args) -> "pyagrum.BayesNet":
+        r"""
+
+        Return a new Bayesian network conditioned on observations and interventions.
+
+        Parameters
+        ----------
+        observations : dict
+            a dict mapping variable names (str) or ids (int) to observed values (str or int)
+        interventions : dict
+            a dict mapping variable names (str) or ids (int) to intervened values (str or int)
+
+        Returns
+        -------
+        pyagrum.BayesNet
+            a new BayesNet representing the interventional/observational distribution
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if arguments are not dicts
+
+        """
         return _pyagrum.BayesNet_contextualize(self, *args)
 
     def __getstate__(self):
@@ -13169,15 +14854,67 @@ class BayesNetFragment(IBayesNet, ):
     __swig_destroy__ = _pyagrum.delete_BayesNetFragment
 
     def whenNodeAdded(self, src: object, id: int) -> None:
+        r"""
+
+        Internal callback invoked when a node is added to the referenced BayesNet.
+
+        Parameters
+        ----------
+        src : object
+            the event source
+        id : int
+            the id of the new node
+
+        """
         return _pyagrum.BayesNetFragment_whenNodeAdded(self, src, id)
 
     def whenNodeDeleted(self, src: object, id: int) -> None:
+        r"""
+
+        Internal callback invoked when a node is removed from the referenced BayesNet.
+
+        Parameters
+        ----------
+        src : object
+            the event source
+        id : int
+            the id of the deleted node
+
+        """
         return _pyagrum.BayesNetFragment_whenNodeDeleted(self, src, id)
 
     def whenArcAdded(self, src: object, _from: int, to: int) -> None:
+        r"""
+
+        Internal callback invoked when an arc is added to the referenced BayesNet.
+
+        Parameters
+        ----------
+        src : object
+            the event source
+        from : int
+            the tail node id
+        to : int
+            the head node id
+
+        """
         return _pyagrum.BayesNetFragment_whenArcAdded(self, src, _from, to)
 
     def whenArcDeleted(self, src: object, _from: int, to: int) -> None:
+        r"""
+
+        Internal callback invoked when an arc is removed from the referenced BayesNet.
+
+        Parameters
+        ----------
+        src : object
+            the event source
+        from : int
+            the tail node id
+        to : int
+            the head node id
+
+        """
         return _pyagrum.BayesNetFragment_whenArcDeleted(self, src, _from, to)
 
     def cpt(self, *args) -> "pyagrum.Tensor":
@@ -13272,7 +15009,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Notes
         -----
-          A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
+          A convenient shortcut for ``g.variableFromName(name)`` is ``g[name]``.
 
         Returns
         -------
@@ -13896,6 +15633,16 @@ class LazyPropagation(object):
     __swig_destroy__ = _pyagrum.delete_LazyPropagation
 
     def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
+        r"""
+
+        Replace the triangulation algorithm used to build the junction tree.
+
+        Parameters
+        ----------
+        new_triangulation : pyagrum.Triangulation
+            the new triangulation algorithm
+
+        """
         return _pyagrum.LazyPropagation_setTriangulation(self, new_triangulation)
 
     def setRelevantTensorsFinderType(self, type: int) -> None:
@@ -14608,6 +16355,23 @@ class LazyPropagation(object):
         return _pyagrum.LazyPropagation_evidenceImpact(self, *args)
 
     def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
         return _pyagrum.LazyPropagation_jointMutualInformation(self, targets)
 
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
@@ -14761,6 +16525,16 @@ class ShaferShenoyInference(object):
     __swig_destroy__ = _pyagrum.delete_ShaferShenoyInference
 
     def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
+        r"""
+
+        Replace the triangulation algorithm used to build the junction tree.
+
+        Parameters
+        ----------
+        new_triangulation : pyagrum.Triangulation
+            the new triangulation algorithm
+
+        """
         return _pyagrum.ShaferShenoyInference_setTriangulation(self, new_triangulation)
 
     def setRelevantTensorsFinderType(self, type: int) -> None:
@@ -15447,6 +17221,23 @@ class ShaferShenoyInference(object):
         return _pyagrum.ShaferShenoyInference_evidenceImpact(self, *args)
 
     def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
         return _pyagrum.ShaferShenoyInference_jointMutualInformation(self, targets)
 
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
@@ -15604,6 +17395,16 @@ class VariableElimination(object):
     __swig_destroy__ = _pyagrum.delete_VariableElimination
 
     def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
+        r"""
+
+        Replace the triangulation algorithm used to build the junction tree.
+
+        Parameters
+        ----------
+        new_triangulation : pyagrum.Triangulation
+            the new triangulation algorithm
+
+        """
         return _pyagrum.VariableElimination_setTriangulation(self, new_triangulation)
 
     def setRelevantTensorsFinderType(self, type: int) -> None:
@@ -16241,6 +18042,23 @@ class VariableElimination(object):
         return _pyagrum.VariableElimination_evidenceImpact(self, *args)
 
     def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
         return _pyagrum.VariableElimination_jointMutualInformation(self, targets)
 
     def evidenceJointImpact(self, targets: object, evs: object) -> "pyagrum.Tensor":
@@ -19560,6 +21378,13 @@ class LoopyImportanceSampling(ImportanceSampling):
     __swig_destroy__ = _pyagrum.delete_LoopyImportanceSampling
 
     def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
         return _pyagrum.LoopyImportanceSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
@@ -20349,6 +22174,13 @@ class LoopyWeightedSampling(WeightedSampling):
     __swig_destroy__ = _pyagrum.delete_LoopyWeightedSampling
 
     def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
         return _pyagrum.LoopyWeightedSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
@@ -21138,6 +22970,13 @@ class LoopyGibbsSampling(GibbsSampling):
     __swig_destroy__ = _pyagrum.delete_LoopyGibbsSampling
 
     def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
         return _pyagrum.LoopyGibbsSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
@@ -21993,6 +23832,13 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
     __swig_destroy__ = _pyagrum.delete_LoopyMonteCarloSampling
 
     def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
         return _pyagrum.LoopyMonteCarloSampling_makeInference_(self)
 
     def setVirtualLBPSize(self, vlbpsize: float) -> None:
@@ -24757,9 +26603,34 @@ class BNLearner(object):
         return _pyagrum.BNLearner_EMenableMaxTime(self)
 
     def EMsetPeriodSize(self, p: int) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the period size for the EM stopping criterion check.
+
+        Parameters
+        ----------
+        p : int
+            number of iterations between two stopping criterion evaluations (must be ≥ 1)
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            if p < 1
+
+        """
         return _pyagrum.BNLearner_EMsetPeriodSize(self, p)
 
     def EMPeriodSize(self) -> int:
+        r"""
+
+        Return the period size used by the EM stopping criterion check.
+
+        Returns
+        -------
+        int
+            number of EM iterations between two stopping criterion evaluations
+
+        """
         return _pyagrum.BNLearner_EMPeriodSize(self)
 
     def EMsetVerbosity(self, v: bool) -> "pyagrum.BNLearner":
@@ -25849,9 +27720,33 @@ class BNLearner(object):
         return _pyagrum.BNLearner_EMHistory(self)
 
     def EMStateApproximationScheme(self) -> int:
+        r"""
+
+        Returns an int representing the state of the EM algorithm.
+
+        The possible states are:
+          0. Undefined
+          1. Continue: EM has not been stopped yet
+          2. Epsilon: EM has been stopped due to the min log-likelihood difference stopping criterion
+          3. Rate: EM has been stopped due to the min log-likelihood evolution rate stopping criterion
+          4. Limit: EM has been stopped due to a limit on the number of iterations
+          5. TimeLimit: EM has been stopped due to a timeout
+          6. Stopped: EM has been stopped because there was a divergence on the log-likelihood
+
+        """
         return _pyagrum.BNLearner_EMStateApproximationScheme(self)
 
     def EMStateMessage(self) -> str:
+        r"""
+
+        Return a human-readable message describing the current state of the EM algorithm.
+
+        Returns
+        -------
+        str
+            state message (same information as EMStateApproximationScheme but as text)
+
+        """
         return _pyagrum.BNLearner_EMStateMessage(self)
 
     def setNumberOfThreads(self, nb: int) -> None:
@@ -26054,7 +27949,22 @@ class BNLearner(object):
         p.fillWith(self.rawPseudoCount(lv))
         return p
 
-    def fitParameters(self,bn,take_into_account_score=True):
+    def fitParameters(self, bn, take_into_account_score=True):
+      """
+      Fit the parameters of a BayesNet in place using this learner's database.
+
+      Parameters
+      ----------
+      bn : pyagrum.BayesNet
+          the network whose CPTs will be filled (structure must match the database variables)
+      take_into_account_score : bool
+          if True, include the implicit prior of the structure-learning score (e.g. K2) in parameter learning
+
+      Returns
+      -------
+      pyagrum.BNLearner
+          self
+      """
       if not set(self.names()).issuperset(bn.names()):
         raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
 
@@ -26950,6 +28860,16 @@ class CredalNet(object):
         return _pyagrum.CredalNet_isSeparatelySpecified(self)
 
     def hasComputedBinaryCPTMinMax(self) -> bool:
+        r"""
+
+        Check whether the binary CPT min/max values have been computed.
+
+        Returns
+        -------
+        bool
+            True if binary CPT min/max have been computed (via the dedicated computation method)
+
+        """
         return _pyagrum.CredalNet_hasComputedBinaryCPTMinMax(self)
 
     def get_binaryCPT_min(self) -> "pyagrum.YetUnWrapped":
@@ -27364,9 +29284,31 @@ class CNMonteCarloSampling(object):
         return _pyagrum.CNMonteCarloSampling_eraseAllEvidence(self)
 
     def addEvidence(self, *args) -> None:
+        r"""
+
+        Add evidence for a variable in the credal network.
+
+        Parameters
+        ----------
+        id_or_name : int | str
+            the node id or name
+        val_or_label : int | str
+            the value index or label for the evidence
+
+        """
         return _pyagrum.CNMonteCarloSampling_addEvidence(self, *args)
 
     def CN(self) -> "pyagrum.CredalNet":
+        r"""
+
+        Return the credal network used by this inference engine.
+
+        Returns
+        -------
+        pyagrum.CredalNet
+            the credal network
+
+        """
         return _pyagrum.CNMonteCarloSampling_CN(self)
 
     def setEvidence(self, evidces):
@@ -27805,9 +29747,31 @@ class CNLoopyPropagation(object):
         return _pyagrum.CNLoopyPropagation_eraseAllEvidence(self)
 
     def addEvidence(self, *args) -> None:
+        r"""
+
+        Add evidence for a variable in the credal network.
+
+        Parameters
+        ----------
+        id_or_name : int | str
+            the node id or name
+        val_or_label : int | str
+            the value index or label for the evidence
+
+        """
         return _pyagrum.CNLoopyPropagation_addEvidence(self, *args)
 
     def CN(self) -> "pyagrum.CredalNet":
+        r"""
+
+        Return the credal network used by this inference engine.
+
+        Returns
+        -------
+        pyagrum.CredalNet
+            the credal network
+
+        """
         return _pyagrum.CNLoopyPropagation_CN(self)
 
     def setEvidence(self, evidces):
@@ -27981,6 +29945,11 @@ class InfluenceDiagram(DAGmodel):
         return _pyagrum.InfluenceDiagram_toDot(self)
 
     def clear(self) -> None:
+        r"""
+
+        Clear the influence diagram, removing all nodes and arcs.
+
+        """
         return _pyagrum.InfluenceDiagram_clear(self)
 
     def cpt(self, *args) -> "pyagrum.Tensor":
@@ -28334,6 +30303,21 @@ class InfluenceDiagram(DAGmodel):
         return _pyagrum.InfluenceDiagram_getDecisionGraph(self)
 
     def decisionOrder(self) -> list[int]:
+        r"""
+
+        Return the sequence of decision nodes in a valid decision order.
+
+        Returns
+        -------
+        list[int]
+            the ordered list of decision node ids
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no valid decision order exists
+
+        """
         return _pyagrum.InfluenceDiagram_decisionOrder(self)
 
     def existsPathBetween(self, *args) -> bool:
@@ -28348,12 +30332,46 @@ class InfluenceDiagram(DAGmodel):
         return _pyagrum.InfluenceDiagram_existsPathBetween(self, *args)
 
     def beginTopologyTransformation(self) -> None:
+        r"""
+
+        Begin a sequence of structural modifications to the influence diagram.
+
+        Structural changes are batched until endTopologyTransformation is called.
+
+        """
         return _pyagrum.InfluenceDiagram_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> None:
+        r"""
+
+        End a sequence of structural modifications and recompute internal structures.
+
+        Should be called after beginTopologyTransformation when all modifications are done.
+
+        """
         return _pyagrum.InfluenceDiagram_endTopologyTransformation(self)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the node id of a variable given its name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.InfluenceDiagram_idFromName(self, name)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
@@ -28378,9 +30396,49 @@ class InfluenceDiagram(DAGmodel):
         return _pyagrum.InfluenceDiagram_variable(self, *args)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        r"""
+
+        Return the node id of a variable.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the variable does not exist in the model
+
+        """
         return _pyagrum.InfluenceDiagram_nodeId(self, var)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.InfluenceDiagram_variableFromName(self, name)
 
     def names(self) -> object:
@@ -28900,12 +30958,44 @@ class ShaferShenoyLIMIDInference(object):
 
 
     def clear(self) -> None:
+        r"""
+
+        Clear all evidence and reset the inference engine to its initial state.
+
+        """
         return _pyagrum.ShaferShenoyLIMIDInference_clear(self)
 
     def addNoForgettingAssumption(self, *args) -> None:
+        r"""
+
+        Add a no-forgetting assumption for a list of decision variables.
+
+        The no-forgetting assumption means that each decision node has access to all variables observed before it in the decision order.
+
+        Parameters
+        ----------
+        ids : list[int]
+            the list of decision node ids
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if a given id is not a decision node
+
+        """
         return _pyagrum.ShaferShenoyLIMIDInference_addNoForgettingAssumption(self, *args)
 
     def hasNoForgettingAssumption(self) -> bool:
+        r"""
+
+        Check whether the no-forgetting assumption has been added.
+
+        Returns
+        -------
+        bool
+            True if the no-forgetting assumption is currently active
+
+        """
         return _pyagrum.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
 
     def reducedGraph(self) -> "pyagrum.DAG":
@@ -28923,6 +31013,16 @@ class ShaferShenoyLIMIDInference(object):
         return _pyagrum.ShaferShenoyLIMIDInference_reducedGraph(self)
 
     def reversePartialOrder(self) -> "pyagrum.YetUnWrapped":
+        r"""
+
+        Return the reversed partial order of decision nodes used internally.
+
+        Returns
+        -------
+        list[set[int]]
+            the reversed partial order as a list of node id sets
+
+        """
         return _pyagrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
     def reducedLIMID(self) -> "pyagrum.InfluenceDiagram":
@@ -29301,6 +31401,16 @@ class ShaferShenoyLIMIDInference(object):
         return _pyagrum.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> object:
+        r"""
+
+        Return the set of nodes with soft (likelihood) evidence.
+
+        Returns
+        -------
+        set[int]
+            the set of node ids with soft evidence
+
+        """
         return _pyagrum.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
 
     def MEU(self, *args) -> object:
@@ -29530,27 +31640,107 @@ class IMarkovRandomField(UGmodel):
         return _pyagrum.IMarkovRandomField___eq__(self, _from)
 
     def dim(self) -> int:
+        r"""
+
+        Return the dimension (total number of free parameters) of the Markov random field.
+
+        Returns
+        -------
+        int
+            the number of free parameters
+
+        """
         return _pyagrum.IMarkovRandomField_dim(self)
 
     def maxVarDomainSize(self) -> int:
+        r"""
+
+        Return the maximum domain size among all variables in the model.
+
+        Returns
+        -------
+        int
+            the maximum domain size
+
+        """
         return _pyagrum.IMarkovRandomField_maxVarDomainSize(self)
 
     def minParam(self) -> float:
+        r"""
+
+        Return the minimum parameter value across all factors.
+
+        Returns
+        -------
+        float
+            the minimum factor parameter
+
+        """
         return _pyagrum.IMarkovRandomField_minParam(self)
 
     def maxParam(self) -> float:
+        r"""
+
+        Return the maximum parameter value across all factors.
+
+        Returns
+        -------
+        float
+            the maximum factor parameter
+
+        """
         return _pyagrum.IMarkovRandomField_maxParam(self)
 
     def minNonZeroParam(self) -> float:
+        r"""
+
+        Return the minimum non-zero parameter value across all factors.
+
+        Returns
+        -------
+        float
+            the minimum non-zero factor parameter
+
+        """
         return _pyagrum.IMarkovRandomField_minNonZeroParam(self)
 
     def maxNonOneParam(self) -> float:
+        r"""
+
+        Return the maximum parameter value strictly less than 1 across all factors.
+
+        Returns
+        -------
+        float
+            the maximum non-one factor parameter
+
+        """
         return _pyagrum.IMarkovRandomField_maxNonOneParam(self)
 
     def toDot(self) -> str:
+        r"""
+
+        Return a Graphviz dot representation of the Markov random field.
+
+        Returns
+        -------
+        str
+            a dot-format string
+
+        """
         return _pyagrum.IMarkovRandomField_toDot(self)
 
     def toDotAsFactorGraph(self) -> str:
+        r"""
+
+        Return a Graphviz dot representation of the Markov random field as a factor graph.
+
+        Returns
+        -------
+        str
+            a dot-format string with variable nodes and factor nodes
+
+        """
         return _pyagrum.IMarkovRandomField_toDotAsFactorGraph(self)
 
     def names(self) -> object:
@@ -29738,6 +31928,21 @@ class MarkovRandomField(IMarkovRandomField):
 
     @staticmethod
     def fromBN(bn: "pyagrum.BayesNet") -> "pyagrum.MarkovRandomField":
+        r"""
+
+        Create a Markov random field from a Bayesian network.
+
+        Parameters
+        ----------
+        bn : pyagrum.BayesNet
+            the Bayesian network to convert
+
+        Returns
+        -------
+        pyagrum.MarkovRandomField
+            a new MRF with the same variables and moralised structure
+
+        """
         return _pyagrum.MarkovRandomField_fromBN(bn)
     __swig_destroy__ = _pyagrum.delete_MarkovRandomField
 
@@ -29745,9 +31950,39 @@ class MarkovRandomField(IMarkovRandomField):
         _pyagrum.MarkovRandomField_swiginit(self, _pyagrum.new_MarkovRandomField(*args))
 
     def smallestFactorFromNode(self, node: int) -> list[int]:
+        r"""
+
+        Return the id set of the smallest factor that contains the given node.
+
+        Parameters
+        ----------
+        node : int
+            the node id
+
+        Returns
+        -------
+        set[int]
+            the id set of the smallest factor containing this node
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no factor contains this node
+
+        """
         return _pyagrum.MarkovRandomField_smallestFactorFromNode(self, node)
 
     def factors(self) -> list[set[int]]:
+        r"""
+
+        Return the table of all factors in the Markov random field.
+
+        Returns
+        -------
+        dict
+            a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
+
+        """
         return _pyagrum.MarkovRandomField_factors(self)
 
     def add(self, *args) -> int:
@@ -29876,6 +32111,13 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_generateFactor(self, vars)
 
     def beginTopologyTransformation(self) -> None:
+        r"""
+
+        Begin a sequence of structural modifications (factor additions/deletions).
+
+        Structural changes are batched until endTopologyTransformation is called, which then adjusts all factor dimensions.
+
+        """
         return _pyagrum.MarkovRandomField_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> None:
@@ -29892,9 +32134,29 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_endTopologyTransformation(self)
 
     def graph(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Return the underlying undirected graph.
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            the underlying graph
+
+        """
         return _pyagrum.MarkovRandomField_graph(self)
 
     def size(self) -> int:
+        r"""
+
+        Return the number of nodes (variables) in the graphical model.
+
+        Returns
+        -------
+        int
+            the number of nodes
+
+        """
         return _pyagrum.MarkovRandomField_size(self)
 
     def log10DomainSize(self) -> float:
@@ -29911,18 +32173,108 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_log10DomainSize(self)
 
     def idFromName(self, name: str) -> int:
+        r"""
+
+        Return the node id of a variable given its name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.MarkovRandomField_idFromName(self, name)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        r"""
+
+        Return the variable-to-node mapping of the model.
+
+        Returns
+        -------
+        pyagrum.VariableNodeMap
+            the internal variable-to-node bijection
+
+        """
         return _pyagrum.MarkovRandomField_variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable associated with a given node id.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the node id does not exist
+
+        """
         return _pyagrum.MarkovRandomField_variable(self, *args)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
+        r"""
+
+        Return the node id of a variable.
+
+        Parameters
+        ----------
+        var : pyagrum.DiscreteVariable
+            the variable
+
+        Returns
+        -------
+        int
+            the node id of the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the variable does not exist in the model
+
+        """
         return _pyagrum.MarkovRandomField_nodeId(self, var)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given name.
+
+        Parameters
+        ----------
+        name : str
+            the name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if no variable with this name exists in the model
+
+        """
         return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
     def names(self) -> object:
@@ -29960,6 +32312,16 @@ class MarkovRandomField(IMarkovRandomField):
 
 
     def nodes(self) -> set[int]:
+        r"""
+
+        Return the set of node ids in the model.
+
+        Returns
+        -------
+        set[int]
+            the set of node ids
+
+        """
         return _pyagrum.MarkovRandomField_nodes(self)
 
     def connectedComponentsList(self):
@@ -30017,12 +32379,52 @@ class MarkovRandomField(IMarkovRandomField):
 
 
     def neighbours(self, norid: object) -> object:
+        r"""
+
+        Return the set of neighbours of a node.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        set[int]
+            the set of neighbour node ids
+
+        """
         return _pyagrum.MarkovRandomField_neighbours(self, norid)
 
     def edges(self) -> object:
+        r"""
+
+        Returns
+        -------
+        set
+            the set of edges in the Markov random field
+
+        """
         return _pyagrum.MarkovRandomField_edges(self)
 
     def minimalCondSet(self, *args) -> object:
+        r"""
+
+        Return a minimal conditioning set of a target given source nodes in the MRF.
+
+        Parameters
+        ----------
+        target : int | str | list[int|str]
+            the target node id(s) or name(s)
+        soids : list[int|str]
+            the list of source node ids or names
+
+        Returns
+        -------
+        set[int]
+            the minimal conditioning set (as node ids)
+
+        """
         return _pyagrum.MarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
@@ -30274,6 +32676,16 @@ class MarkovRandomField(IMarkovRandomField):
         return _pyagrum.MarkovRandomField_addFactor(self, *args)
 
     def eraseFactor(self, *args) -> None:
+        r"""
+
+        Remove the factor that covers a given set of variables.
+
+        Parameters
+        ----------
+        vars : set[int] | list[str]
+            the set of variable ids or names whose factor should be removed
+
+        """
         return _pyagrum.MarkovRandomField_eraseFactor(self, *args)
 
     def addVariables(self,listFastVariables,default_nbr_mod=2):
@@ -30355,6 +32767,16 @@ class ShaferShenoyMRFInference(object):
     __swig_destroy__ = _pyagrum.delete_ShaferShenoyMRFInference
 
     def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
+        r"""
+
+        Replace the triangulation algorithm used to build the junction tree.
+
+        Parameters
+        ----------
+        new_triangulation : pyagrum.Triangulation
+            the new triangulation algorithm
+
+        """
         return _pyagrum.ShaferShenoyMRFInference_setTriangulation(self, new_triangulation)
 
     def joinTree(self) -> "pyagrum.CliqueGraph":
@@ -30771,6 +33193,16 @@ class ShaferShenoyMRFInference(object):
         return _pyagrum.ShaferShenoyMRFInference_H(self, *args)
 
     def MRF(self) -> "pyagrum.IMarkovRandomField":
+        r"""
+
+        Return the Markov random field associated with this inference engine.
+
+        Returns
+        -------
+        pyagrum.IMarkovRandomField
+            the Markov random field
+
+        """
         return _pyagrum.ShaferShenoyMRFInference_MRF(self)
 
     def posterior(self, *args) -> "pyagrum.Tensor":
@@ -30965,6 +33397,21 @@ class ShaferShenoyMRFInference(object):
         return _pyagrum.ShaferShenoyMRFInference_evidenceImpact(self, *args)
 
     def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
         return _pyagrum.ShaferShenoyMRFInference_jointMutualInformation(self, targets)
 
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
@@ -31493,6 +33940,31 @@ class DoorCriteria(object):
 
     @staticmethod
     def firstBackdoor(*args) -> list[int] | None:
+        r"""
+
+        Return the first valid backdoor adjustment set for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of the adjustment set. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only a minimal adjustment set. Default is True.
+
+        Returns
+        -------
+        list of int or None
+            The first valid backdoor adjustment set as a list of NodeIds, or None if none exists.
+
+        """
         return _pyagrum.DoorCriteria_firstBackdoor(*args)
 
     @staticmethod
@@ -31532,6 +34004,31 @@ class DoorCriteria(object):
 
     @staticmethod
     def firstFrontdoor(*args) -> list[int] | None:
+        r"""
+
+        Return the first valid frontdoor adjustment set for the causal effect of X on Y.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            The causal DAG.
+        X : int
+            NodeId of the treatment variable.
+        Y : int
+            NodeId of the outcome variable.
+        excluded_nodes : set of int, optional
+            Nodes that cannot appear in any adjustment set. Default is empty.
+        max_cardinality : int, optional
+            Maximum size of the adjustment set. 0 means no limit. Default is 0.
+        only_minimal : bool, optional
+            If True, return only a minimal adjustment set. Default is True.
+
+        Returns
+        -------
+        list of int or None
+            The first valid frontdoor adjustment set as a list of NodeIds, or None if none exists.
+
+        """
         return _pyagrum.DoorCriteria_firstFrontdoor(*args)
 
     @staticmethod
@@ -32136,6 +34633,26 @@ class CausalModel(object):
         return _pyagrum.CausalModel_connectedComponents(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
+        r"""
+
+        Return the variable with the given id or name (observed variables only).
+
+        Parameters
+        ----------
+        id_or_name : int | str
+            the node id or name of the variable
+
+        Returns
+        -------
+        pyagrum.DiscreteVariable
+            the discrete variable
+
+        Raises
+        ------
+        pyagrum.NotFound
+            if the id or name does not correspond to an observed variable in the model
+
+        """
         return _pyagrum.CausalModel_variable(self, *args)
 
     def __init__(self, *args):
@@ -32220,6 +34737,21 @@ class CausalImpact(object):
         return _pyagrum.CausalImpact_toString(self)
 
     def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
+        """
+        Return a LaTeX string representation of the causal impact formula.
+
+        Parameters
+        ----------
+        doOperatorPrefix : str, optional
+            LaTeX prefix for the do-operator. Defaults to the value in pyAgrum config.
+        doOperatorSuffix : str, optional
+            LaTeX suffix for the do-operator. Defaults to the value in pyAgrum config.
+
+        Returns
+        -------
+        str
+            LaTeX representation of the causal impact expression.
+        """
         if doOperatorPrefix is None:
             doOperatorPrefix = config["causal", "latex_do_prefix"]
         if doOperatorSuffix is None:
