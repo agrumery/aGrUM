@@ -76,7 +76,7 @@ namespace gum_tests {
       dag.addArc(a, b);
       dag.addArc(b, c);
 
-      gum::NodeSet result = gum::graph::requisiteNodes(dag, {c});
+      gum::NodeSet result = gum::graph::requisiteNodes(dag, gum::NodeSet{c});
       CHECK(result.exists(a));
       CHECK(result.exists(b));
       CHECK(result.exists(c));
@@ -93,7 +93,7 @@ namespace gum_tests {
       dag.addArc(b, c);
 
       // hard evidence on B: B is in result (visited from child C) but A is not reached
-      gum::NodeSet result = gum::graph::requisiteNodes(dag, {c}, {b});
+      gum::NodeSet result = gum::graph::requisiteNodes(dag, gum::NodeSet{c}, gum::NodeSet{b});
       CHECK(result.exists(b));
       CHECK(result.exists(c));
       CHECK(!result.exists(a));
@@ -110,7 +110,7 @@ namespace gum_tests {
 
       // query = {a}: upward from a → no parents; downward to b (from_child=false).
       // b has no evidence → downward path blocked at collider.
-      gum::NodeSet result = gum::graph::dConnected(dag, {a});
+      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a});
       CHECK(result.exists(a));
       CHECK(result.exists(b));   // b visited (from parent), added by CollectAll
       CHECK(!result.exists(c));  // c never activated: collider with no evidence
@@ -125,7 +125,7 @@ namespace gum_tests {
       dag.addArc(a, b);
       dag.addArc(c, b);
 
-      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {}, {b});
+      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a}, gum::NodeSet{}, gum::NodeSet{b});
       CHECK(result.exists(a));
       CHECK(result.exists(b));
       CHECK(result.exists(c));   // c reached via collider activation
@@ -141,7 +141,7 @@ namespace gum_tests {
       dag.addArc(c, b);
 
       // hard evidence on b: from_child=false path, is_hard=true → upward propagation to parents
-      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {b});
+      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a}, gum::NodeSet{b});
       CHECK(result.exists(a));
       CHECK(result.exists(b));
       CHECK(result.exists(c));
@@ -157,7 +157,7 @@ namespace gum_tests {
       dag.addArc(b, c);
 
       // query={a}: upward → b (hard evidence, continue path), so c unreachable
-      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {b});
+      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a}, gum::NodeSet{b});
       CHECK(result.exists(a));
       CHECK(result.exists(b));   // b visited from child, added by CollectAll before continue
       CHECK(!result.exists(c));
@@ -172,7 +172,7 @@ namespace gum_tests {
       dag.addArc(b, a);
       dag.addArc(b, c);
 
-      gum::NodeSet result = gum::graph::dConnected(dag, {a});
+      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a});
       CHECK(result.exists(a));
       CHECK(result.exists(b));
       CHECK(result.exists(c));
@@ -189,8 +189,8 @@ namespace gum_tests {
       dag.addArc(a, b);
       dag.addArc(b, c);
 
-      auto dc  = gum::graph::dConnected(dag, {a});
-      auto req = gum::graph::requisiteNodes(dag, {a});
+      auto dc  = gum::graph::dConnected(dag, gum::NodeSet{a});
+      auto req = gum::graph::requisiteNodes(dag, gum::NodeSet{a});
 
       // Both reachable from a; dConnected includes b and c (downward visits counted)
       CHECK(dc.exists(a));
@@ -212,8 +212,8 @@ namespace gum_tests {
       dag.addNode();
       dag.addArc(a, dag.addNode());
 
-      CHECK(gum::graph::requisiteNodes(dag, {}).empty());
-      CHECK(gum::graph::dConnected(dag, {}).empty());
+      CHECK(gum::graph::requisiteNodes(dag, gum::NodeSet{}).empty());
+      CHECK(gum::graph::dConnected(dag, gum::NodeSet{}).empty());
     }
 
     // --- Original tests ---
