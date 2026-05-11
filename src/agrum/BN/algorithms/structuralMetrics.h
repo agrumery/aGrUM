@@ -79,19 +79,23 @@ namespace gum {
     /// @name Accessors
     // ##########################################################################
     /// @{
-    /// compare two DiGraphs
+    /// compare two DiGraphs (nodes matched by NodeId, no alignment)
     void compare(const DiGraph& ref, const DiGraph& test);
-    /// compare two UndiGraphs
+    /// compare two UndiGraphs (nodes matched by NodeId, no alignment)
     void compare(const UndiGraph& ref, const UndiGraph& test);
-    /// compare two PDAGs
+    /// compare two PDAGs (nodes matched by NodeId, no alignment)
     void compare(const PDAG& ref, const PDAG& test);
-    /// compare two BNs based on their DAG
+    /// compare two BNs via their essential graphs (nodes matched by variable
+    /// name). For a DAG-level BN comparison, align NodeIds manually and use
+    /// compare(DiGraph, DiGraph) with bn.dag().
     template < typename GS1, typename GS2 >
     void compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test);
     /// compare a PDAG with the essential graph of a reference BN
+    /// (nodes matched by NodeId, no name-based alignment)
     template < GUM_Numeric GUM_SCALAR >
     void compare(const BayesNet< GUM_SCALAR >& ref, const PDAG& test);
     /// compare the essential graph of a BN with a reference PDAG
+    /// (nodes matched by NodeId, no name-based alignment)
     template < GUM_Numeric GUM_SCALAR >
     void compare(const PDAG& ref, const BayesNet< GUM_SCALAR >& test);
 

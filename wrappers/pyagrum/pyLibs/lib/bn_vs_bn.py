@@ -245,7 +245,9 @@ class GraphicalBNComparator:
     Note
     ----
     Delegates to pyagrum.StructuralMetrics (aGrUM C++): comparison runs on the
-    essential graphs of the two BNs, with nodes matched by variable name.
+    essential graphs of the two BNs, with nodes matched by variable name. For a
+    DAG-level skeleton comparison, align NodeIds manually and call
+    ``pyagrum.StructuralMetrics.compare(bn1.dag(), aligned_bn2.dag())`` directly.
 
     Returns
     -------
@@ -276,7 +278,7 @@ class GraphicalBNComparator:
   def scores(self) -> dict[str, float]:
     """
     Compute Precision, Recall, F-score, dist2opt and SID for self._bn2 compared
-    to self._bn1 at the DAG level.
+    to self._bn1.
 
     precision and recall are computed considering BN1 as the reference.
 
@@ -292,9 +294,12 @@ class GraphicalBNComparator:
 
     Note
     ----
-    Delegates to pyagrum.StructuralMetrics (aGrUM C++): comparison runs on the
-    essential graphs of the two BNs, SID on their DAGs, with nodes matched by
-    variable name. Misoriented arcs are counted once (in fp, not in fn).
+    Delegates to pyagrum.StructuralMetrics (aGrUM C++) with nodes matched by
+    variable name. Precision/recall/F-score/SHD are computed on the essential
+    graphs of the two BNs; SID is computed on their DAGs (it is the only
+    DAG-level metric here). Misoriented arcs are counted once (in fp, not in fn).
+    For a DAG-level precision/recall/F-score, align NodeIds manually and call
+    ``pyagrum.StructuralMetrics.compare(bn1.dag(), aligned_bn2.dag())`` directly.
 
     Returns
     -------

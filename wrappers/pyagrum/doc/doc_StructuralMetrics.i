@@ -71,13 +71,18 @@ confusion matrix used by all metric accessors.
 
 The following overloads are available:
 
-* ``compare(DiGraph, DiGraph)``
-* ``compare(UndiGraph, UndiGraph)``
-* ``compare(PDAG, PDAG)``
+* ``compare(DiGraph, DiGraph)`` — nodes matched by NodeId (no alignment).
+* ``compare(UndiGraph, UndiGraph)`` — nodes matched by NodeId (no alignment).
+* ``compare(PDAG, PDAG)`` — nodes matched by NodeId (no alignment).
 * ``compare(BayesNet, BayesNet)`` — nodes matched by variable name; comparison
   runs on the corresponding essential graphs (CPDAGs).
 * ``compare(BayesNet, PDAG)`` — ref BN is converted to its essential graph first.
 * ``compare(PDAG, BayesNet)`` — test BN is converted to its essential graph first.
+
+For a DAG-level comparison of two BayesNets, align NodeIds manually (e.g. by
+building an aligned BN by variable name) and call ``compare(DiGraph, DiGraph)``
+with ``bn.dag()``. SID (see :meth:`sid`) is the only metric that natively
+operates on the DAGs of BayesNets.
 
 Parameters
 ----------
