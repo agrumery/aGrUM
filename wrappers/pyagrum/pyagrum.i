@@ -152,6 +152,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %include "bayesnet.i"
 %include "inference.i"
 %include "bndistance.i"
+%include "structuralMetrics.i"
 %include "BNDatabaseGenerator.i"
 
 %include "learning.i"

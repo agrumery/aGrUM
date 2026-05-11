@@ -252,6 +252,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     "SamplingTestSuite",
     True,
   )
+  StructuralMetricsTestSuite = _try_import(
+    "StructuralMetricsTestSuite",
+    True,
+  )
   ShallCausalTestSuite = _try_import(
     "ShallCausalTestSuite",
     _pd,
@@ -356,6 +360,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         TensorTestSuite,
         PRMexplorerTestSuite,
         SamplingTestSuite,
+        StructuralMetricsTestSuite,
         TypeAliasesTestSuite,
         VariablesTestSuite,
         WorkaroundTestSuite,
