@@ -337,6 +337,88 @@ namespace gum_tests {
       CHECK(futureIds.empty());
     }
 
+    static void testNodeNames() {
+      gum::NodeGraphPart ngp;
+      gum::NodeId        a = ngp.addNode();
+      gum::NodeId        b = ngp.addNode();
+      gum::NodeId        c = ngp.addNode();
+
+      // defaults
+      CHECK(!ngp.hasName(a));
+      CHECK_EQ(ngp.nameFromId(a), std::to_string(a));
+      CHECK(!ngp.idFromName("foo").has_value());
+
+      // setName basics
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.setName(a, "alpha"));
+      CHECK(ngp.hasName(a));
+      CHECK_EQ(ngp.nameFromId(a), "alpha");
+      CHECK(ngp.idFromName("alpha").has_value());
+      CHECK_EQ(ngp.idFromName("alpha").value(), a);
+
+      ngp.setName(b, "beta");
+      ngp.setName(c, "gamma");
+
+      // duplicate name on different node → error
+      CHECK_THROWS_AS(ngp.setName(b, "alpha"), const gum::DuplicateElement&);
+
+      // same name same node → no-op, no error
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.setName(a, "alpha"));
+      CHECK_EQ(ngp.nameFromId(a), "alpha");
+
+      // rename: change name of a node
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ngp.setName(a, "alpha2"));
+      CHECK_EQ(ngp.nameFromId(a), "alpha2");
+      CHECK(!ngp.idFromName("alpha").has_value());
+      CHECK_EQ(ngp.idFromName("alpha2").value(), a);
+
+      // toString: "id<name>" if named, else "id"
+      std::string s = ngp.toString();
+      CHECK(s.find(std::to_string(a) + "<alpha2>") != std::string::npos);
+      CHECK(s.find(std::to_string(c) + "<gamma>") != std::string::npos);
+
+      // eraseNode removes name
+      ngp.eraseNode(b);
+      CHECK(!ngp.hasName(b));
+      CHECK(!ngp.idFromName("beta").has_value());
+
+      // clear resets all names
+      ngp.clear();
+      CHECK(!ngp.hasName(a));
+      CHECK(!ngp.idFromName("alpha2").has_value());
+
+      // setName on non-existing node → error
+      CHECK_THROWS_AS(ngp.setName(a, "ghost"), const gum::InvalidNode&);
+
+      // copy propagates names
+      gum::NodeGraphPart ngp2;
+      gum::NodeId        x = ngp2.addNode();
+      gum::NodeId        y = ngp2.addNode();
+      ngp2.setName(x, "X");
+      ngp2.setName(y, "Y");
+
+      gum::NodeGraphPart ngp3(ngp2);
+      CHECK_EQ(ngp3.nameFromId(x), "X");
+      CHECK_EQ(ngp3.nameFromId(y), "Y");
+      CHECK_EQ(ngp3.idFromName("X").value(), x);
+
+      // copy is independent
+      ngp3.setName(x, "XX");
+      CHECK_EQ(ngp2.nameFromId(x), "X");
+
+      // move propagates names
+      gum::NodeGraphPart ngp4(std::move(ngp2));
+      CHECK_EQ(ngp4.nameFromId(x), "X");
+      CHECK_EQ(ngp4.nameFromId(y), "Y");
+
+      // assign propagates names
+      gum::NodeGraphPart ngp5;
+      ngp5.addNode();
+      ngp5.setName(0, "tmp");
+      ngp5 = ngp3;
+      CHECK_EQ(ngp5.nameFromId(x), "XX");
+      CHECK(!ngp5.idFromName("tmp").has_value());
+    }
+
     private:
     static void _privateTestBigNodeGraphPart_() {
       {
@@ -422,4 +504,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(IteratorEnd)
   GUM_TEST_ACTIF(IteratorEraseNode)
   GUM_TEST_ACTIF(IteratorAddNodes)
+  GUM_TEST_ACTIF(NodeNames)
 }   // namespace gum_tests

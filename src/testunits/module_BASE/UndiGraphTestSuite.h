@@ -581,6 +581,20 @@ namespace gum_tests {
       // multi-source: {3,5} vs {2} — neither can reach 2
       CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3, 5}, gum::NodeSet{2}));
     }
+    static void testToDotWithNames() {
+      gum::UndiGraph g;
+      g.addNodes(3);
+      g.setName(0, "alpha");
+      g.setName(2, "ga\"mm\\a");
+      g.addEdge(0, 1);
+      g.addEdge(1, 2);
+
+      std::string dot = g.toDot();
+
+      CHECK(dot.find("0 [label=\"alpha\"]") != std::string::npos);
+      CHECK(dot.find("2 [label=\"ga\\\"mm\\\\a\"]") != std::string::npos);
+      CHECK(dot.find("1 [label=") == std::string::npos);
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -610,4 +624,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ConnectedComponents)
   GUM_TEST_ACTIF(HasUndirectedCycle)
   GUM_TEST_ACTIF(AreConnected)
+  GUM_TEST_ACTIF(ToDotWithNames)
 }   // namespace gum_tests

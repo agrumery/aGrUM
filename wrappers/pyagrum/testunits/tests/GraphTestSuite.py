@@ -286,5 +286,70 @@ class TestGraph(pyAgrumTestCase):
     )
 
 
+  def testNodeNames(self):
+    for g in (gum.DiGraph(), gum.UndiGraph(), gum.DAG(), gum.MixedGraph()):
+      g.addNodes(3)
+
+      # defaults
+      self.assertFalse(g.hasName(0))
+      self.assertEqual(g.nameFromId(0), "0")
+      self.assertIsNone(g.idFromName("foo"))
+
+      # setName / nameFromId / hasName / idFromName
+      g.setName(0, "alpha")
+      self.assertTrue(g.hasName(0))
+      self.assertEqual(g.nameFromId(0), "alpha")
+      self.assertEqual(g.idFromName("alpha"), 0)
+
+      g.setName(2, "gamma")
+      self.assertEqual(g.idFromName("gamma"), 2)
+
+      # duplicate name on different node → error
+      with self.assertRaises(gum.DuplicateElement):
+        g.setName(1, "alpha")
+
+      # same name same node → no error
+      g.setName(0, "alpha")
+      self.assertEqual(g.nameFromId(0), "alpha")
+
+      # rename
+      g.setName(0, "alpha2")
+      self.assertEqual(g.nameFromId(0), "alpha2")
+      self.assertIsNone(g.idFromName("alpha"))
+      self.assertEqual(g.idFromName("alpha2"), 0)
+
+      # eraseNode removes name
+      g.eraseNode(2)
+      self.assertFalse(g.hasName(2))
+      self.assertIsNone(g.idFromName("gamma"))
+
+      # clear resets names
+      g.clear()
+      self.assertFalse(g.hasName(0))
+
+  def testToDotWithNames(self):
+    g = gum.DiGraph()
+    g.addNodes(3)
+    g.setName(0, "alpha")
+    g.setName(2, 'ga"mm\\a')
+    g.addArc(0, 1)
+    g.addArc(1, 2)
+
+    dot = g.toDot()
+    self.assertIn('0 [label="alpha"]', dot)
+    self.assertIn('2 [label="ga\\"mm\\\\a"]', dot)
+    self.assertNotIn('1 [label=', dot)
+    self.assertIn('0 -> 1', dot)
+    self.assertIn('1 -> 2', dot)
+
+    u = gum.UndiGraph()
+    u.addNodes(3)
+    u.setName(1, "beta")
+    u.addEdge(0, 1)
+    dot = u.toDot()
+    self.assertIn('1 [label="beta"]', dot)
+    self.assertNotIn('0 [label=', dot)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestGraph)

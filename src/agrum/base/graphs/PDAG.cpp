@@ -138,9 +138,13 @@ namespace gum {
     output << tab << "graph [style=filled,color=\"#F5F5F5\"];" << std::endl;
 
     output << std::endl;
+    auto nodeDecl = [&](NodeId n) -> std::string {
+      return std::to_string(n) + dotNodeLabel(n);
+    };
+
     for (const auto node: nodes()) {
       if (neighbours(node).empty()) {
-        output << tab << node << ";" << std::endl;
+        output << tab << nodeDecl(node) << ";" << std::endl;
         treatedNodes.insert(node);
       }
     }
@@ -152,7 +156,7 @@ namespace gum {
         output << tab << "subgraph cluster_" << cluster++ << "{{" << std::endl;
         output << tab << tab << "rank=same;" << std::endl << tab << tab;
         for (const auto cc: chainComponent(node)) {
-          output << cc << ";";
+          output << nodeDecl(cc) << ";";
           treatedNodes.insert(cc);
         }
         output << std::endl << tab << "}}" << std::endl << std::endl;

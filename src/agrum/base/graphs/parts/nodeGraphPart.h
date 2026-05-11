@@ -48,10 +48,13 @@
 #define GUM_NODE_GRAPH_PART_H
 
 #include <algorithm>
+#include <memory>
+#include <optional>
 #include <utility>
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/bijection.h>
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/graphs/graphElements.h>
 
@@ -441,6 +444,22 @@ namespace gum {
     virtual   /// a function to display the set of nodes
         std::string toString() const;
 
+    /// returns the name of node id, or "<id>" if no name is set
+    std::string nameFromId(NodeId id) const;
+
+    /// returns the id of the node with the given name, or std::nullopt
+    std::optional< NodeId > idFromName(const std::string& name) const;
+
+    /// sets the name of node id
+    /// @throws DuplicateElement if name is already used by another node
+    void setName(NodeId id, const std::string& name);
+
+    /// returns true iff node id has an explicit name
+    bool hasName(NodeId id) const;
+
+    /// returns " [label=\"...\"]" with DOT-escaped name, or "" if no name
+    std::string dotNodeLabel(NodeId id) const;
+
     /// a method to create a HashTable with key:NodeId and value:VAL
     /** VAL are computed from the nodes using for all node x, VAL f(x).
      * This method is a wrapper of the same method in HashTable.
@@ -515,6 +534,13 @@ namespace gum {
      * interval 1.. _max_
      * @warning  _holes_ may be nullptr. */
     NodeSet* _holes_;
+
+    /// optional node names — null when no name has been set
+    std::unique_ptr< Bijection< NodeId, std::string > > _names_;
+
+    std::unique_ptr< Bijection< NodeId, std::string > > _cloneNames_() const {
+      return _names_ ? std::make_unique< Bijection< NodeId, std::string > >(*_names_) : nullptr;
+    }
 
     /// value for  _holes_ configuration
     Size _holes_size_;

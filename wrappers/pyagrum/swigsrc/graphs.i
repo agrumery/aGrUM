@@ -140,6 +140,18 @@
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including DAG, MixedGraph and pdag)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::UndiGraph);
 
+%define ADD_NODENAME_METHODS(classname)
+%extend classname {
+  std::string nameFromId(gum::NodeId id) const { return self->nameFromId(id); };
+  std::optional<gum::NodeId> idFromName(const std::string& name) const { return self->idFromName(name); };
+  void setName(gum::NodeId id, const std::string& name) { self->setName(id, name); };
+  bool hasName(gum::NodeId id) const { return self->hasName(id); };
+};
+%enddef
+
+ADD_NODENAME_METHODS(gum::DiGraph)
+ADD_NODENAME_METHODS(gum::UndiGraph)
+
 
 %define ADD_METHOD_TO_GRAPH_ONLY_CLASS(classname)
 %ignore classname::addNodes(gum::Size n);

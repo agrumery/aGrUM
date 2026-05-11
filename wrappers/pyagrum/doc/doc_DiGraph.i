@@ -418,3 +418,70 @@ Returns
 set
   the set of ids of the descendants of node `norid`.
 "
+
+%feature("docstring") gum::DiGraph::nameFromId
+"
+Return the name of a node, or its id as a string if no name was set.
+
+Parameters
+----------
+id : int
+    the node id
+
+Returns
+-------
+str
+    the name associated with the node, or ``str(id)`` if the node has no name
+"
+
+%feature("docstring") gum::DiGraph::idFromName
+"
+Return the id of the node with the given name, or None if no such name exists.
+
+Parameters
+----------
+name : str
+    the name to look up
+
+Returns
+-------
+int or None
+    the node id, or None if the name is not found
+"
+
+%feature("docstring") gum::DiGraph::setName
+"
+Assign a name to a node.
+
+If the node already has a name, it is replaced. The name must not already be
+used by another node.
+
+Parameters
+----------
+id : int
+    the node id
+name : str
+    the name to assign
+
+Raises
+------
+pyagrum.InvalidNode
+    If the node does not exist.
+pyagrum.DuplicateElement
+    If the name is already used by a different node.
+"
+
+%feature("docstring") gum::DiGraph::hasName
+"
+Check whether a node has an explicitly assigned name.
+
+Parameters
+----------
+id : int
+    the node id
+
+Returns
+-------
+bool
+    True if a name has been assigned to this node via setName
+"

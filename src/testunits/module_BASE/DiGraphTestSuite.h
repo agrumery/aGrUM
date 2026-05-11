@@ -494,6 +494,29 @@ namespace gum_tests {
       CHECK_EQ(cc2.size(), 1U);
     }
 
+    static void testToDotWithNames() {
+      gum::DiGraph g;
+      g.addNodes(3);
+      g.setName(0, "alpha");
+      g.setName(2, "gamma\"slash\\");   // names with chars to escape
+      g.addArc(0, 1);
+      g.addArc(1, 2);
+
+      std::string dot = g.toDot();
+
+      // named nodes get label attribute
+      CHECK(dot.find("0 [label=\"alpha\"]") != std::string::npos);
+      CHECK(dot.find("2 [label=\"gamma\\\"slash\\\\\"]") != std::string::npos);
+
+      // unnamed node: just id, no label
+      CHECK(dot.find("1;") != std::string::npos);
+      CHECK(dot.find("1 [label=") == std::string::npos);
+
+      // arcs use raw ids
+      CHECK(dot.find("0 -> 1") != std::string::npos);
+      CHECK(dot.find("1 -> 2") != std::string::npos);
+    }
+
     static void testTopologicalOrder() {
       // 0 -> 1 -> 3
       //  \-> 2 -> 3 -> 4
@@ -554,5 +577,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(AncestorsDescendants)
   GUM_TEST_ACTIF(ConnectedComponents)
   GUM_TEST_ACTIF(TopologicalOrder)
+  GUM_TEST_ACTIF(ToDotWithNames)
 
 }   // namespace gum_tests

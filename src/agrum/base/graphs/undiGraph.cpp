@@ -111,7 +111,7 @@ namespace gum {
     std::string tab = "  ";
 
     for (const auto node: nodes()) {
-      nodeStream << tab << node << ";";
+      nodeStream << tab << node << dotNodeLabel(node) << ";";
 
       if (neighbours(node).size() > 0)
         for (const auto nei: neighbours(node))

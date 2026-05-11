@@ -667,6 +667,20 @@ namespace gum_tests {
       CHECK(graph.mixedUnorientedPath(1, 0).has_value());
       CHECK(graph.mixedUnorientedPath(4, 2).has_value());
     }
+    static void testToDotWithNames() {
+      gum::MixedGraph g;
+      g.addNodes(3);
+      g.setName(0, "alpha");
+      g.setName(2, "ga\"mm\\a");
+      g.addArc(0, 1);
+      g.addEdge(1, 2);
+
+      std::string dot = g.toDot();
+
+      CHECK(dot.find("0 [label=\"alpha\"]") != std::string::npos);
+      CHECK(dot.find("2 [label=\"ga\\\"mm\\\\a\"]") != std::string::npos);
+      CHECK(dot.find("1 [label=") == std::string::npos);
+    }
   };
 
   GUM_TEST_ACTIF(Constructor1)
@@ -701,4 +715,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ChainComponents)
   GUM_TEST_ACTIF(ConnectedComponents)
   GUM_TEST_ACTIF(MixedPaths)
+  GUM_TEST_ACTIF(ToDotWithNames)
 }   // namespace gum_tests

@@ -231,6 +231,7 @@ namespace gum {
       _holes_size_          = p._holes_size_;
       _holes_resize_policy_ = p._holes_resize_policy_;
       _boundVal_            = p._boundVal_;
+      _names_               = std::move(p._names_);
       p._holes_             = nullptr;
       p._boundVal_          = 0;
       _updateEndIteratorSafe_();
@@ -307,6 +308,8 @@ namespace gum {
 
   INLINE void NodeGraphPart::eraseNode(const NodeId node) {
     if (!existsNode(node)) return;
+
+    if (_names_ && _names_->existsFirst(node)) _names_->eraseFirst(node);
 
     _addHole_(node);
 

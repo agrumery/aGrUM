@@ -3293,6 +3293,85 @@ class UndiGraph(object):
       return am
 
 
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        str
+            the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrum.UndiGraph_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> "std::optional< int >":
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+            the name to look up
+
+        Returns
+        -------
+        int or None
+            the node id, or None if the name is not found
+
+        """
+        return _pyagrum.UndiGraph_idFromName(self, name)
+
+    def setName(self, id: int, name: str) -> None:
+        r"""
+
+        Assign a name to a node.
+
+        If the node already has a name, it is replaced. The name must not already be
+        used by another node.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+        name : str
+            the name to assign
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+            If the node does not exist.
+        pyagrum.DuplicateElement
+            If the name is already used by a different node.
+
+        """
+        return _pyagrum.UndiGraph_setName(self, id, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Check whether a node has an explicitly assigned name.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        bool
+            True if a name has been assigned to this node via setName
+
+        """
+        return _pyagrum.UndiGraph_hasName(self, id)
+
     def addNodes(self, n: int) -> object:
         r"""
 
@@ -3803,6 +3882,85 @@ class DiGraph(object):
                   am[node,neighbour]=1
       return am
 
+
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        str
+            the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrum.DiGraph_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> "std::optional< int >":
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+            the name to look up
+
+        Returns
+        -------
+        int or None
+            the node id, or None if the name is not found
+
+        """
+        return _pyagrum.DiGraph_idFromName(self, name)
+
+    def setName(self, id: int, name: str) -> None:
+        r"""
+
+        Assign a name to a node.
+
+        If the node already has a name, it is replaced. The name must not already be
+        used by another node.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+        name : str
+            the name to assign
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+            If the node does not exist.
+        pyagrum.DuplicateElement
+            If the name is already used by a different node.
+
+        """
+        return _pyagrum.DiGraph_setName(self, id, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Check whether a node has an explicitly assigned name.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        bool
+            True if a name has been assigned to this node via setName
+
+        """
+        return _pyagrum.DiGraph_hasName(self, id)
 
     def addNodes(self, n: int) -> object:
         r"""

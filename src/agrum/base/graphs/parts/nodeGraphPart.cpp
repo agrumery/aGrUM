@@ -69,6 +69,8 @@ namespace gum {
 
     if (s._holes_) _holes_ = new NodeSet(*s._holes_);
 
+    _names_ = s._cloneNames_();
+
     _updateEndIteratorSafe_();
 
     GUM_CONS_CPY(NodeGraphPart);
@@ -77,7 +79,7 @@ namespace gum {
   NodeGraphPart::NodeGraphPart(NodeGraphPart&& s) :
       _holes_(s._holes_), _holes_size_(s._holes_size_),
       _holes_resize_policy_(s._holes_resize_policy_), _endIteratorSafe_(*this),
-      _boundVal_(s._boundVal_) {
+      _boundVal_(s._boundVal_), _names_(std::move(s._names_)) {
     s._holes_    = nullptr;
     s._boundVal_ = 0;
 
@@ -98,6 +100,8 @@ namespace gum {
     _holes_resize_policy_ = s._holes_resize_policy_;
 
     if (s._holes_) _holes_ = new NodeSet(*s._holes_);
+
+    _names_ = s._cloneNames_();
 
     _boundVal_ = s._boundVal_;
 
@@ -138,6 +142,7 @@ namespace gum {
     bool              first = true;
     s << "{";
 
+    const bool hasNames = (_names_ != nullptr);
     for (NodeId id = 0; id < _boundVal_; ++id) {
       if (_inHoles_(id)) continue;
 
@@ -147,12 +152,61 @@ namespace gum {
         s << ",";
       }
 
-      s << id;
+      if (hasNames && _names_->existsFirst(id))
+        s << id << "<" << _names_->second(id) << ">";
+      else
+        s << id;
     }
 
     s << "}";
 
     return s.str();
+  }
+
+  std::string NodeGraphPart::nameFromId(NodeId id) const {
+    if (_names_ && _names_->existsFirst(id)) return _names_->second(id);
+    return std::to_string(id);
+  }
+
+  std::optional< NodeId > NodeGraphPart::idFromName(const std::string& name) const {
+    if (_names_ && _names_->existsSecond(name)) return _names_->first(name);
+    return std::nullopt;
+  }
+
+  void NodeGraphPart::setName(NodeId id, const std::string& name) {
+    if (!existsNode(id)) GUM_ERROR(InvalidNode, "node " << id << " does not exist")
+    if (_names_) {
+      auto owner = _names_->tryFirst(name);
+      if (owner.has_value()) {
+        if (*owner != id) GUM_ERROR(DuplicateElement, "name '" << name << "' already used by node " << *owner)
+        return;
+      }
+      if (_names_->existsFirst(id)) _names_->eraseFirst(id);
+    } else {
+      _names_ = std::make_unique< Bijection< NodeId, std::string > >();
+    }
+    _names_->insert(id, name);
+  }
+
+  bool NodeGraphPart::hasName(NodeId id) const { return _names_ && _names_->existsFirst(id); }
+
+  std::string NodeGraphPart::dotNodeLabel(NodeId id) const {
+    if (!hasName(id)) return "";
+    const std::string& name = _names_->second(id);
+    std::string        result;
+    result.reserve(name.size() + 10);
+    result = " [label=\"";
+    for (char c: name) {
+      switch (c) {
+        case '"':  result += "\\\""; break;
+        case '\\': result += "\\\\"; break;
+        case '\n': result += "\\n";  break;
+        case '\r': result += "\\r";  break;
+        default:   result += c;
+      }
+    }
+    result += "\"]";
+    return result;
   }
 
   std::ostream& operator<<(std::ostream& stream, const NodeGraphPart& set) {
@@ -197,6 +251,7 @@ namespace gum {
 
     delete (_holes_);
     _holes_ = nullptr;
+    _names_.reset();
   }
 
   void NodeGraphPartIteratorSafe::whenNodeDeleted(const void* src, NodeId id) {

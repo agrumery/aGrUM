@@ -125,6 +125,16 @@
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
 }
 
+// std::optional<gum::NodeId> -> Python int or None
+%typemap(out) std::optional< gum::NodeId >, std::optional< std::size_t > {
+  if ($1.has_value()) {
+    $result = PyLong_FromSize_t((size_t)$1.value());
+  } else {
+    $result = Py_None;
+    Py_INCREF(Py_None);
+  }
+}
+
 // std::optional<gum::NodeSet> -> Python set[int] or None
 %typemap(out) std::optional< gum::NodeSet > {
   if ($1.has_value()) {
