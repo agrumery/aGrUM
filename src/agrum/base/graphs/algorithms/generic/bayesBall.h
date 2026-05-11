@@ -90,33 +90,33 @@ namespace gum::graph {
       _bayesBall_(const G& g, const NodeSet& query, const NodeSet& Zhard, const NodeSet& Zsoft) {
     NodeSet result;
 
-    NodeProperty< std::pair< bool, bool > > marks(g.size());
-    const std::pair< bool, bool >           empty_mark(false, false);
+    static constexpr std::pair< bool, bool >        empty_mark{false, false};
+    NodeProperty< std::pair< bool, bool > >         marks(g.size());
 
     List< std::pair< NodeId, bool > > to_visit;
     for (const auto node: query)
-      to_visit.insert(std::pair< NodeId, bool >(node, true));
+      to_visit.insert(std::pair{node, true});
 
     while (!to_visit.empty()) {
       const NodeId node       = to_visit.front().first;
       const bool   from_child = to_visit.front().second;
       to_visit.popFront();
 
-      if (!marks.exists(node)) marks.insert(node, empty_mark);
+      auto& [top, bot] = marks.getWithDefault(node, empty_mark);
 
       if (from_child) {
         result.insert(node);                // always requisite on upward visit
         if (Zhard.exists(node)) continue;   // hard evidence blocks upward
 
-        if (!marks[node].first) {
-          marks[node].first = true;
+        if (!top) {
+          top = true;
           for (const auto par: g.parents(node))
-            to_visit.insert(std::pair< NodeId, bool >(par, true));
+            to_visit.insert(std::pair{par, true});
         }
-        if (!marks[node].second) {
-          marks[node].second = true;
+        if (!bot) {
+          bot = true;
           for (const auto chi: g.children(node))
-            to_visit.insert(std::pair< NodeId, bool >(chi, false));
+            to_visit.insert(std::pair{chi, false});
         }
 
       } else {
@@ -125,16 +125,16 @@ namespace gum::graph {
         const bool is_hard = Zhard.exists(node);
         const bool is_ev   = is_hard || Zsoft.exists(node);
 
-        if (is_ev && !marks[node].first) {
-          marks[node].first = true;
+        if (is_ev && !top) {
+          top = true;
           if constexpr (!CollectAll) result.insert(node);   // requisiteNodes: collider only
           for (const auto par: g.parents(node))
-            to_visit.insert(std::pair< NodeId, bool >(par, true));
+            to_visit.insert(std::pair{par, true});
         }
-        if (!is_hard && !marks[node].second) {
-          marks[node].second = true;
+        if (!is_hard && !bot) {
+          bot = true;
           for (const auto chi: g.children(node))
-            to_visit.insert(std::pair< NodeId, bool >(chi, false));
+            to_visit.insert(std::pair{chi, false});
         }
       }
     }

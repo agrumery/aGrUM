@@ -46,6 +46,8 @@
 #include <string>
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleMultiDim.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -62,6 +64,160 @@ namespace gum_tests {
 
   struct BayesBallTestSuite {
     public:
+    // --- Tests for graph::requisiteNodes / graph::dConnected ---
+    // These exercise the optimised _bayesBall_ (getWithDefault marks, CTAD pairs).
+
+    // Chain A→B→C — no evidence: all nodes reachable from query C upward.
+    static void testGenericChainNoEvidence() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(b, c);
+
+      gum::NodeSet result = gum::graph::requisiteNodes(dag, {c});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));
+      CHECK(result.exists(c));
+      CHECK(result.size() == 3);
+    }
+
+    // Chain A→B→C — B hard evidence: blocks propagation to A.
+    static void testGenericChainHardEvidence() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(b, c);
+
+      // hard evidence on B: B is in result (visited from child C) but A is not reached
+      gum::NodeSet result = gum::graph::requisiteNodes(dag, {c}, {b});
+      CHECK(result.exists(b));
+      CHECK(result.exists(c));
+      CHECK(!result.exists(a));
+    }
+
+    // V-structure A→B←C — B not observed: A and C d-separated (collider blocked).
+    static void testGenericColliderBlocked() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(c, b);
+
+      // query = {a}: upward from a → no parents; downward to b (from_child=false).
+      // b has no evidence → downward path blocked at collider.
+      gum::NodeSet result = gum::graph::dConnected(dag, {a});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));   // b visited (from parent), added by CollectAll
+      CHECK(!result.exists(c));  // c never activated: collider with no evidence
+    }
+
+    // V-structure A→B←C — B soft evidence: collider activated, C reachable.
+    static void testGenericColliderSoftEvidence() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(c, b);
+
+      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {}, {b});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));
+      CHECK(result.exists(c));   // c reached via collider activation
+    }
+
+    // V-structure A→B←C — B hard evidence: collider activated, C reachable.
+    static void testGenericColliderHardEvidence() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(c, b);
+
+      // hard evidence on b: from_child=false path, is_hard=true → upward propagation to parents
+      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {b});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));
+      CHECK(result.exists(c));
+    }
+
+    // Fork A←B→C — B hard evidence: A and C d-separated.
+    static void testGenericForkHardEvidenceBlocks() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(b, a);
+      dag.addArc(b, c);
+
+      // query={a}: upward → b (hard evidence, continue path), so c unreachable
+      gum::NodeSet result = gum::graph::dConnected(dag, {a}, {b});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));   // b visited from child, added by CollectAll before continue
+      CHECK(!result.exists(c));
+    }
+
+    // Fork A←B→C — no evidence: all three reachable.
+    static void testGenericForkNoEvidence() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(b, a);
+      dag.addArc(b, c);
+
+      gum::NodeSet result = gum::graph::dConnected(dag, {a});
+      CHECK(result.exists(a));
+      CHECK(result.exists(b));
+      CHECK(result.exists(c));
+    }
+
+    // dConnected vs requisiteNodes: different CollectAll semantics.
+    // Chain A→B→C, query={a}, no evidence.
+    // dConnected collects all visited; requisiteNodes only upward visits + activated colliders.
+    static void testGenericDConnectedVsRequisite() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      auto     b = dag.addNode();
+      auto     c = dag.addNode();
+      dag.addArc(a, b);
+      dag.addArc(b, c);
+
+      auto dc  = gum::graph::dConnected(dag, {a});
+      auto req = gum::graph::requisiteNodes(dag, {a});
+
+      // Both reachable from a; dConnected includes b and c (downward visits counted)
+      CHECK(dc.exists(a));
+      CHECK(dc.exists(b));
+      CHECK(dc.exists(c));
+
+      // requisiteNodes: a is requisite (queried); b and c are visited from parent
+      // (from_child=false), not from child, so not added unless evidence activates collider.
+      // In a chain with no evidence, b and c are NOT upward-visited from a's perspective.
+      CHECK(req.exists(a));
+      CHECK(!req.exists(b));
+      CHECK(!req.exists(c));
+    }
+
+    // Empty query: result must be empty.
+    static void testGenericEmptyQuery() {
+      gum::DAG dag;
+      auto     a = dag.addNode();
+      dag.addNode();
+      dag.addArc(a, dag.addNode());
+
+      CHECK(gum::graph::requisiteNodes(dag, {}).empty());
+      CHECK(gum::graph::dConnected(dag, {}).empty());
+    }
+
+    // --- Original tests ---
+
     static void testRequisiteNodes() {
       gum::SimpleBayesNetGenerator< double > gen(50, 200, 2);
       gum::BayesNet< double >                bn;
@@ -153,6 +309,15 @@ namespace gum_tests {
     }
   };
 
+  GUM_TEST_ACTIF(GenericChainNoEvidence)
+  GUM_TEST_ACTIF(GenericChainHardEvidence)
+  GUM_TEST_ACTIF(GenericColliderBlocked)
+  GUM_TEST_ACTIF(GenericColliderSoftEvidence)
+  GUM_TEST_ACTIF(GenericColliderHardEvidence)
+  GUM_TEST_ACTIF(GenericForkHardEvidenceBlocks)
+  GUM_TEST_ACTIF(GenericForkNoEvidence)
+  GUM_TEST_ACTIF(GenericDConnectedVsRequisite)
+  GUM_TEST_ACTIF(GenericEmptyQuery)
   GUM_TEST_ACTIF(RequisiteNodes)
   GUM_TEST_ACTIF(RelevantTensors)
   GUM_TEST_ACTIF(RelevantScheduleMultiDims)
