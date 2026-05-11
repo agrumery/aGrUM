@@ -813,23 +813,19 @@ class TestScore(BayesNetTestCase):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     precision = bvb.GraphicalBNComparator(true_bn, bn).scores()["precision"]
-    self.assertEqual(1.0 / 3.0, precision)
+    self.assertEqual(2.0 / 3.0, precision)
 
   def testRecall(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     recall = bvb.GraphicalBNComparator(true_bn, bn).scores()["recall"]
-    # New semantic: misoriented arcs (B->C reversed to C->B in bn) are counted
-    # once via the misoriented_arc counter (included in fp only), not double-
-    # counted as both fn and fp like in the previous Python implementation.
     self.assertEqual(1.0, recall)
 
   def testFscore(self):
     true_bn = gum.fastBN("A->B->C")
     bn = gum.fastBN("A->B;C->B;A->C")
     fscore = bvb.GraphicalBNComparator(true_bn, bn).scores()["fscore"]
-    # Updated to match the new misoriented-arc convention (see testRecall).
-    self.assertEqual(0.5, fscore)
+    self.assertEqual(0.8, fscore)
 
   def testSID(self):
     true_bn = gum.fastBN("A->B->C")

@@ -44,7 +44,6 @@ The purpose of this module is to provide tools for comaring different BNs.
 
 import os
 import math
-from itertools import product, combinations
 
 import pydot as dot
 
@@ -186,22 +185,6 @@ class GraphicalBNComparator:
         return res
     return "OK"
 
-  def _bn2_aligned_with_bn1_ids(self):
-    """
-    Return a BayesNet with self._bn1's variables and NodeIds, but self._bn2's
-    arc structure. Used to align NodeIds before delegating structural comparisons
-    to pyagrum.StructuralMetrics, since aGrUM C++ comparisons match nodes by ID,
-    not by name.
-    """
-    aligned = pyagrum.BayesNet()
-    for nid in self._bn1.nodes():
-      aligned.add(self._bn1.variable(nid), nid)
-    for tail, head in self._bn2.arcs():
-      ttail = self._bn1.idFromName(self._bn2.variable(tail).name())
-      thead = self._bn1.idFromName(self._bn2.variable(head).name())
-      aligned.addArc(ttail, thead)
-    return aligned
-
   def equivalentBNs(self) -> str:
     """
     Check if the 2 BNs are equivalent :
@@ -261,18 +244,16 @@ class GraphicalBNComparator:
 
     Note
     ----
-    Now delegates to pyagrum.StructuralMetrics (aGrUM C++). The skeleton metrics
-    are independent of orientation, so the values match the previous Python
-    implementation exactly.
+    Delegates to pyagrum.StructuralMetrics (aGrUM C++): comparison runs on the
+    essential graphs of the two BNs, with nodes matched by variable name.
 
     Returns
     -------
     dict[str,double]
       A dictionnary containing 'precision', 'recall', 'fscore', 'dist2opt' and so on.
     """
-    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
     comp = pyagrum.StructuralMetrics()
-    comp.compare(self._bn1.dag(), aligned_bn2.dag())
+    comp.compare(self._bn1, self._bn2)
 
     count = {
       "tp": int(comp.tp_skeleton()),
@@ -311,9 +292,9 @@ class GraphicalBNComparator:
 
     Note
     ----
-    The metrics are now computed by pyagrum.StructuralMetrics (aGrUM C++).
-    Misoriented arcs are counted once (in fp, not in fn) instead of being
-    double-counted as both a missing arc and an extra arc.
+    Delegates to pyagrum.StructuralMetrics (aGrUM C++): comparison runs on the
+    essential graphs of the two BNs, SID on their DAGs, with nodes matched by
+    variable name. Misoriented arcs are counted once (in fp, not in fn).
 
     Returns
     -------
@@ -321,9 +302,8 @@ class GraphicalBNComparator:
       A dictionary containing 'count', 'precision', 'recall', 'fscore',
       'dist2opt', 'sid'.
     """
-    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
     comp = pyagrum.StructuralMetrics()
-    comp.compare(self._bn1.dag(), aligned_bn2.dag())
+    comp.compare(self._bn1, self._bn2)
 
     count = {
       "tp": int(comp.tp()),
@@ -341,7 +321,7 @@ class GraphicalBNComparator:
       "precision": precision,
       "fscore": fscore,
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
-      "sid": int(comp.sid(self._bn1.dag(), aligned_bn2.dag())),
+      "sid": int(comp.sid(self._bn1, self._bn2)),
     }
 
   def hamming(self) -> dict[float, float]:
@@ -354,22 +334,16 @@ class GraphicalBNComparator:
 
     Note
     ----
-    Now delegates to pyagrum.StructuralMetrics (aGrUM C++). The essential graphs
-    (CPDAGs) are still built in Python via pyagrum.EssentialGraph (since the
-    BayesNet overload of compare is not exposed via SWIG), then the actual
-    counting happens in C++ via compare(PDAG, PDAG).
+    Delegates to pyagrum.StructuralMetrics.compare(BN, BN) which aligns nodes
+    by variable name and compares the essential graphs (CPDAGs) in C++.
 
     Returns
     -------
     dict[str,int]
       A dictionary containing PURE_HAMMING and STRUCTURAL_HAMMING.
     """
-    aligned_bn2 = self._bn2_aligned_with_bn1_ids()
-    cpdag1 = pyagrum.EssentialGraph(self._bn1).pdag()
-    cpdag2 = pyagrum.EssentialGraph(aligned_bn2).pdag()
-
     comp = pyagrum.StructuralMetrics()
-    comp.compare(cpdag1, cpdag2)
+    comp.compare(self._bn1, self._bn2)
     return {
       PURE_HAMMING: int(comp.shd_skeleton()),
       STRUCTURAL_HAMMING: int(comp.shd()),
