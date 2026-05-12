@@ -77,9 +77,9 @@ namespace gum {
   }
 
   NodeGraphPart::NodeGraphPart(NodeGraphPart&& s) :
-      _holes_(s._holes_), _holes_size_(s._holes_size_),
+      _holes_(s._holes_), _names_(std::move(s._names_)), _holes_size_(s._holes_size_),
       _holes_resize_policy_(s._holes_resize_policy_), _endIteratorSafe_(*this),
-      _boundVal_(s._boundVal_), _names_(std::move(s._names_)) {
+      _boundVal_(s._boundVal_) {
     s._holes_    = nullptr;
     s._boundVal_ = 0;
 
@@ -152,10 +152,8 @@ namespace gum {
         s << ",";
       }
 
-      if (hasNames && _names_->existsFirst(id))
-        s << id << "<" << _names_->second(id) << ">";
-      else
-        s << id;
+      if (hasNames && _names_->existsFirst(id)) s << id << "<" << _names_->second(id) << ">";
+      else s << id;
     }
 
     s << "}";
@@ -178,7 +176,8 @@ namespace gum {
     if (_names_) {
       auto owner = _names_->tryFirst(name);
       if (owner.has_value()) {
-        if (*owner != id) GUM_ERROR(DuplicateElement, "name '" << name << "' already used by node " << *owner)
+        if (*owner != id)
+          GUM_ERROR(DuplicateElement, "name '" << name << "' already used by node " << *owner)
         return;
       }
       if (_names_->existsFirst(id)) _names_->eraseFirst(id);
@@ -194,15 +193,17 @@ namespace gum {
     if (!hasName(id)) return "";
     const std::string& name = _names_->second(id);
     std::string        result;
-    result.reserve(name.size() + 10);
+    result.reserve(name.size() + 20);
     result = " [label=\"";
-    for (char c: name) {
+    result += std::to_string(id);
+    result += ':';
+    for (const char c: name) {
       switch (c) {
-        case '"':  result += "\\\""; break;
-        case '\\': result += "\\\\"; break;
-        case '\n': result += "\\n";  break;
-        case '\r': result += "\\r";  break;
-        default:   result += c;
+        case '"' : result += "\\\""; break;
+        case '\\' : result += "\\\\"; break;
+        case '\n' : result += "\\n"; break;
+        case '\r' : result += "\\r"; break;
+        default : result += c;
       }
     }
     result += "\"]";

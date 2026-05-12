@@ -285,7 +285,6 @@ class TestGraph(pyAgrumTestCase):
       np.array_equal(mg.adjacencyMatrix(), np.array([[0, 1, 0, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]]))
     )
 
-
   def testNodeNames(self):
     for g in (gum.DiGraph(), gum.UndiGraph(), gum.DAG(), gum.MixedGraph()):
       g.addNodes(3)
@@ -336,19 +335,19 @@ class TestGraph(pyAgrumTestCase):
     g.addArc(1, 2)
 
     dot = g.toDot()
-    self.assertIn('0 [label="alpha"]', dot)
-    self.assertIn('2 [label="ga\\"mm\\\\a"]', dot)
-    self.assertNotIn('1 [label=', dot)
-    self.assertIn('0 -> 1', dot)
-    self.assertIn('1 -> 2', dot)
+    self.assertIn('0 [label="0:alpha"]', dot)
+    self.assertIn('2 [label="2:ga\\"mm\\\\a"]', dot)
+    self.assertNotIn("1 [label=", dot)
+    self.assertIn("0 -> 1", dot)
+    self.assertIn("1 -> 2", dot)
 
     u = gum.UndiGraph()
     u.addNodes(3)
     u.setName(1, "beta")
     u.addEdge(0, 1)
     dot = u.toDot()
-    self.assertIn('1 [label="beta"]', dot)
-    self.assertNotIn('0 [label=', dot)
+    self.assertIn('1 [label="1:beta"]', dot)
+    self.assertNotIn("0 [label=", dot)
 
 
 ts = unittest.TestSuite()

@@ -548,9 +548,7 @@ namespace gum {
     _require_elimination_order_ = true;
   }
 
-  /// checks that the incremental triangulation works properly
-
-  bool IncrementalTriangulation::_check_() {
+  bool IncrementalTriangulation::checkConsistency() {
     // just in case, update everything
     updateTriangulation();
 

@@ -54,12 +54,6 @@
 
 #include <agrum/base/graphs/algorithms/triangulations/unconstrainedTriangulation.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-namespace gum_tests {
-  class IncrementalTriangulationTestSuite;
-}
-#endif
-
 namespace gum {
 
   /** @class IncrementalTriangulation
@@ -185,6 +179,9 @@ namespace gum {
     /// virtual copy constructor
     virtual IncrementalTriangulation* copyFactory() const final;
 
+    /// checks that the incremental triangulation is consistent
+    bool checkConsistency();
+
     /// @}
 
 
@@ -280,11 +277,6 @@ namespace gum {
     /// a collect algorithm to compute, for each node, one container JT's clique
     void _collectJTCliques_(const NodeId clique, const NodeId from, NodeProperty< bool >& examined);
 
-    /// checks that the incremental triangulation works properly
-    bool _check_();
-
-    /// to enable testunits to use  _check_
-    friend class gum_tests::IncrementalTriangulationTestSuite;
   };
 
 } /* namespace gum */

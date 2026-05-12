@@ -58,15 +58,6 @@
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/graphs/graphElements.h>
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-namespace gum_tests {
-
-  class NodeGraphPartTestSuite;
-}
-
-#endif
-
 namespace gum {
 
   class NodeGraphPart;
@@ -98,7 +89,7 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    NodeGraphPartIterator(const NodeGraphPart& nodes) noexcept;
+    explicit NodeGraphPartIterator(const NodeGraphPart& nodes) noexcept;
 
     /// copy constructor
     NodeGraphPartIterator(const NodeGraphPartIterator& it) noexcept;
@@ -176,7 +167,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    NodeGraphPartIteratorSafe(const NodeGraphPart& nodes);
+    explicit NodeGraphPartIteratorSafe(const NodeGraphPart& nodes);
 
     /// copy constructor
     NodeGraphPartIteratorSafe(const NodeGraphPartIteratorSafe& it);
@@ -185,7 +176,7 @@ namespace gum {
     NodeGraphPartIteratorSafe(NodeGraphPartIteratorSafe&& it);
 
     /// destructor
-    ~NodeGraphPartIteratorSafe();
+    ~NodeGraphPartIteratorSafe() final;
 
     /// @}
 
@@ -498,10 +489,6 @@ namespace gum {
     private:
     friend class NodeGraphPartIterator;
     friend class NodeGraphPartIteratorSafe;
-
-    /// to enable testunits to use  _check_
-
-    friend class gum_tests::NodeGraphPartTestSuite;
 
     /// updating endIterator (always at  _max_+1)
     void _updateEndIteratorSafe_();

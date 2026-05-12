@@ -677,8 +677,8 @@ namespace gum_tests {
 
       std::string dot = g.toDot();
 
-      CHECK(dot.find("0 [label=\"alpha\"]") != std::string::npos);
-      CHECK(dot.find("2 [label=\"ga\\\"mm\\\\a\"]") != std::string::npos);
+      CHECK(dot.find("0 [label=\"0:alpha\"]") != std::string::npos);
+      CHECK(dot.find("2 [label=\"2:ga\\\"mm\\\\a\"]") != std::string::npos);
       CHECK(dot.find("1 [label=") == std::string::npos);
     }
   };

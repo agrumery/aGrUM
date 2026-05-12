@@ -103,11 +103,11 @@ namespace gum_tests {
     static void testAdd2() {
       gum::NodeGraphPart ngp;
       ngp.addNodeWithId(gum::NodeId(3));
-      CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(3));
+      CHECK_EQ(ngp.bound() - ngp.size(), static_cast< gum::Size >(3));
       ngp.addNodeWithId(gum::NodeId(2));
       ngp.addNodeWithId(gum::NodeId(1));
       ngp.addNodeWithId(gum::NodeId(0));
-      CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));
+      CHECK_EQ(ngp.bound() - ngp.size(), static_cast< gum::Size >(0));
 
       gum::NodeGraphPart ngp2;
       ngp2.addNodeWithId(gum::NodeId(0));
@@ -123,15 +123,15 @@ namespace gum_tests {
       ngp.addNode();
       ngp.addNode();
       _ForTestCopy_(ngp);
-      CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));
+      CHECK_EQ(ngp.bound() - ngp.size(), static_cast< gum::Size >(0));
       gum::NodeId id3 = ngp.addNode();
       gum::NodeId id4 = ngp.addNode();
       ngp.eraseNode(id3);
       _ForTestCopy_(ngp);
-      CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(1));
+      CHECK_EQ(ngp.bound() - ngp.size(), static_cast< gum::Size >(1));
       ngp.eraseNode(id4);
       _ForTestCopy_(ngp);
-      CHECK_EQ(ngp._sizeHoles_(), static_cast< gum::Size >(0));   // 2 last hole has vanished
+      CHECK_EQ(ngp.bound() - ngp.size(), static_cast< gum::Size >(0));   // 2 last hole has vanished
     }
 
     static void testInsertionForcee() {
@@ -145,44 +145,53 @@ namespace gum_tests {
       gum::NodeId        g = 7;
 
       ngp.addNodeWithId(c);
-      CHECK(ngp._inHoles_(a));
-      CHECK(ngp._inHoles_(b));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(3)));
+      CHECK_LT(a, ngp.bound());
+      CHECK(!ngp.existsNode(a));
+      CHECK_LT(b, ngp.bound());
+      CHECK(!ngp.existsNode(b));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(3)));
       CHECK_EQ(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(a);
-      CHECK(ngp._inHoles_(b));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(2)));
+      CHECK_LT(b, ngp.bound());
+      CHECK(!ngp.existsNode(b));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(2)));
       CHECK_EQ(ngp.bound(), c + 1);
 
       ngp.addNodeWithId(f);
-      CHECK(ngp._inHoles_(b));
-      CHECK(ngp._inHoles_(d));
-      CHECK(ngp._inHoles_(e));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(4)));
+      CHECK_LT(b, ngp.bound());
+      CHECK(!ngp.existsNode(b));
+      CHECK_LT(d, ngp.bound());
+      CHECK(!ngp.existsNode(d));
+      CHECK_LT(e, ngp.bound());
+      CHECK(!ngp.existsNode(e));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(4)));
       CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(e);
-      CHECK(ngp._inHoles_(b));
-      CHECK(ngp._inHoles_(d));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(3)));
+      CHECK_LT(b, ngp.bound());
+      CHECK(!ngp.existsNode(b));
+      CHECK_LT(d, ngp.bound());
+      CHECK(!ngp.existsNode(d));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(3)));
       CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(b);
-      CHECK(ngp._inHoles_(d));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(2)));
+      CHECK_LT(d, ngp.bound());
+      CHECK(!ngp.existsNode(d));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(2)));
       CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(d);
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(1)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(1)));
       CHECK_EQ(ngp.bound(), f + 1);
 
       ngp.addNodeWithId(g);
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(1)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(1)));
       CHECK_EQ(ngp.bound(), g + 1);
 
       ngp.addNodeWithId(gum::NodeId(0));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(0)));
       CHECK_EQ(ngp.bound(), g + 1);
 
       CHECK_THROWS_AS(ngp.addNodeWithId(f), const gum::DuplicateElement&);
@@ -193,14 +202,14 @@ namespace gum_tests {
       gum::NodeId        node = 6;
 
       CHECK_EQ(ngp.bound(), (gum::NodeId)(0));
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(0)));
       CHECK_EQ(ngp.nextNodeId(), (static_cast< gum::Size >(0)));
       ngp.addNodeWithId(node);
       CHECK_EQ(ngp.bound(), (gum::NodeId)(node + 1));
-      CHECK_EQ(ngp._sizeHoles_(), (gum::Size(node)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (gum::Size(node)));
       CHECK(ngp.nextNodeId() < node);   // we fill one of the holes
       ngp.eraseNode(node);
-      CHECK_EQ(ngp._sizeHoles_(), (static_cast< gum::Size >(0)));
+      CHECK_EQ(ngp.bound() - ngp.size(), (static_cast< gum::Size >(0)));
       CHECK_EQ(ngp.nextNodeId(), (static_cast< gum::Size >(0)));
       CHECK_EQ(ngp.bound(), (gum::NodeId)(0));
 
@@ -209,17 +218,17 @@ namespace gum_tests {
       ngp2.addNodeWithId(node);
 
       for (gum::Size i = 1; i < node; i++) {
-        CHECK_EQ(ngp2._sizeHoles_(), (gum::Size(node) + 1 - i));
+        CHECK_EQ(ngp2.bound() - ngp2.size(), (gum::Size(node) + 1 - i));
         CHECK(ngp2.addNode() < node);
       }
 
-      CHECK_EQ(ngp2._sizeHoles_(), static_cast< gum::Size >(1));
+      CHECK_EQ(ngp2.bound() - ngp2.size(), static_cast< gum::Size >(1));
 
       CHECK_EQ(ngp2.nextNodeId(), gum::NodeId(node - 1));
 
       ngp2.addNode();
 
-      CHECK_EQ(ngp2._sizeHoles_(), static_cast< gum::Size >(0));
+      CHECK_EQ(ngp2.bound() - ngp2.size(), static_cast< gum::Size >(0));
       CHECK_EQ(ngp2.nextNodeId(), gum::NodeId(node + 1));
     }
 
