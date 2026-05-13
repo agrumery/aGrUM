@@ -42,6 +42,11 @@
 tools for BN analysis in ipython (and spyder)
 """
 
+import base64
+import os
+import sys
+
+import IPython
 import IPython.display
 import matplotlib as mpl
 import matplotlib.colors
@@ -49,15 +54,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pydot as dot
 
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 from IPython.display import Image, display
 
 import pyagrum
 from pyagrum.lib.bn2graph import BN2dot
+from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot
-from pyagrum.lib.mrf2graph import MRF2FactorGraphdot
+from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
 from pyagrum.lib.bn_vs_bn import GraphicalBNComparator
-from pyagrum.lib.proba_histogram import proba2histo
+from pyagrum.lib.utils import setDarkTheme
+import pyagrum.lib._colors as gumcols
+from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
+from pyagrum.lib.image import prepareShowInference
+from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
 
 # check if an instance of ipython exists
 try:
@@ -66,6 +76,29 @@ except NameError:
   raise ImportError(
     "[pyAgrum ERROR] pyagrum.lib.ipython has to be imported from an IPython's instance (mainly ipython's console)."
   ) from None
+
+# SVG is not reliably supported outside Jupyter notebooks — force PNG for all rendering
+pyagrum.config["notebook", "graph_format"] = "png"
+
+# ipython console is typically dark-background
+setDarkTheme()
+
+
+def _inline_png_render(data, metadata: dict | None = None) -> None:
+  """Display PNG inline using iTerm2 protocol (no ACK response, no console garbage)."""
+  if isinstance(data, bytes):
+    b64 = base64.b64encode(data).decode("ascii")
+  else:
+    b64 = data  # already base64-encoded string
+  sys.stdout.write(f"\033]1337;File=inline=1;preserveAspectRatio=1:{b64}\007")
+  sys.stdout.flush()
+
+
+# Replace any image/png renderer IPython installed (Kitty/iTerm2 renderers produce ACK garbage)
+_ip = get_ipython()
+if hasattr(_ip, "mime_renderers") and "image/png" in _ip.mime_renderers:
+  _ip.mime_renderers["image/png"] = _inline_png_render
+del _ip
 
 
 def configuration() -> None:
@@ -90,7 +123,7 @@ def configuration() -> None:
 
 def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   """
-  show a pydot graph in a notebook
+  show a pydot graph in ipython
 
   Parameters
   ----------
@@ -102,8 +135,8 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
 
-  gr.set_size(size)
-  display(Image(gr.create_png()))
+  gumcols.prepareDot(gr, size=size)
+  display(Image(data=gr.create_png(), format="png"))
 
 
 def _from_dotstring(dotstring: str) -> dot.Dot:
@@ -121,7 +154,7 @@ def showDot(dotstring: str, size: float | str | None = None) -> None:
   dotstring: str
     the dot string
   size: float | str
-    the size of the graphe
+    the size of the graph
   """
   showGraph(_from_dotstring(dotstring), size)
 
@@ -150,6 +183,40 @@ def showBNDiff(bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str |
   showGraph(cmp.dotDiff(), size)
 
 
+def showJunctionTreeMap(
+  bn: pyagrum.BayesNet,
+  size: str | None = None,
+  scaleClique: float | None = None,
+  scaleSep: float | None = None,
+  lenEdge: float | None = None,
+  colorClique: str | None = None,
+  colorSep: str | None = None,
+) -> None:
+  """
+  Show the map of the junction tree of a Bayesian network.
+
+  Parameters
+  ----------
+  bn: pyagrum.BayesNet
+    the model
+  size: str, optional
+    size (for graphviz) of the rendered graph
+  scaleClique: float, optional
+    scale for the size of the clique nodes
+  scaleSep: float, optional
+    scale for the size of the separator nodes
+  lenEdge: float, optional
+    desired length of edges
+  colorClique: str, optional
+    color for the clique nodes
+  colorSep: str, optional
+    color for the separator nodes
+  """
+  if size is None:
+    size = pyagrum.config["notebook", "junctiontree_map_size"]
+  showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
+
+
 def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> None:
   """
   Show a junction tree.
@@ -163,12 +230,114 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
   size : int or str, optional
       Size of the rendered graph.
   """
-  jtg = pyagrum.JunctionTreeGenerator()
-  jt = jtg.junctionTree(bn)
-  if withNames:
-    return showDot(jt.toDotWithNames(bn), size)
-  else:
-    return showDot(jt.toDot(), size)
+  if size is None:
+    size = pyagrum.config["notebook", "default_graph_size"]
+  showDot(_junctionTreeDotStr(bn, withNames), size)
+
+
+def showProba(p: pyagrum.Tensor, scale: float = 1.0) -> None:
+  """
+  Show a mono-dim Tensor.
+
+  Parameters
+  ----------
+  p : pyagrum.Tensor
+      The mono-dim Tensor.
+  scale : float, optional
+      Scale factor.
+  """
+  _ = proba2histo(p, scale)
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  plt.show()
+
+
+def showProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.0) -> None:
+  """
+  Show a bi-Tensor (min, max).
+
+  Parameters
+  ----------
+  pmin: pyagrum.Tensor
+    the min marginal to show
+  pmax: pyagrum.Tensor
+    the max marginal to show
+  scale: float
+    the zoom factor
+  """
+  _ = probaMinMaxH(pmin, pmax, scale)
+  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  plt.show()
+
+
+def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
+  """
+  Shortcut for showProba(pyagrum.getPosterior(bn, evs, target)).
+
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet
+      The Bayesian network.
+  evs : dict
+      Map of evidence.
+  target : str or int
+      Name or id of target variable.
+  """
+  showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
+
+
+def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
+  """
+  Show an animated version of an approximation algorithm.
+
+  Parameters
+  ----------
+  apsc: pyagrum.ApproximationScheme
+    the approximation algorithm
+  scale: callable
+    a function to apply to the history values
+  """
+  f = plt.gcf()
+
+  h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
+  apsc.setVerbosity(True)
+  apsc.listener = h
+
+  def stopper(x):
+    IPython.display.clear_output(True)
+    plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
+
+  def progresser(x, y, z):
+    if len(apsc.history()) < 10:
+      plt.xlim(1, 10)
+    else:
+      plt.xlim(1, len(apsc.history()))
+    plt.plot(scale(apsc.history()), "g")
+    IPython.display.clear_output(True)
+    IPython.display.display(f)
+
+  h.setWhenStop(stopper)
+  h.setWhenProgress(progresser)
+
+
+def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
+  """
+  Show the state of an approximation algorithm.
+
+  Parameters
+  ----------
+  apsc: pyagrum.ApproximationScheme
+    the approximation algorithm
+  scale: callable
+    a function to apply to the history values
+  """
+  if apsc.verbosity():
+    set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+    if len(apsc.history()) < 10:
+      plt.xlim(1, 10)
+    else:
+      plt.xlim(1, len(apsc.history()))
+    plt.title(f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
+    plt.plot(scale(apsc.history()), "g")
 
 
 def showBN(
@@ -193,8 +362,12 @@ def showBN(
       A nodeMap of values to be shown as color nodes.
   arcWidth : dict, optional
       A arcMap of values to be shown as bold arcs.
+  arcColor : dict, optional
+      A arcMap of values to be shown as color of arcs.
   cmap : matplotlib.colors.Colormap, optional
       Color map to show the node values.
+  cmapArc : matplotlib.colors.Colormap, optional
+      Color map to show the arc values.
   """
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
@@ -202,40 +375,60 @@ def showBN(
   if cmapArc is None:
     cmapArc = cmap
 
-  return showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
+  showGraph(BN2dot(bn, size, nodeColor, arcWidth, arcColor, cmap, cmapArc), size)
 
 
-def showProba(p: pyagrum.Tensor, scale: float = 1.0) -> None:
+def showCN(
+  cn: pyagrum.CredalNet,
+  size: float | str | None = None,
+  nodeColor=None,
+  arcWidth=None,
+  arcLabel=None,
+  arcColor=None,
+  cmapNode=None,
+  cmapArc=None,
+) -> None:
   """
-  Show a mono-dim Tensor.
+  Show a credal network.
 
   Parameters
   ----------
-  p : pyagrum.Tensor
-      The mono-dim Tensor.
-  scale : float, optional
-      Scale factor.
+  cn : pyagrum.CredalNet
+    the Credal network
+  size: str, optional
+    size (for graphviz) of the rendered graph
+  nodeColor: dict[int,float], optional
+    a nodeMap of values to be shown as color nodes
+  arcWidth: dict[tuple,float], optional
+    an arcMap of values to be shown as bold arcs
+  arcLabel: dict[tuple,float], optional
+    an arcMap of labels to be shown next to arcs
+  arcColor: dict[tuple,float], optional
+    an arcMap of values to be shown as color of arcs
+  cmapNode: matplotlib.colors.Colormap, optional
+    color map to show the vals of nodes
+  cmapArc: matplotlib.colors.Colormap, optional
+    color map to show the vals of arcs
   """
-  _ = proba2histo(p, scale)
-  #  fig.patch.set_facecolor(pyagrum.config["notebook", "figure_facecolor"])
-  IPython.display.set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
-  plt.show()
+  if size is None:
+    size = pyagrum.config["notebook", "default_graph_size"]
 
+  if cmapArc is None:
+    cmapArc = cmapNode
 
-def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
-  """
-  Shortcut for showProba(pyagrum.getPosterior(bn, evs, target)).
-
-  Parameters
-  ----------
-  bn : pyagrum.BayesNet
-      The Bayesian network.
-  evs : dict
-      Map of evidence.
-  target : str
-      Name of target variable.
-  """
-  showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
+  showGraph(
+    CN2dot(
+      cn,
+      size=size,
+      nodeColor=nodeColor,
+      arcWidth=arcWidth,
+      arcLabel=arcLabel,
+      arcColor=arcColor,
+      cmapNode=cmapNode,
+      cmapArc=cmapArc,
+    ),
+    size,
+  )
 
 
 def showMRF(
@@ -257,27 +450,22 @@ def showMRF(
   mrf : pyagrum.MarkovRandomField
       The Markov random field.
   view : str, optional
-      ‘graph’ | ‘factorgraph’ | None (default).
+      'graph' | 'factorgraph' | None (default).
   size : int or str, optional
       Size of the rendered graph.
   nodeColor : dict, optional
       A nodeMap of values (between 0 and 1) to be shown as color of nodes.
   factorColor : callable, optional
-      A function returning a value (between 0 and 1) to be shown as a color of factor.
-      Used when view=’factorgraph’.
+      A function returning a value (between 0 and 1) for factor color.
+      Used when view='factorgraph'.
   edgeWidth : dict, optional
-      A edgeMap of values to be shown as width of edges. Used when view=’graph’.
+      A edgeMap of values to be shown as width of edges. Used when view='graph'.
   edgeColor : dict, optional
-      A edgeMap of values (between 0 and 1) to be shown as color of edges. Used when view=’graph’.
+      A edgeMap of values (between 0 and 1) to be shown as color of edges. Used when view='graph'.
   cmap : matplotlib.colors.Colormap, optional
       Color map to show the node colors.
   cmapEdge : matplotlib.colors.Colormap, optional
-      Color map to show the edge color if distinction is needed.
-
-  Returns
-  -------
-  pydot.Dot
-      The graph.
+      Color map to show the edge colors.
   """
   if view is None:
     view = pyagrum.config["notebook", "default_markovrandomfield_view"]
@@ -293,7 +481,7 @@ def showMRF(
   else:
     dottxt = MRF2FactorGraphdot(mrf, size, nodeColor, factorColor, cmapNode=cmap)
 
-  return showGraph(dottxt, size)
+  showGraph(dottxt, size)
 
 
 def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None = None) -> None:
@@ -306,46 +494,85 @@ def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | Non
       The influence diagram.
   size : int or str, optional
       Size of the rendered graph.
-
-  Returns
-  -------
-  pydot.Dot
-      The representation of the influence diagram.
   """
   if size is None:
     size = pyagrum.config["influenceDiagram", "default_id_size"]
 
-  return showGraph(ID2dot(diag), size)
+  showGraph(ID2dot(diag), size)
 
 
-def showInference(
-  model,
-  engine=None,
-  evs=None,
-  targets=None,
-  size=None,
-  nodeColor=None,
-  factorColor=None,
-  arcWidth=None,
-  arcColor=None,
-  cmap=None,
-  cmapArc=None,
-  graph=None,
-  view=None,
-) -> None:
-  import warnings
+def showCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) -> None:
+  """
+  Show a causal model.
 
-  warnings.warn(
-    "pyagrum.lib.ipython does not provide `showInference` due to the use of svg format (not compatible with spyder)."
-  )
+  Parameters
+  ----------
+  cm: pyagrum.CausalModel
+    the causal model
+  size: int|str, optional
+    the size of the rendered graph
+  """
+  if size is None:
+    size = pyagrum.config["causal", "default_graph_size"]
+  showDot(cm.toDot(), size=size)
+
+
+def showInference(model: pyagrum.PGM, **kwargs) -> None:
+  """
+  Show a graphical model with inference results (histograms in nodes).
+
+  Parameters
+  ----------
+  model: pyagrum.GraphicalModel
+    the model in which to infer (BayesNet, MarkovRandomField or InfluenceDiagram)
+  engine: pyagrum.Inference, optional
+    inference algorithm. If None, LazyPropagation used for BayesNet.
+  evs: dict, optional
+    map of evidence
+  targets: set, optional
+    set of targets
+  size: str, optional
+    size (for graphviz) of the rendered graph
+  nodeColor: dict, optional
+    nodeMap of values (0–1) shown as node colors
+  arcWidth: dict, optional
+    arcMap of values shown as arc widths
+  arcColor: dict, optional
+    arcMap of values (0–1) shown as arc colors
+  cmap: matplotlib.colors.Colormap, optional
+    color map for nodes
+  cmapArc: matplotlib.colors.Colormap, optional
+    color map for arcs
+  graph: pyagrum.Graph, optional
+    restrict display to nodes in this graph
+  view: str, optional
+    'graph' | 'factorgraph' | None for MarkovRandomField
+  """
+  size = kwargs.get("size", pyagrum.config["notebook", "default_graph_inference_size"])
+  showGraph(prepareShowInference(model, **kwargs), size)
 
 
 def showTensor(p: pyagrum.Tensor) -> None:
   print(p)
 
 
+def showCPTs(bn: pyagrum.BayesNet) -> None:
+  """
+  Show all CPTs of a Bayesian network.
+
+  Parameters
+  ----------
+  bn: pyagrum.BayesNet
+    the Bayesian network
+  """
+  for name in bn.names():
+    print(f"P({name} | ...)")
+    showTensor(bn.cpt(name))
+    print()
+
+
 def show(
-  model: pyagrum.GraphicalModel | pyagrum.Tensor,
+  model,
   size: float | str | None = None,
 ) -> None:
   """
@@ -360,22 +587,19 @@ def show(
   """
   if isinstance(model, pyagrum.BayesNet):
     showBN(model, size)
+  elif isinstance(model, pyagrum.CredalNet):
+    showCN(model, size)
   elif isinstance(model, pyagrum.MarkovRandomField):
     showMRF(model, size)
   elif isinstance(model, pyagrum.InfluenceDiagram):
     showInfluenceDiagram(model, size)
+  elif isinstance(model, pyagrum.CausalModel):
+    showCausalModel(model, size)
+  elif isinstance(model, pyagrum.CliqueGraph):
+    showDot(model.toDot(), size)
   elif isinstance(model, pyagrum.Tensor):
     showTensor(model)
   else:
-    raise pyagrum.InvalidArgument("Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram")
-
-
-# check if an instance of ipython exists
-try:
-  get_ipython
-except NameError:
-  import warnings
-
-  warnings.warn("""
-  ** pyagrum.lib.notebook has to be import from an IPython's instance.
-  """)
+    raise pyagrum.InvalidArgument(
+      "Argument model should be a PGM (BayesNet, CredalNet, MarkovRandomField, InfluenceDiagram or CausalModel)"
+    )

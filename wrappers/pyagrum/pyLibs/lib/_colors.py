@@ -383,7 +383,15 @@ def prepareDot(dotgraph: dot.Dot, **kwargs) -> dot.Dot:
   for n in dotgraph.get_nodes():
     if n.get_color() is None:
       n.set_color(getBlackInTheme())
-    if n.get_fontcolor() is None:
+    fillcolor = n.get_fillcolor()
+    if fillcolor is not None:
+      fc = fillcolor.strip('"')
+      try:
+        r, g, b = hex2rgb(fc)
+        n.set_fontcolor(rgb2brightness(r, g, b))
+      except (ValueError, KeyError):
+        n.set_fontcolor(getBlackInTheme())
+    else:
       n.set_fontcolor(getBlackInTheme())
 
   return dotgraph

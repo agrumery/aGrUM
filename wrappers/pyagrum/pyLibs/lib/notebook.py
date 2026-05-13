@@ -73,6 +73,7 @@ from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
+from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
 
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
@@ -465,12 +466,9 @@ def getJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.JunctionTreeGenerator()
-  jt = jtg.junctionTree(bn)
-
   if size is None:
     size = pyagrum.config["notebook", "junctiontree_map_size"]
-  return getGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
+  return getGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
 def showJunctionTreeMap(
@@ -500,12 +498,9 @@ def showJunctionTreeMap(
   colorSep: str
     color for the separator nodes
   """
-  jtg = pyagrum.JunctionTreeGenerator()
-  jt = jtg.junctionTree(bn)
-
   if size is None:
     size = pyagrum.config["notebook", "junctiontree_map_size"]
-  showGraph(jt.map(scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
+  showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
 def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> None:
@@ -523,17 +518,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
   """
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
-
-  jtg = pyagrum.JunctionTreeGenerator()
-  jt = jtg.junctionTree(bn)
-
-  jt._engine = jtg
-  jtg._model = bn
-
-  if withNames:
-    showDot(jt.toDotWithNames(bn), size)
-  else:
-    showDot(jt.toDot(), size)
+  showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
 def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | str | None = None) -> str:
@@ -555,17 +540,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
   """
   if size is None:
     size = pyagrum.config["notebook", "junctiontree_graph_size"]
-
-  jtg = pyagrum.JunctionTreeGenerator()
-  jt = jtg.junctionTree(bn)
-
-  jt._engine = jtg
-  jtg._model = bn
-
-  if withNames:
-    return getDot(jt.toDotWithNames(bn), size)
-  else:
-    return getDot(jt.toDot(), size)
+  return getDot(_junctionTreeDotStr(bn, withNames), size)
 
 
 def showProba(p: pyagrum.Tensor, scale: float | None = None) -> None:
@@ -585,8 +560,7 @@ def showProba(p: pyagrum.Tensor, scale: float | None = None) -> None:
 
 
 def _getMatplotFig(fig: "mpl.figure.Figure") -> str:
-  bio = io.BytesIO()  # bytes buffer for the plot
-  # .canvas.print_png(bio)  # make a png of the plot in the buffer
+  bio = io.BytesIO()
   fig.savefig(bio, format="png", bbox_inches="tight")
 
   # encode the bytes as string using base 64
@@ -661,7 +635,7 @@ def getProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.
 
 def getPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> str:
   """
-  shortcut for proba2histo(pyagrum.getPosterior(bn,evs,target))
+  shortcut for getProba(pyagrum.getPosterior(bn,evs,target))
 
   Parameters
   ----------
@@ -674,11 +648,9 @@ def getPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> str:
 
   Returns
   ------
-    the matplotlib graph
+    the HTML representation of the posterior
   """
-  fig = proba2histo(pyagrum.getPosterior(bn, evs=evs, target=target))
-  plt.close()
-  return _getMatplotFig(fig)
+  return getProba(pyagrum.getPosterior(bn, evs=evs, target=target))
 
 
 def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
@@ -1432,13 +1404,6 @@ def __isKindOfProba(pot: pyagrum.Tensor) -> bool:
   return True
 
 
-def showPotential(
-  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
-) -> None:
-  warnings.warn("showPotential is deprecated since pyAgrum 2.0.0. Use showTensor instead", DeprecationWarning)
-  showTensor(pot, digits, withColors, varnames)
-
-
 def showTensor(
   pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
 ) -> None:
@@ -1465,13 +1430,6 @@ def showTensor(
 
   s = _reprTensor(pot, digits, withColors, varnames, asString=False)
   IPython.display.display(s)
-
-
-def getPotential(
-  pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
-) -> str:
-  warnings.warn("getPotential is deprecated since pyAgrum 2.0.0. Use getTensor instead", DeprecationWarning)
-  return getTensor(pot, digits, withColors, varnames)
 
 
 def getTensor(
@@ -1633,9 +1591,9 @@ def getInferenceEngine(ie, inferenceCaption: str) -> str:
   return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
-def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
+def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
   """
-  returns the representation of a junction tree as a HTML string
+  returns the pydot.Dot representation of a junction tree
 
   Parameters
   ----------
@@ -1646,8 +1604,8 @@ def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
 
   Returns
   -------
-  str
-    the representation of a junction tree as a HTML string
+  dot.Dot
+    the pydot.Dot representation of the junction tree
 
   """
   if pyagrum.config.asBool["notebook", "junctiontree_with_names"]:
@@ -1714,7 +1672,7 @@ def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
 
   graph.set_size(pyagrum.config["notebook", "junctiontree_graph_size"])
 
-  return graph.to_string()
+  return graph
 
 
 def getCliqueGraph(cg: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
@@ -1731,7 +1689,7 @@ def getCliqueGraph(cg: pyagrum.CliqueGraph, size: float | str | None = None) -> 
     the dot representation of the graph
   """
   if hasattr(cg, "_engine"):
-    return getDot(getJT(cg), size)
+    return getGraph(getJT(cg), size)
   else:
     return getDot(cg.toDot())
 
@@ -1973,7 +1931,6 @@ else:
   pyagrum.BayesNet._repr_html_ = lambda self: getBN(self)
   pyagrum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   pyagrum.MarkovRandomField._repr_html_ = lambda self: getMRF(self)
-  pyagrum.BayesNetFragment._repr_html_ = lambda self: getBN(self)
   pyagrum.InfluenceDiagram._repr_html_ = lambda self: getInfluenceDiagram(self)
   pyagrum.CredalNet._repr_html_ = lambda self: getCN(self)
 
