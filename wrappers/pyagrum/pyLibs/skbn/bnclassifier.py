@@ -344,6 +344,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       variableNames = [f"X{x}" if check_int(x) else x for x in X.columns]
+      X = X.astype(object)
 
     # verifies the shape of the two arrays
     X, y = sklearn.utils.validation.validate_data(self, X, y, dtype=None, accept_sparse=False)
