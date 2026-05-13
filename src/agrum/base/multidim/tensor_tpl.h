@@ -1015,35 +1015,47 @@ namespace gum {
 
     const auto& var = table->variable(0);
 
-    const Size        nbparents = table->nbrDim() - 1;
-    const Size        nbcol     = var.domainSize();
-    const std::string maskparent(colwidth, '-');
-    const std::string masknumber(numberwidth, '-');
+    const Size nbparents = table->nbrDim() - 1;
+    const Size nbcol     = var.domainSize();
+
+    // box-drawing characters
+    constexpr const char* vbar   = "│";   // U+2502 single vertical
+    constexpr const char* dvbar  = "║";   // U+2551 double vertical
+    constexpr const char* hbar   = "─";   // U+2500 single horizontal
+
+    const auto repeat_str = [](const char* s, Size n) {
+      std::string r;
+      const std::string unit(s);
+      r.reserve(unit.size() * n);
+      for (Size i = 0; i < n; i++) r += unit;
+      return r;
+    };
+    const std::string maskparent = repeat_str(hbar, colwidth);
+    const std::string masknumber = repeat_str(hbar, numberwidth);
 
     if (nbparents > 0)
       ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
-         << "||";
+         << dvbar;
     ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
-       << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << "|";
+       << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << vbar;
     ss << std::endl;
 
     if (nbparents > 0) {
       for (Idx i = 1; i <= nbparents; i++)
-        ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth) << "|";
-      ss << "|";
+        ss << std::setw(colwidth) << table->variable(i).name().substr(0, colwidth)
+           << (i < (Idx)nbparents ? vbar : dvbar);
     }
     for (Idx i = 0; i < nbcol; i++)
-      ss << std::setw(numberwidth) << var.label(i).substr(0, numberwidth) << "|";
+      ss << std::setw(numberwidth) << var.label(i).substr(0, numberwidth) << vbar;
     ss << std::endl;
 
 
     if (nbparents > 0) {
       for (Idx i = 1; i <= nbparents; i++)
-        ss << maskparent << "|";
-      ss << "|";
+        ss << maskparent << (i < (Idx)nbparents ? vbar : dvbar);
     }
     for (Idx i = 0; i < nbcol; i++)
-      ss << masknumber << "|";
+      ss << masknumber << vbar;
     ss << std::endl;
     Instantiation I(*table);
 
@@ -1051,11 +1063,10 @@ namespace gum {
       if (nbparents > 0) {
         for (Idx i = 1; i <= nbparents; i++)
           ss << std::setw(colwidth) << table->variable(i).label(I.val(i)).substr(0, colwidth)
-             << "|";
-        ss << "|";
+             << (i < (Idx)nbparents ? vbar : dvbar);
       }
       for (I.setFirstVar(var); !I.end(); I.incVar(var))
-        ss << " " << std::setw(numberwidth - 1) << table->get(I) << "|";
+        ss << " " << std::setw(numberwidth - 1) << table->get(I) << vbar;
       I.setFirstVar(var);
       ss << std::endl;
     };
