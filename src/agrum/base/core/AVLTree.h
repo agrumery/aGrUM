@@ -243,7 +243,7 @@ namespace gum {
      * @param from The gum::AVLTree to move.
      * @return Returns this gum::AVLTree.
      */
-    AVLTree< Val, Cmp >& operator=(AVLTree< Val, Cmp >&& from) noexcept;
+    AVLTree< Val, Cmp >& operator=(AVLTree< Val, Cmp >&& from);
 
     /// @}
 

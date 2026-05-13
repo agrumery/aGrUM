@@ -230,7 +230,7 @@ namespace gum {
 
   /// move operator
   template < typename Val, typename Cmp >
-  AVLTree< Val, Cmp >& AVLTree< Val, Cmp >::operator=(AVLTree< Val, Cmp >&& from) noexcept {
+  AVLTree< Val, Cmp >& AVLTree< Val, Cmp >::operator=(AVLTree< Val, Cmp >&& from) {
     if (this != &from) {
       if (!owns_nodes_) {
         GUM_ERROR(OperationNotAllowed,
