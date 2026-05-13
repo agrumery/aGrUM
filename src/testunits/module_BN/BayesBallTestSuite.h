@@ -46,8 +46,8 @@
 #include <string>
 
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleMultiDim.h>
-#include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
+#include <agrum/base/graphs/DAG.h>
 #include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -112,8 +112,8 @@ namespace gum_tests {
       // b has no evidence → downward path blocked at collider.
       gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a});
       CHECK(result.exists(a));
-      CHECK(result.exists(b));   // b visited (from parent), added by CollectAll
-      CHECK(!result.exists(c));  // c never activated: collider with no evidence
+      CHECK(result.exists(b));    // b visited (from parent), added by CollectAll
+      CHECK(!result.exists(c));   // c never activated: collider with no evidence
     }
 
     // V-structure A→B←C — B soft evidence: collider activated, C reachable.
@@ -125,7 +125,8 @@ namespace gum_tests {
       dag.addArc(a, b);
       dag.addArc(c, b);
 
-      gum::NodeSet result = gum::graph::dConnected(dag, gum::NodeSet{a}, gum::NodeSet{}, gum::NodeSet{b});
+      gum::NodeSet result
+          = gum::graph::dConnected(dag, gum::NodeSet{a}, gum::NodeSet{}, gum::NodeSet{b});
       CHECK(result.exists(a));
       CHECK(result.exists(b));
       CHECK(result.exists(c));   // c reached via collider activation

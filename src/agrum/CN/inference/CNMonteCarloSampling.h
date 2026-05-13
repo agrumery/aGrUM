@@ -135,7 +135,7 @@ namespace gum {
       /// @{
 
       /** Starts the inference. */
-      void makeInference();
+      void makeInference() override;
 
       /// @}
 

@@ -102,7 +102,7 @@ namespace gum {
       /// @{
 
       /** Starts the inference. */
-      void makeInference();
+      void makeInference() override;
 
       void insertEvidenceFile(std::string_view path) override {
         InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);

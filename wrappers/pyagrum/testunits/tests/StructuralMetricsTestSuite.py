@@ -46,8 +46,14 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 class StructuralMetricsCompareBNTestCase(pyAgrumTestCase):
   def _assertPerfectMetrics(self, comp):
-    for fn in [comp.precision_skeleton, comp.recall_skeleton, comp.f_score_skeleton,
-               comp.precision, comp.recall, comp.f_score]:
+    for fn in [
+      comp.precision_skeleton,
+      comp.recall_skeleton,
+      comp.f_score_skeleton,
+      comp.precision,
+      comp.recall,
+      comp.f_score,
+    ]:
       self.assertAlmostEqual(fn(), 1.0)
     self.assertEqual(int(comp.shd_skeleton()), 0)
     self.assertEqual(int(comp.shd()), 0)
@@ -98,7 +104,7 @@ class StructuralMetricsSIDTestCase(pyAgrumTestCase):
   def testSidBNReversedArc(self):
     # Peters & Bühlmann 2015, Figure 2 (via C++ test_sid_bn_overload):
     # G has 0->1; h2 is G with that arc reversed (1->0). sid(G, h2) = 8.
-    g  = gum.fastBN("0->1;0->2;1->2;0->3;1->3;0->4;1->4")
+    g = gum.fastBN("0->1;0->2;1->2;0->3;1->3;0->4;1->4")
     h2 = gum.fastBN("1->0;0->2;1->2;0->3;1->3;0->4;1->4")
     comp = gum.StructuralMetrics()
     self.assertEqual(int(comp.sid(g, h2)), 8)

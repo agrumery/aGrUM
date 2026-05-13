@@ -190,13 +190,9 @@ namespace gum {
     return _true_arc_ + _misoriented_arc_ + _true_edge_ + _wrong_edge_arc_ + _wrong_arc_edge_;
   }
 
-  double StructuralMetrics::fp_skeleton() const {
-    return _wrong_arc_none_ + _wrong_edge_none_;
-  }
+  double StructuralMetrics::fp_skeleton() const { return _wrong_arc_none_ + _wrong_edge_none_; }
 
-  double StructuralMetrics::fn_skeleton() const {
-    return _wrong_none_arc_ + _wrong_none_edge_;
-  }
+  double StructuralMetrics::fn_skeleton() const { return _wrong_none_arc_ + _wrong_none_edge_; }
 
   double StructuralMetrics::tn_skeleton() const {
     // Cannot simply return _true_none_: it counts ordered pairs in compare(DiGraph,DiGraph)
@@ -219,33 +215,22 @@ namespace gum {
     return 2 * p * r / (p + r);
   }
 
-  double StructuralMetrics::shd_skeleton() const {
-    return fp_skeleton() + fn_skeleton();
-  }
+  double StructuralMetrics::shd_skeleton() const { return fp_skeleton() + fn_skeleton(); }
 
-  double StructuralMetrics::tp() const {
-    return _true_arc_ + _true_edge_;
-  }
+  double StructuralMetrics::tp() const { return _true_arc_ + _true_edge_; }
 
   double StructuralMetrics::fp() const {
-    return _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_ + _misoriented_arc_;
+    return _wrong_edge_arc_ + _wrong_arc_edge_ + _wrong_arc_none_ + _wrong_edge_none_
+         + _misoriented_arc_;
   }
 
-  double StructuralMetrics::fn() const {
-    return _wrong_none_arc_ + _wrong_none_edge_;
-  }
+  double StructuralMetrics::fn() const { return _wrong_none_arc_ + _wrong_none_edge_; }
 
-  double StructuralMetrics::tn() const {
-    return _true_none_;
-  }
+  double StructuralMetrics::tn() const { return _true_none_; }
 
-  double StructuralMetrics::precision() const {
-    return tp() / (tp() + fp());
-  }
+  double StructuralMetrics::precision() const { return tp() / (tp() + fp()); }
 
-  double StructuralMetrics::recall() const {
-    return tp() / (tp() + fn());
-  }
+  double StructuralMetrics::recall() const { return tp() / (tp() + fn()); }
 
   double StructuralMetrics::f_score() const {
     const double p = precision();
@@ -253,15 +238,11 @@ namespace gum {
     return 2 * p * r / (p + r);
   }
 
-  double StructuralMetrics::shd() const {
-    return fp() + fn();
-  }
+  double StructuralMetrics::shd() const { return fp() + fn(); }
 
   double StructuralMetrics::sid(const DAG& ref, const DAG& test) const {
     // Validate node sets match.
-    if (ref.size() != test.size()) {
-      GUM_ERROR(OperationNotAllowed, "Graphs of different sizes")
-    }
+    if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.asNodeSet()) {
       if (!test.existsNode(node)) {
         GUM_ERROR(InvalidNode, "test does not contain all nodes from ref")
@@ -270,7 +251,9 @@ namespace gum {
 
     // Pre-compute (strict) descendants in ref. DE[i] does NOT include i itself.
     NodeProperty< NodeSet > DE;
-    for (const NodeId i: ref.asNodeSet()) { DE.insert(i, ref.descendants(i)); }
+    for (const NodeId i: ref.asNodeSet()) {
+      DE.insert(i, ref.descendants(i));
+    }
 
     // Working copy of ref for the back-door mutation (mutate / restore per pair).
     DAG G = ref;
@@ -334,7 +317,9 @@ namespace gum {
         if (!G.dSeparation(i, j, paH)) { errors += 1; }
 
         // Restore the removed arcs so that G is back to ref's structure.
-        for (const NodeId c: arcs_removed) { G.addArc(i, c); }
+        for (const NodeId c: arcs_removed) {
+          G.addArc(i, c);
+        }
       }
     }
 

@@ -116,7 +116,7 @@ namespace gum {
      */
     virtual ~MultiDimArray();
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
+    MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
     /// }
     // =========================================================================
@@ -127,46 +127,46 @@ namespace gum {
     /**
      * @brief Copy from a other MultiDimContainer.
      */
-    virtual void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const;
+    void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const override;
 
     /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply(std::function< GUM_ELEMENT(GUM_ELEMENT) > f) const;
+    void apply(std::function< GUM_ELEMENT(GUM_ELEMENT) > f) const override;
 
     /**
      * @brief compute lfold for this container
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
-                               GUM_ELEMENT                                            base) const;
+    GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
+                       GUM_ELEMENT                                            base) const override;
 
     /**
      * @brief Adds a variable.
      */
-    virtual void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
     /**
      * @brief Removes a variable.
      */
-    virtual void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
     /**
      * @brief Returns the real size of this MultiDimArray.
      */
-    virtual Size realSize() const;
+    Size realSize() const override;
 
     /**
      * @brief Fills the MultiDimArray with the given value.
      */
-    virtual void fill(const GUM_ELEMENT& d) const;
+    void fill(const GUM_ELEMENT& d) const override;
 
     /**
      * @brief Returns the MultiDimArray name.
      */
-    virtual const std::string& name() const;
+    const std::string& name() const override;
 
     /// @}
     // =========================================================================

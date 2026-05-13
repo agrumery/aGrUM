@@ -88,8 +88,7 @@ namespace gum {
   }
 
   template < typename GS1, typename GS2 >
-  double StructuralMetrics::sid(const BayesNet< GS1 >& ref,
-                                const BayesNet< GS2 >& test) const {
+  double StructuralMetrics::sid(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test) const {
     if (ref.size() != test.size()) { GUM_ERROR(OperationNotAllowed, "Graphs of different sizes") }
     for (const NodeId node: ref.dag().asNodeSet()) {
       if (!test.exists(ref.variable(node).name())) {
@@ -99,7 +98,9 @@ namespace gum {
     // Align test's DAG to ref's NodeIds by variable name (DAG-level only,
     // no need to materialize an aligned BN since SID works on the DAG).
     DAG aligned_test;
-    for (const NodeId id: ref.dag().asNodeSet()) { aligned_test.addNodeWithId(id); }
+    for (const NodeId id: ref.dag().asNodeSet()) {
+      aligned_test.addNodeWithId(id);
+    }
     for (const Arc& arc: test.dag().arcs()) {
       const NodeId tail = ref.idFromName(test.variable(arc.tail()).name());
       const NodeId head = ref.idFromName(test.variable(arc.head()).name());

@@ -90,8 +90,8 @@ namespace gum::graph {
       _bayesBall_(const G& g, const NodeSet& query, const NodeSet& Zhard, const NodeSet& Zsoft) {
     NodeSet result;
 
-    static constexpr std::pair< bool, bool >        empty_mark{false, false};
-    NodeProperty< std::pair< bool, bool > >         marks(g.size());
+    static constexpr std::pair< bool, bool > empty_mark{false, false};
+    NodeProperty< std::pair< bool, bool > >  marks(g.size());
 
     List< std::pair< NodeId, bool > > to_visit;
     for (const auto node: query)

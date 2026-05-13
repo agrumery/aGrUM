@@ -179,7 +179,7 @@ namespace gum_tests {
       // apparition order leads to : id of "3" is 0, if of "4" is 1, etc.
       // it's hard to check the shd between this graph and another created directly with the ids.
       // hence we redefine it in the correct order of apparition:
-      asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5;2->6;5->7"); // now labels match ids
+      asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5;2->6;5->7");   // now labels match ids
 
       // asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5->6;2->6");
       // bn1 = bn1.fastPrototype("3->4;7->5->6;5->4->1->0->2->6;5->1");
@@ -222,8 +222,9 @@ namespace gum_tests {
     }
 
     static void test_identities_by_names() {
-      // for every metric M we want to check that M(g1,g2) = 0 where g2=g1 regarding the variables names but not the ids.
-      
+      // for every metric M we want to check that M(g1,g2) = 0 where g2=g1 regarding the variables
+      // names but not the ids.
+
       // "D" -> "A" <- "B" <- "C"
       gum::BayesNet< double > g1;
       g1 = g1.fastPrototype("D->A<-B<-C");
@@ -248,7 +249,8 @@ namespace gum_tests {
     static void test_sid_identity() {
       // SID(G, G) = 0 trivially
       gum::DAG g;
-      for (gum::NodeId i = 0; i < 4; ++i) g.addNodeWithId(i);
+      for (gum::NodeId i = 0; i < 4; ++i)
+        g.addNodeWithId(i);
       g.addArc(0, 1);
       g.addArc(0, 2);
       g.addArc(1, 3);
@@ -320,7 +322,8 @@ namespace gum_tests {
       // Nodes: 0=X_1, 1=X_2, 2=Y_1, 3=Y_2, 4=Y_3.
       // G: X_1 -> X_2; X_1 and X_2 are parents of each Y_j.
       gum::DAG g;
-      for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
+      for (gum::NodeId i = 0; i < 5; ++i)
+        g.addNodeWithId(i);
       g.addArc(0, 1);
       for (gum::NodeId y = 2; y <= 4; ++y) {
         g.addArc(0, y);
@@ -338,7 +341,8 @@ namespace gum_tests {
     static void test_sid_paper_figure2_h2() {
       // Peters & Bühlmann 2015, Figure 2: G vs H_2 (arc X_1 -> X_2 reversed).
       gum::DAG g;
-      for (gum::NodeId i = 0; i < 5; ++i) g.addNodeWithId(i);
+      for (gum::NodeId i = 0; i < 5; ++i)
+        g.addNodeWithId(i);
       g.addArc(0, 1);
       for (gum::NodeId y = 2; y <= 4; ++y) {
         g.addArc(0, y);
@@ -347,7 +351,8 @@ namespace gum_tests {
 
       // H_2: same as G but X_2 -> X_1 instead of X_1 -> X_2.
       gum::DAG h2;
-      for (gum::NodeId i = 0; i < 5; ++i) h2.addNodeWithId(i);
+      for (gum::NodeId i = 0; i < 5; ++i)
+        h2.addNodeWithId(i);
       h2.addArc(1, 0);   // reversed arc
       for (gum::NodeId y = 2; y <= 4; ++y) {
         h2.addArc(0, y);
@@ -368,8 +373,8 @@ namespace gum_tests {
       g = g.fastPrototype("0->1;0->2;1->2;0->3;1->3;0->4;1->4");
 
       gum::BayesNet< double > h2 = g;
-      const gum::NodeId X1 = g.idFromName("0");
-      const gum::NodeId X2 = g.idFromName("1");
+      const gum::NodeId       X1 = g.idFromName("0");
+      const gum::NodeId       X2 = g.idFromName("1");
       h2.eraseArc(X1, X2);   // remove X_1 -> X_2
       h2.addArc(X2, X1);     // add X_2 -> X_1
 
