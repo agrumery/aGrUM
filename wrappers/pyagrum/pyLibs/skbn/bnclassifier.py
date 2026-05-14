@@ -286,7 +286,11 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.discretizationStrategy = discretizationStrategy
     self.discretizationThreshold = discretizationThreshold
 
-  def fit(self, X, y,):
+  def fit(
+    self,
+    X,
+    y,
+  ):
     """
     Fits the model to the training data provided. The two possible uses of this function are `fit(X,y)`
     and `fit(data=...,targetName=...)`. Any other combination will raise a ValueError
@@ -311,7 +315,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     # classifier designates it as that class only if the probability is higher than the threshold.
     # The ROC curve is used to calculate the optimal threshold
     self.threshold_ = 0.5
-    
+
     self.type_processor_ = DiscreteTypeProcessor(
       defaultDiscretizationMethod=self.discretizationStrategy,
       defaultNumberOfBins=self.discretizationNbBins,
@@ -320,13 +324,14 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     # the name of the target variable
     self.target_ = "y"
-    
-    
+
     if X is not None and y is None:
-        raise ValueError("requires y to be passed, but the target y is None")
+      raise ValueError("requires y to be passed, but the target y is None")
     if X is None or y is None:
-        raise ValueError("fit() requires both X and y. To fit from a CSV or DataFrame, use fitFromData(data, targetName).")
-    
+      raise ValueError(
+        "fit() requires both X and y. To fit from a CSV or DataFrame, use fitFromData(data, targetName)."
+      )
+
     # boolean that tells us whether this classifier is obtained from an already trained model (using the function
     # fromTrainedModel) or not
     self.fromModel_ = False
@@ -436,7 +441,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.MarkovBlanket_ = compileMarkovBlanket(self.bn_, self.target_)
 
     if len(self.classes_) == 2:
-      if(self.MarkovBlanket_.size() <= 1):
+      if self.MarkovBlanket_.size() <= 1:
         self.threshold_ = 0.5
       else:
         mb_features = [n for n in self.MarkovBlanket_.names() if n != self.target_]
@@ -454,7 +459,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     os.remove(csvfilename)
     os.remove(tmpfilename)
     return self
-  
+
   def fitFromData(self, data, targetName):
     """
     Convenience wrapper around fit() for loading training data from a CSV file or
@@ -495,7 +500,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     return self.fit(X, y)
 
-  def fromTrainedModel(self, bn, targetAttribute, targetModality="", copy=False, threshold=0.5, variableList=None, dtype=str):
+  def fromTrainedModel(
+    self, bn, targetAttribute, targetModality="", copy=False, threshold=0.5, variableList=None, dtype=str
+  ):
     """
     parameters:
         bn: pyagrum.BayesNet
@@ -577,22 +584,15 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
       self.label_ = ""  # multiclasse sans modality : pas de label positif unique
 
     if dtype not in (str, int, numpy.int32, numpy.int64):
-      raise ValueError(
-        f"dtype={dtype} non supporté dans fromTrainedModel. "
-        "Utilisez str (défaut) ou int."
-      )
+      raise ValueError(f"dtype={dtype} non supporté dans fromTrainedModel. Utilisez str (défaut) ou int.")
 
-    raw_classes = numpy.array([
-      self.bn_.variable(self.target_).label(i)
-      for i in range(self.bn_.variable(self.target_).domainSize())
-    ])
+    raw_classes = numpy.array(
+      [self.bn_.variable(self.target_).label(i) for i in range(self.bn_.variable(self.target_).domainSize())]
+    )
     try:
       self.classes_ = raw_classes.astype(dtype)
     except (ValueError, TypeError):
-      raise ValueError(
-        f"Impossible de convertir les classes en {dtype}: "
-        f"les labels du BN sont {raw_classes.tolist()}."
-      )
+      raise ValueError(f"Impossible de convertir les classes en {dtype}: les labels du BN sont {raw_classes.tolist()}.")
 
     self.targetType_ = self.classes_.dtype
 
@@ -644,16 +644,16 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     if isinstance(X, str):
       X, _ = self.XYfromCSV(X, target=self.target_)
-    
+
     if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
       dictName = DFNames(X)
     else:
       dictName = self.variableNameIndexDictionary_
 
     if self.fromModel_:
-        X = sklearn.utils.validation.validate_data(self, X, dtype="str", reset=False)
+      X = sklearn.utils.validation.validate_data(self, X, dtype="str", reset=False)
     else:
-        X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
+      X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
 
     if len(self.classes_) == 2:
       returned_list = self._binary_predict(X, dictName)
@@ -745,7 +745,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   def predict_proba(self, X):
     """
     Predicts the probability of classes for each row of input data, with bn's Markov Blanket.
-    
+
     Warnings
     ---------
     For binary classifiers, the raw posterior P(target=label1 | evidence) is piecewise-linearly recalibrated so that argmax(predict_proba(X)) always
@@ -779,9 +779,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
       vals = X
 
     if self.fromModel_:
-        vals = sklearn.utils.validation.validate_data(self, vals, dtype="str", reset=False)
+      vals = sklearn.utils.validation.validate_data(self, vals, dtype="str", reset=False)
     else:
-        vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
+      vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
 
     returned_list = []
 
@@ -805,7 +805,11 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
           self.significant_digit,
         )
         if self.threshold_ != 0.5:
-          res_cal = (0.5 + 0.5 * (res - self.threshold_) / (1 - self.threshold_)) if res >= self.threshold_ else (0.5 * res / self.threshold_)
+          res_cal = (
+            (0.5 + 0.5 * (res - self.threshold_) / (1 - self.threshold_))
+            if res >= self.threshold_
+            else (0.5 * res / self.threshold_)
+          )
         else:
           res_cal = res
         returned_list.append([1 - res_cal, res_cal])
@@ -1009,7 +1013,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     """
     self.__init__()
     self.fromTrainedModel(bn=state["bn"], targetAttribute=state["target"], targetModality=state["label"], copy=False)
-    
+
     self.targetType_ = state["targetType"]
 
     self.fromModel_ = state["fromModel"]
@@ -1022,7 +1026,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     self.classes_ = state["classes"]
     self.n_features_in_ = state["n_features_in"]
-    
+
     return self
 
   def showROC_PR(self, data, *, beta=1, save_fig=False, show_progress=False, bgcolor=None):
