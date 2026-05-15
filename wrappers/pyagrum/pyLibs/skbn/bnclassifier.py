@@ -68,7 +68,7 @@ from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
 from ._learningMethods import _fitTAN as BN_fitTAN
 from ._learningMethods import _fitChowLiu as BN_fitChowLiu
 
-def createBnclassifier(learningMethod="MIIC",
+def createBNClassifier(*, learningMethod="MIIC",
     prior=None,
     scoringType="BIC",
     constraints=None,
@@ -114,7 +114,7 @@ def createBnclassifier(learningMethod="MIIC",
         discretizationThreshold = discretizationThreshold,
       )
   return BNClassifier(
-    type_processor,
+    type_processor=type_processor,
     learningMethod=learningMethod,
     prior=prior,
     scoringType=scoringType,
@@ -223,7 +223,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   """
 
   def __init__(
-    self,
+    self,*,
     type_processor,
     learningMethod="MIIC",
     prior=None,
@@ -339,6 +339,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.significant_digit = significant_digit
 
     self.type_processor = type_processor
+  
   def fit(
     self,
     X,
@@ -507,7 +508,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     os.remove(tmpfilename)
     return self
 
-  def fitFromData(self, data, targetName):
+  def fitFromTabular(self, data, targetName):
     """
     Convenience wrapper around fit() for loading training data from a CSV file or
     a pandas DataFrame directly.
@@ -716,6 +717,8 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     else:
       if numpy.issubdtype(self.targetType_, numpy.number):
         returned_list = returned_list.astype(self.targetType_)
+      elif self.label_ != "":
+        returned_list = returned_list == self.label_
 
     return returned_list
 
@@ -927,7 +930,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     elif getattr(self, "fromModel_", False):
       y = y.astype("str")
-      if len(self.classes_) == 2:
+      if self.label_:
         y = y == self.label_
 
     return X, y

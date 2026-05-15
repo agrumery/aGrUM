@@ -98,8 +98,8 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     asia_target_column = "lung_cancer"
 
-    classif1 = skbn.BNClassifier()
-    classif1.fitFromData(csvfile, asia_target_column)
+    classif1 = skbn.createBNClassifier()
+    classif1.fitFromTabular(csvfile, asia_target_column)
 
     self.assertEqual(classif1.bn_.size(), 8)
     self.assertEqual(classif1.target_, asia_target_column)
@@ -119,7 +119,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     x_test_asia = df_asia[-1000:].drop(asia_target_column, axis=1)
     _ = df_asia[-1000:][asia_target_column]
 
-    classif2 = skbn.BNClassifier()
+    classif2 = skbn.createBNClassifier()
     classif2.fit(x_train_asia, y_train_asia)
 
     self.assertEqual(classif2.bn_.size(), 8)
@@ -137,8 +137,8 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
     self.assertGreater(classif2.MarkovBlanket_.size(), 0)
 
-    classif3 = skbn.BNClassifier()
-    classif3.fitFromData(csvfile, "lung_cancer")
+    classif3 = skbn.createBNClassifier()
+    classif3.fitFromTabular(csvfile, "lung_cancer")
 
     self.assertEqual(classif3.bn_.size(), 8)
 
@@ -146,8 +146,8 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertTrue(classif3.threshold_ <= 1)
 
     df = pd.read_csv(csvfile)
-    classif4 = skbn.BNClassifier()
-    classif4.fitFromData(df, "lung_cancer")
+    classif4 = skbn.createBNClassifier()
+    classif4.fitFromTabular(df, "lung_cancer")
 
     self.assertEqual(classif4.bn_.size(), 8)
 
@@ -155,7 +155,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertTrue(classif4.threshold_ <= 1)
 
     # some instantiation of parents are missing : No prior should lead to division by 0
-    classif3 = skbn.BNClassifier(prior="NoPrior")
+    classif3 = skbn.createBNClassifier(prior="NoPrior")
     with self.assertRaises(gum.DatabaseError):
       classif3.fit(x_train_asia, y_train_asia)
 
@@ -163,14 +163,14 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     bn = gum.fastBN("X1->X2{a|b|c}->Y<-X1;X3[3]->Y<-X4")
     dftrain, _ = gum.generateSample(bn, 500)
     dftest, _ = gum.generateSample(bn, 300)
-    bnc = skbn.BNClassifier()
+    bnc = skbn.createBNClassifier()
 
-    bnc.fitFromData(dftrain, "Y")
+    bnc.fitFromTabular(dftrain, "Y")
 
     smodel = pickle.dumps(bnc)
     bnc2 = pickle.loads(smodel)
 
-    bnc2.fitFromData(dftrain, "Y")
+    bnc2.fitFromTabular(dftrain, "Y")
 
     self.assertDictEqual(
       _normalizeDiscretizerAudit(bnc.type_processor_.audit(dftrain)),
@@ -187,12 +187,12 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
 
 class BNClassifierFitTestCase(pyAgrumTestCase):
-  # Tests for fit(X, y), fitFromData and learning methods.#
+  # Tests for fit(X, y), fitFromTabular and learning methods.#
 
   def testFitNumpyFloat(self):
     # fit() with a float numpy array sets classes_ and n_features_in_
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "classes_"))
     self.assertTrue(hasattr(clf, "n_features_in_"))
@@ -201,21 +201,21 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
   def testFitNumpyInt(self):
     # fit() with an int numpy array sets classes_
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X.astype(int), y)
     self.assertTrue(hasattr(clf, "classes_"))
 
   def testFitNumpyObject(self):
     # fit() with an object numpy array sets classes_
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X.astype(object), y)
     self.assertTrue(hasattr(clf, "classes_"))
 
   def testFitYInt(self):
     # fit() with integer y produces classes_ == {0, 1}
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y.astype(int))
     self.assertEqual(set(clf.classes_), {0, 1})
 
@@ -223,21 +223,21 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     # fit() with string y produces classes_ == {'cat', 'dog'}
     X, y = _make_binary()
     y_str = np.where(y == 0, "cat", "dog")
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y_str)
     self.assertEqual(set(clf.classes_), {"cat", "dog"})
 
   def testFitYBool(self):
     # fit() with boolean y does not raise
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y.astype(bool))
     self.assertTrue(hasattr(clf, "classes_"))
 
   def testFitYList(self):
     # fit() with a Python list as y does not raise
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, list(y))
     self.assertTrue(hasattr(clf, "classes_"))
 
@@ -245,7 +245,7 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     # it() with a named Series uses the series name as target_
     X, y = _make_binary()
     y_s = pd.Series(y, name="label")
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y_s)
     self.assertEqual(clf.target_, "label")
 
@@ -253,7 +253,7 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     # fit() with Series name=None falls back to 'y' as target_
     X, y = _make_binary()
     y_s = pd.Series(y, name=None)
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y_s)
     self.assertEqual(clf.target_, "y")
 
@@ -261,7 +261,7 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     # fit() with a DataFrame uses column names as variable names
     X, y = _make_binary()
     df = pd.DataFrame(X, columns=[f"feat_{i}" for i in range(X.shape[1])])
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(df, y)
     self.assertIn("feat_0", clf.variableNameIndexDictionary_)
 
@@ -270,28 +270,28 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     X, y = _make_binary()
     df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
     y_s = pd.Series(y, name="cible")
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(df, y_s)
     self.assertEqual(clf.target_, "cible")
 
   def testFitMulticlass(self):
     # fit() on a 3-class problem sets len(classes_) == 3
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y)
     self.assertEqual(len(clf.classes_), 3)
 
   def testFitReturnsSelf(self):
     # fit() returns the classifier instance (sklearn convention)
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     result = clf.fit(X, y)
     self.assertIs(result, clf)
 
   def testFitTwice(self):
     # Calling fit() twice in a row does not raise
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y)
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "classes_"))
@@ -299,21 +299,21 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
   def testFitClassesAttribute(self):
     # classes_ matches exactly the unique values in y
     X, y = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.fit(X, y)
     self.assertTrue(np.array_equal(np.sort(clf.classes_), np.sort(np.unique(y))))
 
-  def testFitFromDataframe(self):
-    # fitFromData() with a DataFrame sets classes_
+  def testfitFromTabularframe(self):
+    # fitFromTabular() with a DataFrame sets classes_
     X, y = _make_binary()
     df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
     df["target"] = y
-    clf = skbn.BNClassifier()
-    clf.fitFromData(df, "target")
+    clf = skbn.createBNClassifier()
+    clf.fitFromTabular(df, "target")
     self.assertTrue(hasattr(clf, "classes_"))
 
   def testFitFromCsvTemp(self):
-    # fitFromData() with a CSV file path sets classes_
+    # fitFromTabular() with a CSV file path sets classes_
     X, y = _make_binary()
     df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
     df["target"] = y
@@ -321,8 +321,8 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
       df.to_csv(f, index=False)
       fname = f.name
     try:
-      clf = skbn.BNClassifier()
-      clf.fitFromData(fname, "target")
+      clf = skbn.createBNClassifier()
+      clf.fitFromTabular(fname, "target")
       self.assertTrue(hasattr(clf, "classes_"))
     finally:
       os.remove(fname)
@@ -330,28 +330,28 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
   def testLearningNaiveBayes(self):
     # NaiveBayes learning method sets bn_ after fit()
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes")
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes")
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
 
   def testLearningTAN(self):
     # TAN learning method sets bn_ after fit()
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="TAN")
+    clf = skbn.createBNClassifier(learningMethod="TAN")
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
 
   def testLearningChowLiu(self):
     # Chow-Liu learning method sets bn_ after fit()
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="Chow-Liu")
+    clf = skbn.createBNClassifier(learningMethod="Chow-Liu")
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
 
   def testLearningMIIC(self):
     # MIIC learning method sets bn_ after fit()
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="MIIC")
+    clf = skbn.createBNClassifier(learningMethod="MIIC")
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
 
@@ -362,28 +362,28 @@ class BNClassifierPredictTestCase(pyAgrumTestCase):
   def testPredictShape(self):
     # predict() returns an array of shape (n_samples,)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     preds = clf.predict(X)
     self.assertEqual(preds.shape, (len(X),))
 
   def testPredictValuesInClasses(self):
     # All predicted values belong to classes_
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     preds = clf.predict(X)
     self.assertTrue(set(preds).issubset(set(clf.classes_)))
 
   def testPredictMulticlassShape(self):
     # predict() on a multi-class problem returns shape (n_samples,)
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     preds = clf.predict(X)
     self.assertEqual(preds.shape, (len(X),))
 
   def testPredictDataframeInput(self):
     # predict() accepts a DataFrame with the correct column names
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     col_names = list(clf.variableNameIndexDictionary_.keys())
     X_df = pd.DataFrame(X, columns=col_names)
     preds = clf.predict(X_df)
@@ -392,7 +392,7 @@ class BNClassifierPredictTestCase(pyAgrumTestCase):
   def testPredictConsistentWithProba(self):
     # argmax(predict_proba(X)) must equal predict(X) (sklearn consistency)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     preds = clf.predict(X)
     proba = clf.predict_proba(X)
     argmax_preds = clf.classes_[np.argmax(proba, axis=1)]
@@ -401,42 +401,42 @@ class BNClassifierPredictTestCase(pyAgrumTestCase):
   def testPredictProbaShapeBinary(self):
     # predict_proba() returns shape (n_samples, 2) for a binary problem
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertEqual(proba.shape, (len(X), 2))
 
   def testPredictProbaSumToOne(self):
     # Each row of predict_proba() sums to 1
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertTrue(np.allclose(proba.sum(axis=1), 1.0))
 
   def testPredictProbaBetween0And1(self):
     # All probabilities returned by predict_proba() are in [0, 1]
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertTrue((proba >= 0).all() and (proba <= 1).all())
 
   def testPredictProbaMulticlassShape(self):
     # predict_proba() returns (n_samples, n_classes) for a multi-class problem
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertEqual(proba.shape, (len(X), 3))
 
   def testPredictProbaMulticlassSumToOne(self):
     # Multi-class probabilities sum to 1 per row
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertTrue(np.allclose(proba.sum(axis=1), 1.0))
 
   def testPredictProbaMulticlassBetween0And1(self):
     # All multi-class probabilities are in [0, 1]
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba = clf.predict_proba(X)
     self.assertTrue(np.all(proba >= 0.0) and np.all(proba <= 1.0))
 
@@ -447,7 +447,7 @@ class BNClassifierErrorTestCase(pyAgrumTestCase):
   def testErrorFitYNone(self):
     # fit(X, None) raises ValueError mentioning 'y' or 'none'
     X, _ = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(ValueError) as ctx:
       clf.fit(X, None)
     msg = str(ctx.exception).lower()
@@ -457,7 +457,7 @@ class BNClassifierErrorTestCase(pyAgrumTestCase):
     # fit() with a single-class y raises ValueError
     X, _ = _make_binary()
     y_single = np.zeros(len(X), dtype=int)
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
       clf.fit(X, y_single)
 
@@ -465,28 +465,28 @@ class BNClassifierErrorTestCase(pyAgrumTestCase):
     # fit() with continuous float y raises ValueError
     X, _ = _make_binary()
     y_cont = np.random.rand(len(X))
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
       clf.fit(X, y_cont)
 
   def testErrorPredictNotFitted(self):
     # predict() before fit() raises NotFittedError
     X, _ = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(NotFittedError):
       clf.predict(X)
 
   def testErrorPredictProbaNotFitted(self):
     # predict_proba() before fit() raises NotFittedError
     X, _ = _make_binary()
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(NotFittedError):
       clf.predict_proba(X)
 
   def testErrorPredictWrongNFeatures(self):
     # predict() with a wrong number of features raises ValueError
     X, y = _make_binary(n_features=4)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     X_wrong = np.random.rand(10, 7)
     with self.assertRaises(ValueError):
       clf.predict(X_wrong)
@@ -494,27 +494,27 @@ class BNClassifierErrorTestCase(pyAgrumTestCase):
   def testErrorPredictWrongFeaturesFromTrainedModel(self):
     # predict() after fromTrainedModel() with wrong feature count raises ValueError
     X, y = _make_binary(n_features=4)
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     X_wrong = np.random.rand(10, 7)
     with self.assertRaises(ValueError):
       clf2.predict(X_wrong)
 
-  def testErrorFitFromDataNoTargetName(self):
-    # fitFromData() without a target name raises ValueError
+  def testErrorfitFromTabularNoTargetName(self):
+    # fitFromTabular() without a target name raises ValueError
     X, y = _make_binary()
     df = pd.DataFrame(X)
     df["target"] = y
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
-      clf.fitFromData(df, None)
+      clf.fitFromTabular(df, None)
 
-  def testErrorFitFromDataNoData(self):
-    # fitFromData() without data raises ValueError
-    clf = skbn.BNClassifier()
+  def testErrorfitFromTabularNoData(self):
+    # fitFromTabular() without data raises ValueError
+    clf = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
-      clf.fitFromData(None, "target")
+      clf.fitFromTabular(None, "target")
 
 
 class BNClassifierPickleTestCase(pyAgrumTestCase):
@@ -523,7 +523,7 @@ class BNClassifierPickleTestCase(pyAgrumTestCase):
   def testPicklePredictIdentical(self):
     # predict() gives identical results after a pickle/unpickle round-trip
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     preds_before = clf.predict(X)
     clf2 = pickle.loads(pickle.dumps(clf))
     preds_after = clf2.predict(X)
@@ -532,7 +532,7 @@ class BNClassifierPickleTestCase(pyAgrumTestCase):
   def testPicklePredictProbaIdentical(self):
     # predict_proba() gives identical results after a pickle/unpickle round-trip
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     proba_before = clf.predict_proba(X)
     clf2 = pickle.loads(pickle.dumps(clf))
     proba_after = clf2.predict_proba(X)
@@ -541,21 +541,21 @@ class BNClassifierPickleTestCase(pyAgrumTestCase):
   def testPickleClassesPreserved(self):
     # classes_ is correctly restored after pickle
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     clf2 = pickle.loads(pickle.dumps(clf))
     self.assertTrue(np.array_equal(clf.classes_, clf2.classes_))
 
   def testPickleNFeaturesPreserved(self):
     # n_features_in_ is correctly restored after pickle
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     clf2 = pickle.loads(pickle.dumps(clf))
     self.assertEqual(clf.n_features_in_, clf2.n_features_in_)
 
   def testPickleMulticlass(self):
     # Pickle round-trip works for a multi-class classifier
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
+    clf = skbn.createBNClassifier().fit(X, y)
     clf2 = pickle.loads(pickle.dumps(clf))
     preds = clf2.predict(X)
     self.assertEqual(preds.shape, (len(X),))
@@ -563,8 +563,8 @@ class BNClassifierPickleTestCase(pyAgrumTestCase):
   def testPickleFromTrainedModel(self):
     # Pickle round-trip preserves classes_ after fromTrainedModel()
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     clf3 = pickle.loads(pickle.dumps(clf2))
     self.assertTrue(hasattr(clf3, "classes_"))
@@ -577,40 +577,40 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFromTrainedModelHasClasses(self):
     # fromTrainedModel() sets classes_
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     self.assertTrue(hasattr(clf2, "classes_"))
 
   def testFromTrainedModelClassesAreStrings(self):
     # classes_ from fromTrainedModel() are strings by default
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     self.assertTrue(all(isinstance(c, str) for c in clf2.classes_))
 
   def testFromTrainedModelBinary(self):
     # fromTrainedModel() works for a binary classifier (len(classes_) == 2)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     self.assertEqual(len(clf2.classes_), 2)
 
   def testFromTrainedModelMulticlass(self):
     # fromTrainedModel() works for a multi-class classifier
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     self.assertEqual(len(clf2.classes_), 3)
 
   def testFtmPredictShape(self):
     # predict() after fromTrainedModel() returns shape (n_samples,)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     preds = clf2.predict(X)
     self.assertEqual(preds.shape, (len(X),))
@@ -618,8 +618,8 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmPredictValuesInClasses(self):
     # Predictions after fromTrainedModel() are contained in classes_
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     preds = clf2.predict(X)
     self.assertTrue(set(preds).issubset(set(clf2.classes_)))
@@ -627,8 +627,8 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmPredictProbaShape(self):
     # predict_proba() after fromTrainedModel() returns shape (n_samples, 2)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     proba = clf2.predict_proba(X)
     self.assertEqual(proba.shape, (len(X), 2))
@@ -636,8 +636,8 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmPredictProbaSumToOne(self):
     # Probabilities sum to 1 per row after fromTrainedModel()
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     proba = clf2.predict_proba(X)
     self.assertTrue(np.allclose(proba.sum(axis=1), 1.0))
@@ -645,8 +645,8 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmPredictConsistentWithProba(self):
     # argmax(predict_proba) == predict() after fromTrainedModel()
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     preds = clf2.predict(X)
     proba = clf2.predict_proba(X)
@@ -656,8 +656,8 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmPredictMulticlass(self):
     # predict() after fromTrainedModel() works for a multi-class problem
     X, y = _make_multiclass(n_classes=3)
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     preds = clf2.predict(X)
     self.assertEqual(preds.shape, (len(X),))
@@ -666,16 +666,16 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmDtypeStrDefault(self):
     # dtype=str (default): classes_ are strings
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_)
     self.assertTrue(all(isinstance(c, str) for c in clf2.classes_))
 
   def testFtmDtypeInt(self):
     # dtype=int: classes_ are converted to int and equal {0, 1}
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=int)
     self.assertTrue(all(isinstance(c, (int, np.integer)) for c in clf2.classes_))
     self.assertEqual(set(clf2.classes_), {0, 1})
@@ -683,40 +683,40 @@ class BNClassifierFromTrainedModelTestCase(pyAgrumTestCase):
   def testFtmDtypeNumpyInt32(self):
     # dtype=np.int32: classes_.dtype is np.int32
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=np.int32)
     self.assertEqual(clf2.classes_.dtype, np.int32)
 
   def testFtmDtypeNumpyInt64(self):
     # dtype=np.int64: classes_.dtype is np.int64
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=np.int64)
     self.assertEqual(clf2.classes_.dtype, np.int64)
 
   def testFtmDtypeBoolRaises(self):
     # dtype=bool raises ValueError
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
       clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=bool)
 
   def testFtmDtypeFloatRaises(self):
     # dtype=float raises ValueError (continuous classes are not allowed)
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
       clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=float)
 
   def testFtmDtypeInvalidRaises(self):
     # dtype=list (invalid type) raises ValueError
     X, y = _make_binary()
-    clf = skbn.BNClassifier().fit(X, y)
-    clf2 = skbn.BNClassifier()
+    clf = skbn.createBNClassifier().fit(X, y)
+    clf2 = skbn.createBNClassifier()
     with self.assertRaises(ValueError):
       clf2.fromTrainedModel(clf.bn_, clf.target_, dtype=list)
 
@@ -726,21 +726,21 @@ class BNClassifierSklearnAPITestCase(pyAgrumTestCase):
 
   def testGetParams(self):
     # get_params() returns the correct hyperparameters
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes", discretizationNbBins=3)
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes", discretizationNbBins=3)
     params = clf.get_params()
     self.assertEqual(params["learningMethod"], "NaiveBayes")
     self.assertEqual(params["discretizationNbBins"], 3)
 
   def testSetParams(self):
     # set_params() updates the hyperparameters in place
-    clf = skbn.BNClassifier()
+    clf = skbn.createBNClassifier()
     clf.set_params(learningMethod="TAN")
     self.assertEqual(clf.learningMethod, "TAN")
 
   def testCloneNoFittedAttrs(self):
     # clone() creates an unfitted estimator with the same hyperparameters
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes").fit(X, y)
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes").fit(X, y)
     clf2 = sklearn.base.clone(clf)
     self.assertFalse(hasattr(clf2, "bn_"))
     self.assertEqual(clf2.learningMethod, "NaiveBayes")
@@ -748,7 +748,7 @@ class BNClassifierSklearnAPITestCase(pyAgrumTestCase):
   def testCloneThenFit(self):
     # clone() followed by fit() works correctly
     X, y = _make_binary()
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes").fit(X, y)
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes").fit(X, y)
     clf2 = sklearn.base.clone(clf)
     clf2.fit(X, y)
     self.assertTrue(hasattr(clf2, "classes_"))
@@ -768,7 +768,7 @@ class BNClassifierQualityTestCase(pyAgrumTestCase):
       n_clusters_per_class=1,
       random_state=0,
     )
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes").fit(X, y)
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes").fit(X, y)
     preds = clf.predict(X)
     acc = sklearn.metrics.accuracy_score(y, preds)
     self.assertGreater(acc, 0.6)
@@ -784,7 +784,7 @@ class BNClassifierQualityTestCase(pyAgrumTestCase):
       n_clusters_per_class=1,
       random_state=0,
     )
-    clf = skbn.BNClassifier(learningMethod="NaiveBayes").fit(X, y)
+    clf = skbn.createBNClassifier(learningMethod="NaiveBayes").fit(X, y)
     preds = clf.predict(X)
     cm = sklearn.metrics.confusion_matrix(y, preds)
     for i in range(len(cm)):

@@ -60,7 +60,7 @@ class SkbnTestCase(pyAgrumTestCase):
     )
     y = [3, 2, 3, 1, 2]
 
-    classifier = skbn.BNClassifier()
+    classifier = skbn.createBNClassifier()
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
     self.assertEqual(str(res["X1"][1]), "2.6")
@@ -82,7 +82,7 @@ class SkbnTestCase(pyAgrumTestCase):
       ]
     )
     y = [3, 2, 3, 1, 2]
-    classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
+    classifier = skbn.createBNClassifier(discretizationThreshold=3, discretizationNbBins=3)
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
     self.assertEqual(res["X1"][1], "[2.6;3.14)")
@@ -107,7 +107,7 @@ class SkbnTestCase(pyAgrumTestCase):
     iris = datasets.load_iris()
     X = iris.data[:, 0:2]  # we only take the first two features for visualization
     y = iris.target
-    classifier = skbn.BNClassifier(discretizationThreshold=3, discretizationNbBins=3)
+    classifier = skbn.createBNClassifier(discretizationThreshold=3, discretizationNbBins=3)
     classifier.fit(X, y)
     res = classifier.preparedData(X, y)
     # X0 and X1 are discretized so the labels should start with '[' but the rest is random (chosen by load_iris)...
@@ -115,15 +115,15 @@ class SkbnTestCase(pyAgrumTestCase):
     self.assertEqual(res["x1"][149][0], "[")
 
   def test_with_file(self):
-    classifier = skbn.BNClassifier()
-    classifier.fitFromData(self.agrumSrcDir("miniasia.csv"), "dyspnoea")
+    classifier = skbn.createBNClassifier()
+    classifier.fitFromTabular(self.agrumSrcDir("miniasia.csv"), "dyspnoea")
     res = classifier.preparedData(data=self.agrumSrcDir("miniasia.csv"))
     self.assertEqual(str(res["lung_cancer"][0]), "0")
 
   def test_with_df(self):
-    classifier = skbn.BNClassifier()
+    classifier = skbn.createBNClassifier()
     df = pd.read_csv(self.agrumSrcDir("miniasia.csv"))
-    classifier.fitFromData(df, "dyspnoea")
+    classifier.fitFromTabular(df, "dyspnoea")
     res = classifier.preparedData(data=df)
     self.assertEqual(str(res["lung_cancer"][0]), "0")
 
