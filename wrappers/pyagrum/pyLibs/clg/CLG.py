@@ -69,6 +69,32 @@ class CLG:
     if clg:
       self.copy(clg)
 
+  def asDiscreteBN(self, domain: int = 2) -> pyagrum.BayesNet:
+    """
+    Return a BN with the same structure as the CLG. The variables of the BN are RangeVariable[domain].
+
+    Parameters
+    ----------
+    domain : int
+      The domain of the variables in the returned BN.
+
+    Returns
+    -------
+    pyagrum.BayesNet
+      A BN with the same structure as the CLG.
+
+    Warning
+    -------
+    The returned BN is not a faithful representation of the CLG since the variables in the CLG are Gaussian and the variables in the returned BN are discrete. In particular, the CPTs are not defined in the returned BN.
+    """
+    bn = pyagrum.BayesNet()
+    for name in self.names():
+      bn.add(f"{name}[{domain}]")
+    for arc in self.arcs():
+      bn.addArc(self.variable(arc[0]).name(), self.variable(arc[1]).name())
+
+    return bn
+
   def copy(self, clg: "CLG") -> None:
     for _, variable in clg._id2var.items():
       new_variable = GaussianVariable(name=variable.name(), mu=variable.mu(), sigma=variable.sigma())
