@@ -198,7 +198,7 @@ namespace gum {
     result.reserve(name.size() + 24 + 15);   
     result = " [label=\"(";
     result += std::to_string(id);
-    result += ') ';
+    result += ") ";
     for (const char c: name) {
       switch (c) {
         case '"' : result += "\\\""; break;

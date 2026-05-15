@@ -505,8 +505,8 @@ namespace gum_tests {
       std::string dot = g.toDot();
 
       // named nodes get label attribute
-      CHECK(dot.find("0 [label=\"0:alpha\"]") != std::string::npos);
-      CHECK(dot.find("2 [label=\"2:gamma\\\"slash\\\\\"]") != std::string::npos);
+      CHECK(dot.find("0 [label=\"(0) alpha\"]") != std::string::npos);
+      CHECK(dot.find("2 [label=\"(2) gamma\\\"slash\\\\\"]") != std::string::npos);
 
       // unnamed node: just id, no label
       CHECK(dot.find("1;") != std::string::npos);
