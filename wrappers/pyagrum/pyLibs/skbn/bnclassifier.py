@@ -68,6 +68,64 @@ from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
 from ._learningMethods import _fitTAN as BN_fitTAN
 from ._learningMethods import _fitChowLiu as BN_fitChowLiu
 
+def createBnclassifier(learningMethod="MIIC",
+    prior=None,
+    scoringType="BIC",
+    constraints=None,
+    priorWeight=1,
+    possibleSkeleton=None,
+    DirichletCsv=None,
+    discretizationStrategy="quantile",
+    discretizationNbBins=5,
+    discretizationThreshold=25,
+    usePR=False,
+    beta=1,
+    significant_digit=10,):
+  """
+  Convenience factory that creates a BNClassifier with a DiscreteTypeProcessor built from
+  simple discretization parameters (strategy, bins, threshold).
+
+  For per-variable discretization control, create a DiscreteTypeProcessor directly and
+  pass it to BNClassifier(type_processor, ...) instead.
+
+  Parameters
+  ----------
+  learningMethod : str, default="MIIC"
+  prior : str, optional
+      Possible values: Smoothing, BDeu, Dirichlet, NoPrior.
+  scoringType : str, default="BIC"
+      Ignored for fixed-structure algorithms (Chow-Liu, TAN, NaiveBayes).
+  constraints : dict, optional
+  priorWeight : float, default=1
+  possibleSkeleton : pyagrum.UndiGraph, optional
+  DirichletCsv : str, optional
+  discretizationStrategy : str, default="quantile"
+      Possible values: quantile, uniform, kmeans, NML, CAIM, MDLP.
+  discretizationNbBins : int, default=5
+  discretizationThreshold : int or float, default=25
+  usePR : bool, default=False
+  beta : float, default=1
+  significant_digit : int, default=10
+  """
+
+  type_processor = DiscreteTypeProcessor(
+        defaultDiscretizationMethod = discretizationStrategy,
+        defaultNumberOfBins = discretizationNbBins,
+        discretizationThreshold = discretizationThreshold,
+      )
+  return BNClassifier(
+    type_processor,
+    learningMethod=learningMethod,
+    prior=prior,
+    scoringType=scoringType,
+    constraints=constraints,
+    priorWeight=priorWeight,
+    possibleSkeleton=possibleSkeleton,
+    DirichletCsv=DirichletCsv,
+    usePR=usePR,
+    beta=beta,
+    significant_digit=significant_digit,
+  )
 
 class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   """
@@ -166,6 +224,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
   def __init__(
     self,
+    type_processor,
     learningMethod="MIIC",
     prior=None,
     scoringType="BIC",
@@ -173,9 +232,6 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     priorWeight=1,
     possibleSkeleton=None,
     DirichletCsv=None,
-    discretizationStrategy="quantile",
-    discretizationNbBins=5,
-    discretizationThreshold=25,
     usePR=False,
     beta=1,
     significant_digit=10,
@@ -282,10 +338,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     self.significant_digit = significant_digit
 
-    self.discretizationNbBins = discretizationNbBins
-    self.discretizationStrategy = discretizationStrategy
-    self.discretizationThreshold = discretizationThreshold
-
+    self.type_processor = type_processor
   def fit(
     self,
     X,
@@ -316,13 +369,6 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     # The ROC curve is used to calculate the optimal threshold
     self.threshold_ = 0.5
 
-    if not hasattr(self, "type_processor_") :
-      self.type_processor_ = DiscreteTypeProcessor(
-        defaultDiscretizationMethod=self.discretizationStrategy,
-        defaultNumberOfBins=self.discretizationNbBins,
-        discretizationThreshold=self.discretizationThreshold,
-      )
-
     # the name of the target variable
     self.target_ = "y"
 
@@ -337,7 +383,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     # fromTrainedModel) or not
     self.fromModel_ = False
     variableNames = None
-    self.type_processor_.clear()
+    self.type_processor.clear()
 
     if isinstance(y, pandas.DataFrame):  # type(y) == pandas.DataFrame:
       self.target_ = y.columns.tolist()[0]
@@ -411,7 +457,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.bn_.add(var)
 
     for i in range(d):
-      var = self.type_processor_._createVariable(variableNames[i], X[:, i], y, self.classes_)
+      var = self.type_processor._createVariable(variableNames[i], X[:, i], y, self.classes_)
       self.bn_.add(var)
 
     csvfile = tempfile.NamedTemporaryFile(delete=False)
@@ -992,7 +1038,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
       "threshold": self.threshold_,
       "variableNameIndexDictionary": self.variableNameIndexDictionary_,
       "params": self.get_params(),
-      "discretizer": getattr(self, "type_processor_", None),
+      "discretizer": getattr(self, "type_processor", None),
       "classes": self.classes_,
       "n_features_in": self.n_features_in_,
     }
@@ -1026,7 +1072,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.set_params(**state["params"])
 
     if state["discretizer"] is not None:
-      self.type_processor_ = state["discretizer"]
+      self.type_processor = state["discretizer"]
 
     self.classes_ = state["classes"]
     self.n_features_in_ = state["n_features_in"]

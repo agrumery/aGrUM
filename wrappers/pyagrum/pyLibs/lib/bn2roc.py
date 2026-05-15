@@ -186,7 +186,7 @@ def _computePoints(bn, datasrc, target, label, *, beta=1, show_progress=True, wi
   else:
     idLabel = label
 
-  Classifier = skbn.BNClassifier(beta=beta, significant_digit=significant_digits)
+  Classifier = skbn.createBnclassifier(beta=beta, significant_digit=significant_digits)
 
   if show_progress:
     # tqdm is optional:

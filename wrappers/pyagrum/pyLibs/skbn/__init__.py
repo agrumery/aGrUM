@@ -43,7 +43,7 @@
 __author__ = "Pierre-Henri Wuillemin, Nikola Matevski, Louise Mouillé"
 __copyright__ = "(c) 2020-2024 PARIS"
 
-from .bnclassifier import BNClassifier
+from .bnclassifier import BNClassifier, createBnclassifier
 from ._MBCalcul import compileMarkovBlanket
 
 __all__ = ["BNClassifier", "compileMarkovBlanket"]
