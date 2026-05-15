@@ -666,6 +666,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
         returned_list = returned_list == "True"
       elif numpy.issubdtype(self.targetType_, numpy.number):
         returned_list = returned_list.astype("float")
+    else:
+      if numpy.issubdtype(self.targetType_, numpy.number):
+        returned_list = returned_list.astype(self.targetType_)
 
     return returned_list
 
