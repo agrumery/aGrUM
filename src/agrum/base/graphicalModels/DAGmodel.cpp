@@ -79,7 +79,7 @@ namespace gum {
   }
 
   UndiGraph DAGmodel::moralGraph() const {
-    auto g = dag().moralGraph();
+    auto g = dag_.moralGraph();
     _nameNodes_(g);
     return g;
   }

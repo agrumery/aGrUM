@@ -769,7 +769,7 @@ namespace gum {
       t1_.clear();
 
       // t = 0 vars belongs to t0_ as keys
-      for (auto node: credalNet_->current_bn().dag().nodes()) {
+      for (auto node: credalNet_->current_bn().internalDag().nodes()) {
         std::string var_name = credalNet_->current_bn().variable(node).name();
         auto        delim    = var_name.find_first_of("_");
 
@@ -786,7 +786,7 @@ namespace gum {
       }
 
       // t = 1 vars belongs to either t0_ as member value or t1_ as keys
-      for (const auto& node: credalNet_->current_bn().dag().nodes()) {
+      for (const auto& node: credalNet_->current_bn().internalDag().nodes()) {
         std::string var_name  = credalNet_->current_bn().variable(node).name();
         auto        delim     = var_name.find_first_of("_");
         std::string time_step = var_name.substr(delim + 1, var_name.size());
@@ -820,7 +820,7 @@ namespace gum {
 
       // t > 1 vars belongs to either t0_ or t1_ as member value
       // remember timeSteps_
-      for (auto node: credalNet_->current_bn().dag().nodes()) {
+      for (auto node: credalNet_->current_bn().internalDag().nodes()) {
         std::string var_name  = credalNet_->current_bn().variable(node).name();
         auto        delim     = var_name.find_first_of("_");
         std::string time_step = var_name.substr(delim + 1, var_name.size());

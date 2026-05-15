@@ -105,7 +105,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(topo.add(*var5)));
 
       CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(topo.internalDag().size(), static_cast< gum::Size >(5));
 
       gum::NodeId ind = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(const gum::DiscreteVariable& varPtr
@@ -137,7 +137,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[3], idList[4]));
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.addArc(idList[1], idList[4]));
 
-      CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(topo.internalDag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseVar() const {
@@ -145,30 +145,30 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
 
       CHECK(topo.empty());
-      CHECK(topo.dag().empty());
-      CHECK(topo.dag().emptyArcs());
+      CHECK(topo.internalDag().empty());
+      CHECK(topo.internalDag().emptyArcs());
 
       _fill_(topo, idList);
 
       CHECK(!topo.empty());
-      CHECK(!topo.dag().empty());
-      CHECK(!topo.dag().emptyArcs());
+      CHECK(!topo.internalDag().empty());
+      CHECK(!topo.internalDag().emptyArcs());
 
       CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(topo.internalDag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(topo.internalDag().sizeArcs(), static_cast< gum::Size >(6));
 
       for (const auto i: idList)
         topo.erase(i);
 
       CHECK(topo.empty());
 
-      CHECK(topo.dag().empty());
-      CHECK(topo.dag().emptyArcs());
+      CHECK(topo.internalDag().empty());
+      CHECK(topo.internalDag().emptyArcs());
 
       CHECK_EQ(topo.size(), static_cast< gum::Size >(0));
-      CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(0));
-      CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(topo.internalDag().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(topo.internalDag().sizeArcs(), static_cast< gum::Size >(0));
     }
 
     void testEraseArc() const {
@@ -176,18 +176,18 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
 
       CHECK(topo.empty());
-      CHECK(topo.dag().empty());
-      CHECK(topo.dag().emptyArcs());
+      CHECK(topo.internalDag().empty());
+      CHECK(topo.internalDag().emptyArcs());
 
       _fill_(topo, idList);
 
       CHECK(!topo.empty());
-      CHECK(!topo.dag().empty());
-      CHECK(!topo.dag().emptyArcs());
+      CHECK(!topo.internalDag().empty());
+      CHECK(!topo.internalDag().emptyArcs());
 
       CHECK_EQ(topo.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(topo.dag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(topo.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(topo.internalDag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(topo.internalDag().sizeArcs(), static_cast< gum::Size >(6));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[0], idList[2])));
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[2], idList[4])));
@@ -197,8 +197,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(topo.eraseArc(gum::Arc(idList[1], idList[4])));
 
       CHECK(!topo.empty());
-      CHECK(!topo.dag().empty());
-      CHECK(topo.dag().emptyArcs());
+      CHECK(!topo.internalDag().empty());
+      CHECK(topo.internalDag().emptyArcs());
     }
 
     static void testIterator() {
@@ -256,7 +256,7 @@ namespace gum_tests {
                                               gum::List< gum::NodeId >&      idList) {
       gum::UndiGraph graph;
 
-      graph.populateNodes(topo.dag());
+      graph.populateNodes(topo.internalDag());
 
       graph.addEdge(idList[0], idList[2]);
       graph.addEdge(idList[0], idList[3]);

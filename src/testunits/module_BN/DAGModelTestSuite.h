@@ -157,6 +157,25 @@ namespace gum_tests {
       CHECK(bn.isIndependent("I", "H", {"C", "E", "B", "G"}));
     }
 
+    static void testNamedGraphs() {
+      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+
+      // dag() returns a named copy
+      auto dag = bn.dag();
+      for (auto id: dag)
+        CHECK_EQ(dag.nameFromId(id), bn.variable(id).name());
+
+      // moralGraph() returns named UndiGraph
+      auto mg = bn.moralGraph();
+      for (auto id: mg.nodes())
+        CHECK_EQ(mg.nameFromId(id), bn.variable(id).name());
+
+      // moralizedAncestralGraph() returns named UndiGraph
+      auto ag = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
+      for (auto id: ag.nodes())
+        CHECK_EQ(ag.nameFromId(id), bn.variable(id).name());
+    }
+
     static void testMultiIndependence() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
 
@@ -184,4 +203,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(MoralizedAncestralGraph)
   GUM_TEST_ACTIF(Independence)
   GUM_TEST_ACTIF(MultiIndependence)
+  GUM_TEST_ACTIF(NamedGraphs)
 }   // namespace gum_tests

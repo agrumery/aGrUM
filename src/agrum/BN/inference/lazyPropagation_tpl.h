@@ -530,7 +530,7 @@ namespace gum {
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
       if (target_nodes.size() != bn.size()) {
-        BarrenNodesFinder finder(&(bn.dag()));
+        BarrenNodesFinder finder(&bn.internalDag());
         finder.setTargets(&target_nodes);
 
         NodeSet evidence_nodes(this->evidence().size());

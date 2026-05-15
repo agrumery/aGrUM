@@ -181,7 +181,7 @@ namespace gum_tests {
       CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
 
       // install a non-existing node
-      CHECK_EQ(bn.dag().exists((gum::NodeId)100), false);
+      CHECK_EQ(bn.internalDag().exists((gum::NodeId)100), false);
       CHECK_THROWS_AS(frag.installNode((gum::NodeId)100), const gum::NotFound&);
       CHECK_EQ(frag.size(), static_cast< gum::Size >(1));
       CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(0));
@@ -307,16 +307,16 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode(bn.idFromName("v6")));
 
-      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
-      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.internalDag().sizeNodes(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.internalDag().sizeArcs(), static_cast< gum::Size >(0));
       CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
       CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
       CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants(bn.idFromName("v6")));
 
-      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
-      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.internalDag().sizeNodes(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.internalDag().sizeArcs(), static_cast< gum::Size >(2));
       CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
       CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       CHECK((pow(10, frag.log10DomainSize()))
@@ -371,16 +371,16 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installNode("v6"));
 
-      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(2));
-      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(frag.internalDag().sizeNodes(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.internalDag().sizeArcs(), static_cast< gum::Size >(0));
       CHECK_EQ(frag.size(), static_cast< gum::Size >(2));
       CHECK_EQ(frag.dim(), gum::Size((3 - 1) + (2 - 1)));
       CHECK_EQ(pow(10, frag.log10DomainSize()), 2 * 3);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(frag.installAscendants("v6"));
 
-      CHECK_EQ(frag.dag().sizeNodes(), static_cast< gum::Size >(3));
-      CHECK_EQ(frag.dag().sizeArcs(), static_cast< gum::Size >(2));
+      CHECK_EQ(frag.internalDag().sizeNodes(), static_cast< gum::Size >(3));
+      CHECK_EQ(frag.internalDag().sizeArcs(), static_cast< gum::Size >(2));
       CHECK_EQ(frag.size(), static_cast< gum::Size >(3));
       CHECK_EQ(frag.dim(), gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       CHECK((pow(10, frag.log10DomainSize()))
@@ -437,20 +437,20 @@ namespace gum_tests {
       CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
       CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(3));
 
-      CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(2));
-      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      CHECK_EQ(frag.internalDag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(2));
+      CHECK(!frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      CHECK(frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      CHECK(frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       bn.eraseArc(gum::Arc(bn.idFromName("v2"), bn.idFromName("v5")));
 
       CHECK_EQ(frag.size(), static_cast< gum::Size >(4));
       CHECK_EQ(frag.sizeArcs(), static_cast< gum::Size >(2));
 
-      CHECK_EQ(frag.dag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(1));
-      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
-      CHECK(!frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
-      CHECK(frag.dag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
+      CHECK_EQ(frag.internalDag().parents(bn.idFromName("v5")).size(), static_cast< gum::Size >(1));
+      CHECK(!frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v1")));
+      CHECK(!frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v2")));
+      CHECK(frag.internalDag().parents(bn.idFromName("v5")).contains(bn.idFromName("v3")));
 
       // nothing should change here
       gum::BayesNet< double > bn2;

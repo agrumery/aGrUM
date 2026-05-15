@@ -54,7 +54,7 @@
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   BayesNetFragment< GUM_SCALAR >::BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn) :
-      DiGraphListener(&bn.dag()), _bn_(bn) {
+      DiGraphListener(&bn.internalDag()), _bn_(bn) {
     GUM_CONSTRUCTOR(BayesNetFragment)
   }
 
@@ -87,7 +87,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE void
       BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
-    if (dag().existsArc(from, to)) uninstallArc_(from, to);
+    if (this->internalDag().existsArc(from, to)) uninstallArc_(from, to);
   }
 
   //============================================================
@@ -145,12 +145,12 @@ namespace gum {
   // specific API for BayesNetFragment
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const {
-    return dag().existsNode(id);
+    return this->internalDag().existsNode(id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installNode(NodeId id) {
-    if (!_bn_.dag().existsNode(id))
+    if (!_bn_.internalDag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet")
 
     if (!isInstalledNode(id)) {
@@ -216,7 +216,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT(NodeId id, const Tensor< GUM_SCALAR >& pot) {
-    if (!dag().existsNode(id))
+    if (!this->internalDag().existsNode(id))
       GUM_ERROR(NotFound, "Node " << id << " is not installed in the fragment")
 
     if (&(pot.variable(0)) != &(variable(id))) {
@@ -352,7 +352,7 @@ namespace gum {
           output << tab << "\"" << _bn_.variable(node).name() << "\" -> "
                  << "\"" << _bn_.variable(child).name() << "\" [";
 
-          if (dag().existsArc(Arc(node, child))) output << inFragmentStyle;
+          if (this->internalDag().existsArc(Arc(node, child))) output << inFragmentStyle;
           else output << outFragmentStyle;
 
           output << "];" << std::endl;
@@ -374,7 +374,7 @@ namespace gum {
     for (const auto nod: nodes()) {
       res.add(variable(nod), nod);
     }
-    for (const auto& arc: dag().arcs()) {
+    for (const auto& arc: this->internalDag().arcs()) {
       res.addArc(arc.tail(), arc.head());
     }
     for (const auto nod: nodes()) {

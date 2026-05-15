@@ -44,7 +44,7 @@ class PythonBNListener: public gum::DiGraphListener {
 
   public:
   PythonBNListener(const gum::BayesNet< double >* bn, const gum::VariableNodeMap* vnm) :
-      gum::DiGraphListener(&(bn->dag())), _map_(vnm) {
+      gum::DiGraphListener(&(bn->internalDag())), _map_(vnm) {
     _pyWhenArcAdded_ = _pyWhenArcDeleted_ = (PyObject*)0;
     _pyWhenNodeAdded_ = _pyWhenNodeDeleted_ = (PyObject*)0;
   }

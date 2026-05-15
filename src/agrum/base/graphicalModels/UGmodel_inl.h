@@ -55,10 +55,17 @@
 
 namespace gum {
   INLINE
-  const UndiGraph& UGmodel::graph() const { return graph_; }
+  const UndiGraph& UGmodel::internalGraph() const { return graph_; }
 
   INLINE
-  Size UGmodel::size() const { return graph().size(); }
+  UndiGraph UGmodel::graph() const {
+    UndiGraph g = graph_;
+    _nameNodes_(g);
+    return g;
+  }
+
+  INLINE
+  Size UGmodel::size() const { return graph_.size(); }
 
   INLINE
   Size UGmodel::sizeEdges() const { return graph_.sizeEdges(); }
@@ -90,11 +97,11 @@ namespace gum {
   INLINE const NodeGraphPart& UGmodel::nodes() const { return (NodeGraphPart&)graph_; }
 
   INLINE bool UGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    return !graph().hasUndirectedPath(X, Y, Z);
+    return !graph_.hasUndirectedPath(X, Y, Z);
   }
 
   INLINE bool UGmodel::isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
-    return !graph().hasUndirectedPath(X, Y, Z);
+    return !graph_.hasUndirectedPath(X, Y, Z);
   }
 
   INLINE NodeProperty< NodeId > UGmodel::connectedComponents() const {

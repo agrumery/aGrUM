@@ -63,7 +63,7 @@ namespace gum {
     for (const NodeId id: ref.dag().asNodeSet()) {
       aligned_test.add(ref.variable(id), id);
     }
-    for (const Arc& arc: test.dag().arcs()) {
+    for (const Arc& arc: test.internalDag().arcs()) {
       const NodeId tail = ref.idFromName(test.variable(arc.tail()).name());
       const NodeId head = ref.idFromName(test.variable(arc.head()).name());
       aligned_test.addArc(tail, head);
@@ -101,7 +101,7 @@ namespace gum {
     for (const NodeId id: ref.dag().asNodeSet()) {
       aligned_test.addNodeWithId(id);
     }
-    for (const Arc& arc: test.dag().arcs()) {
+    for (const Arc& arc: test.internalDag().arcs()) {
       const NodeId tail = ref.idFromName(test.variable(arc.tail()).name());
       const NodeId head = ref.idFromName(test.variable(arc.head()).name());
       aligned_test.addArc(tail, head);

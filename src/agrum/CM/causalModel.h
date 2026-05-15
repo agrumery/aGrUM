@@ -296,8 +296,13 @@ namespace gum {
     /// @brief Observational BN (observed variables only).
     const BayesNet< GUM_SCALAR >& observationalBN() const { return _observationalBN_; }
 
-    /// @brief Causal DAG (observed + latent variables).
-    const DAG& causalDAG() const { return _causalDAG_; }
+    /// @brief Causal DAG (observed + latent variables), with node names set.
+    DAG causalDAG() const {
+      DAG g = _causalDAG_;
+      for (auto id: g)
+        g.setName(id, nameFromId(id));
+      return g;
+    }
 
     /// @brief All variable names appearing in the causal model (observed + latent).
     Set< std::string > names() const;

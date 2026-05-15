@@ -119,8 +119,8 @@ namespace gum_tests {
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-        CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(8));
-        CHECK_EQ(bn2.dag().arcs().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(8));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }   // namespace gum_tests
 
@@ -170,7 +170,7 @@ namespace gum_tests {
           database.variableNames (),
           modalities, order );
 
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      std::cout << bn << std::endl << \1.internalDag() << std::endl;
     }
 
 
@@ -180,11 +180,11 @@ namespace gum_tests {
 
       gum::BayesNet<float> bn =
         k2.learnBNFromCSV ( GET_RESSOURCES_PATH( "asia.csv" ), order );
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      std::cout << bn << std::endl << \1.internalDag() << std::endl;
 
       gum::BayesNet<double> bn2 =
         k2.learnBNFromCSV<double> ( GET_RESSOURCES_PATH( "asia.csv" ), order );
-      std::cout << bn2 << std::endl << bn2.dag () << std::endl;
+      std::cout << bn2 << std::endl << \1.internalDag() << std::endl;
     }
 
 
@@ -225,7 +225,7 @@ namespace gum_tests {
                                              database.variableNames (),
                                              modalities );
 
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      std::cout << bn << std::endl << \1.internalDag() << std::endl;
     }
 
 
@@ -277,7 +277,7 @@ namespace gum_tests {
                                              database.variableNames (),
                                              modalities );
 
-      std::cout << bn << std::endl << bn.dag () << std::endl;
+      std::cout << bn << std::endl << \1.internalDag() << std::endl;
     }
 
 

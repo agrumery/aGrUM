@@ -91,9 +91,11 @@ namespace gum {
     /// @name Variable manipulation methods.
     /// @{
     /**
-     * Returns a constant reference to the dag of this Bayes Net.
+     * Returns a named copy of the internal DAG: each node id is assigned the
+     * name of the corresponding variable. O(n) — allocates a new DAG.
+     * For a stable reference (listeners, long-lived pointers), use internalDag().
      */
-    const DAG& dag() const;
+    DAG dag() const;
 
     /**
      * Returns the number of variables in this Directed Graphical Model.
@@ -269,6 +271,11 @@ namespace gum {
     NodeSet minimalCondSet(const std::vector< std::string >& targets,
                            const std::vector< std::string >& soids) const;
 
+
+    /// Returns a const reference to the internal (unnamed) DAG. O(1), no copy.
+    /// Use for stable references or pointers (graph listeners, BarrenNodesFinder).
+    /// For named node access, use dag() instead.
+    const DAG& internalDag() const;
 
     protected:
     /**

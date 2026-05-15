@@ -62,7 +62,7 @@ bool compareInference(const std::string&                       file,
   std::string argstr = "";
 
   for (const auto& node: bn.nodes()) {
-    if (!inf.BN().dag().exists(node)) continue;
+    if (!inf.BN().internalDag().exists(node)) continue;
     GUM_SCALAR e = (inf.posterior(node) - lazy.posterior(node)).abs().max();
 
     if (e > err) {

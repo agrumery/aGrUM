@@ -128,7 +128,7 @@ namespace gum_tests {
     gum::UndiGraph getRealMoralGraph(const gum::BayesNet< double >&  bn,
                                      const gum::List< gum::NodeId >& idList) {
       gum::UndiGraph graph;
-      graph.populateNodes(bn.dag());
+      graph.populateNodes(bn.internalDag());
 
       graph.addEdge(idList[0], idList[2]);
       graph.addEdge(idList[0], idList[3]);
@@ -197,10 +197,10 @@ namespace gum_tests {
       gum::BayesNet< double >* copy = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::BayesNet< double >(source));
 
-      CHECK_EQ(source.dag().size(), copy->dag().size());
-      CHECK_EQ(source.dag().sizeArcs(), copy->dag().sizeArcs());
+      CHECK_EQ(source.internalDag().size(), copy->dag().size());
+      CHECK_EQ(source.internalDag().sizeArcs(), copy->dag().sizeArcs());
 
-      for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
+      for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
         CHECK(copy->dag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
@@ -215,7 +215,7 @@ namespace gum_tests {
           CHECK(false);
         }
 
-        for (const auto parent: source.dag().parents(node)) {
+        for (const auto parent: source.internalDag().parents(node)) {
           CHECK(copy->dag().existsArc(gum::Arc(parent, node)));
         }
 
@@ -246,11 +246,11 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(copy = source);
 
-      CHECK_EQ(source.dag().size(), copy.dag().size());
-      CHECK_EQ(source.dag().sizeArcs(), copy.dag().sizeArcs());
+      CHECK_EQ(source.internalDag().size(), copy.internalDag().size());
+      CHECK_EQ(source.internalDag().sizeArcs(), copy.internalDag().sizeArcs());
 
-      for (const gum::DAG dag = source.dag(); const auto node: dag.nodes()) {
-        CHECK(copy.dag().exists(node));
+      for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
+        CHECK(copy.internalDag().exists(node));
 
         const gum::DiscreteVariable& srcVar = source.variable(node);
         const gum::DiscreteVariable& cpVar  = copy.variable(node);
@@ -264,8 +264,8 @@ namespace gum_tests {
           CHECK(false);
         }
 
-        for (const auto parent: source.dag().parents(node)) {
-          CHECK(copy.dag().existsArc(gum::Arc(parent, node)));
+        for (const auto parent: source.internalDag().parents(node)) {
+          CHECK(copy.internalDag().existsArc(gum::Arc(parent, node)));
         }
 
         const gum::Tensor< double >& srcCPT = source.cpt(node);
@@ -310,7 +310,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
 
       // Test for uniqueness of the ids
 
@@ -347,7 +347,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
 
       gum::LabelizedVariable const* varPtr = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
@@ -402,7 +402,7 @@ namespace gum_tests {
 
       CHECK_THROWS_AS(bn.addArc(idList[3], idList[4]), const gum::DuplicateElement&);
 
-      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseVar() {
@@ -410,16 +410,16 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
 
       CHECK(bn.empty());
-      CHECK(bn.dag().emptyArcs());
+      CHECK(bn.internalDag().emptyArcs());
 
       fill(bn, idList);
 
       CHECK(!bn.empty());
-      CHECK(!bn.dag().emptyArcs());
+      CHECK(!bn.internalDag().emptyArcs());
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
 
       bn.erase(idList[0]);
 
@@ -429,21 +429,21 @@ namespace gum_tests {
 
       CHECK(bn.empty());
 
-      CHECK(bn.dag().emptyArcs());
+      CHECK(bn.internalDag().emptyArcs());
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(0));
-      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(0));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(0));
+      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(0));
 
       idList.clear();
       GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
 
       CHECK(!bn.empty());
-      CHECK(!bn.dag().emptyArcs());
+      CHECK(!bn.internalDag().emptyArcs());
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
     }
 
     void testEraseArc() {
@@ -451,16 +451,16 @@ namespace gum_tests {
       gum::List< gum::NodeId > idList;
 
       CHECK(bn.empty());
-      CHECK(bn.dag().emptyArcs());
+      CHECK(bn.internalDag().emptyArcs());
 
       fill(bn, idList);
 
       CHECK(!bn.empty());
-      CHECK(!bn.dag().emptyArcs());
+      CHECK(!bn.internalDag().emptyArcs());
 
       CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.dag().sizeArcs(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[2])));
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[2], idList[4])));
@@ -470,7 +470,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[4])));
 
       CHECK(!bn.empty());
-      CHECK(bn.dag().emptyArcs());
+      CHECK(bn.internalDag().emptyArcs());
     }
 
     void testStringAccessors() {
@@ -585,9 +585,9 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
-      CHECK(bn.dag().existsArc(idList[0], idList[3]));
-      CHECK(bn.dag().existsArc(idList[1], idList[3]));
+      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+      CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_1
           = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
@@ -600,9 +600,9 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.erase(idList[1]));
 
-      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
-      CHECK(bn.dag().existsArc(idList[0], idList[3]));
-      CHECK(!bn.dag().existsArc(idList[1], idList[3]));
+      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+      CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
       dmnSize_2 *= bn.variable(idList[3]).domainSize();
@@ -619,9 +619,9 @@ namespace gum_tests {
 
       fill(bn, idList);
 
-      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(2));
-      CHECK(bn.dag().existsArc(idList[0], idList[3]));
-      CHECK(bn.dag().existsArc(idList[1], idList[3]));
+      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+      CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_1
           = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
@@ -634,9 +634,9 @@ namespace gum_tests {
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
 
-      CHECK_EQ(bn.dag().parents(idList[3]).size(), static_cast< gum::Size >(1));
-      CHECK(bn.dag().existsArc(idList[0], idList[3]));
-      CHECK(!bn.dag().existsArc(idList[1], idList[3]));
+      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+      CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
 
       gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
       dmnSize_2 *= bn.variable(idList[3]).domainSize();

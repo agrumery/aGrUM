@@ -55,10 +55,17 @@
 
 namespace gum {
   INLINE
-  const DAG& DAGmodel::dag() const { return dag_; }
+  const DAG& DAGmodel::internalDag() const { return dag_; }
 
   INLINE
-  Size DAGmodel::size() const { return dag().size(); }
+  DAG DAGmodel::dag() const {
+    DAG g = dag_;
+    _nameNodes_(g);
+    return g;
+  }
+
+  INLINE
+  Size DAGmodel::size() const { return dag_.size(); }
 
   INLINE
   Size DAGmodel::sizeArcs() const { return dag_.sizeArcs(); }
@@ -111,19 +118,19 @@ namespace gum {
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const { return (NodeGraphPart&)dag_; }
 
-  INLINE Sequence< NodeId > DAGmodel::topologicalOrder() const { return dag().topologicalOrder(); }
+  INLINE Sequence< NodeId > DAGmodel::topologicalOrder() const { return dag_.topologicalOrder(); }
 
   INLINE NodeProperty< NodeId > DAGmodel::connectedComponents() const {
     return dag_.connectedComponents();
   }
 
-  INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag().descendants(id); }
+  INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag_.descendants(id); }
 
   INLINE NodeSet DAGmodel::descendants(std::string_view name) const {
     return descendants(idFromName(name));
   }
 
-  INLINE NodeSet DAGmodel::ancestors(const NodeId id) const { return dag().ancestors(id); }
+  INLINE NodeSet DAGmodel::ancestors(const NodeId id) const { return dag_.ancestors(id); }
 
   INLINE NodeSet DAGmodel::ancestors(std::string_view name) const {
     return ancestors(idFromName(name));
@@ -135,17 +142,17 @@ namespace gum {
   }
 
   INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
-    auto g = dag().moralizedAncestralGraph(nodes);
+    auto g = dag_.moralizedAncestralGraph(nodes);
     _nameNodes_(g);
     return g;
   }
 
   INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
-    return dag().dSeparation(X, Y, Z);
+    return dag_.dSeparation(X, Y, Z);
   }
 
   INLINE bool DAGmodel::isIndependent(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
-    return dag().dSeparation(X, Y, Z);
+    return dag_.dSeparation(X, Y, Z);
   }
 
   INLINE NodeSet DAGmodel::minimalCondSet(NodeId target, const NodeSet& soids) const {

@@ -193,10 +193,12 @@ namespace gum {
     if (!hasName(id)) return "";
     const std::string& name = _names_->second(id);
     std::string        result;
-    result.reserve(name.size() + 20);
-    result = " [label=\"";
+    // 10(" [label=\"(") + 10(NodeId digits) + 2(") ") + 2("\"]")
+    // + 15 escaped chars (worst case : all are \n, \r, " or \) + name.size()
+    result.reserve(name.size() + 24 + 15);   
+    result = " [label=\"(";
     result += std::to_string(id);
-    result += ':';
+    result += ') ';
     for (const char c: name) {
       switch (c) {
         case '"' : result += "\\\""; break;

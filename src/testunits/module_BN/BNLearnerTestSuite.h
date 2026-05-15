@@ -120,7 +120,7 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
+        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(9));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       learner.setDatabaseWeight(10.0);
@@ -168,7 +168,7 @@ namespace gum_tests {
         learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.internalDag(), bn2.internalDag());
       }
 
       {
@@ -191,7 +191,7 @@ namespace gum_tests {
         learner2.useNoPrior();
         gum::BayesNet< double > bn2 = learner2.learnBN();
 
-        CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.internalDag(), bn2.internalDag());
       }
 
       {
@@ -227,7 +227,7 @@ namespace gum_tests {
         learner2.useScoreAIC();
         gum::BayesNet< double > xbn2 = learner2.learnBN();
 
-        CHECK_EQ(xbn1.dag(), xbn2.dag());
+        CHECK_EQ(xbn1.internalDag(), xbn2.internalDag());
       }
     }
 
@@ -296,7 +296,7 @@ namespace gum_tests {
         gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
-        CHECK_EQ(bn1.dag(), bn2.dag());
+        CHECK_EQ(bn1.internalDag(), bn2.internalDag());
 
         gum::Instantiation I1;
         gum::Instantiation I2;
@@ -452,7 +452,7 @@ namespace gum_tests {
 
         try {
           gum::BayesNet< double > bn = learner.learnBN();
-          CHECK_EQ(bn.dag().arcs().size(), 9);
+          CHECK_EQ(bn.internalDag().arcs().size(), 9);
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       } catch (gum::Exception& e) {
         GUM_TRACE(e.errorType());
@@ -626,8 +626,8 @@ namespace gum_tests {
       gum::BayesNet< double > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.internalDag());
+        CHECK_EQ(bn2.internalDag().arcs().size(), bn.internalDag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -664,8 +664,8 @@ namespace gum_tests {
       gum::BayesNet< double > bn = learner.learnBN();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
-        CHECK_EQ(bn2.dag().arcs().size(), bn.dag().arcs().size());
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.internalDag());
+        CHECK_EQ(bn2.internalDag().arcs().size(), bn.internalDag().arcs().size());
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
 
@@ -704,7 +704,7 @@ namespace gum_tests {
       learner.useSmoothingPrior();
 
       try {
-        gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
+        gum::BayesNet< double > bn2 = learner.learnParameters(bn.internalDag());
         CHECK_EQ(bn2.dim(), bn.dim());
 
         for (gum::NodeId node: bn.nodes()) {
@@ -771,7 +771,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
       learner.useSmoothingPrior();
 
-      gum::BayesNet< double > bn2 = learner.learnParameters(bn.dag());
+      gum::BayesNet< double > bn2 = learner.learnParameters(bn.internalDag());
     }
 
     static void test_asia_param_bn_with_unknow_modality() {
@@ -888,7 +888,7 @@ namespace gum_tests {
         gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"));
         learner.useScoreLog2Likelihood();
         learner.useSmoothingPrior(1.0);
-        learn1 = learner.learnParameters(dbn.dag());
+        learn1 = learner.learnParameters(dbn.internalDag());
       }
       gum::BayesNet< double > learn2;
       {
@@ -897,7 +897,7 @@ namespace gum_tests {
           gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"), learn1);
           learner.useScoreLog2Likelihood();
           learner.useSmoothingPrior(1.0);
-          learn2 = learner.learnParameters(dbn.dag());
+          learn2 = learner.learnParameters(dbn.internalDag());
         } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       }
       gum::BayesNet< double > learn3;
@@ -906,7 +906,7 @@ namespace gum_tests {
         gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/DBN_Tonda.csv"), dbn);
         learner.useScoreLog2Likelihood();
         learner.useSmoothingPrior(1.0);
-        learn3 = learner.learnParameters(dbn.dag());
+        learn3 = learner.learnParameters(dbn.internalDag());
       }
 
       CHECK_EQ(learn1.variable(learn1.idFromName("wl_0")).toString(), "wl_0:Range([0,3])");
@@ -935,7 +935,7 @@ namespace gum_tests {
                                                    false);
         learner.useScoreLog2Likelihood();
         learner.useSmoothingPrior(1.0);
-        learn4 = learner.learnParameters(dbn.dag());
+        learn4 = learner.learnParameters(dbn.internalDag());
       }
       CHECK((learn4.variable(learn1.idFromName("wl_0")).toString())
             == ("wl_0:Labelized({0|1|2|3})"));
@@ -1030,7 +1030,7 @@ namespace gum_tests {
       gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/bugDoumenc.csv"), templ);
       learner.useScoreLog2Likelihood();
       learner.useSmoothingPrior();
-      auto bn = learner.learnParameters(templ.dag());
+      auto bn = learner.learnParameters(templ.internalDag());
     }
 
     static void test_BugDoumencWithInt() {
@@ -1104,7 +1104,7 @@ namespace gum_tests {
       learner.useScoreLog2Likelihood();
       learner.useSmoothingPrior();
 
-      auto bn = learner.learnParameters(templ.dag());
+      auto bn = learner.learnParameters(templ.internalDag());
 
       const gum::DiscreteVariable& var_discr = bn.variable("A");
       int                          good      = 1;
@@ -1681,10 +1681,10 @@ namespace gum_tests {
       // without specific score
       auto templ12 = gum::BayesNet< double >::fastPrototype("smoking->lung_cancer");
       gum::learning::BNLearner learner(GET_RESSOURCES_PATH("csv/asia.csv"), templ12);
-      auto                     bn = learner.learnParameters(templ12.dag());
+      auto                     bn = learner.learnParameters(templ12.internalDag());
 
       gum::learning::BNLearner learner2(GET_RESSOURCES_PATH("csv/asia.csv"), templ12);
-      auto                     bn2 = learner2.learnParameters(templ12.dag());
+      auto                     bn2 = learner2.learnParameters(templ12.internalDag());
       CHECK_EQ(bn.cpt("lung_cancer").toString(), bn2.cpt("lung_cancer").toString());
 
       //////////////////////////
@@ -1694,7 +1694,7 @@ namespace gum_tests {
       learner3.useScoreAIC();
       learner3.useSmoothingPrior(1e-6);
 
-      auto bn3 = learner3.learnParameters(templ34.dag());
+      auto bn3 = learner3.learnParameters(templ34.internalDag());
       {
         const gum::Tensor< double >& p = bn.cpt("lung_cancer");
         const gum::Tensor< double >& q = bn3.cpt("lung_cancer");
@@ -1728,7 +1728,7 @@ namespace gum_tests {
       gum::learning::BNLearner learner4(GET_RESSOURCES_PATH("csv/asia.csv"), templ35);
       learner4.useScoreAIC();
 
-      CHECK_THROWS_AS(learner4.learnParameters(templ34.dag()), const gum::DatabaseError&);
+      CHECK_THROWS_AS(learner4.learnParameters(templ34.internalDag()), const gum::DatabaseError&);
     }
 
     static void test_misorientation_MIIC() {
@@ -1957,7 +1957,7 @@ namespace gum_tests {
           gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
           gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
-          CHECK_EQ(bn1.dag(), bn2.dag());
+          CHECK_EQ(bn1.internalDag(), bn2.internalDag());
 
           gum::Instantiation I1;
           gum::Instantiation I2;
@@ -2073,10 +2073,10 @@ namespace gum_tests {
       learner.useEM(1e-2);
       learner.useSmoothingPrior();
       learner.setVerbosity(true);
-      auto bn1 = learner.learnParameters(bn.dag());
+      auto bn1 = learner.learnParameters(bn.internalDag());
       CHECK_LE(1UL, learner.EMnbrIterations());
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         const auto& cpt  = bn1.cpt(node);
         auto        cpt2 = cpt;
         cpt2.normalizeAsCPT();
@@ -2088,7 +2088,7 @@ namespace gum_tests {
     static void _test_dirichlet(const gum::BayesNet< double >& model) {
       gum::learning::BNLearner all(GET_RESSOURCES_PATH("dirichlet/dirichlet.csv"), model);
       all.useNoPrior();
-      auto full = all.learnParameters(model.dag(), true);
+      auto full = all.learnParameters(model.internalDag(), true);
 
       const std::vector< std::string > parts = {GET_RESSOURCES_PATH("dirichlet/dir_part1.csv"),
                                                 GET_RESSOURCES_PATH("dirichlet/dir_part2.csv"),
@@ -2106,7 +2106,7 @@ namespace gum_tests {
           // other parts, using partial(i-1) as prior
           learner.useDirichletPrior(partial, double(nb_elt));
         }
-        partial = learner.learnParameters(model.dag(), true);
+        partial = learner.learnParameters(model.internalDag(), true);
         nb_elt += learner.nbRows();
       }
 

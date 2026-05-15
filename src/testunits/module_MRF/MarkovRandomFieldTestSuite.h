@@ -404,6 +404,14 @@ namespace gum_tests {
       CHECK_THROWS_AS(mn.add("Y[1,1]", 1), const gum::OperationNotAllowed&);
     }
 
+    static void testNamedGraph() {
+      auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--E");
+
+      auto g = mrf.graph();
+      for (auto id: g.nodes())
+        CHECK_EQ(g.nameFromId(id), mrf.variable(id).name());
+    }
+
     void testConnectedComponents() {
       // A--B connected, C--D connected, E isolated: 3 components
       auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;C--D;E");
@@ -448,6 +456,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FastPrototypeVarType)
   GUM_TEST_ACTIF(MonoClique)
   GUM_TEST_ACTIF(ShortCutAddFastVar)
+  GUM_TEST_ACTIF(NamedGraph)
   GUM_TEST_ACTIF(ConnectedComponents)
 
 }   // namespace gum_tests

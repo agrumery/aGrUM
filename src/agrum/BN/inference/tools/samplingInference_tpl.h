@@ -127,7 +127,7 @@ namespace gum {
   void SamplingInference< GUM_SCALAR >::contextualize() {
     // Finding Barren nodes
 
-    BarrenNodesFinder barr_nodes = BarrenNodesFinder(&this->BN().dag());
+    BarrenNodesFinder barr_nodes = BarrenNodesFinder(&this->BN().internalDag());
     barr_nodes.setTargets(&this->targets());
     barr_nodes.setEvidence(&this->hardEvidenceNodes());
     const NodeSet& barren = barr_nodes.barrenNodes();

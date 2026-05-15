@@ -92,9 +92,11 @@ namespace gum {
     /// @name Variable manipulation methods.
     /// @{
     /**
-     * Returns a constant reference to the dag of this Bayes Net.
+     * Returns a named copy of the internal undirected graph: each node id is
+     * assigned the name of the corresponding variable. O(n) — allocates a new graph.
+     * For a stable reference (listeners, long-lived pointers), use internalGraph().
      */
-    const UndiGraph& graph() const;
+    UndiGraph graph() const;
 
     /**
      * Returns the number of variables in this Directed Graphical Model.
@@ -178,6 +180,11 @@ namespace gum {
      * the returned nodes*/
     NodeSet family(const NodeId id) const final;
     NodeSet family(std::string_view name) const final;
+
+    /// Returns a const reference to the internal (unnamed) graph. O(1), no copy.
+    /// Use for stable references or pointers (graph listeners).
+    /// For named node access, use graph() instead.
+    const UndiGraph& internalGraph() const;
 
     protected:
     /**

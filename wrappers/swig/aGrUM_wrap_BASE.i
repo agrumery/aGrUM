@@ -217,7 +217,9 @@
 %import <agrum/base/graphicalModels/variableNodeMap.h>
 %include <agrum/base/graphicalModels/graphicalModel.h>
 %include <agrum/base/graphicalModels/discreteGraphicalModel.h>
+%ignore gum::DAGmodel::internalDag;
 %include <agrum/base/graphicalModels/DAGmodel.h>
+%ignore gum::UGmodel::internalGraph;
 %include <agrum/base/graphicalModels/UGmodel.h>
 
 %import <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>

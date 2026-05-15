@@ -95,7 +95,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     static void testgeneral_dsep_basic_paths() {
       auto  bn = makeRefBN();
-      auto& dg = bn.dag();
+      const auto& dg = bn.dag();
 
       auto A = ns(bn, {"A"});
       auto B = ns(bn, {"B"});
@@ -129,7 +129,7 @@ namespace gum_tests {
     static void testbackdoor_forward_simple_chain() {
       // A -> B -> C
       auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto& dg = bn.dag();
+      const auto& dg = bn.dag();
 
       auto A = ns(bn, {"A"});
       auto C = ns(bn, {"C"});
@@ -203,7 +203,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     static void testbarren_nodes_and_reduction() {
       auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
-      auto& dg = bn.dag();
+      const auto& dg = bn.dag();
 
       const auto idA = bn.idFromName("A");
       const auto idB = bn.idFromName("B");

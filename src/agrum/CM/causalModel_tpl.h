@@ -304,7 +304,8 @@ namespace gum {
     }
 
     // add arcs among the kept observed nodes (from the *causal* DAG)
-    for (const auto& a: cm.causalDAG().arcs()) {
+    const auto causalDag = cm.causalDAG();
+    for (const auto& a: causalDag.arcs()) {
       const NodeId x = a.tail();
       const NodeId y = a.head();
       if (nodes.contains(x) && nodes.contains(y)) { bn.addArc(idmap[x], idmap[y]); }
