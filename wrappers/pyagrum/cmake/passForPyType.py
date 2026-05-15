@@ -416,7 +416,7 @@ def main(*args):
         do_the_job(
             src_filename=args[0],
             target_filename=args[1],
-            backup_filename=f"{namedest}.backup{sufdest}",
+            backup_filename=f"{namedest}{sufdest}.backup",
             is_python=is_python,
             debug_mode=False,
         )
