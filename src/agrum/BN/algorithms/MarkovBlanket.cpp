@@ -68,6 +68,9 @@ namespace gum {
         }
       }
     }
+
+    for (auto node: _mb_)
+      _mb_.setName(node, _model_.variable(node).name());
   }
 
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, std::string_view name, int level) :

@@ -251,6 +251,12 @@ namespace gum {
      */
     GraphicalModel& operator=(GraphicalModel&& source);
 
+    /**
+     * Names every node of g using variable(id).name() for each node id in g.
+     * Call this before returning any newly constructed graph from a model method.
+     */
+    void _nameNodes_(NodeGraphPart& g) const;
+
     private:
     /// The properties of this Directed Graphical Model.
     HashTable< std::string, std::string > _propertiesMap_;

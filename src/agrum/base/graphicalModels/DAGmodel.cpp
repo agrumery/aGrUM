@@ -78,7 +78,11 @@ namespace gum {
     return *this;
   }
 
-  UndiGraph DAGmodel::moralGraph() const { return dag().moralGraph(); }
+  UndiGraph DAGmodel::moralGraph() const {
+    auto g = dag().moralGraph();
+    _nameNodes_(g);
+    return g;
+  }
 
   bool DAGmodel::hasSameStructure(const DAGmodel& other) {
     if (this == &other) return true;

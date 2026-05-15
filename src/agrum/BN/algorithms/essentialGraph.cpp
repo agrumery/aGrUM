@@ -104,6 +104,9 @@ namespace gum {
     for (const auto& edge: mg.edges()) {
       _pdag_.addEdge(edge.first(), edge.second());
     }
+
+    for (auto id: _pdag_)
+      _pdag_.setName(id, _dagmodel_->variable(id).name());
   }
 
   bool EssentialGraph::_strongly_protected_(NodeId a, NodeId b) const {
@@ -182,6 +185,9 @@ namespace gum {
       skel.addEdge(edge.first(), edge.second());
     for (const auto& arc: arcs())
       skel.addEdge(arc.tail(), arc.head());
+    if (_dagmodel_ != nullptr)
+      for (auto id: skel)
+        skel.setName(id, _dagmodel_->variable(id).name());
     return skel;
   }
 }   // namespace gum

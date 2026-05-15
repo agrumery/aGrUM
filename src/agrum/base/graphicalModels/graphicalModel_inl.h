@@ -170,4 +170,10 @@ namespace gum {
   bool GraphicalModel::existsProperty(std::string_view name) const {
     return _propertiesMap_.exists(name);
   }
+
+  INLINE
+  void GraphicalModel::_nameNodes_(NodeGraphPart& g) const {
+    for (auto id: g)
+      g.setName(id, variable(id).name());
+  }
 } /* namespace gum */

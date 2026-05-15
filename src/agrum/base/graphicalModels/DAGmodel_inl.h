@@ -135,7 +135,9 @@ namespace gum {
   }
 
   INLINE UndiGraph DAGmodel::moralizedAncestralGraph(const NodeSet& nodes) const {
-    return dag().moralizedAncestralGraph(nodes);
+    auto g = dag().moralizedAncestralGraph(nodes);
+    _nameNodes_(g);
+    return g;
   }
 
   INLINE bool DAGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
