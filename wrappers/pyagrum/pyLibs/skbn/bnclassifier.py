@@ -316,11 +316,12 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     # The ROC curve is used to calculate the optimal threshold
     self.threshold_ = 0.5
 
-    self.type_processor_ = DiscreteTypeProcessor(
-      defaultDiscretizationMethod=self.discretizationStrategy,
-      defaultNumberOfBins=self.discretizationNbBins,
-      discretizationThreshold=self.discretizationThreshold,
-    )
+    if not hasattr(self, "type_processor_") :
+      self.type_processor_ = DiscreteTypeProcessor(
+        defaultDiscretizationMethod=self.discretizationStrategy,
+        defaultNumberOfBins=self.discretizationNbBins,
+        discretizationThreshold=self.discretizationThreshold,
+      )
 
     # the name of the target variable
     self.target_ = "y"
@@ -847,7 +848,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     Tuple(pandas.Dataframe,pandas.Dataframe)
         Matrix X containing the data,Column-vector containing the class for each data vector in X
     """
-    if self.fromModel_:
+    if getattr(self, "fromModel_", False):
       dataframe = pandas.read_csv(filename, dtype="str")
     else:
       dataframe = pandas.read_csv(filename)
@@ -865,7 +866,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
       for row in X:
         for i in range(len(row)):
           row[i] = variableList[i].labels(row[i])
-      if self.fromModel_:
+      if getattr(self, "fromModel_", False):
         if len(self.classes_) == 2:
           labelIndex = 0
           labelList = targetVariable.labels()
@@ -878,7 +879,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
         for index in range(len(y)):
           y[index] = targetVariable(y[index])
 
-    elif self.fromModel_:
+    elif getattr(self, "fromModel_", False):
       y = y.astype("str")
       if len(self.classes_) == 2:
         y = y == self.label_
