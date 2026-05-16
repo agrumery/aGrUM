@@ -160,7 +160,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
       classif3.fit(x_train_asia, y_train_asia)
 
   def testPickling(self):
-    bn = gum.fastBN("X1->X2{a|b|c}->Y<-X1;X3[3]->Y<-X4")
+    bn = gum.fastBN("X1{A|B}->X2{a|b|c}->Y{y0|y1}<-X1;X3[3]->Y<-X4{A|B}")
     dftrain, _ = gum.generateSample(bn, 500)
     dftest, _ = gum.generateSample(bn, 300)
     bnc = skbn.createBNClassifier()
@@ -173,10 +173,12 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     bnc2.fitFromTabular(dftrain, "Y")
 
     self.assertDictEqual(
-      _normalizeDiscretizerAudit(bnc.type_processor_.audit(dftrain)),
-      _normalizeDiscretizerAudit(bnc2.type_processor_.audit(dftrain)),
+      _normalizeDiscretizerAudit(bnc.type_processor.audit(dftrain)),
+      _normalizeDiscretizerAudit(bnc2.type_processor.audit(dftrain)),
     )
-    self.assertDictEqual(bnc.get_params(), bnc2.get_params())
+    params1 = {k: v for k, v in bnc.get_params().items() if k != "type_processor"}
+    params2 = {k: v for k, v in bnc2.get_params().items() if k != "type_processor"}
+    self.assertDictEqual(params1, params2)
     self.assertEqual(bnc.threshold_, bnc2.threshold_)
     feature_cols = [c for c in dftrain.columns if c != "Y"]
     dftest_X = dftest[feature_cols]
@@ -729,7 +731,7 @@ class BNClassifierSklearnAPITestCase(pyAgrumTestCase):
     clf = skbn.createBNClassifier(learningMethod="NaiveBayes", discretizationNbBins=3)
     params = clf.get_params()
     self.assertEqual(params["learningMethod"], "NaiveBayes")
-    self.assertEqual(params["discretizationNbBins"], 3)
+    self.assertEqual(clf.type_processor.defaultParamDiscretizationMethod, 3)
 
   def testSetParams(self):
     # set_params() updates the hyperparameters in place

@@ -626,10 +626,8 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
     if targetModality != "":
       self.label_ = targetModality
-    elif self.bn_.variableFromName(self.target_).domainSize() == 2:
-      self.label_ = self.bn_.variableFromName(self.target_).labels()[1]  # we take the label 1 as targetModality
     else:
-      self.label_ = ""  # multiclasse sans modality : pas de label positif unique
+      self.label_ = ""
 
     if dtype not in (str, int, numpy.int32, numpy.int64):
       raise ValueError(f"dtype={dtype} non supporté dans fromTrainedModel. Utilisez str (défaut) ou int.")
@@ -703,7 +701,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     else:
       X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
 
-    if len(self.classes_) == 2:
+    if len(self.classes_) == 2 and self.label_:
       returned_list = self._binary_predict(X, dictName)
     else:
       returned_list = self._nary_predict(X, dictName)
@@ -851,7 +849,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     I = self.MarkovBlanket_.completeInstantiation()
 
     # read through database's ligns
-    if len(self.classes_) == 2:
+    if len(self.classes_) == 2 and self.label_:
       for x in vals:
         res = round(
           _calcul_proba_for_binary_class(x, label1, labels, I, dictName, self.MarkovBlanket_, self.target_),
@@ -1064,7 +1062,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     -------
       self
     """
-    self.__init__()
+    self.__init__(type_processor=DiscreteTypeProcessor())
     self.fromTrainedModel(bn=state["bn"], targetAttribute=state["target"], targetModality=state["label"], copy=False)
 
     self.targetType_ = state["targetType"]
