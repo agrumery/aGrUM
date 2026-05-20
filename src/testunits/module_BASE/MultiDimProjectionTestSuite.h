@@ -938,7 +938,7 @@ namespace gum_tests {
       const auto& xt6sched
           = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t6sched);
       CHECK(xt6sched.multiDim() == t6multi.multiDim());
-      CHECK(schedule.dag().sizeNodes() == 0);
+      CHECK(schedule.internalDag().sizeNodes() == 0);
 
       gum::Tensor< double > t7;
       t7 << *(vars[2]);
@@ -963,7 +963,7 @@ namespace gum_tests {
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
-      CHECK(schedule.dag().sizeNodes() == 0);
+      CHECK(schedule.internalDag().sizeNodes() == 0);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& xt7sched
           = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t7sched);
       CHECK(xt7sched.multiDim() == t7);
@@ -1163,7 +1163,7 @@ namespace gum_tests {
       const auto& xt6sched
           = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t6sched);
       CHECK(xt6sched.multiDim() == t6multi.multiDim());
-      CHECK(schedule.dag().sizeNodes() == 0);
+      CHECK(schedule.internalDag().sizeNodes() == 0);
 
       gum::Tensor< double > t7;
       t7 << *(vars[2]);
@@ -1189,7 +1189,7 @@ namespace gum_tests {
       proj_ops.execute();
       std::vector< gum::NodeId > xavail;
       schedule.updateAfterExecution(node, xavail, false);
-      CHECK(schedule.dag().sizeNodes() == 0);
+      CHECK(schedule.internalDag().sizeNodes() == 0);
       const gum::ScheduleMultiDim< gum::Tensor< double > >& xt7sched
           = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*t7sched);
       CHECK(xt7sched.multiDim() == t7);

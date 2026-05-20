@@ -206,7 +206,7 @@ namespace gum_tests {
 
       // bugfix for parallel execution of VariableElimination
       {
-        const gum::DAG& dag = bn.dag();
+        const gum::DAG& dag = bn.internalDag();
         for (const auto node: dag) {
           dag.parents(node);
           dag.children(node);

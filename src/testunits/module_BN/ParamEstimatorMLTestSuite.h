@@ -885,7 +885,7 @@ namespace gum_tests {
       bn.cpt("D").fillWith({0.8, 0.2});
 
       // bugfix for parallel execution of VariableElimination
-      const gum::DAG& dag = bn.dag();
+      const gum::DAG& dag = bn.internalDag();
       for (const auto node: dag) {
         dag.parents(node);
         dag.children(node);

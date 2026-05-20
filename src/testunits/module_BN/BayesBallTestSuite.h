@@ -236,8 +236,11 @@ namespace gum_tests {
       for (gum::Idx j = 24; j > 19; --j)
         query.insert(nodes_seq.atPos(j));
 
-      CHECK_NOTHROW(
-          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+      CHECK_NOTHROW(gum::BayesBall::requisiteNodes(bn.internalDag(),
+                                                   query,
+                                                   hardEvidence,
+                                                   softEvidence,
+                                                   requisite));
 
       CHECK(requisite.size() >= 5);
     }   // namespace gum_tests
@@ -265,8 +268,11 @@ namespace gum_tests {
       query.insert(gum::NodeId(1));          // tuberculosis
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
-      CHECK_NOTHROW(
-          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+      CHECK_NOTHROW(gum::BayesBall::requisiteNodes(bn.internalDag(),
+                                                   query,
+                                                   hardEvidence,
+                                                   softEvidence,
+                                                   requisite));
       CHECK_NOTHROW(
           gum::BayesBall::relevantTensors(bn, query, hardEvidence, softEvidence, tensors));
 
@@ -298,8 +304,11 @@ namespace gum_tests {
       query.insert(gum::NodeId(1));          // tuberculosis
       hardEvidence.insert(gum::NodeId(5));   // smoking
 
-      CHECK_NOTHROW(
-          gum::BayesBall::requisiteNodes(bn.dag(), query, hardEvidence, softEvidence, requisite));
+      CHECK_NOTHROW(gum::BayesBall::requisiteNodes(bn.internalDag(),
+                                                   query,
+                                                   hardEvidence,
+                                                   softEvidence,
+                                                   requisite));
       CHECK_NOTHROW(
           gum::BayesBall::relevantTensors(bn, query, hardEvidence, softEvidence, tensors));
 

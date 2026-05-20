@@ -160,10 +160,22 @@ namespace gum_tests {
     static void testNamedGraphs() {
       auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
-      // dag() returns a named copy
+      // dag() returns a named copy: nameFromId/idFromName work
       auto dag = bn.dag();
-      for (auto id: dag)
+      for (auto id: dag) {
+        CHECK(dag.hasName(id));
         CHECK_EQ(dag.nameFromId(id), bn.variable(id).name());
+        CHECK(dag.idFromName(bn.variable(id).name()).has_value());
+        CHECK_EQ(dag.idFromName(bn.variable(id).name()).value(), id);
+      }
+
+      // internalDag() returns an unnamed const reference: no names attached
+      const auto& idag = bn.internalDag();
+      for (auto id: idag) {
+        CHECK_FALSE(idag.hasName(id));
+        CHECK_EQ(idag.nameFromId(id), std::to_string(id));
+        CHECK_FALSE(idag.idFromName(bn.variable(id).name()).has_value());
+      }
 
       // moralGraph() returns named UndiGraph
       auto mg = bn.moralGraph();

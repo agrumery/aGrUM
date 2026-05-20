@@ -550,7 +550,7 @@ namespace gum_tests {
 
       auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
       gum::learning::BNLearner learn(csvFileURL, marginals);
-      auto                     bn2 = learn.learnParameters(marginals.dag());
+      auto                     bn2 = learn.learnParameters(marginals.internalDag());
 
       gum::LazyPropagation ie(&bn);
       ie.makeInference();
@@ -579,7 +579,7 @@ namespace gum_tests {
 
       auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
       gum::learning::BNLearner learn(csvFileURL, marginals);
-      auto                     bn2 = learn.learnParameters(marginals.dag());
+      auto                     bn2 = learn.learnParameters(marginals.internalDag());
 
       gum::LazyPropagation ie(&bn);
       ie.addEvidence("B", 0);

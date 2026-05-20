@@ -144,7 +144,7 @@ namespace gum_tests {
       CHECK(available_operations.size() == 1);
       CHECK(available_operations.contains(gum::NodeId(1)));
       CHECK(schedule.nodeId(xcomb1) == gum::NodeId(1));
-      const gum::DAG& dag = schedule.dag();
+      const gum::DAG& dag = schedule.internalDag();
       CHECK(dag.sizeNodes() == 1);
 
       const auto xf3 = schedule.insertScheduleMultiDim(f3);
@@ -228,7 +228,7 @@ namespace gum_tests {
       CHECK(dag.existsArc(6, 8));
 
       gum::Schedule   schedule2(schedule);
-      const gum::DAG& dag2 = schedule2.dag();
+      const gum::DAG& dag2 = schedule2.internalDag();
       available_operations = schedule2.availableOperations();
       CHECK(available_operations.size() == 2);
       CHECK(dag2.sizeNodes() == 8);
@@ -245,7 +245,7 @@ namespace gum_tests {
       CHECK(dag2.existsArc(6, 8));
 
       gum::Schedule   schedule3(std::move(schedule2));
-      const gum::DAG& dag3 = schedule3.dag();
+      const gum::DAG& dag3 = schedule3.internalDag();
       available_operations = schedule3.availableOperations();
       CHECK(available_operations.size() == 2);
       CHECK(dag3.sizeNodes() == 8);
@@ -265,7 +265,7 @@ namespace gum_tests {
       CHECK(schedule2 != schedule);
 
       gum::Schedule*  schedule4 = schedule3.clone();
-      const gum::DAG& dag4      = schedule4->dag();
+      const gum::DAG& dag4      = schedule4->internalDag();
       available_operations      = schedule4->availableOperations();
       CHECK(available_operations.size() == 2);
       CHECK(dag4.sizeNodes() == 8);
@@ -484,7 +484,7 @@ namespace gum_tests {
       schedule2.emplaceDeletion(*xres1);
       schedule2.emplaceStorage(*xres2, vect);
 
-      CHECK(schedule2.dag().sizeNodes() == 4);
+      CHECK(schedule2.internalDag().sizeNodes() == 4);
 
       available_operations = schedule2.availableOperations();
       CHECK(available_operations.size() == 1);

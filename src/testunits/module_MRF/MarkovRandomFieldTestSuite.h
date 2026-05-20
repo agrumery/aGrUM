@@ -329,7 +329,7 @@ namespace gum_tests {
       CHECK_EQ(pbn.domainSize(), diff.domainSize());
       CHECK_LT(diff.max(), 1e-10);
 
-      CHECK_EQ(mn.graph(), bn.moralGraph());
+      CHECK_EQ(mn.internalGraph(), bn.moralGraph());
     }
 
     static void testExistsEdge() {
@@ -407,9 +407,22 @@ namespace gum_tests {
     static void testNamedGraph() {
       auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--E");
 
+      // graph() returns a named copy: nameFromId/idFromName work
       auto g = mrf.graph();
-      for (auto id: g.nodes())
+      for (auto id: g.nodes()) {
+        CHECK(g.hasName(id));
         CHECK_EQ(g.nameFromId(id), mrf.variable(id).name());
+        CHECK(g.idFromName(mrf.variable(id).name()).has_value());
+        CHECK_EQ(g.idFromName(mrf.variable(id).name()).value(), id);
+      }
+
+      // internalGraph() returns an unnamed const reference: no names attached
+      const auto& ig = mrf.internalGraph();
+      for (auto id: ig.nodes()) {
+        CHECK_FALSE(ig.hasName(id));
+        CHECK_EQ(ig.nameFromId(id), std::to_string(id));
+        CHECK_FALSE(ig.idFromName(mrf.variable(id).name()).has_value());
+      }
     }
 
     void testConnectedComponents() {

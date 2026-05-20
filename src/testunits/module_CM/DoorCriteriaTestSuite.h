@@ -73,7 +73,7 @@ namespace gum_tests {
     public:
     static void testBackdoor_EmptySetWhenNoParents() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idA = bn.idFromName("A");
@@ -101,7 +101,7 @@ namespace gum_tests {
       // Classic confounding: U -> X, U -> Y, and X -> Y
       // Minimal backdoor set is {U}
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idU = bn.idFromName("U");
@@ -134,7 +134,7 @@ namespace gum_tests {
     static void testBackdoor_MinimalityFilter() {
       // U->X, U->Y, W->X (W not confounding Y). {U} is minimal; {U,W} is valid but not minimal.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;W->X");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idU = bn.idFromName("U");
@@ -164,7 +164,7 @@ namespace gum_tests {
       // Frontdoor canonical: X->Z->Y with hidden confounding U->X, U->Y.
       // {Z} is a valid frontdoor set. Note: Z is a descendant of X — that’s OK.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -194,7 +194,7 @@ namespace gum_tests {
       // {Z1} alone does NOT intercept the path via Z2; likewise {Z2} alone fails.
       // {Z1,Z2} satisfies condition (i); check the other backdoor conditions too.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z1->Y;X->Z2->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX  = bn.idFromName("X");
@@ -229,7 +229,7 @@ namespace gum_tests {
     static void testExistsUnblockedDirectedPath_and_NodesOnDirectedPaths() {
       // X -> Z1 -> Z2 -> Y, plus a side branch X -> W (not leading to Y)
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z1->Z2->Y;X->W");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX  = bn.idFromName("X");
@@ -261,7 +261,7 @@ namespace gum_tests {
     static void testBackdoor_DescendantInZIsRejected() {
       // X -> Z, Z -> Y; conditioning on Z is invalid for backdoor sets
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -283,7 +283,7 @@ namespace gum_tests {
       // X -> Z, Z -> Y; conditioning on Z is invalid for backdoor sets
       auto bn = gum::BayesNet< double >::fastPrototype(
           "N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4;N1<-N5->N6<-N0");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idN0 = bn.idFromName("N0");
@@ -299,7 +299,7 @@ namespace gum_tests {
     static void testFrontdoor_NoDirectedPath_ReturnsEmptyEnumeration() {
       // No directed path X→Y: X and Y disconnected (or only via incoming to X).
       auto        bn  = gum::BayesNet< double >::fastPrototype("A->X;Y->B");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -313,7 +313,7 @@ namespace gum_tests {
       // Graph: X<-U1->Y; X<-U2->Y; X->W1->Y; X->W2->Y
       // Backdoor sets must block both X<-U1->Y and X<-U2->Y  ⇒ minimal set = {U1,U2}.
       auto bn = gum::BayesNet< double >::fastPrototype("U1->X;U1->Y;U2->X;U2->Y;X->W1->Y;X->W2->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX  = bn.idFromName("X");
@@ -366,7 +366,7 @@ namespace gum_tests {
       // Same graph. Frontdoor must intercept both directed paths X->W1->Y and X->W2->Y.
       // Minimal frontdoor set = {W1, W2}. Singles fail (don’t intercept both paths).
       auto bn = gum::BayesNet< double >::fastPrototype("U1->X;U1->Y;U2->X;U2->Y;X->W1->Y;X->W2->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX  = bn.idFromName("X");
@@ -412,7 +412,7 @@ namespace gum_tests {
 
     static void testBackdoor_HasBackdoorPath_Equivalence() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idU = bn.idFromName("U");
@@ -431,7 +431,7 @@ namespace gum_tests {
 
     static void testFrontdoor_RejectsZInBackdoorReach() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Z;Z->Y;X->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -448,7 +448,7 @@ namespace gum_tests {
 
     static void testFrontdoor_PrunesImpossibleByFD3() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Z->Y;V->Z;V->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -465,7 +465,7 @@ namespace gum_tests {
 
     static void testFrontdoor_NoDiPath_PrunesParentsOfX() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -477,7 +477,7 @@ namespace gum_tests {
 
     static void testBackdoorReach_ContainsParents() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("M->X;M->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -489,7 +489,7 @@ namespace gum_tests {
 
     static void testExistsUnblockedDirectedPath_EndpointsNotBlocked() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("X->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -502,7 +502,7 @@ namespace gum_tests {
 
     static void testBackdoor_DeterministicOrderAndNoDup() {
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;V->X");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -529,7 +529,7 @@ namespace gum_tests {
     static void testBackdoor_Rejects_X_or_Y_in_Z() {
       // Graph with confounding and a direct edge.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX = bn.idFromName("X");
@@ -555,7 +555,7 @@ namespace gum_tests {
     static void testFrontdoor_Rejects_X_or_Y_in_Z() {
       // Canonical frontdoor structure.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX = bn.idFromName("X");
@@ -579,7 +579,7 @@ namespace gum_tests {
     static void testFrontdoor_Fails_With_Direct_XY_Edge() {
       // Add a direct edge X->Y : FD-1 ("intercept all directed paths") should fail for {Z}.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y;X->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX = bn.idFromName("X");
@@ -602,7 +602,7 @@ namespace gum_tests {
       // inclusion-minimal.
       auto bn = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z1->Z3;X->Z2->Z3;Z3->Y");
 
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX  = bn.idFromName("X");
@@ -698,7 +698,7 @@ namespace gum_tests {
 
       // Canonical frontdoor: U->X; U->Y; X->Z->Y
       auto        bn  = BN::fastPrototype("U->X;U->Y;X->Z->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX = bn.idFromName("X");
@@ -771,7 +771,7 @@ namespace gum_tests {
       // They form a prefix pair in sorted order (whichever id is smaller).
       // The result must be strictly lex-sorted.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -809,7 +809,7 @@ namespace gum_tests {
       // Every consecutive pair in the result must satisfy strict lex order,
       // exercising all branches of the O(n) _lexLess implementation.
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y;V->X;W->X");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       auto idX = bn.idFromName("X");
@@ -865,7 +865,7 @@ namespace gum_tests {
       // No directed path X→Y; they are in the same weakly connected component:
       //   X → A ← B → Y
       auto        bn  = BN::fastPrototype("X->A;B->A;B->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
 
       const auto idX = bn.idFromName("X");
@@ -927,7 +927,7 @@ namespace gum_tests {
       // Simple chain: empty set is the (only) valid backdoor set
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idA = bn.idFromName("A");
         auto        idC = bn.idFromName("C");
 
@@ -938,7 +938,7 @@ namespace gum_tests {
       // Classic confounder U->X->Y;U->Y: first backdoor set is {U}
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idX = bn.idFromName("X");
         auto        idY = bn.idFromName("Y");
         auto        idU = bn.idFromName("U");
@@ -951,7 +951,7 @@ namespace gum_tests {
       // When all blocking nodes are excluded, returns nullopt
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("U->X->Y;U->Y");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idX = bn.idFromName("X");
         auto        idY = bn.idFromName("Y");
         auto        idU = bn.idFromName("U");
@@ -965,7 +965,7 @@ namespace gum_tests {
       // Classic frontdoor: X->Z->Y with hidden U->X, U->Y; {Z} is the unique frontdoor set
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y;X->Z->Y");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idX = bn.idFromName("X");
         auto        idY = bn.idFromName("Y");
         auto        idZ = bn.idFromName("Z");
@@ -978,7 +978,7 @@ namespace gum_tests {
       // Direct edge X->Y: FD-3 fails (no valid frontdoor set)
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("X->Y");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idX = bn.idFromName("X");
         auto        idY = bn.idFromName("Y");
 
@@ -988,7 +988,7 @@ namespace gum_tests {
       // No directed path X->Y: no frontdoor set exists
       {
         auto        bn  = gum::BayesNet< double >::fastPrototype("A->B;C->B");
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         auto        idA = bn.idFromName("A");
         auto        idC = bn.idFromName("C");
 

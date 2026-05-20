@@ -82,7 +82,7 @@ namespace gum_tests {
 
     [[nodiscard]] gum::Tensor< double > joint(const gum::BayesNet< double >& bn) {
       gum::Tensor< double > pot;
-      for (const auto node: bn.dag()) {
+      for (const auto node: bn.internalDag()) {
         pot *= bn.cpt(node);
       }
       return pot;
@@ -154,7 +154,7 @@ namespace gum_tests {
       const auto                               bn_joint = this->joint(*bn);
       gum::Set< const gum::DiscreteVariable* > vars;
 
-      for (const auto node: bn->dag()) {
+      for (const auto node: bn->internalDag()) {
         vars.insert(&(bn->variable(node)));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars));
         vars.clear();
@@ -177,7 +177,7 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
 
       gum::Set< const gum::DiscreteVariable* > vars;
-      for (const auto node: bn->dag()) {
+      for (const auto node: bn->internalDag()) {
         vars.insert(&(bn->variable(node)));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(inf.posterior(node), bn_joint.sumIn(vars).normalize());
         vars.clear();
@@ -418,7 +418,7 @@ namespace gum_tests {
 
       const auto bn_joint = this->joint(bn);
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         const auto&           variable = bn.variable(node);
         gum::Tensor< double > ev_pot;
         ev_pot << variable;
@@ -439,7 +439,7 @@ namespace gum_tests {
           }
           CHECK_NOTHROW(inf1.makeInference());
           CHECK_NOTHROW(inf2.makeInference());
-          for (auto node: bn.dag()) {
+          for (auto node: bn.internalDag()) {
             GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node));
             CHECK(
                 equalTensors(inf2.posterior(node), joint.sumIn({&bn.variable(node)}).normalize()));
@@ -464,7 +464,7 @@ namespace gum_tests {
       CHECK_NOTHROW(inf1.makeInference());
       CHECK_NOTHROW(inf2.makeInference());
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         CHECK_NOTHROW(inf1.posterior(node));
         CHECK_NOTHROW(inf2.posterior(node));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf2.posterior(node));
@@ -504,7 +504,7 @@ namespace gum_tests {
       CHECK_NOTHROW(inf3.makeInference());
       CHECK_NOTHROW(inf4.makeInference());
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         CHECK_NOTHROW(inf1.posterior(node));
         CHECK_NOTHROW(inf2.posterior(node));
         CHECK_NOTHROW(inf3.posterior(node));
@@ -519,7 +519,7 @@ namespace gum_tests {
         CHECK_NOTHROW(inf5.addEvidence(*pot));
       }
       CHECK_NOTHROW(inf5.makeInference());
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         CHECK_NOTHROW(inf5.posterior(node));
         GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(node), inf5.posterior(node));
       }
@@ -539,7 +539,7 @@ namespace gum_tests {
 
       const auto bn_joint = this->joint(bn);
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         const auto&           variable = bn.variable(node);
         gum::Tensor< double > ev_pot;
         ev_pot << variable;
@@ -549,7 +549,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2: bn.dag()) {
+          for (auto node2: bn.internalDag()) {
             if (node2 > node) {
               const auto&           variable2 = bn.variable(node2);
               gum::Tensor< double > ev_pot2;
@@ -575,7 +575,7 @@ namespace gum_tests {
                 CHECK_NOTHROW(inf1.makeInference());
                 CHECK_NOTHROW(inf2.makeInference());
 
-                for (auto xnode: bn.dag()) {
+                for (auto xnode: bn.internalDag()) {
                   GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode));
                   CHECK(equalTensors(inf1.posterior(xnode),
                                      joint.sumIn({&bn.variable(xnode)}).normalize()));
@@ -601,7 +601,7 @@ namespace gum_tests {
 
       const auto bn_joint = this->joint(bn);
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         const auto&           variable = bn.variable(node);
         gum::Tensor< double > ev_pot;
         ev_pot << variable;
@@ -611,7 +611,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2: bn.dag()) {
+          for (auto node2: bn.internalDag()) {
             if (node2 > node) {
               const auto&           variable2 = bn.variable(node2);
               gum::Tensor< double > ev_pot2;
@@ -637,7 +637,7 @@ namespace gum_tests {
                 CHECK_NOTHROW(inf1.makeInference());
                 CHECK_NOTHROW(inf2.makeInference());
 
-                for (auto xnode: bn.dag()) {
+                for (auto xnode: bn.internalDag()) {
                   CHECK(equalTensors(inf1.posterior(xnode),
                                      joint.sumIn({&bn.variable(xnode)}).normalize()));
                   GUM_CHECK_TENSOR_ALMOST_EQUALS(inf1.posterior(xnode), inf2.posterior(xnode));
@@ -663,7 +663,7 @@ namespace gum_tests {
 
       const auto bn_joint = this->joint(bn);
 
-      for (auto node: bn.dag()) {
+      for (auto node: bn.internalDag()) {
         const auto&           variable = bn.variable(node);
         gum::Tensor< double > ev_pot;
         ev_pot << variable;
@@ -674,7 +674,7 @@ namespace gum_tests {
         for (inst.setFirst(); !inst.end(); ++inst, ++inst_index) {
           ev_pot.set(inst, 1.0f);
 
-          for (auto node2: bn.dag()) {
+          for (auto node2: bn.internalDag()) {
             if (node2 > node) {
               const auto&           variable2 = bn.variable(node2);
               gum::Tensor< double > ev_pot2;
@@ -701,7 +701,7 @@ namespace gum_tests {
                 CHECK_NOTHROW(inf1.makeInference());
                 CHECK_NOTHROW(inf2.makeInference());
 
-                for (auto xnode: bn.dag()) {
+                for (auto xnode: bn.internalDag()) {
                   try {
                     const auto res = joint.sumIn({&bn.variable(xnode)});
                     if (res.sum() > GUM_SMALL_ERROR) {

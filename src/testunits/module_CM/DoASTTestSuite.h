@@ -92,10 +92,10 @@ namespace gum_tests {
       gum::ASTposteriorProba< double > nod2(bn, sA, sC);
       CHECK_EQ(nod2.toString(), "P(A|C)");
 
-      gum::ASTposteriorProba< double > nod3(bn.dag(), id2name_fromBN(bn), sAC, sB);
+      gum::ASTposteriorProba< double > nod3(bn.internalDag(), id2name_fromBN(bn), sAC, sB);
       CHECK_EQ(nod3.toString(), "P(A,C|B)");
 
-      gum::ASTposteriorProba< double > nod4(bn.dag(), id2name_fromBN(bn), sA, sC);
+      gum::ASTposteriorProba< double > nod4(bn.internalDag(), id2name_fromBN(bn), sA, sC);
       CHECK_EQ(nod4.toString(), "P(A|C)");
       // sum on A
       auto n1 = std::make_unique< gum::ASTposteriorProba< double > >(bn, sAC, sB);
@@ -191,7 +191,7 @@ namespace gum_tests {
       gum::ASTposteriorProba< double > nod(m, y, knw);
       CHECK_EQ(nod.toString(), "P(y|z1,z3)");
 
-      gum::ASTposteriorProba< double > nod2(m.dag(), id2name_fromBN(m), y, knw);
+      gum::ASTposteriorProba< double > nod2(m.internalDag(), id2name_fromBN(m), y, knw);
       CHECK_EQ(nod2.toString(), "P(y|z1,z3)");
     }
 
@@ -213,7 +213,7 @@ namespace gum_tests {
       auto ref = bn.cpt(bn.idFromName("B"));
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varB, condA);
+      gum::ASTposteriorProba< double > node2(bn.internalDag(), id2name_fromBN(bn), varB, condA);
       auto                             got2 = node2.eval(bn);
     }
 
@@ -235,7 +235,7 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varC, empty);
+      gum::ASTposteriorProba< double > node2(bn.internalDag(), id2name_fromBN(bn), varC, empty);
       auto                             got2 = node2.eval(bn);
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got2, ref);
     }
@@ -263,7 +263,7 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      gum::ASTposteriorProba< double > node2(bn.dag(), id2name_fromBN(bn), varC, condB);
+      gum::ASTposteriorProba< double > node2(bn.internalDag(), id2name_fromBN(bn), varC, condB);
       auto                             got2 = node2.eval(bn);
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got2, ref);
     }
@@ -463,11 +463,11 @@ namespace gum_tests {
 
       GUM_CHECK_TENSOR_ALMOST_EQUALS(got, ref);
 
-      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto t3 = std::make_unique< gum::ASTposteriorProba< double > >(bn.internalDag(),
                                                                      id2name_fromBN(bn),
                                                                      A,
                                                                      C);   // P(A|C)
-      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.dag(),
+      auto t4 = std::make_unique< gum::ASTposteriorProba< double > >(bn.internalDag(),
                                                                      id2name_fromBN(bn),
                                                                      C,
                                                                      none);   // P(C)

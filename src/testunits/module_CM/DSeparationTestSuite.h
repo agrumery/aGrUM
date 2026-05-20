@@ -94,8 +94,8 @@ namespace gum_tests {
     // General d-separation checks
     // -------------------------------------------------------------------
     static void testgeneral_dsep_basic_paths() {
-      auto  bn = makeRefBN();
-      const auto& dg = bn.dag();
+      auto        bn = makeRefBN();
+      const auto& dg = bn.internalDag();
 
       auto A = ns(bn, {"A"});
       auto B = ns(bn, {"B"});
@@ -128,8 +128,8 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     static void testbackdoor_forward_simple_chain() {
       // A -> B -> C
-      auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-      const auto& dg = bn.dag();
+      auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+      const auto& dg = bn.internalDag();
 
       auto A = ns(bn, {"A"});
       auto C = ns(bn, {"C"});
@@ -159,7 +159,7 @@ namespace gum_tests {
                               const char*                                                   X,
                               const char* Y) -> bool {
         const auto  bn  = gum::BayesNet< double >::fastPrototype(spec);
-        const auto& dag = bn.dag();
+        const auto& dag = bn.internalDag();
         const auto  Xs  = mkNS(bn, {X});
         const auto  Ys  = mkNS(bn, {Y});
 
@@ -202,8 +202,8 @@ namespace gum_tests {
     // Reduction & barren nodes
     // -------------------------------------------------------------------
     static void testbarren_nodes_and_reduction() {
-      auto  bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
-      const auto& dg = bn.dag();
+      auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
+      const auto& dg = bn.internalDag();
 
       const auto idA = bn.idFromName("A");
       const auto idB = bn.idFromName("B");
@@ -254,7 +254,7 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     static void testagreement_with_DAG_API() {
       auto        bn  = makeRefBN();
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
       auto A = ns(bn, {"A"});
       auto B = ns(bn, {"B"});
@@ -269,7 +269,7 @@ namespace gum_tests {
     static void testdsep_confounder_conditioning_blocks() {
       // Confounding only (no direct X->Y path): U->X, U->Y
       auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
-      const auto& dag = bn.dag();
+      const auto& dag = bn.internalDag();
 
       auto X = ns(bn, {"X"});
       auto Y = ns(bn, {"Y"});
