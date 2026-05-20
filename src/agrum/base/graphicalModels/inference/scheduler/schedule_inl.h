@@ -57,7 +57,7 @@ namespace gum {
   INLINE Idx Schedule::versionNumber() const { return _version_number_; }
 
   /// returns a DAG indicating in which order the operations can be performed
-  INLINE const DAG& Schedule::dag() const { return _dag_; }
+  INLINE const DAG& Schedule::internalDag() const { return _dag_; }
 
   /// returns the scheduleOperation corresponding to an id in the DAG
   INLINE const ScheduleOperator& Schedule::operation(const NodeId node_id) const {

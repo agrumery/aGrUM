@@ -96,7 +96,7 @@ namespace gum {
      * assigned the name of the corresponding variable. O(n) — allocates a new graph.
      * For a stable reference (listeners, long-lived pointers), use internalGraph().
      */
-    UndiGraph graph() const;
+    [[nodiscard]] UndiGraph graph() const;
 
     /**
      * Returns the number of variables in this Directed Graphical Model.

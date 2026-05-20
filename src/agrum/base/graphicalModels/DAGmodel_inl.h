@@ -104,7 +104,7 @@ namespace gum {
     return children(nodeset(names));
   }
 
-  INLINE NodeSet DAGmodel::parents(const NodeSet& ids) const { return dag_.children(ids); }
+  INLINE NodeSet DAGmodel::parents(const NodeSet& ids) const { return dag_.parents(ids); }
 
   INLINE NodeSet DAGmodel::parents(const std::vector< std::string >& names) const {
     return parents(nodeset(names));

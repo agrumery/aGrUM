@@ -95,7 +95,7 @@ namespace gum {
      * name of the corresponding variable. O(n) — allocates a new DAG.
      * For a stable reference (listeners, long-lived pointers), use internalDag().
      */
-    DAG dag() const;
+    [[nodiscard]] DAG dag() const;
 
     /**
      * Returns the number of variables in this Directed Graphical Model.
@@ -273,7 +273,7 @@ namespace gum {
 
 
     /// Returns a const reference to the internal (unnamed) DAG. O(1), no copy.
-    /// Use for stable references or pointers (graph listeners, BarrenNodesFinder).
+    /// Use for stable references or pointers (e.g. graph listeners).
     /// For named node access, use dag() instead.
     const DAG& internalDag() const;
 
