@@ -251,7 +251,7 @@ namespace gum {
     // 1/ create an undirected graph containing only the nodes and no edge
     const auto& bn = this->BN();
     _graph_.clear();
-    for (const auto node: bn.dag())
+    for (const auto node: bn.internalDag())
       _graph_.addNodeWithId(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the
@@ -289,7 +289,7 @@ namespace gum {
       switch (_find_relevant_tensor_type_) {
         case RelevantTensorsFinderType::DSEP_BAYESBALL_TENSORS :
         case RelevantTensorsFinderType::DSEP_BAYESBALL_NODES : {
-          BayesBall::requisiteNodes(bn.dag(),
+          BayesBall::requisiteNodes(bn.internalDag(),
                                     targets,
                                     this->hardEvidenceNodes(),
                                     this->softEvidenceNodes(),
@@ -299,7 +299,7 @@ namespace gum {
 
         case RelevantTensorsFinderType::DSEP_KOLLER_FRIEDMAN_2009 : {
           dSeparationAlgorithm dsep;
-          dsep.requisiteNodes(bn.dag(),
+          dsep.requisiteNodes(bn.internalDag(),
                               targets,
                               this->hardEvidenceNodes(),
                               this->softEvidenceNodes(),
@@ -379,7 +379,7 @@ namespace gum {
     NodeProperty< int >          elim_order(Size(JT_elim_order.size()));
     for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size; ++i)
       elim_order.insert(JT_elim_order[i], (int)i);
-    const DAG& dag = bn.dag();
+    const DAG& dag = bn.internalDag();
 
     for (const auto node: _graph_) {
       // get the variables in the tensor of node (and its parents)
@@ -478,7 +478,7 @@ namespace gum {
 
     // determine the set of tensors d-connected with the kept variables
     NodeSet requisite_nodes;
-    BayesBall::requisiteNodes(bn.dag(),
+    BayesBall::requisiteNodes(bn.internalDag(),
                               kept_ids,
                               this->hardEvidenceNodes(),
                               this->softEvidenceNodes(),

@@ -62,8 +62,8 @@ namespace gum::learning {
 
     // we use the bn to insert the translators into the database table
     std::vector< NodeId > nodes;
-    nodes.reserve(bn.dag().sizeNodes());
-    for (const auto node: bn.dag())
+    nodes.reserve(bn.internalDag().sizeNodes());
+    for (const auto node: bn.internalDag())
       nodes.push_back(node);
     std::sort(nodes.begin(), nodes.end());
     std::size_t i = std::size_t(0);

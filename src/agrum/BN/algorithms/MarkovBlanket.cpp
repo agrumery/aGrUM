@@ -56,7 +56,7 @@ namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) : _model_(m), _node_(id) {
     if (level < 1) GUM_ERROR(InvalidArgument, "Argument level(=" << level << ") must be >0.")
 
-    _mb_ = graph::markovBlanket(m.dag(), id, level);
+    _mb_ = graph::markovBlanket(m.internalDag(), id, level);
 
     // Add arcs that exist in the model between MB nodes but are not part of
     // the canonical MB definition (e.g. arc between a parent and a co-parent).

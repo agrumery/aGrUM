@@ -56,7 +56,7 @@ namespace gum {
                                   const NodeSet&                 hardEvidence,
                                   const NodeSet&                 softEvidence,
                                   Set< const TABLE* >&           tensors) {
-    const DAG& dag = bn.dag();
+    const DAG& dag = bn.internalDag();
 
     // create the marks (top = first and bottom = second)
     NodeProperty< std::pair< bool, bool > > marks(dag.size());

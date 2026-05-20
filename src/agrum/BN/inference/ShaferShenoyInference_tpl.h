@@ -412,7 +412,7 @@ namespace gum {
   /// fired after all the nodes of the BN are added as single targets
   template < GUM_Numeric GUM_SCALAR >
   INLINE void ShaferShenoyInference< GUM_SCALAR >::onAllMarginalTargetsAdded_() {
-    for (const auto node: this->BN().dag()) {
+    for (const auto node: this->BN().internalDag()) {
       // if the graph does not contain the node, either this is due to the fact
       // that the node has received a hard evidence or because it was d-separated
       // from the target nodes during the last inference. In the latter case, we
@@ -521,7 +521,7 @@ namespace gum {
     // 1/ create an undirected graph containing only the nodes and no edge
     const auto& bn = this->BN();
     _graph_.clear();
-    for (const auto node: bn.dag())
+    for (const auto node: bn.internalDag())
       _graph_.addNodeWithId(node);
 
     // identify the target nodes
@@ -535,7 +535,7 @@ namespace gum {
     // received no evidence and such that their descendants are neither
     // targets nor evidence nodes. Such nodes can be safely discarded from
     // the BN without altering the inference output
-    if ((this->nbrTargets() != bn.dag().size())
+    if ((this->nbrTargets() != bn.internalDag().size())
         && (_barren_nodes_type_ == FindBarrenNodesType::FIND_BARREN_NODES)) {
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
@@ -561,13 +561,13 @@ namespace gum {
     // 3/ if we wish to exploit d-separation, remove all the nodes that are
     // d-separated from our targets. Of course, if all the nodes are targets,
     // no need to perform a d-separation analysis
-    if (this->nbrTargets() != bn.dag().size()) {
+    if (this->nbrTargets() != bn.internalDag().size()) {
       NodeSet requisite_nodes;
       bool    dsep_analysis = false;
       switch (_find_relevant_tensor_type_) {
         case RelevantTensorsFinderType::DSEP_BAYESBALL_TENSORS :
         case RelevantTensorsFinderType::DSEP_BAYESBALL_NODES : {
-          BayesBall::requisiteNodes(bn.dag(),
+          BayesBall::requisiteNodes(bn.internalDag(),
                                     target_nodes,
                                     this->hardEvidenceNodes(),
                                     this->softEvidenceNodes(),
@@ -577,7 +577,7 @@ namespace gum {
 
         case RelevantTensorsFinderType::DSEP_KOLLER_FRIEDMAN_2009 : {
           dSeparationAlgorithm dsep;
-          dsep.requisiteNodes(bn.dag(),
+          dsep.requisiteNodes(bn.internalDag(),
                               target_nodes,
                               this->hardEvidenceNodes(),
                               this->softEvidenceNodes(),
@@ -667,7 +667,7 @@ namespace gum {
     NodeProperty< int >          elim_order(Size(JT_elim_order.size()));
     for (std::size_t i = std::size_t(0), size = JT_elim_order.size(); i < size; ++i)
       elim_order.insert(JT_elim_order[i], (int)i);
-    const DAG& dag = bn.dag();
+    const DAG& dag = bn.internalDag();
     for (const auto node: _graph_) {
       // get the variables in the tensor of node (and its parents)
       NodeId first_eliminated_node = node;
@@ -841,7 +841,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_() {
     const auto& bn  = this->BN();
-    const DAG&  dag = bn.dag();
+    const DAG&  dag = bn.internalDag();
 
     // put all the CPTs of the Bayes net nodes into the cliques
     // here, beware: all the tensors that are defined over some nodes
@@ -956,7 +956,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::_initializeJTCliques_(Schedule& schedule) {
     const auto& bn  = this->BN();
-    const DAG&  dag = bn.dag();
+    const DAG&  dag = bn.internalDag();
 
     // put all the CPTs of the Bayes net nodes into the cliques
     // here, beware: all the tensors that are defined over some nodes
@@ -1498,7 +1498,7 @@ namespace gum {
 
     // determine the set of tensors d-connected with the kept variables
     NodeSet requisite_nodes;
-    BayesBall::requisiteNodes(bn.dag(),
+    BayesBall::requisiteNodes(bn.internalDag(),
                               kept_ids,
                               this->hardEvidenceNodes(),
                               this->softEvidenceNodes(),

@@ -94,7 +94,7 @@ namespace gum {
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
-    if (!this->BN().dag().exists(node)) {
+    if (!this->BN().internalDag().exists(node)) {
       GUM_ERROR(UndefinedElement, node << " is not a NodeId in the bn")
     }
 
@@ -127,7 +127,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->BN().dag().exists(target)) {
+    if (!this->BN().internalDag().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn")
     }
 
@@ -151,7 +151,7 @@ namespace gum {
 
 
     setTargetedMode_();   // does nothing if already in targeted mode
-    for (const auto target: this->BN().dag()) {
+    for (const auto target: this->BN().internalDag()) {
       if (!_targets_.contains(target)) {
         _targets_.insert(target);
         onMarginalTargetAdded_(target);
@@ -181,7 +181,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->BN().dag().exists(target)) {
+    if (!this->BN().internalDag().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the bn")
     }
 
@@ -230,7 +230,7 @@ namespace gum {
   void MarginalTargetedInference< GUM_SCALAR >::_setAllMarginalTargets_() {
     _targets_.clear();
     if (!this->hasNoModel_()) {
-      _targets_ = this->BN().dag().asNodeSet();
+      _targets_ = this->BN().internalDag().asNodeSet();
       onAllMarginalTargetsAdded_();
     }
   }

@@ -59,7 +59,7 @@ namespace gum {
                                              const NodeSet&                 hardEvidence,
                                              const NodeSet&                 softEvidence,
                                              Set< const TABLE* >&           tensors) {
-    const DAG& dag = bn.dag();
+    const DAG& dag = bn.internalDag();
 
     // mark the set of ancestors of the evidence
     NodeSet ev_ancestors(dag.size());

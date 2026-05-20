@@ -92,7 +92,7 @@ namespace gum {
       GUM_ERROR(NullElement,
                 "No Markov net has been assigned to the "
                 "inference algorithm");
-    if (!this->MRF().graph().exists(node)) {
+    if (!this->MRF().internalGraph().exists(node)) {
       GUM_ERROR(UndefinedElement, node << " is not a NodeId in the Markov random field")
     }
 
@@ -126,7 +126,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->MRF().graph().exists(target)) {
+    if (!this->MRF().internalGraph().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov random field")
     }
 
@@ -150,7 +150,7 @@ namespace gum {
 
 
     setTargetedMode_();   // does nothing if already in targeted mode
-    for (const auto target: this->MRF().graph()) {
+    for (const auto target: this->MRF().internalGraph()) {
       if (!_targets_.contains(target)) {
         _targets_.insert(target);
         onMarginalTargetAdded_(target);
@@ -180,7 +180,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    if (!this->MRF().graph().exists(target)) {
+    if (!this->MRF().internalGraph().exists(target)) {
       GUM_ERROR(UndefinedElement, target << " is not a NodeId in the Markov random field")
     }
 
@@ -223,7 +223,7 @@ namespace gum {
   void MarginalTargetedMRFInference< GUM_SCALAR >::_setAllMarginalTargets_() {
     _targets_.clear();
     if (!this->hasNoModel_()) {
-      _targets_ = this->MRF().graph().asNodeSet();
+      _targets_ = this->MRF().internalGraph().asNodeSet();
       onAllMarginalTargetsAdded_();
     }
   }

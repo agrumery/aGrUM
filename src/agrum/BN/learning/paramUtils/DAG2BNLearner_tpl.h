@@ -161,7 +161,7 @@ namespace gum {
                                                          BayesNet< GUM_SCALAR >&& bn) {
       // estimate the parameters of the fully zeroed CPTs using the bootstrap estimator
       const VariableNodeMap& varmap = bn.variableNodeMap();
-      for (const auto id: bn.dag()) {
+      for (const auto id: bn.internalDag()) {
         // get the CPT of node id and its variables in the correct order
         auto& pot = const_cast< Tensor< GUM_SCALAR >& >(bn.cpt(id));
 
@@ -216,7 +216,7 @@ namespace gum {
       }
 
       // as bn will be modified, be sure that the DAG is kept unchanged
-      const DAG dag = bn.dag();
+      const DAG dag = bn.internalDag();
 
       // perturb the CPTs to initialize EM
       if (noiseEM_ != 0.0) {
@@ -266,7 +266,7 @@ namespace gum {
 
       do {
         // bugfix for parallel execution of VariableElimination
-        const auto& xdag = bn.dag();
+        const auto& xdag = bn.internalDag();
         for (const auto node: xdag) {
           xdag.parents(node);
           xdag.children(node);

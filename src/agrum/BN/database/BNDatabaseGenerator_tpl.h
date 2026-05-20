@@ -61,7 +61,7 @@ namespace gum::learning {
 
     // get the node names => they will serve as ids
     NodeId id = 0;
-    for (const auto& var: _bn_.dag()) {
+    for (const auto& var: _bn_.internalDag()) {
       auto name = _bn_.variable(var).name();
       _names2ids_.insert(name, var);
       ++id;
@@ -434,7 +434,7 @@ namespace gum::learning {
   void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
     std::vector< std::string > varOrder;
     varOrder.reserve(_bn_.size());
-    for (const auto& var: _bn_.dag()) {
+    for (const auto& var: _bn_.internalDag()) {
       varOrder.push_back(_bn_.variable(var).name());
     }
     std::shuffle(varOrder.begin(), varOrder.end(), gum::randomGenerator());

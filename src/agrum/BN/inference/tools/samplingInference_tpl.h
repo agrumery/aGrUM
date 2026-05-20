@@ -134,21 +134,21 @@ namespace gum {
 
     // creating BN fragment
     _samplingBN_ = new BayesNetFragment< GUM_SCALAR >(this->BN());
-    for (const auto elmt: this->BN().dag().asNodeSet() - barren)
+    for (const auto elmt: this->BN().internalDag().asNodeSet() - barren)
       _samplingBN_->installNode(elmt);
 
     // D-separated nodes
 
     dSeparationAlgorithm dsep = gum::dSeparationAlgorithm();
     NodeSet              requisite;
-    dsep.requisiteNodes(this->BN().dag(),
+    dsep.requisiteNodes(this->BN().internalDag(),
                         this->BN().nodes().asNodeSet(),   // no target for approximateInference
                         this->hardEvidenceNodes(),
                         this->softEvidenceNodes(),        // should be empty
                         requisite);
     requisite += this->hardEvidenceNodes();
 
-    auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
+    auto nonRequisite = this->BN().internalDag().asNodeSet() - requisite;
 
     for (const auto elmt: nonRequisite)
       _samplingBN_->uninstallNode(elmt);

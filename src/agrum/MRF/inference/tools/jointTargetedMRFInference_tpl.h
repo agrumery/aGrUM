@@ -88,7 +88,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& gra = this->MRF().graph();
+    const auto& gra = this->MRF().internalGraph();
     for (const auto var: vars) {
       if (!gra.exists(var)) {
         GUM_ERROR(UndefinedElement, var << " is not a NodeId in the Markov random field")
@@ -131,7 +131,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->MRF().graph();
+    const auto& dag = this->MRF().internalGraph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -168,7 +168,7 @@ namespace gum {
                 "No Markov net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->MRF().graph();
+    const auto& dag = this->MRF().internalGraph();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,

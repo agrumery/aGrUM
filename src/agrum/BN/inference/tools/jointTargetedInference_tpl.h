@@ -90,7 +90,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->BN().dag();
+    const auto& dag = this->BN().internalDag();
     for (const auto var: vars) {
       if (!dag.exists(var)) { GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn") }
     }
@@ -131,7 +131,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->BN().dag();
+    const auto& dag = this->BN().internalDag();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,
@@ -168,7 +168,7 @@ namespace gum {
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
 
-    const auto& dag = this->BN().dag();
+    const auto& dag = this->BN().internalDag();
     for (const auto node: joint_target) {
       if (!dag.exists(node)) {
         GUM_ERROR(UndefinedElement,

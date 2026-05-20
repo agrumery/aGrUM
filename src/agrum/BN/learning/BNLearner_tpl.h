@@ -268,10 +268,10 @@ namespace gum {
         BNLearner< GUM_SCALAR >::_learnParametersWithEM_(const BayesNet< GUM_SCALAR >& bn,
                                                          bool takeIntoAccountScore) {
       // if the dag contains no node, return an empty BN
-      if (bn.dag().size() == 0) return BayesNet< GUM_SCALAR >();
+      if (bn.internalDag().size() == 0) return BayesNet< GUM_SCALAR >();
 
       // get a pair containing the bootstrap and the EM estimators
-      auto estimators = _initializeEMParameterLearning_(bn.dag(), takeIntoAccountScore);
+      auto estimators = _initializeEMParameterLearning_(bn.internalDag(), takeIntoAccountScore);
 
       return dag2BN_.createBNwithEM< GUM_SCALAR >(*(estimators.first.get()),
                                                   *(estimators.second.get()),

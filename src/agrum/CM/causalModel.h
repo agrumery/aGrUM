@@ -103,7 +103,7 @@ namespace gum {
      * Initializes the causal DAG as the BN's DAG (observed-only).
      */
     explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN) :
-        _observationalBN_(observationalBN), _causalDAG_(observationalBN.dag()) {
+        _observationalBN_(observationalBN), _causalDAG_(observationalBN.internalDag()) {
       GUM_CONSTRUCTOR(CausalModel)
     }
 

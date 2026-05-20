@@ -380,7 +380,7 @@ namespace gum {
       // check that if nodeId2columns is not empty, then all the columns
       // correspond to nodes of the BN
       if (!this->nodeId2columns_.empty()) {
-        const DAG& dag = new_bn.dag();
+        const DAG& dag = new_bn.internalDag();
         for (auto iter = this->nodeId2columns_.begin(); iter != this->nodeId2columns_.end();
              ++iter) {
           if (!dag.existsNode(iter.first())) {
@@ -397,7 +397,7 @@ namespace gum {
       // we determine the size of the filled rows
       std::size_t size = std::size_t(0);
       if (this->nodeId2columns_.empty()) {
-        for (auto node: new_bn.dag())
+        for (auto node: new_bn.internalDag())
           if (std::size_t(node) > size) size = std::size_t(node);
       } else {
         for (auto iter = this->nodeId2columns_.begin(); iter != this->nodeId2columns_.end();

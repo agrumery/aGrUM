@@ -61,7 +61,7 @@ namespace gum {
   CausalModel< GUM_SCALAR >::CausalModel(const BayesNet< GUM_SCALAR >& observationalBN,
                                          const LatentDescriptorVector& latentVarsDescriptor,
                                          bool                          assumeNonSpurious) :
-      _observationalBN_(observationalBN), _causalDAG_(observationalBN.dag()) {
+      _observationalBN_(observationalBN), _causalDAG_(observationalBN.internalDag()) {
     // add each latent (children given as names)
     for (const auto& [latent, children]: latentVarsDescriptor) {
       addLatentVariable(latent, children, assumeNonSpurious);
@@ -182,7 +182,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void CausalModel< GUM_SCALAR >::assumeSpurious(NodeId x, NodeId y) {
     // Validate arc in observationalBN
-    if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+    if (!_observationalBN_.internalDag().existsArc(Arc(x, y))) {
       GUM_ERROR(InvalidArgument,
                 "Arc(" + std::to_string(x) + "," + std::to_string(y)
                     + ") not present in observationalBN");
@@ -199,7 +199,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void CausalModel< GUM_SCALAR >::assumeNonSpurious(NodeId x, NodeId y) {
     // Validate arc in observationalBN
-    if (!_observationalBN_.dag().existsArc(Arc(x, y))) {
+    if (!_observationalBN_.internalDag().existsArc(Arc(x, y))) {
       GUM_ERROR(InvalidArgument,
                 "Arc(" + std::to_string(x) + "," + std::to_string(y)
                     + ") not present in observationalBN");
@@ -215,7 +215,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   bool CausalModel< GUM_SCALAR >::isAssumedSpurious(NodeId x, NodeId y) const {
-    return _observationalBN_.dag().existsArc(Arc(x, y)) && !_causalDAG_.existsArc(Arc(x, y));
+    return _observationalBN_.internalDag().existsArc(Arc(x, y))
+        && !_causalDAG_.existsArc(Arc(x, y));
   }
 
   template < GUM_Numeric GUM_SCALAR >

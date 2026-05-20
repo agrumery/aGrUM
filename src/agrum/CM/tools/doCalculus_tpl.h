@@ -283,7 +283,7 @@ namespace gum {
       DoCalculus< GUM_SCALAR >::_cDecomposition_(const CausalModel< GUM_SCALAR >& cm) const {
     // c-components: undirected connectivity among observed children of the same latent.
     const NodeSet lat = cm.latentVariablesIds();
-    const NodeSet V   = cm.observationalBN().dag().nodes().asNodeSet();
+    const NodeSet V   = cm.observationalBN().internalDag().nodes().asNodeSet();
 
     // adjacency among observed nodes, via latent co-children
     std::unordered_map< NodeId, std::vector< NodeId > > adj;
@@ -340,7 +340,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeId >
       DoCalculus< GUM_SCALAR >::_topoObserved_(const CausalModel< GUM_SCALAR >& cm) const {
-    const auto&   dag = cm.observationalBN().dag();
+    const auto&   dag = cm.observationalBN().internalDag();
     const NodeSet V   = dag.nodes().asNodeSet();
 
     // indegree in the observed DAG
@@ -527,7 +527,7 @@ namespace gum {
                                      const NodeSet&                           X,
                                      std::unique_ptr< ASTtree< GUM_SCALAR > > P) const {
     const NodeSet lat = cm.latentVariablesIds();
-    const NodeSet V   = cm.observationalBN().dag().nodes().asNodeSet();
+    const NodeSet V   = cm.observationalBN().internalDag().nodes().asNodeSet();
 
     // --- 1) if X is empty ---
     if (X.empty()) {

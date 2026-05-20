@@ -70,7 +70,7 @@ namespace gum {
     _triangulation_ = new DefaultTriangulation;
 
     // for each node in the MRF, assign the set of factors that contain it
-    const auto& graph = this->MRF().graph();
+    const auto& graph = this->MRF().internalGraph();
     _node_to_factors_.resize(graph.size());
     _TensorSet_ empty;
     for (const auto node: graph)
@@ -393,7 +393,7 @@ namespace gum {
 
     // 1/ copy the undirected graph of the MRF
     const auto& mn = this->MRF();
-    _graph_        = mn.graph();
+    _graph_        = mn.internalGraph();
 
     // 2/ if there exist some joint targets, we shall add new edges into the
     // undirected graph in order to ensure that there exists a clique containing

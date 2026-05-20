@@ -117,7 +117,7 @@ namespace gum {
   double SchedulerSequential::nbOperations(const Schedule& schedule) {
     double nb_ops = 0.0;
 
-    for (const auto node: schedule.dag()) {
+    for (const auto node: schedule.internalDag()) {
       nb_ops += schedule.operation(node).nbOperations();
     }
 
@@ -245,7 +245,7 @@ namespace gum {
   /// returns the memory consumption used during the execution of a schedule
   void SchedulerSequential::_simulateExecution_() {
     // get the DAG of the operations to perform
-    DAG dag = _schedule_->dag();
+    DAG dag = _schedule_->internalDag();
 
     _operations_.clear();
     _operations_.reserve(dag.sizeNodes());

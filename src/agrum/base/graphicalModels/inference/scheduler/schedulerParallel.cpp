@@ -102,7 +102,7 @@ namespace gum {
 
     // compute the set of operations to perform
     List< NodeId > available_nodes;
-    const DAG&     dag = schedule.dag();
+    const DAG&     dag = schedule.internalDag();
     NodeSet        nodes_to_execute(dag.sizeNodes());
     {
       for (const auto node: schedule.availableOperations()) {
@@ -190,7 +190,7 @@ namespace gum {
                       // &stats,
                       &nb_remaining_operations](const std::size_t this_thread,
                                                 const std::size_t nb_threads) -> void {
-      const DAG& dag = schedule.dag();
+      const DAG& dag = schedule.internalDag();
 
       // get the synchronization objects
       auto& this_mutex         = thread2mutex[this_thread];
