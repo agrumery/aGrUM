@@ -281,12 +281,12 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE UndiGraph& InterfaceGraph< GUM_SCALAR >::graph() {
+      INLINE UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() {
         return _graph_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const UndiGraph& InterfaceGraph< GUM_SCALAR >::graph() const {
+      INLINE const UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() const {
         return _graph_;
       }
 

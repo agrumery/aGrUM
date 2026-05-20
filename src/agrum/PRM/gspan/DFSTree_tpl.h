@@ -474,7 +474,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const InterfaceGraph< GUM_SCALAR >& DFSTree< GUM_SCALAR >::graph() const {
+      INLINE const InterfaceGraph< GUM_SCALAR >& DFSTree< GUM_SCALAR >::internalGraph() const {
         return *_graph_;
       }
 

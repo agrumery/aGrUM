@@ -140,7 +140,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DAG& ClassDependencyGraph< GUM_SCALAR >::dag() const {
+    INLINE const DAG& ClassDependencyGraph< GUM_SCALAR >::internalDag() const {
       return _graph_;
     }
 

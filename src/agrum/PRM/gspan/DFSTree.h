@@ -95,7 +95,7 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        const InterfaceGraph< GUM_SCALAR >& graph() const;
+        const InterfaceGraph< GUM_SCALAR >& internalGraph() const;
 
         struct PatternData {
           /// Constructor.

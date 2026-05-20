@@ -364,8 +364,8 @@ namespace gum {
       Sequence< const PRMClassElementContainer< GUM_SCALAR >* > class_elim_order;
       std::list< NodeId >                                       l;
 
-      for (const auto node: cdg.dag().nodes()) {
-        if (cdg.dag().parents(node).empty()) { l.push_back(node); }
+      for (const auto node: cdg.internalDag().nodes()) {
+        if (cdg.internalDag().parents(node).empty()) { l.push_back(node); }
       }
 
       Set< NodeId > visited_node;
@@ -377,7 +377,7 @@ namespace gum {
           class_elim_order.insert(cdg.get(l.front()).first);
         }
 
-        for (const auto child: cdg.dag().children(l.front())) {
+        for (const auto child: cdg.internalDag().children(l.front())) {
           if (!visited_node.contains(child)) { l.push_back(child); }
         }
 

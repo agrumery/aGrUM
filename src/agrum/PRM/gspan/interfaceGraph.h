@@ -196,10 +196,10 @@ namespace gum {
         ~InterfaceGraph();
 
         /// Returns the graph of this interface graph
-        UndiGraph& graph();
+        UndiGraph& internalGraph();
 
         /// Returns the graph of this interface graph
-        const UndiGraph& graph() const;
+        const UndiGraph& internalGraph() const;
 
         /// Returns the bijection between LabelData and their string
         /// representation.

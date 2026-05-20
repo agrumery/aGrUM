@@ -93,7 +93,7 @@ namespace gum {
 
       /// Returns a constant reference over the graph of the DAG representing
       /// the ClassDependencyGraph<GUM_SCALAR>.
-      const DAG& dag() const;
+      const DAG& internalDag() const;
 
       /// Returns a constant reference over the element assiociated with the
       /// node

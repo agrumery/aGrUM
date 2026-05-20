@@ -67,7 +67,7 @@ namespace gum {
           for (const auto node: _tree_.iso_graph(p).nodes()) {
             PRMInstance< GUM_SCALAR >* u = _tree_.iso_map(p, node).atPos(0);
             PRMInstance< GUM_SCALAR >* v = _tree_.iso_map(p, node).atPos(1);
-            graph.graph().eraseEdge(Edge(graph.id(u), graph.id(v)));
+            graph.internalGraph().eraseEdge(Edge(graph.id(u), graph.id(v)));
           }
         }
       }
@@ -174,7 +174,7 @@ namespace gum {
               current_id = ig.id(current);
               // Checking for edges not in p
 
-              for (const auto neighbor_id: ig.graph().neighbours(current_id)) {
+              for (const auto neighbor_id: ig.internalGraph().neighbours(current_id)) {
                 neighbor = ig.node(neighbor_id).n;
 
                 // We want a forward edge in any case or a backward edge if

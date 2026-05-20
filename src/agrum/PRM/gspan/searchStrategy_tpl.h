@@ -289,7 +289,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       INLINE bool FrequenceSearch< GUM_SCALAR >::operator()(LabelData* i, LabelData* j) {
-        return (this->tree_->graph().size(i) > this->tree_->graph().size(j));
+        return (this->tree_->internalGraph().size(i) > this->tree_->internalGraph().size(j));
       }
 
       // StrictSearch
@@ -341,8 +341,8 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       INLINE bool StrictSearch< GUM_SCALAR >::operator()(LabelData* i, LabelData* j) {
-        return i->tree_width * this->tree_->graph().size(i)
-             < j->tree_width * this->tree_->graph().size(j);
+        return i->tree_width * this->tree_->internalGraph().size(i)
+             < j->tree_width * this->tree_->internalGraph().size(j);
       }
 
       template < GUM_Numeric GUM_SCALAR >
