@@ -667,6 +667,7 @@ namespace gum_tests {
       CHECK(graph.mixedUnorientedPath(1, 0).has_value());
       CHECK(graph.mixedUnorientedPath(4, 2).has_value());
     }
+
     static void testToDotWithNames() {
       gum::MixedGraph g;
       g.addNodes(3);

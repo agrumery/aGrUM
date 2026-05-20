@@ -581,6 +581,7 @@ namespace gum_tests {
       // multi-source: {3,5} vs {2} — neither can reach 2
       CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3, 5}, gum::NodeSet{2}));
     }
+
     static void testToDotWithNames() {
       gum::UndiGraph g;
       g.addNodes(3);

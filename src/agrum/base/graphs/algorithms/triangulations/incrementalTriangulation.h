@@ -276,7 +276,6 @@ namespace gum {
 
     /// a collect algorithm to compute, for each node, one container JT's clique
     void _collectJTCliques_(const NodeId clique, const NodeId from, NodeProperty< bool >& examined);
-
   };
 
 } /* namespace gum */

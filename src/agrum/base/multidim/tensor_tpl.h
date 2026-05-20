@@ -1019,23 +1019,22 @@ namespace gum {
     const Size nbcol     = var.domainSize();
 
     // box-drawing characters
-    constexpr const char* vbar   = "│";   // U+2502 single vertical
-    constexpr const char* dvbar  = "║";   // U+2551 double vertical
-    constexpr const char* hbar   = "─";   // U+2500 single horizontal
+    constexpr const char* vbar  = "│";   // U+2502 single vertical
+    constexpr const char* dvbar = "║";   // U+2551 double vertical
+    constexpr const char* hbar  = "─";   // U+2500 single horizontal
 
     const auto repeat_str = [](const char* s, Size n) {
-      std::string r;
+      std::string       r;
       const std::string unit(s);
       r.reserve(unit.size() * n);
-      for (Size i = 0; i < n; i++) r += unit;
+      for (Size i = 0; i < n; i++)
+        r += unit;
       return r;
     };
     const std::string maskparent = repeat_str(hbar, colwidth);
     const std::string masknumber = repeat_str(hbar, numberwidth);
 
-    if (nbparents > 0)
-      ss << std::setw(nbparents * (colwidth + 1) - 1) << " "
-         << dvbar;
+    if (nbparents > 0) ss << std::setw(nbparents * (colwidth + 1) - 1) << " " << dvbar;
     ss << "  " << std::setw(nbcol * (numberwidth + 1) - 3)
        << var.name().substr(0, nbcol * (numberwidth + 1) - 3) << vbar;
     ss << std::endl;

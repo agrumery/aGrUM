@@ -138,9 +138,7 @@ namespace gum {
     output << tab << "graph [style=filled,color=\"#F5F5F5\"];" << std::endl;
 
     output << std::endl;
-    auto nodeDecl = [&](NodeId n) -> std::string {
-      return std::to_string(n) + dotNodeLabel(n);
-    };
+    auto nodeDecl = [&](NodeId n) -> std::string { return std::to_string(n) + dotNodeLabel(n); };
 
     for (const auto node: nodes()) {
       if (neighbours(node).empty()) {

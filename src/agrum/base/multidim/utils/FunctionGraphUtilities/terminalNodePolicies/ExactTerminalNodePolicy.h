@@ -50,7 +50,6 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H
 
-#include <agrum/base/core/bijection.h>
 #include <agrum/base/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
 
 namespace gum {
