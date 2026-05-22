@@ -128,9 +128,7 @@ namespace gum_tests {
                 double new_score = _score_(score, j, dag) - current_scores[j];
                 if (new_score > 0) {
                   changes.push_back(std::pair< gum::learning::GraphChange, double >(
-                      gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_ADDITION,
-                                                 gum::NodeId(i),
-                                                 gum::NodeId(j)),
+                      gum::learning::ArcAddition(gum::NodeId(i), gum::NodeId(j)),
                       new_score));
                 }
                 dag.eraseArc(gum::Arc(i, j));
@@ -143,9 +141,7 @@ namespace gum_tests {
               double new_score = _score_(score, j, dag) - current_scores[j];
               if (new_score > 0) {
                 changes.push_back(std::pair< gum::learning::GraphChange, double >(
-                    gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_DELETION,
-                                               gum::NodeId(i),
-                                               gum::NodeId(j)),
+                    gum::learning::ArcDeletion(gum::NodeId(i), gum::NodeId(j)),
                     new_score));
               }
               dag.addArc(gum::NodeId(i), gum::NodeId(j));
@@ -161,9 +157,7 @@ namespace gum_tests {
                 double new_score   = new_score_i + new_score_j;
                 if (new_score > 0) {
                   changes.push_back(std::pair< gum::learning::GraphChange, double >(
-                      gum::learning::GraphChange(gum::learning::GraphChangeType::ARC_REVERSAL,
-                                                 gum::NodeId(i),
-                                                 gum::NodeId(j)),
+                      gum::learning::ArcReversal(gum::NodeId(i), gum::NodeId(j)),
                       new_score));
                 }
                 dag.eraseArc(gum::Arc(j, i));

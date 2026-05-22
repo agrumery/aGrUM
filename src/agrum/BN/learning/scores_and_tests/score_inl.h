@@ -124,7 +124,7 @@ namespace gum {
         cache_.insert(std::move(idset), the_score);
         return the_score;
       } else {
-        return score_(idset);
+        return score_(std::move(idset));
       }
     }
 

@@ -98,11 +98,11 @@ namespace gum_tests {
             all_scores[i][j] = -score.score(i, pars);
 
             if (!parents.exists(j)) {
-              pars.push_back(static_cast< gum::NodeId >(j));
+              pars.push_back(gum::NodeId(j));
               all_scores[i][j] += score.score(i, pars);
             } else {
               for (auto& par: pars) {
-                if (par == j) {
+                if (par == gum::NodeId(j)) {
                   par = *(pars.rbegin());
                   pars.pop_back();
                   break;
@@ -203,7 +203,7 @@ namespace gum_tests {
         CHECK(!selector.empty(node));
       }
 
-      gum::learning::GraphChange change(gum::learning::GraphChangeType::ARC_DELETION, 0, 1);
+      gum::learning::ArcDeletion change(0, 1);
       CHECK(!selector.isChangeValid(change));
 
       for (const auto node: graph) {
@@ -237,7 +237,7 @@ namespace gum_tests {
       }
       CHECK_EQ(best_score, all_scores[best_node][best_nodes[best_node]]);
 
-      gum::learning::GraphChange change2(gum::learning::GraphChangeType::ARC_ADDITION, 3, 1);
+      gum::learning::ArcAddition change2(3, 1);
       graph.addArc(change2.node1(), change2.node2());
       selector.applyChangeWithoutScoreUpdate(change2);
       selector.updateScoresAfterAppliedChanges();
@@ -256,7 +256,7 @@ namespace gum_tests {
 
       scores[1] = selector.bestScore(1);
       scores[3] = selector.bestScore(3);
-      gum::learning::GraphChange change3(gum::learning::GraphChangeType::ARC_ADDITION, 3, 2);
+      gum::learning::ArcAddition change3(3, 2);
       graph.addArc(change3.node1(), change3.node2());
       selector.applyChange(change3);
 
@@ -274,7 +274,7 @@ namespace gum_tests {
 
       scores[2] = selector.bestScore(2);
       scores[3] = selector.bestScore(3);
-      gum::learning::GraphChange change4(gum::learning::GraphChangeType::ARC_DELETION, 3, 1);
+      gum::learning::ArcDeletion change4(3, 1);
       graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
       selector.applyChange(change4);
 

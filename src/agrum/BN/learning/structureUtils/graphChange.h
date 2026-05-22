@@ -51,40 +51,65 @@
 #ifndef GUM_LEARNING_GRAPH_CHANGE_H
 #define GUM_LEARNING_GRAPH_CHANGE_H
 
+#include <cstdint>
+#include <cstring>
 #include <iostream>
 #include <string>
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/hashFunc.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
 namespace gum {
 
   namespace learning {
 
-    /// the type of modification that can be applied to the graph
-    enum GraphChangeType { ARC_ADDITION, ARC_DELETION, ARC_REVERSAL, EDGE_ADDITION, EDGE_DELETION };
+    /// the internal type of the nodes involved in the arc/edge modifications
+    // it is important that the size of this type be a multiple of 32 bits.
+    // This is exploited to both reduce the memory consumption and speed-up
+    // copying the fields of GraphChange
+    using LearnNodeId = uint32_t;
 
-    /* =========================================================================
-     */
-    /* ===                        GRAPH CHANGE CLASS                         ===
-     */
-    /* =========================================================================
-     */
+    /// the type of modification that can be applied to the graph
+    enum class GraphChangeType : LearnNodeId {
+      ARC_ADDITION,
+      ARC_DELETION,
+      ARC_REVERSAL,
+      ARC_TRIANGLE_DELETION1,
+      ARC_TRIANGLE_DELETION2,
+      EDGE_ADDITION,
+      EDGE_DELETION
+    };
+
+    // forward the declarations of the Graph changes classes. This will be
+    // useful for specifying HashFunc friendships in Class GraphChange
+    class ArcAddition;
+    class ArcDeletion;
+    class ArcReversal;
+    class ArcTriangleDeletion1;
+    class ArcTriangleDeletion2;
+    class EdgeAddition;
+    class EdgeDeletion;
+
+    /* ========================================================================= */
+    /* ===                        GRAPH CHANGE CLASS                         === */
+    /* ========================================================================= */
     /** @class GraphChange
      * @brief
      * @ingroup learning_group
      */
     class GraphChange {
-      public:
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
+      protected:
       /// default constructor
-      GraphChange(GraphChangeType type, NodeId node1, NodeId node2) noexcept;
+      GraphChange(GraphChangeType type, NodeId node1, NodeId node2, NodeId node3 = 0) noexcept;
 
+      public:
       /// copy constructor
       GraphChange(const GraphChange& from) noexcept;
 
@@ -123,34 +148,56 @@ namespace gum {
       /// returns the type of the operation
       GraphChangeType type() const noexcept;
 
+      /// returns a string corresponding to the type of the change
+      std::string typeAsString() const;
+
       /// returns the first node involved in the modification
       NodeId node1() const noexcept;
 
       /// returns the second node involved in the modification
       NodeId node2() const noexcept;
 
+      /// returns the third node involved in the modification (if any)
+      /** @throws InvalidNode is raised if the modification does not involve
+       * a third */
+      NodeId node3() const;
+
       /// put the content of the graph change into a string
-      virtual std::string toString() const;
+      // This method has not been declared as virtual in order to reduce the
+      // memory consumption. The drawback is that it is slower than what we
+      // would get with a virtual method. But this method should essentially
+      // be used for debugging purposes, hence this is not really an issue.
+      std::string toString() const;
 
       /// @}
 
-      private:
+      protected:
+      /// the nodes involved in the edge or arc to be modified
+      LearnNodeId nodes_[3];
+
       /// the type of modification
-      GraphChangeType _type_;
+      // @warning this field must follow _nodes_. This fact is exploited to
+      // speed up copying Class GraphChange fields: as LearnNodeId is 32-bit
+      // long, _type is aligned as 32 bits, hence, it directly follows _nodes
+      // without any padding. Overall, _nodes + _type should be 16-byte long.
+      GraphChangeType type_;
 
-      /// the first node in the edge or arc to be modified
-      NodeId _node1_;
 
-      /// the second node in the edge or arc to be modified
-      NodeId _node2_;
+      // friendships allow accessing _nodes. This will speed up computations
+      // when sizeof(Size) == 2 * sizeof(LearnNodeId)
+      friend class HashFunc< GraphChange >;
+      friend class HashFunc< ArcAddition >;
+      friend class HashFunc< ArcDeletion >;
+      friend class HashFunc< ArcReversal >;
+      friend class HashFunc< ArcTriangleDeletion1 >;
+      friend class HashFunc< ArcTriangleDeletion2 >;
+      friend class HashFunc< EdgeAddition >;
+      friend class HashFunc< EdgeDeletion >;
     };
 
-    /* =========================================================================
-     */
-    /* ===                        ARC ADDITION CLASS                         ===
-     */
-    /* =========================================================================
-     */
+    /* ========================================================================= */
+    /* ===                        ARC ADDITION CLASS                         === */
+    /* ========================================================================= */
     /** @class ArcAddition
      * @brief The class for notifying learning algorithms of new arc additions
      * @ingroup learning_group
@@ -199,24 +246,11 @@ namespace gum {
       bool operator!=(const ArcAddition& from) const noexcept;
 
       /// @}
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// put the content of the ArcAddition into a string
-      virtual std::string toString() const final;
-
-      /// @}
     };
 
-    /* =========================================================================
-     */
-    /* ===                        ARC DELETION CLASS                         ===
-     */
-    /* =========================================================================
-     */
+    /* =========================================================================*/
+    /* ===                        ARC DELETION CLASS                         ===*/
+    /* =========================================================================*/
     /** @class ArcDeletion
      * @brief The class for notifying learning algorithms of arc removals
      * @ingroup learning_group
@@ -265,24 +299,11 @@ namespace gum {
       bool operator!=(const ArcDeletion& from) const noexcept;
 
       /// @}
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// put the content of the ArcDeletion into a string
-      virtual std::string toString() const final;
-
-      /// @}
     };
 
-    /* =========================================================================
-     */
-    /* ===                        ARC REVERSAL CLASS                         ===
-     */
-    /* =========================================================================
-     */
+    /* ========================================================================= */
+    /* ===                        ARC REVERSAL CLASS                         === */
+    /* ========================================================================= */
     /** @class ArcReversal
      * @brief The class for notifying learning algorithms of arc reversals
      * @ingroup learning_group
@@ -331,24 +352,161 @@ namespace gum {
       bool operator!=(const ArcReversal& from) const noexcept;
 
       /// @}
+    };
 
+    /* ========================================================================= */
+    /* ===                 ARC TRIANGLE DELETION 1ST CLASS                   === */
+    /* ========================================================================= */
+    /** @class ArcTriangleDeletion1
+     * @brief The graph change substituting a triangle node1->node2->node3 +
+     * node1->node3 into v-structure node2->node1<-node3
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
+     */
+    class ArcTriangleDeletion1: public GraphChange {
+      public:
       // ##########################################################################
-      /// @name Accessors / Modifiers
+      /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
-      /// put the content of the ArcReversal into a string
-      virtual std::string toString() const final;
+      /// default constructor
+      /** The triangle that we wish to delete (substitute by a v-structure) is the
+       * following: node1 -> node2 -> node3 + node1 -> node3. It is substituted
+       * by v-structure node2 -> node1 <- node3 */
+      ArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) noexcept;
+
+      /// copy constructor
+      ArcTriangleDeletion1(const ArcTriangleDeletion1& from) noexcept;
+
+      /// move constructor
+      ArcTriangleDeletion1(ArcTriangleDeletion1&& from) noexcept;
+
+      /// destructor
+      ~ArcTriangleDeletion1() noexcept;
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      ArcTriangleDeletion1& operator=(const ArcTriangleDeletion1& from) noexcept;
+
+      /// move operator
+      ArcTriangleDeletion1& operator=(ArcTriangleDeletion1&& from) noexcept;
+
+      /// returns whether two ArcTriangleDeletion1 are identical or not
+      /** Two ArcTriangleDeletion1 are identical if and only if they involve
+       * the same set of nodes, in the same order.
+       */
+      bool operator==(const ArcTriangleDeletion1& from) const noexcept;
+
+      /// returns whether two ArcTriangleDeletion1 are different or not
+      /** Two ArcTriangleDeletion1 differ if and only if either they do not
+       * involve the same set of nodes or those are not in the same order.
+       */
+      bool operator!=(const ArcTriangleDeletion1& from) const noexcept;
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Accessors/Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// returns the third node involved in the modification (if any)
+      /** @throws InvalidNode is raised if the modification does not involve
+       * a third */
+      NodeId node3() const;
 
       /// @}
     };
 
-    /* =========================================================================
+    /* ========================================================================= */
+    /* ===                 ARC TRIANGLE DELETION 2ND CLASS                   === */
+    /* ========================================================================= */
+    /** @class ArcTriangleDeletion2
+     * @brief The graph change substituting a triangle node1->node2->node3 +
+     * node1->node3 into v-structure node1->node2<-node3
+     * @ingroup learning_group
+     *
+     * This class is convenient to know at compile time which graph change we
+     * are dealing with. Thus, this enables to perform faster code (we can avoid
+     * using a switch on GraphChanges to determine which change corresponds to
+     * this class.
      */
-    /* ===                        EDGE ADDITION CLASS                        ===
-     */
-    /* =========================================================================
-     */
+    class ArcTriangleDeletion2: public GraphChange {
+      public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      /** The triangle that we wish to delete (substitute by a v-structure) is the
+       * following: node1 -> node2 -> node3 + node1 -> node3. It is substituted
+       * by v-structure node1 -> node2 <- node3 */
+      ArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) noexcept;
+
+      /// copy constructor
+      ArcTriangleDeletion2(const ArcTriangleDeletion2& from) noexcept;
+
+      /// move constructor
+      ArcTriangleDeletion2(ArcTriangleDeletion2&& from) noexcept;
+
+      /// destructor
+      ~ArcTriangleDeletion2() noexcept;
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy constructor
+      ArcTriangleDeletion2& operator=(const ArcTriangleDeletion2& from) noexcept;
+
+      /// move operator
+      ArcTriangleDeletion2& operator=(ArcTriangleDeletion2&& from) noexcept;
+
+      /// returns whether two ArcTriangleDeletion2 are identical or not
+      /** Two ArcTriangleDeletion2 are identical if and only if they involve
+       * the same set of nodes, in the same order.
+       */
+      bool operator==(const ArcTriangleDeletion2& from) const noexcept;
+
+      /// returns whether two ArcTriangleDeletion2 are different or not
+      /** Two ArcTriangleDeletion2 differ if and only if either they do not
+       * involve the same set of nodes or those are not in the same order.
+       */
+      bool operator!=(const ArcTriangleDeletion2& from) const noexcept;
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Accessors/Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// returns the third node involved in the modification (if any)
+      /** @throws InvalidNode is raised if the modification does not involve
+       * a third */
+      NodeId node3() const;
+
+      /// @}
+    };
+
+    /* =========================================================================*/
+    /* ===                        EDGE ADDITION CLASS                        ===*/
+    /* =========================================================================*/
     /** @class EdgeAddition
      * @brief The class for notifying learning algorithms of new edge additions
      * @ingroup learning_group
@@ -397,24 +555,11 @@ namespace gum {
       bool operator!=(const EdgeAddition& from) const noexcept;
 
       /// @}
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// put the content of the EdgeAddition into a string
-      virtual std::string toString() const final;
-
-      /// @}
     };
 
-    /* =========================================================================
-     */
-    /* ===                        EDGE DELETION CLASS                        ===
-     */
-    /* =========================================================================
-     */
+    /* ========================================================================= */
+    /* ===                        EDGE DELETION CLASS                        === */
+    /* ========================================================================= */
     /** @class EdgeDeletion
      * @brief The class for notifying learning algorithms of edge removals
      * @ingroup learning_group
@@ -463,35 +608,10 @@ namespace gum {
       bool operator!=(const EdgeDeletion& from) const noexcept;
 
       /// @}
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// put the content of the EdgeDeletion into a string
-      virtual std::string toString() const final;
-
-      /// @}
     };
 
     /// a \c << operator for GraphChanges
     std::ostream& operator<<(std::ostream& stream, const GraphChange& change);
-
-    /// a \c << operator for ArcAddition
-    std::ostream& operator<<(std::ostream& stream, const ArcAddition& change);
-
-    /// a \c << operator for ArcDeletion
-    std::ostream& operator<<(std::ostream& stream, const ArcDeletion& change);
-
-    /// a \c << operator for ArcReversal
-    std::ostream& operator<<(std::ostream& stream, const ArcReversal& change);
-
-    /// a \c << operator for EdgeAddition
-    std::ostream& operator<<(std::ostream& stream, const EdgeAddition& change);
-
-    /// a \c << operator for EdgeDeletion
-    std::ostream& operator<<(std::ostream& stream, const EdgeDeletion& change);
 
   } /* namespace learning */
 
@@ -507,7 +627,7 @@ namespace gum {
     static Size castToSize(const learning::GraphChange& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::GraphChange& key) const override final;
+    Size operator()(const learning::GraphChange& key) const final;
   };
 
   /// the hash function for Arc Additions
@@ -522,7 +642,7 @@ namespace gum {
     static Size castToSize(const learning::ArcAddition& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::ArcAddition& key) const override final;
+    Size operator()(const learning::ArcAddition& key) const final;
   };
 
   /// the hash function for Arc Deletions
@@ -537,7 +657,7 @@ namespace gum {
     static Size castToSize(const learning::ArcDeletion& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::ArcDeletion& key) const override final;
+    Size operator()(const learning::ArcDeletion& key) const final;
   };
 
   /// the hash function for Arc Reversals
@@ -552,7 +672,39 @@ namespace gum {
     static Size castToSize(const learning::ArcReversal& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::ArcReversal& key) const override final;
+    Size operator()(const learning::ArcReversal& key) const final;
+  };
+
+  /// the hash function for Arc Triangle Deletions creating a v-structure in node 1
+  template <>
+  class HashFunc< learning::ArcTriangleDeletion1 >:
+      public HashFuncBase< learning::ArcTriangleDeletion1 > {
+    public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::ArcTriangleDeletion1& key);
+
+    /// computes the hashed value of a key
+    Size operator()(const learning::ArcTriangleDeletion1& key) const final;
+  };
+
+  /// the hash function for Arc Triangle Deletions creating a v-structure in node 2
+  template <>
+  class HashFunc< learning::ArcTriangleDeletion2 >:
+      public HashFuncBase< learning::ArcTriangleDeletion2 > {
+    public:
+    /**
+     * @brief Returns the value of a key as a Size.
+     * @param key The value to return as a Size.
+     * @return Returns the value of a key as a Size.
+     */
+    static Size castToSize(const learning::ArcTriangleDeletion2& key);
+
+    /// computes the hashed value of a key
+    Size operator()(const learning::ArcTriangleDeletion2& key) const final;
   };
 
   /// the hash function for Edge Additions
@@ -566,7 +718,7 @@ namespace gum {
     static Size castToSize(const learning::EdgeAddition& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::EdgeAddition& key) const override final;
+    Size operator()(const learning::EdgeAddition& key) const final;
   };
 
   /// the hash function for Edge Deletions
@@ -581,13 +733,13 @@ namespace gum {
     static Size castToSize(const learning::EdgeDeletion& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(const learning::EdgeDeletion& key) const override final;
+    Size operator()(const learning::EdgeDeletion& key) const final;
   };
 
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/BN/learning/structureUtils/graphChange_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NOINLINE
 
 #endif   /* GUM_LEARNING_GRAPH_CHANGE_H */

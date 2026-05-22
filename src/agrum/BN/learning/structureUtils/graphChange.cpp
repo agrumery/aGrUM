@@ -52,7 +52,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/learning/structureUtils/graphChange_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
@@ -74,6 +74,16 @@ namespace gum {
           stream << "ArcReversal ( " << node1() << " , " << node2() << " )";
           return stream.str();
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          stream << "ArcTriangleDeletion1 ( " << node1() << " , " << node2() << " , " << node3()
+                 << " )";
+          return stream.str();
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          stream << "ArcTriangleDeletion2 ( " << node1() << " , " << node2() << " , " << node3()
+                 << " )";
+          return stream.str();
+
         case GraphChangeType::EDGE_ADDITION :
           stream << "EdgeAddition ( " << node1() << " , " << node2() << " )";
           return stream.str();
@@ -81,73 +91,37 @@ namespace gum {
         case GraphChangeType::EDGE_DELETION :
           stream << "EdgeDeletion ( " << node1() << " , " << node2() << " )";
           return stream.str();
-
-        default : GUM_ERROR(OperationNotAllowed, "this graph modification is not supported yet")
       }
+
+      GUM_ERROR(OperationNotAllowed,
+                "Graph modification " << (int)type() << " is not supported yet in method toString")
     }
 
-    /// put the content of the ArcAddition into a string
-    std::string ArcAddition::toString() const {
-      std::stringstream stream;
-      stream << "ArcAddition ( " << node1() << " , " << node2() << " )";
-      return stream.str();
-    }
+    /// returns a string corresponding to the type of the change
+    std::string GraphChange::typeAsString() const {
+      switch (type()) {
+        case GraphChangeType::ARC_ADDITION : return "ArcAddition";
 
-    /// put the content of the ArcDeletion into a string
-    std::string ArcDeletion::toString() const {
-      std::stringstream stream;
-      stream << "ArcDeletion ( " << node1() << " , " << node2() << " )";
-      return stream.str();
-    }
+        case GraphChangeType::ARC_DELETION : return "ArcDeletion";
 
-    /// put the content of the ArcReversal into a string
-    std::string ArcReversal::toString() const {
-      std::stringstream stream;
-      stream << "ArcReversal ( " << node1() << " , " << node2() << " )";
-      return stream.str();
-    }
+        case GraphChangeType::ARC_REVERSAL : return "ArcReversal";
 
-    /// put the content of the EdgeAddition into a string
-    std::string EdgeAddition::toString() const {
-      std::stringstream stream;
-      stream << "EdgeAddition ( " << node1() << " , " << node2() << " )";
-      return stream.str();
-    }
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 : return "ArcTriangleDeletion1";
 
-    /// put the content of the EdgeDeletion into a string
-    std::string EdgeDeletion::toString() const {
-      std::stringstream stream;
-      stream << "EdgeDeletion ( " << node1() << " , " << node2() << " )";
-      return stream.str();
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 : return "ArcTriangleDeletion2";
+
+        case GraphChangeType::EDGE_ADDITION : return "EdgeAddition";
+
+        case GraphChangeType::EDGE_DELETION : return "EdgeDeletion";
+      }
+
+      GUM_ERROR(OperationNotAllowed,
+                "Graph modification " << (int)type()
+                                      << " is not supported yet in method typeAsString")
     }
 
     /// a \c << operator for GraphChanges
     std::ostream& operator<<(std::ostream& stream, const GraphChange& change) {
-      return stream << change.toString();
-    }
-
-    /// a \c << operator for ArcAddition
-    std::ostream& operator<<(std::ostream& stream, const ArcAddition& change) {
-      return stream << change.toString();
-    }
-
-    /// a \c << operator for ArcDeletion
-    std::ostream& operator<<(std::ostream& stream, const ArcDeletion& change) {
-      return stream << change.toString();
-    }
-
-    /// a \c << operator for ArcReversal
-    std::ostream& operator<<(std::ostream& stream, const ArcReversal& change) {
-      return stream << change.toString();
-    }
-
-    /// a \c << operator for EdgeAddition
-    std::ostream& operator<<(std::ostream& stream, const EdgeAddition& change) {
-      return stream << change.toString();
-    }
-
-    /// a \c << operator for EdgeDeletion
-    std::ostream& operator<<(std::ostream& stream, const EdgeDeletion& change) {
       return stream << change.toString();
     }
 

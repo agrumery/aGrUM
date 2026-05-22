@@ -96,31 +96,6 @@ namespace gum {
 #endif
     }
 
-    INLINE void setNestedParallelism(bool value) {
-#ifdef _OPENMP
-#  if _OPENMP >= 201811
-      omp_set_max_active_levels(value ? omp_get_supported_active_levels() : 1);
-#  else
-      omp_set_nested(value ? 1 : 0);
-#  endif
-#else
-      GUM_ERROR(OperationNotAllowed,
-                "openMP was not enabled at compilation (and you "
-                "asked for nested parallelism !)");
-#endif
-    }
-
-    INLINE bool getNestedParallelism() {
-#ifdef _OPENMP
-#  if _OPENMP >= 201811
-      return omp_get_max_active_levels() > 1;
-#  else
-      return omp_get_nested() != 0;
-#  endif
-#else
-      return false;
-#endif
-    }
 
     INLINE void setDynamicThreadsNumber(bool value) {
 #ifdef _OPENMP

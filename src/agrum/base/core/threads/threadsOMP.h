@@ -134,27 +134,6 @@ namespace gum {
     unsigned int getNumberOfRunningThreads();
 
     /**
-     * @brief Set nested parallelism (false bu default).
-     * @ingroup basicstruct_group
-     *
-     * Nested parallelism, i.e. parallel activity within another parallel
-     * activity : threads creating more threads.
-     *
-     * Off by default.
-     *
-     * @param value \c True if nested parallelism should be activated, \c False
-     * otherwise.
-     */
-    void setNestedParallelism(bool value);
-
-    /**
-     * @brief Get nested parallelism status.
-     * @ingroup basicstruct_group
-     * @return \c True if nested parallelism is enabled, \c False otherwise.
-     */
-    bool getNestedParallelism();
-
-    /**
      * @brief Set the dynamic threads number (false by default).
      * @ingroup basicstruct_group
      *

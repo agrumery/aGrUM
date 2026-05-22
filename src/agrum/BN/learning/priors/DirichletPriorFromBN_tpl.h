@@ -116,7 +116,7 @@ namespace gum::learning {
     return PriorType::DirichletPriorType;
   }
 
-  /// indicates whether the prior is tensorly informative
+  /// indicates whether the prior is potentially informative
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE bool DirichletPriorFromBN< GUM_SCALAR >::isInformative() const {

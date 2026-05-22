@@ -88,17 +88,20 @@ namespace gum {
    * Hash functions are of the form [M * ((k * A) mod 1)], where [] stands for
    * the integer part, M is equal to the number of slots in the hashtable, k is
    * the key to be hashed, and mod 1 retrieves the decimal part of (k * A). A
-   * is an irrational number (currently either the gold number or pi/4). To
-   * speed up computations, the hash function is implemented using only
-   * Size (a.k.a. std::size_t). Therefore pi/4 and the gold number are encoded
-   * as X * 2^{-n} where n is the number of bits in a Size. Consequently, we
-   * should adapt X's definition to 32 and 64 bits architectures.
+   * is an irrational number (currently either the gold number, pi/4 or
+   * sqrt(3)/2). To speed up computations, the hash function is implemented
+   * using only Size (a.k.a. std::size_t). Therefore pi/4, the gold number and
+   * sqrt(3)/2 are encoded as X * 2^{-n} where n is the number of bits in a
+   * Size. Consequently, we should adapt X's definition to 32 and 64 bits
+   * architectures.
    */
   struct HashFuncConst {
     static constexpr Size gold
         = sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
-    static constexpr Size pi
+    static constexpr Size pi      // pi / 4
         = sizeof(Size) == 4 ? Size(3373259426UL) : Size(14488038916154245684UL);
+    static constexpr Size sqrt3   // sqrt(3) / 2
+        = sizeof(Size) == 4 ? Size(3719550786UL) : Size(15975348984942515101UL);
     static constexpr Size mask
         = sizeof(Size) == 4 ? Size(4294967295UL) : Size(18446744073709551615UL);
     static constexpr Size offset = sizeof(Size) == 4 ? Size(32) : Size(64);

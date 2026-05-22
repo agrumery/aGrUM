@@ -355,7 +355,7 @@ namespace gum {
             default : {
               GUM_ERROR(NotImplementedYet,
                         "Method setGraph of GraphChangesSelector4DiGraph "
-                            << "does not handle yet graph change of type " << change.type());
+                            << "does not handle yet graph change of type " << change.typeAsString());
             }
           }
         }
@@ -604,7 +604,7 @@ namespace gum {
           default : {
             GUM_ERROR(NotImplementedYet,
                       "Method  _updateScores_ of GraphChangesSelector4DiGraph "
-                          << "does not handle yet graph change of type " << change.type());
+                          << "does not handle yet graph change of type " << change.typeAsString());
           }
         }
       }
@@ -747,7 +747,7 @@ namespace gum {
         default :
           GUM_ERROR(NotImplementedYet,
                     "Method applyChange of GraphChangesSelector4DiGraph "
-                        << "does not handle yet graph change of type " << change.type());
+                        << "does not handle yet graph change of type " << change.typeAsString());
       }
 
       _queues_valid_ = false;
@@ -861,7 +861,7 @@ namespace gum {
           GUM_ERROR(NotImplementedYet,
                     "Method applyChangeWithoutScoreUpdate of "
                         << "GraphChangesSelector4DiGraph "
-                        << "does not handle yet graph change of type " << change.type());
+                        << "does not handle yet graph change of type " << change.typeAsString());
       }
     }
 
