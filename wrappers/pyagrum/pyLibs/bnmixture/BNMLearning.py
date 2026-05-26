@@ -154,7 +154,6 @@ class BNMLearner(IMixtureLearner):
 
   - We create a reference learner using the source with maximum weight.
 
-
   Parameters
   ----------
   weights : list[float]
@@ -259,7 +258,6 @@ class BNMBootstrapLearner(IMixtureLearner):
 
   - To keep one BNLearner at a time, we create a reference learner. To apply a method for the learning algorithm of all bootstraped BNs,
     "use" methods modify the reference learner. Then the other learners make use of ``BNLearner.copyState`` to update themself according to the reference learner.
-
 
   Parameters
   ----------

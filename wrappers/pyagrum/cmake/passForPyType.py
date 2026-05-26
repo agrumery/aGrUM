@@ -168,6 +168,8 @@ _RULES_PYTHON_RAW: list[tuple] = [
     ),
     ("gum::NodeProperty< gum::NodeId >", "dict[int,int]"),
     ("std::optional< gum::NodeSet >", "list[int] | None"),
+    ("std::optional< gum::NodeId >", "int | None"),
+    ("std::optional< int >", "int | None"),
     ("gum::NodeSet", "list[int]"),
     ("gum::Set< gum::Instantiation >", "list[dict[str,int]]"),
     ("gum::Sequence< gum::DiscreteVariable const \\* >", "list[object]"),

@@ -68,19 +68,23 @@ from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
 from ._learningMethods import _fitTAN as BN_fitTAN
 from ._learningMethods import _fitChowLiu as BN_fitChowLiu
 
-def createBNClassifier(*, learningMethod="MIIC",
-    prior=None,
-    scoringType="BIC",
-    constraints=None,
-    priorWeight=1,
-    possibleSkeleton=None,
-    DirichletCsv=None,
-    discretizationStrategy="quantile",
-    discretizationNbBins=5,
-    discretizationThreshold=25,
-    usePR=False,
-    beta=1,
-    significant_digit=10,):
+
+def createBNClassifier(
+  *,
+  learningMethod="MIIC",
+  prior=None,
+  scoringType="BIC",
+  constraints=None,
+  priorWeight=1,
+  possibleSkeleton=None,
+  DirichletCsv=None,
+  discretizationStrategy="quantile",
+  discretizationNbBins=5,
+  discretizationThreshold=25,
+  usePR=False,
+  beta=1,
+  significant_digit=10,
+):
   """
   Convenience factory that creates a BNClassifier with a DiscreteTypeProcessor built from
   simple discretization parameters (strategy, bins, threshold).
@@ -109,10 +113,10 @@ def createBNClassifier(*, learningMethod="MIIC",
   """
 
   type_processor = DiscreteTypeProcessor(
-        defaultDiscretizationMethod = discretizationStrategy,
-        defaultNumberOfBins = discretizationNbBins,
-        discretizationThreshold = discretizationThreshold,
-      )
+    defaultDiscretizationMethod=discretizationStrategy,
+    defaultNumberOfBins=discretizationNbBins,
+    discretizationThreshold=discretizationThreshold,
+  )
   return BNClassifier(
     type_processor=type_processor,
     learningMethod=learningMethod,
@@ -126,6 +130,7 @@ def createBNClassifier(*, learningMethod="MIIC",
     beta=beta,
     significant_digit=significant_digit,
   )
+
 
 class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   """
@@ -223,7 +228,8 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   """
 
   def __init__(
-    self,*,
+    self,
+    *,
     type_processor,
     learningMethod="MIIC",
     prior=None,
@@ -339,7 +345,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.significant_digit = significant_digit
 
     self.type_processor = type_processor
-  
+
   def fit(
     self,
     X,

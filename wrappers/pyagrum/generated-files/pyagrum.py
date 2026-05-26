@@ -3311,7 +3311,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_nameFromId(self, id)
 
-    def idFromName(self, name: str) -> "std::optional< int >":
+    def idFromName(self, name: str) -> int | None:
         r"""
 
         Return the id of the node with the given name, or None if no such name exists.
@@ -3901,7 +3901,7 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_nameFromId(self, id)
 
-    def idFromName(self, name: str) -> "std::optional< int >":
+    def idFromName(self, name: str) -> int | None:
         r"""
 
         Return the id of the node with the given name, or None if no such name exists.
@@ -8446,16 +8446,16 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyagrum.DiscretizedVariable Parameters:
 
-            - **aName** (*str*) -- the name of the variable
-            - **aDesc** (*str*) -- the description of the variable
-            - **ticks** (*list[double]*) -- the list of ticks to add
-            - **is_empirical** (*bool*) -- if False, raise an error if a value is out of bound.
+            - **aName** (``str``) -- the name of the variable
+            - **aDesc** (``str``) -- the description of the variable
+            - **ticks** (``list[float]``) -- the list of ticks to add
+            - **is_empirical** (``bool``) -- if False, raise an error if a value is out of bound.
 
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
 
-            - **aDDRV** (*pyagrum.DiscretizedVariable*) -- the pyagrum.DiscretizedVariable that will be copied
+            - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
 
     Examples
     --------
@@ -8797,11 +8797,11 @@ class Tensor(object):
 
     Tensor(src) -> Tensor
         Parameters:
-            - **src** (*pyagrum.Tensor*) -- the Tensor to copy
+            - **src** (``pyagrum.Tensor``) -- the Tensor to copy
 
     Tensor(v1,v2, ...) -> Tensor
         Parameters:
-            - v1,v2... (*pyagrum.DiscreteVariable*) -- the variables to be added to the tensor
+            - v1,v2... (``pyagrum.DiscreteVariable``) -- the variables to be added to the tensor
 
     """
 

@@ -50,16 +50,16 @@ DiscretizedVariable is a discrete random variable with a set of `ticks` defining
 
 DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyagrum.DiscretizedVariable Parameters:
 
-        - **aName** (*str*) -- the name of the variable
-        - **aDesc** (*str*) -- the description of the variable
-        - **ticks** (*list[double]*) -- the list of ticks to add
-        - **is_empirical** (*bool*) -- if False, raise an error if a value is out of bound.
+        - **aName** (``str``) -- the name of the variable
+        - **aDesc** (``str``) -- the description of the variable
+        - **ticks** (``list[float]``) -- the list of ticks to add
+        - **is_empirical** (``bool``) -- if False, raise an error if a value is out of bound.
 
 
 DiscretizedVariable(aDDRV) -> DiscretizedVariable
     Parameters:
 
-        - **aDDRV** (*pyagrum.DiscretizedVariable*) -- the pyagrum.DiscretizedVariable that will be copied
+        - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
 
 Examples
 --------

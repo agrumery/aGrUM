@@ -149,8 +149,8 @@ class ShapValues:
         If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
     plot_importance : bool, optional
         If True, plots the bar chart of feature importance (default is False).
-    percentage: bool
-      if True, the importance plot is shown in percent.
+    percentage : bool, optional
+        If True, the importance plot is shown in percent (default is False).
     filename : str, optional
         If provided, saves the plots to the specified filename instead of displaying them.
 
@@ -189,8 +189,8 @@ class ShapValues:
         If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
     plot_importance : bool, optional
         If True, plots the bar chart of feature importance (default is False).
-    percentage: bool
-      if True, the importance plot is shown in percent.
+    percentage : bool, optional
+        If True, the importance plot is shown in percent (default is False).
 
     Returns
     -------
@@ -227,8 +227,8 @@ class ShapValues:
         If True, plots the waterfall or beeswarm plot depending on the number of rows in df (default is False).
     plot_importance : bool, optional
         If True, plots the bar chart of feature importance (default is False).
-    percentage: bool
-      if True, the importance plot is shown in percent.
+    percentage : bool, optional
+        If True, the importance plot is shown in percent (default is False).
     filename : str, optional
         If provided, saves the plots to the specified filename instead of displaying them.
 
