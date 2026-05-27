@@ -78,7 +78,7 @@ class Learner:
     traj = Trajectory(self.data, ctbn)
     traj.computeAllCIMs()
 
-  def learnCTBN(self, template: CTBN = None) -> CTBN:
+  def learnCTBN(self, template: CTBN | None = None) -> CTBN:
     """
     Learns a CTBN, using the CTPC(continuous-time PC) algorithm.
     Reference : A. Bregoli, M. Scutari, F. Stella, Constraint-Based Learning for Continuous-Time Bayesian Networks,

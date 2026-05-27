@@ -248,7 +248,7 @@ def CTBNFromData(data: dict[int, list[tuple[float, str, str]]]) -> CTBN:
   return ctbn
 
 
-def computeCIMFromStats(X: str, M: pyagrum.Tensor, T: pyagrum.Tensor) -> "pyagrum.Tensor":
+def computeCIMFromStats(X: str, M: pyagrum.Tensor, T: pyagrum.Tensor) -> pyagrum.Tensor:
   """
   Computes a CIM (Conditional Intensity Matrix) using stats from a trajectory. Variables in the tensor
   are not copied but directly used in the result to avoid memory issues.
@@ -325,7 +325,7 @@ class Trajectory:
       The time length of the trajectory.
   """
 
-  def __init__(self, source, ctbn: CTBN = None):
+  def __init__(self, source, ctbn: CTBN | None = None):
     if isinstance(source, str):
       self.data = readTrajectoryCSV(source)
     else:
@@ -443,6 +443,7 @@ class Trajectory:
 
     X_from = self.ctbn.CIM(X).findVar(CIM.varI(X))
     X_to = self.ctbn.CIM(X).findVar(CIM.varJ(X))
+    assert X_from is not None and X_to is not None
 
     Txu.add(X_from)
     Mxu.add(X_from)
@@ -600,6 +601,7 @@ class Trajectory:
 
     X_from = self.ctbn.CIM(X).findVar(CIM.varI(X))
     X_to = self.ctbn.CIM(X).findVar(CIM.varJ(X))
+    assert X_from is not None and X_to is not None
     varY = self.ctbn.variable(Y)
 
     Txu.add(X_from)

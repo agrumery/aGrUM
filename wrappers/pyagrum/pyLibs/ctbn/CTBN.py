@@ -255,7 +255,7 @@ class CTBN:
     """
     return self._id2var[self._nameOrId(val)].labels()
 
-  def variable(self, val: str | int) -> "pyagrum.DiscreteVariable":
+  def variable(self, val: str | int) -> pyagrum.DiscreteVariable:
     """
     Parameters
     ----------
@@ -327,7 +327,7 @@ class CTBN:
     pyagrum.NotFound
         If the variable isn't found in the CTBN.
     """
-    return self._graph.parents(self._nameOrId(val))
+    return set(self._graph.parents(self._nameOrId(val)))
 
   def parentNames(self, val: str | int) -> list[str]:
     """
@@ -365,7 +365,7 @@ class CTBN:
     pyagrum.NotFound
         If the variable isn't in the CTBN.
     """
-    return self._graph.children(self._nameOrId(val))
+    return set(self._graph.children(self._nameOrId(val)))
 
   def childrenNames(self, val: str | int) -> list[str]:
     """

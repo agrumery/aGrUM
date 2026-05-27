@@ -164,7 +164,7 @@ class CIM:
     """
     return CIM(self._pot.extract(ctxt))
 
-  def asTensor(self) -> "pyagrum.Tensor":
+  def asTensor(self) -> pyagrum.Tensor:
     """
 
     Returns
@@ -194,7 +194,7 @@ class CIM:
     """
     return self._pot.variablesSequence()
 
-  def variable(self, arg: int) -> "pyagrum.DiscreteVariable":
+  def variable(self, arg: int) -> pyagrum.DiscreteVariable:
     """
     Parameters
     ----------
@@ -501,7 +501,7 @@ class CIM:
 
     return amal
 
-  def getTensor(self) -> "pyagrum.Tensor":
+  def getTensor(self) -> pyagrum.Tensor:
     """
     Returns
     -------

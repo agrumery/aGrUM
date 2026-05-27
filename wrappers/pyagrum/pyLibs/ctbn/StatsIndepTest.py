@@ -103,7 +103,7 @@ class Oracle(IndepTest):
     return not self.ctbn.graph.existsArc(self.ctbn.name2id[Y], self.ctbn.name2id[X])
 
 
-def sqrtTensor(tensor: pyagrum.Tensor) -> "pyagrum.Tensor":
+def sqrtTensor(tensor: pyagrum.Tensor) -> pyagrum.Tensor:
   """
   Applies sqrt function to all values inside the tensor.
 
@@ -206,7 +206,7 @@ class FChi2Test(IndepTest):
 
     return True
 
-  def getMxxGivenU(self, M: pyagrum.Tensor, Y: str) -> "pyagrum.Tensor":
+  def getMxxGivenU(self, M: pyagrum.Tensor, Y: str) -> pyagrum.Tensor:
     """
     Parameters
     ----------
@@ -222,7 +222,7 @@ class FChi2Test(IndepTest):
     """
     return M.sumOut([Y])
 
-  def computeF(self) -> "pyagrum.Tensor":
+  def computeF(self) -> pyagrum.Tensor:
     """
     Compute F-test value for every instance of the variables.
 
@@ -234,7 +234,7 @@ class FChi2Test(IndepTest):
     F: pyagrum.Tensor = self.stats.Qx / self.stats.Qxy
     return F
 
-  def computeChi2(self) -> "pyagrum.Tensor":
+  def computeChi2(self) -> pyagrum.Tensor:
     """
     Compute chi2-test value for every instance of the variables.
 

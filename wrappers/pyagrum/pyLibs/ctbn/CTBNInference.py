@@ -53,6 +53,13 @@ This file contains inference tools for CTBNs
 """
 
 
+def _newTensor(var: pyagrum.DiscreteVariable) -> pyagrum.Tensor:
+  # Tensor.add() returns None in SWIG annotation but returns self at runtime
+  t = pyagrum.Tensor()
+  t.add(var)
+  return t
+
+
 class CTBNInference:
   """
   Class CtbnInference includes tools for inference calculation : exact inference through amalgamation
@@ -70,7 +77,7 @@ class CTBNInference:
   def makeInference(self):
     raise NotImplementedError("Not yet implemented.")
 
-  def posterior(self, name: str) -> "pyagrum.Tensor":
+  def posterior(self, name: str) -> pyagrum.Tensor:
     raise NotImplementedError("Not yet implemented.")
 
 
@@ -116,7 +123,7 @@ class SimpleInference(CTBNInference):
 
     self._joint = (t0 * q._pot).sumOut(list(t0.names))
 
-  def posterior(self, v: str | int) -> "pyagrum.Tensor":
+  def posterior(self, v: str | int) -> pyagrum.Tensor:
     """
     Parameters
     ----------
@@ -129,7 +136,10 @@ class SimpleInference(CTBNInference):
         The computed distribution of variable ``v`` using exact inference.
     """
     vj = CIM.varJ(self._model.variable(v).name())
-    return pyagrum.Tensor().add(self._model.variable(v)).fillWith(self._joint.sumIn(vj), [vj])
+    assert self._joint is not None
+    t = _newTensor(self._model.variable(v))
+    t.fillWith(self._joint.sumIn(vj), [vj])
+    return t
 
 
 class ForwardSamplingInference(CTBNInference):
@@ -166,7 +176,7 @@ class ForwardSamplingInference(CTBNInference):
     self.trajectory = list()
     self.idtraj = 0
     super().__init__(ctbn)
-    self._posteriors = {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
+    self._posteriors: dict[str, pyagrum.Tensor] = {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
 
   def makeSample(self, posteriors: dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
     """
@@ -206,7 +216,7 @@ class ForwardSamplingInference(CTBNInference):
         current.chgVal(v.name(), newval)
         posteriors[v.name()][newval] = 1
 
-    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[int, float]:
+    def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[int | None, float | None]:
       """
       Chooses the next variable to change value. The variable is chosen by drawing values of all of the variables transition
       time (i.e how much time does a variable stay in the same state). Those durations follow an exponential distribution.
@@ -305,7 +315,7 @@ class ForwardSamplingInference(CTBNInference):
       nextEvt, dt = getNextEvent(current, indice)
 
       # if none of variables changes before the timeHorizon (or just doesn't change at all)
-      if duration + dt > timeHorizon or nextEvt is None:
+      if nextEvt is None or dt is None or duration + dt > timeHorizon:
         # update everyone for last event
         for name in self._model.names():
           posteriors[name][current] += timeHorizon - duration
@@ -314,6 +324,7 @@ class ForwardSamplingInference(CTBNInference):
         break  # arriving at the timeHorizon, we quit the loop
 
       # update posteriors
+      assert dt is not None and nextEvt is not None
       for name in self._model.names():
         posteriors[name][current] += dt
       duration += dt
@@ -364,7 +375,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [
-      {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
+      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
       for _ in range(nbTrajectories)
     ]
 
@@ -397,7 +408,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [
-      {nod: pyagrum.Tensor().add(self._model.variable(nod)) for nod in self._model.names()}
+      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
       for _ in range(nbTrajectories)
     ]
 
@@ -410,7 +421,7 @@ class ForwardSamplingInference(CTBNInference):
         self._posteriors[nam] += posteriorsList[i][nam]
       self._posteriors[nam].normalize()
 
-  def posterior(self, name: str) -> "pyagrum.Tensor":
+  def posterior(self, name: str) -> pyagrum.Tensor:
     """
     Parameters
     ----------
