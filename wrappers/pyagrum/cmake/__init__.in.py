@@ -235,6 +235,16 @@ CausalModel.causalBN = _causalBN_lambda
 
 # type aliases
 from typing import NewType, TypeAlias
+import numpy as np
+try:
+  import pandas as pd
+  #: Matrix-like input: np.ndarray or pd.DataFrame.
+  MatrixLike: TypeAlias = np.ndarray | pd.DataFrame
+  #: Array-like input: np.ndarray or pd.Series.
+  ArrayLike: TypeAlias = np.ndarray | pd.Series
+except ImportError:
+  MatrixLike: TypeAlias = np.ndarray
+  ArrayLike: TypeAlias = np.ndarray
 
 #: Any directed probabilistic model: BayesNet, DAG, CausalModel or InfluenceDiagram.
 DirectedModel: TypeAlias = BayesNet | DAG | CausalModel | InfluenceDiagram
