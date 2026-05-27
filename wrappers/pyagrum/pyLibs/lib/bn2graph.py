@@ -61,7 +61,7 @@ from pyagrum.lib.utils import getBlackInTheme
 
 def BN2dot(
   bn: pyagrum.BayesNet,
-  size: str | None = None,
+  size: float | str | None = None,
   nodeColor: dict[tuple[int, int], float] | None = None,
   arcWidth: dict[tuple[int, int], float] | None = None,
   arcLabel: dict[tuple[int, int], str] | None = None,
@@ -164,14 +164,14 @@ def BN2dot(
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
-  dotobj.set_size(size)
+  dotobj.set_size(str(size))
 
   return dotobj
 
 
 def BNinference2dot(
   bn: pyagrum.BayesNet,
-  size: str | None = None,
+  size: float | str | None = None,
   engine: pyagrum.BNInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
@@ -304,7 +304,7 @@ def BNinference2dot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]
-  g.set_size(size)
+  g.set_size(str(size))
   g.temp_dir = temp_dir
 
   return g

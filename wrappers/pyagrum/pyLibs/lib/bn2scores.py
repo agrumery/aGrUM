@@ -90,7 +90,7 @@ def checkCompatibility(bn: pyagrum.BayesNet, fields: dict[str, int], csv_name: s
 
 def computeScores(
   bn_name: pyagrum.BayesNet | str, csv_name: str, visible: bool = False, dialect: csv.Dialect | None = None
-) -> tuple[float, dict[str, float]]:
+) -> tuple[float, dict[str, float | str]]:
   """
   Compute scores (likelihood, aic, bic, mdl, etc.) from a bn w.r.t to a csv
 

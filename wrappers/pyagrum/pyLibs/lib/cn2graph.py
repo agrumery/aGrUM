@@ -59,7 +59,7 @@ from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
 def CN2dot(
   cn: pyagrum.CredalNet,
-  size: str | None = None,
+  size: float | str | None = None,
   nodeColor: dict[tuple[int, int], float] | None = None,
   arcWidth: dict[tuple[int, int], float] | None = None,
   arcLabel: dict[tuple[int, int], str] | None = None,
@@ -170,13 +170,13 @@ def CN2dot(
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
-  graph.set_size(size)
+  graph.set_size(str(size))
   return graph
 
 
 def CNinference2dot(
   cn: pyagrum.CredalNet,
-  size: str | None = None,
+  size: float | str | None = None,
   engine: pyagrum.CNInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
@@ -310,7 +310,7 @@ def CNinference2dot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]
-  g.set_size(size)
+  g.set_size(str(size))
   g.temp_dir = temp_dir
 
   return g

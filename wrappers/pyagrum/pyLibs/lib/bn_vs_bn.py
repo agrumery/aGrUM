@@ -229,7 +229,7 @@ class GraphicalBNComparator:
     """
     return graphDiff(self._bn1, self._bn2)
 
-  def skeletonScores(self) -> dict[str, float]:
+  def skeletonScores(self) -> dict[str, float | dict[str, int]]:
     """
     Compute Precision, Recall, F-score and dist2opt for the skeleton of
     self._bn2 compared to self._bn1 (orientations are ignored).
@@ -275,7 +275,7 @@ class GraphicalBNComparator:
       "dist2opt": math.sqrt((1 - precision) ** 2 + (1 - recall) ** 2),
     }
 
-  def scores(self) -> dict[str, float]:
+  def scores(self) -> dict[str, float | int | dict[str, int]]:
     """
     Compute Precision, Recall, F-score, dist2opt and SID for self._bn2 compared
     to self._bn1.
@@ -329,7 +329,7 @@ class GraphicalBNComparator:
       "sid": int(comp.sid(self._bn1, self._bn2)),
     }
 
-  def hamming(self) -> dict[float, float]:
+  def hamming(self) -> dict[str, int]:
     """
     Compute hamming and structural hamming distance.
 

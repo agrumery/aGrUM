@@ -71,7 +71,7 @@ from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
 
 # check if an instance of ipython exists
 try:
-  get_ipython
+  get_ipython  # type: ignore[name-defined]
 except NameError:
   raise ImportError(
     "[pyAgrum ERROR] pyagrum.lib.ipython has to be imported from an IPython's instance (mainly ipython's console)."
@@ -95,7 +95,7 @@ def _inline_png_render(data, metadata: dict | None = None) -> None:
 
 
 # Replace any image/png renderer IPython installed (Kitty/iTerm2 renderers produce ACK garbage)
-_ip = get_ipython()
+_ip = get_ipython()  # type: ignore[name-defined]
 if hasattr(_ip, "mime_renderers") and "image/png" in _ip.mime_renderers:
   _ip.mime_renderers["image/png"] = _inline_png_render
 del _ip

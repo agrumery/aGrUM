@@ -324,7 +324,7 @@ def proba2bgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   Returns
   -------
   str
-    the html representation of the background color
+    the HTML representation of the background color
   """
   r, g, b = proba2hex(p, cmap, withSpecialColor=True)
   return "#" + r + g + b

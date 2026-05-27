@@ -155,6 +155,7 @@ class FlowLayout:
 
     Bio = io.BytesIO()  # bytes buffer for the plot
     fig = oAxes.get_figure()
+    assert fig is not None
     fig.canvas.print_png(Bio)  # make a png of the plot in the buffer
 
     # encode the bytes as string using base 64
@@ -308,7 +309,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
 
-  return _reprGraph(gr, size, asString=False)
+  _reprGraph(gr, size, asString=False)
 
 
 def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
@@ -330,7 +331,9 @@ def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
 
-  return _reprGraph(gr, size, asString=True)
+  result = _reprGraph(gr, size, asString=True)
+  assert result is not None
+  return result
 
 
 def _from_dotstring(dotstring: str) -> dot.Dot:
@@ -527,7 +530,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
 
   Parameters
   ----------
-    bn: "pyagrum.BayesNet"
+    bn: pyagrum.BayesNet
      the Bayesian network
     withNames: Boolean
      display the variable names or the node id in the clique
@@ -639,7 +642,7 @@ def getPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> str:
 
   Parameters
   ----------
-  bn: "pyagrum.BayesNet"
+  bn: pyagrum.BayesNet
     the BayesNet
   evs: dict[str|int:int|str|list[float]]
     map of evidence
@@ -659,7 +662,7 @@ def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
 
   Parameters
   ----------
-  bn: "pyagrum.BayesNet"
+  bn: pyagrum.BayesNet
     the BayesNet
   evs: dict[str|int:int|str|list[float]]
     map of evidence
@@ -739,7 +742,7 @@ def showMRF(
 
   Parameters
   ----------
-  mrf : "pyagrum.MarkovRandomField"
+  mrf : pyagrum.MarkovRandomField
    the Markov random field
   view : str
    'graph' | 'factorgraph’ | None (default)
@@ -787,7 +790,7 @@ def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | Non
 
   Parameters
   ----------
-  diag : "pyagrum.InfluenceDiagram"
+  diag : pyagrum.InfluenceDiagram
     the influence diagram
   size : str
     size (for graphviz) of the rendered graph
@@ -808,7 +811,7 @@ def getInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None
 
   Parameters
   ----------
-  diag : "pyagrum.InfluenceDiagram"
+  diag : pyagrum.InfluenceDiagram
     the influence diagram
   size : str
     size (for graphviz) of the rendered graph
@@ -954,7 +957,7 @@ def getMRF(
 
   Parameters
   ----------
-  mrf : "pyagrum.MarkovRandomField"
+  mrf : pyagrum.MarkovRandomField
     the Markov random field
   view: str
     'graph' | 'factorgraph’ | None (default)
@@ -1211,7 +1214,7 @@ def _reprTensor(
   withColors: bool | None = None,
   varnames: list[str] | None = None,
   asString: bool = False,
-) -> str:
+) -> "str | IPython.display.HTML":
   """
   return a representation of a pyagrum.Tensor as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -1461,7 +1464,9 @@ def getTensor(
   if withColors:
     withColors = __isKindOfProba(pot)
 
-  return _reprTensor(pot, digits, withColors, varnames, asString=True)
+  result = _reprTensor(pot, digits, withColors, varnames, asString=True)
+  assert isinstance(result, str)
+  return result
 
 
 def showCPTs(bn: pyagrum.BayesNet) -> None:
@@ -1556,7 +1561,7 @@ def getInferenceEngine(ie, inferenceCaption: str) -> str:
 
   Parameters
   ---------
-  ie : "pyagrum.InferenceEngine"
+  ie : pyagrum.InferenceEngine
     Inference engine
   caption: str
     inferenceCaption: caption for the inference
@@ -1877,7 +1882,7 @@ def _update_config_notebooks() -> None:
 
 # check if an instance of ipython exists
 try:
-  get_ipython
+  get_ipython  # type: ignore[name-defined]
 except NameError:
   import warnings
 

@@ -58,7 +58,7 @@ from .proba_histogram import saveFigProba
 
 def MRF2UGdot(
   mrf: pyagrum.MarkovRandomField,
-  size: str = "4",
+  size: float | str = "4",
   nodeColor: dict[int, float] | None = None,
   edgeWidth: dict[tuple[int, int], float] | None = None,
   edgeLabel: dict[tuple[int, int], str] | None = None,
@@ -158,7 +158,7 @@ def MRF2UGdot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
-  graph.set_size(size)
+  graph.set_size(str(size))
   return graph
 
 
@@ -244,13 +244,13 @@ def MRF2FactorGraphdot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
-  graph.set_size(size)
+  graph.set_size(str(size))
   return graph
 
 
 def MRFinference2UGdot(
   mrf: pyagrum.MarkovRandomField,
-  size: str | None = None,
+  size: float | str | None = None,
   engine: pyagrum.MRFInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
@@ -384,7 +384,7 @@ def MRFinference2UGdot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]
-  g.set_size(size)
+  g.set_size(str(size))
   g.temp_dir = temp_dir
 
   return g
@@ -392,7 +392,7 @@ def MRFinference2UGdot(
 
 def MRFinference2FactorGraphdot(
   mrf: pyagrum.MarkovRandomField,
-  size: str | None = None,
+  size: float | str | None = None,
   engine: pyagrum.MRFInference | None = None,
   evs: dict | None = None,
   targets: set | None = None,
@@ -511,7 +511,7 @@ def MRFinference2FactorGraphdot(
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_inference_size"]
-  g.set_size(size)
+  g.set_size(str(size))
   g.temp_dir = temp_dir
 
   return g
