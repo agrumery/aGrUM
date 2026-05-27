@@ -702,10 +702,12 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     else:
       dictName = self.variableNameIndexDictionary_
 
-    if self.fromModel_:
-      X = sklearn.utils.validation.validate_data(self, X, dtype="str", reset=False)
-    else:
-      X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
+    with warnings.catch_warnings():
+      warnings.filterwarnings("ignore", message="X does not have valid feature names", category=UserWarning)
+      if self.fromModel_:
+        X = sklearn.utils.validation.validate_data(self, X, dtype="str", reset=False)
+      else:
+        X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
 
     if len(self.classes_) == 2 and self.label_:
       returned_list = self._binary_predict(X, dictName)
@@ -835,10 +837,12 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     else:
       vals = X
 
-    if self.fromModel_:
-      vals = sklearn.utils.validation.validate_data(self, vals, dtype="str", reset=False)
-    else:
-      vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
+    with warnings.catch_warnings():
+      warnings.filterwarnings("ignore", message="X does not have valid feature names", category=UserWarning)
+      if self.fromModel_:
+        vals = sklearn.utils.validation.validate_data(self, vals, dtype="str", reset=False)
+      else:
+        vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
 
     returned_list = []
 
