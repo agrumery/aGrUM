@@ -45,7 +45,7 @@ import pyagrum
 import pyagrum.bnmixture as BNM
 
 
-def tensor2ref(ref, tens) -> "pyagrum.Tensor":
+def tensor2ref(ref, tens) -> pyagrum.Tensor:
   """
   Returns a copy of ``tens`` but with a reference to ``ref`` 's variables instead. Allow to sum tensors that have the same variables
   but with different instantiations of them.
@@ -138,7 +138,7 @@ class BNMixtureInference(IMixtureInference):
     self._engine = engine
     self._inferences = [self._engine(bn) for bn in self._bnm.BNs()]
 
-  def posterior(self, name: str) -> "pyagrum.Tensor":
+  def posterior(self, name: str) -> pyagrum.Tensor:
     """
     Parameters
     ----------
@@ -198,7 +198,7 @@ class BootstrapMixtureInference(IMixtureInference):
     self._ref_inference.makeInference()
     super().makeInference()
 
-  def posterior(self, name: str) -> "pyagrum.Tensor":
+  def posterior(self, name: str) -> pyagrum.Tensor:
     """
     Parameters
     ----------

@@ -828,7 +828,7 @@ def arcsCompLegend():
 
 
 ####################### tool box for quantiles #######################
-def tensor2ref(ref, tens) -> "pyagrum.Tensor":
+def tensor2ref(ref, tens) -> pyagrum.Tensor:
   """
   Returns a copy of ``tens`` but with a reference to ``ref`` 's variables instead. Allow to sum tensors that have the same variables
   but with different instantiations of them.

@@ -243,7 +243,7 @@ class IMixture:
     """
     return sum(self._weights.values()) != 0
 
-  def BN(self, name: str) -> "pyagrum.BayesNet":
+  def BN(self, name: str) -> pyagrum.BayesNet:
     """
     Parameters
     ----------
