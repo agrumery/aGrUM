@@ -1,0 +1,21 @@
+python-version = "3.10.0"
+preset = "legacy"
+search_path = ["wrappers/pyagrum/pyLibs"]
+replace-imports-with-any = ["pydot", "pydot.*"]
+ignore-missing-imports = [
+    "pyagrum",
+    "pyagrum.*",
+    "pandas",
+    "pandas.*",
+    "scipy",
+    "scipy.*",
+    "sklearn",
+    "sklearn.*",
+    "tqdm",
+    "tqdm.*",
+    "pylab",
+    "cairosvg",
+    "cairosvg.*",
+    "ipywidgets",
+    "ipywidgets.*",
+]

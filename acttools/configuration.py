@@ -478,8 +478,8 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     "--check",
     help=(
       "act guideline: select checks using +/- syntax "
-      "(checks: cpp,python,header,coverage,deps,mypy,all). "
-      "Examples: --check cpp+mypy  --check all-cpp  --check all-cpp-mypy"
+      "(checks: cpp,python,header,coverage,deps,pyrefly,all). "
+      "Examples: --check cpp+pyrefly  --check all-cpp  --check all-cpp-pyrefly"
     ),
     dest="guideline_check",
     default="all",

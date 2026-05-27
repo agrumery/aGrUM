@@ -285,11 +285,11 @@ class ActBuilderGuideline(ActBuilder):
     return True
 
 
-_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "mypy"})
+_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "pyrefly"})
 
 
 def _parse_checks(spec: str) -> frozenset[str]:
-  """Parse a check specification like 'all-cpp' or 'cpp+mypy' into a set of check names."""
+  """Parse a check specification like 'all-cpp' or 'cpp+pyrefly' into a set of check names."""
   known = _GUIDELINE_ALL_CHECKS | {"all"}
   tokens = re.split(r"([+\-])", spec.strip())
   result: set[str] = set()
@@ -329,7 +329,7 @@ def guideline(
   run_header = "header" in active
   run_coverage = "coverage" in active
   run_deps = "deps" in active
-  run_mypy = "mypy" in active
+  run_pyrefly = "pyrefly" in active
 
   effective_correction = correction and not dry_run
   active_checks_label = checks if checks is not None else "all"
@@ -380,11 +380,11 @@ def guideline(
     notif("  [[(6-python) check for py format]]")
     nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run), "format")
 
-  if run_mypy:
-    notif("  [[(7-mypy) check mypy type annotations in pyLibs]]")
+  if run_pyrefly:
+    notif("  [[(7-pyrefly) check pyrefly type annotations in pyLibs]]")
     nbrError += _aff_errors(
-      _check_mypy(details, effective_correction, dry_run),
-      "mypy type (unrecorded in coverage)",
+      _check_pyrefly(details, effective_correction, dry_run),
+      "pyrefly type (unrecorded in coverage)",
     )
 
   return nbrError
@@ -717,43 +717,40 @@ def _check_cpp_file_exists(details: bool, correction: bool) -> int:
   return nbrError
 
 
-def _check_mypy(details: bool, correction: bool, dry_run: bool = False) -> int:
-  mypy_cmd = f"{cfg.python} -m mypy"
+def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> int:
+  pyrefly_cmd = "pyrefly check"
 
   if dry_run:
-    notif(f"  {mypy_cmd} {cfg.pymodulesPath}")
+    notif(f"  {pyrefly_cmd} {cfg.pymodulesPath}")
     return 0
 
   probe = subprocess_run(
-    f"{mypy_cmd} --version",
+    "pyrefly --version",
     shell=True,
     stdout=PIPE,
     stderr=PIPE,
   )
   if probe.returncode != 0:
-    warn("[[mypy]] not installed in current Python environment. Skipping.")
+    warn("[[pyrefly]] not installed in current Python environment. Skipping.")
     return 0
 
   result = subprocess_run(
-    f"{mypy_cmd} {cfg.pymodulesPath}",
+    f"{pyrefly_cmd} {cfg.pymodulesPath}",
     shell=True,
     stdout=PIPE,
     stderr=PIPE,
     text=True,
   )
 
-  lines = result.stdout.splitlines()
   nbrError = 0
 
-  # Summary is on last line: "Found N errors in M files (...)"
-  if lines and " error" in lines[-1]:
-    try:
-      nbrError = int(lines[-1].split()[1])
-    except (ValueError, IndexError):
-      nbrError = 0
+  # Summary goes to stderr: " INFO N errors (...)" followed by config notice lines
+  match = re.search(r"INFO (\d+) error", result.stderr)
+  if match:
+    nbrError = int(match.group(1))
 
   if details and nbrError > 0:
-    for line in lines:
+    for line in result.stdout.splitlines():
       notif(line)
 
   return nbrError
