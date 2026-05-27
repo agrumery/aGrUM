@@ -42,6 +42,7 @@ import numpy as np
 import pandas as pd
 
 import pyagrum
+from pyagrum import MatrixLike, ArrayLike
 
 
 class CausalBNEstimator:
@@ -126,7 +127,7 @@ class CausalBNEstimator:
         The index of the conditional in the variable domain.
     """
 
-    splits: list[str] = []
+    splits: list[float] = []
     accumulator = ""
     for letter in self.causal_model.causalDAG().variable(var).domain():
       if letter in ["-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
@@ -199,18 +200,18 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")  # type: ignore[attr-defined]
 
       diff = cpt1 - cpt0
       return diff.expectedValue(lambda d: diff.variable(0).numerical(d[diff.variable(0).name()]))
 
   def predict(
     self,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    M: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series | None = None,
-    y: np.ndarray | pd.Series | None = None,
+    w: MatrixLike | None = None,
+    X: MatrixLike | None = None,
+    M: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE),
@@ -236,15 +237,16 @@ class CausalBNEstimator:
     if X is not None:
       return X.apply(self._predictRow, axis=1).to_numpy()
     else:
+      assert M is not None
       return M.apply(self._predictRow, axis=1).to_numpy()
 
   def estimate_ate(
     self,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    M: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series | None = None,
-    y: np.ndarray | pd.Series | None = None,
+    w: MatrixLike | None = None,
+    X: MatrixLike | None = None,
+    M: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
@@ -295,7 +297,7 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")
+        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")  # type: ignore[attr-defined]
 
       difference = cpt1 - cpt0
       return difference.expectedValue(lambda d: difference.variable(0).numerical(d[difference.variable(0).name()]))

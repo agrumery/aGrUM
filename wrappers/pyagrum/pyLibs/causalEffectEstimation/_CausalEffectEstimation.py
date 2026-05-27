@@ -338,7 +338,7 @@ class CausalEffectEstimation:
     self._T = intervention
     self._y = outcome
 
-  def identifyAdjustmentSet(self, intervention: str, outcome: str, verbose: bool = True) -> str:
+  def identifyAdjustmentSet(self, intervention: str, outcome: str, verbose: bool = True) -> str | None:
     """
     Identify the sufficent adjustment set of covariates.
 
@@ -448,8 +448,12 @@ class CausalEffectEstimation:
         No adjustment have been selected before fitting an estimator.
     """
 
+    assert self._estimator is not None, "Please set an estimator before fitting."
+    assert self._X is not None and self._T is not None and self._y is not None
+
     match self._adjustment:
       case self._IV:
+        assert self._w is not None
         try:
           return self._estimator.fit(
             X=self._df[[*self._X]],
@@ -468,6 +472,7 @@ class CausalEffectEstimation:
           )
 
       case self._FRONTDOOR:
+        assert self._M is not None
         return self._estimator.fit(
           X=self._df[[*self._X]], treatment=self._df[self._T], y=self._df[self._y], M=self._df[[*self._M]], **fit_params
         )
@@ -502,7 +507,8 @@ class CausalEffectEstimation:
     identifiable through do-calculus.
     """
 
-    self._estimator = CausalBNEstimator(self._causal_model, self._T, self._y, self._w)
+    assert self._T is not None and self._y is not None
+    self._estimator = CausalBNEstimator(self._causal_model, self._T, self._y, self._w)  # type: ignore[arg-type]
 
     self._estimator.fit(self._df)
 
@@ -943,6 +949,7 @@ class CausalEffectEstimation:
     """
 
     assert self._estimator is not None, "Please fit an estimator before attempting to make an estimate."
+    assert self._X is not None and self._T is not None and self._y is not None
 
     if estimation_params is None:
       estimation_params = dict()
@@ -995,6 +1002,7 @@ class CausalEffectEstimation:
     """
 
     assert self._estimator is not None, "Please fit an estimator before attempting to make an estimate."
+    assert self._X is not None and self._T is not None and self._y is not None and self._w is not None
 
     if estimation_params is None:
       estimation_params = dict()
@@ -1060,6 +1068,7 @@ class CausalEffectEstimation:
     """
 
     assert self._estimator is not None, "Please fit an estimator before attempting to make an estimate."
+    assert self._X is not None and self._T is not None and self._y is not None and self._M is not None
 
     if estimation_params is None:
       estimation_params = dict()
@@ -1124,6 +1133,7 @@ class CausalEffectEstimation:
     """
 
     assert self._estimator is not None, "Please fit an estimator before attempting to make an estimate."
+    assert self._X is not None and self._T is not None and self._y is not None
 
     if estimation_params is None:
       estimation_params = dict()

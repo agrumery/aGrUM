@@ -41,6 +41,8 @@
 import pandas as pd
 import numpy as np
 
+from pyagrum import MatrixLike, ArrayLike
+
 
 class DM:
   """
@@ -56,9 +58,9 @@ class DM:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
   ) -> None:
     """
     Fit the inference model.
@@ -75,9 +77,9 @@ class DM:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
+    X: MatrixLike,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Average Causal Effect (ACE).
@@ -99,14 +101,14 @@ class DM:
         An array containing the predicted ACE.
     """
 
-    return [y[treatment == 1].mean() - y[treatment == 0].mean()] * len(y)
+    return np.array([y[treatment == 1].mean() - y[treatment == 0].mean()] * len(y))
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """

@@ -43,6 +43,8 @@ import numpy as np
 
 from typing import Any
 
+from pyagrum import MatrixLike, ArrayLike
+
 from sklearn.base import clone
 
 from ._learners import learnerFromString
@@ -66,10 +68,10 @@ class Wald:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> None:
     """
     Fit the inference model.
@@ -94,10 +96,10 @@ class Wald:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE).
@@ -120,14 +122,14 @@ class Wald:
     """
 
     w = w.iloc[:, 0] if isinstance(w, pd.DataFrame) else w
-    return [(y[w == 1].mean() - y[w == 0].mean()) / (treatment[w == 1].mean() - treatment[w == 0].mean())] * len(w)
+    return np.array([(y[w == 1].mean() - y[w == 0].mean()) / (treatment[w == 1].mean() - treatment[w == 0].mean())] * len(w))
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
@@ -184,10 +186,10 @@ class WaldIPW:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> None:
     """
     Fit the inference model.
@@ -212,10 +214,10 @@ class WaldIPW:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE).
@@ -247,10 +249,10 @@ class WaldIPW:
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
@@ -306,10 +308,10 @@ class NormalizedWaldIPW:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> None:
     """
     Fit the inference model.
@@ -333,10 +335,10 @@ class NormalizedWaldIPW:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE).
@@ -371,10 +373,10 @@ class NormalizedWaldIPW:
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
@@ -454,10 +456,10 @@ class TSLS:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> None:
     """
     Fit the inference model.
@@ -478,10 +480,10 @@ class TSLS:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE).
@@ -510,10 +512,10 @@ class TSLS:
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
@@ -599,10 +601,10 @@ class _ICSW:
 
   def fit(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame,
-    treatment: np.ndarray | pd.Series,
-    y: np.ndarray | pd.Series,
-    w: np.matrix | np.ndarray | pd.DataFrame,
+    X: MatrixLike,
+    treatment: ArrayLike,
+    y: ArrayLike,
+    w: MatrixLike,
   ) -> None:
     """
     Fit the inference model.
@@ -648,10 +650,10 @@ class _ICSW:
 
   def predict(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
   ) -> np.ndarray:
     """
     Predict the Individual Treatment Effect (ITE).
@@ -686,10 +688,10 @@ class _ICSW:
 
   def estimate_ate(
     self,
-    X: np.matrix | np.ndarray | pd.DataFrame = None,
-    treatment: np.ndarray | pd.Series = None,
-    y: np.ndarray | pd.Series = None,
-    w: np.matrix | np.ndarray | pd.DataFrame = None,
+    X: MatrixLike | None = None,
+    treatment: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+    w: MatrixLike | None = None,
     pretrain: bool = True,
   ) -> float:
     """
