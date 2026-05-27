@@ -43,6 +43,6 @@ import numpy as np
 
 class ConditionalComputation:
   @staticmethod
-  def _weight(evidces: dict[int, int], count: int) -> np.ndarray:
+  def _weight(evidces: dict[int, int], count: int) -> float:
     # The signature must be : dict[int, int], int, **kwargs
     return count

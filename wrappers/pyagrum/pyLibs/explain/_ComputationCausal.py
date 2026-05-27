@@ -68,7 +68,7 @@ class CausalComputation:
       doNetTemplate.cpt(i)[int(j)] = 1.0
 
   @staticmethod
-  def _weight(evidces: dict[int, int], count: int, doLazy: pyagrum.LazyPropagation) -> np.ndarray:
+  def _weight(evidces: dict[int, int], count: int, doLazy: pyagrum.LazyPropagation) -> float:
     # Returns the evidces probability.
     # The signature must be : dict[int, int], int, **kwargs
     doLazy.updateEvidence(evidces)

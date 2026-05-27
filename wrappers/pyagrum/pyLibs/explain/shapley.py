@@ -100,7 +100,7 @@ class ShapValues:
     self.logit = logit
 
   @staticmethod
-  def _plot(explanation: Explanation, y: int, plot: bool, plot_importance: bool, percentage: bool, filename: str):
+  def _plot(explanation: Explanation, y: int, plot: bool, plot_importance: bool, percentage: bool, filename: str | None):
     ndim = explanation.data.ndim
     n_figures = sum([plot, plot_importance])
     plot_index = 0

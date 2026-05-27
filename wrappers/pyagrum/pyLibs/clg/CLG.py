@@ -411,16 +411,16 @@ class CLG:
     """
     return list(self._name2id.keys())
 
-  def arcs(self) -> list[tuple[int, int]]:
+  def arcs(self) -> set[tuple[int, int]]:
     """
-    Return the list of arcs in the CLG.
+    Return the set of arcs in the CLG.
 
     Returns
     -------
-    list[tuple[int, int]]
-      The list of arcs in the CLG.
+    set[tuple[int, int]]
+      The set of arcs in the CLG.
     """
-    return self._graph.arcs()
+    return set(self._graph.arcs())
 
   def coefArc(self, val1: int | str, val2: int | str) -> float | int:
     """
@@ -467,7 +467,7 @@ class CLG:
     set[int]
       The set of parent nodes' ids.
     """
-    return self._graph.parents(self.nameOrId(val))
+    return set(self._graph.parents(self.nameOrId(val)))
 
   def parent_names(self, val: int | str) -> list[str]:
     """
@@ -499,7 +499,7 @@ class CLG:
     set[int]
       The set of children nodes' ids.
     """
-    return self._graph.children(self.nameOrId(val))
+    return set(self._graph.children(self.nameOrId(val)))
 
   def children_names(self, val: int | str) -> list[str]:
     """
