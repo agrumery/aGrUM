@@ -682,6 +682,17 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     if oldName in self.MarkovBlanket_.names():
       self.MarkovBlanket_.changeVariableName(oldName, newName)
 
+  def model(self) -> gum.BayesNet:
+    """
+    Returns a copy of the Bayesian network used by this classifier.
+
+    Returns
+    -------
+    pyagrum.BayesNet
+      A copy of the underlying Bayesian network.
+    """
+    return gum.BayesNet(self.bn_)
+
   # ------------------method Markov Blanket and predict---------------------
 
   def _prepare_X(self, X: pandas.DataFrame | numpy.ndarray | str) -> tuple[numpy.ndarray, dict]:

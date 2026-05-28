@@ -793,7 +793,46 @@ class BNClassifierQualityTestCase(pyAgrumTestCase):
       self.assertEqual(cm[i, i], cm[i].max())
 
 
+class BNClassifierModelTestCase(pyAgrumTestCase):
+  def setUp(self):
+    X, y = _make_binary()
+    self.clf = skbn.createBNClassifier()
+    self.clf.fit(X, y)
+
+  def testModelReturnsBayesNet(self):
+    self.assertIsInstance(self.clf.model(), gum.BayesNet)
+
+  def testModelIsCopy(self):
+    self.assertIsNot(self.clf.model(), self.clf.bn_)
+
+  def testModelNodesMatchBn(self):
+    self.assertEqual(sorted(self.clf.model().names()), sorted(self.clf.bn_.names()))
+
+  def testModelMutationIsolated(self):
+    m = self.clf.model()
+    old_names = sorted(self.clf.bn_.names())
+    first = next(iter(m.names()))
+    m.changeVariableName(first, "__renamed__")
+    self.assertEqual(sorted(self.clf.bn_.names()), old_names)
+
+  def testModelFromTrainedModel(self):
+    bn = gum.BayesNet()
+    for name in ["X0", "X1", "X2", "y"]:
+      bn.add(gum.LabelizedVariable(name, name, 2))
+    bn.addArc("X0", "y")
+    bn.addArc("X1", "y")
+    bn.addArc("X2", "y")
+    bn.generateCPTs()
+    clf = skbn.createBNClassifier()
+    clf.fromTrainedModel(bn, "y")
+    m = clf.model()
+    self.assertIsInstance(m, gum.BayesNet)
+    self.assertIsNot(m, clf.bn_)
+    self.assertEqual(sorted(m.names()), sorted(bn.names()))
+
+
 ts = unittest.TestSuite()
+addTests(ts, BNClassifierModelTestCase)
 addTests(ts, BNCLassifierTestCase)
 addTests(ts, BNClassifierFitTestCase)
 addTests(ts, BNClassifierPredictTestCase)
