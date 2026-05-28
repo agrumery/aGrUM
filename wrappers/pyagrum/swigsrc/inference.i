@@ -157,13 +157,13 @@ def setTargets(self, targets):
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
 
-    PyObject* hardEvidenceNodes() {
+    PyAgrumSetOfInt* hardEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
     }
-    PyObject* softEvidenceNodes() {
+    PyAgrumSetOfInt* softEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
     }
-    PyObject* targets() const {
+    PyAgrumSetOfInt* targets() const {
       return PyAgrumHelper::PySetFromNodeSet(self->targets());
     }
 
@@ -241,7 +241,7 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 
-    PyObject* jointTargets() const {
+    PyAgrumListOfSetOfInt* jointTargets() const {
       return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedInference<double>::jointTargets());
     }
 }

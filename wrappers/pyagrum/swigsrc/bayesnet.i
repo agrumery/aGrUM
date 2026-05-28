@@ -65,22 +65,22 @@
 
 %define IMPROVE_BAYESNET_API(classname)
 %extend classname {
-  PyObject*ids(const std::vector<std::string>& names) {
+  PyAgrumListOfInt*ids(const std::vector<std::string>& names) {
     return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
   }
 
-  PyObject*nodeset(const std::vector<std::string>& names) {
+  PyAgrumSetOfInt*nodeset(const std::vector<std::string>& names) {
     return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
   }
 
-  PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
+  PyAgrumSetOfInt *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
   };
 
 
-  PyObject *minimalCondSet(PyObject* targets,PyObject* list) const {
+  PyAgrumSetOfInt *minimalCondSet(PyObject* targets,PyObject* list) const {
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 

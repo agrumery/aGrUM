@@ -60,15 +60,15 @@ class JunctionTreeGenerator {
     return junctionTree_(mn.graph(), translatePartialOrder_(partial_order), mods);
   }
 
-  PyObject* eliminationOrder(const gum::UndiGraph& g, PyObject* partial_order = nullptr) const {
+  PyAgrumListOfInt* eliminationOrder(const gum::UndiGraph& g, PyObject* partial_order = nullptr) const {
     return eliminationOrder_(g, translatePartialOrder_(partial_order));
   }
 
-  PyObject* eliminationOrder(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
+  PyAgrumListOfInt* eliminationOrder(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
     return eliminationOrder_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
-  PyObject* eliminationOrder(const gum::BayesNet< double >& bn,
+  PyAgrumListOfInt* eliminationOrder(const gum::BayesNet< double >& bn,
                              PyObject*                      partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node: bn.internalDag().nodes())

@@ -49,7 +49,7 @@
 %ignore gum::learning::BNDatabaseGenerator< double>::DiscretizedLabelMode;
 
 %extend gum::learning::BNDatabaseGenerator< double > {
-  PyObject* varOrder() const { return PyAgrumHelper::PyTupleFromNodeVect(self->varOrder()); };
+  PyAgrumTupleOfInt* varOrder() const { return PyAgrumHelper::PyTupleFromNodeVect(self->varOrder()); };
 };
 %ignore gum::learning::BNDatabaseGenerator< double >::varOrder const;
 

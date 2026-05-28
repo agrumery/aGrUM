@@ -167,7 +167,7 @@ class JunctionTreeGenerator(object):
         """
         return _pyagrum.JunctionTreeGenerator_junctionTree(self, *args)
 
-    def eliminationOrder(self, *args) -> object:
+    def eliminationOrder(self, *args) -> list[int]:
         r"""
 
         Computes the elimination for its parameters. If the first parameter is a graph, the heurisitcs assume that all the node have the same domain size (2). If given, the heuristic takes into account the partial order for its elimination order.
@@ -3372,7 +3372,7 @@ class UndiGraph(object):
         """
         return _pyagrum.UndiGraph_hasName(self, id)
 
-    def addNodes(self, n: int) -> object:
+    def addNodes(self, n: int) -> set[int]:
         r"""
 
         Add n nodes.
@@ -3962,7 +3962,7 @@ class DiGraph(object):
         """
         return _pyagrum.DiGraph_hasName(self, id)
 
-    def addNodes(self, n: int) -> object:
+    def addNodes(self, n: int) -> set[int]:
         r"""
 
         Add a set of n nodes.
@@ -4375,7 +4375,7 @@ class DAG(DiGraph):
         """
         return _pyagrum.DAG_dSeparation(self, *args)
 
-    def addNodes(self, n: int) -> object:
+    def addNodes(self, n: int) -> set[int]:
         r"""
 
         Add a set of n nodes.
@@ -4761,7 +4761,7 @@ class MixedGraph(UndiGraph, DiGraph):
     def __str__(self) -> str:
         return _pyagrum.MixedGraph___str__(self)
 
-    def addNodes(self, n: int) -> object:
+    def addNodes(self, n: int) -> set[int]:
         r"""
 
         Add n nodes.
@@ -5388,7 +5388,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrum.PDAG_cSeparation(self, *args)
 
-    def addNodes(self, n: int) -> object:
+    def addNodes(self, n: int) -> set[int]:
         r"""
 
         Add n new nodes to the graph.
@@ -6935,7 +6935,7 @@ class Instantiation(object):
         """
         return _pyagrum.Instantiation_isMutable(self)
 
-    def todict(self, withLabels: bool=False) -> object:
+    def todict(self, withLabels: bool=False) -> dict[str, int | str]:
         r"""
 
         Create a dictionary `{variable_name:value}` from an instantiation
@@ -9612,7 +9612,7 @@ class Tensor(object):
     def __str__(self) -> str:
         return _pyagrum.Tensor___str__(self)
 
-    def expectedValue(self, *args) -> object:
+    def expectedValue(self, *args) -> float:
         r"""
 
         Calculate the mathematical expected value of a (joint) random variable using the given function as an argument.
@@ -9829,7 +9829,7 @@ class Tensor(object):
         """
         return _pyagrum.Tensor_minIn(self, *args)
 
-    def argmin(self) -> object:
+    def argmin(self) -> tuple[list["pyagrum.Instantiation"], float]:
         r"""
 
         Returns
@@ -9840,7 +9840,7 @@ class Tensor(object):
         """
         return _pyagrum.Tensor_argmin(self)
 
-    def argmax(self) -> object:
+    def argmax(self) -> tuple[list["pyagrum.Instantiation"], float]:
         r"""
 
         Returns
@@ -9857,13 +9857,13 @@ class Tensor(object):
     def __ne__(self, b: "Tensor") -> bool:
         return _pyagrum.Tensor___ne__(self, b)
 
-    def _as_nparray_raw(self, self_pyobj: object) -> object:
+    def _as_nparray_raw(self, self_pyobj: object) -> "numpy.ndarray":
         return _pyagrum.Tensor__as_nparray_raw(self, self_pyobj)
 
-    def _toarray_raw(self) -> object:
+    def _toarray_raw(self) -> "numpy.ndarray":
         return _pyagrum.Tensor__toarray_raw(self)
 
-    def _fillWithNpArray(self, arr: object) -> object:
+    def _fillWithNpArray(self, arr: object) -> None:
         return _pyagrum.Tensor__fillWithNpArray(self, arr)
 
     def __radd__(self,other):
@@ -11412,7 +11412,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_load(self, *args)
 
-    def isType(self, name: str) -> object:
+    def isType(self, name: str) -> bool:
         r"""
 
         Parameters
@@ -11428,7 +11428,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_isType(self, name)
 
-    def isClass(self, name: str) -> object:
+    def isClass(self, name: str) -> bool:
         r"""
 
         Parameters
@@ -11444,7 +11444,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_isClass(self, name)
 
-    def isInterface(self, name: str) -> object:
+    def isInterface(self, name: str) -> bool:
         r"""
 
         Parameters
@@ -11460,7 +11460,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_isInterface(self, name)
 
-    def classes(self) -> object:
+    def classes(self) -> list[str]:
         r"""
 
         Returns
@@ -11471,7 +11471,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classes(self)
 
-    def classAttributes(self, class_name: str) -> object:
+    def classAttributes(self, class_name: str) -> list[object]:
         r"""
 
         Parameters
@@ -11492,7 +11492,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classAttributes(self, class_name)
 
-    def isAttribute(self, class_name: str, att_name: str) -> object:
+    def isAttribute(self, class_name: str, att_name: str) -> bool:
         r"""
 
         Parameters
@@ -11517,7 +11517,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_isAttribute(self, class_name, att_name)
 
-    def classReferences(self, class_name: str) -> object:
+    def classReferences(self, class_name: str) -> list[object]:
         r"""
 
         Parameters
@@ -11538,7 +11538,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classReferences(self, class_name)
 
-    def classParameters(self, class_name: str) -> object:
+    def classParameters(self, class_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11559,7 +11559,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classParameters(self, class_name)
 
-    def classImplements(self, class_name: str) -> object:
+    def classImplements(self, class_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11580,7 +11580,7 @@ class PRMexplorer(object):
 
     """)
 
-    def classAggregates(self, class_name: str) -> object:
+    def classAggregates(self, class_name: str) -> list[object]:
         r"""
 
         Parameters
@@ -11601,7 +11601,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classAggregates(self, class_name)
 
-    def classSlotChains(self, class_name: str) -> object:
+    def classSlotChains(self, class_name: str) -> list[object]:
         r"""
 
         Parameters
@@ -11643,7 +11643,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_classDag(self, class_name)
 
-    def getalltheSystems(self) -> object:
+    def getalltheSystems(self) -> list[object]:
         r"""
 
         Returns
@@ -11654,7 +11654,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getalltheSystems(self)
 
-    def getSuperClass(self, class_name: str) -> object:
+    def getSuperClass(self, class_name: str) -> str | None:
         r"""
 
         Parameters
@@ -11675,7 +11675,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getSuperClass(self, class_name)
 
-    def getDirectSubClass(self, class_name: str) -> object:
+    def getDirectSubClass(self, class_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11724,7 +11724,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_cpf(self, class_name, attribute)
 
-    def types(self) -> object:
+    def types(self) -> list[str]:
         r"""
 
         Returns
@@ -11735,7 +11735,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_types(self)
 
-    def getSuperType(self, type_name: str) -> object:
+    def getSuperType(self, type_name: str) -> str | None:
         r"""
 
         Parameters
@@ -11756,7 +11756,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getSuperType(self, type_name)
 
-    def getDirectSubTypes(self, type_name: str) -> object:
+    def getDirectSubTypes(self, type_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11777,7 +11777,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getDirectSubTypes(self, type_name)
 
-    def getLabels(self, type_name: str) -> object:
+    def getLabels(self, type_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11819,7 +11819,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getLabelMap(self, type_name)
 
-    def interfaces(self) -> object:
+    def interfaces(self) -> list[str]:
         r"""
 
         Returns
@@ -11830,7 +11830,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_interfaces(self)
 
-    def interAttributes(self, interface_name: str, allAttributes: bool=False) -> object:
+    def interAttributes(self, interface_name: str, allAttributes: bool=False) -> list[object]:
         r"""
 
         Parameters
@@ -11854,7 +11854,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
 
-    def interReferences(self, interface_name: str) -> object:
+    def interReferences(self, interface_name: str) -> list[object]:
         r"""
 
         Parameters
@@ -11875,7 +11875,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_interReferences(self, interface_name)
 
-    def getSuperInterface(self, interface_name: str) -> object:
+    def getSuperInterface(self, interface_name: str) -> str | None:
         r"""
 
         Parameters
@@ -11896,7 +11896,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getSuperInterface(self, interface_name)
 
-    def getDirectSubInterfaces(self, interface_name: str) -> object:
+    def getDirectSubInterfaces(self, interface_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -11917,7 +11917,7 @@ class PRMexplorer(object):
         """
         return _pyagrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
 
-    def getImplementations(self, interface_name: str) -> object:
+    def getImplementations(self, interface_name: str) -> list[str]:
         r"""
 
         Parameters
@@ -13254,7 +13254,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_memoryFootprint(self)
 
-    def ids(self, names: tuple[str, ...]) -> object:
+    def ids(self, names: tuple[str, ...]) -> list[int]:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -13272,7 +13272,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_ids(self, names)
 
-    def nodeset(self, names: tuple[str, ...]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> set[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -13290,7 +13290,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_nodeset(self, names)
 
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
@@ -13339,7 +13339,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_isIndependent(self, *args)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Set of names of variables in the model
@@ -13438,7 +13438,7 @@ class IBayesNet(DAGmodel):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -13449,7 +13449,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_arcs(self)
 
-    def parents(self, norid: object) -> object:
+    def parents(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -13465,7 +13465,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_parents(self, norid)
 
-    def children(self, norid: object) -> object:
+    def children(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -13481,7 +13481,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_children(self, norid)
 
-    def family(self, norid: object) -> object:
+    def family(self, norid: object) -> set[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -13499,7 +13499,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_family(self, norid)
 
-    def descendants(self, norid: object) -> object:
+    def descendants(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -13517,7 +13517,7 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrum.IBayesNet_descendants(self, norid)
 
-    def ancestors(self, norid: object) -> object:
+    def ancestors(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -14399,7 +14399,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_variableFromName(self, name)
 
-    def ids(self, names: tuple[str, ...]) -> object:
+    def ids(self, names: tuple[str, ...]) -> list[int]:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -14417,7 +14417,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_ids(self, names)
 
-    def nodeset(self, names: tuple[str, ...]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> set[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -14435,7 +14435,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_nodeset(self, names)
 
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
@@ -14484,7 +14484,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_isIndependent(self, *args)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Set of names of variables in the model
@@ -14583,7 +14583,7 @@ class BayesNet(IBayesNet):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -14594,7 +14594,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_arcs(self)
 
-    def parents(self, norid: object) -> object:
+    def parents(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -14610,7 +14610,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_parents(self, norid)
 
-    def children(self, norid: object) -> object:
+    def children(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -14626,7 +14626,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_children(self, norid)
 
-    def family(self, norid: object) -> object:
+    def family(self, norid: object) -> set[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -14644,7 +14644,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_family(self, norid)
 
-    def descendants(self, norid: object) -> object:
+    def descendants(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -14662,7 +14662,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_descendants(self, norid)
 
-    def ancestors(self, norid: object) -> object:
+    def ancestors(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -15627,7 +15627,7 @@ class BayesNetFragment(IBayesNet, ):
         return val
 
 
-    def ids(self, names: tuple[str, ...]) -> object:
+    def ids(self, names: tuple[str, ...]) -> list[int]:
         r"""
 
         List of ids for a list of names of variables in the model
@@ -15645,7 +15645,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_ids(self, names)
 
-    def nodeset(self, names: tuple[str, ...]) -> object:
+    def nodeset(self, names: tuple[str, ...]) -> set[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -15663,7 +15663,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_nodeset(self, names)
 
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
@@ -15712,7 +15712,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_isIndependent(self, *args)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Set of names of variables in the model
@@ -15811,7 +15811,7 @@ class BayesNetFragment(IBayesNet, ):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -15822,7 +15822,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_arcs(self)
 
-    def parents(self, norid: object) -> object:
+    def parents(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -15838,7 +15838,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_parents(self, norid)
 
-    def children(self, norid: object) -> object:
+    def children(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -15854,7 +15854,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_children(self, norid)
 
-    def family(self, norid: object) -> object:
+    def family(self, norid: object) -> set[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -15872,7 +15872,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_family(self, norid)
 
-    def descendants(self, norid: object) -> object:
+    def descendants(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -15890,7 +15890,7 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrum.BayesNetFragment_descendants(self, norid)
 
-    def ancestors(self, norid: object) -> object:
+    def ancestors(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -16687,7 +16687,7 @@ class LazyPropagation(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -16698,7 +16698,7 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -16709,7 +16709,7 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -16878,7 +16878,7 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_isJointTarget(self, targets)
 
-    def jointTargets(self) -> object:
+    def jointTargets(self) -> list[set[int]]:
         r"""
 
         Returns
@@ -17553,7 +17553,7 @@ class ShaferShenoyInference(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -17564,7 +17564,7 @@ class ShaferShenoyInference(object):
         """
         return _pyagrum.ShaferShenoyInference_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -17575,7 +17575,7 @@ class ShaferShenoyInference(object):
         """
         return _pyagrum.ShaferShenoyInference_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -17744,7 +17744,7 @@ class ShaferShenoyInference(object):
         """
         return _pyagrum.ShaferShenoyInference_isJointTarget(self, targets)
 
-    def jointTargets(self) -> object:
+    def jointTargets(self) -> list[set[int]]:
         r"""
 
         Returns
@@ -18374,7 +18374,7 @@ class VariableElimination(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -18385,7 +18385,7 @@ class VariableElimination(object):
         """
         return _pyagrum.VariableElimination_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -18396,7 +18396,7 @@ class VariableElimination(object):
         """
         return _pyagrum.VariableElimination_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -18565,7 +18565,7 @@ class VariableElimination(object):
         """
         return _pyagrum.VariableElimination_isJointTarget(self, targets)
 
-    def jointTargets(self) -> object:
+    def jointTargets(self) -> list[set[int]]:
         r"""
 
         Returns
@@ -19360,7 +19360,7 @@ class GibbsSampling(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -19371,7 +19371,7 @@ class GibbsSampling(object):
         """
         return _pyagrum.GibbsSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -19382,7 +19382,7 @@ class GibbsSampling(object):
         """
         return _pyagrum.GibbsSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -20135,7 +20135,7 @@ class ImportanceSampling(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -20146,7 +20146,7 @@ class ImportanceSampling(object):
         """
         return _pyagrum.ImportanceSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -20157,7 +20157,7 @@ class ImportanceSampling(object):
         """
         return _pyagrum.ImportanceSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -20910,7 +20910,7 @@ class WeightedSampling(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -20921,7 +20921,7 @@ class WeightedSampling(object):
         """
         return _pyagrum.WeightedSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -20932,7 +20932,7 @@ class WeightedSampling(object):
         """
         return _pyagrum.WeightedSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -21685,7 +21685,7 @@ class MonteCarloSampling(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -21696,7 +21696,7 @@ class MonteCarloSampling(object):
         """
         return _pyagrum.MonteCarloSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -21707,7 +21707,7 @@ class MonteCarloSampling(object):
         """
         return _pyagrum.MonteCarloSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -22481,7 +22481,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -22492,7 +22492,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrum.LoopyImportanceSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -22503,7 +22503,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrum.LoopyImportanceSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -23277,7 +23277,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -23288,7 +23288,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrum.LoopyWeightedSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -23299,7 +23299,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrum.LoopyWeightedSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -24139,7 +24139,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -24150,7 +24150,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrum.LoopyGibbsSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -24161,7 +24161,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrum.LoopyGibbsSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -24935,7 +24935,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -24946,7 +24946,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrum.LoopyMonteCarloSampling_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -24957,7 +24957,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrum.LoopyMonteCarloSampling_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -25685,7 +25685,7 @@ class LoopyBeliefPropagation(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -25696,7 +25696,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrum.LoopyBeliefPropagation_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -25707,7 +25707,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrum.LoopyBeliefPropagation_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -25775,7 +25775,7 @@ class ExactBNdistance(object):
         _pyagrum.ExactBNdistance_swiginit(self, _pyagrum.new_ExactBNdistance(*args))
     __swig_destroy__ = _pyagrum.delete_ExactBNdistance
 
-    def compute(self) -> object:
+    def compute(self) -> dict[str, object]:
         r"""
 
         Returns
@@ -25839,7 +25839,7 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrum.GibbsBNdistance_burnIn(self)
 
-    def compute(self) -> object:
+    def compute(self) -> dict[str, object]:
         r"""
 
         Returns
@@ -26372,7 +26372,7 @@ class BNDatabaseGenerator(object):
         """
         return _pyagrum.BNDatabaseGenerator_bn(self)
 
-    def varOrder(self) -> object:
+    def varOrder(self) -> tuple[int, ...]:
         r"""
 
         The actual order for the variable (as a tuple of NodeId)
@@ -28179,7 +28179,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_isGumNumberOfThreadsOverriden(self)
 
-    def chi2(self, *args) -> object:
+    def chi2(self, *args) -> tuple[float, float]:
         r"""
 
         chi2 computes the chi2 statistic and p-value of two variables conditionally to a
@@ -28211,7 +28211,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_chi2(self, *args)
 
-    def G2(self, *args) -> object:
+    def G2(self, *args) -> tuple[float, float]:
         r"""
 
         G2 computes the G2 statistic and p-value of two variables conditionally to a
@@ -28272,7 +28272,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_useK2(self, *args)
 
-    def latentVariables(self) -> object:
+    def latentVariables(self) -> list[tuple[int,int]]:
         r"""
 
         Returns the list of latent variables discovered by MIIC.
@@ -28289,7 +28289,7 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_latentVariables(self)
 
-    def state(self) -> object:
+    def state(self) -> dict[str, tuple[str, str]]:
         r"""
 
         Returns a dictionary containing the current state of the BNLearner.
@@ -30831,7 +30831,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_variableFromName(self, name)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Returns
@@ -30928,7 +30928,7 @@ class InfluenceDiagram(DAGmodel):
       return am
 
 
-    def arcs(self) -> object:
+    def arcs(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -30939,7 +30939,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_arcs(self)
 
-    def parents(self, norid: object) -> object:
+    def parents(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -30955,7 +30955,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_parents(self, norid)
 
-    def children(self, norid: object) -> object:
+    def children(self, norid: object) -> set[int]:
         r"""
 
         Parameters
@@ -30971,7 +30971,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_children(self, norid)
 
-    def family(self, norid: object) -> object:
+    def family(self, norid: object) -> set[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -30989,7 +30989,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_family(self, norid)
 
-    def descendants(self, norid: object) -> object:
+    def descendants(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -31007,7 +31007,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_descendants(self, norid)
 
-    def ancestors(self, norid: object) -> object:
+    def ancestors(self, norid: object) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -31779,7 +31779,7 @@ class ShaferShenoyLIMIDInference(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -31790,7 +31790,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _pyagrum.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Return the set of nodes with soft (likelihood) evidence.
@@ -31803,7 +31803,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _pyagrum.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
 
-    def MEU(self, *args) -> object:
+    def MEU(self, *args) -> dict[str, float]:
         r"""
 
         Returns maximum expected utility obtained from inference.
@@ -31816,7 +31816,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _pyagrum.ShaferShenoyLIMIDInference_MEU(self, *args)
 
-    def meanVar(self, *args) -> object:
+    def meanVar(self, *args) -> dict[str, float]:
         r"""
 
         Parameters
@@ -32133,7 +32133,7 @@ class IMarkovRandomField(UGmodel):
         """
         return _pyagrum.IMarkovRandomField_toDotAsFactorGraph(self)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Set of names of variables in the model
@@ -32224,13 +32224,13 @@ class IMarkovRandomField(UGmodel):
       return am
 
 
-    def neighbours(self, norid: object) -> object:
+    def neighbours(self, norid: object) -> set[int]:
         return _pyagrum.IMarkovRandomField_neighbours(self, norid)
 
-    def edges(self) -> object:
+    def edges(self) -> set[tuple[int,int]]:
         return _pyagrum.IMarkovRandomField_edges(self)
 
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> set[int]:
         return _pyagrum.IMarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
@@ -32667,7 +32667,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_variableFromName(self, name)
 
-    def names(self) -> object:
+    def names(self) -> set[str]:
         r"""
 
         Set of names of variables in the model
@@ -32768,7 +32768,7 @@ class MarkovRandomField(IMarkovRandomField):
       return am
 
 
-    def neighbours(self, norid: object) -> object:
+    def neighbours(self, norid: object) -> set[int]:
         r"""
 
         Return the set of neighbours of a node.
@@ -32786,7 +32786,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_neighbours(self, norid)
 
-    def edges(self) -> object:
+    def edges(self) -> set[tuple[int,int]]:
         r"""
 
         Returns
@@ -32797,7 +32797,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_edges(self)
 
-    def minimalCondSet(self, *args) -> object:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Return a minimal conditioning set of a target given source nodes in the MRF.
@@ -33729,7 +33729,7 @@ class ShaferShenoyMRFInference(object):
 
 
 
-    def hardEvidenceNodes(self) -> object:
+    def hardEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -33740,7 +33740,7 @@ class ShaferShenoyMRFInference(object):
         """
         return _pyagrum.ShaferShenoyMRFInference_hardEvidenceNodes(self)
 
-    def softEvidenceNodes(self) -> object:
+    def softEvidenceNodes(self) -> set[int]:
         r"""
 
         Returns
@@ -33751,7 +33751,7 @@ class ShaferShenoyMRFInference(object):
         """
         return _pyagrum.ShaferShenoyMRFInference_softEvidenceNodes(self)
 
-    def targets(self) -> object:
+    def targets(self) -> set[int]:
         r"""
 
         Returns
@@ -33918,7 +33918,7 @@ class ShaferShenoyMRFInference(object):
         """
         return _pyagrum.ShaferShenoyMRFInference_isJointTarget(self, targets)
 
-    def jointTargets(self) -> object:
+    def jointTargets(self) -> list[set[int]]:
         r"""
 
         Returns
@@ -35352,7 +35352,7 @@ class CausalImpact(object):
       print_ast_rec(self.toDict(),indent=" "*print_title(get_title(self)))
 
 
-    def toDict(self) -> object:
+    def toDict(self) -> dict[str, object]:
         r"""
 
         Return the identified causal formula as a JSON-serialisable dictionary.

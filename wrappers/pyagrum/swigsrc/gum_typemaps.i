@@ -45,6 +45,54 @@
 
 
 
+// Sentinel typedefs: used as %extend return types so that passForPyType.py
+// can map each sentinel name to the correct Python type annotation.
+// All are aliases for PyObject at the C level — no runtime overhead.
+%{
+typedef PyObject PyAgrumSetOfArc;
+typedef PyObject PyAgrumSetOfEdge;
+typedef PyObject PyAgrumSetOfInt;
+typedef PyObject PyAgrumSetOfStr;
+typedef PyObject PyAgrumListOfSetOfInt;
+typedef PyObject PyAgrumListOfInt;
+typedef PyObject PyAgrumListOfStr;
+typedef PyObject PyAgrumListOfArc;
+typedef PyObject PyAgrumList;
+typedef PyObject PyAgrumTupleFF;
+typedef PyObject PyAgrumTupleOfInt;
+typedef PyObject PyAgrumDictSF;
+typedef PyObject PyAgrumDictState;
+typedef PyObject PyAgrumInstDict;
+typedef PyObject PyAgrumBool;
+typedef PyObject PyAgrumFloat;
+typedef PyObject PyAgrumArgMinMax;
+typedef PyObject PyAgrumStr;
+typedef PyObject PyAgrumNdArray;
+typedef PyObject PyAgrumNone;
+typedef PyObject PyAgrumDict;
+%}
+typedef PyObject PyAgrumSetOfArc;
+typedef PyObject PyAgrumSetOfEdge;
+typedef PyObject PyAgrumSetOfInt;
+typedef PyObject PyAgrumSetOfStr;
+typedef PyObject PyAgrumListOfSetOfInt;
+typedef PyObject PyAgrumListOfInt;
+typedef PyObject PyAgrumListOfStr;
+typedef PyObject PyAgrumListOfArc;
+typedef PyObject PyAgrumList;
+typedef PyObject PyAgrumTupleFF;
+typedef PyObject PyAgrumTupleOfInt;
+typedef PyObject PyAgrumDictSF;
+typedef PyObject PyAgrumDictState;
+typedef PyObject PyAgrumInstDict;
+typedef PyObject PyAgrumBool;
+typedef PyObject PyAgrumFloat;
+typedef PyObject PyAgrumArgMinMax;
+typedef PyObject PyAgrumStr;
+typedef PyObject PyAgrumNdArray;
+typedef PyObject PyAgrumNone;
+typedef PyObject PyAgrumDict;
+
 /* Convert from C --> Python */
 
 // std::tuple<CausalImpact<double>, Tensor<double>, std::string>

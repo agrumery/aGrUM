@@ -110,17 +110,17 @@ def updateEvidence(self, evidces):
     void setEvidence(PyObject *evidces) {}
     void updateEvidence(PyObject *evidces) {}
 
-    PyObject* hardEvidenceNodes() {
+    PyAgrumSetOfInt* hardEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
     }
-    PyObject* softEvidenceNodes() {
+    PyAgrumSetOfInt* softEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
     }
-    PyObject* MEU() {
+    PyAgrumDictSF* MEU() {
     std::cout<<"H"<<std::endl;
       return PyAgrumHelper::PyDictFromPairMeanVar(self->MEU() ) ;
     }
-    PyObject* meanVar(gum::NodeId node) {
+    PyAgrumDictSF* meanVar(gum::NodeId node) {
       return PyAgrumHelper::PyDictFromPairMeanVar(self->meanVar(node) ) ;
     }
 }

@@ -45,7 +45,7 @@
 
 
  %extend gum::ExactBNdistance {
-PyObject* compute(void) {
+PyAgrumDict* compute(void) {
   PyObject* q=PyDict_New();
 
   PyObject* pyval;
@@ -84,7 +84,7 @@ PyObject* compute(void) {
 }
 
 %extend gum::GibbsBNdistance {
-PyObject* compute(void) {
+PyAgrumDict* compute(void) {
   PyObject* q=PyDict_New();
 
   PyObject* pyval;

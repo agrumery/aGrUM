@@ -135,7 +135,7 @@ if len(args)>1:
 %enddef
 
 %extend gum::Tensor<double> {
-  PyObject *expectedValue(PyObject* pyfunc) const {
+  PyAgrumFloat *expectedValue(PyObject* pyfunc) const {
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!");return NULL; }
 
     PyObject* args=PyTuple_New(1);
@@ -177,12 +177,12 @@ if len(args)>1:
     PYTHONIZED_MARGINALS(maxIn)
     PYTHONIZED_MARGINALS(minIn)
 
-    PyObject* argmin() {
+    PyAgrumArgMinMax* argmin() {
       const auto [argmi,mi] = self->argmin();
       return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),PyFloat_FromDouble(mi));
     }
 
-    PyObject* argmax() {
+    PyAgrumArgMinMax* argmax() {
       const auto [argma,ma] = self->argmax();
       return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argma),PyFloat_FromDouble(ma));
     }
@@ -200,18 +200,18 @@ if len(args)>1:
     // --- numpy interoperability (C level) ---
 
     // Zero-copy view: self_pyobj is the Python Tensor object passed as base.
-    PyObject* _as_nparray_raw(PyObject* self_pyobj) {
+    PyAgrumNdArray* _as_nparray_raw(PyObject* self_pyobj) {
       return PyAgrumHelper::tensorAsNpArrayRaw(self, self_pyobj);
     }
 
     // Copy into a new numpy array.
-    PyObject* _toarray_raw() const {
+    PyAgrumNdArray* _toarray_raw() const {
       return PyAgrumHelper::tensorToArray(self);
     }
 
     // Fill from a C-contiguous float64 numpy array via a single memcpy.
     // Returns None on success, nullptr (exception set) on error.
-    PyObject* _fillWithNpArray(PyObject* arr) {
+    PyAgrumNone* _fillWithNpArray(PyObject* arr) {
       if (PyAgrumHelper::tensorFillWithNpArray(self, arr) < 0)
         return nullptr;
       Py_RETURN_NONE;

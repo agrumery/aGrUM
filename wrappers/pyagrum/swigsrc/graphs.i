@@ -156,7 +156,7 @@ ADD_NODENAME_METHODS(gum::UndiGraph)
 %define ADD_METHOD_TO_GRAPH_ONLY_CLASS(classname)
 %ignore classname::addNodes(gum::Size n);
 %extend classname {
-  PyObject *addNodes(gum::Size n) const {
+  PyAgrumSetOfInt *addNodes(gum::Size n) const {
     return PyAgrumHelper::PySetFromNodeVect(const_cast<classname *>(self)->addNodes(n));
   };
 

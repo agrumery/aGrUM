@@ -54,7 +54,7 @@
 
 %define IMPROVE_GRAPHICAL_MODEL_API(classname)
 %extend classname {
-  PyObject* names() const {
+  PyAgrumSetOfStr* names() const {
      PyObject* q=PySet_New(0);
 
      PyObject* pyval;
@@ -98,23 +98,23 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname);
 IMPROVE_GRAPHICAL_MODEL_API(classname);
 
 %extend classname {
-   PyObject *arcs() const {
+   PyAgrumSetOfArc *arcs() const {
      return PyAgrumHelper::PySetFromArcSet(self->arcs());
    };
 
-   PyObject *parents(PyObject* norid) const {
+   PyAgrumSetOfInt *parents(PyObject* norid) const {
      return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
    };
-   PyObject *children(PyObject* norid) const {
+   PyAgrumSetOfInt *children(PyObject* norid) const {
      return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
    };
-   PyObject *family(PyObject* norid) const {
+   PyAgrumSetOfInt *family(PyObject* norid) const {
      return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
    };
-   PyObject *descendants(PyObject* norid) const {
+   PyAgrumSetOfInt *descendants(PyObject* norid) const {
      return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
    };
-   PyObject *ancestors(PyObject* norid) const {
+   PyAgrumSetOfInt *ancestors(PyObject* norid) const {
      return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
    };
 
@@ -132,12 +132,12 @@ IMPROVE_GRAPHICAL_MODEL_API(classname);
 IMPROVE_GRAPHICAL_MODEL_API(classname);
 
 %extend classname {
-  PyObject* neighbours(PyObject * norid) const {
+  PyAgrumSetOfInt* neighbours(PyObject * norid) const {
     return PyAgrumHelper::PySetFromNodeSet(self->neighbours(
        PyAgrumHelper::nodeIdFromNameOrIndex(norid, self->variableNodeMap())));
   };
 
-  PyObject* edges() const {
+  PyAgrumSetOfEdge* edges() const {
     return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
   };
 }

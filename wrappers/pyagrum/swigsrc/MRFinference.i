@@ -137,13 +137,13 @@ def setTargets(self, targets):
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
 
-    PyObject* hardEvidenceNodes() {
+    PyAgrumSetOfInt* hardEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
     }
-    PyObject* softEvidenceNodes() {
+    PyAgrumSetOfInt* softEvidenceNodes() {
       return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
     }
-    PyObject* targets() {
+    PyAgrumSetOfInt* targets() {
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
     Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
@@ -208,7 +208,7 @@ IMPROVE_MRF_INFERENCE_API(ShaferShenoyMRFInference<double>)
       return self->gum::JointTargetedMRFInference<double>::isJointTarget(nodeset);
     }
 
-    PyObject* jointTargets() const {
+    PyAgrumListOfSetOfInt* jointTargets() const {
       return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedMRFInference<double>::jointTargets());
     }
 }

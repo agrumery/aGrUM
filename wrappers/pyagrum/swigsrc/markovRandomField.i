@@ -49,14 +49,14 @@
 IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
 
 %extend classname {
-  PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
+  PyAgrumSetOfInt *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
   };
 
 
-  PyObject *minimalCondSet(PyObject* targets,PyObject* list) const {
+  PyAgrumSetOfInt *minimalCondSet(PyObject* targets,PyObject* list) const {
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 

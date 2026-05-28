@@ -76,13 +76,13 @@ class PRMexplorer {
    * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
    * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
    */
-  PyObject* isType(std::string name) { return _prm_->isType(name) ? Py_True : Py_False; }
+  PyAgrumBool* isType(std::string name) { return _prm_->isType(name) ? Py_True : Py_False; }
 
   /**
    * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
    * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
    */
-  PyObject* isClass(std::string name) {
+  PyAgrumBool* isClass(std::string name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     return _prm_->isClass(name) ? Py_True : Py_False;
@@ -92,7 +92,7 @@ class PRMexplorer {
    * @param name The name of a possible Interface<GUM_SCALAR> in this PRM.
    * @return Returns true if name names a Interface<GUM_SCALAR> in this PRM.
    */
-  PyObject* isInterface(std::string name) {
+  PyAgrumBool* isInterface(std::string name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     return _prm_->isInterface(name) ? Py_True : Py_False;
@@ -104,7 +104,7 @@ class PRMexplorer {
   /**
    * @return a list of class names
    */
-  PyObject* classes() {
+  PyAgrumListOfStr* classes() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -121,7 +121,7 @@ class PRMexplorer {
    * @param class_name : the name of the class
    * @param allAttributes : even automatically generated attributes
    */
-  PyObject* classAttributes(std::string class_name /*, bool allAttributes = false */) {
+  PyAgrumList* classAttributes(std::string class_name /*, bool allAttributes = false */) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -159,7 +159,7 @@ class PRMexplorer {
    * @param class_name : the name of the class
    * @param att_name : the name of the attribute contained in this class
    */
-  PyObject* isAttribute(std::string class_name, std::string att_name) {
+  PyAgrumBool* isAttribute(std::string class_name, std::string att_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& ob = _prm_->getClass(class_name).get(att_name);
@@ -171,7 +171,7 @@ class PRMexplorer {
    * @return a list of Tuplet(typename,reference_name, isArray)
    * @param class_name : the name of the class
    */
-  PyObject* classReferences(std::string class_name) {
+  PyAgrumList* classReferences(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -195,7 +195,7 @@ class PRMexplorer {
    * @return a list of parameters from a class
    * @param class_name : the name of the class
    */
-  PyObject* classParameters(std::string class_name) {
+  PyAgrumListOfStr* classParameters(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -210,7 +210,7 @@ class PRMexplorer {
    * @return a list of interface which the class implemented
    * @param class_name : the name of the class
    */
-  PyObject* classImplements(std::string class_name) {
+  PyAgrumListOfStr* classImplements(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -234,7 +234,7 @@ class PRMexplorer {
   std::string aggType[9]
      = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
 
-  PyObject* classAggregates(std::string class_name) {
+  PyAgrumList* classAggregates(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -270,7 +270,7 @@ class PRMexplorer {
    * @return a list of Tuplet(typename, slotname, isMultiple)
    * @param class_name : the name of the class
    */
-  PyObject* classSlotChains(std::string class_name) {
+  PyAgrumList* classSlotChains(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -324,7 +324,7 @@ class PRMexplorer {
    * @return a list of 3-uplets (nameofsystem,dictinary of ids  their name &
    * type,list of arcs:[(tail,head),..] )
    */
-  PyObject* getalltheSystems() {
+  PyAgrumList* getalltheSystems() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -370,7 +370,7 @@ class PRMexplorer {
    * @return the name of the super class
    * @param class_name : the name of the class
    */
-  PyObject* getSuperClass(std::string class_name) {
+  PyAgrumStr* getSuperClass(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->getClass(class_name);
@@ -384,7 +384,7 @@ class PRMexplorer {
    * @return the list of subclass name
    * @param class_name : the name of the class
    */
-  PyObject* getDirectSubClass(std::string class_name) {
+  PyAgrumListOfStr* getDirectSubClass(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l     = PyList_New(0);
@@ -411,7 +411,7 @@ class PRMexplorer {
   /**
    * @return the list of type names
    */
-  PyObject* types() {
+  PyAgrumListOfStr* types() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -425,7 +425,7 @@ class PRMexplorer {
    * @return the name of super type
    * @param type_name : the name of the type
    */
-  PyObject* getSuperType(std::string type_name) {
+  PyAgrumStr* getSuperType(std::string type_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->type(type_name);
@@ -440,7 +440,7 @@ class PRMexplorer {
    * @return the list of subtype name
    * @param type_name : the name of the type
    */
-  PyObject* getDirectSubTypes(std::string type_name) {
+  PyAgrumListOfStr* getDirectSubTypes(std::string type_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l        = PyList_New(0);
@@ -459,7 +459,7 @@ class PRMexplorer {
    * @return the list of labels name
    * @param type_name : the name of the type
    */
-  PyObject* getLabels(std::string type_name) {
+  PyAgrumListOfStr* getLabels(std::string type_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l        = PyList_New(0);
@@ -496,7 +496,7 @@ class PRMexplorer {
   /**
    * @return the list of interface names
    */
-  PyObject* interfaces() {
+  PyAgrumListOfStr* interfaces() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l = PyList_New(0);
@@ -511,7 +511,7 @@ class PRMexplorer {
    * @param interface_name : the name of the interface
    * @param allAttributes : even automatically generated attributes
    */
-  PyObject* interAttributes(std::string interface_name, bool allAttributes = false) {
+  PyAgrumList* interAttributes(std::string interface_name, bool allAttributes = false) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -539,7 +539,7 @@ class PRMexplorer {
    * @param interface_name : the name of the interface
    * @param allAttributes : even automatically generated attributes
    */
-  PyObject* interReferences(std::string interface_name) {
+  PyAgrumList* interReferences(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* q = PyList_New(0);
@@ -562,7 +562,7 @@ class PRMexplorer {
    * @return the name of super interface
    * @param interface_name : the name of the interface
    */
-  PyObject* getSuperInterface(std::string interface_name) {
+  PyAgrumStr* getSuperInterface(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     auto& c = _prm_->getInterface(interface_name);
@@ -576,7 +576,7 @@ class PRMexplorer {
    * @return the list of subinterface name
    * @param interface_name : the name of the interface
    */
-  PyObject* getDirectSubInterfaces(std::string interface_name) {
+  PyAgrumListOfStr* getDirectSubInterfaces(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l        = PyList_New(0);
@@ -597,7 +597,7 @@ class PRMexplorer {
    * @return the list of class name how implement this interface
    * @param interface_name : the name of the interface
    */
-  PyObject* getImplementations(std::string interface_name) {
+  PyAgrumListOfStr* getImplementations(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
     PyObject* l        = PyList_New(0);

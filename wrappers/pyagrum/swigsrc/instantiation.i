@@ -62,7 +62,7 @@
     return self->isSlave();
   }
 
-  PyObject* todict(bool withLabels=false) const {
+  PyAgrumInstDict* todict(bool withLabels=false) const {
     return PyAgrumHelper::instantiationToDict(*self,withLabels);
   }
 

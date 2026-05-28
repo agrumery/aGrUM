@@ -140,7 +140,7 @@
 // must come after the matching %template directive.
 // ---------------------------------------------------------------------------
 %extend gum::CausalImpact<double> {
-  PyObject* toDict() const {
+  PyAgrumDict* toDict() const {
     if (!$self->isIdentified()) Py_RETURN_NONE;
     return PyAgrumHelper::PyDictFromASTtree($self->root());
   }
