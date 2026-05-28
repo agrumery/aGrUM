@@ -122,7 +122,9 @@ class Wald:
     """
 
     w = w.iloc[:, 0] if isinstance(w, pd.DataFrame) else w
-    return np.array([(y[w == 1].mean() - y[w == 0].mean()) / (treatment[w == 1].mean() - treatment[w == 0].mean())] * len(w))
+    return np.array(
+      [(y[w == 1].mean() - y[w == 0].mean()) / (treatment[w == 1].mean() - treatment[w == 0].mean())] * len(w)
+    )
 
   def estimate_ate(
     self,

@@ -176,7 +176,9 @@ class ForwardSamplingInference(CTBNInference):
     self.trajectory = list()
     self.idtraj = 0
     super().__init__(ctbn)
-    self._posteriors: dict[str, pyagrum.Tensor] = {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
+    self._posteriors: dict[str, pyagrum.Tensor] = {
+      nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()
+    }
 
   def makeSample(self, posteriors: dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
     """
@@ -375,8 +377,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [
-      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
-      for _ in range(nbTrajectories)
+      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()} for _ in range(nbTrajectories)
     ]
 
     def runMakeSample(task: int):
@@ -408,8 +409,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     """
     posteriorsList = [
-      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()}
-      for _ in range(nbTrajectories)
+      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()} for _ in range(nbTrajectories)
     ]
 
     for i in range(nbTrajectories):

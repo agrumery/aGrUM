@@ -744,12 +744,18 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
 
   nbrError = 0
 
-  # Summary goes to stderr: " INFO N errors (...)" followed by config notice lines
+  # Summary goes to stderr: " INFO N errors (K suppressed)" followed by config notice lines
   match = re.search(r"INFO (\d+) error", result.stderr)
   if match:
     nbrError = int(match.group(1))
 
-  if details and nbrError > 0:
+  suppressed_match = re.search(r"\((\d+) suppressed\)", result.stderr)
+  suppressed = int(suppressed_match.group(1)) if suppressed_match else 0
+
+  if nbrError == 0:
+    suffix = f" ({suppressed} suppressed)" if suppressed else ""
+    notif(f"    pyrefly: [[(✓)]]{suffix}")
+  elif details:
     for line in result.stdout.splitlines():
       notif(line)
 
