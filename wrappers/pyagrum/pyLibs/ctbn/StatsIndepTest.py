@@ -100,7 +100,7 @@ class Oracle(IndepTest):
     bool
         False if there is an arc from Y to X knowing U, True otherwise.
     """
-    return not self.ctbn.graph.existsArc(self.ctbn.name2id[Y], self.ctbn.name2id[X])
+    return not self.ctbn._graph.existsArc(self.ctbn._graph.idFromName(Y), self.ctbn._graph.idFromName(X))
 
 
 def sqrtTensor(tensor: pyagrum.Tensor) -> pyagrum.Tensor:

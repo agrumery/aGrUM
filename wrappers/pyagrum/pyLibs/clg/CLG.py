@@ -57,13 +57,11 @@ import pandas as pd
 class CLG:
   _graph: pyagrum.DAG
   _id2var: dict[int, GaussianVariable]
-  _name2id: dict[str, int]
   _arc2coef: dict[tuple[int, int], float | int]
 
   def __init__(self, clg: "CLG | None" = None) -> None:
     self._graph = pyagrum.DAG()
     self._id2var = {}
-    self._name2id = {}
     self._arc2coef = {}
 
     if clg:
@@ -142,12 +140,12 @@ class CLG:
       raise ValueError("The argument cannot be None.")
     if var.name() == "":
       raise NameError(f"The name cannot be '{var.name()}'.")
-    if var.name() in self._name2id:
+    if self._graph.idFromName(var.name()) is not None:
       raise NameError(f"A variable with the same name ({var.name()}) already exists in this CLG.")
 
     n = self._graph.addNode()
+    self._graph.setName(n, var.name())
     self._id2var[n] = var
-    self._name2id[var.name()] = n
 
     return n
 
@@ -201,7 +199,7 @@ class CLG:
     int
       The int of the variable.
     """
-    return val if isinstance(val, int) else self._name2id[val]
+    return val if isinstance(val, int) else self._graph.idFromName(val)
 
   def addArc(self, val1: int | str, val2: int | str, coef: float | int = 1) -> tuple[int, int]:
     """
@@ -355,7 +353,10 @@ class CLG:
     pyagrum.NotFound
       if the name is not found in the CLG.
     """
-    return self._name2id[name]
+    nid = self._graph.idFromName(name)
+    if nid is None:
+      raise pyagrum.NotFound(f"'{name}' not found in the CLG.")
+    return nid
 
   def variable(self, val: int | str) -> GaussianVariable:
     """
@@ -409,7 +410,7 @@ class CLG:
     list[str]
       The list of names in the CLG.
     """
-    return list(self._name2id.keys())
+    return [self._graph.nameFromId(n) for n in self.nodes()]
 
   def arcs(self) -> set[tuple[int, int]]:
     """

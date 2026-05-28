@@ -58,25 +58,21 @@ class CTBN:
   Attributes
   ----------
   _graph : pyagrum.DiGraph
-      Graph representing dependency relations between variables. Also used to link a variable with an id.
+      Graph representing dependency relations between variables. Node names are registered via setName/idFromName.
   _cim : dict[int, CIM]
       Dict containing a CIM for each nodeId(the integer given to a variable).
   _id2var : dict[int, pyagrum.DiscreteVariable]
       Dict containing the variable associated to a node id.
-  _name2id : dict[str, int]
-      Dict containing the nodeId associated to a variable's name.
   """
 
   _graph: pyagrum.DiGraph
   _cim: dict[int, CIM]
   _id2var: dict[int, pyagrum.DiscreteVariable]
-  _name2id: dict[str, int]
 
   def __init__(self):
     self._graph = pyagrum.DiGraph()
     self._cim = {}
     self._id2var = {}
-    self._name2id = {}
 
   def add(self, var: pyagrum.DiscreteVariable) -> int:
     """
@@ -103,13 +99,13 @@ class CTBN:
       raise ValueError("The var cannot be None.")
     if var.name() == "" or not CIM.isParent(var):
       raise NameError(f"The name '{var.name()}' is not correct.")
-    if var.name() in self._name2id:
+    if self._graph.idFromName(var.name()) is not None:
       raise NameError(f"A variable with the same name ({var.name()}) already exists in this CTBN.")
 
     # link variable to its name and int
     n = self._graph.addNode()
+    self._graph.setName(n, var.name())
     self._id2var[n] = var
-    self._name2id[var.name()] = n
 
     # add leaving and starting states in the CIM
     v_i = var.clone()
@@ -137,9 +133,10 @@ class CTBN:
         raise pyagrum.NotFound("the variable isn't in the ctbn")
       return val
     else:
-      if val not in self.names():
+      nid = self._graph.idFromName(val)
+      if nid is None:
         raise pyagrum.NotFound("the variable isn't in the ctbn")
-      return self._name2id[val]
+      return nid
 
   def addArc(self, val1: str | int, val2: str | int) -> tuple[int, int]:
     """
@@ -232,9 +229,10 @@ class CTBN:
     pyagrum.NotFound
         If the variable is not found in the CTBN.
     """
-    if name not in self.names():
+    nid = self._graph.idFromName(name)
+    if nid is None:
       raise pyagrum.NotFound("the variable isn't in the ctbn")
-    return self._name2id[name]
+    return nid
 
   def labels(self, val: str | int) -> tuple:
     """
@@ -299,7 +297,7 @@ class CTBN:
     list[str]
         The list of variables name in the CTBN.
     """
-    return list(self._name2id.keys())
+    return [self._graph.nameFromId(n) for n in self.nodes()]
 
   def arcs(self) -> set[tuple[int, int]]:
     """
@@ -506,7 +504,7 @@ class CTBN:
     # Checks if all arcs from current CTBN are in the other one
     for arc in arcs1:
       if not ctbn._graph.existsArc(
-        ctbn._name2id[self._id2var[arc[0]].name()], ctbn._name2id[self._id2var[arc[1]].name()]
+        ctbn._graph.idFromName(self._id2var[arc[0]].name()), ctbn._graph.idFromName(self._id2var[arc[1]].name())
       ):
         print(self._id2var[arc[0]].name(), self._id2var[arc[1]].name())
         print("arc non present dans le ctbn en parametres")

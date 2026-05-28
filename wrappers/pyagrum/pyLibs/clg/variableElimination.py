@@ -141,7 +141,7 @@ class CLGVariableElimination:
         raise ValueError(f"The variable {l} is observed.")
 
     # Converting list of name to list of ids
-    variables = [self._clg._name2id[v] for v in variables]
+    variables = [self._clg.idFromName(v) for v in variables]
 
     # Finding the elimination order
     jtg = JunctionTreeGenerator()
@@ -226,7 +226,7 @@ class CLGVariableElimination:
     """
 
     # Converting from dict[str, float] to dict[int, float]
-    evidence = {self._clg._name2id[name]: evidence[name] for name in evidence.keys()}
+    evidence = {self._clg.idFromName(name): evidence[name] for name in evidence.keys()}
 
     # Reducing the canonical forms containing observed variables
     if len(evidence) != 0:
