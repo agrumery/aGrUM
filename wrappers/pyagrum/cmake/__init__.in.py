@@ -124,6 +124,7 @@ from .pyagrum import (
   UndefinedIteratorValue,
   UnknownLabelInDatabase,
   CPTError,
+  HedgeException,
 )
 
 # submodule BN

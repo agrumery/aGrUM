@@ -49,8 +49,8 @@ import shutil
 class IMixture:
   _bns: dict[str, pyagrum.BayesNet]
   _weights: dict[str, float]
-  _refBN: pyagrum.BayesNet
-  _refName: str
+  _refBN: pyagrum.BayesNet | None = None
+  _refName: str = ""
 
   def __init__(self):
     raise NotImplementedError("class IMixture is not supposed to be initialized !")

@@ -200,7 +200,7 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")  # type: ignore[attr-defined]
+        raise pyagrum.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       diff = cpt1 - cpt0
       return diff.expectedValue(lambda d: diff.variable(0).numerical(d[diff.variable(0).name()]))
@@ -297,7 +297,7 @@ class CausalBNEstimator:
       )
 
       if cpt0 is None:
-        raise pyagrum._exceptions.HedgeException("Causal effect is unidentifiable using do-calculus.")  # type: ignore[attr-defined]
+        raise pyagrum.HedgeException("Causal effect is unidentifiable using do-calculus.")
 
       difference = cpt1 - cpt0
       return difference.expectedValue(lambda d: difference.variable(0).numerical(d[difference.variable(0).name()]))

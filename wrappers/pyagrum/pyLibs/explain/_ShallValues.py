@@ -126,6 +126,7 @@ class ShallValues(Explainer):
     self.inst = pyagrum.Instantiation()
     for var in self.bn.ids(self.feat_names):
       self.inst.add(self.bn.variable(var))
+    self.baseline: np.ndarray | None = None
 
   # Note: We use BayesNet.jointProbability instead of lazyPropagation.evidenceProbability because joint probability is much faster.
   def _joint(self, row_values):

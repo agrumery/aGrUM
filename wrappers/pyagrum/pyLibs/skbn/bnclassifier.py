@@ -132,6 +132,18 @@ def createBNClassifier(
   )
 
 
+def _bestTypedVal(v: gum.DiscreteVariable, idx: int) -> str | int | float:
+  match v.varType():
+    case gum.VarType_DISCRETIZED | gum.VarType_LABELIZED:
+      return v.label(idx)
+    case gum.VarType_INTEGER | gum.VarType_RANGE:
+      return int(v.numerical(idx))
+    case gum.VarType_NUMERICAL:
+      return float(v.numerical(idx))
+    case _:
+      raise gum.NotFound("This type of variable does not exist yet.")
+
+
 class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   """
   Represents a (scikit-learn compliant) classifier which uses a BN to classify. A BNClassifier is build using
@@ -401,7 +413,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     else:
       self.target_ = "y"
 
-    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
+    if isinstance(X, pandas.DataFrame):
       variableNames = [f"X{x}" if check_int(x) else x for x in X.columns]
       X = X.astype(object)
 
@@ -613,22 +625,14 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
       if len(namesSet) - 1 != len(variableList):
         raise ValueError("variableList should include all variables in the Bayesian network except the target")
 
-      i = 0
-      for name in variableList:
+      for i, name in enumerate(variableList):
         if name not in namesSet:
           raise ValueError("variableList includes a name that does not appear in the Bayesian network")
         self.variableNameIndexDictionary_[name] = i
-        i = i + 1
 
-    # if the user didn't specify an order we use the order that the variables were added in
     else:
-      variableList = bn.names()
-      i = 0
-      for name in variableList:
-        if name == self.target_:
-          continue
-        self.variableNameIndexDictionary_[name] = i
-        i = i + 1
+      non_target_names = [n for n in bn.names() if n != self.target_]
+      self.variableNameIndexDictionary_ = {name: i for i, name in enumerate(non_target_names)}
 
     if targetModality != "":
       self.label_ = targetModality
@@ -680,6 +684,40 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
   # ------------------method Markov Blanket and predict---------------------
 
+  def _prepare_X(self, X: pandas.DataFrame | numpy.ndarray | str) -> tuple[numpy.ndarray, dict]:
+    """Convert input X to a numpy array and build the column-name-to-index dict."""
+    if isinstance(X, str):
+      X, _ = self.XYfromCSV(X, target=self.target_)
+
+    if isinstance(X, pandas.DataFrame):
+      dictName = DFNames(X)
+      vals = X.to_numpy()
+      named = True
+    else:
+      dictName = self.variableNameIndexDictionary_
+      vals = numpy.asarray(X)
+      named = False
+
+    if self.fromModel_:
+      # For named input (DataFrame/CSV), column mapping via dictName handles any layout,
+      # so extra or differently-ordered columns are fine — skip sklearn's feature count check.
+      # For unnamed input (ndarray), no column mapping is possible, so enforce feature count.
+      if not named and vals.shape[1] != self.n_features_in_:
+        raise ValueError(
+          f"X has {vals.shape[1]} features, but {self.__class__.__name__} "
+          f"is expecting {self.n_features_in_} features as input."
+        )
+      vals = vals.astype(str)
+    else:
+      with warnings.catch_warnings():
+        # BNClassifier handles feature-name mapping via dictName independently of sklearn's tracking,
+        # so mismatches between fit-time and predict-time feature name presence are harmless.
+        warnings.filterwarnings("ignore", message="X does not have valid feature names", category=UserWarning)
+        warnings.filterwarnings("ignore", message="X has feature names, but", category=UserWarning)
+        vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
+
+    return vals, dictName
+
   def predict(self, X):
     """
     Predicts the most likely class for each row of input data, with bn's Markov Blanket
@@ -694,20 +732,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     """
     sklearn.utils.validation.check_is_fitted(self)
 
-    if isinstance(X, str):
-      X, _ = self.XYfromCSV(X, target=self.target_)
-
-    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
-      dictName = DFNames(X)
-    else:
-      dictName = self.variableNameIndexDictionary_
-
-    with warnings.catch_warnings():
-      warnings.filterwarnings("ignore", message="X does not have valid feature names", category=UserWarning)
-      if self.fromModel_:
-        X = sklearn.utils.validation.validate_data(self, X, dtype="str", reset=False)
-      else:
-        X = sklearn.utils.validation.validate_data(self, X, dtype=None, reset=False)
+    X, dictName = self._prepare_X(X)
 
     if len(self.classes_) == 2 and self.label_:
       returned_list = self._binary_predict(X, dictName)
@@ -727,6 +752,11 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
         returned_list = returned_list == self.label_
 
     return returned_list
+
+  @property
+  def _other_labels(self) -> list[str]:
+    var = self.bn_.variable(self.target_)
+    return [var.label(i) for i in range(var.domainSize()) if var.label(i) != self.label_]
 
   def _nary_predict(self, X, dictName) -> list[str]:
     """
@@ -771,21 +801,11 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     array-like of shape (n_samples,)
       the list of predictions
     """
-    returned_list = []
-    # list of other labels of the target
-    labels = [
-      self.bn_.variable(self.target_).label(i)
-      for i in range(self.bn_.variable(self.target_).domainSize())
-      if self.bn_.variable(self.target_).label(i) != self.label_
-    ]
-
-    # negative value to add to the list returned
+    labels = self._other_labels
     label0 = labels[0]
-    # label of the target
     label1 = self.label_
-    # Instantiation use to apply values of the database
     I = self.MarkovBlanket_.completeInstantiation()
-    # read through database's ligns
+    returned_list = []
     for x in X:
       res = round(
         _calcul_proba_for_binary_class(x, label1, labels, I, dictName, self.MarkovBlanket_, self.target_),
@@ -824,41 +844,13 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     """
     sklearn.utils.validation.check_is_fitted(self)
 
-    # dictionary of the name of a variable and his column in the database
-    dictName = self.variableNameIndexDictionary_
-
-    if isinstance(X, pandas.DataFrame):  # type(X) == pandas.DataFrame:
-      dictName = DFNames(X)
-      vals = X.to_numpy()
-    elif isinstance(X, str):
-      vals, _ = self.XYfromCSV(X, target=self.target)
-      dictName = DFNames(vals)
-      vals = vals.to_numpy()
-    else:
-      vals = X
-
-    with warnings.catch_warnings():
-      warnings.filterwarnings("ignore", message="X does not have valid feature names", category=UserWarning)
-      if self.fromModel_:
-        vals = sklearn.utils.validation.validate_data(self, vals, dtype="str", reset=False)
-      else:
-        vals = sklearn.utils.validation.validate_data(self, vals, dtype=None, reset=False)
+    vals, dictName = self._prepare_X(X)
 
     returned_list = []
-
-    # label of the target
     label1 = self.label_
-    # list of other labels of the target
-    labels = [
-      self.bn_.variable(self.target_).label(i)
-      for i in range(self.bn_.variable(self.target_).domainSize())
-      if self.bn_.variable(self.target_).label(i) != self.label_
-    ]
-
-    # Instantiation use to apply values of the database
+    labels = self._other_labels
     I = self.MarkovBlanket_.completeInstantiation()
 
-    # read through database's ligns
     if len(self.classes_) == 2 and self.label_:
       for x in vals:
         res = round(
@@ -992,40 +984,24 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
         y = data[targetName]
         X = data.drop(targetName, axis=1)
 
-    def bestTypedVal(v, idx):
-      if v.varType() == gum.VarType_DISCRETIZED:
-        return v.label(idx)
-      elif v.varType() == gum.VarType_INTEGER:
-        return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_LABELIZED:
-        return v.label(idx)
-      elif v.varType() == gum.VarType_RANGE:
-        return int(v.numerical(idx))
-      elif v.varType() == gum.VarType_NUMERICAL:
-        return float(v.numerical(idx))
-      else:
-        raise gum.NotFound("This type of variable does not exist yet.")
-
     reverse = {v: k for k, v in self.variableNameIndexDictionary_.items()}
-    if isinstance(X, pandas.DataFrame):  # to be sure of the name of the columns
+    if isinstance(X, pandas.DataFrame):
       X = X.rename(columns=reverse)
     varY = self.bn_.variable(self.target_)
-    df = pandas.DataFrame([], columns=[reverse[k] for k in range(len(reverse))] + [self.target_])
+    columns = [reverse[k] for k in range(len(reverse))] + [self.target_]
+    is_df = isinstance(X, pandas.DataFrame)
 
+    rows = []
     for n in range(len(X)):
       ligne = []
       for k in range(len(reverse)):
-        if isinstance(X, pandas.DataFrame):
-          val = X[reverse[k]][n]
-        else:  # np.array
-          val = X[n][k]
+        val = X[reverse[k]][n] if is_df else X[n][k]
         var = self.bn_.variable(reverse[k])
-        ligne.append(bestTypedVal(var, var[str(val)]))
+        ligne.append(_bestTypedVal(var, var[str(val)]))
+      ligne.append(_bestTypedVal(varY, varY[str(y[n])]))
+      rows.append(ligne)
 
-      ligne.append(bestTypedVal(varY, varY[str(y[n])]))
-      df.loc[len(df)] = ligne
-
-    return df
+    return pandas.DataFrame(rows, columns=columns)
 
   def __getstate__(self):
     """

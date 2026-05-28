@@ -96,6 +96,7 @@ class ShapleyValues(Explainer):
     self.ie = pyagrum.LazyPropagation(self.bn)  # Inference engine for the Bayesian Network.
     self.ie.addTarget(self.target)  # Setting the target for inference.
     self.func = self._logit if logit else self._identity  # Function to apply to the probabilities.
+    self.baseline: np.ndarray | None = None
 
   def _markov_blanket(self):
     # Retrieves the Markov blanket of the target node.

@@ -598,6 +598,7 @@ class _ICSW:
     self.link_func = expit
     self.theta_A = None
     self.theta_AC = None
+    self.iv_probability_learner: Any | None = None
 
   def fit(
     self,

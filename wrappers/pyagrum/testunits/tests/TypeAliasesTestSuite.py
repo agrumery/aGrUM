@@ -41,6 +41,7 @@
 import types
 import typing
 import unittest
+import warnings
 
 import pyagrum as gum
 
@@ -117,9 +118,10 @@ class TestTypeAliases(pyAgrumTestCase):
 
   def testAnnotationsFunctions(self):
     # typing.get_type_hints() forces evaluation of all annotations in the module
-    # namespace — catches missing type references even with lazy annotations
-    # (from __future__ import annotations) and on Python 3.10-3.13 eager eval.
-    from pyagrum.lib import bn2graph, mrf2graph, cn2graph, image, notebook
+    # namespace — catches missing type references at runtime (Python >= 3.10).
+    with warnings.catch_warnings():
+      warnings.simplefilter("ignore", UserWarning)
+      from pyagrum.lib import bn2graph, mrf2graph, cn2graph, image, notebook
 
     for func, label in (
       (bn2graph.BNinference2dot, "bn2graph.BNinference2dot"),
