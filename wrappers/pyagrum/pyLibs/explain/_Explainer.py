@@ -98,7 +98,7 @@ class Explainer(ABC):
 
   def _labelToPos_row(self, x: np.ndarray, elements: list[int]) -> np.ndarray:
     # Converts labels to positions for a single instance.
-    y = np.empty(shape=x.shape, dtype=int)
+    y = np.zeros(shape=x.shape, dtype=int)
     for i in elements:
       try:
         val = self.bn.variable(i).posLabel(x[i])
@@ -109,7 +109,7 @@ class Explainer(ABC):
 
   def _labelToPos_df(self, x: np.ndarray, elements: list[int]) -> np.ndarray:
     # Converts labels to positions for multiple instances.
-    y = np.empty(shape=x.shape, dtype=int)  # Initialisation
+    y = np.zeros(shape=x.shape, dtype=int)
     posLabelVect = np.vectorize(lambda i, j: self.bn.variable(int(j)).posLabel(i))
     for j in elements:
       try:
