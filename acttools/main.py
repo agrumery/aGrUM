@@ -131,6 +131,9 @@ def adapt_options_from_context(options: argparse.Namespace, args: set[str]) -> N
     The options parsed from the command line.
   args
   """
+  if args.get("only"):
+    args["build"] = "no-make"
+
   if platform.system() == "Windows" and options.compiler.startswith("mvsc"):
     options.static_lib = True
     # options.no_fun = True

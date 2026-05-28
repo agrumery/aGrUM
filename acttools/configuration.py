@@ -230,6 +230,7 @@ def init_params() -> None:
     "coverage": False,
     "withSQL": False,
     "build": "all",
+    "only": False,
     "noSaveParams": False,
     "correction": False,
     "guideline_check": "all",
@@ -264,6 +265,7 @@ def init_params() -> None:
     "guideline_check",
     "build_graph",
     "force_swig",
+    "only",
   ]
   cfg.mains = ["action", "target", "mode"]
   cfg.specialActions = ["show", "clean", "purge", "guideline"]
@@ -459,6 +461,13 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     choices=["all", "no-cmake", "no-make", "doc-only"],
     dest="build",
     default="all",
+  )
+  cfg.parser.add_argument(
+    "--only",
+    help="skip build step, only run install/test on existing artifacts (equivalent to --build no-make).",
+    action="store_true",
+    dest="only",
+    default=False,
   )
   cfg.parser.add_argument(
     "--no-saveParams",
