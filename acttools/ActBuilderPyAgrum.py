@@ -279,28 +279,33 @@ class ActBuilderPyAgrum(ActBuilder):
     safe_cd(self.current, cfg.buildPath[self.current["mode"]])
 
     err = False
-    gc = gm = gb = 0
-    t0 = time.time()
-    if self.current["build"] == "all":
-      if self._cmake_needed():
-        self.run_start(prefix + "cmake")
-        cmake_cde = self.build_cmake()
-        err = err or 0 != self.execFromLine(cmake_cde, checkRC=False)
-      else:
-        self.run_start(prefix + "cmake (skipped — cache up to date)")
-    t1 = time.time()
-    if self.current["force_swig"]:
-      self.run_start(prefix + "force-swig (touching .i files)")
-      now = time.time()
-      source_root = os.path.join("..", "..", "..")
-      for fichier in glob.glob(os.path.join(source_root, "**", "*.i"), recursive=True):
-        os.utime(fichier, (now, now))
-        notif(f"  + touched : {fichier}")
-    if not err and self.current["build"] != "no-make":
-      self.run_start(prefix + "make")
-      make_cde = self.build_make()
-      err = err or 0 != self.execFromLine(make_cde, checkRC=False)
-    t2 = time.time()
+    t0 = t1 = t2 = time.time()
+    if self.current["build"] == "no-make" and self.current.get("action") == "install":
+      self.run_start(prefix + "cmake --install (reuse compiled artifacts)")
+      destination = self.current.get("destination", ".")
+      err = 0 != self.execFromLine(f'cmake --install . --prefix "{destination}"', checkRC=False)
+      t1 = t2 = time.time()
+    else:
+      if self.current["build"] == "all":
+        if self._cmake_needed():
+          self.run_start(prefix + "cmake")
+          cmake_cde = self.build_cmake()
+          err = err or 0 != self.execFromLine(cmake_cde, checkRC=False)
+        else:
+          self.run_start(prefix + "cmake (skipped — cache up to date)")
+      t1 = time.time()
+      if self.current["force_swig"]:
+        self.run_start(prefix + "force-swig (touching .i files)")
+        now = time.time()
+        source_root = os.path.join("..", "..", "..")
+        for fichier in glob.glob(os.path.join(source_root, "**", "*.i"), recursive=True):
+          os.utime(fichier, (now, now))
+          notif(f"  + touched : {fichier}")
+      if not err and self.current["build"] != "no-make":
+        self.run_start(prefix + "make")
+        make_cde = self.build_make()
+        err = err or 0 != self.execFromLine(make_cde, checkRC=False)
+      t2 = time.time()
     if not err:
       self.run_start(prefix + "post")
       post_cde = self.build_post()

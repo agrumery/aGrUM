@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import tempfile
 import subprocess
 
 from .utils import *
@@ -57,7 +56,11 @@ class ActBuilderPipInstall(ActBuilder):
   def build(self) -> bool:
     self.run_start()
 
-    tmp = tempfile.mkdtemp(prefix="act")
+    safe_cd(self.current, "build")
+    safe_cd(self.current, "wheel")
+    tmp = os.getcwd()
+    safe_cd(self.current, "..")
+    safe_cd(self.current, "..")
     self.run_start(f"Building wheel in {tmp}")
     newcurrent = self.current.copy()
     newcurrent["destination"] = tmp
