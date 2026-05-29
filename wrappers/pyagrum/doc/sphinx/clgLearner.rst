@@ -9,8 +9,12 @@ More precisely what can be learned is :
 
 **Learning the graph**
 
-To learn the graph of a CLG (ie the dependence between variables) we use a modified PC algorithm based on the workof Diego Colombo, Marloes H. Maathuis: Order-Independent Constraint-Based Causal Structure Learning(2014).
+To learn the graph of a CLG (ie the dependence between variables) we use a modified PC algorithm
+based on :cite:t:`colombo2014order`.
 
-The independence test used is based on the work of Dario Simionato, Fabio Vandin: Bounding the Family-Wise Error Rate in Local Causal Discovery using Rademacher Averages(2022).
+The independence test used is based on :cite:t:`simionato2022bounding`.
 
 .. autoclass:: pyagrum.clg.learning.CLGLearner
+
+.. bibliography::
+    :filter: docname in docnames

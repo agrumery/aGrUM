@@ -72,8 +72,8 @@ Examples
     notebooks/*-Examples*
     notebooks/*-Applications*
 
-Examples from 'The Book of Why' (J. Pearl, 2018)
-=================================================
+Examples from :cite:t:`pearl2018why`
+=====================================
 
 .. nbgallery::
     :glob:

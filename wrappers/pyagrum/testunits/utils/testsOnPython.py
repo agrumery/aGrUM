@@ -70,6 +70,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
   pandasFound = find_spec("pandas") is not None
   sklearnFound = find_spec("sklearn") is not None
+  qiskitFound = find_spec("qiskit") is not None and find_spec("qiskit_aer") is not None
 
   import unittest
 
@@ -285,6 +286,11 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     "SkbnTestSuite",
     _pd_sk,
   )
+  QBNTestSuite = _try_import(
+    "QBNTestSuite",
+    qiskitFound,
+    "[pyAgrum] pyagrum.qBN needs qiskit and qiskit-aer",
+  )
   TensorTestSuite = _try_import(
     "TensorTestSuite",
     True,
@@ -377,6 +383,9 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       "skbn": [
         BNClassifierTestSuite,
         SkbnTestSuite,
+      ],
+      "qBN": [
+        QBNTestSuite,
       ],
       "ctbn": [
         CtbnCimTestSuite,

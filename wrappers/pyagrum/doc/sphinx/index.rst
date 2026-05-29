@@ -94,6 +94,7 @@ Reference manual
   ctbn
   clg
   bnmixture
+  qBNSampling
 
 .. toctree::
   :caption: 6- pyagrum's modules
