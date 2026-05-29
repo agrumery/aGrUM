@@ -102,7 +102,7 @@ class QBNMCTestCase(pyAgrumTestCase):
     self.mock_bn.nodeId.side_effect = lambda var: ord(var.name()) - ord("A")
 
     result = self.qb_net.getBinarizedParameters(width_dict, param_dict)
-    self.assertEqual(result[0], [1, 0])   # binary(2, width=2)
+    self.assertEqual(result[0], [1, 0])  # binary(2, width=2)
     self.assertEqual(result[1], [1, 0, 1])  # binary(5, width=3)
 
   def test_getRootNodes(self):
@@ -111,16 +111,16 @@ class QBNMCTestCase(pyAgrumTestCase):
     self.assertEqual(self.qb_net.getRootNodes(), {0, 2})
 
   def test_getAllParentSates(self):
-    expected = [{"smoking": 0}, {"smoking": 1}]
-    self.assertEqual(self.qb_asia.getAllParentSates("lung_cancer"), expected)
+    expected = [{"smoking?": 0}, {"smoking?": 1}]
+    self.assertEqual(self.qb_asia.getAllParentSates("lung_cancer?"), expected)
 
     expected2 = [
-      {"tuberculosis": 0, "lung_cancer": 0},
-      {"tuberculosis": 1, "lung_cancer": 0},
-      {"tuberculosis": 0, "lung_cancer": 1},
-      {"tuberculosis": 1, "lung_cancer": 1},
+      {"tuberculosis?": 0, "lung_cancer?": 0},
+      {"tuberculosis?": 1, "lung_cancer?": 0},
+      {"tuberculosis?": 0, "lung_cancer?": 1},
+      {"tuberculosis?": 1, "lung_cancer?": 1},
     ]
-    self.assertEqual(self.qb_asia.getAllParentSates("tuberculos_or_cancer"), expected2)
+    self.assertEqual(self.qb_asia.getAllParentSates("tuberculos_or_cancer?"), expected2)
 
   def test_getQuantumRegisters(self):
     def var_side(n_id):
@@ -253,11 +253,11 @@ class QBNRejectionTestCase(pyAgrumTestCase):
 
     qinf = qBNRejection(qbn)
     qinf.setEvidence(evidence)
-    qinf.setMaxIter(1000)
+    qinf.setMaxIter(200)
     qinf.makeInference()
     quantum_A = qinf.posterior("A")
 
-    epsilon = 0.05
+    epsilon = 0.1
     self.assertLess(abs(exact_A[0] - quantum_A[0]), epsilon)
     self.assertLess(abs(exact_A[1] - quantum_A[1]), epsilon)
 

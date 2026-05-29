@@ -26,7 +26,6 @@
 # homepage : http://agrum.gitlab.io                                         #
 # gitlab   : https://gitlab.com/agrumery/agrum                             #
 
-import scipy.linalg  # required by qiskit transpile internally
 from typing import Union
 
 import numpy as np
@@ -154,7 +153,6 @@ class qBNRejection:
     circuit: QuantumCircuit,
     A: QuantumCircuit,
     evidence_qbs: dict[int, int],
-    inplace: bool = True,
   ) -> None:
     """Compose one Grover iterate G = S_e A^{-1} S_0 A onto the circuit.
 
@@ -166,15 +164,13 @@ class qBNRejection:
         Sample-preparation circuit.
     evidence_qbs : dict[int, int]
         Qubit ID → required quantum state for the evidence flip S_e.
-    inplace : bool, optional
-        Unused; kept for API compatibility.
     """
-    all_qbits = np.ravel(list(self.qbn.n_qb_map.values())).tolist()
     self.addS(circuit, evidence_qbs)
     circuit.barrier(label="Sₑ")
     self.addInverse(circuit, A)
     circuit.barrier(label="A⁻¹")
-    self.addS(circuit, {qb_id: 0 for qb_id in all_qbits})
+    # S₀ flips the phase of the all-zero state: apply X on every qubit (state=0 means flip)
+    self.addS(circuit, {qb_id: 0 for qb_id in self.all_qbits})
     circuit.barrier(label="S₀")
     circuit.compose(A, inplace=True)
     circuit.barrier(label="A")
@@ -188,7 +184,7 @@ class qBNRejection:
     self.addA(self.A)
 
     self.G = QuantumCircuit(*list(self.q_registers.values()))
-    self.addG(self.G, self.A, evidence_qbs, inplace=False)
+    self.addG(self.G, self.A, evidence_qbs)
 
   def transpileGates(self) -> None:
     """Transpile cached A and G to optimisation level 3."""
@@ -241,14 +237,23 @@ class qBNRejection:
     cl_reg = ClassicalRegister(len(self.all_qbits), "meas")
     circuit = QuantumCircuit(*list(self.q_registers.values()), cl_reg)
     circuit.compose(A, inplace=True)
+
+    # measure_all(add_bits=False) appends num_qubits measurements + 1 barrier.
+    # We track this length to truncate cleanly before each new Grover power,
+    # instead of relying on pop() which would break if qiskit's internal layout changes.
+    n_meas_ops = circuit.num_qubits + 1
     circuit.measure_all(add_bits=False)
 
     k = -2
     while True:
       k += 1
-      for _ in range(A.num_qubits + 1):
-        circuit.data.pop(-1)
+      if k > 20:
+        raise RuntimeError(
+          "qBNRejection.getSample: evidence not satisfied after 2^20 Grover iterates — "
+          "evidence may be inconsistent or have near-zero probability"
+        )
 
+      circuit.data = circuit.data[:-n_meas_ops]
       circuit.compose(G.power(int(np.ceil(2.0**k))), inplace=True)
       circuit.measure_all(add_bits=False)
 
@@ -256,8 +261,9 @@ class qBNRejection:
       self.log["A"] += 1
       self.log["G"] += 2 ** (k + 1)
 
+      # argmax instead of index(1.0): robust to numpy float representation
       run_res = {
-        self.qbn.bn.nodeId(self.qbn.bn.variable(node)): state.index(1.0)
+        self.qbn.bn.nodeId(self.qbn.bn.variable(node)): int(np.argmax(state))
         for node, state in run_res.items()
       }
 

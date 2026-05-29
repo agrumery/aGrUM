@@ -289,7 +289,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   QBNTestSuite = _try_import(
     "QBNTestSuite",
     qiskitFound,
-    "[pyAgrum] pyagrum.qBN needs qiskit and qiskit-aer",
+    "[pyAgrum] pyagrum.qbn needs qiskit and qiskit-aer",
   )
   TensorTestSuite = _try_import(
     "TensorTestSuite",
@@ -312,13 +312,12 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   module_map: dict[str, str] = {}
 
   def _reg(suite_mod, mod_name: str) -> None:
-    """Append suite to tl and register its test case class in module_map."""
+    """Append suite to tl and register all test case classes in module_map."""
     if suite_mod is None:
       return
     tl.append(suite_mod.ts)
-    first = next(iter(suite_mod.ts), None)
-    if first is not None:
-      module_map[type(first).__name__] = mod_name
+    for test in suite_mod.ts:
+      module_map[type(test).__name__] = mod_name
 
   if test_suite != "":
     tl.append(eval(test_suite + "TestSuite.ts"))
@@ -384,7 +383,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         BNClassifierTestSuite,
         SkbnTestSuite,
       ],
-      "qBN": [
+      "qbn": [
         QBNTestSuite,
       ],
       "ctbn": [

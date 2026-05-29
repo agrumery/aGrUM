@@ -80,7 +80,7 @@ class qBNMC:
     """
     res = {}
     qubit_id = 0
-    for n_id in nodes:
+    for n_id in sorted(nodes):
       res[n_id] = []
       for _ in range(self.getWidth(n_id)):
         res[n_id].append(qubit_id)
@@ -110,7 +110,7 @@ class qBNMC:
     int
         Sum of widths over all nodes.
     """
-    return int(np.sum([self.getWidth(id) for id in self.bn.nodes()], dtype=int))
+    return sum(self.getWidth(n_id) for n_id in self.bn.nodes())
 
   def getBinarizedParameters(
     self,
@@ -182,7 +182,7 @@ class qBNMC:
         Node ID → QuantumRegister sized to hold the variable.
     """
     return {
-      n_id: QuantumRegister(int(np.ceil(np.log2(self.bn.variable(n_id).domainSize()))), str(n_id))
+      n_id: QuantumRegister(self.getWidth(n_id), str(n_id))
       for n_id in self.bn.nodes()
     }
 
@@ -372,11 +372,17 @@ class qBNMC:
       self.multiQubitRotation(circuit, n_id, self.n_qb_map[n_id], {}, verbose=verbose)
 
     for n_id in internal_nodes:
-      parent_id_set = self.bn.parents(n_id)
-      parent_qbit_list = list(np.hstack([self.n_qb_map[p_id] for p_id in parent_id_set]))
+      # Parent order must match CPT dimension order (names[1:]).
+      # bn.parents() returns a set — iterating it directly gives non-deterministic order,
+      # which misaligns parent_qbit_list with the binary params produced by
+      # getBinarizedParameters (which follows CPT order), causing X gates to flip
+      # the wrong control qubits.
+      parent_names = self.bn.cpt(n_id).names[1:]
+      parent_id_list = [self.bn.nodeId(self.bn.variable(n)) for n in parent_names]
+      parent_qbit_list = [qb for p_id in parent_id_list for qb in self.n_qb_map[p_id]]
 
       for params_dict in self.getAllParentSates(n_id):
-        width_dict = {p_id: self.getWidth(p_id) for p_id in parent_id_set}
+        width_dict = {n: self.getWidth(n) for n in parent_names}
         bin_params = self.getBinarizedParameters(width_dict, params_dict)
 
         circuit.barrier()

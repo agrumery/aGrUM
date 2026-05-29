@@ -55,7 +55,7 @@ from utils.gumTestOutput import notif, warn, error
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
 # This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'
 # Note : the tool 'act' uses this variable to know which modules to test when the user asks for 'act -m <module>'.
-PYAGRUM_TEST_MODULES = {"", "main", "skbn", "qBN", "causal", "causaleffect", "clg", "ctbn", "bnmixture", "explain"}
+PYAGRUM_TEST_MODULES = {"", "main", "skbn", "qbn", "causal", "causaleffect", "clg", "ctbn", "bnmixture", "explain"}
 
 
 def go():
