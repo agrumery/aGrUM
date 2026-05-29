@@ -118,7 +118,7 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
     Parameters
     ----------
-    cm : pyagrum.causal.CausalModel
+    cm : pyagrum.CausalModel
         The causal model.
     on : str or set of str
         Target variable(s) of the causal query. A single string is
@@ -135,7 +135,7 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
     Returns
     -------
-    tuple (pyagrum.causal.CausalImpact, pyagrum.Tensor or None, str)
+    tuple (pyagrum.CausalImpact, pyagrum.Tensor or None, str)
         - The CausalImpact object encoding the identified formula.
         - The evaluated tensor P(on | do(doing), knowing), or None if the
           effect is not identifiable.
@@ -176,7 +176,7 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
 
     Parameters
     ----------
-    cm : pyagrum.causal.CausalModel
+    cm : pyagrum.CausalModel
         The causal model.
     on : str or set of str
         Target variable(s) of the counterfactual query. A single string is
@@ -224,7 +224,7 @@ def counterfactualModel(cm, profile=None, whatif=None):
 
     Parameters
     ----------
-    cm : pyagrum.causal.CausalModel
+    cm : pyagrum.CausalModel
         The original causal model.
     profile : dict of str → str, optional
         The factual observation as ``{variable_name: value_name}``.
@@ -237,7 +237,7 @@ def counterfactualModel(cm, profile=None, whatif=None):
 
     Returns
     -------
-    pyagrum.causal.CausalModel
+    pyagrum.CausalModel
         The twin causal model ready for the prediction step.
 
     Examples
