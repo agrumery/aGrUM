@@ -119,5 +119,28 @@ class ShapMarginalTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(0.0, expl["PetalWidthCm"], 5)
 
 
+  def test_plain_dataframe_syntax(self):
+    data = pd.read_csv("tests/resources/iris.csv")
+    data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    bn = gum.fastBN(
+      "Id[1,150];SepalLengthCm[5];SepalWidthCm[5];PetalLengthCm[5];PetalWidthCm[5];Species{Iris-setosa|Iris-versicolor|Iris-virginica};PetalLengthCm->SepalLengthCm;Species->PetalLengthCm;PetalWidthCm->Species;Species->SepalWidthCm;Id"
+    )
+    bg = data.head(10)
+    expl_tuple = MarginalShapValues(bn, 5, (bg, True))
+    expl_plain = MarginalShapValues(bn, 5, bg)
+
+    for i in range(len(expl_tuple.baseline)):
+      self.assertAlmostEqual(expl_tuple.baseline[i], expl_plain.baseline[i], 5)
+
+    df = data.head(5)
+    imp_tuple = expl_tuple.compute((df, True)).importances[1]
+    imp_plain = expl_tuple.compute(df).importances[1]
+    for feat in imp_tuple:
+      self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
+
+
 ts = unittest.TestSuite()
 addTests(ts, ShapMarginalTestCase)

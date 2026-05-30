@@ -59,7 +59,7 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
   The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
   """
 
-  def __init__(self, bn: pyagrum.BayesNet, target: int, background: tuple | None, sample_size=1000, logit=True):
+  def __init__(self, bn: pyagrum.BayesNet, target: int, background: pd.DataFrame | tuple | None, sample_size=1000, logit=True):
     """
     Parameters
     ----------
@@ -67,8 +67,9 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
         The Bayesian Network.
     target : int | str
         The node id (or node name) of the target.
-    background : Tuple(pandas.DataFrame, bool) | None
-        A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame contains labels or positions.
+    background : pandas.DataFrame | tuple(pandas.DataFrame, bool) | None
+        Background data. A plain DataFrame is treated as (df, True) (labels assumed).
+        A tuple allows explicit control: (DataFrame, with_labels).
     sample_size : int
         The size of the background sample to generate if `background` is None.
     logit : bool
@@ -77,7 +78,7 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
+        If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
     ValueError
         If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
@@ -96,9 +97,10 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
         pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       )
     else:
-      if not isinstance(background, tuple):
-        raise TypeError("`background` must be a tuple (pd.DataFrame, bool).")
-      data, with_labels = background
+      if isinstance(background, tuple):
+        data, with_labels = background
+      else:
+        data, with_labels = background, True
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."

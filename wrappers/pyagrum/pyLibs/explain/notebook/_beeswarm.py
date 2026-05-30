@@ -49,7 +49,13 @@ from matplotlib import colors
 
 
 def beeswarm(
-  explanation: Explanation, y: int = 1, max_display: int = 20, color_bar: bool = True, ax=None, sort: bool = True
+  explanation: Explanation,
+  y: int = 1,
+  max_display: int = 20,
+  color_bar: bool = True,
+  ax=None,
+  sort: bool = True,
+  filename: str | None = None,
 ):
   """
   Plots a beeswarm plot of the Shapley values for a given target class.
@@ -68,6 +74,9 @@ def beeswarm(
       The matplotlib Axes object to plot on (default is None, which creates a new figure).
   sort : bool, optional
       If True, sorts the features by their importance before plotting (default is True).
+  filename : str, optional
+      If provided, save the figure to this path instead of displaying it (default is None).
+      Ignored when `ax` is supplied by the caller.
 
   Raises
   ------
@@ -101,6 +110,7 @@ def beeswarm(
   features = explanation.data
 
   # Create the figure and axis if not provided
+  _own_figure = ax is None
   if ax is None:
     _, ax = plt.subplots()
 
@@ -172,3 +182,7 @@ def beeswarm(
   ax.spines["left"].set_visible(False)
   ax.spines["right"].set_visible(False)
   ax.figure.set_facecolor("white")
+
+  if filename is not None and _own_figure:
+    ax.figure.savefig(filename)
+    plt.close(ax.figure)

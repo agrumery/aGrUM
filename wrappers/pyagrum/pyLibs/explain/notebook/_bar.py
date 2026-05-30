@@ -48,7 +48,13 @@ from matplotlib.colors import LinearSegmentedColormap, to_rgb
 from matplotlib.patches import Patch
 
 
-def bar(explanation: Explanation, y: int | None = None, ax: plt.Axes | None = None, percentage: bool = False) -> None:
+def bar(
+  explanation: Explanation,
+  y: int | None = None,
+  ax: plt.Axes | None = None,
+  percentage: bool = False,
+  filename: str | None = None,
+) -> None:
   """
   Plots a horizontal bar chart of the mean absolute SHAP/SHALL values for each feature in the explanation.
 
@@ -63,6 +69,9 @@ def bar(explanation: Explanation, y: int | None = None, ax: plt.Axes | None = No
       The matplotlib Axes object to plot on (default is None, which creates a new figure).
   percentage: bool
     if True, the importance plot is shown in percent.
+  filename : str, optional
+      If provided, save the figure to this path instead of displaying it (default is None).
+      Ignored when `ax` is supplied by the caller.
 
   Raises
   ------
@@ -86,6 +95,7 @@ def bar(explanation: Explanation, y: int | None = None, ax: plt.Axes | None = No
   else:
     raise ValueError(f"Wrong values type, expected SHAP/SHALL but got {explanation.values_type}")
 
+  _own_figure = ax is None
   if ax is None:
     _, ax = plt.subplots(figsize=(6, 4))
 
@@ -142,3 +152,7 @@ def bar(explanation: Explanation, y: int | None = None, ax: plt.Axes | None = No
   ax.spines["left"].set_visible(False)
   ax.spines["right"].set_visible(False)
   ax.figure.set_facecolor("white")
+
+  if filename is not None and _own_figure:
+    ax.figure.savefig(filename)
+    plt.close(ax.figure)

@@ -117,5 +117,22 @@ class ShapConditionalTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(expl.importances[1]["PetalWidthCm"], 3.38405, 5)
 
 
+  def test_plain_dataframe_syntax(self):
+    data = pd.read_csv("tests/resources/iris.csv")
+    data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    data["SepalWidthCm"] = pd.cut(data["SepalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
+    learner = gum.BNLearner(data)
+    bn = learner.learnBN()
+    explainer = ConditionalShapValues(bn, 5)
+
+    df = data.head(5)
+    imp_tuple = explainer.compute((df, True)).importances[1]
+    imp_plain = explainer.compute(df).importances[1]
+    for feat in imp_tuple:
+      self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
+
+
 ts = unittest.TestSuite()
 addTests(ts, ShapConditionalTestCase)

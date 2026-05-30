@@ -54,7 +54,7 @@ class ShallValues(Explainer):
   The ShallValues class is an abstract base class for computing Shall values in a Bayesian Network.
   """
 
-  def __init__(self, bn: pyagrum.BayesNet, background: tuple | None, sample_size: int = 1000, log: bool = True):
+  def __init__(self, bn: pyagrum.BayesNet, background: pd.DataFrame | tuple | None, sample_size: int = 1000, log: bool = True):
     """
     Notes
     -----
@@ -64,8 +64,9 @@ class ShallValues(Explainer):
     ----------
     bn : pyagrum.BayesNet
         The Bayesian Network.
-    background : tuple[pandas.DataFrame, bool] | None
-        A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
+    background : pandas.DataFrame | tuple(pandas.DataFrame, bool) | None
+        Background data. A plain DataFrame is treated as (df, True) (labels assumed).
+        A tuple allows explicit control: (DataFrame, with_labels).
     sample_size : int
         The size of the background sample to generate if `background` is None.
     log : bool
@@ -74,7 +75,7 @@ class ShallValues(Explainer):
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance, background is not a tuple.
+        If bn is not a pyagrum.BayesNet instance.
     ValueError
         If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
@@ -96,9 +97,10 @@ class ShallValues(Explainer):
         pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       )
     else:
-      if not isinstance(background, tuple):
-        raise TypeError("`background` must be a tuple (pd.DataFrame, bool).")
-      data, with_labels = background
+      if isinstance(background, tuple):
+        data, with_labels = background
+      else:
+        data, with_labels = background, True
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."
@@ -145,7 +147,7 @@ class ShallValues(Explainer):
     # This method should be implemented in subclasses.
     raise NotImplementedError("This method should be implemented in subclasses.")
 
-  def compute(self, data: tuple | None, N: int = 100):
+  def compute(self, data: pd.DataFrame | pd.Series | dict | tuple | None, N: int = 100):
     """
     Computes the SHALL values for all rows in the provided data.
 
@@ -156,9 +158,9 @@ class ShallValues(Explainer):
 
     Parameters
     ----------
-    data : tuple | None
-        A tuple containing either a pandas DataFrame, Series, or dictionary, and a boolean indicating whether labels are provided.
-        If None, a random sample of size N is generated.
+    data : pandas.DataFrame | pandas.Series | dict | tuple | None
+        Data to explain. A plain DataFrame/Series/dict is treated as (data, True) (labels assumed).
+        A tuple allows explicit control: (data, with_labels). If None, a random sample of size N is generated.
     N : int
         The number of samples to generate if data is None.
 
@@ -187,9 +189,10 @@ class ShallValues(Explainer):
       y = y[idx, :]
       contributions = self._shall_ndim(y)
     else:
-      if not isinstance(data, tuple):
-        raise TypeError("`data` must be a tuple (pd.DataFrame, bool).")
-      df, with_labels = data
+      if isinstance(data, tuple):
+        df, with_labels = data
+      else:
+        df, with_labels = data, True
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `data` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."

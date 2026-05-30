@@ -102,5 +102,18 @@ class ShallMarginalTest(pyAgrumTestCase):
     self.assertAlmostEqual(x, joint4, 5)
 
 
+  def test_plain_dataframe_syntax(self):
+    bn, data, explainer, inst = ShallMarginalTest.create_data()
+    expl_plain = MarginalShallValues(bn, background=data, log=True)
+
+    self.assertAlmostEqual(explainer.baseline, expl_plain.baseline, 5)
+
+    df = data.iloc[[0]]
+    imp_tuple = explainer.compute((df, True)).importances
+    imp_plain = expl_plain.compute(df).importances
+    for feat in imp_tuple:
+      self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
+
+
 ts = unittest.TestSuite()
 addTests(ts, ShallMarginalTest)

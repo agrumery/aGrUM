@@ -121,14 +121,15 @@ class ShapleyValues(Explainer):
     # This method should be implemented in subclasses.
     raise NotImplementedError("This method should be implemented in subclasses.")
 
-  def compute(self, data: tuple | None, N=100):
+  def compute(self, data: pd.DataFrame | pd.Series | dict | tuple | None, N=100):
     """
     Computes the Shapley values for the target node based on the provided data.
 
     Parameters
     ----------
-    data : tuple | None
-        A tuple containing a pandas DataFrame, Series or a dictionary and a boolean indicating whether data are provided with labels. If None, a random sample of size N is generated.
+    data : pandas.DataFrame | pandas.Series | dict | tuple | None
+        Data to explain. A plain DataFrame/Series/dict is treated as (data, True) (labels assumed).
+        A tuple allows explicit control: (data, with_labels). If None, a random sample of size N is generated.
     N : int
         The number of samples to generate if data is None.
 
@@ -159,9 +160,10 @@ class ShapleyValues(Explainer):
       contributions = self._shap_ndim(y, sorted(elements))
 
     else:
-      if not isinstance(data, tuple):
-        raise TypeError("`data` must be a tuple (pd.DataFrame, bool).")
-      df, with_labels = data
+      if isinstance(data, tuple):
+        df, with_labels = data
+      else:
+        df, with_labels = data, True
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `data` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."

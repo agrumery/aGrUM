@@ -57,7 +57,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
   The CausalShapValues class computes the Causal Shapley values for a given target node in a Bayesian Network.
   """
 
-  def __init__(self, bn, target, background: tuple | None, sample_size=1000, logit=True):
+  def __init__(self, bn, target, background: pd.DataFrame | tuple | None, sample_size=1000, logit=True):
     """
     Parameters
     ----------
@@ -65,8 +65,9 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         The Bayesian Network.
     target : int | str
         The node id (or node name) of the target.
-    background : Tuple(pandas.DataFrame, bool) | None
-        A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame contains labels or positions.
+    background : pandas.DataFrame | tuple(pandas.DataFrame, bool) | None
+        Background data. A plain DataFrame is treated as (df, True) (labels assumed).
+        A tuple allows explicit control: (DataFrame, with_labels).
     sample_size : int
         The size of the background sample to generate if `background` is None.
     logit : bool
@@ -75,11 +76,13 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance, background is not a tuple or target is not an integer or string.
+        If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
     ValueError
         If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """
     super().__init__(bn, target, logit)
+    # Causal players: only ancestors of target have non-zero causal Shapley values
+    self._causal_players = self.bn.ancestors(self.target)
     # Processing background data
     if background is None:
       if not isinstance(sample_size, int):
@@ -91,9 +94,10 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         pyagrum.generateSample(self.bn, sample_size, with_labels=False)[0].reindex(columns=self.feat_names).to_numpy()
       )
     else:
-      if not isinstance(background, tuple):
-        raise TypeError("`background` must be a tuple (pd.DataFrame, bool).")
-      data, with_labels = background
+      if isinstance(background, tuple):
+        data, with_labels = background
+      else:
+        data, with_labels = background, True
       if not isinstance(with_labels, bool):
         warnings.warn(
           f"The second element of `background` should be a boolean, but got {type(with_labels)}. Unexpected calculations may occur."
@@ -128,6 +132,8 @@ class CausalShapValues(ShapleyValues, CausalComputation):
 
   def _shap_1dim(self, x, elements):
     # Computes the Shapley values for a 1-dimensional input x (local explanation).
+    # Only ancestors of the target are causal players; non-ancestors stay at 0.
+    elements = [e for e in elements if e in self._causal_players]
     contributions = np.zeros((self.M, self.bn.variable(self.target).domainSize()))  # Initializes contributions array.
     cache = CustomShapleyCache(5000)
     markovImpact = FIFOCache(1000)
@@ -168,6 +174,8 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     return contributions
 
   def _shap_ndim(self, x, elements):
+    # Only ancestors of the target are causal players; non-ancestors stay at 0.
+    elements = [e for e in elements if e in self._causal_players]
     contributions = np.zeros(
       (self.M, len(x), self.bn.variable(self.target).domainSize())
     )  # Initializes contributions array.

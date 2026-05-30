@@ -59,7 +59,13 @@ def _FMT(func: str) -> str:
   return ".2e" if func == "_identity" else ".2f"
 
 
-def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict | None = None):
+def waterfall(
+  explanation: Explanation,
+  y: int = 1,
+  ax=None,
+  real_values: dict | None = None,
+  filename: str | None = None,
+):
   """
   Plots a waterfall chart of the SHAP/SHALL values.
 
@@ -76,6 +82,9 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict |
       Dictionary used to display custum values for each feature.
       For example, useful when continuous values have been discretized but you still want to show the original continuous values from the database.
       The keys of the dictionary must match the keys in the Explanation object, and the values are the values you want to display on the plot.
+  filename : str, optional
+      If provided, save the figure to this path instead of displaying it (default is None).
+      Ignored when `ax` is supplied by the caller.
 
   Raises
   ------
@@ -108,6 +117,7 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict |
   y_positions = np.arange(len(values) * 0.25, 0, -0.25)
 
   # Create the figure and axis if not provided
+  _own_figure = ax is None
   if ax is None:
     _, ax = plt.subplots()
 
@@ -219,3 +229,7 @@ def waterfall(explanation: Explanation, y: int = 1, ax=None, real_values: dict |
   plt.ylim(min(y_positions) - 1, max(y_positions) + 1)
   delta = max_x - min_x
   plt.xlim(min_x - 0.05 * delta, max_x + 0.05 * delta)
+
+  if filename is not None and _own_figure:
+    ax.figure.savefig(filename)
+    plt.close(ax.figure)

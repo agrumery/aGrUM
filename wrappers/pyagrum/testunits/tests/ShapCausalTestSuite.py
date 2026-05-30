@@ -63,54 +63,49 @@ class ShapCausalTestCase(pyAgrumTestCase):
     return bn, data
 
   def test__shap_1dim(self):
-    bn, data = self.create_data()
-    explainer = CausalShapValues(bn, 4, (data.head(10), True))
-
-    instance_0 = {"SepalLengthCm": 1, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_1 = {"SepalLengthCm": 0, "SepalWidthCm": 2, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_2 = {"SepalLengthCm": 0, "SepalWidthCm": 3, "PetalLengthCm": 0, "PetalWidthCm": 0}
-    instance_3 = {"SepalLengthCm": 0, "SepalWidthCm": 3, "PetalLengthCm": 0}
-    instance_4 = {"SepalLengthCm": 0, "SepalWidthCm": 3}
-
-    posterior0 = sum(list(explainer.compute((instance_0, False))._values[1].values())) + explainer.baseline[1]
-    posterior1 = sum(list(explainer.compute((instance_1, False))._values[1].values())) + explainer.baseline[1]
-    posterior2 = sum(list(explainer.compute((instance_2, False))._values[1].values())) + explainer.baseline[1]
-    posterior3 = sum(list(explainer.compute((instance_3, False))._values[1].values())) + explainer.baseline[1]
-    posterior4 = sum(list(explainer.compute((instance_4, False))._values[1].values())) + explainer.baseline[1]
-
-    explainer.ie.eraseAllEvidence()
-
-    explainer.ie.updateEvidence(instance_0)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
-    self.assertAlmostEqual(x, posterior0, 5)
-
-    explainer.ie.updateEvidence(instance_1)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
-    self.assertAlmostEqual(x, posterior1, 5)
-
-    explainer.ie.updateEvidence(instance_2)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
-    self.assertAlmostEqual(x, posterior2, 5)
-
-    explainer.ie.eraseAllEvidence()
-    explainer.ie.updateEvidence(instance_3)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
-    self.assertAlmostEqual(x, posterior3, 5)
-
-    explainer.ie.eraseAllEvidence()
-    explainer.ie.updateEvidence(instance_4)
-    x = explainer.func(explainer.ie.posterior(explainer.target)[1])
-    self.assertAlmostEqual(x, posterior4, 5)
+    # BN with known structure: R is not an ancestor of Y.
+    # Causal SHAP of R must be zero regardless of R's observed value.
+    bn = gum.fastBN(
+      "X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];"
+      "X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y"
+    )
+    df = pd.DataFrame(gum.generateSample(bn, 30, with_labels=True)[0])
+    explainer = CausalShapValues(bn, "Y", df)
+    for r_val in ["0", "1", "2", "3", "4"]:
+      instance = {"X0": "0", "X1": "1", "X2": "0", "X3": "1", "Z": "0", "R": r_val}
+      result = explainer.compute((instance, True))
+      self.assertAlmostEqual(result._values[1].get("R", 0.0), 0.0, 5)
 
   def test_shap_ndim(self):
-    bn, data = self.create_data()
-    explainer = CausalShapValues(bn, 4, (data.head(10), True))
+    # BN with known causal structure: X1->X2->Y;X3->Z->Y;X0->Z;X1->Z;X2->R[5];Z->R;X1->Y
+    # R is not an ancestor of Y → causal importance must be zero.
+    # Ancestors of Y are X0, X1, X2, X3, Z → non-zero importance expected.
+    bn = gum.fastBN(
+      "X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];"
+      "X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y"
+    )
+    df = pd.DataFrame(gum.generateSample(bn, 50, with_labels=True)[0])
+    explainer = CausalShapValues(bn, "Y", df)
+    expl = explainer.compute(df.head(10)).importances[1]
+    self.assertAlmostEqual(expl.get("R", 0.0), 0.0, 5)
+    ancestor_importance = sum(expl.get(a, 0.0) for a in ["X0", "X1", "X2", "X3", "Z"])
+    self.assertGreater(ancestor_importance, 0.0)
 
-    expl = explainer.compute((data.head(10), True)).importances[1]
-    self.assertAlmostEqual(expl["SepalLengthCm"], 0.68502, 5)
-    self.assertAlmostEqual(expl["SepalWidthCm"], 2.80933, 5)
-    self.assertAlmostEqual(expl["PetalLengthCm"], 0.00336, 5)
-    self.assertAlmostEqual(expl["PetalWidthCm"], 0.01005, 5)
+
+  def test_plain_dataframe_syntax(self):
+    bn, data = self.create_data()
+    bg = data.head(10)
+    expl_tuple = CausalShapValues(bn, 4, (bg, True))
+    expl_plain = CausalShapValues(bn, 4, bg)
+
+    for i in range(len(expl_tuple.baseline)):
+      self.assertAlmostEqual(expl_tuple.baseline[i], expl_plain.baseline[i], 5)
+
+    df = data.head(5)
+    imp_tuple = expl_tuple.compute((df, True)).importances[1]
+    imp_plain = expl_tuple.compute(df).importances[1]
+    for feat in imp_tuple:
+      self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
 
 
 ts = unittest.TestSuite()

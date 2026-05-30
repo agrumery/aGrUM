@@ -147,7 +147,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
     return gr
 
 
-def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
+def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False, show_legend=True):
   """
   repr a bn annotated with results from inference : Information and mutual information
 
@@ -163,6 +163,8 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
     the cmap
   asString: bool
     returns the string or display the HTML
+  show_legend: bool
+    if True, append a colorbar for entropy and an arc-width scale for mutual information
 
   Returns
   -------
@@ -173,6 +175,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   import IPython.core.pylabtools
   from base64 import encodebytes
   from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+  import matplotlib.lines as mlines
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
@@ -180,27 +183,43 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False):
   if evs is None:
     evs = {}
 
-  gr, mi, ma, _, _ = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
+  gr, mi, ma, mi_arc, ma_arc = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
   gumcols.prepareDot(gr, size=size)
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   gsvg = IPython.display.SVG(gr.create_svg(encoding="utf-8"))
+
+  if not show_legend:
+    sss = f"<div align='center'>{gsvg.data}</div>"
+    if asString:
+      return sss
+    return IPython.display.display(IPython.display.HTML(sss))
+
   width = (
     int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams["figure.dpi"]
   )  # pixel in inches
   if width < 5:
     width = 5
 
-  fig = mpl.figure.Figure(figsize=(width, 1))
+  fig = mpl.figure.Figure(figsize=(width, 1.0))
   fig.patch.set_alpha(0)
   canvas = fc(fig)
-  ax1 = fig.add_axes([0.05, 0.80, 0.9, 0.15])
+
+  # Arc width legend for mutual information (top)
+  ax2 = fig.add_axes([0.0, 0.52, 1.0, 0.42])
+  ax2.set_axis_off()
+  ax2.set_facecolor("none")
+  thin = mlines.Line2D([], [], color="black", linewidth=0.5, label=f"min MI = {mi_arc:.4f}")
+  thick = mlines.Line2D([], [], color="black", linewidth=4, label=f"max MI = {ma_arc:.4f}")
+  ax2.legend(handles=[thin, thick], loc="center", ncol=2, framealpha=0)
+
+  # Entropy colorbar (below arc legend), min/max on the label line
+  ax1 = fig.add_axes([0.05, 0.05, 0.9, 0.38])
   norm = mpl.colors.Normalize(vmin=mi, vmax=ma)
   cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap, norm=norm, orientation="horizontal")
-  cb1.set_label("Entropy")
-  cb1.ax.text(mi, -2, f"{mi:.4f}", ha="left", va="top", color=gumcols.proba2bgcolor(0.01, cmap))
-  cb1.ax.text(ma, -2, f"{ma:.4f}", ha="right", va="top", color=gumcols.proba2bgcolor(0.99, cmap))
+  cb1.set_label(f"{mi:.4f}   Entropy   {ma:.4f}")
+
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = f"<img style='vertical-align:middle' src='data:image/png;base64,{encodebytes(png).decode('ascii')}'>"
 
@@ -241,9 +260,11 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap) -> str:
   return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
+def showInformation(bn, evs=None, size=None, cmap=_INFOcmap, show_legend=True):
   """
-  diplay a bn annotated with results from inference : entropy and mutual information
+  Display a bn annotated with results from inference : entropy and mutual information.
+
+  Node color encodes entropy; arc width encodes mutual information between endpoints.
 
   Parameters
   ----------
@@ -255,10 +276,13 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap):
     size of the rendered graph
   cmap: matplotlib.colours.Colormap
     the cmap
+  show_legend: bool
+    if True, display a colorbar for entropy and an arc-width scale for mutual information
+    (default is False)
   """
   if evs is None:
     evs = {}
 
   if size is None:
     size = pyagrum.config["notebook", "default_graph_size"]
-  return _reprInformation(bn, evs, size, cmap, asString=False)
+  return _reprInformation(bn, evs, size, cmap, asString=False, show_legend=show_legend)
