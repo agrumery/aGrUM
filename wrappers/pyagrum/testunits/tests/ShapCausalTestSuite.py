@@ -65,10 +65,7 @@ class ShapCausalTestCase(pyAgrumTestCase):
   def test__shap_1dim(self):
     # BN with known structure: R is not an ancestor of Y.
     # Causal SHAP of R must be zero regardless of R's observed value.
-    bn = gum.fastBN(
-      "X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];"
-      "X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y"
-    )
+    bn = gum.fastBN("X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y")
     df = pd.DataFrame(gum.generateSample(bn, 30, with_labels=True)[0])
     explainer = CausalShapValues(bn, "Y", df)
     for r_val in ["0", "1", "2", "3", "4"]:
@@ -80,17 +77,13 @@ class ShapCausalTestCase(pyAgrumTestCase):
     # BN with known causal structure: X1->X2->Y;X3->Z->Y;X0->Z;X1->Z;X2->R[5];Z->R;X1->Y
     # R is not an ancestor of Y → causal importance must be zero.
     # Ancestors of Y are X0, X1, X2, X3, Z → non-zero importance expected.
-    bn = gum.fastBN(
-      "X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];"
-      "X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y"
-    )
+    bn = gum.fastBN("X0[2];X1[2];X2[2];X3[2];Z[2];Y[2];R[5];X1->X2;X2->Y;X3->Z;Z->Y;X0->Z;X1->Z;X2->R;Z->R;X1->Y")
     df = pd.DataFrame(gum.generateSample(bn, 50, with_labels=True)[0])
     explainer = CausalShapValues(bn, "Y", df)
     expl = explainer.compute(df.head(10)).importances[1]
     self.assertAlmostEqual(expl.get("R", 0.0), 0.0, 5)
     ancestor_importance = sum(expl.get(a, 0.0) for a in ["X0", "X1", "X2", "X3", "Z"])
     self.assertGreater(ancestor_importance, 0.0)
-
 
   def test_plain_dataframe_syntax(self):
     bn, data = self.create_data()

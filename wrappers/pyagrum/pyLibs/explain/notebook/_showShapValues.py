@@ -46,7 +46,9 @@ from pyagrum.explain import Explanation
 import matplotlib.pyplot as plt
 
 
-def showShapValues(bn: pyagrum.BayesNet, expl: Explanation | dict, cmap="plasma", y=1, show_legend=False, filename: str | None = None):
+def showShapValues(
+  bn: pyagrum.BayesNet, expl: Explanation | dict, cmap="plasma", y=1, show_legend=False, filename: str | None = None
+):
   """
   Show the Shap values in the DAG of the BN
 

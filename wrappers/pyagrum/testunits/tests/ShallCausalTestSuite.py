@@ -104,7 +104,6 @@ class ShallMarginalTestCase(pyAgrumTestCase):
     x = explainer.func(bn.jointProbability(inst))
     self.assertAlmostEqual(x, joint4, 5)
 
-
   def test_plain_dataframe_syntax(self):
     bn, data, inst, explainer = ShallMarginalTestCase.create_data()
     expl_plain = CausalShallValues(bn, background=data, log=True)

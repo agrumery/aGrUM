@@ -116,7 +116,6 @@ class ShapConditionalTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(expl.importances[1]["PetalLengthCm"], 3.68744, 5)
     self.assertAlmostEqual(expl.importances[1]["PetalWidthCm"], 3.38405, 5)
 
-
   def test_plain_dataframe_syntax(self):
     data = pd.read_csv("tests/resources/iris.csv")
     data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)

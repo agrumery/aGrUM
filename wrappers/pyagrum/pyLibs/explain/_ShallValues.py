@@ -54,7 +54,9 @@ class ShallValues(Explainer):
   The ShallValues class is an abstract base class for computing Shall values in a Bayesian Network.
   """
 
-  def __init__(self, bn: pyagrum.BayesNet, background: pd.DataFrame | tuple | None, sample_size: int = 1000, log: bool = True):
+  def __init__(
+    self, bn: pyagrum.BayesNet, background: pd.DataFrame | tuple | None, sample_size: int = 1000, log: bool = True
+  ):
     """
     Notes
     -----

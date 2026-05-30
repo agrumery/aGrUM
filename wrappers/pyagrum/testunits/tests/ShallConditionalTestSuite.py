@@ -104,7 +104,6 @@ class ShallConditionalTest(pyAgrumTestCase):
     x = explainer.func(bn.jointProbability(inst))
     self.assertAlmostEqual(x, joint4, 5)
 
-
   def test_plain_dataframe_syntax(self):
     bn, data, inst, explainer = ShallConditionalTest.create_data()
     expl_plain = ConditionalShallValues(bn, background=data.head(150), log=True)

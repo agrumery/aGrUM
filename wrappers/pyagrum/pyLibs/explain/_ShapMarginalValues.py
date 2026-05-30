@@ -59,7 +59,9 @@ class MarginalShapValues(ShapleyValues, MarginalComputation):
   The MarginalShapValues class computes the Marginal Shapley values for a given target node in a Bayesian Network.
   """
 
-  def __init__(self, bn: pyagrum.BayesNet, target: int, background: pd.DataFrame | tuple | None, sample_size=1000, logit=True):
+  def __init__(
+    self, bn: pyagrum.BayesNet, target: int, background: pd.DataFrame | tuple | None, sample_size=1000, logit=True
+  ):
     """
     Parameters
     ----------

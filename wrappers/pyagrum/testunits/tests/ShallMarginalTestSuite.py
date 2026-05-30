@@ -101,7 +101,6 @@ class ShallMarginalTest(pyAgrumTestCase):
     x = round(explainer.func(bn.jointProbability(inst)), 5)
     self.assertAlmostEqual(x, joint4, 5)
 
-
   def test_plain_dataframe_syntax(self):
     bn, data, explainer, inst = ShallMarginalTest.create_data()
     expl_plain = MarginalShallValues(bn, background=data, log=True)
