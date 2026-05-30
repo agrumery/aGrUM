@@ -66,7 +66,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       gum.BNLearner("shouldNotExist.csv")
 
   def testHillClimbingAccurate(self):
-    reference = gum.loadBN(self.agrumSrcDir("asia2.bif"), verbose=False)
+    reference = gum.loadBN(self.agrumSrcDir("asia2.bgum"), verbose=False)
 
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"), reference)
 
@@ -97,7 +97,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       gum.BNLearner("shouldNotExist.csv")
 
   def testLocalSearchWithTabuAccurate(self):
-    reference = gum.loadBN(self.agrumSrcDir("asia2.bif"), verbose=False)
+    reference = gum.loadBN(self.agrumSrcDir("asia2.bgum"), verbose=False)
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"), reference)
     learner.useLocalSearchWithTabuList()
     bn = learner.learnBN()
@@ -106,7 +106,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
 
   def testParameterLearning(self):
-    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bif"), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bgum"), verbose=False)
 
     learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"), bn)
     learner.useScoreLog2Likelihood()
@@ -121,7 +121,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     for i in range(bn.size()):
       self.assertListsAlmostEqual(bn3.cpt(i).tolist(), bn2.cpt(i).tolist(), delta=0.01)
 
-    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bif"), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir("asia_bool.bgum"), verbose=False)
     # there is a beurk modality in asia3-faulty.csv
     with self.assertRaises(gum.UnknownLabelInDatabase):
       gum.BNLearner(self.agrumSrcDir("asia3-faulty.csv"), bn)

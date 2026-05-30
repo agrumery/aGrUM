@@ -46,7 +46,7 @@ from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 class LazyPropagationTestCase(pyAgrumTestCase):
   def testEvidenceImpactWithNodeId(self):
-    bn = gum.loadBN(self.agrumSrcDir("asia.bif"), [], verbose=False)  # verbose=False : don't want to see the warnings
+    bn = gum.loadBN(self.agrumSrcDir("asia.bgum"), [], verbose=False)  # verbose=False : don't want to see the warnings
 
     ie = gum.LazyPropagation(bn)
 
@@ -63,7 +63,7 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     self.assertEqual(res.extract({"tuberculosis?": 1}), gum.getPosterior(bn, target=0, evs={1: 1}))
 
   def testEvidenceImpactWithName(self):
-    bn = gum.loadBN(self.agrumSrcDir("asia.bif"), [], verbose=False)  # verbose=False : don't want to see the warnings
+    bn = gum.loadBN(self.agrumSrcDir("asia.bgum"), [], verbose=False)  # verbose=False : don't want to see the warnings
 
     ie = gum.LazyPropagation(bn)
     with self.assertRaises(gum.InvalidArgument):

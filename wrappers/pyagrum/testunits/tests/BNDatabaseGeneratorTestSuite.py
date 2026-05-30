@@ -56,7 +56,7 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     _ = gum.BNDatabaseGenerator(bn)
 
   def testSetVarOrder(self):
-    bn = gum.loadBN(self.agrumSrcDir("survey.bif"))
+    bn = gum.loadBN(self.agrumSrcDir("survey.bgum"))
     dbgen = gum.BNDatabaseGenerator(bn)
 
     dbgen.setVarOrderFromCSV(self.agrumSrcDir("survey1.csv"))

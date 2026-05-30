@@ -1,30 +1,42 @@
-# (c) Copyright 2005-2026 by                                               #
-#   - Pierre-Henri WUILLEMIN(_at_LIP6)                                     #
-#   - Christophe GONZALES(_at_AMU)                                         #
-# The aGrUM/pyAgrum library is free software; you can redistribute it      #
-# and/or modify it under the terms of either :                             #
-#  - the GNU Lesser General Public License as published by                 #
-#    the Free Software Foundation, either version 3 of the License,        #
-#    or (at your option) any later version,                                #
-#  - the MIT license (MIT),                                                #
-#  - or both in dual license, as here.                                     #
-# (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)      #
-# This aGrUM/pyAgrum library is distributed in the hope that it will be    #
-# useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,            #
-# INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS   #
-# FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE     #
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER   #
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,          #
-# ARISING FROM, OUT OF OR IN conn WITH THE SOFTWARE OR THE USE OR          #
-# OTHER DEALINGS IN THE SOFTWARE.                                           #
-# See LICENCES for more details.                                            #
-# SPDX-FileCopyrightText: Copyright 2005-2026                              #
-#     - Pierre-Henri WUILLEMIN(_at_LIP6)                                   #
-#     - Christophe GONZALES(_at_AMU)                                       #
-# SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                        #
-# Contact  : info_at_agrum_dot_org                                          #
-# homepage : http://agrum.gitlab.io                                         #
-# gitlab   : https://gitlab.com/agrumery/agrum                             #
+############################################################################
+#   This file is part of the aGrUM/pyAgrum library.                        #
+#                                                                          #
+#   Copyright (c) 2005-2026 by                                             #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#                                                                          #
+#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
+#   and/or modify it under the terms of either :                           #
+#                                                                          #
+#    - the GNU Lesser General Public License as published by               #
+#      the Free Software Foundation, either version 3 of the License,      #
+#      or (at your option) any later version,                              #
+#    - the MIT license (MIT),                                              #
+#    - or both in dual license, as here.                                   #
+#                                                                          #
+#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
+#                                                                          #
+#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
+#                                                                          #
+#   Contact  : info_at_agrum_dot_org                                       #
+#   homepage : http://agrum.gitlab.io                                      #
+#   gitlab   : https://gitlab.com/agrumery/agrum                           #
+#                                                                          #
+############################################################################
 
 from typing import Union
 
@@ -181,14 +193,9 @@ class qBNMC:
     dict[int, QuantumRegister]
         Node ID → QuantumRegister sized to hold the variable.
     """
-    return {
-      n_id: QuantumRegister(self.getWidth(n_id), str(n_id))
-      for n_id in self.bn.nodes()
-    }
+    return {n_id: QuantumRegister(self.getWidth(n_id), str(n_id)) for n_id in self.bn.nodes()}
 
-  def indicatorFunction(
-    self, binary_list: list[list[int]], targets: dict[int, int], verbose: int = 0
-  ) -> list[bool]:
+  def indicatorFunction(self, binary_list: list[list[int]], targets: dict[int, int], verbose: int = 0) -> list[bool]:
     """Match binary strings against target conditions (eq17/eq19).
 
     Parameters
@@ -338,9 +345,13 @@ class qBNMC:
 
       popped_qb = target_copy.pop(0)
 
-      self.multiQubitRotation(circuit, node, target_copy, {**param_qbs, **{popped_qb: 1}}, param_nodes, control_qbs, verbose=verbose)
+      self.multiQubitRotation(
+        circuit, node, target_copy, {**param_qbs, **{popped_qb: 1}}, param_nodes, control_qbs, verbose=verbose
+      )
       circuit.append(X, qargs=control_qbs + params_qb_list + [popped_qb])
-      self.multiQubitRotation(circuit, node, target_copy, {**param_qbs, **{popped_qb: 0}}, param_nodes, control_qbs, verbose=verbose)
+      self.multiQubitRotation(
+        circuit, node, target_copy, {**param_qbs, **{popped_qb: 0}}, param_nodes, control_qbs, verbose=verbose
+      )
       circuit.append(X, qargs=control_qbs + params_qb_list + [popped_qb])
 
     if verbose > 0:
@@ -431,7 +442,7 @@ class qBNMC:
         matches = [
           val
           for key, val in counts_aer.items()
-          if key[::-1][self.n_qb_map[n_id][0]: self.n_qb_map[n_id][-1] + 1] == pattern
+          if key[::-1][self.n_qb_map[n_id][0] : self.n_qb_map[n_id][-1] + 1] == pattern
         ]
         probability_vector.append(np.sum(matches) / shots)
       res[self.bn.variable(n_id).name()] = probability_vector
