@@ -582,7 +582,6 @@ namespace gum {
         std::vector< GUM_SCALAR > vertex(var_dSize);
 
         for (Size entry = 0; entry < entry_size; entry++) {
-          GUM_SCALAR    den      = 0;
           bool          zeroes   = false;
           Instantiation ins_prev = ins;
 
@@ -594,8 +593,6 @@ namespace gum {
                         "lagrangeNormalization : the BayesNet "
                         "contains probabilities and not event "
                         "counts.");
-
-            den += vertex[modality];
 
             if (!zeroes && vertex[modality] == 0) { zeroes = true; }
 

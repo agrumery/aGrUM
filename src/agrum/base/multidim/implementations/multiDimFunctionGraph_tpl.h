@@ -97,6 +97,13 @@ namespace gum {
     this->clear();
   }
 
+  // GCC false positive: deep inlining of newFactory() through Tensor copy-ctor loses virtual
+  // dispatch, making GCC believe a MultiDimFunctionGraph (larger) is accessed on a MultiDimArray
+  // allocation (512 bytes). The access is safe at runtime because the virtual call is correct.
+#ifdef __GNUC__
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE MultiDimContainer< GUM_ELEMENT >*
          MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::newFactory() const {
@@ -105,6 +112,9 @@ namespace gum {
                                     TerminalNodePolicy >::getReducedAndOrderedInstance();
     else return MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getTreeInstance();
   }
+#ifdef __GNUC__
+#  pragma GCC diagnostic pop
+#endif
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   INLINE const std::string& MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::name() const {

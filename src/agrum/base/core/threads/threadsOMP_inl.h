@@ -98,7 +98,11 @@ namespace gum {
 
     INLINE void setNestedParallelism(bool value) {
 #ifdef _OPENMP
-      omp_set_nested(((value == true) ? 1 : 0));
+#  if _OPENMP >= 201811
+      omp_set_max_active_levels(value ? omp_get_supported_active_levels() : 1);
+#  else
+      omp_set_nested(value ? 1 : 0);
+#  endif
 #else
       GUM_ERROR(OperationNotAllowed,
                 "openMP was not enabled at compilation (and you "
@@ -108,7 +112,11 @@ namespace gum {
 
     INLINE bool getNestedParallelism() {
 #ifdef _OPENMP
-      return ((omp_get_nested() == 0) ? false : true);
+#  if _OPENMP >= 201811
+      return omp_get_max_active_levels() > 1;
+#  else
+      return omp_get_nested() != 0;
+#  endif
 #else
       return false;
 #endif
