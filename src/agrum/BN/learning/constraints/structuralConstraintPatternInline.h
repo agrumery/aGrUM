@@ -68,6 +68,20 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal(NodeId x, NodeId y) cons
   return constraints::checkArcReversal(x, y) && checkArcReversalAlone(x, y);
 }
 
+/// checks whether the constraints enable to apply an ArcTriangleDeletion1
+INLINE bool
+    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) const {
+  return constraints::checkArcTriangleDeletion1(node1, node2, node3)
+      && checkArcTriangleDeletion1Alone(node1, node2, node3);
+}
+
+/// checks whether the constraints enable to apply an ArcTriangleDeletion2
+INLINE bool
+    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) const {
+  return constraints::checkArcTriangleDeletion2(node1, node2, node3)
+      && checkArcTriangleDeletion2Alone(node1, node2, node3);
+}
+
 /// notify the constraint of a modification of the graph
 INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcAddition& change) {
   constraints::modifyGraph(change);
@@ -82,6 +96,18 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcDeletion& change) {
 
 /// notify the constraint of a modification of the graph
 INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcReversal& change) {
+  constraints::modifyGraph(change);
+  modifyGraphAlone(change);
+}
+
+/// notify the constraint of a modification of the graph
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcTriangleDeletion1& change) {
+  constraints::modifyGraph(change);
+  modifyGraphAlone(change);
+}
+
+/// notify the constraint of a modification of the graph
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcTriangleDeletion2& change) {
   constraints::modifyGraph(change);
   modifyGraphAlone(change);
 }
@@ -112,6 +138,16 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& chan
   return checkArcReversal(change.node1(), change.node2());
 }
 
+/// checks whether the constraints enable to apply an ArcTriangleDeletion1
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcTriangleDeletion1& change) const {
+  return checkArcTriangleDeletion1(change.node1(), change.node2(), change.node3());
+}
+
+/// checks whether the constraints enable to apply an ArcTriangleDeletion2
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcTriangleDeletion2& change) const {
+  return checkArcTriangleDeletion2(change.node1(), change.node2(), change.node3());
+}
+
 /// checks whether the constraints enable to perform a graph change
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& change) const {
   switch (change.type()) {
@@ -120,6 +156,12 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const GraphChange& chan
     case GraphChangeType::ARC_DELETION : return checkArcDeletion(change.node1(), change.node2());
 
     case GraphChangeType::ARC_REVERSAL : return checkArcReversal(change.node1(), change.node2());
+
+    case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+      return checkArcTriangleDeletion1(change.node1(), change.node2(), change.node3());
+
+    case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+      return checkArcTriangleDeletion2(change.node1(), change.node2(), change.node3());
 
     default :
       GUM_ERROR(OperationNotAllowed, "edge modifications are not supported by the constraint")

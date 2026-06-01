@@ -56,138 +56,156 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        GraphChangesSelector4DiGraph(Score&                   score,
-                                     STRUCTURAL_CONSTRAINT&   constraint,
-                                     GRAPH_CHANGES_GENERATOR& changes_generator) :
-        _score_(score.clone()), _constraint_(&constraint), _changes_generator_(&changes_generator) {
-      _parents_.resize(32);
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        GraphChangesSelector4DiGraph(Score&                      score,
+                                     INVARIABLE_CONSTRAINT_TYPE& invariable_constraints,
+                                     VARIABLE_CONSTRAINT_TYPE&   variable_constraints) :
+        _score_(&score), _invariable_constraints_(&invariable_constraints),
+        _variable_constraints_(&variable_constraints) {
       GUM_CONSTRUCTOR(GraphChangesSelector4DiGraph);
     }
 
     /// copy constructor
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
         GraphChangesSelector4DiGraph(
-            const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-                from) :
-        _score_(from._score_ != nullptr ? from._score_->clone() : nullptr),
-        _constraint_(from._constraint_), _changes_generator_(from._changes_generator_),
-        _changes_(from._changes_), _change_scores_(from._change_scores_),
-        _change_queue_per_node_(from._change_queue_per_node_), _node_queue_(from._node_queue_),
-        _illegal_changes_(from._illegal_changes_),
-        _node_current_scores_(from._node_current_scores_), _parents_(from._parents_),
-        _queues_valid_(from._queues_valid_), _queues_to_update_(from._queues_to_update_) {
+            const GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                VARIABLE_CONSTRAINT_TYPE >& from) :
+        _score_(from._score_), _invariable_constraints_(from._invariable_constraints_),
+        _variable_constraints_(from._variable_constraints_), _graph_(from._graph_),
+        _node_scores_(from._node_scores_), _node_parents_(from._node_parents_),
+        _sorted_changes_(from._sorted_changes_), _removed_nodes_(from._removed_nodes_),
+        _use_arc_additions_(from._use_arc_additions_),
+        _use_arc_deletions_(from._use_arc_deletions_),
+        _use_arc_reversals_(from._use_arc_reversals_),
+        _use_arc_triangle_deletions_(from._use_arc_triangle_deletions_) {
       // for debugging
       GUM_CONS_CPY(GraphChangesSelector4DiGraph);
     }
 
     /// move constructor
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
         GraphChangesSelector4DiGraph(
-            GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from) :
-        _score_(from._score_), _constraint_(std::move(from._constraint_)),
-        _changes_generator_(std::move(from._changes_generator_)),
-        _changes_(std::move(from._changes_)), _change_scores_(std::move(from._change_scores_)),
-        _change_queue_per_node_(std::move(from._change_queue_per_node_)),
-        _node_queue_(std::move(from._node_queue_)),
-        _illegal_changes_(std::move(from._illegal_changes_)),
-        _node_current_scores_(std::move(from._node_current_scores_)),
-        _parents_(std::move(from._parents_)), _queues_valid_(std::move(from._queues_valid_)),
-        _queues_to_update_(std::move(from._queues_to_update_)) {
-      from._score_ = nullptr;
+            GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >&&
+                from) :
+        _score_(from._score_), _invariable_constraints_(from._invariable_constraints_),
+        _variable_constraints_(from._variable_constraints_), _graph_(from._graph_),
+        _node_scores_(std::move(from._node_scores_)),
+        _node_parents_(std::move(from._node_parents_)),
+        _sorted_changes_(std::move(from._sorted_changes_)),
+        _removed_nodes_(std::move(from._removed_nodes_)),
+        _use_arc_additions_(from._use_arc_additions_),
+        _use_arc_deletions_(from._use_arc_deletions_),
+        _use_arc_reversals_(from._use_arc_reversals_),
+        _use_arc_triangle_deletions_(from._use_arc_triangle_deletions_) {
       // for debugging
       GUM_CONS_MOV(GraphChangesSelector4DiGraph);
     }
 
     /// destructor
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::~GraphChangesSelector4DiGraph() {
-      if (_score_ != nullptr) delete _score_;
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::~GraphChangesSelector4DiGraph() {
       GUM_DESTRUCTOR(GraphChangesSelector4DiGraph);
     }
 
     /// copy operator
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::operator=(
-            const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-                from) {
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >&
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            operator=(const GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                          VARIABLE_CONSTRAINT_TYPE >& from) {
       if (this != &from) {
-        // remove the old score
-        if (_score_ != nullptr) {
-          delete _score_;
-          _score_ = nullptr;
-        }
-
-        if (from._score_ != nullptr) _score_ = from._score_->clone();
-        _constraint_            = from._constraint_;
-        _changes_generator_     = from._changes_generator_;
-        _changes_               = from._changes_;
-        _change_scores_         = from._change_scores_;
-        _change_queue_per_node_ = from._change_queue_per_node_;
-        _node_queue_            = from._node_queue_;
-        _illegal_changes_       = from._illegal_changes_;
-        _node_current_scores_   = from._node_current_scores_;
-        _parents_               = from._parents_;
-        _queues_valid_          = from._queues_valid_;
-        _queues_to_update_      = from._queues_to_update_;
+        _score_                      = from._score_;
+        _invariable_constraints_     = from._invariable_constraints_;
+        _variable_constraints_       = from._variable_constraints_;
+        _graph_                      = from._graph_;
+        _node_scores_                = from._node_scores_;
+        _node_parents_               = from._node_parents_;
+        _sorted_changes_             = from._sorted_changes_;
+        _removed_nodes_              = from._removed_nodes_;
+        _use_arc_additions_          = from._use_arc_additions_;
+        _use_arc_deletions_          = from._use_arc_deletions_;
+        _use_arc_reversals_          = from._use_arc_reversals_;
+        _use_arc_triangle_deletions_ = from._use_arc_triangle_deletions_;
       }
 
       return *this;
     }
 
     /// move operator
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::operator=(
-            GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from) {
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >&
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            operator=(GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                    VARIABLE_CONSTRAINT_TYPE >&& from) {
       if (this != &from) {
-        _score_      = from._score_;
-        from._score_ = nullptr;
-
-        _constraint_            = std::move(from._constraint_);
-        _changes_generator_     = std::move(from._changes_generator_);
-        _changes_               = std::move(from._changes_);
-        _change_scores_         = std::move(from._change_scores_);
-        _change_queue_per_node_ = std::move(from._change_queue_per_node_);
-        _node_queue_            = std::move(from._node_queue_);
-        _illegal_changes_       = std::move(from._illegal_changes_);
-        _node_current_scores_   = std::move(from._node_current_scores_);
-        _parents_               = std::move(from._parents_);
-        _queues_valid_          = std::move(from._queues_valid_);
-        _queues_to_update_      = std::move(from._queues_to_update_);
+        _score_                      = from._score_;
+        _invariable_constraints_     = from._invariable_constraints_;
+        _variable_constraints_       = from._variable_constraints_;
+        _graph_                      = from._graph_;
+        _node_scores_                = std::move(from._node_scores_);
+        _node_parents_               = std::move(from._node_parents_);
+        _sorted_changes_             = std::move(from._sorted_changes_);
+        _removed_nodes_              = std::move(from._removed_nodes_);
+        _use_arc_additions_          = from._use_arc_additions_;
+        _use_arc_deletions_          = from._use_arc_deletions_;
+        _use_arc_reversals_          = from._use_arc_reversals_;
+        _use_arc_triangle_deletions_ = from._use_arc_triangle_deletions_;
       }
 
       return *this;
     }
 
-    /// indicates whether a given change is valid or not
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        isChangeValid(const GraphChange& change) const {
-      return _constraint_->checkModification(change);
+    /// returns the set of invariable constraints used by the selector
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE INVARIABLE_CONSTRAINT_TYPE&
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::invariableConstraints() {
+      return *_invariable_constraints_;
     }
 
-    /// indicates whether a given change is valid or not
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        _isChangeValid_(const std::size_t index) const {
-      return isChangeValid(_changes_[index]);
+    /// returns the set of variable constraints used by the selector
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE VARIABLE_CONSTRAINT_TYPE&
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::variableConstraints() {
+      return *_variable_constraints_;
     }
 
     /// sets the graph from which scores are computed
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::setGraph(
-        DiGraph& graph) {
-      // fill the DAG with all the missing nodes
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::setGraph(DiGraph& graph) {
+      _graph_ = &graph;
+
+      // remove the nodes of grapĥ that belong neither to the database nor to nodeId2Columns
       const DatabaseTable& database       = _score_->database();
       const auto&          nodeId2Columns = _score_->nodeId2Columns();
 
+      _removed_nodes_.clear();
+      if (nodeId2Columns.empty()) {
+        const NodeId nb_nodes = NodeId(database.nbVariables());
+        for (auto node: graph) {
+          if (node >= nb_nodes) {
+            graph.eraseNode(node);
+            _removed_nodes_.insert(node);
+          }
+        }
+      } else {
+        for (auto node: graph) {
+          if (!nodeId2Columns.existsFirst(node)) {
+            graph.eraseNode(node);
+            _removed_nodes_.insert(node);
+          }
+        }
+      }
+
+      // fill the DAG with all the missing nodes. This is convenient to allow the user
+      // to just specify a partial graph
       if (nodeId2Columns.empty()) {
         const NodeId nb_nodes = NodeId(database.nbVariables());
         for (NodeId i = NodeId(0); i < nb_nodes; ++i) {
@@ -200,752 +218,1187 @@ namespace gum {
         }
       }
 
+      // indicate to the constraints the new graph to which the learning will be applied
+      _invariable_constraints_->setGraph(graph);
+      _variable_constraints_->setGraph(graph);
 
-      // remove the node that do belong neither to the database
-      // nor to nodeId2Columns
-      if (nodeId2Columns.empty()) {
-        const NodeId nb_nodes = NodeId(database.nbVariables());
-        for (auto node: graph) {
-          if (node >= nb_nodes) { graph.eraseNode(node); }
-        }
-      } else {
-        for (auto node: graph) {
-          if (!nodeId2Columns.existsFirst(node)) { graph.eraseNode(node); }
-        }
-      }
-
-
-      //  _constraint_ is the constraint used by the selector to restrict the set
-      // of applicable changes. However, the generator may have a different set
-      // of constraints (e.g., a constraintSliceOrder needs be tested only by the
-      // generator because the changes returned by the generator will always
-      // statisfy this constraint, hence the selector needs not test this
-      // constraint). Therefore, if the selector and generator have different
-      // constraints, both should use method setGraph() to initialize
-      // themselves.
-      _constraint_->setGraph(graph);
-      if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-          != _constraint_) {
-        _changes_generator_->constraint().setGraph(graph);
-      }
-
-      _changes_generator_->setGraph(graph);
-
-
-      // save the set of parents of each node (this will speed-up the
-      // computations of the scores)
-      const std::size_t nb_nodes = graph.size();
+      // save the set of parents of each node (this will speed-up the computations of the scores)
+      const auto nb_nodes = graph.size();
+      _node_parents_.clear();
+      _node_parents_.resize(nb_nodes);
       {
         const std::vector< NodeId > empty_pars;
-        _parents_.clear();
-        _parents_.resize(nb_nodes);
         for (const auto node: graph) {
-          auto&          node_parents = _parents_.insert(node, empty_pars).second;
+          auto&          node_parents = _node_parents_.insert(node, empty_pars).second;
           const NodeSet& dag_parents  = graph.parents(node);
           if (!dag_parents.empty()) {
             node_parents.resize(dag_parents.size());
-            std::size_t j = std::size_t(0);
+            Idx j = Idx(0);
             for (const auto par: dag_parents) {
-              node_parents[j] = par;
-              ++j;
+              node_parents[j++] = par;
             }
           }
         }
       }
 
       // assign a score to each node given its parents in the current graph
-      _node_current_scores_.clear();
-      _node_current_scores_.resize(nb_nodes);
+      _score_->clearCache();
+      _node_scores_.clear();
+      _node_scores_.resize(nb_nodes);
       for (const auto node: graph) {
-        _node_current_scores_.insert(node, _score_->score(node, _parents_[node]));
+        _node_scores_.insert(node, _score_->score(node, _node_parents_[node]));
       }
 
       // compute all the possible changes
-      _changes_.clear();
-      _changes_.resize(nb_nodes);
-      for (const auto& change: *_changes_generator_) {
-        _changes_ << change;
-      }
-      _changes_generator_->notifyGetCompleted();
+      _sorted_changes_.clear();
+      _sorted_changes_.resize(nb_nodes * nb_nodes);
 
-      // determine the changes that are illegal and prepare the computation of
-      // the scores of all the legal changes
-      _illegal_changes_.clear();
+      if (_use_arc_additions_) _initSortedChangesWithArcAdditions_(graph);
+      if (_use_arc_deletions_) _initSortedChangesWithArcDeletions_(graph);
+      if (_use_arc_reversals_) _initSortedChangesWithArcReversals_(graph);
+      if (_use_arc_triangle_deletions_) _initSortedChangesWithArcTriangleDeletions_(graph);
+    }
 
-      // set the  _change_scores_ and  _change_queue_per_node_ for legal changes
-      _change_scores_.clear();
-      _change_scores_.resize(_changes_.size(),
-                             std::pair< double, double >(std::numeric_limits< double >::min(),
-                                                         std::numeric_limits< double >::min()));
-      _change_queue_per_node_.clear();
-      _change_queue_per_node_.resize(nb_nodes);
-      {
-        const PriorityQueue< std::size_t, double, std::greater< double > > empty_prio;
-        for (const auto node: graph) {
-          _change_queue_per_node_.insert(node, empty_prio);
+    /// sets whether or not the selector allows the application of arc additions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::useArcAdditions(bool use) {
+      if (use) {
+        // do something only if we did not yet allow the application of arc additions
+        if (!_use_arc_additions_) {
+          // add the arc additions to _sorted_changes_
+          if (_graph_ != nullptr) _initSortedChangesWithArcAdditions_(*_graph_);
+          _use_arc_additions_ = true;
+        }
+      } else {
+        // do something only if we currently allowed the application of arc additions
+        if (_use_arc_additions_) {
+          // remove the arc additions from _sorted_changes_
+          for (auto& change: _sorted_changes_) {
+            if (change.type() == GraphChangeType::ARC_ADDITION) {
+              _sorted_changes_.erase(change, true);
+            }
+          }
+          _use_arc_additions_ = false;
         }
       }
+    }
 
-      for (std::size_t i = std::size_t(0); i < _changes_.size(); ++i) {
-        if (!_isChangeValid_(i)) {
-          _illegal_changes_.insert(i);
-        } else {
-          const GraphChange& change = _changes_[i];
+    /// sets whether or not the selector allows the application of arc deletions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::useArcDeletions(bool use) {
+      if (use) {
+        // do something only if we did not yet allow the application of arc deletions
+        if (!_use_arc_deletions_) {
+          // add the arc deletions to _sorted_changes_
+          if (_graph_ != nullptr) _initSortedChangesWithArcDeletions_(*_graph_);
+          _use_arc_deletions_ = true;
+        }
+      } else {
+        // do something only if we currently allowed the application of arc deletions
+        if (_use_arc_deletions_) {
+          // remove the arc deletions from _sorted_changes_
+          for (auto& change: _sorted_changes_) {
+            if (change.type() == GraphChangeType::ARC_DELETION) {
+              _sorted_changes_.erase(change, true);
+            }
+          }
+          _use_arc_deletions_ = false;
+        }
+      }
+    }
 
-          switch (change.type()) {
-            case GraphChangeType::ARC_ADDITION : {
-              auto& parents = _parents_[change.node2()];
-              parents.push_back(change.node1());
-              const double delta
-                  = _score_->score(change.node2(), parents) - _node_current_scores_[change.node2()];
-              parents.pop_back();
+    /// sets whether or not the selector allows the application of arc reversals
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::useArcReversals(bool use) {
+      if (use) {
+        // do something only if we did not yet allow the application of arc reversals
+        if (!_use_arc_reversals_) {
+          // add the arc reversals to _sorted_changes_
+          if (_graph_ != nullptr) _initSortedChangesWithArcReversals_(*_graph_);
+          _use_arc_reversals_ = true;
+        }
+      } else {
+        // do something only if we currently allowed the application of arc reversals
+        if (_use_arc_reversals_) {
+          // remove the arc reversals from _sorted_changes_
+          for (auto& change: _sorted_changes_) {
+            if (change.type() == GraphChangeType::ARC_REVERSAL) {
+              _sorted_changes_.erase(change, true);
+            }
+          }
+          _use_arc_reversals_ = false;
+        }
+      }
+    }
 
-              _change_scores_[i].second = delta;
-              _change_queue_per_node_[change.node2()].insert(i, delta);
-            } break;
+    /// sets whether or not the selector allows the application of arc triangle deletions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        useArcTriangleDeletions(bool use) {
+      if (use) {
+        // do something only if we did not yet allow the application of arc triangle deletions
+        if (!_use_arc_triangle_deletions_) {
+          // add the arc triangle deletions to _sorted_changes_
+          if (_graph_ != nullptr) _initSortedChangesWithArcTriangleDeletions_(*_graph_);
+          _use_arc_triangle_deletions_ = true;
+        }
+      } else {
+        // do something only if we currently allowed the application of arc triangle deletions
+        if (_use_arc_triangle_deletions_) {
+          // remove the arc triangle deletions from _sorted_changes_
+          for (auto& change: _sorted_changes_) {
+            if ((change.type() == GraphChangeType::ARC_TRIANGLE_DELETION1)
+                || (change.type() == GraphChangeType::ARC_TRIANGLE_DELETION2)) {
+              _sorted_changes_.erase(change, true);
+            }
+          }
+          _use_arc_triangle_deletions_ = false;
+        }
+      }
+    }
 
-            case GraphChangeType::ARC_DELETION : {
-              auto& parents = _parents_[change.node2()];
-              for (auto& par: parents) {
-                if (par == change.node1()) {
-                  par = *(parents.rbegin());
-                  parents.pop_back();
-                  break;
-                }
-              }
-              const double delta
-                  = _score_->score(change.node2(), parents) - _node_current_scores_[change.node2()];
-              parents.push_back(change.node1());
+    /// compute the new score of node given that we added it a new parent
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent) {
+      auto& parents = _node_parents_[node];
+      parents.push_back(new_parent);
+      const double new_score = _score_->score(node, parents);
+      parents.pop_back();
+      return new_score;
+    }
 
-              _change_scores_[i].second = delta;
-              _change_queue_per_node_[change.node2()].insert(i, delta);
-            } break;
+    /// adds some nodes that were removed because they did not belong to the database
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::finalizeGraph(DiGraph& graph) {
+      for (const auto node: _removed_nodes_) {
+        graph.addNodeWithId(node);
+      }
+    }
 
-            case GraphChangeType::ARC_REVERSAL : {
-              // remove arc ( node1 -> node2 )
-              auto& parents2 = _parents_[change.node2()];
-              for (auto& par: parents2) {
-                if (par == change.node1()) {
-                  par = *(parents2.rbegin());
-                  parents2.pop_back();
-                  break;
-                }
-              }
+    /// compute the new score of node given that we removed a parent
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _scoreAfterRemovingParent_(const NodeId node, const NodeId parent) {
+      auto& parents = _node_parents_[node];
+      for (auto& par: parents) {
+        if (par == parent) {
+          par = *(parents.rbegin());
+          parents.pop_back();
+          break;
+        }
+      }
+      const double new_score = _score_->score(node, parents);
+      parents.push_back(parent);
+      return new_score;
+    }
 
-              const double delta2 = _score_->score(change.node2(), parents2)
-                                  - _node_current_scores_[change.node2()];
-              parents2.push_back(change.node1());
+    /// compute the new score of node given that we added it a new parent
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _scoreAfterAddingParents_(const NodeId node,
+                                      const NodeId new_parent1,
+                                      const NodeId new_parent2) {
+      auto& parents = _node_parents_[node];
+      parents.push_back(new_parent1);
+      parents.push_back(new_parent2);
+      const double new_score = _score_->score(node, parents);
+      parents.pop_back();
+      parents.pop_back();
+      return new_score;
+    }
 
-              // add arc ( node2 -> node1 )
-              auto& parents1 = _parents_[change.node1()];
-              parents1.push_back(change.node2());
-              const double delta1 = _score_->score(change.node1(), parents1)
-                                  - _node_current_scores_[change.node1()];
-              parents1.pop_back();
+    /// compute the new score of node given that we removed two parents
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _scoreAfterRemovingParents_(const NodeId node,
+                                        const NodeId parent1,
+                                        const NodeId parent2) {
+      auto& parents = _node_parents_[node];
+      for (auto& par: parents) {
+        if (par == parent1) {
+          par = *(parents.rbegin());
+          parents.pop_back();
+          break;
+        }
+      }
+      for (auto& par: parents) {
+        if (par == parent2) {
+          par = *(parents.rbegin());
+          parents.pop_back();
+          break;
+        }
+      }
+      const double new_score = _score_->score(node, parents);
+      parents.push_back(parent1);
+      parents.push_back(parent2);
+      return new_score;
+    }
 
-              _change_scores_[i].first  = delta1;
-              _change_scores_[i].second = delta2;
+    /// adds an ArcAddition to _sorted_changes_ if possible
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _addArcAdditionToSortedChanges_(const ArcAddition& change) {
+      const NodeId node1 = change.node1();
+      const NodeId node2 = change.node2();
 
-              const double delta = delta1 + delta2;
-              _change_queue_per_node_[change.node1()].insert(i, delta);
-              _change_queue_per_node_[change.node2()].insert(i, delta);
+      // only add the arc addition if this is allowed by the graph and the constraints
+      if (!_graph_->existsArc(Arc(node1, node2))
+          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+        // compute the delta in the score resulting from adding node1 to the set
+        // of parents of the node2
+        const double delta = _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2];
+        _sorted_changes_.insert(change, delta);
+      }
+    }
 
-            } break;
+    /// adds an ArcDeletion to _sorted_changes_ if possible
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _addArcDeletionToSortedChanges_(const ArcDeletion& change) {
+      const NodeId tail = change.node1();
+      const NodeId head = change.node2();
 
-            default : {
-              GUM_ERROR(NotImplementedYet,
-                        "Method setGraph of GraphChangesSelector4DiGraph "
-                            << "does not handle yet graph change of type " << change.typeAsString());
+      // only add the arc deletion if this is allowed by the constraints
+      if (_graph_->existsArc(Arc(tail, head))
+          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+        // compute the delta in the score resulting from removing the tail from
+        // the set of parents of the head
+        const double delta = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head];
+        _sorted_changes_.insert(change, delta);
+      }
+    }
+
+    /// adds an ArcReversal to _sorted_changes_ if possible
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _addArcReversalToSortedChanges_(const ArcReversal& change) {
+      const NodeId tail = change.node1();
+      const NodeId head = change.node2();
+
+      // only add the arc reversal if this is allowed by the constraints
+      if (_graph_->existsArc(Arc(tail, head)) && !_graph_->existsArc(Arc(head, tail))
+          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+        // compute the delta in the score resulting from removing the tail from the
+        // set of parents of the head and that resulting from adding the head to
+        // the tail
+        const double delta = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                           + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail];
+
+        // the overall delta is the sum of the two deltas
+        _sorted_changes_.insert(change, delta);
+      }
+    }
+
+    /// adds an ArcTriangleDeletion1 to _sorted_changes_ if possible
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _addArcTriangleDeletion1ToSortedChanges_(const ArcTriangleDeletion1& change) {
+      const auto node1 = change.node1();
+      const auto node2 = change.node2();
+      const auto node3 = change.node3();
+
+      // only add the arc triangle deletion if this is allowed by the constraints
+      if (_graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
+          && _graph_->existsArc(Arc(node1, node3)) && !_graph_->existsArc(Arc(node2, node1))
+          && !_graph_->existsArc(Arc(node3, node1))
+          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+        // the arc triangle deletion will substitute triangle
+        // node1 -> node2 -> node3 + node1 -> node3 into the following v-structure:
+        // node2 -> node1 <- node3. The modifications will therefore be:
+        // 1/ add node2 and node3 to the set of parents of node1
+        // 2/ remove node1 from the set of parents of node2
+        // 3/ remove node1 and node2 from the set of parents of node3
+        // compute the update in the score due to these 3 operations
+        const double delta = _scoreAfterAddingParents_(node1, node2, node3) - _node_scores_[node1]
+                           + _scoreAfterRemovingParent_(node2, node1) - _node_scores_[node2]
+                           + _scoreAfterRemovingParents_(node3, node1, node2)
+                           - _node_scores_[node3];
+        _sorted_changes_.insert(change, delta);
+      }
+    }
+
+    /// adds an ArcTriangleDeletion2 to _sorted_changes_ if possible
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _addArcTriangleDeletion2ToSortedChanges_(const ArcTriangleDeletion2& change) {
+      const auto node1 = change.node1();
+      const auto node2 = change.node2();
+      const auto node3 = change.node3();
+
+      // only add the arc triangle deletion if this is allowed by the constraints
+      if (_graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
+          && _graph_->existsArc(Arc(node1, node3)) && !_graph_->existsArc(Arc(node3, node2))
+          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+        // the arc triangle deletion will substitute triangle
+        // node1 -> node2 -> node3 + node1 -> node3 into the following v-structure:
+        // node1 -> node2 <- node3. The modifications will therefore be:
+        // 1/ add node3 to the set of parents of node2
+        // 2/ remove node1 and node2 from the set of parents of node3
+        // compute the update in the score due to these 2 operations
+        const double delta = _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
+                           + _scoreAfterRemovingParents_(node3, node1, node2)
+                           - _node_scores_[node3];
+        _sorted_changes_.insert(change, delta);
+      }
+    }
+
+    /// updates the score of a given ArcAddition
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _updateArcAdditionScore_(const NodeId tail, const NodeId head) {
+      try {
+        const auto&  addition = _sorted_changes_[ArcAddition(tail, head)];
+        const double delta    = _scoreAfterAddingParent_(head, tail) - _node_scores_[head];
+        _sorted_changes_.setPriority(addition, delta, true);
+      } catch (NotFound&) {}
+    }
+
+    /// updates the score of a given ArcDeletion
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _updateArcDeletionScore_(const NodeId tail, const NodeId head) {
+      try {
+        const auto&  deletion = _sorted_changes_[ArcDeletion(tail, head)];
+        const double delta    = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head];
+        _sorted_changes_.setPriority(deletion, delta, true);
+      } catch (NotFound&) {}
+    }
+
+    /// updates the score of a given ArcReversal
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE void
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            _updateArcReversalScore_(const NodeId tail, const NodeId head) {
+      try {
+        const auto&  reversal = _sorted_changes_[ArcReversal(tail, head)];
+        const double delta    = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                              + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail];
+        _sorted_changes_.setPriority(reversal, delta, true);
+      } catch (NotFound&) {}
+    }
+
+    /// add all the possible ArcAdditions to initialize _sorted_changes_
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _initSortedChangesWithArcAdditions_(const DiGraph& graph) {
+      // for each pair of nodes (node1,node2) that are not adjacent, try an arc addition
+      for (auto iter1 = graph.begin(); iter1 != graph.end(); ++iter1) {
+        const NodeId node1 = *iter1;
+
+        // here, we enforce that node2 > node to avoid having to check the adjacency twice:
+        // one for pair (node1,node2) and the second for pair (node2,node1)
+        auto iter2 = iter1;
+        for (++iter2; iter2 != graph.end(); ++iter2) {
+          const NodeId node2 = *iter2;
+          _addArcAdditionToSortedChanges_(ArcAddition(node1, node2));
+          _addArcAdditionToSortedChanges_(ArcAddition(node2, node1));
+        }
+      }
+    }
+
+    /// add all the possible ArcDeletions to initialize _sorted_changes_
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _initSortedChangesWithArcDeletions_(const DiGraph& graph) {
+      // for each arc in graph, try to add an arc deletion
+      for (const auto& arc: graph.arcs()) {
+        _addArcDeletionToSortedChanges_(ArcDeletion(arc.tail(), arc.head()));
+      }
+    }
+
+    /// add all the possible ArcReversals to initialize _sorted_changes_
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _initSortedChangesWithArcReversals_(const DiGraph& graph) {
+      // for each arc in graph, try to add an arc reversal
+      for (const auto& arc: graph.arcs()) {
+        _addArcReversalToSortedChanges_(ArcReversal(arc.tail(), arc.head()));
+      }
+    }
+
+    /// add all the possible ArcTriangleDeletions to initialize _sorted_changes_
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _initSortedChangesWithArcTriangleDeletions_(const DiGraph& graph) {
+      // for each node "node1" having two children node2 and node3 such that node3 is
+      // also a child of node2, we have a triangle
+      for (const auto node1: graph) {
+        const auto& children1 = graph.children(node1);
+        for (const auto node2: children1) {
+          const auto& children2 = graph.children(node2);
+          for (const auto node3: children2) {
+            if (children1.exists(node3)) {
+              // here, we have a triangle node1 -> node2 -> node3 + node1 -> node3.
+              // add the two possible arc triangle deletions (the v-structure cannot
+              // be on node3 since this would correspond to a deletion of arc
+              // node1 -> node2)
+              _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(node1, node2, node3));
+              _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(node1, node2, node3));
             }
           }
         }
       }
-
-      // update the global queue
-      _node_queue_.clear();
-      for (const auto node: graph) {
-        _node_queue_.insert(node,
-                            _change_queue_per_node_[node].empty()
-                                ? std::numeric_limits< double >::min()
-                                : _change_queue_per_node_[node].topPriority());
-      }
-      _queues_valid_ = true;
-      _queues_to_update_.clear();
     }
 
-    /// put a change into the illegal set
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        _invalidateChange_(const std::size_t change_index) {
-      const GraphChange& change = _changes_[change_index];
-      if (change.type() == GraphChangeType::ARC_REVERSAL) {
-        // remove the tail change from its priority queue
-        PriorityQueue< std::size_t, double, std::greater< double > >& queue1
-            = _change_queue_per_node_[change.node1()];
-        queue1.erase(change_index);
-
-        // recompute the top priority for the changes of the head
-        const double new_priority
-            = queue1.empty() ? std::numeric_limits< double >::min() : queue1.topPriority();
-        _node_queue_.setPriority(change.node1(), new_priority);
-      }
-
-      // remove the head change from its priority queue
-      PriorityQueue< std::size_t, double, std::greater< double > >& queue2
-          = _change_queue_per_node_[change.node2()];
-      queue2.erase(change_index);
-
-      // recompute the top priority for the changes of the head
-      const double new_priority
-          = queue2.empty() ? std::numeric_limits< double >::min() : queue2.topPriority();
-      _node_queue_.setPriority(change.node2(), new_priority);
-
-      // put the change into the illegal set
-      _illegal_changes_.insert(change_index);
-    }
-
-    /// indicates whether the selector still contain graph changes
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::empty() {
-      // put into the illegal change set all the top elements of the different
-      // queues that are not valid anymore
-      if (!_queues_valid_) {
-        for (auto& queue_pair: _change_queue_per_node_) {
-          auto& queue = queue_pair.second;
-          while (!queue.empty() && !_isChangeValid_(queue.top())) {
-            _invalidateChange_(queue.top());
-          }
-        }
-        _queues_valid_ = true;
-      }
-
-      return _node_queue_.topPriority() == std::numeric_limits< double >::min();
-    }
-
-    /// indicates whether the selector still contain graph changes
-    /// in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    bool GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::empty(
-        const NodeId node) {
-      // put into the illegal change set all the top elements of the different
-      // queues that are not valid anymore
-      if (!_queues_valid_) {
-        for (auto& queue_pair: _change_queue_per_node_) {
-          auto& queue = queue_pair.second;
-          while (!queue.empty() && !_isChangeValid_(queue.top())) {
-            _invalidateChange_(queue.top());
-          }
-        }
-        _queues_valid_ = true;
-      }
-
-      return _change_queue_per_node_[node].empty();
-    }
-
-    /// returns the best graph change to examine
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    /// returns the best graph change that can be applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE const GraphChange&
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::bestChange() {
-      if (!empty()) return _changes_[_change_queue_per_node_[_node_queue_.top()].top()];
-      else GUM_ERROR(NotFound, "there exists no graph change applicable")
-    }
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::bestChange() {
+      for (auto iter = _sorted_changes_.begin(); iter != _sorted_changes_.end(); ++iter) {
+        if (_variable_constraints_->checkModification(*iter)) { return *iter; }
+      }
 
-    /// returns the best graph change to examine in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE const GraphChange&
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestChange(
-            const NodeId node) {
-      if (!empty(node)) return _changes_[_change_queue_per_node_[node].top()];
-      else GUM_ERROR(NotFound, "there exists no graph change applicable")
+      GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
     /// return the score of the best graph change
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE double GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                GRAPH_CHANGES_GENERATOR >::bestScore() {
-      if (!empty()) return _change_queue_per_node_[_node_queue_.top()].topPriority();
-      else GUM_ERROR(NotFound, "there exists no graph change applicable")
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                VARIABLE_CONSTRAINT_TYPE >::bestDeltaScore() {
+      for (auto iter = _sorted_changes_.begin(); iter != _sorted_changes_.end(); ++iter) {
+        if (_variable_constraints_->checkModification(*iter)) { return iter.priority(); }
+      }
+
+      GUM_ERROR(NotFound, "there exists no graph change applicable")
     }
 
-    /// return the score of the best graph change in the ith queue
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    /// return the delta score of a change in the ith queue
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE double
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::bestScore(
-            const NodeId node) {
-      if (!empty(node)) return _change_queue_per_node_[node].topPriority();
-      else GUM_ERROR(NotFound, "there exists no graph change applicable")
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            deltaScore(const GraphChange& change, const bool internal_change) const {
+      try {
+        return _sorted_changes_.priority(change, internal_change);
+      } catch (NotFound&) {
+        GUM_ERROR(NotFound, "Change " << change.toString() << " will never be applicable")
+      }
     }
 
-    /// remove the now legal changes from the illegal set
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute) {
-      for (auto iter = _illegal_changes_.beginSafe(); iter != _illegal_changes_.endSafe(); ++iter) {
-        if (_isChangeValid_(*iter)) {
-          const GraphChange& change = _changes_[*iter];
-          if (change.type() == GraphChangeType::ARC_REVERSAL) {
-            _change_queue_per_node_[change.node1()].insert(*iter,
-                                                           std::numeric_limits< double >::min());
-          }
-          _change_queue_per_node_[change.node2()].insert(*iter,
-                                                         std::numeric_limits< double >::min());
+    /// returns the current score of a node
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE double
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::score(
+            const NodeId node) const {
+      return _node_scores_[node];
+    }
 
-          changes_to_recompute.insert(*iter);
-          _illegal_changes_.erase(iter);
+    /// indicates whether a given change is valid or not
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE bool
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            isChangeValid(const GraphChange& change) const {
+      return !_invariable_constraints_->isAlwaysInvalid(change)
+          && _variable_constraints_->checkModification(change);
+    }
+
+    /** @brief update the score of the triangle deletions which contain a node whose
+     * neighborhood has changed */
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _updateTriangleDeletionsScoresFromNeighborhood_(const NodeId changed_node) {
+      const auto& children_changed_node = _graph_->children(changed_node);
+      const auto& parents_changed_node  = _graph_->parents(changed_node);
+      const auto  score_changed_node    = _node_scores_[changed_node];
+
+      // we consider here triangles node1 -> node2 -> node3 + node1 -> node3
+      // Three cases can occur: changed_node is 1/ node1, 2/ node2, 3/ node3
+      // case1:
+      for (const auto node2: children_changed_node) {
+        for (const auto node3: children_changed_node) {
+          if (_graph_->parents(node3).contains(node2)) {
+            // case 1 for ArcTriangleDeletion1
+            double delta3 = std::numeric_limits< double >::lowest();
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion1(changed_node, node2, node3)];
+              delta3
+                  = _scoreAfterRemovingParents_(node3, changed_node, node2) - _node_scores_[node3];
+              // the following delta score just computes the score of the
+              // v-structure that we would get if we applied the arc triangle
+              // deletion minus the current score of the 3 nodes involved
+              // in the triangle
+              const double delta
+                  = _scoreAfterAddingParents_(changed_node, node3, node2) - score_changed_node
+                  + _scoreAfterRemovingParent_(node2, changed_node) - _node_scores_[node2] + delta3;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+
+            // case 1 for ArcTriangleDeletion2
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion2(changed_node, node2, node3)];
+              if (delta3 == std::numeric_limits< double >::lowest())
+                delta3 = _scoreAfterRemovingParents_(node3, changed_node, node2)
+                       - _node_scores_[node3];
+              const double delta
+                  = _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2] + delta3;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+          }
+        }
+      }
+
+      // case2:
+      for (const auto node1: parents_changed_node) {
+        for (const auto node3: children_changed_node) {
+          if (_graph_->parents(node3).contains(node1)) {
+            // case 2 for ArcTriangleDeletion1
+            double delta3 = std::numeric_limits< double >::lowest();
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion1(node1, changed_node, node3)];
+              delta3
+                  = _scoreAfterRemovingParents_(node3, changed_node, node1) - _node_scores_[node3];
+              const double delta
+                  = _scoreAfterAddingParents_(node1, changed_node, node3) - _node_scores_[node1]
+                  + _scoreAfterRemovingParent_(changed_node, node1) - score_changed_node + delta3;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+
+            // case 2 for ArcTriangleDeletion2
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion2(node1, changed_node, node3)];
+              if (delta3 == std::numeric_limits< double >::lowest())
+                delta3 = _scoreAfterRemovingParents_(node3, changed_node, node1)
+                       - _node_scores_[node3];
+              const double delta
+                  = _scoreAfterAddingParent_(changed_node, node3) - score_changed_node + delta3;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+          }
+        }
+      }
+
+      // case 3:
+      for (const auto node1: parents_changed_node) {
+        for (const auto node2: parents_changed_node) {
+          if (_graph_->parents(node2).contains(node1)) {
+            // case 3 for ArcTriangleDeletion1
+            double delta_head = std::numeric_limits< double >::lowest();
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion1(node1, node2, changed_node)];
+              delta_head
+                  = _scoreAfterRemovingParents_(changed_node, node1, node2) - score_changed_node;
+              const double delta = _scoreAfterAddingParents_(node1, changed_node, node2)
+                                 - _node_scores_[node1] + _scoreAfterRemovingParent_(node2, node1)
+                                 - _node_scores_[node2] + delta_head;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+
+            // case 3 for ArcTriangleDeletion2
+            try {
+              const auto& triangle_deletion
+                  = _sorted_changes_[ArcTriangleDeletion2(node1, node2, changed_node)];
+              if (delta_head == std::numeric_limits< double >::lowest())
+                delta_head
+                    = _scoreAfterRemovingParents_(changed_node, node1, node2) - score_changed_node;
+              const double delta = _scoreAfterAddingParent_(node2, changed_node)
+                                 - _node_scores_[node2] + delta_head;
+              _sorted_changes_.setPriority(triangle_deletion, delta, true);
+            } catch (NotFound&) {}
+          }
         }
       }
     }
 
-    /// finds the changes that are affected by a given node modification
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
-                                        const NodeId        target_node) {
-      const HashTable< std::size_t, Size >& changes
-          = _change_queue_per_node_[target_node].allValues();
-      for (auto iter = changes.cbeginSafe(); iter != changes.cendSafe(); ++iter) {
-        if (!changes_to_recompute.exists(iter.key())) {
-          if (_isChangeValid_(iter.key())) {
-            changes_to_recompute.insert(iter.key());
-          } else {
-            _invalidateChange_(iter.key());
-          }
+    /// indicate to the selector that an ArcAddition has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _applyArcAddition_(const ArcAddition& change) {
+      // get the delta score of the change and update the score of the head
+      const auto tail        = change.node1();
+      const auto head        = change.node2();
+      const auto delta_score = _sorted_changes_.priority(change);
+      _node_scores_[head] += delta_score;
+      const auto head_score = _node_scores_[head];
+
+      // update the graph
+      _graph_->addArc(tail, head);
+      _node_parents_[head].push_back(tail);
+      const auto& children_head = _graph_->children(head);
+      const auto& parents_head  = _graph_->parents(head);
+
+      // indicate to the constraints that we added a new arc
+      _invariable_constraints_->modifyGraph(change);
+      _variable_constraints_->modifyGraph(change);
+
+      // now, we have to update the _sorted_changes_. Here, several modifications
+      // are needed:
+      // 1/ if we added a new arc tail -> head, this addition should be removed
+      //    from _sorted_changes_
+      // 2/ Arc tail->head's deletion should be added
+      // 3/ Arc tail->head's reversal should be added if Arc head -> tail does not
+      //    already exist
+      // 4/ The scores of all the additions of arcs whose heads are equal to "head"
+      //    should be updated
+      // 5/ The scores of all the deletions of arcs whose heads are equal to "head"
+      //    should be updated
+      // 6/ The scores of all the arc reversals involving "head" should be updated
+      // 7/ The scores of all the arc triangle deletions in which one of the nodes
+      //    is head should be updated
+      // 8/ The new arc may have created some new triangles, hence we should also
+      //    add their possible removals to the _sorted_changes_
+      _sorted_changes_.erase(change, true);   // case 1
+
+      // case 4:
+      for (const auto node: *_graph_) {
+        // here, no need to check whether node is different from tail because
+        // we just erased in case 1 ArcAddition(tail, head)
+        _updateArcAdditionScore_(node, head);
+      }
+
+      // cases 2 and 5
+      if (_use_arc_deletions_) {
+        // case5:
+        for (const auto node: parents_head) {
+          // here, no need to check whether node is different from tail because,
+          // since we just added arc tail -> head, ArcDeletion(tail, head) does
+          // not belong yet to _sorted_changes_
+          _updateArcDeletionScore_(node, head);
+        }
+
+        // case 2:
+        const ArcDeletion deletion(tail, head);
+        if (!_invariable_constraints_->isAlwaysInvalid(deletion)) {
+          _sorted_changes_.insert(deletion, -delta_score);
         }
       }
-    }
 
-    /// perform the necessary updates of the scores
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        _updateScores_(const Set< std::size_t >& changes_to_recompute) {
-      Set< NodeId > modified_nodes(changes_to_recompute.size());
+      // cases 3 and 6
+      if (_use_arc_reversals_) {
+        // case 6:
+        // case 6.1: we consider the reversals of arcs node -> head
+        for (const auto node: parents_head) {
+          // here, no need to check whether node is different from tail because,
+          // we just added Arc tail -> head, hence ArcReversal(tail, head) cannot
+          // belong yet to _sorted_changes_ (see case 3 below)
+          _updateArcReversalScore_(node, head);
+        }
 
-      for (const auto change_index: changes_to_recompute) {
-        const GraphChange& change = _changes_[change_index];
-
-        switch (change.type()) {
-          case GraphChangeType::ARC_ADDITION : {
-            // add the arc
-            auto& parents = _parents_[change.node2()];
-            parents.push_back(change.node1());
-            const double delta
-                = _score_->score(change.node2(), parents) - _node_current_scores_[change.node2()];
-            parents.pop_back();
-
-            // update the score
-            _change_scores_[change_index].second = delta;
-
-            // update the head queue
-            _change_queue_per_node_[change.node2()].setPriority(change_index, delta);
-            // indicate which queue was modified
-            modified_nodes.insert(change.node2());
-          } break;
-
-          case GraphChangeType::ARC_DELETION : {
-            // remove the arc
-            auto& parents = _parents_[change.node2()];
-            for (auto& par: parents) {
-              if (par == change.node1()) {
-                par = *(parents.rbegin());
-                parents.pop_back();
-                break;
-              }
+        // case 6.2: we consider the reversals of arcs head -> node
+        for (const auto node: children_head) {
+          try {
+            const auto& reversal = _sorted_changes_[ArcReversal(head, node)];
+            if (node != tail) {
+              // here, we must update the score of the reversal
+              const double delta = _scoreAfterAddingParent_(head, node) - head_score
+                                 + _scoreAfterRemovingParent_(node, head) - _node_scores_[node];
+              _sorted_changes_.setPriority(reversal, delta, true);
+            } else {
+              // here, in the graph, there exists and arc head->tail. Its reversal
+              // would substitute it by the arc tail->head that we just added. So
+              // we need to remove Reversal(head, node) from _sorted_changes_
+              _sorted_changes_.erase(reversal, true);
             }
-            const double delta
-                = _score_->score(change.node2(), parents) - _node_current_scores_[change.node2()];
-            parents.push_back(change.node1());
+          } catch (NotFound&) {}
+        }
 
-            // update the score
-            _change_scores_[change_index].second = delta;
+        // case 3:
+        _addArcReversalToSortedChanges_(ArcReversal(tail, head));
+      }
 
-            // update the head queue
-            _change_queue_per_node_[change.node2()].setPriority(change_index, delta);
-            // indicate which queue was modified
-            modified_nodes.insert(change.node2());
-          } break;
+      // cases 7 and 8:
+      if (_use_arc_triangle_deletions_) {
+        // case 7:
+        _updateTriangleDeletionsScoresFromNeighborhood_(head);
 
-          case GraphChangeType::ARC_REVERSAL : {
-            // remove arc ( node1 -> node2 )
-            auto& parents2 = _parents_[change.node2()];
-            for (auto& par: parents2) {
-              if (par == change.node1()) {
-                par = *(parents2.rbegin());
-                parents2.pop_back();
-                break;
-              }
-            }
+        // case 8:
+        // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
+        // and c/ node->tail->head. We should examine these three cases
 
-            const double delta2
-                = _score_->score(change.node2(), parents2) - _node_current_scores_[change.node2()];
-            parents2.push_back(change.node1());
+        // cases a/ and c/
+        const auto& children_tail = _graph_->children(tail);
+        const auto& parents_tail  = _graph_->parents(tail);
+        for (const auto node: parents_head) {
+          if (children_tail.contains(node)) {         // case a
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(tail, node, head));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(tail, node, head));
+          } else if (parents_tail.contains(node)) {   // case c
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(node, tail, head));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(node, tail, head));
+          }
+        }
 
-            // add arc ( node2 -> node1 )
-            auto& parents1 = _parents_[change.node1()];
-            parents1.push_back(change.node2());
-            const double delta1
-                = _score_->score(change.node1(), parents1) - _node_current_scores_[change.node1()];
-            parents1.pop_back();
-
-            // update the scores
-            _change_scores_[change_index].first  = delta1;
-            _change_scores_[change_index].second = delta2;
-
-            // update the queues
-            const double delta = delta1 + delta2;
-            _change_queue_per_node_[change.node1()].setPriority(change_index, delta);
-            _change_queue_per_node_[change.node2()].setPriority(change_index, delta);
-
-            // indicate which queues were modified
-            modified_nodes.insert(change.node1());
-            modified_nodes.insert(change.node2());
-          } break;
-
-          default : {
-            GUM_ERROR(NotImplementedYet,
-                      "Method  _updateScores_ of GraphChangesSelector4DiGraph "
-                          << "does not handle yet graph change of type " << change.typeAsString());
+        // case b/
+        for (const auto node: children_tail) {
+          if (children_head.exists(node)) {
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(tail, head, node));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(tail, head, node));
           }
         }
       }
-
-      // update the node queue
-      for (const auto node: modified_nodes) {
-        _node_queue_.setPriority(node,
-                                 _change_queue_per_node_[node].empty()
-                                     ? std::numeric_limits< double >::min()
-                                     : _change_queue_per_node_[node].topPriority());
-      }
     }
 
-    /// get from the graph change generator a new set of changes
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                       GRAPH_CHANGES_GENERATOR >::_getNewChanges_() {
-      // ask the graph change generator for all its available changes
-      for (const auto& change: *_changes_generator_) {
-        // check that the change does not already exist
-        if (!_changes_.exists(change)) {
-          // add the new change. To make the addition simple, we put the new
-          // change into the illegal changes set. Afterwards, the applyChange
-          // function will put the legal changes again into the queues
-          _illegal_changes_.insert(_changes_.size());
-          _changes_ << change;
-          _change_scores_.push_back(
-              std::pair< double, double >(std::numeric_limits< double >::min(),
-                                          std::numeric_limits< double >::min()));
+    /// indicate to the selector that an ArcDeletion has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _applyArcDeletion_(const ArcDeletion& change) {
+      // get the delta score of the change and update the score of the head
+      const auto tail        = change.node1();
+      const auto head        = change.node2();
+      const auto delta_score = _sorted_changes_.priority(change);
+      _node_scores_[head] += delta_score;
+
+      // update the graph and the set of parents of the head
+      _graph_->eraseArc(Arc(tail, head));
+      auto& parents = _node_parents_[head];
+      for (auto& par: parents) {
+        if (par == tail) {
+          par = *(parents.rbegin());
+          parents.pop_back();
+          break;
+        }
+      }
+      const auto& children_head = _graph_->children(head);
+      const auto& parents_head  = _graph_->parents(head);
+
+      // indicate to the constraints that we removed the arc
+      _invariable_constraints_->modifyGraph(change);
+      _variable_constraints_->modifyGraph(change);
+
+      // now, we have to update the _sorted_changes_. Here, several modifications
+      // are needed:
+      //  1/ if we removed arc tail -> head, this deletion should be removed from
+      //     _sorted_changes_
+      //  2/ since arc tail -> head existed, it could also have been reversed.
+      //     Hence, we should remove this reversal from _sorted_changes_
+      //  3/ the addition of arc tail -> head should be added to _sorted_changes_
+      //  4/ if arc head -> tail exists, its reversal is now possible, so add it to
+      //     _sorted_changes_
+      //  5/ The scores of all the additions of arcs whose heads are equal to
+      //     "head" should be updated
+      //  6/ The scores of all the deletions of arcs whose heads are equal to
+      //     "head" should be updated
+      //  7/ The scores of all the arc reversals involving "head" should be updated
+      //  8/ The removed arc may have been involved into some triangles, hence we
+      //     should also remove them from _sorted_changes_
+      //  9/ The scores of the triangle deletions which include head as one of their
+      //     nodes should be updated
+      // 10/ Some arc triangles deletions which, when applied, would have created
+      //     Arc tail -> head could not be inserted yet into _sorted_changes_
+      //     because this arc already existed. Now, they can be created.
+      _sorted_changes_.erase(change);   // case 1
+
+      // cases 3 and 5
+      if (_use_arc_additions_) {
+        // case 5
+        for (const auto node: *_graph_) {
+          // here, no need to check whether node is different from tail because
+          // we just added the arc tail -> head to the graph, hence
+          // Addition(tail, head) does not belong yet to _sorted_changes_
+          _updateArcAdditionScore_(node, head);
+        }
+
+        // case 3
+        const ArcAddition addition(tail, head);
+        if (!_invariable_constraints_->isAlwaysInvalid(addition)) {
+          _sorted_changes_.insert(addition, -delta_score);
         }
       }
 
-      // indicate to the generator that we have finished retrieving its changes
-      _changes_generator_->notifyGetCompleted();
+      // case 6
+      for (const auto node: parents_head) {
+        // here, no need to check whether node is different from tail because
+        // we just erased in case 1 ArcDeletion(tail, head)
+        _updateArcDeletionScore_(node, head);
+      }
+
+      // cases 2, 4 and 7
+      if (_use_arc_reversals_) {
+        _sorted_changes_.erase(ArcReversal(tail, head));   // case 2
+
+        // case 7:
+        // case 7.1: we consider the reversals of arcs node -> head
+        for (const auto node: parents_head) {
+          // here, no need to check whether node is different from tail because
+          // we just erased in case 2 ArcReversal(tail, head)
+          _updateArcReversalScore_(node, head);
+        }
+
+        // case 7.2: we consider the reversals of arcs head -> node
+        for (const auto node: children_head) {
+          // Here, no need to check whether node is different from tail.
+          // Actually, if node = tail, we are considering in this for loop change
+          // ArcReversal(head,tail). This means that arc head->tail already
+          // existed in the graph and that we consider the possibility of
+          // substituting it by arc tail -> head. But since, in this method, we
+          // apply ArcDeletion(tail, head), this means that this arc already
+          // existed. Hence ArcReversal(head,tail) could not have belonged
+          // to _sorted_changes_
+          _updateArcReversalScore_(head, node);
+        }
+
+        // case 4: if arc head -> tail exists, add its reversal to _sorted_changes_
+        _addArcReversalToSortedChanges_(ArcReversal(head, tail));
+      }
+
+      // cases 8 and 9:
+      if (_use_arc_triangle_deletions_) {
+        // case 8:
+        // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
+        // and c/ node->tail->head. We should examine these three cases
+
+        // cases a/ and c/
+        const auto& children_tail = _graph_->children(tail);
+        const auto& parents_tail  = _graph_->parents(tail);
+        for (const auto node: parents_head) {
+          if (children_tail.contains(node)) {   // case a
+            _sorted_changes_.erase(ArcTriangleDeletion1(tail, node, head));
+            _sorted_changes_.erase(ArcTriangleDeletion2(tail, node, head));
+          }
+          if (parents_tail.contains(node)) {   // case c
+            _sorted_changes_.erase(ArcTriangleDeletion1(node, tail, head));
+            _sorted_changes_.erase(ArcTriangleDeletion2(node, tail, head));
+          }
+        }
+
+        // case b/
+        for (const auto node: children_tail) {
+          if (children_head.contains(node)) {
+            _sorted_changes_.erase(ArcTriangleDeletion1(tail, head, node));
+            _sorted_changes_.erase(ArcTriangleDeletion2(tail, head, node));
+          }
+        }
+
+        // case 9:
+        _updateTriangleDeletionsScoresFromNeighborhood_(head);
+
+        // case 10:
+        // there are 3 cases to consider: a/ ArcTriangleDeletion1(head, tail, x),
+        // b/ ArcTriangleDeletion(head, x, tail) and
+        // c/ ArcTriangleDeletion2(x, head, tail)
+        // case a:
+        for (const auto node: children_head) {
+          if (children_tail.contains(node)) {
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, tail, node));
+          }
+        }
+
+        for (const auto node: parents_tail) {
+          // case b:
+          if (children_head.contains(node)) {
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, node, tail));
+          }
+
+          // case c:
+          if (parents_head.contains(node)) {
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(node, head, tail));
+          }
+        }
+      }
     }
 
-    /// indicate to the selector that its best score has been applied
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::applyChange(
-            const GraphChange& change) {
-      // first, we get the index of the change
-      const std::size_t change_index = _changes_.pos(change);
+    /// indicate to the selector that an ArcReversal has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _applyArcReversal_(const ArcReversal& change) {
+      // update the graph
+      const auto tail = change.node1();
+      const auto head = change.node2();
+      _graph_->eraseArc(Arc(tail, head));
+      _graph_->addArc(head, tail);
+      const auto& children_head = _graph_->children(head);
+      const auto& parents_head  = _graph_->parents(head);
+      const auto& children_tail = _graph_->children(tail);
+      const auto& parents_tail  = _graph_->parents(tail);
 
-      // perform the change
-      Set< std::size_t > changes_to_recompute;
+      auto& node_parents_tail = _node_parents_[tail];
+      node_parents_tail.push_back(head);
+      auto& node_parents_head = _node_parents_[head];
+      for (auto& par: node_parents_head) {
+        if (par == tail) {
+          par = *(node_parents_head.rbegin());
+          node_parents_head.pop_back();
+          break;
+        }
+      }
+
+      // update the scores of the head and of the tail
+      const auto overall_delta_score = _sorted_changes_.priority(change);
+      const auto delta_score_tail = _score_->score(tail, node_parents_tail) - _node_scores_[tail];
+
+      _node_scores_[head] += overall_delta_score - delta_score_tail;
+      _node_scores_[tail] += delta_score_tail;
+      const auto tail_score = _node_scores_[tail];
+
+      // indicate to the constraints that we reversed an arc
+      _invariable_constraints_->modifyGraph(change);
+      _variable_constraints_->modifyGraph(change);
+
+      // now, we have to update the _sorted_changes_. Here, several modifications
+      // are needed:
+      //  1/ if we reversed Arc tail -> head, then this reversal should be removed
+      //     from _sorted_changes_
+      //  2/ since arc tail -> head existed, its deletion should be also removed
+      //     from _sorted_changes_.
+      //  3/ Arc head->tail's deletion should be added
+      //  4/ Arc head->tail's reversal should be added
+      //  5/ The scores of all the additions of arcs whose heads are equal to
+      //     "head" or "tail" should be updated
+      //  6/ The scores of all the deletions of arcs whose heads are equal to
+      //     "head" or "tail" should be updated
+      //  7/ The scores of all the arc reversals involving "head" or "tail"
+      //     should be updated
+      //  8/ Arc tail -> head has been removed. It may have been involved into
+      //     some triangles, hence we should also remove them from _sorted_changes_
+      //  9/ The scores of the triangle deletions that involve either head or tail
+      //     as one of their nodes should be updated.
+      // 10/ Arc head -> tail has been added. It may have created some triangles,
+      //     hence we should also add their possible removals to the
+      //     _sorted_changes_
+      _sorted_changes_.erase(change);   // case 1
+
+      // case 5
+      if (_use_arc_additions_) {
+        for (const auto node: *_graph_) {
+          // here, no need to check whether node is equal to tail. Actually, since
+          // we apply ArcReversal(tail, head), this means that arc tail -> head
+          // belonged to the graph, hence ArcAddition(tail, head) cannot belong
+          // yet to _sorted_changes_
+          _updateArcAdditionScore_(node, head);
+
+          try {
+            // Here, if node = head, then we consider change ArcAddition(head, tail).
+            // Since, in this method, we apply ArcReversal(tail, head), which
+            // already creates arc head->tail, ArcAddition(head, tail) has now
+            // become impossible and should be removed from _sorted_changes_
+            const auto& addition = _sorted_changes_[ArcAddition(node, tail)];
+            if (node != head) {
+              const double delta = _scoreAfterAddingParent_(tail, node) - tail_score;
+              _sorted_changes_.setPriority(addition, delta, true);
+            } else {
+              _sorted_changes_.erase(addition, true);
+            }
+          } catch (NotFound&) {}
+        }
+      }
+
+      // cases 2, 3 and 6:
+      if (_use_arc_deletions_) {
+        _sorted_changes_.erase(ArcDeletion(tail, head));   // case 2
+
+        // case 6:
+        for (const auto node: parents_head) {
+          // here, no need to check whether node = tail because we just removed in
+          // case 2 change ArcDeletion(tail, head)
+          _updateArcDeletionScore_(node, head);
+        }
+
+        for (const auto node: parents_tail) {
+          // Here, no need to check whether node = head. Actuallu, if node = head,
+          // we are considering ArcDeletion(head,tail). But, in this method, we
+          // apply ArcReversal(tail, head), which creates arc head->tail. Hence,
+          // since this arc did not exist before the application of change,
+          // ArcDeletion(head,tail) cannot belong yet to _sorted_changes_
+          _updateArcDeletionScore_(node, tail);
+        }
+
+        // case 3:
+        const ArcDeletion deletion(head, tail);
+        if (!_invariable_constraints_->isAlwaysInvalid(deletion)) {
+          _sorted_changes_.insert(deletion, -delta_score_tail);
+        }
+      }
+
+      // case 7:
+      // case 7.1: we consider the reversals of arcs node -> head
+      for (const auto node: parents_head) {
+        // here, no need to check whether node = tail because we removed
+        // ArcReversal(tail, head) in case 1
+        _updateArcReversalScore_(node, head);
+      }
+
+      // case 7.2: we consider the reversals of arcs head -> node
+      for (const auto node: children_head) {
+        // here, no need to check whether node = tail. Actually, for
+        // ArcReversal(head, tail) to belong to _sorted_changes_, _graph_ should
+        // have contained arc head -> tail before the execution of the current
+        // method. But this is impossible because change = ArcReversal(tail, head),
+        // which means that arc head -> tail did not exist.
+        _updateArcReversalScore_(head, node);
+      }
+
+      // case 7.3: we consider the reversals of arcs node -> tail
+      for (const auto node: parents_tail) {
+        // here, no need to check whether node = head. Actually, for
+        // ArcReversal(head,tail) to belong to _sorted_changes_, _graph_ should
+        // have contained arc head -> tail before the execution of the current
+        // method. But this is impossible because change = ArcReversal(tail, head),
+        // which means that arc head -> tail did not exist.
+        _updateArcReversalScore_(node, tail);
+      }
+
+      // case 7.4: we consider the reversals of arcs tail -> node
+      for (const auto node: children_tail) {
+        // here, no need to check whether node = tail because we removed
+        // ArcReversal(tail, head) in case 1
+        _updateArcReversalScore_(tail, node);
+      }
+
+      // case 4
+      const ArcReversal reversal(head, tail);
+      if (!_invariable_constraints_->isAlwaysInvalid(reversal)) {
+        _sorted_changes_.insert(reversal, -overall_delta_score);
+      }
+
+      if (_use_arc_triangle_deletions_) {
+        // case 8:
+        // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
+        // and c/ node->tail->head. We should examine these three cases
+        for (const auto node: parents_head) {   // cases a/ and c/
+          if (children_tail.contains(node)) {   // case a
+            _sorted_changes_.erase(ArcTriangleDeletion1(tail, node, head));
+            _sorted_changes_.erase(ArcTriangleDeletion2(tail, node, head));
+          }
+          if (parents_tail.exists(node)) {   // case c
+            _sorted_changes_.erase(ArcTriangleDeletion1(node, tail, head));
+            _sorted_changes_.erase(ArcTriangleDeletion2(node, tail, head));
+          }
+        }
+
+        for (const auto node: children_tail) {   // case b/
+          if (children_head.contains(node)) {
+            _sorted_changes_.erase(ArcTriangleDeletion1(tail, head, node));
+            _sorted_changes_.erase(ArcTriangleDeletion2(tail, head, node));
+          }
+        }
+
+        // case 9:
+        _updateTriangleDeletionsScoresFromNeighborhood_(head);
+        _updateTriangleDeletionsScoresFromNeighborhood_(tail);
+
+        // case 10:
+        // there are 3 types of triangles: a/ head->node->tail, b/ head->tail->node
+        // and c/ node->head->tail. We should examine these three cases
+        for (const auto node: parents_tail) {            // cases a/ and c/
+          if (_graph_->parents(node).contains(head)) {   // case a
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, node, tail));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(head, node, tail));
+          }
+          if (parents_head.exists(node)) {   // case c
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(node, head, tail));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(node, head, tail));
+          }
+        }
+
+        // case b/
+        for (const auto node: children_head) {
+          if (_graph_->parents(node).contains(tail)) {
+            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, tail, node));
+            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(head, tail, node));
+          }
+        }
+      }
+    }
+
+    /// indicate to the selector that an ArcTriangleDeletion1 has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change) {
+      const auto node1 = change.node1();
+      const auto node2 = change.node2();
+      const auto node3 = change.node3();
+
+      // remove the arc triangle deletion
+      _sorted_changes_.erase(change);
+
+      // apply the deletion:
+      // 1/ remove arc node2 -> node3
+      _applyArcDeletion_(ArcDeletion(node2, node3));
+
+      // 2/ try to reverse arc node1 -> node2
+      const ArcReversal reversal12(node1, node2);
+      bool              reversal12_applied = false;
+      if (_variable_constraints_->checkModification(reversal12)) {
+        _applyArcReversal_(reversal12);
+        reversal12_applied = true;
+      } else {
+        _applyArcDeletion_(ArcDeletion(node1, node2));
+      }
+
+      // 3/ try to reverse node1 -> node3
+      const ArcReversal reversal13(node1, node3);
+      bool              reversal13_applied = false;
+      if (_variable_constraints_->checkModification(reversal13)) {
+        _applyArcReversal_(reversal13);
+        reversal13_applied = true;
+      } else {
+        _applyArcDeletion_(ArcDeletion(node1, node3));
+      }
+
+      // 4/ finalize the reversal of arcs node1 -> node2 and node1 -> node3
+      if (!reversal12_applied) { _applyArcAddition_(ArcAddition(node2, node1)); }
+      if (!reversal13_applied) { _applyArcAddition_(ArcAddition(node3, node1)); }
+    }
+
+    /// indicate to the selector that an ArcTriangleDeletion2 has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change) {
+      const auto node1 = change.node1();
+      const auto node2 = change.node2();
+      const auto node3 = change.node3();
+
+      // remove the arc triangle deletion
+      _sorted_changes_.erase(change);
+
+      // apply the deletion:
+      // 1/ remove arc node1 -> node3
+      _applyArcDeletion_(ArcDeletion(node1, node3));
+
+      // 2/ try to reverse arc node2 -> node4
+      _applyArcReversal_(ArcReversal(node2, node3));
+    }
+
+    /// indicate to the selector that a change has been applied
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        applyChange(const GraphChange& change) {
       switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION : {
-          // update the current score
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          _parents_[change.node2()].push_back(change.node1());
+        case GraphChangeType::ARC_ADDITION :
+          _applyArcAddition_(static_cast< const ArcAddition& >(change));
+          break;
 
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcAddition& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcAddition& >(change));
-          }
+        case GraphChangeType::ARC_DELETION :
+          _applyArcDeletion_(static_cast< const ArcDeletion& >(change));
+          break;
 
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcAddition& >(change));
-          _getNewChanges_();
+        case GraphChangeType::ARC_REVERSAL :
+          _applyArcReversal_(static_cast< const ArcReversal& >(change));
+          break;
 
-          // check whether some illegal changes can be put into the valid queues
-          _illegal2LegalChanges_(changes_to_recompute);
-          _invalidateChange_(change_index);
-          _findLegalChangesNeedingUpdate_(changes_to_recompute, change.node2());
-          _updateScores_(changes_to_recompute);
-        } break;
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          _applyArcTriangleDeletion1_(static_cast< const ArcTriangleDeletion1& >(change));
+          break;
 
-        case GraphChangeType::ARC_DELETION : {
-          // update the current score
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          auto& parents = _parents_[change.node2()];
-          for (auto& par: parents) {
-            if (par == change.node1()) {
-              par = *(parents.rbegin());
-              parents.pop_back();
-              break;
-            }
-          }
-
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcDeletion& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcDeletion& >(change));
-          }
-
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcDeletion& >(change));
-          _getNewChanges_();
-
-          // check whether some illegal changes can be put into the valid queues
-          _illegal2LegalChanges_(changes_to_recompute);
-          _invalidateChange_(change_index);
-          _findLegalChangesNeedingUpdate_(changes_to_recompute, change.node2());
-          _updateScores_(changes_to_recompute);
-        } break;
-
-        case GraphChangeType::ARC_REVERSAL : {
-          // update the current score
-          _node_current_scores_[change.node1()] += _change_scores_[change_index].first;
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          _parents_[change.node1()].push_back(change.node2());
-          auto& parents = _parents_[change.node2()];
-          for (auto& par: parents) {
-            if (par == change.node1()) {
-              par = *(parents.rbegin());
-              parents.pop_back();
-              break;
-            }
-          }
-
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcReversal& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcReversal& >(change));
-          }
-
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcReversal& >(change));
-          _getNewChanges_();
-
-          // check whether some illegal changes can be put into the valid queues
-          _illegal2LegalChanges_(changes_to_recompute);
-          _invalidateChange_(change_index);
-          _findLegalChangesNeedingUpdate_(changes_to_recompute, change.node1());
-          _findLegalChangesNeedingUpdate_(changes_to_recompute, change.node2());
-          _updateScores_(changes_to_recompute);
-        } break;
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          _applyArcTriangleDeletion2_(static_cast< const ArcTriangleDeletion2& >(change));
+          break;
 
         default :
           GUM_ERROR(NotImplementedYet,
                     "Method applyChange of GraphChangesSelector4DiGraph "
                         << "does not handle yet graph change of type " << change.typeAsString());
       }
-
-      _queues_valid_ = false;
-    }
-
-    /// applies several changes at a time
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >::
-        applyChangeWithoutScoreUpdate(const GraphChange& change) {
-      // first, we get the index of the change
-      const std::size_t change_index = _changes_.pos(change);
-
-      // perform the change
-      switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION : {
-          // update the current score
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          _parents_[change.node2()].push_back(change.node1());
-
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcAddition& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcAddition& >(change));
-          }
-
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcAddition& >(change));
-          _getNewChanges_();
-
-          // indicate that we have just applied the change
-          _invalidateChange_(change_index);
-
-          // indicate that the queue to which the change belongs needs be
-          // updated
-          _queues_to_update_.insert(change.node2());
-        } break;
-
-        case GraphChangeType::ARC_DELETION : {
-          // update the current score
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          auto& parents = _parents_[change.node2()];
-          for (auto& par: parents) {
-            if (par == change.node1()) {
-              par = *(parents.rbegin());
-              parents.pop_back();
-              break;
-            }
-          }
-
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcDeletion& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcDeletion& >(change));
-          }
-
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcDeletion& >(change));
-          _getNewChanges_();
-
-          // indicate that we have just applied the change
-          _invalidateChange_(change_index);
-
-          // indicate that the queue to which the change belongs needs be
-          // updated
-          _queues_to_update_.insert(change.node2());
-        } break;
-
-        case GraphChangeType::ARC_REVERSAL : {
-          // update the current score
-          _node_current_scores_[change.node1()] += _change_scores_[change_index].first;
-          _node_current_scores_[change.node2()] += _change_scores_[change_index].second;
-          _parents_[change.node1()].push_back(change.node2());
-          auto& parents = _parents_[change.node2()];
-          for (auto& par: parents) {
-            if (par == change.node1()) {
-              par = *(parents.rbegin());
-              parents.pop_back();
-              break;
-            }
-          }
-
-          // inform the constraint that the graph has been modified
-          _constraint_->modifyGraph(static_cast< const ArcReversal& >(change));
-          if (reinterpret_cast< STRUCTURAL_CONSTRAINT* >(&(_changes_generator_->constraint()))
-              != _constraint_) {
-            _changes_generator_->constraint().modifyGraph(
-                static_cast< const ArcReversal& >(change));
-          }
-
-          // get new possible changes from the graph change generator
-          // warning: put the next 3 lines before calling  _illegal2LegalChanges_
-          _changes_generator_->modifyGraph(static_cast< const ArcReversal& >(change));
-          _getNewChanges_();
-
-          // indicate that we have just applied the change
-          _invalidateChange_(change_index);
-
-          // indicate that the queue to which the change belongs needs be
-          // updated
-          _queues_to_update_.insert(change.node1());
-          _queues_to_update_.insert(change.node2());
-        } break;
-
-        default :
-          GUM_ERROR(NotImplementedYet,
-                    "Method applyChangeWithoutScoreUpdate of "
-                        << "GraphChangesSelector4DiGraph "
-                        << "does not handle yet graph change of type " << change.typeAsString());
-      }
-    }
-
-    /// applies several changes at a time
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    void
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::updateScoresAfterAppliedChanges() {
-      // determine which changes in the illegal set are now legal
-      Set< std::size_t > new_legal_changes;
-      for (auto iter = _illegal_changes_.beginSafe(); iter != _illegal_changes_.endSafe(); ++iter) {
-        if (_isChangeValid_(*iter)) {
-          new_legal_changes.insert(*iter);
-          _illegal_changes_.erase(iter);
-        }
-      }
-
-      // update the scores that need be updated
-      Set< std::size_t > changes_to_recompute;
-      for (const auto& node: _queues_to_update_) {
-        _findLegalChangesNeedingUpdate_(changes_to_recompute, node);
-      }
-      _queues_to_update_.clear();
-
-      // put the previously illegal changes that are now legal into their queues
-      for (const auto change_index: new_legal_changes) {
-        const GraphChange& change = _changes_[change_index];
-        if (change.type() == GraphChangeType::ARC_REVERSAL) {
-          _change_queue_per_node_[change.node1()].insert(change_index,
-                                                         std::numeric_limits< double >::min());
-        }
-        _change_queue_per_node_[change.node2()].insert(change_index,
-                                                       std::numeric_limits< double >::min());
-
-        changes_to_recompute.insert(change_index);
-      }
-
-      // compute the scores that we need
-      _updateScores_(changes_to_recompute);
-
-      _queues_valid_ = false;
-    }
-
-    /// returns the set of queues sorted by decreasing top priority
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    std::vector< std::pair< NodeId, double > >
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::nodesSortedByBestScore() const {
-      std::vector< std::pair< NodeId, double > > result(_node_queue_.size());
-      for (std::size_t i = std::size_t(0); i < _node_queue_.size(); ++i) {
-        result[i].first  = _node_queue_[i];
-        result[i].second = _node_queue_.priorityByPos(i);
-      }
-
-      std::sort(result.begin(),
-                result.end(),
-                [](const std::pair< NodeId, double >& a,
-                   const std::pair< NodeId, double >& b) -> bool { return a.second > b.second; });
-
-      return result;
-    }
-
-    /// returns the set of queues sorted by decreasing top priority
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    std::vector< std::pair< NodeId, double > >
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::nodesUnsortedWithScore() const {
-      std::vector< std::pair< NodeId, double > > result(_node_queue_.size());
-      for (std::size_t i = std::size_t(0); i < _node_queue_.size(); ++i) {
-        result[i].first  = _node_queue_[i];
-        result[i].second = _node_queue_.priorityByPos(i);
-      }
-
-      return result;
-    }
-
-    /// returns the generator used by the selector
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
-    INLINE typename GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                  GRAPH_CHANGES_GENERATOR >::GeneratorType&
-        GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                      GRAPH_CHANGES_GENERATOR >::graphChangeGenerator()
-            const noexcept {
-      return *_changes_generator_;
     }
 
 

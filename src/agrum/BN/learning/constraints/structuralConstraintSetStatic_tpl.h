@@ -122,6 +122,22 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE void _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
+        const ArcTriangleDeletion1& change) {
+      next_constraints::modifyGraph(change);
+      first_constraint::modifyGraphAlone(change);
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE void _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
+        const ArcTriangleDeletion2& change) {
+      next_constraints::modifyGraph(change);
+      first_constraint::modifyGraphAlone(change);
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE void _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
         const GraphChange& change) {
       next_constraints::modifyGraph(change);
       first_constraint::modifyGraphAlone(change);
@@ -166,6 +182,22 @@ namespace gum {
           && first_constraint::checkArcReversalAlone(x, y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::
+        checkArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) const {
+      return next_constraints::checkArcTriangleDeletion1(node1, node2, node3)
+          && first_constraint::checkArcTriangleDeletion1Alone(node1, node2, node3);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::
+        checkArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) const {
+      return next_constraints::checkArcTriangleDeletion2(node1, node2, node3)
+          && first_constraint::checkArcTriangleDeletion2Alone(node1, node2, node3);
+    }
+
     /// checks whether the constraints enable to add an arc
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE bool
@@ -189,6 +221,24 @@ namespace gum {
     INLINE bool
         _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
             const ArcReversal& change) const {
+      return next_constraints::checkModification(change)
+          && first_constraint::checkModificationAlone(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool
+        _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
+            const ArcTriangleDeletion1& change) const {
+      return next_constraints::checkModification(change)
+          && first_constraint::checkModificationAlone(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool
+        _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
+            const ArcTriangleDeletion2& change) const {
       return next_constraints::checkModification(change)
           && first_constraint::checkModificationAlone(change);
     }
@@ -256,6 +306,20 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     template < typename CONSTRAINT >
+    INLINE void _StructuralConstraintSetStatic_< CONSTRAINT >::modifyGraph(
+        const ArcTriangleDeletion1& change) {
+      first_constraint::modifyGraphAlone(change);
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT >
+    INLINE void _StructuralConstraintSetStatic_< CONSTRAINT >::modifyGraph(
+        const ArcTriangleDeletion2& change) {
+      first_constraint::modifyGraphAlone(change);
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT >
     INLINE void
         _StructuralConstraintSetStatic_< CONSTRAINT >::modifyGraph(const GraphChange& change) {
       first_constraint::modifyGraphAlone(change);
@@ -289,6 +353,24 @@ namespace gum {
       return first_constraint::checkArcReversalAlone(x, y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT >
+    INLINE bool
+        _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion1(NodeId node1,
+                                                                                 NodeId node2,
+                                                                                 NodeId node3) const {
+      return first_constraint::checkArcTriangleDeletion1Alone(node1, node2, node3);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT >
+    INLINE bool
+        _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion2(NodeId node1,
+                                                                                 NodeId node2,
+                                                                                 NodeId node3) const {
+      return first_constraint::checkArcTriangleDeletion2Alone(node1, node2, node3);
+    }
+
     /// checks whether the constraints enable to add an arc
     template < typename CONSTRAINT >
     INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkModification(
@@ -307,6 +389,20 @@ namespace gum {
     template < typename CONSTRAINT >
     INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkModification(
         const ArcReversal& change) const {
+      return first_constraint::checkModificationAlone(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT >
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkModification(
+        const ArcTriangleDeletion1& change) const {
+      return first_constraint::checkModificationAlone(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT >
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkModification(
+        const ArcTriangleDeletion2& change) const {
       return first_constraint::checkModificationAlone(change);
     }
 
@@ -386,6 +482,20 @@ namespace gum {
       return constraints::checkArcReversal(x, y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::
+        checkArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) const {
+      return constraints::checkArcTriangleDeletion1(node1, node2, node3);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::
+        checkArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) const {
+      return constraints::checkArcTriangleDeletion2(node1, node2, node3);
+    }
+
     /// checks whether the constraints enable to add an arc
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE bool
@@ -407,6 +517,22 @@ namespace gum {
     INLINE bool
         StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
             const ArcReversal& change) const {
+      return constraints::checkModification(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
+            const ArcTriangleDeletion1& change) const {
+      return constraints::checkModification(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::checkModification(
+            const ArcTriangleDeletion2& change) const {
       return constraints::checkModification(change);
     }
 
@@ -460,6 +586,32 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     INLINE void StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
+        const ArcTriangleDeletion1& change) {
+      if (checkModification(change)) {
+        constraints::modifyGraph(change);
+      } else {
+        GUM_ERROR(OperationNotAllowed,
+                  "the constraint set does not allow the deletion of arc triangle1 "
+                      << change.node1() << " -> " << change.node2() << " -> " << change.node3());
+      }
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE void StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
+        const ArcTriangleDeletion2& change) {
+      if (checkModification(change)) {
+        constraints::modifyGraph(change);
+      } else {
+        GUM_ERROR(OperationNotAllowed,
+                  "the constraint set does not allow the deletion of arc triangle2 "
+                      << change.node1() << " -> " << change.node2() << " -> " << change.node3());
+      }
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
+    INLINE void StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >::modifyGraph(
         const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
@@ -474,10 +626,18 @@ namespace gum {
           modifyGraph(reinterpret_cast< const ArcReversal& >(change));
           break;
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          modifyGraph(reinterpret_cast< const ArcTriangleDeletion1& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          modifyGraph(reinterpret_cast< const ArcTriangleDeletion2& >(change));
+          break;
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "currently supported by constraint sets");
+                    "Graph change operation " << change.typeAsString()
+                                              << " is not currently supported by constraint sets");
       }
     }
 
@@ -546,6 +706,24 @@ namespace gum {
       return constraints::checkArcReversal(x, y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT >
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT >::checkArcTriangleDeletion1(NodeId node1,
+                                                                               NodeId node2,
+                                                                               NodeId node3) const {
+      return constraints::checkArcTriangleDeletion1(node1, node2, node3);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT >
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT >::checkArcTriangleDeletion2(NodeId node1,
+                                                                               NodeId node2,
+                                                                               NodeId node3) const {
+      return constraints::checkArcTriangleDeletion2(node1, node2, node3);
+    }
+
     /// checks whether the constraints enable to add an arc
     template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
@@ -562,15 +740,29 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse an arc
     template < typename CONSTRAINT >
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT >::checkModification(const ArcReversal& change) const {
+      return constraints::checkModification(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    template < typename CONSTRAINT >
     INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
-        const ArcReversal& change) const {
+        const ArcTriangleDeletion1& change) const {
+      return constraints::checkModification(change);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    template < typename CONSTRAINT >
+    INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
+        const ArcTriangleDeletion2& change) const {
       return constraints::checkModification(change);
     }
 
     /// checks whether the constraints enable to perform a graph change
     template < typename CONSTRAINT >
-    INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
-        const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintSetStatic< CONSTRAINT >::checkModification(const GraphChange& change) const {
       return constraints::checkModification(change);
     }
 
@@ -615,6 +807,32 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     template < typename CONSTRAINT >
+    INLINE void StructuralConstraintSetStatic< CONSTRAINT >::modifyGraph(
+        const ArcTriangleDeletion1& change) {
+      if (checkModification(change)) {
+        constraints::modifyGraph(change);
+      } else {
+        GUM_ERROR(OperationNotAllowed,
+                  "the constraint set does not allow the deletion of arc triangle1 "
+                      << change.node1() << " -> " << change.node2() << " -> " << change.node3());
+      }
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT >
+    INLINE void StructuralConstraintSetStatic< CONSTRAINT >::modifyGraph(
+        const ArcTriangleDeletion2& change) {
+      if (checkModification(change)) {
+        constraints::modifyGraph(change);
+      } else {
+        GUM_ERROR(OperationNotAllowed,
+                  "the constraint set does not allow the deletion of arc triangle2 "
+                      << change.node1() << " -> " << change.node2() << " -> " << change.node3());
+      }
+    }
+
+    /// notify the constraint of a modification of the graph
+    template < typename CONSTRAINT >
     INLINE void
         StructuralConstraintSetStatic< CONSTRAINT >::modifyGraph(const GraphChange& change) {
       switch (change.type()) {
@@ -630,10 +848,18 @@ namespace gum {
           modifyGraph(reinterpret_cast< const ArcReversal& >(change));
           break;
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          modifyGraph(reinterpret_cast< const ArcTriangleDeletion1& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          modifyGraph(reinterpret_cast< const ArcTriangleDeletion2& >(change));
+          break;
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "currently supported by constraint sets");
+                    "Graph change operation " << change.typeAsString()
+                                              << " is not currently supported by constraint sets");
       }
     }
 

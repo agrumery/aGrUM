@@ -259,14 +259,17 @@ namespace gum {
   template < typename Val, typename Priority, typename Cmp >
   INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
       SortedPriorityQueue< Val, Priority, Cmp >::insert(Val&& val, Priority&& priority) {
-    // create the entry in the indices hashtable (if the element already exists,
-    // _nodes_.insert will raise a DuplicateElement exception)
-    const auto& new_elt = _nodes_.insert(AVLNode(std::move(val)), std::move(priority));
+    if constexpr (std::is_move_constructible_v< Val >) {
+      // create the entry in the indices hashtable (if the element already exists,
+      // _nodes_.insert will raise a DuplicateElement exception)
+      const auto& new_elt = _nodes_.insert(AVLNode(std::move(val)), std::move(priority));
 
-    // update the tree
-    _tree_.insert(const_cast< AVLTreeNode< Val >* >(&new_elt.first));
-
-    return new_elt.first.value;
+      // update the tree
+      _tree_.insert(const_cast< AVLTreeNode< Val >* >(&new_elt.first));
+      return new_elt.first.value;
+    } else {
+      return insert(val, priority);
+    }
   }
 
   // emplace a new element into the priority queue
@@ -290,22 +293,23 @@ namespace gum {
   // removes the bottom of the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::eraseBottom() {
-    if (_tree_.empty()) return;
+    if (_tree_.empty()) {
+      return;
+    }
     AVLNode* node = _tree_.lowestNode();
     _tree_.erase(node);
     _nodes_.erase(*node);
   }
 
-  // returns the node in the hash table corresponding to a given value
+  // returns the node in the hash table corresponding to a given external value
   template < typename Val, typename Priority, typename Cmp >
   INLINE AVLTreeNode< Val >&
-         SortedPriorityQueue< Val, Priority, Cmp >::getNode_(const Val& val) const {
-    // Some compilers are optimizing _tree_cmp_.getNode(val) for Val=string. This
-    // induces a lot of warnings. To prevent this, we have an optimized code for
-    // non-strings and a less optimal but warning-free
-    if constexpr (!is_basic_string< Val >::value)
-      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(*(_tree_cmp_.getNode(val))));
-    else {
+      SortedPriorityQueue< Val, Priority, Cmp >::getNodeFromExternalValue_(const Val& val) const {
+    // here, we optimize the code for scalars and GraphChanges. For those types,
+    // it is faster to make one copy rather than 2 moves
+    if constexpr (std::is_scalar_v< Val > || std::is_base_of_v< GraphChange, Val >) {
+      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(AVLTreeNode< Val >(val)));
+    } else {
       AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
       const bool         found = _nodes_.exists(xval);
       if (found) {
@@ -319,11 +323,35 @@ namespace gum {
     }
   }
 
+  // returns the node in the hash table corresponding to a given value
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE AVLTreeNode< Val >&
+      SortedPriorityQueue< Val, Priority, Cmp >::getNodeFromInternalValue_(const Val& val) const {
+    // Some compilers are optimizing _tree_cmp_.getNode(val) for Val=string. This
+    // induces a lot of warnings. To prevent this, we have an optimized code for
+    // non-strings and a less optimal but warning-free
+    if constexpr (!is_basic_string< Val >::value) {
+      return const_cast< AVLTreeNode< Val >& >(_nodes_.key(*(_tree_cmp_.getNode(val))));
+    } else {
+      return getNodeFromExternalValue_(val);
+    }
+  }
+
+  // returns the "internal" value stored into the queue corresponding to val
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueue< Val, Priority, Cmp >::const_reference
+      SortedPriorityQueue< Val, Priority, Cmp >::operator[](const Val& val) const {
+    // if this method is called, then val should be an external value
+    return getNodeFromExternalValue_(val).value;
+  }
+
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
-  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val,
+                                                               bool       internal_val) {
     if (contains(val)) {
-      AVLNode& node = getNode_(val);
+      AVLNode& node
+          = internal_val ? getNodeFromInternalValue_(val) : getNodeFromExternalValue_(val);
       _tree_.erase(&node);
       _nodes_.erase(node);
     }
@@ -332,13 +360,15 @@ namespace gum {
   // modifies the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val&      elt,
-                                                                     const Priority& new_priority) {
+                                                                     const Priority& new_priority,
+                                                                     bool            internal_val) {
     if (!contains(elt)) {
       GUM_ERROR(NotFound,
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
-    AVLNode& node = getNode_(elt);
+    AVLNode& node
+        = internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
     _tree_.erase(&node);
     _nodes_[node] = new_priority;
     _tree_.insert(&node);
@@ -347,13 +377,15 @@ namespace gum {
   // modifies the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::setPriority(const Val& elt,
-                                                                     Priority&& new_priority) {
+                                                                     Priority&& new_priority,
+                                                                     bool       internal_val) {
     if (!contains(elt)) {
       GUM_ERROR(NotFound,
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
-    AVLNode& node = getNode_(elt);
+    AVLNode& node =
+        internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
     _tree_.erase(&node);
     _nodes_[node] = std::move(new_priority);
     _tree_.insert(&node);
@@ -361,8 +393,10 @@ namespace gum {
 
   // returns the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Priority& SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
-    return _nodes_[getNode_(elt)];
+  INLINE const Priority&
+      SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt,
+                                                          bool       internal_val) const {
+    return _nodes_[internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt)];
   }
 
   // removes all the elements from the queue
@@ -575,6 +609,23 @@ namespace gum {
     else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
+  /// alias for operator*
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueIterator< Val, Priority, Cmp >::const_reference
+      SortedPriorityQueueIterator< Val, Priority, Cmp >::value() const {
+    return operator*();
+  }
+
+  /// returns the priority of the element pointed to by the iterator
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority& SortedPriorityQueueIterator< Val, Priority, Cmp >::priority() const {
+    auto node = SharedAVLTreeReverseIterator< Val, TreeCmp >::operator->();
+    if (node != nullptr) return TreeIterator::tree().compare().getPriority(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
+  }
+
   /// ======================================================================================
 
   /// constructor for begin safe iterators
@@ -685,6 +736,23 @@ namespace gum {
       SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::operator->() const {
     auto node = SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >::operator->();
     if (node != nullptr) return &(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
+  }
+
+  /// alias for operator*
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::const_reference
+      SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::value() const {
+    return operator*();
+  }
+
+  /// returns the priority of the element pointed to by the iterator
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority& SortedPriorityQueueIteratorSafe< Val, Priority, Cmp >::priority() const {
+    auto node = SharedAVLTreeReverseIteratorSafe< Val, TreeCmp >::operator->();
+    if (node != nullptr) return TreeIterator::tree().compare().getPriority(node->value);
     else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
@@ -802,6 +870,24 @@ namespace gum {
       SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::operator->() const {
     auto node = SharedAVLTreeIterator< Val, TreeCmp >::operator->();
     if (node != nullptr) return &(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
+  }
+
+  /// alias for operator*
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::const_reference
+      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::value() const {
+    return operator*();
+  }
+
+  /// returns the priority of the element pointed to by the iterator
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+      SortedPriorityQueueReverseIterator< Val, Priority, Cmp >::priority() const {
+    auto node = SharedAVLTreeIterator< Val, TreeCmp >::operator->();
+    if (node != nullptr) return TreeIterator::tree().compare().getPriority(node->value);
     else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
@@ -923,6 +1009,23 @@ namespace gum {
     else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
+  /// alias for operator*
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE typename SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::const_reference
+      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::value() const {
+    return operator*();
+  }
+
+  /// returns the priority of the element pointed to by the iterator
+  /** @throws NotFound is raised if the iterator points to nothing */
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+      SortedPriorityQueueReverseIteratorSafe< Val, Priority, Cmp >::priority() const {
+    auto node = SharedAVLTreeIteratorSafe< Val, TreeCmp >::operator->();
+    if (node != nullptr) return TreeIterator::tree().compare().getPriority(node->value);
+    else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
+  }
 
 }   // namespace gum
 

@@ -45,7 +45,7 @@
 // StructuralConstraints, i.e., that do not derive from public virtual
 // StructuralConstraintSetStatic<...>. Such a class is
 // StructuralConstraintUndiGraph.
-// If your class derives from anoter constraint, include file
+// If your class derives from another constraint, include file
 // StructuralConstraintPattern4UndiGraphInline.h instead.
 
 #ifdef GUM_CONSTRAINT_CLASS_NAME

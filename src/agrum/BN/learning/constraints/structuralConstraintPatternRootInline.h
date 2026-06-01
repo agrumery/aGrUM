@@ -45,7 +45,7 @@
 // StructuralConstraints, i.e., that do not derive from public virtual
 // StructuralConstraintSetStatic<...>. Such a class is
 // StructuralConstraintDiGraph.
-// If your class derives from anoter constraint, include file
+// If your class derives from another constraint, include file
 // StructuralConstraintPatternInline.h instead.
 
 #ifdef GUM_CONSTRAINT_CLASS_NAME
@@ -69,6 +69,16 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcReversal& change) {
 }
 
 /// notify the constraint of a modification of the graph
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcTriangleDeletion1& change) {
+  modifyGraphAlone(change);
+}
+
+/// notify the constraint of a modification of the graph
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const ArcTriangleDeletion2& change) {
+  modifyGraphAlone(change);
+}
+
+/// notify the constraint of a modification of the graph
 INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph(const GraphChange& change) {
   modifyGraphAlone(change);
 }
@@ -88,6 +98,18 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal(NodeId x, NodeId y) cons
   return checkArcReversalAlone(x, y);
 }
 
+/// checks whether the constraints enable to apply an ArcTriangleDeletion1
+INLINE bool
+    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) const {
+  return checkArcTriangleDeletion1Alone(node1, node2, node3);
+}
+
+/// checks whether the constraints enable to apply an ArcTriangleDeletion2
+INLINE bool
+    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) const {
+  return checkArcTriangleDeletion2Alone(node1, node2, node3);
+}
+
 /// checks whether the constraints enable to add an arc
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcAddition& change) const {
   return checkModificationAlone(change);
@@ -100,6 +122,16 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcDeletion& chan
 
 /// checks whether the constraints enable to reverse an arc
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcReversal& change) const {
+  return checkModificationAlone(change);
+}
+
+/// checks whether the constraints enable to apply an ArcTriangleDeletion1
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcTriangleDeletion1& change) const {
+  return checkModificationAlone(change);
+}
+
+/// checks whether the constraints enable to apply an ArcTriangleDeletion2
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(const ArcTriangleDeletion2& change) const {
   return checkModificationAlone(change);
 }
 

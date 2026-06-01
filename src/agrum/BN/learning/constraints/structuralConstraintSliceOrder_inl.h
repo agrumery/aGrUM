@@ -86,6 +86,29 @@ namespace gum {
       } catch (const Exception&) { return true; }
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintSliceOrder::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                               NodeId node2,
+                                                                               NodeId node3) const {
+      bool res = true;
+      try {
+        res = _SliceOrder_order_[node1] == _SliceOrder_order_[node2];
+      } catch (const Exception&) {}
+      try {
+        return res && _SliceOrder_order_[node1] == _SliceOrder_order_[node3];
+      } catch (const Exception&) { return true; }
+      return res;
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintSliceOrder::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                               NodeId node2,
+                                                                               NodeId node3) const {
+      try {
+        return _SliceOrder_order_[node2] == _SliceOrder_order_[node3];
+      } catch (const Exception&) { return true; }
+    }
+
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(const ArcAddition& change) {}
 
@@ -96,6 +119,14 @@ namespace gum {
     INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(const ArcReversal& change) {}
 
     /// notify the constraint of a modification of the graph
+    INLINE void
+        StructuralConstraintSliceOrder::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+        StructuralConstraintSliceOrder::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
+
+    /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
@@ -103,21 +134,23 @@ namespace gum {
         StructuralConstraintSliceOrder::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
-          try {
-            return (_SliceOrder_order_[change.node1()] > _SliceOrder_order_[change.node2()]);
-          } catch (const Exception&) { return false; }
+          return !checkArcAdditionAlone(change.node1(), change.node2());
 
         case GraphChangeType::ARC_DELETION : return false;
 
         case GraphChangeType::ARC_REVERSAL :
-          try {
-            return (_SliceOrder_order_[change.node1()] != _SliceOrder_order_[change.node2()]);
-          } catch (const Exception&) { return false; }
+          return !checkArcAdditionAlone(change.node2(), change.node1());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return !checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return !checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
 
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "supported by SliceOrder constraints");
+                    "Graph change operation " << change.typeAsString()
+                                              << " is not supported by SliceOrder constraints");
       }
     }
 
@@ -139,9 +172,20 @@ namespace gum {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
-    /// checks whether the constraints enable to perform a graph change
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool
-        StructuralConstraintSliceOrder::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintSliceOrder::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool
+        StructuralConstraintSliceOrder::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool StructuralConstraintSliceOrder::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -151,6 +195,12 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
 
         default :
           GUM_ERROR(OperationNotAllowed,

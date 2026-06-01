@@ -97,6 +97,33 @@ namespace gum {
       return !_DAG_cycle_detector_.hasCycleFromReversal(x, y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                        NodeId node2,
+                                                                        NodeId node3) const {
+      _DAG_cycle_detector_.eraseArc(node2, node3);
+      _DAG_cycle_detector_.eraseArc(node1, node3);
+      bool res = false;
+      if (!_DAG_cycle_detector_.hasCycleFromReversal(node1, node2)) {
+        _DAG_cycle_detector_.reverseArc(node1, node2);
+        res = !_DAG_cycle_detector_.hasCycleFromAddition(node3, node1);
+        _DAG_cycle_detector_.reverseArc(node2, node1);
+      }
+      _DAG_cycle_detector_.addArc(node1, node3);
+      _DAG_cycle_detector_.addArc(node2, node3);
+      return res;
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                        NodeId node2,
+                                                                        NodeId node3) const {
+      _DAG_cycle_detector_.eraseArc(node1, node3);
+      bool res = !_DAG_cycle_detector_.hasCycleFromReversal(node2, node3);
+      _DAG_cycle_detector_.addArc(node1, node3);
+      return res;
+    }
+
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintDAG::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
@@ -112,6 +139,18 @@ namespace gum {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool
+        StructuralConstraintDAG::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool
+        StructuralConstraintDAG::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+    }
+
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintDAG::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
@@ -124,10 +163,16 @@ namespace gum {
         case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "supported by StructuralConstraintDAG");
+                    "Graph change operation " << change.typeAsString()
+                                              << "is not supported by StructuralConstraintDAG");
       }
     }
 
@@ -147,6 +192,20 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcTriangleDeletion1& change) {
+      _DAG_cycle_detector_.eraseArc(change.node2(), change.node3());
+      _DAG_cycle_detector_.eraseArc(change.node1(), change.node3());
+      _DAG_cycle_detector_.reverseArc(change.node1(), change.node2());
+      _DAG_cycle_detector_.addArc(change.node3(), change.node1());
+    }
+
+    /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcTriangleDeletion2& change) {
+      _DAG_cycle_detector_.eraseArc(change.node1(), change.node3());
+      _DAG_cycle_detector_.reverseArc(change.node2(), change.node3());
+    }
+
+    /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
@@ -161,8 +220,18 @@ namespace gum {
           modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
           break;
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion1& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion2& >(change));
+          break;
+
         default :
-          GUM_ERROR(OperationNotAllowed, "edge modifications are not supported by DAG constraints")
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation " << change.typeAsString()
+                                              << " is not supported by DAG constraints")
       }
     }
 

@@ -52,6 +52,11 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/sortedPriorityQueue.h>
+#include <agrum/base/graphs/diGraph.h>
+
+#include <agrum/BN/learning/structureUtils/graphChange.h>
+
 #include <agrum/BN/learning/scores_and_tests/score.h>
 
 namespace gum {
@@ -61,32 +66,43 @@ namespace gum {
     /** @class GraphChangesSelector4DiGraph
      * @brief The mecanism to compute the next available graph changes for
      * directed structure learning search algorithms.
+     * @tparam INVARIABLE_CONSTRAINT_TYPE invariable constraints are those constraints whose
+     *         satisfaction does not depend on the current DiGraph. For instance topological
+     *         ordering constraints always yield the same results whatever the digraph.
+     * @tparam VARIABLE_CONSTRAINT_TYPE variable constraints are those constraints that 
+     *         require examining the current DiGraph to determine whether they are satisfied
+     *         or not. For instance, limits on the indegrees of the nodes can be reached or
+     *         not depending on the DiGraph of interest.
      * @ingroup learning_group
      */
-    template < typename STRUCTURAL_CONSTRAINT, typename GRAPH_CHANGES_GENERATOR >
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     class GraphChangesSelector4DiGraph {
       public:
-      /// the type of the generator
-      using GeneratorType = GRAPH_CHANGES_GENERATOR;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
-      /// default constructor
-      GraphChangesSelector4DiGraph(Score&                   score,
-                                   STRUCTURAL_CONSTRAINT&   constraint,
-                                   GRAPH_CHANGES_GENERATOR& changes_generator);
+      /**
+       * @brief default constructor
+       *
+       * @param score the score used to select the best next change
+       * @param invariable_constraints
+       * @param variable_constraints
+       * @param changes_generator
+       */
+      GraphChangesSelector4DiGraph(Score&                      score,
+                                   INVARIABLE_CONSTRAINT_TYPE& invariable_constraints,
+                                   VARIABLE_CONSTRAINT_TYPE&   variable_constraints);
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
-          const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-              from);
+          const GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                              VARIABLE_CONSTRAINT_TYPE >& from);
 
       /// move constructor
-      GraphChangesSelector4DiGraph(
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
+      GraphChangesSelector4DiGraph(GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                                 VARIABLE_CONSTRAINT_TYPE >&& from);
 
       /// destructor
       ~GraphChangesSelector4DiGraph();
@@ -99,13 +115,14 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&
-          operator=(const GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT,
-                                                        GRAPH_CHANGES_GENERATOR >& from);
+      GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >&
+          operator=(const GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                        VARIABLE_CONSTRAINT_TYPE >& from);
 
       /// move operator
-      GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >& operator=(
-          GraphChangesSelector4DiGraph< STRUCTURAL_CONSTRAINT, GRAPH_CHANGES_GENERATOR >&& from);
+      GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >&
+          operator=(GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                  VARIABLE_CONSTRAINT_TYPE >&& from);
 
       /// @}
 
@@ -114,59 +131,33 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the generator used by the selector
-      GeneratorType& graphChangeGenerator() const noexcept;
-
-      /// indicates whether the selector still contains graph changes
-      bool empty();
-
-      /** @brief indicates whether the selector contains graph changes related
-       * to
-       * the ith node */
-      bool empty(const NodeId i);
-
       /// returns the best graph change to examine
       /** @throws NotFound exception is thrown if the selector is empty */
       const GraphChange& bestChange();
 
-      /// returns the best graph change to examine related to the ith node
-      /** The selector computes not only the best change possible but also the
-       * best changes impacting the parents' set of each node. This method
-       * allows to get the change that is considered the best for modifying the
-       * parents' set of the ith node.
-       * @throws NotFound exception is thrown if the selector is empty */
-      const GraphChange& bestChange(const NodeId i);
-
       /// return the score of the best graph change
-      /** @throws NotFound exception is thrown if the selector is empty */
-      double bestScore();
-
-      /// return the score of the best graph change related to the ith node
-      /** The selector computes not only the best change possible but also the
-       * best changes impacting the parents' set of each node. This method
-       * allows to get the score of the change that is considered the best for
-       * modifying the parents' set of the ith node.
+      /** @warning If you want both to get the bestScore and the bestChange,
+       * consider first to get the bestChange and, then, the score of this
+       * best change, it will be faster than calling both the bestChange and
+       * bestScore methods.
        * @throws NotFound exception is thrown if the selector is empty */
-      double bestScore(const NodeId i);
+      double bestDeltaScore();
+
+      /// return the score of a given change
+      /**
+       * @param change the GraphChange whose delta score we want
+       * @param internal_change If the change is stored in memory within the
+       * selector (essentially, it results from a call to method bestChange),
+       * then set internal_change to true. This will speed-up the computations.
+       * Otherwise, set it to false.
+       * @throws NotFound exception is thrown if the selector is empty */
+      double deltaScore(const GraphChange& change, const bool internal_change = false) const;
+
+      /// returns the current score of a node
+      double score(const NodeId node) const;
 
       /// indicate to the selector that a change has been applied
       void applyChange(const GraphChange& change);
-
-      /// indicate to the selector that one of serveral changes has been applied
-      /** This function is to be used rather than applyChange when we wish to
-       * apply several changes at a time. It is faster than applyChange because
-       * it does not recomputes the scores. Then, after applying all changes,
-       * we shall compute the scores with function
-       * updateScoresAfterAppliedChanges (). See class GreedyHillClimbing for
-       * an illustration of the use of this method. */
-      void applyChangeWithoutScoreUpdate(const GraphChange& change);
-
-      /// recompute all the scores after the application of several changes
-      /** This method needs COMPULSORILY be used after applications of
-       * applyChangeWithoutScoreUpdate in order to ensure the fact that
-       * functions bestScore and bestChange return correct answers. See class
-       * GreedyHillClimbing for an illustration of the use of this method. */
-      void updateScoresAfterAppliedChanges();
 
       /// indicates whether a given change is valid or not
       bool isChangeValid(const GraphChange& change) const;
@@ -174,11 +165,32 @@ namespace gum {
       /// sets the graph from which scores are computed
       void setGraph(DiGraph& graph);
 
-      /// returns the set of queues sorted by decreasing top priority
-      std::vector< std::pair< NodeId, double > > nodesSortedByBestScore() const;
+      /** @brief adds some nodes that were removed because they did not belong to
+       * the database
+       *
+       * This function should be called at the end of the learning in order to
+       * add to the learnt graph all the nodes that were removed from it because
+       * we had no data over them
+       */
+      void finalizeGraph(DiGraph& graph);
 
-      /// returns the set of queues top priorities
-      std::vector< std::pair< NodeId, double > > nodesUnsortedWithScore() const;
+      /// sets whether or not the selector allows the application of arc additions
+      void useArcAdditions(bool use);
+
+      /// sets whether or not the selector allows the application of arc deletions
+      void useArcDeletions(bool use);
+
+      /// sets whether or not the selector allows the application of arc reversals
+      void useArcReversals(bool use);
+
+      /// sets whether or not the selector allows the application of arc triangle deletions
+      void useArcTriangleDeletions(bool use);
+
+      /// returns the set of invariable constraints used by the selector
+      INVARIABLE_CONSTRAINT_TYPE& invariableConstraints();
+
+      /// returns the set of variable constraints used by the selector
+      VARIABLE_CONSTRAINT_TYPE& variableConstraints();
 
       /// @}
 
@@ -186,63 +198,145 @@ namespace gum {
       /// the scoring function
       Score* _score_;
 
-      /// the set of constraints used to determine valid changes
-      STRUCTURAL_CONSTRAINT* _constraint_;
+      /**
+       * @brief the set of constraints which, for a given change, always return
+       * the same output
+       *
+       * An example of such a constraint is the slice order constraint: if x and
+       * y are in slices 1 and 2 respectively, it will always be impossible to
+       * add an arc y->x, whatever the current graph. Mandatory arcs and
+       * forbidden arcs are also constraints of this type.
+       */
+      INVARIABLE_CONSTRAINT_TYPE* _invariable_constraints_;
 
-      /// the generator that returns the set of possible changes
-      GRAPH_CHANGES_GENERATOR* _changes_generator_;
+      /** @brief the set of constraints whose outputs can change depending on
+       * the current graph
+       *
+       * An example of such a constraint is the indegree constraint: depending
+       * on the current number of parents of node x, it may or may not be
+       * possible to add a new arc incoming into x.
+       */
+      VARIABLE_CONSTRAINT_TYPE* _variable_constraints_;
 
-      /// a sequence containing all the possible changes
-      Sequence< GraphChange > _changes_;
 
-      /// the scores for the head and tail of all the changes
-      /** the scores are indexed by their index in sequence  _changes_ */
-      std::vector< std::pair< double, double > > _change_scores_;
-
-      /// for each node, a priority queue sorting GraphChanges by decreasing score
-      /** within each queue, the changes are determined by their index in
-       * sequence  _changes_. */
-      NodeProperty< PriorityQueue< std::size_t, double, std::greater< double > > >
-          _change_queue_per_node_;
-
-      /// a global priority queue indicating for each node its best score
-      PriorityQueue< NodeId, double, std::greater< double > > _node_queue_;
-
-      /// the set of changes known to be currently illegal (due to the constraints)
-      /** within each queue, the changes are determined by their index in
-       * sequence  _changes_. */
-      Set< std::size_t > _illegal_changes_;
+      /// the graph that we learn
+      DiGraph* _graph_{nullptr};
 
       /// the current score of each node
-      NodeProperty< double > _node_current_scores_;
+      NodeProperty< double > _node_scores_;
 
       /// the set of parents of each node (speeds-up score computations)
-      NodeProperty< std::vector< NodeId > > _parents_;
+      NodeProperty< std::vector< NodeId > > _node_parents_;
 
-      /// indicates whether we need to recompute whether the queue is empty or not
-      bool _queues_valid_{false};
+      /**
+       * @brief the graph changes sorted by decreasing delta score value
+       *
+       * The graph changes in this queue are those that are allowed according to
+       * the _invariable_constraints_. Their priority corresponds to the delta
+       * that should be added to the overall score of the graph if the graph
+       * change is applied.
+       * @warning Note that there is never any guarantee that the changes in this
+       * queue are allowed according to the _variable_constraints_, hence, to look
+       * for the next best change, we should iterate over this queue and, for
+       * each element, check whether it is variable-allowed.
+       */
+      SortedPriorityQueue< GraphChange, double > _sorted_changes_;
 
-      /// the set of queues to update when applying several changes
-      Set< NodeId > _queues_to_update_;
+      /**
+       * @brief the set of nodes removed from the graph passed in argument to the
+       * selector because they do not appear in the database
+       */
+      NodeSet _removed_nodes_;
 
-      /// indicates whether a given change is valid or not
-      bool _isChangeValid_(const std::size_t index) const;
+      bool _use_arc_additions_{true};
+      bool _use_arc_deletions_{true};
+      bool _use_arc_reversals_{true};
+      bool _use_arc_triangle_deletions_{true};
 
-      /// put a change into the illegal set
-      void _invalidateChange_(const std::size_t change_index);
+      /// computes the new score of node given that we added it a new parent
+      double _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent);
 
-      /// remove the now legal changes from the illegal set
-      void _illegal2LegalChanges_(Set< std::size_t >& changes_to_recompute);
+      /// computes the new score of node given that we added it two new parents
+      double _scoreAfterAddingParents_(const NodeId node,
+                                       const NodeId new_parent1,
+                                       const NodeId new_parent2);
 
-      /// finds the changes that are affected by a given node modification
-      void _findLegalChangesNeedingUpdate_(Set< std::size_t >& changes_to_recompute,
-                                           const NodeId        target_node);
+      /// computes the new score of node given that we removed a parent
+      double _scoreAfterRemovingParent_(const NodeId node, const NodeId parent);
 
-      /// perform the necessary updates of the scores
-      void _updateScores_(const Set< std::size_t >& changes_to_recompute);
+      /// computes the new score of node given that we removed two parents
+      double _scoreAfterRemovingParents_(const NodeId node,
+                                         const NodeId parent1,
+                                         const NodeId parent2);
 
-      /// get from the graph change generator a new set of changes
-      void _getNewChanges_();
+
+      /// adds an ArcAddition to _sorted_changes_ if possible
+      /** @warning if the invariable constraints forbid this ArcAddition,
+       * then nothing is done. In particular, no exception is raised. */
+      void _addArcAdditionToSortedChanges_(const ArcAddition& change);
+
+      /// adds an ArcDeletion to _sorted_changes_ if possible
+      /** @warning if the invariable constraints forbid this ArcDeletion,
+       * then nothing is done. In particular, no exception is raised. */
+      void _addArcDeletionToSortedChanges_(const ArcDeletion& change);
+
+      /// adds an ArcReversal to _sorted_changes_ if possible
+      /** @warning if the invariable constraints forbid this ArcReversal,
+       * then nothing is done. In particular, no exception is raised. */
+      void _addArcReversalToSortedChanges_(const ArcReversal& change);
+
+      /// adds an ArcTriangleDeletion1 to _sorted_changes_ if possible
+      /** @warning if the invariable constraints forbid this ArcTriangleDeletion1,
+       * then nothing is done. In particular, no exception is raised. */
+      void _addArcTriangleDeletion1ToSortedChanges_(const ArcTriangleDeletion1& change);
+
+      /// adds an ArcTriangleDeletion2 to _sorted_changes_ if possible
+      /** @warning if the invariable constraints forbid this ArcTriangleDeletion2,
+       * then nothing is done. In particular, no exception is raised. */
+      void _addArcTriangleDeletion2ToSortedChanges_(const ArcTriangleDeletion2& change);
+
+
+      /// updates the score of a given ArcAddition
+      void _updateArcAdditionScore_(const NodeId tail, const NodeId head);
+
+      /// updates the score of a given ArcDeletion
+      void _updateArcDeletionScore_(const NodeId tail, const NodeId head);
+
+      /// updates the score of a given ArcReversal
+      void _updateArcReversalScore_(const NodeId tail, const NodeId head);
+
+      /** @brief update the score of the triangle deletions which contain a node whose
+       * neighborhood has changed */
+      void _updateTriangleDeletionsScoresFromNeighborhood_(const NodeId changed_node);
+
+
+      /// add all the possible ArcAdditions to initialize _sorted_changes_
+      void _initSortedChangesWithArcAdditions_(const DiGraph& graph);
+
+      /// add all the possible ArcDeletions to initialize _sorted_changes_
+      void _initSortedChangesWithArcDeletions_(const DiGraph& graph);
+
+      /// add all the possible ArcReversals to initialize _sorted_changes_
+      void _initSortedChangesWithArcReversals_(const DiGraph& graph);
+
+      /// add all the possible ArcTriangleDeletions to initialize _sorted_changes_
+      void _initSortedChangesWithArcTriangleDeletions_(const DiGraph& graph);
+
+
+      /// indicate to the selector that an ArcAddition has been applied
+      void _applyArcAddition_(const ArcAddition& change);
+
+      /// indicate to the selector that an ArcDeletion has been applied
+      void _applyArcDeletion_(const ArcDeletion& change);
+
+      /// indicate to the selector that an ArcReversal has been applied
+      void _applyArcReversal_(const ArcReversal& change);
+
+      /// indicate to the selector that an ArcTriangleDeletion1 has been applied
+      void _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change);
+
+      /// indicate to the selector that an ArcTriangleDeletion2 has been applied
+      void _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change);
     };
 
   } /* namespace learning */

@@ -59,6 +59,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/sharedAVLTree.h>
 
@@ -66,6 +67,8 @@
 #include <type_traits>
 
 namespace gum {
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template < typename Val, typename Priority, typename Cmp >
   class SortedPriorityQueueIterator;
@@ -76,6 +79,11 @@ namespace gum {
   class SortedPriorityQueueReverseIterator;
   template < typename Val, typename Priority, typename Cmp >
   class SortedPriorityQueueReverseIteratorSafe;
+
+  // we declare this class to enable getNodeFromExternalValue_ optimizations
+  class GraphChange;
+
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
 
   /**
    * @class SortedPriorityQueue
@@ -227,6 +235,9 @@ namespace gum {
     SortedPriorityQueue< Val, Priority, Cmp >&
         operator=(SortedPriorityQueue< Val, Priority, Cmp >&& from) noexcept;
 
+    /// returns the "internal" value stored into the queue corresponding to val
+    const_reference operator[](const Val& val) const;
+
     /// @}
 
     // ============================================================================
@@ -351,24 +362,39 @@ namespace gum {
      * any exception.
      *
      * @param val the element we wish to remove.
+     * @param internal_val This parameter is used for speeding-up computations:
+     * when val is an element stored in memory within the queue, we can
+     * speed-up computations. In this case, set internal_val to true.
+     * Otherwise (internal_val = false), we first search for val within the queue
+     * and, once a corresponding value is found, we erase it.
      */
-    void erase(const Val& val);
+    void erase(const Val& val, bool internal_val = false);
 
     /**
      * @brief Modifies the priority of each instance of a given element.
      * @param elt The value to update.
      * @param new_priority The values new priority.
+     * @param internal_val This parameter is used for speeding-up computations:
+     * when val is an element stored in memory within the queue, we can
+     * speed-up computations. In this case, set internal_val to true.
+     * Otherwise (internal_val = false), we first search for val within the queue
+     * and, once a corresponding value is found, we change its priority
      * @throw NotFound Raised if the element cannot be found.
      */
-    void setPriority(const Val& elt, const Priority& new_priority);
+    void setPriority(const Val& elt, const Priority& new_priority, bool internal_val = false);
 
     /**
      * @brief Modifies the priority of each instance of a given element.
      * @param elt The value to update.
      * @param new_priority The values new priority.
+     * @param internal_val This parameter is used for speeding-up computations:
+     * when val is an element stored in memory within the queue, we can
+     * speed-up computations. In this case, set internal_val to true.
+     * Otherwise (internal_val = false), we first search for val within the queue
+     * and, once a corresponding value is found, we change its priority
      * @throw NotFound Raised if the element cannot be found.
      */
-    void setPriority(const Val& elt, Priority&& new_priority);
+    void setPriority(const Val& elt, Priority&& new_priority, bool internal_val = false);
 
     /**
      * @brief Returns the priority of an instance of the value passed in
@@ -377,9 +403,14 @@ namespace gum {
      * @param elt The element for which the priority is returned.
      * @return Returns the priority of an instance of the value passed in
      * argument.
+     * @param internal_val This parameter is used for speeding-up computations:
+     * when val is an element stored in memory within the queue, we can
+     * speed-up computations. In this case, set internal_val to true.
+     * Otherwise (internal_val = false), we first search for val within the queue
+     * and, once a corresponding value is found, we return its priority
      * @throw NotFound Raised if the element cannot be found.
      */
-    const Priority& priority(const Val& elt) const;
+    const Priority& priority(const Val& elt, bool internal_val = false) const;
 
     /**
      * @brief Removes all the elements from the queue.
@@ -515,10 +546,20 @@ namespace gum {
     /// Comparison function.
     TreeCmp _tree_cmp_;
 
-    /** @brief returns the node in the hash table corresponding to a given value
+    /** @brief returns the node in the hash table corresponding to a given internal value
+     *
+     * By internal value, we mean that this is the value stored into an AVLNode
+     * element of the hash table
      * @throws NotFound is raised if the node cannot be found
      */
-    AVLNode& getNode_(const Val& val) const;
+    AVLNode& getNodeFromInternalValue_(const Val& val) const;
+
+    /** @brief returns the node in the hash table corresponding to a given external value
+     * By external value, we mean that the value is not stored into an AVLNode
+     * element of the hash table
+     * @throws NotFound is raised if the node cannot be found
+     */
+    AVLNode& getNodeFromExternalValue_(const Val& val) const;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // the TreeCmp getnode function induces some warning on some compilers when Val
@@ -654,8 +695,27 @@ namespace gum {
 
     /// @}
 
+    // ============================================================================
+    /// @name Accessors / Modifiers
+    // ============================================================================
+    /// @{
+
+    /// alias for operator*
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const_reference value() const;
+
+    /// returns the priority of the element pointed to by the iterator
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const Priority& priority() const;
+
+    /// @}
+
     /// allow sorted priority queues to access the content of the iterators
     friend SortedPriorityQueue< Val, Priority, Cmp >;
+
+    using TreeIterator = SharedAVLTreeReverseIterator<
+        Val,
+        typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp >;
   };
 
   /**
@@ -771,9 +831,28 @@ namespace gum {
 
     /// @}
 
+    // ============================================================================
+    /// @name Accessors / Modifiers
+    // ============================================================================
+    /// @{
+
+    /// alias for operator*
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const_reference value() const;
+
+    /// returns the priority of the element pointed to by the iterator
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const Priority& priority() const;
+
+    /// @}
+
     protected:
     /// allow sorted priority queues to access the content of the iterators
     friend SortedPriorityQueue< Val, Cmp >;
+
+    using TreeIterator = SharedAVLTreeReverseIteratorSafe<
+        Val,
+        typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp >;
   };
 
   /**
@@ -891,10 +970,27 @@ namespace gum {
 
     /// @}
 
+    // ============================================================================
+    /// @name Accessors / Modifiers
+    // ============================================================================
+    /// @{
+
+    /// alias for operator*
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const_reference value() const;
+
+    /// returns the priority of the element pointed to by the iterator
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const Priority& priority() const;
+
+    /// @}
 
     protected:
     /// allow sorted priority queues to access the content of the iterators
     friend SortedPriorityQueue< Val, Priority, Cmp >;
+
+    using TreeIterator
+        = SharedAVLTreeIterator< Val, typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp >;
   };
 
   /**
@@ -1012,10 +1108,29 @@ namespace gum {
 
     /// @}
 
+    // ============================================================================
+    /// @name Accessors / Modifiers
+    // ============================================================================
+    /// @{
+
+    /// alias for operator*
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const_reference value() const;
+
+    /// returns the priority of the element pointed to by the iterator
+    /** @throws NotFound is raised if the iterator points to nothing */
+    const Priority& priority() const;
+
+    /// @}
+
     protected:
     /// allow AVL trees to access the content of the iterators
     friend AVLTree< Val, Cmp >;
     friend SortedPriorityQueue< Val, Cmp >;
+
+    using TreeIterator
+        = SharedAVLTreeIteratorSafe< Val,
+                                     typename SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp >;
   };
 
   /// display the content of a sorted priority queue

@@ -97,6 +97,29 @@ namespace gum {
           && !_TabuList_changes_.existsFirst(ArcReversal(x, y));
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintTabuList::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                             NodeId node2,
+                                                                             NodeId node3) const {
+      return !_TabuList_changes_.existsFirst(ArcTriangleDeletion1(node1, node2, node3))
+          && !_TabuList_changes_.existsFirst(ArcReversal(node1, node2))
+          && !_TabuList_changes_.existsFirst(ArcReversal(node1, node3))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(node2, node3))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node2))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node3))
+          && !_TabuList_changes_.existsFirst(ArcAddition(node2, node1))
+          && !_TabuList_changes_.existsFirst(ArcAddition(node3, node1));
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintTabuList::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                             NodeId node2,
+                                                                             NodeId node3) const {
+      return !_TabuList_changes_.existsFirst(ArcTriangleDeletion2(node1, node2, node3))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node3))
+          && !_TabuList_changes_.existsFirst(ArcReversal(node2, node3));
+    }
+
     /// checks whether the constraints enable to add an arc
     INLINE bool
         StructuralConstraintTabuList::checkModificationAlone(const ArcAddition& change) const {
@@ -115,9 +138,20 @@ namespace gum {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
-    /// checks whether the constraints enable to perform a graph change
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool
-        StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
+        StructuralConstraintTabuList::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool
+        StructuralConstraintTabuList::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to perform a graph change
+    INLINE bool StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
@@ -128,10 +162,17 @@ namespace gum {
         case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "supported by StructuralConstraintTabuList");
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << "is not supported by StructuralConstraintTabuList");
       }
     }
 
@@ -157,6 +198,20 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcTriangleDeletion1& change) {
+      _TabuList_changes_.eraseSecond(_TabuList_offset_);
+      ++_TabuList_offset_;
+      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+    }
+
+    /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcTriangleDeletion2& change) {
+      _TabuList_changes_.eraseSecond(_TabuList_offset_);
+      ++_TabuList_offset_;
+      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+    }
+
+    /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
@@ -171,9 +226,18 @@ namespace gum {
           modifyGraphAlone(static_cast< const ArcReversal& >(change));
           break;
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          modifyGraphAlone(static_cast< const ArcTriangleDeletion1& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          modifyGraphAlone(static_cast< const ArcTriangleDeletion2& >(change));
+          break;
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not supported by digraph constraint")
+                    "Graph change operation " << change.typeAsString()
+                                              << " is not supported by digraph constraint")
       }
     }
 

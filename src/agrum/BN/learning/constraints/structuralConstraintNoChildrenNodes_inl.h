@@ -76,6 +76,24 @@ namespace gum {
       return !_noChildrenNodes_.exists(y);
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
+    INLINE bool StructuralConstraintNoChildrenNodes::checkArcTriangleDeletion1Alone(NodeId x,
+                                                                                    NodeId y,
+                                                                                    NodeId z) const {
+      // no need ti check whether y cannot have children since, in the triangleDeletion1 case,
+      // we know that, before performing the deletion, z is a child of y
+      return !_noChildrenNodes_.exists(z);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
+    INLINE bool StructuralConstraintNoChildrenNodes::checkArcTriangleDeletion2Alone(NodeId x,
+                                                                                    NodeId y,
+                                                                                    NodeId z) const {
+      // no need ti check whether x cannot have children since, in the triangleDeletion1 case,
+      // we know that, before performing the deletion, y is a child of x
+      return !_noChildrenNodes_.exists(z);
+    }
+
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintNoChildrenNodes::checkModificationAlone(
         const ArcAddition& change) const {
@@ -93,6 +111,8 @@ namespace gum {
         const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
+
+
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintNoChildrenNodes::checkModificationAlone(

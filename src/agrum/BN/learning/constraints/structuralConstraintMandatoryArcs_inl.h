@@ -71,6 +71,21 @@ namespace gum {
       return !_MandatoryArcs_mandatory_arcs_.exists(Arc(x, y));
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintMandatoryArcs::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                                  NodeId node2,
+                                                                                  NodeId node3) const {
+      return !_MandatoryArcs_mandatory_arcs_.exists(Arc(node2, node1))
+          && !_MandatoryArcs_mandatory_arcs_.exists(Arc(node3, node1));
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintMandatoryArcs::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                                  NodeId node2,
+                                                                                  NodeId node3) const {
+      return !_MandatoryArcs_mandatory_arcs_.exists(Arc(node3, node2));
+    }
+
     /// checks whether the constraints enable to add an arc
     INLINE bool
         StructuralConstraintMandatoryArcs::checkModificationAlone(const ArcAddition& change) const {
@@ -89,6 +104,18 @@ namespace gum {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
+      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintMandatoryArcs::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
+      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+    }
+
     /// checks whether the constraints enable to perform a graph change
     INLINE bool
         StructuralConstraintMandatoryArcs::checkModificationAlone(const GraphChange& change) const {
@@ -102,10 +129,17 @@ namespace gum {
         case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not "
-                    "supported by StructuralConstraintMandatoryArcs");
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by StructuralConstraintMandatoryArcs");
       }
     }
 
@@ -121,6 +155,14 @@ namespace gum {
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintMandatoryArcs::modifyGraphAlone(const GraphChange& change) {}
 
+    /// notify the constraint of a modification of the graph
+    INLINE void
+        StructuralConstraintMandatoryArcs::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
+
+    /// notify the constraint of a modification of the graph
+    INLINE void
+        StructuralConstraintMandatoryArcs::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
+
     /// indicates whether a change will always violate the constraint
     INLINE bool
         StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
@@ -133,10 +175,17 @@ namespace gum {
         case GraphChangeType::ARC_REVERSAL :
           return !checkArcReversalAlone(change.node1(), change.node2());
 
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return !checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return !checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "edge modifications are not supported "
-                    "by StructuralConstraintMandatoryArcs");
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by StructuralConstraintMandatoryArcs");
       }
     }
 

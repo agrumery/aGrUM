@@ -53,6 +53,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 
@@ -145,6 +146,18 @@ namespace gum {
       void modifyGraphAlone(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      void modifyGraphAlone(const ArcTriangleDeletion1& change);
+
+      /// notify the constraint of a modification of the graph
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      void modifyGraphAlone(const ArcTriangleDeletion2& change);
+
+      /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
@@ -185,6 +198,18 @@ namespace gum {
        * constraint of x. */
       bool checkArcReversalAlone(NodeId x, NodeId y) const;
 
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      bool checkArcTriangleDeletion1Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      bool checkArcTriangleDeletion2Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and its addition would not
@@ -200,6 +225,18 @@ namespace gum {
        * does not and its addition would not violate the indegree
        * constraint of x. */
       bool checkModificationAlone(const ArcReversal& change) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      bool checkModificationAlone(const ArcTriangleDeletion1& change) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      bool checkModificationAlone(const ArcTriangleDeletion2& change) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
