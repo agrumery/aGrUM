@@ -125,6 +125,18 @@ namespace gum::learning {
     void modifyGraphAlone(const ArcReversal& change);
 
     /// notify the constraint of a modification of the graph
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node2 -> node1 <- node3 */
+    void modifyGraphAlone(const ArcTriangleDeletion1& change);
+
+    /// notify the constraint of a modification of the graph
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node1 -> node2 <- node3 */
+    void modifyGraphAlone(const ArcTriangleDeletion2& change);
+
+    /// notify the constraint of a modification of the graph
     void modifyGraphAlone(const GraphChange& change);
 
     /// indicates whether a change will always violate the constraint
@@ -152,6 +164,18 @@ namespace gum::learning {
     /// checks whether the constraints enable to reverse arc (x,y)
     bool checkArcReversalAlone(NodeId x, NodeId y) const;
 
+    /// checks whether the constraints enable triangle deletion1
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node2 -> node1 <- node3 */
+    bool checkArcTriangleDeletion1Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node1 -> node2 <- node3 */
+    bool checkArcTriangleDeletion2Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
     /// checks whether the constraints enable to perform a graph change
     bool checkModificationAlone(const GraphChange& change) const;
 
@@ -163,6 +187,18 @@ namespace gum::learning {
 
     /// checks whether the constraints enable to reverse an arc
     bool checkModificationAlone(const ArcReversal& change) const;
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node2 -> node1 <- node3 */
+    bool checkModificationAlone(const ArcTriangleDeletion1& change) const;
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    /** An arc triangle deletion1 substitutes triangle
+     * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+     * node1 -> node2 <- node3 */
+    bool checkModificationAlone(const ArcTriangleDeletion2& change) const;
 
     /// @}
 

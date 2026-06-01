@@ -80,7 +80,7 @@ namespace gum {
     INLINE bool StructuralConstraintNoChildrenNodes::checkArcTriangleDeletion1Alone(NodeId x,
                                                                                     NodeId y,
                                                                                     NodeId z) const {
-      // no need ti check whether y cannot have children since, in the triangleDeletion1 case,
+      // no need to check whether y cannot have children since, in the triangleDeletion1 case,
       // we know that, before performing the deletion, z is a child of y
       return !_noChildrenNodes_.exists(z);
     }
@@ -89,7 +89,7 @@ namespace gum {
     INLINE bool StructuralConstraintNoChildrenNodes::checkArcTriangleDeletion2Alone(NodeId x,
                                                                                     NodeId y,
                                                                                     NodeId z) const {
-      // no need ti check whether x cannot have children since, in the triangleDeletion1 case,
+      // no need to check whether x cannot have children since, in the triangleDeletion1 case,
       // we know that, before performing the deletion, y is a child of x
       return !_noChildrenNodes_.exists(z);
     }
@@ -112,7 +112,17 @@ namespace gum {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+    INLINE bool StructuralConstraintNoChildrenNodes::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
+      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+    }
 
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+    INLINE bool StructuralConstraintNoChildrenNodes::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
+      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+    }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintNoChildrenNodes::checkModificationAlone(
@@ -126,6 +136,12 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL :
           return checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
 
         default :
           GUM_ERROR(OperationNotAllowed,
@@ -144,6 +160,14 @@ namespace gum {
     INLINE void StructuralConstraintNoChildrenNodes::modifyGraphAlone(const ArcReversal& change) {}
 
     /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintNoChildrenNodes::modifyGraphAlone(
+        const ArcTriangleDeletion1& change) {}
+
+    /// notify the constraint of a modification of the graph
+    INLINE void StructuralConstraintNoChildrenNodes::modifyGraphAlone(
+        const ArcTriangleDeletion2& change) {}
+
+    /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintNoChildrenNodes::modifyGraphAlone(const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
@@ -151,13 +175,21 @@ namespace gum {
         StructuralConstraintNoChildrenNodes::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
-          return !checkArcAdditionAlone(change.node1(), change.node2());
+          return _noChildrenNodes_.exists(change.node1());
 
         case GraphChangeType::ARC_DELETION :
-          return checkArcDeletionAlone(change.node1(), change.node2());
+          return false;
 
         case GraphChangeType::ARC_REVERSAL :
-          return !checkArcAdditionAlone(change.node2(), change.node1());
+          return _noChildrenNodes_.exists(change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1:
+          return _noChildrenNodes_.exists(change.node2()) ||
+                 _noChildrenNodes_.exists(change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2:
+          return _noChildrenNodes_.exists(change.node1()) ||
+                 _noChildrenNodes_.exists(change.node3());
 
         default :
           GUM_ERROR(OperationNotAllowed,

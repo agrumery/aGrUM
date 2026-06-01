@@ -101,6 +101,8 @@ namespace gum {
     INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                         NodeId node2,
                                                                         NodeId node3) const {
+      /// @TODO update DagCycleDetector
+      /*
       _DAG_cycle_detector_.eraseArc(node2, node3);
       _DAG_cycle_detector_.eraseArc(node1, node3);
       bool res = false;
@@ -112,16 +114,23 @@ namespace gum {
       _DAG_cycle_detector_.addArc(node1, node3);
       _DAG_cycle_detector_.addArc(node2, node3);
       return res;
+       */
+
+      GUM_ERROR(NotImplementedYet, "DAGCycleDetector should handle arc triangle deletions");
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                         NodeId node2,
                                                                         NodeId node3) const {
+      /// @TODO update DagCycleDetector
+      /*
       _DAG_cycle_detector_.eraseArc(node1, node3);
       bool res = !_DAG_cycle_detector_.hasCycleFromReversal(node2, node3);
       _DAG_cycle_detector_.addArc(node1, node3);
       return res;
+       */
+      GUM_ERROR(NotImplementedYet, "DAGCycleDetector should handle arc triangle deletions");
     }
 
     /// checks whether the constraints enable to add an arc

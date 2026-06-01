@@ -72,6 +72,20 @@ namespace gum::learning {
     return !_noParentNodes_.exists(x);
   }
 
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
+  INLINE bool StructuralConstraintNoParentNodes::checkArcTriangleDeletion1Alone(NodeId x,
+                                                                                NodeId y,
+                                                                                NodeId z) const {
+      return !_noParentNodes_.exists(x);
+    }
+
+    /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
+    INLINE bool StructuralConstraintNoParentNodes::checkArcTriangleDeletion2Alone(NodeId x,
+                                                                                  NodeId y,
+                                                                                  NodeId z) const {
+      return !_noParentNodes_.exists(y);
+    }
+
   /// checks whether the constraints enable to add an arc
   INLINE bool
       StructuralConstraintNoParentNodes::checkModificationAlone(const ArcAddition& change) const {
@@ -90,6 +104,18 @@ namespace gum::learning {
     return checkArcReversalAlone(change.node1(), change.node2());
   }
 
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+  INLINE bool StructuralConstraintNoParentNodes::checkModificationAlone(
+      const ArcTriangleDeletion1& change) const {
+    return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+  INLINE bool StructuralConstraintNoParentNodes::checkModificationAlone(
+      const ArcTriangleDeletion2& change) const {
+    return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+  }
+
   /// checks whether the constraints enable to perform a graph change
   INLINE bool
       StructuralConstraintNoParentNodes::checkModificationAlone(const GraphChange& change) const {
@@ -102,6 +128,12 @@ namespace gum::learning {
 
       case GraphChangeType::ARC_REVERSAL :
         return checkArcReversalAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
 
       default :
         GUM_ERROR(OperationNotAllowed,
@@ -120,6 +152,12 @@ namespace gum::learning {
   INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcReversal& change) {}
 
   /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
+
+  /// notify the constraint of a modification of the graph
   INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const GraphChange& change) {}
 
   /// indicates whether a change will always violate the constraint
@@ -127,13 +165,19 @@ namespace gum::learning {
       StructuralConstraintNoParentNodes::isAlwaysInvalidAlone(const GraphChange& change) const {
     switch (change.type()) {
       case GraphChangeType::ARC_ADDITION :
-        return !checkArcAdditionAlone(change.node1(), change.node2());
+        return _noParentNodes_.exists(change.node2());
 
       case GraphChangeType::ARC_DELETION :
-        return checkArcDeletionAlone(change.node1(), change.node2());
+        return false;
 
       case GraphChangeType::ARC_REVERSAL :
-        return !checkArcAdditionAlone(change.node2(), change.node1());
+        return _noParentNodes_.exists(change.node1());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1:
+        return _noParentNodes_.exists(change.node1());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2:
+        return _noParentNodes_.exists(change.node2());
 
       default :
         GUM_ERROR(OperationNotAllowed,

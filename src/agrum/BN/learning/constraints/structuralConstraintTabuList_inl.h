@@ -151,7 +151,7 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) {
+    INLINE bool StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());
