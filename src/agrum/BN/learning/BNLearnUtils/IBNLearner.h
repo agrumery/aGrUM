@@ -62,20 +62,29 @@
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintNoChildrenNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintNoParentNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
+#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
+#include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
+#include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
+#include <agrum/BN/learning/Miic.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/priors/bdeuPrior.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-#include <agrum/BN/learning/SimpleMiic.h>
+#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/structureUtils/graphChange.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -83,7 +92,11 @@
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
+#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
+#include <agrum/BN/learning/scores_and_tests/scorefNML.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
+#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
+#include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
 
 namespace gum::learning {
   class BNLearnerListener;
@@ -98,7 +111,7 @@ namespace gum::learning {
   class IBNLearner: public IApproximationSchemeConfiguration, public ThreadNumberManager {
     public:
     /// an enumeration enabling to select easily the score we wish to use
-    enum class ScoreType { AIC, BD, BDeu, BIC, K2, LOG2LIKELIHOOD };
+    enum class ScoreType { AIC, BD, BDeu, BIC, fNML, K2, LOG2LIKELIHOOD, MDL };
 
     /// an enumeration to select the type of parameter estimation we shall
     /// apply
@@ -114,7 +127,13 @@ namespace gum::learning {
     };
 
     /// an enumeration to select easily the learning algorithm to use
-    enum class AlgoType { K2, GREEDY_HILL_CLIMBING, LOCAL_SEARCH_WITH_TABU_LIST, MIIC };
+    enum class AlgoType {
+      K2,
+      GREEDY_HILL_CLIMBING,
+      LOCAL_SEARCH_WITH_TABU_LIST,
+      MIIC,
+      EXTENDED_GREEDY_HILL_CLIMBING
+    };
 
     /// the default noise amount added to CPTs during EM's initialization (see method useEM())
     static constexpr double default_EM_noise{0.1};
@@ -713,11 +732,17 @@ namespace gum::learning {
     /// indicate that we wish to use a BIC score
     void useScoreBIC();
 
+    /// indicate that we wish to use a fNML score
+    void useScorefNML();
+
     /// indicate that we wish to use a K2 score
     void useScoreK2();
 
     /// indicate that we wish to use a Log2Likelihood score
     void useScoreLog2Likelihood();
+
+    /// indicate that we wish to use a MDL score
+    void useScoreMDL();
 
     /// @}
 
@@ -758,6 +783,21 @@ namespace gum::learning {
     /// indicate that we wish to use a greedy hill climbing algorithm
     void useGreedyHillClimbing();
 
+    /// indicate that we wish to use the extended greedy hill climbing algorithm
+    /**
+     * The extended greedy hill climbing adds to the classical operations
+     * (arc addition, arc reversal, arc deletion) two additional operations:
+     * arc triangle deletion1 and arc triangle deletion2. The former modifies
+     * a structure X1->X2->X3 + X1->X3 into a v-structure centered on X1, i.e.,
+     * X2->X1<-X3. Arc triangle deletion2 modifies structure X1->X2->X3 + X1->X3
+     * into a v-structure centered on X2, i.e., X1->X2<-X3.
+     *
+     * In addition, the extended greedy hill climbing allows the user to select
+     * which operations among arc additions, arc reversals, arc deletions, arc
+     * triangle deletions, are allowed.
+     */
+    void useExtendedGreedyHillClimbing();
+
     /// indicate that we wish to use a local search with tabu list
     /** @param tabu_size indicate the size of the tabu list
      * @param nb_decrease indicate the max number of changes decreasing the
@@ -786,6 +826,43 @@ namespace gum::learning {
 
     /// indicate if the selected algorithm is score-based
     bool isScoreBased() const { return !isConstraintBased(); }
+
+
+    // ##########################################################################
+    /// @name allow/forbid the graph operations used during learning
+    // ##########################################################################
+    /// @{
+    /** @brief allow (true)/forbid (false) to add arcs during learning.
+     *
+     * This affects only Extended Greedy Hill Climbing and Local Search with
+     * Tabu List. Greedy Hill Climbing and K2 always allow arc additions.
+     */
+    void allowArcAdditions(bool allow = true);
+
+    /** @brief allow (true)/forbid (false) to delete arcs during learning.
+     *
+     * This affects only Extended Greedy Hill Climbing and Local Search with
+     * Tabu List. Greedy Hill Climbing always allows arc deletions while
+     * K2 always forbid them. If you wish a K2-like algorithm that enables
+     * arc deletions, use and extended greedy hill climbing combined with
+     * a TotalOrder constraint.
+     */
+    void allowArcDeletions(bool allow = true);
+
+    /** @brief allow (true)/forbid (false) to reverse arcs during learning.
+     *
+     * This affects only Extended Greedy Hill Climbing and Local Search with
+     * Tabu List. Greedy Hill Climbing always allows arc reversals while
+     * K2 always forbid them (due to its total ordering constraint).
+     */
+    void allowArcReversals(bool allow = true);
+
+    /** @brief allow (true)/forbid (false) to delete arc triangles during learning.
+     *
+     * This affects only Extended Greedy Hill Climbing and Local Search with
+     * Tabu List. Greedy Hill Climbing and K2 always forbid arc triangle deletions.
+     */
+    void allowArcTriangleDeletions(bool allow = true);
 
     /// @}
 
@@ -825,9 +902,44 @@ namespace gum::learning {
 
     /**
      * sets a partial order on the nodes
-     * @param slices the list of list of variable names
+     * @param slices the list of list of variable names. If it is empty, this is
+     * equivalent to removing the constraint (useful if you had previously added
+     * a slice order constraint and you do not want to use it anymore)
      */
     void setSliceOrder(const std::vector< std::vector< std::string > >& slices);
+
+    /** @brief removes the slice order constraint
+     *
+     * The methd is useful if you had previously added
+     * a slice order constraint and you do not want to use it anymore
+     */
+    void unsetSliceOrder();
+
+    /** @brief sets a total order over some nodes
+     *
+     * This defines a total ordering constraint on the nodes belonging to the
+     * sequence. If you plan to use K2, do not use this constraint, prefer using
+     * method useK2(order).
+     *
+     * Note that all the nodes of the graph to be learned need not
+     * belong to order: if a node does not belong to it, then it just means that
+     * there is no constraint on this node in the total ordering.
+     *
+     * Note also that you can both exploit a total ordering and slice ordering. For
+     * instance, we may wish that the topological ordering of the graph we learn
+     * satisfies that 1 < 3 < 4 < 5 and 2 < 3, 4 and 5, then use a total ordering
+     * 1 < 3 < 4 < 5 combined with a slice ordering {2} < {3,4,5}.
+     * @param order
+     */
+    /// @{
+    void setTotalOrder(const Sequence< NodeId >& order);
+    void setTotalOrder(const std::vector< std::string >& order);
+    /// @}
+
+    /// removes the current total ordering constraint, if any
+    void unsetTotalOrder();
+
+    /// removes a total
 
     /// assign a set of forbidden arcs
     void setForbiddenArcs(const ArcSet& set);
@@ -895,9 +1007,8 @@ namespace gum::learning {
     /// @}
 
     /// @name assign a new possible edge
-    /// @warning By default, all edge is possible. However, once at least one possible edge is
-    /// defined, all other edges not declared possible
-    //  are considered as impossible.
+    /// @warning By default, any edge is possible. However, once at least one possible edge
+    /// is defined, all the other edges not declared possible are considered as impossible.
     /// @{
     void addPossibleEdge(const Edge& edge);
     void addPossibleEdge(NodeId tail, NodeId head);
@@ -966,6 +1077,9 @@ namespace gum::learning {
     /// the constraint for 2TBNs
     StructuralConstraintSliceOrder constraintSliceOrder_;
 
+    /// the total order ing constraint
+    StructuralConstraintTotalOrder constraintTotalOrder_;
+
     /// the constraint for indegrees
     StructuralConstraintIndegree constraintIndegree_;
 
@@ -987,9 +1101,20 @@ namespace gum::learning {
     /// the constraint on no children nodes
     StructuralConstraintNoChildrenNodes constraintNoChildrenNodes_;
 
-
     /// the selected learning algorithm
-    AlgoType selectedAlgo_{AlgoType::MIIC};
+    AlgoType selectedAlgo_{AlgoType::GREEDY_HILL_CLIMBING};
+
+    /// whether we allow or not arc additions during learning
+    bool allowArcAdditions_{true};
+
+    /// whether we allow or not arc deletions during learning
+    bool allowArcDeletions_{true};
+
+    /// whether we allow or not arc reversals during learning
+    bool allowArcReversals_{true};
+
+    /// whether we allow or not arc deletions during learning
+    bool allowArcTriangleDeletions_{true};
 
     /// the K2 algorithm
     K2 algoK2_;
@@ -1009,6 +1134,9 @@ namespace gum::learning {
 
     /// the greedy hill climbing algorithm
     GreedyHillClimbing greedyHillClimbing_;
+
+    /// the extended greedy hill climbing
+    GreedyHillClimbing extendedGreedyHillClimbing_;
 
     /// the local search with tabu list algorithm
     LocalSearchWithTabuList localSearchWithTabuList_;
@@ -1110,6 +1238,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setEpsilon(eps);
       greedyHillClimbing_.setEpsilon(eps);
       localSearchWithTabuList_.setEpsilon(eps);
+      dag2BN_.setEpsilon(eps);
     }
 
     /// Get the value of epsilon
@@ -1123,6 +1252,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableEpsilon();
       greedyHillClimbing_.disableEpsilon();
       localSearchWithTabuList_.disableEpsilon();
+      dag2BN_.disableEpsilon();
     }
 
     /// Enable stopping criterion on epsilon
@@ -1130,6 +1260,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableEpsilon();
       greedyHillClimbing_.enableEpsilon();
       localSearchWithTabuList_.enableEpsilon();
+      dag2BN_.enableEpsilon();
     }
 
     /// @return true if stopping criterion on epsilon is enabled, false
@@ -1150,6 +1281,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMinEpsilonRate(rate);
       greedyHillClimbing_.setMinEpsilonRate(rate);
       localSearchWithTabuList_.setMinEpsilonRate(rate);
+      dag2BN_.setMinEpsilonRate(rate);
     }
 
     /// Get the value of the minimal epsilon rate
@@ -1163,6 +1295,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMinEpsilonRate();
       greedyHillClimbing_.disableMinEpsilonRate();
       localSearchWithTabuList_.disableMinEpsilonRate();
+      dag2BN_.disableMinEpsilonRate();
     }
 
     /// Enable stopping criterion on epsilon rate
@@ -1170,6 +1303,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableMinEpsilonRate();
       greedyHillClimbing_.enableMinEpsilonRate();
       localSearchWithTabuList_.enableMinEpsilonRate();
+      dag2BN_.enableMinEpsilonRate();
     }
 
     /// @return true if stopping criterion on epsilon rate is enabled, false
@@ -1190,6 +1324,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMaxIter(max);
       greedyHillClimbing_.setMaxIter(max);
       localSearchWithTabuList_.setMaxIter(max);
+      dag2BN_.setMaxIter(max);
     }
 
     /// @return the criterion on number of iterations
@@ -1203,6 +1338,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxIter();
       greedyHillClimbing_.disableMaxIter();
       localSearchWithTabuList_.disableMaxIter();
+      dag2BN_.disableMaxIter();
     }
 
     /// Enable stopping criterion on max iterations
@@ -1210,6 +1346,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().enableMaxIter();
       greedyHillClimbing_.enableMaxIter();
       localSearchWithTabuList_.enableMaxIter();
+      dag2BN_.enableMaxIter();
     }
 
     /// @return true if stopping criterion on max iterations is enabled, false
@@ -1231,6 +1368,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setMaxTime(timeout);
       greedyHillClimbing_.setMaxTime(timeout);
       localSearchWithTabuList_.setMaxTime(timeout);
+      dag2BN_.setMaxTime(timeout);
     }
 
     /// returns the timeout (in seconds)
@@ -1250,12 +1388,14 @@ namespace gum::learning {
       algoK2_.approximationScheme().disableMaxTime();
       greedyHillClimbing_.disableMaxTime();
       localSearchWithTabuList_.disableMaxTime();
+      dag2BN_.disableMaxTime();
     }
 
     void enableMaxTime() override {
       algoK2_.approximationScheme().enableMaxTime();
       greedyHillClimbing_.enableMaxTime();
       localSearchWithTabuList_.enableMaxTime();
+      dag2BN_.enableMaxTime();
     }
 
     /// @return true if stopping criterion on timeout is enabled, false
@@ -1274,6 +1414,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setPeriodSize(p);
       greedyHillClimbing_.setPeriodSize(p);
       localSearchWithTabuList_.setPeriodSize(p);
+      dag2BN_.setPeriodSize(p);
     }
 
     Size periodSize() const override {
@@ -1289,6 +1430,7 @@ namespace gum::learning {
       algoK2_.approximationScheme().setVerbosity(v);
       greedyHillClimbing_.setVerbosity(v);
       localSearchWithTabuList_.setVerbosity(v);
+      dag2BN_.setVerbosity(v);
     }
 
     bool verbosity() const override {

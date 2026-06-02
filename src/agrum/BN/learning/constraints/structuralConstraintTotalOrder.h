@@ -1,0 +1,270 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2026 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
+
+/** @file
+ * @brief the structural constraint imposing a total ordering over some nodes
+ *
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
+ */
+#ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_TOTAL_ORDER_H
+#define GUM_LEARNING_STRUCTURAL_CONSTRAINT_TOTAL_ORDER_H
+
+#include <agrum/agrum.h>
+
+#include <agrum/base/core/sequence.h>
+
+#include <agrum/BN/learning/constraints/structuralConstraint.h>
+#include <agrum/BN/learning/structureUtils/graphChange.h>
+
+namespace gum {
+
+  namespace learning {
+
+    /** @class StructuralConstraintTotalOrder
+     * @brief the structural constraint imposing a total order over some nodes
+     *
+     * @ingroup learning_group
+     */
+    class StructuralConstraintTotalOrder: public virtual StructuralConstraintEmpty {
+      public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
+
+      /// default constructor
+      StructuralConstraintTotalOrder();
+
+      /// constructor starting with an empty graph with a given number of nodes
+      /** param order the partial order  */
+      StructuralConstraintTotalOrder(const Sequence< NodeId >& order);
+
+      /// constructor starting with a given graph
+      StructuralConstraintTotalOrder(const DiGraph& graph, const Sequence< NodeId >& order);
+
+      /// copy constructor
+      StructuralConstraintTotalOrder(const StructuralConstraintTotalOrder& from);
+
+      /// move constructor
+      StructuralConstraintTotalOrder(StructuralConstraintTotalOrder&& from);
+
+      /// destructor
+      virtual ~StructuralConstraintTotalOrder();
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
+
+      /// copy operator
+      StructuralConstraintTotalOrder& operator=(const StructuralConstraintTotalOrder& from);
+
+      /// move operator
+      StructuralConstraintTotalOrder& operator=(StructuralConstraintTotalOrder&& from);
+
+      /// @}
+
+      // ##########################################################################
+      /// @name Specific Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// sets the time Totals of all the nodes in the property
+      void setTotalOrder(const Sequence< NodeId >& Total);
+
+      /// returns the current Total order
+      const Sequence< NodeId >& TotalOrder() const;
+
+      /// sets a new graph from which we will perform checkings
+      void setGraphAlone(const DiGraph& graph);
+
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, nothing is done. In
+       * particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
+       * or y does not belong to the graph nodes
+       * @throws InvalidArc exception is thrown if any time-backward arc
+       * is created by the arc addition. */
+      void modifyGraphAlone(const ArcAddition& change);
+
+      /// notify the constraint of a modification of the graph
+      /** @warning If a nonexisting arc is removed, nothing is done. In
+       * particular, no exception is raised. */
+      void modifyGraphAlone(const ArcDeletion& change);
+
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, or if a nonexisting arc
+       * is removed, nothing is done. In particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
+       * or y does not belong to the graph nodes
+       * @throws InvalidArc exception is thrown if any time-backward arc
+       * is created by the arc reversal. */
+      void modifyGraphAlone(const ArcReversal& change);
+
+      /// notify the constraint of a modification of the graph
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      void modifyGraphAlone(const ArcTriangleDeletion1& change);
+
+      /// notify the constraint of a modification of the graph
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      void modifyGraphAlone(const ArcTriangleDeletion2& change);
+
+      /// notify the constraint of a modification of the graph
+      /** @warning If an already existing arc is added, or if a nonexisting arc
+       * is removed, nothing is done. In particular, no exception is raised.
+       * @throws InvalidNode exception is thrown if an arc (x,y) is added or
+       * reversed and x or y does not belong to the graph nodes
+       * @throws InvalidArc exception is thrown if any time-backward arc
+       * is created by an arc addition or reversal. */
+      void modifyGraphAlone(const GraphChange& change);
+
+      /// indicates whether a change will always violate the constraint
+      /** Some learning algorithms need examine several times whether a given
+       * graph change can be applied. For instance, the first time arc (X,Y)
+       * addition is considered, the learning algorithm may discard this change
+       * because it violates the structural constraint (e.g., if the latter
+       * enforces a DAG structure, this arc addition might induce a directed
+       * cycle), but, later on, other arc removal may induce that the arc
+       * addition
+       * is now possible. Such change is thus not always invalid. Conversely,
+       * there are changes that can be discarded once and for all. For instance,
+       * in a 2TBN structure, it is always impossible to add a backward-time
+       * arc.
+       * Such graph changes are always invalid and are therefore tagged as such
+       * by the isAlwaysInvalid method. */
+      bool isAlwaysInvalidAlone(const GraphChange& change) const;
+
+      /// checks whether the constraints enable to add arc (x,y)
+      /** an arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
+      bool checkArcAdditionAlone(NodeId x, NodeId y) const;
+
+      /// checks whether the constraints enable to remove arc (x,y)
+      /** an arc can be removed if and only if the arc exists. */
+      bool checkArcDeletionAlone(NodeId x, NodeId y) const;
+
+      /// checks whether the constraints enable to reverse arc (x,y)
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      bool checkArcReversalAlone(NodeId x, NodeId y) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      bool checkArcTriangleDeletion1Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      bool checkArcTriangleDeletion2Alone(NodeId node1, NodeId node2, NodeId node3) const;
+
+
+      /// checks whether the constraints enable to add an arc
+      /** an arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc. */
+      bool checkModificationAlone(const ArcAddition& change) const;
+
+      /// checks whether the constraints enable to remove an arc
+      /** an arc can be removed if and only if the arc exists. */
+      bool checkModificationAlone(const ArcDeletion& change) const;
+
+      /// checks whether the constraints enable to reverse an arc
+      /** an arc can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      bool checkModificationAlone(const ArcReversal& change) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node2 -> node1 <- node3 */
+      bool checkModificationAlone(const ArcTriangleDeletion1& change) const;
+
+      /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+      /** An arc triangle deletion1 substitutes triangle
+       * node1 -> node2 -> node3 + node1 -> node3 into v-structure
+       * node1 -> node2 <- node3 */
+      bool checkModificationAlone(const ArcTriangleDeletion2& change) const;
+
+      /// checks whether the constraints enable to perform a graph change
+      /** An arc can be added if and only if its extremal nodes belong to the
+       * graph and the arc does not already exist and is not a
+       * backward-time arc.
+       * An arc can be removed if and only if the arc exists.
+       * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
+       * does not and is not a backward-time arc. */
+      bool checkModificationAlone(const GraphChange& change) const;
+
+      /// @}
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+// include the set of methods that enable the structural constraint to
+// be standalone, i.e., that it needs not be included into a
+// StructuralConstraintSetStatic to be used by learning algorithms
+#  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintTotalOrder
+#  include <agrum/BN/learning/constraints/structuralConstraintPatternHeader.h>
+#  undef GUM_CONSTRAINT_CLASS_NAME
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+      protected:
+      /// the total ordering over the nodes
+      Sequence< NodeId > _total_order_;
+    };
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+/// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/constraints/structuralConstraintTotalOrder_inl.h>
+#endif /* GUM_NO_INLINE */
+
+#endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_TOTAL_ORDER_H */

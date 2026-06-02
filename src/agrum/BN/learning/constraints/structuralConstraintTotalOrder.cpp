@@ -38,70 +38,71 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
-
 
 /** @file
- * @brief The K2 algorithm
+ * @brief the structural constraint imposing a total order over nodes
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
-#include <type_traits>
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#  include <agrum/BN/learning/constraints/structuralConstraintTotalOrder_inl.h>
+#endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   namespace learning {
 
-    /// learns the structure of a Bayes net
-    template < typename GRAPH_CHANGES_SELECTOR >
-    DAG K2::learnStructure(GRAPH_CHANGES_SELECTOR& selector, DAG initial_dag) {
-      // check that we used a selector compatible with the K2 algorithm
-      auto& total_order_constraint
-          = static_cast< StructuralConstraintTotalOrder& >(selector.invariableConstraints());
-
-      // check that the order passed in argument concerns all the nodes
-      // __checkOrder(modal);
-
-      // assign the order to the invariable constraints
-      total_order_constraint.setTotalOrder(_order_);
-
-      // forbid the use of arc deletions, reversals and triangle deletions
-      selector.useArcAdditions(true);
-      selector.useArcDeletions(false);
-      selector.useArcReversals(false);
-      selector.useArcTriangleDeletions(false);
-
-      // use the greedy hill climbing algorithm to perform the search
-      return GreedyHillClimbing::learnStructure(selector, initial_dag);
+    /// default constructor
+    StructuralConstraintTotalOrder::StructuralConstraintTotalOrder() {
+      GUM_CONSTRUCTOR(StructuralConstraintTotalOrder);
     }
 
-    /// learns the structure and the parameters of a BN
-    template < GUM_Numeric GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR >
-        K2::learnBN(GRAPH_CHANGES_SELECTOR& selector, PARAM_ESTIMATOR& estimator, DAG initial_dag) {
-      // check that we used a selector compatible with the K2 algorithm
-      auto& total_order_constraint
-          = static_cast< StructuralConstraintTotalOrder& >(selector.invariableConstraints());
+    /// constructor starting with an empty graph with a given number of nodes
+    StructuralConstraintTotalOrder::StructuralConstraintTotalOrder(
+        const Sequence< NodeId >& order) : _total_order_(order) {
+      GUM_CONSTRUCTOR(StructuralConstraintTotalOrder);
+    }
 
-      // check that the order passed in argument concerns all the nodes
-      // __checkOrder(modal);
+    /// constructor starting with a given graph
+    StructuralConstraintTotalOrder::StructuralConstraintTotalOrder(
+        const DiGraph&            graph,
+        const Sequence< NodeId >& order) : _total_order_(order) {
+      GUM_CONSTRUCTOR(StructuralConstraintTotalOrder);
+    }
 
-      // assign the order to the invariable constraints
-      total_order_constraint.setTotalOrder(_order_);
+    /// copy constructor
+    StructuralConstraintTotalOrder::StructuralConstraintTotalOrder(
+        const StructuralConstraintTotalOrder& from) : _total_order_(from._total_order_) {
+      GUM_CONS_CPY(StructuralConstraintTotalOrder);
+    }
 
-      // forbid the use of arc deletions, reversals and triangle deletions
-      selector.useArcAdditions(true);
-      selector.useArcDeletions(false);
-      selector.useArcReversals(false);
-      selector.useArcTriangleDeletions(false);
+    /// move constructor
+    StructuralConstraintTotalOrder::StructuralConstraintTotalOrder(
+        StructuralConstraintTotalOrder&& from) : _total_order_(std::move(from._total_order_)) {
+      GUM_CONS_MOV(StructuralConstraintTotalOrder);
+    }
 
-      // use the greedy hill climbing algorithm to perform the search
-      return GreedyHillClimbing::learnBN< GUM_SCALAR >(selector, estimator, initial_dag);
+    /// destructor
+    StructuralConstraintTotalOrder::~StructuralConstraintTotalOrder() {
+      GUM_DESTRUCTOR(StructuralConstraintTotalOrder);
+    }
+
+    /// copy operator
+    StructuralConstraintTotalOrder&
+        StructuralConstraintTotalOrder::operator=(const StructuralConstraintTotalOrder& from) {
+      if (this != &from) { _total_order_ = from._total_order_; }
+      return *this;
+    }
+
+    /// move operator
+    StructuralConstraintTotalOrder&
+        StructuralConstraintTotalOrder::operator=(StructuralConstraintTotalOrder&& from) {
+      if (this != &from) { _total_order_ = std::move(from._total_order_); }
+      return *this;
     }
 
   } /* namespace learning */

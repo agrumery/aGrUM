@@ -64,83 +64,30 @@ namespace gum {
 
       initApproximationScheme();
 
-      // a vector that indicates which queues have valid scores, i.e., scores
-      // that were not invalidated by previously applied changes
-      std::vector< bool > impacted_queues(dag.size(), false);
-
       do {
         nb_changes_applied = 0;
         delta_score        = 0;
 
-        std::vector< std::pair< NodeId, double > > ordered_queues
-            = selector.nodesSortedByBestScore();
+        try {
+          const auto& change = selector.bestChange();
+          delta_score        = selector.deltaScore(change, true);
 
-        for (Idx j = 0; j < dag.size(); ++j) {
-          Idx i = ordered_queues[j].first;
-
-          if (!(selector.empty(i)) && (selector.bestScore(i) > 0)) {
-            // pick up the best change
-            const GraphChange& change = selector.bestChange(i);
-
-            // perform the change
-            switch (change.type()) {
-              case GraphChangeType::ARC_ADDITION :
-                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.addArc(change.node1(), change.node2());
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              case GraphChangeType::ARC_DELETION :
-                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              case GraphChangeType::ARC_REVERSAL :
-                if ((!impacted_queues[change.node1()]) && (!impacted_queues[change.node2()])
-                    && selector.isChangeValid(change)) {
-                  delta_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
-                  dag.addArc(change.node2(), change.node1());
-                  impacted_queues[change.node1()] = true;
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              default :
-                GUM_ERROR(OperationNotAllowed,
-                          "edge modifications are not supported by local search")
-            }
+          if (delta_score > 0) {
+            // std::cout << "applying " << change.toString()
+            //           << " delta score = " << delta_score << std::endl;
+            selector.applyChange(change);
+            nb_changes_applied = 1;
+            updateApproximationScheme(nb_changes_applied);
           }
-        }
-
-        selector.updateScoresAfterAppliedChanges();
-
-        // reset the impacted queue and applied changes structures
-        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end(); ++iter) {
-          *iter = false;
-        }
-
-        updateApproximationScheme(nb_changes_applied);
-
+        } catch (NotFound&) {}
       } while (nb_changes_applied && continueApproximationScheme(delta_score));
 
       stopApproximationScheme();   // just to be sure of the approximationScheme
-                                   // has
-                                   // been notified of the end of looop
+                                   // has been notified of the end of loop
+
+      // here, we add to the dag the set of nodes that were removed by method
+      // setGraph because they did not belong to the database
+      selector.finalizeGraph(dag);
 
       return dag;
     }

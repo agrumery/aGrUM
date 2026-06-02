@@ -189,6 +189,12 @@ namespace gum::learning {
     checkScorePriorCompatibility();
   }
 
+  // indicate that we wish to use a fNML score
+  INLINE void IBNLearner::useScorefNML() {
+    scoreType_ = ScoreType::fNML;
+    checkScorePriorCompatibility();
+  }
+
   // indicate that we wish to use a K2 score
   INLINE void IBNLearner::useScoreK2() {
     scoreType_ = ScoreType::K2;
@@ -198,6 +204,12 @@ namespace gum::learning {
   // indicate that we wish to use a Log2Likelihood score
   INLINE void IBNLearner::useScoreLog2Likelihood() {
     scoreType_ = ScoreType::LOG2LIKELIHOOD;
+    checkScorePriorCompatibility();
+  }
+
+  // indicate that we wish to use a MDL score
+  INLINE void IBNLearner::useScoreMDL() {
+    scoreType_ = ScoreType::MDL;
     checkScorePriorCompatibility();
   }
 
@@ -244,6 +256,11 @@ namespace gum::learning {
   // indicate that we wish to use a greedy hill climbing algorithm
   INLINE void IBNLearner::useGreedyHillClimbing() {
     selectedAlgo_ = AlgoType::GREEDY_HILL_CLIMBING;
+  }
+
+  // indicate that we wish to use a greedy hill climbing algorithm
+  INLINE void IBNLearner::useExtendedGreedyHillClimbing() {
+    selectedAlgo_ = AlgoType::EXTENDED_GREEDY_HILL_CLIMBING;
   }
 
   // indicate that we wish to use a local search with tabu list
@@ -311,6 +328,20 @@ namespace gum::learning {
   INLINE std::string IBNLearner::EMStateMessage() const {
     if (useEM_) return dag2BN_.messageApproximationScheme();
     else return "EM is currently forbidden. Please enable it with useEM()";
+  }
+
+  // allow (true)/forbid (false) to add arcs during learning
+  INLINE void IBNLearner::allowArcAdditions(bool allow) { allowArcAdditions_ = allow; }
+
+  // allow (true)/forbid (false) to delete arcs during learning
+  INLINE void IBNLearner::allowArcDeletions(bool allow) { allowArcDeletions_ = allow; }
+
+  // allow (true)/forbid (false) to reverse arcs during learning
+  INLINE void IBNLearner::allowArcReversals(bool allow) { allowArcReversals_ = allow; }
+
+  // allow (true)/forbid (false) to delete arc triangles during learning
+  INLINE void IBNLearner::allowArcTriangleDeletions(bool allow) {
+    allowArcTriangleDeletions_ = allow;
   }
 
   INLINE bool IBNLearner::hasMissingValues() const {
@@ -469,6 +500,25 @@ namespace gum::learning {
     }
     setSliceOrder(slice_order);
   }
+
+  INLINE void IBNLearner::unsetSliceOrder() { setSliceOrder(NodeProperty< NodeId >()); }
+
+  // sets a total order over some nodes
+  INLINE void IBNLearner::setTotalOrder(const Sequence< NodeId >& order) {
+    constraintTotalOrder_ = StructuralConstraintTotalOrder(order);
+  }
+
+  // sets a total order over some nodes
+  INLINE void IBNLearner::setTotalOrder(const std::vector< std::string >& order) {
+    Sequence< NodeId > sequence;
+    for (const auto& name: order) {
+      sequence.insert(idFromName(name));
+    }
+    setTotalOrder(sequence);
+  }
+
+  // removes the current total ordering constraint, if any
+  INLINE void IBNLearner::unsetTotalOrder() { setTotalOrder(Sequence< NodeId >()); }
 
   // sets the prior weight
   INLINE void IBNLearner::_setPriorWeight_(double weight) {

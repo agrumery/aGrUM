@@ -582,6 +582,7 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     void BNLearner< GUM_SCALAR >::copyState(const BNLearner< GUM_SCALAR >& learner) {
       switch (learner.selectedAlgo_) {
+        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING : useExtendedGreedyHillClimbing(); break;
         case AlgoType::GREEDY_HILL_CLIMBING : useGreedyHillClimbing(); break;
         case AlgoType::K2 : useK2(learner.algoK2_.order()); break;
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
@@ -596,6 +597,8 @@ namespace gum {
         case ScoreType::BIC : useScoreBIC(); break;
         case ScoreType::BD : useScoreBD(); break;
         case ScoreType::BDeu : useScoreBDeu(); break;
+        case ScoreType::fNML: useScorefNML(); break;
+        case ScoreType::MDL: useScoreMDL(); break;
         case ScoreType::LOG2LIKELIHOOD : useScoreLog2Likelihood(); break;
       }
 

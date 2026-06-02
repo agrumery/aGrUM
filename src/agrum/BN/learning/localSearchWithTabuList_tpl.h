@@ -66,10 +66,6 @@ namespace gum {
 
       initApproximationScheme();
 
-      // a vector that indicates which queues have valid scores, i.e., scores
-      // that were not invalidated by previously applied changes
-      std::vector< bool > impacted_queues(dag.size(), false);
-
       // the best dag found so far with its score
       DAG    best_dag      = dag;
       double best_score    = 0;
@@ -80,132 +76,49 @@ namespace gum {
         applied_change_with_positive_score = 0;
         delta_score                        = 0;
 
-        std::vector< std::pair< NodeId, double > > ordered_queues
-            = selector.nodesSortedByBestScore();
+        try {
+          const auto& change = selector.bestChange();
+          delta_score        = selector.deltaScore(change, true);
 
-        for (Idx j = 0; j < dag.size(); ++j) {
-          NodeId i = ordered_queues[j].first;
+          if ((nb_changes_applied > 0) || (delta_score > 0)) {
+            // std::cout << "applying " << change.toString()
+            //           << " delta score = " << delta_score << std::endl;
 
-          if (!selector.empty(i) && (!nb_changes_applied || (selector.bestScore(i) > 0))) {
-            // pick up the best change
-            const GraphChange& change = selector.bestChange(i);
-
-            // perform the change
-            switch (change.type()) {
-              case GraphChangeType::ARC_ADDITION :
-                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
-                  if (selector.bestScore(i) > 0) {
-                    ++applied_change_with_positive_score;
-                  } else if (current_score > best_score) {
-                    best_score = current_score;
-                    best_dag   = dag;
-                  }
-
-                  // std::cout << "apply arc addition " << change.node1()
-                  //           << " -> " << change.node2()
-                  //           << "  delta = " << selector.bestScore( i )
-                  //           << std::endl;
-
-                  delta_score += selector.bestScore(i);
-                  current_score += selector.bestScore(i);
-                  dag.addArc(change.node1(), change.node2());
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              case GraphChangeType::ARC_DELETION :
-                if (!impacted_queues[change.node2()] && selector.isChangeValid(change)) {
-                  if (selector.bestScore(i) > 0) {
-                    ++applied_change_with_positive_score;
-                  } else if (current_score > best_score) {
-                    best_score = current_score;
-                    best_dag   = dag;
-                  }
-
-                  // std::cout << "apply arc deletion " << change.node1()
-                  //           << " -> " << change.node2()
-                  //           << "  delta = " << selector.bestScore( i )
-                  //           << std::endl;
-
-                  delta_score += selector.bestScore(i);
-                  current_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              case GraphChangeType::ARC_REVERSAL :
-                if ((!impacted_queues[change.node1()]) && (!impacted_queues[change.node2()])
-                    && selector.isChangeValid(change)) {
-                  if (selector.bestScore(i) > 0) {
-                    ++applied_change_with_positive_score;
-                  } else if (current_score > best_score) {
-                    best_score = current_score;
-                    best_dag   = dag;
-                  }
-
-                  // std::cout << "apply arc reversal " << change.node1()
-                  //           << " -> " << change.node2()
-                  //           << "  delta = " << selector.bestScore( i )
-                  //           << std::endl;
-
-                  delta_score += selector.bestScore(i);
-                  current_score += selector.bestScore(i);
-                  dag.eraseArc(Arc(change.node1(), change.node2()));
-                  dag.addArc(change.node2(), change.node1());
-                  impacted_queues[change.node1()] = true;
-                  impacted_queues[change.node2()] = true;
-                  selector.applyChangeWithoutScoreUpdate(change);
-                  ++nb_changes_applied;
-                }
-
-                break;
-
-              default :
-                GUM_ERROR(OperationNotAllowed,
-                          "edge modifications are not "
-                          "supported by local search");
+            if (delta_score > 0) {
+              ++applied_change_with_positive_score;
+            } else if (current_score > best_score) {
+              best_score = current_score;
+              best_dag   = dag;
             }
 
-            break;
+            selector.applyChange(change);
+            current_score += delta_score;
+            ++nb_changes_applied;
           }
-        }
 
-        selector.updateScoresAfterAppliedChanges();
+          updateApproximationScheme(nb_changes_applied);
 
-        // reset the impacted queue and applied changes structures
-        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end(); ++iter) {
-          *iter = false;
-        }
-
-        updateApproximationScheme(nb_changes_applied);
-
-        // update current_N
-        if (applied_change_with_positive_score) {
-          current_N          = 0;
-          nb_changes_applied = 0;
-        } else {
-          ++current_N;
-        }
-
-        // std::cout << "current N = " << current_N << std::endl;
+          // update current_N
+          if (applied_change_with_positive_score) {
+            current_N          = 0;
+            nb_changes_applied = 0;
+          } else {
+            ++current_N;
+          }
+        } catch (NotFound&) { break; }
       } while ((current_N <= _MaxNbDecreasing_) && continueApproximationScheme(delta_score));
 
-      stopApproximationScheme();   // just to be sure of the
-                                   // approximationScheme has
-                                   // been notified of the end of looop
+      stopApproximationScheme();   // just to be sure of the approximationScheme
+                                   // has been notified of the end of loop
 
-      if (current_score > best_score) {
-        return dag;
-      } else {
-        return best_dag;
-      }
+      // get the dag that we will return
+      auto& res_dag = current_score > best_score ? dag : best_dag;
+
+      // here, we add to the dag the set of nodes that were removed by method
+      // setGraph because they did not belong to the database
+      selector.finalizeGraph(res_dag);
+
+      return res_dag;
     }
 
     /// learns the structure and the parameters of a BN

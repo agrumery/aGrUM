@@ -499,6 +499,13 @@ namespace gum::learning {
                               scoreDatabase_.nodeId2Columns());
         break;
 
+      case ScoreType::fNML :
+        score_ = new ScorefNML(scoreDatabase_.parser(),
+                               *prior_,
+                               ranges_,
+                               scoreDatabase_.nodeId2Columns());
+        break;
+
       case ScoreType::K2 :
         score_ = new ScoreK2(scoreDatabase_.parser(),
                              *prior_,
@@ -511,6 +518,13 @@ namespace gum::learning {
                                          *prior_,
                                          ranges_,
                                          scoreDatabase_.nodeId2Columns());
+        break;
+
+      case ScoreType::MDL :
+        score_ = new ScoreMDL(scoreDatabase_.parser(),
+                              *prior_,
+                              ranges_,
+                              scoreDatabase_.nodeId2Columns());
         break;
 
       default : GUM_ERROR(OperationNotAllowed, "IBNLearner does not support yet this score")
@@ -770,27 +784,79 @@ namespace gum::learning {
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintSliceOrder,
                                        StructuralConstraintNoParentNodes,
-                                       StructuralConstraintNoChildrenNodes >
-            gen_constraint;
-        static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+                                       StructuralConstraintNoChildrenNodes,
+                                       StructuralConstraintTotalOrder >
+            invariable_constraints;
+        static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints)
             = constraintMandatoryArcs_;
-        static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+        static_cast< StructuralConstraintForbiddenArcs& >(invariable_constraints)
             = constraintForbiddenArcs_;
-        static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+        static_cast< StructuralConstraintPossibleEdges& >(invariable_constraints)
             = constraintPossibleEdges_;
-        static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
-        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+        static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
+            = constraintSliceOrder_;
+        static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
             = constraintNoParentNodes_;
-        static_cast< StructuralConstraintNoChildrenNodes& >(gen_constraint)
+        static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
             = constraintNoChildrenNodes_;
-
-        GraphChangesGenerator4DiGraph op_set(gen_constraint);
+        static_cast< StructuralConstraintTotalOrder& >(invariable_constraints)
+            = constraintTotalOrder_;
 
         StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
-            sel_constraint;
-        static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
+            variable_constraints;
+        static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
 
-        GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
+        GraphChangesSelector4DiGraph selector(*score_,
+                                              invariable_constraints,
+                                              variable_constraints);
+
+        /*
+        selector.useArcAdditions(true);
+        selector.useArcDeletions(true);
+        selector.useArcReversals(true);
+        selector.useArcTriangleDeletions(true);
+        */
+        return greedyHillClimbing_.learnStructure(selector, init_graph);
+      }
+
+      // ========================================================================
+      case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING : {
+        BNLearnerListener listener(this, extendedGreedyHillClimbing_);
+        StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
+                                       StructuralConstraintForbiddenArcs,
+                                       StructuralConstraintPossibleEdges,
+                                       StructuralConstraintNoParentNodes,
+                                       StructuralConstraintNoChildrenNodes,
+                                       StructuralConstraintSliceOrder,
+                                       StructuralConstraintTotalOrder >
+            invariable_constraints;
+        static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints)
+            = constraintMandatoryArcs_;
+        static_cast< StructuralConstraintForbiddenArcs& >(invariable_constraints)
+            = constraintForbiddenArcs_;
+        static_cast< StructuralConstraintPossibleEdges& >(invariable_constraints)
+            = constraintPossibleEdges_;
+        static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
+            = constraintSliceOrder_;
+       static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
+            = constraintNoParentNodes_;
+        static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
+            = constraintNoChildrenNodes_;
+        static_cast< StructuralConstraintTotalOrder& >(invariable_constraints)
+            = constraintTotalOrder_;
+
+        StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
+            variable_constraints;
+        static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
+
+        GraphChangesSelector4DiGraph selector(*score_,
+                                              invariable_constraints,
+                                              variable_constraints);
+
+        selector.useArcAdditions(allowArcAdditions_);
+        selector.useArcDeletions(allowArcDeletions_);
+        selector.useArcReversals(allowArcReversals_);
+        selector.useArcTriangleDeletions(allowArcTriangleDeletions_);
 
         return greedyHillClimbing_.learnStructure(selector, init_graph);
       }
@@ -803,30 +869,39 @@ namespace gum::learning {
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintSliceOrder,
                                        StructuralConstraintNoParentNodes,
-                                       StructuralConstraintNoChildrenNodes >
-            gen_constraint;
-        static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+                                       StructuralConstraintNoChildrenNodes,
+                                       StructuralConstraintTotalOrder >
+            invariable_constraints;
+        static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints)
             = constraintMandatoryArcs_;
-        static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+        static_cast< StructuralConstraintForbiddenArcs& >(invariable_constraints)
             = constraintForbiddenArcs_;
-        static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+        static_cast< StructuralConstraintPossibleEdges& >(invariable_constraints)
             = constraintPossibleEdges_;
-        static_cast< StructuralConstraintSliceOrder& >(gen_constraint) = constraintSliceOrder_;
-        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+        static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
+            = constraintSliceOrder_;
+       static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
             = constraintNoParentNodes_;
-        static_cast< StructuralConstraintNoChildrenNodes& >(gen_constraint)
+        static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
             = constraintNoChildrenNodes_;
-
-        GraphChangesGenerator4DiGraph op_set(gen_constraint);
+        static_cast< StructuralConstraintTotalOrder& >(invariable_constraints)
+            = constraintTotalOrder_;
 
         StructuralConstraintSetStatic< StructuralConstraintTabuList,
                                        StructuralConstraintIndegree,
                                        StructuralConstraintDAG >
-            sel_constraint;
-        static_cast< StructuralConstraintTabuList& >(sel_constraint) = constraintTabuList_;
-        static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
+            variable_constraints;
+        static_cast< StructuralConstraintTabuList& >(variable_constraints) = constraintTabuList_;
+        static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
 
-        GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
+        GraphChangesSelector4DiGraph selector(*score_,
+                                              invariable_constraints,
+                                              variable_constraints);
+
+        selector.useArcAdditions(allowArcAdditions_);
+        selector.useArcDeletions(allowArcDeletions_);
+        selector.useArcReversals(allowArcReversals_);
+        selector.useArcTriangleDeletions(allowArcTriangleDeletions_);
 
         return localSearchWithTabuList_.learnStructure(selector, init_graph);
       }
@@ -838,27 +913,26 @@ namespace gum::learning {
                                        StructuralConstraintForbiddenArcs,
                                        StructuralConstraintPossibleEdges,
                                        StructuralConstraintNoParentNodes,
-                                       StructuralConstraintNoChildrenNodes >
-            gen_constraint;
-        static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint)
+                                       StructuralConstraintNoChildrenNodes,
+                                       StructuralConstraintTotalOrder >
+            invariable_constraints;
+        static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints)
             = constraintMandatoryArcs_;
-        static_cast< StructuralConstraintForbiddenArcs& >(gen_constraint)
+        static_cast< StructuralConstraintForbiddenArcs& >(invariable_constraints)
             = constraintForbiddenArcs_;
-        static_cast< StructuralConstraintPossibleEdges& >(gen_constraint)
+        static_cast< StructuralConstraintPossibleEdges& >(invariable_constraints)
             = constraintPossibleEdges_;
-        ;
-        static_cast< StructuralConstraintNoParentNodes& >(gen_constraint)
+        static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
             = constraintNoParentNodes_;
-        ;
-        static_cast< StructuralConstraintNoChildrenNodes& >(gen_constraint)
+        static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
             = constraintNoChildrenNodes_;
-
-        GraphChangesGenerator4K2 op_set(gen_constraint);
+        static_cast< StructuralConstraintTotalOrder& >(invariable_constraints)
+            = constraintTotalOrder_;
 
         // if some mandatory arcs are incompatible with the order, use a DAG
         // constraint instead of a DiGraph constraint to avoid cycles
         const ArcSet& mandatory_arcs
-            = static_cast< StructuralConstraintMandatoryArcs& >(gen_constraint).arcs();
+            = static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints).arcs();
         const Sequence< NodeId >& order            = algoK2_.order();
         bool                      order_compatible = true;
 
@@ -871,29 +945,31 @@ namespace gum::learning {
 
         if (order_compatible) {
           StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDiGraph >
-              sel_constraint;
-          static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
+              variable_constraints;
+          static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
 
-          GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
+          GraphChangesSelector4DiGraph selector(*score_,
+                                                invariable_constraints,
+                                                variable_constraints);
 
           return algoK2_.learnStructure(selector, init_graph);
         } else {
           StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
-              sel_constraint;
-          static_cast< StructuralConstraintIndegree& >(sel_constraint) = constraintIndegree_;
+              variable_constraints;
+          static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
 
-          GraphChangesSelector4DiGraph selector(*score_, sel_constraint, op_set);
+          GraphChangesSelector4DiGraph selector(*score_,
+                                                invariable_constraints,
+                                                variable_constraints);
 
           return algoK2_.learnStructure(selector, init_graph);
         }
       }
-
-      // ========================================================================
-      default :
-        GUM_ERROR(OperationNotAllowed,
-                  "the learnDAG method has not been implemented for this "
-                  "learning algorithm")
     }
+
+    GUM_ERROR(OperationNotAllowed,
+              "the learnDAG method has not been implemented for this "
+              "learning algorithm")
   }
 
   std::string IBNLearner::checkScorePriorCompatibility() const {
@@ -911,9 +987,13 @@ namespace gum::learning {
 
       case BIC : return ScoreBIC::isPriorCompatible(prior, priorWeight_);
 
+      case fNML : return ScorefNML::isPriorCompatible(prior, priorWeight_);
+
       case K2 : return ScoreK2::isPriorCompatible(prior, priorWeight_);
 
       case LOG2LIKELIHOOD : return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
+
+      case MDL : return ScoreMDL::isPriorCompatible(prior, priorWeight_);
 
       default : return "IBNLearner does not support yet this score";
     }
