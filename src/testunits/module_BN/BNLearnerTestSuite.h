@@ -254,10 +254,10 @@ namespace gum_tests {
       gum::learning::SmoothingPrior       prior(database);
       prior.setWeight(1);
 
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
+         invariable_constraints;
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
-          struct_constraint;
-
-      gum::learning::GraphChangesGenerator4DiGraph op_set(struct_constraint);
+         variable_constraints;
 
       gum::learning::GreedyHillClimbing search;
 
@@ -293,7 +293,9 @@ namespace gum_tests {
 
         score.setRanges(ranges);
         estimator.setRanges(ranges);
-        gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
+        gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+           decltype(variable_constraints) >
+                                selector(score, invariable_constraints, variable_constraints);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
         CHECK_EQ(bn1.internalDag(), bn2.internalDag());
@@ -1215,14 +1217,14 @@ namespace gum_tests {
         gum::learning::ScoreBIC score(parser, prior);
 
         // finalize the learning algorithm
+        gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
+         invariable_constraint;
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
             struct_constraint;
 
         gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-        gum::learning::GraphChangesGenerator4DiGraph op_set(struct_constraint);
-
-        gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
+        gum::learning::GraphChangesSelector4DiGraph selector(score, invariable_constraint, struct_constraint);
 
         gum::learning::GreedyHillClimbing search;
 
@@ -1912,10 +1914,10 @@ namespace gum_tests {
       gum::learning::SmoothingPrior       prior(database);
       prior.setWeight(1);
 
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
+         invariable_constraint;
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
           struct_constraint;
-
-      gum::learning::GraphChangesGenerator4DiGraph op_set(struct_constraint);
 
       gum::learning::GreedyHillClimbing search;
 
@@ -1954,7 +1956,7 @@ namespace gum_tests {
 
           score.setRanges(ranges);
           estimator.setRanges(ranges);
-          gum::learning::GraphChangesSelector4DiGraph selector(score, struct_constraint, op_set);
+          gum::learning::GraphChangesSelector4DiGraph selector(score, invariable_constraint, struct_constraint);
           gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
           CHECK_EQ(bn1.internalDag(), bn2.internalDag());

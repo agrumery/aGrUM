@@ -100,29 +100,31 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      std::vector< gum::NodeId > order(database.nbVariables());
-      for (gum::NodeId i = 0; i < order.size(); ++i) {
-        order[i] = i;
-      }
+      gum::Sequence< gum::NodeId > order {4, 6, 2, 1, 5, 7, 0};
 
-      gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) > op_set(
-          struct_constraint);
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
+         invariable_constraints;
 
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
-          selector(score, struct_constraint, op_set);
+      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+         decltype(struct_constraint) >
+         selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::K2 k2;
       k2.setOrder(order);
-      k2.approximationScheme().setEpsilon(1000);
+      k2.approximationScheme().setEpsilon(0);
 
       try {
+        gum::DAG dag = k2.learnStructure(selector);
+        CHECK_EQ(dag.arcs().size(), (gum::Size)11);
+
         gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
+
         CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(8));
         CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(8));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }   // namespace gum_tests
+    }
 
     //@beforeMerging why is this code commented ?
     /*

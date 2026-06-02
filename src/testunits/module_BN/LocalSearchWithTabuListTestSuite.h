@@ -80,9 +80,9 @@ namespace gum_tests {
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
 
-      gum::learning::DBTranslatorSet translator_set;
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
       for (std::size_t i = 0; i < nb_vars; ++i) {
-        gum::learning::DBTranslator4LabelizedVariable translator;
         translator_set.insertTranslator(translator, i);
       }
 
@@ -97,25 +97,25 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree,
-                                                    gum::learning::StructuralConstraintSliceOrder,
                                                     gum::learning::StructuralConstraintTabuList >
           struct_constraint;
 
       struct_constraint.setMaxIndegree(2);
       struct_constraint.setTabuListSize(100);
 
-      gum::NodeProperty< gum::NodeId > slices{std::make_pair(static_cast< gum::NodeId >(0), 0),
-                                              std::make_pair(static_cast< gum::NodeId >(1), 0)};
-      struct_constraint.setSliceOrder(slices);
-      struct_constraint.setDefaultSlice(1);
+     gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
+         invariable_constraints;
+
+      gum::NodeProperty< gum::NodeId > slices{std::make_pair(gum::NodeId(0), 0),
+                                              std::make_pair(gum::NodeId(1), 0)};
+      invariable_constraints.setSliceOrder(slices);
+      invariable_constraints.setDefaultSlice(1);
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) > op_set(
-          struct_constraint);
-
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint), decltype(op_set) >
-          selector(score, struct_constraint, op_set);
+      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+         decltype(struct_constraint) >
+         selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);
@@ -125,7 +125,7 @@ namespace gum_tests {
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
         CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(10));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }   // namespace gum_tests
+    } 
 
     /*
     void xtest_alarm1() {
