@@ -53,7 +53,7 @@ namespace gum {
 
   // Set the number of threads to be used in the next parallel region
   void setNumberOfThreads(unsigned int number) {
-    if (number == 0) number = 1;
+    if (number == 0) { number = 1; }
 
     threadsSTL::setNumberOfThreads(number);
 
@@ -73,21 +73,23 @@ namespace gum {
 
   // returns a vector equally splitting elements of a range among threads
   std::vector< std::pair< Idx, Idx > >
-      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads) {
+      dispatchRangeToThreads(const Idx beg, const Idx end, const unsigned int nb_threads) {
     // there should always be at least one thread
-    const auto real_nb_threads = nb_threads < 1 ? Idx(1) : Idx(nb_threads);
-    const Idx  range_size      = end - beg;
+    const auto real_nb_threads
+        = nb_threads < 1 ? static_cast< Idx >(1) : static_cast< Idx >(nb_threads);
+    const Idx                            range_size = end - beg;
     std::vector< std::pair< Idx, Idx > > result;
     result.reserve(real_nb_threads);
 
     // if the number of elements in the range is lower than or equal to the
     // number of threads, assign only one element per thread
     if (range_size <= real_nb_threads) {
-      for (Idx i = Idx(0); i < range_size; ++i) {
+      for (Idx i = static_cast< Idx >(0); i < range_size; ++i) {
         result.emplace_back(i, i + 1);
       }
-      for (Idx i = range_size; i < real_nb_threads; ++i)
+      for (Idx i = range_size; i < real_nb_threads; ++i) {
         result.emplace_back(range_size, range_size);
+      }
     } else {
       // here there are more elements in the range than threads. So try to balance
       // the number of elements among the threads
@@ -95,9 +97,9 @@ namespace gum {
       Idx rest_elts          = range_size - nb_elts_par_thread * real_nb_threads;
 
       Idx begin_index = beg;
-      for (Idx i = Idx(0); i < real_nb_threads; ++i) {
+      for (Idx i = static_cast< Idx >(0); i < real_nb_threads; ++i) {
         Idx end_index = begin_index + nb_elts_par_thread;
-        if (rest_elts != Idx(0)) {
+        if (rest_elts != static_cast< Idx >(0)) {
           ++end_index;
           --rest_elts;
         }

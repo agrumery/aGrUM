@@ -45,6 +45,8 @@ class GaussianVariable: Continuous Gaussian Variable
 
 class GaussianVariable:
   def __init__(self, name: str, mu: float, sigma: float):
+    if sigma <= 0:
+      raise ValueError(f"sigma must be strictly positive, got {sigma}.")
     self._mu = mu
     self._sigma = sigma
     self._name = name
@@ -105,6 +107,8 @@ class GaussianVariable:
     sigma : float
       The new standard deviation of the variable.
     """
+    if sigma <= 0:
+      raise ValueError(f"sigma must be strictly positive, got {sigma}.")
     self._sigma = sigma
 
   def __str__(self) -> str:

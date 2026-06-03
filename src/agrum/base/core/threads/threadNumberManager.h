@@ -107,17 +107,17 @@ namespace gum {
      * @param nb the number of threads to be used. If this number is set to 0, then
      * it is defaulted to aGrUM's number of threads
      */
-    virtual void setNumberOfThreads(Size nb);
+    void setNumberOfThreads(Size nb) override;
 
     /** @brief returns the current max number of threads used by the class
      * containing this ThreadNumberManager
      */
-    virtual Size getNumberOfThreads() const;
+    [[nodiscard]] Size getNumberOfThreads() const override;
 
     /** @brief indicates whether the class containing this ThreadNumberManager set
      * its own number of threads
      */
-    bool isGumNumberOfThreadsOverriden() const;
+    [[nodiscard]] bool isGumNumberOfThreadsOverriden() const override;
 
     /// @}
 

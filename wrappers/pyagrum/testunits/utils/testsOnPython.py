@@ -145,6 +145,10 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     "CLGSamplingTestSuite",
     _pd,
   )
+  CLGRandomTestSuite = _try_import(
+    "CLGRandomTestSuite",
+    _pd,
+  )
   ConfigTestSuite = _try_import(
     "ConfigTestSuite",
     True,
@@ -396,6 +400,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       "clg": [
         CLGLearningTestSuite,
         CLGSamplingTestSuite,
+        CLGRandomTestSuite,
         CLGCanonicalFormTestSuite,
         CLGInferenceTestSuite,
       ],

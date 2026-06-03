@@ -629,62 +629,109 @@ class CLG:
 def randomCLG(
   nb_variables: int,
   names: list[str],
-  MuMax: float = 5,
+  max_parents: int | None = None,
+  ratio_arc: float = 1.2,
   MuMin: float = -5,
-  SigmaMax: float = 10,
+  MuMax: float = 5,
   SigmaMin: float = 1,
+  SigmaMax: float = 10,
+  ArcCoefMin: float = 1,
   ArcCoefMax: float = 10,
-  ArcCoefMin: float = 5,
 ) -> CLG:
   """
-  This function generates a random CLG with nb_variables variables.
+  Generate a random CLG with ``nb_variables`` variables.
 
   Parameters
   ----------
   nb_variables : int
-    The number of variables in the CLG.
-  names : str
-    The list of names of the variables.
-  MuMax : float
-    The maximum value of mu.
+    Number of variables. Must be >= 4.
+  names : list[str]
+    Names of the variables. Must satisfy ``len(names) == nb_variables``.
+  max_parents : int or None
+    Maximum number of parents per node. ``None`` means no constraint.
+  ratio_arc : float
+    Target number of arcs expressed as a multiple of ``nb_variables``
+    (passed to :func:`pyagrum.randomBN`). Must be > 0.
   MuMin : float
-    The minimum value of mu.
-  SigmaMax : float
-    The maximum value of sigma.
+    Lower bound for the uniform draw of each node's mean. Must be <= ``MuMax``.
+  MuMax : float
+    Upper bound for the uniform draw of each node's mean.
   SigmaMin : float
-    The minimum value of sigma.
-  ArcCoefMax : float
-    The maximum value of the coefficient of the arc.
+    Lower bound for the uniform draw of each node's std deviation.
+    Must be > 0 and <= ``SigmaMax``.
+  SigmaMax : float
+    Upper bound for the uniform draw of each node's std deviation.
   ArcCoefMin : float
-    The minimum value of the coefficient of the arc.
+    Minimum absolute value of arc coefficients. Must be > 0 and <= ``ArcCoefMax``.
+    Coefficients are drawn uniformly from ``[-ArcCoefMax, -ArcCoefMin] ∪ [ArcCoefMin, ArcCoefMax]``.
+  ArcCoefMax : float
+    Maximum absolute value of arc coefficients.
 
   Returns
   -------
   CLG
-    The random CLG.
-  """
-  # Create a random BN with nb_variables variables
-  bn = pyagrum.randomBN(names=names, n=nb_variables)
+    A random CLG.
 
-  # Order names by their NodeIds
+  Raises
+  ------
+  ValueError
+    If any parameter violates its constraint.
+  """
+  if len(names) != nb_variables:
+    raise ValueError(f"len(names) ({len(names)}) must equal nb_variables ({nb_variables}).")
+  if nb_variables < 4:
+    raise ValueError(f"nb_variables must be >= 4, got {nb_variables}.")
+  if ratio_arc <= 0:
+    raise ValueError(f"ratio_arc must be strictly positive, got {ratio_arc}.")
+  if max_parents is not None and max_parents < 1:
+    raise ValueError(f"max_parents must be >= 1, got {max_parents}.")
+  if MuMin > MuMax:
+    raise ValueError(f"MuMin ({MuMin}) must be <= MuMax ({MuMax}).")
+  if SigmaMin <= 0:
+    raise ValueError(f"SigmaMin must be strictly positive, got {SigmaMin}.")
+  if SigmaMin > SigmaMax:
+    raise ValueError(f"SigmaMin ({SigmaMin}) must be <= SigmaMax ({SigmaMax}).")
+  if ArcCoefMin <= 0:
+    raise ValueError(f"ArcCoefMin must be strictly positive, got {ArcCoefMin}.")
+  if ArcCoefMin > ArcCoefMax:
+    raise ValueError(f"ArcCoefMin ({ArcCoefMin}) must be <= ArcCoefMax ({ArcCoefMax}).")
+
+  bn = pyagrum.randomBN(names=names, n=nb_variables, ratio_arc=ratio_arc)
+
+  # Order names by their NodeIds in the generated BN
   ordered_names = [""] * nb_variables
   for name in bn.names():
     ordered_names[bn.idFromName(name)] = name
 
-  # Create a random CLG with nb_variables variables(The CLG is created with the same structure as the BN)
   clg = CLG()
-  # Add variables
   for name in ordered_names:
-    new_variable = GaussianVariable(
-      name=name, mu=random.uniform(MuMin, MuMax), sigma=random.uniform(SigmaMin, SigmaMax)
+    clg.add(
+      GaussianVariable(
+        name=name,
+        mu=random.uniform(MuMin, MuMax),
+        sigma=random.uniform(SigmaMin, SigmaMax),
+      )
     )
-    clg.add(new_variable)
-  # Add arcs
-  for arc in bn.arcs():
+
+  # Build arc list, trimming excess parents per node when max_parents is set
+  if max_parents is not None:
+    arcs_by_child: dict[int, list[int]] = {}
+    for arc in bn.arcs():
+      arcs_by_child.setdefault(arc[1], []).append(arc[0])
+    arcs_to_add: list[tuple[int, int]] = []
+    for child, parents in arcs_by_child.items():
+      if len(parents) > max_parents:
+        parents = random.sample(parents, max_parents)
+      for parent in parents:
+        arcs_to_add.append((parent, child))
+  else:
+    arcs_to_add = list(bn.arcs())
+
+  for arc in arcs_to_add:
     clg.addArc(
       val1=arc[0],
       val2=arc[1],
-      coef=random.uniform(-1 * ArcCoefMax, -1 * ArcCoefMin)
+      coef=random.uniform(-ArcCoefMax, -ArcCoefMin)
       if random.random() < 0.5
       else random.uniform(ArcCoefMin, ArcCoefMax),
     )
