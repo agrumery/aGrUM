@@ -48,6 +48,8 @@
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
+#include "agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h"
+
 #include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -148,7 +150,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = std::size_t(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }

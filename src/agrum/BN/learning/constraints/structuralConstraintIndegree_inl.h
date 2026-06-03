@@ -66,7 +66,7 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return (_Indegree_max_parents_[y] > _DiGraph_graph_.parents(y).size());
+      return (_Indegree_max_parents_[y] > _graph_.parents(y).size());
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -76,21 +76,21 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintIndegree::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return (_Indegree_max_parents_[x] > _DiGraph_graph_.parents(x).size());
+      return (_Indegree_max_parents_[x] > _graph_.parents(x).size());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                              NodeId node2,
                                                                              NodeId node3) const {
-      return _Indegree_max_parents_[node1] >= _DiGraph_graph_.parents(node1).size() + 2;
+      return _Indegree_max_parents_[node1] >= _graph_.parents(node1).size() + 2;
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                              NodeId node2,
                                                                              NodeId node3) const {
-      return _Indegree_max_parents_[node2] > _DiGraph_graph_.parents(node1).size();
+      return _Indegree_max_parents_[node2] > _graph_.parents(node1).size();
     }
 
     /// checks whether the constraints enable to add an arc

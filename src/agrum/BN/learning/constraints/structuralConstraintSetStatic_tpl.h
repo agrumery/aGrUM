@@ -552,7 +552,7 @@ namespace gum {
         constraints::modifyGraph(change);
       } else {
         GUM_ERROR(OperationNotAllowed,
-                  "the constraint set does not allow this arc addition between "
+                  "the constraint set does not allow an arc addition between "
                       << change.node1() << " and " << change.node2());
       }
     }
@@ -565,7 +565,7 @@ namespace gum {
         constraints::modifyGraph(change);
       } else {
         GUM_ERROR(OperationNotAllowed,
-                  "the constraint set does not allow this arc deletion between "
+                  "the constraint set does not allow an arc deletion between "
                       << change.node1() << " and " << change.node2());
       }
     }
@@ -578,7 +578,7 @@ namespace gum {
         constraints::modifyGraph(change);
       } else {
         GUM_ERROR(OperationNotAllowed,
-                  "the constraint set does not allow this arc reversal between "
+                  "the constraint set does not allow an arc reversal between "
                       << change.node1() << " and " << change.node2());
       }
     }

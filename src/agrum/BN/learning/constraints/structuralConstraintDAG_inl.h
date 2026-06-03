@@ -50,87 +50,119 @@
 
 #  include <agrum/agrum.h>
 
-#  include <agrum/base/graphs/algorithms/DAGCycleDetector.h>
-#  include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
+#  include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 
 namespace gum {
 
   namespace learning {
 
-    /// sets a new graph from which we will perform checkings
+    ALWAYS_INLINE void StructuralConstraintDAG::_lock_() const {
+      while (_lock_flag_.test_and_set(std::memory_order_acquire)) {}
+    }
+
+    ALWAYS_INLINE void StructuralConstraintDAG::_unlock_() const {
+      _lock_flag_.clear(std::memory_order_release);
+    }
+
+    /// sets a new graph from which we will perform checking
     INLINE void StructuralConstraintDAG::setGraphAlone(const DiGraph& graph) {
-      // check that the digraph has no cycle
-      DAG g;
+      // check that the digraph contains no directed cycle
+      DiGraph g;
 
       for (auto node: graph)
         g.addNodeWithId(node);
 
-      for (auto& arc: graph.arcs())
+      for (auto& arc: graph.arcs()) {
+        if (graph::hasDirectedPath(g, arc.head(), arc.tail())) {
+          GUM_ERROR(
+            InvalidDirectedCycle,
+            "Graphs with directed cycles cannot be passed to StructuralConstraintDAG"
+          );
+        }
         g.addArc(arc.tail(), arc.head());
-
-      _DAG_cycle_detector_.setDAG(g);
-    }
-
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraphAlone(Size nb_nodes) {
-      DAG g;
-
-      for (NodeId i = 0; i < nb_nodes; ++i) {
-        g.addNodeWithId(i);
       }
 
-      _DAG_cycle_detector_.setDAG(g);
+      // ok, here, there is no directed cycle
+      _graph_ = std::move(g);
+    }
+
+    /// sets a new graph from which we will perform checking
+    INLINE void StructuralConstraintDAG::setGraphAlone(Size nb_nodes) {
+      for (NodeId i = 0; i < nb_nodes; ++i) {
+        _graph_.addNodeWithId(i);
+      }
     }
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return !_DAG_cycle_detector_.hasCycleFromAddition(x, y);
+      if (!_graph_.existsNode(x) || !_graph_.existsNode(y)) return false;
+      _lock_();
+      bool result = !_graph_.existsArc(x, y) && !graph::hasDirectedPath(_graph_, y, x);
+      _unlock_();
+      return result;
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return !_DAG_cycle_detector_.hasCycleFromDeletion(x, y);
+      _lock_();
+      bool result = _graph_.existsArc(x, y);
+      _unlock_();
+      return result;
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintDAG::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return !_DAG_cycle_detector_.hasCycleFromReversal(x, y);
+      bool result = false;
+      _lock_();
+      if (_graph_.existsArc(x, y)) {
+        _graph_.eraseArc(Arc(x, y));
+        result = !graph::hasDirectedPath(_graph_, x, y);
+        _graph_.addArc(x, y);
+      }
+      _unlock_();
+      return result;
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                         NodeId node2,
                                                                         NodeId node3) const {
-      /// @TODO update DagCycleDetector
-      /*
-      _DAG_cycle_detector_.eraseArc(node2, node3);
-      _DAG_cycle_detector_.eraseArc(node1, node3);
-      bool res = false;
-      if (!_DAG_cycle_detector_.hasCycleFromReversal(node1, node2)) {
-        _DAG_cycle_detector_.reverseArc(node1, node2);
-        res = !_DAG_cycle_detector_.hasCycleFromAddition(node3, node1);
-        _DAG_cycle_detector_.reverseArc(node2, node1);
+      bool result = false;
+      _lock_();
+      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3) &&
+          _graph_.existsArc(node2, node3)) {
+        _graph_.eraseArc(Arc(node1, node2));
+        _graph_.eraseArc(Arc(node1, node3));
+        _graph_.eraseArc(Arc(node2, node3));
+        if (!graph::hasDirectedPath(_graph_, node1, node2)) {
+          _graph_.addArc(node2, node1);
+          result = !graph::hasDirectedPath(_graph_, node1, node3);
+          _graph_.eraseArc(Arc(node2, node1));
+        }
+        _graph_.addArc(node1, node2);
+        _graph_.addArc(node1, node3);
+        _graph_.addArc(node2, node3);
       }
-      _DAG_cycle_detector_.addArc(node1, node3);
-      _DAG_cycle_detector_.addArc(node2, node3);
-      return res;
-       */
-
-      GUM_ERROR(NotImplementedYet, "DAGCycleDetector should handle arc triangle deletions");
+      _unlock_();
+      return result;
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintDAG::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                         NodeId node2,
                                                                         NodeId node3) const {
-      /// @TODO update DagCycleDetector
-      /*
-      _DAG_cycle_detector_.eraseArc(node1, node3);
-      bool res = !_DAG_cycle_detector_.hasCycleFromReversal(node2, node3);
-      _DAG_cycle_detector_.addArc(node1, node3);
-      return res;
-       */
-      GUM_ERROR(NotImplementedYet, "DAGCycleDetector should handle arc triangle deletions");
+      bool result = false;
+      _lock_();
+      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3) &&
+          _graph_.existsArc(node2, node3)) {
+        _graph_.eraseArc(Arc(node1, node3));
+        _graph_.eraseArc(Arc(node2, node3));
+        result = !graph::hasDirectedPath(_graph_, node2, node3);
+        _graph_.addArc(node1, node3);
+        _graph_.addArc(node2, node3);
+      }
+      _unlock_();
+      return result;
     }
 
     /// checks whether the constraints enable to add an arc
@@ -187,31 +219,44 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcAddition& change) {
-      _DAG_cycle_detector_.addArc(change.node1(), change.node2());
+      _lock_();
+      _graph_.addArc(change.node1(), change.node2());
+      _unlock_();
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcDeletion& change) {
-      _DAG_cycle_detector_.eraseArc(change.node1(), change.node2());
+      _lock_();
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _unlock_();
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcReversal& change) {
-      _DAG_cycle_detector_.reverseArc(change.node1(), change.node2());
+      _lock_();
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _graph_.addArc(change.node2(), change.node1());
+      _unlock_();
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcTriangleDeletion1& change) {
-      _DAG_cycle_detector_.eraseArc(change.node2(), change.node3());
-      _DAG_cycle_detector_.eraseArc(change.node1(), change.node3());
-      _DAG_cycle_detector_.reverseArc(change.node1(), change.node2());
-      _DAG_cycle_detector_.addArc(change.node3(), change.node1());
+      _lock_();
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _graph_.eraseArc(Arc(change.node1(), change.node3()));
+      _graph_.eraseArc(Arc(change.node2(), change.node3()));
+      _graph_.addArc(change.node2(), change.node1());
+      _graph_.addArc(change.node3(), change.node1());
+      _unlock_();
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDAG::modifyGraphAlone(const ArcTriangleDeletion2& change) {
-      _DAG_cycle_detector_.eraseArc(change.node1(), change.node3());
-      _DAG_cycle_detector_.reverseArc(change.node2(), change.node3());
+      _lock_();
+      _graph_.eraseArc(Arc(change.node1(), change.node3()));
+      _graph_.eraseArc(Arc(change.node2(), change.node3()));
+      _graph_.addArc(change.node3(), change.node2());
+      _unlock_();
     }
 
     /// notify the constraint of a modification of the graph
@@ -249,21 +294,19 @@ namespace gum {
       return false;
     }
 
-    /// sets a new graph from which we will perform checkings
+    /// sets a new graph from which we will perform checking
     INLINE void StructuralConstraintDAG::setGraph(const DAG& graph) {
-      constraints::setGraph(graph);
-      _DAG_cycle_detector_.setDAG(graph);
+      _graph_ = graph;
     }
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDAG::setGraph(Size nb_nodes) {
-      StructuralConstraintDiGraph::setGraph(nb_nodes);
       setGraphAlone(nb_nodes);
     }
 
 // include all the methods applicable to the whole class hierarchy
 #  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG
-#  include <agrum/BN/learning/constraints/structuralConstraintPatternInline.h>
+#  include <agrum/BN/learning/constraints/structuralConstraintPatternRootInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
   } /* namespace learning */

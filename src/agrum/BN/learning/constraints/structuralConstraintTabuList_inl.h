@@ -87,6 +87,11 @@ namespace gum {
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x, NodeId y) const {
+      if (x == 1 && y == 4) {
+        std::cout << "check deletion 1->4 = " <<
+                (!_TabuList_changes_.existsFirst(ArcAddition(x, y))
+                && !_TabuList_changes_.existsFirst(ArcDeletion(x, y))) << std::endl;
+      }
       return !_TabuList_changes_.existsFirst(ArcAddition(x, y))
           && !_TabuList_changes_.existsFirst(ArcDeletion(x, y));
     }
@@ -117,7 +122,9 @@ namespace gum {
                                                                              NodeId node3) const {
       return !_TabuList_changes_.existsFirst(ArcTriangleDeletion2(node1, node2, node3))
           && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node3))
-          && !_TabuList_changes_.existsFirst(ArcReversal(node2, node3));
+          && !_TabuList_changes_.existsFirst(ArcReversal(node2, node3))
+          && !_TabuList_changes_.existsFirst(ArcDeletion(node2, node3))
+          && !_TabuList_changes_.existsFirst(ArcAddition(node3, node2));
     }
 
     /// checks whether the constraints enable to add an arc

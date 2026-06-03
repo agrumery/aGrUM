@@ -74,9 +74,8 @@ namespace gum {
    * induce cycles, use class DAGCycleDetector instead of trying to apply the
    * modifications to the DAG itself and check whether and exception is raised:
    * the class is designed to be fast for such modifications. However, the
-   *number
-   * of modifications checked should be higher than at least 3 for this class to
-   * be competitive.
+   * number of modifications checked should be higher than at least 3 for this
+   * class to be competitive.
    */
   class DAGCycleDetector {
     public:

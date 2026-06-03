@@ -114,7 +114,7 @@ namespace gum {
     return stream;
   }
 
-  bool DiGraph::hasDirectedPath(const NodeId from, const NodeId to) {
+  bool DiGraph::hasDirectedPath(const NodeId from, const NodeId to) const {
     return graph::hasDirectedPath(*this, from, to);
   }
 

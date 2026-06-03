@@ -236,7 +236,7 @@ namespace gum {
      * @return true if a directed path exists
      *
      */
-    bool hasDirectedPath(NodeId from, NodeId to);
+    bool hasDirectedPath(NodeId from, NodeId to) const;
 
     /// returns a directed path from node1 to node2, or std::nullopt if none
     std::optional< std::vector< NodeId > > directedPath(NodeId node1, NodeId node2) const;

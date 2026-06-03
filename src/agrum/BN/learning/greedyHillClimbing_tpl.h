@@ -72,15 +72,15 @@ namespace gum {
           const auto& change = selector.bestChange();
           delta_score        = selector.deltaScore(change, true);
 
-          if (delta_score > 0) {
-            // std::cout << "applying " << change.toString()
-            //           << " delta score = " << delta_score << std::endl;
+          if ((delta_score > 0) && continueApproximationScheme(delta_score)) {
+             std::cout << "applying " << change.toString()
+                       << " delta score = " << delta_score << std::endl;
             selector.applyChange(change);
             nb_changes_applied = 1;
             updateApproximationScheme(nb_changes_applied);
           }
         } catch (NotFound&) {}
-      } while (nb_changes_applied && continueApproximationScheme(delta_score));
+      } while (nb_changes_applied);
 
       stopApproximationScheme();   // just to be sure of the approximationScheme
                                    // has been notified of the end of loop

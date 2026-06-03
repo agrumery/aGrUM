@@ -47,11 +47,13 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 
+#include <atomic>
 #include <agrum/agrum.h>
 
-#include <agrum/base/graphs/algorithms/DAGCycleDetector.h>
-#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
+#include <agrum/base/graphs/diGraph.h>
+#include <agrum/base/graphs/DAG.h>
+#include <agrum/BN/learning/constraints/structuralConstraint.h>
+#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
@@ -61,13 +63,11 @@ namespace gum {
      * @brief The base class for structural constraints imposed by DAGs
      *
      * This base should always be a virtual parents of the structural
-     *constraints
-     * classes. This will allow to combine different constraints into a single
-     * class
+     * constraints classes. This will allow to combine different constraints
+     * into a single class
      * @ingroup learning_group
      */
-    class StructuralConstraintDAG:
-        public virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
+    class StructuralConstraintDAG: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -87,7 +87,7 @@ namespace gum {
       StructuralConstraintDAG(const StructuralConstraintDAG& from);
 
       /// move constructor
-      StructuralConstraintDAG(StructuralConstraintDAG&& from);
+      StructuralConstraintDAG(StructuralConstraintDAG&& from) noexcept;
 
       /// destructor
       virtual ~StructuralConstraintDAG();
@@ -112,10 +112,10 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// sets a new graph from which we will perform checkings
+      /// sets a new graph from which we will perform checking
       void setGraphAlone(const DiGraph& graph);
 
-      /// sets a new empty graph from which we will perform checkings
+      /// sets a new empty graph from which we will perform checking
       void setGraphAlone(Size nb_nodes);
 
       /// notify the constraint of a modification of the graph
@@ -243,10 +243,10 @@ namespace gum {
        * arc (y,x) does not induce a directed cycle. */
       bool checkModificationAlone(const GraphChange& change) const;
 
-      /// sets a new graph from which we will perform checkings
+      /// sets a new graph from which we will perform checking
       void setGraph(const DAG& graph);
 
-      /// sets a new empty graph from which we will perform checkings
+      /// sets a new empty graph from which we will perform checking
       void setGraph(Size nb_nodes);
 
       /// @}
@@ -260,9 +260,28 @@ namespace gum {
 #  undef GUM_CONSTRAINT_CLASS_NAME
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
-      protected:
-      /// the cycle detector used to check quickly graph modifications
-      DAGCycleDetector _DAG_cycle_detector_;
+      private:
+      // the DiGraph on which we perform checks: it is better to use a DiGraph
+      // here rather than a DAG because this will speed-up checking triangle
+      // deletions (not enforcing checking the acyclicity for some graph
+      // operations in which we know for sure that the graph cannot contain any
+      // directed cycle)
+      mutable DiGraph _graph_;
+
+      // in order to check for directed acyclicity when performing operations
+      // like arc reversals or triangle deletions, we will perform modifications
+      // on _graph_. This will simplify the checking. In order to guaranty that
+      // several threads do not mess with _graph_ (data races) or simply that
+      // their computations are correct, we will use a spinlock. This should be
+      // efficient because, usually, only 1 thread will perform these operations
+      // at a time.
+      mutable std::atomic_flag _lock_flag_ = ATOMIC_FLAG_INIT;
+
+      /// the method to lock a critical region in order to modify _graph_
+      void _lock_() const;
+
+      /// the methode to release a critical region used to modify _graph_
+      void _unlock_() const;
     };
 
   } /* namespace learning */

@@ -814,8 +814,8 @@ namespace gum::learning {
         selector.useArcAdditions(true);
         selector.useArcDeletions(true);
         selector.useArcReversals(true);
-        selector.useArcTriangleDeletions(true);
         */
+        selector.useArcTriangleDeletions(false);
         return greedyHillClimbing_.learnStructure(selector, init_graph);
       }
 

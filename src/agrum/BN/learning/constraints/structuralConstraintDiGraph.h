@@ -63,9 +63,8 @@ namespace gum {
      * algorithms that learn a directed graph structure
      *
      * This base should always be a virtual parents of the structural
-     *constraints
-     * classes. This will allow to combine different constraints into a single
-     * class
+     * constraints classes. This will allow to combine different constraints into
+     * a single class
      * @ingroup learning_group
      */
     class StructuralConstraintDiGraph: public virtual StructuralConstraintEmpty {
@@ -88,7 +87,7 @@ namespace gum {
       StructuralConstraintDiGraph(const StructuralConstraintDiGraph& from);
 
       /// move constructor
-      StructuralConstraintDiGraph(StructuralConstraintDiGraph&& from);
+      StructuralConstraintDiGraph(StructuralConstraintDiGraph&& from) noexcept;
 
       /// destructor
       virtual ~StructuralConstraintDiGraph();
@@ -113,10 +112,10 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// sets a new empty graph from which we will perform checkings
+      /// sets a new empty graph from which we will perform checking
       void setGraph(Size nb_nodes);
 
-      /// sets a new graph from which we will perform checkings
+      /// sets a new graph from which we will perform checking
       void setGraphAlone(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
@@ -246,7 +245,7 @@ namespace gum {
 
       protected:
       /// the DiGraph on which we perform checks
-      DiGraph _DiGraph_graph_;
+      DiGraph _graph_;
     };
 
   } /* namespace learning */

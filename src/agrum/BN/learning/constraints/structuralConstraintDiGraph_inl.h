@@ -55,37 +55,40 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDiGraph::setGraphAlone(const DiGraph& graph) {
-      _DiGraph_graph_ = graph;
+      _graph_ = graph;
     }
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintDiGraph::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return _DiGraph_graph_.existsNode(x) && _DiGraph_graph_.existsNode(y)
-          && !_DiGraph_graph_.existsArc(x, y);
+      return _graph_.existsNode(x) && _graph_.existsNode(y)
+          && !_graph_.existsArc(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintDiGraph::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return _DiGraph_graph_.existsArc(x, y);
+      return _graph_.existsArc(x, y);
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintDiGraph::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return !_DiGraph_graph_.existsArc(y, x);
+      return _graph_.existsArc(x, y) && !_graph_.existsArc(y, x);
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                             NodeId node2,
                                                                             NodeId node3) const {
-      return !_DiGraph_graph_.existsArc(node2, node1) && !_DiGraph_graph_.existsArc(node3, node1);
+      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3) &&
+             _graph_.existsArc(node1, node3) && !_graph_.existsArc(node2, node1) &&
+             !_graph_.existsArc(node3, node1);
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                             NodeId node2,
                                                                             NodeId node3) const {
-      return !_DiGraph_graph_.existsArc(node1, node2) && !_DiGraph_graph_.existsArc(node3, node2);
+      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3) &&
+             _graph_.existsArc(node1, node3) && !_graph_.existsArc(node3, node2);
     }
 
     /// checks whether the constraints enable to add an arc
@@ -146,34 +149,34 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcAddition& change) {
-      _DiGraph_graph_.addArc(change.node1(), change.node2());
+      _graph_.addArc(change.node1(), change.node2());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcDeletion& change) {
-      _DiGraph_graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcReversal& change) {
-      _DiGraph_graph_.eraseArc(Arc(change.node1(), change.node2()));
-      _DiGraph_graph_.addArc(change.node2(), change.node1());
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _graph_.addArc(change.node2(), change.node1());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion1& change) {
-      _DiGraph_graph_.eraseArc(Arc(change.node1(), change.node2()));
-      _DiGraph_graph_.eraseArc(Arc(change.node1(), change.node3()));
-      _DiGraph_graph_.eraseArc(Arc(change.node2(), change.node3()));
-      _DiGraph_graph_.addArc(change.node2(), change.node1());
-      _DiGraph_graph_.addArc(change.node3(), change.node1());
+      _graph_.eraseArc(Arc(change.node1(), change.node2()));
+      _graph_.eraseArc(Arc(change.node1(), change.node3()));
+      _graph_.eraseArc(Arc(change.node2(), change.node3()));
+      _graph_.addArc(change.node2(), change.node1());
+      _graph_.addArc(change.node3(), change.node1());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion2& change) {
-      _DiGraph_graph_.eraseArc(Arc(change.node1(), change.node3()));
-      _DiGraph_graph_.eraseArc(Arc(change.node2(), change.node3()));
-      _DiGraph_graph_.addArc(change.node3(), change.node1());
+      _graph_.eraseArc(Arc(change.node1(), change.node3()));
+      _graph_.eraseArc(Arc(change.node2(), change.node3()));
+      _graph_.addArc(change.node3(), change.node1());
     }
 
     /// notify the constraint of a modification of the graph
@@ -213,10 +216,10 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDiGraph::setGraph(Size nb_nodes) {
-      _DiGraph_graph_.clear();
+      _graph_.clear();
 
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        _DiGraph_graph_.addNodeWithId(i);
+        _graph_.addNodeWithId(i);
       }
     }
 
