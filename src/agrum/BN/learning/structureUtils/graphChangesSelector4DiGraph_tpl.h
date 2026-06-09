@@ -931,7 +931,7 @@ namespace gum {
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
       // 1/ Remove the arc addition tail -> head we just applied
-      // 2/ Update The scores of the changes impacted by head's additional
+      // 2/ Update the scores of the changes impacted by head's additional
       //    ingoing arc:
       //    2.a/ all the additions of arcs whose heads are equal to "head"
       //         should be updated
@@ -945,7 +945,7 @@ namespace gum {
       //    3.a/ Add the reverse change: Arc tail->head's deletion
       //    3.b/ Arc tail->head's reversal should be added
       //    3.c/ The new arc may have created some new triangles, hence we should
-      //         also add their possible removals to the _sorted_changes_
+      //         also add their possible deletions to the _sorted_changes_
 
       _sorted_changes_.erase(change, true);   // case 1
 
@@ -1057,83 +1057,70 @@ namespace gum {
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
-      //  1/ if we removed arc tail -> head, this deletion should be removed from
-      //     _sorted_changes_
-      //  2/ since arc tail -> head existed, it could also have been reversed.
-      //     Hence, we should remove this reversal from _sorted_changes_
-      //  3/ the addition of arc tail -> head should be added to _sorted_changes_
-      //  4/ if arc head -> tail exists, its reversal is now possible, so add it to
-      //     _sorted_changes_
-      //  5/ The scores of all the additions of arcs whose heads are equal to
-      //     "head" should be updated
-      //  6/ The scores of all the deletions of arcs whose heads are equal to
-      //     "head" should be updated
-      //  7/ The scores of all the arc reversals involving "head" should be updated
-      //  8/ The removed arc may have been involved into some triangles, hence we
-      //     should also remove them from _sorted_changes_
-      //  9/ The scores of the triangle deletions which include head as one of their
-      //     nodes should be updated
-      // 10/ Some arc triangles deletions which, when applied, would have created
-      //     Arc tail -> head could not be inserted yet into _sorted_changes_
-      //     because this arc already existed. Now, they can be created.
+      //  1/ Remove arc deletion tail -> head we just applied
+      //  2/ Update the scores of the changes impacted by the deletion:
+      //     2.a/ The scores of all the additions of arcs whose heads are equal to
+      //          "head" should be updated
+      //     2.b/ The scores of all the deletions of arcs whose heads are equal to
+      //          "head" should be updated
+      //     2.c/ The scores of all the arc reversals involving "head" should
+      //          be updated
+      //     2.d/ The scores of the triangle deletions which include head as one of
+      //          their nodes but not arc tail -> head should be updated
+      //  3/ Add/remove the changes resulting from the application of the arc deletion:
+      //     3.a/ add Arc addition tail -> head to _sorted_changes_
+      //     3.b/ remove Arc reversal tail -> head from _sorted_changes_
+      //     3.c/ The removed arc may have been involved into some triangles, hence we
+      //          should also remove them from _sorted_changes_
+
       _sorted_changes_.erase(change);   // case 1
 
-      // cases 3 and 5
+      // cases 2.a and 3.a
       if (_use_arc_additions_) {
-        // case 5
+        // case 2.a
         for (const auto node: *_graph_) {
           // here, no need to check whether node is different from tail because
           // we just added the arc tail -> head to the graph, hence
-          // Addition(tail, head) does not belong yet to _sorted_changes_
+          // ArcAddition(tail, head) does not belong yet to _sorted_changes_
           _updateArcAdditionScore_(node, head);
         }
 
-        // case 3
+        // case 3.a
         const ArcAddition addition(tail, head);
         if (!_invariable_constraints_->isAlwaysInvalid(addition)) {
           _sorted_changes_.insert(addition, -delta_score);
         }
       }
 
-      // case 6
-      for (const auto node: parents_head) {
-        // here, no need to check whether node is different from tail because
-        // we just erased in case 1 ArcDeletion(tail, head)
-        _updateArcDeletionScore_(node, head);
+      // case 2.b
+      if (_use_arc_deletions_) {
+        for (const auto node: parents_head) {
+          // here, no need to check whether node is different from tail because
+          // we just erased in case 1 ArcDeletion(tail, head)
+          _updateArcDeletionScore_(node, head);
+        }
       }
 
-      // cases 2, 4 and 7
+      // cases 2.c and 3.b
       if (_use_arc_reversals_) {
-        _sorted_changes_.erase(ArcReversal(tail, head));   // case 2
+        _sorted_changes_.erase(ArcReversal(tail, head));   // case 3.b
 
-        // case 7:
-        // case 7.1: we consider the reversals of arcs node -> head
+        // case 2.c: we consider the reversals of arcs node -> head
         for (const auto node: parents_head) {
           // here, no need to check whether node is different from tail because
           // we just erased in case 2 ArcReversal(tail, head)
           _updateArcReversalScore_(node, head);
         }
 
-        // case 7.2: we consider the reversals of arcs head -> node
+        // case 2.c: we consider the reversals of arcs head -> node
         for (const auto node: children_head) {
-          // Here, no need to check whether node is different from tail.
-          // Actually, if node = tail, we are considering in this for loop change
-          // ArcReversal(head,tail). This means that arc head->tail already
-          // existed in the graph and that we consider the possibility of
-          // substituting it by arc tail -> head. But since, in this method, we
-          // apply ArcDeletion(tail, head), this means that this arc already
-          // existed. Hence ArcReversal(head,tail) could not have belonged
-          // to _sorted_changes_
           _updateArcReversalScore_(head, node);
         }
-
-        // case 4: if arc head -> tail exists, add its reversal to _sorted_changes_
-        _addArcReversalToSortedChanges_(ArcReversal(head, tail));
       }
 
-      // cases 8 and 9:
+      // cases 2.d and 3.c:
       if (_use_arc_triangle_deletions_) {
-        // case 8:
+        // case 3.c:
         // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
         // and c/ node->tail->head. We should examine these three cases
 
@@ -1159,31 +1146,8 @@ namespace gum {
           }
         }
 
-        // case 9:
+        // case 2.d:
         _updateTriangleDeletionsScoresFromNeighborhood_(head);
-
-        // case 10:
-        // there are 3 cases to consider: a/ ArcTriangleDeletion1(head, tail, x),
-        // b/ ArcTriangleDeletion(head, x, tail) and
-        // c/ ArcTriangleDeletion2(x, head, tail)
-        // case a:
-        for (const auto node: children_head) {
-          if (children_tail.contains(node)) {
-            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, tail, node));
-          }
-        }
-
-        for (const auto node: parents_tail) {
-          // case b:
-          if (children_head.contains(node)) {
-            _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, node, tail));
-          }
-
-          // case c:
-          if (parents_head.contains(node)) {
-            _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(node, head, tail));
-          }
-        }
       }
     }
 
@@ -1218,7 +1182,6 @@ namespace gum {
 
       _node_scores_[head] += overall_delta_score - delta_score_tail;
       _node_scores_[tail] += delta_score_tail;
-      const auto tail_score = _node_scores_[tail];
 
       // indicate to the constraints that we reversed an arc
       _invariable_constraints_->modifyGraph(change);
@@ -1226,125 +1189,103 @@ namespace gum {
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
-      //  1/ if we reversed Arc tail -> head, then this reversal should be removed
-      //     from _sorted_changes_
-      //  2/ since arc tail -> head existed, its deletion should be also removed
-      //     from _sorted_changes_.
-      //  3/ Arc head->tail's deletion should be added
-      //  4/ Arc head->tail's reversal should be added
-      //  5/ The scores of all the additions of arcs whose heads are equal to
-      //     "head" or "tail" should be updated
-      //  6/ The scores of all the deletions of arcs whose heads are equal to
-      //     "head" or "tail" should be updated
-      //  7/ The scores of all the arc reversals involving "head" or "tail"
-      //     should be updated
-      //  8/ Arc tail -> head has been removed. It may have been involved into
-      //     some triangles, hence we should also remove them from _sorted_changes_
-      //  9/ The scores of the triangle deletions that involve either head or tail
-      //     as one of their nodes should be updated.
-      // 10/ Arc head -> tail has been added. It may have created some triangles,
-      //     hence we should also add their possible removals to the
-      //     _sorted_changes_
+      //  1/ Remove Arc reversal tail -> head from _sorted_changes_
+      //  2/ Update the scores of the changes impacted by the arc reversal:
+      //     2.a/ The scores of all the additions of arcs whose heads are equal to
+      //          "head" or "tail" should be updated
+      //     2.b/ The scores of all the deletions of arcs whose heads are equal to
+      //          "head" or "tail" should be updated
+      //     2.c/ The scores of all the arc reversals involving "head" or "tail"
+      //          should be updated
+      //     2.d/ The scores of the triangle deletions which include head as one of
+      //          their nodes but not arc tail -> head should be updated
+      //     2.e/ The scores of all the arc triangle deletions in which one of the
+      //          nodes is tail should be updated
+      //  3/ Add/remove the changes resulting from the application of the arc reversal:
+      //     3.a/ since arc tail -> head existed, its Arc deletion tail -> head should
+      //          be also removed from _sorted_changes_.
+      //     3.b/ since arc head -> tail did not exit, Arc addition head -> tail should
+      //          be removed
+      //     3.c/ Arc addition tail -> head should be added to _sorted_changes_
+      //     3.d/ Arc head->tail's deletion should be added
+      //     3.e/ Arc head->tail's reversal should be added
+      //     3.f/ Arc tail -> head has been removed. It may have been involved into
+      //          some triangles, hence we should also remove them from _sorted_changes_
+      //     3.g/ Arc head -> tail has been added. It may have created some triangles,
+      //          hence we should also add their possible removals to the
+      //          _sorted_changes_
       _sorted_changes_.erase(change);   // case 1
 
-      // case 5
+      // cases 2.a, 3.b and 3.c
       if (_use_arc_additions_) {
-        for (const auto node: *_graph_) {
-          // here, no need to check whether node is equal to tail. Actually, since
-          // we apply ArcReversal(tail, head), this means that arc tail -> head
-          // belonged to the graph, hence ArcAddition(tail, head) cannot belong
-          // yet to _sorted_changes_
-          _updateArcAdditionScore_(node, head);
+        // case 3.b:
+        _sorted_changes_.erase(ArcAddition(head, tail));
 
-          try {
-            // Here, if node = head, then we consider change ArcAddition(head, tail).
-            // Since, in this method, we apply ArcReversal(tail, head), which
-            // already creates arc head->tail, ArcAddition(head, tail) has now
-            // become impossible and should be removed from _sorted_changes_
-            const auto& addition = _sorted_changes_[ArcAddition(node, tail)];
-            if (node != head) {
-              const double delta = _scoreAfterAddingParent_(tail, node) - tail_score;
-              _sorted_changes_.setPriority(addition, delta, true);
-            } else {
-              _sorted_changes_.erase(addition, true);
-            }
-          } catch (NotFound&) {}
+        // case 2.a:
+        for (const auto node: *_graph_) {
+          _updateArcAdditionScore_(node, head);
+          _updateArcAdditionScore_(node, tail);
         }
+
+        // case 3.c:
+        _addArcAdditionToSortedChanges_(ArcAddition(tail, head));
       }
 
-      // cases 2, 3 and 6:
+      // cases 2.b, 3.a and 3.d:
       if (_use_arc_deletions_) {
-        _sorted_changes_.erase(ArcDeletion(tail, head));   // case 2
+        // case 3.a
+        _sorted_changes_.erase(ArcDeletion(tail, head));
 
-        // case 6:
+        // case 2.b: we consider the deletions of arcs node -> head
         for (const auto node: parents_head) {
-          // here, no need to check whether node = tail because we just removed in
-          // case 2 change ArcDeletion(tail, head)
           _updateArcDeletionScore_(node, head);
         }
 
+        // case 2.b: we consider the deletions of arcs node -> tail
         for (const auto node: parents_tail) {
-          // Here, no need to check whether node = head. Actuallu, if node = head,
-          // we are considering ArcDeletion(head,tail). But, in this method, we
-          // apply ArcReversal(tail, head), which creates arc head->tail. Hence,
-          // since this arc did not exist before the application of change,
-          // ArcDeletion(head,tail) cannot belong yet to _sorted_changes_
           _updateArcDeletionScore_(node, tail);
         }
 
-        // case 3:
+        // case 3.d:
         const ArcDeletion deletion(head, tail);
         if (!_invariable_constraints_->isAlwaysInvalid(deletion)) {
           _sorted_changes_.insert(deletion, -delta_score_tail);
         }
       }
 
-      // case 7:
-      // case 7.1: we consider the reversals of arcs node -> head
+      // cases 2.c and 3.e:
+      // case 2.c: we consider the reversals of arcs node -> head
       for (const auto node: parents_head) {
-        // here, no need to check whether node = tail because we removed
-        // ArcReversal(tail, head) in case 1
         _updateArcReversalScore_(node, head);
       }
 
-      // case 7.2: we consider the reversals of arcs head -> node
+      // case 2.c: we consider the reversals of arcs head -> node
       for (const auto node: children_head) {
-        // here, no need to check whether node = tail. Actually, for
-        // ArcReversal(head, tail) to belong to _sorted_changes_, _graph_ should
-        // have contained arc head -> tail before the execution of the current
-        // method. But this is impossible because change = ArcReversal(tail, head),
-        // which means that arc head -> tail did not exist.
         _updateArcReversalScore_(head, node);
       }
 
-      // case 7.3: we consider the reversals of arcs node -> tail
+      // case 2.c: we consider the reversals of arcs node -> tail
       for (const auto node: parents_tail) {
-        // here, no need to check whether node = head. Actually, for
-        // ArcReversal(head,tail) to belong to _sorted_changes_, _graph_ should
-        // have contained arc head -> tail before the execution of the current
-        // method. But this is impossible because change = ArcReversal(tail, head),
-        // which means that arc head -> tail did not exist.
         _updateArcReversalScore_(node, tail);
       }
 
-      // case 7.4: we consider the reversals of arcs tail -> node
+      // case 2.c: we consider the reversals of arcs tail -> node
       for (const auto node: children_tail) {
-        // here, no need to check whether node = tail because we removed
-        // ArcReversal(tail, head) in case 1
         _updateArcReversalScore_(tail, node);
       }
 
-      // case 4
+      // case 3.e:
       const ArcReversal reversal(head, tail);
       if (!_invariable_constraints_->isAlwaysInvalid(reversal)) {
         _sorted_changes_.insert(reversal, -overall_delta_score);
       }
 
+      // cases 2.d, 2.e, 3.f and 3.g:
       if (_use_arc_triangle_deletions_) {
-        // case 8:
+        // case 3.f:
         // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
         // and c/ node->tail->head. We should examine these three cases
-        for (const auto node: parents_head) {   // cases a/ and c/
+        for (const auto node: parents_head) {
           if (children_tail.contains(node)) {   // case a
             _sorted_changes_.erase(ArcTriangleDeletion1(tail, node, head));
             _sorted_changes_.erase(ArcTriangleDeletion2(tail, node, head));
@@ -1362,15 +1303,15 @@ namespace gum {
           }
         }
 
-        // case 9:
+        // cases 2.d and 2.e:
         _updateTriangleDeletionsScoresFromNeighborhood_(head);
         _updateTriangleDeletionsScoresFromNeighborhood_(tail);
 
-        // case 10:
+        // case 3.g:
         // there are 3 types of triangles: a/ head->node->tail, b/ head->tail->node
         // and c/ node->head->tail. We should examine these three cases
-        for (const auto node: parents_tail) {            // cases a/ and c/
-          if (_graph_->parents(node).contains(head)) {   // case a
+        for (const auto node: parents_tail) {
+          if (children_head.contains(node)) {   // case a
             _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, node, tail));
             _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(head, node, tail));
           }
@@ -1382,7 +1323,7 @@ namespace gum {
 
         // case b/
         for (const auto node: children_head) {
-          if (_graph_->parents(node).contains(tail)) {
+          if (children_tail.contains(node)) {
             _addArcTriangleDeletion1ToSortedChanges_(ArcTriangleDeletion1(head, tail, node));
             _addArcTriangleDeletion2ToSortedChanges_(ArcTriangleDeletion2(head, tail, node));
           }
