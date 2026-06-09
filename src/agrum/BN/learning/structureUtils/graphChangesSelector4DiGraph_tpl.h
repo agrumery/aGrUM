@@ -1378,6 +1378,10 @@ namespace gum {
       // remove the arc triangle deletion
       _sorted_changes_.erase(change);
 
+      std::cout << "graph: " << _graph_->existsArc(node1, node2)
+                                << "  " << _graph_->existsArc(node2, node3)
+                           << "  " << _graph_->existsArc(node1, node3) << std::endl;
+
       // apply the deletion:
       // 1/ remove arc node2 -> node3
       _applyArcDeletion_(ArcDeletion(node2, node3));

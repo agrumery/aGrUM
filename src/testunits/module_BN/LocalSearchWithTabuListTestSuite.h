@@ -127,6 +127,49 @@ namespace gum_tests {
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
+    static void test_asia_unconstrained() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::SmoothingPrior       prior(database);
+      gum::learning::ScoreK2              score(parser, prior);
+
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                    gum::learning::StructuralConstraintTabuList >
+          struct_constraint;
+
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
+          invariable_constraints;
+
+      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
+
+      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
+
+      gum::learning::LocalSearchWithTabuList search;
+      search.setMaxNbDecreasingChanges(2);
+
+      try {
+        gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
+        gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
+        CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(10));
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    }
+
     /*
     void xtest_alarm1() {
       gum::learning::DatabaseFromCSV
@@ -309,5 +352,6 @@ namespace gum_tests {
   };
 
   GUM_TEST_ACTIF(_asia)
+  GUM_TEST_ACTIF(_asia_unconstrained)
 
 } /* namespace gum_tests */

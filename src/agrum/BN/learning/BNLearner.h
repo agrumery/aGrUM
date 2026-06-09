@@ -499,6 +499,11 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() {
+        IBNLearner::useExtendedGreedyHillClimbing();
+        return *this;
+      }
+
       BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
                                                           Size nb_decrease = 2) {
         IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
@@ -548,6 +553,18 @@ namespace gum {
       BNLearner< GUM_SCALAR >&
           setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
         IBNLearner::setSliceOrder(slices);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >&
+          setTotalOrder(const std::vector< std::string >& order) {
+        IBNLearner::setTotalOrder(order);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >&
+          setTotalOrder(const Sequence< NodeId >& order) {
+        IBNLearner::setTotalOrder(order);
         return *this;
       }
 
@@ -698,6 +715,26 @@ namespace gum {
 
       BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name) {
         IBNLearner::eraseNoChildrenNode(name);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& allowArcAdditions(bool allow) {
+        IBNLearner::allowArcAdditions(allow);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& allowArcDeletions(bool allow) {
+        IBNLearner::allowArcDeletions(allow);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& allowArcReversals(bool allow) {
+        IBNLearner::allowArcReversals(allow);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& allowArcTriangleDeletions(bool allow) {
+        IBNLearner::allowArcTriangleDeletions(allow);
         return *this;
       }
 
