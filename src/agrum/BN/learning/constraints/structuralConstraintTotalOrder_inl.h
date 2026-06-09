@@ -63,7 +63,7 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraintTotalOrder::checkArcDeletionAlone(NodeId x, NodeId y)  const{
+    INLINE bool StructuralConstraintTotalOrder::checkArcDeletionAlone(NodeId x, NodeId y) const {
       return true;
     }
 
@@ -118,7 +118,8 @@ namespace gum {
     INLINE void StructuralConstraintTotalOrder::modifyGraphAlone(const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool StructuralConstraintTotalOrder::isAlwaysInvalidAlone(const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintTotalOrder::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return !checkArcAdditionAlone(change.node1(), change.node2());
@@ -142,34 +143,38 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to add an arc
-    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(const ArcAddition& change) const {
+    INLINE bool
+        StructuralConstraintTotalOrder::checkModificationAlone(const ArcAddition& change) const {
       return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
-    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(const ArcDeletion& change) const {
+    INLINE bool
+        StructuralConstraintTotalOrder::checkModificationAlone(const ArcDeletion& change) const {
       return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
-    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(const ArcReversal& change) const {
+    INLINE bool
+        StructuralConstraintTotalOrder::checkModificationAlone(const ArcReversal& change) const {
       return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool
-        StructuralConstraintTotalOrder::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
       return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool
-        StructuralConstraintTotalOrder::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
       return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintTotalOrder::checkModificationAlone(const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintTotalOrder::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

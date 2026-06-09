@@ -48,12 +48,11 @@
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 
 #include <atomic>
+
 #include <agrum/agrum.h>
 
-#include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

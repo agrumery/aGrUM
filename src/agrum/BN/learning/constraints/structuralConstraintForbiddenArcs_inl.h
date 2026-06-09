@@ -72,17 +72,19 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintForbiddenArcs::checkArcTriangleDeletion1Alone(NodeId node1,
-                                                                                  NodeId node2,
-                                                                                  NodeId node3) const {
+    INLINE bool
+        StructuralConstraintForbiddenArcs::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
       return !_forbidden_arcs_.exists(Arc(node2, node1))
           && !_forbidden_arcs_.exists(Arc(node3, node1));
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintForbiddenArcs::checkArcTriangleDeletion2Alone(NodeId node1,
-                                                                                  NodeId node2,
-                                                                                  NodeId node3) const {
+    INLINE bool
+        StructuralConstraintForbiddenArcs::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
       return !_forbidden_arcs_.exists(Arc(node1, node2))
           && !_forbidden_arcs_.exists(Arc(node3, node2));
     }

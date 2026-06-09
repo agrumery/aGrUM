@@ -49,7 +49,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/set.h>
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

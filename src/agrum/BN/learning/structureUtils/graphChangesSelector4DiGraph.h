@@ -53,8 +53,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/sortedPriorityQueue.h>
-#include <agrum/base/graphs/diGraph.h>
-
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 
 #include <agrum/BN/learning/scores_and_tests/score.h>
@@ -69,7 +67,7 @@ namespace gum {
      * @tparam INVARIABLE_CONSTRAINT_TYPE invariable constraints are those constraints whose
      *         satisfaction does not depend on the current DiGraph. For instance topological
      *         ordering constraints always yield the same results whatever the digraph.
-     * @tparam VARIABLE_CONSTRAINT_TYPE variable constraints are those constraints that 
+     * @tparam VARIABLE_CONSTRAINT_TYPE variable constraints are those constraints that
      *         require examining the current DiGraph to determine whether they are satisfied
      *         or not. For instance, limits on the indegrees of the nodes can be reached or
      *         not depending on the DiGraph of interest.
@@ -265,7 +263,7 @@ namespace gum {
       bool _use_arc_reversals_{true};
       bool _use_arc_triangle_deletions_{true};
 
-      int _nb_inf_ {0};
+      int _nb_inf_{0};
 
       /// computes the new score of node given that we added it a new parent
       double _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent);

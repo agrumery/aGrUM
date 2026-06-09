@@ -58,7 +58,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/hashFunc.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
 namespace gum {

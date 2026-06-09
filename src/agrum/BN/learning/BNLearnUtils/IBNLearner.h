@@ -62,29 +62,22 @@
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
-#include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintMandatoryArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintNoChildrenNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintNoParentNodes.h>
 #include <agrum/BN/learning/constraints/structuralConstraintPossibleEdges.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
-#include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
-#include <agrum/BN/learning/Miic.h>
-#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/bdeuPrior.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-#include <agrum/BN/learning/priors/noPrior.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
+#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -92,10 +85,8 @@
 #include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
 #include <agrum/BN/learning/scores_and_tests/scorefNML.h>
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
 #include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
 
 namespace gum::learning {
@@ -818,7 +809,7 @@ namespace gum::learning {
       switch (selectedAlgo_) {
         case AlgoType::K2 :
         case AlgoType::GREEDY_HILL_CLIMBING :
-        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING:
+        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return false;
         case AlgoType::MIIC : return true;
         default : throw OperationNotAllowed("Unknown algorithm");
@@ -827,7 +818,6 @@ namespace gum::learning {
 
     /// indicate if the selected algorithm is score-based
     bool isScoreBased() const { return !isConstraintBased(); }
-
 
     // ##########################################################################
     /// @name allow/forbid the graph operations used during learning

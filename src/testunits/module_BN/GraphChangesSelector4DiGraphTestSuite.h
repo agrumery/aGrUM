@@ -48,11 +48,11 @@
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-#include "agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h"
-
 #include <agrum/BN/learning/priors/smoothingPrior.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
+
+#include "agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h"
 
 #include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -182,13 +182,14 @@ namespace gum_tests {
       gum::learning::ScoreK2        score(parser, prior);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
-         variable_constraints;
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-         invariable_constraints;
+          variable_constraints;
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
+          invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(variable_constraints) >
-         selector(score, invariable_constraints, variable_constraints);
+                                                   decltype(variable_constraints) >
+          selector(score, invariable_constraints, variable_constraints);
 
       gum::DAG graph;
       selector.setGraph(graph);
@@ -216,7 +217,6 @@ namespace gum_tests {
         selector.applyChange(change);
         delta_score = selector.score(change.node2()) - delta_score;
         CHECK_EQ(score, delta_score);
-
       }
       CHECK_EQ(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION);
 

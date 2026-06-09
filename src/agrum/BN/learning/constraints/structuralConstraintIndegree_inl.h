@@ -112,19 +112,20 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+    INLINE bool StructuralConstraintIndegree::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
       return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+    INLINE bool StructuralConstraintIndegree::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
       return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintIndegree::checkModificationAlone(const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintIndegree::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

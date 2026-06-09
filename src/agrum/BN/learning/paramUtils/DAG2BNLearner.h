@@ -54,7 +54,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/paramUtils/EMApproximationScheme.h>
 #include <agrum/BN/learning/paramUtils/paramEstimator.h>
 

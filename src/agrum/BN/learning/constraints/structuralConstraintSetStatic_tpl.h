@@ -355,19 +355,19 @@ namespace gum {
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     template < typename CONSTRAINT >
-    INLINE bool
-        _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion1(NodeId node1,
-                                                                                 NodeId node2,
-                                                                                 NodeId node3) const {
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion1(
+        NodeId node1,
+        NodeId node2,
+        NodeId node3) const {
       return first_constraint::checkArcTriangleDeletion1Alone(node1, node2, node3);
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     template < typename CONSTRAINT >
-    INLINE bool
-        _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion2(NodeId node1,
-                                                                                 NodeId node2,
-                                                                                 NodeId node3) const {
+    INLINE bool _StructuralConstraintSetStatic_< CONSTRAINT >::checkArcTriangleDeletion2(
+        NodeId node1,
+        NodeId node2,
+        NodeId node3) const {
       return first_constraint::checkArcTriangleDeletion2Alone(node1, node2, node3);
     }
 
@@ -740,8 +740,8 @@ namespace gum {
 
     /// checks whether the constraints enable to reverse an arc
     template < typename CONSTRAINT >
-    INLINE bool
-        StructuralConstraintSetStatic< CONSTRAINT >::checkModification(const ArcReversal& change) const {
+    INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
+        const ArcReversal& change) const {
       return constraints::checkModification(change);
     }
 
@@ -761,8 +761,8 @@ namespace gum {
 
     /// checks whether the constraints enable to perform a graph change
     template < typename CONSTRAINT >
-    INLINE bool
-        StructuralConstraintSetStatic< CONSTRAINT >::checkModification(const GraphChange& change) const {
+    INLINE bool StructuralConstraintSetStatic< CONSTRAINT >::checkModification(
+        const GraphChange& change) const {
       return constraints::checkModification(change);
     }
 

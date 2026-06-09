@@ -60,8 +60,7 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintDiGraph::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return _graph_.existsNode(x) && _graph_.existsNode(y)
-          && !_graph_.existsArc(x, y);
+      return _graph_.existsNode(x) && _graph_.existsNode(y) && !_graph_.existsArc(x, y);
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -78,17 +77,17 @@ namespace gum {
     INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                             NodeId node2,
                                                                             NodeId node3) const {
-      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3) &&
-             _graph_.existsArc(node1, node3) && !_graph_.existsArc(node2, node1) &&
-             !_graph_.existsArc(node3, node1);
+      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
+          && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node2, node1)
+          && !_graph_.existsArc(node3, node1);
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                             NodeId node2,
                                                                             NodeId node3) const {
-      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3) &&
-             _graph_.existsArc(node1, node3) && !_graph_.existsArc(node3, node2);
+      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
+          && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node3, node2);
     }
 
     /// checks whether the constraints enable to add an arc
@@ -110,19 +109,20 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+    INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
       return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+    INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
       return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

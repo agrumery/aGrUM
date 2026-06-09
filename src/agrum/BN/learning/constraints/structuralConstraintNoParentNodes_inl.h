@@ -76,15 +76,15 @@ namespace gum::learning {
   INLINE bool StructuralConstraintNoParentNodes::checkArcTriangleDeletion1Alone(NodeId x,
                                                                                 NodeId y,
                                                                                 NodeId z) const {
-      return !_noParentNodes_.exists(x);
-    }
+    return !_noParentNodes_.exists(x);
+  }
 
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
-    INLINE bool StructuralConstraintNoParentNodes::checkArcTriangleDeletion2Alone(NodeId x,
-                                                                                  NodeId y,
-                                                                                  NodeId z) const {
-      return !_noParentNodes_.exists(y);
-    }
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1(x, y, z)
+  INLINE bool StructuralConstraintNoParentNodes::checkArcTriangleDeletion2Alone(NodeId x,
+                                                                                NodeId y,
+                                                                                NodeId z) const {
+    return !_noParentNodes_.exists(y);
+  }
 
   /// checks whether the constraints enable to add an arc
   INLINE bool
@@ -152,10 +152,12 @@ namespace gum::learning {
   INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcReversal& change) {}
 
   /// notify the constraint of a modification of the graph
-  INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
+  INLINE void
+      StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
 
   /// notify the constraint of a modification of the graph
-  INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
+  INLINE void
+      StructuralConstraintNoParentNodes::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
 
   /// notify the constraint of a modification of the graph
   INLINE void StructuralConstraintNoParentNodes::modifyGraphAlone(const GraphChange& change) {}
@@ -164,20 +166,15 @@ namespace gum::learning {
   INLINE bool
       StructuralConstraintNoParentNodes::isAlwaysInvalidAlone(const GraphChange& change) const {
     switch (change.type()) {
-      case GraphChangeType::ARC_ADDITION :
-        return _noParentNodes_.exists(change.node2());
+      case GraphChangeType::ARC_ADDITION : return _noParentNodes_.exists(change.node2());
 
-      case GraphChangeType::ARC_DELETION :
-        return false;
+      case GraphChangeType::ARC_DELETION : return false;
 
-      case GraphChangeType::ARC_REVERSAL :
-        return _noParentNodes_.exists(change.node1());
+      case GraphChangeType::ARC_REVERSAL : return _noParentNodes_.exists(change.node1());
 
-      case GraphChangeType::ARC_TRIANGLE_DELETION1:
-        return _noParentNodes_.exists(change.node1());
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 : return _noParentNodes_.exists(change.node1());
 
-      case GraphChangeType::ARC_TRIANGLE_DELETION2:
-        return _noParentNodes_.exists(change.node2());
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 : return _noParentNodes_.exists(change.node2());
 
       default :
         GUM_ERROR(OperationNotAllowed,

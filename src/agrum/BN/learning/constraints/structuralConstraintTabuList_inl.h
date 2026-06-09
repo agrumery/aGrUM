@@ -88,9 +88,10 @@ namespace gum {
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x, NodeId y) const {
       if (x == 1 && y == 4) {
-        std::cout << "check deletion 1->4 = " <<
-                (!_TabuList_changes_.existsFirst(ArcAddition(x, y))
-                && !_TabuList_changes_.existsFirst(ArcDeletion(x, y))) << std::endl;
+        std::cout << "check deletion 1->4 = "
+                  << (!_TabuList_changes_.existsFirst(ArcAddition(x, y))
+                      && !_TabuList_changes_.existsFirst(ArcDeletion(x, y)))
+                  << std::endl;
       }
       return !_TabuList_changes_.existsFirst(ArcAddition(x, y))
           && !_TabuList_changes_.existsFirst(ArcDeletion(x, y));
@@ -146,19 +147,20 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool
-        StructuralConstraintTabuList::checkModificationAlone(const ArcTriangleDeletion1& change) const {
+    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
+        const ArcTriangleDeletion1& change) const {
       return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool
-        StructuralConstraintTabuList::checkModificationAlone(const ArcTriangleDeletion2& change) const {
+    INLINE bool StructuralConstraintTabuList::checkModificationAlone(
+        const ArcTriangleDeletion2& change) const {
       return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
     }
 
     /// checks whether the constraints enable to perform a graph change
-    INLINE bool StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
+    INLINE bool
+        StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

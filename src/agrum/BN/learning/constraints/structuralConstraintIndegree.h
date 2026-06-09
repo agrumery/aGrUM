@@ -53,7 +53,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 
 namespace gum {
 

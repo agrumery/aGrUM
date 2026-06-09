@@ -839,7 +839,7 @@ namespace gum::learning {
             = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
             = constraintSliceOrder_;
-       static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
+        static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
             = constraintNoParentNodes_;
         static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
             = constraintNoChildrenNodes_;
@@ -881,7 +881,7 @@ namespace gum::learning {
             = constraintPossibleEdges_;
         static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
             = constraintSliceOrder_;
-       static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
+        static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
             = constraintNoParentNodes_;
         static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
             = constraintNoChildrenNodes_;

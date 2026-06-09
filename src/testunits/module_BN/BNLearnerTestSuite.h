@@ -254,10 +254,11 @@ namespace gum_tests {
       gum::learning::SmoothingPrior       prior(database);
       prior.setWeight(1);
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-         invariable_constraints;
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
+          invariable_constraints;
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
-         variable_constraints;
+          variable_constraints;
 
       gum::learning::GreedyHillClimbing search;
 
@@ -294,7 +295,7 @@ namespace gum_tests {
         score.setRanges(ranges);
         estimator.setRanges(ranges);
         gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-           decltype(variable_constraints) >
+                                                     decltype(variable_constraints) >
                                 selector(score, invariable_constraints, variable_constraints);
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
@@ -1217,14 +1218,17 @@ namespace gum_tests {
         gum::learning::ScoreBIC score(parser, prior);
 
         // finalize the learning algorithm
-        gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
-         invariable_constraint;
+        gum::learning::StructuralConstraintSetStatic<
+            gum::learning::StructuralConstraintTotalOrder >
+            invariable_constraint;
         gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
             struct_constraint;
 
         gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-        gum::learning::GraphChangesSelector4DiGraph selector(score, invariable_constraint, struct_constraint);
+        gum::learning::GraphChangesSelector4DiGraph selector(score,
+                                                             invariable_constraint,
+                                                             struct_constraint);
 
         gum::learning::GreedyHillClimbing search;
 
@@ -1776,14 +1780,14 @@ namespace gum_tests {
         CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
         CHECK_EQ(std::get< 1 >(state[4]), "False");
 
-//        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-//        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
-//
-//        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
-//        CHECK_EQ(std::get< 1 >(state[6]), "MDL");
-//
-//        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
-//        CHECK_EQ(std::get< 1 >(state[7]), "-");
+        //        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        //        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+        //
+        //        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
+        //        CHECK_EQ(std::get< 1 >(state[6]), "MDL");
+        //
+        //        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+        //        CHECK_EQ(std::get< 1 >(state[7]), "-");
 
         CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
         CHECK_EQ(std::get< 1 >(state[5]), "Extended Greedy Hill Climbing");
@@ -1924,7 +1928,7 @@ namespace gum_tests {
       prior.setWeight(1);
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
-         invariable_constraint;
+          invariable_constraint;
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG >
           struct_constraint;
 
@@ -1965,7 +1969,9 @@ namespace gum_tests {
 
           score.setRanges(ranges);
           estimator.setRanges(ranges);
-          gum::learning::GraphChangesSelector4DiGraph selector(score, invariable_constraint, struct_constraint);
+          gum::learning::GraphChangesSelector4DiGraph selector(score,
+                                                               invariable_constraint,
+                                                               struct_constraint);
           gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
 
           CHECK_EQ(bn1.internalDag(), bn2.internalDag());

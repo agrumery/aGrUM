@@ -59,11 +59,10 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/hashTable.h>
-#include <agrum/base/core/optional_ref.h>
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/sharedAVLTree.h>
 
+#include <agrum/base/core/optional_ref.h>
 #include <initializer_list>
 #include <type_traits>
 

@@ -82,8 +82,7 @@ namespace gum {
 
     /// move constructor
     StructuralConstraintDiGraph::StructuralConstraintDiGraph(
-        StructuralConstraintDiGraph&& from) noexcept:
-        _graph_(std::move(from._graph_)) {
+        StructuralConstraintDiGraph&& from) noexcept : _graph_(std::move(from._graph_)) {
       GUM_CONS_MOV(StructuralConstraintDiGraph);
     }
 

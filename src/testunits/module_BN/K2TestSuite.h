@@ -100,14 +100,14 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::Sequence< gum::NodeId > order {4, 6, 2, 1, 5, 7, 0};
+      gum::Sequence< gum::NodeId > order{4, 6, 2, 1, 5, 7, 0};
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
-         invariable_constraints;
+          invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::K2 k2;
       k2.setOrder(order);

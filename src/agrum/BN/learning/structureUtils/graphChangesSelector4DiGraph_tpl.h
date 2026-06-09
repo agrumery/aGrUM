@@ -363,32 +363,33 @@ namespace gum {
     // indicates whether the selector allows the application of arc additions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            arcAdditionsEnabled() const {
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::arcAdditionsEnabled() const {
       return _use_arc_additions_;
     }
 
     // indicates whether the selector allows the application of arc deletions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            arcDeletionsEnabled() const {
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::arcDeletionsEnabled() const {
       return _use_arc_deletions_;
     }
 
     // indicates whether the selector allows the application of arc reversals
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            arcReversalsEnabled() const {
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::arcReversalsEnabled() const {
       return _use_arc_reversals_;
     }
 
     // indicates whether the selector allows the application of arc triangle deletions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            arcTriangleDeletionsEnabled() const {
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                      VARIABLE_CONSTRAINT_TYPE >::arcTriangleDeletionsEnabled()
+            const {
       return _use_arc_triangle_deletions_;
     }
 
@@ -489,8 +490,8 @@ namespace gum {
         // of parents of the node2
         // currently invalid changes are assigned a -infty score
         const double delta = !_graph_->existsArc(Arc(node1, node2))
-            ? _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2]
-            : std::numeric_limits< double >::lowest();
+                               ? _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2]
+                               : std::numeric_limits< double >::lowest();
 
         if (delta == std::numeric_limits< double >::lowest()) {
           std::cout << "infAddAdd (" << node1 << ", " << node2 << ") = " << ++_nb_inf_ << std::endl;
@@ -514,11 +515,11 @@ namespace gum {
         // the set of parents of the head
         // currently invalid changes are assigned a -infty score
         const double delta = _graph_->existsArc(Arc(tail, head))
-            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
-            : std::numeric_limits< double >::lowest();
+                               ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                               : std::numeric_limits< double >::lowest();
 
         if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddDel (" << tail << ", " << head << ") = " <<  ++_nb_inf_ << std::endl;
+          std::cout << "infAddDel (" << tail << ", " << head << ") = " << ++_nb_inf_ << std::endl;
         }
         _sorted_changes_.insert(change, delta);
       }
@@ -538,8 +539,8 @@ namespace gum {
         // set of parents of the head and that resulting from adding the head to
         // the tail
         // currently invalid changes are assigned a -infty score
-        const double delta =
-            _graph_->existsArc(Arc(tail, head)) && !_graph_->existsArc(Arc(head, tail))
+        const double delta
+            = _graph_->existsArc(Arc(tail, head)) && !_graph_->existsArc(Arc(head, tail))
                 ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
                       + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
                 : std::numeric_limits< double >::lowest();
@@ -580,7 +581,8 @@ namespace gum {
                       + _scoreAfterRemovingParents_(node3, node1, node2) - _node_scores_[node3]
                 : std::numeric_limits< double >::lowest();
         if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddTr1 (" << node1 << ", " << node2 << ", " << node3 << ") = "  << ++_nb_inf_ << std::endl;
+          std::cout << "infAddTr1 (" << node1 << ", " << node2 << ", " << node3
+                    << ") = " << ++_nb_inf_ << std::endl;
         }
         _sorted_changes_.insert(change, delta);
       }
@@ -609,12 +611,12 @@ namespace gum {
             = _graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
                    && _graph_->existsArc(Arc(node1, node3))
                    && !_graph_->existsArc(Arc(node3, node2))
-            ? _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
-                  + _scoreAfterRemovingParents_(node3, node1, node2)
-                  - _node_scores_[node3]
-            : std::numeric_limits< double >::lowest();
+                ? _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
+                      + _scoreAfterRemovingParents_(node3, node1, node2) - _node_scores_[node3]
+                : std::numeric_limits< double >::lowest();
         if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddTr2 (" << node1 << ", " << node2 << ", " << node3 << ") = " << ++_nb_inf_ << std::endl;
+          std::cout << "infAddTr2 (" << node1 << ", " << node2 << ", " << node3
+                    << ") = " << ++_nb_inf_ << std::endl;
         }
         _sorted_changes_.insert(change, delta);
       }
@@ -629,8 +631,8 @@ namespace gum {
       if (addition.has_value()) {
         // currently unavailable changes have a -infty priority
         const double delta = !_graph_->existsArc(tail, head)
-            ? _scoreAfterAddingParent_(head, tail) - _node_scores_[head]
-            : std::numeric_limits< double >::lowest();
+                               ? _scoreAfterAddingParent_(head, tail) - _node_scores_[head]
+                               : std::numeric_limits< double >::lowest();
         _sorted_changes_.setPriority(addition.value(), delta, true);
       }
     }
@@ -644,8 +646,8 @@ namespace gum {
       if (deletion.has_value()) {
         // currently unavailable changes have a -infty priority
         const double delta = _graph_->existsArc(tail, head)
-            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
-            : std::numeric_limits< double >::lowest();
+                               ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                               : std::numeric_limits< double >::lowest();
         _sorted_changes_.setPriority(deletion.value(), delta, true);
       }
     }
@@ -657,11 +659,10 @@ namespace gum {
             _updateArcReversalScore_(const NodeId tail, const NodeId head) {
       const auto reversal = _sorted_changes_.tryGet(ArcReversal(tail, head));
       if (reversal.has_value()) {
-        const double delta =
-            _graph_->existsArc(tail, head) && !_graph_->existsArc(head, tail)
-            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
-                  + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
-            : std::numeric_limits< double >::lowest();
+        const double delta = _graph_->existsArc(tail, head) && !_graph_->existsArc(head, tail)
+                               ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                                     + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
+                               : std::numeric_limits< double >::lowest();
         _sorted_changes_.setPriority(reversal.value(), delta, true);
       }
     }
@@ -680,7 +681,7 @@ namespace gum {
       // case1:
       for (const auto node2: children_changed_node) {
         for (const auto node3: children_changed_node) {
-          if (_graph_->parents(node3).contains(node2)) { // changed_node -> node2 -> node3
+          if (_graph_->parents(node3).contains(node2)) {   // changed_node -> node2 -> node3
             double delta3 = std::numeric_limits< double >::lowest();
 
             // case 1 for ArcTriangleDeletion1
@@ -717,7 +718,7 @@ namespace gum {
                     = !_graph_->existsArc(changed_node, node2) && !_graph_->existsArc(node3, node2);
                 delta3             = is_valid && (delta3 == std::numeric_limits< double >::lowest())
                                        ? _scoreAfterRemovingParents_(node3, changed_node, node2)
-                                 - _node_scores_[node3]
+                                             - _node_scores_[node3]
                                        : delta3;
                 const double delta = is_valid ? _scoreAfterAddingParent_(node2, node3)
                                                     - _node_scores_[node2] + delta3
@@ -732,12 +733,13 @@ namespace gum {
       // case2:
       for (const auto node1: parents_changed_node) {
         for (const auto node3: children_changed_node) {
-          if (_graph_->parents(node3).contains(node1)) { // node1 -> changed_node -> node3
+          if (_graph_->parents(node3).contains(node1)) {   // node1 -> changed_node -> node3
             double delta3 = std::numeric_limits< double >::lowest();
 
             // case 2 for ArcTriangleDeletion1
             {
-              auto change = _sorted_changes_.tryGet(ArcTriangleDeletion1(node1, changed_node, node3));
+              auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion1(node1, changed_node, node3));
               if (change.has_value()) {
                 const bool is_valid
                     = !_graph_->existsArc(changed_node, node1) && !_graph_->existsArc(node3, node1);
@@ -764,7 +766,7 @@ namespace gum {
                                    && !_graph_->existsArc(node3, changed_node);
                 delta3             = is_valid && (delta3 == std::numeric_limits< double >::lowest())
                                        ? _scoreAfterRemovingParents_(node3, node1, changed_node)
-                                 - _node_scores_[node3]
+                                             - _node_scores_[node3]
                                        : delta3;
                 const double delta = is_valid ? _scoreAfterAddingParent_(changed_node, node3)
                                                     - score_changed_node + delta3
@@ -779,7 +781,7 @@ namespace gum {
       // case 3:
       for (const auto node1: parents_changed_node) {
         for (const auto node2: parents_changed_node) {
-          if (_graph_->parents(node2).contains(node1)) { // node1 -> node2 -> changed_node
+          if (_graph_->parents(node2).contains(node1)) {   // node1 -> node2 -> changed_node
             double delta3 = std::numeric_limits< double >::lowest();
 
             // case 3 for ArcTriangleDeletion1
@@ -805,20 +807,20 @@ namespace gum {
 
             // case 3 for ArcTriangleDeletion2
             {
-               auto change
+              auto change
                   = _sorted_changes_.tryGet(ArcTriangleDeletion2(node1, node2, changed_node));
-               if (change.has_value()) {
-                 const bool is_valid = !_graph_->existsArc(node1, node2)
-                                    && !_graph_->existsArc(changed_node, node2);
-                 delta3 = is_valid && (delta3 == std::numeric_limits< double >::lowest())
-                            ? _scoreAfterRemovingParents_(changed_node, node1, node2)
-                                  - score_changed_node
-                            : delta3;
-                 const double delta = is_valid ? _scoreAfterAddingParent_(node2, changed_node)
-                                                     - _node_scores_[node2] + delta3
-                                               : std::numeric_limits< double >::lowest();
-                 _sorted_changes_.setPriority(change.value(), delta, true);
-               }
+              if (change.has_value()) {
+                const bool is_valid
+                    = !_graph_->existsArc(node1, node2) && !_graph_->existsArc(changed_node, node2);
+                delta3             = is_valid && (delta3 == std::numeric_limits< double >::lowest())
+                                       ? _scoreAfterRemovingParents_(changed_node, node1, node2)
+                                             - score_changed_node
+                                       : delta3;
+                const double delta = is_valid ? _scoreAfterAddingParent_(node2, changed_node)
+                                                    - _node_scores_[node2] + delta3
+                                              : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
             }
           }
         }

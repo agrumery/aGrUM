@@ -49,10 +49,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/sequence.h>
-
 #include <agrum/BN/learning/constraints/structuralConstraint.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 

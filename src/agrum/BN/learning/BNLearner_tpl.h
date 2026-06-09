@@ -425,7 +425,7 @@ namespace gum {
           case ScoreType::BIC : vals.emplace_back(key, "BIC", ""); break;
           case ScoreType::BD : vals.emplace_back(key, "BD", ""); break;
           case ScoreType::BDeu : vals.emplace_back(key, "BDeu", ""); break;
-          case ScoreType::fNML :  vals.emplace_back(key, "fNML", ""); break;
+          case ScoreType::fNML : vals.emplace_back(key, "fNML", ""); break;
           case ScoreType::K2 : vals.emplace_back(key, "K2", ""); break;
           case ScoreType::LOG2LIKELIHOOD : vals.emplace_back(key, "Log2Likelihood", ""); break;
           case ScoreType::MDL : vals.emplace_back(key, "MDL", ""); break;
@@ -602,8 +602,8 @@ namespace gum {
         case ScoreType::BIC : useScoreBIC(); break;
         case ScoreType::BD : useScoreBD(); break;
         case ScoreType::BDeu : useScoreBDeu(); break;
-        case ScoreType::fNML: useScorefNML(); break;
-        case ScoreType::MDL: useScoreMDL(); break;
+        case ScoreType::fNML : useScorefNML(); break;
+        case ScoreType::MDL : useScoreMDL(); break;
         case ScoreType::LOG2LIKELIHOOD : useScoreLog2Likelihood(); break;
       }
 

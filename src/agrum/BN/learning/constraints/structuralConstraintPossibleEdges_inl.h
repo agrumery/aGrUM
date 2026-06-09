@@ -75,18 +75,20 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintPossibleEdges::checkArcTriangleDeletion1Alone(NodeId node1,
-                                                                                  NodeId node2,
-                                                                                  NodeId node3) const {
+    INLINE bool
+        StructuralConstraintPossibleEdges::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
       return _PossibleEdges_possible_edges_.empty()
           || (_PossibleEdges_possible_edges_.exists(Edge(node2, node1))
               && _PossibleEdges_possible_edges_.exists(Edge(node3, node1)));
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintPossibleEdges::checkArcTriangleDeletion2Alone(NodeId node1,
-                                                                                  NodeId node2,
-                                                                                  NodeId node3) const {
+    INLINE bool
+        StructuralConstraintPossibleEdges::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
       return _PossibleEdges_possible_edges_.empty()
           || _PossibleEdges_possible_edges_.exists(Edge(node3, node1));
     }

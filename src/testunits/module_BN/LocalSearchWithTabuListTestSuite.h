@@ -103,8 +103,8 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree(2);
       struct_constraint.setTabuListSize(100);
 
-     gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
-         invariable_constraints;
+      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
+          invariable_constraints;
 
       gum::NodeProperty< gum::NodeId > slices{std::make_pair(gum::NodeId(0), 0),
                                               std::make_pair(gum::NodeId(1), 0)};
@@ -114,8 +114,8 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);
@@ -125,7 +125,7 @@ namespace gum_tests {
         gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
         CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(10));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    } 
+    }
 
     /*
     void xtest_alarm1() {

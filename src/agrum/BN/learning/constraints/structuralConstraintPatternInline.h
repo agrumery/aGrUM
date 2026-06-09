@@ -69,15 +69,17 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcReversal(NodeId x, NodeId y) cons
 }
 
 /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion1(NodeId node1,
+                                                                 NodeId node2,
+                                                                 NodeId node3) const {
   return constraints::checkArcTriangleDeletion1(node1, node2, node3)
       && checkArcTriangleDeletion1Alone(node1, node2, node3);
 }
 
 /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-INLINE bool
-    GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) const {
+INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkArcTriangleDeletion2(NodeId node1,
+                                                                 NodeId node2,
+                                                                 NodeId node3) const {
   return constraints::checkArcTriangleDeletion2(node1, node2, node3)
       && checkArcTriangleDeletion2Alone(node1, node2, node3);
 }

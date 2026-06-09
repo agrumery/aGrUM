@@ -74,10 +74,8 @@ namespace gum {
 
       for (auto& arc: graph.arcs()) {
         if (graph::hasDirectedPath(g, arc.head(), arc.tail())) {
-          GUM_ERROR(
-            InvalidDirectedCycle,
-            "Graphs with directed cycles cannot be passed to StructuralConstraintDAG"
-          );
+          GUM_ERROR(InvalidDirectedCycle,
+                    "Graphs with directed cycles cannot be passed to StructuralConstraintDAG");
         }
         g.addArc(arc.tail(), arc.head());
       }
@@ -129,8 +127,8 @@ namespace gum {
                                                                         NodeId node3) const {
       bool result = false;
       _lock_();
-      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3) &&
-          _graph_.existsArc(node2, node3)) {
+      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3)
+          && _graph_.existsArc(node2, node3)) {
         _graph_.eraseArc(Arc(node1, node2));
         _graph_.eraseArc(Arc(node1, node3));
         _graph_.eraseArc(Arc(node2, node3));
@@ -153,8 +151,8 @@ namespace gum {
                                                                         NodeId node3) const {
       bool result = false;
       _lock_();
-      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3) &&
-          _graph_.existsArc(node2, node3)) {
+      if (_graph_.existsArc(node1, node2) && _graph_.existsArc(node1, node3)
+          && _graph_.existsArc(node2, node3)) {
         _graph_.eraseArc(Arc(node1, node3));
         _graph_.eraseArc(Arc(node2, node3));
         result = !graph::hasDirectedPath(_graph_, node2, node3);
@@ -295,14 +293,10 @@ namespace gum {
     }
 
     /// sets a new graph from which we will perform checking
-    INLINE void StructuralConstraintDAG::setGraph(const DAG& graph) {
-      _graph_ = graph;
-    }
+    INLINE void StructuralConstraintDAG::setGraph(const DAG& graph) { _graph_ = graph; }
 
     /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDAG::setGraph(Size nb_nodes) {
-      setGraphAlone(nb_nodes);
-    }
+    INLINE void StructuralConstraintDAG::setGraph(Size nb_nodes) { setGraphAlone(nb_nodes); }
 
 // include all the methods applicable to the whole class hierarchy
 #  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDAG

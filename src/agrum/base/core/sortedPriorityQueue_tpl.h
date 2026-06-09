@@ -293,9 +293,7 @@ namespace gum {
   // removes the bottom of the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
   INLINE void SortedPriorityQueue< Val, Priority, Cmp >::eraseBottom() {
-    if (_tree_.empty()) {
-      return;
-    }
+    if (_tree_.empty()) { return; }
     AVLNode* node = _tree_.lowestNode();
     _tree_.erase(node);
     _nodes_.erase(*node);
@@ -326,22 +324,20 @@ namespace gum {
   // returns the node in the hash table corresponding to a given external value
   template < typename Val, typename Priority, typename Cmp >
   INLINE optional_ref< AVLTreeNode< Val > >
-      SortedPriorityQueue< Val, Priority, Cmp >::tryGetNodeFromExternalValue_(
-          const Val& val) const {
+         SortedPriorityQueue< Val, Priority, Cmp >::tryGetNodeFromExternalValue_(
+             const Val& val) const {
     // here, we optimize the code for scalars and GraphChanges. For those types,
     // it is faster to make one copy rather than 2 moves
     if constexpr (std::is_scalar_v< Val > || std::is_base_of_v< GraphChange, Val >) {
       auto key = _nodes_.tryGetKey(AVLTreeNode< Val >(val));
-      return key.has_value()
-               ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
-               : optional_ref< AVLTreeNode< Val > >{};
+      return key.has_value() ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
+                             : optional_ref< AVLTreeNode< Val > >{};
     } else {
       AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
       auto               key  = _nodes_.tryGetKey(xval);
       const_cast< Val& >(val) = std::move(xval.value);
-      return key.has_value()
-               ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
-               : optional_ref< AVLTreeNode< Val > >{};
+      return key.has_value() ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
+                             : optional_ref< AVLTreeNode< Val > >{};
     }
   }
 
@@ -370,18 +366,15 @@ namespace gum {
   // returns the a pointer on the "internal" value stored into the queue or nullptr
   template < typename Val, typename Priority, typename Cmp >
   INLINE optional_ref< const Val >
-      SortedPriorityQueue< Val, Priority, Cmp >::tryGet(const Val& val) const {
+         SortedPriorityQueue< Val, Priority, Cmp >::tryGet(const Val& val) const {
     // if this method is called, then val should be an external value
     auto node = tryGetNodeFromExternalValue_(val);
-    return node.has_value()
-                ? optional_ref< const Val >{node->value}
-                : optional_ref< const Val >{};
+    return node.has_value() ? optional_ref< const Val >{node->value} : optional_ref< const Val >{};
   }
 
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
-  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val,
-                                                               bool       internal_val) {
+  INLINE void SortedPriorityQueue< Val, Priority, Cmp >::erase(const Val& val, bool internal_val) {
     if (contains(val)) {
       AVLNode& node
           = internal_val ? getNodeFromInternalValue_(val) : getNodeFromExternalValue_(val);
@@ -400,8 +393,7 @@ namespace gum {
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
-    AVLNode& node
-        = internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
+    AVLNode& node = internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
     _tree_.erase(&node);
     _nodes_[node] = new_priority;
     _tree_.insert(&node);
@@ -417,8 +409,7 @@ namespace gum {
                 "The sorted priority queue does not contain"
                     << elt << ". Hence it is not possible to change its priority")
     }
-    AVLNode& node =
-        internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
+    AVLNode& node = internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt);
     _tree_.erase(&node);
     _nodes_[node] = std::move(new_priority);
     _tree_.insert(&node);
@@ -427,8 +418,7 @@ namespace gum {
   // returns the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
   INLINE const Priority&
-      SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt,
-                                                          bool       internal_val) const {
+      SortedPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt, bool internal_val) const {
     return _nodes_[internal_val ? getNodeFromInternalValue_(elt) : getNodeFromExternalValue_(elt)];
   }
 

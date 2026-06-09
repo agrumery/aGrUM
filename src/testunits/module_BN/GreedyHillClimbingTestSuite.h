@@ -55,10 +55,10 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
+#include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintIndegree.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSetStatic.h>
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
-#include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
 #include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
@@ -105,9 +105,8 @@ namespace gum_tests {
 
   struct GreedyHillClimbingTestSuite {
     private:
-    static double _score_(gum::learning::Score& score,
-                          const gum::NodeId&    node,
-                          const gum::DAG&       dag) {
+    static double
+        _score_(gum::learning::Score& score, const gum::NodeId& node, const gum::DAG& dag) {
       std::vector< gum::NodeId > cond_set;
       for (const auto par: dag.parents(node)) {
         cond_set.push_back(par);
@@ -115,17 +114,16 @@ namespace gum_tests {
       return score.score(node, cond_set);
     }
 
-    static bool _applyNextChange_(
-        gum::learning::Score&  score,
-        std::vector< double >& current_scores,
-        gum::DAG&              dag,
-        bool                   allow_additions = true,
-        bool                   allow_deletions = true,
-        bool                   allow_reversals = true,
-        bool                   allow_triangle_deletions = true,
-        const double           epsilon = -1,
-        const int              max_indegree = -1,
-        const gum::Sequence< gum::NodeId >& total_order
+    static bool _applyNextChange_(gum::learning::Score&  score,
+                                  std::vector< double >& current_scores,
+                                  gum::DAG&              dag,
+                                  bool                   allow_additions          = true,
+                                  bool                   allow_deletions          = true,
+                                  bool                   allow_reversals          = true,
+                                  bool                   allow_triangle_deletions = true,
+                                  const double           epsilon                  = -1,
+                                  const int              max_indegree             = -1,
+                                  const gum::Sequence< gum::NodeId >& total_order
                                   = gum::Sequence< gum::NodeId >()) {
       const int nb_vars = int(dag.size());
 
@@ -133,7 +131,7 @@ namespace gum_tests {
       if (!total_order.empty()) {
         rank.resize(total_order.size());
         int i = 0;
-        for(const auto node : total_order) {
+        for (const auto node: total_order) {
           rank[node] = i++;
         }
         std::cout << "order: " << rank << std::endl;
@@ -145,15 +143,14 @@ namespace gum_tests {
         for (int j = 0; j < nb_vars; ++j) {
           if ((i != j) && (rank.empty() || (rank[i] < rank[j]))) {
             // check add arc
-            if (allow_additions && !dag.existsArc(gum::Arc(i, j)) &&
-                ((max_indegree < 0) || (dag.parents(j).size() < (gum::Size) max_indegree))) {
+            if (allow_additions && !dag.existsArc(gum::Arc(i, j))
+                && ((max_indegree < 0) || (dag.parents(j).size() < (gum::Size)max_indegree))) {
               try {
                 dag.addArc(gum::NodeId(i), gum::NodeId(j));
                 double delta_score = _score_(score, j, dag) - current_scores[j];
                 if (delta_score > 0) {
-                  changes.emplace_back(
-                      gum::learning::ArcAddition(gum::NodeId(i), gum::NodeId(j)),
-                      delta_score);
+                  changes.emplace_back(gum::learning::ArcAddition(gum::NodeId(i), gum::NodeId(j)),
+                                       delta_score);
                 }
                 dag.eraseArc(gum::Arc(i, j));
               } catch (...) {}
@@ -164,16 +161,15 @@ namespace gum_tests {
               dag.eraseArc(gum::Arc(i, j));
               double delta_score = _score_(score, j, dag) - current_scores[j];
               if (delta_score > 0) {
-                changes.emplace_back(
-                    gum::learning::ArcDeletion(gum::NodeId(i), gum::NodeId(j)),
-                    delta_score);
+                changes.emplace_back(gum::learning::ArcDeletion(gum::NodeId(i), gum::NodeId(j)),
+                                     delta_score);
               }
               dag.addArc(gum::NodeId(i), gum::NodeId(j));
             }
 
             // check reverse arc
-            if (allow_reversals && dag.existsArc(gum::Arc(i, j)) && rank.empty() &&
-                ((max_indegree < 0) || (dag.parents(i).size() < (gum::Size) max_indegree))) {
+            if (allow_reversals && dag.existsArc(gum::Arc(i, j)) && rank.empty()
+                && ((max_indegree < 0) || (dag.parents(i).size() < (gum::Size)max_indegree))) {
               dag.eraseArc(gum::Arc(i, j));
               try {
                 dag.addArc(j, i);
@@ -181,9 +177,8 @@ namespace gum_tests {
                 double delta_score_j = _score_(score, j, dag) - current_scores[j];
                 double delta_score   = delta_score_i + delta_score_j;
                 if (delta_score > 0) {
-                  changes.emplace_back(
-                      gum::learning::ArcReversal(gum::NodeId(i), gum::NodeId(j)),
-                      delta_score);
+                  changes.emplace_back(gum::learning::ArcReversal(gum::NodeId(i), gum::NodeId(j)),
+                                       delta_score);
                 }
                 dag.eraseArc(gum::Arc(j, i));
                 dag.addArc(i, j);
@@ -199,10 +194,9 @@ namespace gum_tests {
             if (dag.existsArc(gum::Arc(i, j))) {
               for (int k = 0; k < nb_vars; ++k) {
                 if (dag.existsArc(gum::Arc(i, k)) && dag.existsArc(gum::Arc(j, k))) {
-
                   // check arc triangle deletion1
-                  if ((max_indegree < 0) ||
-                      (dag.parents(i).size() + 2 <= (gum::Size) max_indegree)) {
+                  if ((max_indegree < 0)
+                      || (dag.parents(i).size() + 2 <= (gum::Size)max_indegree)) {
                     dag.eraseArc(gum::Arc(i, j));
                     dag.eraseArc(gum::Arc(i, k));
                     dag.eraseArc(gum::Arc(j, k));
@@ -216,10 +210,10 @@ namespace gum_tests {
                       double delta_score_k = _score_(score, k, dag) - current_scores[k];
                       double delta_score   = delta_score_i + delta_score_j + delta_score_k;
                       if (delta_score > 0) {
-                        changes.emplace_back(
-                          gum::learning::ArcTriangleDeletion1(
-                                gum::NodeId(i), gum::NodeId(j), gum::NodeId(k)),
-                          delta_score);
+                        changes.emplace_back(gum::learning::ArcTriangleDeletion1(gum::NodeId(i),
+                                                                                 gum::NodeId(j),
+                                                                                 gum::NodeId(k)),
+                                             delta_score);
                       }
 
                       dag.eraseArc(gum::Arc(j, i));
@@ -235,8 +229,8 @@ namespace gum_tests {
                   }
 
                   // check arc triangle deletion2
-                  if ((max_indegree < 0) ||
-                      (dag.parents(j).size() + 1 <= (gum::Size) max_indegree)) {
+                  if ((max_indegree < 0)
+                      || (dag.parents(j).size() + 1 <= (gum::Size)max_indegree)) {
                     dag.eraseArc(gum::Arc(i, j));
                     dag.eraseArc(gum::Arc(i, k));
                     dag.eraseArc(gum::Arc(j, k));
@@ -248,16 +242,14 @@ namespace gum_tests {
                       double delta_score_k = _score_(score, k, dag) - current_scores[k];
                       double delta_score   = delta_score_j + delta_score_k;
                       if (delta_score > 0) {
-                        changes.emplace_back(
-                            gum::learning::ArcTriangleDeletion2(
-                                gum::NodeId(i), gum::NodeId(j), gum::NodeId(k)),
-                            delta_score);
+                        changes.emplace_back(gum::learning::ArcTriangleDeletion2(gum::NodeId(i),
+                                                                                 gum::NodeId(j),
+                                                                                 gum::NodeId(k)),
+                                             delta_score);
                       }
 
                       dag.eraseArc(gum::Arc(k, j));
-                    } catch (...) {
-                      dag.eraseArc(gum::Arc(k, j));
-                    }
+                    } catch (...) { dag.eraseArc(gum::Arc(k, j)); }
 
                     dag.addArc(i, j);
                     dag.addArc(i, k);
@@ -277,57 +269,58 @@ namespace gum_tests {
       for (auto i = std::size_t(0); i < changes.size(); ++i) {
         if (changes[i].second > changes[best_i].second) best_i = i;
       }
-      //std::cout << "applying " << changes[best_i].first.toString()
-      //          << " delta_score = " << changes[best_i].second << std::endl;
+      // std::cout << "applying " << changes[best_i].first.toString()
+      //           << " delta_score = " << changes[best_i].second << std::endl;
 
       if (changes[best_i].second < epsilon) return false;
-      std::cout << "apply " << changes[best_i].first << " score : " << changes[best_i].second << std::endl;
+      std::cout << "apply " << changes[best_i].first << " score : " << changes[best_i].second
+                << std::endl;
 
       // apply the best change
       switch (changes[best_i].first.type()) {
         case gum::learning::GraphChangeType::ARC_ADDITION :
           dag.addArc(changes[best_i].first.node1(), changes[best_i].first.node2());
-          current_scores[changes[best_i].first.node2()] =
-             _score_(score, changes[best_i].first.node2(), dag);
+          current_scores[changes[best_i].first.node2()]
+              = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
         case gum::learning::GraphChangeType::ARC_DELETION :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
-          current_scores[changes[best_i].first.node2()] =
-             _score_(score, changes[best_i].first.node2(), dag);
+          current_scores[changes[best_i].first.node2()]
+              = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
         case gum::learning::GraphChangeType::ARC_REVERSAL :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()]
-             = _score_(score, changes[best_i].first.node1(), dag);
+              = _score_(score, changes[best_i].first.node1(), dag);
           current_scores[changes[best_i].first.node2()]
-             = _score_(score, changes[best_i].first.node2(), dag);
+              = _score_(score, changes[best_i].first.node2(), dag);
           break;
 
-        case gum::learning::GraphChangeType::ARC_TRIANGLE_DELETION1:
+        case gum::learning::GraphChangeType::ARC_TRIANGLE_DELETION1 :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node2()));
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node3()));
           dag.eraseArc(gum::Arc(changes[best_i].first.node2(), changes[best_i].first.node3()));
           dag.addArc(changes[best_i].first.node2(), changes[best_i].first.node1());
           dag.addArc(changes[best_i].first.node3(), changes[best_i].first.node1());
           current_scores[changes[best_i].first.node1()]
-             = _score_(score, changes[best_i].first.node1(), dag);
+              = _score_(score, changes[best_i].first.node1(), dag);
           current_scores[changes[best_i].first.node2()]
-             = _score_(score, changes[best_i].first.node2(), dag);
+              = _score_(score, changes[best_i].first.node2(), dag);
           current_scores[changes[best_i].first.node3()]
-             = _score_(score, changes[best_i].first.node3(), dag);
+              = _score_(score, changes[best_i].first.node3(), dag);
           break;
 
-        case gum::learning::GraphChangeType::ARC_TRIANGLE_DELETION2:
+        case gum::learning::GraphChangeType::ARC_TRIANGLE_DELETION2 :
           dag.eraseArc(gum::Arc(changes[best_i].first.node1(), changes[best_i].first.node3()));
           dag.eraseArc(gum::Arc(changes[best_i].first.node2(), changes[best_i].first.node3()));
           dag.addArc(changes[best_i].first.node3(), changes[best_i].first.node2());
           current_scores[changes[best_i].first.node2()]
-             = _score_(score, changes[best_i].first.node2(), dag);
+              = _score_(score, changes[best_i].first.node2(), dag);
           current_scores[changes[best_i].first.node3()]
-             = _score_(score, changes[best_i].first.node3(), dag);
+              = _score_(score, changes[best_i].first.node3(), dag);
           break;
 
         default : break;
@@ -361,7 +354,7 @@ namespace gum_tests {
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
                                                     gum::learning::StructuralConstraintIndegree >
-         struct_constraint;
+          struct_constraint;
 
       struct_constraint.setMaxIndegree(6);
 
@@ -380,14 +373,14 @@ namespace gum_tests {
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
       gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
-         invariable_constraints;
+          invariable_constraints;
 
-      gum::Sequence< gum::NodeId > sequence {4, 6, 2, 1, 5, 7, 0};
+      gum::Sequence< gum::NodeId > sequence{4, 6, 2, 1, 5, 7, 0};
       invariable_constraints.setTotalOrder(sequence);
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
       selector.useArcDeletions(false);
       selector.useArcReversals(false);
       selector.useArcTriangleDeletions(false);
@@ -408,16 +401,21 @@ namespace gum_tests {
             myscores.push_back(_score_(score, i, mydag));
           }
 
-          while (_applyNextChange_(
-              score, myscores, mydag,
-              true, false, false, false,
-              10, -1,
-              sequence)) {}
+          while (_applyNextChange_(score,
+                                   myscores,
+                                   mydag,
+                                   true,
+                                   false,
+                                   false,
+                                   false,
+                                   10,
+                                   -1,
+                                   sequence)) {}
 
-          //std::cout << dag << std::endl;
+          // std::cout << dag << std::endl;
           CHECK_EQ(dag, mydag);
         }
-      } catch(gum::Exception& e) { GUM_SHOWERROR(e)}
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
       // gum::BayesNet<double> bn =
       // search.learnBN<double> ( selector, estimator,
       // database.variableNames (),
@@ -472,13 +470,14 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-         invariable_constraints;
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
+          invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
-      selector.useArcTriangleDeletions(false); // usual greedy hill climbing
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
+      selector.useArcTriangleDeletions(false);   // usual greedy hill climbing
 
       gum::learning::GreedyHillClimbing search;
       search.approximationScheme().setEpsilon(0);
@@ -495,11 +494,9 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, myscores, mydag,
-            true, true, true, false,
-            0, 1,
-            total_order)) {}
+        while (
+            _applyNextChange_(score, myscores, mydag, true, true, true, false, 0, 1, total_order)) {
+        }
 
         CHECK_EQ(dag, mydag);
       }
@@ -554,13 +551,14 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
           invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
                                                    decltype(struct_constraint) >
           selector(score, invariable_constraints, struct_constraint);
-      selector.useArcTriangleDeletions(true); // usual greedy hill climbing
+      selector.useArcTriangleDeletions(true);   // usual greedy hill climbing
 
       gum::learning::GreedyHillClimbing search;
       search.approximationScheme().setEpsilon(0);
@@ -577,11 +575,8 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, myscores, mydag,
-            true, true, true, true,
-            0, 6,
-            total_order)) {}
+        while (
+            _applyNextChange_(score, myscores, mydag, true, true, true, true, 0, 6, total_order)) {}
 
         CHECK_EQ(dag, mydag);
       }
@@ -637,18 +632,20 @@ namespace gum_tests {
       // struct_constraint.setSliceOrder ( slices );
       // struct_constraint.setDefaultSlice ( 1 );
 
-//      gum::learning::StructuralConstraintIndegree constraint1;
-//      constraint1.setMaxIndegree(6);
-//      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) = constraint1;
+      //      gum::learning::StructuralConstraintIndegree constraint1;
+      //      constraint1.setMaxIndegree(6);
+      //      static_cast< gum::learning::StructuralConstraintIndegree& >(struct_constraint) =
+      //      constraint1;
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-         invariable_constraints;
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
+          invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::GreedyHillClimbing search;
       // simpleListenerForGHC agsl ( search );
@@ -665,11 +662,16 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, myscores, mydag,
-            true, true, true, false,
-            1000, 6,
-            total_order)) {}
+        while (_applyNextChange_(score,
+                                 myscores,
+                                 mydag,
+                                 true,
+                                 true,
+                                 true,
+                                 false,
+                                 1000,
+                                 6,
+                                 total_order)) {}
 
         CHECK_EQ(bn.dag(), mydag);
       }
@@ -734,12 +736,13 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-         invariable_constraints;
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
+          invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-         decltype(struct_constraint) >
-         selector(score, invariable_constraints, struct_constraint);
+                                                   decltype(struct_constraint) >
+          selector(score, invariable_constraints, struct_constraint);
 
       gum::learning::GreedyHillClimbing search;
       // simpleListenerForGHC agsl ( search );
@@ -756,11 +759,16 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, myscores, mydag,
-            true, true, true, false,
-            1000, 6,
-            total_order)) {}
+        while (_applyNextChange_(score,
+                                 myscores,
+                                 mydag,
+                                 true,
+                                 true,
+                                 true,
+                                 false,
+                                 1000,
+                                 6,
+                                 total_order)) {}
 
         CHECK_EQ(bn.dag(), mydag);
       }
@@ -823,7 +831,8 @@ namespace gum_tests {
 
       gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
+      gum::learning::StructuralConstraintSetStatic<
+          gum::learning::StructuralConstraintForbiddenArcs >
           invariable_constraints;
 
       gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
@@ -850,11 +859,9 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, myscores, mydag,
-            true, true, true, true,
-            50, 6,
-            total_order)) {}
+        while (
+            _applyNextChange_(score, myscores, mydag, true, true, true, true, 50, 6, total_order)) {
+        }
 
         CHECK_EQ(bn.dag(), mydag);
       }
@@ -927,19 +934,20 @@ namespace gum_tests {
 
         gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
 
-        gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
-          invariable_constraints;
+        gum::learning::StructuralConstraintSetStatic<
+            gum::learning::StructuralConstraintForbiddenArcs >
+            invariable_constraints;
 
         gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-          decltype(struct_constraint) >
-          selector(score, invariable_constraints, struct_constraint);
+                                                     decltype(struct_constraint) >
+            selector(score, invariable_constraints, struct_constraint);
 
         gum::learning::GreedyHillClimbing search;
 
         gum::DAG dag = search.learnStructure(selector);
         // std::cout << dag << std::endl;
 
-        gum::DAG xdag;
+        gum::DAG              xdag;
         std::vector< double > scores(nb_vars);
         for (auto node: dag) {
           xdag.addNodeWithId(node);
@@ -947,11 +955,8 @@ namespace gum_tests {
         }
 
         gum::Sequence< gum::NodeId > total_order;
-        while (_applyNextChange_(
-            score, scores, xdag,
-            true, true, true, false,
-            -1, -1,
-            total_order)) {}
+        while (
+            _applyNextChange_(score, scores, xdag, true, true, true, false, -1, -1, total_order)) {}
 
         CHECK_EQ(xdag, dag);
       }

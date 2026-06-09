@@ -56,9 +56,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    StructuralConstraintDAG::StructuralConstraintDAG() {
-      GUM_CONSTRUCTOR(StructuralConstraintDAG);
-    }
+    StructuralConstraintDAG::StructuralConstraintDAG() { GUM_CONSTRUCTOR(StructuralConstraintDAG); }
 
     /// constructor starting with an empty graph with a given number of nodes
     StructuralConstraintDAG::StructuralConstraintDAG(Size nb_nodes) {
@@ -79,16 +77,13 @@ namespace gum {
     }
 
     /// move constructor
-    StructuralConstraintDAG::StructuralConstraintDAG(
-        StructuralConstraintDAG&& from) noexcept :
+    StructuralConstraintDAG::StructuralConstraintDAG(StructuralConstraintDAG&& from) noexcept :
         _graph_(std::move(from._graph_)) {
       GUM_CONS_MOV(StructuralConstraintDAG);
     }
 
     /// destructor
-    StructuralConstraintDAG::~StructuralConstraintDAG() {
-      GUM_DESTRUCTOR(StructuralConstraintDAG);
-    }
+    StructuralConstraintDAG::~StructuralConstraintDAG() { GUM_DESTRUCTOR(StructuralConstraintDAG); }
 
     /// copy operator
     StructuralConstraintDAG&
