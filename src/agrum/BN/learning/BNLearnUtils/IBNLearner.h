@@ -818,6 +818,7 @@ namespace gum::learning {
       switch (selectedAlgo_) {
         case AlgoType::K2 :
         case AlgoType::GREEDY_HILL_CLIMBING :
+        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING:
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return false;
         case AlgoType::MIIC : return true;
         default : throw OperationNotAllowed("Unknown algorithm");

@@ -360,7 +360,39 @@ namespace gum {
       }
     }
 
-    /// compute the new score of node given that we added it a new parent
+    // indicates whether the selector allows the application of arc additions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE bool
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            arcAdditionsEnabled() const {
+      return _use_arc_additions_;
+    }
+
+    // indicates whether the selector allows the application of arc deletions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE bool
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            arcDeletionsEnabled() const {
+      return _use_arc_deletions_;
+    }
+
+    // indicates whether the selector allows the application of arc reversals
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE bool
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            arcReversalsEnabled() const {
+      return _use_arc_reversals_;
+    }
+
+    // indicates whether the selector allows the application of arc triangle deletions
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    INLINE bool
+        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+            arcTriangleDeletionsEnabled() const {
+      return _use_arc_triangle_deletions_;
+    }
+
+    // compute the new score of node given that we added it a new parent
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     INLINE double
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
@@ -1254,30 +1286,32 @@ namespace gum {
       }
 
       // cases 2.c and 3.e:
-      // case 2.c: we consider the reversals of arcs node -> head
-      for (const auto node: parents_head) {
-        _updateArcReversalScore_(node, head);
-      }
+      if (_use_arc_reversals_) {
+        // case 2.c: we consider the reversals of arcs node -> head
+        for (const auto node: parents_head) {
+          _updateArcReversalScore_(node, head);
+        }
 
-      // case 2.c: we consider the reversals of arcs head -> node
-      for (const auto node: children_head) {
-        _updateArcReversalScore_(head, node);
-      }
+        // case 2.c: we consider the reversals of arcs head -> node
+        for (const auto node: children_head) {
+          _updateArcReversalScore_(head, node);
+        }
 
-      // case 2.c: we consider the reversals of arcs node -> tail
-      for (const auto node: parents_tail) {
-        _updateArcReversalScore_(node, tail);
-      }
+        // case 2.c: we consider the reversals of arcs node -> tail
+        for (const auto node: parents_tail) {
+          _updateArcReversalScore_(node, tail);
+        }
 
-      // case 2.c: we consider the reversals of arcs tail -> node
-      for (const auto node: children_tail) {
-        _updateArcReversalScore_(tail, node);
-      }
+        // case 2.c: we consider the reversals of arcs tail -> node
+        for (const auto node: children_tail) {
+          _updateArcReversalScore_(tail, node);
+        }
 
-      // case 3.e:
-      const ArcReversal reversal(head, tail);
-      if (!_invariable_constraints_->isAlwaysInvalid(reversal)) {
-        _sorted_changes_.insert(reversal, -overall_delta_score);
+        // case 3.e:
+        const ArcReversal reversal(head, tail);
+        if (!_invariable_constraints_->isAlwaysInvalid(reversal)) {
+          _sorted_changes_.insert(reversal, -overall_delta_score);
+        }
       }
 
       // cases 2.d, 2.e, 3.f and 3.g:

@@ -186,6 +186,18 @@ namespace gum {
       /// sets whether or not the selector allows the application of arc triangle deletions
       void useArcTriangleDeletions(bool use);
 
+      /// indicates whether the selector allows the application of arc additions
+      bool arcAdditionsEnabled() const;
+
+      /// indicates whether the selector allows the application of arc deletions
+      bool arcDeletionsEnabled() const;
+
+      /// indicates whether the selector allows the application of arc reversals
+      bool arcReversalsEnabled() const;
+
+      /// indicates whether the selector allows the application of arc triangle deletions
+      bool arcTriangleDeletionsEnabled() const;
+
       /// returns the set of invariable constraints used by the selector
       INVARIABLE_CONSTRAINT_TYPE& invariableConstraints();
 

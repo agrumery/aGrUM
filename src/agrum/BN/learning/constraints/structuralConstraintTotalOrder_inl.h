@@ -193,13 +193,13 @@ namespace gum {
       }
     }
 
-    /// sets the time Totals of all the nodes in the property
+    /// sets the Total order of all the nodes in the property
     INLINE void StructuralConstraintTotalOrder::setTotalOrder(const Sequence< NodeId >& order) {
       _total_order_ = order;
     }
 
     /// returns the current Total order
-    INLINE const Sequence< NodeId >& StructuralConstraintTotalOrder::TotalOrder() const {
+    INLINE const Sequence< NodeId >& StructuralConstraintTotalOrder::totalOrder() const {
       return _total_order_;
     }
 

@@ -109,11 +109,11 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// sets the time Totals of all the nodes in the property
+      /// sets the Total order of all the nodes in the property
       void setTotalOrder(const Sequence< NodeId >& Total);
 
       /// returns the current Total order
-      const Sequence< NodeId >& TotalOrder() const;
+      const Sequence< NodeId >& totalOrder() const;
 
       /// sets a new graph from which we will perform checkings
       void setGraphAlone(const DiGraph& graph);

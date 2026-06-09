@@ -811,7 +811,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(2));
+        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(9));
         CHECK_EQ(listen.getMess(), "stopped on request");
         CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
@@ -826,7 +826,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(3));
+        CHECK_EQ(listen.getNbr(), static_cast< gum::Size >(11));
         CHECK_EQ(listen.getMess(), "stopped on request");
         CHECK_EQ(learner.messageApproximationScheme(), "stopped on request");
       }
@@ -1643,7 +1643,7 @@ namespace gum_tests {
         gum::BayesNet< double > bn = learner.learnBN();
         CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
         CHECK(bn.parents("lung_cancer").contains(bn.idFromName("smoking")));
-        CHECK(bn.parents("bronchitis").contains(bn.idFromName("smoking")));
+        CHECK(bn.parents("smoking").contains(bn.idFromName("bronchitis")));
         CHECK(bn.parents("bronchitis").contains(bn.idFromName("visit_to_Asia")));
       }
     }
@@ -1776,11 +1776,20 @@ namespace gum_tests {
         CHECK_EQ(std::get< 0 >(state[4]), "Missing values");
         CHECK_EQ(std::get< 1 >(state[4]), "False");
 
-        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+//        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+//        CHECK_EQ(std::get< 1 >(state[5]), "MIIC");
+//
+//        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
+//        CHECK_EQ(std::get< 1 >(state[6]), "MDL");
+//
+//        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+//        CHECK_EQ(std::get< 1 >(state[7]), "-");
 
-        CHECK_EQ(std::get< 0 >(state[6]), "Correction");
-        CHECK_EQ(std::get< 1 >(state[6]), "MDL");
+        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        CHECK_EQ(std::get< 1 >(state[5]), "Extended Greedy Hill Climbing");
+
+        CHECK_EQ(std::get< 0 >(state[6]), "Score");
+        CHECK_EQ(std::get< 1 >(state[6]), "BDeu");
 
         CHECK_EQ(std::get< 0 >(state[7]), "Prior");
         CHECK_EQ(std::get< 1 >(state[7]), "-");

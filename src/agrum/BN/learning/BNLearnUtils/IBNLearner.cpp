@@ -810,12 +810,13 @@ namespace gum::learning {
                                               invariable_constraints,
                                               variable_constraints);
 
-        /*
+        // enforce that greedy hill climbing uses arc additions, deletions and reversals
+        // and only these operations
         selector.useArcAdditions(true);
         selector.useArcDeletions(true);
         selector.useArcReversals(true);
-        */
         selector.useArcTriangleDeletions(false);
+
         return greedyHillClimbing_.learnStructure(selector, init_graph);
       }
 

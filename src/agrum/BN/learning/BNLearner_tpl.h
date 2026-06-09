@@ -396,6 +396,9 @@ namespace gum {
         case AlgoType::GREEDY_HILL_CLIMBING :
           vals.emplace_back(key, "Greedy Hill Climbing", "");
           break;
+        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
+          vals.emplace_back(key, "Extended Greedy Hill Climbing", "");
+          break;
         case AlgoType::K2 : {
           vals.emplace_back(key, "K2", "");
           const auto& k2order = algoK2_.order();
@@ -418,12 +421,14 @@ namespace gum {
 
       if (isScoreBased()) {
         switch (scoreType_) {
-          case ScoreType::K2 : vals.emplace_back(key, "K2", ""); break;
           case ScoreType::AIC : vals.emplace_back(key, "AIC", ""); break;
           case ScoreType::BIC : vals.emplace_back(key, "BIC", ""); break;
           case ScoreType::BD : vals.emplace_back(key, "BD", ""); break;
           case ScoreType::BDeu : vals.emplace_back(key, "BDeu", ""); break;
+          case ScoreType::fNML :  vals.emplace_back(key, "fNML", ""); break;
+          case ScoreType::K2 : vals.emplace_back(key, "K2", ""); break;
           case ScoreType::LOG2LIKELIHOOD : vals.emplace_back(key, "Log2Likelihood", ""); break;
+          case ScoreType::MDL : vals.emplace_back(key, "MDL", ""); break;
           default : vals.emplace_back(key, "(unknown)", "?"); break;
         }
       }
@@ -678,6 +683,9 @@ namespace gum {
           }
         }
         setSliceOrder(slice_order);
+      }
+      if (!learner.constraintTotalOrder_.totalOrder().empty()) {
+        setTotalOrder(learner.constraintTotalOrder_.totalOrder());
       }
     }
 
