@@ -1351,6 +1351,22 @@ namespace gum {
     const Key& key(const Key& key) const;
 
     /**
+     * @brief Returns an optional reference to a given key, or nullptr if the
+     * hash table does not contain it.
+     *
+     * Some complex structures use pointers on keys of hashtables. These
+     * structures thus require that we do not only get a copy of a given key,
+     * but the key stored in the hashtable itself. This is the very purpose of
+     * this function.
+     *
+     * @param key The key to return.
+     * @return Returns a pointer on a given key, or nullptr if the hash table
+     *        does not contain it.
+     * @throw NotFound Raised if the element cannot be found.
+     */
+    optional_ref< const Key > tryGetKey(const Key& key) const;
+
+    /**
      * @brief Removes all the elements having a certain value from the hash
      * table.
      *

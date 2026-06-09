@@ -898,6 +898,16 @@ namespace gum {
   }
 
   template < typename Key, typename Val >
+  INLINE optional_ref< const Key >
+      HashTable< Key, Val >::tryGetKey(const Key& key) const {
+    // get the bucket corresponding to the key
+    Bucket* bucket = _nodes_[_hash_func_(key)].bucket(key);
+    return (bucket != nullptr)
+                ? optional_ref< const Key >{bucket->key()}
+                : optional_ref< const Key >();
+  }
+
+  template < typename Key, typename Val >
   void HashTable< Key, Val >::eraseAllVal(const Val& val) {
     for (auto iterAll = cbeginSafe(); iterAll != cendSafe(); ++iterAll) {
       if (iterAll._bucket_->val() == val) { _erase_(iterAll._bucket_, iterAll._index_); }

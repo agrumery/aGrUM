@@ -323,6 +323,28 @@ namespace gum {
     }
   }
 
+  // returns the node in the hash table corresponding to a given external value
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE optional_ref< AVLTreeNode< Val > >
+      SortedPriorityQueue< Val, Priority, Cmp >::tryGetNodeFromExternalValue_(
+          const Val& val) const {
+    // here, we optimize the code for scalars and GraphChanges. For those types,
+    // it is faster to make one copy rather than 2 moves
+    if constexpr (std::is_scalar_v< Val > || std::is_base_of_v< GraphChange, Val >) {
+      auto key = _nodes_.tryGetKey(AVLTreeNode< Val >(val));
+      return key.has_value()
+               ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
+               : optional_ref< AVLTreeNode< Val > >{};
+    } else {
+      AVLTreeNode< Val > xval(std::move(const_cast< Val& >(val)));
+      auto               key  = _nodes_.tryGetKey(xval);
+      const_cast< Val& >(val) = std::move(xval.value);
+      return key.has_value()
+               ? optional_ref{const_cast< AVLTreeNode< Val >& >(key.value())}
+               : optional_ref< AVLTreeNode< Val > >{};
+    }
+  }
+
   // returns the node in the hash table corresponding to a given value
   template < typename Val, typename Priority, typename Cmp >
   INLINE AVLTreeNode< Val >&
@@ -343,6 +365,17 @@ namespace gum {
       SortedPriorityQueue< Val, Priority, Cmp >::operator[](const Val& val) const {
     // if this method is called, then val should be an external value
     return getNodeFromExternalValue_(val).value;
+  }
+
+  // returns the a pointer on the "internal" value stored into the queue or nullptr
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE optional_ref< const Val >
+      SortedPriorityQueue< Val, Priority, Cmp >::tryGet(const Val& val) const {
+    // if this method is called, then val should be an external value
+    auto node = tryGetNodeFromExternalValue_(val);
+    return node.has_value()
+                ? optional_ref< const Val >{node->value}
+                : optional_ref< const Val >{};
   }
 
   // removes a given element from the priority queue (but does not return it)

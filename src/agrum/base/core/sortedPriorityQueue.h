@@ -60,6 +60,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/hashTable.h>
+#include <agrum/base/core/optional_ref.h>
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/sharedAVLTree.h>
 
@@ -263,6 +264,17 @@ namespace gum {
      * @return Returns true if val is in the priority queue.
      */
     bool contains(const Val& val) const noexcept;
+
+    /**
+     * @brief Returns a pointer to the "internal" value stored into the queue
+     * corresponding to val if it exists, or nullptr if val does not exist.
+     *
+     * This avoids the double lookup of exists() + operator[].
+     *
+     * @param val The value to search for.
+     * @return A pointer to the mapped value, or nullptr if not found.
+     */
+    [[nodiscard]] optional_ref< const value_type > tryGet(const Val& key) const;
 
     /// returns the element at the top of the sorted priority queue
     /** @throw NotFound Raised if the queue is empty */
@@ -509,7 +521,7 @@ namespace gum {
         return (AVLTreeNode< Val >*)((char*)&v - offset_to_value);
       }
 
-      // the comparison function betwwen two contents of two nodes of the AVL tree:
+      // the comparison function between two contents of two nodes of the AVL tree:
       // the nodes should be sorted according to their priority
       constexpr bool operator()(const Val& x, const Val& y) const {
         return _cmp_(getPriority(x), getPriority(y));
@@ -554,12 +566,22 @@ namespace gum {
      */
     AVLNode& getNodeFromInternalValue_(const Val& val) const;
 
-    /** @brief returns the node in the hash table corresponding to a given external value
+    /** @brief returns the node of the hash table corresponding to a given external value
+     *
      * By external value, we mean that the value is not stored into an AVLNode
      * element of the hash table
      * @throws NotFound is raised if the node cannot be found
      */
     AVLNode& getNodeFromExternalValue_(const Val& val) const;
+
+    /** @brief returns an optional reference on the node of the hash table
+     * corresponding to a given external value
+     *
+     * By external value, we mean that the value is not stored into an AVLNode
+     * element of the hash table
+     * @throws NotFound is raised if the node cannot be found
+     */
+    optional_ref< AVLNode > tryGetNodeFromExternalValue_(const Val& val) const;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // the TreeCmp getnode function induces some warning on some compilers when Val
@@ -702,11 +724,11 @@ namespace gum {
 
     /// alias for operator*
     /** @throws NotFound is raised if the iterator points to nothing */
-    const_reference value() const;
+    [[nodiscard]] const_reference value() const;
 
     /// returns the priority of the element pointed to by the iterator
     /** @throws NotFound is raised if the iterator points to nothing */
-    const Priority& priority() const;
+    [[nodiscard]] const Priority& priority() const;
 
     /// @}
 
@@ -838,11 +860,11 @@ namespace gum {
 
     /// alias for operator*
     /** @throws NotFound is raised if the iterator points to nothing */
-    const_reference value() const;
+    [[nodiscard]] const_reference value() const;
 
     /// returns the priority of the element pointed to by the iterator
     /** @throws NotFound is raised if the iterator points to nothing */
-    const Priority& priority() const;
+    [[nodiscard]] const Priority& priority() const;
 
     /// @}
 
@@ -977,11 +999,11 @@ namespace gum {
 
     /// alias for operator*
     /** @throws NotFound is raised if the iterator points to nothing */
-    const_reference value() const;
+    [[nodiscard]] const_reference value() const;
 
     /// returns the priority of the element pointed to by the iterator
     /** @throws NotFound is raised if the iterator points to nothing */
-    const Priority& priority() const;
+    [[nodiscard]] const Priority& priority() const;
 
     /// @}
 
@@ -1115,11 +1137,11 @@ namespace gum {
 
     /// alias for operator*
     /** @throws NotFound is raised if the iterator points to nothing */
-    const_reference value() const;
+    [[nodiscard]] const_reference value() const;
 
     /// returns the priority of the element pointed to by the iterator
     /** @throws NotFound is raised if the iterator points to nothing */
-    const Priority& priority() const;
+    [[nodiscard]] const Priority& priority() const;
 
     /// @}
 

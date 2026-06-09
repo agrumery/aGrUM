@@ -448,15 +448,22 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _addArcAdditionToSortedChanges_(const ArcAddition& change) {
-      const NodeId node1 = change.node1();
-      const NodeId node2 = change.node2();
-
       // only add the arc addition if this is allowed by the graph and the constraints
-      if (!_graph_->existsArc(Arc(node1, node2))
-          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+      if (!_invariable_constraints_->isAlwaysInvalid(change)) {
+        const NodeId node1 = change.node1();
+        const NodeId node2 = change.node2();
+
         // compute the delta in the score resulting from adding node1 to the set
         // of parents of the node2
-        const double delta = _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2];
+        // currently invalid changes are assigned a -infty score
+        const double delta = !_graph_->existsArc(Arc(node1, node2))
+            ? _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2]
+            : std::numeric_limits< double >::lowest();
+
+        if (delta == std::numeric_limits< double >::lowest()) {
+          std::cout << "infAddAdd (" << node1 << ", " << node2 << ") = " << ++_nb_inf_ << std::endl;
+        }
+
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -466,15 +473,21 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _addArcDeletionToSortedChanges_(const ArcDeletion& change) {
-      const NodeId tail = change.node1();
-      const NodeId head = change.node2();
+      // only add the arc reversal if this is allowed by the constraints
+      if (!_invariable_constraints_->isAlwaysInvalid(change)) {
+        const NodeId tail = change.node1();
+        const NodeId head = change.node2();
 
-      // only add the arc deletion if this is allowed by the constraints
-      if (_graph_->existsArc(Arc(tail, head))
-          && !_invariable_constraints_->isAlwaysInvalid(change)) {
         // compute the delta in the score resulting from removing the tail from
         // the set of parents of the head
-        const double delta = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head];
+        // currently invalid changes are assigned a -infty score
+        const double delta = _graph_->existsArc(Arc(tail, head))
+            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+            : std::numeric_limits< double >::lowest();
+
+        if (delta == std::numeric_limits< double >::lowest()) {
+          std::cout << "infAddDel (" << tail << ", " << head << ") = " <<  ++_nb_inf_ << std::endl;
+        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -484,19 +497,23 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _addArcReversalToSortedChanges_(const ArcReversal& change) {
-      const NodeId tail = change.node1();
-      const NodeId head = change.node2();
-
       // only add the arc reversal if this is allowed by the constraints
-      if (_graph_->existsArc(Arc(tail, head)) && !_graph_->existsArc(Arc(head, tail))
-          && !_invariable_constraints_->isAlwaysInvalid(change)) {
+      if (!_invariable_constraints_->isAlwaysInvalid(change)) {
+        const NodeId tail = change.node1();
+        const NodeId head = change.node2();
+
         // compute the delta in the score resulting from removing the tail from the
         // set of parents of the head and that resulting from adding the head to
         // the tail
-        const double delta = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
-                           + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail];
-
-        // the overall delta is the sum of the two deltas
+        // currently invalid changes are assigned a -infty score
+        const double delta =
+            _graph_->existsArc(Arc(tail, head)) && !_graph_->existsArc(Arc(head, tail))
+                ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                      + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
+                : std::numeric_limits< double >::lowest();
+        if (delta == std::numeric_limits< double >::lowest()) {
+          std::cout << "infAddRev (" << tail << ", " << head << ") = " << ++_nb_inf_ << std::endl;
+        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -506,15 +523,12 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _addArcTriangleDeletion1ToSortedChanges_(const ArcTriangleDeletion1& change) {
-      const auto node1 = change.node1();
-      const auto node2 = change.node2();
-      const auto node3 = change.node3();
+      // only add the arc reversal if this is allowed by the constraints
+      if (!_invariable_constraints_->isAlwaysInvalid(change)) {
+        const auto node1 = change.node1();
+        const auto node2 = change.node2();
+        const auto node3 = change.node3();
 
-      // only add the arc triangle deletion if this is allowed by the constraints
-      if (_graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
-          && _graph_->existsArc(Arc(node1, node3)) && !_graph_->existsArc(Arc(node2, node1))
-          && !_graph_->existsArc(Arc(node3, node1))
-          && !_invariable_constraints_->isAlwaysInvalid(change)) {
         // the arc triangle deletion will substitute triangle
         // node1 -> node2 -> node3 + node1 -> node3 into the following v-structure:
         // node2 -> node1 <- node3. The modifications will therefore be:
@@ -522,10 +536,20 @@ namespace gum {
         // 2/ remove node1 from the set of parents of node2
         // 3/ remove node1 and node2 from the set of parents of node3
         // compute the update in the score due to these 3 operations
-        const double delta = _scoreAfterAddingParents_(node1, node2, node3) - _node_scores_[node1]
-                           + _scoreAfterRemovingParent_(node2, node1) - _node_scores_[node2]
-                           + _scoreAfterRemovingParents_(node3, node1, node2)
-                           - _node_scores_[node3];
+        // But currently invalid changes are assigned a -infty score
+
+        const double delta
+            = _graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
+                   && _graph_->existsArc(Arc(node1, node3))
+                   && !_graph_->existsArc(Arc(node2, node1))
+                   && !_graph_->existsArc(Arc(node3, node1))
+                ? _scoreAfterAddingParents_(node1, node2, node3) - _node_scores_[node1]
+                      + _scoreAfterRemovingParent_(node2, node1) - _node_scores_[node2]
+                      + _scoreAfterRemovingParents_(node3, node1, node2) - _node_scores_[node3]
+                : std::numeric_limits< double >::lowest();
+        if (delta == std::numeric_limits< double >::lowest()) {
+          std::cout << "infAddTr1 (" << node1 << ", " << node2 << ", " << node3 << ") = "  << ++_nb_inf_ << std::endl;
+        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -535,23 +559,31 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _addArcTriangleDeletion2ToSortedChanges_(const ArcTriangleDeletion2& change) {
-      const auto node1 = change.node1();
-      const auto node2 = change.node2();
-      const auto node3 = change.node3();
+      // only add the arc reversal if this is allowed by the constraints
+      if (!_invariable_constraints_->isAlwaysInvalid(change)) {
+        const auto node1 = change.node1();
+        const auto node2 = change.node2();
+        const auto node3 = change.node3();
 
-      // only add the arc triangle deletion if this is allowed by the constraints
-      if (_graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
-          && _graph_->existsArc(Arc(node1, node3)) && !_graph_->existsArc(Arc(node3, node2))
-          && !_invariable_constraints_->isAlwaysInvalid(change)) {
         // the arc triangle deletion will substitute triangle
         // node1 -> node2 -> node3 + node1 -> node3 into the following v-structure:
         // node1 -> node2 <- node3. The modifications will therefore be:
         // 1/ add node3 to the set of parents of node2
         // 2/ remove node1 and node2 from the set of parents of node3
         // compute the update in the score due to these 2 operations
-        const double delta = _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
-                           + _scoreAfterRemovingParents_(node3, node1, node2)
-                           - _node_scores_[node3];
+        // But currently invalid changes are assigned a -infty score
+
+        const double delta
+            = _graph_->existsArc(Arc(node1, node2)) && _graph_->existsArc(Arc(node2, node3))
+                   && _graph_->existsArc(Arc(node1, node3))
+                   && !_graph_->existsArc(Arc(node3, node2))
+            ? _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
+                  + _scoreAfterRemovingParents_(node3, node1, node2)
+                  - _node_scores_[node3]
+            : std::numeric_limits< double >::lowest();
+        if (delta == std::numeric_limits< double >::lowest()) {
+          std::cout << "infAddTr2 (" << node1 << ", " << node2 << ", " << node3 << ") = " << ++_nb_inf_ << std::endl;
+        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -561,11 +593,14 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _updateArcAdditionScore_(const NodeId tail, const NodeId head) {
-      try {
-        const auto&  addition = _sorted_changes_[ArcAddition(tail, head)];
-        const double delta    = _scoreAfterAddingParent_(head, tail) - _node_scores_[head];
-        _sorted_changes_.setPriority(addition, delta, true);
-      } catch (NotFound&) {}
+      const auto addition = _sorted_changes_.tryGet(ArcAddition(tail, head));
+      if (addition.has_value()) {
+        // currently unavailable changes have a -infty priority
+        const double delta = !_graph_->existsArc(tail, head)
+            ? _scoreAfterAddingParent_(head, tail) - _node_scores_[head]
+            : std::numeric_limits< double >::lowest();
+        _sorted_changes_.setPriority(addition.value(), delta, true);
+      }
     }
 
     /// updates the score of a given ArcDeletion
@@ -573,11 +608,14 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _updateArcDeletionScore_(const NodeId tail, const NodeId head) {
-      try {
-        const auto&  deletion = _sorted_changes_[ArcDeletion(tail, head)];
-        const double delta    = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head];
-        _sorted_changes_.setPriority(deletion, delta, true);
-      } catch (NotFound&) {}
+      const auto deletion = _sorted_changes_.tryGet(ArcDeletion(tail, head));
+      if (deletion.has_value()) {
+        // currently unavailable changes have a -infty priority
+        const double delta = _graph_->existsArc(tail, head)
+            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+            : std::numeric_limits< double >::lowest();
+        _sorted_changes_.setPriority(deletion.value(), delta, true);
+      }
     }
 
     /// updates the score of a given ArcReversal
@@ -585,12 +623,174 @@ namespace gum {
     INLINE void
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
             _updateArcReversalScore_(const NodeId tail, const NodeId head) {
-      try {
-        const auto&  reversal = _sorted_changes_[ArcReversal(tail, head)];
-        const double delta    = _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
-                              + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail];
-        _sorted_changes_.setPriority(reversal, delta, true);
-      } catch (NotFound&) {}
+      const auto reversal = _sorted_changes_.tryGet(ArcReversal(tail, head));
+      if (reversal.has_value()) {
+        const double delta =
+            _graph_->existsArc(tail, head) && !_graph_->existsArc(head, tail)
+            ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
+                  + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
+            : std::numeric_limits< double >::lowest();
+        _sorted_changes_.setPriority(reversal.value(), delta, true);
+      }
+    }
+
+    /** @brief update the score of the triangle deletions which contain a node whose
+     * neighborhood has changed */
+    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _updateTriangleDeletionsScoresFromNeighborhood_(const NodeId changed_node) {
+      const auto& children_changed_node = _graph_->children(changed_node);
+      const auto& parents_changed_node  = _graph_->parents(changed_node);
+      const auto  score_changed_node    = _node_scores_[changed_node];
+
+      // we consider here triangles node1 -> node2 -> node3 + node1 -> node3
+      // Three cases can occur: changed_node is 1/ node1, 2/ node2, 3/ node3
+      // case1:
+      for (const auto node2: children_changed_node) {
+        for (const auto node3: children_changed_node) {
+          if (_graph_->parents(node3).contains(node2)) { // changed_node -> node2 -> node3
+            double delta3 = std::numeric_limits< double >::lowest();
+
+            // case 1 for ArcTriangleDeletion1
+            {
+              auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion1(changed_node, node2, node3));
+              if (change.has_value()) {
+                const bool is_valid = !_graph_->existsArc(node2, changed_node)
+                                   && !_graph_->existsArc(node3, changed_node);
+                // the delta score at node3
+                delta3 = is_valid ? _scoreAfterRemovingParents_(node3, changed_node, node2)
+                                        - _node_scores_[node3]
+                                  : delta3;
+                // the following delta score just computes the score of the
+                // v-structure that we would get if we applied the arc triangle
+                // deletion minus the current score of the 3 nodes involved
+                // in the triangle
+                const double delta = is_valid
+                                       ? _scoreAfterAddingParents_(changed_node, node3, node2)
+                                             - score_changed_node
+                                             + _scoreAfterRemovingParent_(node2, changed_node)
+                                             - _node_scores_[node2] + delta3
+                                       : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
+            }
+
+            // case 1 for ArcTriangleDeletion2
+            {
+              auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion2(changed_node, node2, node3));
+              if (change.has_value()) {
+                const bool is_valid
+                    = !_graph_->existsArc(changed_node, node2) && !_graph_->existsArc(node3, node2);
+                delta3             = is_valid && (delta3 == std::numeric_limits< double >::lowest())
+                                       ? _scoreAfterRemovingParents_(node3, changed_node, node2)
+                                 - _node_scores_[node3]
+                                       : delta3;
+                const double delta = is_valid ? _scoreAfterAddingParent_(node2, node3)
+                                                    - _node_scores_[node2] + delta3
+                                              : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
+            }
+          }
+        }
+      }
+
+      // case2:
+      for (const auto node1: parents_changed_node) {
+        for (const auto node3: children_changed_node) {
+          if (_graph_->parents(node3).contains(node1)) { // node1 -> changed_node -> node3
+            double delta3 = std::numeric_limits< double >::lowest();
+
+            // case 2 for ArcTriangleDeletion1
+            {
+              auto change = _sorted_changes_.tryGet(ArcTriangleDeletion1(node1, changed_node, node3));
+              if (change.has_value()) {
+                const bool is_valid
+                    = !_graph_->existsArc(changed_node, node1) && !_graph_->existsArc(node3, node1);
+                // the delta score at node3
+                delta3 = is_valid ? _scoreAfterRemovingParents_(node3, node1, changed_node)
+                                        - _node_scores_[node3]
+                                  : delta3;
+                const double delta = is_valid
+                                       ? _scoreAfterAddingParents_(node1, changed_node, node3)
+                                             - _node_scores_[node1]
+                                             + _scoreAfterRemovingParent_(changed_node, node1)
+                                             - score_changed_node + delta3
+                                       : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
+            }
+
+            // case 2 for ArcTriangleDeletion2
+            {
+              auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion2(node1, changed_node, node3));
+              if (change.has_value()) {
+                const bool is_valid = !_graph_->existsArc(node1, changed_node)
+                                   && !_graph_->existsArc(node3, changed_node);
+                delta3             = is_valid && (delta3 == std::numeric_limits< double >::lowest())
+                                       ? _scoreAfterRemovingParents_(node3, node1, changed_node)
+                                 - _node_scores_[node3]
+                                       : delta3;
+                const double delta = is_valid ? _scoreAfterAddingParent_(changed_node, node3)
+                                                    - score_changed_node + delta3
+                                              : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
+            }
+          }
+        }
+      }
+
+      // case 3:
+      for (const auto node1: parents_changed_node) {
+        for (const auto node2: parents_changed_node) {
+          if (_graph_->parents(node2).contains(node1)) { // node1 -> node2 -> changed_node
+            double delta3 = std::numeric_limits< double >::lowest();
+
+            // case 3 for ArcTriangleDeletion1
+            {
+              auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion1(node1, node2, changed_node));
+              if (change.has_value()) {
+                const bool is_valid
+                    = !_graph_->existsArc(node2, node1) && !_graph_->existsArc(changed_node, node1);
+                // the delta score at changed_node
+                delta3 = is_valid ? _scoreAfterRemovingParents_(changed_node, node1, node2)
+                                        - score_changed_node
+                                  : delta3;
+                const double delta = is_valid
+                                       ? _scoreAfterAddingParents_(node1, changed_node, node2)
+                                             - _node_scores_[node1]
+                                             + _scoreAfterRemovingParent_(node2, node1)
+                                             - _node_scores_[node2] + delta3
+                                       : std::numeric_limits< double >::lowest();
+                _sorted_changes_.setPriority(change.value(), delta, true);
+              }
+            }
+
+            // case 3 for ArcTriangleDeletion2
+            {
+               auto change
+                  = _sorted_changes_.tryGet(ArcTriangleDeletion2(node1, node2, changed_node));
+               if (change.has_value()) {
+                 const bool is_valid = !_graph_->existsArc(node1, node2)
+                                    && !_graph_->existsArc(changed_node, node2);
+                 delta3 = is_valid && (delta3 == std::numeric_limits< double >::lowest())
+                            ? _scoreAfterRemovingParents_(changed_node, node1, node2)
+                                  - score_changed_node
+                            : delta3;
+                 const double delta = is_valid ? _scoreAfterAddingParent_(node2, changed_node)
+                                                     - _node_scores_[node2] + delta3
+                                               : std::numeric_limits< double >::lowest();
+                 _sorted_changes_.setPriority(change.value(), delta, true);
+               }
+            }
+          }
+        }
+      }
     }
 
     /// add all the possible ArcAdditions to initialize _sorted_changes_
@@ -708,118 +908,6 @@ namespace gum {
           && _variable_constraints_->checkModification(change);
     }
 
-    /** @brief update the score of the triangle deletions which contain a node whose
-     * neighborhood has changed */
-    template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _updateTriangleDeletionsScoresFromNeighborhood_(const NodeId changed_node) {
-      const auto& children_changed_node = _graph_->children(changed_node);
-      const auto& parents_changed_node  = _graph_->parents(changed_node);
-      const auto  score_changed_node    = _node_scores_[changed_node];
-
-      // we consider here triangles node1 -> node2 -> node3 + node1 -> node3
-      // Three cases can occur: changed_node is 1/ node1, 2/ node2, 3/ node3
-      // case1:
-      for (const auto node2: children_changed_node) {
-        for (const auto node3: children_changed_node) {
-          if (_graph_->parents(node3).contains(node2)) {
-            // case 1 for ArcTriangleDeletion1
-            double delta3 = std::numeric_limits< double >::lowest();
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion1(changed_node, node2, node3)];
-              delta3
-                  = _scoreAfterRemovingParents_(node3, changed_node, node2) - _node_scores_[node3];
-              // the following delta score just computes the score of the
-              // v-structure that we would get if we applied the arc triangle
-              // deletion minus the current score of the 3 nodes involved
-              // in the triangle
-              const double delta
-                  = _scoreAfterAddingParents_(changed_node, node3, node2) - score_changed_node
-                  + _scoreAfterRemovingParent_(node2, changed_node) - _node_scores_[node2] + delta3;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-
-            // case 1 for ArcTriangleDeletion2
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion2(changed_node, node2, node3)];
-              if (delta3 == std::numeric_limits< double >::lowest())
-                delta3 = _scoreAfterRemovingParents_(node3, changed_node, node2)
-                       - _node_scores_[node3];
-              const double delta
-                  = _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2] + delta3;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-          }
-        }
-      }
-
-      // case2:
-      for (const auto node1: parents_changed_node) {
-        for (const auto node3: children_changed_node) {
-          if (_graph_->parents(node3).contains(node1)) {
-            // case 2 for ArcTriangleDeletion1
-            double delta3 = std::numeric_limits< double >::lowest();
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion1(node1, changed_node, node3)];
-              delta3
-                  = _scoreAfterRemovingParents_(node3, changed_node, node1) - _node_scores_[node3];
-              const double delta
-                  = _scoreAfterAddingParents_(node1, changed_node, node3) - _node_scores_[node1]
-                  + _scoreAfterRemovingParent_(changed_node, node1) - score_changed_node + delta3;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-
-            // case 2 for ArcTriangleDeletion2
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion2(node1, changed_node, node3)];
-              if (delta3 == std::numeric_limits< double >::lowest())
-                delta3 = _scoreAfterRemovingParents_(node3, changed_node, node1)
-                       - _node_scores_[node3];
-              const double delta
-                  = _scoreAfterAddingParent_(changed_node, node3) - score_changed_node + delta3;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-          }
-        }
-      }
-
-      // case 3:
-      for (const auto node1: parents_changed_node) {
-        for (const auto node2: parents_changed_node) {
-          if (_graph_->parents(node2).contains(node1)) {
-            // case 3 for ArcTriangleDeletion1
-            double delta_head = std::numeric_limits< double >::lowest();
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion1(node1, node2, changed_node)];
-              delta_head
-                  = _scoreAfterRemovingParents_(changed_node, node1, node2) - score_changed_node;
-              const double delta = _scoreAfterAddingParents_(node1, changed_node, node2)
-                                 - _node_scores_[node1] + _scoreAfterRemovingParent_(node2, node1)
-                                 - _node_scores_[node2] + delta_head;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-
-            // case 3 for ArcTriangleDeletion2
-            try {
-              const auto& triangle_deletion
-                  = _sorted_changes_[ArcTriangleDeletion2(node1, node2, changed_node)];
-              if (delta_head == std::numeric_limits< double >::lowest())
-                delta_head
-                    = _scoreAfterRemovingParents_(changed_node, node1, node2) - score_changed_node;
-              const double delta = _scoreAfterAddingParent_(node2, changed_node)
-                                 - _node_scores_[node2] + delta_head;
-              _sorted_changes_.setPriority(triangle_deletion, delta, true);
-            } catch (NotFound&) {}
-          }
-        }
-      }
-    }
-
     /// indicate to the selector that an ArcAddition has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
@@ -829,7 +917,6 @@ namespace gum {
       const auto head        = change.node2();
       const auto delta_score = _sorted_changes_.priority(change);
       _node_scores_[head] += delta_score;
-      const auto head_score = _node_scores_[head];
 
       // update the graph
       _graph_->addArc(tail, head);
@@ -843,85 +930,78 @@ namespace gum {
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
-      // 1/ if we added a new arc tail -> head, this addition should be removed
-      //    from _sorted_changes_
-      // 2/ Arc tail->head's deletion should be added
-      // 3/ Arc tail->head's reversal should be added if Arc head -> tail does not
-      //    already exist
-      // 4/ The scores of all the additions of arcs whose heads are equal to "head"
-      //    should be updated
-      // 5/ The scores of all the deletions of arcs whose heads are equal to "head"
-      //    should be updated
-      // 6/ The scores of all the arc reversals involving "head" should be updated
-      // 7/ The scores of all the arc triangle deletions in which one of the nodes
-      //    is head should be updated
-      // 8/ The new arc may have created some new triangles, hence we should also
-      //    add their possible removals to the _sorted_changes_
+      // 1/ Remove the arc addition tail -> head we just applied
+      // 2/ Update The scores of the changes impacted by head's additional
+      //    ingoing arc:
+      //    2.a/ all the additions of arcs whose heads are equal to "head"
+      //         should be updated
+      //    2.b/ The scores of all the deletions of arcs whose heads are equal
+      //         to "head" should be updated
+      //    2.c/ The scores of all the arc reversals involving "head" should
+      //         be updated
+      //    2.d/ The scores of all the arc triangle deletions in which one of the
+      //         nodes is head should be updated
+      // 3/ Add the changes induced by the application of the arc addition:
+      //    3.a/ Add the reverse change: Arc tail->head's deletion
+      //    3.b/ Arc tail->head's reversal should be added
+      //    3.c/ The new arc may have created some new triangles, hence we should
+      //         also add their possible removals to the _sorted_changes_
+
       _sorted_changes_.erase(change, true);   // case 1
 
-      // case 4:
-      for (const auto node: *_graph_) {
-        // here, no need to check whether node is different from tail because
-        // we just erased in case 1 ArcAddition(tail, head)
-        _updateArcAdditionScore_(node, head);
+      // case 2.a:
+      if (_use_arc_additions_) {
+        for (const auto node: *_graph_) {
+          // here, no need to check whether node is different from tail because,
+          // in case 1, we just removed ArcAddition(tail, head)
+          _updateArcAdditionScore_(node, head);
+        }
       }
 
-      // cases 2 and 5
+      // cases 2.b and 3.a
       if (_use_arc_deletions_) {
-        // case5:
+        // case 2.b:
         for (const auto node: parents_head) {
           // here, no need to check whether node is different from tail because,
-          // since we just added arc tail -> head, ArcDeletion(tail, head) does
-          // not belong yet to _sorted_changes_
+          // as we just added Arc tail -> head, this arc did not belonged yet to
+          // _sorted_changes_, hence the latter cannot contain yet
+          // ArcDeletion tail -> head
           _updateArcDeletionScore_(node, head);
         }
 
-        // case 2:
+        // case 3.a:
         const ArcDeletion deletion(tail, head);
         if (!_invariable_constraints_->isAlwaysInvalid(deletion)) {
           _sorted_changes_.insert(deletion, -delta_score);
         }
       }
 
-      // cases 3 and 6
+      // cases 2.c and 3.b
       if (_use_arc_reversals_) {
-        // case 6:
-        // case 6.1: we consider the reversals of arcs node -> head
+        // case 2.c: hre, we consider the reversals of arcs node -> head
         for (const auto node: parents_head) {
-          // here, no need to check whether node is different from tail because,
+          // here, no need to check whether node is different from tail because
           // we just added Arc tail -> head, hence ArcReversal(tail, head) cannot
-          // belong yet to _sorted_changes_ (see case 3 below)
+          // belong yet to _sorted_changes_
           _updateArcReversalScore_(node, head);
         }
 
-        // case 6.2: we consider the reversals of arcs head -> node
+        // case 2.c: we consider the reversals of arcs head -> node
         for (const auto node: children_head) {
-          try {
-            const auto& reversal = _sorted_changes_[ArcReversal(head, node)];
-            if (node != tail) {
-              // here, we must update the score of the reversal
-              const double delta = _scoreAfterAddingParent_(head, node) - head_score
-                                 + _scoreAfterRemovingParent_(node, head) - _node_scores_[node];
-              _sorted_changes_.setPriority(reversal, delta, true);
-            } else {
-              // here, in the graph, there exists and arc head->tail. Its reversal
-              // would substitute it by the arc tail->head that we just added. So
-              // we need to remove Reversal(head, node) from _sorted_changes_
-              _sorted_changes_.erase(reversal, true);
-            }
-          } catch (NotFound&) {}
+          _updateArcReversalScore_(head, node);
         }
 
-        // case 3:
+        // case 3.b:
+        // we must add an arc reversal tail->head
         _addArcReversalToSortedChanges_(ArcReversal(tail, head));
       }
 
-      // cases 7 and 8:
+      // cases 2.d and 3.c:
       if (_use_arc_triangle_deletions_) {
-        // case 7:
+        // case 2.d:
         _updateTriangleDeletionsScoresFromNeighborhood_(head);
 
-        // case 8:
+        // case 3.c:
         // there are 3 types of triangles: a/ tail->node->head, b/ tail->head->node
         // and c/ node->tail->head. We should examine these three cases
 
