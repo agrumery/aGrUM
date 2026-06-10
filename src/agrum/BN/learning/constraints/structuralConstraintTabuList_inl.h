@@ -56,70 +56,78 @@ namespace gum {
     /// sets the size of the tabu list
     INLINE
     void StructuralConstraintTabuList::setTabuListSize(Size new_size) {
-      if (new_size == _TabuList_changes_.size()) return;
+      if (new_size == _graph_tabuList_.size()) return;
 
-      if (_TabuList_changes_.size() > new_size) {
+      if (_graph_tabuList_.size() > new_size) {
         // remove the oldest elements, so that only newsize elements remain
-        while (_TabuList_changes_.size() > new_size) {
-          _TabuList_changes_.eraseSecond(_TabuList_offset_);
-          ++_TabuList_offset_;
+        while (_graph_tabuList_.size() > new_size) {
+          _graph_tabuList_.eraseSecond(_tabuList_offset_);
+          ++_tabuList_offset_;
         }
       } else {
         // add dummy elements
-        while (_TabuList_changes_.size() < new_size) {
-          --_TabuList_offset_;
-          _TabuList_changes_.insert(
-              ArcAddition(std::numeric_limits< NodeId >::max() - _TabuList_offset_,
-                          std::numeric_limits< NodeId >::max()),
-              _TabuList_offset_);
+        while (_graph_tabuList_.size() < new_size) {
+          --_tabuList_offset_;
+          _graph_tabuList_.insert(_current_graph_, _tabuList_offset_);
         }
       }
     }
 
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintTabuList::setGraphAlone(const DiGraph& graph) {}
+    /// sets a new graph from which we will perform checking
+    INLINE void StructuralConstraintTabuList::setGraphAlone(const DiGraph& graph) {
+      // compute the hash of the graph
+      _current_graph_ = {0, 0};
+      for (const auto& arc : graph.arcs()) {
+        const auto hash_arc = _hashArc_(arc.tail(), arc.head());
+        _current_graph_.first ^= hash_arc.first;
+        _current_graph_.second ^= hash_arc.second;
+      }
+
+      // set all the elements of the _graph_tabuList_ as the current graph
+      const Size size = _graph_tabuList_.size();
+      _graph_tabuList_.clear();
+      for (Size i = 0; i < size; ++i) {
+        _graph_tabuList_.insert(_current_graph_, i);
+      }
+    }
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return !_TabuList_changes_.existsFirst(ArcDeletion(x, y))
-          && !_TabuList_changes_.existsFirst(ArcAddition(x, y));
+      return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(_hashArc_(x, y)));
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return !_TabuList_changes_.existsFirst(ArcAddition(x, y))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(x, y));
+      return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(_hashArc_(x, y)));
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool StructuralConstraintTabuList::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return !_TabuList_changes_.existsFirst(ArcReversal(y, x))
-          && !_TabuList_changes_.existsFirst(ArcReversal(x, y));
+      // compute the hash of removing arc x -> y and adding arc y -> x
+      const auto hashReversal = _xorHashes_(_hashArc_(x, y), _hashArc_(y, x));
+      return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(hashReversal));
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion1
     INLINE bool StructuralConstraintTabuList::checkArcTriangleDeletion1Alone(NodeId node1,
                                                                              NodeId node2,
                                                                              NodeId node3) const {
-      return !_TabuList_changes_.existsFirst(ArcTriangleDeletion1(node1, node2, node3))
-          && !_TabuList_changes_.existsFirst(ArcReversal(node1, node2))
-          && !_TabuList_changes_.existsFirst(ArcReversal(node1, node3))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(node2, node3))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node2))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node3))
-          && !_TabuList_changes_.existsFirst(ArcAddition(node2, node1))
-          && !_TabuList_changes_.existsFirst(ArcAddition(node3, node1));
+      const auto hashReversal12 = _xorHashes_(_hashArc_(node1, node2), _hashArc_(node2, node1));
+      const auto hashReversal13 = _xorHashes_(_hashArc_(node1, node3), _hashArc_(node3, node1));
+      const auto hashDeletion23 = _hashArc_(node2, node3);
+      const auto hashTriangle   = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13),
+                                            hashDeletion23);
+      return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(hashTriangle));
     }
 
     /// checks whether the constraints enable to apply an ArcTriangleDeletion2
     INLINE bool StructuralConstraintTabuList::checkArcTriangleDeletion2Alone(NodeId node1,
                                                                              NodeId node2,
                                                                              NodeId node3) const {
-      return !_TabuList_changes_.existsFirst(ArcTriangleDeletion2(node1, node2, node3))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(node1, node3))
-          && !_TabuList_changes_.existsFirst(ArcReversal(node2, node3))
-          && !_TabuList_changes_.existsFirst(ArcDeletion(node2, node3))
-          && !_TabuList_changes_.existsFirst(ArcAddition(node3, node2));
+      const auto hashReversal23 = _xorHashes_(_hashArc_(node2, node3), _hashArc_(node3, node2));
+      const auto hashDeletion13 = _hashArc_(node1, node3);
+      const auto hashTriangle   = _xorHashes_(hashReversal23, hashDeletion13);
+      return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(hashTriangle));
     }
 
     /// checks whether the constraints enable to add an arc
@@ -181,37 +189,55 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcAddition& change) {
-      _TabuList_changes_.eraseSecond(_TabuList_offset_);
-      ++_TabuList_offset_;
-      _TabuList_changes_.insert(change, NodeId(_TabuList_offset_ + _TabuList_changes_.size()));
+      _graph_tabuList_.eraseSecond(_tabuList_offset_);
+      ++_tabuList_offset_;
+      _current_graph_ = _xorWithCurrentGraph_(_hashArc_(change.node1(), change.node2()));
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcDeletion& change) {
-      _TabuList_changes_.eraseSecond(_TabuList_offset_);
-      ++_TabuList_offset_;
-      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+      _graph_tabuList_.eraseSecond(_tabuList_offset_);
+      ++_tabuList_offset_;
+      _current_graph_ = _xorWithCurrentGraph_(_hashArc_(change.node1(), change.node2()));
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcReversal& change) {
-      _TabuList_changes_.eraseSecond(_TabuList_offset_);
-      ++_TabuList_offset_;
-      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+      _graph_tabuList_.eraseSecond(_tabuList_offset_);
+      ++_tabuList_offset_;
+      const auto hashReversal = _xorHashes_(_hashArc_(change.node1(), change.node2()),
+                                            _hashArc_(change.node2(), change.node1()));
+      _current_graph_ = _xorWithCurrentGraph_(hashReversal);
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcTriangleDeletion1& change) {
-      _TabuList_changes_.eraseSecond(_TabuList_offset_);
-      ++_TabuList_offset_;
-      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+      _graph_tabuList_.eraseSecond(_tabuList_offset_);
+      ++_tabuList_offset_;
+      const auto hashReversal12 = _xorHashes_(_hashArc_(change.node1(), change.node2()),
+                                              _hashArc_(change.node2(), change.node1()));
+      const auto hashReversal13 = _xorHashes_(_hashArc_(change.node1(), change.node3()),
+                                              _hashArc_(change.node3(), change.node1()));
+      const auto hashDeletion23 = _hashArc_(change.node2(), change.node3());
+      const auto hashTriangle   = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13),
+                                            hashDeletion23);
+      _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void StructuralConstraintTabuList::modifyGraphAlone(const ArcTriangleDeletion2& change) {
-      _TabuList_changes_.eraseSecond(_TabuList_offset_);
-      ++_TabuList_offset_;
-      _TabuList_changes_.insert(change, _TabuList_offset_ + NodeId(_TabuList_changes_.size()));
+      _graph_tabuList_.eraseSecond(_tabuList_offset_);
+      ++_tabuList_offset_;
+      const auto hashReversal23 = _xorHashes_(_hashArc_(change.node2(), change.node3()),
+                                              _hashArc_(change.node3(), change.node2()));
+      const auto hashDeletion13 = _hashArc_(change.node1(), change.node3());
+      const auto hashTriangle   = _xorHashes_(hashReversal23, hashDeletion13);
+      _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
     }
 
     /// notify the constraint of a modification of the graph

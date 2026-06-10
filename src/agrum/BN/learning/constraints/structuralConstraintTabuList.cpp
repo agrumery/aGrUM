@@ -59,13 +59,11 @@ namespace gum {
 
     /// default constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList() :
-        _TabuList_changes_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+        _graph_tabuList_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
       // put dummy elements into the list (this avoids having tests to do
       // afterwards)
-      for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
-        _TabuList_changes_.insert(ArcAddition(std::numeric_limits< NodeId >::max() - i,
-                                              std::numeric_limits< NodeId >::max()),
-                                  i);
+      for (Size i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
+        _graph_tabuList_.insert(_current_graph_, i); // this is the empty graph
       }
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
@@ -73,13 +71,16 @@ namespace gum {
 
     /// constructor starting with a given graph
     StructuralConstraintTabuList::StructuralConstraintTabuList(const DiGraph& graph) :
-        _TabuList_changes_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
-      // put dummy elements into the list (this avoids having tests to do
-      // afterwards)
-      for (NodeId i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
-        _TabuList_changes_.insert(ArcAddition(std::numeric_limits< NodeId >::max() - i,
-                                              std::numeric_limits< NodeId >::max()),
-                                  i);
+        _graph_tabuList_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+      // compute the hash value of the diGraph
+      for (const auto& arc : graph.arcs()) {
+        const auto hash_arc = _hashArc_(arc.tail(), arc.head());
+        _current_graph_.first ^= hash_arc.first;
+        _current_graph_.second ^= hash_arc.second;
+      }
+
+      for (Size i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
+        _graph_tabuList_.insert(_current_graph_, i);
       }
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
@@ -88,15 +89,17 @@ namespace gum {
     /// copy constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
         const StructuralConstraintTabuList& from) :
-        _TabuList_changes_(from._TabuList_changes_), _TabuList_offset_(from._TabuList_offset_) {
+        _graph_tabuList_(from._graph_tabuList_), _tabuList_offset_(from._tabuList_offset_),
+        _current_graph_(from._current_graph_) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
     }
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-        StructuralConstraintTabuList&& from) :
-        _TabuList_changes_(std::move(from._TabuList_changes_)),
-        _TabuList_offset_(std::move(from._TabuList_offset_)) {
+        StructuralConstraintTabuList&& from)  noexcept :
+        _graph_tabuList_(std::move(from._graph_tabuList_)),
+        _tabuList_offset_(from._tabuList_offset_),
+        _current_graph_(std::move(from._current_graph_)) {
       GUM_CONS_MOV(StructuralConstraintTabuList);
     }
 
@@ -109,8 +112,9 @@ namespace gum {
     StructuralConstraintTabuList&
         StructuralConstraintTabuList::operator=(const StructuralConstraintTabuList& from) {
       if (this != &from) {
-        _TabuList_changes_ = from._TabuList_changes_;
-        _TabuList_offset_  = from._TabuList_offset_;
+        _graph_tabuList_  = from._graph_tabuList_;
+        _tabuList_offset_ = from._tabuList_offset_;
+        _current_graph_   = from._current_graph_;
       }
       return *this;
     }
@@ -119,8 +123,9 @@ namespace gum {
     StructuralConstraintTabuList&
         StructuralConstraintTabuList::operator=(StructuralConstraintTabuList&& from) {
       if (this != &from) {
-        _TabuList_changes_ = std::move(from._TabuList_changes_);
-        _TabuList_offset_  = std::move(from._TabuList_offset_);
+        _graph_tabuList_  = std::move(from._graph_tabuList_);
+        _tabuList_offset_ = from._tabuList_offset_;
+        _current_graph_   = from._current_graph_;
       }
       return *this;
     }
