@@ -50,7 +50,7 @@
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  GumMRFReader
-#define GUM_CURRENT_MODULE BN
+#define GUM_CURRENT_MODULE MRF
 
 namespace gum_tests {
   struct GumMRFReaderTestSuite {
@@ -90,6 +90,47 @@ namespace gum_tests {
       CHECK_EQ(mrf.property("software"), "aGrUM test");
     }
 
+    static void testInvalidJsonString() {
+      gum::MarkovRandomField< double > mrf;
+      auto                             reader = gum::GumMRFReader< double >(&mrf);
+      CHECK_NE(reader.proceedFromString("not valid json at all"), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("Invalid JSON"), std::string::npos);
+    }
+
+    static void testFileNotFound() {
+      gum::MarkovRandomField< double > mrf;
+      auto reader = gum::GumMRFReader< double >(&mrf, "/no/such/file.jgum");
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("No such file"), std::string::npos);
+    }
+
+    static void testBinaryRoundtrip() {
+      const auto                       path = GET_RESSOURCES_PATH("outputs/reader_mrf.bgum");
+      gum::MarkovRandomField< double > mrf;
+      {
+        auto r = gum::GumMRFReader< double >(&mrf, GET_RESSOURCES_PATH("jsonGum/minimal.mrf.jgum"));
+        CHECK_EQ(r.proceed(), 0u);
+      }
+      gum::GumMRFWriter< double > writer(true, 2);
+      writer.write(path, mrf);
+      gum::MarkovRandomField< double > mrf2;
+      auto                             reader = gum::GumMRFReader< double >(&mrf2, path, true);
+      CHECK_EQ(reader.proceed(), 0u);
+      CHECK_EQ(mrf, mrf2);
+    }
+
+    static void testWrongModelType() {
+      const std::string                filename = GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum");
+      gum::MarkovRandomField< double > mrf;
+      auto                             reader = gum::GumMRFReader< double >(&mrf, filename);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("expected 'MRF'"), std::string::npos);
+      CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
+    }
+
     static void testProceedWithoutFilename() {
       gum::MarkovRandomField< double > mrf;
       auto                             reader = gum::GumMRFReader< double >(&mrf);
@@ -117,6 +158,10 @@ namespace gum_tests {
   };
 
   GUM_TEST_ACTIF(BuildingMRFFromJson)
+  GUM_TEST_ACTIF(InvalidJsonString)
+  GUM_TEST_ACTIF(FileNotFound)
+  GUM_TEST_ACTIF(BinaryRoundtrip)
+  GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
 }   // namespace gum_tests

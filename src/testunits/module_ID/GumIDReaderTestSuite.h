@@ -52,7 +52,7 @@
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  GumIDReader
-#define GUM_CURRENT_MODULE BN
+#define GUM_CURRENT_MODULE ID
 
 namespace gum_tests {
   struct GumIDReaderTestSuite {
@@ -108,6 +108,47 @@ namespace gum_tests {
       CHECK_EQ(id.property("software"), "aGrUM test");
     }
 
+    static void testInvalidJsonString() {
+      gum::InfluenceDiagram< double > id;
+      auto                            reader = gum::GumIDReader< double >(&id);
+      CHECK_NE(reader.proceedFromString("not valid json at all"), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("Invalid JSON"), std::string::npos);
+    }
+
+    static void testFileNotFound() {
+      gum::InfluenceDiagram< double > id;
+      auto reader = gum::GumIDReader< double >(&id, "/no/such/file.jgum");
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("No such file"), std::string::npos);
+    }
+
+    static void testBinaryRoundtrip() {
+      const auto                      path = GET_RESSOURCES_PATH("outputs/reader_id.bgum");
+      gum::InfluenceDiagram< double > id;
+      {
+        auto r = gum::GumIDReader< double >(&id, GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum"));
+        CHECK_EQ(r.proceed(), 0u);
+      }
+      gum::GumIDWriter< double > writer(true, 2);
+      writer.write(path, id);
+      gum::InfluenceDiagram< double > id2;
+      auto                            reader = gum::GumIDReader< double >(&id2, path, true);
+      CHECK_EQ(reader.proceed(), 0u);
+      CHECK_EQ(id, id2);
+    }
+
+    static void testWrongModelType() {
+      const std::string               filename = GET_RESSOURCES_PATH("jsonGum/minimal.mrf.jgum");
+      gum::InfluenceDiagram< double > id;
+      auto                            reader = gum::GumIDReader< double >(&id, filename);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("expected 'ID'"), std::string::npos);
+      CHECK_NE(reader.error(0).msg.find("got 'MRF'"), std::string::npos);
+    }
+
     static void testProceedWithoutFilename() {
       gum::InfluenceDiagram< double > id;
       auto                            reader = gum::GumIDReader< double >(&id);
@@ -128,6 +169,10 @@ namespace gum_tests {
   };
 
   GUM_TEST_ACTIF(BuildingIDFromJson)
+  GUM_TEST_ACTIF(InvalidJsonString)
+  GUM_TEST_ACTIF(FileNotFound)
+  GUM_TEST_ACTIF(BinaryRoundtrip)
+  GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
 }   // namespace gum_tests

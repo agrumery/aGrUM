@@ -54,7 +54,7 @@ namespace gum {
    * This class is used to read a Bayesian network from a GUM file format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  class GumBNReader: public BNReader< GUM_SCALAR >, ErrorsContainer {
+  class GumBNReader: public BNReader< GUM_SCALAR >, public ErrorsContainer {
     public:
     /**
      * Constructor

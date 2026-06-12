@@ -166,13 +166,13 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void GumBNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& stream) const {
-    if (_parseDone_) elegantErrorsAndWarnings(stream);
+    if (_parseDone_ || count() > 0) elegantErrorsAndWarnings(stream);
     else { GUM_ERROR(OperationNotAllowed, "File not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE void GumBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
-    if (_parseDone_) syntheticResults(stream);
+    if (_parseDone_ || count() > 0) syntheticResults(stream);
     else { GUM_ERROR(OperationNotAllowed, "File not parsed yet") }
   }
 }   // namespace gum

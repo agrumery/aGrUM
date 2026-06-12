@@ -54,7 +54,7 @@
 #undef GUM_CURRENT_SUITE
 #undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  GumMRFWriter
-#define GUM_CURRENT_MODULE BN
+#define GUM_CURRENT_MODULE MRF
 
 namespace gum_tests {
   struct GumMRFWriterTestSuite {

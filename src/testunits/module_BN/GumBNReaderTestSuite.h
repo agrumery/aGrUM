@@ -246,6 +246,47 @@ namespace gum_tests {
       CHECK_EQ(bn2.properties().size(), 3u);
     }
 
+    static void testInvalidJsonString() {
+      gum::BayesNet< double > bn;
+      auto                    reader = gum::GumBNReader< double >(&bn);
+      CHECK_NE(reader.proceedFromString("not valid json at all"), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("Invalid JSON"), std::string::npos);
+    }
+
+    static void testFileNotFound() {
+      gum::BayesNet< double > bn;
+      auto                    reader = gum::GumBNReader< double >(&bn, "/no/such/file.jgum");
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("No such file"), std::string::npos);
+    }
+
+    static void testBinaryRoundtrip() {
+      const auto              path = GET_RESSOURCES_PATH("outputs/reader_bn.bgum");
+      gum::BayesNet< double > bn;
+      {
+        auto r = gum::GumBNReader< double >(&bn, GET_RESSOURCES_PATH("jsonGum/minimal.gum"));
+        CHECK_EQ(r.proceed(), 0u);
+      }
+      gum::GumBNWriter< double > writer(true, 2);
+      writer.write(path, bn);
+      gum::BayesNet< double > bn2;
+      auto                    reader = gum::GumBNReader< double >(&bn2, path, true);
+      CHECK_EQ(reader.proceed(), 0u);
+      CHECK_EQ(bn, bn2);
+    }
+
+    static void testWrongModelType() {
+      const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum");
+      gum::BayesNet< double > bn;
+      auto                    reader = gum::GumBNReader< double >(&bn, filename);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("expected 'BN'"), std::string::npos);
+      CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
+    }
+
     static void testProceedWithoutFilename() {
       gum::BayesNet< double > bn;
       auto                    reader = gum::GumBNReader< double >(&bn);
@@ -270,6 +311,10 @@ namespace gum_tests {
   GUM_TEST_ACTIF(GetCPTs)
   GUM_TEST_ACTIF(Existence)
   GUM_TEST_ACTIF(BuildingBayesNetFromJson)
+  GUM_TEST_ACTIF(InvalidJsonString)
+  GUM_TEST_ACTIF(FileNotFound)
+  GUM_TEST_ACTIF(BinaryRoundtrip)
+  GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
 }   // namespace gum_tests

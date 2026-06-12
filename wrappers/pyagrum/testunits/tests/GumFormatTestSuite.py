@@ -194,40 +194,84 @@ class TestGumFormat(pyAgrumTestCase):
 
   def testBN_loadGUMstring_invalid_json(self):
     bn = gum.BayesNet()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       bn.loadGUMstring("not valid json {{{")
+    self.assertIn("Invalid JSON", str(ctx.exception))
 
   def testID_loadGUMstring_invalid_json(self):
     id_ = gum.InfluenceDiagram()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       id_.loadGUMstring("not valid json {{{")
+    self.assertIn("Invalid JSON", str(ctx.exception))
 
   def testMRF_loadGUMstring_invalid_json(self):
     mrf = gum.MarkovRandomField()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       mrf.loadGUMstring("not valid json {{{")
+    self.assertIn("Invalid JSON", str(ctx.exception))
+
+  def testBN_loadGUM_file_not_found(self):
+    with self.assertRaises(Exception) as ctx:
+      gum.loadBN("/no/such/file.jgum")
+    self.assertIn("No such file", str(ctx.exception))
+
+  def testID_loadGUM_file_not_found(self):
+    with self.assertRaises(Exception) as ctx:
+      gum.loadID("/no/such/file.jgum")
+    self.assertIn("No such file", str(ctx.exception))
+
+  def testMRF_loadGUM_file_not_found(self):
+    with self.assertRaises(Exception) as ctx:
+      gum.loadMRF("/no/such/file.jgum")
+    self.assertIn("No such file", str(ctx.exception))
 
   def testBN_loadGUMstring_wrong_type(self):
-    # JSON valid but wrong model type should raise
     id_ = gum.fastID("A->*D->$U")
     s = id_.saveGUMstring()  # produces type="ID"
     bn = gum.BayesNet()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       bn.loadGUMstring(s)
+    self.assertIn("expected 'BN'", str(ctx.exception))
+    self.assertIn("got 'ID'", str(ctx.exception))
+
+  def testBN_loadGUM_wrong_type(self):
+    filename = self.agrumSrcDir("test_id.jgum")
+    with self.assertRaises(Exception) as ctx:
+      gum.loadBN(filename)
+    self.assertIn("expected 'BN'", str(ctx.exception))
+    self.assertIn("got 'ID'", str(ctx.exception))
 
   def testID_loadGUMstring_wrong_type(self):
     bn = gum.fastBN("A->B->C")
     s = bn.saveGUMstring()  # produces type="BN"
     id_ = gum.InfluenceDiagram()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       id_.loadGUMstring(s)
+    self.assertIn("expected 'ID'", str(ctx.exception))
+    self.assertIn("got 'BN'", str(ctx.exception))
+
+  def testID_loadGUM_wrong_type(self):
+    filename = self.agrumSrcDir("test_bn.jgum")
+    with self.assertRaises(Exception) as ctx:
+      gum.loadID(filename)
+    self.assertIn("expected 'ID'", str(ctx.exception))
+    self.assertIn("got 'BN'", str(ctx.exception))
 
   def testMRF_loadGUMstring_wrong_type(self):
     bn = gum.fastBN("A->B->C")
     s = bn.saveGUMstring()  # produces type="BN"
     mrf = gum.MarkovRandomField()
-    with self.assertRaises(Exception):
+    with self.assertRaises(Exception) as ctx:
       mrf.loadGUMstring(s)
+    self.assertIn("expected 'MRF'", str(ctx.exception))
+    self.assertIn("got 'BN'", str(ctx.exception))
+
+  def testMRF_loadGUM_wrong_type(self):
+    filename = self.agrumSrcDir("test_bn.jgum")
+    with self.assertRaises(Exception) as ctx:
+      gum.loadMRF(filename)
+    self.assertIn("expected 'MRF'", str(ctx.exception))
+    self.assertIn("got 'BN'", str(ctx.exception))
 
 
 ts = unittest.TestSuite()

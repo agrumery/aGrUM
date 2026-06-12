@@ -178,7 +178,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void GumMRFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& stream) const {
-    if (_parseDone_) {
+    if (_parseDone_ || count() > 0) {
       elegantErrorsAndWarnings(stream);
     } else {
       GUM_ERROR(OperationNotAllowed, "File not parsed yet")
@@ -187,7 +187,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   INLINE void GumMRFReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
-    if (_parseDone_) {
+    if (_parseDone_ || count() > 0) {
       syntheticResults(stream);
     } else {
       GUM_ERROR(OperationNotAllowed, "File not parsed yet")
