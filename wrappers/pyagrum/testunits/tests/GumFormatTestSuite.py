@@ -235,7 +235,7 @@ class TestGumFormat(pyAgrumTestCase):
     self.assertIn("got 'ID'", str(ctx.exception))
 
   def testBN_loadGUM_wrong_type(self):
-    filename = self.agrumSrcDir("test_id.jgum")
+    filename = self.agrumSrcDir("jgum/check_id.jgum")
     with self.assertRaises(Exception) as ctx:
       gum.loadBN(filename)
     self.assertIn("expected 'BN'", str(ctx.exception))
@@ -251,7 +251,7 @@ class TestGumFormat(pyAgrumTestCase):
     self.assertIn("got 'BN'", str(ctx.exception))
 
   def testID_loadGUM_wrong_type(self):
-    filename = self.agrumSrcDir("test_bn.jgum")
+    filename = self.agrumSrcDir("jgum/check_bn.jgum")
     with self.assertRaises(Exception) as ctx:
       gum.loadID(filename)
     self.assertIn("expected 'ID'", str(ctx.exception))
@@ -267,7 +267,7 @@ class TestGumFormat(pyAgrumTestCase):
     self.assertIn("got 'BN'", str(ctx.exception))
 
   def testMRF_loadGUM_wrong_type(self):
-    filename = self.agrumSrcDir("test_bn.jgum")
+    filename = self.agrumSrcDir("jgum/check_bn.jgum")
     with self.assertRaises(Exception) as ctx:
       gum.loadMRF(filename)
     self.assertIn("expected 'MRF'", str(ctx.exception))
