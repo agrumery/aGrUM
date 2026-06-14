@@ -1,4 +1,6 @@
 .directory
+wrappers/pyagrum/testunits/tests/resources/SEM/test_model.pkl
+wrappers/pyagrum/testunits/tests/resources/SEM/test_model.sem
 .options.*
 wrappers/pyagrum/sphinx/_build
 wrappers/pyagrum/generated-files/*.pyold.py
@@ -81,6 +83,7 @@ apps/pyagrum/doc/sphinx/notebooks/*.csv
 apps/pyagrum/doc/sphinx/notebooks/*.html
 .ipynb_checkpoints
 wrappers/pyagrum/doc/sphinx/sphinx_warnings.txt
+wrappers/pyagrum/doc/sphinx/notebooks/.virtual_documents
 
 apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv
