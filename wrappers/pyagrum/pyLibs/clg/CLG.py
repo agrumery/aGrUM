@@ -93,7 +93,7 @@ class CLG:
 
     return bn
 
-  def copy(self, clg: "CLG") -> None:
+  def copy(self, clg: CLG) -> None:
     for _, variable in clg._id2var.items():
       new_variable = GaussianVariable(name=variable.name(), mu=variable.mu(), sigma=variable.sigma())
       self.add(new_variable)
@@ -101,15 +101,45 @@ class CLG:
     for (parent, child), coef in clg._arc2coef.items():
       self.addArc(parent, child, coef)
 
-  def __str__(self):
-    return (
-      f"CLG{{nodes: {len(self.nodes())}, "
-      f"arcs: {len(self.arcs())}, "
-      f"parameters: {len(self.arcs()) + 2 * len(self.nodes())}}}"
-    )
-
   def __repr__(self):
     return str(self)
+
+  def __getstate__(self) -> dict:
+    return {'_id2var': self._id2var, '_arc2coef': self._arc2coef}
+
+  def __setstate__(self, state: dict) -> None:
+    self._graph = pyagrum.DAG()
+    self._id2var = {}
+    self._arc2coef = {}
+    for node_id in sorted(state['_id2var']):
+      var = state['_id2var'][node_id]
+      self._graph.addNodeWithId(node_id)
+      self._graph.setName(node_id, var.name())
+      self._id2var[node_id] = var
+    for (p, c), coef in state['_arc2coef'].items():
+      self._graph.addArc(p, c)
+      self._arc2coef[(p, c)] = coef
+
+  def __eq__(self, other: object) -> bool:
+    if not isinstance(other, CLG):
+      return NotImplemented
+    if self._graph.size() != other._graph.size() or self._graph.sizeArcs() != other._graph.sizeArcs():
+      return False
+    if set(self.names()) != set(other.names()):
+      return False
+    for name in self.names():
+      v1, v2 = self.variable(name), other.variable(name)
+      if v1.mu() != v2.mu() or v1.sigma() != v2.sigma():
+        return False
+    self_arcs = {
+      (self._id2var[p].name(), self._id2var[c].name()): coef
+      for (p, c), coef in self._arc2coef.items()
+    }
+    other_arcs = {
+      (other._id2var[p].name(), other._id2var[c].name()): coef
+      for (p, c), coef in other._arc2coef.items()
+    }
+    return self_arcs == other_arcs
 
   def add(self, var: GaussianVariable) -> int:
     """
@@ -410,7 +440,7 @@ class CLG:
     list[str]
       The list of names in the CLG.
     """
-    return [self._graph.nameFromId(n) for n in self.nodes()]
+    return [self.variable(n).name() for n in self.nodes()]
 
   def arcs(self) -> set[tuple[int, int]]:
     """
@@ -585,7 +615,7 @@ class CLG:
 
     return log_likelihood
 
-  def CompareStructure(self, clg_to_compare: "CLG") -> float:
+  def CompareStructure(self, clg_to_compare: CLG) -> float:
     """
     We use the f-score to compare the causal structure of the two CLGs.
     We create two BNs with the same structure as the two CLGs and then compare the two BNs.
@@ -626,17 +656,22 @@ class CLG:
     return cmp.scores()["fscore"]
 
 
+  def __str__(self) -> str:
+    from . import SEM
+    return SEM.tosem(self)
+
+
 def randomCLG(
-  nb_variables: int,
-  names: list[str],
-  max_parents: int | None = None,
-  ratio_arc: float = 1.2,
-  MuMin: float = -5,
-  MuMax: float = 5,
-  SigmaMin: float = 1,
-  SigmaMax: float = 10,
-  ArcCoefMin: float = 1,
-  ArcCoefMax: float = 10,
+   nb_variables: int,
+   names: list[str],
+   max_parents: int | None = None,
+   ratio_arc: float = 1.2,
+   MuMin: float = -5,
+   MuMax: float = 5,
+   SigmaMin: float = 1,
+   SigmaMax: float = 10,
+   ArcCoefMin: float = 1,
+   ArcCoefMax: float = 10,
 ) -> CLG:
   """
   Generate a random CLG with ``nb_variables`` variables.

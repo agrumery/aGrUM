@@ -68,13 +68,13 @@ def go():
 
   parser = argparse.ArgumentParser(prog="gumTest.py", add_help=False)
   parser.add_argument("mode", nargs="?", default="release", choices=["debug", "release"], type=str.lower)
-  parser.add_argument("loc", nargs="?", default="local", choices=["installed", "local"], type=str.lower)
+  parser.add_argument("test_build_path", nargs="?", default="installed", choices=["installed", "local"], type=str.lower)
   parser.add_argument("-m", dest="module", default="")
   parser.add_argument("-t", dest="suite", default="all")
   args, _ = parser.parse_known_args(sys.argv[1:])
 
   mod = args.mode
-  islocal = args.loc != "installed"
+  islocal = args.test_build_path != "installed"
   testNotebooks = False
   notebooksOnly = False
   test_suite = "" if args.suite == "all" else args.suite
@@ -115,7 +115,10 @@ def go():
   log.info("Mode detected : " + mod)
   log.info("Testing notebooks : " + str(testNotebooks))
 
-  if mod != "standAlone":
+  sys.path.insert(0, os.path.join(os.getcwd(), "tests"))
+  sys.path.insert(0, os.getcwd())
+
+  if mod != "standAlone" and islocal:
     if mod == "debug":
       libagrum = os.path.abspath("../../../build/pyAgrum/debug/wrappers")
     else:

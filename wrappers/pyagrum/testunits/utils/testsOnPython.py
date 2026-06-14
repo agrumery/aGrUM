@@ -85,233 +85,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   _pd = pandasFound
   _pd_sk = pandasFound and sklearnFound
 
-  AggregatorsForBNTestSuite = _try_import(
-    "AggregatorsForBNTestSuite",
-    True,
-  )
-  AllIncrementalInferenceTestSuite = _try_import(
-    "AllIncrementalInferenceTestSuite",
-    True,
-  )
-  BayesNetTestSuite = _try_import(
-    "BayesNetTestSuite",
-    True,
-  )
-  BayesNetFragmentTestSuite = _try_import(
-    "BayesNetFragmentTestSuite",
-    True,
-  )
-  BNClassifierTestSuite = _try_import(
-    "BNClassifierTestSuite", _pd_sk, "[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn"
-  )
-  BNDatabaseGeneratorTestSuite = _try_import(
-    "BNDatabaseGeneratorTestSuite",
-    True,
-  )
-  BNLearnerTestSuite = _try_import(
-    "BNLearnerTestSuite",
-    True,
-  )
-  BNListenerTestSuite = _try_import(
-    "BNListenerTestSuite",
-    True,
-  )
-  CausalDSepTestSuite = _try_import("CausalDSepTestSuite", _pd, "[pyAgrum] Causal*TestSuite needs pandas")
-  CausalEffectEstimationTestSuite = _try_import(
-    "CausalEffectEstimationTestSuite", _pd, "[pyAgrum] CausalEffectEstimationTestSuite needs pandas"
-  )
-  CausalImpactTestSuite = _try_import(
-    "CausalImpactTestSuite",
-    _pd,
-  )
-  CausalModelTestSuite = _try_import(
-    "CausalModelTestSuite",
-    _pd,
-  )
-  CausalNonRegressionTestSuite = _try_import(
-    "CausalNonRegressionTestSuite",
-    _pd,
-  )
-  CLGCanonicalFormTestSuite = _try_import(
-    "CLGCanonicalFormTestSuite",
-    _pd,
-  )
-  CLGInferenceTestSuite = _try_import(
-    "CLGInferenceTestSuite",
-    _pd,
-  )
-  CLGLearningTestSuite = _try_import("CLGLearningTestSuite", _pd, "[pyAgrum] CLG*TestSuite needs pandas")
-  CLGSamplingTestSuite = _try_import(
-    "CLGSamplingTestSuite",
-    _pd,
-  )
-  CLGRandomTestSuite = _try_import(
-    "CLGRandomTestSuite",
-    _pd,
-  )
-  ConfigTestSuite = _try_import(
-    "ConfigTestSuite",
-    True,
-  )
-  CtbnCimTestSuite = _try_import(
-    "CtbnCimTestSuite",
-    True,
-  )
-  CtbnIndependenceTestSuite = _try_import(
-    "CtbnIndependenceTestSuite",
-    True,
-  )
-  CtbnLearnerTestSuite = _try_import(
-    "CtbnLearnerTestSuite",
-    True,
-  )
-  CtbnModelTestSuite = _try_import(
-    "CtbnModelTestSuite",
-    True,
-  )
-  CtbnTrajectoryTestSuite = _try_import(
-    "CtbnTrajectoryTestSuite",
-    True,
-  )
-  DiscreteTypeProcessorTestSuite = _try_import(
-    "DiscreteTypeProcessorTestSuite", _pd, "[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas"
-  )
-  EssentialGraphTestSuite = _try_import(
-    "EssentialGraphTestSuite",
-    True,
-  )
-  EvidenceTestSuite = _try_import(
-    "EvidenceTestSuite",
-    True,
-  )
-  ExplainCausalTest = _try_import("ExplainCausalTest", _pd, "[pyAgrum] ExplainCausalTest needs pandas")
-  GumFormatTestSuite = _try_import(
-    "GumFormatTestSuite",
-    True,
-  )
-  GraphTestSuite = _try_import(
-    "GraphTestSuite",
-    True,
-  )
-  ICIModelsForBNTestSuite = _try_import(
-    "ICIModelsForBNTestSuite",
-    True,
-  )
-  ImportTestSuite = _try_import(
-    "ImportTestSuite",
-    True,
-  )
-  InfluenceDiagramTestSuite = _try_import(
-    "InfluenceDiagramTestSuite",
-    True,
-  )
-  InformationTheoryTestSuite = _try_import(
-    "InformationTheoryTestSuite",
-    True,
-  )
-  InstantiationTestSuite = _try_import(
-    "InstantiationTestSuite",
-    True,
-  )
-  JTInferenceTestSuite = _try_import(
-    "JTInferenceTestSuite",
-    True,
-  )
-  JunctionTreeTestSuite = _try_import(
-    "JunctionTreeTestSuite",
-    True,
-  )
-  LazyPropagationTestSuite = _try_import(
-    "LazyPropagationTestSuite",
-    True,
-  )
-  LoopyBeliefPropagationTestSuite = _try_import(
-    "LoopyBeliefPropagationTestSuite",
-    True,
-  )
-  MarkovBlanketTestSuite = _try_import(
-    "MarkovBlanketTestSuite",
-    True,
-  )
-  MarkovRandomFieldTestSuite = _try_import(
-    "MarkovRandomFieldTestSuite",
-    True,
-  )
-  MixtureModelTestSuite = _try_import(
-    "MixtureModelTestSuite",
-    True,
-  )
-  PicklerTestSuite = _try_import(
-    "PicklerTestSuite",
-    True,
-  )
-  PRMexplorerTestSuite = _try_import(
-    "PRMexplorerTestSuite",
-    True,
-  )
-  RandomGeneratorTestSuite = _try_import(
-    "RandomGeneratorTestSuite",
-    True,
-  )
-  SamplingTestSuite = _try_import(
-    "SamplingTestSuite",
-    True,
-  )
-  StructuralMetricsTestSuite = _try_import(
-    "StructuralMetricsTestSuite",
-    True,
-  )
-  ShallCausalTestSuite = _try_import(
-    "ShallCausalTestSuite",
-    _pd,
-  )
-  ShallConditionalTestSuite = _try_import(
-    "ShallConditionalTestSuite",
-    _pd,
-  )
-  ShallMarginalTestSuite = _try_import(
-    "ShallMarginalTestSuite",
-    _pd,
-  )
-  ShapCausalTestSuite = _try_import("ShapCausalTestSuite", _pd, "[pyAgrum] Shapley(s) needs pandas")
-  ShapConditionalTestSuite = _try_import(
-    "ShapConditionalTestSuite",
-    _pd,
-  )
-  ShapCustomCacheTestSuite = _try_import(
-    "ShapCustomCacheTestSuite",
-    _pd,
-  )
-  ShapMarginalTestSuite = _try_import(
-    "ShapMarginalTestSuite",
-    _pd,
-  )
-  SkbnTestSuite = _try_import(
-    "SkbnTestSuite",
-    _pd_sk,
-  )
-  QBNTestSuite = _try_import(
-    "QBNTestSuite",
-    qiskitFound,
-    "[pyAgrum] pyagrum.qbn needs qiskit and qiskit-aer",
-  )
-  TensorTestSuite = _try_import(
-    "TensorTestSuite",
-    True,
-  )
-  TypeAliasesTestSuite = _try_import(
-    "TypeAliasesTestSuite",
-    True,
-  )
-  VariablesTestSuite = _try_import(
-    "VariablesTestSuite",
-    True,
-  )
-  WorkaroundTestSuite = _try_import(
-    "WorkaroundTestSuite",
-    True,
-  )
-
   tl = []
   module_map: dict[str, str] = {}
 
@@ -323,8 +96,107 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     for test in suite_mod.ts:
       module_map[type(test).__name__] = mod_name
 
+  # (suite_name, condition [, warning_msg])
+  MODULE_SUITES: dict[str, list] = {
+    mod: [_try_import(e[0], e[1], e[2] if len(e) > 2 else "") for e in entries]
+    for mod, entries in {
+      "main": [
+        ("AggregatorsForBNTestSuite",          True),
+        ("AllIncrementalInferenceTestSuite",    True),
+        ("BayesNetTestSuite",                   True),
+        ("BayesNetFragmentTestSuite",           True),
+        ("BNDatabaseGeneratorTestSuite",        True),
+        ("BNLearnerTestSuite",                  True),
+        ("BNListenerTestSuite",                 True),
+        ("ConfigTestSuite",                     True),
+        ("DiscreteTypeProcessorTestSuite",      _pd,     "[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas"),
+        ("EssentialGraphTestSuite",             True),
+        ("EvidenceTestSuite",                   True),
+        ("GraphTestSuite",                      True),
+        ("GumFormatTestSuite",                  True),
+        ("ICIModelsForBNTestSuite",             True),
+        ("ImportTestSuite",                     True),
+        ("InfluenceDiagramTestSuite",           True),
+        ("InformationTheoryTestSuite",          True),
+        ("InstantiationTestSuite",              True),
+        ("JTInferenceTestSuite",                True),
+        ("JunctionTreeTestSuite",               True),
+        ("LazyPropagationTestSuite",            True),
+        ("LoopyBeliefPropagationTestSuite",     True),
+        ("MarkovBlanketTestSuite",              True),
+        ("MarkovRandomFieldTestSuite",          True),
+        ("PicklerTestSuite",                    True),
+        ("PRMexplorerTestSuite",                True),
+        ("RandomGeneratorTestSuite",            True),
+        ("SamplingTestSuite",                   True),
+        ("StructuralMetricsTestSuite",          True),
+        ("TensorTestSuite",                     True),
+        ("TypeAliasesTestSuite",                True),
+        ("VariablesTestSuite",                  True),
+        ("WorkaroundTestSuite",                 True),
+      ],
+      "causaleffect": [
+        ("CausalEffectEstimationTestSuite",     _pd,     "[pyAgrum] CausalEffectEstimationTestSuite needs pandas"),
+      ],
+      "causal": [
+        ("CausalDSepTestSuite",                 _pd,     "[pyAgrum] Causal*TestSuite needs pandas"),
+        ("CausalImpactTestSuite",               _pd),
+        ("CausalModelTestSuite",                _pd),
+        ("CausalNonRegressionTestSuite",        _pd),
+      ],
+      "skbn": [
+        ("BNClassifierTestSuite",               _pd_sk,  "[pyAgrum] pyagrum.lib.classifier needs pandas and scikit-learn"),
+        ("SkbnTestSuite",                       _pd_sk),
+      ],
+      "qbn": [
+        ("QBNTestSuite",                        qiskitFound, "[pyAgrum] pyagrum.qbn needs qiskit and qiskit-aer"),
+      ],
+      "ctbn": [
+        ("CtbnCimTestSuite",                    True),
+        ("CtbnModelTestSuite",                  True),
+        ("CtbnTrajectoryTestSuite",             True),
+        ("CtbnIndependenceTestSuite",           True),
+        ("CtbnLearnerTestSuite",                True),
+      ],
+      "clg": [
+        ("CLGLearningTestSuite",                _pd,     "[pyAgrum] CLG*TestSuite needs pandas"),
+        ("CLGSamplingTestSuite",                _pd),
+        ("CLGRandomTestSuite",                  _pd),
+        ("CLGCanonicalFormTestSuite",           _pd),
+        ("CLGInferenceTestSuite",               _pd),
+        ("CLGSEMTestSuite",                     _pd),
+      ],
+      "bnmixture": [
+        ("MixtureModelTestSuite",               True),
+      ],
+      "explain": [
+        ("ExplainCausalTestSuite",              _pd,     "[pyAgrum] ExplainCausalTestSuite needs pandas"),
+        ("ShapCausalTestSuite",                 _pd,     "[pyAgrum] Shapley(s) needs pandas"),
+        ("ShapConditionalTestSuite",            _pd),
+        ("ShapCustomCacheTestSuite",            _pd),
+        ("ShapMarginalTestSuite",               _pd),
+        ("ShallCausalTestSuite",                _pd),
+        ("ShallConditionalTestSuite",           _pd),
+        ("ShallMarginalTestSuite",              _pd),
+      ],
+    }.items()
+  }
+
+  # reverse maps: suite module name → category name, suite module name → suite module
+  _suite_to_module: dict[str, str] = {}
+  _suite_by_name: dict[str, object] = {}
+  for _mod_name, _suites in MODULE_SUITES.items():
+    for _suite in _suites:
+      if _suite is not None:
+        _key = _suite.__name__.split(".")[-1]
+        _suite_to_module[_key] = _mod_name
+        _suite_by_name[_key] = _suite
+
   if test_suite != "":
-    tl.append(eval(test_suite + "TestSuite.ts"))
+    _key = test_suite + "TestSuite"
+    suite_mod = _suite_by_name.get(_key)
+    mod_name = _suite_to_module.get(_key, "main")
+    _reg(suite_mod, mod_name)
   else:
     # Support "all-mod1-mod2" syntax: run all modules except the listed ones.
     # "all" alone is equivalent to "" (run everything).
@@ -337,87 +209,6 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
     def wants(module: str) -> bool:
       return test_module in {"", module} and module not in excluded_modules
-
-    MODULE_SUITES: dict[str, list] = {
-      "main": [
-        AggregatorsForBNTestSuite,
-        AllIncrementalInferenceTestSuite,
-        BayesNetTestSuite,
-        BayesNetFragmentTestSuite,
-        BNDatabaseGeneratorTestSuite,
-        BNLearnerTestSuite,
-        BNListenerTestSuite,
-        ConfigTestSuite,
-        DiscreteTypeProcessorTestSuite,
-        EssentialGraphTestSuite,
-        EvidenceTestSuite,
-        GraphTestSuite,
-        GumFormatTestSuite,
-        ICIModelsForBNTestSuite,
-        ImportTestSuite,
-        InfluenceDiagramTestSuite,
-        InformationTheoryTestSuite,
-        InstantiationTestSuite,
-        JTInferenceTestSuite,
-        JunctionTreeTestSuite,
-        LazyPropagationTestSuite,
-        LoopyBeliefPropagationTestSuite,
-        MarkovBlanketTestSuite,
-        MarkovRandomFieldTestSuite,
-        PicklerTestSuite,
-        RandomGeneratorTestSuite,
-        TensorTestSuite,
-        PRMexplorerTestSuite,
-        SamplingTestSuite,
-        StructuralMetricsTestSuite,
-        TypeAliasesTestSuite,
-        VariablesTestSuite,
-        WorkaroundTestSuite,
-      ],
-      "causaleffect": [
-        CausalEffectEstimationTestSuite,
-      ],
-      "causal": [
-        CausalDSepTestSuite,
-        CausalImpactTestSuite,
-        CausalModelTestSuite,
-        CausalNonRegressionTestSuite,
-      ],
-      "skbn": [
-        BNClassifierTestSuite,
-        SkbnTestSuite,
-      ],
-      "qbn": [
-        QBNTestSuite,
-      ],
-      "ctbn": [
-        CtbnCimTestSuite,
-        CtbnModelTestSuite,
-        CtbnTrajectoryTestSuite,
-        CtbnIndependenceTestSuite,
-        CtbnLearnerTestSuite,
-      ],
-      "clg": [
-        CLGLearningTestSuite,
-        CLGSamplingTestSuite,
-        CLGRandomTestSuite,
-        CLGCanonicalFormTestSuite,
-        CLGInferenceTestSuite,
-      ],
-      "bnmixture": [
-        MixtureModelTestSuite,
-      ],
-      "explain": [
-        ExplainCausalTest,
-        ShapCausalTestSuite,
-        ShapConditionalTestSuite,
-        ShapCustomCacheTestSuite,
-        ShapMarginalTestSuite,
-        ShallCausalTestSuite,
-        ShallConditionalTestSuite,
-        ShallMarginalTestSuite,
-      ],
-    }
 
     for mod_name, suites in MODULE_SUITES.items():
       if wants(mod_name):
