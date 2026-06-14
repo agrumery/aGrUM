@@ -171,5 +171,58 @@ class CLGInferenceTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(gammaP[0][0], 90000.0, delta=delta)
 
 
+  def test_eraseEvidence(self):
+    clg = CLG()
+    X = GaussianVariable(mu=0.5, sigma=1, name="X")
+    Y = GaussianVariable(mu=0, sigma=2, name="Y")
+    clg.add(X)
+    idY = clg.add(Y)
+    clg.addArc(clg.idFromName("X"), idY, -1)
+    ie = CLGVariableElimination(clg)
+    ie.updateEvidence({"Y": 1.0})
+    self.assertTrue(ie.hasEvidence("Y"))
+    ie.eraseEvidence("Y")
+    self.assertFalse(ie.hasEvidence("Y"))
+    self.assertEqual(ie.nbrEvidence(), 0)
+
+  def test_eraseAllEvidence(self):
+    clg = CLG()
+    X = GaussianVariable(mu=0.5, sigma=1, name="X")
+    Y = GaussianVariable(mu=0, sigma=2, name="Y")
+    clg.add(X)
+    idY = clg.add(Y)
+    clg.addArc(clg.idFromName("X"), idY, -1)
+    ie = CLGVariableElimination(clg)
+    ie.updateEvidence({"X": 0.0, "Y": 1.0})
+    self.assertEqual(ie.nbrEvidence(), 2)
+    ie.eraseAllEvidence()
+    self.assertEqual(ie.nbrEvidence(), 0)
+
+  def test_posterior_observed_variable_is_dirac(self):
+    clg = CLG()
+    X = GaussianVariable(mu=0.5, sigma=1, name="X")
+    Y = GaussianVariable(mu=0, sigma=2, name="Y")
+    clg.add(X)
+    idY = clg.add(Y)
+    clg.addArc(clg.idFromName("X"), idY, -1)
+    ie = CLGVariableElimination(clg)
+    ie.updateEvidence({"X": 0.5})
+    vx = ie.posterior("X")
+    self.assertAlmostEqual(vx.mu(), 0.5)
+    self.assertEqual(vx.sigma(), 0)
+
+  def test_canonicalPosterior_observed_variable_raises(self):
+    clg = CLG()
+    X = GaussianVariable(mu=0.5, sigma=1, name="X")
+    Y = GaussianVariable(mu=0, sigma=2, name="Y")
+    clg.add(X)
+    idY = clg.add(Y)
+    clg.addArc(clg.idFromName("X"), idY, -1)
+    ie = CLGVariableElimination(clg)
+    ie.updateEvidence({"X": 0.5})
+    with self.assertRaises(ValueError):
+      ie.canonicalPosterior("X")
+
+
 ts = unittest.TestSuite()
 addTests(ts, CLGInferenceTestCase)

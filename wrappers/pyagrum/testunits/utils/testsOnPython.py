@@ -160,6 +160,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
       ],
       "clg": [
         ("CLGLearningTestSuite",                _pd,     "[pyAgrum] CLG*TestSuite needs pandas"),
+        ("CLGModelTestSuite",                   _pd),
         ("CLGSamplingTestSuite",                _pd),
         ("CLGRandomTestSuite",                  _pd),
         ("CLGCanonicalFormTestSuite",           _pd),

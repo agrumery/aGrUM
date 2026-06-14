@@ -98,5 +98,50 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(vy.sigma(), fs.stddev_sample("Y"), delta=DELTA)
 
 
+  def test_seed_reproducible(self):
+    clg = CLG()
+    idX = clg.add(GaussianVariable(mu=4.5, sigma=2, name="X"))
+    idY = clg.add(GaussianVariable(mu=3, sigma=2, name="Y"))
+    fs1 = ForwardSampling(clg)
+    fs1.makeSample(100, seed=42)
+    fs2 = ForwardSampling(clg)
+    fs2.makeSample(100, seed=42)
+    import numpy as np
+    self.assertTrue(np.array_equal(fs1.toarray("X"), fs2.toarray("X")))
+    self.assertTrue(np.array_equal(fs1.toarray("Y"), fs2.toarray("Y")))
+
+  def test_variance_theoretical(self):
+    clg = CLG()
+    idX = clg.add(GaussianVariable(mu=0.5, sigma=1, name="X"))
+    idY = clg.add(GaussianVariable(mu=0, sigma=2, name="Y"))
+    clg.addArc(idX, idY, -1)
+    fs = ForwardSampling(clg)
+    fs.makeSample(50000, seed=0)
+    # Var(Y) = sigma_Y^2 + coef^2 * sigma_X^2 = 4 + 1 = 5
+    DELTA = 0.15
+    self.assertAlmostEqual(fs.variance_sample("Y"), 5.0, delta=DELTA)
+
+  def test_topandas_columns(self):
+    clg = CLG()
+    clg.add(GaussianVariable(mu=0, sigma=1, name="A"))
+    clg.add(GaussianVariable(mu=0, sigma=1, name="B"))
+    fs = ForwardSampling(clg)
+    fs.makeSample(10)
+    df = fs.topandas()
+    self.assertEqual(set(df.columns), {"A", "B"})
+    self.assertEqual(len(df), 10)
+
+  def test_covariance_sample_shape(self):
+    clg = CLG()
+    clg.add(GaussianVariable(mu=0, sigma=1, name="A"))
+    clg.add(GaussianVariable(mu=0, sigma=1, name="B"))
+    clg.add(GaussianVariable(mu=0, sigma=1, name="C"))
+    fs = ForwardSampling(clg)
+    fs.makeSample(100)
+    cov = fs.covariance_sample()
+    import numpy as np
+    self.assertEqual(cov.shape, (3, 3))
+
+
 ts = unittest.TestSuite()
 addTests(ts, CLGSamplingTestCase)

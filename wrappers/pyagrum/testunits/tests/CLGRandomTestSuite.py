@@ -191,18 +191,21 @@ class CLGRandomTestCase(pyAgrumTestCase):
   # GaussianVariable sigma validation                                   #
   # ------------------------------------------------------------------ #
 
-  def test_gaussian_variable_sigma_zero_raises(self):
-    with self.assertRaises(ValueError):
-      GaussianVariable(name="X", mu=0, sigma=0)
+  def test_gaussian_variable_sigma_zero_allowed(self):
+    v = GaussianVariable(name="X", mu=0, sigma=0)
+    self.assertEqual(v.sigma(), 0)
 
   def test_gaussian_variable_sigma_negative_raises(self):
     with self.assertRaises(ValueError):
       GaussianVariable(name="X", mu=0, sigma=-1)
 
-  def test_gaussian_variable_set_sigma_invalid_raises(self):
+  def test_gaussian_variable_set_sigma_zero_allowed(self):
     v = GaussianVariable(name="X", mu=0, sigma=1)
-    with self.assertRaises(ValueError):
-      v.setSigma(0)
+    v.setSigma(0)
+    self.assertEqual(v.sigma(), 0)
+
+  def test_gaussian_variable_set_sigma_negative_raises(self):
+    v = GaussianVariable(name="X", mu=0, sigma=1)
     with self.assertRaises(ValueError):
       v.setSigma(-2)
 
