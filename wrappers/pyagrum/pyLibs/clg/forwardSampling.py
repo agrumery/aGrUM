@@ -96,7 +96,10 @@ class ForwardSampling:
     Returns
     -------
     np.ndarray
-      The samples of variable <val> or all the samples if <val> is None.
+      If val is given: 1-D array of N samples for that variable.
+      If val is None: 2-D array of shape (N, nb_variables) where columns
+      follow the insertion order of variables (same as :meth:`CLG.nodes`).
+      Use :meth:`topandas` for named column access.
     """
     if val is None:
       return np.stack([self._id2samples[node] for node in self._model.nodes()]).T

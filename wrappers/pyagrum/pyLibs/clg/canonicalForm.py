@@ -355,10 +355,11 @@ class CanonicalForm:
     h_x = self._h[ns_positions]
     h_y = self._h[v_positions]
 
-    K = K_xx - np.dot(np.dot(K_xy, inv(K_yy)), K_yx)
-    h = h_x - np.dot(np.dot(K_xy, inv(K_yy)), h_y)
+    K_yy_inv = inv(K_yy)
+    K = K_xx - np.dot(np.dot(K_xy, K_yy_inv), K_yx)
+    h = h_x - np.dot(np.dot(K_xy, K_yy_inv), h_y)
     g = self._g + 0.5 * (
-      len(variables) * np.log(2 * np.pi) - np.log(det(K_yy)) + np.dot(np.dot(np.transpose(h_y), inv(K_yy)), h_y)
+      len(variables) * np.log(2 * np.pi) - np.log(det(K_yy)) + np.dot(np.dot(np.transpose(h_y), K_yy_inv), h_y)
     )
 
     return CanonicalForm(new_scope, K, h, g[0][0])
