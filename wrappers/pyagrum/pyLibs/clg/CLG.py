@@ -94,12 +94,15 @@ class CLG:
     return bn
 
   def copy(self, clg: CLG) -> None:
-    for _, variable in clg._id2var.items():
+    for node_id, variable in sorted(clg._id2var.items()):
       new_variable = GaussianVariable(name=variable.name(), mu=variable.mu(), sigma=variable.sigma())
-      self.add(new_variable)
+      self._graph.addNodeWithId(node_id)
+      self._graph.setName(node_id, variable.name())
+      self._id2var[node_id] = new_variable
 
     for (parent, child), coef in clg._arc2coef.items():
-      self.addArc(parent, child, coef)
+      self._graph.addArc(parent, child)
+      self._arc2coef[(parent, child)] = coef
 
   def __repr__(self):
     return str(self)
@@ -342,6 +345,7 @@ class CLG:
     Erase the arc val->val2.
     """
     self._graph.eraseArc(val1, val2)
+    del self._arc2coef[(val1, val2)]
 
   def name(self, node: int) -> str:
     """
@@ -600,7 +604,8 @@ class CLG:
       id2samples[node] = df[self.name(node)].tolist()
 
     # for each sample, compute the pdf of each node
-    for i in range(len(id2samples[0])):
+    n_samples = len(next(iter(id2samples.values())))
+    for i in range(n_samples):
       joint_pdf = 1
       for node in self.nodes():
         # compute the real mu of node considering its parents
@@ -615,46 +620,37 @@ class CLG:
 
     return log_likelihood
 
-  def CompareStructure(self, clg_to_compare: CLG) -> float:
+  def structuralFScore(self, other: "CLG") -> float:
     """
-    We use the f-score to compare the causal structure of the two CLGs.
-    We create two BNs with the same structure as the two CLGs and then compare the two BNs.
+    Compare the structure of two CLGs using the F-score.
 
     Parameters
     ----------
-    clg_to_compare : CLG
+    other : CLG
       The CLG to compare with.
 
     Returns
     -------
     float
-      The f-score of the comparison.
+      The F-score of the structural comparison (1.0 = identical structure).
     """
-    # Create a BN with the same structure as the CLG
-    bn = pyagrum.BayesNet()
-    # add variables
-    for name in self.names():
-      new_variable = pyagrum.LabelizedVariable(name, "a labelized variable", 2)
-      bn.add(new_variable)
-    # add arcs
-    for arc in self.arcs():
-      bn.addArc(arc[0], arc[1])
-
-    # Create a BN with the same structure as the clg_to_compare
-    bn_to_compare = pyagrum.BayesNet()
-    # add variables
-    for name in clg_to_compare.names():
-      new_variable = pyagrum.LabelizedVariable(name, "a labelized variable", 2)
-      bn_to_compare.add(new_variable)
-    # add arcs and edges
-    for arc in clg_to_compare.arcs():
-      bn_to_compare.addArc(arc[0], arc[1])
-
-    # We use the f-score to compare graphs of the two created BNs
-    cmp = gcm.GraphicalBNComparator(bn, bn_to_compare)
-
+    cmp = gcm.GraphicalBNComparator(self.asDiscreteBN(), other.asDiscreteBN())
     return cmp.scores()["fscore"]
 
+
+  def _build_canonical_forms(self) -> dict[int, "CanonicalForm"]:
+    from .canonicalForm import CanonicalForm
+    cf_dict = {}
+    for node in self._graph.nodes():
+      var = self._id2var[node]
+      parents = list(self.parents(node))
+      if len(parents) == 0:
+        cf = CanonicalForm.fromCLG(node, [], var.mu(), var.sigma(), [])
+      else:
+        B = [self._arc2coef[(parent, node)] for parent in parents]
+        cf = CanonicalForm.fromCLG(node, parents, var.mu(), var.sigma(), B)
+      cf_dict[node] = cf
+    return cf_dict
 
   def __str__(self) -> str:
     from . import SEM

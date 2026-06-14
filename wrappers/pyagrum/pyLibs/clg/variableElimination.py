@@ -55,7 +55,7 @@ class CLGVariableElimination:
   def __init__(self, clg: CLG) -> None:
     self._clg = clg
     self._evidence: dict[str, float] = {}
-    self._cf_dict = self._constructCanonicalForms()
+    self._cf_dict = clg._build_canonical_forms()
 
   def updateEvidence(self, evidence: dict[str, float]) -> None:
     """
@@ -184,25 +184,6 @@ class CLGVariableElimination:
     _, t_mu, t_var = posterior_cf.toGaussian()
 
     return GaussianVariable(variable, t_mu[0][0], math.sqrt(t_var[0][0]))
-
-  def _constructCanonicalForms(self) -> dict[int, CanonicalForm]:
-    """
-    Construct the canonical forms associated with the CLG.
-    """
-    cf_dict = {}
-    for node in self._clg._graph.nodes():
-      var = self._clg._id2var[node]
-      parents = list(self._clg.parents(node))
-      if len(parents) == 0:
-        cf = CanonicalForm.fromCLG(node, [], var.mu(), var.sigma(), [])
-      else:
-        B = []
-        for parent in parents:
-          B.append(self._clg._arc2coef[(parent, node)])
-
-        cf = CanonicalForm.fromCLG(node, parents, var.mu(), var.sigma(), B)
-      cf_dict[node] = cf
-    return cf_dict
 
   def _sum_product_ve(
     self, elimination_order: list[int], cf_list: list[CanonicalForm], evidence: dict[str, float]

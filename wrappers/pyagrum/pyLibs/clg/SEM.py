@@ -225,7 +225,7 @@ class SEM:
       try:
         var, terms, stddev = SEM._parse_line(line)
       except SyntaxError as e:
-        raise SyntaxError(f"In line {line}, {e.msg()}.")
+        raise SyntaxError(f"In line {line}, {e.args[0]}.")
       mu = 0.0
       for parent in terms:
         if parent == "":
@@ -270,7 +270,7 @@ class SEM:
 
       # before the "="
       line = clg._id2var[node].name() + "=" + str(clg._id2var[node].mu()) + line
-      line = line.replace("=0+", "=")  # remove the 0
+      line = line.replace("=0.0+", "=").replace("=0+", "=")
 
       lines += line + "\n"
 

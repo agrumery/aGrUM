@@ -45,8 +45,8 @@ class GaussianVariable: Continuous Gaussian Variable
 
 class GaussianVariable:
   def __init__(self, name: str, mu: float, sigma: float):
-    if sigma <= 0:
-      raise ValueError(f"sigma must be strictly positive, got {sigma}.")
+    if sigma < 0:
+      raise ValueError(f"sigma must be non-negative, got {sigma}.")
     self._mu = mu
     self._sigma = sigma
     self._name = name
@@ -107,9 +107,14 @@ class GaussianVariable:
     sigma : float
       The new standard deviation of the variable.
     """
-    if sigma <= 0:
-      raise ValueError(f"sigma must be strictly positive, got {sigma}.")
+    if sigma < 0:
+      raise ValueError(f"sigma must be non-negative, got {sigma}.")
     self._sigma = sigma
+
+  def __eq__(self, other: object) -> bool:
+    if not isinstance(other, GaussianVariable):
+      return NotImplemented
+    return self._name == other._name and self._mu == other._mu and self._sigma == other._sigma
 
   def __str__(self) -> str:
     return f"{self._name}:{self._mu}[{self._sigma}]"

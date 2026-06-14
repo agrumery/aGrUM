@@ -183,7 +183,7 @@ class CLGLearner:
     SD : float
       The supremum deviation.
     """
-    K = len(self.id2samples[0])  # number of samples
+    K = len(next(iter(self.id2samples.values())))  # number of samples
 
     # create sigma: the n_sample × K matrix of i.i.d. Rademacher random variables
     sigma = np.zeros((n_sample, K))
@@ -746,12 +746,12 @@ class CLGLearner:
     for node in self._model.nodes():
       learned_clg.add(
         GaussianVariable(
-          name=self._model.variable(node).name(), mu=float(f"{id2mu[node]:.3f}"), sigma=float(f"{id2sigma[node]:.3f}")
+          name=self._model.variable(node).name(), mu=id2mu[node], sigma=id2sigma[node]
         )
       )
     # Add the arcs to the CLG model
     for arc in arc2coef.keys():
-      learned_clg.addArc(arc[0], arc[1], float(f"{arc2coef[arc]:.2f}"))
+      learned_clg.addArc(arc[0], arc[1], arc2coef[arc])
 
     return learned_clg
 
@@ -772,8 +772,8 @@ class CLGLearner:
 
     # Change the parameters of the CLG model
     for node in clg.nodes():
-      clg.setMu(node, float(f"{id2mu[node]:.3f}"))
-      clg.setSigma(node, float(f"{id2sigma[node]:.3f}"))
+      clg.setMu(node, id2mu[node])
+      clg.setSigma(node, id2sigma[node])
 
     for arc in arc2coef.keys():
-      clg.setCoef(arc[0], arc[1], float(f"{arc2coef[arc]:.2f}"))
+      clg.setCoef(arc[0], arc[1], arc2coef[arc])
