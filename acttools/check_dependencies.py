@@ -257,7 +257,7 @@ def check_gum_dependencies(graph: bool = True, details: bool = True, correction:
   nb_arcs = sum([len(c) for c in deps.values()])
 
   if correction or details:
-    notif("AGrUM headers dependencies")
+    notif("aGrUM headers dependencies")
     notif(f"  + Nbr of headers : {len(deps)}")
     notif(f"  + Nbr of dependencies : {nb_arcs}")
 

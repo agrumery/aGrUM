@@ -1,6 +1,6 @@
 .directory
-wrappers/pyagrum/testunits/tests/resources/SEM/test_model.pkl
-wrappers/pyagrum/testunits/tests/resources/SEM/test_model.sem
+wrappers/pyagrum/testunits/tests/resources/test_model.pkl
+wrappers/pyagrum/testunits/tests/resources/test_model.sem
 .options.*
 wrappers/pyagrum/sphinx/_build
 wrappers/pyagrum/generated-files/*.pyold.py
