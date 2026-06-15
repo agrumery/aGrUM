@@ -42,6 +42,8 @@
 The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a graph structure.
 """
 
+from __future__ import annotations
+
 import pyagrum
 import random
 

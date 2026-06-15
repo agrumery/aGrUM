@@ -239,6 +239,7 @@ def init_params() -> None:
     "stable_abi_off": False,
     "no_gil": False,  # used to disable the GIL in the python wrapper
     "force_swig": False,  # force SWIG to regenerate wrappers
+    "test_build_path": "local",  # "local" or "installed" — which pyAgrum build to test
   }
 
   if cfg.os_platform == "Windows":
@@ -271,6 +272,7 @@ def init_params() -> None:
   cfg.specialActions = ["show", "clean", "purge", "guideline"]
   cfg.swapOptions = {
     "withSQL": {True: "withSQL", False: "withoutSQL"},
+    "test_build_path": {"local": "local", "installed": "installed"},
   }
   cfg.buildPath = {"Release": "release", "Debug": "debug"}
 
@@ -528,6 +530,13 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     action="store_true",
     dest="force_swig",
     default=False,
+  )
+  cfg.parser.add_argument(
+    "--test_build_path",
+    help="which pyAgrum build to test: {local|installed}.",
+    choices=["local", "installed"],
+    dest="test_build_path",
+    default=current["test_build_path"],
   )
 
 

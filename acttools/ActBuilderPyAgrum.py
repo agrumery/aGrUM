@@ -218,7 +218,7 @@ class ActBuilderPyAgrum(ActBuilder):
   def build_post(self) -> str:
     line = ""
     if self.current["action"] == "test":
-      gumTest = "gumTest.py " + self.current["mode"]
+      gumTest = "gumTest.py " + self.current["mode"] + " " + self.current["test_build_path"]
 
       if self.current["tests"] not in {"", "all"}:
         gumTest += " -m all -t " + self.current["tests"]

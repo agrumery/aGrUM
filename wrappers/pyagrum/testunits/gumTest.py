@@ -68,7 +68,7 @@ def go():
 
   parser = argparse.ArgumentParser(prog="gumTest.py", add_help=False)
   parser.add_argument("mode", nargs="?", default="release", choices=["debug", "release"], type=str.lower)
-  parser.add_argument("test_build_path", nargs="?", default="installed", choices=["installed", "local"], type=str.lower)
+  parser.add_argument("test_build_path", nargs="?", default="local", choices=["installed", "local"], type=str.lower)
   parser.add_argument("-m", dest="module", default="")
   parser.add_argument("-t", dest="suite", default="all")
   args, _ = parser.parse_known_args(sys.argv[1:])
