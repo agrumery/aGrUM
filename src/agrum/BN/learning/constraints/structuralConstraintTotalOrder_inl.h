@@ -138,7 +138,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << " is not supported by TotalOrder constraints");
+                                              << " is not supported by the Total Order structural constraint");
       }
     }
 
@@ -194,7 +194,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
-                    "supported by StructuralConstraintTotalOrder");
+                    "supported by the Total Order structural constraint");
       }
     }
 

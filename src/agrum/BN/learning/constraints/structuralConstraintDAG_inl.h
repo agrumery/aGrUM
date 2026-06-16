@@ -40,7 +40,6 @@
 
 #pragma once
 
-
 /** @file
  * @brief the base class for structural constraints imposed by DAGs
  *
@@ -52,9 +51,7 @@
 
 #  include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 
-namespace gum {
-
-  namespace learning {
+  namespace gum::learning {
 
     ALWAYS_INLINE void StructuralConstraintDAG::_lock_() const {
       while (_lock_flag_.test_and_set(std::memory_order_acquire)) {}
@@ -211,7 +208,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << "is not supported by StructuralConstraintDAG");
+                                              << "is not supported by the DAG structural constraint");
       }
     }
 
@@ -283,7 +280,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << " is not supported by DAG constraints")
+                                              << " is not supported by the DAG structural constraints")
       }
     }
 
@@ -303,8 +300,8 @@ namespace gum {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternRootInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
-  } /* namespace learning */
+  } // namespace gum::learning
 
-} /* namespace gum */
+
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

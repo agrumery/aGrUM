@@ -54,9 +54,7 @@
 
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /** @class StructuralConstraintIndegree
      * @brief the class for structural constraints limiting the number of
@@ -268,9 +266,9 @@ namespace gum {
       Size _Indegree_max_indegree_{std::numeric_limits< Size >::max()};
     };
 
-  } /* namespace learning */
+  } // namespace gum::learning
 
-} /* namespace gum */
+
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

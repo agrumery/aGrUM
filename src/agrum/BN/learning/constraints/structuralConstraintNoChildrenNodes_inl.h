@@ -148,7 +148,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
-                    "supported by StructuralConstraintNoChildrenNodes");
+                    "supported by the No-Children Nodes structural constraint");
       }
     }
 
@@ -193,7 +193,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not supported "
-                    "by StructuralConstraintNoChildrenNodes");
+                    "by the No-Children Nodes structural constraint");
       }
     }
 

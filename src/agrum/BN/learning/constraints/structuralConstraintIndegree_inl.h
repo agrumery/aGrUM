@@ -40,7 +40,6 @@
 
 #pragma once
 
-
 /** @file
  * @brief the class for structural constraints limiting the number of parents
  * of nodes in a directed graph
@@ -50,9 +49,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
 
-  namespace learning {
+
+  namespace gum::learning {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
@@ -146,7 +145,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintIndegree");
+                        << " is not supported by the Indegree structural constraint");
       }
     }
 
@@ -190,7 +189,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintIndegree");
+                        << " is not supported by the Indegree structural constraint");
       }
     }
 
@@ -218,8 +217,8 @@ namespace gum {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
-  } /* namespace learning */
+  } // namespace gum::learning
 
-} /* namespace gum */
+
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

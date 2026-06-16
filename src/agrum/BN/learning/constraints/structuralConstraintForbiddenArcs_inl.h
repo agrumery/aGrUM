@@ -40,7 +40,6 @@
 
 #pragma once
 
-
 /** @file
  * @brief the structural constraint for forbidding the creation of some arcs
  * during structure learning
@@ -49,9 +48,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
-
-  namespace learning {
+  namespace gum::learning {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintForbiddenArcs::setGraphAlone(const DiGraph& graph) {}
@@ -142,7 +139,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintForbiddenArcs");
+                        << " is not supported by the Forbidden Arcs structural constraint");
       }
     }
 
@@ -188,7 +185,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintForbiddenArcs");
+                        << " is not supported by the Forbidden Arcs structural constraint");
       }
     }
 
@@ -217,8 +214,8 @@ namespace gum {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternRootInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
-  } /* namespace learning */
+  } // namespace gum::learning
 
-} /* namespace gum */
+
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -199,7 +199,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << "is not supported by StructuralConstraintTabuList");
+                        << "is not supported by the Tabu List structural constraint");
       }
     }
 
@@ -302,7 +302,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << " is not supported by digraph constraint")
+                                              << " is not supported by Tabu List structural constraint")
       }
     }
 

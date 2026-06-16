@@ -263,8 +263,6 @@ namespace gum {
       bool _use_arc_reversals_{true};
       bool _use_arc_triangle_deletions_{true};
 
-      int _nb_inf_{0};
-
       /// computes the new score of node given that we added it a new parent
       double _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent);
 

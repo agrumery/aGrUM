@@ -138,7 +138,7 @@ namespace gum::learning {
       default :
         GUM_ERROR(OperationNotAllowed,
                   "edge modifications are not "
-                  "supported by StructuralConstraintNoParentNodes");
+                  "supported by the No-Parent Nodes structural constraint");
     }
   }
 
@@ -179,7 +179,7 @@ namespace gum::learning {
       default :
         GUM_ERROR(OperationNotAllowed,
                   "edge modifications are not supported "
-                  "by StructuralConstraintNoParentNodes");
+                  "by the No-Parent Nodes structural constraint");
     }
   }
 

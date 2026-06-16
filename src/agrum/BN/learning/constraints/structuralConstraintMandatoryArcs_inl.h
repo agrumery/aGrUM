@@ -141,7 +141,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintMandatoryArcs");
+                        << " is not supported by the Mandatory Arcs structural constraint");
       }
     }
 
@@ -187,7 +187,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintMandatoryArcs");
+                        << " is not supported by the Mandatory Arcs structural constraint");
       }
     }
 

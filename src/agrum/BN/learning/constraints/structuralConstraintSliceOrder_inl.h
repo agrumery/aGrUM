@@ -150,7 +150,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << " is not supported by SliceOrder constraints");
+                                              << " is not supported by the SliceOrder structural constraint");
       }
     }
 
@@ -206,7 +206,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "edge modifications are not "
-                    "supported by StructuralConstraintSliceOrder");
+                    "supported by the Slice Order structural constraint");
       }
     }
 

@@ -40,7 +40,6 @@
 
 #pragma once
 
-
 /** @file
  * @brief the base class for structural constraints used by learning algorithms
  * that learn a directed graph structure
@@ -49,9 +48,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /// sets a new graph from which we will perform checkings
     INLINE void StructuralConstraintDiGraph::setGraphAlone(const DiGraph& graph) {
@@ -143,7 +140,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintDiGraph");
+                        << " is not supported by the DiGraph structural constraint");
       }
     }
 
@@ -205,7 +202,7 @@ namespace gum {
         default :
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation " << change.typeAsString()
-                                              << " is not supported by digraph constraint")
+                                              << " is not supported by the DiGraph structural constraint")
       }
     }
 
@@ -228,8 +225,6 @@ namespace gum {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternRootInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
-  } /* namespace learning */
-
-} /* namespace gum */
+} /* namespace gum::learning */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

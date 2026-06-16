@@ -80,12 +80,7 @@ namespace gum {
           const auto& change = selector.bestChange();
           delta_score        = selector.deltaScore(change, true);
 
-          std::cout << change << "  == score = " << delta_score << std::endl;
-
           if ((nb_changes_applied > 0) || (delta_score > 0)) {
-            // std::cout << "applying " << change.toString()
-            //           << " delta score = " << delta_score << std::endl;
-
             if (delta_score > 0) {
               ++applied_change_with_positive_score;
             } else if (current_score > best_score) {

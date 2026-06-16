@@ -146,7 +146,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintPossibleEdges");
+                        << " is not supported by the Possible Edges structural constraint");
       }
     }
 
@@ -192,7 +192,7 @@ namespace gum {
           GUM_ERROR(OperationNotAllowed,
                     "Graph change operation "
                         << change.typeAsString()
-                        << " is not supported by StructuralConstraintPossibleEdges");
+                        << " is not supported by the Possible Edges structural constraint");
       }
     }
 

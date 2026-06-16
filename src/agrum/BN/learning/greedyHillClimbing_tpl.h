@@ -73,8 +73,6 @@ namespace gum {
           delta_score        = selector.deltaScore(change, true);
 
           if ((delta_score > 0) && continueApproximationScheme(delta_score)) {
-            std::cout << "applying " << change.toString() << " delta score = " << delta_score
-                      << std::endl;
             selector.applyChange(change);
             nb_changes_applied = 1;
             updateApproximationScheme(nb_changes_applied);

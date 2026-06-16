@@ -261,7 +261,6 @@ namespace gum {
     // moved from eps isEnabled below
 
     if (enabled_eps_) {
-      std::cout << "epsilon: current = " << current_epsilon_ << " vs limit = " << eps_ << std::endl;
       if (current_epsilon_ <= eps_) {
         stopScheme_(ApproximationSchemeSTATE::Epsilon);
         return false;

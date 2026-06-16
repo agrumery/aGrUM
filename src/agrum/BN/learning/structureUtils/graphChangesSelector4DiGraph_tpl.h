@@ -492,11 +492,6 @@ namespace gum {
         const double delta = !_graph_->existsArc(Arc(node1, node2))
                                ? _scoreAfterAddingParent_(node2, node1) - _node_scores_[node2]
                                : std::numeric_limits< double >::lowest();
-
-        if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddAdd (" << node1 << ", " << node2 << ") = " << ++_nb_inf_ << std::endl;
-        }
-
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -517,10 +512,6 @@ namespace gum {
         const double delta = _graph_->existsArc(Arc(tail, head))
                                ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
                                : std::numeric_limits< double >::lowest();
-
-        if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddDel (" << tail << ", " << head << ") = " << ++_nb_inf_ << std::endl;
-        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -544,9 +535,6 @@ namespace gum {
                 ? _scoreAfterRemovingParent_(head, tail) - _node_scores_[head]
                       + _scoreAfterAddingParent_(tail, head) - _node_scores_[tail]
                 : std::numeric_limits< double >::lowest();
-        if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddRev (" << tail << ", " << head << ") = " << ++_nb_inf_ << std::endl;
-        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -580,10 +568,6 @@ namespace gum {
                       + _scoreAfterRemovingParent_(node2, node1) - _node_scores_[node2]
                       + _scoreAfterRemovingParents_(node3, node1, node2) - _node_scores_[node3]
                 : std::numeric_limits< double >::lowest();
-        if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddTr1 (" << node1 << ", " << node2 << ", " << node3
-                    << ") = " << ++_nb_inf_ << std::endl;
-        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -614,10 +598,6 @@ namespace gum {
                 ? _scoreAfterAddingParent_(node2, node3) - _node_scores_[node2]
                       + _scoreAfterRemovingParents_(node3, node1, node2) - _node_scores_[node3]
                 : std::numeric_limits< double >::lowest();
-        if (delta == std::numeric_limits< double >::lowest()) {
-          std::cout << "infAddTr2 (" << node1 << ", " << node2 << ", " << node3
-                    << ") = " << ++_nb_inf_ << std::endl;
-        }
         _sorted_changes_.insert(change, delta);
       }
     }
@@ -1376,47 +1356,42 @@ namespace gum {
     /// indicate to the selector that an ArcTriangleDeletion1 has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change, bool update_contraints) {
+        _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& xchange, bool update_contraints) {
+      // save the change because we will remove it before updating the constraints
+      // and we need the change for these updates
+      ArcTriangleDeletion1 change(xchange);
+
       const auto node1 = change.node1();
       const auto node2 = change.node2();
       const auto node3 = change.node3();
 
       // remove the arc triangle deletion
-      _sorted_changes_.erase(change);
-
-      std::cout << "graph: " << node1 << " " << node2 << " " << node3 << " : "
-      <<_graph_->existsArc(node1, node2)
-                                << "  " << _graph_->existsArc(node2, node3)
-                           << "  " << _graph_->existsArc(node1, node3) << std::endl;
+      _sorted_changes_.erase(xchange);
 
       // apply the deletion:
       // 1/ remove arc node2 -> node3
-      std::cout << "aaa" << std::endl;
       _applyArcDeletion_(ArcDeletion(node2, node3), false);
-      std::cout << "bbb" << std::endl;
 
       // 2/ reverse arc node1 -> node2
-      std::cout << "ccc" << std::endl;
       _applyArcReversal_(ArcReversal(node1, node2), false);
-      std::cout << "ddd" << std::endl;
 
       // 3/ reverse node1 -> node3
-      std::cout << "eee" << std::endl;
       _applyArcReversal_(ArcReversal(node1, node3), false);
-      std::cout << "fff" << std::endl;
 
       if (update_contraints) {
         _invariable_constraints_->modifyGraph(change);
-        std::cout << "toto" << std::endl;
         _variable_constraints_->modifyGraph(change);
-        std::cout << "titi" << std::endl;
       }
     }
 
     /// indicate to the selector that an ArcTriangleDeletion2 has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change, bool update_contraints) {
+        _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& xchange, bool update_contraints) {
+      // save the change because we will remove it before updating the constraints
+      // and we need the change for these updates
+      ArcTriangleDeletion2 change(xchange);
+
       const auto node1 = change.node1();
       const auto node2 = change.node2();
       const auto node3 = change.node3();
