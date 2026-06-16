@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import pandas
 from numpy.random import dirichlet
 
 import pyagrum
@@ -47,7 +46,6 @@ import pyagrum.bnmixture as BNM
 
 class IMixtureLearner:
   def __init__(self):
-    self._ref_learner = None
     raise NotImplementedError("Learner interface should not be initialized !")
 
   def updateState(self, learner: pyagrum.BNLearner, **kargs):
@@ -108,7 +106,7 @@ class IMixtureLearner:
       elif zescore == "Log2Likelihood":
         learner.useScoreLog2Likelihood()
       else:
-        raise pyagrum.ArgumentError(f"could not find a suitable score : {kargs['score']}")
+        raise pyagrum.ArgumentError(f"could not find a suitable score : {zescore}")
 
       zecorrec = kargs.get("correction", "MDL")
       if zecorrec == "MDL":
@@ -118,7 +116,7 @@ class IMixtureLearner:
       elif zecorrec == "No correction":
         learner.useNoCorrection()
       else:
-        raise pyagrum.ArgumentError(f"could not find a suitable correction : {kargs['correction']}")
+        raise pyagrum.ArgumentError(f"could not find a suitable correction : {zecorrec}")
 
       zeprior = kargs.get("prior", "-")
       if zeprior == "-":
@@ -140,6 +138,8 @@ class IMixtureLearner:
           learner.useSmoothingPrior(kargs["prior_weight"])
         else:
           learner.useSmoothingPrior()
+      else:
+        raise pyagrum.ArgumentError(f"Unknown prior '{zeprior}'. Use '-', 'Dirichlet', 'BDEU' or 'Smoothing'.")
 
 
 class BNMLearner(IMixtureLearner):
@@ -199,14 +199,20 @@ class BNMLearner(IMixtureLearner):
     BNM.BNMixture
         The learned BNMixture.
     """
+    import pandas
+
     # finding heaviest source
     index, max_w = max(enumerate(self._weights), key=lambda x: x[1])
     if isinstance(self._data[index], str):
       datatmp = pandas.read_csv(self._data[index])
     elif isinstance(self._data[index], pandas.DataFrame):
       datatmp = self._data[index]
+    else:
+      raise pyagrum.ArgumentError(
+        f"Source must be a file path (str) or a pandas.DataFrame, got {type(self._data[index]).__name__}"
+      )
 
-      # setting reference learner
+    # setting reference learner
     if self._template is None:
       self._ref_learner = pyagrum.BNLearner(datatmp)
     else:
@@ -230,6 +236,10 @@ class BNMLearner(IMixtureLearner):
         datatmp = pandas.read_csv(self._data[i])
       elif isinstance(self._data[i], pandas.DataFrame):
         datatmp = self._data[i]
+      else:
+        raise pyagrum.ArgumentError(
+          f"Source must be a file path (str) or a pandas.DataFrame, got {type(self._data[i]).__name__}"
+        )
 
       # creating learner
       if self._template is None:
@@ -268,11 +278,17 @@ class BNMBootstrapLearner(IMixtureLearner):
   """
 
   def __init__(self, source, template=None, N=100):
+    import pandas
+
     # loading source
     if isinstance(source, str):
       self._data = pandas.read_csv(source)
     elif isinstance(source, pandas.DataFrame):
       self._data = source
+    else:
+      raise pyagrum.ArgumentError(
+        f"Source must be a file path (str) or a pandas.DataFrame, got {type(source).__name__}"
+      )
 
     # creating reference learner
     if template is None:
@@ -289,19 +305,22 @@ class BNMBootstrapLearner(IMixtureLearner):
     """
     Learns a reference BN from the database. Then add bootstrap-generated BNs to a BootstrapMixture object.
     """
-    # Learn reference BN
     learner = self._ref_learner
+    n = self._data.shape[0]
+    # reset record weights so consecutive calls produce identical reference BNs
+    for j in range(n):
+      learner.setRecordWeight(j, 1.0)
+
     refBN = learner.learnBN()
     refBN.setProperty("name", "bn0")
     bnm = BNM.BootstrapMixture("bn0", refBN)
 
-    n = self._data.shape[0]
+    alpha = [1 / n] * n
 
     for i in range(self._iter):
-      # updating learner
-      weights_samples = dirichlet([1 / n] * n, self._iter) * n
+      weights_i = dirichlet(alpha) * n
       for j in range(n):
-        learner.setRecordWeight(j, weights_samples[i][j])
+        learner.setRecordWeight(j, weights_i[j])
 
       bni = learner.learnBN()
       namei = f"bn{bnm.size() + 1}"

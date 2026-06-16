@@ -43,18 +43,18 @@
 __author__ = "Pierre-Henri Wuillemin, Rodolphe Tavernier"
 __copyright__ = "(c) 2022-2023 PARIS"
 
-from .BNMixture import BNMixture, BootstrapMixture, IMixture
-from .BNMInference import BNMixtureInference, BootstrapMixtureInference, IMixtureInference
-from .BNMLearning import BNMLearner, BNMBootstrapLearner, IMixtureLearner
+from .BNMixture import BNMixture, BootstrapMixture, saveBNM, loadBNM, loadRetroCompatibleBNM
+from .BNMInference import BNMixtureInference, BootstrapMixtureInference
+from .BNMLearning import BNMLearner, BNMBootstrapLearner
 
 __all__ = [
   "BNMixture",
   "BootstrapMixture",
-  "IMixture",
+  "saveBNM",
+  "loadBNM",
+  "loadRetroCompatibleBNM",
   "BNMixtureInference",
   "BootstrapMixtureInference",
-  "IMixtureInference",
   "BNMLearner",
   "BNMBootstrapLearner",
-  "IMixtureLearner",
 ]

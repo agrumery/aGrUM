@@ -41,28 +41,39 @@ from zipfile import ZipFile
 #                                                                          #
 ############################################################################
 
+import json
+import math
 import os
 import pyagrum
-import shutil
 
 
 class IMixture:
   _bns: dict[str, pyagrum.BayesNet]
   _weights: dict[str, float]
-  _refBN: pyagrum.BayesNet | None = None
-  _refName: str = ""
+  _refBN: pyagrum.BayesNet | None
+  _refName: str
 
   def __init__(self):
     raise NotImplementedError("class IMixture is not supposed to be initialized !")
 
   def __repr__(self):
-    nameref = self._refBN.property("name")
+    nameref = self._refBN.property("name") if self._refBN is not None else "<none>"
     ret = f"(reference BN : {nameref}), "
     for name in self.names():
       ret += "(" + name + ", w=" + str(self._weights[name]) + "), "
     if len(ret) > 1:
       ret = ret[:-2]
     return ret
+
+  @property
+  def refBN(self) -> "pyagrum.BayesNet | None":
+    """Read-only access to the reference BN."""
+    return self._refBN
+
+  @property
+  def refName(self) -> str:
+    """Read-only access to the reference BN name."""
+    return self._refName
 
   def names(self) -> list[str]:
     """
@@ -171,18 +182,16 @@ class IMixture:
     if self._refBN is None:
       self._refBN = pyagrum.BayesNet(bn)
       self._refBN.setProperty("name", "refBN")
-      # self._refTrueName = name
       self._bns[name] = pyagrum.BayesNet(bn)
       self._bns[name].setProperty("name", name)
       self._weights[name] = w
       return
 
-    if bn.names() != self._refBN.names():
+    if set(bn.names()) != set(self._refBN.names()):
       raise pyagrum.InvalidArgument("variables names are different from the reference BN variables")
-    if set([bn.variable(name) for name in bn.names()]) != set(
-      [self._refBN.variable(name) for name in self._refBN.names()]
-    ):
-      raise pyagrum.InvalidArgument("variables are different from those in the reference BN")
+    for vname in self._refBN.names():
+      if bn.variable(vname).domain() != self._refBN.variable(vname).domain():
+        raise pyagrum.InvalidArgument("variables are different from those in the reference BN")
 
     if name in self._bns and bn == self._bns[name]:
       self._weights[name] += w
@@ -222,13 +231,20 @@ class IMixture:
     """
     Checks if the model is normalized (the sum of the weights equals 1).
     """
-    return round(sum(self._weights.values()), 14) == 1
+    return math.isclose(sum(self._weights.values()), 1.0)
 
   def normalize(self) -> None:
     """
     Normalizes the weights.
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If all weights are zero (cannot normalize).
     """
     total = sum(self._weights.values())
+    if total == 0:
+      raise pyagrum.InvalidArgument("Cannot normalize: all weights are zero.")
     for name in self._bns.keys():
       self.setWeight(name, self.weight(name) / total)
 
@@ -284,7 +300,7 @@ class IMixture:
     """
     return {name for name in self.names() if self.weight(name) == 0}
 
-  def existsArc(self, a, b) -> int:
+  def existsArc(self, a: str | int, b: str | int) -> int:
     """
     Counts the number of time arc ``a`` -> ``b`` appears among all BNs in the model.
 
@@ -301,7 +317,7 @@ class IMixture:
         The number of time arc ``a`` -> ``b`` appears.
     """
     count = 0
-    for bn in self.BNs():
+    for bn in self._bns.values():
       if bn.existsArc(a, b):
         count += 1
     return count
@@ -315,38 +331,27 @@ class IMixture:
 
     Returns
     -------
-    pyagrum.LabelizedVariable
+    pyagrum.DiscreteVariable
         The corresponding variable.
     """
     if self._refBN is None:
       raise pyagrum.NotFound("Reference BN is None")
     return self._refBN.variable(name)
 
-  def saveBIF(self, fname: str) -> None:
-    """
-    Saves a Mixture in BIF format and zip it.
-
-    Parameters
-    ----------
-    fname : str
-        Name of the file (without extenstion).
-    """
-    with TemporaryDirectory("", fname, None) as temp_dir:
-      txt_name = f"{temp_dir}/weights.txt"
-      with open(txt_name, "w+") as f_txt:
-        for e in self.weights():
-          f_txt.write(f"{e}:{self.weight(e)}\n")
-      ref_name = "ref_" + self._refBN.property("name")
-      self._refBN.saveBIF(f"{temp_dir}/{ref_name}.bif")
-      for name in self.names():
-        file_name = f"{temp_dir}/{name}.bif"
-        self.BN(name).saveBIF(file_name)
-      shutil.make_archive(fname, "zip", temp_dir)
-
 
 class BNMixture(IMixture):
   """
-  Experimental model. The class contains a list of BNs. Each BN has its own weight.
+  A mixture of Bayesian networks where each network carries a positive weight.
+
+  The **reference BN** (``refBN``) is the BN with the highest weight; it is
+  recomputed by :meth:`updateRef`.  It serves as the structural template for
+  visualisation and variable look-ups, but plays no special role during inference:
+  :class:`~pyagrum.bnmixture.BNMixtureInference` returns the weight-averaged
+  posterior over *all* BNs in the mixture.
+
+  Notes
+  -----
+  This is an experimental model.
   """
 
   def __init__(self):
@@ -359,58 +364,39 @@ class BNMixture(IMixture):
     """
     Updates the reference BN. The new reference BN is the one with maximum weight.
     """
+    if not self._weights:
+      raise pyagrum.InvalidArgument("Cannot update reference: mixture is empty.")
     highest = max(list(self._weights.keys()), key=lambda x: self._weights[x])
     newRef = pyagrum.BayesNet(self._bns[highest])
     newRef.setProperty("name", self._refName)
-    # self._refTrueName = highest
     self._refBN = newRef
-
-  @staticmethod
-  def loadBIF(filename):
-    """
-    Retrieve a BNMixture from a file.
-
-    Parameters
-    ----------
-    filename : str
-        Zip file containing the mixture.
-
-    Returns
-    -------
-    BNMixture
-        The stored BNMixture
-    """
-    with TemporaryDirectory("", "tmp", None) as temp_dir:
-      # temp_dir = mkdtemp("", "tmp", None)
-      with ZipFile(filename, "r") as zf:
-        zf.extractall(temp_dir)
-      weights = {}
-      with open(f"{temp_dir}/weights.txt") as wf:
-        for line in wf:
-          name, w = line.split(":")
-          weights[name] = float(w)
-      bnm = BNMixture()
-      for path in os.listdir(temp_dir):
-        name, _ = path.split(".")
-        if name in weights:
-          bni = pyagrum.BayesNet()
-          bni.loadBIF(f"{temp_dir}/{path}")
-          bnm.add(name, bni, w=weights[name])
-      bnm.updateRef()
-      return bnm
 
 
 class BootstrapMixture(IMixture):
   """
-  Experimental model base on bootstraping. The class contains reference BN and a list of BNs. Each BN has its own weight except for the reference BN.
-  The reference BN is used so that every other BN added later contains the same variables as the reference BN.
+  A mixture of Bayesian networks built by Bayesian bootstrapping a single database.
+
+  The **reference BN** (``refBN``) is learned from the *original* (uniformly
+  weighted) database.  It is the primary estimate: its posteriors are the ones
+  returned by :class:`~pyagrum.bnmixture.BootstrapMixtureInference`.
+
+  The other BNs are learned from Bayesian bootstrap resamples of the same database
+  (Dirichlet-drawn record weights simulate resampling with replacement).  They are
+  used exclusively to quantify the stability of the reference estimate: arc-confidence
+  scores and quantile intervals on posteriors.
 
   Parameters
   ----------
   name : str
-      Name of the first BN to add to the model. It is used for reference.
+      Name given to the reference BN.  Acts as a guard: no BN added later may
+      carry this same name.
   bn : pyagrum.BayesNet
-      BN to add. Adding new BNs to the model is allowed only if the variables are the same in the first and new BN.
+      The reference BN.  Every BN added later must share the same variables.
+
+  Notes
+  -----
+  This is an experimental model.  Use :class:`~pyagrum.bnmixture.BNMBootstrapLearner`
+  to build one automatically from a database.
   """
 
   def __init__(self, name: str, bn: pyagrum.BayesNet):
@@ -420,44 +406,175 @@ class BootstrapMixture(IMixture):
     self._weights = {}
     self._refName = name
 
-  @staticmethod
-  def loadBIF(filename):
-    """
-    Retrieve a BootstrapMixture from a file.
 
-    Parameters
-    ----------
-    filename : str
-        Zip file containing the mixture.
+def saveBNM(bnm: "IMixture", fname: str, fmt: str = "jgum") -> None:
+  """
+  Save a BNMixture or BootstrapMixture to a file.
 
-    Returns
-    -------
-    BootstrapMixture
-        The stored BootstrapMixture.
-    """
-    with TemporaryDirectory("", "tmp", None) as temp_dir:
-      with ZipFile(filename, "r") as zf:
-        zf.extractall(temp_dir)
-      weights = {}
-      with open(f"{temp_dir}/weights.txt") as wf:
-        for line in wf:
-          name, w = line.split(":")
-          weights[name] = float(w)
+  The file is created at the exact path ``fname`` (no extension is appended).
+  Use :func:`loadBNM` with the same name to reload it.
+
+  Parameters
+  ----------
+  bnm : IMixture
+      The mixture model to save.
+  fname : str
+      Exact output filename.
+  fmt : str
+      Format for individual BNs: ``'jgum'`` (JSON, default) or ``'bgum'`` (binary).
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+      If ``fmt`` is neither ``'jgum'`` nor ``'bgum'``.
+  """
+  if fmt not in ("jgum", "bgum"):
+    raise pyagrum.InvalidArgument(f"Unknown format '{fmt}'. Use 'jgum' or 'bgum'.")
+  ref_stem = "ref_" + bnm._refBN.property("name")
+  ref_filename = f"{ref_stem}.{fmt}"
+  for name in bnm.names():
+    if name == ref_stem:
+      raise pyagrum.InvalidArgument(
+        f"Member BN name '{name}' would collide with the reference file '{ref_filename}' in the archive. "
+        "Rename this BN before saving."
+      )
+  with TemporaryDirectory() as temp_dir:
+    with open(f"{temp_dir}/type.txt", "w") as f:
+      f.write(type(bnm).__name__)
+    with open(f"{temp_dir}/weights.txt", "w") as f_txt:
+      for e in bnm.weights():
+        f_txt.write(f"{e}:{bnm.weight(e)}\n")
+    with open(f"{temp_dir}/manifest.json", "w") as f:
+      json.dump({"type": type(bnm).__name__, "ref_file": ref_filename, "weights": bnm.weights()}, f)
+    pyagrum.saveBN(bnm._refBN, f"{temp_dir}/{ref_filename}")
+    for name in bnm.names():
+      pyagrum.saveBN(bnm.BN(name), f"{temp_dir}/{name}.{fmt}")
+    with ZipFile(fname, "w") as zf:
+      for f in os.listdir(temp_dir):
+        zf.write(f"{temp_dir}/{f}", arcname=f)
+
+
+def loadBNM(fname: str) -> "IMixture":
+  """
+  Load a BNMixture or BootstrapMixture from a file saved with :func:`saveBNM`.
+
+  Requires a ``manifest.json`` in the archive (produced by current :func:`saveBNM`).
+  For archives saved by older versions of pyAgrum, use :func:`loadRetroCompatibleBNM`.
+
+  Parameters
+  ----------
+  fname : str
+      Exact filename to read.
+
+  Returns
+  -------
+  IMixture
+      A :class:`BNMixture` or :class:`BootstrapMixture` depending on what was saved.
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+      If ``manifest.json`` is absent from the archive.
+  """
+  with TemporaryDirectory() as temp_dir:
+    with ZipFile(fname, "r") as zf:
+      zf.extractall(temp_dir)
+    manifest_path = f"{temp_dir}/manifest.json"
+    if not os.path.exists(manifest_path):
+      raise pyagrum.InvalidArgument(
+        "No manifest.json found in the archive. "
+        "Use loadRetroCompatibleBNM() for archives saved by older versions of pyAgrum."
+      )
+    with open(manifest_path) as f:
+      manifest = json.load(f)
+    type_name = manifest["type"]
+    ref_file = manifest["ref_file"]
+    weights = manifest["weights"]
+    if type_name == "BootstrapMixture":
       bn_dict = {}
       refBN = None
       for path in os.listdir(temp_dir):
-        name, form = path.split(".")
-        if form != "bif":
+        _, ext = os.path.splitext(path)
+        if ext not in (".jgum", ".bgum"):
           continue
-        bni = pyagrum.BayesNet()
-        bni.loadBIF(f"{temp_dir}/{path}")
-        if name in weights:
-          bn_dict[name] = bni
-          bn_dict[name].setProperty("name", name)
-        else:
+        bni = pyagrum.loadBN(f"{temp_dir}/{path}")
+        if path == ref_file:
           refBN = bni
-          refBN.setProperty("name", name)
+        elif path.removesuffix(ext) in weights:
+          bn_dict[path.removesuffix(ext)] = bni
+      if refBN is None:
+        raise pyagrum.InvalidArgument(f"Reference file '{ref_file}' listed in manifest not found in archive.")
       bnm = BootstrapMixture(refBN.property("name"), refBN)
-      for name in bn_dict:
-        bnm.add(name, bn_dict[name], weights[name])
+      for name, bn in bn_dict.items():
+        bnm.add(name, bn, weights[name])
+      return bnm
+    else:
+      bnm = BNMixture()
+      for path in os.listdir(temp_dir):
+        stem, ext = os.path.splitext(path)
+        if ext not in (".jgum", ".bgum") or path == ref_file or stem not in weights:
+          continue
+        bnm.add(stem, pyagrum.loadBN(f"{temp_dir}/{path}"), w=weights[stem])
+      bnm.updateRef()
+      return bnm
+
+
+def loadRetroCompatibleBNM(fname: str) -> "IMixture":
+  """
+  Load a BNMixture or BootstrapMixture from an archive saved by older versions of
+  pyAgrum (before the ``manifest.json`` format was introduced).
+
+  Uses ``type.txt``, ``weights.txt``, and the ``ref_`` filename prefix heuristic.
+  For archives saved by current pyAgrum, prefer :func:`loadBNM`.
+
+  Parameters
+  ----------
+  fname : str
+      Exact filename to read.
+
+  Returns
+  -------
+  IMixture
+      A :class:`BNMixture` or :class:`BootstrapMixture` depending on what was saved.
+  """
+  with TemporaryDirectory() as temp_dir:
+    with ZipFile(fname, "r") as zf:
+      zf.extractall(temp_dir)
+    type_name = "BNMixture"
+    type_file = f"{temp_dir}/type.txt"
+    if os.path.exists(type_file):
+      with open(type_file) as f:
+        type_name = f.read().strip()
+    weights = {}
+    with open(f"{temp_dir}/weights.txt") as wf:
+      for line in wf:
+        name, w = line.rsplit(":", 1)
+        weights[name] = float(w)
+    if type_name == "BootstrapMixture":
+      bn_dict = {}
+      refBN = None
+      for path in os.listdir(temp_dir):
+        stem, ext = os.path.splitext(path)
+        if ext not in (".jgum", ".bgum"):
+          continue
+        bni = pyagrum.loadBN(f"{temp_dir}/{path}")
+        if stem in weights:
+          bn_dict[stem] = bni
+        elif stem.startswith("ref_"):
+          refBN = bni
+          refBN.setProperty("name", stem[4:])
+      if refBN is None:
+        raise pyagrum.InvalidArgument("No reference BN found in the archive (no 'ref_*' file).")
+      bnm = BootstrapMixture(refBN.property("name"), refBN)
+      for name, bn in bn_dict.items():
+        bnm.add(name, bn, weights[name])
+      return bnm
+    else:
+      bnm = BNMixture()
+      for path in os.listdir(temp_dir):
+        stem, ext = os.path.splitext(path)
+        if ext not in (".jgum", ".bgum") or stem not in weights:
+          continue
+        bnm.add(stem, pyagrum.loadBN(f"{temp_dir}/{path}"), w=weights[stem])
+      bnm.updateRef()
       return bnm

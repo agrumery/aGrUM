@@ -45,36 +45,13 @@ import pyagrum
 import pyagrum.bnmixture as BNM
 
 
-def tensor2ref(ref, tens) -> pyagrum.Tensor:
-  """
-  Returns a copy of ``tens`` but with a reference to ``ref`` 's variables instead. Allow to sum tensors that have the same variables
-  but with different instantiations of them.
-
-  Parameters
-  ----------
-  ref : pyagrum.Tensor
-      Tensor containing variables of reference.
-  tens : pyagrum.Tensor
-      Tensor to convert.
-
-  Returns
-  -------
-  pyagrum.Tensor
-      The converted tensor with values of ``tens`` and variable references of ``ref``.
-  """
-  res = pyagrum.Tensor()
-  for v in tens.names:
-    res.add(ref.variable(v))
-  return res.fillWith(tens)
-
-
 class IMixtureInference:
   """
   Interface class for inference on Mixture models.
   """
 
   def __init__(self):
-    self._inferences = []
+    self._inferences = {}
     raise NotImplementedError("Interface should not be initialized !")
 
   def setEvidence(self, evs) -> None:
@@ -86,14 +63,14 @@ class IMixtureInference:
     evs : dict
         A dict of evidences.
     """
-    for ie in self._inferences:
+    for ie in self._inferences.values():
       ie.setEvidence(evs)
 
   def makeInference(self) -> None:
     """
     Compute inference for all BNs in the model, excluding reference BN.
     """
-    for ie in self._inferences:
+    for ie in self._inferences.values():
       ie.makeInference()
 
   def _posteriors(self, name: str) -> dict[str, pyagrum.Tensor]:
@@ -108,7 +85,7 @@ class IMixtureInference:
     list[pyagrum.Tensor]
         List of (not normalized) posteriors of variable ``name`` for each BN in the model, excluding reference BN.
     """
-    return {ie._model.property("name"): pyagrum.Tensor(ie.posterior(name)) for ie in self._inferences}
+    return {bn_name: pyagrum.Tensor(ie.posterior(name)) for bn_name, ie in self._inferences.items()}
 
 
 class BNMixtureInference(IMixtureInference):
@@ -136,7 +113,7 @@ class BNMixtureInference(IMixtureInference):
     """
     self._bnm = bnm
     self._engine = engine
-    self._inferences = [self._engine(bn) for bn in self._bnm.BNs()]
+    self._inferences = {name: self._engine(self._bnm.BN(name)) for name in self._bnm.names()}
 
   def posterior(self, name: str) -> pyagrum.Tensor:
     """
@@ -149,10 +126,17 @@ class BNMixtureInference(IMixtureInference):
     -------
     pyagrum.Tensor
         The weighted mean (over all the BNs in the model) of the posterior of a variable.
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If the mixture was empty when this inference object was created.
     """
+    if not self._inferences:
+      raise pyagrum.InvalidArgument("Cannot compute posterior: the mixture is empty.")
     posts = self._posteriors(name)
 
-    ret = pyagrum.Tensor()
+    ret = pyagrum.Tensor().fillWith(0)
     for bn_name in posts:
       ret += posts[bn_name].toVarsIn(self._bnm) * self._bnm.weight(bn_name)
 
@@ -176,8 +160,8 @@ class BootstrapMixtureInference(IMixtureInference):
   def __init__(self, bnm: BNM.BootstrapMixture, engine=pyagrum.LazyPropagation):
     self._bnm = bnm
     self._engine = engine
-    self._ref_inference = self._engine(pyagrum.BayesNet(self._bnm._refBN))
-    self._inferences = [self._engine(bn) for bn in self._bnm.BNs()]
+    self._ref_inference = self._engine(pyagrum.BayesNet(self._bnm.refBN))
+    self._inferences = {name: self._engine(self._bnm.BN(name)) for name in self._bnm.names()}
 
   def setEvidence(self, evs) -> None:
     """

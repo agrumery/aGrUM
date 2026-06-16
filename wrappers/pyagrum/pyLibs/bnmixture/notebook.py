@@ -38,29 +38,35 @@
 #                                                                          #
 ############################################################################
 
-import IPython
 import hashlib
 import time
 import csv
 import math
-
-import pyagrum
-import pyagrum.lib.notebook as gnb
-import pyagrum.lib._colors as gumcols
-import pydot as dot
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-import pyagrum.bnmixture as BNM
-import numpy as np
-
-from tempfile import mkdtemp
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+import os
+from tempfile import TemporaryDirectory
 from base64 import encodebytes
 from math import ceil
 
+import pyagrum
+import pyagrum.bnmixture as BNM
+
 _colors = ["lightgreen", "lightseagreen", "green"]
-_cmap1 = LinearSegmentedColormap.from_list("mycmap", _colors)
+
+try:
+  import IPython
+  import pydot as dot
+  import matplotlib.pyplot as plt
+  import matplotlib as mpl
+  import numpy as np
+  import pyagrum.lib.notebook as gnb
+  import pyagrum.lib._colors as gumcols
+  from matplotlib.colors import LinearSegmentedColormap
+  from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+
+  _cmap1 = LinearSegmentedColormap.from_list("mycmap", _colors)
+  _DISPLAY_AVAILABLE = True
+except ImportError:
+  _DISPLAY_AVAILABLE = False
 
 
 def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
@@ -161,13 +167,13 @@ def _compareBNinf(bnref: pyagrum.BayesNet, refdot: dot.Dot, cmpDot: dot.Dot, sca
     node.set("pos", positions[namecut])
 
 
-def getMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
+def getMixtureGraph(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, ref=False):
   """
   HTML representation of a Mixture.
 
   Parameters
   ----------
-  bnm : pyagrum.bnmixture.IMixture
+  bnm : pyagrum.bnmixture.BNMixture | pyagrum.bnmixture.BootstrapMixture
       Mixture to get graph from.
   size : str | int
       Size of the graph.
@@ -178,9 +184,9 @@ def getMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
   if size is None:
     size = pyagrum.config["bnmixture", "default_graph_size"]
 
-  dotref = gnb.BN2dot(bnm._refBN, size=size)
+  dotref = gnb.BN2dot(bnm.refBN, size=size)
   if ref:
-    gnb.flow.add(gnb.getGraph(dotref), caption=f"reference BN : {bnm._refName}")
+    gnb.flow.add(gnb.getGraph(dotref), caption=f"reference BN : {bnm.refName}")
 
   for bn in bnm.BNs():
     name = bn.property("name")
@@ -189,13 +195,13 @@ def getMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
   return gnb.flow.html()
 
 
-def showMixtureGraph(bnm: BNM.IMixture, size=None, ref=False):
+def showMixtureGraph(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, ref=False):
   """
   Display a HTML representation of a Mixture.
 
   Parameters
   ----------
-  bnm : pyagrum.bnmixture.IMixture
+  bnm : pyagrum.bnmixture.BNMixture | pyagrum.bnmixture.BootstrapMixture
       Mixture to get graph from.
   size : str | int
       Size of the graph.
@@ -276,7 +282,8 @@ def BNMixtureInference2dot(
   ie.makeInference()
   stopTime = time.time()
 
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
+  _td = TemporaryDirectory()
+  temp_dir = _td.name + os.sep
 
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
@@ -287,10 +294,10 @@ def BNMixtureInference2dot(
   dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
-  showdag = bnm._refBN.dag() if dag is None else dag
+  showdag = bnm.refBN.dag() if dag is None else dag
 
   for nid in showdag.nodes():
-    name = bnm._refBN.variable(nid).name()
+    name = bnm.refBN.variable(nid).name()
 
     # defaults
     bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
@@ -330,7 +337,7 @@ def BNMixtureInference2dot(
     if arcColor is not None and a in arcColor:
       col = gumcols.proba2color(arcColor[a], cmapArc)
 
-    dotstr += f' "{bnm._refBN.variable(n).name()}"->"{bnm._refBN.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
+    dotstr += f' "{bnm.refBN.variable(n).name()}"->"{bnm.refBN.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
   dotstr += "}"
 
@@ -343,6 +350,7 @@ def BNMixtureInference2dot(
     size = pyagrum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
+  g._td = _td
 
   return g
 
@@ -423,7 +431,8 @@ def BootstrapInference2dot(
   ie.makeInference()
   stopTime = time.time()
 
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
+  _td = TemporaryDirectory()
+  temp_dir = _td.name + os.sep
 
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
@@ -442,7 +451,7 @@ def BootstrapInference2dot(
   dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
-  showdag = bnm._refBN.dag() if dag is None else dag
+  showdag = bnm.refBN.dag() if dag is None else dag
 
   for nid in showdag.nodes():
     name = bnm.variable(nid).name()
@@ -505,6 +514,7 @@ def BootstrapInference2dot(
     size = pyagrum.config["notebook", "default_graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
+  g._td = _td
 
   return g
 
@@ -562,9 +572,10 @@ def showBNMixtureInference(
     cmapNode=cmapNode,
     cmapArc=cmapArc,
   )
-  refdot = gnb.BN2dot(bnm._refBN)
-  _compareBNinf(bnm._refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_histo_scale"]))
+  refdot = gnb.BN2dot(bnm.refBN)
+  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_histo_scale"]))
   IPython.display.display(html)
+  html._td.cleanup()
 
 
 def showBootstrapMixtureInference(
@@ -626,31 +637,34 @@ def showBootstrapMixtureInference(
     quantiles=quantiles,
     show_mu_sigma=show_mu_sigma,
   )
-  refdot = gnb.BN2dot(bnm._refBN)
-  _compareBNinf(bnm._refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_boot_histo_scale"]))
+  refdot = gnb.BN2dot(bnm.refBN)
+  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_boot_histo_scale"]))
   IPython.display.display(html)
+  html._td.cleanup()
 
 
-def _normalizedArcsWeight(bnm: BNM.IMixture):
+def _normalizedArcsWeight(bnm: BNM.BNMixture | BNM.BootstrapMixture):
   """
   Counts arcs in the BNs of the mixture. The value of an arc is the weight of the BN containing it.
   Result is normalized.
   """
-  countArcs = {nod1: {nod2: 0.0 for nod2 in bnm._refBN.names() if nod2 != nod1} for nod1 in bnm._refBN.names()}
-  sum_weight = sum(bnm._weights.values())
+  countArcs = {nod1: {nod2: 0.0 for nod2 in bnm.refBN.names() if nod2 != nod1} for nod1 in bnm.refBN.names()}
+  sum_weight = sum(bnm.weights().values())
+  if sum_weight == 0:
+    raise pyagrum.InvalidArgument("Cannot compute arc weights: all weights are zero.")
 
   mi = 1.0
   ma = 0.0
   for bn_name in bnm.names():
-    bn = bnm.BN(bn_name)
-    w = bnm.weight(bn_name)
+    bn = bnm._bns[bn_name]
+    w = bnm._weights[bn_name]
     for a, b in bn.arcs():
       tail = bn.variable(a).name()
       head = bn.variable(b).name()
       countArcs[tail][head] += w
 
-  for n1 in bnm._refBN.names():
-    for n2 in bnm._refBN.names():
+  for n1 in bnm.refBN.names():
+    for n2 in bnm.refBN.names():
       if n1 == n2:
         continue
       countArcs[n1][n2] = countArcs[n1][n2] / sum_weight
@@ -662,12 +676,12 @@ def _normalizedArcsWeight(bnm: BNM.IMixture):
   return countArcs, mi, ma
 
 
-def _compareArcs2dot(bnm: BNM.IMixture, size=None, refStruct=False):
+def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refStruct=False):
   """
   Pydot representation of a graph that shows confidence value for every arc in the mixture.
   """
   countArcs, mi, ma = _normalizedArcsWeight(bnm)
-  g = gnb.BN2dot(bnm._refBN, size=size)
+  g = gnb.BN2dot(bnm.refBN, size=size)
   positions = {
     l[1]: f"{str(float(l[2]) * 2)},{str(float(l[3]) * 2)}!"
     for l in csv.reader(g.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
@@ -688,7 +702,7 @@ def _compareArcs2dot(bnm: BNM.IMixture, size=None, refStruct=False):
       sep=3,
     )
 
-  for vname in bnm._refBN.names():
+  for vname in bnm.refBN.names():
     if refStruct:
       pos = positions[vname]
     else:
@@ -703,11 +717,11 @@ def _compareArcs2dot(bnm: BNM.IMixture, size=None, refStruct=False):
       )
     )
 
-  for n1 in bnm._refBN.names():
-    for n2 in bnm._refBN.names():
+  for n1 in bnm.refBN.names():
+    for n2 in bnm.refBN.names():
       if n1 == n2 or countArcs[n1][n2] == 0:
         continue
-      if bnm._refBN.existsArc(n1, n2):
+      if bnm.refBN.existsArc(n1, n2):
         style = pyagrum.config["bnmixture", "correct_arc_style"]
       else:
         style = pyagrum.config["bnmixture", "incorrect_arc_style"]
@@ -820,7 +834,7 @@ def arcsCompLegend():
       "d",
       label="Absent from reference",
       style=pyagrum.config["bnmixture", "incorrect_arc_style"],
-      color=pyagrum.config["bnmixture", "correct_arc_color"],
+      color=pyagrum.config["bnmixture", "incorrect_arc_color"],
     )
   )
 
@@ -828,27 +842,6 @@ def arcsCompLegend():
 
 
 ####################### tool box for quantiles #######################
-def tensor2ref(ref, tens) -> pyagrum.Tensor:
-  """
-  Returns a copy of ``tens`` but with a reference to ``ref`` 's variables instead. Allow to sum tensors that have the same variables
-  but with different instantiations of them.
-
-  Parameters
-  ----------
-  ref : pyagrum.Tensor
-      Tensor containing variables of reference.
-  tens : pyagrum.Tensor
-      Tensor to convert.
-
-  Returns
-  -------
-  pyagrum.Tensor
-      The converted tensor with values of ``tens`` and variable references of ``ref``.
-  """
-  res = pyagrum.Tensor()
-  for v in tens.names:
-    res.add(ref.variable(v))
-  return res.fillWith(tens)
 
 
 def _stats(tens):
@@ -862,7 +855,7 @@ def _stats(tens):
     x = v.numerical(i)
     mu += p * x
     mu2 += p * x * x
-  return mu, math.sqrt(mu2 - mu * mu)
+  return mu, math.sqrt(max(0.0, mu2 - mu * mu))
 
 
 def _getTitleHisto(p, show_mu_sigma=False):
