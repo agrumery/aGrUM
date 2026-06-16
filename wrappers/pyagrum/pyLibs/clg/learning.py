@@ -744,11 +744,7 @@ class CLGLearner:
 
     # Add the nodes to the CLG model
     for node in self._model.nodes():
-      learned_clg.add(
-        GaussianVariable(
-          name=self._model.variable(node).name(), mu=id2mu[node], sigma=id2sigma[node]
-        )
-      )
+      learned_clg.add(GaussianVariable(name=self._model.variable(node).name(), mu=id2mu[node], sigma=id2sigma[node]))
     # Add the arcs to the CLG model
     for arc in arc2coef.keys():
       learned_clg.addArc(arc[0], arc[1], arc2coef[arc])

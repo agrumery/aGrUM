@@ -56,83 +56,83 @@ E=9 + D [0.9]
 
 
 class CLGSEMTestCase(pyAgrumTestCase):
-    def test_names(self):
-        model = gclg.CLG()
-        model.add(gclg.GaussianVariable("A", 1, 1))
-        self.assertEqual(model.names(), ["A"])
+  def test_names(self):
+    model = gclg.CLG()
+    model.add(gclg.GaussianVariable("A", 1, 1))
+    self.assertEqual(model.names(), ["A"])
 
-    def test_names_from_sem(self):
-        sem = SEM1
-        model = gclg.SEM.toclg(sem)
-        self.assertEqual(set(model.names()), {"A", "F", "B", "C", "D", "E"})
+  def test_names_from_sem(self):
+    sem = SEM1
+    model = gclg.SEM.toclg(sem)
+    self.assertEqual(set(model.names()), {"A", "F", "B", "C", "D", "E"})
 
-    def test_sem1_IO(self):
-        sem = SEM1
-        model = gclg.SEM.toclg(sem)
+  def test_sem1_IO(self):
+    sem = SEM1
+    model = gclg.SEM.toclg(sem)
 
-        sem_filename = self.agrumSrcDir("test_model.sem")
-        gclg.SEM.saveCLG(model, sem_filename)
-        model2 = gclg.SEM.loadCLG(sem_filename)
-        self.assertEqual(model, model2)
+    sem_filename = self.agrumSrcDir("test_model.sem")
+    gclg.SEM.saveCLG(model, sem_filename)
+    model2 = gclg.SEM.loadCLG(sem_filename)
+    self.assertEqual(model, model2)
 
-    def test_clg_pickle(self):
-        sem = SEM1
-        model = gclg.SEM.toclg(sem)
+  def test_clg_pickle(self):
+    sem = SEM1
+    model = gclg.SEM.toclg(sem)
 
-        pkl_filename = self.agrumSrcDir("test_model.pkl")
-        with open(pkl_filename, "bw") as f:
-            pickle.dump(model, f)
-        with open(pkl_filename, "br") as f:
-            model2 = pickle.load(f)
-        self.assertEqual(model, model2)
+    pkl_filename = self.agrumSrcDir("test_model.pkl")
+    with open(pkl_filename, "bw") as f:
+      pickle.dump(model, f)
+    with open(pkl_filename, "br") as f:
+      model2 = pickle.load(f)
+    self.assertEqual(model, model2)
 
-    def test_negative_coef_roundtrip(self):
-        import warnings
+  def test_negative_coef_roundtrip(self):
+    import warnings
 
-        sem = """
+    sem = """
 A=4.5[0.3]
 B=3-2.5A[0.5]
 """
-        model = gclg.SEM.toclg(sem)
-        sem_out = gclg.SEM.tosem(model)
-        model2 = gclg.SEM.toclg(sem_out)
-        self.assertEqual(model, model2)
-        self.assertAlmostEqual(model2.coefArc("A", "B"), -2.5, delta=1e-9)
+    model = gclg.SEM.toclg(sem)
+    sem_out = gclg.SEM.tosem(model)
+    model2 = gclg.SEM.toclg(sem_out)
+    self.assertEqual(model, model2)
+    self.assertAlmostEqual(model2.coefArc("A", "B"), -2.5, delta=1e-9)
 
-    def test_mu_zero_roundtrip(self):
-        sem = """
+  def test_mu_zero_roundtrip(self):
+    sem = """
 A=0.0[0.3]
 B=0.0+1.5A[0.5]
 """
-        model = gclg.SEM.toclg(sem)
-        sem_out = gclg.SEM.tosem(model)
-        model2 = gclg.SEM.toclg(sem_out)
-        self.assertEqual(model, model2)
-        self.assertAlmostEqual(model2.variable("A").mu(), 0.0, delta=1e-9)
-        self.assertAlmostEqual(model2.variable("B").mu(), 0.0, delta=1e-9)
+    model = gclg.SEM.toclg(sem)
+    sem_out = gclg.SEM.tosem(model)
+    model2 = gclg.SEM.toclg(sem_out)
+    self.assertEqual(model, model2)
+    self.assertAlmostEqual(model2.variable("A").mu(), 0.0, delta=1e-9)
+    self.assertAlmostEqual(model2.variable("B").mu(), 0.0, delta=1e-9)
 
-    def test_sem_instantiation_warns(self):
-        import warnings
+  def test_sem_instantiation_warns(self):
+    import warnings
 
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-            gclg.SEM()
-            self.assertTrue(len(w) > 0)
+    with warnings.catch_warnings(record=True) as w:
+      warnings.simplefilter("always")
+      gclg.SEM()
+      self.assertTrue(len(w) > 0)
 
-    def test_syntax_error_bad_line_raises(self):
-        bad_sem = "X 4.5 [0.3]"
-        with self.assertRaises(SyntaxError):
-            gclg.SEM.toclg(bad_sem)
+  def test_syntax_error_bad_line_raises(self):
+    bad_sem = "X 4.5 [0.3]"
+    with self.assertRaises(SyntaxError):
+      gclg.SEM.toclg(bad_sem)
 
-    def test_comments_ignored(self):
-        sem = """
+  def test_comments_ignored(self):
+    sem = """
 # full comment line
 A=4.5[0.3]  # inline comment
 B=3+1.2A[0.5]
 """
-        model = gclg.SEM.toclg(sem)
-        self.assertIn("A", model.names())
-        self.assertIn("B", model.names())
+    model = gclg.SEM.toclg(sem)
+    self.assertIn("A", model.names())
+    self.assertIn("B", model.names())
 
 
 ts = unittest.TestSuite()

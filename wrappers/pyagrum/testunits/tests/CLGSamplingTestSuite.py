@@ -97,7 +97,6 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(vx.sigma(), fs.stddev_sample("X"), delta=DELTA)
     self.assertAlmostEqual(vy.sigma(), fs.stddev_sample("Y"), delta=DELTA)
 
-
   def test_seed_reproducible(self):
     clg = CLG()
     idX = clg.add(GaussianVariable(mu=4.5, sigma=2, name="X"))
@@ -107,6 +106,7 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     fs2 = ForwardSampling(clg)
     fs2.makeSample(100, seed=42)
     import numpy as np
+
     self.assertTrue(np.array_equal(fs1.toarray("X"), fs2.toarray("X")))
     self.assertTrue(np.array_equal(fs1.toarray("Y"), fs2.toarray("Y")))
 
@@ -140,6 +140,7 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     fs.makeSample(100)
     cov = fs.covariance_sample()
     import numpy as np
+
     self.assertEqual(cov.shape, (3, 3))
 
 

@@ -170,7 +170,6 @@ class CLGInferenceTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(muP[0][0], 7000.0, delta=delta)
     self.assertAlmostEqual(gammaP[0][0], 90000.0, delta=delta)
 
-
   def test_eraseEvidence(self):
     clg = CLG()
     X = GaussianVariable(mu=0.5, sigma=1, name="X")

@@ -52,7 +52,6 @@ C=9+2A+1.5B[0.6]
 
 
 class CLGModelTestCase(pyAgrumTestCase):
-
   # --- add ---
 
   def test_add_returns_id(self):

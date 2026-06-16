@@ -110,18 +110,18 @@ class CLG:
     return str(self)
 
   def __getstate__(self) -> dict:
-    return {'_id2var': self._id2var, '_arc2coef': self._arc2coef}
+    return {"_id2var": self._id2var, "_arc2coef": self._arc2coef}
 
   def __setstate__(self, state: dict) -> None:
     self._graph = pyagrum.DAG()
     self._id2var = {}
     self._arc2coef = {}
-    for node_id in sorted(state['_id2var']):
-      var = state['_id2var'][node_id]
+    for node_id in sorted(state["_id2var"]):
+      var = state["_id2var"][node_id]
       self._graph.addNodeWithId(node_id)
       self._graph.setName(node_id, var.name())
       self._id2var[node_id] = var
-    for (p, c), coef in state['_arc2coef'].items():
+    for (p, c), coef in state["_arc2coef"].items():
       self._graph.addArc(p, c)
       self._arc2coef[(p, c)] = coef
 
@@ -136,14 +136,8 @@ class CLG:
       v1, v2 = self.variable(name), other.variable(name)
       if v1.mu() != v2.mu() or v1.sigma() != v2.sigma():
         return False
-    self_arcs = {
-      (self._id2var[p].name(), self._id2var[c].name()): coef
-      for (p, c), coef in self._arc2coef.items()
-    }
-    other_arcs = {
-      (other._id2var[p].name(), other._id2var[c].name()): coef
-      for (p, c), coef in other._arc2coef.items()
-    }
+    self_arcs = {(self._id2var[p].name(), self._id2var[c].name()): coef for (p, c), coef in self._arc2coef.items()}
+    other_arcs = {(other._id2var[p].name(), other._id2var[c].name()): coef for (p, c), coef in other._arc2coef.items()}
     return self_arcs == other_arcs
 
   def add(self, var: GaussianVariable) -> int:
@@ -639,9 +633,9 @@ class CLG:
     cmp = gcm.GraphicalBNComparator(self.asDiscreteBN(), other.asDiscreteBN())
     return cmp.scores()["fscore"]
 
-
   def _build_canonical_forms(self) -> dict[int, "CanonicalForm"]:
     from .canonicalForm import CanonicalForm
+
     cf_dict = {}
     for node in self._graph.nodes():
       var = self._id2var[node]
@@ -656,20 +650,21 @@ class CLG:
 
   def __str__(self) -> str:
     from . import SEM
+
     return SEM.tosem(self)
 
 
 def randomCLG(
-   nb_variables: int,
-   names: list[str],
-   max_parents: int | None = None,
-   ratio_arc: float = 1.2,
-   MuMin: float = -5,
-   MuMax: float = 5,
-   SigmaMin: float = 1,
-   SigmaMax: float = 10,
-   ArcCoefMin: float = 1,
-   ArcCoefMax: float = 10,
+  nb_variables: int,
+  names: list[str],
+  max_parents: int | None = None,
+  ratio_arc: float = 1.2,
+  MuMin: float = -5,
+  MuMax: float = 5,
+  SigmaMin: float = 1,
+  SigmaMax: float = 10,
+  ArcCoefMin: float = 1,
+  ArcCoefMax: float = 10,
 ) -> CLG:
   """
   Generate a random CLG with ``nb_variables`` variables.
