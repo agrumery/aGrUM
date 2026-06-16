@@ -539,28 +539,6 @@ class TestMixtureModel(pyAgrumTestCase):
         manifest = json.loads(zf.read("manifest.json"))
         self.assertEqual(manifest["type"], "BootstrapMixture")
 
-  def testBug_saveBNM_memberNameCollidesWithRefRaises(self):
-    import tempfile, os
-
-    bn0 = gum.fastBN("A->C<-B")
-    bnm = BNM.BNMixture()
-    bnm.add("ref_refBN", bn0, w=1.0)
-    with tempfile.TemporaryDirectory() as d:
-      with self.assertRaises(gum.InvalidArgument):
-        BNM.saveBNM(bnm, os.path.join(d, "bad.bnm"))
-
-  def testBug_saveBNM_bootstrapMemberNameCollidesWithRefRaises(self):
-    import tempfile, os
-
-    bn0 = gum.fastBN("A->C<-B")
-    bn1 = gum.BayesNet(bn0)
-    bn1.addArc("A", "B")
-    bnb = BNM.BootstrapMixture("myref", bn0)
-    bnb.add("ref_myref", bn1, w=1.0)
-    with tempfile.TemporaryDirectory() as d:
-      with self.assertRaises(gum.InvalidArgument):
-        BNM.saveBNM(bnb, os.path.join(d, "bad.bnb"))
-
   def testLoadBNM_noManifestRaises(self):
     import tempfile, os, zipfile
 

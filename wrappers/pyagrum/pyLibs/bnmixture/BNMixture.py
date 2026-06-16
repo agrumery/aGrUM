@@ -430,25 +430,16 @@ def saveBNM(bnm: "IMixture", fname: str, fmt: str = "jgum") -> None:
   """
   if fmt not in ("jgum", "bgum"):
     raise pyagrum.InvalidArgument(f"Unknown format '{fmt}'. Use 'jgum' or 'bgum'.")
-  ref_stem = "ref_" + bnm._refBN.property("name")
-  ref_filename = f"{ref_stem}.{fmt}"
-  for name in bnm.names():
-    if name == ref_stem:
-      raise pyagrum.InvalidArgument(
-        f"Member BN name '{name}' would collide with the reference file '{ref_filename}' in the archive. "
-        "Rename this BN before saving."
-      )
+  safe_ref_file = f"ref_bn.{fmt}"
+  name_map = {f"bn_{i}": name for i, name in enumerate(bnm.names())}
   with TemporaryDirectory() as temp_dir:
-    with open(f"{temp_dir}/type.txt", "w") as f:
-      f.write(type(bnm).__name__)
-    with open(f"{temp_dir}/weights.txt", "w") as f_txt:
-      for e in bnm.weights():
-        f_txt.write(f"{e}:{bnm.weight(e)}\n")
     with open(f"{temp_dir}/manifest.json", "w") as f:
-      json.dump({"type": type(bnm).__name__, "ref_file": ref_filename, "weights": bnm.weights()}, f)
-    pyagrum.saveBN(bnm._refBN, f"{temp_dir}/{ref_filename}")
-    for name in bnm.names():
-      pyagrum.saveBN(bnm.BN(name), f"{temp_dir}/{name}.{fmt}")
+      json.dump(
+        {"type": type(bnm).__name__, "ref_file": safe_ref_file, "weights": bnm.weights(), "name_map": name_map}, f
+      )
+    pyagrum.saveBN(bnm._refBN, f"{temp_dir}/{safe_ref_file}")
+    for stem, name in name_map.items():
+      pyagrum.saveBN(bnm.BN(name), f"{temp_dir}/{stem}.{fmt}")
     with ZipFile(fname, "w") as zf:
       for f in os.listdir(temp_dir):
         zf.write(f"{temp_dir}/{f}", arcname=f)
@@ -490,31 +481,37 @@ def loadBNM(fname: str) -> "IMixture":
     type_name = manifest["type"]
     ref_file = manifest["ref_file"]
     weights = manifest["weights"]
+    name_map = manifest.get("name_map")  # {safe_stem: original_name}, absent in old archives
+
+    def resolve(stem: str) -> "str | None":
+      name = name_map.get(stem) if name_map else stem
+      return name if name in weights else None
+
     if type_name == "BootstrapMixture":
-      bn_dict = {}
+      members: dict[str, pyagrum.BayesNet] = {}
       refBN = None
       for path in os.listdir(temp_dir):
-        _, ext = os.path.splitext(path)
+        stem, ext = os.path.splitext(path)
         if ext not in (".jgum", ".bgum"):
           continue
-        bni = pyagrum.loadBN(f"{temp_dir}/{path}")
         if path == ref_file:
-          refBN = bni
-        elif path.removesuffix(ext) in weights:
-          bn_dict[path.removesuffix(ext)] = bni
+          refBN = pyagrum.loadBN(f"{temp_dir}/{path}")
+        elif (name := resolve(stem)) is not None:
+          members[name] = pyagrum.loadBN(f"{temp_dir}/{path}")
       if refBN is None:
         raise pyagrum.InvalidArgument(f"Reference file '{ref_file}' listed in manifest not found in archive.")
       bnm = BootstrapMixture(refBN.property("name"), refBN)
-      for name, bn in bn_dict.items():
+      for name, bn in members.items():
         bnm.add(name, bn, weights[name])
       return bnm
     else:
       bnm = BNMixture()
       for path in os.listdir(temp_dir):
         stem, ext = os.path.splitext(path)
-        if ext not in (".jgum", ".bgum") or path == ref_file or stem not in weights:
+        if ext not in (".jgum", ".bgum"):
           continue
-        bnm.add(stem, pyagrum.loadBN(f"{temp_dir}/{path}"), w=weights[stem])
+        if (name := resolve(stem)) is not None:
+          bnm.add(name, pyagrum.loadBN(f"{temp_dir}/{path}"), w=weights[name])
       bnm.updateRef()
       return bnm
 
