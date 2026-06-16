@@ -945,7 +945,7 @@ namespace gum {
     /// indicate to the selector that an ArcAddition has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcAddition_(const ArcAddition& change) {
+        _applyArcAddition_(const ArcAddition& change, bool update_contraints) {
       // get the delta score of the change and update the score of the head
       const auto tail        = change.node1();
       const auto head        = change.node2();
@@ -959,8 +959,10 @@ namespace gum {
       const auto& parents_head  = _graph_->parents(head);
 
       // indicate to the constraints that we added a new arc
-      _invariable_constraints_->modifyGraph(change);
-      _variable_constraints_->modifyGraph(change);
+      if (update_contraints) {
+        _invariable_constraints_->modifyGraph(change);
+        _variable_constraints_->modifyGraph(change);
+      }
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
@@ -1065,7 +1067,7 @@ namespace gum {
     /// indicate to the selector that an ArcDeletion has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcDeletion_(const ArcDeletion& change) {
+        _applyArcDeletion_(const ArcDeletion& change, bool update_contraints) {
       // get the delta score of the change and update the score of the head
       const auto tail        = change.node1();
       const auto head        = change.node2();
@@ -1086,8 +1088,10 @@ namespace gum {
       const auto& parents_head  = _graph_->parents(head);
 
       // indicate to the constraints that we removed the arc
-      _invariable_constraints_->modifyGraph(change);
-      _variable_constraints_->modifyGraph(change);
+      if (update_contraints) {
+        _invariable_constraints_->modifyGraph(change);
+        _variable_constraints_->modifyGraph(change);
+      }
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
@@ -1188,7 +1192,7 @@ namespace gum {
     /// indicate to the selector that an ArcReversal has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcReversal_(const ArcReversal& change) {
+        _applyArcReversal_(const ArcReversal& change, bool update_contraints) {
       // update the graph
       const auto tail = change.node1();
       const auto head = change.node2();
@@ -1218,8 +1222,10 @@ namespace gum {
       _node_scores_[tail] += delta_score_tail;
 
       // indicate to the constraints that we reversed an arc
-      _invariable_constraints_->modifyGraph(change);
-      _variable_constraints_->modifyGraph(change);
+      if (update_contraints) {
+        _invariable_constraints_->modifyGraph(change);
+        _variable_constraints_->modifyGraph(change);
+      }
 
       // now, we have to update the _sorted_changes_. Here, several modifications
       // are needed:
@@ -1370,7 +1376,7 @@ namespace gum {
     /// indicate to the selector that an ArcTriangleDeletion1 has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change) {
+        _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change, bool update_contraints) {
       const auto node1 = change.node1();
       const auto node2 = change.node2();
       const auto node3 = change.node3();
@@ -1378,43 +1384,39 @@ namespace gum {
       // remove the arc triangle deletion
       _sorted_changes_.erase(change);
 
-      std::cout << "graph: " << _graph_->existsArc(node1, node2)
+      std::cout << "graph: " << node1 << " " << node2 << " " << node3 << " : "
+      <<_graph_->existsArc(node1, node2)
                                 << "  " << _graph_->existsArc(node2, node3)
                            << "  " << _graph_->existsArc(node1, node3) << std::endl;
 
       // apply the deletion:
       // 1/ remove arc node2 -> node3
-      _applyArcDeletion_(ArcDeletion(node2, node3));
+      std::cout << "aaa" << std::endl;
+      _applyArcDeletion_(ArcDeletion(node2, node3), false);
+      std::cout << "bbb" << std::endl;
 
-      // 2/ try to reverse arc node1 -> node2
-      const ArcReversal reversal12(node1, node2);
-      bool              reversal12_applied = false;
-      if (_variable_constraints_->checkModification(reversal12)) {
-        _applyArcReversal_(reversal12);
-        reversal12_applied = true;
-      } else {
-        _applyArcDeletion_(ArcDeletion(node1, node2));
+      // 2/ reverse arc node1 -> node2
+      std::cout << "ccc" << std::endl;
+      _applyArcReversal_(ArcReversal(node1, node2), false);
+      std::cout << "ddd" << std::endl;
+
+      // 3/ reverse node1 -> node3
+      std::cout << "eee" << std::endl;
+      _applyArcReversal_(ArcReversal(node1, node3), false);
+      std::cout << "fff" << std::endl;
+
+      if (update_contraints) {
+        _invariable_constraints_->modifyGraph(change);
+        std::cout << "toto" << std::endl;
+        _variable_constraints_->modifyGraph(change);
+        std::cout << "titi" << std::endl;
       }
-
-      // 3/ try to reverse node1 -> node3
-      const ArcReversal reversal13(node1, node3);
-      bool              reversal13_applied = false;
-      if (_variable_constraints_->checkModification(reversal13)) {
-        _applyArcReversal_(reversal13);
-        reversal13_applied = true;
-      } else {
-        _applyArcDeletion_(ArcDeletion(node1, node3));
-      }
-
-      // 4/ finalize the reversal of arcs node1 -> node2 and node1 -> node3
-      if (!reversal12_applied) { _applyArcAddition_(ArcAddition(node2, node1)); }
-      if (!reversal13_applied) { _applyArcAddition_(ArcAddition(node3, node1)); }
     }
 
     /// indicate to the selector that an ArcTriangleDeletion2 has been applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-        _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change) {
+        _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change, bool update_contraints) {
       const auto node1 = change.node1();
       const auto node2 = change.node2();
       const auto node3 = change.node3();
@@ -1424,10 +1426,15 @@ namespace gum {
 
       // apply the deletion:
       // 1/ remove arc node1 -> node3
-      _applyArcDeletion_(ArcDeletion(node1, node3));
+      _applyArcDeletion_(ArcDeletion(node1, node3), false);
 
       // 2/ try to reverse arc node2 -> node4
-      _applyArcReversal_(ArcReversal(node2, node3));
+      _applyArcReversal_(ArcReversal(node2, node3), false);
+
+      if (update_contraints) {
+        _invariable_constraints_->modifyGraph(change);
+        _variable_constraints_->modifyGraph(change);
+      }
     }
 
     /// indicate to the selector that a change has been applied
@@ -1436,23 +1443,23 @@ namespace gum {
         applyChange(const GraphChange& change) {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
-          _applyArcAddition_(static_cast< const ArcAddition& >(change));
+          _applyArcAddition_(static_cast< const ArcAddition& >(change), true);
           break;
 
         case GraphChangeType::ARC_DELETION :
-          _applyArcDeletion_(static_cast< const ArcDeletion& >(change));
+          _applyArcDeletion_(static_cast< const ArcDeletion& >(change), true);
           break;
 
         case GraphChangeType::ARC_REVERSAL :
-          _applyArcReversal_(static_cast< const ArcReversal& >(change));
+          _applyArcReversal_(static_cast< const ArcReversal& >(change), true);
           break;
 
         case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          _applyArcTriangleDeletion1_(static_cast< const ArcTriangleDeletion1& >(change));
+          _applyArcTriangleDeletion1_(static_cast< const ArcTriangleDeletion1& >(change), true);
           break;
 
         case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          _applyArcTriangleDeletion2_(static_cast< const ArcTriangleDeletion2& >(change));
+          _applyArcTriangleDeletion2_(static_cast< const ArcTriangleDeletion2& >(change), true);
           break;
 
         default :

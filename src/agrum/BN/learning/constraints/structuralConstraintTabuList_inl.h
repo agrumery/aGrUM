@@ -56,21 +56,39 @@ namespace gum {
     /// sets the size of the tabu list
     INLINE
     void StructuralConstraintTabuList::setTabuListSize(Size new_size) {
-      if (new_size == _graph_tabuList_.size()) return;
+      if (new_size == _tabuList_size_) return;
 
       if (_graph_tabuList_.size() > new_size) {
-        // remove the oldest elements, so that only newsize elements remain
+        // here, there are more graphs than allowed by the new size.
+        // So remove the oldest elements, so that only new_size elements remain
         while (_graph_tabuList_.size() > new_size) {
           _graph_tabuList_.eraseSecond(_tabuList_offset_);
           ++_tabuList_offset_;
         }
       } else {
-        // add dummy elements
-        while (_graph_tabuList_.size() < new_size) {
-          --_tabuList_offset_;
-          _graph_tabuList_.insert(_current_graph_, _tabuList_offset_);
+        // here, we should keep all the elements in _graph_tabuList_ but we must
+        // ensure that the difference between the max offset in _graph_tabuList_ and
+        // _tabuList_offset_ is equal to new_size
+        if (_tabuList_offset_ + _tabuList_size_ >= new_size) {
+          // we can modify _tabuList_offset_ so that the aforementioned difference
+          // is now equal to new_size
+          _tabuList_offset_ = (_tabuList_offset_ + _tabuList_size_) - new_size;
+        } else {
+          // basically, we should add _tabuList_size_ - new_size to _tabuList_offset_,
+          // except that the value of _tabuList_offset_ would be strictly negative,
+          // which is impossible for an attribute of type Size. Hence, here, instead
+          // of changing _tabuList_offset_, we will add (new_size - _tabuList_size_)
+          // to all the offsets in the tabu list
+          const Size delta = new_size - _tabuList_size_;
+          Bijection< GraphHash, Size > new_tabuList(2 * new_size);
+          for (auto iter = _graph_tabuList_.begin(); iter != _graph_tabuList_.end(); ++iter) {
+            new_tabuList.emplace(iter.first(), iter.second() + delta);
+          }
+          _graph_tabuList_ = std::move(new_tabuList);
         }
       }
+
+      _tabuList_size_ = new_size;
     }
 
     /// sets a new graph from which we will perform checking
@@ -84,11 +102,9 @@ namespace gum {
       }
 
       // set all the elements of the _graph_tabuList_ as the current graph
-      const Size size = _graph_tabuList_.size();
+      _tabuList_offset_ = 0;
       _graph_tabuList_.clear();
-      for (Size i = 0; i < size; ++i) {
-        _graph_tabuList_.insert(_current_graph_, i);
-      }
+      _graph_tabuList_.insert(_current_graph_, _tabuList_size_);
     }
 
     /// checks whether the constraints enable to add arc (x,y)
@@ -192,7 +208,11 @@ namespace gum {
       _graph_tabuList_.eraseSecond(_tabuList_offset_);
       ++_tabuList_offset_;
       _current_graph_ = _xorWithCurrentGraph_(_hashArc_(change.node1(), change.node2()));
-      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
+
+      // The difference between the offset of the inserted graph hash and uList_offset_
+      // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
+      // size is at most equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _tabuList_size_);
     }
 
     /// notify the constraint of a modification of the graph
@@ -200,7 +220,11 @@ namespace gum {
       _graph_tabuList_.eraseSecond(_tabuList_offset_);
       ++_tabuList_offset_;
       _current_graph_ = _xorWithCurrentGraph_(_hashArc_(change.node1(), change.node2()));
-      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
+
+      // The difference between the offset of the inserted graph hash and uList_offset_
+      // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
+      // size is at most equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _tabuList_size_);
     }
 
     /// notify the constraint of a modification of the graph
@@ -210,7 +234,11 @@ namespace gum {
       const auto hashReversal = _xorHashes_(_hashArc_(change.node1(), change.node2()),
                                             _hashArc_(change.node2(), change.node1()));
       _current_graph_ = _xorWithCurrentGraph_(hashReversal);
-      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
+
+      // The difference between the offset of the inserted graph hash and uList_offset_
+      // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
+      // size is at most equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _tabuList_size_);
     }
 
     /// notify the constraint of a modification of the graph
@@ -225,7 +253,11 @@ namespace gum {
       const auto hashTriangle   = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13),
                                             hashDeletion23);
       _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
-      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
+
+      // The difference between the offset of the inserted graph hash and uList_offset_
+      // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
+      // size is at most equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _tabuList_size_);
     }
 
     /// notify the constraint of a modification of the graph
@@ -237,7 +269,11 @@ namespace gum {
       const auto hashDeletion13 = _hashArc_(change.node1(), change.node3());
       const auto hashTriangle   = _xorHashes_(hashReversal23, hashDeletion13);
       _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
-      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _graph_tabuList_.size());
+
+      // The difference between the offset of the inserted graph hash and uList_offset_
+      // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
+      // size is at most equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_offset_ + _tabuList_size_);
     }
 
     /// notify the constraint of a modification of the graph

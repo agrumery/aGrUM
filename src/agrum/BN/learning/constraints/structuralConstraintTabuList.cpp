@@ -59,19 +59,19 @@ namespace gum {
 
     /// default constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList() :
-        _graph_tabuList_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
-      // put dummy elements into the list (this avoids having tests to do
-      // afterwards)
-      for (Size i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
-        _graph_tabuList_.insert(_current_graph_, i); // this is the empty graph
-      }
+        _graph_tabuList_(2 * GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE),
+        _tabuList_size_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+      // insert the empty graph. The difference between the _tabuList_offset_ and
+      // the max offset in _graph_tabuList_ should always be equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_size_);
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
     }
 
     /// constructor starting with a given graph
     StructuralConstraintTabuList::StructuralConstraintTabuList(const DiGraph& graph) :
-        _graph_tabuList_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
+        _graph_tabuList_(2 * GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE),
+        _tabuList_size_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE){
       // compute the hash value of the diGraph
       for (const auto& arc : graph.arcs()) {
         const auto hash_arc = _hashArc_(arc.tail(), arc.head());
@@ -79,9 +79,9 @@ namespace gum {
         _current_graph_.second ^= hash_arc.second;
       }
 
-      for (Size i = 0; i < GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE; ++i) {
-        _graph_tabuList_.insert(_current_graph_, i);
-      }
+      // insert the graph hash. The difference between the _tabuList_offset_ and
+      // the max offset in _graph_tabuList_ should always be equal to _tabuList_size_
+      _graph_tabuList_.insert(_current_graph_, _tabuList_size_);
 
       GUM_CONSTRUCTOR(StructuralConstraintTabuList);
     }
@@ -90,7 +90,7 @@ namespace gum {
     StructuralConstraintTabuList::StructuralConstraintTabuList(
         const StructuralConstraintTabuList& from) :
         _graph_tabuList_(from._graph_tabuList_), _tabuList_offset_(from._tabuList_offset_),
-        _current_graph_(from._current_graph_) {
+        _tabuList_size_(from._tabuList_size_), _current_graph_(from._current_graph_) {
       GUM_CONS_CPY(StructuralConstraintTabuList);
     }
 
@@ -98,7 +98,7 @@ namespace gum {
     StructuralConstraintTabuList::StructuralConstraintTabuList(
         StructuralConstraintTabuList&& from)  noexcept :
         _graph_tabuList_(std::move(from._graph_tabuList_)),
-        _tabuList_offset_(from._tabuList_offset_),
+        _tabuList_offset_(from._tabuList_offset_), _tabuList_size_(from._tabuList_size_),
         _current_graph_(std::move(from._current_graph_)) {
       GUM_CONS_MOV(StructuralConstraintTabuList);
     }
@@ -114,6 +114,7 @@ namespace gum {
       if (this != &from) {
         _graph_tabuList_  = from._graph_tabuList_;
         _tabuList_offset_ = from._tabuList_offset_;
+        _tabuList_size_   = from._tabuList_size_;
         _current_graph_   = from._current_graph_;
       }
       return *this;
@@ -125,6 +126,7 @@ namespace gum {
       if (this != &from) {
         _graph_tabuList_  = std::move(from._graph_tabuList_);
         _tabuList_offset_ = from._tabuList_offset_;
+        _tabuList_size_   = from._tabuList_size_;
         _current_graph_   = from._current_graph_;
       }
       return *this;

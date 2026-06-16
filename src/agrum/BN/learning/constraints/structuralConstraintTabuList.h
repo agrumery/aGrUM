@@ -269,6 +269,9 @@ namespace gum {
       /// the index of the oldest element
       Size _tabuList_offset_{0};
 
+      /// the max size of the tabu list
+      Size _tabuList_size_;
+
       /// the current graph hash
       GraphHash _current_graph_ {0, 0};
 

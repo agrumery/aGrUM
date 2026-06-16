@@ -336,19 +336,24 @@ namespace gum {
 
 
       /// indicate to the selector that an ArcAddition has been applied
-      void _applyArcAddition_(const ArcAddition& change);
+      void _applyArcAddition_(const ArcAddition& change,
+                              bool               update_contraints);
 
       /// indicate to the selector that an ArcDeletion has been applied
-      void _applyArcDeletion_(const ArcDeletion& change);
+      void _applyArcDeletion_(const ArcDeletion& change,
+                              bool               update_contraints);
 
       /// indicate to the selector that an ArcReversal has been applied
-      void _applyArcReversal_(const ArcReversal& change);
+      void _applyArcReversal_(const ArcReversal& change,
+                              bool               update_contraints);
 
       /// indicate to the selector that an ArcTriangleDeletion1 has been applied
-      void _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change);
+      void _applyArcTriangleDeletion1_(const ArcTriangleDeletion1& change,
+                                       bool                        update_contraints);
 
       /// indicate to the selector that an ArcTriangleDeletion2 has been applied
-      void _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change);
+      void _applyArcTriangleDeletion2_(const ArcTriangleDeletion2& change,
+                                       bool                        update_contraints);
     };
 
   } /* namespace learning */
