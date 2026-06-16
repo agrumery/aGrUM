@@ -134,7 +134,7 @@ namespace gum_tests {
         for (const auto node: total_order) {
           rank[node] = i++;
         }
-        //std::cout << "order: " << rank << std::endl;
+        // std::cout << "order: " << rank << std::endl;
       }
 
       std::vector< std::pair< gum::learning::GraphChange, double > > changes;
@@ -273,8 +273,9 @@ namespace gum_tests {
       //           << " delta_score = " << changes[best_i].second << std::endl;
 
       if (changes[best_i].second < epsilon) return false;
-//      std::cout << "apply " << changes[best_i].first << " score : " << changes[best_i].second
-//                << std::endl;
+      //      std::cout << "apply " << changes[best_i].first << " score : " <<
+      //      changes[best_i].second
+      //                << std::endl;
 
       // apply the best change
       switch (changes[best_i].first.type()) {

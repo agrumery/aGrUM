@@ -556,14 +556,12 @@ namespace gum {
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >&
-          setTotalOrder(const std::vector< std::string >& order) {
+      BNLearner< GUM_SCALAR >& setTotalOrder(const std::vector< std::string >& order) {
         IBNLearner::setTotalOrder(order);
         return *this;
       }
 
-      BNLearner< GUM_SCALAR >&
-          setTotalOrder(const Sequence< NodeId >& order) {
+      BNLearner< GUM_SCALAR >& setTotalOrder(const Sequence< NodeId >& order) {
         IBNLearner::setTotalOrder(order);
         return *this;
       }

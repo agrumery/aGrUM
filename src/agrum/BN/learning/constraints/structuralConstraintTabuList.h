@@ -98,7 +98,7 @@ namespace gum {
       StructuralConstraintTabuList(const StructuralConstraintTabuList& from);
 
       /// move constructor
-      StructuralConstraintTabuList(StructuralConstraintTabuList&& from) noexcept ;
+      StructuralConstraintTabuList(StructuralConstraintTabuList&& from) noexcept;
 
       /// destructor
       virtual ~StructuralConstraintTabuList();
@@ -273,24 +273,20 @@ namespace gum {
       Size _tabuList_size_;
 
       /// the current graph hash
-      GraphHash _current_graph_ {0, 0};
+      GraphHash _current_graph_{0, 0};
 
       GraphHash _hashArc_(NodeId node1, NodeId node2) const {
-        return {
-            HashFuncConst::gold * node1 + HashFuncConst::sqrt3 * node2,
-            HashFuncConst::pi * node2 + HashFuncConst::sqrt3 * node1};
+        return {HashFuncConst::gold * node1 + HashFuncConst::sqrt3 * node2,
+                HashFuncConst::pi * node2 + HashFuncConst::sqrt3 * node1};
       }
 
-      GraphHash _xorHashes_(const GraphHash& hash1,
-                                              const GraphHash& hash2) const {
-        return { hash1.first ^ hash2.first, hash1.second ^ hash2.second };
+      GraphHash _xorHashes_(const GraphHash& hash1, const GraphHash& hash2) const {
+        return {hash1.first ^ hash2.first, hash1.second ^ hash2.second};
       }
 
-      GraphHash _xorWithCurrentGraph_ (const GraphHash& hash) const {
+      GraphHash _xorWithCurrentGraph_(const GraphHash& hash) const {
         return _xorHashes_(_current_graph_, hash);
       }
-
-
     };
 
   } /* namespace learning */

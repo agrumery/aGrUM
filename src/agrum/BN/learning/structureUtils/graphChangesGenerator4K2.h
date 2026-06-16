@@ -82,10 +82,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/set.h>
 #include <agrum/base/core/threads/threadExecutor.h>
 #include <agrum/base/core/threads/threads.h>
-#include <agrum/BN/learning/structureUtils/graphChange.h>
 #include <agrum/BN/learning/structureUtils/IGraphChangesGenerator4DiGraph.h>
 
 namespace gum {

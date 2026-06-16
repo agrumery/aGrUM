@@ -79,7 +79,7 @@ namespace gum {
           // which is impossible for an attribute of type Size. Hence, here, instead
           // of changing _tabuList_offset_, we will add (new_size - _tabuList_size_)
           // to all the offsets in the tabu list
-          const Size delta = new_size - _tabuList_size_;
+          const Size                   delta = new_size - _tabuList_size_;
           Bijection< GraphHash, Size > new_tabuList(2 * new_size);
           for (auto iter = _graph_tabuList_.begin(); iter != _graph_tabuList_.end(); ++iter) {
             new_tabuList.emplace(iter.first(), iter.second() + delta);
@@ -95,7 +95,7 @@ namespace gum {
     INLINE void StructuralConstraintTabuList::setGraphAlone(const DiGraph& graph) {
       // compute the hash of the graph
       _current_graph_ = {0, 0};
-      for (const auto& arc : graph.arcs()) {
+      for (const auto& arc: graph.arcs()) {
         const auto hash_arc = _hashArc_(arc.tail(), arc.head());
         _current_graph_.first ^= hash_arc.first;
         _current_graph_.second ^= hash_arc.second;
@@ -131,8 +131,8 @@ namespace gum {
       const auto hashReversal12 = _xorHashes_(_hashArc_(node1, node2), _hashArc_(node2, node1));
       const auto hashReversal13 = _xorHashes_(_hashArc_(node1, node3), _hashArc_(node3, node1));
       const auto hashDeletion23 = _hashArc_(node2, node3);
-      const auto hashTriangle   = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13),
-                                            hashDeletion23);
+      const auto hashTriangle
+          = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13), hashDeletion23);
       return !_graph_tabuList_.existsFirst(_xorWithCurrentGraph_(hashTriangle));
     }
 
@@ -233,7 +233,7 @@ namespace gum {
       ++_tabuList_offset_;
       const auto hashReversal = _xorHashes_(_hashArc_(change.node1(), change.node2()),
                                             _hashArc_(change.node2(), change.node1()));
-      _current_graph_ = _xorWithCurrentGraph_(hashReversal);
+      _current_graph_         = _xorWithCurrentGraph_(hashReversal);
 
       // The difference between the offset of the inserted graph hash and uList_offset_
       // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
@@ -250,8 +250,8 @@ namespace gum {
       const auto hashReversal13 = _xorHashes_(_hashArc_(change.node1(), change.node3()),
                                               _hashArc_(change.node3(), change.node1()));
       const auto hashDeletion23 = _hashArc_(change.node2(), change.node3());
-      const auto hashTriangle   = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13),
-                                            hashDeletion23);
+      const auto hashTriangle
+          = _xorHashes_(_xorHashes_(hashReversal12, hashReversal13), hashDeletion23);
       _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
 
       // The difference between the offset of the inserted graph hash and uList_offset_
@@ -268,7 +268,7 @@ namespace gum {
                                               _hashArc_(change.node3(), change.node2()));
       const auto hashDeletion13 = _hashArc_(change.node1(), change.node3());
       const auto hashTriangle   = _xorHashes_(hashReversal23, hashDeletion13);
-      _current_graph_ = _xorWithCurrentGraph_(hashTriangle);
+      _current_graph_           = _xorWithCurrentGraph_(hashTriangle);
 
       // The difference between the offset of the inserted graph hash and uList_offset_
       // must always be equal to _tabuList_size_ in order to guarantee that the tabu list
@@ -301,8 +301,9 @@ namespace gum {
 
         default :
           GUM_ERROR(OperationNotAllowed,
-                    "Graph change operation " << change.typeAsString()
-                                              << " is not supported by Tabu List structural constraint")
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by Tabu List structural constraint")
       }
     }
 

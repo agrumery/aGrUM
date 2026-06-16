@@ -50,175 +50,169 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 
+namespace gum::learning {
 
-  namespace gum::learning {
+  /// sets a new graph from which we will perform checkings
+  INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
+    // check that the max_indegree corresponds to the graph
+    for (const auto id: graph) {
+      if (!_Indegree_max_parents_.exists(id)) {
+        _Indegree_max_parents_.insert(id, _Indegree_max_indegree_);
+      }
+    }
+  }
 
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintIndegree::setGraphAlone(const DiGraph& graph) {
-      // check that the max_indegree corresponds to the graph
-      for (const auto id: graph) {
-        if (!_Indegree_max_parents_.exists(id)) {
-          _Indegree_max_parents_.insert(id, _Indegree_max_indegree_);
-        }
+  /// checks whether the constraints enable to add arc (x,y)
+  INLINE bool StructuralConstraintIndegree::checkArcAdditionAlone(NodeId x, NodeId y) const {
+    return (_Indegree_max_parents_[y] > _graph_.parents(y).size());
+  }
+
+  /// checks whether the constraints enable to remove arc (x,y)
+  INLINE bool StructuralConstraintIndegree::checkArcDeletionAlone(NodeId x, NodeId y) const {
+    return true;
+  }
+
+  /// checks whether the constraints enable to reverse arc (x,y)
+  INLINE bool StructuralConstraintIndegree::checkArcReversalAlone(NodeId x, NodeId y) const {
+    return (_Indegree_max_parents_[x] > _graph_.parents(x).size());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+  INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                           NodeId node2,
+                                                                           NodeId node3) const {
+    return _Indegree_max_parents_[node1] >= _graph_.parents(node1).size() + 2;
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+  INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                           NodeId node2,
+                                                                           NodeId node3) const {
+    return _Indegree_max_parents_[node2] > _graph_.parents(node1).size();
+  }
+
+  /// checks whether the constraints enable to add an arc
+  INLINE bool
+      StructuralConstraintIndegree::checkModificationAlone(const ArcAddition& change) const {
+    return checkArcAdditionAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to remove an arc
+  INLINE bool
+      StructuralConstraintIndegree::checkModificationAlone(const ArcDeletion& change) const {
+    return checkArcDeletionAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to reverse an arc
+  INLINE bool
+      StructuralConstraintIndegree::checkModificationAlone(const ArcReversal& change) const {
+    return checkArcReversalAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+  INLINE bool StructuralConstraintIndegree::checkModificationAlone(
+      const ArcTriangleDeletion1& change) const {
+    return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+  INLINE bool StructuralConstraintIndegree::checkModificationAlone(
+      const ArcTriangleDeletion2& change) const {
+    return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+  }
+
+  /// checks whether the constraints enable to perform a graph change
+  INLINE bool
+      StructuralConstraintIndegree::checkModificationAlone(const GraphChange& change) const {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        return checkArcAdditionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_DELETION :
+        return checkArcDeletionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_REVERSAL :
+        return checkArcReversalAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation "
+                      << change.typeAsString()
+                      << " is not supported by the Indegree structural constraint");
+    }
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcAddition& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcDeletion& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcReversal& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const GraphChange& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcTriangleDeletion1& change) {}
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
+
+  /// indicates whether a change will always violate the constraint
+  INLINE bool StructuralConstraintIndegree::isAlwaysInvalidAlone(const GraphChange& change) const {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION : return _Indegree_max_parents_[change.node2()] == 0;
+
+      case GraphChangeType::ARC_DELETION : return true;
+
+      case GraphChangeType::ARC_REVERSAL : return _Indegree_max_parents_[change.node1()] == 0;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return _Indegree_max_parents_[change.node1()] < 2;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return _Indegree_max_parents_[change.node2()] < 2;
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation "
+                      << change.typeAsString()
+                      << " is not supported by the Indegree structural constraint");
+    }
+  }
+
+  /// sets the indegree for a given set of nodes
+  INLINE void StructuralConstraintIndegree::setIndegree(const NodeProperty< Size >& max_indegree) {
+    for (const auto& degree: max_indegree) {
+      _Indegree_max_parents_.set(degree.first, degree.second);
+    }
+  }
+
+  /// resets the max indegree
+  INLINE void StructuralConstraintIndegree::setMaxIndegree(Size max_indegree, bool update_all) {
+    if (update_all) {
+      for (auto& degree: _Indegree_max_parents_) {
+        degree.second = max_indegree;
       }
     }
 
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return (_Indegree_max_parents_[y] > _graph_.parents(y).size());
-    }
-
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return true;
-    }
-
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraintIndegree::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return (_Indegree_max_parents_[x] > _graph_.parents(x).size());
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion1Alone(NodeId node1,
-                                                                             NodeId node2,
-                                                                             NodeId node3) const {
-      return _Indegree_max_parents_[node1] >= _graph_.parents(node1).size() + 2;
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintIndegree::checkArcTriangleDeletion2Alone(NodeId node1,
-                                                                             NodeId node2,
-                                                                             NodeId node3) const {
-      return _Indegree_max_parents_[node2] > _graph_.parents(node1).size();
-    }
-
-    /// checks whether the constraints enable to add an arc
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const ArcAddition& change) const {
-      return checkArcAdditionAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const ArcDeletion& change) const {
-      return checkArcDeletionAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const ArcReversal& change) const {
-      return checkArcReversalAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintIndegree::checkModificationAlone(
-        const ArcTriangleDeletion1& change) const {
-      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintIndegree::checkModificationAlone(
-        const ArcTriangleDeletion2& change) const {
-      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-    }
-
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-        StructuralConstraintIndegree::checkModificationAlone(const GraphChange& change) const {
-      switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION :
-          return checkArcAdditionAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_DELETION :
-          return checkArcDeletionAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_REVERSAL :
-          return checkArcReversalAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-
-        default :
-          GUM_ERROR(OperationNotAllowed,
-                    "Graph change operation "
-                        << change.typeAsString()
-                        << " is not supported by the Indegree structural constraint");
-      }
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcAddition& change) {}
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcDeletion& change) {}
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcReversal& change) {}
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const GraphChange& change) {}
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcTriangleDeletion1& change) {
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(const ArcTriangleDeletion2& change) {
-    }
-
-    /// indicates whether a change will always violate the constraint
-    INLINE bool
-        StructuralConstraintIndegree::isAlwaysInvalidAlone(const GraphChange& change) const {
-      switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION : return _Indegree_max_parents_[change.node2()] == 0;
-
-        case GraphChangeType::ARC_DELETION : return true;
-
-        case GraphChangeType::ARC_REVERSAL : return _Indegree_max_parents_[change.node1()] == 0;
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          return _Indegree_max_parents_[change.node1()] < 2;
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          return _Indegree_max_parents_[change.node2()] < 2;
-
-        default :
-          GUM_ERROR(OperationNotAllowed,
-                    "Graph change operation "
-                        << change.typeAsString()
-                        << " is not supported by the Indegree structural constraint");
-      }
-    }
-
-    /// sets the indegree for a given set of nodes
-    INLINE void
-        StructuralConstraintIndegree::setIndegree(const NodeProperty< Size >& max_indegree) {
-      for (const auto& degree: max_indegree) {
-        _Indegree_max_parents_.set(degree.first, degree.second);
-      }
-    }
-
-    /// resets the max indegree
-    INLINE void StructuralConstraintIndegree::setMaxIndegree(Size max_indegree, bool update_all) {
-      if (update_all) {
-        for (auto& degree: _Indegree_max_parents_) {
-          degree.second = max_indegree;
-        }
-      }
-
-      _Indegree_max_indegree_ = max_indegree;
-    }
+    _Indegree_max_indegree_ = max_indegree;
+  }
 
 // include all the methods applicable to the whole class hierarchy
 #  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintIndegree
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
-  } // namespace gum::learning
-
+}   // namespace gum::learning
 
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

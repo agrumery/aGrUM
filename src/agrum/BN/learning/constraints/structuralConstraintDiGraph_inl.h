@@ -50,175 +50,170 @@
 
 namespace gum::learning {
 
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDiGraph::setGraphAlone(const DiGraph& graph) {
-      _graph_ = graph;
+  /// sets a new graph from which we will perform checkings
+  INLINE void StructuralConstraintDiGraph::setGraphAlone(const DiGraph& graph) { _graph_ = graph; }
+
+  /// checks whether the constraints enable to add arc (x,y)
+  INLINE bool StructuralConstraintDiGraph::checkArcAdditionAlone(NodeId x, NodeId y) const {
+    return _graph_.existsNode(x) && _graph_.existsNode(y) && !_graph_.existsArc(x, y);
+  }
+
+  /// checks whether the constraints enable to remove arc (x,y)
+  INLINE bool StructuralConstraintDiGraph::checkArcDeletionAlone(NodeId x, NodeId y) const {
+    return _graph_.existsArc(x, y);
+  }
+
+  /// checks whether the constraints enable to reverse arc (x,y)
+  INLINE bool StructuralConstraintDiGraph::checkArcReversalAlone(NodeId x, NodeId y) const {
+    return _graph_.existsArc(x, y) && !_graph_.existsArc(y, x);
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+  INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion1Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
+    return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
+        && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node2, node1)
+        && !_graph_.existsArc(node3, node1);
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+  INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion2Alone(NodeId node1,
+                                                                          NodeId node2,
+                                                                          NodeId node3) const {
+    return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
+        && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node3, node2);
+  }
+
+  /// checks whether the constraints enable to add an arc
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const ArcAddition& change) const {
+    return checkArcAdditionAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to remove an arc
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const ArcDeletion& change) const {
+    return checkArcDeletionAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to reverse an arc
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const ArcReversal& change) const {
+    return checkArcReversalAlone(change.node1(), change.node2());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion1
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
+      const ArcTriangleDeletion1& change) const {
+    return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+  }
+
+  /// checks whether the constraints enable to apply an ArcTriangleDeletion2
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
+      const ArcTriangleDeletion2& change) const {
+    return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+  }
+
+  /// checks whether the constraints enable to perform a graph change
+  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        return checkArcAdditionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_DELETION :
+        return checkArcDeletionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_REVERSAL :
+        return checkArcReversalAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation "
+                      << change.typeAsString()
+                      << " is not supported by the DiGraph structural constraint");
     }
+  }
 
-    /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool StructuralConstraintDiGraph::checkArcAdditionAlone(NodeId x, NodeId y) const {
-      return _graph_.existsNode(x) && _graph_.existsNode(y) && !_graph_.existsArc(x, y);
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcAddition& change) {
+    _graph_.addArc(change.node1(), change.node2());
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcDeletion& change) {
+    _graph_.eraseArc(Arc(change.node1(), change.node2()));
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcReversal& change) {
+    _graph_.eraseArc(Arc(change.node1(), change.node2()));
+    _graph_.addArc(change.node2(), change.node1());
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion1& change) {
+    _graph_.eraseArc(Arc(change.node1(), change.node2()));
+    _graph_.eraseArc(Arc(change.node1(), change.node3()));
+    _graph_.eraseArc(Arc(change.node2(), change.node3()));
+    _graph_.addArc(change.node2(), change.node1());
+    _graph_.addArc(change.node3(), change.node1());
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion2& change) {
+    _graph_.eraseArc(Arc(change.node1(), change.node3()));
+    _graph_.eraseArc(Arc(change.node2(), change.node3()));
+    _graph_.addArc(change.node3(), change.node1());
+  }
+
+  /// notify the constraint of a modification of the graph
+  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const GraphChange& change) {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
+        break;
+
+      case GraphChangeType::ARC_DELETION :
+        modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
+        break;
+
+      case GraphChangeType::ARC_REVERSAL :
+        modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
+        break;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion1& >(change));
+        break;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion2& >(change));
+        break;
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation "
+                      << change.typeAsString()
+                      << " is not supported by the DiGraph structural constraint")
     }
+  }
 
-    /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool StructuralConstraintDiGraph::checkArcDeletionAlone(NodeId x, NodeId y) const {
-      return _graph_.existsArc(x, y);
+  /// indicates whether a change will always violate the constraint
+  INLINE bool StructuralConstraintDiGraph::isAlwaysInvalidAlone(const GraphChange&) const {
+    return false;
+  }
+
+  /// sets a new graph from which we will perform checkings
+  INLINE void StructuralConstraintDiGraph::setGraph(Size nb_nodes) {
+    _graph_.clear();
+
+    for (NodeId i = 0; i < nb_nodes; ++i) {
+      _graph_.addNodeWithId(i);
     }
-
-    /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool StructuralConstraintDiGraph::checkArcReversalAlone(NodeId x, NodeId y) const {
-      return _graph_.existsArc(x, y) && !_graph_.existsArc(y, x);
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion1Alone(NodeId node1,
-                                                                            NodeId node2,
-                                                                            NodeId node3) const {
-      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
-          && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node2, node1)
-          && !_graph_.existsArc(node3, node1);
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintDiGraph::checkArcTriangleDeletion2Alone(NodeId node1,
-                                                                            NodeId node2,
-                                                                            NodeId node3) const {
-      return _graph_.existsArc(node1, node2) && _graph_.existsArc(node2, node3)
-          && _graph_.existsArc(node1, node3) && !_graph_.existsArc(node3, node2);
-    }
-
-    /// checks whether the constraints enable to add an arc
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const ArcAddition& change) const {
-      return checkArcAdditionAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to remove an arc
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const ArcDeletion& change) const {
-      return checkArcDeletionAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to reverse an arc
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const ArcReversal& change) const {
-      return checkArcReversalAlone(change.node1(), change.node2());
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion1
-    INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
-        const ArcTriangleDeletion1& change) const {
-      return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-    }
-
-    /// checks whether the constraints enable to apply an ArcTriangleDeletion2
-    INLINE bool StructuralConstraintDiGraph::checkModificationAlone(
-        const ArcTriangleDeletion2& change) const {
-      return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-    }
-
-    /// checks whether the constraints enable to perform a graph change
-    INLINE bool
-        StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
-      switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION :
-          return checkArcAdditionAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_DELETION :
-          return checkArcDeletionAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_REVERSAL :
-          return checkArcReversalAlone(change.node1(), change.node2());
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-
-        default :
-          GUM_ERROR(OperationNotAllowed,
-                    "Graph change operation "
-                        << change.typeAsString()
-                        << " is not supported by the DiGraph structural constraint");
-      }
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcAddition& change) {
-      _graph_.addArc(change.node1(), change.node2());
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcDeletion& change) {
-      _graph_.eraseArc(Arc(change.node1(), change.node2()));
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcReversal& change) {
-      _graph_.eraseArc(Arc(change.node1(), change.node2()));
-      _graph_.addArc(change.node2(), change.node1());
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion1& change) {
-      _graph_.eraseArc(Arc(change.node1(), change.node2()));
-      _graph_.eraseArc(Arc(change.node1(), change.node3()));
-      _graph_.eraseArc(Arc(change.node2(), change.node3()));
-      _graph_.addArc(change.node2(), change.node1());
-      _graph_.addArc(change.node3(), change.node1());
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcTriangleDeletion2& change) {
-      _graph_.eraseArc(Arc(change.node1(), change.node3()));
-      _graph_.eraseArc(Arc(change.node2(), change.node3()));
-      _graph_.addArc(change.node3(), change.node1());
-    }
-
-    /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const GraphChange& change) {
-      switch (change.type()) {
-        case GraphChangeType::ARC_ADDITION :
-          modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
-          break;
-
-        case GraphChangeType::ARC_DELETION :
-          modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
-          break;
-
-        case GraphChangeType::ARC_REVERSAL :
-          modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
-          break;
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion1& >(change));
-          break;
-
-        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion2& >(change));
-          break;
-
-        default :
-          GUM_ERROR(OperationNotAllowed,
-                    "Graph change operation " << change.typeAsString()
-                                              << " is not supported by the DiGraph structural constraint")
-      }
-    }
-
-    /// indicates whether a change will always violate the constraint
-    INLINE bool StructuralConstraintDiGraph::isAlwaysInvalidAlone(const GraphChange&) const {
-      return false;
-    }
-
-    /// sets a new graph from which we will perform checkings
-    INLINE void StructuralConstraintDiGraph::setGraph(Size nb_nodes) {
-      _graph_.clear();
-
-      for (NodeId i = 0; i < nb_nodes; ++i) {
-        _graph_.addNodeWithId(i);
-      }
-    }
+  }
 
 // include all the methods applicable to the whole class hierarchy
 #  define GUM_CONSTRAINT_CLASS_NAME StructuralConstraintDiGraph

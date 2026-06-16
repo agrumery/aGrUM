@@ -71,9 +71,9 @@ namespace gum {
     /// constructor starting with a given graph
     StructuralConstraintTabuList::StructuralConstraintTabuList(const DiGraph& graph) :
         _graph_tabuList_(2 * GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE),
-        _tabuList_size_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE){
+        _tabuList_size_(GUM_STRUCTURAL_CONSTRAINT_TABU_LIST_DEFAULT_SIZE) {
       // compute the hash value of the diGraph
-      for (const auto& arc : graph.arcs()) {
+      for (const auto& arc: graph.arcs()) {
         const auto hash_arc = _hashArc_(arc.tail(), arc.head());
         _current_graph_.first ^= hash_arc.first;
         _current_graph_.second ^= hash_arc.second;
@@ -96,7 +96,7 @@ namespace gum {
 
     /// move constructor
     StructuralConstraintTabuList::StructuralConstraintTabuList(
-        StructuralConstraintTabuList&& from)  noexcept :
+        StructuralConstraintTabuList&& from) noexcept :
         _graph_tabuList_(std::move(from._graph_tabuList_)),
         _tabuList_offset_(from._tabuList_offset_), _tabuList_size_(from._tabuList_size_),
         _current_graph_(std::move(from._current_graph_)) {

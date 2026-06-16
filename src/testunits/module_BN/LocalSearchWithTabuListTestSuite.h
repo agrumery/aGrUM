@@ -163,7 +163,7 @@ namespace gum_tests {
       gum::learning::LocalSearchWithTabuList search;
       search.setMaxNbDecreasingChanges(2);
 
-      //try {
+      // try {
       gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
       gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
       CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
