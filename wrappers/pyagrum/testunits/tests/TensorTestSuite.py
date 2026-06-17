@@ -1082,6 +1082,53 @@ class TestOperators(pyAgrumTestCase):
     q = gum.Tensor().add(v).add(w)
     self.assertNotEqual(p, q)
 
+  def testMeanVarianceStdDev(self):
+    x = gum.RangeVariable("x", "x", 0, 3)
+
+    # uniform distribution over {0,1,2,3}: mean=1.5, var=1.25
+    p = gum.Tensor().add(x).fillWith([0.25, 0.25, 0.25, 0.25])
+    self.assertAlmostEqual(p.mean(), 1.5, delta=1e-7)
+    self.assertAlmostEqual(p.variance(), 1.25, delta=1e-7)
+    self.assertAlmostEqual(p.stdDev(), 1.25**0.5, delta=1e-7)
+    self.assertAlmostEqual(p.stdDev() ** 2, p.variance(), delta=1e-7)
+
+    # non-uniform [0.1, 0.2, 0.3, 0.4]: mean=2.0, var=1.0
+    p.fillWith([0.1, 0.2, 0.3, 0.4])
+    self.assertAlmostEqual(p.mean(), 2.0, delta=1e-7)
+    self.assertAlmostEqual(p.variance(), 1.0, delta=1e-7)
+    self.assertAlmostEqual(p.stdDev(), 1.0, delta=1e-7)
+
+    # degenerate: Dirac at 2 → mean=2, var=0
+    p.fillWith([0.0, 0.0, 1.0, 0.0])
+    self.assertAlmostEqual(p.mean(), 2.0, delta=1e-7)
+    self.assertAlmostEqual(p.variance(), 0.0, delta=1e-7)
+    self.assertAlmostEqual(p.stdDev(), 0.0, delta=1e-7)
+
+    # LabelizedVariable is not numerical → raise
+    y = gum.LabelizedVariable("y", "y", 4)
+    q = gum.Tensor().add(y).fillWith([0.25, 0.25, 0.25, 0.25])
+    with self.assertRaises(gum.ArgumentError):
+      q.mean()
+    with self.assertRaises(gum.ArgumentError):
+      q.variance()
+    with self.assertRaises(gum.ArgumentError):
+      q.stdDev()
+
+    # multi-dim tensor → raise
+    z = gum.RangeVariable("z", "z", 0, 1)
+    r = gum.Tensor().add(x).add(z).randomDistribution()
+    with self.assertRaises(gum.ArgumentError):
+      r.mean()
+    with self.assertRaises(gum.ArgumentError):
+      r.variance()
+
+    # not a distribution (sum != 1) → raise
+    s = gum.Tensor().add(x).fillWith([0.1, 0.1, 0.1, 0.1])
+    with self.assertRaises(gum.ArgumentError):
+      s.mean()
+    with self.assertRaises(gum.ArgumentError):
+      s.variance()
+
   def testInverse(self):
     u = gum.LabelizedVariable("u", "u", 4)
     v = gum.LabelizedVariable("v", "v", 2)

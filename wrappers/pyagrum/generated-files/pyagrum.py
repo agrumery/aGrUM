@@ -1097,6 +1097,19 @@ class DiscreteVariable(Variable):
     def isEmpirical(self) -> bool:
         return _pyagrum.DiscreteVariable_isEmpirical(self)
 
+    def isNumerical(self) -> bool:
+        r"""
+
+        Returns True if the variable has a meaningful numerical representation, i.e. it is not a LabelizedVariable.
+
+        Returns
+        -------
+        bool
+            True for DiscretizedVariable, IntegerVariable, NumericalDiscreteVariable and RangeVariable; False for LabelizedVariable.
+
+        """
+        return _pyagrum.DiscreteVariable_isNumerical(self)
+
     def closestIndex(self, val: float) -> int:
         r"""
 
@@ -8877,7 +8890,13 @@ class Tensor(object):
             self (in-place modification)
 
         """
-        return _pyagrum.Tensor_random(self)
+        val = _pyagrum.Tensor_random(self)
+
+        return self
+
+
+        return val
+
 
     def randomDistribution(self) -> "pyagrum.Tensor":
         r"""
@@ -8890,7 +8909,13 @@ class Tensor(object):
             self (in-place modification)
 
         """
-        return _pyagrum.Tensor_randomDistribution(self)
+        val = _pyagrum.Tensor_randomDistribution(self)
+
+        return self
+
+
+        return val
+
 
     def randomCPT(self) -> "pyagrum.Tensor":
         r"""
@@ -8903,7 +8928,13 @@ class Tensor(object):
             self (in-place modification)
 
         """
-        return _pyagrum.Tensor_randomCPT(self)
+        val = _pyagrum.Tensor_randomCPT(self)
+
+        return self
+
+
+        return val
+
 
     def noising(self, alpha: float) -> "pyagrum.Tensor":
         r"""
@@ -8921,7 +8952,13 @@ class Tensor(object):
             self (in-place modification)
 
         """
-        return _pyagrum.Tensor_noising(self, alpha)
+        val = _pyagrum.Tensor_noising(self, alpha)
+
+        return self
+
+
+        return val
+
 
     def isNonZeroMap(self) -> "pyagrum.Tensor":
         r"""
@@ -9038,6 +9075,60 @@ class Tensor(object):
 
         """
         return _pyagrum.Tensor_entropy(self)
+
+    def mean(self) -> float:
+        r"""
+
+        Compute the mean of a univariate numerical discrete distribution.
+
+        Raises
+        ------
+        pyagrum.ArgumentError
+          If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+        Returns
+        -------
+        float
+          the mean of the distribution
+
+        """
+        return _pyagrum.Tensor_mean(self)
+
+    def variance(self) -> float:
+        r"""
+
+        Compute the variance of a univariate numerical discrete distribution.
+
+        Raises
+        ------
+        pyagrum.ArgumentError
+          If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+        Returns
+        -------
+        float
+          the variance of the distribution
+
+        """
+        return _pyagrum.Tensor_variance(self)
+
+    def stdDev(self) -> float:
+        r"""
+
+        Compute the standard deviation of a univariate numerical discrete distribution.
+
+        Raises
+        ------
+        pyagrum.ArgumentError
+          If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+        Returns
+        -------
+        float
+          the standard deviation of the distribution
+
+        """
+        return _pyagrum.Tensor_stdDev(self)
 
     def reorganize(self, *args) -> "pyagrum.Tensor":
         r"""

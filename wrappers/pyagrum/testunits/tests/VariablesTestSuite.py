@@ -158,6 +158,13 @@ class DiscreteVariableTestCase(VariablesTestCase):
     self.assertEqual(not_imported_api("DiscretizedVariable"), {"eraseTicks", "setEmpirical", "addTick"})
     self.assertEqual(not_imported_api("IntegerVariable"), {"eraseValue", "eraseValues", "addValue", "changeValue"})
 
+  def testIsNumerical(self):
+    self.assertFalse(gum.LabelizedVariable("v", "v", 3).isNumerical())
+    self.assertTrue(gum.RangeVariable("v", "v", 0, 5).isNumerical())
+    self.assertTrue(gum.IntegerVariable("v", "v", [0, 1, 2]).isNumerical())
+    self.assertTrue(gum.NumericalDiscreteVariable("v", "v", [0.0, 1.5, 3.0]).isNumerical())
+    self.assertTrue(gum.DiscretizedVariable("v", "v", [0.0, 1.0, 2.0]).isNumerical())
+
 
 class LabelizedVariableTestCase(VariablesTestCase):
   def testCopyConstructor(self):
