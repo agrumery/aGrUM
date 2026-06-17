@@ -41,10 +41,13 @@ Class BNLearner
 
     * - `isConstraintBased <#pyagrum.BNLearner.isConstraintBased>`_
       - `isScoreBased <#pyagrum.BNLearner.isScoreBased>`_
-      - `useGreedyHillClimbing <#pyagrum.BNLearner.useGreedyHillClimbing>`_
-    * - `useK2 <#pyagrum.BNLearner.useK2>`_
+      - `useExtendedGreedyHillClimbing <#pyagrum.BNLearner.useExtendedGreedyHillClimbing>`_
+    * - `useGreedyHillClimbing <#pyagrum.BNLearner.useGreedyHillClimbing>`_
+      - `useK2 <#pyagrum.BNLearner.useK2>`_
       - `useLocalSearchWithTabuList <#pyagrum.BNLearner.useLocalSearchWithTabuList>`_
-      - `useMIIC <#pyagrum.BNLearner.useMIIC>`_
+    * - `useMIIC <#pyagrum.BNLearner.useMIIC>`_
+      -
+      -
 
 
 .. list-table:: Managing structure learning constraints:
@@ -67,8 +70,20 @@ Class BNLearner
       -
     * - `setMaxIndegree <#pyagrum.BNLearner.setMaxIndegree>`_
       - `setSliceOrder <#pyagrum.BNLearner.setSliceOrder>`_
-      -
+      - `setTotalOrder <#pyagrum.BNLearner.setTotalOrder>`_
 
+.. list-table:: Managing learning operations allowed:
+    :class: method-summary
+    :align: left
+    :widths: 10 10 10
+    :header-rows: 0
+
+    * - `allowArcAdditions <#pyagrum.BNLearner.allowArcAdditions>`_
+      - `allowArcDeletions <#pyagrum.BNLearner.allowArcDeletions>`_
+      - `allowArcReversals <#pyagrum.BNLearner.allowArcReversals>`_
+    * - `allowArcTriangleDeletions <#pyagrum.BNLearner.allowArcTriangleDeletions>`_
+      -
+      -
 
 .. list-table:: Scores and priors (for structure learning):
     :class: method-summary

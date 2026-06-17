@@ -39,11 +39,6 @@
  ****************************************************************************/
 
 
-
-
-
-
-
 %feature("docstring") gum::learning::BNLearner
 "
 This class provides functionality for learning Bayesian Networks from data.
@@ -114,7 +109,7 @@ Creates a Bayes net whose structure corresponds to that passed in argument or to
 the last structure learnt by Method `learnDAG()`, and whose parameters are learnt
 from the BNLearner's database.
 
-usage:
+Usage:
   1. `learnParameters(dag, take_into_account_score=True)`
   2. `learnParameters(bn, take_into_account_score=True)`
   3. `learnParameters(take_into_account_score=True)`
@@ -252,9 +247,21 @@ list
 
 %feature("docstring") gum::learning::BNLearner::useGreedyHillClimbing
 "
-Indicate that we wish to use a greedy hill climbing algorithm.
+Indicate that we wish to use a greedy hill climbing algorithm. This algorithm
+exploits all the three operators arc addition, arc deletion and arc reversal
+and only these operators.
 "
 
+%feature("docstring") gum::learning::BNLearner::useExtendedGreedyHillClimbing
+"
+Indicate that we wish to use a greedy hill climbing algorithm, controlling the
+set of arc operations that this learning algorithm is allowed to exploit.
+Those are the traditional arc additions, arc deletions and arc reversals, plus
+two additional operators arc triangle deletion1 and arc triangle deletion2
+that are capable of transforming triangles into v-structures. To control which
+operations are allowed, see Methods allowArcAdditions, allowArcDeletions,
+allowArcReversals, allowArcTriangleDeletions.
+"
 
 %feature("docstring") gum::learning::BNLearner::useK2
 "
@@ -565,7 +572,7 @@ assign a new possible edge
 
 Warnings
 --------
-By default, all edge is possible. However, once at least one possible edge is defined,
+By default, any edge is possible. However, once at least one possible edge is defined,
 all other edges not declared possible are considered as impossible.
 
 Parameters
@@ -590,6 +597,20 @@ l : list
 "
 
 
+%feature("docstring") gum::learning::BNLearner::setTotalOrder
+"
+Sets a total order on a set of nodes (not necessarily all the nodes). In the
+case where only a proper subset of all the nodes is passed in argument, then
+the constraint applies only on the arcs for which both extremal nodes belong
+to the set.
+
+Parameters
+----------
+l : list
+        a list of row ids or strings (variable names)
+"
+
+
 %feature("docstring") gum::learning::BNLearner::setMaxIndegree
 "
 Parameters
@@ -598,6 +619,79 @@ max_indegree : int
     the limit number of parents
 "
 
+
+/// ================================================================================
+/// Managing graph  operations allowed during the learning process
+/// ================================================================================
+
+%feature("docstring") gum::learning::BNLearner::allowArcAdditions
+"
+Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+allowed to perform arc addition operations or not.
+
+Parameters
+----------
+allow : bool
+    arc additions allowed if and only if allow is equal to true
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+"
+
+
+%feature("docstring") gum::learning::BNLearner::allowArcDeletions
+"
+Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+allowed to perform arc deletion operations or not.
+
+Parameters
+----------
+allow : bool
+    arc deletions allowed if and only if allow is equal to true
+
+Returns
+-------
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+"
+
+
+%feature("docstring") gum::learning::BNLearner::allowArcReversals
+"
+Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+allowed to perform arc reveral operations (changing the direction of the arc) or not.
+
+Parameters
+----------
+allow : bool
+    arc reversals allowed if and only if allow is equal to true
+
+Returns
+-------
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+"
+
+
+%feature("docstring") gum::learning::BNLearner::allowArcTriangleDeletions
+"
+Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+allowed to perform arc triangle deletion operations or not. Arc triangle deletions
+consist of substituting triangles (node1 -> node2 -> node3 + node1 -> node3) into
+v-structures node2 -> node1 <- node3 or node1 -> node2 <- node3.
+
+Parameters
+----------
+allow : bool
+    arc triangle deletions allowed if and only if allow is equal to true
+
+Returns
+-------
+pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+"
 
 
 /// ================================================================================

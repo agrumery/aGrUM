@@ -26637,7 +26637,7 @@ class BNLearner(object):
         the last structure learnt by Method `learnDAG()`, and whose parameters are learnt
         from the BNLearner's database.
 
-        usage:
+        Usage:
           1. `learnParameters(dag, take_into_account_score=True)`
           2. `learnParameters(bn, take_into_account_score=True)`
           3. `learnParameters(take_into_account_score=True)`
@@ -27237,12 +27237,25 @@ class BNLearner(object):
     def useGreedyHillClimbing(self) -> "pyagrum.BNLearner":
         r"""
 
-        Indicate that we wish to use a greedy hill climbing algorithm.
+        Indicate that we wish to use a greedy hill climbing algorithm. This algorithm
+        exploits all the three operators arc addition, arc deletion and arc reversal
+        and only these operators.
 
         """
         return _pyagrum.BNLearner_useGreedyHillClimbing(self)
 
     def useExtendedGreedyHillClimbing(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a greedy hill climbing algorithm, controlling the
+        set of arc operations that this learning algorithm is allowed to exploit.
+        Those are the traditional arc additions, arc deletions and arc reversals, plus
+        two additional operators arc triangle deletion1 and arc triangle deletion2
+        that are capable of transforming triangles into v-structures. To control which
+        operations are allowed, see Methods allowArcAdditions, allowArcDeletions,
+        allowArcReversals, allowArcTriangleDeletions.
+
+        """
         return _pyagrum.BNLearner_useExtendedGreedyHillClimbing(self)
 
     def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.BNLearner":
@@ -27305,6 +27318,19 @@ class BNLearner(object):
         return _pyagrum.BNLearner_setMaxIndegree(self, max_indegree)
 
     def setTotalOrder(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Sets a total order on a set of nodes (not necessarily all the nodes). In the
+        case where only a proper subset of all the nodes is passed in argument, then
+        the constraint applies only on the arcs for which both extremal nodes belong
+        to the set.
+
+        Parameters
+        ----------
+        l : list
+                a list of row ids or strings (variable names)
+
+        """
         return _pyagrum.BNLearner_setTotalOrder(self, *args)
 
     def addForbiddenArc(self, *args) -> "pyagrum.BNLearner":
@@ -27395,7 +27421,7 @@ class BNLearner(object):
 
         Warnings
         --------
-        By default, all edge is possible. However, once at least one possible edge is defined,
+        By default, any edge is possible. However, once at least one possible edge is defined,
         all other edges not declared possible are considered as impossible.
 
         Parameters
@@ -27493,15 +27519,81 @@ class BNLearner(object):
         return _pyagrum.BNLearner_eraseNoChildrenNode(self, *args)
 
     def allowArcAdditions(self, allow: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+        allowed to perform arc addition operations or not.
+
+        Parameters
+        ----------
+        allow : bool
+            arc additions allowed if and only if allow is equal to true
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+
+        """
         return _pyagrum.BNLearner_allowArcAdditions(self, allow)
 
     def allowArcDeletions(self, allow: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+        allowed to perform arc deletion operations or not.
+
+        Parameters
+        ----------
+        allow : bool
+            arc deletions allowed if and only if allow is equal to true
+
+        Returns
+        -------
+        pyagrum.BNLearner
+                the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+
+        """
         return _pyagrum.BNLearner_allowArcDeletions(self, allow)
 
     def allowArcReversals(self, allow: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+        allowed to perform arc reveral operations (changing the direction of the arc) or not.
+
+        Parameters
+        ----------
+        allow : bool
+            arc reversals allowed if and only if allow is equal to true
+
+        Returns
+        -------
+        pyagrum.BNLearner
+                the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+
+        """
         return _pyagrum.BNLearner_allowArcReversals(self, allow)
 
     def allowArcTriangleDeletions(self, allow: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Sets whether ExtendedGreedyHillClimbing and LocalSearchWithTabuList are
+        allowed to perform arc triangle deletion operations or not. Arc triangle deletions
+        consist of substituting triangles (node1 -> node2 -> node3 + node1 -> node3) into
+        v-structures node2 -> node1 <- node3 or node1 -> node2 <- node3.
+
+        Parameters
+        ----------
+        allow : bool
+            arc triangle deletions allowed if and only if allow is equal to true
+
+        Returns
+        -------
+        pyagrum.BNLearner
+                the BNLearner itself, so that we can chain useXXX() and allowXXX() methods.
+
+        """
         return _pyagrum.BNLearner_allowArcTriangleDeletions(self, allow)
 
     def isConstraintBased(self) -> bool:
