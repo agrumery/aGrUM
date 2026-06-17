@@ -41,7 +41,6 @@
 import hashlib
 import time
 import csv
-import math
 import os
 from tempfile import TemporaryDirectory
 from base64 import encodebytes
@@ -846,16 +845,9 @@ def arcsCompLegend():
 
 def _stats(tens):
   """
-  Returns mean and variance.
+  Returns mean and standard deviation.
   """
-  mu = 0.0
-  mu2 = 0.0
-  v = tens.variable(0)
-  for i, p in enumerate(tens.tolist()):
-    x = v.numerical(i)
-    mu += p * x
-    mu2 += p * x * x
-  return mu, math.sqrt(max(0.0, mu2 - mu * mu))
+  return tens.mean(), tens.stdDev()
 
 
 def _getTitleHisto(p, show_mu_sigma=False):

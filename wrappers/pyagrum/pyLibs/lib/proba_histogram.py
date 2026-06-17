@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import math
 import numpy as np
 
 import matplotlib.figure
@@ -52,20 +51,13 @@ RIGHT_ARROW = "\u2192"
 
 
 def _stats(pot):
-  mu = 0.0
-  mu2 = 0.0
-  v = pot.variable(0)
-  for i, p in enumerate(pot.tolist()):
-    x = v.numerical(i)
-    mu += p * x
-    mu2 += p * x * x
-  return mu, math.sqrt(mu2 - mu * mu)
+  return pot.mean(), pot.stdDev()
 
 
 def _getTitleHisto(p, show_mu_sigma=True):
   var = p.variable(0)
 
-  if var.varType() == 1 or not show_mu_sigma:  # type=1 is for pyagrum.LabelizedVariable
+  if not var.isNumerical() or not show_mu_sigma:
     return var.name()
 
   (mu, std) = _stats(p)
