@@ -289,10 +289,16 @@ namespace gum_tests {
       CHECK_EQ(v.closestLabel(1.0), "4");
       CHECK_EQ(v.closestLabel(15.0), "14");
     }
+
+    static void testIsNumerical() {
+      gum::NumericalDiscreteVariable var("var", "var", {0.0, 1.5, 3.0});
+      CHECK(var.isNumerical());
+    }
   };
 
   GUM_TEST_ACTIF(All)
   GUM_TEST_ACTIF(SecondConstructor)
   GUM_TEST_ACTIF(InfiniteValue)
   GUM_TEST_ACTIF(Positions)
+  GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests

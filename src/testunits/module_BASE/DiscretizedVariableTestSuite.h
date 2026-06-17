@@ -389,6 +389,12 @@ namespace gum_tests {
       CHECK_EQ(copy.toString(), "angle:Discretized(<[1;90[,[90;180]>)");
       CHECK(!copy.empty());
     }
+
+    static void testIsNumerical() {
+      gum::DiscretizedVariable< double > var("var", "var");
+      var.addTick(0.0).addTick(1.0).addTick(2.0);
+      CHECK(var.isNumerical());
+    }
   };
 
   GUM_TEST_ACTIF(Creation)
@@ -406,4 +412,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Numerical)
   GUM_TEST_ACTIF(CopyEmptyVariableWithZeros)
   GUM_TEST_ACTIF(CopyEmptyVariableWithoutZeros)
+  GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests

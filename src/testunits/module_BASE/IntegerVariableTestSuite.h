@@ -258,8 +258,14 @@ namespace gum_tests {
         CHECK_EQ(vect[5], 9);
       }
     }
+
+    static void testIsNumerical() {
+      gum::IntegerVariable var("var", "var", {0, 1, 2, 5});
+      CHECK(var.isNumerical());
+    }
   };
 
   GUM_TEST_ACTIF(All)
   GUM_TEST_ACTIF(SecondConstructor)
+  GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests

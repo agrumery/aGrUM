@@ -112,9 +112,15 @@ namespace gum_tests {
         CHECK_EQ(var1.numerical(i), var1.minVal() + i);
       }
     }
+
+    static void testIsNumerical() {
+      gum::RangeVariable var("var", "var", 0, 5);
+      CHECK(var.isNumerical());
+    }
   };
 
   GUM_TEST_ACTIF(Copy)
   GUM_TEST_ACTIF(Labels)
   GUM_TEST_ACTIF(Numerical)
+  GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests

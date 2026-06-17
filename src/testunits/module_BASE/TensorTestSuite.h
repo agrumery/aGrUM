@@ -1278,6 +1278,56 @@ namespace gum_tests {
             < 1e-10);
     }
 
+    static void testMeanVarianceStdDev() {
+      // uniform distribution over [0..3]: mean=1.5, var=1.25
+      gum::RangeVariable    x("x", "x", 0, 3);
+      gum::Tensor< double > p;
+      p.add(x);
+      p.fillWith({0.25, 0.25, 0.25, 0.25});
+
+      CHECK(p.mean() == doctest::Approx(1.5).epsilon(1e-7));
+      CHECK(p.variance() == doctest::Approx(1.25).epsilon(1e-7));
+      CHECK(p.stdDev() == doctest::Approx(std::sqrt(1.25)).epsilon(1e-7));
+      CHECK(p.stdDev() * p.stdDev() == doctest::Approx(p.variance()).epsilon(1e-7));
+
+      // non-uniform [0.1, 0.2, 0.3, 0.4]: mean=2.0, var=1.0
+      p.fillWith({0.1, 0.2, 0.3, 0.4});
+      CHECK(p.mean() == doctest::Approx(2.0).epsilon(1e-7));
+      CHECK(p.variance() == doctest::Approx(1.0).epsilon(1e-7));
+      CHECK(p.stdDev() == doctest::Approx(1.0).epsilon(1e-7));
+
+      // degenerate: Dirac at 2 → mean=2, var=0
+      p.fillWith({0.0, 0.0, 1.0, 0.0});
+      CHECK(p.mean() == doctest::Approx(2.0).epsilon(1e-7));
+      CHECK(p.variance() == doctest::Approx(0.0).epsilon(1e-7));
+      CHECK(p.stdDev() == doctest::Approx(0.0).epsilon(1e-7));
+
+      // LabelizedVariable is not numerical → throw
+      gum::LabelizedVariable y("y", "y", 4);
+      gum::Tensor< double >  q;
+      q.add(y);
+      q.fillWith({0.25, 0.25, 0.25, 0.25});
+      CHECK_THROWS_AS(q.mean(), const gum::ArgumentError&);
+      CHECK_THROWS_AS(q.variance(), const gum::ArgumentError&);
+      CHECK_THROWS_AS(q.stdDev(), const gum::ArgumentError&);
+
+      // multi-dim tensor → throw
+      gum::RangeVariable    z("z", "z", 0, 1);
+      gum::Tensor< double > r;
+      r.add(x);
+      r.add(z);
+      r.randomDistribution();
+      CHECK_THROWS_AS(r.mean(), const gum::ArgumentError&);
+      CHECK_THROWS_AS(r.variance(), const gum::ArgumentError&);
+
+      // not a distribution (sum != 1) → throw
+      gum::Tensor< double > s;
+      s.add(x);
+      s.fillWith({0.1, 0.1, 0.1, 0.1});
+      CHECK_THROWS_AS(s.mean(), const gum::ArgumentError&);
+      CHECK_THROWS_AS(s.variance(), const gum::ArgumentError&);
+    }
+
     static void testInverse() {
       gum::LabelizedVariable u("u", "u", 4);
       gum::LabelizedVariable v("v", "v", 2);
@@ -1557,6 +1607,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(RandomTensor)
   GUM_TEST_ACTIF(Equalities)
   GUM_TEST_ACTIF(ExpectedValue)
+  GUM_TEST_ACTIF(MeanVarianceStdDev)
   GUM_TEST_ACTIF(Inverse)
   GUM_TEST_ACTIF(MinNegatif)
   GUM_TEST_ACTIF(Sgn)

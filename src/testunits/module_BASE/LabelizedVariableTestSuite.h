@@ -126,6 +126,11 @@ namespace gum_tests {
       CHECK_EQ(var1.toString(), "var1:Labelized({rouge|vert|bleu})");
       CHECK_EQ(var1.posLabel("vert"), gum::Idx(1));
     }
+
+    static void testIsNumerical() {
+      gum::LabelizedVariable var("var", "var", 3);
+      CHECK_FALSE(var.isNumerical());
+    }
   };
 
   GUM_TEST_ACTIF(Copy)
@@ -133,4 +138,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ChangeLabel)
   GUM_TEST_ACTIF(Numerical)
   GUM_TEST_ACTIF(AndConstructorWithLabels)
+  GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests
