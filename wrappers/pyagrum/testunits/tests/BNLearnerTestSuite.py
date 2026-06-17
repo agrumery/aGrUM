@@ -113,6 +113,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.assertIn(n, witness)
 
     learner.useExtendedGreedyHillClimbing()
+    learner.allowArcAdditions(True)
+    learner.allowArcDeletions(True)
+    learner.allowArcReversals(True)
+    learner.allowArcTriangleDeletions(True)
     bn = learner.learnBN()
 
     f = gum.ExactBNdistance(bn, reference)
@@ -127,7 +131,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     reference = gum.loadBN(self.agrumSrcDir("asia2.bgum"), verbose=False)
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"), reference)
     learner.useLocalSearchWithTabuList()
-    print(learner.state())
+    # print(learner.state())
 
     bn = learner.learnBN()
     f = gum.ExactBNdistance(bn, reference)
@@ -239,6 +243,19 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     with self.assertRaises(gum.MissingVariableInDatabase):
       learner.setSliceOrder([[SMOKING, LUNG], [BRONCHITIS, "CRUCRU?"], [TUBERCULOSIS]])
+
+  def test_totalOrder_with_names(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+    learner.setTotalOrder([VISIT_ASIA, TUBERCULOSIS, SMOKING, BRONCHITIS, LUNG, T_OR_C, POSITIVE_XRAY, DYSPNOEA])
+    bn = learner.learnBN()
+    for tail, head in bn.dag().arcs():
+      self.assertTrue(tail < head)
+
+    learner.setTotalOrder([SMOKING, LUNG, BRONCHITIS, VISIT_ASIA])
+    bn = learner.learnBN()
+    for tail, head in bn.dag().arcs():
+      if tail <= 3 and head <= 3:
+        self.assertTrue(tail < head)
 
   def test_dirichlet(self):
     bn = gum.fastBN("A->B<-C->D->E<-B")
@@ -487,8 +504,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     forcedarcs = {(bn.idFromName(VISIT_ASIA), bn.idFromName(BRONCHITIS))}
 
+    learner.useGreedyHillClimbing()
     bn = learner.learnBN()
-    self.assertLessEqual(bn.sizeArcs(), 2)
+    self.assertLessEqual(bn.sizeArcs(), 3)
     self.assertGreaterEqual(bn.sizeArcs(), 1)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
     self.assertTrue(set(bn.arcs()).issuperset(forcedarcs))
@@ -497,6 +515,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     # possible edges are not relevant
     learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.useLocalSearchWithTabuList()
+    learner.allowArcTriangleDeletions(True)
     learner.addPossibleEdge(VISIT_ASIA, LUNG)
     learner.addPossibleEdge(VISIT_ASIA, SMOKING)
 

@@ -58,6 +58,10 @@ namespace gum {
     /** @class StructuralConstraintTotalOrder
      * @brief the structural constraint imposing a total order over some nodes
      *
+     * @warning the total order needs not be defined over all the variables in
+     * the database. If you define it on a proper subset, then the constraint
+     * applies only on this subset.
+     *
      * @ingroup learning_group
      */
     class StructuralConstraintTotalOrder: public virtual StructuralConstraintEmpty {
