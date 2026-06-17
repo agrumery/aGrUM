@@ -145,6 +145,51 @@ float
   the entropy of the tensor
 "
 
+%feature("docstring") gum::Tensor::mean
+"
+Compute the mean of a univariate numerical discrete distribution.
+
+Raises
+------
+pyagrum.ArgumentError
+  If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+Returns
+-------
+float
+  the mean of the distribution
+"
+
+%feature("docstring") gum::Tensor::variance
+"
+Compute the variance of a univariate numerical discrete distribution.
+
+Raises
+------
+pyagrum.ArgumentError
+  If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+Returns
+-------
+float
+  the variance of the distribution
+"
+
+%feature("docstring") gum::Tensor::stdDev
+"
+Compute the standard deviation of a univariate numerical discrete distribution.
+
+Raises
+------
+pyagrum.ArgumentError
+  If the tensor is not a 1-dimensional distribution (sum != 1) or if the variable is not numerical.
+
+Returns
+-------
+float
+  the standard deviation of the distribution
+"
+
 %feature("docstring") gum::Tensor::extract
 "
 create a new Tensor extracted from self given a partial instantiation.

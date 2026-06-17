@@ -241,9 +241,42 @@ namespace gum {
     auto       i   = Instantiation(*this);
     for (i.setFirst(); !i.end(); i.inc()) {
       const GUM_SCALAR v_f = f(i);
-      if (v_f != GUM_SCALAR(0.0)) res += this->get(i) * v_f;
+      if (v_f != GUM_SCALAR(0.0)) { res += this->get(i) * v_f; }
     }
     return res;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  GUM_SCALAR Tensor< GUM_SCALAR >::mean() const {
+    if (this->nbrDim() != 1) { GUM_ERROR(ArgumentError, "The tensor is not a marginal"); }
+    if (sum() != GUM_SCALAR(1)) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
+    if (this->variable(0).isNumerical()) {
+      return expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+        return GUM_SCALAR(this->variable(0).numerical(i.val(0)));
+      });
+    } else {
+      GUM_ERROR(ArgumentError, "The variable is not numerical");
+    }
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  GUM_SCALAR Tensor< GUM_SCALAR >::variance() const {
+    if (this->nbrDim() != 1) { GUM_ERROR(ArgumentError, "The tensor is not a marginal"); }
+    if (sum() != GUM_SCALAR(1)) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
+    if (this->variable(0).isNumerical()) {
+      const auto mu = mean();
+      return expectedValue([this, mu](const gum::Instantiation& i) -> GUM_SCALAR {
+        const auto r = GUM_SCALAR(this->variable(0).numerical(i.val(0))) - mu;
+        return r * r;
+      });
+    } else {
+      GUM_ERROR(ArgumentError, "The variable is not numerical");
+    }
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  GUM_SCALAR Tensor< GUM_SCALAR >::stdDev() const {
+    return std::sqrt(variance());
   }
 
   // entropy of this
@@ -303,7 +336,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
                Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
-                                              const std::vector< std::string >& mapSrc) const {
+                                     const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Tensor to copy has not the same size.")
     }

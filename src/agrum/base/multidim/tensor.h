@@ -268,6 +268,31 @@ namespace gum {
     /// entropy of the Tensor
     GUM_SCALAR entropy() const;
 
+    /**
+     * compute the mean of a numerical discrete random variable
+     * @raise
+     *  - InvalidArgument if the Tensor is not a distribution (sum!=1) or if a variable is not
+     * numerical
+     */
+    GUM_SCALAR mean() const;
+
+    /**
+     * compute the variance of a numerical discrete random variable
+     * @raise
+     *  - InvalidArgument if the Tensor is not a distribution (sum!=1) or if a variable is not
+     * numerical
+     */
+    GUM_SCALAR variance() const;
+
+    /**
+     * compute the stdDev of a numerical discrete random variable
+     *
+     * @raise
+     *  - InvalidArgument if the Tensor is not a distribution (sum!=1) or if a variable is not
+     * numerical
+     */
+    GUM_SCALAR stdDev() const;
+
     /** create a new Tensor with another order
      * @throw InvalidArgument if not all and only the vars of the tensor are
      * in vars
