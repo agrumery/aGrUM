@@ -667,6 +667,15 @@ namespace gum::learning {
       copyOrder.erase(n1);
     }
 
+    // GUM_CHECKPOINT
+    const auto& totalOrder = constraintTotalOrder_.totalOrder();
+    for (auto iter1 = totalOrder.begin(); iter1 != totalOrder.end(); ++iter1) {
+      const auto node1 = *iter1;
+      for (auto iter2 = iter1 + 1; iter2 != totalOrder.end(); ++iter2) {
+        forbiddenGraph.addArc(*iter2, node1);
+      }
+    }
+
     for (const auto node: constraintNoParentNodes_.nodes()) {
       for (const auto node2: mgraph.nodes()) {
         if (node != node2) { forbiddenGraph.addArc(node2, node); }

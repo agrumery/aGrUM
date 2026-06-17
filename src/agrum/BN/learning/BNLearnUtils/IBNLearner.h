@@ -1091,7 +1091,7 @@ namespace gum::learning {
     StructuralConstraintNoChildrenNodes constraintNoChildrenNodes_;
 
     /// the selected learning algorithm
-    AlgoType selectedAlgo_{AlgoType::EXTENDED_GREEDY_HILL_CLIMBING};
+    AlgoType selectedAlgo_{AlgoType::MIIC};
 
     /// whether we allow or not arc additions during learning
     bool allowArcAdditions_{true};
