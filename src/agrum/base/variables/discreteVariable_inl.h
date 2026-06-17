@@ -79,6 +79,8 @@ namespace gum {
   // empty <==> domainSize()<2
   INLINE bool DiscreteVariable::empty() const { return domainSize() < 2; }
 
+  INLINE bool DiscreteVariable::isNumerical() const { return varType() != VarType::LABELIZED; }
+
   INLINE std::string DiscreteVariable::closestLabel(double val) const {
     return label(closestIndex(val));
   }

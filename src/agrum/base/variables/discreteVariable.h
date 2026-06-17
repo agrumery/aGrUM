@@ -125,6 +125,9 @@ namespace gum {
 
     virtual bool isEmpirical() const { return false; }
 
+    /// @return true if the variable has a meaningful numerical representation (i.e. not Labelized)
+    bool isNumerical() const;
+
     /// for numerical variables, returns the closest index for the value
     virtual Idx closestIndex(double val) const = 0;
     /// for numerical variables, returns the closest label for the value

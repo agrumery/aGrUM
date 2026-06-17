@@ -200,6 +200,16 @@ int :
     0: DiscretizedVariable, 1: LabelizedVariable, 2: IntegerVariable, 3: NumericalDiscreteVariable, 4: RangeVariable
 "
 
+%feature("docstring") gum::DiscreteVariable::isNumerical
+"
+Returns True if the variable has a meaningful numerical representation, i.e. it is not a LabelizedVariable.
+
+Returns
+-------
+bool
+    True for DiscretizedVariable, IntegerVariable, NumericalDiscreteVariable and RangeVariable; False for LabelizedVariable.
+"
+
 %feature("docstring") gum::DiscreteVariable::asLabelizedVar
 "
 Tries to cast the variable as a `gum.LabelizedVar`.
