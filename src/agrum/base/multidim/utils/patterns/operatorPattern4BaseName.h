@@ -172,7 +172,7 @@ namespace gum {
       unsigned int nb_t1_t2_vars = 0;
 
       for (const auto var: t1_vars) {
-        if (var != t1_and_t2_var[nb_t1_t2_vars]) break;
+        if (nb_t1_t2_vars >= t1_and_t2_var.size() || var != t1_and_t2_var[nb_t1_t2_vars]) break;
         nb_t1_t2_vars += 1;
       }
 
