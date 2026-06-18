@@ -121,8 +121,8 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
 
-        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(8));
-        CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(8));
+        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(11));
+        CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(11));
       } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
