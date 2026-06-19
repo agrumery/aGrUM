@@ -58,8 +58,7 @@
 #include <agrum/base/stattests/pseudoCount.h>
 #include <agrum/BN/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
-
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
+#include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE

@@ -67,7 +67,7 @@ namespace gum {
 
     /** @class RecordCounter
      * @brief The class that computes counting of observations from the database.
-     * @headerfile recordCounter.h <agrum/BN/learning/scores_and_tests/recordCounter.h>
+     * @headerfile recordCounter.h <agrum/BN/learning/scores/recordCounter.h>
      * @ingroup learning_scores
      *
      * This class is the one to be called by scores and independence tests to

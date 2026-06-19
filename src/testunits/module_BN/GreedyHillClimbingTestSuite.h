@@ -64,14 +64,14 @@
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/scores/scoreBDeu.h>
+#include <agrum/BN/learning/scores/scoreBIC.h>
+#include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4UndiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBIC.h>
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
@@ -916,7 +916,7 @@ namespace gum_tests {
       // create the score and the prior
       gum::learning::DBRowGeneratorSet          dirichlet_genset;
       gum::learning::DBRowGeneratorParser       dirichlet_parser(dirichlet_database.handler(),
-                                                                 dirichlet_genset);
+                                                           dirichlet_genset);
       gum::learning::DirichletPriorFromDatabase prior(dirichlet_database, dirichlet_parser);
 
       gum::learning::DBRowGeneratorSet    genset;

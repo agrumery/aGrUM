@@ -53,8 +53,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/sortedPriorityQueue.h>
-
-#include <agrum/BN/learning/scores_and_tests/score.h>
+#include <agrum/BN/learning/scores/score.h>
 
 namespace gum {
 

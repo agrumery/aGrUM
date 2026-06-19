@@ -55,9 +55,8 @@
 #include <agrum/config.h>
 
 #include <agrum/base/stattests/kNML.h>
-
-#include <agrum/BN/learning/scores_and_tests/scoreLog2Likelihood.h>
-#include <agrum/BN/learning/scores_and_tests/scoreMDL.h>
+#include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
+#include <agrum/BN/learning/scores/scoreMDL.h>
 
 namespace gum {
   namespace learning {

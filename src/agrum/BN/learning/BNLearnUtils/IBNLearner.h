@@ -76,16 +76,15 @@
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
+#include <agrum/BN/learning/scores/scoreAIC.h>
+#include <agrum/BN/learning/scores/scoreBD.h>
+#include <agrum/BN/learning/scores/scoreBDeu.h>
+#include <agrum/BN/learning/scores/scorefNML.h>
+#include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
-
-#include <agrum/BN/learning/scores_and_tests/scoreAIC.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBD.h>
-#include <agrum/BN/learning/scores_and_tests/scoreBDeu.h>
-#include <agrum/BN/learning/scores_and_tests/scorefNML.h>
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 
 namespace gum::learning {
   class BNLearnerListener;

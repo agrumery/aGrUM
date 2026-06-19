@@ -60,7 +60,7 @@ namespace gum {
 
     /** @class IndepTestChi2
      * @brief the class for computing Chi2 independence test scores
-     * @headerfile indepTestChi2.h <agrum/BN/learning/scores_and_tests/indepTestChi2.h>
+     * @headerfile indepTestChi2.h <agrum/BN/learning/scores/indepTestChi2.h>
      * @ingroup learning_scores
      */
     class IndepTestChi2: public IndependenceTest {

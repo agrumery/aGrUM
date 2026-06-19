@@ -47,8 +47,8 @@
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/scores/scoreBD.h>
 
-#include <agrum/BN/learning/scores_and_tests/scoreBD.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 

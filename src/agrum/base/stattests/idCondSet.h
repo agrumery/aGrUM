@@ -69,7 +69,7 @@ namespace gum {
 
     /** @class IdCondSetIterator
      * @brief The iterators for IdSets
-     * @headerfile idCondSet.h <agrum/BN/learning/scores_and_tests/idSet.h>
+     * @headerfile idCondSet.h <agrum/BN/learning/scores/idSet.h>
      * @ingroup learning_scores
      */
     class IdCondSetIterator {
@@ -201,7 +201,7 @@ namespace gum {
     /** @class IdCondSet
      * @brief A class for storing a pair of sets of NodeIds, the second one
      * corresponding to a conditional set.
-     * @headerfile idSet.h <agrum/BN/learning/scores_and_tests/idSet.h>
+     * @headerfile idSet.h <agrum/BN/learning/scores/idSet.h>
      * @ingroup learning_scores
      *
      * IdCondSets are used by learning caches to store pairs of sets of nodes,

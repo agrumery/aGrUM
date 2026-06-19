@@ -62,7 +62,7 @@ namespace gum {
 
     /** @class IndependenceTest
      * @brief The base class for all the independence tests used for learning
-     * @headerfile independenceTest.h <agrum/BN/learning/scores_and_tests/independenceTest.h>
+     * @headerfile independenceTest.h <agrum/BN/learning/scores/independenceTest.h>
      * @ingroup learning_scores
      */
     class IndependenceTest: public IThreadNumberManager {

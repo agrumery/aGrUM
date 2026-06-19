@@ -49,12 +49,12 @@
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
 #include "agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h"
 
-#include <agrum/BN/learning/scores_and_tests/scoreK2.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
