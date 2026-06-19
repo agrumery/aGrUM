@@ -76,11 +76,11 @@ namespace gum {
     for (auto node: graph) {
       pdag.addNodeWithId(node);
     }
-    for (const Arc& arc: graph.arcs()) {
-      pdag.addArc(arc.tail(), arc.head());
-    }
     for (const Edge& edge: graph.edges()) {
       pdag.addEdge(edge.first(), edge.second());
+    }
+    for (const Arc& arc: graph.arcs()) {
+      pdag.addArc(arc.tail(), arc.head());
     }
     return pdag;
   }
