@@ -139,14 +139,14 @@ namespace gum {
      *  if neither direction creates a cycle, applies the min-parents heuristic.
      *  @param mg the graph (modified in place)
      */
-    void _orientDoubleHeadedArcs_(MixedGraph& mg);
+    static void _orientDoubleHeadedArcs_(MixedGraph& mg);
 
     /// Returns true if the edge xi–xj can be oriented as xi→xj under Meek rules R1–R3.
     /** @param graph the graph
      *  @param xi   candidate tail
      *  @param xj   candidate head
      */
-    [[nodiscard]] bool _isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const;
+    [[nodiscard]] static bool _isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj);
 
     /// Returns true if there is a directed path from n1 to n2 (BFS, double arcs ignored).
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
@@ -156,13 +156,13 @@ namespace gum {
 
     /// Returns the arc to erase when resolving a double-headed arc, using a min-parents heuristic.
     /** Prefers to keep the direction whose head already has more parents.  Ties are broken by
-     *  neighbour count.
+     *  neighbor count.
      *  @param graph the graph
      *  @param x     one endpoint
      *  @param y     the other endpoint
      *  @return the arc (x→y or y→x) that should be erased
      */
-    Arc _selectArcToEraseByMinParents_(const MixedGraph& graph, NodeId x, NodeId y);
+    static Arc _selectArcToEraseByMinParents_(const MixedGraph& graph, NodeId x, NodeId y);
   };   /// class MeekRules
 
 }   // namespace gum

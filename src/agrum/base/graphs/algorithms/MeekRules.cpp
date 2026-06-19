@@ -76,11 +76,11 @@ namespace gum {
     for (auto node: graph) {
       pdag.addNodeWithId(node);
     }
-    for (const Edge& edge: graph.edges()) {
-      pdag.addEdge(edge.first(), edge.second());
-    }
     for (const Arc& arc: graph.arcs()) {
       pdag.addArc(arc.tail(), arc.head());
+    }
+    for (const Edge& edge: graph.edges()) {
+      pdag.addEdge(edge.first(), edge.second());
     }
     return pdag;
   }
@@ -111,8 +111,8 @@ namespace gum {
   /// Orient double-headed arcs while avoiding cycles
   void MeekRules::_orientDoubleHeadedArcs_(MixedGraph& mg) {
     gum::ArcSet L;   // create a set of all double-headed arcs
-    for (gum::NodeId x: mg.nodes())
-      for (NodeId y: mg.parents(x))
+    for (gum::NodeId x: mg.nodes()) {
+      for (NodeId y: mg.parents(x)) {
         // If there is a mutual parent-child relationship, add the arc to the set
         if (mg.parents(y).contains(x)) {
           if (x > y) {
@@ -121,15 +121,17 @@ namespace gum {
             L.insert(gum::Arc(x, y));
           }
         }
+      }
+    }
 
     // If there are double-headed arcs
-    if (not L.empty()) {
+    if (!L.empty()) {
       while (true) {
         bool withdrawFlag_L = false;
-        for (auto arc: ArcSet(L)) {
-          bool tail_head        = _existsDirectedPath_(mg, arc.tail(), arc.head());
-          bool head_tail        = _existsDirectedPath_(mg, arc.head(), arc.tail());
-          bool withdrawFlag_arc = false;
+        for (auto& arc: ArcSet(L)) {
+          const bool tail_head        = _existsDirectedPath_(mg, arc.tail(), arc.head());
+          const bool head_tail        = _existsDirectedPath_(mg, arc.head(), arc.tail());
+          bool       withdrawFlag_arc = false;
 
           // Case 1: There is already a path from tail to head and no path from head to tail
           if (tail_head && !head_tail) {
@@ -251,7 +253,7 @@ namespace gum {
     }
   }
 
-  bool MeekRules::_isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) const {
+  bool MeekRules::_isOrientable_(const MixedGraph& graph, NodeId xi, NodeId xj) {
     // no cycle
     if (_existsDirectedPath_(graph, xj, xi)) {
       // GUM_TRACE("cycle(" << xi << "-" << xj << ")")
@@ -267,15 +269,28 @@ namespace gum {
       // GUM_TRACE("R2(" << xi << "-" << xj << ")")
       return true;
     }
-    // R3
-    int nbr = 0;
-    for (const auto p: graph.parents(xj)) {
-      if (graph.mixedOrientedPath(xi, p).has_value()) {
-        nbr += 1;
-        if (nbr == 2) {
-          // GUM_TRACE("R3(" << xi << "-" << xj << ")")
-          return true;
-        }
+    // R3: orient xi-xj if two non-adjacent parents of xj are both direct undirected
+    //     neighbors of xi (classical Meek R3: chains xi-k->xj and xi-l->xj, k not adj l)
+    {
+      std::vector< NodeId > qualifying;
+      for (const auto p: graph.parents(xj)) {
+        if (graph.neighbours(xi).contains(p)) { qualifying.push_back(p); }
+      }
+      for (std::size_t i = 0; i < qualifying.size(); ++i)
+        for (std::size_t j = i + 1; j < qualifying.size(); ++j)
+          if (!graph.boundary(qualifying[i]).contains(qualifying[j])) {
+            // GUM_TRACE("R3(" << xi << "-" << xj << ")")
+            return true;
+          }
+    }
+    // R4: orient xi-xj if there is a purely directed path from xi to some node xk,
+    //     xk is an undirected neighbor of xj, and xi is not adjacent to xk
+    for (const auto xk: graph.neighbours(xj)) {
+      if (graph.boundary(xi).contains(xk)) continue;
+      if (graph.existsArc(xi, xk) || graph.existsArc(xk, xi)) continue;
+      if (_existsDirectedPath_(graph, xi, xk)) {
+        // GUM_TRACE("R4(" << xi << "-" << xj << ")")
+        return true;
       }
     }
     return false;
