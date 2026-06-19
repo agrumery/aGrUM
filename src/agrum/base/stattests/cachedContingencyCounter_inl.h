@@ -42,60 +42,94 @@
 
 
 /** @file
- * @brief the class for computing G2 scores
+ * @brief implementation of gum::learning::CachedContingencyCounter
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE
-    IndepTestG2::IndepTestG2(const DBRowGeneratorParser&                                 parser,
-                             const Prior&                                                prior,
-                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, ranges, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
-      GUM_CONSTRUCTOR(IndepTestG2);
+    INLINE CachedContingencyCounter::CachedContingencyCounter(
+        const DBRowGeneratorParser&                                 parser,
+        const Prior&                                                prior,
+        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
+      GUM_CONSTRUCTOR(CachedContingencyCounter);
     }
 
-    /// default constructor
-    INLINE IndepTestG2::IndepTestG2(const DBRowGeneratorParser&             parser,
-                                    const Prior&                            prior,
-                                    const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
-      GUM_CONSTRUCTOR(IndepTestG2);
+    INLINE CachedContingencyCounter::CachedContingencyCounter(
+        const DBRowGeneratorParser&             parser,
+        const Prior&                            prior,
+        const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        prior_(prior.clone()), counter_(parser, nodeId2columns) {
+      GUM_CONSTRUCTOR(CachedContingencyCounter);
     }
 
-    /// copy constructor
-    INLINE IndepTestG2::IndepTestG2(const IndepTestG2& from) :
-        IndependenceTest(from), _domain_sizes_(from._domain_sizes_), _chi2_(_domain_sizes_) {
-      GUM_CONS_CPY(IndepTestG2);
+    INLINE CachedContingencyCounter::CachedContingencyCounter(
+        const CachedContingencyCounter& from) :
+        prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
+        use_cache_(from.use_cache_) {
+      GUM_CONS_CPY(CachedContingencyCounter);
     }
 
-    /// move constructor
-    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) :
-        IndependenceTest(std::move(from)), _domain_sizes_(from._domain_sizes_),
-        _chi2_(_domain_sizes_) {
-      GUM_CONS_MOV(IndepTestG2);
+    INLINE CachedContingencyCounter::CachedContingencyCounter(
+        CachedContingencyCounter&& from) :
+        prior_(from.prior_), counter_(std::move(from.counter_)), cache_(std::move(from.cache_)),
+        use_cache_(from.use_cache_) {
+      from.prior_ = nullptr;
+      GUM_CONS_MOV(CachedContingencyCounter);
     }
 
-    /// virtual copy constructor
-    INLINE IndepTestG2* IndepTestG2::clone() const { return new IndepTestG2(*this); }
+    INLINE CachedContingencyCounter::~CachedContingencyCounter() {
+      if (prior_ != nullptr) delete prior_;
+      GUM_DESTRUCTOR(CachedContingencyCounter);
+    }
 
-    /// destructor
-    INLINE IndepTestG2::~IndepTestG2() { GUM_DESTRUCTOR(IndepTestG2); }
+    INLINE void CachedContingencyCounter::setNumberOfThreads(Size nb) {
+      counter_.setNumberOfThreads(nb);
+    }
 
-    /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
-    INLINE std::pair< double, double >
-           IndepTestG2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
-      return statistics_(IdCondSet(var1, var2, rhs_ids, false));
+    INLINE Size CachedContingencyCounter::getNumberOfThreads() const {
+      return counter_.getNumberOfThreads();
+    }
+
+    INLINE bool CachedContingencyCounter::isGumNumberOfThreadsOverriden() const {
+      return counter_.isGumNumberOfThreadsOverriden();
+    }
+
+    INLINE void CachedContingencyCounter::setMinNbRowsPerThread(const std::size_t nb) const {
+      counter_.setMinNbRowsPerThread(nb);
+    }
+
+    INLINE std::size_t CachedContingencyCounter::minNbRowsPerThread() const {
+      return counter_.minNbRowsPerThread();
+    }
+
+    INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
+        CachedContingencyCounter::ranges() const {
+      return counter_.ranges();
+    }
+
+    INLINE void CachedContingencyCounter::clear() {
+      counter_.clear();
+      cache_.clear();
+    }
+
+    INLINE void CachedContingencyCounter::clearCache() { cache_.clear(); }
+
+    INLINE void CachedContingencyCounter::useCache(const bool on_off) { use_cache_ = on_off; }
+
+    INLINE const Bijection< NodeId, std::size_t >&
+        CachedContingencyCounter::nodeId2Columns() const {
+      return counter_.nodeId2Columns();
+    }
+
+    INLINE const DatabaseTable& CachedContingencyCounter::database() const {
+      return counter_.database();
     }
 
   } /* namespace learning */

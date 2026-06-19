@@ -62,7 +62,7 @@ namespace gum {
     /// copy operator
     KNML& KNML::operator=(const KNML& from) {
       if (this != &from) {
-        IndependenceTest::operator=(from);
+        CachedContingencyCounter::operator=(from);
         _param_complexity_ = from._param_complexity_;
       }
       return *this;
@@ -71,7 +71,7 @@ namespace gum {
     /// move operator
     KNML& KNML::operator=(KNML&& from) {
       if (this != &from) {
-        IndependenceTest::operator=(std::move(from));
+        CachedContingencyCounter::operator=(std::move(from));
         _param_complexity_ = std::move(from._param_complexity_);
       }
       return *this;
@@ -79,24 +79,24 @@ namespace gum {
 
     /// clears all the data structures from memory, including the cache
     void KNML::clear() {
-      IndependenceTest::clear();
+      CachedContingencyCounter::clear();
       _param_complexity_.clearCache();
     }
 
     /// clears the current cache
     void KNML::clearCache() {
-      IndependenceTest::clearCache();
+      CachedContingencyCounter::clearCache();
       _param_complexity_.clearCache();
     }
 
     /// turn on/off the use of a cache of the previously computed score
     void KNML::useCache(const bool on_off) {
-      IndependenceTest::useCache(on_off);
+      CachedContingencyCounter::useCache(on_off);
       _param_complexity_.useCache(on_off);
     }
 
-    /// returns the score corresponding to a given nodeset
-    double KNML::score_(const IdCondSet& idset) {
+    /// computes the NML penalty for a given IdCondSet
+    double KNML::_score_(const IdCondSet& idset) {
       // perform the counts on the database for all the nodes in the idset
       // This will help optimizing the computations of the Nxui, Nyui and Nui
       // that we will be needed subsequently

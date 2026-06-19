@@ -70,10 +70,10 @@ namespace gum {
         ApproximationScheme(from),
         _forbiddenGraph_(from._forbiddenGraph_),
         _mandatoryGraph_(from._mandatoryGraph_),
-        _maxIndegree_(from._maxIndegree_),
         _initialMarks_(from._initialMarks_),
         _latentCouples_(from._latentCouples_),
-        _maxLog_(from._maxLog_) {
+        _maxLog_(from._maxLog_),
+        _maxIndegree_(from._maxIndegree_) {
       GUM_CONS_CPY(ConstraintBasedLearning);
     }
 
@@ -81,10 +81,10 @@ namespace gum {
         ApproximationScheme(std::move(from)),
         _forbiddenGraph_(std::move(from._forbiddenGraph_)),
         _mandatoryGraph_(std::move(from._mandatoryGraph_)),
-        _maxIndegree_(from._maxIndegree_),
         _initialMarks_(std::move(from._initialMarks_)),
         _latentCouples_(std::move(from._latentCouples_)),
-        _maxLog_(from._maxLog_) {
+        _maxLog_(from._maxLog_),
+        _maxIndegree_(from._maxIndegree_) {
       GUM_CONS_MOV(ConstraintBasedLearning);
     }
 

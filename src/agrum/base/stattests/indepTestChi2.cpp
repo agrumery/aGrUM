@@ -63,7 +63,7 @@ namespace gum {
     IndepTestChi2& IndepTestChi2::operator=(const IndepTestChi2& from) {
       if (this != &from) {
         IndependenceTest::operator=(from);
-        // __chi2 = from. _chi2_;
+        _domain_sizes_ = from._domain_sizes_;
       }
       return *this;
     }
@@ -72,7 +72,7 @@ namespace gum {
     IndepTestChi2& IndepTestChi2::operator=(IndepTestChi2&& from) {
       if (this != &from) {
         IndependenceTest::operator=(std::move(from));
-        // __chi2 = std::move(from. _chi2_);
+        _domain_sizes_ = std::move(from._domain_sizes_);
       }
       return *this;
     }

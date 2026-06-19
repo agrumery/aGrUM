@@ -100,31 +100,6 @@ namespace gum {
       return statistics_(IdCondSet(var1, var2, rhs_ids, false));
     }
 
-    /// returns the score corresponding to a given nodeset
-    INLINE double IndepTestChi2::score_(const IdCondSet& idset) {
-      const auto& nodeId2cols = this->counter_.nodeId2Columns();
-      Idx         var_x, var_y;
-      if (nodeId2cols.empty()) {
-        var_x = idset[0];
-        var_y = idset[1];
-      } else {
-        var_x = nodeId2cols.second(idset[0]);
-        var_y = nodeId2cols.second(idset[1]);
-      }
-
-      auto   stat  = statistics_(idset);   // stat contains pair(Chi2stat,pValue)
-      double score = stat.first;
-
-      // ok, here, score contains the value of the chi2 formula.
-      // To get a meaningful score, we shall compute the critical values
-      // for the Chi2 distribution and assign as the score of
-      // (score - alpha ) / alpha, where alpha is the critical value
-      const double alpha = _chi2_.criticalValue(var_x, var_y);
-      score              = (score - alpha) / alpha;
-
-      return score;
-    }
-
   } /* namespace learning */
 
 } /* namespace gum */

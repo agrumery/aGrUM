@@ -61,53 +61,14 @@ namespace gum {
 
     /// copy operator
     IndependenceTest& IndependenceTest::operator=(const IndependenceTest& from) {
-      if (this != &from) {
-        Prior*        new_prior   = from.prior_->clone();
-        RecordCounter new_counter = from.counter_;
-        ScoringCache  new_cache   = from.cache_;
-
-        if (prior_ != nullptr) delete prior_;
-
-        prior_   = new_prior;
-        counter_ = std::move(new_counter);
-        cache_   = std::move(new_cache);
-
-        use_cache_ = from.use_cache_;
-      }
+      CachedContingencyCounter::operator=(from);
       return *this;
     }
 
     /// move operator
     IndependenceTest& IndependenceTest::operator=(IndependenceTest&& from) {
-      if (this != &from) {
-        std::swap(prior_, from.prior_);
-
-        counter_   = std::move(from.counter_);
-        cache_     = std::move(from.cache_);
-        use_cache_ = from.use_cache_;
-      }
+      CachedContingencyCounter::operator=(std::move(from));
       return *this;
-    }
-
-    /// sets new ranges to perform the counts used by the score
-    /** @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
-     * indices. The counts are then performed only on the union of the
-     * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
-     * cross validation tasks, in which part of the database should be ignored.
-     * An empty set of ranges is equivalent to an interval [X,Y) ranging over
-     * the whole database. */
-    void IndependenceTest::setRanges(
-        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
-      std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
-      counter_.setRanges(new_ranges);
-      if (old_ranges != ranges()) clear();
-    }
-
-    /// reset the ranges to the one range corresponding to the whole database
-    void IndependenceTest::clearRanges() {
-      std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
-      counter_.clearRanges();
-      if (old_ranges != ranges()) clear();
     }
 
     /// returns a counting vector where variables are marginalized from N_xyz

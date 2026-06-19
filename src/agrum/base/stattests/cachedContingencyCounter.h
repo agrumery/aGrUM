@@ -39,32 +39,37 @@
  ****************************************************************************/
 
 
-/**
- * @file
- * @brief The class for the NML penalty used in MIIC
+/** @file
+ * @brief Common counting infrastructure for independence tests and KNML scoring
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#ifndef GUM_LEARNING_CACHED_CONTINGENCY_COUNTER_H
+#define GUM_LEARNING_CACHED_CONTINGENCY_COUNTER_H
 
-#ifndef GUM_LEARNING_K_NML_H
-#define GUM_LEARNING_K_NML_H
+#include <utility>
 
-#include <vector>
+#include <agrum/agrum.h>
 
-#include <agrum/base/core/math/variableLog2ParamComplexity.h>
-#include <agrum/base/stattests/cachedContingencyCounter.h>
+#include <agrum/base/stattests/recordCounter.h>
+#include <agrum/base/stattests/scoringCache.h>
+#include <agrum/BN/learning/priors/prior.h>
+#include <agrum/BN/learning/structureUtils/graphChange.h>
 
 namespace gum {
 
   namespace learning {
 
-
-    /** @class KNML
-     * @brief the class for computing the NML penalty used by MIIC
+    /** @class CachedContingencyCounter
+     * @brief Common counting infrastructure shared by IndependenceTest and KNML
+     * @headerfile cachedContingencyCounter.h <agrum/base/stattests/cachedContingencyCounter.h>
      * @ingroup learning_scores
      *
+     * Holds the database parser, prior, record counter, and scoring cache.
+     * Both IndependenceTest (Chi2, G2) and KNML inherit from this class.
+     * Copy and move constructors/operators are protected to prevent slicing.
      */
-    class KNML: public CachedContingencyCounter {
+    class CachedContingencyCounter: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -73,9 +78,7 @@ namespace gum {
 
       /// default constructor
       /** @param parser the parser used to parse the database
-       * @param prior An prior that we add to the computation of
-       * the score (this should come from expert knowledge): this consists in
-       * adding numbers to counts in the contingency tables
+       * @param prior An prior that we add to the computation of the score
        * @param ranges a set of pairs {(X1,Y1),...,(Xn,Yn)} of database's rows
        * indices. The counts are then performed only on the union of the
        * rows [Xi,Yi), i in {1,...,n}. This is useful, e.g, when performing
@@ -84,67 +87,23 @@ namespace gum {
        * the whole database.
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
-       * parsed by the parser. This enables estimating from a database in
-       * which variable A corresponds to the 2nd column the parameters of a BN
-       * in which variable A has a NodeId of 5. An empty nodeId2Columns
-       * bijection means that the mapping is an identity, i.e., the value of a
-       * NodeId is equal to the index of the column in the DatabaseTable.
-       * @warning If nodeId2columns is not empty, then only the scores over the
-       * ids belonging to this bijection can be computed: applying method
-       * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser&                                 parser,
-           const Prior&                                                prior,
-           const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-           const Bijection< NodeId, std::size_t >&                     nodeId2columns
-           = Bijection< NodeId, std::size_t >());
+       * parsed by the parser. An empty bijection means identity mapping. */
+      CachedContingencyCounter(
+          const DBRowGeneratorParser&                                 parser,
+          const Prior&                                                prior,
+          const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+          const Bijection< NodeId, std::size_t >&                     nodeId2columns
+          = Bijection< NodeId, std::size_t >());
 
-
-      /// default constructor
-      /** @param parser the parser used to parse the database
-       * @param prior An prior that we add to the computation of
-       * the score (this should come from expert knowledge): this consists in
-       * adding numbers to counts in the contingency tables
-       * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable
-       * parsed by the parser. This enables estimating from a database in
-       * which variable A corresponds to the 2nd column the parameters of a BN
-       * in which variable A has a NodeId of 5. An empty nodeId2Columns
-       * bijection means that the mapping is an identity, i.e., the value of a
-       * NodeId is equal to the index of the column in the DatabaseTable.
-       * @warning If nodeId2columns is not empty, then only the scores over the
-       * ids belonging to this bijection can be computed: applying method
-       * score() over other ids will raise exception NotFound. */
-      KNML(const DBRowGeneratorParser&             parser,
-           const Prior&                            prior,
-           const Bijection< NodeId, std::size_t >& nodeId2columns
-           = Bijection< NodeId, std::size_t >());
-
-      /// copy constructor
-      KNML(const KNML& from);
-
-      /// move constructor
-      KNML(KNML&& from);
-
-      /// virtual copy constructor
-      virtual KNML* clone() const;
+      /// default constructor (no ranges)
+      CachedContingencyCounter(
+          const DBRowGeneratorParser&             parser,
+          const Prior&                            prior,
+          const Bijection< NodeId, std::size_t >& nodeId2columns
+          = Bijection< NodeId, std::size_t >());
 
       /// destructor
-      virtual ~KNML();
-
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-
-      /// @{
-
-      /// copy operator
-      KNML& operator=(const KNML& from);
-
-      /// move operator
-      KNML& operator=(KNML&& from);
+      virtual ~CachedContingencyCounter();
 
       /// @}
 
@@ -154,34 +113,83 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// returns the kNML penalty for a pair of nodes
-      double score(NodeId var1, NodeId var2);
+      /// sets the number max of threads that can be used
+      virtual void setNumberOfThreads(Size nb);
 
-      /// returns the kNML penalty for a pair of nodes given conditioning nodes
-      double score(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids);
+      /// returns the current max number of threads of the scheduler
+      virtual Size getNumberOfThreads() const;
 
-      /// clears all the data structures from memory, including the C_n^r cache
+      /// indicates whether the user set herself the number of threads
+      virtual bool isGumNumberOfThreadsOverriden() const;
+
+      /** @brief changes the number min of rows a thread should process in a
+       * multithreading context */
+      virtual void setMinNbRowsPerThread(const std::size_t nb) const;
+
+      /// returns the minimum of rows that each thread should process
+      virtual std::size_t minNbRowsPerThread() const;
+
+      /// sets new ranges to perform the counts
+      void setRanges(const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges);
+
+      /// reset the ranges to the one range corresponding to the whole database
+      void clearRanges();
+
+      /// returns the current ranges
+      const std::vector< std::pair< std::size_t, std::size_t > >& ranges() const;
+
+      /// clears all the data structures from memory, including the cache
       virtual void clear();
 
-      /// clears the current C_n^r cache
+      /// clears the current cache
       virtual void clearCache();
 
-      /// turn on/off the use of the C_n^r cache
+      /// turn on/off the use of a cache of the previously computed score
       virtual void useCache(const bool on_off);
+
+      /// return the mapping between the columns of the database and the node ids
+      /** @warning An empty nodeId2Columns bijection means that the mapping is
+       * an identity, i.e., the value of a NodeId is equal to the index of the
+       * column in the DatabaseTable. */
+      const Bijection< NodeId, std::size_t >& nodeId2Columns() const;
+
+      /// return the database used by the score
+      const DatabaseTable& database() const;
 
       /// @}
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      protected:
+      /// 1 / log(2)
+      const double one_log2_{M_LOG2E};
 
-      private:
-      /// the CTable computation
-      VariableLog2ParamComplexity _param_complexity_;
+      /// the expert knowledge prior added to the contingency tables
+      Prior* prior_{nullptr};
 
-      /// computes the NML penalty for a given IdCondSet
-      double _score_(const IdCondSet& idset);
+      /// the record counter used for the counts over discrete variables
+      RecordCounter counter_;
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      /// the scoring cache
+      ScoringCache cache_;
+
+      /// a Boolean indicating whether we wish to use the cache
+      bool use_cache_{true};
+
+      /// an empty vector
+      const std::vector< NodeId > empty_ids_;
+
+
+      /// copy constructor
+      CachedContingencyCounter(const CachedContingencyCounter& from);
+
+      /// move constructor
+      CachedContingencyCounter(CachedContingencyCounter&& from);
+
+      /// copy operator
+      CachedContingencyCounter& operator=(const CachedContingencyCounter& from);
+
+      /// move operator
+      CachedContingencyCounter& operator=(CachedContingencyCounter&& from);
     };
 
   } /* namespace learning */
@@ -190,7 +198,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/base/stattests/kNML_inl.h>
+#  include <agrum/base/stattests/cachedContingencyCounter_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_K_NML_H */
+#endif /* GUM_LEARNING_CACHED_CONTINGENCY_COUNTER_H */

@@ -38,64 +38,71 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
 
-
-/** @file
- * @brief the class for computing G2 scores
+/**
+ * @file
+ * @brief Implementation of gum::learning::CachedContingencyCounter
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/stattests/cachedContingencyCounter.h>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/base/stattests/cachedContingencyCounter_inl.h>
+#  endif /* GUM_NO_INLINE */
 
 namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE
-    IndepTestG2::IndepTestG2(const DBRowGeneratorParser&                                 parser,
-                             const Prior&                                                prior,
-                             const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                             const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, ranges, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
-      GUM_CONSTRUCTOR(IndepTestG2);
+    /// copy operator
+    CachedContingencyCounter&
+        CachedContingencyCounter::operator=(const CachedContingencyCounter& from) {
+      if (this != &from) {
+        Prior*        new_prior   = from.prior_->clone();
+        RecordCounter new_counter = from.counter_;
+        ScoringCache  new_cache   = from.cache_;
+
+        if (prior_ != nullptr) delete prior_;
+
+        prior_   = new_prior;
+        counter_ = std::move(new_counter);
+        cache_   = std::move(new_cache);
+
+        use_cache_ = from.use_cache_;
+      }
+      return *this;
     }
 
-    /// default constructor
-    INLINE IndepTestG2::IndepTestG2(const DBRowGeneratorParser&             parser,
-                                    const Prior&                            prior,
-                                    const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
-      GUM_CONSTRUCTOR(IndepTestG2);
+    /// move operator
+    CachedContingencyCounter&
+        CachedContingencyCounter::operator=(CachedContingencyCounter&& from) {
+      if (this != &from) {
+        std::swap(prior_, from.prior_);
+        counter_   = std::move(from.counter_);
+        cache_     = std::move(from.cache_);
+        use_cache_ = from.use_cache_;
+      }
+      return *this;
     }
 
-    /// copy constructor
-    INLINE IndepTestG2::IndepTestG2(const IndepTestG2& from) :
-        IndependenceTest(from), _domain_sizes_(from._domain_sizes_), _chi2_(_domain_sizes_) {
-      GUM_CONS_CPY(IndepTestG2);
+    /// sets new ranges to perform the counts
+    void CachedContingencyCounter::setRanges(
+        const std::vector< std::pair< std::size_t, std::size_t > >& new_ranges) {
+      std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
+      counter_.setRanges(new_ranges);
+      if (old_ranges != ranges()) clear();
     }
 
-    /// move constructor
-    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) :
-        IndependenceTest(std::move(from)), _domain_sizes_(from._domain_sizes_),
-        _chi2_(_domain_sizes_) {
-      GUM_CONS_MOV(IndepTestG2);
-    }
-
-    /// virtual copy constructor
-    INLINE IndepTestG2* IndepTestG2::clone() const { return new IndepTestG2(*this); }
-
-    /// destructor
-    INLINE IndepTestG2::~IndepTestG2() { GUM_DESTRUCTOR(IndepTestG2); }
-
-    /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
-    INLINE std::pair< double, double >
-           IndepTestG2::statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids) {
-      return statistics_(IdCondSet(var1, var2, rhs_ids, false));
+    /// reset the ranges to the one range corresponding to the whole database
+    void CachedContingencyCounter::clearRanges() {
+      std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
+      counter_.clearRanges();
+      if (old_ranges != ranges()) clear();
     }
 
   } /* namespace learning */

@@ -83,31 +83,43 @@ namespace gum_tests {
       gum::learning::NoPrior              prior(database);
       gum::learning::IndepTestG2          score(parser, prior);
 
-      CHECK((score.score(0, 1)) == doctest::Approx(123.3614).epsilon(1e-3));
-      CHECK((score.score(3, 1)) == doctest::Approx(-0.2345).epsilon(1e-3));
+      // strongly dependent pair: G2 statistic > 0, p-value << 0.001
+      auto s01 = score.statistics(0, 1);
+      CHECK(s01.first > 0.0);
+      CHECK(s01.second < 0.001);
 
-      CHECK((score.score(0, 2)) == doctest::Approx(230.7461).epsilon(1e-3));
-      CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
+      // symmetry: statistics(x,y) == statistics(y,x)
+      auto s10 = score.statistics(1, 0);
+      CHECK(s10.first == doctest::Approx(s01.first).epsilon(1e-9));
 
-      CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
-            == doctest::Approx(-0.5569).epsilon(1e-3));
-      CHECK((score.score(0, 2, std::vector< gum::NodeId >{4}))
-            == doctest::Approx(147.7192).epsilon(1e-3));
+      // independent pair: p-value > 0.05
+      auto s31 = score.statistics(3, 1);
+      CHECK(s31.second > 0.05);
 
-      CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
-            == doctest::Approx(-0.6153).epsilon(1e-3));
+      // strongly dependent: p-value << 0.001, symmetry
+      auto s02 = score.statistics(0, 2);
+      CHECK(s02.second < 0.001);
+      auto s20 = score.statistics(2, 0);
+      CHECK(s20.first == doctest::Approx(s02.first).epsilon(1e-9));
 
-      CHECK((score.score(0, 1)) == doctest::Approx(123.3614).epsilon(1e-3));
-      CHECK((score.score(1, 3)) == doctest::Approx(-0.2345).epsilon(1e-3));
-      CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
-            == doctest::Approx(-0.6153).epsilon(1e-3));
-      CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-      CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
-            == doctest::Approx(-0.5569).epsilon(1e-3));
-      CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-      CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
-            == doctest::Approx(-0.5569).epsilon(1e-3));
-    }   // namespace gum_tests
+      // conditionally independent given {4}: p-value > 0.05
+      auto s13_4 = score.statistics(1, 3, std::vector< gum::NodeId >{4});
+      CHECK(s13_4.second > 0.05);
+
+      // conditionally dependent given {4}: p-value << 0.001
+      auto s02_4 = score.statistics(0, 2, std::vector< gum::NodeId >{4});
+      CHECK(s02_4.second < 0.001);
+
+      // conditionally independent given {1,2}: p-value > 0.05
+      auto s36_12 = score.statistics(3, 6, std::vector< gum::NodeId >{1, 2});
+      CHECK(s36_12.second > 0.05);
+
+      // stability after clear()
+      score.clear();
+      CHECK(score.statistics(0, 1).first == doctest::Approx(s01.first).epsilon(1e-9));
+      CHECK(score.statistics(3, 1).first == doctest::Approx(s31.first).epsilon(1e-9));
+      CHECK(score.statistics(2, 0).first == doctest::Approx(s20.first).epsilon(1e-9));
+    }
 
     static void test_cache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -128,23 +140,30 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       gum::learning::NoPrior              prior(database);
       gum::learning::IndepTestG2          score(parser, prior);
-      // score.useCache ( false );
 
+      // establish reference values
+      auto ref01   = score.statistics(0, 1);
+      auto ref13   = score.statistics(1, 3);
+      auto ref36   = score.statistics(3, 6, std::vector< gum::NodeId >{1, 2});
+      auto ref20   = score.statistics(2, 0);
+      auto ref31_4 = score.statistics(3, 1, std::vector< gum::NodeId >{4});
+      auto ref13_4 = score.statistics(1, 3, std::vector< gum::NodeId >{4});
+
+      // repeated calls must return identical values
       for (gum::Idx i = 0; i < 1000; ++i) {
-        CHECK((score.score(0, 1)) == doctest::Approx(123.3614).epsilon(1e-3));
-        CHECK((score.score(1, 3)) == doctest::Approx(-0.2345).epsilon(1e-3));
-        CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
-              == doctest::Approx(-0.6153).epsilon(1e-3));
-        CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-        CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
-              == doctest::Approx(-0.5569).epsilon(1e-3));
-        CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-        CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
-              == doctest::Approx(-0.5569).epsilon(1e-3));
+        CHECK(score.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
+        CHECK(score.statistics(1, 3).first == doctest::Approx(ref13.first).epsilon(1e-9));
+        CHECK(score.statistics(3, 6, std::vector< gum::NodeId >{1, 2}).first
+              == doctest::Approx(ref36.first).epsilon(1e-9));
+        CHECK(score.statistics(2, 0).first == doctest::Approx(ref20.first).epsilon(1e-9));
+        CHECK(score.statistics(3, 1, std::vector< gum::NodeId >{4}).first
+              == doctest::Approx(ref31_4.first).epsilon(1e-9));
+        CHECK(score.statistics(1, 3, std::vector< gum::NodeId >{4}).first
+              == doctest::Approx(ref13_4.first).epsilon(1e-9));
       }
     }
 
-    void xtest_clearcache() {
+    static void test_clearcache() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
       const auto&                         var_names = initializer.variableNames();
       const std::size_t                   nb_vars   = var_names.size();
@@ -163,21 +182,75 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
       gum::learning::NoPrior              prior(database);
       gum::learning::IndepTestG2          score(parser, prior);
-      // score.useCache ( false );
 
+      // establish reference values before any clear()
+      auto ref01   = score.statistics(0, 1);
+      auto ref13   = score.statistics(1, 3);
+      auto ref36   = score.statistics(3, 6, std::vector< gum::NodeId >{1, 2});
+      auto ref20   = score.statistics(2, 0);
+      auto ref31_4 = score.statistics(3, 1, std::vector< gum::NodeId >{4});
+      auto ref13_4 = score.statistics(1, 3, std::vector< gum::NodeId >{4});
+
+      // clear() must not corrupt recomputed results
       for (gum::Idx i = 0; i < 4; ++i) {
-        score.clearCache();
-        CHECK((score.score(0, 1)) == doctest::Approx(61.181).epsilon(1e-3));
-        CHECK((score.score(1, 3)) == doctest::Approx(0.617).epsilon(1e-3));
-        CHECK((score.score(3, 6, std::vector< gum::NodeId >{1, 2}))
-              == doctest::Approx(-0.6153).epsilon(1e-3));
-        CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-        CHECK((score.score(3, 1, std::vector< gum::NodeId >{4}))
-              == doctest::Approx(0.778).epsilon(1e-3));
-        CHECK((score.score(2, 0)) == doctest::Approx(230.7461).epsilon(1e-3));
-        CHECK((score.score(1, 3, std::vector< gum::NodeId >{4}))
-              == doctest::Approx(0.778).epsilon(1e-3));
+        score.clear();
+        CHECK(score.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
+        CHECK(score.statistics(1, 3).first == doctest::Approx(ref13.first).epsilon(1e-9));
+        CHECK(score.statistics(3, 6, std::vector< gum::NodeId >{1, 2}).first
+              == doctest::Approx(ref36.first).epsilon(1e-9));
+        CHECK(score.statistics(2, 0).first == doctest::Approx(ref20.first).epsilon(1e-9));
+        CHECK(score.statistics(3, 1, std::vector< gum::NodeId >{4}).first
+              == doctest::Approx(ref31_4.first).epsilon(1e-9));
+        CHECK(score.statistics(1, 3, std::vector< gum::NodeId >{4}).first
+              == doctest::Approx(ref13_4.first).epsilon(1e-9));
       }
+    }
+
+    static void test_copy_constructor() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          orig(parser, prior);
+
+      auto ref01   = orig.statistics(0, 1);
+      auto ref13_4 = orig.statistics(1, 3, std::vector< gum::NodeId >{4});
+      auto ref36   = orig.statistics(3, 6, std::vector< gum::NodeId >{1, 2});
+
+      // copy constructor (was buggy: _domain_sizes_ not copied → UB on degreesOfFreedom)
+      gum::learning::IndepTestG2 copy(orig);
+      CHECK(copy.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
+      CHECK(copy.statistics(1, 3, std::vector< gum::NodeId >{4}).first
+            == doctest::Approx(ref13_4.first).epsilon(1e-9));
+      CHECK(copy.statistics(3, 6, std::vector< gum::NodeId >{1, 2}).first
+            == doctest::Approx(ref36.first).epsilon(1e-9));
+
+      // clone (virtual copy constructor — calls the same copy constructor)
+      auto* cloned = orig.clone();
+      CHECK(cloned->statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
+      CHECK(cloned->statistics(3, 6, std::vector< gum::NodeId >{1, 2}).first
+            == doctest::Approx(ref36.first).epsilon(1e-9));
+      delete cloned;
+
+      // copy assignment
+      gum::learning::IndepTestG2 assigned(parser, prior);
+      assigned = orig;
+      CHECK(assigned.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
+      CHECK(assigned.statistics(1, 3, std::vector< gum::NodeId >{4}).first
+            == doctest::Approx(ref13_4.first).epsilon(1e-9));
     }
 
     static void test_statistics_2() {
@@ -208,6 +281,8 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(_G2)
   GUM_TEST_ACTIF(_cache)
+  GUM_TEST_ACTIF(_clearcache)
+  GUM_TEST_ACTIF(_copy_constructor)
   GUM_TEST_ACTIF(_statistics_2)
 
 } /* namespace gum_tests */

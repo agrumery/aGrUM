@@ -63,7 +63,7 @@ namespace gum {
     IndepTestG2& IndepTestG2::operator=(const IndepTestG2& from) {
       if (this != &from) {
         IndependenceTest::operator=(from);
-        // __chi2 = from. _chi2_;
+        _domain_sizes_ = from._domain_sizes_;
       }
       return *this;
     }
@@ -72,7 +72,7 @@ namespace gum {
     IndepTestG2& IndepTestG2::operator=(IndepTestG2&& from) {
       if (this != &from) {
         IndependenceTest::operator=(std::move(from));
-        // __chi2 = std::move(from. _chi2_);
+        _domain_sizes_ = std::move(from._domain_sizes_);
       }
       return *this;
     }
@@ -190,32 +190,6 @@ namespace gum {
       Size   df     = _chi2_.degreesOfFreedom(var_x, var_y);
       double pValue = _chi2_.probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
-    }
-
-    /// returns the score corresponding to a given nodeset
-    double IndepTestG2::score_(const IdCondSet& idset) {
-      // compute the domain sizes of X and Y
-      const auto& nodeId2cols = this->counter_.nodeId2Columns();
-      Idx         var_x, var_y;
-      if (nodeId2cols.empty()) {
-        var_x = idset[0];
-        var_y = idset[1];
-      } else {
-        var_x = nodeId2cols.second(idset[0]);
-        var_y = nodeId2cols.second(idset[1]);
-      }
-
-      auto   stat  = statistics_(idset);
-      double score = stat.first;
-
-      // ok, here, score contains the value of the chi2 formula.
-      // To get a meaningful score, we shall compute the critical values
-      // for the Chi2 distribution and assign as the score of
-      // (score - alpha ) / alpha, where alpha is the critical value
-      const double alpha = _chi2_.criticalValue(var_x, var_y);
-      score              = (score - alpha) / alpha;
-
-      return score;
     }
 
   } /* namespace learning */

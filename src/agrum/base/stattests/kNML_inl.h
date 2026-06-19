@@ -59,7 +59,7 @@ namespace gum {
                       const Prior&                                                prior,
                       const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                       const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        IndependenceTest(parser, prior, ranges, nodeId2columns) {
+        CachedContingencyCounter(parser, prior, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(KNML);
     }
 
@@ -67,19 +67,20 @@ namespace gum {
     INLINE KNML::KNML(const DBRowGeneratorParser&             parser,
                       const Prior&                            prior,
                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, nodeId2columns) {
+        CachedContingencyCounter(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(KNML);
     }
 
     /// copy constructor
     INLINE KNML::KNML(const KNML& from) :
-        IndependenceTest(from), _param_complexity_(from._param_complexity_) {
+        CachedContingencyCounter(from), _param_complexity_(from._param_complexity_) {
       GUM_CONS_CPY(KNML);
     }
 
     /// move constructor
     INLINE KNML::KNML(KNML&& from) :
-        IndependenceTest(std::move(from)), _param_complexity_(std::move(from._param_complexity_)) {
+        CachedContingencyCounter(std::move(from)),
+        _param_complexity_(std::move(from._param_complexity_)) {
       GUM_CONS_MOV(KNML);
     }
 
@@ -88,6 +89,32 @@ namespace gum {
 
     /// destructor
     INLINE KNML::~KNML() { GUM_DESTRUCTOR(KNML); }
+
+    INLINE double KNML::score(const NodeId var1, const NodeId var2) {
+      IdCondSet idset(var1, var2, empty_ids_, false, true);
+      if (use_cache_) {
+        if (auto p = cache_.tryGet(idset)) { return *p; }
+        double s = _score_(idset);
+        cache_.insert(std::move(idset), s);
+        return s;
+      } else {
+        return _score_(std::move(idset));
+      }
+    }
+
+    INLINE double KNML::score(const NodeId                 var1,
+                              const NodeId                 var2,
+                              const std::vector< NodeId >& rhs_ids) {
+      IdCondSet idset(var1, var2, rhs_ids, false, false);
+      if (use_cache_) {
+        if (auto p = cache_.tryGet(idset)) { return *p; }
+        double s = _score_(idset);
+        cache_.insert(std::move(idset), s);
+        return s;
+      } else {
+        return _score_(idset);
+      }
+    }
 
 
   } /* namespace learning */
