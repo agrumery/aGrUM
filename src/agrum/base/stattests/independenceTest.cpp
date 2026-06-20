@@ -61,13 +61,19 @@ namespace gum {
 
     /// copy operator
     IndependenceTest& IndependenceTest::operator=(const IndependenceTest& from) {
-      CachedContingencyCounter::operator=(from);
+      if (this != &from) {
+        CachedContingencyCounter::operator=(from);
+        _domain_sizes_ = from._domain_sizes_;
+      }
       return *this;
     }
 
     /// move operator
     IndependenceTest& IndependenceTest::operator=(IndependenceTest&& from) {
-      CachedContingencyCounter::operator=(std::move(from));
+      if (this != &from) {
+        CachedContingencyCounter::operator=(std::move(from));
+        _domain_sizes_ = std::move(from._domain_sizes_);
+      }
       return *this;
     }
 

@@ -65,25 +65,8 @@
 
 #endif                                                  /* DOXYGEN_SHOULD_SKIP_THIS */
 
-// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#  include <agrum/base/core/math/chi2_inl.h>
-#endif /* GUM_NO_INLINE */
 
 namespace gum {
-
-  // default constructor
-  Chi2::Chi2(const std::vector< std::size_t >& var_modalities, double confidence_proba) :
-      _modalities_(var_modalities),
-      _confidence_proba_(confidence_proba) {   // for debugging purposes
-    GUM_CONSTRUCTOR(Chi2);
-  }
-
-  // destructor
-  Chi2::~Chi2() {
-    // for debugging purposes
-    GUM_DESTRUCTOR(Chi2);
-  }
 
   // computes the probability of normal z value (used by the cache)
   double Chi2::_probaZValue_(double z) {
@@ -186,8 +169,8 @@ namespace gum {
     } else return (s);
   }
 
-  // computes the critical value of a given chi2 test (used by the cache)
-  double Chi2::_criticalValue_(double proba, Size df) {
+  // computes the critical value of a given chi2 test
+  double Chi2::criticalValue(double proba, Size df) {
     double minchisq = 0.0;
     double maxchisq = GUM_CHI_MAX;
     double chisqval;

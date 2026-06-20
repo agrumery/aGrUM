@@ -58,7 +58,8 @@ namespace gum {
         const Prior&                                                prior,
         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
         const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        CachedContingencyCounter(parser, prior, ranges, nodeId2columns) {
+        CachedContingencyCounter(parser, prior, ranges, nodeId2columns),
+        _domain_sizes_(parser.database().domainSizes()) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
@@ -67,24 +68,32 @@ namespace gum {
     IndependenceTest::IndependenceTest(const DBRowGeneratorParser&             parser,
                                        const Prior&                            prior,
                                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        CachedContingencyCounter(parser, prior, nodeId2columns) {
+        CachedContingencyCounter(parser, prior, nodeId2columns),
+        _domain_sizes_(parser.database().domainSizes()) {
       GUM_CONSTRUCTOR(IndependenceTest);
     }
 
     /// copy constructor
     INLINE IndependenceTest::IndependenceTest(const IndependenceTest& from) :
-        CachedContingencyCounter(from) {
+        CachedContingencyCounter(from), _domain_sizes_(from._domain_sizes_) {
       GUM_CONS_CPY(IndependenceTest);
     }
 
     /// move constructor
     INLINE IndependenceTest::IndependenceTest(IndependenceTest&& from) :
-        CachedContingencyCounter(std::move(from)) {
+        CachedContingencyCounter(std::move(from)),
+        _domain_sizes_(std::move(from._domain_sizes_)) {
       GUM_CONS_MOV(IndependenceTest);
     }
 
     /// destructor
     INLINE IndependenceTest::~IndependenceTest() { GUM_DESTRUCTOR(IndependenceTest); }
+
+    INLINE Size IndependenceTest::degreesOfFreedom_(std::size_t X_size,
+                                                    std::size_t Y_size,
+                                                    std::size_t Z_size) {
+      return Z_size * (X_size - 1) * (Y_size - 1);
+    }
 
   } /* namespace learning */
 

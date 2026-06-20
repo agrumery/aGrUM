@@ -230,7 +230,7 @@ namespace gum_tests {
       auto ref13_4 = orig.statistics(1, 3, std::vector< gum::NodeId >{4});
       auto ref36   = orig.statistics(3, 6, std::vector< gum::NodeId >{1, 2});
 
-      // copy constructor (was buggy: _domain_sizes_ not copied → UB on degreesOfFreedom)
+      // copy constructor (_domain_sizes_ is now in IndependenceTest, copied by the base class)
       gum::learning::IndepTestG2 copy(orig);
       CHECK(copy.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
       CHECK(copy.statistics(1, 3, std::vector< gum::NodeId >{4}).first

@@ -59,8 +59,7 @@ namespace gum {
                              const Prior&                                                prior,
                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, ranges, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
+        IndependenceTest(parser, prior, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
@@ -68,21 +67,17 @@ namespace gum {
     INLINE IndepTestG2::IndepTestG2(const DBRowGeneratorParser&             parser,
                                     const Prior&                            prior,
                                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        IndependenceTest(parser, prior, nodeId2columns),
-        _domain_sizes_(parser.database().domainSizes()), _chi2_(_domain_sizes_) {
+        IndependenceTest(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(IndepTestG2);
     }
 
     /// copy constructor
-    INLINE IndepTestG2::IndepTestG2(const IndepTestG2& from) :
-        IndependenceTest(from), _domain_sizes_(from._domain_sizes_), _chi2_(_domain_sizes_) {
+    INLINE IndepTestG2::IndepTestG2(const IndepTestG2& from) : IndependenceTest(from) {
       GUM_CONS_CPY(IndepTestG2);
     }
 
     /// move constructor
-    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) :
-        IndependenceTest(std::move(from)), _domain_sizes_(from._domain_sizes_),
-        _chi2_(_domain_sizes_) {
+    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) : IndependenceTest(std::move(from)) {
       GUM_CONS_MOV(IndepTestG2);
     }
 

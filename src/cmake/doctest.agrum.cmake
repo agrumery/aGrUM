@@ -46,6 +46,13 @@ else ()
     target_link_libraries(gumTest ${LIBAGRUM})
 endif ()
 
+# doctest uses __COUNTER__ to generate unique test-case identifiers. Clang flags
+# __COUNTER__ as a C2y extension (-Wc2y-extensions) even though it is universally
+# supported and the warning is purely cosmetic. Suppress it for the test binary only.
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    target_compile_options(gumTest PRIVATE -Wno-c2y-extensions)
+endif ()
+
 # doctest command-line options:
 # Run all tests:           ./gumTest
 # List all tests:          ./gumTest --list-test-cases

@@ -54,8 +54,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/hashTable.h>
-
 #include <agrum/base/core/math/math_utils.h>
 
 #define GUM_LEARNING_CONFIDENCE_PROBA 0.05
@@ -69,84 +67,15 @@ namespace gum {
   /**
    * @class Chi2
    * @headerfile chi2.h <agrum/base/core/math/chi2.h>
-   * @brief Represent the chi2 distribution.
+   * @brief Static math utilities for the chi2 distribution.
    * @ingroup math_group
-   *
-   * The class constructor receives a std::vector of unsigned integers. This
-   * std::vector represents the variables modalities. The variables indexes in
-   * the std::vector will be used as the variables identifiers.
    */
   class Chi2 {
     public:
     // ==========================================================================
-    /// @name Constructors / Destructors
+    /// @name Static math utilities
     // ==========================================================================
     /// @{
-
-    /**
-     * @brief Default constructor.
-     * @param var_modalities The variables modalities.
-     * @param confidence_proba The confidence probability.
-     */
-    Chi2(const std::vector< std::size_t >& var_modalities,
-         double                            confidence_proba = GUM_LEARNING_CONFIDENCE_PROBA);
-
-    /**
-     * @brief Class destructor.
-     */
-    ~Chi2();
-
-    /// @}
-    // ==========================================================================
-    /// @name Accessors / Modifiers
-    // ==========================================================================
-    /// @{
-
-    /**
-     * @brief Sets the conditioning nodes (useful for computing degrees of
-     * freedom).
-     *
-     * @param db_conditioning_ids The conditioning nodes id.
-     */
-    void setConditioningNodes(const std::vector< Idx >& db_conditioning_ids);
-
-    /**
-     * @brief Computes the critical value according to the number of degrees of
-     * freedom.
-     * @param pair A pair of variables ids.
-     * @return Returns the critical values.
-     */
-    double criticalValue(const std::pair< Idx, Idx >& pair);
-
-    /**
-     * @brief Computes the critical value according to the number of degrees of
-     * freedom.
-     * @param var1 The first variable id.
-     * @param var2 The second variable id.
-     * @return Returns the critical value.
-     */
-    double criticalValue(Idx var1, Idx var2);
-
-    /**
-     * @brief Returns the number of degrees of freedom.
-     * @param pair A pair of variables ids.
-     * @return Returns the number of degrees of freedom.
-     */
-    Size degreesOfFreedom(const std::pair< Idx, Idx >& pair);
-
-    /**
-     * @brief Returns the number of degrees of freedom.
-     * @param var1 The first variable id.
-     * @param var2 The second variable id.
-     * @return Returns the number of degrees of freedom.
-     */
-    Size degreesOfFreedom(Idx var1, Idx var2);
-
-    /**
-     * @brief Modifies the confidence probability.
-     * @param new_proba The new confidence probability
-     */
-    void setConfidenceProba(double new_proba);
 
     /**
      * @brief Computes the probability of chi2 value.
@@ -164,35 +93,24 @@ namespace gum {
      * @param df The number of degrees of freedom.
      * @return The probability of x given df degrees of freedom.
      */
-
     static double probaChi2(double x, Size df);
-    /// @}
-
-    private:
-    /// The modalities of the random variables.
-    const std::vector< std::size_t >& _modalities_;
-
-    /// The confidence probability used for critical values.
-    double _confidence_proba_;
-
-    /// The domain size of the conditioning nodes.
-    Size _conditioning_size_;
-
-    /// A set of already computed critical values.
-    HashTable< Idx, double > _critical_values_;
 
     /**
-     * @brief Computes the critical value of a given chi2 test (used by the
-     * cache).
+     * @brief Computes the critical chi2 value for a given confidence
+     * probability and number of degrees of freedom.
      *
      * This code has been written by Gary Perlman.
      *
-     * @param proba The probability value.
+     * @param proba The confidence probability.
      * @param df The number of degrees of freedom.
-     * @return Returns the critical value of a given chi2 test.
+     * @return The critical chi2 value.
      */
-    static double _criticalValue_(double proba, Size df);
+    static double criticalValue(double proba, Size df);
 
+    /// @}
+
+    private:
+    Chi2() = delete;
 
     /**
      * @brief Computes the probability of normal z value.
@@ -210,19 +128,8 @@ namespace gum {
      * @return The probability of z.
      */
     static double _probaZValue_(double z);
-
-    /// Forbid use of the copy constructor.
-    Chi2(const Chi2&) = delete;
-
-    /// Forbid used of the copy operator.
-    Chi2& operator=(const Chi2&) = delete;
   };
 
 } /* namespace gum */
-
-/// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#  include <agrum/base/core/math/chi2_inl.h>
-#endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CHI2_H */

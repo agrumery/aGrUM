@@ -135,6 +135,18 @@ namespace gum {
       /// move operator
       IndependenceTest& operator=(IndependenceTest&& from);
 
+      /// the domain sizes of the variables (indexed by column id in the database)
+      std::vector< std::size_t > _domain_sizes_;
+
+      /// returns the degrees of freedom for a chi2/G2 test X _|_ Y | Z
+      /** @param X_size domain size of X
+       * @param Y_size domain size of Y
+       * @param Z_size product of domain sizes of the conditioning variables
+       *               (1 if no conditioning set) */
+      static Size degreesOfFreedom_(std::size_t X_size,
+                                    std::size_t Y_size,
+                                    std::size_t Z_size = 1);
+
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:
        * - 0 means that X should be marginalized

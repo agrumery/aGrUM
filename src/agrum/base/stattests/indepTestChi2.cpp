@@ -46,6 +46,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/core/math/chi2.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -61,19 +62,13 @@ namespace gum {
 
     /// copy operator
     IndepTestChi2& IndepTestChi2::operator=(const IndepTestChi2& from) {
-      if (this != &from) {
-        IndependenceTest::operator=(from);
-        _domain_sizes_ = from._domain_sizes_;
-      }
+      IndependenceTest::operator=(from);
       return *this;
     }
 
     /// move operator
     IndepTestChi2& IndepTestChi2::operator=(IndepTestChi2&& from) {
-      if (this != &from) {
-        IndependenceTest::operator=(std::move(from));
-        _domain_sizes_ = std::move(from._domain_sizes_);
-      }
+      IndependenceTest::operator=(std::move(from));
       return *this;
     }
 
@@ -100,13 +95,13 @@ namespace gum {
       const std::size_t X_size = database.domainSize(var_x);
       const std::size_t Y_size = database.domainSize(var_y);
 
-      double cumulStat = 0;
+      double            cumulStat = 0;
+      const std::size_t Z_size
+          = idset.hasConditioningSet() ? all_size / (X_size * Y_size) : std::size_t(1);
 
       // here, we distinguish idsets with conditioning nodes from those
       // without conditioning nodes
       if (idset.hasConditioningSet()) {
-        const std::size_t Z_size = all_size / (X_size * Y_size);
-
         // get the counts for the conditioning nodes
         std::vector< double > N_xz
             = this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
@@ -114,22 +109,6 @@ namespace gum {
             = this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
         std::vector< double > N_z
             = this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
-
-        // indicate to the chi2 distribution the set of conditioning nodes
-        std::vector< Idx > cond_nodes;
-        cond_nodes.reserve(idset.nbRHSIds());
-        {
-          const auto cond_idset = idset.conditionalIdCondSet().ids();
-          if (nodeId2cols.empty()) {
-            for (const auto node: cond_idset)
-              cond_nodes.push_back(node);
-          } else {
-            for (const auto node: cond_idset)
-              cond_nodes.push_back(nodeId2cols.second(node));
-          }
-        }
-        _chi2_.setConditioningNodes(cond_nodes);
-
 
         // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
         // (#ZX * #ZY / #Z )
@@ -156,12 +135,7 @@ namespace gum {
       } else {
         // here, there is no conditioning set
 
-        // indicate to the chi2 distribution the set of conditioning nodes
-        _chi2_.setConditioningNodes(_empty_set_);
-
         // now, perform sum_X sum_Y ( #XY - (#X * #Y) / N )^2 / (#X * #Y )/N
-
-        // get the counts for all the targets and for the conditioning nodes
         std::vector< double > N_x
             = this->marginalize_(std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
         std::vector< double > N_y
@@ -184,8 +158,8 @@ namespace gum {
         }
       }
 
-      Size   df     = _chi2_.degreesOfFreedom(var_x, var_y);
-      double pValue = _chi2_.probaChi2(cumulStat, df);
+      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size);
+      double pValue = Chi2::probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }
 
