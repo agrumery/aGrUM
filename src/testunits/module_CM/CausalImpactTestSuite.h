@@ -750,7 +750,7 @@ namespace gum_tests {
 
       // check if in the string there is only once subtring "frac"
       auto t = gum::split(ci.toLatex(), "frac");
-      CHECK_EQ(t.size(), 2);   // if there are 1 "frac" substring
+      CHECK_EQ(t.size(), gum::Size(2));   // if there are 1 "frac" substring
     }
   };
 

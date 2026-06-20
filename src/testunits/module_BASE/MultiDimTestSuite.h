@@ -87,7 +87,11 @@ namespace gum_tests {
         v[i] = new gum::LabelizedVariable(name, "x");
       }
 
+      // GCC 16 false positive: inlined feedMultiDimUntilOverflow triggers -Warray-bounds
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
       CHECK_THROWS_AS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&);
+#pragma GCC diagnostic pop
 
       for (int i = 0; i < 100; i++)
         delete (v[i]);

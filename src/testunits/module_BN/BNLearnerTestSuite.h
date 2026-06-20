@@ -1272,7 +1272,7 @@ namespace gum_tests {
       CHECK_EQ(learner.EMisEnabledEpsilon(), false);
       CHECK_EQ(learner.EMisEnabledMaxIter(), false);
       CHECK_EQ(learner.EMisEnabledMaxTime(), false);
-      CHECK_EQ(learner.EMMaxIter(), 10);
+      CHECK_EQ(learner.EMMaxIter(), gum::Size(10));
       CHECK_EQ(learner.EMMaxTime(), 200);
 
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnParameters(dag, false));

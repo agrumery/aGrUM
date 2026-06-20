@@ -170,7 +170,7 @@ namespace gum_tests {
         nodevect5.emplace_back(i);
       for (int i = 0; i < 100; ++i)
         tree5.insert(&nodevect5[i]);
-      CHECK_EQ(tree5.size(), 100);
+      CHECK_EQ(tree5.size(), gum::Size(100));
       i          = 0;
       auto iter5 = tree5.rbeginSafe();
       iter5 += 3;
@@ -311,7 +311,7 @@ namespace gum_tests {
       gum::SharedAVLTree< std::pair< int, int >, Mycmp > tree5;
       for (auto& node: nodevect5)
         tree5.insert(&node);
-      CHECK_EQ(tree5.size(), 100);
+      CHECK_EQ(tree5.size(), gum::Size(100));
       i          = 0;
       auto iter5 = tree5.rbeginSafe();
       iter5 += 3;

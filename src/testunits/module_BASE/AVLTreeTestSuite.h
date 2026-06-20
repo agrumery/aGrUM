@@ -164,7 +164,7 @@ namespace gum_tests {
         } else if (i >= 2) CHECK_EQ(*iter3, (i - 2) * 4 + 9);
       }
 
-      CHECK_EQ(tree2.size(), 100);
+      CHECK_EQ(tree2.size(), 100u);
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
@@ -317,7 +317,7 @@ namespace gum_tests {
         }
       }
 
-      CHECK_EQ(tree2.size(), 100);
+      CHECK_EQ(tree2.size(), 100u);
       i          = 0;
       auto iter4 = tree2.rbeginSafe();
       iter4 += 3;
