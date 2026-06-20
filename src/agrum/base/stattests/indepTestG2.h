@@ -120,13 +120,13 @@ namespace gum {
       IndepTestG2(const IndepTestG2& from);
 
       /// move constructor
-      IndepTestG2(IndepTestG2&& from);
+      IndepTestG2(IndepTestG2&& from) noexcept;
 
       /// virtual copy constructor
-      virtual IndepTestG2* clone() const;
+      IndepTestG2* clone() const override;
 
       /// destructor
-      virtual ~IndepTestG2();
+      ~IndepTestG2() override;
 
       /// @}
 
@@ -141,7 +141,7 @@ namespace gum {
       IndepTestG2& operator=(const IndepTestG2& from);
 
       /// move operator
-      IndepTestG2& operator=(IndepTestG2&& from);
+      IndepTestG2& operator=(IndepTestG2&& from) noexcept;
 
       /// get the pair <G2statistic,pvalue> for a test var1 indep var2 given
       /// rhs_ids

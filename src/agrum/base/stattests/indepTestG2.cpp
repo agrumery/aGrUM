@@ -61,13 +61,10 @@ namespace gum {
   namespace learning {
 
     /// copy operator
-    IndepTestG2& IndepTestG2::operator=(const IndepTestG2& from) {
-      IndependenceTest::operator=(from);
-      return *this;
-    }
+    IndepTestG2& IndepTestG2::operator=(const IndepTestG2& from) = default;
 
     /// move operator
-    IndepTestG2& IndepTestG2::operator=(IndepTestG2&& from) {
+    IndepTestG2& IndepTestG2::operator=(IndepTestG2&& from) noexcept {
       IndependenceTest::operator=(std::move(from));
       return *this;
     }
@@ -77,7 +74,7 @@ namespace gum {
       // get the counts
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
       const bool            informative_external_prior = this->prior_->isInformative();
-      if (informative_external_prior) this->prior_->addJointPseudoCount(idset, N_xyz);
+      if (informative_external_prior) { this->prior_->addJointPseudoCount(idset, N_xyz); }
       const std::size_t all_size = (N_xyz.size());
 
       // compute the domain sizes of X and Y
@@ -113,10 +110,7 @@ namespace gum {
 
         // now, perform :
         // sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
-        for (std::size_t z      = std::size_t(0),
-                         beg_xz = std::size_t(0),
-                         beg_yz = std::size_t(0),
-                         xyz    = std::size_t(0);
+        for (std::size_t z = 0, beg_xz = 0, beg_yz = 0, xyz = 0;
              z < Z_size;
              ++z, beg_xz += X_size, beg_yz += Y_size) {
           if (N_z[z] > 0) {
@@ -156,8 +150,9 @@ namespace gum {
 
         // count N
         double N = 0.0;
-        for (auto n_x: N_x)
+        for (auto n_x: N_x) {
           N += n_x;
+        }
 
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           const double tmp_Ny = N_y[y];
@@ -181,7 +176,7 @@ namespace gum {
 
       Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size, n_skipped);
       double pValue = Chi2::probaChi2(cumulStat, df);
-      return std::pair< double, double >(cumulStat, pValue);
+      return {cumulStat, pValue};
     }
 
   } /* namespace learning */

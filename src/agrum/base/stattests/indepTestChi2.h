@@ -117,13 +117,13 @@ namespace gum {
       IndepTestChi2(const IndepTestChi2& from);
 
       /// move constructor
-      IndepTestChi2(IndepTestChi2&& from);
+      IndepTestChi2(IndepTestChi2&& from) noexcept;
 
       /// virtual copy constructor
-      virtual IndepTestChi2* clone() const;
+      IndepTestChi2* clone() const override;
 
       /// destructor
-      virtual ~IndepTestChi2();
+      ~IndepTestChi2() override;
 
       /// @}
 
@@ -138,7 +138,7 @@ namespace gum {
       IndepTestChi2& operator=(const IndepTestChi2& from);
 
       /// move operator
-      IndepTestChi2& operator=(IndepTestChi2&& from);
+      IndepTestChi2& operator=(IndepTestChi2&& from) noexcept;
 
       /// @}
 

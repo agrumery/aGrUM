@@ -77,7 +77,8 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) : IndependenceTest(std::move(from)) {
+    INLINE IndepTestG2::IndepTestG2(IndepTestG2&& from) noexcept :
+        IndependenceTest(std::move(from)) {
       GUM_CONS_MOV(IndepTestG2);
     }
 

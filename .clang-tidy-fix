@@ -1,0 +1,54 @@
+---
+# Auto-fix configuration — used with:
+#   run-clang-tidy -fix --config-file=.clang-tidy-fix -p build/aGrUM/release src/agrum/
+#
+# Only checks whose fixits are safe to apply mechanically are listed here.
+# Full detection config (including checks without safe fixits) lives in .clang-tidy.
+
+Checks: >
+  -*,
+
+  # --- Braces and readability (purely structural, zero semantic risk) ---
+  readability-braces-around-statements,
+
+  # --- Modernize: safe mechanical rewrites ---
+  modernize-concat-nested-namespaces,
+  modernize-use-override,
+  modernize-return-braced-init-list,
+  modernize-use-equals-default,
+  # --- Excluded from auto-fix (kept in .clang-tidy for detection only) ---
+  #
+  # performance-noexcept-move-constructor
+  #   Risk: clang-tidy adds noexcept without verifying the full call chain.
+  #   If any callee throws inside a noexcept function, std::terminate() is
+  #   called with no useful diagnostic. Requires manual review per class.
+  #
+  # modernize-use-auto
+  #   Risk: can hide the actual type, reducing readability in complex templates.
+  #
+  # modernize-use-trailing-return-type
+  #   Excluded from detection too (personal preference, already in .clang-tidy).
+  #
+  # clang-analyzer-*, bug-prone-*
+  #   Detect real issues but fixits are often wrong or incomplete.
+  #
+  # readability-identifier-naming
+  #   Fixits rename symbols — safe only with a full rename refactor pass.
+
+HeaderFileExtensions:
+  - ''
+  - h
+  - hh
+  - hpp
+  - hxx
+ImplementationFileExtensions:
+  - c
+  - cc
+  - cpp
+  - cxx
+HeaderFilterRegex: '.*/agrum/.*'
+ExcludeHeaderFilterRegex: '.*/agrum/base/external/.*'
+FormatStyle: none
+CheckOptions: { }
+SystemHeaders: false
+...

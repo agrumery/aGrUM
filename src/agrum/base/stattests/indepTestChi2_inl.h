@@ -79,7 +79,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE IndepTestChi2::IndepTestChi2(IndepTestChi2&& from) :
+    INLINE IndepTestChi2::IndepTestChi2(IndepTestChi2&& from) noexcept :
         IndependenceTest(std::move(from)) {
       GUM_CONS_MOV(IndepTestChi2);
     }
