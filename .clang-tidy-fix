@@ -48,7 +48,7 @@ ImplementationFileExtensions:
   - cxx
 HeaderFilterRegex: '.*/agrum/.*'
 ExcludeHeaderFilterRegex: '.*/agrum/base/external/.*'
-FormatStyle: none
+FormatStyle: file
 CheckOptions: { }
 SystemHeaders: false
 ...

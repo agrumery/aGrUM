@@ -90,7 +90,7 @@ class ActBuilder:
     notif(f"{builder_name} ⌛ [[{msg}]]", cfg.prefix_line)
 
   def run_start(self, subaction: str = ""):
-    self.warn(f"{subaction} �                    ")
+    self.warn(f"{subaction} ⏳                    ")
 
   def run_done(self, subaction: str = ""):
     self.warn(f"{subaction} ✅                         ")

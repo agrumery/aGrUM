@@ -172,7 +172,7 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
     with open(path, "w") as f:
       for line in lines:
         f.write(line)
-  except:
+  except Exception:
     critic(f"Could not update WHEEL file: {path}")
 
 
@@ -207,7 +207,7 @@ def clean_up(install_dir):
   for f in filelist:
     try:
       remove(join(install_dir, f))
-    except:
+    except Exception:
       warn(f"Could not remove dir: {join(install_dir, f)}")
 
 
@@ -264,7 +264,7 @@ def write_record_file(install_dir, version, nightly=False):
       for l in files_hash:
         f.write(l)
       f.write(f"{join(dist_info_dir, 'RECORD')},,")
-  except:
+  except Exception:
     critic("Could not write RECORD file.")
 
 
@@ -280,7 +280,7 @@ def sha256_checksum(file_path, block_size=65536):
 
     digest = "sha256=" + urlsafe_b64encode(h.digest()).decode("latin1").rstrip("=")
     return (digest, str(length))
-  except:
+  except Exception:
     critic(f"Could not compute sha256 for file: {file_path}")
 
 

@@ -106,7 +106,7 @@ def is_tool(prog: str, longpath=False) -> str | None:
   return f'"{found}"' if longpath else os.path.basename(found)
 
 
-def check_tools() -> tuple[str, str, str, str, str, str, str]:
+def check_tools() -> tuple[str, str, str, str, str, str, str, str]:
   exe_py = f'"{sys.executable}"'
   res = cmdline(exe_py + ' -c "import platform;print(platform.python_version())"')
   version, subversion, patch = res.strip().split(".")
@@ -138,6 +138,7 @@ def check_tools() -> tuple[str, str, str, str, str, str, str]:
 
   exe_msbuild = is_tool("msbuild")
   exe_ruff = is_tool("ruff")
+  exe_run_clang_tidy = is_tool("run-clang-tidy")
 
   return (
     exe_py,
@@ -147,6 +148,7 @@ def check_tools() -> tuple[str, str, str, str, str, str, str]:
     exe_clangformat,
     exe_msbuild,
     exe_ruff,
+    exe_run_clang_tidy,
   )
 
 
@@ -233,7 +235,7 @@ def init_params() -> None:
     "only": False,
     "noSaveParams": False,
     "correction": False,
-    "guideline_check": "all",
+    "guideline_check": None,
     "build_graph": False,
     "profiling": False,
     "stable_abi_off": False,
@@ -284,6 +286,7 @@ def init_params() -> None:
     cfg.clangformat,
     cfg.msbuild,
     cfg.ruff,
+    cfg.run_clang_tidy,
   ) = check_tools()
 
 
@@ -489,11 +492,12 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     "--check",
     help=(
       "act guideline: select checks using +/- syntax "
-      "(checks: cpp,python,header,coverage,deps,pyrefly,all). "
-      "Examples: --check cpp+pyrefly  --check all-cpp  --check all-cpp-pyrefly"
+      "(checks: cpp,python,header,coverage,deps,tidy,pyrefly,all). "
+      "Default: all checks except tidy (slow). "
+      "Examples: --check tidy  --check all  --check all-cpp  --check cpp+tidy"
     ),
     dest="guideline_check",
-    default="all",
+    default=None,
     metavar="CHECKS",
   )
   cfg.parser.add_argument(

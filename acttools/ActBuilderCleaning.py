@@ -83,7 +83,7 @@ class ActBuilderCleaning(ActBuilder):
     if self.current["action"] == "purge":
       self.run_start("purging atg files")
       ops += self.rectouch("atg")
-      self.run_start("purging swig-generetard files")
+      self.run_start("purging swig-generated files")
       ops += self.rectouch("i")
 
     if ops > 0:

@@ -205,6 +205,12 @@ namespace gum {
     }
 
     // initialize the parameter learning by EM
+    // GCC 16 false positive: VRP inlines shared_ptr<ParamEstimator> control block and
+    // incorrectly reports -Warray-bounds on the mutex; #pragma GCC diagnostic cannot
+    // suppress warnings whose primary location is in system headers (stl_construct.h),
+    // so we disable VRP for this function via optimize pragma instead
+#  pragma GCC push_options
+#  pragma GCC optimize("no-tree-vrp")
     template < GUM_Numeric GUM_SCALAR >
     std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
         BNLearner< GUM_SCALAR >::_initializeEMParameterLearning_(const DAG& dag,
@@ -246,6 +252,7 @@ namespace gum {
 
       return {param_estimator_bootstrap, param_estimator_EM};
     }
+#  pragma GCC pop_options
 
     // learns a BN (its parameters) with EM when its structure is known
     template < GUM_Numeric GUM_SCALAR >

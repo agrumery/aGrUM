@@ -45,7 +45,7 @@ from collections.abc import Iterable
 import types
 import inspect
 from datetime import datetime
-from subprocess import call, run as subprocess_run, PIPE
+from subprocess import call, run as subprocess_run, Popen, PIPE, STDOUT
 
 from .configuration import cfg
 from .utils import *
@@ -285,7 +285,8 @@ class ActBuilderGuideline(ActBuilder):
     return True
 
 
-_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "pyrefly"})
+_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly"})
+_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy"}
 
 
 def _parse_checks(spec: str) -> frozenset[str]:
@@ -323,16 +324,17 @@ def guideline(
       error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")
     return nb
 
-  active = _parse_checks(checks if checks is not None else "all")
+  active = _parse_checks(checks) if checks is not None else _GUIDELINE_DEFAULT_CHECKS
   run_cpp = "cpp" in active
   run_python = "python" in active
   run_header = "header" in active
   run_coverage = "coverage" in active
   run_deps = "deps" in active
+  run_tidy = "tidy" in active
   run_pyrefly = "pyrefly" in active
 
   effective_correction = correction and not dry_run
-  active_checks_label = checks if checks is not None else "all"
+  active_checks_label = checks if checks is not None else "default"
   notif(
     f"[[aGrUM {'detailed ' if details else ''}guideline "
     f"[{active_checks_label}]"
@@ -345,6 +347,8 @@ def guideline(
   if run_cpp:
     notif("  [[(1-cpp) ]]*.cpp[[ file for every ]]*.h[[ file]]")
     nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction), "missing cpp file")
+  else:
+    notif("  (1-cpp) pass")
 
   if run_header:
     notif("  [[(2-header) check for ]]LGPL+MIT[[ license]]")
@@ -356,10 +360,14 @@ def guideline(
       _check_LGPL_MIT_license_py(details, effective_correction),
       "missing LGPL+MIT python licence",
     )
+  else:
+    notif("  (2-header) pass")
 
   if run_coverage:
     notif("  [[(3-coverage) check for missing documentation in pyAgrum]]")
     nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
+  else:
+    notif("  (3-coverage) pass")
 
   if run_deps:
     notif("  [[(4-deps) check for deps]]")
@@ -371,21 +379,35 @@ def guideline(
       ),
       "redundant dependency",
     )
+  else:
+    notif("  (4-deps) pass")
+
+  if run_tidy:
+    notif("  [[(5-tidy) check clang-tidy fixes]]")
+    nbrError += _aff_errors(_check_clang_tidy(details, effective_correction, dry_run), "clang-tidy")
+  else:
+    notif("  (5-tidy) pass")
 
   if run_cpp:
-    notif("  [[(5-cpp) check for cpp format]]")
+    notif("  [[(6-cpp) check for cpp format]]")
     nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run), "format")
+  else:
+    notif("  (6-cpp) pass")
 
   if run_python:
-    notif("  [[(6-python) check for py format]]")
+    notif("  [[(7-python) check for py format]]")
     nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run), "format")
+  else:
+    notif("  (7-python) pass")
 
   if run_pyrefly:
-    notif("  [[(7-pyrefly) check pyrefly type annotations in pyLibs]]")
+    notif("  [[(8-pyrefly) check pyrefly type annotations in pyLibs]]")
     nbrError += _aff_errors(
       _check_pyrefly(details, effective_correction, dry_run),
       "pyrefly type (unrecorded in coverage)",
     )
+  else:
+    notif("  (8-pyrefly) pass")
 
   return nbrError
 
@@ -462,6 +484,58 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -
     correction=correction,
     dry_run=dry_run,
   )
+
+
+_TIDY_PROGRESS_RE = re.compile(r'^\[(\d+)/(\d+)\].*? (\S+\.cpp)$')
+_TIDY_WARNING_RE = re.compile(r'^(.+?):\d+:\d+: warning:')
+
+
+def _check_clang_tidy(details: bool, correction: bool, dry_run: bool = False) -> int:
+  tool = cfg.run_clang_tidy
+  if tool is None:
+    warn("No [[run-clang-tidy]] tool found. Skipping tidy check.")
+    return 0
+
+  build_dir = os.path.join("build", "aGrUM", cfg.buildPath["Release"])
+  if not os.path.isfile(os.path.join(build_dir, "compile_commands.json")):
+    warn(f"No [[compile_commands.json]] in {build_dir}. Run 'act lib release aGrUM' first.")
+    return 0
+
+  fix_flag = " -fix -format" if correction else ""
+  cmd = f"{tool}{fix_flag} -config-file=.clang-tidy-fix -p {build_dir} 'src/agrum/(?!base/external)'"
+
+  if dry_run:
+    notif(f"  {cmd}")
+    return 0
+
+  nbrError = 0
+  warnings_by_file: dict[str, int] = {}
+
+  proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT, text=True)
+  for line in proc.stdout:
+    line = line.rstrip()
+    m_prog = _TIDY_PROGRESS_RE.match(line)
+    m_warn = _TIDY_WARNING_RE.match(line)
+    if m_prog:
+      notif_oneline(f"[[{os.path.basename(m_prog.group(3))}]]")
+    elif m_warn:
+      nbrError += 1
+      if details:
+        fname = os.path.basename(m_warn.group(1))
+        warnings_by_file[fname] = warnings_by_file.get(fname, 0) + 1
+        notif(line)
+  proc.wait()
+
+  if details:
+    for fname, count in sorted(warnings_by_file.items()):
+      notif(f"  err [[{fname}]] ({count} warning{'s' if count > 1 else ''})")
+  elif nbrError > 0:
+    notif(f"  {nbrError} clang-tidy warning{'s' if nbrError > 1 else ''}")
+
+  if nbrError == 0:
+    notif("    clang-tidy: [[(✓)]]")
+
+  return nbrError
 
 
 def _check_clang_format(details: bool, correction: bool, dry_run: bool = False) -> int:
