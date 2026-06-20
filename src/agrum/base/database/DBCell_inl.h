@@ -47,6 +47,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/database/DBCell.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/database/DBCell.h>

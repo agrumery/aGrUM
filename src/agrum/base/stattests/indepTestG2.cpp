@@ -110,8 +110,7 @@ namespace gum {
 
         // now, perform :
         // sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
-        for (std::size_t z = 0, beg_xz = 0, beg_yz = 0, xyz = 0;
-             z < Z_size;
+        for (std::size_t z = 0, beg_xz = 0, beg_yz = 0, xyz = 0; z < Z_size;
              ++z, beg_xz += X_size, beg_yz += Y_size) {
           if (N_z[z] > 0) {
             for (std::size_t y = std::size_t(0), yz = beg_yz; y < Y_size; ++yz, ++y) {

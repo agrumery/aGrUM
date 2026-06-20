@@ -60,6 +60,7 @@
 #include <agrum/base/multidim/aggregators/min.h>
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/aggregators/sum.h>
+#include <agrum/PRM/elements/PRMAggregate.h>   // to ease IDE parser
 
 namespace gum {
   namespace prm {

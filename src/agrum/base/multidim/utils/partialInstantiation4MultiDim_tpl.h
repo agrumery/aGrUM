@@ -48,6 +48,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/multidim/utils/partialInstantiation4MultiDim.h>   // to ease IDE parser
 // allow partialInstantiationPatterns to be used
 #define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED 1
 

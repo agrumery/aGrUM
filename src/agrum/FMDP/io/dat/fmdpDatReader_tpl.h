@@ -50,6 +50,7 @@
  * GONZALES(_at_AMU)
  */
 
+#include <agrum/FMDP/io/dat/fmdpDatReader.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/FMDP/io/dat/fmdpDatReader.h>

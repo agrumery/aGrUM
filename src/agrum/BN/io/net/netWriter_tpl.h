@@ -40,6 +40,7 @@
 
 #pragma once
 
+#include <agrum/BN/io/net/netWriter.h>   // to ease IDE parser
 #pragma once
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

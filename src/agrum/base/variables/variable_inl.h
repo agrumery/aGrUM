@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/base/variables/variable.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

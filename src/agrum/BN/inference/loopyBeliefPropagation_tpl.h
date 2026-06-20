@@ -45,6 +45,7 @@
  * @file
  * @brief Implementation of Loopy Belief Propagation in Bayesian networks.
  */
+#include <agrum/BN/inference/loopyBeliefPropagation.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <algorithm>

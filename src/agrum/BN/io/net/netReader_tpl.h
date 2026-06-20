@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/BN/io/net/netReader.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/BN/io/net/netReader.h>

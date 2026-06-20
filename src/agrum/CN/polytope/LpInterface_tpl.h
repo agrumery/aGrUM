@@ -41,6 +41,8 @@
 #pragma once
 
 
+#include <agrum/CN/polytope/LpInterface.h>   // to ease IDE parser
+
 #include "LpInterface.h"
 
 namespace gum {

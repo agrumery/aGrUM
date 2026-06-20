@@ -48,6 +48,8 @@
  */
 #include <iterator>
 
+#include <agrum/MRF/inference/tools/marginalTargetedMRFInference.h>   // to ease IDE parser
+
 namespace gum {
 
 

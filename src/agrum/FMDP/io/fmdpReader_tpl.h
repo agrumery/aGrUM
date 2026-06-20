@@ -47,6 +47,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
  * GONZALES(_at_AMU)
  */
+#include <agrum/FMDP/io/fmdpReader.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

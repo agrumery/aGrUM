@@ -49,6 +49,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/MRF/inference/ShaferShenoyMRFInference.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <algorithm>
 

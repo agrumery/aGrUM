@@ -49,6 +49,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/multidim/utils/operators/completeProjections4MultiDim.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // allow projectionPatterns to be used

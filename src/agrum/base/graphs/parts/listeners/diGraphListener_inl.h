@@ -46,3 +46,4 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <agrum/base/graphs/parts/listeners/diGraphListener.h>   // to ease IDE parser

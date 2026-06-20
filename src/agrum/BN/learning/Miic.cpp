@@ -47,11 +47,12 @@
 
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/heap.h>
-#include <agrum/base/core/math/math_utils.h>
 #include <agrum/base/core/timer.h>
 #include <agrum/base/graphs/mixedGraph.h>
 #include <agrum/BN/learning/correctedMutualInformation.h>
 #include <agrum/BN/learning/Miic.h>
+
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
 
@@ -92,7 +93,7 @@ namespace gum {
 
       _latentCouples_.clear();
 
-      Heap< CondRanking, GreaterPairOn2nd >                                    rank;
+      Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
 
       initiation_(mutualInformation, graph, sep_set, rank);
@@ -108,7 +109,7 @@ namespace gum {
 
       _latentCouples_.clear();
 
-      Heap< CondRanking, GreaterPairOn2nd >                                    rank;
+      Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
 
       initiation_(mutualInformation, graph, sep_set, rank);
@@ -561,9 +562,9 @@ namespace gum {
         }
       }
       CondRanking final;
-      auto        tup  = new CondThreePoints{x, y, maxZ, ui};
-      final.first      = tup;
-      final.second     = maxP;
+      auto        tup = new CondThreePoints{x, y, maxZ, ui};
+      final.first     = tup;
+      final.second    = maxP;
       rank.insert(final);
     }
 

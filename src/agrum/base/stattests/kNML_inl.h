@@ -48,6 +48,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/stattests/kNML.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -102,9 +103,8 @@ namespace gum {
       }
     }
 
-    INLINE double KNML::score(const NodeId                 var1,
-                              const NodeId                 var2,
-                              const std::vector< NodeId >& rhs_ids) {
+    INLINE double
+        KNML::score(const NodeId var1, const NodeId var2, const std::vector< NodeId >& rhs_ids) {
       IdCondSet idset(var1, var2, rhs_ids, false, false);
       if (use_cache_) {
         if (auto p = cache_.tryGet(idset)) { return *p; }

@@ -48,6 +48,8 @@
  */
 #include <iterator>
 
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>   // to ease IDE parser
+
 namespace gum {
 
 

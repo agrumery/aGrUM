@@ -62,7 +62,6 @@
 
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/heap.h>
-#include <agrum/base/graphs/PDAG.h>
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 #include <agrum/BN/learning/correctedMutualInformation.h>
 
@@ -116,7 +115,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class ConstraintBasedLearning : public ApproximationScheme {
+    class ConstraintBasedLearning: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

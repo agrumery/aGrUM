@@ -47,6 +47,7 @@
  * in InfluenceDiagram/inference/ShaferShenoyLIMIDInference.h.
  */
 
+#include <agrum/ID/inference/ShaferShenoyLIMIDInference.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing by IDE
@@ -800,15 +801,15 @@ namespace gum {
         }
         // GCC 16 false positive: deep inlining confuses heap-allocated internals
         // of DecisionTensor with the stack object bounds
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
         const auto dp = finalphi ^ family;
 
         gum::Tensor< double > decision = dp.utilPot.putFirst(&infdiag.variable(node));
         binarizingMax_(decision, dp.probPot);
         strategies_.insert(node, decision);
         res = dp ^ sev;
-#pragma GCC diagnostic pop
+#  pragma GCC diagnostic pop
         res.probPot.normalize();
         if (unconditionalDecisions_.exists(node)) {
           res.utilPot = unconditionalDecisions_[node].utilPot;

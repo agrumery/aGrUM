@@ -19,6 +19,7 @@
  */
 #pragma once
 
+#include <agrum/base/database/CSVParser.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/database/CSVParser.h>

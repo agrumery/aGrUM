@@ -48,6 +48,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/BN/learning/localSearchWithTabuList.h>   // to ease IDE parser
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

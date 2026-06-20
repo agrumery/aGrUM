@@ -49,6 +49,7 @@
  */
 
 #include <agrum/base/multidim/implementations/multiDimAdressable.h>
+#include <agrum/base/multidim/instantiation.h>   // to ease IDE parser
 
 namespace gum {
   // indicates whether a given variable belongs to the Instantiation

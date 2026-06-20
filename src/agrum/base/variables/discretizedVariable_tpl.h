@@ -39,6 +39,7 @@
  ****************************************************************************/
 
 #pragma once
+#include <agrum/base/variables/discretizedVariable.h>   // to ease IDE parser
 #pragma once
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -48,6 +48,8 @@
  */
 
 
+#include <agrum/BN/algorithms/dSeparationAlgorithm.h>   // to ease IDE parser
+
 namespace gum {
 
 

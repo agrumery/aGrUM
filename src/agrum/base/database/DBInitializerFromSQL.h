@@ -47,8 +47,8 @@
  */
 #ifdef _ODBC
 
-#  ifndef GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
-#    define GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H
+#  ifndef GUM_LEARNING_DB_INITIALIZER_FROM_SQL_H
+#    define GUM_LEARNING_DB_INITIALIZER_FROM_SQL_H
 
 #    include <agrum/agrum.h>
 
@@ -274,6 +274,6 @@ namespace gum {
 #      include <agrum/base/database/DBInitializerFromSQL_inl.h>
 #    endif /* GUM_NO_INLINE */
 
-#  endif   /* GUM_LEARNING_DB_INITILIALIZER_FROM_SQL_H */
+#  endif   /* GUM_LEARNING_DB_INITIALIZER_FROM_SQL_H */
 
 #endif     /* _ODBC */

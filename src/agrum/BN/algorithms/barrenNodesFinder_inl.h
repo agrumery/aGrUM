@@ -40,6 +40,8 @@
 
 #pragma once
 
+#include <agrum/BN/algorithms/barrenNodesFinder.h>   // to ease IDE parser
+
 namespace gum {
 
 

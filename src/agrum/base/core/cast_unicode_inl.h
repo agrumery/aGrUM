@@ -48,13 +48,15 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#ifndef CAST_UNICODE_H
-#  define CAST_UNICODE_H
+#ifndef GUM_CAST_UNICODE_H
+#  define GUM_CAST_UNICODE_H
 
 #  include <iostream>
 #  include <locale>
 #  include <sstream>
 #  include <string>
+
+#  include <agrum/base/core/inline.h>
 
 #  include <agrum/base/core/cast_unicode.h>
 
@@ -80,4 +82,4 @@ INLINE std::string narrow(const std::wstring& str) {
   return stm.str();
 }
 
-#endif   // CAST_UNICODE_H
+#endif   // GUM_CAST_UNICODE_H

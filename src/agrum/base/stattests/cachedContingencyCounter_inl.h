@@ -46,6 +46,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <agrum/base/stattests/cachedContingencyCounter.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -69,15 +70,14 @@ namespace gum {
       GUM_CONSTRUCTOR(CachedContingencyCounter);
     }
 
-    INLINE CachedContingencyCounter::CachedContingencyCounter(
-        const CachedContingencyCounter& from) :
+    INLINE
+    CachedContingencyCounter::CachedContingencyCounter(const CachedContingencyCounter& from) :
         prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
         use_cache_(from.use_cache_) {
       GUM_CONS_CPY(CachedContingencyCounter);
     }
 
-    INLINE CachedContingencyCounter::CachedContingencyCounter(
-        CachedContingencyCounter&& from) :
+    INLINE CachedContingencyCounter::CachedContingencyCounter(CachedContingencyCounter&& from) :
         prior_(from.prior_), counter_(std::move(from.counter_)), cache_(std::move(from.cache_)),
         use_cache_(from.use_cache_) {
       from.prior_ = nullptr;
@@ -110,7 +110,7 @@ namespace gum {
     }
 
     INLINE const std::vector< std::pair< std::size_t, std::size_t > >&
-        CachedContingencyCounter::ranges() const {
+                 CachedContingencyCounter::ranges() const {
       return counter_.ranges();
     }
 
@@ -124,7 +124,7 @@ namespace gum {
     INLINE void CachedContingencyCounter::useCache(const bool on_off) { use_cache_ = on_off; }
 
     INLINE const Bijection< NodeId, std::size_t >&
-        CachedContingencyCounter::nodeId2Columns() const {
+                 CachedContingencyCounter::nodeId2Columns() const {
       return counter_.nodeId2Columns();
     }
 

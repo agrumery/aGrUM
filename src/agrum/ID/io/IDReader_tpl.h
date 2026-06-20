@@ -48,6 +48,8 @@
  * GONZALES(_at_AMU)
  */
 
+#include <agrum/ID/io/IDReader.h>   // to ease IDE parser
+
 #include "IDReader.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

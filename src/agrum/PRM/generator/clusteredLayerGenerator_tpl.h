@@ -47,6 +47,8 @@
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/PRM/generator/clusteredLayerGenerator.h>   // to ease IDE parser
+
 namespace gum {
   namespace prm {
 

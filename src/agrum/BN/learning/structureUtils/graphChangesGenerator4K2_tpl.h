@@ -47,6 +47,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

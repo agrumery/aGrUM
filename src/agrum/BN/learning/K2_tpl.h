@@ -48,6 +48,7 @@
  */
 
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
+#include <agrum/BN/learning/K2.h>   // to ease IDE parser
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/structureUtils/graphChange.h>
 

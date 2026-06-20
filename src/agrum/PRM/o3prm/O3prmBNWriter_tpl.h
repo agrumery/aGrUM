@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/PRM/o3prm/O3prmBNWriter.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/PRM/o3prm/O3prmBNWriter.h>

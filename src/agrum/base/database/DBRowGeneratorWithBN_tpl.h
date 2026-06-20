@@ -47,6 +47,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <agrum/base/database/DBRowGeneratorIdentity.h>
+#include <agrum/base/database/DBRowGeneratorWithBN.h>   // to ease IDE parser
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

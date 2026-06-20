@@ -47,6 +47,8 @@
  */
 
 
+#include <agrum/MRF/inference/tools/evidenceMRFInference.h>   // to ease IDE parser
+
 namespace gum {
 
 

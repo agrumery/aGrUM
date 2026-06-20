@@ -46,6 +46,7 @@
  *
  * @author Christophe GONZALES(@AMU) and Pierre-Henri WUILLEMIN(@LIP6)
  */
+#include <agrum/base/graphicalModels/inference/scheduler/schedule.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/agrum.h>

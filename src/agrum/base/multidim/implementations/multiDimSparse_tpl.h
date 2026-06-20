@@ -47,6 +47,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <agrum/base/multidim/implementations/multiDimSparse.h>   // to ease IDE parser
+
 namespace gum {
 
   // Default constructor: creates an empty null dimensional matrix

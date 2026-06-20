@@ -50,6 +50,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>   // to ease IDE parser
+
 namespace gum {
 
 

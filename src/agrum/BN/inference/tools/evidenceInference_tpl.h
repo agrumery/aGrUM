@@ -47,6 +47,8 @@
  */
 
 
+#include <agrum/BN/inference/tools/evidenceInference.h>   // to ease IDE parser
+
 namespace gum {
 
 

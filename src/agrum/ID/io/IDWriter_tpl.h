@@ -47,6 +47,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
  * GONZALES(_at_AMU)
  */
+#include <agrum/ID/io/IDWriter.h>   // to ease IDE parser
+
 #include "IDWriter.h"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

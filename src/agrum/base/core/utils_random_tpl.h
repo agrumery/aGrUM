@@ -47,6 +47,8 @@
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/core/utils_random.h>   // to ease IDE parser
+
 namespace gum {
 
   // return a random discrete distribution

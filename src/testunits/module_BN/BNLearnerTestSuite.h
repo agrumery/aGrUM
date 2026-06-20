@@ -1789,14 +1789,14 @@ namespace gum_tests {
         CHECK_EQ(std::get< 0 >(state[7]), "Prior");
         CHECK_EQ(std::get< 1 >(state[7]), "-");
 
-//        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
-//        CHECK_EQ(std::get< 1 >(state[5]), "Extended Greedy Hill Climbing");
-//
-//        CHECK_EQ(std::get< 0 >(state[6]), "Score");
-//        CHECK_EQ(std::get< 1 >(state[6]), "BDeu");
-//
-//        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
-//        CHECK_EQ(std::get< 1 >(state[7]), "-");
+        //        CHECK_EQ(std::get< 0 >(state[5]), "Algorithm");
+        //        CHECK_EQ(std::get< 1 >(state[5]), "Extended Greedy Hill Climbing");
+        //
+        //        CHECK_EQ(std::get< 0 >(state[6]), "Score");
+        //        CHECK_EQ(std::get< 1 >(state[6]), "BDeu");
+        //
+        //        CHECK_EQ(std::get< 0 >(state[7]), "Prior");
+        //        CHECK_EQ(std::get< 1 >(state[7]), "-");
       }
 
       learner.useMIIC();

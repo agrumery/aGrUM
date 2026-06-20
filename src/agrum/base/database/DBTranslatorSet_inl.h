@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/base/database/DBTranslatorSet.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/database/DBTranslatorSet.h>

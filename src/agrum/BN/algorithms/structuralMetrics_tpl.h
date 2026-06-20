@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/BN/algorithms/structuralMetrics.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/graphs/PDAG.h>

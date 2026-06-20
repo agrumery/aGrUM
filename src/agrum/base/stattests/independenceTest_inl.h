@@ -46,6 +46,7 @@
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <agrum/base/stattests/independenceTest.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -81,8 +82,7 @@ namespace gum {
 
     /// move constructor
     INLINE IndependenceTest::IndependenceTest(IndependenceTest&& from) :
-        CachedContingencyCounter(std::move(from)),
-        _domain_sizes_(std::move(from._domain_sizes_)) {
+        CachedContingencyCounter(std::move(from)), _domain_sizes_(std::move(from._domain_sizes_)) {
       GUM_CONS_MOV(IndependenceTest);
     }
 

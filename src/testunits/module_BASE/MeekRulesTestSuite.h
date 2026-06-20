@@ -127,7 +127,7 @@ namespace gum_tests {
       mg.addEdge(4, 5);
 
       gum::MeekRules mr;
-      const auto dag = mr.propagateToDAG(mg);
+      const auto     dag = mr.propagateToDAG(mg);
 
       CHECK_EQ(dag.arcs().size(), 13u);
 
@@ -171,7 +171,7 @@ namespace gum_tests {
       mg.addEdge(4, 5);
 
       gum::MeekRules mr;
-      const auto cpdag = mr.propagateToCPDAG(mg);
+      const auto     cpdag = mr.propagateToCPDAG(mg);
 
       CHECK_EQ(cpdag.arcs().size(), 13u);
       CHECK_EQ(cpdag.edges().size(), 0u);
@@ -192,6 +192,7 @@ namespace gum_tests {
       CHECK(cpdag.existsArc(4, 0));
       CHECK(cpdag.existsArc(4, 5));
     }
+
     // R1 isolated: 0->1-2, 0 not adjacent to 2.
     // R1 fires: parents(1)={0} not in boundary(2)={1} -> orient 1->2.
     static void testMeekRuleR1_isolated() {

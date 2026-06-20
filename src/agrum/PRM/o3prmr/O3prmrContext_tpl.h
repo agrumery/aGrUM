@@ -48,6 +48,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6), Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
+#include <agrum/PRM/o3prmr/O3prmrContext.h>   // to ease IDE parser
+
 #include "O3prmrContext.h"
 
 namespace gum {

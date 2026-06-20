@@ -79,8 +79,7 @@ namespace gum {
     }
 
     /// move operator
-    CachedContingencyCounter&
-        CachedContingencyCounter::operator=(CachedContingencyCounter&& from) {
+    CachedContingencyCounter& CachedContingencyCounter::operator=(CachedContingencyCounter&& from) {
       if (this != &from) {
         std::swap(prior_, from.prior_);
         counter_   = std::move(from.counter_);

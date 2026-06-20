@@ -48,6 +48,7 @@
  */
 
 
+#include <agrum/base/database/DBTranslator4IntegerVariable.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  include <agrum/base/database/DBTranslator4IntegerVariable.h>

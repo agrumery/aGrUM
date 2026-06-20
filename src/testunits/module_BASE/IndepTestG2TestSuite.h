@@ -43,12 +43,12 @@
 
 #include <iostream>
 
+#include <agrum/base/core/math/chi2.h>
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGeneratorParser.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/base/core/math/chi2.h>
 #include <agrum/base/stattests/indepTestG2.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 

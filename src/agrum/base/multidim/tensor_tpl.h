@@ -345,7 +345,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE const Tensor< GUM_SCALAR >&
                Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
-                                     const std::vector< std::string >& mapSrc) const {
+                                              const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Tensor to copy has not the same size.")
     }

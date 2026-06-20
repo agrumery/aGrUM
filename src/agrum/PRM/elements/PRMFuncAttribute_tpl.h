@@ -48,6 +48,8 @@
  */
 
 
+#include <agrum/PRM/elements/PRMFuncAttribute.h>   // to ease IDE parser
+
 namespace gum {
   namespace prm {
 

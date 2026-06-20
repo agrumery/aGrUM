@@ -48,6 +48,8 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/BN/inference/tools/estimator.h>   // to ease IDE parser
+
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >

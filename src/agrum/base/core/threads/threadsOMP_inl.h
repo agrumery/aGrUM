@@ -96,7 +96,6 @@ namespace gum {
 #endif
     }
 
-
     INLINE void setDynamicThreadsNumber(bool value) {
 #ifdef _OPENMP
       omp_set_dynamic(((value == true) ? 1 : 0));

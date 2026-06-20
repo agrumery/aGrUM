@@ -88,19 +88,17 @@ namespace gum {
        * @param nodeId2Columns a mapping from the ids of the nodes in the
        * graphical model to the corresponding column in the DatabaseTable
        * parsed by the parser. An empty bijection means identity mapping. */
-      CachedContingencyCounter(
-          const DBRowGeneratorParser&                                 parser,
-          const Prior&                                                prior,
-          const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-          const Bijection< NodeId, std::size_t >&                     nodeId2columns
-          = Bijection< NodeId, std::size_t >());
+      CachedContingencyCounter(const DBRowGeneratorParser&                                 parser,
+                               const Prior&                                                prior,
+                               const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                               const Bijection< NodeId, std::size_t >& nodeId2columns
+                               = Bijection< NodeId, std::size_t >());
 
       /// default constructor (no ranges)
-      CachedContingencyCounter(
-          const DBRowGeneratorParser&             parser,
-          const Prior&                            prior,
-          const Bijection< NodeId, std::size_t >& nodeId2columns
-          = Bijection< NodeId, std::size_t >());
+      CachedContingencyCounter(const DBRowGeneratorParser&             parser,
+                               const Prior&                            prior,
+                               const Bijection< NodeId, std::size_t >& nodeId2columns
+                               = Bijection< NodeId, std::size_t >());
 
       /// destructor
       virtual ~CachedContingencyCounter();

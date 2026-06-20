@@ -41,6 +41,7 @@
 
 #pragma once
 
+#include <agrum/BN/io/GUM/GumBNReader.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease parsing in IDE

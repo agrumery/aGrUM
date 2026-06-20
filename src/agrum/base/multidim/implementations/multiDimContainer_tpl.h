@@ -52,6 +52,8 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/multidim/implementations/multiDimContainer.h>   // to ease IDE parser
+
 namespace gum {
 
   template < typename GUM_ELEMENT >

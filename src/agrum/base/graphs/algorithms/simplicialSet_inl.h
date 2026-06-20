@@ -49,6 +49,8 @@
 #include <limits>
 #include <sstream>
 
+#include <agrum/base/graphs/algorithms/simplicialSet.h>   // to ease IDE parser
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease IDE parser

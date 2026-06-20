@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/MRF/io/UAI/UAIMRFReader.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

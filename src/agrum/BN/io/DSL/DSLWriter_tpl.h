@@ -46,6 +46,7 @@
  *
  * @author Lionel TORTI and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <agrum/BN/io/DSL/DSLWriter.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // to ease automatic parser

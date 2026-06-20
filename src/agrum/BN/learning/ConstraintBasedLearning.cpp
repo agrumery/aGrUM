@@ -67,30 +67,26 @@ namespace gum {
     }
 
     ConstraintBasedLearning::ConstraintBasedLearning(const ConstraintBasedLearning& from) :
-        ApproximationScheme(from),
-        _forbiddenGraph_(from._forbiddenGraph_),
-        _mandatoryGraph_(from._mandatoryGraph_),
-        _initialMarks_(from._initialMarks_),
-        _latentCouples_(from._latentCouples_),
-        _maxLog_(from._maxLog_),
+        ApproximationScheme(from), _forbiddenGraph_(from._forbiddenGraph_),
+        _mandatoryGraph_(from._mandatoryGraph_), _initialMarks_(from._initialMarks_),
+        _latentCouples_(from._latentCouples_), _maxLog_(from._maxLog_),
         _maxIndegree_(from._maxIndegree_) {
       GUM_CONS_CPY(ConstraintBasedLearning);
     }
 
     ConstraintBasedLearning::ConstraintBasedLearning(ConstraintBasedLearning&& from) :
-        ApproximationScheme(std::move(from)),
-        _forbiddenGraph_(std::move(from._forbiddenGraph_)),
+        ApproximationScheme(std::move(from)), _forbiddenGraph_(std::move(from._forbiddenGraph_)),
         _mandatoryGraph_(std::move(from._mandatoryGraph_)),
         _initialMarks_(std::move(from._initialMarks_)),
-        _latentCouples_(std::move(from._latentCouples_)),
-        _maxLog_(from._maxLog_),
+        _latentCouples_(std::move(from._latentCouples_)), _maxLog_(from._maxLog_),
         _maxIndegree_(from._maxIndegree_) {
       GUM_CONS_MOV(ConstraintBasedLearning);
     }
 
     ConstraintBasedLearning::~ConstraintBasedLearning() { GUM_DESTRUCTOR(ConstraintBasedLearning); }
 
-    ConstraintBasedLearning& ConstraintBasedLearning::operator=(const ConstraintBasedLearning& from) {
+    ConstraintBasedLearning&
+        ConstraintBasedLearning::operator=(const ConstraintBasedLearning& from) {
       ApproximationScheme::operator=(from);
       _forbiddenGraph_ = from._forbiddenGraph_;
       _mandatoryGraph_ = from._mandatoryGraph_;
@@ -203,19 +199,19 @@ namespace gum {
     // ##########################################################################
 
     bool ConstraintBasedLearning::_existsNonTrivialDirectedPath_(const MixedGraph& graph,
-                                                                  const NodeId      n1,
-                                                                  const NodeId      n2) {
+                                                                 const NodeId      n1,
+                                                                 const NodeId      n2) {
       for (const auto parent: graph.parents(n2)) {
         if (graph.existsArc(n2, parent)) continue;   // double arc — skip
-        if (parent == n1) continue;                   // trivial path — not counted
+        if (parent == n1) continue;                  // trivial path — not counted
         if (_existsDirectedPath_(graph, n1, parent)) return true;
       }
       return false;
     }
 
     bool ConstraintBasedLearning::_existsDirectedPath_(const MixedGraph& graph,
-                                                        const NodeId      n1,
-                                                        const NodeId      n2) {
+                                                       const NodeId      n1,
+                                                       const NodeId      n2) {
       List< NodeId > nodeFIFO;
       Set< NodeId >  mark;
 
