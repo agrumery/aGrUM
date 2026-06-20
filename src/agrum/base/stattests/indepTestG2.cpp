@@ -96,6 +96,7 @@ namespace gum {
       const std::size_t Y_size = database.domainSize(var_y);
 
       double            cumulStat = 0.0;
+      std::size_t       n_skipped = 0;
       const std::size_t Z_size
           = idset.hasConditioningSet() ? all_size / (X_size * Y_size) : std::size_t(1);
 
@@ -121,14 +122,26 @@ namespace gum {
           if (N_z[z] > 0) {
             for (std::size_t y = std::size_t(0), yz = beg_yz; y < Y_size; ++yz, ++y) {
               for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size; ++xz, ++x, ++xyz) {
+                // Two distinct reasons to skip this cell and reduce df:
+                // 1. tmp2 == 0: a marginal is zero — E = N_xz·N_yz/N_z undefined
+                //    (structural zero).
+                // 2. tmp1 == 0 with tmp2 > 0: O=0 but E>0. The G2 term
+                //    0·log(0/E) = 0 by convention; unlike Chi2 where (O-E)²/E = E,
+                //    this cell adds no signal to the statistic. Treating it as
+                //    inactive (reducing df) is a deliberate conservative choice for
+                //    graphical-model structure learning, where avoiding spurious
+                //    edges in sparse data takes priority over maximising power.
                 const double tmp1 = N_xyz[xyz] * N_z[z];
                 const double tmp2 = N_yz[yz] * N_xz[xz];
                 if ((tmp1 != 0.0) && (tmp2 != 0.0)) {
                   cumulStat += N_xyz[xyz] * std::log(tmp1 / tmp2);
+                } else {
+                  ++n_skipped;
                 }
               }
             }
           } else {   // moving xyz out of the loops x,y when if N_z[z]==0
+            n_skipped += X_size * Y_size;
             xyz += X_size * Y_size;
           }
         }
@@ -149,9 +162,14 @@ namespace gum {
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           const double tmp_Ny = N_y[y];
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
+            // Same two skip conditions as the conditioned case above: structural
+            // zero (tmp==0) or sampling zero with no G2 contribution (N_xyz==0,
+            // term = 0·log(0/E) = 0). Both reduce df for the same reasons.
             const double tmp = (tmp_Ny * N_x[x]);
             if ((tmp != 0.0) && (N_xyz[xy] != 0.0)) {
               cumulStat += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp);
+            } else {
+              ++n_skipped;
             }
           }
         }
@@ -161,7 +179,7 @@ namespace gum {
       // to the Pearson's chi-squared test formula
       cumulStat *= 2;
 
-      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size);
+      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size, n_skipped);
       double pValue = Chi2::probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }

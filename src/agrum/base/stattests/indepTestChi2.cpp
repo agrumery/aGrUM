@@ -96,6 +96,7 @@ namespace gum {
       const std::size_t Y_size = database.domainSize(var_y);
 
       double            cumulStat = 0;
+      std::size_t       n_skipped = 0;
       const std::size_t Z_size
           = idset.hasConditioningSet() ? all_size / (X_size * Y_size) : std::size_t(1);
 
@@ -121,14 +122,19 @@ namespace gum {
           if (N_z[z] > 0) {
             for (std::size_t y = std::size_t(0), yz = beg_yz; y < Y_size; ++yz, ++y) {
               for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size; ++xz, ++x, ++xyz) {
+                // silent cell: expected count E = N_xz*N_yz/N_z == 0
+                // (a marginal is zero); (O-E)²/E is indeterminate → skip
                 const double tmp1 = (N_yz[yz] * N_xz[xz]) / N_z[z];
                 if (tmp1 != 0.0) {
                   const double tmp2 = N_xyz[xyz] - tmp1;
                   cumulStat += (tmp2 * tmp2) / tmp1;
+                } else {
+                  ++n_skipped;
                 }
               }
             }
           } else {   // moving xyz out of the loops x,y when if N_z[z]==0
+            n_skipped += X_size * Y_size;
             xyz += X_size * Y_size;
           }
         }
@@ -149,16 +155,20 @@ namespace gum {
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           const double tmp_Ny = N_y[y];
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
+            // silent cell: E = N_y*N_x/N == 0 (a marginal is zero); only
+            // possible if a pre-defined variable has values absent from the data
             const double tmp1 = (tmp_Ny * N_x[x]) / N;
             if (tmp1 != 0.0) {
               const double tmp2 = N_xyz[xy] - tmp1;
               cumulStat += (tmp2 * tmp2) / tmp1;
+            } else {
+              ++n_skipped;
             }
           }
         }
       }
 
-      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size);
+      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size, n_skipped);
       double pValue = Chi2::probaChi2(cumulStat, df);
       return std::pair< double, double >(cumulStat, pValue);
     }

@@ -139,13 +139,18 @@ namespace gum {
       std::vector< std::size_t > _domain_sizes_;
 
       /// returns the degrees of freedom for a chi2/G2 test X _|_ Y | Z
-      /** @param X_size domain size of X
-       * @param Y_size domain size of Y
-       * @param Z_size product of domain sizes of the conditioning variables
-       *               (1 if no conditioning set) */
+      /** @param X_size   domain size of X
+       * @param Y_size   domain size of Y
+       * @param Z_size   product of domain sizes of the conditioning variables
+       *                 (1 if no conditioning set)
+       * @param n_skipped number of cells excluded from the statistic sum because
+       *                 their expected count is zero (silent cells). Each such
+       *                 cell effectively removes one degree of freedom. The result
+       *                 is clamped to 1 to keep the distribution well-defined. */
       static Size degreesOfFreedom_(std::size_t X_size,
                                     std::size_t Y_size,
-                                    std::size_t Z_size = 1);
+                                    std::size_t Z_size    = 1,
+                                    std::size_t n_skipped = 0);
 
       /// returns a counting vector where variables are marginalized from N_xyz
       /** @param node_2_marginalize indicates which node(s) shall be marginalized:

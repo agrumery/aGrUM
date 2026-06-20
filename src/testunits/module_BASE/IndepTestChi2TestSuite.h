@@ -48,6 +48,7 @@
 #include <agrum/base/database/DBRowGeneratorParser.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
+#include <agrum/base/core/math/chi2.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/BN/learning/priors/noPrior.h>
 
@@ -341,7 +342,8 @@ namespace gum_tests {
 
       auto stats = score.statistics(0, 1, {2, 3});
       CHECK((stats.first) == doctest::Approx(2.0).epsilon(1e-3));
-      CHECK((stats.second) == doctest::Approx(0.7357588823428847).epsilon(1e-3));
+      // indepXYZ1Z2.csv has many silent cells (sparse, 6 rows); df_effective=1
+      CHECK((stats.second) == doctest::Approx(gum::Chi2::probaChi2(2.0, 1)).epsilon(1e-3));
     }
 
     static void test_statistics_4() {
@@ -366,7 +368,46 @@ namespace gum_tests {
 
       auto stats = score.statistics(0, 1, {2});
       CHECK((stats.first) == doctest::Approx(2.0).epsilon(1e-3));
-      CHECK((stats.second) == doctest::Approx(0.5724067044783774).epsilon(1e-3));
+      // indepXYZ.csv has many silent cells (sparse, 6 rows); df_effective=1
+      CHECK((stats.second) == doctest::Approx(gum::Chi2::probaChi2(2.0, 1)).epsilon(1e-3));
+    }
+
+    // sparse_XYZ.csv: X(A,B,C) x Y(a,b) | Z(0,1)
+    // C never appears with Z=0 → 2 silent cells (E=0) in the Z=0 slice.
+    // df_theoretical = 2*(3-1)*(2-1) = 4, n_skipped = 2 → df_effective = 2.
+    // With df=2 the statistic 6.0 gives p-value = exp(-3) ≈ 0.0498,
+    // much smaller than the uncorrected value Chi2(6.0, df=4) ≈ 0.199.
+    static void test_df_skipped_cells() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/sparse_XYZ.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestChi2        score(parser, prior);
+
+      // node 0=X, node 1=Y, node 2=Z
+      auto stat = score.statistics(0, 1, std::vector< gum::NodeId >{2});
+
+      // statistic: sum over active cells only, computed on the Z=0 and Z=1 slices
+      CHECK(stat.first == doctest::Approx(6.0).epsilon(1e-9));
+
+      // p-value must match Chi2(df=2), not Chi2(df=4)
+      CHECK(stat.second == doctest::Approx(gum::Chi2::probaChi2(6.0, 2)).epsilon(1e-6));
+
+      // verify the correction tightens the test: corrected p < uncorrected p
+      CHECK(stat.second < gum::Chi2::probaChi2(6.0, 4));
     }
   };
 
@@ -378,5 +419,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_statistics_2)
   GUM_TEST_ACTIF(_statistics_3)
   GUM_TEST_ACTIF(_statistics_4)
+  GUM_TEST_ACTIF(_df_skipped_cells)
 
 } /* namespace gum_tests */
