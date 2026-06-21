@@ -83,11 +83,48 @@ namespace gum {
     }
 
     // ##########################################################################
+    // Scorer injection
+    // ##########################################################################
+
+    void Miic::setMutualInformation(CorrectedMutualInformation& mi) { mi_ = &mi; }
+
+    // ##########################################################################
+    // Comparator operators
+    // ##########################################################################
+
+    bool GreaterPairOn2nd::operator()(const CondRanking& e1, const CondRanking& e2) const {
+      return e1.second > e2.second;
+    }
+
+    bool GreaterAbsPairOn2nd::operator()(const Ranking& e1, const Ranking& e2) const {
+      return std::abs(e1.second) > std::abs(e2.second);
+    }
+
+    bool GreaterTupleOnLast::operator()(const ProbabilisticRanking& e1,
+                                        const ProbabilisticRanking& e2) const {
+      double p1xz = std::get< 2 >(e1);
+      double p1yz = std::get< 3 >(e1);
+      double p2xz = std::get< 2 >(e2);
+      double p2yz = std::get< 3 >(e2);
+      double I1   = std::get< 1 >(e1);
+      double I2   = std::get< 1 >(e2);
+      if ((I1 < 0 && I2 < 0) || (I1 >= 0 && I2 >= 0)) {
+        if (std::max(p1xz, p1yz) == std::max(p2xz, p2yz)) {
+          return std::abs(I1) > std::abs(I2);
+        } else {
+          return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
+        }
+      } else {
+        return I1 < I2;
+      }
+    }
+
+    // ##########################################################################
     // Skeleton learning
     // ##########################################################################
 
-    MixedGraph Miic::learnSkeleton(CorrectedMutualInformation& mutualInformation,
-                                   MixedGraph                  graph) {
+    MixedGraph Miic::learnSkeleton(MixedGraph graph) {
+      if (mi_ == nullptr) GUM_ERROR(NullElement, "call setMutualInformation before learnSkeleton")
       timer_.reset();
       current_step_ = 0;
 
@@ -96,14 +133,14 @@ namespace gum {
       Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
 
-      initiation_(mutualInformation, graph, sep_set, rank);
-      iteration_(mutualInformation, graph, sep_set, rank);
+      initiation_(*mi_, graph, sep_set, rank);
+      iteration_(*mi_, graph, sep_set, rank);
 
       return graph;
     }
 
-    MixedGraph Miic::learnMixedStructure(CorrectedMutualInformation& mutualInformation,
-                                         MixedGraph                  graph) {
+    MixedGraph Miic::learnMixedStructure(MixedGraph graph) {
+      if (mi_ == nullptr) GUM_ERROR(NullElement, "call setMutualInformation before learnMixedStructure")
       timer_.reset();
       current_step_ = 0;
 
@@ -112,9 +149,9 @@ namespace gum {
       Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
 
-      initiation_(mutualInformation, graph, sep_set, rank);
-      iteration_(mutualInformation, graph, sep_set, rank);
-      orientationMiic_(mutualInformation, graph, sep_set);
+      initiation_(*mi_, graph, sep_set, rank);
+      iteration_(*mi_, graph, sep_set, rank);
+      orientationMiic_(*mi_, graph, sep_set);
 
       return meekRules_.propagate(graph);
     }

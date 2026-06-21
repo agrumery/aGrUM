@@ -8,12 +8,10 @@ namespace gum {
 
   namespace learning {
 
-    template < GUM_Numeric GUM_SCALAR, typename GRAPH_CHANGES_SELECTOR, typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR > ConstraintBasedLearning::learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                                            PARAM_ESTIMATOR&        estimator,
-                                                            DAG                     initial_dag) {
-      return DAG2BNLearner::createBN< GUM_SCALAR >(estimator,
-                                                   learnStructure(selector, initial_dag));
+    template < GUM_Numeric GUM_SCALAR, typename PARAM_ESTIMATOR >
+    BayesNet< GUM_SCALAR > ConstraintBasedLearning::learnBN(PARAM_ESTIMATOR& estimator,
+                                                            MixedGraph       graph) {
+      return DAG2BNLearner::createBN< GUM_SCALAR >(estimator, learnDAG(graph));
     }
 
   } /* namespace learning */

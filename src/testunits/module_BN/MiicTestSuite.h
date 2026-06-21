@@ -131,6 +131,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation cI(parser, prior);
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -142,17 +143,17 @@ namespace gum_tests {
       }
 
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
@@ -198,17 +199,17 @@ namespace gum_tests {
         }
       }
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
@@ -245,6 +246,7 @@ namespace gum_tests {
       cI.useNML();
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
       gum::MixedGraph     graph;
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -255,17 +257,17 @@ namespace gum_tests {
       }
 
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
@@ -310,17 +312,17 @@ namespace gum_tests {
       }
 
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
@@ -364,17 +366,17 @@ namespace gum_tests {
         }
       }
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
@@ -404,6 +406,7 @@ namespace gum_tests {
       cI.useMDL();
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -425,12 +428,12 @@ namespace gum_tests {
 
       search.setForbiddenGraph(forbidGraph);
 
-      auto mg = search.learnMixedStructure(cI, graph);
+      auto mg = search.learnMixedStructure(graph);
       CHECK(!mg.existsArc(2, 6));
       CHECK(!mg.existsEdge(2, 6));
       CHECK(!mg.existsArc(1, 5));
 
-      auto dag = search.learnStructure(cI, graph);
+      auto dag = search.learnDAG(graph);
       CHECK(!dag.existsArc(2, 6));
       CHECK(!dag.existsArc(2, 6));
       CHECK(!dag.existsArc(1, 5));
@@ -461,6 +464,7 @@ namespace gum_tests {
       cI.useMDL();
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -477,10 +481,10 @@ namespace gum_tests {
       mandaGraph.addArc(3, 4);
       search.setMandatoryGraph(mandaGraph);
 
-      auto mg = search.learnMixedStructure(cI, graph);
+      auto mg = search.learnMixedStructure(graph);
       CHECK(mg.existsArc(3, 4));
 
-      auto dag = search.learnStructure(cI, graph);
+      auto dag = search.learnDAG(graph);
       CHECK(dag.existsArc(3, 4));
     }
 
@@ -515,6 +519,7 @@ namespace gum_tests {
       // cI.useCache( false );
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -529,7 +534,7 @@ namespace gum_tests {
       search.setMaxIndegree(n);
 
       // Learn Structure
-      graph = search.learnMixedStructure(cI, graph);
+      graph = search.learnMixedStructure(graph);
 
       gum::NodeSet nodesSet = graph.asNodeSet();
       for (auto& x: nodesSet) {
@@ -574,6 +579,7 @@ namespace gum_tests {
       // cI.useCache( false );
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
 
       // SimpleListenerForMiic listener;
       //  FilterListenerForMiic filterlistener;
@@ -592,8 +598,8 @@ namespace gum_tests {
           graph.addEdge(j, i);
         }
       }
-      auto mg   = search.learnMixedStructure(cI, graph);
-      auto pdag = search.learnPDAG(cI, graph);
+      auto mg   = search.learnMixedStructure(graph);
+      auto pdag = search.learnPDAG(graph);
     }
 
     static void test_MIIC_ms_order2_() {
@@ -633,6 +639,7 @@ namespace gum_tests {
       // cI.useCache( false );
 
       gum::learning::Miic search;
+      search.setMutualInformation(cI);
 
       // SimpleListenerForMiic listener;
       //  FilterListenerForMiic filterlistener;
@@ -651,8 +658,8 @@ namespace gum_tests {
           graph.addEdge(j, i);
         }
       }
-      auto mg   = search.learnMixedStructure(cI, graph);
-      auto pdag = search.learnPDAG(cI, graph);
+      auto mg   = search.learnMixedStructure(graph);
+      auto pdag = search.learnPDAG(graph);
     }
 
     static void test_125_learn() {
@@ -688,16 +695,16 @@ namespace gum_tests {
         }
       }
       try {
-        auto mg = search.learnMixedStructure(cI, graph);
+        auto mg = search.learnMixedStructure(graph);
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto pdag = search.learnPDAG(cI, graph);
+        auto pdag = search.learnPDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
 
       try {
-        auto dag = search.learnStructure(cI, graph);
+        auto dag = search.learnDAG(graph);
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }

@@ -718,7 +718,8 @@ namespace gum::learning {
     BNLearnerListener listener(this, algoMiic_);
     // create the mixedGraph_constraint_MandatoryArcs.arcs
     MixedGraph mgraph = this->prepareMiic_();
-    return algoMiic_.learnPDAG(*mutualInfo_, mgraph);
+    algoMiic_.setMutualInformation(*mutualInfo_);
+    return algoMiic_.learnPDAG(mgraph);
   }
 
   DAG IBNLearner::learnDAG() {
@@ -781,7 +782,8 @@ namespace gum::learning {
         // create the mixedGraph and the corrected mutual information
         MixedGraph mgraph = this->prepareMiic_();
 
-        return algoMiic_.learnStructure(*mutualInfo_, mgraph);
+        algoMiic_.setMutualInformation(*mutualInfo_);
+        return algoMiic_.learnDAG(mgraph);
       }
 
       // ========================================================================

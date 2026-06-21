@@ -45,7 +45,7 @@
  *
  * ConstraintBasedLearning factors the code common to all constraint-based
  * algorithms (MIIC, PC, FCI, …): constraint management, template-method
- * implementations of learnPDAG / learnStructure / learnBN, and shared graph
+ * implementations of learnPDAG / learnDAG / learnBN, and shared graph
  * utilities. Subclasses must implement learnSkeleton() and learnMixedStructure().
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -61,9 +61,7 @@
 #include <agrum/config.h>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
-#include <agrum/base/core/heap.h>
 #include <agrum/base/graphs/algorithms/MeekRules.h>
-#include <agrum/BN/learning/correctedMutualInformation.h>
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \
   {                                                                                       \
@@ -78,33 +76,14 @@ namespace gum {
 
   namespace learning {
 
-    using CondThreePoints      = std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >;
-    using CondRanking          = std::pair< CondThreePoints*, double >;
-    using ThreePoints          = std::tuple< NodeId, NodeId, NodeId >;
-    using Ranking              = std::pair< ThreePoints*, double >;
-    using ProbabilisticRanking = std::tuple< ThreePoints*, double, double, double >;
-
-    class GreaterPairOn2nd {
-      public:
-      bool operator()(const CondRanking& e1, const CondRanking& e2) const;
-    };
-
-    class GreaterAbsPairOn2nd {
-      public:
-      bool operator()(const Ranking& e1, const Ranking& e2) const;
-    };
-
-    class GreaterTupleOnLast {
-      public:
-      bool operator()(const ProbabilisticRanking& e1, const ProbabilisticRanking& e2) const;
-    };
+    using ThreePoints = std::tuple< NodeId, NodeId, NodeId >;
 
     /**
      * @class ConstraintBasedLearning
      * @brief Abstract base class for constraint-based structure learning algorithms.
      *
      * Provides constraint management (forbidden/mandatory arcs, max indegree),
-     * template-method implementations of learnPDAG, learnStructure and learnBN,
+     * template-method implementations of learnPDAG, learnDAG and learnBN,
      * and shared graph utilities.
      *
      * Subclasses must implement learnSkeleton() and learnMixedStructure().
@@ -151,19 +130,15 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// learns the structure of an Essential Graph (CPDAG)
-      PDAG learnPDAG(CorrectedMutualInformation& mutualInformation, MixedGraph graph);
+      /// learns the essential graph (CPDAG)
+      PDAG learnPDAG(MixedGraph graph);
 
-      /// learns the structure of a DAG
-      DAG learnStructure(CorrectedMutualInformation& I, MixedGraph graph);
+      /// learns a DAG
+      DAG learnDAG(MixedGraph graph);
 
-      /// learns the structure and the parameters of a BN
-      template < GUM_Numeric GUM_SCALAR = double,
-                 typename GRAPH_CHANGES_SELECTOR,
-                 typename PARAM_ESTIMATOR >
-      BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR& selector,
-                                     PARAM_ESTIMATOR&        estimator,
-                                     DAG                     initial_dag = DAG());
+      /// learns structure then estimates parameters
+      template < GUM_Numeric GUM_SCALAR = double, typename PARAM_ESTIMATOR >
+      BayesNet< GUM_SCALAR > learnBN(PARAM_ESTIMATOR& estimator, MixedGraph graph);
 
       /// @}
 
@@ -175,11 +150,9 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      virtual MixedGraph learnSkeleton(CorrectedMutualInformation& mutualInformation,
-                                       MixedGraph                  graph) = 0;
+      virtual MixedGraph learnSkeleton(MixedGraph graph) = 0;
 
-      virtual MixedGraph learnMixedStructure(CorrectedMutualInformation& mutualInformation,
-                                             MixedGraph                  graph) = 0;
+      virtual MixedGraph learnMixedStructure(MixedGraph graph) = 0;
 
       /// @}
 
@@ -191,9 +164,8 @@ namespace gum {
       static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       static bool _existsNonTrivialDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       void        orientDoubleHeadedArcs_(MixedGraph& mg);
-      std::vector< Ranking > unshieldedTriples_(
+      std::vector< ThreePoints > unshieldedTriples_(
           const MixedGraph&                                                      graph,
-          CorrectedMutualInformation&                                            mutualInformation,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
       gum::MeekRules meekRules_;

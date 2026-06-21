@@ -59,11 +59,33 @@
 #ifndef GUM_LEARNING_MIIC_H
 #define GUM_LEARNING_MIIC_H
 
+#include <agrum/base/core/heap.h>
 #include <agrum/BN/learning/ConstraintBasedLearning.h>
+#include <agrum/BN/learning/correctedMutualInformation.h>
 
 namespace gum {
 
   namespace learning {
+
+    using CondThreePoints      = std::tuple< NodeId, NodeId, NodeId, std::vector< NodeId > >;
+    using CondRanking          = std::pair< CondThreePoints*, double >;
+    using Ranking              = std::pair< ThreePoints*, double >;
+    using ProbabilisticRanking = std::tuple< ThreePoints*, double, double, double >;
+
+    class GreaterPairOn2nd {
+      public:
+      bool operator()(const CondRanking& e1, const CondRanking& e2) const;
+    };
+
+    class GreaterAbsPairOn2nd {
+      public:
+      bool operator()(const Ranking& e1, const Ranking& e2) const;
+    };
+
+    class GreaterTupleOnLast {
+      public:
+      bool operator()(const ProbabilisticRanking& e1, const ProbabilisticRanking& e2) const;
+    };
 
     /**
      * @class Miic
@@ -94,15 +116,22 @@ namespace gum {
       Miic& operator=(Miic&& from);
 
       // ##########################################################################
+      /// @name Scorer injection
+      // ##########################################################################
+      /// @{
+
+      void setMutualInformation(CorrectedMutualInformation& mi);
+
+      /// @}
+
+      // ##########################################################################
       /// @name ConstraintBasedLearning interface
       // ##########################################################################
       /// @{
 
-      MixedGraph learnSkeleton(CorrectedMutualInformation& mutualInformation,
-                               MixedGraph                  graph) override;
+      MixedGraph learnSkeleton(MixedGraph graph) override;
 
-      MixedGraph learnMixedStructure(CorrectedMutualInformation& mutualInformation,
-                                     MixedGraph                  graph) override;
+      MixedGraph learnMixedStructure(MixedGraph graph) override;
 
       /// @}
 
@@ -154,7 +183,8 @@ namespace gum {
       /// @}
 
       private:
-      ArcProperty< double > _arcProbas_;
+      CorrectedMutualInformation* mi_{nullptr};
+      ArcProperty< double >       _arcProbas_;
 
       void _orientingVstructureMiic_(MixedGraph&                                     graph,
                                      HashTable< std::pair< NodeId, NodeId >, char >& marks,

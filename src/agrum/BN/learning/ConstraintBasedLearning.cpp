@@ -46,7 +46,6 @@
  */
 
 #include <agrum/base/core/hashTable.h>
-#include <agrum/base/core/heap.h>
 #include <agrum/base/graphs/mixedGraph.h>
 #include <agrum/BN/learning/ConstraintBasedLearning.h>
 
@@ -109,37 +108,6 @@ namespace gum {
     }
 
     // ##########################################################################
-    // Comparator operators
-    // ##########################################################################
-
-    bool GreaterPairOn2nd::operator()(const CondRanking& e1, const CondRanking& e2) const {
-      return e1.second > e2.second;
-    }
-
-    bool GreaterAbsPairOn2nd::operator()(const Ranking& e1, const Ranking& e2) const {
-      return std::abs(e1.second) > std::abs(e2.second);
-    }
-
-    bool GreaterTupleOnLast::operator()(const ProbabilisticRanking& e1,
-                                        const ProbabilisticRanking& e2) const {
-      double p1xz = std::get< 2 >(e1);
-      double p1yz = std::get< 3 >(e1);
-      double p2xz = std::get< 2 >(e2);
-      double p2yz = std::get< 3 >(e2);
-      double I1   = std::get< 1 >(e1);
-      double I2   = std::get< 1 >(e2);
-      if ((I1 < 0 && I2 < 0) || (I1 >= 0 && I2 >= 0)) {
-        if (std::max(p1xz, p1yz) == std::max(p2xz, p2yz)) {
-          return std::abs(I1) > std::abs(I2);
-        } else {
-          return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
-        }
-      } else {
-        return I1 < I2;
-      }
-    }
-
-    // ##########################################################################
     // Constraint setters
     // ##########################################################################
 
@@ -166,12 +134,12 @@ namespace gum {
     // Template methods
     // ##########################################################################
 
-    PDAG ConstraintBasedLearning::learnPDAG(CorrectedMutualInformation& I, MixedGraph graph) {
-      return meekRules_.propagateToCPDAG(learnMixedStructure(I, graph));
+    PDAG ConstraintBasedLearning::learnPDAG(MixedGraph graph) {
+      return meekRules_.propagateToCPDAG(learnMixedStructure(graph));
     }
 
-    DAG ConstraintBasedLearning::learnStructure(CorrectedMutualInformation& I, MixedGraph graph) {
-      return meekRules_.propagateToDAG(learnMixedStructure(I, graph));
+    DAG ConstraintBasedLearning::learnDAG(MixedGraph graph) {
+      return meekRules_.propagateToDAG(learnMixedStructure(graph));
     }
 
     // ##########################################################################
@@ -279,37 +247,20 @@ namespace gum {
       }
     }
 
-    std::vector< Ranking > ConstraintBasedLearning::unshieldedTriples_(
+    std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(
         const MixedGraph&                                                      graph,
-        CorrectedMutualInformation&                                            mutualInformation,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
-      std::vector< Ranking > triples;
+      std::vector< ThreePoints > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
           for (NodeId y: graph.neighbours(z)) {
-            if (y < x && !graph.existsEdge(x, y)) {
-              std::vector< NodeId >       ui;
-              std::pair< NodeId, NodeId > key     = {x, y};
-              std::pair< NodeId, NodeId > rev_key = {y, x};
-              if (sepSet.exists(key)) {
-                ui = sepSet[key];
-              } else if (sepSet.exists(rev_key)) {
-                ui = sepSet[rev_key];
-              }
-              const auto iter_z_place = std::find(ui.begin(), ui.end(), z);
-              if (iter_z_place != ui.end()) ui.erase(iter_z_place);
-
-              double  Ixyz_ui = mutualInformation.score(x, y, z, ui);
-              Ranking triple;
-              auto    tup   = new ThreePoints{x, y, z};
-              triple.first  = tup;
-              triple.second = Ixyz_ui;
-              triples.push_back(triple);
+            if (y < x && !graph.existsEdge(x, y) && !graph.existsArc(x, y)
+                && !graph.existsArc(y, x)) {
+              triples.emplace_back(x, y, z);
             }
           }
         }
       }
-      std::sort(triples.begin(), triples.end(), GreaterAbsPairOn2nd());
       return triples;
     }
 
