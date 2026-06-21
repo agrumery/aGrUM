@@ -1652,6 +1652,76 @@ namespace gum_tests {
       }
     }
 
+    static void test_PossibleEdgesPC() {
+      //[smoking , lung_cancer , bronchitis , visit_to_Asia , tuberculosis ,
+      // tuberculos_or_cancer , dyspnoea , positive_XraY]
+      {
+        // possible edges are not relevant
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        learner.usePC();
+        learner.addPossibleEdge("visit_to_Asia", "lung_cancer");
+        learner.addPossibleEdge("visit_to_Asia", "smoking");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(0));
+      }
+
+      {
+        // possible edges are relevant
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        learner.usePC();
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
+        gum::ArcSet possible_arcs{gum::Arc(bn.idFromName("smoking"), bn.idFromName("lung_cancer")),
+                                  gum::Arc(bn.idFromName("bronchitis"), bn.idFromName("smoking")),
+                                  gum::Arc(bn.idFromName("smoking"), bn.idFromName("bronchitis")),
+                                  gum::Arc(bn.idFromName("lung_cancer"), bn.idFromName("smoking"))};
+        CHECK(possible_arcs.isSupersetOrEqual(bn.arcs()));
+      }
+
+      {
+        // possible edges + forbidden arc
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        learner.usePC();
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addForbiddenArc("smoking", "bronchitis");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(2));
+        gum::ArcSet possible_arcs{gum::Arc(bn.idFromName("bronchitis"), bn.idFromName("smoking")),
+                                  gum::Arc(bn.idFromName("smoking"), bn.idFromName("bronchitis")),
+                                  gum::Arc(bn.idFromName("lung_cancer"), bn.idFromName("smoking")),
+                                  gum::Arc(bn.idFromName("smoking"), bn.idFromName("lung_cancer"))};
+        CHECK(possible_arcs.isSupersetOrEqual(bn.arcs()));
+      }
+
+      {
+        // possible edges + mandatory arc
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        learner.usePC();
+        learner.addPossibleEdge("smoking", "lung_cancer");
+        learner.addPossibleEdge("bronchitis", "smoking");
+        learner.addMandatoryArc("visit_to_Asia", "bronchitis");
+
+        gum::BayesNet< double > bn = learner.learnBN();
+        CHECK_LE(bn.sizeArcs(), static_cast< gum::Size >(3));
+        CHECK_LE(static_cast< gum::Size >(1), bn.sizeArcs());
+        gum::ArcSet possible_arcs{
+            gum::Arc(bn.idFromName("smoking"), bn.idFromName("lung_cancer")),
+            gum::Arc(bn.idFromName("bronchitis"), bn.idFromName("smoking")),
+            gum::Arc(bn.idFromName("smoking"), bn.idFromName("bronchitis")),
+            gum::Arc(bn.idFromName("lung_cancer"), bn.idFromName("smoking")),
+            gum::Arc(bn.idFromName("visit_to_Asia"), bn.idFromName("bronchitis"))};
+        CHECK(possible_arcs.isSupersetOrEqual(bn.arcs()));
+        CHECK(bn.arcs().contains(
+            gum::Arc(bn.idFromName("visit_to_Asia"), bn.idFromName("bronchitis"))));
+      }
+    }
+
     static void testPseudoCount() {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/minimal.csv"));
       CHECK_EQ(learner.domainSize(0), 2u);
@@ -2268,6 +2338,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_PossibleEdgesMIIC)
   GUM_TEST_ACTIF(_PossibleEdgesGHC)
   GUM_TEST_ACTIF(_PossibleEdgesTabu)
+  GUM_TEST_ACTIF(_PossibleEdgesPC)
   GUM_TEST_ACTIF(PseudoCount)
   GUM_TEST_ACTIF(NonRegressionZeroCount)
   GUM_TEST_ACTIF(_misorientation_MIIC)

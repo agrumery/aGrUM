@@ -642,7 +642,8 @@ namespace gum::learning {
     // GUM_CHECKPOINT
     for (const auto& arc: mandatory_arcs) {
       mandatoryGraph.addArc(arc.tail(), arc.head());
-      forbiddenGraph.addArc(arc.head(), arc.head());
+      // MIIC's marks mechanism (orientationMiic_) handles the reverse direction;
+      // adding it to forbiddenGraph would cause DuplicateElement (unlike preparePC_).
     }
 
     // GUM_CHECKPOINT
@@ -976,6 +977,43 @@ namespace gum::learning {
         selector.useArcTriangleDeletions(allowArcTriangleDeletions_);
 
         return greedyHillClimbing_.learnStructure(selector, init_graph);
+      }
+
+      // ========================================================================
+      case AlgoType::GREEDY_THICK_THINNING : {
+        BNLearnerListener listener(this, greedyThickThinning_);
+        StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
+                                       StructuralConstraintForbiddenArcs,
+                                       StructuralConstraintPossibleEdges,
+                                       StructuralConstraintSliceOrder,
+                                       StructuralConstraintNoParentNodes,
+                                       StructuralConstraintNoChildrenNodes,
+                                       StructuralConstraintTotalOrder >
+            invariable_constraints;
+        static_cast< StructuralConstraintMandatoryArcs& >(invariable_constraints)
+            = constraintMandatoryArcs_;
+        static_cast< StructuralConstraintForbiddenArcs& >(invariable_constraints)
+            = constraintForbiddenArcs_;
+        static_cast< StructuralConstraintPossibleEdges& >(invariable_constraints)
+            = constraintPossibleEdges_;
+        static_cast< StructuralConstraintSliceOrder& >(invariable_constraints)
+            = constraintSliceOrder_;
+        static_cast< StructuralConstraintNoParentNodes& >(invariable_constraints)
+            = constraintNoParentNodes_;
+        static_cast< StructuralConstraintNoChildrenNodes& >(invariable_constraints)
+            = constraintNoChildrenNodes_;
+        static_cast< StructuralConstraintTotalOrder& >(invariable_constraints)
+            = constraintTotalOrder_;
+
+        StructuralConstraintSetStatic< StructuralConstraintIndegree, StructuralConstraintDAG >
+            variable_constraints;
+        static_cast< StructuralConstraintIndegree& >(variable_constraints) = constraintIndegree_;
+
+        GraphChangesSelector4DiGraph selector(*score_,
+                                              invariable_constraints,
+                                              variable_constraints);
+
+        return greedyThickThinning_.learnStructure(selector, init_graph);
       }
 
       // ========================================================================

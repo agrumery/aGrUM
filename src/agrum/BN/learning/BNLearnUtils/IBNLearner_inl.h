@@ -307,6 +307,21 @@ namespace gum::learning {
     selectedAlgo_ = AlgoType::EXTENDED_GREEDY_HILL_CLIMBING;
   }
 
+  // indicate that we wish to use greedy thick-thinning
+  INLINE void IBNLearner::useGreedyThickThinning() {
+    selectedAlgo_ = AlgoType::GREEDY_THICK_THINNING;
+  }
+
+  // enable or disable arc reversals in the thin phase of greedy thick-thinning
+  INLINE void IBNLearner::setGreedyThickThinningReversals(bool allow) {
+    greedyThickThinning_.setAllowReversalsInThinPhase(allow);
+  }
+
+  // returns whether arc reversals are allowed in the thin phase
+  INLINE bool IBNLearner::greedyThickThinningReversals() const {
+    return greedyThickThinning_.allowReversalsInThinPhase();
+  }
+
   // indicate that we wish to use a local search with tabu list
   INLINE void IBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
     selectedAlgo_        = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;

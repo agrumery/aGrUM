@@ -425,6 +425,10 @@ namespace gum {
           vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
           break;
         case AlgoType::MIIC : vals.emplace_back(key, "MIIC", ""); break;
+        case AlgoType::PC : vals.emplace_back(key, "PC", ""); break;
+        case AlgoType::GREEDY_THICK_THINNING :
+          vals.emplace_back(key, "Greedy Thick Thinning", "");
+          break;
         default : vals.emplace_back(key, "(unknown)", "?"); break;
       }
 
@@ -600,11 +604,16 @@ namespace gum {
       switch (learner.selectedAlgo_) {
         case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING : useExtendedGreedyHillClimbing(); break;
         case AlgoType::GREEDY_HILL_CLIMBING : useGreedyHillClimbing(); break;
+        case AlgoType::GREEDY_THICK_THINNING :
+          useGreedyThickThinning();
+          setGreedyThickThinningReversals(learner.greedyThickThinningReversals());
+          break;
         case AlgoType::K2 : useK2(learner.algoK2_.order()); break;
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
           useLocalSearchWithTabuList(learner.nbDecreasingChanges_);
           break;
         case AlgoType::MIIC : useMIIC(); break;
+        case AlgoType::PC : usePC(); break;
       }
 
       switch (learner.scoreType_) {

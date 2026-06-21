@@ -73,6 +73,7 @@
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
+#include <agrum/BN/learning/greedyThickThinning.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
@@ -124,7 +125,8 @@ namespace gum::learning {
       LOCAL_SEARCH_WITH_TABU_LIST,
       MIIC,
       PC,
-      EXTENDED_GREEDY_HILL_CLIMBING
+      EXTENDED_GREEDY_HILL_CLIMBING,
+      GREEDY_THICK_THINNING
     };
 
     /// the default noise amount added to CPTs during EM's initialization (see method useEM())
@@ -808,13 +810,23 @@ namespace gum::learning {
     /// indicate that we wish to use PC (Chi2 test by default)
     void usePC();
 
+    /// indicate that we wish to use greedy thick-thinning
+    void useGreedyThickThinning();
+
+    /// enable or disable arc reversals in the thin phase of greedy thick-thinning
+    void setGreedyThickThinningReversals(bool allow);
+
+    /// returns whether arc reversals are allowed in the thin phase of greedy thick-thinning
+    bool greedyThickThinningReversals() const;
+
     /// indicate if the selected algorithm is constraint-based
     bool isConstraintBased() const {
       switch (selectedAlgo_) {
         case AlgoType::K2 :
         case AlgoType::GREEDY_HILL_CLIMBING :
         case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
-        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return false;
+        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
+        case AlgoType::GREEDY_THICK_THINNING : return false;
         case AlgoType::MIIC :
         case AlgoType::PC : return true;
         default : throw OperationNotAllowed("Unknown algorithm");
@@ -1176,6 +1188,9 @@ namespace gum::learning {
 
     /// the extended greedy hill climbing
     GreedyHillClimbing extendedGreedyHillClimbing_;
+
+    /// the greedy thick-thinning algorithm
+    GreedyThickThinning greedyThickThinning_;
 
     /// the local search with tabu list algorithm
     LocalSearchWithTabuList localSearchWithTabuList_;

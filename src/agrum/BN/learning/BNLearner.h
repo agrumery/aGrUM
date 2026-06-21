@@ -504,6 +504,20 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& useGreedyThickThinning() {
+        IBNLearner::useGreedyThickThinning();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setGreedyThickThinningReversals(bool allow) {
+        IBNLearner::setGreedyThickThinningReversals(allow);
+        return *this;
+      }
+
+      bool greedyThickThinningReversals() const {
+        return IBNLearner::greedyThickThinningReversals();
+      }
+
       BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
                                                           Size nb_decrease = 2) {
         IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);

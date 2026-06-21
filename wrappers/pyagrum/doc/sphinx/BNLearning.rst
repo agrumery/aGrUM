@@ -43,11 +43,11 @@ Class BNLearner
       - `isScoreBased <#pyagrum.BNLearner.isScoreBased>`_
       - `useExtendedGreedyHillClimbing <#pyagrum.BNLearner.useExtendedGreedyHillClimbing>`_
     * - `useGreedyHillClimbing <#pyagrum.BNLearner.useGreedyHillClimbing>`_
+      - `useGreedyThickThinning <#pyagrum.BNLearner.useGreedyThickThinning>`_
       - `useK2 <#pyagrum.BNLearner.useK2>`_
-      - `useLocalSearchWithTabuList <#pyagrum.BNLearner.useLocalSearchWithTabuList>`_
-    * - `useMIIC <#pyagrum.BNLearner.useMIIC>`_
-      -
-      -
+    * - `useLocalSearchWithTabuList <#pyagrum.BNLearner.useLocalSearchWithTabuList>`_
+      - `useMIIC <#pyagrum.BNLearner.useMIIC>`_
+      - `usePC <#pyagrum.BNLearner.usePC>`_
 
 
 .. list-table:: Managing structure learning constraints:

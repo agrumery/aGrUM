@@ -252,6 +252,37 @@ exploits all the three operators arc addition, arc deletion and arc reversal
 and only these operators.
 "
 
+%feature("docstring") gum::learning::BNLearner::useGreedyThickThinning
+"
+Indicate that we wish to use the greedy thick-thinning algorithm.
+
+This two-phase algorithm first greedily adds arcs (thick phase) until no
+addition improves the score, then greedily removes arcs (thin phase) until no
+deletion improves the score. By default the thin phase uses only arc deletions;
+arc reversals can optionally be allowed via setGreedyThickThinningReversals.
+"
+
+%feature("docstring") gum::learning::BNLearner::setGreedyThickThinningReversals
+"
+Enable or disable arc reversals during the thin phase of greedy thick-thinning.
+
+Parameters
+----------
+allow : bool
+    If True, arc reversals are considered in addition to arc deletions during
+    the thin phase (default: False).
+"
+
+%feature("docstring") gum::learning::BNLearner::greedyThickThinningReversals
+"
+Returns whether arc reversals are allowed in the thin phase of greedy thick-thinning.
+
+Returns
+-------
+bool
+    True if arc reversals are enabled in the thin phase, False otherwise.
+"
+
 %feature("docstring") gum::learning::BNLearner::useExtendedGreedyHillClimbing
 "
 Indicate that we wish to use a greedy hill climbing algorithm, controlling the

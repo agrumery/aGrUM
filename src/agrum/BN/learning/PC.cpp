@@ -129,71 +129,61 @@ namespace gum {
           const NodeId X = edge.first();
           const NodeId Y = edge.second();
 
-          // try both directions: (A=X, B=Y) then (A=Y, B=X)
-          for (int dir = 0; dir < 2; ++dir) {
-            const NodeId A = (dir == 0) ? X : Y;
-            const NodeId B = (dir == 0) ? Y : X;
-
-            // build Adj(A) \ {B}
-            std::vector< NodeId > adj;
-            for (NodeId nb: graph.neighbours(A)) {
-              if (nb != B) { adj.push_back(nb); }
+          // Returns true if a separating set was found (edge removed or marked).
+          // Lambda replaces goto-based early exit from nested loops.
+          const bool separated = [&]() -> bool {
+            if (d == 0) {
+              // marginal test: symmetric, single direction suffices
+              anyTested = true;
+              const double pval = test_->statistics(X, Y, _emptySet_).second;
+              if (pval <= alpha_) return false;
+              if (stable_) toRemove.push_back(edge); else graph.eraseEdge(edge);
+              sepSet_.insert({X, Y}, {});
+              sepSet_.insert({Y, X}, {});
+              return true;
             }
 
-            if (static_cast< Size >(adj.size()) < d) { continue; }
-            anyTested = true;
+            // d > 0: try both directions (A=X,B=Y) then (A=Y,B=X)
+            for (int dir = 0; dir < 2; ++dir) {
+              const NodeId A = (dir == 0) ? X : Y;
+              const NodeId B = (dir == 0) ? Y : X;
 
-            if (d == 0) {
-              // single marginal independence test (empty conditioning set)
-              const double pval = test_->statistics(A, B, _emptySet_).second;
-              if (pval > alpha_) {
-                if (stable_) {
-                  toRemove.push_back(edge);
-                } else {
-                  graph.eraseEdge(edge);
-                }
-                sepSet_.insert({X, Y}, {});
-                sepSet_.insert({Y, X}, {});
-                goto next_edge;
-              }
-            } else {
-              // index-based combination generation: iterate all S ⊆ adj, |S| = d
+              std::vector< NodeId > adj;
+              for (NodeId nb: graph.neighbours(A))
+                if (nb != B) adj.push_back(nb);
+
+              if (static_cast< Size >(adj.size()) < d) continue;
+              anyTested = true;
+
+              // iterate all S ⊆ adj with |S| = d
               std::vector< std::size_t > idx(d);
               std::iota(idx.begin(), idx.end(), std::size_t(0));
 
               for (;;) {
                 std::vector< NodeId > cond(d);
-                for (Size i = 0; i < d; ++i) {
-                  cond[i] = adj[idx[i]];
-                }
+                for (Size i = 0; i < d; ++i) cond[i] = adj[idx[i]];
 
                 const double pval = test_->statistics(A, B, cond).second;
                 if (pval > alpha_) {
-                  // standard PC: first sep-set found suffices
-                  if (stable_) {
-                    toRemove.push_back(edge);
-                  } else {
-                    graph.eraseEdge(edge);
-                  }
+                  if (stable_) toRemove.push_back(edge); else graph.eraseEdge(edge);
                   sepSet_.insert({X, Y}, cond);
                   sepSet_.insert({Y, X}, cond);
-                  goto next_edge;
+                  return true;
                 }
 
                 // advance combination indices
                 int i = static_cast< int >(d) - 1;
-                while (i >= 0 && idx[i] == adj.size() - d + static_cast< std::size_t >(i)) {
+                while (i >= 0 && idx[i] == adj.size() - d + static_cast< std::size_t >(i))
                   --i;
-                }
-                if (i < 0) { break; }
+                if (i < 0) break;
                 ++idx[i];
-                for (int j = i + 1; j < static_cast< int >(d); ++j) {
+                for (int j = i + 1; j < static_cast< int >(d); ++j)
                   idx[j] = idx[j - 1] + 1;
-                }
               }
             }
-          }
-        next_edge:;
+            return false;
+          }();
+          (void)separated;
         }
 
         if (stable_) {

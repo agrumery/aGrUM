@@ -274,13 +274,27 @@ namespace gum {
       MixedGraph graph;
       for (NodeId n: template_graph.nodes())
         graph.addNodeWithId(n);
-      for (NodeId x: template_graph.nodes())
-        for (NodeId y: template_graph.nodes())
-          if (x < y) {
-            if (isForbiddenEdge_(x, y))
-              GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
-            else graph.addEdge(x, y);
-          }
+
+      auto addEdgeIfAllowed = [&](NodeId x, NodeId y) {
+        if (x > y) std::swap(x, y);
+        if (isForbiddenEdge_(x, y))
+          GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
+        else
+          graph.addEdge(x, y);
+      };
+
+      if (template_graph.edges().empty()) {
+        // node-only template: constraint-based learning always starts from complete graph
+        const std::vector< NodeId > nodes(template_graph.nodes().begin(),
+                                          template_graph.nodes().end());
+        for (std::size_t i = 0; i < nodes.size(); ++i)
+          for (std::size_t j = i + 1; j < nodes.size(); ++j)
+            addEdgeIfAllowed(nodes[i], nodes[j]);
+      } else {
+        for (const auto& edge: template_graph.edges())
+          addEdgeIfAllowed(edge.first(), edge.second());
+      }
+
       return graph;
     }
 
