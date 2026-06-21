@@ -170,6 +170,11 @@ namespace gum {
 
       void applyStructuralConstraints_(MixedGraph& graph);
 
+      /// Builds a complete MixedGraph on the nodes of template_graph, minus edges
+      /// forbidden by structural constraints. Every constraint-based skeleton phase
+      /// must start from this graph so forbidden pairs are never tested by CI.
+      MixedGraph initGraph_(const MixedGraph& template_graph);
+
       gum::MeekRules meekRules_;
 
       /// @}
@@ -180,7 +185,7 @@ namespace gum {
       /// @{
 
       bool isForbiddenArc_(NodeId x, NodeId y) const;
-      bool isForbiddenEdge_(NodeId x, NodeId y);
+      bool isForbiddenEdge_(NodeId x, NodeId y) const;
       bool isMaxIndegree_(const MixedGraph& graph, NodeId x);
       bool isArcValid_(const MixedGraph& graph, NodeId x, NodeId y);
 

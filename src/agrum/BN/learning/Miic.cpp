@@ -129,6 +129,7 @@ namespace gum {
       current_step_ = 0;
 
       _latentCouples_.clear();
+      graph = initGraph_(graph);
 
       Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
@@ -145,6 +146,7 @@ namespace gum {
       current_step_ = 0;
 
       _latentCouples_.clear();
+      graph = initGraph_(graph);
 
       Heap< CondRanking, GreaterPairOn2nd >                           rank;
       HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sep_set;
@@ -171,31 +173,27 @@ namespace gum {
       for (const Edge& edge: edges) {
         x = edge.first();
         y = edge.second();
-        if (isForbiddenEdge_(x, y)) {
-          GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, " Constraints : Forbidden edge")
+
+        double Ixy = mutualInformation.score(x, y);
+
+        if (Ixy <= 0) {
           graph.eraseEdge(edge);
+          GUM_SL_EMIT(x,
+                      y,
+                      "Remove " << x << " - " << y,
+                      "Independent based on Mutual Information :" << Ixy)
+          sepSet.insert(std::make_pair(x, y), _emptySet_);
         } else {
-          double Ixy = mutualInformation.score(x, y);
+          findBestContributor_(x, y, _emptySet_, graph, mutualInformation, rank);
+          GUM_SL_EMIT(x,
+                      y,
+                      "Keep " << x << " - " << y,
+                      "Dependent based on Mutual Information :" << Ixy)
+        }
 
-          if (Ixy <= 0) {
-            graph.eraseEdge(edge);
-            GUM_SL_EMIT(x,
-                        y,
-                        "Remove " << x << " - " << y,
-                        "Independent based on Mutual Information :" << Ixy)
-            sepSet.insert(std::make_pair(x, y), _emptySet_);
-          } else {
-            findBestContributor_(x, y, _emptySet_, graph, mutualInformation, rank);
-            GUM_SL_EMIT(x,
-                        y,
-                        "Keep " << x << " - " << y,
-                        "Dependent based on Mutual Information :" << Ixy)
-          }
-
-          ++current_step_;
-          if (onProgress.hasListener()) {
-            GUM_EMIT3(onProgress, (current_step_ * 33) / steps_init, 0., timer_.step());
-          }
+        ++current_step_;
+        if (onProgress.hasListener()) {
+          GUM_EMIT3(onProgress, (current_step_ * 33) / steps_init, 0., timer_.step());
         }
       }
     }

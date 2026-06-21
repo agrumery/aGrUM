@@ -150,7 +150,7 @@ namespace gum {
       return _forbiddenGraph_.existsArc(x, y);
     }
 
-    bool ConstraintBasedLearning::isForbiddenEdge_(NodeId x, NodeId y) {
+    bool ConstraintBasedLearning::isForbiddenEdge_(NodeId x, NodeId y) const {
       return _forbiddenGraph_.existsArc(x, y) && _forbiddenGraph_.existsArc(y, x);
     }
 
@@ -249,12 +249,11 @@ namespace gum {
 
     void ConstraintBasedLearning::applyStructuralConstraints_(MixedGraph& graph) {
       for (const auto& arc: _mandatoryGraph_.arcs()) {
-        if (graph.existsEdge(arc.head(), arc.tail())) {
+        if (graph.existsEdge(arc.head(), arc.tail()))
           graph.eraseEdge(Edge(arc.head(), arc.tail()));
+        if (!graph.existsArc(arc.tail(), arc.head())) {
           GUM_SL_EMIT(arc.tail(), arc.head(),
                       "Add Arc" << arc.tail() << "->" << arc.head(), "Mandatory")
-          graph.addArc(arc.tail(), arc.head());
-        } else {
           graph.addArc(arc.tail(), arc.head());
         }
       }
@@ -267,6 +266,21 @@ namespace gum {
                       "Forbidden in the other orientation")
         }
       }
+    }
+
+    MixedGraph ConstraintBasedLearning::initGraph_(const MixedGraph& template_graph) {
+      MixedGraph graph;
+      for (NodeId n : template_graph.nodes())
+        graph.addNodeWithId(n);
+      for (NodeId x : template_graph.nodes())
+        for (NodeId y : template_graph.nodes())
+          if (x < y) {
+            if (isForbiddenEdge_(x, y))
+              GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
+            else
+              graph.addEdge(x, y);
+          }
+      return graph;
     }
 
     std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(

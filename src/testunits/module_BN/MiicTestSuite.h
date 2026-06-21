@@ -104,6 +104,21 @@ namespace gum_tests {
     };
   };
 
+  class CountingListenerForMiic: public gum::Listener {
+    public:
+    int forbidden_count{0};
+    int mandatory_count{0};
+
+    void whenStructuralModification(const void* src,
+                                    gum::NodeId x,
+                                    gum::NodeId y,
+                                    std::string action,
+                                    std::string explain) {
+      if (explain.find("Forbidden edge") != std::string::npos) ++forbidden_count;
+      if (explain.find("Mandatory") != std::string::npos) ++mandatory_count;
+    }
+  };
+
   struct MiicTestSuite {
     public:
     static void test_latent_var_() {
@@ -408,34 +423,42 @@ namespace gum_tests {
       gum::learning::Miic search;
       search.setMutualInformation(cI);
 
-      // creating complete graph
+      // creating node-only graph — initGraph_ builds the complete graph internally
       gum::MixedGraph graph;
       gum::DiGraph    forbidGraph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         forbidGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
       }
 
-      // GUM_TRACE_VAR((gum::Edge(0,1) == gum::Edge(1,0)))
-
-      // adding constraints
+      // (2,6) : fully forbidden edge (both directions)
+      // (1,5) : asymmetric — only 1->5 forbidden, 5->1 remains valid
       forbidGraph.addArc(2, 6);
       forbidGraph.addArc(6, 2);
       forbidGraph.addArc(1, 5);
 
       search.setForbiddenGraph(forbidGraph);
 
+      // connect signal counter to verify initGraph_ emits forbidden-edge signals
+      CountingListenerForMiic counter;
+      GUM_CONNECT(search,
+                  onStructuralModification,
+                  counter,
+                  CountingListenerForMiic::whenStructuralModification);
+
       auto mg = search.learnMixedStructure(graph);
-      CHECK(!mg.existsArc(2, 6));
+      // fully forbidden edge (2,6) must be absent in both orientations
       CHECK(!mg.existsEdge(2, 6));
+      CHECK(!mg.existsArc(2, 6));
+      CHECK(!mg.existsArc(6, 2));
+      // asymmetric: arc 1->5 forbidden, but 5->1 could exist
       CHECK(!mg.existsArc(1, 5));
+      // initGraph_ must have emitted a signal for the fully forbidden edge (2,6)
+      CHECK(counter.forbidden_count >= 1);
 
       auto dag = search.learnDAG(graph);
       CHECK(!dag.existsArc(2, 6));
-      CHECK(!dag.existsArc(2, 6));
+      CHECK(!dag.existsArc(6, 2));
       CHECK(!dag.existsArc(1, 5));
     }
 
@@ -466,23 +489,29 @@ namespace gum_tests {
       gum::learning::Miic search;
       search.setMutualInformation(cI);
 
-      // creating complete graph
+      // node-only graph — initGraph_ builds complete graph internally
       gum::MixedGraph graph;
       gum::DAG        mandaGraph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         mandaGraph.addNodeWithId(i);
         graph.addNodeWithId(i);
-        for (gum::Size j = 0; j < i; ++j) {
-          graph.addEdge(j, i);
-        }
       }
 
-      // adding constraints
       mandaGraph.addArc(3, 4);
       search.setMandatoryGraph(mandaGraph);
 
+      CountingListenerForMiic counter;
+      GUM_CONNECT(search,
+                  onStructuralModification,
+                  counter,
+                  CountingListenerForMiic::whenStructuralModification);
+
       auto mg = search.learnMixedStructure(graph);
       CHECK(mg.existsArc(3, 4));
+      CHECK(counter.mandatory_count >= 1);
+
+      auto pdag = search.learnPDAG(graph);
+      CHECK(pdag.existsArc(3, 4));
 
       auto dag = search.learnDAG(graph);
       CHECK(dag.existsArc(3, 4));
@@ -708,6 +737,114 @@ namespace gum_tests {
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+    static void test_asia_constraints_skeleton() {
+      // Verifies that initGraph_ removes forbidden pairs before learnSkeleton
+      // so they are never CI-tested and never appear in the skeleton.
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
+      gum::learning::NoPrior                    prior(database);
+      gum::learning::CorrectedMutualInformation cI(parser, prior);
+      cI.useMDL();
+
+      gum::learning::Miic search;
+      search.setMutualInformation(cI);
+
+      gum::MixedGraph graph;
+      gum::DiGraph    forbidGraph;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        forbidGraph.addNodeWithId(i);
+        graph.addNodeWithId(i);
+      }
+      forbidGraph.addArc(2, 6);
+      forbidGraph.addArc(6, 2);
+      search.setForbiddenGraph(forbidGraph);
+
+      CountingListenerForMiic counter;
+      GUM_CONNECT(search,
+                  onStructuralModification,
+                  counter,
+                  CountingListenerForMiic::whenStructuralModification);
+
+      auto skel = search.learnSkeleton(graph);
+      CHECK(!skel.existsEdge(2, 6));
+      CHECK(!skel.existsArc(2, 6));
+      CHECK(!skel.existsArc(6, 2));
+      CHECK(counter.forbidden_count >= 1);
+    }
+
+    static void test_asia_combined_constraints() {
+      // Verifies that forbidden and mandatory constraints can coexist in a single run.
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
+      gum::learning::NoPrior                    prior(database);
+      gum::learning::CorrectedMutualInformation cI(parser, prior);
+      cI.useMDL();
+
+      gum::learning::Miic search;
+      search.setMutualInformation(cI);
+
+      gum::MixedGraph graph;
+      gum::DiGraph    forbidGraph;
+      gum::DAG        mandaGraph;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        forbidGraph.addNodeWithId(i);
+        mandaGraph.addNodeWithId(i);
+        graph.addNodeWithId(i);
+      }
+      forbidGraph.addArc(2, 6);
+      forbidGraph.addArc(6, 2);
+      mandaGraph.addArc(3, 4);
+      search.setForbiddenGraph(forbidGraph);
+      search.setMandatoryGraph(mandaGraph);
+
+      CountingListenerForMiic counter;
+      GUM_CONNECT(search,
+                  onStructuralModification,
+                  counter,
+                  CountingListenerForMiic::whenStructuralModification);
+
+      auto dag = search.learnDAG(graph);
+      CHECK(!dag.existsArc(2, 6));
+      CHECK(!dag.existsArc(6, 2));
+      CHECK(dag.existsArc(3, 4));
+      CHECK(counter.forbidden_count >= 1);
+      CHECK(counter.mandatory_count >= 1);
+    }
+
   };   // MiicTestSuite
 
   GUM_TEST_ACTIF(_latent_var_)
@@ -721,4 +858,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_MIIC_ms_order1_)
   GUM_TEST_ACTIF(_MIIC_ms_order2_)
   GUM_TEST_ACTIF(_125_learn)
+  GUM_TEST_ACTIF(_asia_constraints_skeleton)
+  GUM_TEST_ACTIF(_asia_combined_constraints)
 }   // namespace gum_tests
