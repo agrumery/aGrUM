@@ -262,7 +262,7 @@ namespace gum_tests {
 
       gum::learning::Miic search;
       search.setMutualInformation(cI);
-      gum::MixedGraph     graph;
+      gum::MixedGraph graph;
 
       for (gum::Size i = 0; i < modalities.size(); ++i) {
         graph.addNodeWithId(i);
@@ -737,6 +737,7 @@ namespace gum_tests {
         // GUM_TRACE_VAR(dag.toDot())
       } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
     }
+
     static void test_asia_constraints_skeleton() {
       // Verifies that initGraph_ removes forbidden pairs before learnSkeleton
       // so they are never CI-tested and never appear in the skeleton.

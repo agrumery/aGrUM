@@ -270,6 +270,8 @@ namespace gum::learning {
 
     if (mutualInfo_) delete mutualInfo_;
 
+    if (indepTestPC_) delete indepTestPC_;
+
     GUM_DESTRUCTOR(IBNLearner)
   }
 
@@ -702,8 +704,99 @@ namespace gum::learning {
     return mgraph;
   }
 
+  MixedGraph IBNLearner::preparePC_() {
+    MixedGraph mgraph;
+    DiGraph    forbiddenGraph;
+    DAG        mandatoryGraph;
+
+    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
+      mgraph.addNodeWithId(i);
+      forbiddenGraph.addNodeWithId(i);
+      mandatoryGraph.addNodeWithId(i);
+    }
+
+    const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
+    if (possible_edges.empty()) {
+      for (const NodeId i: mgraph.nodes()) {
+        for (NodeId j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
+        }
+      }
+    } else {
+      for (const auto& edge: possible_edges) {
+        mgraph.addEdge(edge.first(), edge.second());
+      }
+    }
+
+    for (const auto& arc: constraintMandatoryArcs_.arcs()) {
+      mandatoryGraph.addArc(arc.tail(), arc.head());
+      forbiddenGraph.addArc(arc.head(), arc.tail());
+    }
+    for (const auto& arc: constraintForbiddenArcs_.arcs()) {
+      forbiddenGraph.addArc(arc.tail(), arc.head());
+    }
+
+    const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
+    gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
+    for (const auto& [n1, r1]: sliceOrder) {
+      for (const auto& [n2, r2]: copyOrder) {
+        if (r1 > r2) {
+          forbiddenGraph.addArc(n1, n2);
+        } else if (r2 > r1) {
+          forbiddenGraph.addArc(n2, n1);
+        }
+      }
+      copyOrder.erase(n1);
+    }
+
+    const auto& totalOrder = constraintTotalOrder_.totalOrder();
+    for (auto iter1 = totalOrder.begin(); iter1 != totalOrder.end(); ++iter1) {
+      for (auto iter2 = iter1 + 1; iter2 != totalOrder.end(); ++iter2) {
+        forbiddenGraph.addArc(*iter2, *iter1);
+      }
+    }
+
+    for (const auto node: constraintNoParentNodes_.nodes()) {
+      for (const auto node2: mgraph.nodes()) {
+        if (node != node2) { forbiddenGraph.addArc(node2, node); }
+      }
+    }
+    for (const auto node: constraintNoChildrenNodes_.nodes()) {
+      for (const auto node2: mgraph.nodes()) {
+        if (node != node2) { forbiddenGraph.addArc(node, node2); }
+      }
+    }
+
+    // build the independence test (owned by IBNLearner)
+    if (indepTestPC_) {
+      delete indepTestPC_;
+      indepTestPC_ = nullptr;
+    }
+    if (indepTestTypePC_ == IndepTestType::Chi2) {
+      indepTestPC_ = new IndepTestChi2(scoreDatabase_.parser(),
+                                       *noPrior_,
+                                       ranges_,
+                                       scoreDatabase_.nodeId2Columns());
+    } else {
+      indepTestPC_ = new IndepTestG2(scoreDatabase_.parser(),
+                                     *noPrior_,
+                                     ranges_,
+                                     scoreDatabase_.nodeId2Columns());
+    }
+
+    algoPC_.setMaxIndegree(constraintIndegree_.maxIndegree());
+    algoPC_.setMandatoryGraph(mandatoryGraph);
+    algoPC_.setForbiddenGraph(forbiddenGraph);
+    algoPC_.setIndependenceTest(*indepTestPC_);
+    algoPC_.setAlpha(alphaPc_);
+    algoPC_.setStable(stablePc_);
+    algoPC_.setMaxCondSetSize(maxCondSetSizePc_);
+
+    return mgraph;
+  }
+
   PDAG IBNLearner::learnPDAG() {
-    if (selectedAlgo_ != AlgoType::MIIC) {
+    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::PC) {
       GUM_ERROR(OperationNotAllowed,
                 "Score-based algorithms do not build PDAG. Please use a constraint-based "
                 "algorithm instead")
@@ -713,6 +806,12 @@ namespace gum::learning {
       GUM_ERROR(MissingValueInDatabase,
                 "For the moment, the BNLearner is unable to learn "
                     << "structures with missing values in databases")
+    }
+
+    if (selectedAlgo_ == AlgoType::PC) {
+      BNLearnerListener listener(this, algoPC_);
+      MixedGraph        mgraph = this->preparePC_();
+      return algoPC_.learnPDAG(mgraph);
     }
 
     BNLearnerListener listener(this, algoMiic_);
@@ -776,6 +875,13 @@ namespace gum::learning {
 
 
     switch (selectedAlgo_) {
+      // ========================================================================
+      case AlgoType::PC : {
+        BNLearnerListener listener(this, algoPC_);
+        MixedGraph        mgraph = this->preparePC_();
+        return algoPC_.learnDAG(mgraph);
+      }
+
       // ========================================================================
       case AlgoType::MIIC : {
         BNLearnerListener listener(this, algoMiic_);

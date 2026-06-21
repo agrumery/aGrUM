@@ -249,11 +249,12 @@ namespace gum {
 
     void ConstraintBasedLearning::applyStructuralConstraints_(MixedGraph& graph) {
       for (const auto& arc: _mandatoryGraph_.arcs()) {
-        if (graph.existsEdge(arc.head(), arc.tail()))
-          graph.eraseEdge(Edge(arc.head(), arc.tail()));
+        if (graph.existsEdge(arc.head(), arc.tail())) graph.eraseEdge(Edge(arc.head(), arc.tail()));
         if (!graph.existsArc(arc.tail(), arc.head())) {
-          GUM_SL_EMIT(arc.tail(), arc.head(),
-                      "Add Arc" << arc.tail() << "->" << arc.head(), "Mandatory")
+          GUM_SL_EMIT(arc.tail(),
+                      arc.head(),
+                      "Add Arc" << arc.tail() << "->" << arc.head(),
+                      "Mandatory")
           graph.addArc(arc.tail(), arc.head());
         }
       }
@@ -261,7 +262,8 @@ namespace gum {
         if (graph.existsEdge(Edge(arc.tail(), arc.head()))) {
           graph.eraseEdge(Edge(arc.tail(), arc.head()));
           graph.addArc(arc.head(), arc.tail());
-          GUM_SL_EMIT(arc.head(), arc.tail(),
+          GUM_SL_EMIT(arc.head(),
+                      arc.tail(),
                       "Add Arc" << arc.head() << "->" << arc.tail(),
                       "Forbidden in the other orientation")
         }
@@ -270,15 +272,14 @@ namespace gum {
 
     MixedGraph ConstraintBasedLearning::initGraph_(const MixedGraph& template_graph) {
       MixedGraph graph;
-      for (NodeId n : template_graph.nodes())
+      for (NodeId n: template_graph.nodes())
         graph.addNodeWithId(n);
-      for (NodeId x : template_graph.nodes())
-        for (NodeId y : template_graph.nodes())
+      for (NodeId x: template_graph.nodes())
+        for (NodeId y: template_graph.nodes())
           if (x < y) {
             if (isForbiddenEdge_(x, y))
               GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
-            else
-              graph.addEdge(x, y);
+            else graph.addEdge(x, y);
           }
       return graph;
     }

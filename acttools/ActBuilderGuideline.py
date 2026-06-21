@@ -486,8 +486,8 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -
   )
 
 
-_TIDY_PROGRESS_RE = re.compile(r'^\[(\d+)/(\d+)\].*? (\S+\.cpp)$')
-_TIDY_WARNING_RE = re.compile(r'^(.+?):\d+:\d+: warning:')
+_TIDY_PROGRESS_RE = re.compile(r"^\[(\d+)/(\d+)\].*? (\S+\.cpp)$")
+_TIDY_WARNING_RE = re.compile(r"^(.+?):\d+:\d+: warning:")
 
 
 def _check_clang_tidy(details: bool, correction: bool, dry_run: bool = False) -> int:

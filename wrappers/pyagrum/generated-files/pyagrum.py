@@ -27282,6 +27282,162 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_useMIIC(self)
 
+    def usePC(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the PC (Peter-Clark) algorithm.
+
+        PC is a constraint-based structure learning algorithm. It learns a CPDAG
+        (completed partially directed acyclic graph) from data via conditional
+        independence tests. Three phases: skeleton discovery, v-structure orientation,
+        and Meek rules propagation.
+
+        After calling `usePC()`, configure the independence test with `useChi2Test()`
+        (default) or `useG2Test()`, and optionally tune the significance threshold with
+        `setPCAlpha()`.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        """
+        return _pyagrum.BNLearner_usePC(self)
+
+    def useChi2Test(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Select the chi-squared (χ²) independence test for the PC algorithm.
+
+        This is the default test when `usePC()` is called. The test measures
+        whether two variables are conditionally independent given a set of
+        conditioning variables by comparing observed and expected counts under
+        the independence hypothesis.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call `usePC()` first).
+
+        """
+        return _pyagrum.BNLearner_useChi2Test(self)
+
+    def useG2Test(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Select the G² (log-likelihood ratio) independence test for the PC algorithm.
+
+        G² is an alternative to χ² based on the likelihood-ratio statistic.
+        It is asymptotically equivalent to χ² but may perform better on sparse
+        contingency tables.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call `usePC()` first).
+
+        """
+        return _pyagrum.BNLearner_useG2Test(self)
+
+    def setPCAlpha(self, alpha: float) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the significance threshold (α) used by the PC algorithm to decide
+        whether two variables are conditionally independent.
+
+        An edge (X, Y) is removed from the skeleton when the p-value of the
+        conditional independence test exceeds α. Smaller α makes PC more
+        conservative (fewer edges removed); larger α makes it more aggressive.
+
+        Parameters
+        ----------
+        alpha : float
+            significance threshold in (0, 1). Default is 0.05.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call `usePC()` first).
+
+        """
+        return _pyagrum.BNLearner_setPCAlpha(self, alpha)
+
+    def setPCStable(self, stable: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Set whether to use the stable variant of the PC algorithm.
+
+        In stable PC (default), the adjacency sets used to build conditioning
+        subsets are frozen at the start of each depth level and edge removals
+        are deferred until the end of that level. This makes the result
+        order-independent within each depth level.
+
+        In unstable PC (`stable=False`), edges are removed immediately and
+        adjacency sets are updated on the fly, which may cause the result to
+        depend on the order in which edges are processed.
+
+        Parameters
+        ----------
+        stable : bool
+            True (default) for stable PC, False for the original (unstable) PC.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call `usePC()` first).
+
+        """
+        return _pyagrum.BNLearner_setPCStable(self, stable)
+
+    def setPCMaxCondSetSize(self, max_k: int) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the maximum size of conditioning sets considered by the PC algorithm.
+
+        PC tests conditional independence of X and Y given subsets S of the
+        neighbours of X (or Y). By default all subset sizes are considered
+        (unlimited). Setting a limit k restricts tests to |S| ≤ k, which
+        reduces runtime at the cost of possibly missing some independencies.
+
+        Parameters
+        ----------
+        max_k : int
+            maximum conditioning set size. Pass a very large integer (or leave
+            unset) for no limit.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call `usePC()` first).
+
+        """
+        return _pyagrum.BNLearner_setPCMaxCondSetSize(self, max_k)
+
     def useNMLCorrection(self) -> "pyagrum.BNLearner":
         r"""
 

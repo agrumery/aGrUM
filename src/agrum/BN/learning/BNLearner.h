@@ -525,6 +525,36 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& usePC() {
+        IBNLearner::usePC();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& useChi2Test() {
+        IBNLearner::useChi2Test();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& useG2Test() {
+        IBNLearner::useG2Test();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setPCAlpha(double alpha) {
+        IBNLearner::setPCAlpha(alpha);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setPCStable(bool stable) {
+        IBNLearner::setPCStable(stable);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k) {
+        IBNLearner::setPCMaxCondSetSize(max_k);
+        return *this;
+      }
+
       BNLearner< GUM_SCALAR >& useNMLCorrection() {
         IBNLearner::useNMLCorrection();
         return *this;

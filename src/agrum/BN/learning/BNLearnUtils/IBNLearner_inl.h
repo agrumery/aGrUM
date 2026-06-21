@@ -221,6 +221,50 @@ namespace gum::learning {
   // indicate that we wish to use MIIC with constraints
   INLINE void IBNLearner::useMIIC() { selectedAlgo_ = AlgoType::MIIC; }
 
+  // indicate that we wish to use the PC algorithm
+  INLINE void IBNLearner::usePC() { selectedAlgo_ = AlgoType::PC; }
+
+  // select Chi2 independence test for PC (default)
+  INLINE void IBNLearner::useChi2Test() {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed, "useChi2Test() is only valid when using the PC algorithm")
+    }
+    indepTestTypePC_ = IndepTestType::Chi2;
+  }
+
+  // select G2 independence test for PC
+  INLINE void IBNLearner::useG2Test() {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed, "useG2Test() is only valid when using the PC algorithm")
+    }
+    indepTestTypePC_ = IndepTestType::G2;
+  }
+
+  // set the alpha threshold for PC
+  INLINE void IBNLearner::setPCAlpha(double alpha) {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed, "setPCAlpha() is only valid when using the PC algorithm")
+    }
+    alphaPc_ = alpha;
+  }
+
+  // set stable mode for PC
+  INLINE void IBNLearner::setPCStable(bool stable) {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed, "setPCStable() is only valid when using the PC algorithm")
+    }
+    stablePc_ = stable;
+  }
+
+  // set max conditioning set size for PC (Size(-1) = unlimited)
+  INLINE void IBNLearner::setPCMaxCondSetSize(Size max_k) {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed,
+                "setPCMaxCondSetSize() is only valid when using the PC algorithm")
+    }
+    maxCondSetSizePc_ = max_k;
+  }
+
   /// indicate that we wish to use the NML correction for MIIC
   INLINE void IBNLearner::useNMLCorrection() {
     kmodeMiic_ = CorrectedMutualInformation::KModeTypes::NML;

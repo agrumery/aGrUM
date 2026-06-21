@@ -60,6 +60,8 @@
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/base/database/DBRowGeneratorEM.h>
+#include <agrum/base/stattests/indepTestChi2.h>
+#include <agrum/base/stattests/indepTestG2.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
@@ -75,6 +77,7 @@
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/PC.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
 #include <agrum/BN/learning/scores/scoreBD.h>
@@ -120,6 +123,7 @@ namespace gum::learning {
       GREEDY_HILL_CLIMBING,
       LOCAL_SEARCH_WITH_TABU_LIST,
       MIIC,
+      PC,
       EXTENDED_GREEDY_HILL_CLIMBING
     };
 
@@ -801,6 +805,9 @@ namespace gum::learning {
     /// indicate that we wish to use MIIC
     void useMIIC();
 
+    /// indicate that we wish to use PC (Chi2 test by default)
+    void usePC();
+
     /// indicate if the selected algorithm is constraint-based
     bool isConstraintBased() const {
       switch (selectedAlgo_) {
@@ -808,7 +815,8 @@ namespace gum::learning {
         case AlgoType::GREEDY_HILL_CLIMBING :
         case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return false;
-        case AlgoType::MIIC : return true;
+        case AlgoType::MIIC :
+        case AlgoType::PC : return true;
         default : throw OperationNotAllowed("Unknown algorithm");
       }
     }
@@ -873,6 +881,34 @@ namespace gum::learning {
     std::vector< Arc > latentVariables() const;
 
     /// @}
+
+    // ##########################################################################
+    /// @name PC parameterization
+    // ##########################################################################
+    /// @{
+
+    /// indicate that we wish to use Chi2 independence test for PC
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void useChi2Test();
+
+    /// indicate that we wish to use G2 independence test for PC
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void useG2Test();
+
+    /// set the significance threshold alpha for PC (default 0.05)
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void setPCAlpha(double alpha);
+
+    /// set stable mode for PC — defer removals to end of each depth level (default true)
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void setPCStable(bool stable);
+
+    /// set maximum conditioning set size for PC (default Size(-1) = unlimited)
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void setPCMaxCondSetSize(Size max_k);
+
+    /// @}
+
     // ##########################################################################
     /// @name Accessors / Modifiers for adding constraints on learning
     // ##########################################################################
@@ -1117,6 +1153,21 @@ namespace gum::learning {
     typename CorrectedMutualInformation::KModeTypes kmodeMiic_{
         CorrectedMutualInformation::KModeTypes::MDL};
 
+    /// the PC algorithm
+    gum::learning::PC algoPC_;
+
+    /// independence test type for PC
+    enum class IndepTestType { Chi2, G2 };
+    IndepTestType indepTestTypePC_{IndepTestType::Chi2};
+
+    /// owned independence test object for PC (rebuilt before each learn call)
+    IndependenceTest* indepTestPC_{nullptr};
+
+    /// PC parameters
+    double alphaPc_{0.05};
+    bool   stablePc_{true};
+    Size   maxCondSetSizePc_{Size(-1)};
+
     /// the parametric EM
     DAG2BNLearner dag2BN_;
 
@@ -1178,6 +1229,9 @@ namespace gum::learning {
 
     /// prepares the initial graph for miic
     MixedGraph prepareMiic_();
+
+    /// prepares the initial graph and independence test for PC
+    MixedGraph preparePC_();
 
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;

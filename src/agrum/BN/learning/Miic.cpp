@@ -141,7 +141,8 @@ namespace gum {
     }
 
     MixedGraph Miic::learnMixedStructure(MixedGraph graph) {
-      if (mi_ == nullptr) GUM_ERROR(NullElement, "call setMutualInformation before learnMixedStructure")
+      if (mi_ == nullptr)
+        GUM_ERROR(NullElement, "call setMutualInformation before learnMixedStructure")
       timer_.reset();
       current_step_ = 0;
 
