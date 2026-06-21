@@ -119,6 +119,15 @@ namespace gum {
       /// destructor
       virtual ~IndependenceTest();
 
+      /// @name Statistics
+      /// @{
+
+      /// returns the pair (test statistic, p-value) for the independence test X _|_ Y | Z
+      virtual std::pair< double, double >
+          statistics(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids = {}) = 0;
+
+      /// @}
+
       /// @}
 
 
