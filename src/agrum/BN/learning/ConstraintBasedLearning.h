@@ -168,6 +168,8 @@ namespace gum {
           const MixedGraph&                                                      graph,
           const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
 
+      void applyStructuralConstraints_(MixedGraph& graph);
+
       gum::MeekRules meekRules_;
 
       /// @}

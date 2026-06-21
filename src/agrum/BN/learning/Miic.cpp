@@ -261,31 +261,14 @@ namespace gum {
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
       HashTable< std::pair< NodeId, NodeId >, char > marks = _initialMarks_;
 
-      for (auto& arc: _mandatoryGraph_.arcs()) {
-        if (graph.existsEdge(arc.head(), arc.tail())) {
-          graph.eraseEdge(Edge(arc.head(), arc.tail()));
-          GUM_SL_EMIT(arc.tail(),
-                      arc.head(),
-                      "Add Arc" << arc.tail() << "->" << arc.head(),
-                      "Mandatory")
-          graph.addArc(arc.tail(), arc.head());
-          marks.insert({arc.tail(), arc.head()}, '>');
-          marks.insert({arc.head(), arc.tail()}, '-');
-        } else {
-          graph.addArc(arc.tail(), arc.head());
-          marks.insert({arc.tail(), arc.head()}, '>');
-          marks.insert({arc.head(), arc.tail()}, '-');
-        }
-      }
+      applyStructuralConstraints_(graph);
 
-      for (Arc arc: _forbiddenGraph_.arcs()) {
-        if (graph.existsEdge(Edge(arc.tail(), arc.head()))) {
-          graph.eraseEdge(Edge(arc.tail(), arc.head()));
-          graph.addArc(arc.head(), arc.tail());
-          GUM_SL_EMIT(arc.head(),
-                      arc.tail(),
-                      "Add Arc" << arc.head() << "->" << arc.tail(),
-                      "Forbidden in the other orientation")
+      for (const auto& arc: _mandatoryGraph_.arcs()) {
+        marks.insert({arc.tail(), arc.head()}, '>');
+        marks.insert({arc.head(), arc.tail()}, '-');
+      }
+      for (const Arc& arc: _forbiddenGraph_.arcs()) {
+        if (graph.existsArc(arc.head(), arc.tail())) {
           marks.insert({arc.tail(), arc.head()}, '-');
           marks.insert({arc.head(), arc.tail()}, '>');
         }

@@ -247,6 +247,28 @@ namespace gum {
       }
     }
 
+    void ConstraintBasedLearning::applyStructuralConstraints_(MixedGraph& graph) {
+      for (const auto& arc: _mandatoryGraph_.arcs()) {
+        if (graph.existsEdge(arc.head(), arc.tail())) {
+          graph.eraseEdge(Edge(arc.head(), arc.tail()));
+          GUM_SL_EMIT(arc.tail(), arc.head(),
+                      "Add Arc" << arc.tail() << "->" << arc.head(), "Mandatory")
+          graph.addArc(arc.tail(), arc.head());
+        } else {
+          graph.addArc(arc.tail(), arc.head());
+        }
+      }
+      for (const Arc& arc: _forbiddenGraph_.arcs()) {
+        if (graph.existsEdge(Edge(arc.tail(), arc.head()))) {
+          graph.eraseEdge(Edge(arc.tail(), arc.head()));
+          graph.addArc(arc.head(), arc.tail());
+          GUM_SL_EMIT(arc.head(), arc.tail(),
+                      "Add Arc" << arc.head() << "->" << arc.tail(),
+                      "Forbidden in the other orientation")
+        }
+      }
+    }
+
     std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(
         const MixedGraph&                                                      graph,
         const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
