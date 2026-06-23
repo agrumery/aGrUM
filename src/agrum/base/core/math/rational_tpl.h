@@ -77,6 +77,10 @@ namespace gum {
     double  mediant(0.0F);
 
     while (b <= den_max && d <= den_max) {
+      // guard against int64_t overflow before computing a+c and b+d
+      if (c > std::numeric_limits< int64_t >::max() - a
+          || d > std::numeric_limits< int64_t >::max() - b)
+        break;
       mediant = (GUM_SCALAR)(a + c) / (GUM_SCALAR)(b + d);
 
       if (std::fabs(pnumber - mediant) < zero) {

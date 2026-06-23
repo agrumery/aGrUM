@@ -142,7 +142,7 @@ namespace gum {
     std::transform(names.cbegin(),
                    names.cend(),
                    std::back_inserter(res),
-                   [v](const std::string& n) { return v.idFromName(n); });
+                   [&v](const std::string& n) { return v.idFromName(n); });
     return res;
   }
 

@@ -210,6 +210,19 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
         {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n)}
       )
 
+  def testGetDecisionGraph(self):
+    # *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1; *D3 isolated
+    id_ = gum.fastID("*D1->C1->*D2->$U;*D3->$U2")
+    dg = id_.getDecisionGraph()
+    self.assertIsInstance(dg, gum.DAG)
+    self.assertEqual(dg.size(), 3)
+    self.assertEqual(dg.sizeArcs(), 1)
+    d1, d2, d3 = id_.idFromName("D1"), id_.idFromName("D2"), id_.idFromName("D3")
+    self.assertTrue(dg.existsNode(d1))
+    self.assertTrue(dg.existsNode(d2))
+    self.assertTrue(dg.existsNode(d3))
+    self.assertTrue(dg.existsArc(d1, d2))
+
   def testConnectedComponents(self):
     # A->B connected, *C isolated decision, $D isolated utility: 3 components
     id_ = gum.fastID("A->B;*C;$D")

@@ -56,7 +56,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/refPtr.h>
 #include <agrum/base/core/staticInitializer.h>
 
 #include <initializer_list>

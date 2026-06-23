@@ -167,7 +167,7 @@ namespace gum {
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same
-    bool hasSameStructure(const UGmodel& other);
+    bool hasSameStructure(const UGmodel& other) const;
 
     /// Returns the connected components of the underlying undirected graph.
     /// Each node maps to the id of its component root.

@@ -97,6 +97,19 @@ namespace gum_tests {
         delete (v[i]);
     }
 
+    // MED-2: domainSize multiplication guard in MultiDimImplementation::add()
+    static void testDomainSizeOverflow() {
+      gum::LabelizedVariable v1("v1", "v1", 3);
+      gum::LabelizedVariable v2("v2", "v2", 5);
+      gum::LabelizedVariable v3("v3", "v3", 7);
+
+      gum::MultiDimArray< double > m;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v1));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v3));
+      CHECK_EQ(m.domainSize(), gum::Size(3 * 5 * 7));
+    }
+
     private:
     static void feedMultiDimUntilOverflow(gum::LabelizedVariable*       v[],
                                           gum::MultiDimArray< double >& t) {
@@ -111,4 +124,5 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(Creation)
   GUM_TEST_ACTIF(MemoryCrash)
+  GUM_TEST_ACTIF(DomainSizeOverflow)
 }   // namespace gum_tests

@@ -282,11 +282,11 @@ namespace gum {
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment")
 
-    const auto& cpt = this->cpt(id);
+    const auto& node_cpt = this->cpt(id);
     NodeSet     cpt_parents;
 
-    for (Idx i = 1; i < cpt.nbrDim(); i++) {
-      cpt_parents.insert(_bn_.idFromName(cpt.variable(i).name()));
+    for (Idx i = 1; i < node_cpt.nbrDim(); i++) {
+      cpt_parents.insert(_bn_.idFromName(node_cpt.variable(i).name()));
     }
 
     return (this->parents(id) == cpt_parents);

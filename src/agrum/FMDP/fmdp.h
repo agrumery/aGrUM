@@ -271,6 +271,21 @@ namespace gum {
      */
     Size size() const;
 
+    /**
+     * Transfers ownership of variables to this FMDP (they will be deleted on destruction).
+     * Call this when the FMDP has been populated via FMDPFactory.
+     */
+    void setDeleteVariablesOnDestruction(bool b) { _onDestructionDeleteVars_ = b; }
+
+    /**
+     * Sets the discount factor.
+     */
+    void setDiscount(GUM_ELEMENT discount) { _discount_ = discount; }
+
+    /**
+     * Returns the discount factor.
+     */
+    GUM_ELEMENT discount() const { return _discount_; }
 
     /// @}
 
@@ -300,6 +315,8 @@ namespace gum {
     /// destruction of this instance
     /// Usually the case when fmdp has been initialized with the factory
     bool _onDestructionDeleteVars_;
+
+    GUM_ELEMENT _discount_{GUM_ELEMENT(1)};
   };
 
 

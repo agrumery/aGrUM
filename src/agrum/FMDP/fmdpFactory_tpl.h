@@ -219,6 +219,7 @@ namespace gum {
       }
 
       _fmdp_->addVariable(var);
+      _fmdp_->setDeleteVariablesOnDestruction(true);
       _varNameMap_.insert(var->name(), var);
       _varNameMap_.insert(_fmdp_->main2prime(var)->name(), _fmdp_->main2prime(var));
 
@@ -322,7 +323,7 @@ namespace gum {
   INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view          var,
                                                         const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_ELEMENT >* t
-        = reinterpret_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
+        = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
 
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("addTransition");
     else if (_foo_flag_)
@@ -390,7 +391,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE void FMDPFactory< GUM_ELEMENT >::addCost(const MultiDimAdressable* cost) {
     const MultiDimImplementation< GUM_ELEMENT >* c
-        = reinterpret_cast< const MultiDimImplementation< GUM_ELEMENT >* >(cost);
+        = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(cost);
 
     if (state() != FMDPfactory_state::COST) _illegalStateError_("addCost");
     else if (_foo_flag_) _fmdp_->addCostForAction(_fmdp_->actionId(_stringBag_[0]), c);
@@ -459,7 +460,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE void FMDPFactory< GUM_ELEMENT >::addReward(const MultiDimAdressable* reward) {
     const MultiDimImplementation< GUM_ELEMENT >* r
-        = reinterpret_cast< const MultiDimImplementation< GUM_ELEMENT >* >(reward);
+        = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(reward);
 
     if (state() != FMDPfactory_state::REWARD) _illegalStateError_("addReward");
     else _fmdp_->addReward(r);
@@ -489,10 +490,13 @@ namespace gum {
     else {
       if (_foo_flag_) {
         MultiDimImplementation< GUM_ELEMENT >* res = nullptr;
-        MultiDimImplementation< GUM_ELEMENT >* temp;
 
         for (const auto elt: _ddBag_) {
-          temp = res;
+          if (res == nullptr) {
+            res = const_cast< MultiDimImplementation< GUM_ELEMENT >* >(elt);
+            continue;
+          }
+          MultiDimImplementation< GUM_ELEMENT >* temp = res;
 
           switch (_stringBag_[0][0]) {
             case '+' : res = add2MultiDimFunctionGraphs(res, elt); break;
@@ -507,11 +511,13 @@ namespace gum {
           }
 
           delete elt;
-
-          if (temp != nullptr) delete temp;
+          delete temp;
         }
-        reinterpret_cast< MultiDimFunctionGraph< GUM_ELEMENT >* >(res)->setTableName("Reward");
-        _fmdp_->addReward(res);
+
+        if (res != nullptr) {
+          static_cast< MultiDimFunctionGraph< GUM_ELEMENT >* >(res)->setTableName("Reward");
+          _fmdp_->addReward(res);
+        }
       }
 
       _resetParts_();
@@ -545,8 +551,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE void FMDPFactory< GUM_ELEMENT >::addDiscount(float discount) {
     if (state() != FMDPfactory_state::DISCOUNT) _illegalStateError_("addDiscount");
-    //    else
-    //       _fmdp_->setDiscount ( ( GUM_ELEMENT ) discount );
+    else _fmdp_->setDiscount((GUM_ELEMENT)discount);
   }
 
   // Tells the factory that we're out of a discount declaration.

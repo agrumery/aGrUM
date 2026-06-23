@@ -320,10 +320,13 @@ namespace gum {
                                           Size                        multiplier) const {
     for (auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter) {
       if (nodeset.exists(iter.key())) {
-        Size& weight = nodeset[iter.key()];
-        weight -= iter.val() * multiplier;
-
-        if (!weight) { nodeset.erase(iter.key()); }
+        const Size delta = iter.val() * multiplier;
+        Size&      weight = nodeset[iter.key()];
+        if (delta >= weight) {
+          nodeset.erase(iter.key());
+        } else {
+          weight -= delta;
+        }
       }
     }
   }

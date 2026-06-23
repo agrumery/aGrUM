@@ -146,11 +146,8 @@ namespace gum {
     const Sequence< NodeId >& vect = key.ids();
     const std::size_t         size = vect.size();
 
-    std::size_t i = std::size_t(0);
-    while (i < size) {
-      const Size id = Size(vect[i]);
-      ++i;
-      h += Size(i) * id;
+    for (std::size_t i = std::size_t(0); i < size; ++i) {
+      h ^= Size(vect[i]) + Size(0x9e3779b9u) + (h << 6) + (h >> 2);
     }
 
     return h;

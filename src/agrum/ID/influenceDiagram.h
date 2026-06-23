@@ -128,6 +128,9 @@ namespace gum {
      */
     InfluenceDiagram< GUM_SCALAR >& operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
+    InfluenceDiagram(InfluenceDiagram< GUM_SCALAR >&&) noexcept;
+    InfluenceDiagram< GUM_SCALAR >& operator=(InfluenceDiagram< GUM_SCALAR >&&) noexcept;
+
     /// @}
     bool operator==(const InfluenceDiagram< GUM_SCALAR >& other) const;
 
@@ -457,7 +460,7 @@ namespace gum {
     /**
      * Returns the temporal Graph
      */
-    gum::DAG* getDecisionGraph() const;
+    gum::DAG getDecisionGraph() const;
 
     /**
      * Returns the sequence of decision nodes in the directed path

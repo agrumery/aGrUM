@@ -208,11 +208,10 @@ namespace gum {
   }
 
   // Compute the offset of a Instantiation
-  /** If the instantiation is not fully compatible with the MultiDimWithOffset,
-   * no exception thrown
-   * but 0 is assumed for dimensions not present in the instantiation.
-   * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.getOffs_(i) give the
-   * offset of a:0|b:1|c:2.
+  /** If a variable present in the MultiDimWithOffset is missing from the
+   * instantiation, throws InvalidArgument.
+   * for instance : M<<a<<b<<c; with i=b:1|c:2|d:1 then M.getOffs_(i) throws
+   * because a is not present in i.
    */
 
   template < typename GUM_ELEMENT >

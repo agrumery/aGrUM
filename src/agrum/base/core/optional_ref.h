@@ -80,7 +80,7 @@ namespace gum {
       return *_ptr_;
     }
 
-    T& operator*() const noexcept { return *_ptr_; }
+    T& operator*() const { return value(); }
 
     T* operator->() const noexcept { return _ptr_; }
   };

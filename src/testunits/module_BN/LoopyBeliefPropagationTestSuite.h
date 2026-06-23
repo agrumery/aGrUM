@@ -621,6 +621,19 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference(););
     }
 
+    // regression test for HIGH-9: max_iter check used > instead of >=,
+    // making the algorithm run one extra iteration
+    static void testMaxIterExact() {
+      auto                                  bn = gum::BayesNet< double >::fastPrototype("A->B", 2);
+      gum::LoopyBeliefPropagation< double > inf(&bn);
+      // burn_in=0 by default: max_iter check fires from the first iteration
+      inf.disableEpsilon();
+      inf.disableMinEpsilonRate();
+      inf.setMaxIter(10);
+      inf.makeInference();
+      CHECK_EQ(inf.nbrIterations(), gum::Size(10));
+    }
+
     static void testLogitInLBP() {
       gum::BayesNet< double > bn;
       for (const auto& item: {"Cold", "Flu", "Malaria", "X", "Y", "Z"}) {
@@ -665,6 +678,7 @@ namespace gum_tests {
     }
   };
 
+  GUM_TEST_ACTIF(MaxIterExact)
   GUM_TEST_ACTIF(LBPBinaryTreeWithoutEvidence)
   GUM_TEST_ACTIF(LBPBinaryTreeWithEvidenceOnRoot)
   GUM_TEST_ACTIF(LBPBinaryTreeWithEvidenceOnLeaf)

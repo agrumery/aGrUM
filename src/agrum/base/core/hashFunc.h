@@ -50,12 +50,11 @@
 
 // utility provides the std::pair <> template
 #include <climits>
+#include <memory>
 #include <string>
 #include <utility>
 
 #include <agrum/agrum.h>
-
-#include <agrum/base/core/refPtr.h>
 
 #include <string_view>
 #include <type_traits>
@@ -76,6 +75,8 @@ namespace gum {
    * of 2.
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
+   * @throw OutOfBounds is raised if the smallest power of 2 greater than or
+   * equal to nb requires more bits to be stored than Size can provide.
    */
   unsigned int _hashTableLog2_(const Size nb);
 
@@ -674,26 +675,27 @@ namespace gum {
 
   /**
    * @headerfile hashFunc.h <agrum/base/core/hashFunc.h>
-   * @brief Hash function for RefPtr.
+   * @brief Hash function for shared pointers.
    * @ingroup hashfunctions_group
-   * @tparam Type The type of the RefPtr.
+   * @tparam Type The type of the shared pointer's content.
    */
   template < typename Type >
-  class HashFunc< RefPtr< Type > >: public HashFuncBase< RefPtr< Type > > {
+  class HashFunc< std::shared_ptr< Type > >:
+      public HashFuncBase< std::shared_ptr< Type > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
      * @param key The value to return as a Size.
      * @return Returns the value of a key as a Size.
      */
-    static Size castToSize(const RefPtr< Type >& key);
+    static Size castToSize(const std::shared_ptr< Type >& key);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const RefPtr< Type >& key) const override final;
+    virtual Size operator()(const std::shared_ptr< Type >& key) const override final;
   };
 
 } /* namespace gum */

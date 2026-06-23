@@ -428,6 +428,23 @@ namespace gum_tests {
       CHECK_THROWS_AS(cm.assumeSpurious("B", "A"), const gum::InvalidArgument&);
       CHECK_THROWS_AS(cm.assumeNonSpurious("B", "A"), const gum::InvalidArgument&);
     }
+
+    static void testAddLatentVariable_RejectsNameCollision() {
+      auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y;Y->Z");
+      gum::CausalModel< double > cm(bn);
+
+      // latent name == observed variable name must throw
+      std::vector< gum::NodeId > kidsXY{bn.idFromName("X"), bn.idFromName("Y")};
+      CHECK_THROWS_AS(cm.addLatentVariable("X", kidsXY), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(cm.addLatentVariable("Y", kidsXY), const gum::InvalidArgument&);
+
+      // first addition succeeds
+      std::vector< gum::NodeId > kidsYZ{bn.idFromName("Y"), bn.idFromName("Z")};
+      CHECK_NOTHROW(cm.addLatentVariable("U", kidsYZ));
+
+      // duplicate latent name must throw
+      CHECK_THROWS_AS(cm.addLatentVariable("U", kidsXY), const gum::InvalidArgument&);
+    }
   };
 
   GUM_TEST_ACTIF(SimpleBN)
@@ -443,5 +460,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FrontdoorFailsWithDirectEdge)
   GUM_TEST_ACTIF(ThrowsWhenCauseOrEffectIsLatent)
   GUM_TEST_ACTIF(SpuriousArcFunctions)
+  GUM_TEST_ACTIF(AddLatentVariable_RejectsNameCollision)
 
 }   // namespace gum_tests

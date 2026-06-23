@@ -59,7 +59,7 @@ namespace gum {
   Listener::Listener(const Listener& l) {
     GUM_CONS_CPY(Listener);
 
-    for (const auto el: _senders_) {
+    for (const auto el: l._senders_) {
       el->duplicateTarget(&l, this);
     };
   }

@@ -1881,7 +1881,7 @@ namespace gum {
     HashTableBucket< Key, Val >* _next_bucket_{nullptr};
 
     /// Returns the current iterator's bucket.
-    HashTableBucket< Key, Val >* _getBucket_() const noexcept;
+    [[nodiscard]] HashTableBucket< Key, Val >* _getBucket_() const noexcept;
 
     /**
      * @brief  Returns the index in the hashtable's node vector pointed to by
@@ -1889,7 +1889,7 @@ namespace gum {
      * @return  Returns the index in the hashtable's node vector pointed to by
      * the iterator.
      */
-    Size _getIndex_() const noexcept;
+    [[nodiscard]] Size _getIndex_() const noexcept;
 
     /**
      * @brief Removes the iterator from its hashtable' safe iterators list.
@@ -2275,7 +2275,7 @@ namespace gum {
      * @return Returns the key corresponding to the element pointed to by the
      * iterator.
      */
-    const key_type& key() const;
+    [[nodiscard]] const key_type& key() const;
 
     /**
      * @brief Returns the mapped value pointed to by the iterator.
@@ -2286,7 +2286,7 @@ namespace gum {
      *
      * @return Returns the mapped value pointed to by the iterator.
      */
-    const mapped_type& val() const;
+    [[nodiscard]] const mapped_type& val() const;
 
     /**
      * @brief Makes the iterator point toward nothing (in particular, it is not
@@ -2401,7 +2401,7 @@ namespace gum {
      * @brief Returns the current iterator's bucket.
      * @return Returns the current iterator's bucket.
      */
-    typename HashTable< Key, Val >::Bucket* _getBucket_() const noexcept;
+    [[nodiscard]] typename HashTable< Key, Val >::Bucket* _getBucket_() const noexcept;
 
     /**
      * @brief Returns the index in the hashtable's node vector pointed to by
@@ -2409,7 +2409,7 @@ namespace gum {
      * @return Returns the index in the hashtable's node vector pointed to by
      * the iterator.
      */
-    Size _getIndex_() const noexcept;
+    [[nodiscard]] Size _getIndex_() const noexcept;
   };
 
   // ===========================================================================

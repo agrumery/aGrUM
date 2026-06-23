@@ -191,7 +191,7 @@ namespace gum {
 
     // insert the executable deletions into available_nodes
     if (i_del != 0) {
-      for (std::size_t j = i_del - 1, i = 0; i > 0; --j, --i)
+      for (std::size_t j = i_del - 1, i = i_del; i > 0; --j, --i)
         available_nodes.pushFront(unexecuted_deletions[j].node);
 
       unexecuted_deletions.erase(unexecuted_deletions.begin(),

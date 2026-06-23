@@ -64,6 +64,7 @@ namespace gum {
 
   INLINE
   Idx randomValue(const Size max) {
+    if (max == 0) { GUM_ERROR(OutOfBounds, "randomValue: max must be > 0") }
     std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
     return uni_int(_rand_namespace_::generator());
   }

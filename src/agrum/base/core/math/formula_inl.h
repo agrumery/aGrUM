@@ -219,7 +219,7 @@ namespace gum {
         return std::log(args[0].number);
       }
       case FormulaPart::token_function::ln : {
-        return std::log2(args[0].number);
+        return std::log(args[0].number);
       }
       case FormulaPart::token_function::pow : {
         return std::pow(args[1].number, args[0].number);

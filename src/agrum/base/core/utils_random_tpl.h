@@ -55,6 +55,10 @@ namespace gum {
   std::vector< GUM_SCALAR > randomDistribution(Size n) {
     if (n < 2) n = 2;
 
+    if (n == std::numeric_limits< Size >::max()) {
+      GUM_ERROR(OutOfBounds, "randomDistribution: n is too large (SIZE_MAX would overflow n+1)")
+    }
+
     // using sort method for uniformly distributed distributions
     // https://doi.org/10.1016/0377-2217(82)90161-8
     std::vector< GUM_SCALAR > v(n + 1);

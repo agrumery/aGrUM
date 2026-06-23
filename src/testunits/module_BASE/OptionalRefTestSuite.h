@@ -281,6 +281,14 @@ namespace gum_tests {
       CHECK(*cfound == "one");
       CHECK((std::is_same< decltype(*cfound), const std::string& >::value));
     }
+
+    static void testDerefEmptyThrows() {
+      gum::optional_ref< int > empty;
+      CHECK_THROWS_AS(*empty, const std::bad_optional_access&);
+
+      gum::optional_ref< std::string > emptyStr;
+      CHECK_THROWS_AS(*emptyStr, const std::bad_optional_access&);
+    }
   };
 
   GUM_TEST_ACTIF(Cpp26Guard)
@@ -302,4 +310,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(AssignFromEmpty)
   GUM_TEST_ACTIF(IfInitStatement)
   GUM_TEST_ACTIF(WithHashTable)
+  GUM_TEST_ACTIF(DerefEmptyThrows)
 }   // namespace gum_tests

@@ -110,6 +110,10 @@ namespace gum {
 
   /// compute the spanning forest
   void SpanningForestPrim::_compute_() {
+    _spanning_tree_.clear();
+    _edgesToExplore_.clear();
+    _spanning_tree_cost_ = 0;
+
     // compute a spanning tree in every connected component
     for (const auto node: _graph_.nodes()) {
       if (!_spanning_tree_.existsNode(node)) { _computeInAComponent_(node); }
@@ -164,6 +168,10 @@ namespace gum {
     for (const auto node: _graph_.neighbours(id)) {
       if (!_spanning_tree_.existsNode(node)) {
         Edge edge(node, id);
+        if (!_costTable_.exists(edge)) {
+          GUM_ERROR(NotFound,
+                    "no cost defined for edge (" << edge.first() << "," << edge.second() << ")")
+        }
         _edgesToExplore_.insert(edge, _costTable_[edge]);
       }
     }

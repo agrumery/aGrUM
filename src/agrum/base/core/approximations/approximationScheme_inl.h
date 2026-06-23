@@ -250,7 +250,7 @@ namespace gum {
     if (verbosity()) { history_.push_back(error); }
 
     if (enabled_max_iter_) {
-      if (current_step_ > max_iter_) {
+      if (current_step_ >= max_iter_) {
         stopScheme_(ApproximationSchemeSTATE::Limit);
         return false;
       }

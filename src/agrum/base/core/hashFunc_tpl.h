@@ -84,7 +84,7 @@ namespace gum {
   // constructor
   template < typename Key >
   INLINE HashFuncSmallKey< Key >::HashFuncSmallKey() {
-    static_assert(std::is_integral< Key >::value && sizeof(Key) <= sizeof(Size),
+    static_assert(std::is_integral_v< Key > && sizeof(Key) <= sizeof(Size),
                   "Error: you used HashFuncSmallKey for a key which cannot be "
                   "converted (without narrowing) into a gum::Size");
   }
@@ -197,13 +197,14 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< RefPtr< Type > >::castToSize(const RefPtr< Type >& key) {
-    return HashFunc< Type* >::castToSize(key._refCountPtr_());
+  INLINE Size HashFunc< std::shared_ptr< Type > >::castToSize(const std::shared_ptr< Type >& key) {
+    return HashFunc< Type* >::castToSize(key.get());
   }
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< RefPtr< Type > >::operator()(const RefPtr< Type >& key) const {
+  INLINE Size HashFunc< std::shared_ptr< Type > >::operator()(
+      const std::shared_ptr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

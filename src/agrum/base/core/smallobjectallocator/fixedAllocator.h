@@ -66,11 +66,11 @@ namespace gum {
    * @brief Allocates objects of one given size
    *
    * Fixed allocator knows how to allocate and deallocate blocks of fixed size
-   * but is not limited to a chunck size. Its capacity is limited only by the
+   * but is not limited to a chunk size. Its capacity is limited only by the
    * available memory.
    * To achieve this, FixedAllocator aggregates a vector of Chunk objects.
    * Whenever an allocation request occurs, FixedAllocators looks for a Chunk
-   * that can accomodate the request.
+   * that can accommodate the request.
    * If all Chunks are filled up, FixedAllocator appends a new Chunk.
    *
    * @ingroup core
@@ -85,15 +85,11 @@ namespace gum {
      * allocation
      *
      * Each object of type Chunk contains and manages a chunk of memory
-     * containing a
-     * amount of blocks. At construction time, you configure the block size and
-     * the
-     * number of blocks.
-     * A Chunk contains logic that allows you to allocate and deallocate memory
-     * blocks
-     * from that chunk of memory. When there are no more blocks available in the
-     * chunk,
-     * the allocation function returns zero.
+     * containing a amount of blocks. At construction time, you configure the
+     * block size and the number of blocks. A Chunk contains logic that allows
+     * you to allocate and deallocate memory blocks from that chunk of memory.
+     * When there are no more blocks available in the chunk, the allocation
+     * function returns zero.
      *
      * @ingroup core
      */

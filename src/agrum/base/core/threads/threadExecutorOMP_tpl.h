@@ -66,13 +66,11 @@ namespace gum {
       if (nb_threads <= 1) {
         exec_func(0, 1, std::forward< ARGS >(func_args)...);
       } else {
+        // allocate before incrementing so a bad_alloc leaves the counter unchanged
+        std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
+
         // indicate that we start a new threadExecutor
         ++nbRunningThreadsExecutors_;
-
-        // here, we shall create one std::exception_ptr for each openMP thread
-        // that will be created. This will allow us to catch the exception raised
-        // by the threads
-        std::vector< std::exception_ptr > func_exceptions(nb_threads, nullptr);
 
         // launch the threads and wait for their completion
 #    pragma omp parallel num_threads(int(nb_threads))
@@ -81,7 +79,7 @@ namespace gum {
           const std::size_t this_thread = omp_get_thread_num();
 
           try {
-            exec_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+            exec_func(this_thread, nb_threads, func_args...);
           } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
         }
 
@@ -134,7 +132,7 @@ namespace gum {
           const std::size_t this_thread = getThreadNumber();
 
           try {
-            exec_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+            exec_func(this_thread, nb_threads, func_args...);
           } catch (...) { func_exceptions[this_thread] = std::current_exception(); }
         }
 
@@ -158,7 +156,7 @@ namespace gum {
             const std::size_t this_thread = getThreadNumber();
 
             try {
-              undo_func(this_thread, nb_threads, std::forward< ARGS >(func_args)...);
+              undo_func(this_thread, nb_threads, func_args...);
             } catch (...) { undo_func_exceptions[this_thread] = std::current_exception(); }
           }
 

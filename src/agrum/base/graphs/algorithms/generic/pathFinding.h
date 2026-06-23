@@ -72,8 +72,13 @@ namespace gum::graph {
     inline std::vector< NodeId >
         reconstructPath(const NodeProperty< NodeId >& mark, NodeId n1, NodeId n2) {
       std::vector< NodeId > v;
-      for (NodeId cur = n1; cur != n2; cur = mark[cur])
+      NodeId                cur = n1;
+      while (cur != n2) {
         v.push_back(cur);
+        if (!mark.exists(cur))
+          GUM_ERROR(NotFound, "reconstructPath: no BFS predecessor for node " << cur)
+        cur = mark[cur];
+      }
       v.push_back(n2);
       return v;
     }

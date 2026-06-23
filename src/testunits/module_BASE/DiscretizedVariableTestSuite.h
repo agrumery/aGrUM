@@ -390,10 +390,30 @@ namespace gum_tests {
       CHECK(!copy.empty());
     }
 
+
     static void testIsNumerical() {
       gum::DiscretizedVariable< double > var("var", "var");
       var.addTick(0.0).addTick(1.0).addTick(2.0);
       CHECK(var.isNumerical());
+    }
+
+    // regression test for HIGH-14: copy ctor/assign did not copy _is_empirical
+    static void testCopyPreservesEmpirical() {
+      gum::DiscretizedVariable< double > src("x", "");
+      src.addTick(0.0).addTick(1.0).addTick(2.0);
+      src.setEmpirical(true);
+
+      gum::DiscretizedVariable< double > byCopy(src);
+      CHECK(byCopy.isEmpirical());
+
+      gum::DiscretizedVariable< double > byAssign("y", "");
+      byAssign.addTick(0.0).addTick(1.0);
+      byAssign = src;
+      CHECK(byAssign.isEmpirical());
+
+      src.setEmpirical(false);
+      gum::DiscretizedVariable< double > byCopyFalse(src);
+      CHECK_FALSE(byCopyFalse.isEmpirical());
     }
   };
 
@@ -413,4 +433,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(CopyEmptyVariableWithZeros)
   GUM_TEST_ACTIF(CopyEmptyVariableWithoutZeros)
   GUM_TEST_ACTIF(IsNumerical)
+  GUM_TEST_ACTIF(CopyPreservesEmpirical)
 }   // namespace gum_tests

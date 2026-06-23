@@ -84,7 +84,7 @@ namespace gum {
     /**
      * Move constructor. Do nothing.
      */
-    GraphicalModel(GraphicalModel&& source);
+    GraphicalModel(GraphicalModel&& source) noexcept;
 
     /// @}
     /// @name Getter and setters
@@ -249,7 +249,7 @@ namespace gum {
     /**
      * Move assignment operator.
      */
-    GraphicalModel& operator=(GraphicalModel&& source);
+    GraphicalModel& operator=(GraphicalModel&& source) noexcept;
 
     /**
      * Names every node of g using variable(id).name() for each node id in g.

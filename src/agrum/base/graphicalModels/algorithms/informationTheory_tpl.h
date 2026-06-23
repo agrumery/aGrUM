@@ -191,7 +191,7 @@ namespace gum {
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXgivenZ() {
     if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
     return -pXZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
-      // f(x,z)=log (p(x,z)/p(y))
+      // f(x,z)=log (p(x,z)/p(z))
       const auto& pxz = pXZ_[i];
       if (pxz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
@@ -234,7 +234,7 @@ namespace gum {
   INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::variationOfInformationXY() {
     return -pXY_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
-      // f(x,y)= p(x)p(y))
+      // f(x,y)= -log(p(x)*p(y))
       return GUM_LOG2_OR_0(pY_[i] * pX_[i]);
     });
   }
@@ -243,7 +243,7 @@ namespace gum {
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXYgivenZ() {
     if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
     return pXYZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
-      // f(x,y)=log (p(x,y)/p(y))
+      // f(x,y,z)= -log(p(x,y,z)/p(z))
       const auto& pxyz = pXYZ_[i];
       if (pxyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 
@@ -258,7 +258,7 @@ namespace gum {
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::entropyXgivenYZ() {
     if (Z_.empty()) GUM_ERROR(ArgumentError, "Z has not been specified.")
     return pXYZ_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
-      // f(x,y)=log (p(x,y)/p(y))
+      // f(x,y,z)= -log(p(x,y,z)/p(y,z))
       const auto& pxyz = pXYZ_[i];
       if (pxyz == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
 

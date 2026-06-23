@@ -132,8 +132,9 @@ namespace gum::learning {
     // and the one that undoes what it performed if some thread executing
     // it raised an exception
     auto reserve_lambda = [this, new_size](std::size_t begin, std::size_t end, std::size_t index) {
-      for (std::size_t i = begin; i < end; ++i)
+      for (std::size_t i = begin; i < end; ++i) {
         this->rows_[i].row().reserve(new_size);
+      }
     };
 
     auto undo_reserve_lambda = [](std::size_t begin, std::size_t end, std::size_t index) {};
@@ -163,18 +164,34 @@ namespace gum::learning {
         try {
           for (; i < end; ++i) {
             this->rows_[i].row().push_back(missing);
-            this->has_row_missing_val_[i] = IsMissing::True;
           }
         } catch (...) {
-          for (std::size_t j = begin; j < i; ++j)
-            this->rows_[i].row().pop_back();
+          for (std::size_t j = begin; j < i; ++j) {
+            this->rows_[j].row().pop_back();
+          }
           throw;
+        }
+        // indicate that, now, all the rows contain missing values (at least the new column)
+        for (i = begin; i < end; ++i) {
+          this->has_row_missing_val_[i] = IsMissing::True;
         }
       };
 
       auto undo_fill_lambda = [this](std::size_t begin, std::size_t end, std::size_t index) {
-        for (std::size_t i = begin; i < end; ++i)
-          this->rows_[i].row().pop_back();
+        for (std::size_t i = begin; i < end; ++i) {
+          auto& row = this->rows_[i].row();
+          row.pop_back();
+
+          // recompute whether the row contains a missing value
+          bool has_missing_value = false;
+          for (std::size_t j = 0, endj = row.size(); j < endj; ++j) {
+            if (_translators_[j].isMissingValue(row[j])) {
+              has_missing_value = true;
+              break;
+            }
+          }
+          this->has_row_missing_val_[i] = has_missing_value ? IsMissing::True : IsMissing::False;
+        }
       };
 
       // launch the threads executing the lambdas
@@ -287,19 +304,35 @@ namespace gum::learning {
         try {
           for (; i < end; ++i) {
             this->rows_[i].row().push_back(missing);
-            this->has_row_missing_val_[i] = IsMissing::True;
           }
         } catch (...) {
-          for (std::size_t j = begin; j < i; ++j)
-            this->rows_[i].row().pop_back();
+          for (std::size_t j = begin; j < i; ++j) {
+            this->rows_[j].row().pop_back();
+          }
           throw;
+        }
+        // indicate that, now, all the rows contain missing values (at least the new column)
+        for (i = begin; i < end; ++i) {
+          this->has_row_missing_val_[i] = IsMissing::True;
         }
       };
 
       auto undo_fill_lambda
           = [this](std::size_t begin, std::size_t end, std::size_t index) -> void {
-        for (std::size_t i = begin; i < end; ++i)
-          this->rows_[i].row().pop_back();
+        for (std::size_t i = begin; i < end; ++i) {
+          auto& row = this->rows_[i].row();
+          row.pop_back();
+
+          // recompute whether the row contains a missing value
+          bool has_missing_value = false;
+          for (std::size_t j = 0, endj = row.size(); j < endj; ++j) {
+            if (_translators_[j].isMissingValue(row[j])) {
+              has_missing_value = true;
+              break;
+            }
+          }
+          this->has_row_missing_val_[i] = has_missing_value ? IsMissing::True : IsMissing::False;
+        }
       };
 
       // launch the threads executing the lambdas
@@ -585,7 +618,7 @@ namespace gum::learning {
 
       const auto& miss = _translators_[kk].missingSymbols();
       missing.reserve(miss.size());
-      for (const auto& m: missing) {
+      for (const auto& m: miss) {
         missing.push_back(m);
       }
     } else {
@@ -885,8 +918,9 @@ namespace gum::learning {
 
     // get the columns handled by the translators, sorted by increasing order
     DBVector< std::size_t > cols(nb_trans);
-    for (std::size_t i = std::size_t(0); i < nb_trans; ++i)
+    for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
       cols[i] = _translators_.inputColumn(i);
+    }
     std::sort(cols.begin(), cols.end());
 
     // create a vector with all the possible input columns

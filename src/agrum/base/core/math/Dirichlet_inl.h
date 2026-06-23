@@ -51,6 +51,8 @@ namespace gum {
   // default constructor
   INLINE Dirichlet::Dirichlet(const param_type& params) : _params_(params) {
     GUM_CONSTRUCTOR(Dirichlet);
+    for (const auto& a: params)
+      if (a <= 0.0f) { GUM_ERROR(OutOfBounds, "Dirichlet: all alpha parameters must be > 0") }
   }
 
   // copy constructor
@@ -66,10 +68,7 @@ namespace gum {
   }
 
   // destructor
-  INLINE Dirichlet::~Dirichlet() {
-    GUM_DESTRUCTOR(Dirichlet);
-    ;
-  }
+  INLINE Dirichlet::~Dirichlet() { GUM_DESTRUCTOR(Dirichlet); }
 
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {
@@ -93,6 +92,7 @@ namespace gum {
   INLINE Dirichlet::result_type Dirichlet::operator()() {
     Size        size = Size(_params_.size());
     result_type res(size);
+    if (size == 0) return res;
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
@@ -111,6 +111,7 @@ namespace gum {
   INLINE Dirichlet::result_type Dirichlet::operator()(const Dirichlet::param_type& parm) {
     Size        size = Size(parm.size());
     result_type res(size);
+    if (size == 0) return res;
     float       sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
@@ -129,7 +130,11 @@ namespace gum {
   INLINE const Dirichlet::param_type& Dirichlet::param() const noexcept { return _params_; }
 
   // sets the parameters of the distribution
-  INLINE void Dirichlet::param(const Dirichlet::param_type& parm) { _params_ = parm; }
+  INLINE void Dirichlet::param(const Dirichlet::param_type& parm) {
+    for (const auto& a: parm)
+      if (a <= 0.0f) { GUM_ERROR(OutOfBounds, "Dirichlet: all alpha parameters must be > 0") }
+    _params_ = parm;
+  }
 
   // Returns the greatest lower bound of the range of values possibly returned
   INLINE float Dirichlet::min() const noexcept { return 0.0f; }

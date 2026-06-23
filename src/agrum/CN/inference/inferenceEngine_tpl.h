@@ -628,11 +628,8 @@ namespace gum {
           bool first = true;
 
           for (const auto& elt3: elt2) {
-            if (!first) {
-              m_stream << ",";
-              first = false;
-            }
-
+            if (!first) { m_stream << ","; }
+            first = false;
             m_stream << elt3;
           }
 
@@ -919,7 +916,6 @@ namespace gum {
 
       if (!eq || nodeCredalSet.size() == 0) {
         nodeCredalSet.push_back(vertex);
-        return;
       } else return;
 
       // because of next lambda return condition

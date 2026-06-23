@@ -175,6 +175,8 @@ namespace gum {
     double maxchisq = GUM_CHI_MAX;
     double chisqval;
 
+    if (df == 0) return (0.0);
+
     if (proba <= 0.0) return (maxchisq);
     else if (proba >= 1.0) return (0.0);
 

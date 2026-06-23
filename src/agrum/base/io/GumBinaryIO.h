@@ -55,6 +55,7 @@
 #include <cstdint>
 #include <istream>
 #include <ostream>
+#include <stdexcept>
 #include <vector>
 
 namespace gum {
@@ -71,8 +72,14 @@ namespace gum {
   inline std::vector< uint8_t > _readVector_(std::istream& is) {
     uint64_t size = 0;
     is.read(reinterpret_cast< char* >(&size), sizeof(size));
+    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector size");
+    // 256 MB guard: protect against corrupted files with huge size fields
+    constexpr uint64_t kMaxVecSize = uint64_t(256) << 20;
+    if (size > kMaxVecSize)
+      throw std::runtime_error("GumBinaryIO: vector size exceeds 256 MB limit");
     std::vector< uint8_t > vec(size);
-    is.read(reinterpret_cast< char* >(vec.data()), size);
+    is.read(reinterpret_cast< char* >(vec.data()), static_cast< std::streamsize >(size));
+    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector data");
     return vec;
   }
 

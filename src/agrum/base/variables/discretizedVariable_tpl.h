@@ -61,6 +61,8 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
+    if (_ticks_.empty()) { GUM_ERROR(OutOfBounds, "No tick defined for variable " << name()) }
+
     if (target < _ticks_[0]) return static_cast< Idx >(0);
     if (target > _ticks_[_ticks_.size() - 1]) return static_cast< Idx >(_ticks_.size() - 2);
     // now target is in the range [T1,Tn]
@@ -165,7 +167,7 @@ namespace gum {
   INLINE std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
     std::stringstream ss;
 
-    if (i >= _ticks_.size() - 1) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
+    if (i + 1 >= _ticks_.size()) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
 
     if ((i == 0) && _is_empirical) {
       ss << "(";
@@ -237,7 +239,7 @@ namespace gum {
     T_TICKS            target;
     if (i >> target) {
       if (target < _ticks_[0]) {
-        if (_ticks_[0] - target < 1e-10) return 0;
+        if (_ticks_[0] - target < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[0])))) return 0;
         if (_is_empirical) return 0;
         else
           GUM_ERROR(OutOfBounds,
@@ -246,7 +248,9 @@ namespace gum {
       }
 
       if (const auto size = _ticks_.size(); target > _ticks_[size - 1]) {
-        if (target - _ticks_[size - 1] < 1e-10) { return size - 2; }
+        if (target - _ticks_[size - 1] < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[size - 1])))) {
+          return size - 2;
+        }
         if (_is_empirical) {
           return size - 2;
         } else
@@ -287,7 +291,7 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE bool DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
-    // we can assume that aRV is a ContinuousVariable
+    // we can assume that aRV is a DiscretizedVariable
     const auto& cv = static_cast< const DiscretizedVariable< T_TICKS >& >(aRV);
     if (domainSize() != cv.domainSize()) { return false; }
     return cv._ticks_ == _ticks_ && cv._is_empirical == _is_empirical;

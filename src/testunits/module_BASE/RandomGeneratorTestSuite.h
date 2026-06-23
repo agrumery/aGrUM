@@ -43,6 +43,7 @@
 
 #include <agrum/config.h>
 
+#include <agrum/base/core/math/pow.h>
 #include <agrum/base/core/timer.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/MCBayesNetGenerator.h>
@@ -148,10 +149,35 @@ namespace gum_tests {
 
       gum::initRandom(GUM_RANDOMSEED);
     }
+
+    // MED-6: randomValue(0) must throw (uniform_int_distribution(0,-1) is UB)
+    static void testRandomValueZeroThrows() {
+      CHECK_THROWS_AS(gum::randomValue(0), const gum::OutOfBounds&);
+    }
+
+    // MED-6: randomValue with valid max stays in range
+    static void testRandomValueRange() {
+      gum::initRandom(42);
+      for (int i = 0; i < 1000; ++i) {
+        const auto v = gum::randomValue(5);
+        CHECK(v < gum::Idx(5));
+      }
+    }
+
+    // MED-5: int2Pow with exponent >= 64 must throw (1UL << 64 is UB)
+    static void testInt2PowBounds() {
+      CHECK_EQ(gum::int2Pow(0), 1UL);
+      CHECK_EQ(gum::int2Pow(63), 1UL << 63);
+      CHECK_THROWS_AS(gum::int2Pow(64), const gum::OutOfBounds&);
+      CHECK_THROWS_AS(gum::int2Pow(100), const gum::OutOfBounds&);
+    }
   };
 
   GUM_TEST_ACTIF(RandomSeed)
   GUM_TEST_ACTIF(RandomSeeForStructure)
   GUM_TEST_ACTIF(BugSeed)
   GUM_TEST_ACTIF(BugSeed2)
+  GUM_TEST_ACTIF(RandomValueZeroThrows)
+  GUM_TEST_ACTIF(RandomValueRange)
+  GUM_TEST_ACTIF(Int2PowBounds)
 }   // namespace gum_tests

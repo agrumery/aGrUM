@@ -319,7 +319,10 @@ namespace gum {
      * @param args The arguments to pass to each listener's callback.
      */
     void operator()(const void* src, Args... args) {
-      for (auto* connector: this->_connectors_) {
+      if (this->_connectors_.empty()) {
+        return;   // No listeners attached, do nothing
+      }
+      for (const auto connectors = this->_connectors_; auto* connector: connectors) {
         connector->notify(src, args...);
       }
     }

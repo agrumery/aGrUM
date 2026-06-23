@@ -121,8 +121,34 @@ namespace gum_tests {
       }
       CHECK(fabs(res[0] - res[1]) < 0.03);
     }   // namespace gum_tests
+
+    static void testEmptyParams() {
+      gum::Dirichlet::param_type empty;
+      gum::Dirichlet             dir(empty);
+
+      auto res = dir();
+      CHECK_EQ(res.size(), static_cast< gum::Size >(0));
+
+      auto res2 = dir(empty);
+      CHECK_EQ(res2.size(), static_cast< gum::Size >(0));
+    }
+
+    // MED-25: Dirichlet must reject alpha <= 0 (gamma_distribution requires alpha > 0)
+    static void testInvalidAlphaThrows() {
+      CHECK_THROWS_AS(gum::Dirichlet({0.0f, 1.0f}), const gum::OutOfBounds&);
+      CHECK_THROWS_AS(gum::Dirichlet({-1.0f, 1.0f}), const gum::OutOfBounds&);
+      CHECK_THROWS_AS(gum::Dirichlet({1.0f, 0.0f}), const gum::OutOfBounds&);
+
+      gum::Dirichlet dir({1.0f, 2.0f});
+      CHECK_THROWS_AS(dir.param({0.5f, 0.0f}), const gum::OutOfBounds&);
+      CHECK_THROWS_AS(dir.param({-0.1f, 1.0f}), const gum::OutOfBounds&);
+      // valid update does not throw
+      GUM_CHECK_ASSERT_THROWS_NOTHING(dir.param({0.5f, 2.0f}));
+    }
   };
 
   GUM_TEST_ACTIF(XX)
+  GUM_TEST_ACTIF(EmptyParams)
+  GUM_TEST_ACTIF(InvalidAlphaThrows)
 
 } /* namespace gum_tests */

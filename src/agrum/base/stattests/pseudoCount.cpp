@@ -101,6 +101,7 @@ namespace gum {
     void PseudoCount::clearRanges() {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       counter_.clearRanges();
+      if (old_ranges != ranges()) clear();
     }
 
     /// returns a counting vector where variables are marginalized from N_xyz

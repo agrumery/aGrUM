@@ -92,7 +92,7 @@ namespace gum {
 
     /// move constructor
     template < GUM_Numeric GUM_SCALAR >
-    DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) :
+    DBRowGeneratorEM< GUM_SCALAR >::DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) noexcept :
         DBRowGeneratorWithBN< GUM_SCALAR >(std::move(from)), _input_row_(from._input_row_),
         _missing_cols_(std::move(from._missing_cols_)), _nb_miss_(from._nb_miss_),
         _joint_proba_(std::move(from._joint_proba_)), _filled_row1_(std::move(from._filled_row1_)),
@@ -397,6 +397,9 @@ namespace gum {
       // we determine the size of the filled rows
       std::size_t size = std::size_t(0);
       if (this->nodeId2columns_.empty()) {
+        // here, we know that the DAG's node IDs correspond precisely to column indices
+        // in the database. So we can safely set the size of _filled_row_ to the highest
+        // node ID in the graph
         for (auto node: new_bn.internalDag())
           if (std::size_t(node) > size) size = std::size_t(node);
       } else {

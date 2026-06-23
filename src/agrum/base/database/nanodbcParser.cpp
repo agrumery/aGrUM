@@ -93,7 +93,7 @@ namespace gum {
               } else {
                 _data_[i] = _result_.get< std::string >(pos);
               }
-            } catch (nanodbc::null_access_error& e) { _data_[i] = "NULL"; }
+            } catch (nanodbc::null_access_error& e) { _data_[i] = ""; }
           }
           ++_nb_line_;
           return true;

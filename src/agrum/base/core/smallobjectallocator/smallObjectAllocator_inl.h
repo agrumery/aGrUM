@@ -110,27 +110,24 @@ namespace gum {
     // Small Object Allocator called for an object of size equals to 0
     GUM_ASSERT(objectSize > 0);
 
+    std::lock_guard<std::mutex> lock(_mutex_);
+
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > _maxObjectSize_) return new unsigned char[objectSize];
 
-    void* ret;
-#pragma omp critical(soa)
-    {
-      //
-      if (!_pool_.exists(Size(objectSize))) {
-        // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb = _chunkSize_ / Size(objectSize);
-        if (nb > UCHAR_MAX) nb = UCHAR_MAX;
-        unsigned char numBlocks = static_cast< unsigned char >(nb);
+    //
+    if (!_pool_.exists(Size(objectSize))) {
+      // Calcul du nombre de block par chunk pour des objets de cette taille
+      std::size_t nb = _chunkSize_ / Size(objectSize);
+      if (nb > UCHAR_MAX) nb = UCHAR_MAX;
+      auto numBlocks = static_cast< unsigned char >(nb);
 
-        FixedAllocator* newFa = new FixedAllocator(Size(objectSize), numBlocks);
-        _pool_.set(Size(objectSize), newFa);
-      }
-      nbAllocation++;
-
-      ret = _pool_[Size(objectSize)]->allocate();
+      auto* newFa = new FixedAllocator(Size(objectSize), numBlocks);
+      _pool_.set(Size(objectSize), newFa);
     }
-    return ret;
+    nbAllocation++;
+
+    return _pool_[Size(objectSize)]->allocate();
   }
 
   // ============================================================================
@@ -143,18 +140,17 @@ namespace gum {
     // Small Object Allocator called for an object of size equals to 0
     GUM_ASSERT(objectSize > 0);
 
+    std::lock_guard<std::mutex> lock(_mutex_);
+
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > _maxObjectSize_) {
       delete[] (unsigned char*)pDeallocatedObject;
       return;
     }
 
-#pragma omp critical(soa)
-    {
-      //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
-      _pool_[Size(objectSize)]->deallocate(pDeallocatedObject);
-      nbDeallocation++;
-    }
+    //      std::cout << "Deallocating " << pDeallocatedObject << std::endl;
+    _pool_[Size(objectSize)]->deallocate(pDeallocatedObject);
+    nbDeallocation++;
   }
 
 }   // namespace gum

@@ -263,9 +263,21 @@ namespace gum_tests {
       gum::IntegerVariable var("var", "var", {0, 1, 2, 5});
       CHECK(var.isNumerical());
     }
+
+    // LOW-3: index() with non-integer string must throw NotFound, not std::exception
+    static void testIndexInvalidLabel() {
+      gum::IntegerVariable var("var", "var", {0, 1, 2, 5});
+      CHECK_THROWS_AS(var.index("abc"), const gum::NotFound&);
+      CHECK_THROWS_AS(var.index(""), const gum::NotFound&);
+      // overflow: too large for int
+      CHECK_THROWS_AS(var.index("99999999999999999999"), const gum::NotFound&);
+      // valid label still works
+      CHECK_EQ(var.index("2"), gum::Idx(2));
+    }
   };
 
   GUM_TEST_ACTIF(All)
   GUM_TEST_ACTIF(SecondConstructor)
   GUM_TEST_ACTIF(IsNumerical)
+  GUM_TEST_ACTIF(IndexInvalidLabel)
 }   // namespace gum_tests

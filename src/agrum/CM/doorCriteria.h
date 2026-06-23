@@ -287,6 +287,12 @@ namespace gum {
      * @return True if Z is a valid frontdoor set and no strict subset is valid.
      */
     static bool _isMinimalFrontdoorAdjustment(const DAG& dag, NodeId X, NodeId Y, const NodeSet& Z);
+
+    static bool _existsUnblockedDirectedPath_(const DAG&     dag,
+                                              NodeId         X,
+                                              NodeId         Y,
+                                              const NodeSet& Z,
+                                              NodeSet&       visited);
   };
 
 }   // namespace gum

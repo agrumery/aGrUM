@@ -84,7 +84,7 @@ namespace gum {
     /**
      * Move constructor.
      */
-    DAGmodel(DAGmodel&& source);
+    DAGmodel(DAGmodel&& source) noexcept;
 
     /// @}
 
@@ -237,7 +237,7 @@ namespace gum {
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same
-    bool hasSameStructure(const DAGmodel& other);
+    bool hasSameStructure(const DAGmodel& other) const;
 
     /***
      * @return the minimal subset of soids that conditions the target
@@ -282,7 +282,7 @@ namespace gum {
      * Private copy operator.
      */
     DAGmodel& operator=(const DAGmodel& source);
-    DAGmodel& operator=(DAGmodel&& source);
+    DAGmodel& operator=(DAGmodel&& source) noexcept;
 
     /// The DAG of this Directed Graphical Model.
     DAG dag_;

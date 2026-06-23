@@ -374,6 +374,63 @@ namespace gum_tests {
       CHECK_EQ(i1, j);   // both are in overflow => equals
     }
 
+    // regression test for CRIT-17: operator== with exactly one side in overflow
+    static void testOperatorEqualAsymmetricOverflow() {
+      gum::LabelizedVariable a("a", "first var", 2);
+      gum::Instantiation     i, j;
+      j << a;
+      j.setFirst();
+
+      i.inc();   // empty i → overflow
+      CHECK(i.inOverflow());
+      CHECK_FALSE(j.inOverflow());
+      CHECK_NE(i, j);   // one in overflow, one not → must be unequal
+
+      j.setLast();
+      ++j;   // j now in overflow
+      CHECK(j.inOverflow());
+      CHECK_EQ(i, j);   // both in overflow → equal
+    }
+
+    static void testEmptyInstantiationOverflows() {
+      // HIGH-23: inc/dec methods on empty Instantiation must set overflow, not crash
+      gum::LabelizedVariable a("a", "var a", 3);
+
+      gum::Instantiation ref;
+      ref << a;
+      ref.setFirst();
+
+      gum::Instantiation empty_ref;   // stays empty
+
+      {
+        gum::Instantiation i;   // empty *this
+        i.incOut(ref);
+        CHECK(i.inOverflow());
+      }
+      {
+        gum::Instantiation i;
+        i.decOut(ref);
+        CHECK(i.inOverflow());
+      }
+      {
+        gum::Instantiation i;
+        i.incNotVar(a);
+        CHECK(i.inOverflow());
+      }
+      {
+        gum::Instantiation i;
+        i.decNotVar(a);
+        CHECK(i.inOverflow());
+      }
+      {
+        gum::Instantiation i;
+        i << a;
+        i.setLast();
+        i.decIn(empty_ref);   // empty argument → overflow
+        CHECK(i.inOverflow());
+      }
+    }
+
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) const {
@@ -408,4 +465,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(OperatorEgal)
   GUM_TEST_ACTIF(OffsetOperation)
   GUM_TEST_ACTIF(OperatorEqual)
+  GUM_TEST_ACTIF(OperatorEqualAsymmetricOverflow)
+  GUM_TEST_ACTIF(EmptyInstantiationOverflows)
 }   // namespace gum_tests

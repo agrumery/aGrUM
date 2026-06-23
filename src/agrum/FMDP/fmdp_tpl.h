@@ -54,8 +54,8 @@
 #include <iostream>
 //======================================================================
 #include <agrum/FMDP/fmdp.h>
+
 //======================================================================
-#define RECAST(x) reinterpret_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(x)
 
 namespace gum {
 
@@ -352,15 +352,27 @@ namespace gum {
     for (auto actionIter = beginActions(); actionIter != endActions(); ++actionIter) {
       for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
         if (this->transition(*actionIter, *varIter))
-          fmdpCore << RECAST(this->transition(*actionIter, *varIter))->toDot() << std::endl;
+          fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+                          this->transition(*actionIter, *varIter))
+                          ->toDot()
+                   << std::endl;
       if (this->reward(*actionIter))
-        fmdpCore << RECAST(this->reward(*actionIter))->toDot() << std::endl;
+        fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+                        this->reward(*actionIter))
+                        ->toDot()
+                 << std::endl;
     }
 
     for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
       if (this->transition(0, *varIter))
-        fmdpCore << RECAST(this->transition(0, *varIter))->toDot() << std::endl;
-    if (this->reward()) fmdpCore << RECAST(this->reward())->toDot() << std::endl;
+        fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+                        this->transition(0, *varIter))
+                        ->toDot()
+                 << std::endl;
+    if (this->reward())
+      fmdpCore
+          << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward())->toDot()
+          << std::endl;
     return fmdpCore.str();
   }
 

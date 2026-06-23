@@ -410,11 +410,20 @@ namespace gum {
                                                  NodeId         X,
                                                  NodeId         Y,
                                                  const NodeSet& Z) {
-    // DFS over directed edges; internal nodes blocked by membership in Z.
-    if (dag.existsArc(X, Y)) return true;
+    NodeSet visited;
+    return _existsUnblockedDirectedPath_(dag, X, Y, Z, visited);
+  }
 
+  bool DoorCriteria::_existsUnblockedDirectedPath_(const DAG&     dag,
+                                                   NodeId         X,
+                                                   NodeId         Y,
+                                                   const NodeSet& Z,
+                                                   NodeSet&       visited) {
+    if (visited.contains(X)) return false;
+    visited.insert(X);
+    if (dag.existsArc(X, Y)) return true;
     for (auto c: dag.children(X)) {
-      if (!Z.contains(c) && existsUnblockedDirectedPath(dag, c, Y, Z)) return true;
+      if (!Z.contains(c) && _existsUnblockedDirectedPath_(dag, c, Y, Z, visited)) return true;
     }
     return false;
   }

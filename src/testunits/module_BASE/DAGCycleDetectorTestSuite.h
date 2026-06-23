@@ -412,6 +412,34 @@ namespace gum_tests {
         }
       }
     }
+
+    static void testDiamondGraph() {
+      // Diamond: 0->1, 0->2, 1->3, 2->3 — two paths from 0 to 3.
+      // Exercises multi-path ancestor counts in _delWeightedSet_ (unsigned underflow guard).
+      gum::DAG g;
+      for (gum::Idx i = 0; i < 4; ++i) g.addNodeWithId(i);
+      g.addArc(0, 1);
+      g.addArc(0, 2);
+      g.addArc(1, 3);
+      g.addArc(2, 3);
+
+      gum::DAGCycleDetector detector;
+      detector.setDAG(g);
+
+      CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
+      CHECK_EQ(detector.hasCycleFromAddition(3, 1), true);
+      CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
+      CHECK_EQ(detector.hasCycleFromAddition(0, 3), false);
+
+      // after removing one arm of the diamond, 3->0 still creates a cycle via the other arm
+      detector.eraseArc(1, 3);
+      CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
+      CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
+
+      // after removing both arms, 3->0 no longer creates a cycle
+      detector.eraseArc(2, 3);
+      CHECK_EQ(detector.hasCycleFromAddition(3, 0), false);
+    }
   };
 
   GUM_TEST_ACTIF(SmallGraph)
@@ -419,5 +447,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Random)
   GUM_TEST_ACTIF(Modifications)
   GUM_TEST_ACTIF(Modifications2)
+  GUM_TEST_ACTIF(DiamondGraph)
 
 }   // namespace gum_tests

@@ -390,6 +390,7 @@ namespace gum {
 
   // operator -- limited only to the variables in i
   INLINE void Instantiation::decIn(const Instantiation& i) {
+    if (i.nbrDim() == 0) { _overflow_ = true; return; }
     Size p     = i.nbrDim() - 1;
     Idx  i_cpt = 0;
     // if we are in overflow, do nothing
@@ -459,6 +460,7 @@ namespace gum {
 
   // operator ++ for the variables not in i
   INLINE void Instantiation::incOut(const Instantiation& i) {
+    if (nbrDim() == 0) { _overflow_ = true; return; }
     Size p   = nbrDim() - 1;
     Idx  cpt = 0;
     // if we are in overflow, do nothing
@@ -491,6 +493,7 @@ namespace gum {
 
   // operator -- for the variables not in i
   INLINE void Instantiation::decOut(const Instantiation& i) {
+    if (nbrDim() == 0) { _overflow_ = true; return; }
     Size p   = nbrDim() - 1;
     Idx  cpt = 0;
     // if we are in overflow, do nothing
@@ -542,6 +545,7 @@ namespace gum {
 
   // operator ++ for vars which are not v.
   INLINE void Instantiation::incNotVar(const DiscreteVariable& v) {
+    if (nbrDim() == 0) { _overflow_ = true; return; }
     Size p   = nbrDim() - 1;
     Idx  cpt = 0;
     // if we are in overflow, do nothing
@@ -574,6 +578,7 @@ namespace gum {
 
   // operator -- for vars which are not v.
   INLINE void Instantiation::decNotVar(const DiscreteVariable& v) {
+    if (nbrDim() == 0) { _overflow_ = true; return; }
     Size p   = nbrDim() - 1;
     Idx  cpt = 0;
     // if we are in overflow, do nothing
@@ -790,6 +795,7 @@ namespace gum {
 
   INLINE bool Instantiation::operator==(const Instantiation& other) const {
     if (inOverflow() && other.inOverflow()) return true;
+    if (inOverflow() != other.inOverflow()) return false;
     if (other.nbrDim() != nbrDim()) return false;
     for (const auto& k: variablesSequence()) {
       if (!other.contains(k)) return false;

@@ -552,6 +552,9 @@ namespace gum {
     // if the graph is already triangulated, no need to triangulate it again
     if (_has_triangulation_) return;
 
+    if (!_original_graph_)
+      GUM_ERROR(GraphError, "StaticTriangulation: no graph set (call setGraph first)")
+
     // copy the graph to be triangulated, so that we can modify it
     UndiGraph tmp_graph = *_original_graph_;
 

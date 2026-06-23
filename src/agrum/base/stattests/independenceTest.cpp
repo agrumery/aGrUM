@@ -46,6 +46,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <limits>
+
 #include <agrum/base/stattests/independenceTest.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -90,8 +92,15 @@ namespace gum {
                                                          const std::vector< double >& N_xyz) const {
       // determine the size of the output vector
       std::size_t out_size = Z_size;
-      if (node_2_marginalize == std::size_t(0)) out_size *= Y_size;
-      else if (node_2_marginalize == std::size_t(1)) out_size *= X_size;
+      if (node_2_marginalize == std::size_t(0)) {
+        if (Z_size != 0 && Y_size > std::numeric_limits< std::size_t >::max() / Z_size)
+          GUM_ERROR(OutOfBounds, "marginalize_: out_size overflow (Z_size * Y_size)")
+        out_size *= Y_size;
+      } else if (node_2_marginalize == std::size_t(1)) {
+        if (Z_size != 0 && X_size > std::numeric_limits< std::size_t >::max() / Z_size)
+          GUM_ERROR(OutOfBounds, "marginalize_: out_size overflow (Z_size * X_size)")
+        out_size *= X_size;
+      }
 
       // allocate the output vector
       std::vector< double > res(out_size, 0.0);

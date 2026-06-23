@@ -107,6 +107,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -137,6 +141,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -167,6 +175,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -197,6 +209,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -227,6 +243,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -257,6 +277,10 @@ namespace gum {
       if (newHighLimit < newVal) newHighLimit = newVal;
 
       if (newLowLimit > newVal) newLowLimit = newVal;
+
+      this->lowLimit_  = newLowLimit;
+      this->highLimit_ = newHighLimit;
+      computeNbInterval_();
     } catch (const std::bad_cast&) {}
   }
 
@@ -308,6 +332,7 @@ namespace gum {
   // Sets approximation factor
   template < typename GUM_ELEMENT >
   INLINE void LinearApproximationPolicy< GUM_ELEMENT >::setEpsilon(const GUM_ELEMENT& e) {
+    if (e <= 0) { GUM_ERROR(OutOfBounds, "Epsilon must be >0") }
     epsilon_ = e;
     computeNbInterval_();
   }

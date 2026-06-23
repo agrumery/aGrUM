@@ -425,6 +425,20 @@ namespace gum_tests {
       }
     }
 
+    static void testChangeVariableLabel() {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("a{yes|no}--b{1|2|3}");
+
+      // happy path: rename label on labelized variable
+      auto id_a = mn.idFromName("a");
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mn.changeVariableLabel(id_a, "yes", "oui"));
+      CHECK_EQ(mn.variable("a").label(0), "oui");
+      CHECK_EQ(mn.variable("a").label(1), "no");
+
+      // error path: non-labelized variable raises NotFound
+      auto id_b = mn.idFromName("b");
+      CHECK_THROWS_AS(mn.changeVariableLabel(id_b, "1", "one"), const gum::NotFound&);
+    }
+
     void testConnectedComponents() {
       // A--B connected, C--D connected, E isolated: 3 components
       auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;C--D;E");
@@ -471,5 +485,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ShortCutAddFastVar)
   GUM_TEST_ACTIF(NamedGraph)
   GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST_ACTIF(ChangeVariableLabel)
 
 }   // namespace gum_tests

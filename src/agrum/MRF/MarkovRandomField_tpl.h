@@ -177,8 +177,8 @@ namespace gum {
     if (variable(id).varType() != VarType::LABELIZED) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
     }
-    LabelizedVariable* var
-        = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
+    auto* var = dynamic_cast< LabelizedVariable* >(const_cast< DiscreteVariable* >(&variable(id)));
+    if (var == nullptr) GUM_ERROR(TypeError, "Variable " << id << " is not a LabelizedVariable.")
 
     var->changeLabel(var->posLabel(old_label), new_label);
   }

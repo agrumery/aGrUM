@@ -88,16 +88,16 @@ namespace gum {
         DBInitializerFromCSV(from._filename_,
                              from._first_row_has_names_,
                              from._delimiter_,
-                             from._quote_marker_,
-                             from._comment_marker_) {}
+                             from._comment_marker_,
+                             from._quote_marker_) {}
 
     /// move constructor
     DBInitializerFromCSV::DBInitializerFromCSV(DBInitializerFromCSV&& from) :
         DBInitializerFromCSV(from._filename_,
                              from._first_row_has_names_,
                              from._delimiter_,
-                             from._quote_marker_,
-                             from._comment_marker_) {}
+                             from._comment_marker_,
+                             from._quote_marker_) {}
 
     /// virtual copy constructor
     DBInitializerFromCSV* DBInitializerFromCSV::clone() const {

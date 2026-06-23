@@ -119,16 +119,16 @@ namespace gum {
     }
 
     /// equality operator
-    bool operator==(const ThreadData< T_DATA >& from) { return data == from.data; }
+    bool operator==(const ThreadData< T_DATA >& from) const { return data == from.data; }
 
     /// equality operator
-    bool operator==(const T_DATA& from) { return data == from; }
+    bool operator==(const T_DATA& from) const { return data == from; }
 
     /// inequality operator
-    bool operator!=(const ThreadData< T_DATA >& from) { return data != from.data; }
+    bool operator!=(const ThreadData< T_DATA >& from) const { return data != from.data; }
 
     /// inequality operator
-    bool operator!=(const T_DATA& from) { return data != from; }
+    bool operator!=(const T_DATA& from) const { return data != from; }
 
     /// @}
 

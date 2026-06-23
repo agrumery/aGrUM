@@ -132,8 +132,13 @@ namespace gum {
 
   /// returns the index of a given label
   INLINE Idx NumericalDiscreteVariable::index(std::string_view aLabel) const {
-    const auto x   = std::stod(std::string{aLabel});
-    const Idx  ind = std::lower_bound(_domain_.begin(), _domain_.end(), x) - _domain_.begin();
+    double x;
+    try {
+      x = std::stod(std::string{aLabel});
+    } catch (const std::exception&) {
+      GUM_ERROR(NotFound, "label '" << aLabel << "' is unknown in " << toString());
+    }
+    const Idx ind = std::lower_bound(_domain_.begin(), _domain_.end(), x) - _domain_.begin();
 
     if (ind != _domain_.size() && _domain_[ind] == x) {
       return ind;

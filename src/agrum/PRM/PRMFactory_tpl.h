@@ -808,8 +808,13 @@ namespace gum {
               = new PRMScalarAttribute< GUM_SCALAR >(agg->name(), agg->type(), agg->buildImpl());
 
           try {
-            c->add(attr);
-          } catch (DuplicateElement const&) { c->overload(attr); }
+            try {
+              c->add(attr);
+            } catch (DuplicateElement const&) { c->overload(attr); }
+          } catch (...) {
+            delete attr;
+            throw;
+          }
 
           delete agg;
         }
@@ -866,6 +871,7 @@ namespace gum {
           elt_name << name << "[" << i << "]";
           inst = new PRMInstance< GUM_SCALAR >(elt_name.str(), *c);
           model->add(name_str, inst);
+          inst = nullptr;
         }
       } catch (PRMTypeError const&) {
         delete inst;
@@ -1062,7 +1068,7 @@ namespace gum {
       }
 
       // We need to find the most specialized (i.e. max depth) common type
-      current = nullptr;
+      PRMType* result = nullptr;
 
       int max_depth = -1;
 
@@ -1074,12 +1080,12 @@ namespace gum {
 
           if (current_depth > max_depth) {
             max_depth = current_depth;
-            current   = _retrieveType_(elt.first);
+            result    = _retrieveType_(elt.first);
           }
         }
       }
 
-      if (current) { return const_cast< PRMType* >(current); }
+      if (result) { return result; }
 
       GUM_ERROR(NotFound, "could not find a common type")
     }

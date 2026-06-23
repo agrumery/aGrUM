@@ -94,7 +94,9 @@ namespace gum {
     } catch ([[maybe_unused]] gum::NotFound& e) { return false; }
   }
 
-  INLINE const NodeGraphPart& UGmodel::nodes() const { return (NodeGraphPart&)graph_; }
+  INLINE const NodeGraphPart& UGmodel::nodes() const {
+    return static_cast< const NodeGraphPart& >(graph_);
+  }
 
   INLINE bool UGmodel::isIndependent(NodeId X, NodeId Y, const NodeSet& Z) const {
     return !graph_.hasUndirectedPath(X, Y, Z);

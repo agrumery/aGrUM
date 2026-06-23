@@ -116,7 +116,9 @@ namespace gum {
     return variableNodeMap().exists(name);
   }
 
-  INLINE const NodeGraphPart& DAGmodel::nodes() const { return (NodeGraphPart&)dag_; }
+  INLINE const NodeGraphPart& DAGmodel::nodes() const {
+    return static_cast< const NodeGraphPart& >(dag_);
+  }
 
   INLINE Sequence< NodeId > DAGmodel::topologicalOrder() const { return dag_.topologicalOrder(); }
 

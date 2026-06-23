@@ -83,7 +83,7 @@ namespace gum {
                                                        std::exception_ptr& exc,
                                                        ARGS&... args) -> void {
           try {
-            exec_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
+            exec_func(this_thread, nb_threads, args...);
           } catch (...) { exc = std::current_exception(); }
         };
 
@@ -168,7 +168,7 @@ namespace gum {
                                                          std::exception_ptr& exc,
                                                          ARGS&... args) -> void {
             try {
-              undo_func(this_thread, nb_threads, std::forward< ARGS >(args)...);
+              undo_func(this_thread, nb_threads, args...);
             } catch (...) { exc = std::current_exception(); }
           };
 

@@ -520,20 +520,6 @@ namespace gum {
 
   INLINE Size SetInst::vals(const DiscreteVariable* var) const { return _vals_[_vars_.pos(var)]; }
 
-  INLINE Idx SetInst::val(const DiscreteVariable* var) const {
-    Idx  n     = 0;
-    Size value = _vals_[_vars_.pos(var)];
-
-    if (_vals_[_vars_.pos(var)] % 2 == 0) {
-      while (value & 1) {
-        n++;
-        value >>= 1;
-      }
-
-      return n;
-    } else GUM_ERROR(NotFound, "There is more than one value ")
-  }
-
   INLINE Idx SetInst::nbrOccurences(const DiscreteVariable& var) const {
     Idx  n   = 0;
     Size val = _vals_[_vars_.pos(&var)];
@@ -558,6 +544,11 @@ namespace gum {
 
       return n;
     } else GUM_ERROR(NotFound, "There is more than one value ")
+  }
+
+  INLINE Idx SetInst::val(const DiscreteVariable* var) const {
+    if (var != nullptr) { return val(*var); }
+    GUM_ERROR(ArgumentError, "Call 'val' on nullptr")
   }
 
   // returns the variable at position i in the tuple

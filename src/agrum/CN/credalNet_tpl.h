@@ -1249,6 +1249,8 @@ namespace gum {
     // only if CN is binary !!
     template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::computeBinaryCPTMinMax() {
+      // ASSUMPTION: NodeIds are dense 0..N-1 (no nodes ever removed from the BN).
+      // If sparse NodeIds are introduced, indexing by node will go out of bounds.
       _binCptMin_.resize(current_bn().size());
       _binCptMax_.resize(current_bn().size());
 
@@ -1307,31 +1309,24 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     std::string CredalNet< GUM_SCALAR >::toString() const {
       std::stringstream             output;
-      const BayesNet< GUM_SCALAR >* _current_bn_;
-      const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-          _credalNet_current_cpt_;
+      const BayesNet< GUM_SCALAR >* bn_ptr = (_current_bn_ != nullptr) ? _current_bn_ : &_src_bn_;
+      const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >* cpt_ptr
+          = (_credalNet_current_cpt_ != nullptr) ? _credalNet_current_cpt_ : &_credalNet_src_cpt_;
 
-      if (this->_current_bn_ == nullptr) _current_bn_ = &this->_src_bn_;
-      else _current_bn_ = this->_current_bn_;
+      for (auto node: bn_ptr->nodes()) {
+        const Tensor< GUM_SCALAR >* tensor(&bn_ptr->cpt(node));
+        auto pconfs = tensor->domainSize() / bn_ptr->variable(node).domainSize();
 
-      if (this->_credalNet_current_cpt_ == nullptr)
-        _credalNet_current_cpt_ = &this->_credalNet_src_cpt_;
-      else _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
-
-      for (auto node: _current_bn_->nodes()) {
-        const Tensor< GUM_SCALAR >* tensor(&_current_bn_->cpt(node));
-        auto pconfs = tensor->domainSize() / _current_bn_->variable(node).domainSize();
-
-        output << "\n" << _current_bn_->variable(node) << "\n";
+        output << "\n" << bn_ptr->variable(node) << "\n";
 
         Instantiation ins(tensor);
         ins.forgetMaster();
-        ins.erase(_current_bn_->variable(node));
+        ins.erase(bn_ptr->variable(node));
         ins.setFirst();
 
         for (Size pconf = 0; pconf < pconfs; pconf++) {
           output << ins << " : ";
-          output << (*_credalNet_current_cpt_)[node][pconf] << "\n";
+          output << (*cpt_ptr)[node][pconf] << "\n";
 
           if (pconf < pconfs - 1) ++ins;
         }
@@ -1426,20 +1421,16 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_bnCopy_(BayesNet< GUM_SCALAR >& dest) {
-      const BayesNet< GUM_SCALAR >* _current_bn_;
+      const BayesNet< GUM_SCALAR >* bn_ptr = (_current_bn_ != nullptr) ? _current_bn_ : &_src_bn_;
 
-      if (this->_current_bn_ == nullptr) _current_bn_ = &this->_src_bn_;
-      else _current_bn_ = this->_current_bn_;
-
-      for (auto node: _current_bn_->nodes())
-        dest.add(_current_bn_->variable(node));
+      for (auto node: bn_ptr->nodes())
+        dest.add(bn_ptr->variable(node));
 
       dest.beginTopologyTransformation();
 
-      for (auto node: _current_bn_->nodes()) {
-        for (auto parent_idIt: _current_bn_->cpt(node).variablesSequence()) {
-          if (_current_bn_->nodeId(*parent_idIt) != node)
-            dest.addArc(_current_bn_->nodeId(*parent_idIt), node);
+      for (auto node: bn_ptr->nodes()) {
+        for (auto parent_idIt: bn_ptr->cpt(node).variablesSequence()) {
+          if (bn_ptr->nodeId(*parent_idIt) != node) dest.addArc(bn_ptr->nodeId(*parent_idIt), node);
         }   // end of : for each parent in order of appearence
       }   // end of : for each variable
 
@@ -1540,32 +1531,21 @@ namespace gum {
       h_file.close();
 
       // call lrs
-      // lrs arguments
-      char* args[3];
-
-      std::string soft_name = "lrs";
       std::string extfile(sinefile);
       extfile += ".ext";
 
-      args[0] = new char[soft_name.size()];
-      args[1] = new char[sinefile.size()];
-      args[2] = new char[extfile.size()];
-
-      strcpy(args[0], soft_name.c_str());
-      strcpy(args[1], sinefile.c_str());
-      strcpy(args[2], extfile.c_str());
+      std::string lrs_arg0    = "lrs";
+      std::string lrs_arg1    = sinefile;
+      std::string lrs_arg2    = extfile;
+      char*       lrs_argv[3] = {lrs_arg0.data(), lrs_arg1.data(), lrs_arg2.data()};
 
       // it may need to redirect stdout to a file
-      lrs_main(3, args);
-
-      delete[] args[2];
-      delete[] args[1];
-      delete[] args[0];
+      lrs_main(3, lrs_argv);
 
       // read V rep file
       std::ifstream v_file(extfile.c_str() /*extfilename.c_str()*/, std::ios::in);
 
-      if (!v_file.good()) GUM_ERROR(IOError, " __H2Vlrs : could not open lrs ouput file : ")
+      if (!v_file.good()) GUM_ERROR(IOError, " __H2Vlrs : could not open lrs output file : ")
 
       std::string line, tmp;
       char *      cstr, *p;
@@ -1716,32 +1696,19 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void CredalNet< GUM_SCALAR >::_sort_varType_() {
-      NodeProperty< NodeType >* _current_nodeType_;
-      const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
-          _credalNet_current_cpt_;
+      const BayesNet< GUM_SCALAR >* bn_ptr = (_current_bn_ != nullptr) ? _current_bn_ : &_src_bn_;
+      const NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >* cpt_ptr
+          = (_credalNet_current_cpt_ != nullptr) ? _credalNet_current_cpt_ : &_credalNet_src_cpt_;
+      NodeProperty< NodeType >* nodeType_ptr
+          = (_current_nodeType_ != nullptr) ? _current_nodeType_ : &_original_nodeType_;
 
-      const BayesNet< GUM_SCALAR >* _current_bn_;
-
-      if (this->_current_bn_ == nullptr) _current_bn_ = &_src_bn_;
-      else _current_bn_ = this->_current_bn_;
-
-      if (this->_credalNet_current_cpt_ == nullptr) _credalNet_current_cpt_ = &_credalNet_src_cpt_;
-      else _credalNet_current_cpt_ = this->_credalNet_current_cpt_;
-
-      if (this->_current_nodeType_ == nullptr) _current_nodeType_ = &_original_nodeType_;
-      else _current_nodeType_ = this->_current_nodeType_;
-
-      /*if ( !  _current_nodeType_->empty() )
-         _current_nodeType_->clear();*/
-
-      for (auto node: _current_bn_->nodes()) {
+      for (auto node: bn_ptr->nodes()) {
         // indicatrices are already present
-        if (_current_nodeType_->exists(node)) continue;
+        if (nodeType_ptr->exists(node)) continue;
 
         bool precise = true, vacuous = true;
 
-        for (auto entry   = (*_credalNet_current_cpt_)[node].cbegin(),
-                  theEnd2 = (*_credalNet_current_cpt_)[node].cend();
+        for (auto entry = (*cpt_ptr)[node].cbegin(), theEnd2 = (*cpt_ptr)[node].cend();
              entry != theEnd2;
              ++entry) {
           auto vertices  = entry->size();
@@ -1760,26 +1727,22 @@ namespace gum {
                   break;
                 }
               }   // end of : for each modality
-
-              break;   // not vacuous
             }   // end of : for each vertex
 
-            for (auto /*std::vector< bool >::const_iterator*/ probability = elem.cbegin();
-                 probability != elem.cend();
-                 ++probability)
+            for (auto probability = elem.cbegin(); probability != elem.cend(); ++probability)
               if (*probability == false) vacuous = false;
           }   // end of : if vertices == dSize
           else
             vacuous = false;
 
           if (vacuous == false && precise == false) {
-            _current_nodeType_->insert(node, NodeType::Credal);
+            nodeType_ptr->insert(node, NodeType::Credal);
             break;
           }
         }   // end of : for each parents entry
 
-        if (vacuous) _current_nodeType_->insert(node, NodeType::Vacuous);
-        else if (precise) _current_nodeType_->insert(node, NodeType::Precise);
+        if (vacuous) nodeType_ptr->insert(node, NodeType::Vacuous);
+        else if (precise) nodeType_ptr->insert(node, NodeType::Precise);
       }   // end of : for each variable
     }
   }   // namespace credal

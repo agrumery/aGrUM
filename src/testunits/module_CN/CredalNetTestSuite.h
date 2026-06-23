@@ -355,6 +355,22 @@ namespace gum_tests {
       }
     }
 
+    void testVacuousNodeType() {
+      // Binary node with interval [0,1] per modality → full simplex (vacuous).
+      // Bug6: _sort_varType_ exited vertex loop after first vertex, misclassifying as Credal.
+      gum::BayesNet< double > bn_min, bn_max;
+      auto                    a = bn_min.add(gum::LabelizedVariable("A", "A", 2));
+      bn_min.cpt(a).fillWith({0.0, 0.0});
+      bn_max.add(gum::LabelizedVariable("A", "A", 2));
+      bn_max.cpt(bn_max.idFromName("A")).fillWith({1.0, 1.0});
+
+      gum::credal::CredalNet< double > cn(bn_min, bn_max);
+      cn.intervalToCredal();
+
+      auto id = cn.src_bn().idFromName("A");
+      CHECK_EQ(cn.nodeType(id), gum::credal::CredalNet< double >::NodeType::Vacuous);
+    }
+
     void testBadMinMaxFile() {
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(
@@ -375,6 +391,7 @@ namespace gum_tests {
 
   GUM_TEST_ACTIF(CredalNetByLP)
   GUM_TEST_ACTIF(Binarization)
+  GUM_TEST_ACTIF(VacuousNodeType)
   GUM_TEST_ACTIF(BadMinMaxFile)
 
 }   // end of namespace gum_tests

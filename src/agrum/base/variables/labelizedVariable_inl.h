@@ -165,7 +165,7 @@ namespace gum {
   INLINE Idx LabelizedVariable::index(std::string_view aLabel) const {
     try {
       return _labels_.pos(std::string{aLabel});
-    } catch (...) {
+    } catch (const gum::NotFound&) {
       GUM_ERROR(OutOfBounds, "label '" << aLabel << "' is unknown in " << this->toString())
     }
   }

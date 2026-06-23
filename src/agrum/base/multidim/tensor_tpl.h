@@ -323,9 +323,18 @@ namespace gum {
 
     Instantiation Isrc(src);
     Instantiation Idst(*this);
+
+    // pre-compute index mapping from src variable positions to dst positions (O(N))
+    // avoids repeated name lookups (O(N) each) inside the hot loop
+    const Idx          ndim = src.nbrDim();
+    std::vector< Idx > src_to_dst(ndim);
+    for (Idx i = 0; i < ndim; i++) {
+      src_to_dst[i] = Idst.pos(this->variable(Isrc.variable(i).name()));
+    }
+
     for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
-      for (Idx i = 0; i < this->nbrDim(); i++) {
-        Idst.chgVal(Isrc.variable(i).name(), Isrc.val(i));
+      for (Idx i = 0; i < ndim; i++) {
+        Idst.chgVal(src_to_dst[i], Isrc.val(i));
       }
       this->set(Idst, src.get(Isrc));
     }

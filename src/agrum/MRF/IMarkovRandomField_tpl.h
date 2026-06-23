@@ -53,8 +53,6 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/MRF/IMarkovRandomField.h>
 
-#define EF get
-
 namespace gum {
 
   // IMarkovRandomField

@@ -95,15 +95,17 @@ namespace gum {
   }
 
   INLINE Idx RangeVariable::closestIndex(double val) const {
-    int res = static_cast< int >(std::rint(val));
-    if (res - val == 0.5) res--;
+    // std::rint uses round-half-to-even (IEEE default) which is platform-dependent at .5
+    // boundaries. Use floor + explicit > 0.5 check to implement round-half-down deterministically.
+    long res = static_cast< long >(std::floor(val));
+    if (val - static_cast< double >(res) > 0.5) ++res;
 
     if (res < _minBound_) {
       return 0;
     } else if (res > _maxBound_) {
       return domainSize() - 1;
     } else {
-      return res - _minBound_;
+      return static_cast< Idx >(res - _minBound_);
     }
   }
 
@@ -127,11 +129,7 @@ namespace gum {
   // Copy operator
   // @param aRV to be copied
   // @return a ref to *this
-  INLINE RangeVariable& RangeVariable::operator=(const RangeVariable& aRV) {
-    _minBound_ = aRV._minBound_;
-    _maxBound_ = aRV._maxBound_;
-    return *this;
-  }
+  INLINE RangeVariable& RangeVariable::operator=(const RangeVariable& aRV) = default;
 
   INLINE VarType RangeVariable::varType() const { return VarType::RANGE; }
 

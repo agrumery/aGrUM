@@ -52,7 +52,7 @@ namespace gum {
     GUM_CONS_CPY(DAGmodel);
   }
 
-  DAGmodel::DAGmodel(DAGmodel&& from) :
+  DAGmodel::DAGmodel(DAGmodel&& from) noexcept :
       DiscreteGraphicalModel(std::move(from)), dag_(std::move(from.dag_)) {
     GUM_CONS_MOV(DAGmodel);
   }
@@ -69,7 +69,7 @@ namespace gum {
     return *this;
   }
 
-  DAGmodel& DAGmodel::operator=(DAGmodel&& source) {
+  DAGmodel& DAGmodel::operator=(DAGmodel&& source) noexcept {
     if (this != &source) {
       DiscreteGraphicalModel::operator=(std::move(source));
       dag_ = std::move(source.dag_);
@@ -84,7 +84,7 @@ namespace gum {
     return g;
   }
 
-  bool DAGmodel::hasSameStructure(const DAGmodel& other) {
+  bool DAGmodel::hasSameStructure(const DAGmodel& other) const {
     if (this == &other) return true;
 
     if (size() != other.size()) return false;

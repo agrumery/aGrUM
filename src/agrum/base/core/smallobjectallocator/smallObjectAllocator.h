@@ -107,7 +107,7 @@ namespace gum {
     // ============================================================================
     /// Copy Constructor (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator(const SmallObjectAllocator&) {}
+    SmallObjectAllocator(const SmallObjectAllocator&) = delete;
 
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)
@@ -172,6 +172,9 @@ namespace gum {
     /// The maximal size of an object befor new is called
     // ============================================================================
     std::size_t _maxObjectSize_;
+
+    // protects the critical sections
+    std::mutex _mutex_;
 
     Idx nbAllocation;
     Idx nbDeallocation;

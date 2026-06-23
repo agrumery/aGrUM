@@ -61,18 +61,24 @@
 namespace gum {
 
   /* in aGrUM, the sizes of hash tables (number of slots) are powers of 2. This
-   * is
-   * not actually compulsory for the hash function we use. However, as it
+   * is not actually compulsory for the hash function we use. However, as it
    * speeds up the computations of hashed values, we chose to impose
    * this restriction. Function  _hashTableLog2_ thus returns the size in
    * bits - 1 necessary to store the smallest power of 2 greater than or
-   * equal nb. */
+   * equal to nb. */
   INLINE unsigned int _hashTableLog2_(const Size nb) {
     unsigned int i = 0;
 
     for (Size nbb = nb; nbb > Size(1); ++i, nbb >>= 1) {}
 
-    return ((Size(1) << i) < nb ? i + Size(1) : i);
+    // check that the smallest power of 2 greater than or equal to nb does not
+    // require more bits than what Size can provide
+    const Size power_two = Size(1) << i;
+    if ((i == sizeof(Size) * 8 - 1) && (power_two < nb)) {
+      GUM_ERROR(OutOfBounds, "HashTable size " << nb << " is too large");
+    }
+
+    return (power_two < nb ? i + Size(1) : i);
   }
 
   // ===========================================================================

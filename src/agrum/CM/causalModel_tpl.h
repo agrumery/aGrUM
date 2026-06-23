@@ -111,6 +111,17 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "A latent variable must affect at least 2 children.");
     }
 
+    // reject names that collide with observed or existing latent variables
+    if (_observationalBN_.variableNodeMap().exists(latentName)) {
+      GUM_ERROR(InvalidArgument,
+                "Latent variable name conflicts with an observed variable: "
+                    + std::string(latentName));
+    }
+    if (_ids_names_.existsSecond(std::string(latentName))) {
+      GUM_ERROR(InvalidArgument,
+                "Latent variable name already used by another latent: " + std::string(latentName));
+    }
+
     // create a fresh node id for the latent in the causal DAG
     const NodeId id_latent = _causalDAG_.addNode();
 

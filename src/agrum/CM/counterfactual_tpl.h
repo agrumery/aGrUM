@@ -56,10 +56,7 @@ namespace gum {
                                                 const HashTable< VarName, ValName >& profile,
                                                 const HashTable< VarName, ValName >& values) :
       _cm(cm), _on(on), _whatif(whatif), _profile(profile), _values(values),
-      _twin(cm)   // copy-construct (clone semantics)
-      ,
-      _adaptedValue(), _ci(nullptr) {
-    _twin = counterFactualModel(_cm, _profile, _whatif);
+      _twin(counterFactualModel(cm, profile, whatif)), _adaptedValue(), _ci(nullptr) {
     run();
   }
 

@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -343,6 +344,45 @@ namespace gum_tests {
       clearCNet();
     }
 
+    void testSaveVerticesFormat() {
+      // Bug5: saveVertices wrote [v0v1] instead of [v0,v1] because first=false was
+      // only set inside the if(!first) block and never triggered.
+      initCNet();
+
+      gum::credal::CNLoopyPropagation< double > lp(*cn);
+      lp.storeVertices(true);
+
+      // insertModals required so computeExpectations_() fills marginalSets_
+      std::map< std::string, std::vector< double > > modals;
+      std::vector< double >                          binaryModal(2, 0.0);
+      binaryModal[1] = 1.0;
+      for (const auto node: cn->current_bn().nodes())
+        modals[cn->current_bn().variable(node).name()] = binaryModal;
+      lp.insertModals(modals);
+
+      lp.makeInference();
+
+      std::string path = std::tmpnam(nullptr);
+      path += "_gum_saveVertices.txt";
+      lp.saveVertices(path);
+
+      std::ifstream f(path);
+      CHECK(f.good());
+
+      std::string line;
+      bool        found_vertex_line = false;
+      while (std::getline(f, line)) {
+        if (!line.empty() && line.front() == '[') {
+          found_vertex_line = true;
+          CHECK(line.find(',') != std::string::npos);
+        }
+      }
+      f.close();
+      CHECK(found_vertex_line);
+      std::remove(path.c_str());
+
+      clearCNet();
+    }
 
   };   // end of : class L2UInferenceTestSuite
 
@@ -350,5 +390,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(L2UInferenceD)
   GUM_TEST_ACTIF(L2UListener)
   GUM_TEST_ACTIF(L2UInferenceFromBug)
+  GUM_TEST_ACTIF(SaveVerticesFormat)
 
 }   // namespace gum_tests

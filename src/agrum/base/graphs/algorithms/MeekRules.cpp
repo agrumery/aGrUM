@@ -217,12 +217,10 @@ namespace gum {
         res = true;
       }
       if (i_j) {
-        graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xi, xj);
         _applyMeekRules_(graph, xj);
       }
       if (j_i) {
-        graph.eraseEdge(Edge(xi, xj));
         graph.addArc(xj, xi);
         _applyMeekRules_(graph, xi);
       }

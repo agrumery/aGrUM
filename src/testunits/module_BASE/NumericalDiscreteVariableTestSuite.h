@@ -294,6 +294,15 @@ namespace gum_tests {
       gum::NumericalDiscreteVariable var("var", "var", {0.0, 1.5, 3.0});
       CHECK(var.isNumerical());
     }
+
+    // LOW-4: index() with non-numeric string must throw NotFound, not std::exception
+    static void testIndexInvalidLabel() {
+      gum::NumericalDiscreteVariable var("var", "var", {0.0, 1.5, 3.0});
+      CHECK_THROWS_AS(var.index("abc"), const gum::NotFound&);
+      CHECK_THROWS_AS(var.index(""), const gum::NotFound&);
+      // valid label still works
+      CHECK_EQ(var.index("1.5"), gum::Idx(1));
+    }
   };
 
   GUM_TEST_ACTIF(All)
@@ -301,4 +310,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(InfiniteValue)
   GUM_TEST_ACTIF(Positions)
   GUM_TEST_ACTIF(IsNumerical)
+  GUM_TEST_ACTIF(IndexInvalidLabel)
 }   // namespace gum_tests

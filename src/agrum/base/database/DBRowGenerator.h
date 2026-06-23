@@ -242,7 +242,7 @@ namespace gum {
       DBRowGenerator(DBRowGenerator&& from);
 
       /// virtual copy constructor
-      virtual DBRowGenerator* clone() const = 0;
+      [[nodiscard]] virtual DBRowGenerator* clone() const = 0;
 
       /// destructor
       virtual ~DBRowGenerator();

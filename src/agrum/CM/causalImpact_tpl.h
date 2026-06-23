@@ -341,7 +341,9 @@ namespace gum {
     }
 
     // Always return the explanation the class computed
-    return std::make_tuple(std::move(ci), std::move(numeric), ci.explanation());
+    // Capture before moving ci: explanation() returns a const ref into ci internals
+    std::string expl = ci.explanation();
+    return std::make_tuple(std::move(ci), std::move(numeric), std::move(expl));
   }
 
 

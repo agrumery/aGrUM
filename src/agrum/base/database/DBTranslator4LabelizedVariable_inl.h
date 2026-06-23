@@ -87,6 +87,7 @@ namespace gum {
         // check if this is a missing value
         if ((translated_val.discr_val == std::numeric_limits< std::size_t >::max())
             && !this->missing_symbols_.empty())
+          // all missing values share the same sentinel: return first symbol as representative
           return *(this->missing_symbols_.begin());
         else
           GUM_ERROR(UnknownLabelInDatabase,

@@ -58,11 +58,13 @@ namespace gum {
 
 
     // returns the maximum number of threads possible
-    INLINE unsigned int getMaxNumberOfThreads() { return std::thread::hardware_concurrency(); }
+    INLINE unsigned int getMaxNumberOfThreads() {
+      return std::max(1u, std::thread::hardware_concurrency());
+    }
 
     // returns the number of logical processors.
     INLINE unsigned int getNumberOfLogicalProcessors() {
-      return std::thread::hardware_concurrency();
+      return std::max(1u, std::thread::hardware_concurrency());
     }
 
 

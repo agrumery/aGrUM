@@ -142,12 +142,12 @@ namespace gum {
 
       /// indicates whether a given score exists
       /** @param idset the IdCondSet storing the sets of variables */
-      bool exists(const IdCondSet& idset);
+      bool exists(const IdCondSet& idset) const;
 
       /// returns a given score
       /** @param idset the IdCondSet storing the sets of variables
        * @throws NotFound is raised if the score is not cached */
-      double score(const IdCondSet& idset);
+      double score(const IdCondSet& idset) const;
 
       /// returns a pointer to a given score, or nullptr if not cached
       /** @param idset the IdCondSet storing the sets of variables

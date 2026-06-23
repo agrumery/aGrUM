@@ -99,10 +99,12 @@ namespace gum {
     INLINE void ScoringCache::erase(const IdCondSet& idset) { _scores_.erase(idset); }
 
     /// indicates whether a given score exists
-    INLINE bool ScoringCache::exists(const IdCondSet& idset) { return _scores_.exists(idset); }
+    INLINE bool ScoringCache::exists(const IdCondSet& idset) const {
+      return _scores_.exists(idset);
+    }
 
     /// returns a given score
-    INLINE double ScoringCache::score(const IdCondSet& idset) { return _scores_[idset]; }
+    INLINE double ScoringCache::score(const IdCondSet& idset) const { return _scores_[idset]; }
 
     /// returns a pointer to a given score, or nullptr if not cached
     INLINE optional_ref< double > ScoringCache::tryGet(const IdCondSet& idset) {

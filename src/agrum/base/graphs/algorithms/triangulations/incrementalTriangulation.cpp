@@ -392,6 +392,8 @@ namespace gum {
     // update the elimination orders
 
     if (!_require_update_) {
+      if (!_reverse_elimination_order_.exists(X))
+        GUM_ERROR(NotFound, "eraseNode: node " << X << " not in elimination order")
       for (Idx i = _reverse_elimination_order_[X] + 1; i < _reverse_elimination_order_.size(); ++i)
         _elimination_order_[i - 1] = _elimination_order_[i];
 

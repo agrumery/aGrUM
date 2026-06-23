@@ -519,6 +519,7 @@ namespace gum_tests {
         CHECK_LT(err, RELEVANT_ERR);
       }
     }
+
   };
 
   GUM_TEST_ACTIF(GibbsSimpleBN)

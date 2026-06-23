@@ -230,6 +230,16 @@ namespace gum_tests {
       } catch (gum::Exception&) { CHECK(false); }
     }
 
+    // regression test for HIGH-7: ln used log2 instead of log
+    // ln(exp(1)) == 1 with log, but ≈ 1.4427 with log2
+    static void testLnNatural() {
+      try {
+        gum::Formula formula("ln(exp(1))");
+        GUM_CHECK_ASSERT_THROWS_NOTHING(formula.result());
+        CHECK(formula.result() == doctest::Approx(1.0).epsilon(1e-9));
+      } catch (gum::Exception&) { CHECK(false); }
+    }
+
     static void testSqrt() {
       try {
         // Arrange
@@ -472,6 +482,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Exp)
   GUM_TEST_ACTIF(Log)
   GUM_TEST_ACTIF(Ln)
+  GUM_TEST_ACTIF(LnNatural)
   GUM_TEST_ACTIF(Sqrt)
   GUM_TEST_ACTIF(Pow)
   GUM_TEST_ACTIF(Goal)

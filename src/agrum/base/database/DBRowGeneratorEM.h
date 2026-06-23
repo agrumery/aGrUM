@@ -112,7 +112,7 @@ namespace gum {
       DBRowGeneratorEM(const DBRowGeneratorEM< GUM_SCALAR >& from);
 
       /// move constructor
-      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from);
+      DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) noexcept;
 
       /// virtual copy constructor
       DBRowGeneratorEM< GUM_SCALAR >* clone() const final;
@@ -145,17 +145,17 @@ namespace gum {
       /// @{
 
       /// generates one output DBRow for each DBRow passed to method setInputRow
-      virtual const DBRow< DBTranslatedValue >& generate() override final;
+      const DBRow< DBTranslatedValue >& generate() final;
 
       /// assign a new Bayes net to the generator
-      virtual void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) override final;
+      void setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) final;
 
       /// @}
 
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) override final;
+      std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

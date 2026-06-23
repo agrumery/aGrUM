@@ -55,7 +55,10 @@ namespace gum {
     _propertiesMap_ = from._propertiesMap_;
   }
 
-  GraphicalModel::GraphicalModel(GraphicalModel&& from) { GUM_CONS_MOV(GraphicalModel); }
+  GraphicalModel::GraphicalModel(GraphicalModel&& from) noexcept :
+      _propertiesMap_(std::move(from._propertiesMap_)) {
+    GUM_CONS_MOV(GraphicalModel);
+  }
 
   GraphicalModel::~GraphicalModel() { GUM_DESTRUCTOR(GraphicalModel); }
 
@@ -67,7 +70,7 @@ namespace gum {
     return *this;
   }
 
-  GraphicalModel& GraphicalModel::operator=(GraphicalModel&& source) {
+  GraphicalModel& GraphicalModel::operator=(GraphicalModel&& source) noexcept {
     if (this != &source) {
       _propertiesMap_ = std::move(source._propertiesMap_);
       GUM_OP_MOV(GraphicalModel);

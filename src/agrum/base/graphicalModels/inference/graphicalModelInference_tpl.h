@@ -208,7 +208,7 @@ namespace gum {
     Instantiation I(pot);
 
     for (I.setFirst(); !I.end(); I.inc()) {
-      if (pot[I] != 0.0) {
+      if (pot[I] != GUM_SCALAR(0.0)) {
         if (notZero) {   // we already met a non-zero value
           return false;
         } else {

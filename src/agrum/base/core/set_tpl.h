@@ -360,7 +360,7 @@ namespace gum {
   // move operator
   template < typename Key >
   Set< Key >& Set< Key >::operator=(Set< Key >&& from) noexcept {
-    _inside_ = std::move(from._inside_);
+    if (this != &from) { _inside_ = std::move(from._inside_); }
     return *this;
   }
 

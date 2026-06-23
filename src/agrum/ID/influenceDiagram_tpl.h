@@ -159,6 +159,29 @@ namespace gum {
     removeTables_();
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram(InfluenceDiagram< GUM_SCALAR >&& source) noexcept
+      :
+      DAGmodel(std::move(source)), _tensorMap_(std::move(source._tensorMap_)),
+      _utilityMap_(std::move(source._utilityMap_)),
+      _temporalOrder_(std::move(source._temporalOrder_)) {
+    GUM_CONS_MOV(InfluenceDiagram)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  InfluenceDiagram< GUM_SCALAR >&
+      InfluenceDiagram< GUM_SCALAR >::operator=(InfluenceDiagram< GUM_SCALAR >&& source) noexcept {
+    if (this != &source) {
+      removeTables_();
+      DAGmodel::operator=(std::move(source));
+      _tensorMap_     = std::move(source._tensorMap_);
+      _utilityMap_    = std::move(source._utilityMap_);
+      _temporalOrder_ = std::move(source._temporalOrder_);
+      GUM_OP_MOV(InfluenceDiagram)
+    }
+    return *this;
+  }
+
   /*
    * Copy Constructor
    */
@@ -198,10 +221,10 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::removeTables_() {
-    for (const auto node: dag_.nodes()) {
-      if (isChanceNode(node)) delete &cpt(node);
-      else if (isUtilityNode(node)) delete &utility(node);
-    }
+    for (const auto& [node, tensor]: _tensorMap_)
+      delete tensor;
+    for (const auto& [node, tensor]: _utilityMap_)
+      delete tensor;
   }
 
   /*
@@ -696,17 +719,17 @@ namespace gum {
    * Returns the decision graph
    */
   template < GUM_Numeric GUM_SCALAR >
-  gum::DAG* InfluenceDiagram< GUM_SCALAR >::getDecisionGraph() const {
-    auto temporalGraph = new gum::DAG();
+  gum::DAG InfluenceDiagram< GUM_SCALAR >::getDecisionGraph() const {
+    gum::DAG temporalGraph;
 
     for (const auto node: dag_.nodes()) {
       if (isDecisionNode(node)) {
-        if (!temporalGraph->existsNode(node)) temporalGraph->addNodeWithId(node);
+        if (!temporalGraph.existsNode(node)) temporalGraph.addNodeWithId(node);
 
         for (const auto chi: getChildrenDecision_(node)) {
-          if (!temporalGraph->existsNode(chi)) temporalGraph->addNodeWithId(chi);
+          if (!temporalGraph.existsNode(chi)) temporalGraph.addNodeWithId(chi);
 
-          temporalGraph->addArc(node, chi);
+          temporalGraph.addArc(node, chi);
         }
       }
     }

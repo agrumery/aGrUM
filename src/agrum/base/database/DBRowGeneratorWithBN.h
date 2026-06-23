@@ -143,7 +143,7 @@ namespace gum {
       /// the Bayesian network used to fill the unobserved values
       const BayesNet< GUM_SCALAR >* bn_;
 
-      /// the mapping betwen the BN's node ids and the database's columns
+      /// the mapping between the BN's node ids and the database's columns
       Bijection< NodeId, std::size_t > nodeId2columns_;
 
 

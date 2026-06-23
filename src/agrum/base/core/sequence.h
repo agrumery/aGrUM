@@ -1172,7 +1172,7 @@ namespace gum {
 
     private:
     /// The Getter used by this iterator.
-    using Getter = SequenceIteratorGet< std::is_scalar< Key >::value >;
+    using Getter = SequenceIteratorGet< std::is_scalar_v< Key > >;
 
 
     /**
@@ -1196,6 +1196,7 @@ namespace gum {
     // ============================================================================
     ///@{
 
+    SequenceIteratorSafe() = delete;
 
     /**
      * @brief Constructor, always give a valid iterator (even if pos too
@@ -1361,7 +1362,7 @@ namespace gum {
     Idx _iterator_;
 
     /// The sequence pointed to by the iterator (by default, key is a scalar).
-    const SequenceImplementation< Key, std::is_scalar< Key >::value >* _seq_;
+    const SequenceImplementation< Key, std::is_scalar_v< Key > >* _seq_ {nullptr};
 
     /// The iterator points to the posth element (0 = beginning of the
     /// sequence).

@@ -91,9 +91,10 @@ namespace gum {
     } catch (...) {
       // problem: we could not allocate an element in the list => we delete
       // the elements created so far and we throw an exception
-      for (; _deb_list_ != nullptr; _deb_list_ = new_elt) {
-        new_elt = _deb_list_->next;
+      while (_deb_list_ != nullptr) {
+        Bucket* next_elt = _deb_list_->next;
         delete _deb_list_;
+        _deb_list_ = next_elt;
       }
 
       _nb_elements_ = 0;
@@ -150,7 +151,9 @@ namespace gum {
   template < typename Key, typename Val >
   INLINE HashTableList< Key, Val >::HashTableList(HashTableList< Key, Val >&& from) noexcept :
       _deb_list_{from._deb_list_}, _end_list_{from._end_list_}, _nb_elements_{from._nb_elements_} {
-    from._deb_list_ = nullptr;
+    from._deb_list_    = nullptr;
+    from._end_list_    = nullptr;
+    from._nb_elements_ = 0;
   }
 
   template < typename Key, typename Val >
@@ -353,8 +356,12 @@ namespace gum {
   HashTable< Key, Val >::HashTable(HashTable< Key, Val >&& table) noexcept :
       _nodes_(std::move(table._nodes_)), _size_{table._size_}, _nb_elements_{table._nb_elements_},
       _hash_func_{table._hash_func_}, _resize_policy_{table._resize_policy_},
-      _key_uniqueness_policy_{table._key_uniqueness_policy_}, _begin_index_{table._begin_index_},
-      _safe_iterators_(std::move(table._safe_iterators_)) {
+      _key_uniqueness_policy_{table._key_uniqueness_policy_}, _begin_index_{table._begin_index_} {
+    // clear the safe iterators that pointed to the table
+    for (auto* iter : table._safe_iterators_) {
+      iter->clear();
+    }
+
     // for debugging purposes
     table._size_        = 0;
     table._nb_elements_ = 0;
@@ -433,12 +440,21 @@ namespace gum {
       // for debugging purposes
       GUM_OP_MOV(HashTable);
 
-      // first remove the current content of the hashtable and make
-      // the iterators point to end
+      // make the iterators point to nothing
+      for (auto* iter : table._safe_iterators_) {
+        iter->clear();
+      }
+
+      // remove the current content of the hashtable and make
+      // the safe iterators of this point to end
       clear();
 
+      // also make the safe iterators of table point to end
+      for (auto* iter : table._safe_iterators_) {
+        iter->clear();
+      }
+
       _nodes_                 = std::move(table._nodes_);
-      _safe_iterators_        = std::move(table._safe_iterators_);
       _size_                  = table._size_;
       _nb_elements_           = table._nb_elements_;
       _hash_func_             = table._hash_func_;
@@ -1397,14 +1413,13 @@ namespace gum {
     // if  _bucket_ != nullptr then use it, else use next_bucket
     if (_bucket_ == nullptr) {
       // note that this case only happens when the iterator pointed to an
-      // element
-      // that has just been erased. Fortunately, in this case, the Hashtable's
-      // erase functions update appropriately the  _next_bucket_ and  _index_
-      // fields.
+      // element that has just been erased. Fortunately, in this case, the
+      // Hashtable's erase functions update appropriately the _next_bucket_
+      // and  _index_ fields.
       _bucket_      = _next_bucket_;
       _next_bucket_ = nullptr;
     } else {
-      // ok, here we can use  _bucket_ as a starting point
+      // ok, here we can use _bucket_ as a starting point
 
       // if we are not pointing on the first element of the chained list, just
       // point to the preceding bucket in this list

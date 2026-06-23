@@ -46,10 +46,7 @@
 #endif /* GUM_NO_INLINE */
 
 namespace gum {
-  UGmodel::UGmodel() {
-    GUM_CONSTRUCTOR(UGmodel);
-    ;
-  }
+  UGmodel::UGmodel() { GUM_CONSTRUCTOR(UGmodel); }
 
   UGmodel::UGmodel(const UGmodel& from) : DiscreteGraphicalModel(from), graph_(from.graph_) {
     GUM_CONS_CPY(UGmodel);
@@ -60,10 +57,7 @@ namespace gum {
     GUM_CONS_MOV(UGmodel);
   }
 
-  UGmodel::~UGmodel() {
-    GUM_DESTRUCTOR(UGmodel);
-    ;
-  }
+  UGmodel::~UGmodel() { GUM_DESTRUCTOR(UGmodel); }
 
   UGmodel& UGmodel::operator=(const UGmodel& source) {
     if (this != &source) {
@@ -85,7 +79,7 @@ namespace gum {
     return *this;
   }
 
-  bool UGmodel::hasSameStructure(const UGmodel& other) {
+  bool UGmodel::hasSameStructure(const UGmodel& other) const {
     if (this == &other) return true;
 
     if (size() != other.size()) return false;

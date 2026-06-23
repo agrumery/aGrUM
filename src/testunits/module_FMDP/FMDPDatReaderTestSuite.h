@@ -54,6 +54,7 @@
 #include <agrum/base/variables/labelizedVariable.h>
 // =====================================================================
 #include <agrum/FMDP/fmdp.h>
+#include <agrum/FMDP/fmdpFactory.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
 #undef GUM_CURRENT_SUITE
@@ -141,6 +142,41 @@ namespace gum_tests {
       _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       _run_();
     }
+
+    void testDiscountStoredAfterRead() {
+      // coffee.dat declares "discount 0.9" — verify addDiscount() stores the value
+      gum::FMDP< double >          fmdp(true);
+      gum::FMDPDatReader< double > reader(&fmdp, GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
+      reader.trace(false);
+      gum::Size nbrErr = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+      CHECK(std::abs(fmdp.discount() - 0.9) < 1e-6);
+    }
+
+    void testRewardCompositionSingleDiagram() {
+      // Bug1: single-element _ddBag_ with setOperationModeOn used to call
+      // add2MultiDimFunctionGraphs(nullptr, elt) -> UB
+      gum::FMDP< double >        fmdp;
+      gum::FMDPFactory< double > factory(&fmdp);
+
+      factory.startVariableDeclaration();
+      factory.variableName("x");
+      factory.variableDescription("test");
+      factory.addModality("a");
+      factory.addModality("b");
+      factory.endVariableDeclaration();
+
+      factory.startRewardDeclaration();
+      factory.setOperationModeOn("+");
+      gum::NodeId root = factory.addTerminalNode(1.0f);
+      factory.setRoot(root);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.addReward());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.endRewardDeclaration());
+
+      CHECK(fmdp.reward() != nullptr);
+    }
   };
 
   GUM_TEST_ACTIF(Constuctor)
@@ -148,4 +184,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ReadFileTinyFactory)
   GUM_TEST_ACTIF(ReadFileFactory)
   GUM_TEST_ACTIF(ReadFileTaxi)
+  GUM_TEST_ACTIF(DiscountStoredAfterRead)
+  GUM_TEST_ACTIF(RewardCompositionSingleDiagram)
 }   // namespace gum_tests

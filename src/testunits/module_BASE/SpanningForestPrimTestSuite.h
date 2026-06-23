@@ -128,7 +128,44 @@ namespace gum_tests {
       const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
       CHECK_EQ(edges3.size(), 9U);
     }   // namespace gum_tests
+
+    static void testMissingEdgeCostThrows() {
+      // HIGH-20: edge with no cost entry must throw NotFound
+      gum::UndiGraph g;
+      gum::NodeId    n0 = g.addNode();
+      gum::NodeId    n1 = g.addNode();
+      g.addEdge(n0, n1);
+
+      gum::EdgeProperty< float > cost;   // no entry for (n0,n1)
+
+      gum::SpanningForestPrim prim(&g, &cost);
+      CHECK_THROWS_AS(prim.spanningForest(), const gum::NotFound&);
+    }
+
+    static void testIdempotentResults() {
+      // HIGH-11: repeated calls on the same object must return consistent results
+      gum::UndiGraph g;
+      gum::NodeId    n0 = g.addNode();
+      gum::NodeId    n1 = g.addNode();
+      gum::NodeId    n2 = g.addNode();
+      g.addEdge(n0, n1);
+      g.addEdge(n1, n2);
+      g.addEdge(n0, n2);
+
+      gum::EdgeProperty< float > cost;
+      cost.insert(gum::Edge(n0, n1), 1.0f);
+      cost.insert(gum::Edge(n1, n2), 2.0f);
+      cost.insert(gum::Edge(n0, n2), 4.0f);
+
+      gum::SpanningForestPrim prim(&g, &cost);
+      float c = prim.costOfSpanningForest();   // triggers computation
+      CHECK_EQ(prim.edgesInSpanningForest().size(), 2U);
+      CHECK_EQ(prim.costOfSpanningForest(), c);
+      CHECK_EQ(prim.spanningForest().sizeEdges(), 2U);
+    }
   };
 
   GUM_TEST_ACTIF(1)
+  GUM_TEST_ACTIF(MissingEdgeCostThrows)
+  GUM_TEST_ACTIF(IdempotentResults)
 }   // namespace gum_tests

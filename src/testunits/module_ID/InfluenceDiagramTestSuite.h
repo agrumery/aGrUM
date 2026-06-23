@@ -940,6 +940,49 @@ namespace gum_tests {
       CHECK_EQ(model, model3);
     }
 
+    void testGetDecisionGraph() {
+      // *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1
+      // *D3 isolated decision node
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;*D3->$U2");
+
+      gum::DAG dg = id.getDecisionGraph();
+
+      gum::NodeId d1 = id.idFromName("D1");
+      gum::NodeId d2 = id.idFromName("D2");
+      gum::NodeId d3 = id.idFromName("D3");
+
+      CHECK_EQ(dg.size(), gum::Size(3));
+      CHECK_EQ(dg.sizeArcs(), gum::Size(1));
+      CHECK(dg.existsNode(d1));
+      CHECK(dg.existsNode(d2));
+      CHECK(dg.existsNode(d3));
+      CHECK(dg.existsArc(d1, d2));
+    }
+
+    void testMoveConstructor() {
+      auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;C2->$U");
+
+      const gum::Size nNodes = id.size();
+      const gum::Size nArcs  = id.dag().sizeArcs();
+
+      gum::InfluenceDiagram< double > moved(std::move(id));
+      CHECK_EQ(moved.size(), nNodes);
+      CHECK_EQ(moved.dag().sizeArcs(), nArcs);
+      CHECK(moved.isDecisionNode("D1"));
+      CHECK(moved.isDecisionNode("D2"));
+      CHECK(moved.isChanceNode("C1"));
+      CHECK(moved.isChanceNode("C2"));
+      CHECK(moved.isUtilityNode("U"));
+
+      auto src2 = gum::InfluenceDiagram< double >::fastPrototype("*A->B->$C");
+      gum::InfluenceDiagram< double > dst2;
+      dst2 = std::move(src2);
+      CHECK_EQ(dst2.size(), gum::Size(3));
+      CHECK(dst2.isDecisionNode("A"));
+      CHECK(dst2.isChanceNode("B"));
+      CHECK(dst2.isUtilityNode("C"));
+    }
+
     void testConnectedComponents() {
       // A->B connected, *C isolated decision, $D isolated utility: 3 components
       auto id = gum::InfluenceDiagram< double >::fastPrototype("A->B;*C;$D");
@@ -985,5 +1028,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(FastPrototypeVarType)
   GUM_TEST_ACTIF(FastVariable)
   GUM_TEST_ACTIF(operatorEqual)
+  GUM_TEST_ACTIF(GetDecisionGraph)
+  GUM_TEST_ACTIF(MoveConstructor)
   GUM_TEST_ACTIF(ConnectedComponents)
 }   // namespace gum_tests

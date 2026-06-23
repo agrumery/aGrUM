@@ -88,7 +88,7 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
       const SequenceImplementation< Key, Gen >& seq,
       Idx                                       pos) noexcept :
-      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar< Key >::value >* >(
+      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(
           &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
@@ -100,7 +100,7 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(const Sequence< Key >& seq,
                                                            Idx                    pos) noexcept :
-      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar< Key >::value >* >(
+      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(
           &seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
@@ -376,7 +376,12 @@ namespace gum {
   INLINE void SequenceImplementation< Key, Gen >::insert(const Key& k) {
     // k will be added at the end. Insert the new key into the hashtable
     Key& new_key = const_cast< Key& >(_h_.insert(k, _h_.size()).first);
-    _v_.push_back(&new_key);
+    try {
+      _v_.push_back(&new_key);
+    } catch (...) {
+      _h_.erase(new_key);
+      throw;
+    }
     _update_end_();
   }
 
@@ -385,7 +390,12 @@ namespace gum {
   INLINE void SequenceImplementation< Key, Gen >::insert(Key&& k) {
     // k will be added at the end. Insert the new key into the hashtable
     Key& new_key = const_cast< Key& >(_h_.insert(std::move(k), _h_.size()).first);
-    _v_.push_back(&new_key);
+    try {
+      _v_.push_back(&new_key);
+    } catch (...) {
+      _h_.erase(new_key);
+      throw;
+    }
     _update_end_();
   }
 
@@ -395,7 +405,12 @@ namespace gum {
   INLINE void SequenceImplementation< Key, Gen >::emplace(Args&&... args) {
     Key  key(std::forward< Args >(args)...);
     Key& new_key = const_cast< Key& >(_h_.insert(std::move(key), _h_.size()).first);
-    _v_.push_back(&new_key);
+    try {
+      _v_.push_back(&new_key);
+    } catch (...) {
+      _h_.erase(new_key);
+      throw;
+    }
     _update_end_();
   }
 
@@ -757,8 +772,13 @@ namespace gum {
   template < typename Key >
   INLINE void SequenceImplementation< Key, true >::insert(Key k) {
     // k will be added at the end. Insert the new key into the hashtable
-    _h_.insert(k, _h_.size());
-    _v_.push_back(k);
+    Key& new_key = const_cast< Key& >(_h_.insert(k, _h_.size()).first);
+    try {
+      _v_.push_back(new_key);
+    } catch (...) {
+      _h_.erase(new_key);
+      throw;
+    }
     _update_end_();
   }
 
@@ -766,9 +786,13 @@ namespace gum {
   template < typename Key >
   template < typename... Args >
   INLINE void SequenceImplementation< Key, true >::emplace(Args&&... args) {
-    Key new_key(std::forward< Args >(args)...);
-    _h_.insert(new_key, _h_.size());
-    _v_.push_back(new_key);
+    Key key(std::forward< Args >(args)...);
+    Key& new_key = const_cast< Key& >(_h_.insert(std::move(key), _h_.size()).first);
+    try {
+      _v_.push_back(new_key);
+    } catch (...) {
+      _h_.erase(new_key);
+    }
     _update_end_();
   }
 

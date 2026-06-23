@@ -65,7 +65,7 @@ namespace gum {
 
   INLINE
   bool contains(std::string_view s, std::string_view needle) {
-    return s.find(needle) != std::string::npos;
+    return s.find(needle) != std::string_view::npos;
   }
 
   INLINE

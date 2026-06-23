@@ -127,6 +127,13 @@ namespace gum_tests {
       CHECK_EQ(var1.posLabel("vert"), gum::Idx(1));
     }
 
+    static void testIndexUnknownLabelThrows() {
+      gum::LabelizedVariable var("v", "", {"a", "b", "c"});
+      CHECK_THROWS_AS(var.index("z"), const gum::OutOfBounds&);
+      CHECK_THROWS_AS(var.index(""), const gum::OutOfBounds&);
+      CHECK_EQ(var.index("b"), gum::Idx(1));
+    }
+    
     static void testIsNumerical() {
       gum::LabelizedVariable var("var", "var", 3);
       CHECK_FALSE(var.isNumerical());
@@ -138,5 +145,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ChangeLabel)
   GUM_TEST_ACTIF(Numerical)
   GUM_TEST_ACTIF(AndConstructorWithLabels)
+  GUM_TEST_ACTIF(IndexUnknownLabelThrows)
   GUM_TEST_ACTIF(IsNumerical)
 }   // namespace gum_tests

@@ -50,7 +50,6 @@
 #include <agrum/base/core/hashFunc.h>
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/list.h>
-#include <agrum/base/core/refPtr.h>
 #include <agrum/base/core/sequence.h>
 #include <agrum/base/core/set.h>
 #include <agrum/base/core/staticInitializer.h>

@@ -46,6 +46,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
 #include <agrum/BN/io/GUM/GumBNWriter.h>
+#include <agrum/base/io/GumBinaryIO.h>
 
 #include <agrum/base/external/json/json.hpp>
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -303,6 +304,32 @@ namespace gum_tests {
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(bn2, bn);
     }
+
+    // regression tests for CRIT-16: _readVector_ size validation
+    static void testReadVectorTruncatedSizeField() {
+      // Only 4 bytes instead of 8 for the size field
+      std::istringstream iss(std::string(4, '\0'));
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
+
+    static void testReadVectorOversizedField() {
+      // Size = UINT64_MAX → far above 256 MB guard
+      std::ostringstream oss;
+      uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
+      oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));
+      std::istringstream iss(oss.str());
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
+
+    static void testReadVectorTruncatedData() {
+      // Announce 100 bytes but only write 10
+      std::ostringstream oss;
+      uint64_t           size = 100;
+      oss.write(reinterpret_cast< const char* >(&size), sizeof(size));
+      oss.write(std::string(10, 'x').c_str(), 10);
+      std::istringstream iss(oss.str());
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
   };
 
   GUM_TEST_ACTIF(FirstTest)
@@ -317,4 +344,7 @@ namespace gum_tests {
   GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
+  GUM_TEST_ACTIF(ReadVectorTruncatedSizeField)
+  GUM_TEST_ACTIF(ReadVectorOversizedField)
+  GUM_TEST_ACTIF(ReadVectorTruncatedData)
 }   // namespace gum_tests

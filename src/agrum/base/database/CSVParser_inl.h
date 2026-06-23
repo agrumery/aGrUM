@@ -46,6 +46,10 @@ namespace gum {
         return true;
       }
 
+      if (_instream_->bad()) {
+        GUM_ERROR(IOError, "CSVParser: stream I/O error at line " << _nbLine_)
+      }
+
       return false;
     }
 
@@ -63,8 +67,8 @@ namespace gum {
 
         const std::size_t before = str.find_last_not_of('\\', res - 1);
 
-        if (before == std::string::npos) {
-          return res;   // quote found, it is the good one
+        if ((before == std::string::npos) && (res % 2 == 0)) {
+          return res;   // quote found: preceded by an odd number of '\'
         }
 
         if ((res - before) % 2 == 1) {

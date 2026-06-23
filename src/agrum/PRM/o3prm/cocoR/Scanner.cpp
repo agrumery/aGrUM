@@ -36,6 +36,11 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <string.h>
 #include "Scanner.h"
 
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wsign-compare"
+#endif
+
    namespace gum {
 namespace prm {
 namespace o3prm {
@@ -486,6 +491,10 @@ Token* Scanner::Peek() {
 void Scanner::ResetPeek() {
   pt = tokens;
 }
+
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic pop
+#endif
 
 } // namespace
 } // namespace

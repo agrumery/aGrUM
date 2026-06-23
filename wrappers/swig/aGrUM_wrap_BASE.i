@@ -211,7 +211,6 @@
 %include <agrum/base/multidim/instantiation.h>
 %include <agrum/base/multidim/tensor.h>
 
-%import <agrum/base/core/refPtr.h>
 %include <agrum/base/core/list.h>
 
 %import <agrum/base/graphicalModels/variableNodeMap.h>
