@@ -46,7 +46,6 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/base/core/math/chi2.h>
 #include <agrum/base/stattests/indepTestG2.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -69,113 +68,14 @@ namespace gum {
       return *this;
     }
 
-    /// returns the score corresponding to a given nodeset
+    /// returns the pair <statistics,pvalue> corresponding to a given IdCondSet
     std::pair< double, double > IndepTestG2::statistics_(const IdCondSet& idset) {
-      // get the counts
-      std::vector< double > N_xyz(this->counter_.counts(idset, true));
-      const bool            informative_external_prior = this->prior_->isInformative();
-      if (informative_external_prior) { this->prior_->addJointPseudoCount(idset, N_xyz); }
-      const std::size_t all_size = (N_xyz.size());
-
-      // compute the domain sizes of X and Y
-      const auto& nodeId2cols = this->counter_.nodeId2Columns();
-      const auto& database    = this->counter_.database();
-      Idx         var_x, var_y;
-      if (nodeId2cols.empty()) {
-        var_x = idset[0];
-        var_y = idset[1];
-      } else {
-        var_x = nodeId2cols.second(idset[0]);
-        var_y = nodeId2cols.second(idset[1]);
-      }
-
-      const std::size_t X_size = database.domainSize(var_x);
-      const std::size_t Y_size = database.domainSize(var_y);
-
-      double            cumulStat = 0.0;
-      std::size_t       n_skipped = 0;
-      const std::size_t Z_size
-          = idset.hasConditioningSet() ? all_size / (X_size * Y_size) : std::size_t(1);
-
-      // here, we distinguish idsets with conditioning nodes from those
-      // without conditioning nodes
-      if (idset.hasConditioningSet()) {
-        // get the counts for the conditioning nodes
-        std::vector< double > N_xz
-            = this->marginalize_(std::size_t(1), X_size, Y_size, Z_size, N_xyz);
-        std::vector< double > N_yz
-            = this->marginalize_(std::size_t(0), X_size, Y_size, Z_size, N_xyz);
-        std::vector< double > N_z
-            = this->marginalize_(std::size_t(2), X_size, Y_size, Z_size, N_xyz);
-
-        // now, perform :
-        // sum_X sum_Y sum_Z #XYZ * log ( ( #XYZ * #Z ) / ( #XZ * #YZ ) )
-        for (std::size_t z = 0, beg_xz = 0, beg_yz = 0, xyz = 0; z < Z_size;
-             ++z, beg_xz += X_size, beg_yz += Y_size) {
-          if (N_z[z] > 0) {
-            for (std::size_t y = std::size_t(0), yz = beg_yz; y < Y_size; ++yz, ++y) {
-              for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size; ++xz, ++x, ++xyz) {
-                // Two distinct reasons to skip this cell and reduce df:
-                // 1. tmp2 == 0: a marginal is zero — E = N_xz·N_yz/N_z undefined
-                //    (structural zero).
-                // 2. tmp1 == 0 with tmp2 > 0: O=0 but E>0. The G2 term
-                //    0·log(0/E) = 0 by convention; unlike Chi2 where (O-E)²/E = E,
-                //    this cell adds no signal to the statistic. Treating it as
-                //    inactive (reducing df) is a deliberate conservative choice for
-                //    graphical-model structure learning, where avoiding spurious
-                //    edges in sparse data takes priority over maximising power.
-                const double tmp1 = N_xyz[xyz] * N_z[z];
-                const double tmp2 = N_yz[yz] * N_xz[xz];
-                if ((tmp1 != 0.0) && (tmp2 != 0.0)) {
-                  cumulStat += N_xyz[xyz] * std::log(tmp1 / tmp2);
-                } else {
-                  ++n_skipped;
-                }
-              }
-            }
-          } else {   // moving xyz out of the loops x,y when if N_z[z]==0
-            n_skipped += X_size * Y_size;
-            xyz += X_size * Y_size;
-          }
-        }
-      } else {
-        // here, there is no conditioning set
-
-        // now, perform sum_X sum_Y #XY * log ( ( #XY * N ) / ( #X * #Y ) )
-        std::vector< double > N_x
-            = this->marginalize_(std::size_t(1), X_size, Y_size, std::size_t(1), N_xyz);
-        std::vector< double > N_y
-            = this->marginalize_(std::size_t(0), X_size, Y_size, std::size_t(1), N_xyz);
-
-        // count N
-        double N = 0.0;
-        for (auto n_x: N_x) {
-          N += n_x;
-        }
-
-        for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
-          const double tmp_Ny = N_y[y];
-          for (std::size_t x = 0; x < X_size; ++x, ++xy) {
-            // Same two skip conditions as the conditioned case above: structural
-            // zero (tmp==0) or sampling zero with no G2 contribution (N_xyz==0,
-            // term = 0·log(0/E) = 0). Both reduce df for the same reasons.
-            const double tmp = (tmp_Ny * N_x[x]);
-            if ((tmp != 0.0) && (N_xyz[xy] != 0.0)) {
-              cumulStat += N_xyz[xy] * std::log((N_xyz[xy] * N) / tmp);
-            } else {
-              ++n_skipped;
-            }
-          }
-        }
-      }
-
-      // used to make the G test formula asymptotically equivalent
-      // to the Pearson's chi-squared test formula
-      cumulStat *= 2;
-
-      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size, n_skipped);
-      double pValue = Chi2::probaChi2(cumulStat, df);
-      return {cumulStat, pValue};
+      // computeStatistics_ guarantees margX * margY != 0 before calling this lambda,
+      // so the log argument is well-defined — no need to guard against E == 0 here.
+      return computeStatistics_(idset, [](double O, double margX, double margY, double total) {
+        if (O == 0.0) return 0.0;
+        return 2.0 * O * std::log((O * total) / (margX * margY));
+      });
     }
 
   } /* namespace learning */

@@ -176,11 +176,23 @@ namespace gum {
                                          const std::size_t            Y_size,
                                          const std::size_t            Z_size,
                                          const std::vector< double >& N_xyz) const;
+
+      /// shared loop for chi-squared-family statistics
+      /** Handles counts, marginalisation, structural-zero detection and the final
+       *  p-value.  Only active cells (margX * margY != 0) are forwarded to
+       *  @p cellContrib; sampling zeros must be handled inside the lambda.
+       *  Signature: double cellContrib(double O, double margX, double margY, double total) */
+      template < typename CellContribFn >
+      std::pair< double, double > computeStatistics_(const IdCondSet& idset,
+                                                     CellContribFn    cellContrib);
     };
 
   } /* namespace learning */
 
 } /* namespace gum */
+
+/// always include the templated implementations
+#include <agrum/base/stattests/independenceTest_tpl.h>
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE

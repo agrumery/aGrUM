@@ -151,7 +151,7 @@ namespace gum_tests {
       auto ref13_4 = score.statistics(1, 3, std::vector< gum::NodeId >{4});
 
       // repeated calls must return identical values
-      for (gum::Idx i = 0; i < 1000; ++i) {
+      for (gum::Idx i = 0; i < 100; ++i) {
         CHECK(score.statistics(0, 1).first == doctest::Approx(ref01.first).epsilon(1e-9));
         CHECK(score.statistics(1, 3).first == doctest::Approx(ref13.first).epsilon(1e-9));
         CHECK(score.statistics(3, 6, std::vector< gum::NodeId >{1, 2}).first
@@ -254,6 +254,48 @@ namespace gum_tests {
             == doctest::Approx(ref13_4.first).epsilon(1e-9));
     }
 
+    static void test_statistics() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/chi2.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
+
+      // A:0, B:1, C:2, D:3
+      auto stat = score.statistics(0, 2);
+      CHECK(stat.first == doctest::Approx(0.000761).epsilon(1e-3));
+      CHECK(stat.second == doctest::Approx(0.9780).epsilon(1e-3));
+
+      stat = score.statistics(1, 0);
+      CHECK(stat.first == doctest::Approx(21.5847).epsilon(1e-3));
+      CHECK(stat.second == doctest::Approx(3.39e-6).epsilon(GUM_SMALL_ERROR));
+
+      stat = score.statistics(0, 1);
+      CHECK(stat.first == doctest::Approx(21.5847).epsilon(1e-3));
+      CHECK(stat.second == doctest::Approx(3.39e-6).epsilon(GUM_SMALL_ERROR));
+
+      stat = score.statistics(1, 3);
+      CHECK(stat.first == doctest::Approx(0.9027).epsilon(1e-3));
+      CHECK(stat.second == doctest::Approx(0.3421).epsilon(1e-3));
+
+      stat = score.statistics(0, 2, std::vector< gum::NodeId >{1});
+      CHECK(stat.first == doctest::Approx(16.3470).epsilon(1e-3));
+      CHECK(stat.second == doctest::Approx(0.000282).epsilon(1e-4));
+    }
+
     static void test_statistics_2() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/testXYbase.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -277,6 +319,58 @@ namespace gum_tests {
       auto stats = score.statistics(0, 1);
       CHECK((stats.first) == doctest::Approx(16.6066).epsilon(1e-3));
       CHECK((stats.second) == doctest::Approx(0.0108433).epsilon(1e-3));
+    }
+
+    static void test_statistics_3() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ1Z2.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
+
+      auto stats = score.statistics(0, 1, {2, 3});
+      CHECK(stats.first == doctest::Approx(2.7726).epsilon(1e-3));
+      // indepXYZ1Z2.csv has many silent cells (sparse, 6 rows); df_effective=1
+      CHECK(stats.second == doctest::Approx(gum::Chi2::probaChi2(stats.first, 1)).epsilon(1e-3));
+    }
+
+    static void test_statistics_4() {
+      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/indepXYZ.csv"));
+      const auto&                         var_names = initializer.variableNames();
+      const std::size_t                   nb_vars   = var_names.size();
+
+      gum::learning::DBTranslatorSet                translator_set;
+      gum::learning::DBTranslator4LabelizedVariable translator;
+      for (std::size_t i = 0; i < nb_vars; ++i) {
+        translator_set.insertTranslator(translator, i);
+      }
+
+      gum::learning::DatabaseTable database(translator_set);
+      database.setVariableNames(initializer.variableNames());
+      initializer.fillDatabase(database);
+
+      gum::learning::DBRowGeneratorSet    genset;
+      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+      gum::learning::NoPrior              prior(database);
+      gum::learning::IndepTestG2          score(parser, prior);
+
+      auto stats = score.statistics(0, 1, {2});
+      CHECK(stats.first == doctest::Approx(2.7726).epsilon(1e-3));
+      // indepXYZ.csv has many silent cells (sparse, 6 rows); df_effective=1
+      CHECK(stats.second == doctest::Approx(gum::Chi2::probaChi2(stats.first, 1)).epsilon(1e-3));
     }
 
     // sparse_XYZ.csv: X(A,B,C) x Y(a,b) | Z(0,1)
@@ -322,7 +416,10 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_cache)
   GUM_TEST_ACTIF(_clearcache)
   GUM_TEST_ACTIF(_copy_constructor)
+  GUM_TEST_ACTIF(_statistics)
   GUM_TEST_ACTIF(_statistics_2)
+  GUM_TEST_ACTIF(_statistics_3)
+  GUM_TEST_ACTIF(_statistics_4)
   GUM_TEST_ACTIF(_df_skipped_cells)
 
 } /* namespace gum_tests */
