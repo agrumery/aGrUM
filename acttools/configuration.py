@@ -221,6 +221,7 @@ def init_params() -> None:
     "static_lib": False,
     "fixed_seed": False,
     "no_fun": False,
+    "consolide": False,
     "stats": False,
     "oneByOne": False,
     "tests": "all",
@@ -257,6 +258,7 @@ def init_params() -> None:
   cfg.non_persistent = [
     "verbose",
     "fixed_seed",
+    "consolide",
     "stats",
     "no_fun",
     "static_lib",
@@ -347,8 +349,15 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     default=False,
   )
   cfg.parser.add_argument(
-    "--stats",
+    "--consolide",
     help="consolidation on " + str(cfg.nbr_tests_for_stats) + " runs.",
+    action="store_true",
+    dest="consolide",
+    default=False,
+  )
+  cfg.parser.add_argument(
+    "--stats",
+    help="show project statistics (LOC, doc pages, notebooks).",
     action="store_true",
     dest="stats",
     default=False,

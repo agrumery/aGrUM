@@ -263,6 +263,93 @@ def missing_docs(show_funct: bool = False):
   return PyAgrumDocCoverage(verbose=show_funct).check_missing_doc()
 
 
+def _count_loc(root: Path, suffixes: set[str]) -> int:
+  total = 0
+  for path in root.rglob("*"):
+    if path.suffix in suffixes and path.is_file():
+      try:
+        total += sum(1 for _ in path.open(errors="replace"))
+      except OSError:
+        pass
+  return total
+
+
+def _html_stats(html_dir: Path) -> tuple[int, int]:
+  if not html_dir.is_dir():
+    return 0, 0
+  pages = list(html_dir.rglob("*.html"))
+  size = sum(p.stat().st_size for p in pages)
+  return len(pages), size
+
+
+def _fmt_size(nbytes: int) -> str:
+  for unit in ("B", "KB", "MB", "GB"):
+    if nbytes < 1024:
+      return f"{nbytes:.0f} {unit}"
+    nbytes //= 1024
+  return f"{nbytes:.0f} TB"
+
+
+def compute_project_stats():
+  notif("[[Project statistics]]")
+
+  cpp_suffixes = {".h", ".cpp"}
+  swig_suffixes = {".i"}
+  py_suffixes = {".py"}
+
+  loc_src = _count_loc(Path("src/agrum"), cpp_suffixes)
+  notif(f"  C++ source      (src/agrum/)              : [[{loc_src:>10,}]] lines")
+
+  loc_tests = _count_loc(Path("src/testunits"), cpp_suffixes)
+  notif(f"  C++ tests       (src/testunits/)           : [[{loc_tests:>10,}]] lines")
+
+  loc_pyagrum = (
+    _count_loc(Path("wrappers/pyagrum/swigsrc"), swig_suffixes)
+    + _count_loc(Path("wrappers/swig"), swig_suffixes)
+    + _count_loc(Path("wrappers/pyagrum/pyLibs"), py_suffixes)
+    + _count_loc(Path("wrappers/pyagrum/extensions"), {".h"})
+  )
+  notif(f"  pyAgrum sources (swigsrc/+swig/+pyLibs/+extensions/) : [[{loc_pyagrum:>10,}]] lines")
+
+  loc_pytests = _count_loc(Path("wrappers/pyagrum/testunits"), py_suffixes)
+  notif(f"  pyAgrum tests   (pyagrum/testunits/)       : [[{loc_pytests:>10,}]] lines")
+
+  act_script = sys.argv[0]
+  doxy_dir = Path("build/aGrUM/release/docs/html")
+  sphinx_dir = Path("build/pyAgrum/release/wrappers/pyagrum/docs")
+
+  to_build = []
+  if not any(doxy_dir.rglob("*.html")):
+    to_build.append(("aGrUM", doxy_dir))
+  if not any(sphinx_dir.rglob("*.html")):
+    to_build.append(("pyAgrum", sphinx_dir))
+
+  if to_build:
+    targets = " and ".join(f"[[{t}]]" for t, _ in to_build)
+    notif(f"  Building {targets} documentation in parallel...")
+    procs = [(t, Popen([act_script, "doc", t, "release"], stdout=PIPE, stderr=STDOUT)) for t, _ in to_build]
+    for target, proc in procs:
+      out, _ = proc.communicate()
+      notif(f"  [[{target} doc]] output:")
+      printutf8(out.decode(errors="replace"))
+
+  doxy_pages, doxy_size = _html_stats(doxy_dir)
+  if doxy_pages:
+    notif(f"  Doxygen doc     (build/.../docs/html/)    : [[{doxy_pages:>6}]] pages  ({_fmt_size(doxy_size)})")
+  else:
+    notif("  Doxygen doc     : build failed or no output")
+
+  sphinx_pages, sphinx_size = _html_stats(sphinx_dir)
+  if sphinx_pages:
+    notif(f"  Sphinx doc      (build/.../docs/)          : [[{sphinx_pages:>6}]] pages  ({_fmt_size(sphinx_size)})")
+  else:
+    notif("  Sphinx doc      : build failed or no output")
+
+  nb_dir = Path("wrappers/pyagrum/doc/sphinx/notebooks")
+  notebooks = list(nb_dir.glob("*.ipynb")) if nb_dir.is_dir() else []
+  notif(f"  Tutorials       (sphinx/notebooks/)        : [[{len(notebooks):>6}]] notebooks")
+
+
 class ActBuilderGuideline(ActBuilder):
   def __init__(self, current: dict[str, str | bool]):
     super().__init__(current)
@@ -273,13 +360,16 @@ class ActBuilderGuideline(ActBuilder):
   def build(self):
     self.run_start()
 
-    guideline(
-      self.current,
-      self.current["verbose"],
-      self.current["correction"],
-      self.current["dry_run"],
-      self.current["guideline_check"],
-    )
+    if self.current["stats"]:
+      compute_project_stats()
+    else:
+      guideline(
+        self.current,
+        self.current["verbose"],
+        self.current["correction"],
+        self.current["dry_run"],
+        self.current["guideline_check"],
+      )
 
     self.run_done()
     return True
