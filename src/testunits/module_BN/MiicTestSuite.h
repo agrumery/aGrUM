@@ -372,6 +372,8 @@ namespace gum_tests {
                   listener,
                   SimpleListenerForMiic::whenStructuralModification);*/
 
+      search.setMutualInformation(cI);
+
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -714,6 +716,8 @@ namespace gum_tests {
       gum::learning::NoPrior                    prior(database);
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       gum::learning::Miic                       search;
+
+      search.setMutualInformation(cI);
 
       // creating complete graph
       gum::MixedGraph graph;
