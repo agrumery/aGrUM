@@ -680,8 +680,7 @@ namespace gum {
    * @tparam Type The type of the shared pointer's content.
    */
   template < typename Type >
-  class HashFunc< std::shared_ptr< Type > >:
-      public HashFuncBase< std::shared_ptr< Type > > {
+  class HashFunc< std::shared_ptr< Type > >: public HashFuncBase< std::shared_ptr< Type > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

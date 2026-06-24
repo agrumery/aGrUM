@@ -322,7 +322,7 @@ namespace gum {
                                           Size                        multiplier) const {
     for (auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter) {
       if (nodeset.exists(iter.key())) {
-        const Size delta = iter.val() * multiplier;
+        const Size delta  = iter.val() * multiplier;
         Size&      weight = nodeset[iter.key()];
         if (delta >= weight) {
           nodeset.erase(iter.key());

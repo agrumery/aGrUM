@@ -134,10 +134,11 @@ namespace gum {
           const bool separated = [&]() -> bool {
             if (d == 0) {
               // marginal test: symmetric, single direction suffices
-              anyTested = true;
+              anyTested         = true;
               const double pval = test_->statistics(X, Y, _emptySet_).second;
               if (pval <= alpha_) return false;
-              if (stable_) toRemove.push_back(edge); else graph.eraseEdge(edge);
+              if (stable_) toRemove.push_back(edge);
+              else graph.eraseEdge(edge);
               sepSet_.insert({X, Y}, {});
               sepSet_.insert({Y, X}, {});
               return true;
@@ -161,11 +162,13 @@ namespace gum {
 
               for (;;) {
                 std::vector< NodeId > cond(d);
-                for (Size i = 0; i < d; ++i) cond[i] = adj[idx[i]];
+                for (Size i = 0; i < d; ++i)
+                  cond[i] = adj[idx[i]];
 
                 const double pval = test_->statistics(A, B, cond).second;
                 if (pval > alpha_) {
-                  if (stable_) toRemove.push_back(edge); else graph.eraseEdge(edge);
+                  if (stable_) toRemove.push_back(edge);
+                  else graph.eraseEdge(edge);
                   sepSet_.insert({X, Y}, cond);
                   sepSet_.insert({Y, X}, cond);
                   return true;

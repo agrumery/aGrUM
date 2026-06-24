@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -48,8 +48,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/base/stattests/independenceTest.h>   // to ease IDE parser
 #include <agrum/base/core/math/chi2.h>
+#include <agrum/base/stattests/independenceTest.h>   // to ease IDE parser
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -68,8 +68,8 @@ namespace gum {
      *  where O = observed count, margX/margY = relevant marginals, total = N_z or N.
      */
     template < typename CellContribFn >
-    std::pair< double, double >
-        IndependenceTest::computeStatistics_(const IdCondSet& idset, CellContribFn cellContrib) {
+    std::pair< double, double > IndependenceTest::computeStatistics_(const IdCondSet& idset,
+                                                                     CellContribFn    cellContrib) {
       // get the counts
       std::vector< double > N_xyz(this->counter_.counts(idset, true));
       const bool            informative_external_prior = this->prior_->isInformative();

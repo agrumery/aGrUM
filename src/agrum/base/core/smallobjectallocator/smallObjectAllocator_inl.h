@@ -110,7 +110,7 @@ namespace gum {
     // Small Object Allocator called for an object of size equals to 0
     GUM_ASSERT(objectSize > 0);
 
-    std::lock_guard<std::mutex> lock(_mutex_);
+    std::lock_guard< std::mutex > lock(_mutex_);
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > _maxObjectSize_) return new unsigned char[objectSize];
@@ -140,7 +140,7 @@ namespace gum {
     // Small Object Allocator called for an object of size equals to 0
     GUM_ASSERT(objectSize > 0);
 
-    std::lock_guard<std::mutex> lock(_mutex_);
+    std::lock_guard< std::mutex > lock(_mutex_);
 
     // If objectSize is greater than maxObjectSize, normal new is called
     if (objectSize > _maxObjectSize_) {

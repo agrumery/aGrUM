@@ -358,7 +358,7 @@ namespace gum {
       _hash_func_{table._hash_func_}, _resize_policy_{table._resize_policy_},
       _key_uniqueness_policy_{table._key_uniqueness_policy_}, _begin_index_{table._begin_index_} {
     // clear the safe iterators that pointed to the table
-    for (auto* iter : table._safe_iterators_) {
+    for (auto* iter: table._safe_iterators_) {
       iter->clear();
     }
 
@@ -441,7 +441,7 @@ namespace gum {
       GUM_OP_MOV(HashTable);
 
       // make the iterators point to nothing
-      for (auto* iter : table._safe_iterators_) {
+      for (auto* iter: table._safe_iterators_) {
         iter->clear();
       }
 
@@ -450,7 +450,7 @@ namespace gum {
       clear();
 
       // also make the safe iterators of table point to end
-      for (auto* iter : table._safe_iterators_) {
+      for (auto* iter: table._safe_iterators_) {
         iter->clear();
       }
 

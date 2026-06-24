@@ -279,8 +279,7 @@ namespace gum {
         if (x > y) std::swap(x, y);
         if (isForbiddenEdge_(x, y))
           GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
-        else
-          graph.addEdge(x, y);
+        else graph.addEdge(x, y);
       };
 
       if (template_graph.edges().empty()) {

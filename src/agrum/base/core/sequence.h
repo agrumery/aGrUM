@@ -1362,7 +1362,7 @@ namespace gum {
     Idx _iterator_;
 
     /// The sequence pointed to by the iterator (by default, key is a scalar).
-    const SequenceImplementation< Key, std::is_scalar_v< Key > >* _seq_ {nullptr};
+    const SequenceImplementation< Key, std::is_scalar_v< Key > >* _seq_{nullptr};
 
     /// The iterator points to the posth element (0 = beginning of the
     /// sequence).

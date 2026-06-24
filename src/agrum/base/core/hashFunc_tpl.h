@@ -203,8 +203,8 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< std::shared_ptr< Type > >::operator()(
-      const std::shared_ptr< Type >& key) const {
+  INLINE Size
+      HashFunc< std::shared_ptr< Type > >::operator()(const std::shared_ptr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

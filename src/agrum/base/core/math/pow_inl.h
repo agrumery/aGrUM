@@ -69,7 +69,8 @@ namespace gum {
   // Specialized base 2 pow function with integer.
   INLINE unsigned long int2Pow(unsigned long exponent) {
     if (exponent >= sizeof(unsigned long) * 8) {
-      GUM_ERROR(OutOfBounds, "int2Pow: exponent " << exponent << " >= " << sizeof(unsigned long) * 8)
+      GUM_ERROR(OutOfBounds,
+                "int2Pow: exponent " << exponent << " >= " << sizeof(unsigned long) * 8)
     }
     return 1UL << exponent;
   }

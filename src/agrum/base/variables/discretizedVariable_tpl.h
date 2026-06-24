@@ -240,7 +240,8 @@ namespace gum {
     T_TICKS            target;
     if (i >> target) {
       if (target < _ticks_[0]) {
-        if (_ticks_[0] - target < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[0])))) return 0;
+        if (_ticks_[0] - target < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[0]))))
+          return 0;
         if (_is_empirical) return 0;
         else
           GUM_ERROR(OutOfBounds,
@@ -249,7 +250,8 @@ namespace gum {
       }
 
       if (const auto size = _ticks_.size(); target > _ticks_[size - 1]) {
-        if (target - _ticks_[size - 1] < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[size - 1])))) {
+        if (target - _ticks_[size - 1]
+            < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[size - 1])))) {
           return size - 2;
         }
         if (_is_empirical) {

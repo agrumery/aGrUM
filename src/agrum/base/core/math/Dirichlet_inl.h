@@ -95,7 +95,7 @@ namespace gum {
     Size        size = Size(_params_.size());
     result_type res(size);
     if (size == 0) return res;
-    float       sum = 0.0f;
+    float sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
         _gamma_.param(std::gamma_distribution< float >::param_type(_params_[i], 1));
@@ -114,7 +114,7 @@ namespace gum {
     Size        size = Size(parm.size());
     result_type res(size);
     if (size == 0) return res;
-    float       sum = 0.0f;
+    float sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
         _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));

@@ -163,7 +163,8 @@ namespace gum {
   // Destructor.
   // ============================================================================
   INLINE FixedAllocator::~FixedAllocator() {
-    for (_Chunks_::iterator chunkIter = _chunks_.begin(); chunkIter != _chunks_.end(); ++chunkIter) {
+    for (_Chunks_::iterator chunkIter = _chunks_.begin(); chunkIter != _chunks_.end();
+         ++chunkIter) {
       chunkIter->_release_();
     }
     //    GUM_DESTRUCTOR(FixedAllocator);
@@ -227,7 +228,7 @@ namespace gum {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             _deallocChunk_ = (_deallocChunk_ + offset);
-            chunk_found = true;
+            chunk_found    = true;
             break;
           }
         }
@@ -241,16 +242,14 @@ namespace gum {
             // If pointed chunk contains this pointer, deallocation find the
             // place
             _deallocChunk_ = (_deallocChunk_ - offset);
-            chunk_found = true;
+            chunk_found    = true;
             break;
           }
         }
       }
     }
 
-    if (chunk_found) {
-      _deallocChunk_->_deallocat_(pDeallocatedBlock, _blockSize_);
-    }
+    if (chunk_found) { _deallocChunk_->_deallocat_(pDeallocatedBlock, _blockSize_); }
   }
 
 }   // namespace gum

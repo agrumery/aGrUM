@@ -105,8 +105,7 @@ namespace gum {
     }
 
     if (_domainSize_ > std::numeric_limits< Size >::max() / v.domainSize()) {
-      GUM_ERROR(OutOfBounds,
-                "adding variable '" << v.name() << "' would overflow domainSize")
+      GUM_ERROR(OutOfBounds, "adding variable '" << v.name() << "' would overflow domainSize")
     }
     _domainSize_ *= v.domainSize();
 

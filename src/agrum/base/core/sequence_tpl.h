@@ -88,8 +88,8 @@ namespace gum {
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(
       const SequenceImplementation< Key, Gen >& seq,
       Idx                                       pos) noexcept :
-      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(
-          &seq)} {
+      _seq_{
+          reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(&seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
     if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
@@ -100,8 +100,8 @@ namespace gum {
   template < typename Key >
   INLINE SequenceIteratorSafe< Key >::SequenceIteratorSafe(const Sequence< Key >& seq,
                                                            Idx                    pos) noexcept :
-      _seq_{reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(
-          &seq)} {
+      _seq_{
+          reinterpret_cast< const SequenceImplementation< Key, std::is_scalar_v< Key > >* >(&seq)} {
     GUM_CONSTRUCTOR(SequenceIteratorSafe);
 
     if (pos > _seq_->size()) _iterator_ = _seq_->size();   // make the iterator point to end
@@ -786,13 +786,11 @@ namespace gum {
   template < typename Key >
   template < typename... Args >
   INLINE void SequenceImplementation< Key, true >::emplace(Args&&... args) {
-    Key key(std::forward< Args >(args)...);
+    Key  key(std::forward< Args >(args)...);
     Key& new_key = const_cast< Key& >(_h_.insert(std::move(key), _h_.size()).first);
     try {
       _v_.push_back(new_key);
-    } catch (...) {
-      _h_.erase(new_key);
-    }
+    } catch (...) { _h_.erase(new_key); }
     _update_end_();
   }
 
