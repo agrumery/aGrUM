@@ -133,7 +133,7 @@ namespace gum_tests {
       CHECK_THROWS_AS(var.index(""), const gum::OutOfBounds&);
       CHECK_EQ(var.index("b"), gum::Idx(1));
     }
-    
+
     static void testIsNumerical() {
       gum::LabelizedVariable var("var", "var", 3);
       CHECK_FALSE(var.isNumerical());

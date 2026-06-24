@@ -158,7 +158,7 @@ namespace gum_tests {
       cost.insert(gum::Edge(n0, n2), 4.0f);
 
       gum::SpanningForestPrim prim(&g, &cost);
-      float c = prim.costOfSpanningForest();   // triggers computation
+      float                   c = prim.costOfSpanningForest();   // triggers computation
       CHECK_EQ(prim.edgesInSpanningForest().size(), 2U);
       CHECK_EQ(prim.costOfSpanningForest(), c);
       CHECK_EQ(prim.spanningForest().sizeEdges(), 2U);

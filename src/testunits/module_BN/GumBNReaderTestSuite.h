@@ -43,10 +43,10 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/base/io/GumBinaryIO.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
 #include <agrum/BN/io/GUM/GumBNWriter.h>
-#include <agrum/base/io/GumBinaryIO.h>
 
 #include <agrum/base/external/json/json.hpp>
 #include <testunits/gumtest/AgrumTestSuite.h>

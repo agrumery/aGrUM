@@ -97,9 +97,9 @@ namespace gum_tests {
           gum::Rational< double >::farey(num, den, std::sqrt(2.0) - 1.0, big, 1e-9));
       // result must be a valid (non-degenerate) fraction
       CHECK(den > int64_t(0));
-      CHECK(std::abs(static_cast< double >(num) / static_cast< double >(den)
-                     - (std::sqrt(2.0) - 1.0))
-            < 1e-6);
+      CHECK(
+          std::abs(static_cast< double >(num) / static_cast< double >(den) - (std::sqrt(2.0) - 1.0))
+          < 1e-6);
     }
   };
 

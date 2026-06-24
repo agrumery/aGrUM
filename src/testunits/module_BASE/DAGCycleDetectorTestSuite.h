@@ -417,7 +417,8 @@ namespace gum_tests {
       // Diamond: 0->1, 0->2, 1->3, 2->3 — two paths from 0 to 3.
       // Exercises multi-path ancestor counts in _delWeightedSet_ (unsigned underflow guard).
       gum::DAG g;
-      for (gum::Idx i = 0; i < 4; ++i) g.addNodeWithId(i);
+      for (gum::Idx i = 0; i < 4; ++i)
+        g.addNodeWithId(i);
       g.addArc(0, 1);
       g.addArc(0, 2);
       g.addArc(1, 3);

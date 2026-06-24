@@ -390,7 +390,6 @@ namespace gum_tests {
       CHECK(!copy.empty());
     }
 
-
     static void testIsNumerical() {
       gum::DiscretizedVariable< double > var("var", "var");
       var.addTick(0.0).addTick(1.0).addTick(2.0);

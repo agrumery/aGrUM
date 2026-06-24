@@ -381,13 +381,13 @@ namespace gum_tests {
       j << a;
       j.setFirst();
 
-      i.inc();   // empty i → overflow
+      i.inc();          // empty i → overflow
       CHECK(i.inOverflow());
       CHECK_FALSE(j.inOverflow());
       CHECK_NE(i, j);   // one in overflow, one not → must be unequal
 
       j.setLast();
-      ++j;   // j now in overflow
+      ++j;              // j now in overflow
       CHECK(j.inOverflow());
       CHECK_EQ(i, j);   // both in overflow → equal
     }
@@ -403,7 +403,7 @@ namespace gum_tests {
       gum::Instantiation empty_ref;   // stays empty
 
       {
-        gum::Instantiation i;   // empty *this
+        gum::Instantiation i;         // empty *this
         i.incOut(ref);
         CHECK(i.inOverflow());
       }
