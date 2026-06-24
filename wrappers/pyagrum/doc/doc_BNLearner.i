@@ -448,7 +448,7 @@ Set the maximum size of conditioning sets considered by the PC algorithm.
 
 PC tests conditional independence of X and Y given subsets S of the
 neighbours of X (or Y). By default all subset sizes are considered
-(unlimited). Setting a limit k restricts tests to |S| ≤ k, which
+(unlimited). Setting a limit k restricts tests to :math:`|S| \leq k`, which
 reduces runtime at the cost of possibly missing some independencies.
 
 Parameters

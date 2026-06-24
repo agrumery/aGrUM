@@ -1,4 +1,4 @@
-.. orphan::
+:orphan:
 
 Index alphabétique
 ==================

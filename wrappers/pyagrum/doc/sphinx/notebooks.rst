@@ -79,3 +79,6 @@ Examples from :cite:t:`pearl2018why`
     :glob:
 
     notebooks/BoW*
+
+.. bibliography::
+    :filter: docname in docnames
