@@ -840,7 +840,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     ---------
     For binary classifiers, the raw posterior P(target=label1 | evidence) is piecewise-linearly recalibrated so that argmax(predict_proba(X)) always
     matches predict(X), regardless of the decision threshold.
-    The mapping is: p → 0.5·p/t if p < t, else 0.5 + 0.5·(p - t)/(1 - t), where t = self.threshold_. When t = 0.5 the transformation is the identity.
+    The mapping is: p → 0.5·p/t if p < t, else 0.5 + 0.5·(p - t)/(1 - t), where t = ``self.threshold_``. When t = 0.5 the transformation is the identity.
 
 
     Parameters
