@@ -40,6 +40,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGeneratorIdentity.h>
@@ -336,6 +338,295 @@ namespace gum_tests {
       // Asia BN has no latent confounders — FCI should detect zero bidirected edges
       CHECK(lv.size() == 0);
     }
+
+    // ##########################################################################
+    // Non-regression: structural invariants that must hold before and after
+    // any improvement to FCI (Phase A / Phase B).
+    // ##########################################################################
+
+    // alpha=1.0 → pval > 1.0 never true → no edge removed → complete PAG
+    static void test_fci_alpha_one_complete_pag_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+      fci.setAlpha(1.0);
+      const auto pag = fci.learnPAG(db.nodeOnlyGraph());
+      const auto n   = static_cast< gum::Size >(db.nb_vars);
+      CHECK(pag.sizeEdges() == n * (n - 1) / 2);
+    }
+
+    // stable=false must not crash and must produce a structurally valid PAG
+    static void test_fci_unstable_mode_valid_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+      fci.setStable(false);
+      const auto pag = fci.learnPAG(db.nodeOnlyGraph());
+      CHECK(pag.size() == db.nb_vars);
+      for (const auto& e: pag.edges()) {
+        CHECK_NOTHROW(pag.markAt(e.first(), e.second()));
+        CHECK_NOTHROW(pag.markAt(e.second(), e.first()));
+      }
+    }
+
+    // maxPathLength=0 restricts R4 path search; PAG must still be structurally valid
+    static void test_fci_max_path_length_zero_valid_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+      fci.setMaxPathLength(0);
+      const auto pag = fci.learnPAG(db.nodeOnlyGraph());
+      CHECK(pag.size() == db.nb_vars);
+      CHECK(pag.sizeEdges() <= db.nb_vars * (db.nb_vars - 1) / 2);
+    }
+
+    // ##########################################################################
+    // Phase B (exhaustive sepset flag) — non-regression + feature tests.
+    // These FAIL TO COMPILE until setExhaustiveSepSet / exhaustiveSepSet added.
+    // ##########################################################################
+
+    // flag defaults to false
+    static void test_fci_exhaustive_sepset_default_false_() {
+      gum::learning::FCI fci;
+      CHECK(fci.exhaustiveSepSet() == false);
+    }
+
+    // setting flag to true and back round-trips correctly
+    static void test_fci_exhaustive_sepset_flag_roundtrip_() {
+      gum::learning::FCI fci;
+      fci.setExhaustiveSepSet(true);
+      CHECK(fci.exhaustiveSepSet() == true);
+      fci.setExhaustiveSepSet(false);
+      CHECK(fci.exhaustiveSepSet() == false);
+    }
+
+    // flag is preserved across copy construction
+    static void test_fci_exhaustive_sepset_copy_preserves_flag_() {
+      gum::learning::FCI fci;
+      fci.setExhaustiveSepSet(true);
+      const gum::learning::FCI copy(fci);
+      CHECK(copy.exhaustiveSepSet() == true);
+    }
+
+    // exhaustive mode must not crash; PAG remains structurally valid
+    static void test_fci_exhaustive_sepset_valid_pag_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+      fci.setExhaustiveSepSet(true);
+      const auto pag = fci.learnPAG(db.nodeOnlyGraph());
+      CHECK(pag.size() == db.nb_vars);
+      for (const auto& e: pag.edges()) {
+        CHECK_NOTHROW(pag.markAt(e.first(), e.second()));
+        CHECK_NOTHROW(pag.markAt(e.second(), e.first()));
+      }
+    }
+
+    // exhaustive flag must not change the skeleton (only sepset content changes)
+    static void test_fci_exhaustive_sepset_same_skeleton_as_standard_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2a(db.parser, db.prior);
+      gum::learning::IndepTestChi2 chi2b(db.parser, db.prior);
+
+      gum::learning::FCI standard_fci;
+      standard_fci.setIndependenceTest(chi2a);
+      standard_fci.setExhaustiveSepSet(false);
+
+      gum::learning::FCI exhaustive_fci;
+      exhaustive_fci.setIndependenceTest(chi2b);
+      exhaustive_fci.setExhaustiveSepSet(true);
+
+      const auto skel_std = standard_fci.learnSkeleton(db.nodeOnlyGraph());
+      const auto skel_exh = exhaustive_fci.learnSkeleton(db.nodeOnlyGraph());
+
+      CHECK(skel_std.sizeEdges() == skel_exh.sizeEdges());
+      for (const auto& e: skel_std.edges()) {
+        CHECK(skel_exh.existsEdge(e.first(), e.second()));
+      }
+    }
+
+    // ##########################################################################
+    // Phase A (possibleDSep criterion) — unit tests on hand-built PAGs.
+    // Tests marked [FAILS NOW] will fail with the current (old) criterion and
+    // PASS after Phase A replaces the BFS expansion condition.
+    // ##########################################################################
+
+    // Definite collider at B on (X, B, C) → C must be in possibleDSep(X, Y).
+    // Both old and new criteria agree on this case.
+    static void test_fci_possibledsep_def_collider_included_() {
+      // PAG: X(0) *→ B(1) ←* C(2),  X(0) o-o Y(3)
+      //   X-B: circle at X from B, arrowhead at B from X → addEdge(0,1, Circle, Arrowhead)
+      //   B-C: arrowhead at B from C, circle at C from B → addEdge(1,2, Arrowhead, Circle)
+      gum::PAG pag;
+      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle,    gum::EdgeMark::Circle);    // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Circle,    gum::EdgeMark::Arrowhead); // X *→ B
+      pag.addEdge(1, 2, gum::EdgeMark::Arrowhead, gum::EdgeMark::Circle);    // C *→ B
+
+      gum::learning::FCI fci;
+      const auto         dsep = fci.possibleDSep(pag, 0, 3);
+
+      // B(1): direct neighbor of X → always in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(1)) != dsep.end());
+      // C(2): B is def collider on (X,B,C) → expansion happens → C in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(2)) != dsep.end());
+    }
+
+    // Non-neighbor excluded from possibleDSep when no expansion path leads there.
+    // Both criteria agree on this: isolated node is never reachable.
+    static void test_fci_possibledsep_unreachable_node_excluded_() {
+      // PAG: X(0) o-o Y(1),  Z(2) has no edges → unreachable from X via BFS
+      gum::PAG pag;
+      for (gum::NodeId i = 0; i < 3; ++i) { pag.addNodeWithId(i); }
+      pag.addEdge(0, 1, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
+
+      gum::learning::FCI fci;
+      const auto         dsep = fci.possibleDSep(pag, 0, 1);
+
+      // Z(2) has no edges → never reachable → not in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(2)) == dsep.end());
+    }
+
+    // [FAILS NOW with old criterion — PASSES after Phase A]
+    // Node B with Circle-Tail mark (not a def collider, not def non-collider) must
+    // NOT lead to expansion under Zhang's criterion.
+    //
+    // Graph:  X(0) -o B(1) -- C(2),  X(0) o-o Y(3)  (C not adjacent to X)
+    //   X-B: tail at X-endpoint, circle at B-endpoint → addEdge(0,1, Tail, Circle)
+    //   B-C: tail at both endpoints (undirected)      → addEdge(1,2, Tail, Tail)
+    //
+    // marks at B when traversing (X→B): Circle  (not Arrowhead → B not def collider)
+    // marks at B when traversing (C→B): Tail    (not Arrowhead → B not def collider)
+    // → B is NOT a definite collider on (X, B, C)
+    // → Zhang criterion: do NOT expand → C must NOT be in possibleDSep(X, Y)
+    static void test_fci_possibledsep_circle_tail_node_excluded_() {
+      gum::PAG pag;
+      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Tail,   gum::EdgeMark::Circle);  // X -o B
+      pag.addEdge(1, 2, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // B -- C
+
+      gum::learning::FCI fci;
+      const auto         dsep = fci.possibleDSep(pag, 0, 3);
+
+      // B(1): direct neighbor of X → always in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(1)) != dsep.end());
+      // C(2): circle-tail at B → B not def collider → Zhang does not expand
+      // [FAILS with old criterion; PASSES after Phase A]
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(2)) == dsep.end());
+    }
+
+    // [FAILS NOW with old criterion — PASSES after Phase A]
+    // Tail-Tail at B (definite non-collider) → no expansion under either criterion.
+    // Both must agree: definite non-collider → C not in possibleDSep.
+    static void test_fci_possibledsep_definite_noncollider_excluded_() {
+      // Graph:  X(0) → B(1) → C(2),  X(0) o-o Y(3)
+      //   X-B: tail at X-endpoint from B (→ isTail(B,X)=true), arrowhead at B from X
+      //       → addEdge(0,1, Circle, Arrowhead)   (circle at X from B, arrowhead at B from X)
+      // Actually we need definite non-collider: both marks at B are Tail.
+      //   X→B: tail at B from X (actually for directed X→B: markAtX=Tail, markAtB=Arrowhead)
+      // A definite non-collider on (X,B,C) means: NOT (both arrowheads at B).
+      // The strongest form: both marks at B's endpoint are Tail = X--B--C (undirected chain).
+      gum::PAG pag;
+      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // X -- B (Tail-Tail)
+      pag.addEdge(1, 2, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // B -- C (Tail-Tail)
+
+      gum::learning::FCI fci;
+      const auto         dsep = fci.possibleDSep(pag, 0, 3);
+
+      // B(1): direct neighbor of X → in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(1)) != dsep.end());
+      // B has Tail-Tail at B: definite non-collider on (X,B,C)
+      // old criterion: !isTail(X,B) || !isTail(C,B) = !Tail || !Tail = false → does NOT expand → C excluded
+      // new criterion: isDefCollider(X,B,C) || adj(X,C) = false || false = false → does NOT expand → C excluded
+      // BOTH criteria agree: C not in possibleDSep
+      CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(2)) == dsep.end());
+    }
+
+    // ##########################################################################
+    // Phase C — background knowledge respected in orientation rules (R0/R1/R2/R4)
+    // ##########################################################################
+
+    // no crash when a forbidden arc is set for an existing edge
+    static void test_fci_forbidden_arc_no_crash_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+
+      gum::DiGraph forbid;
+      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
+      forbid.addArc(0, 1);   // forbid arc 0→1 (one direction only)
+      fci.setForbiddenGraph(forbid);
+
+      CHECK_NOTHROW(fci.learnPAG(db.nodeOnlyGraph()));
+    }
+
+    // if arc src→dst is forbidden, the PAG must not have an arrowhead at dst from src
+    // (unless the edge was removed from the skeleton entirely by isForbiddenEdge_)
+    static void test_fci_forbidden_arc_arrowhead_blocked_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
+      fci.setIndependenceTest(chi2);
+
+      // forbid ALL arcs in direction i→j for i < j
+      // this prevents any arrowhead at j from i via R0/R1/R2/R4
+      gum::DiGraph forbid;
+      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
+      for (int i = 0; i < db.nb_vars; ++i) {
+        for (int j = i + 1; j < db.nb_vars; ++j) { forbid.addArc(i, j); }
+      }
+      fci.setForbiddenGraph(forbid);
+
+      const auto pag = fci.learnPAG(db.nodeOnlyGraph());
+      CHECK(pag.size() == db.nb_vars);
+
+      for (const auto& e: pag.edges()) {
+        const gum::NodeId src = std::min(e.first(), e.second());
+        const gum::NodeId dst = std::max(e.first(), e.second());
+        // forbidden arc src→dst: no arrowhead at dst from src
+        CHECK_FALSE(pag.isArrowhead(src, dst));
+      }
+    }
+
+    // forbidden arc on a non-adjacent pair must not change the PAG structure
+    static void test_fci_forbidden_arc_does_not_affect_unrelated_edge_() {
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2a(db.parser, db.prior);
+      gum::learning::IndepTestChi2 chi2b(db.parser, db.prior);
+
+      gum::learning::FCI ref_fci;
+      ref_fci.setIndependenceTest(chi2a);
+      const auto ref_pag = ref_fci.learnPAG(db.nodeOnlyGraph());
+
+      // find a pair not adjacent in ref_pag; add forbidden arc for it
+      gum::DiGraph forbid;
+      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
+      for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
+        for (gum::NodeId j = i + 1; j < static_cast< gum::NodeId >(db.nb_vars); ++j) {
+          if (!ref_pag.existsEdge(i, j)) {
+            forbid.addArc(i, j);   // forbidden arc on non-edge → no effect
+            break;
+          }
+        }
+        if (forbid.sizeArcs() > 0) { break; }
+      }
+      if (forbid.sizeArcs() == 0) { return; }  // no non-adjacent pair found (trivial pass)
+
+      gum::learning::FCI bk_fci;
+      bk_fci.setIndependenceTest(chi2b);
+      bk_fci.setForbiddenGraph(forbid);
+      const auto bk_pag = bk_fci.learnPAG(db.nodeOnlyGraph());
+
+      CHECK(bk_pag.sizeEdges() == ref_pag.sizeEdges());
+    }
   };
 
   GUM_TEST_ACTIF(_default_constructor_)
@@ -351,5 +642,28 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_fci_learnPDAG_valid_)
   GUM_TEST_ACTIF(_fci_learnMixedStructure_valid_)
   GUM_TEST_ACTIF(_fci_latent_couples_after_learnPAG_)
+
+  // non-regression
+  GUM_TEST_ACTIF(_fci_alpha_one_complete_pag_)
+  GUM_TEST_ACTIF(_fci_unstable_mode_valid_)
+  GUM_TEST_ACTIF(_fci_max_path_length_zero_valid_)
+
+  // Phase B: exhaustive sepset flag
+  GUM_TEST_ACTIF(_fci_exhaustive_sepset_default_false_)
+  GUM_TEST_ACTIF(_fci_exhaustive_sepset_flag_roundtrip_)
+  GUM_TEST_ACTIF(_fci_exhaustive_sepset_copy_preserves_flag_)
+  GUM_TEST_ACTIF(_fci_exhaustive_sepset_valid_pag_)
+  GUM_TEST_ACTIF(_fci_exhaustive_sepset_same_skeleton_as_standard_)
+
+  // Phase A: possibleDSep criterion
+  GUM_TEST_ACTIF(_fci_possibledsep_def_collider_included_)
+  GUM_TEST_ACTIF(_fci_possibledsep_unreachable_node_excluded_)
+  GUM_TEST_ACTIF(_fci_possibledsep_circle_tail_node_excluded_)
+  GUM_TEST_ACTIF(_fci_possibledsep_definite_noncollider_excluded_)
+
+  // Phase C: background knowledge respected in orientation rules
+  GUM_TEST_ACTIF(_fci_forbidden_arc_no_crash_)
+  GUM_TEST_ACTIF(_fci_forbidden_arc_arrowhead_blocked_)
+  GUM_TEST_ACTIF(_fci_forbidden_arc_does_not_affect_unrelated_edge_)
 
 } /* namespace gum_tests */

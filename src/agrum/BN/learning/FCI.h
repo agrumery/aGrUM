@@ -119,6 +119,10 @@ namespace gum {
 
       /// learnSkeleton() inherited from CIBasedLearning
 
+      /// return all nodes on possible-d-sep paths from x toward y (excl. x and y).
+      /// Public accessor for testing and introspection.
+      std::vector< NodeId > possibleDSep(const PAG& pag, NodeId x, NodeId y) const;
+
       /// @}
 
       protected:

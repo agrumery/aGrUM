@@ -577,6 +577,68 @@ namespace gum_tests {
       CHECK(dag_ref.sizeArcs() == dag_moved.sizeArcs());
       CHECK(dag_ref.size() == dag_moved.size());
     }
+
+    // =========================================================================
+    // Phase B — exhaustive sepset flag
+    // (accessor tests compile once setExhaustiveSepSet / exhaustiveSepSet added)
+    // =========================================================================
+
+    // flag defaults to false
+    static void test_exhaustive_sepset_default_false_() {
+      gum::learning::PC search;
+      CHECK(search.exhaustiveSepSet() == false);
+    }
+
+    // flag round-trips through setter/getter
+    static void test_exhaustive_sepset_flag_roundtrip_() {
+      gum::learning::PC search;
+      search.setExhaustiveSepSet(true);
+      CHECK(search.exhaustiveSepSet() == true);
+      search.setExhaustiveSepSet(false);
+      CHECK(search.exhaustiveSepSet() == false);
+    }
+
+    // flag is preserved through copy construction
+    static void test_exhaustive_sepset_copy_preserves_flag_() {
+      gum::learning::PC search;
+      search.setExhaustiveSepSet(true);
+      const gum::learning::PC copy(search);
+      CHECK(copy.exhaustiveSepSet() == true);
+    }
+
+    // exhaustive mode must not crash; result has correct node count
+    static void test_exhaustive_sepset_produces_valid_result_() {
+      AsiaDB                       db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::PC            search;
+      search.setIndependenceTest(chi2);
+      search.setExhaustiveSepSet(true);
+      const auto mg = search.learnMixedStructure(db.nodeOnlyGraph());
+      CHECK(mg.size() == db.nb_vars);
+    }
+
+    // exhaustive flag must not change the SKELETON — only sepset content differs
+    static void test_exhaustive_sepset_same_skeleton_as_standard_() {
+      AsiaDB                       db;
+      gum::learning::IndepTestChi2 chi2a(db.parser, db.prior);
+      gum::learning::IndepTestChi2 chi2b(db.parser, db.prior);
+
+      gum::learning::PC standard_search;
+      standard_search.setIndependenceTest(chi2a);
+      standard_search.setExhaustiveSepSet(false);
+
+      gum::learning::PC exhaustive_search;
+      exhaustive_search.setIndependenceTest(chi2b);
+      exhaustive_search.setExhaustiveSepSet(true);
+
+      const auto skel_std = standard_search.learnSkeleton(db.nodeOnlyGraph());
+      const auto skel_exh = exhaustive_search.learnSkeleton(db.nodeOnlyGraph());
+
+      CHECK(skel_std.sizeEdges() == skel_exh.sizeEdges());
+      for (const auto& e: skel_std.edges()) {
+        CHECK(skel_exh.existsEdge(e.first(), e.second()));
+      }
+    }
   };
 
   GUM_TEST_ACTIF(_asia_chi2_)
@@ -598,5 +660,12 @@ namespace gum_tests {
   GUM_TEST_ACTIF(_default_ucpriority_is_standard_)
   GUM_TEST_ACTIF(_copy_constructor_same_result_)
   GUM_TEST_ACTIF(_move_constructor_same_result_)
+
+  // Phase B: exhaustive sepset flag
+  GUM_TEST_ACTIF(_exhaustive_sepset_default_false_)
+  GUM_TEST_ACTIF(_exhaustive_sepset_flag_roundtrip_)
+  GUM_TEST_ACTIF(_exhaustive_sepset_copy_preserves_flag_)
+  GUM_TEST_ACTIF(_exhaustive_sepset_produces_valid_result_)
+  GUM_TEST_ACTIF(_exhaustive_sepset_same_skeleton_as_standard_)
 
 } /* namespace gum_tests */

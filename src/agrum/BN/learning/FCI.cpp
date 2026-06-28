@@ -86,6 +86,10 @@ namespace gum {
     void FCI::setMaxPathLength(Size maxLen) { maxPathLength_ = maxLen; }
     Size FCI::maxPathLength() const { return maxPathLength_; }
 
+    std::vector< NodeId > FCI::possibleDSep(const PAG& pag, NodeId x, NodeId y) const {
+      return computePossibleDSep_(pag, x, y);
+    }
+
     // ##########################################################################
     // Conflict hook override — FCI leaves circle marks unchanged
     // ##########################################################################
@@ -113,9 +117,12 @@ namespace gum {
           const NodeId Y = std::get< 1 >(tp);
           const NodeId Z = std::get< 2 >(tp);
           if (!isCollider(X, Y, Z)) { continue; }
-          // set Arrowhead at Z from both X and Y
-          if (pag.existsEdge(X, Z)) { pag.setMarkAt(X, Z, EdgeMark::Arrowhead); }
-          if (pag.existsEdge(Y, Z)) { pag.setMarkAt(Y, Z, EdgeMark::Arrowhead); }
+          if (pag.existsEdge(X, Z) && !isForbiddenArc_(X, Z)) {
+            pag.setMarkAt(X, Z, EdgeMark::Arrowhead);
+          }
+          if (pag.existsEdge(Y, Z) && !isForbiddenArc_(Y, Z)) {
+            pag.setMarkAt(Y, Z, EdgeMark::Arrowhead);
+          }
         }
       } else {
         struct Candidate {
@@ -138,8 +145,12 @@ namespace gum {
                   [](const Candidate& a, const Candidate& b) { return a.pval > b.pval; });
 
         for (const auto& [X, Y, Z, pval]: candidates) {
-          if (pag.existsEdge(X, Z)) { pag.setMarkAt(X, Z, EdgeMark::Arrowhead); }
-          if (pag.existsEdge(Y, Z)) { pag.setMarkAt(Y, Z, EdgeMark::Arrowhead); }
+          if (pag.existsEdge(X, Z) && !isForbiddenArc_(X, Z)) {
+            pag.setMarkAt(X, Z, EdgeMark::Arrowhead);
+          }
+          if (pag.existsEdge(Y, Z) && !isForbiddenArc_(Y, Z)) {
+            pag.setMarkAt(Y, Z, EdgeMark::Arrowhead);
+          }
         }
       }
     }
@@ -167,9 +178,9 @@ namespace gum {
 
         for (const NodeId c: pag.neighbours(b)) {
           if (c == x || c == y || c == a) { continue; }
-          // expand if B is NOT a definite non-collider on (A, B, C)
-          // definite non-collider: both marks at B are Tail
-          if (!pag.isTail(a, b) || !pag.isTail(c, b)) {
+          // expand if B is a definite collider on (A, B, C) or A and C are adjacent
+          // (Zhang 2008 / Colombo et al. criterion)
+          if (pag.isDefCollider(a, b, c) || pag.existsEdge(a, c)) {
             if (visited.insert({b, c}).second) {
               bfsQueue.push({b, c});
               result.insert(c);
@@ -339,6 +350,7 @@ namespace gum {
             if (c == a) { continue; }
             if (!pag.isCircle(c, b)) { continue; }
             if (pag.existsEdge(a, c)) { continue; }
+            if (isForbiddenArc_(b, c)) { continue; }
             pag.setMarkAt(c, b, EdgeMark::Tail);
             pag.setMarkAt(b, c, EdgeMark::Arrowhead);
             changed = true;
@@ -360,6 +372,7 @@ namespace gum {
             if (!pag.isArrowhead(a, b)) { continue; } // a *→ b
             if (!pag.isArrowhead(b, c)) { continue; } // b *→ c
             if (!pag.isTail(b, a) && !pag.isTail(c, b)) { continue; }
+            if (isForbiddenArc_(a, c)) { continue; }
             pag.setMarkAt(a, c, EdgeMark::Arrowhead);
             changed = true;
           }
@@ -545,11 +558,12 @@ namespace gum {
 
       if (use_b_in_sep) {
         pag.setMarkAt(c, b, EdgeMark::Tail);   // B→C: tail at B from C
-      } else {
-        pag.setMarkAt(a, b, EdgeMark::Arrowhead);  // A *→ B (collider)
-        pag.setMarkAt(c, b, EdgeMark::Arrowhead);  // C *→ B (collider)
+        return true;
       }
-      return true;
+      bool any = false;
+      if (!isForbiddenArc_(a, b)) { pag.setMarkAt(a, b, EdgeMark::Arrowhead); any = true; }
+      if (!isForbiddenArc_(c, b)) { pag.setMarkAt(c, b, EdgeMark::Arrowhead); any = true; }
+      return any;
     }
 
     // R4: Discriminating path rule.
