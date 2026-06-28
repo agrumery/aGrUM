@@ -890,6 +890,55 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     dot = p.toDot()
     self.assertIn("digraph", dot)
 
+  def testFCIExhaustiveSepSetDefaultFalse(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI()
+    self.assertFalse(learner.fciExhaustiveSepSet())
+
+  def testFCIExhaustiveSepSetRoundtrip(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI()
+    learner.setFCIExhaustiveSepSet(True)
+    self.assertTrue(learner.fciExhaustiveSepSet())
+    learner.setFCIExhaustiveSepSet(False)
+    self.assertFalse(learner.fciExhaustiveSepSet())
+
+  def testFCIExhaustiveSepSetChaining(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    # method must return self for chaining
+    result = learner.useFCI().setFCIExhaustiveSepSet(True)
+    self.assertIs(result, learner)
+
+  def testFCIExhaustiveSepSetProducesValidPAG(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI().setFCIExhaustiveSepSet(True)
+    pag = learner.learnPAG()
+    self.assertEqual(pag.size(), 8)
+    for e in pag.edges():
+      self.assertIn(pag.markAt(e[0], e[1]),
+                    (gum.EdgeMark_Circle, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead))
+
+  def testFCIExhaustiveSepSetSameSkeleton(self):
+    learner_std = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner_std.useFCI().setFCIExhaustiveSepSet(False)
+    pag_std = learner_std.learnPAG()
+
+    learner_exh = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner_exh.useFCI().setFCIExhaustiveSepSet(True)
+    pag_exh = learner_exh.learnPAG()
+
+    # skeleton invariant: exhaustive mode must not add or remove edges
+    self.assertEqual(pag_std.sizeEdges(), pag_exh.sizeEdges())
+    for e in pag_std.edges():
+      self.assertTrue(pag_exh.existsEdge(e[0], e[1]))
+
+  def testFCIExhaustiveSepSetRaisesWithoutFCI(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.setFCIExhaustiveSepSet(True)
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.fciExhaustiveSepSet()
+
   def testFCIOnlyValidWithFCIAlgo(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
     with self.assertRaises(gum.OperationNotAllowed):

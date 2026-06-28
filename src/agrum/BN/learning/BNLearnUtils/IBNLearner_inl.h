@@ -260,6 +260,22 @@ namespace gum::learning {
     maxPathLengthFci_ = max_len;
   }
 
+  INLINE void IBNLearner::setFCIExhaustiveSepSet(bool exhaustive) {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed,
+                "setFCIExhaustiveSepSet() is only valid when using the FCI algorithm")
+    }
+    exhaustiveSepSetFci_ = exhaustive;
+  }
+
+  INLINE bool IBNLearner::fciExhaustiveSepSet() const {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed,
+                "fciExhaustiveSepSet() is only valid when using the FCI algorithm")
+    }
+    return exhaustiveSepSetFci_;
+  }
+
   // select Chi2 independence test for PC (default)
   INLINE void IBNLearner::useChi2Test() {
     if (selectedAlgo_ != AlgoType::PC) {

@@ -569,6 +569,13 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& setFCIExhaustiveSepSet(bool exhaustive) {
+        IBNLearner::setFCIExhaustiveSepSet(exhaustive);
+        return *this;
+      }
+
+      bool fciExhaustiveSepSet() const { return IBNLearner::fciExhaustiveSepSet(); }
+
       BNLearner< GUM_SCALAR >& useChi2Test() {
         IBNLearner::useChi2Test();
         return *this;

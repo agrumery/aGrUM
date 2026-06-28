@@ -27804,6 +27804,59 @@ class BNLearner(object):
         return val
 
 
+    def setFCIExhaustiveSepSet(self, exhaustive: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Enable or disable exhaustive separating-set mode for the FCI skeleton phase.
+
+        In standard mode (default, ``False``) FCI stops at the first separating set found
+        for each pair of nodes at each conditioning depth. In exhaustive mode (``True``) it
+        tests all subsets of that depth and stores the *union* of all separating sets found.
+        A wider separating set suppresses more collider orientations (conservative), at the
+        cost of more independence tests.
+
+        Parameters
+        ----------
+        exhaustive : bool
+            ``True`` to enable exhaustive mode, ``False`` to restore standard mode.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrum.BNLearner_setFCIExhaustiveSepSet(self, exhaustive)
+
+        return self
+
+
+        return val
+
+
+    def fciExhaustiveSepSet(self) -> bool:
+        r"""
+
+        Return whether FCI exhaustive separating-set mode is enabled.
+
+        Returns
+        -------
+        bool
+            ``True`` if exhaustive sepset mode is on, ``False`` otherwise (default).
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        return _pyagrum.BNLearner_fciExhaustiveSepSet(self)
+
     def useChi2Test(self) -> "pyagrum.BNLearner":
         r"""
 

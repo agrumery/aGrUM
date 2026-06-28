@@ -885,6 +885,7 @@ namespace gum::learning {
     algoFCI_.setIndependenceTest(*indepTestFCI_);
     algoFCI_.setAlpha(alphaFci_);
     algoFCI_.setMaxPathLength(maxPathLengthFci_);
+    algoFCI_.setExhaustiveSepSet(exhaustiveSepSetFci_);
 
     return mgraph;
   }

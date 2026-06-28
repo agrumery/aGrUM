@@ -957,6 +957,14 @@ namespace gum::learning {
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     void setFCIMaxPathLength(Size max_len);
 
+    /// enable exhaustive sepset mode for FCI skeleton learning (default false)
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void setFCIExhaustiveSepSet(bool exhaustive);
+
+    /// return true when FCI uses exhaustive sepset mode
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    bool fciExhaustiveSepSet() const;
+
     /// @}
 
     // ##########################################################################
@@ -1231,6 +1239,7 @@ namespace gum::learning {
     /// FCI parameters
     double alphaFci_{0.05};
     Size   maxPathLengthFci_{Size(-1)};
+    bool   exhaustiveSepSetFci_{false};
 
     /// the parametric EM
     DAG2BNLearner dag2BN_;
