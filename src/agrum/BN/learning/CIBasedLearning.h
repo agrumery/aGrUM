@@ -125,6 +125,11 @@ namespace gum {
       /// stable mode: defer edge removals until end of each depth (default: true)
       void setStable(bool stable);
 
+      /// exhaustive sepset mode: accumulate union of all separating sets found at
+      /// each depth, rather than stopping at the first (default: false)
+      void setExhaustiveSepSet(bool exhaustive);
+      bool exhaustiveSepSet() const;
+
       /// collider candidate ordering (default: Standard)
       void       setUCPriority(UCPriority p);
       UCPriority ucPriority() const;
@@ -173,10 +178,11 @@ namespace gum {
       // ##########################################################################
 
       IndependenceTest* test_{nullptr};
-      double            alpha_          = 0.05;
-      Size              maxCondSetSize_ = Size(-1);
-      bool              stable_         = true;
-      UCPriority        ucPriority_     = UCPriority::Standard;
+      double            alpha_              = 0.05;
+      Size              maxCondSetSize_     = Size(-1);
+      bool              stable_            = true;
+      bool              exhaustiveSepSet_  = false;
+      UCPriority        ucPriority_        = UCPriority::Standard;
 
       HashTable< std::pair< NodeId, NodeId >, SepSetEntry_ > sepSet_;
     };
