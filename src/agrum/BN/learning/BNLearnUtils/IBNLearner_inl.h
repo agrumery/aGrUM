@@ -224,6 +224,42 @@ namespace gum::learning {
   // indicate that we wish to use the PC algorithm
   INLINE void IBNLearner::usePC() { selectedAlgo_ = AlgoType::PC; }
 
+  // indicate that we wish to use the FCI algorithm
+  INLINE void IBNLearner::useFCI() { selectedAlgo_ = AlgoType::FCI; }
+
+  // select Chi2 independence test for FCI (default)
+  INLINE void IBNLearner::useFCIChi2Test() {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed, "useFCIChi2Test() is only valid when using the FCI algorithm")
+    }
+    indepTestTypeFCI_ = IndepTestType::Chi2;
+  }
+
+  // select G2 independence test for FCI
+  INLINE void IBNLearner::useFCIG2Test() {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed, "useFCIG2Test() is only valid when using the FCI algorithm")
+    }
+    indepTestTypeFCI_ = IndepTestType::G2;
+  }
+
+  // set alpha threshold for FCI
+  INLINE void IBNLearner::setFCIAlpha(double alpha) {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed, "setFCIAlpha() is only valid when using the FCI algorithm")
+    }
+    alphaFci_ = alpha;
+  }
+
+  // set max discriminating-path length for FCI R4 (Size(-1) = unlimited)
+  INLINE void IBNLearner::setFCIMaxPathLength(Size max_len) {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed,
+                "setFCIMaxPathLength() is only valid when using the FCI algorithm")
+    }
+    maxPathLengthFci_ = max_len;
+  }
+
   // select Chi2 independence test for PC (default)
   INLINE void IBNLearner::useChi2Test() {
     if (selectedAlgo_ != AlgoType::PC) {
@@ -263,6 +299,15 @@ namespace gum::learning {
                 "setPCMaxCondSetSize() is only valid when using the PC algorithm")
     }
     maxCondSetSizePc_ = max_k;
+  }
+
+  // set unshielded-collider ordering for PC
+  INLINE void IBNLearner::setPCUnshieldedColliderSorted(bool sorted) {
+    if (selectedAlgo_ != AlgoType::PC) {
+      GUM_ERROR(OperationNotAllowed,
+                "setPCUnshieldedColliderSorted() is only valid when using the PC algorithm")
+    }
+    sortedUCPc_ = sorted;
   }
 
   /// indicate that we wish to use the NML correction for MIIC

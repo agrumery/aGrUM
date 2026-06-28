@@ -272,6 +272,8 @@ namespace gum::learning {
 
     if (indepTestPC_) delete indepTestPC_;
 
+    if (indepTestFCI_) delete indepTestFCI_;
+
     GUM_DESTRUCTOR(IBNLearner)
   }
 
@@ -792,12 +794,104 @@ namespace gum::learning {
     algoPC_.setAlpha(alphaPc_);
     algoPC_.setStable(stablePc_);
     algoPC_.setMaxCondSetSize(maxCondSetSizePc_);
+    algoPC_.setUCPriority(sortedUCPc_ ? gum::learning::PC::UCPriority::Sorted
+                                      : gum::learning::PC::UCPriority::Standard);
+
+    return mgraph;
+  }
+
+  MixedGraph IBNLearner::prepareFCI_() {
+    MixedGraph mgraph;
+    DiGraph    forbiddenGraph;
+    DAG        mandatoryGraph;
+
+    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
+      mgraph.addNodeWithId(i);
+      forbiddenGraph.addNodeWithId(i);
+      mandatoryGraph.addNodeWithId(i);
+    }
+
+    const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
+    if (possible_edges.empty()) {
+      for (const NodeId i: mgraph.nodes()) {
+        for (NodeId j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
+        }
+      }
+    } else {
+      for (const auto& edge: possible_edges) {
+        mgraph.addEdge(edge.first(), edge.second());
+      }
+    }
+
+    for (const auto& arc: constraintMandatoryArcs_.arcs()) {
+      mandatoryGraph.addArc(arc.tail(), arc.head());
+      forbiddenGraph.addArc(arc.head(), arc.tail());
+    }
+    for (const auto& arc: constraintForbiddenArcs_.arcs()) {
+      forbiddenGraph.addArc(arc.tail(), arc.head());
+    }
+
+    const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
+    gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
+    for (const auto& [n1, r1]: sliceOrder) {
+      for (const auto& [n2, r2]: copyOrder) {
+        if (r1 > r2) {
+          forbiddenGraph.addArc(n1, n2);
+        } else if (r2 > r1) {
+          forbiddenGraph.addArc(n2, n1);
+        }
+      }
+      copyOrder.erase(n1);
+    }
+
+    const auto& totalOrder = constraintTotalOrder_.totalOrder();
+    for (auto iter1 = totalOrder.begin(); iter1 != totalOrder.end(); ++iter1) {
+      for (auto iter2 = iter1 + 1; iter2 != totalOrder.end(); ++iter2) {
+        forbiddenGraph.addArc(*iter2, *iter1);
+      }
+    }
+
+    for (const auto node: constraintNoParentNodes_.nodes()) {
+      for (const auto node2: mgraph.nodes()) {
+        if (node != node2) { forbiddenGraph.addArc(node2, node); }
+      }
+    }
+    for (const auto node: constraintNoChildrenNodes_.nodes()) {
+      for (const auto node2: mgraph.nodes()) {
+        if (node != node2) { forbiddenGraph.addArc(node, node2); }
+      }
+    }
+
+    if (indepTestFCI_) {
+      delete indepTestFCI_;
+      indepTestFCI_ = nullptr;
+    }
+    if (indepTestTypeFCI_ == IndepTestType::Chi2) {
+      indepTestFCI_ = new IndepTestChi2(scoreDatabase_.parser(),
+                                        *noPrior_,
+                                        ranges_,
+                                        scoreDatabase_.nodeId2Columns());
+    } else {
+      indepTestFCI_ = new IndepTestG2(scoreDatabase_.parser(),
+                                      *noPrior_,
+                                      ranges_,
+                                      scoreDatabase_.nodeId2Columns());
+    }
+
+    algoFCI_.setMaxIndegree(constraintIndegree_.maxIndegree());
+    algoFCI_.setMandatoryGraph(mandatoryGraph);
+    algoFCI_.setForbiddenGraph(forbiddenGraph);
+    algoFCI_.setIndependenceTest(*indepTestFCI_);
+    algoFCI_.setAlpha(alphaFci_);
+    algoFCI_.setMaxPathLength(maxPathLengthFci_);
 
     return mgraph;
   }
 
   PDAG IBNLearner::learnPDAG() {
-    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::PC) {
+    if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::PC
+        && selectedAlgo_ != AlgoType::FCI) {
       GUM_ERROR(OperationNotAllowed,
                 "Score-based algorithms do not build PDAG. Please use a constraint-based "
                 "algorithm instead")
@@ -815,11 +909,31 @@ namespace gum::learning {
       return algoPC_.learnPDAG(mgraph);
     }
 
+    if (selectedAlgo_ == AlgoType::FCI) {
+      BNLearnerListener listener(this, algoFCI_);
+      MixedGraph mgraph = this->prepareFCI_();
+      return algoFCI_.learnPDAG(mgraph);
+    }
+
     BNLearnerListener listener(this, algoMiic_);
     // create the mixedGraph_constraint_MandatoryArcs.arcs
     MixedGraph mgraph = this->prepareMiic_();
     algoMiic_.setMutualInformation(*mutualInfo_);
     return algoMiic_.learnPDAG(mgraph);
+  }
+
+  PAG IBNLearner::learnPAG() {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed, "learnPAG() is only valid when using the FCI algorithm")
+    }
+    if (scoreDatabase_.databaseTable().hasMissingValues()) {
+      GUM_ERROR(MissingValueInDatabase,
+                "For the moment, the BNLearner is unable to learn "
+                    << "structures with missing values in databases")
+    }
+    BNLearnerListener listener(this, algoFCI_);
+    MixedGraph        mgraph = this->prepareFCI_();
+    return algoFCI_.learnPAG(mgraph);
   }
 
   DAG IBNLearner::learnDAG() {
@@ -881,6 +995,13 @@ namespace gum::learning {
         BNLearnerListener listener(this, algoPC_);
         MixedGraph        mgraph = this->preparePC_();
         return algoPC_.learnDAG(mgraph);
+      }
+
+      // ========================================================================
+      case AlgoType::FCI : {
+        BNLearnerListener listener(this, algoFCI_);
+        MixedGraph        mgraph = this->prepareFCI_();
+        return algoFCI_.learnDAG(mgraph);
       }
 
       // ========================================================================

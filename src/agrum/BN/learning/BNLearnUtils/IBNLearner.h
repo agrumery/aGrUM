@@ -78,6 +78,7 @@
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
+#include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/PC.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
@@ -125,6 +126,7 @@ namespace gum::learning {
       LOCAL_SEARCH_WITH_TABU_LIST,
       MIIC,
       PC,
+      FCI,
       EXTENDED_GREEDY_HILL_CLIMBING,
       GREEDY_THICK_THINNING
     };
@@ -373,6 +375,10 @@ namespace gum::learning {
     /// learn a partial structure from a file (must have read the db before and
     /// must have selected miic)
     PDAG learnPDAG();
+
+    /// learn a PAG — only valid when useFCI() has been called
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    PAG learnPAG();
 
     /// sets an initial DAG structure
     void setInitialDAG(const DAG&);
@@ -810,6 +816,9 @@ namespace gum::learning {
     /// indicate that we wish to use PC (Chi2 test by default)
     void usePC();
 
+    /// indicate that we wish to use FCI (Chi2 test by default)
+    void useFCI();
+
     /// indicate that we wish to use greedy thick-thinning
     void useGreedyThickThinning();
 
@@ -828,7 +837,8 @@ namespace gum::learning {
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
         case AlgoType::GREEDY_THICK_THINNING : return false;
         case AlgoType::MIIC :
-        case AlgoType::PC : return true;
+        case AlgoType::PC :
+        case AlgoType::FCI : return true;
         default : throw OperationNotAllowed("Unknown algorithm");
       }
     }
@@ -918,6 +928,34 @@ namespace gum::learning {
     /// set maximum conditioning set size for PC (default Size(-1) = unlimited)
     /// @throws OperationNotAllowed when PC is not the selected algorithm
     void setPCMaxCondSetSize(Size max_k);
+
+    /// set unshielded-collider ordering for PC: sorted=true uses descending p-value order
+    /// (strongest evidence first); sorted=false uses natural traversal order (default false)
+    /// @throws OperationNotAllowed when PC is not the selected algorithm
+    void setPCUnshieldedColliderSorted(bool sorted);
+
+    /// @}
+
+    // ##########################################################################
+    /// @name FCI parameterization
+    // ##########################################################################
+    /// @{
+
+    /// indicate that we wish to use Chi2 independence test for FCI
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void useFCIChi2Test();
+
+    /// indicate that we wish to use G2 independence test for FCI
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void useFCIG2Test();
+
+    /// set the significance threshold alpha for FCI (default 0.05)
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void setFCIAlpha(double alpha);
+
+    /// set maximum discriminating-path length for FCI R4 (default Size(-1) = unlimited)
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void setFCIMaxPathLength(Size max_len);
 
     /// @}
 
@@ -1179,6 +1217,20 @@ namespace gum::learning {
     double alphaPc_{0.05};
     bool   stablePc_{true};
     Size   maxCondSetSizePc_{Size(-1)};
+    bool   sortedUCPc_{false};
+
+    /// the FCI algorithm
+    gum::learning::FCI algoFCI_;
+
+    /// independence test type for FCI (reuses IndepTestType defined above)
+    IndepTestType indepTestTypeFCI_{IndepTestType::Chi2};
+
+    /// owned independence test object for FCI (rebuilt before each learn call)
+    IndependenceTest* indepTestFCI_{nullptr};
+
+    /// FCI parameters
+    double alphaFci_{0.05};
+    Size   maxPathLengthFci_{Size(-1)};
 
     /// the parametric EM
     DAG2BNLearner dag2BN_;
@@ -1247,6 +1299,9 @@ namespace gum::learning {
 
     /// prepares the initial graph and independence test for PC
     MixedGraph preparePC_();
+
+    /// prepares the initial graph and independence test for FCI
+    MixedGraph prepareFCI_();
 
     /// returns the type (as a string) of a given prior
     PriorType getPriorType_() const;

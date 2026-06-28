@@ -426,6 +426,7 @@ namespace gum {
           break;
         case AlgoType::MIIC : vals.emplace_back(key, "MIIC", ""); break;
         case AlgoType::PC : vals.emplace_back(key, "PC", ""); break;
+        case AlgoType::FCI : vals.emplace_back(key, "FCI", ""); break;
         case AlgoType::GREEDY_THICK_THINNING :
           vals.emplace_back(key, "Greedy Thick Thinning", "");
           break;
@@ -614,6 +615,7 @@ namespace gum {
           break;
         case AlgoType::MIIC : useMIIC(); break;
         case AlgoType::PC : usePC(); break;
+        case AlgoType::FCI : useFCI(); break;
       }
 
       switch (learner.scoreType_) {

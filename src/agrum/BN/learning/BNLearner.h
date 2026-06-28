@@ -544,6 +544,31 @@ namespace gum {
         return *this;
       }
 
+      BNLearner< GUM_SCALAR >& useFCI() {
+        IBNLearner::useFCI();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& useFCIChi2Test() {
+        IBNLearner::useFCIChi2Test();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& useFCIG2Test() {
+        IBNLearner::useFCIG2Test();
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setFCIAlpha(double alpha) {
+        IBNLearner::setFCIAlpha(alpha);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setFCIMaxPathLength(Size max_len) {
+        IBNLearner::setFCIMaxPathLength(max_len);
+        return *this;
+      }
+
       BNLearner< GUM_SCALAR >& useChi2Test() {
         IBNLearner::useChi2Test();
         return *this;
@@ -566,6 +591,11 @@ namespace gum {
 
       BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k) {
         IBNLearner::setPCMaxCondSetSize(max_k);
+        return *this;
+      }
+
+      BNLearner< GUM_SCALAR >& setPCUnshieldedColliderSorted(bool sorted) {
+        IBNLearner::setPCUnshieldedColliderSorted(sorted);
         return *this;
       }
 
