@@ -208,6 +208,8 @@ ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::UndiGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::MixedGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PDAG);
 // automatically done for subclass
+//ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PAG);
+// automatically done for subclass
 //ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
@@ -250,6 +252,8 @@ ADD_DI_METHOD_TO_GRAPHCLASS(gum::PDAG);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
 ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PDAG);
+// automatically done for subclass
+//ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::PAG);
 
 %define ADD_MIXED_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {

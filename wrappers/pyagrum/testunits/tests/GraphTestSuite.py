@@ -359,5 +359,73 @@ class TestGraph(pyAgrumTestCase):
     self.assertNotIn("0 [label=", dot)
 
 
+  def testPAGBasic(self):
+    p = gum.PAG()
+    for i in range(4):
+      p.addNodeWithId(i)
+    self.assertEqual(p.size(), 4)
+    self.assertEqual(p.sizeEdges(), 0)
+
+    p.addEdge(0, 1, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead)
+    p.addEdge(1, 2, gum.EdgeMark_Circle, gum.EdgeMark_Circle)
+    p.addEdge(2, 3, gum.EdgeMark_Arrowhead, gum.EdgeMark_Arrowhead)
+    self.assertEqual(p.sizeEdges(), 3)
+
+    self.assertTrue(p.isDefinitelyDirected(0, 1))
+    self.assertFalse(p.isDefinitelyDirected(1, 0))
+    self.assertTrue(p.isCircle(1, 2))
+    self.assertTrue(p.isCircle(2, 1))
+    self.assertTrue(p.isBidirected(2, 3))
+    self.assertFalse(p.isTail(0, 1))
+    self.assertTrue(p.isTail(1, 0))
+
+  def testPAGMarkAt(self):
+    p = gum.PAG()
+    p.addNodeWithId(0)
+    p.addNodeWithId(1)
+    p.addEdge(0, 1, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead)
+    self.assertEqual(p.markAt(0, 1), gum.EdgeMark_Arrowhead)
+    self.assertEqual(p.markAt(1, 0), gum.EdgeMark_Tail)
+
+    p.setMarkAt(0, 1, gum.EdgeMark_Circle)
+    self.assertEqual(p.markAt(0, 1), gum.EdgeMark_Circle)
+
+  def testPAGReorient(self):
+    p = gum.PAG()
+    p.addNodeWithId(0)
+    p.addNodeWithId(1)
+    p.addNodeWithId(2)
+    p.addEdge(0, 1, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead)
+    p.addEdge(1, 2, gum.EdgeMark_Circle, gum.EdgeMark_Circle)
+    p.reorientAllWith(gum.EdgeMark_Circle)
+    for e in p.edges():
+      self.assertEqual(p.markAt(e[0], e[1]), gum.EdgeMark_Circle)
+      self.assertEqual(p.markAt(e[1], e[0]), gum.EdgeMark_Circle)
+
+  def testPAGToDot(self):
+    p = gum.PAG()
+    p.addNodeWithId(0)
+    p.addNodeWithId(1)
+    p.addEdge(0, 1, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead)
+    dot = p.toDot()
+    self.assertIn("digraph", dot)
+    self.assertIn("0", dot)
+    self.assertIn("1", dot)
+
+  def testPAGIter(self):
+    p = gum.PAG()
+    for i in range(5):
+      p.addNodeWithId(i)
+    self.assertEqual(set(p), {0, 1, 2, 3, 4})
+
+  def testPAGConnectedComponents(self):
+    p = gum.PAG()
+    for i in range(4):
+      p.addNodeWithId(i)
+    p.addEdge(0, 1)
+    p.addEdge(2, 3)
+    self.assertEqual(p.connectedComponentsCount(), 2)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestGraph)

@@ -60,6 +60,7 @@
 /* INCLUDES */
 %{
 #include <agrum/base.h>
+#include <agrum/base/graphs/PAG.h>
 %}
 
 
@@ -190,6 +191,9 @@
 %include <agrum/base/graphs/DAG.h>
 %include <agrum/base/graphs/mixedGraph.h>
 %include <agrum/base/graphs/PDAG.h>
+
+%include <agrum/base/graphs/PAG.h>
+
 %include <agrum/base/graphs/cliqueGraph.h>
 %import <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/base/graphs/algorithms/triangulations/triangulation.h>

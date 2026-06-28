@@ -852,5 +852,54 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(learner.correctedMutualInformation(BRONCHITIS, LUNG, [SMOKING]), -0.00486096, delta=1e-6)
 
 
+  def testFCILearnPAG(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI().setFCIAlpha(0.05)
+    pag = learner.learnPAG()
+
+    self.assertEqual(pag.size(), 8)
+    self.assertGreater(pag.sizeEdges(), 0)
+    for n in pag.nodes():
+      self.assertTrue(pag.existsNode(n))
+    for e in pag.edges():
+      self.assertIn(pag.markAt(e[0], e[1]), (gum.EdgeMark_Circle, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead))
+      self.assertIn(pag.markAt(e[1], e[0]), (gum.EdgeMark_Circle, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead))
+
+  def testFCILearnPAGvsLearnPDAG(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI().setFCIAlpha(0.05)
+    pag = learner.learnPAG()
+    pdag = learner.learnPDAG()
+
+    self.assertEqual(pag.size(), pdag.size())
+
+  def testFCILearnPAGManualPAG(self):
+    p = gum.PAG()
+    for i in range(4):
+      p.addNodeWithId(i)
+    p.addEdge(0, 1, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead)
+    p.addEdge(1, 2, gum.EdgeMark_Circle, gum.EdgeMark_Circle)
+    p.addEdge(2, 3, gum.EdgeMark_Arrowhead, gum.EdgeMark_Arrowhead)
+
+    self.assertTrue(p.isDefinitelyDirected(0, 1))
+    self.assertTrue(p.isCircle(1, 2))
+    self.assertTrue(p.isCircle(2, 1))
+    self.assertTrue(p.isBidirected(2, 3))
+    self.assertFalse(p.isDefinitelyDirected(1, 2))
+
+    dot = p.toDot()
+    self.assertIn("digraph", dot)
+
+  def testFCIOnlyValidWithFCIAlgo(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.learnPAG()
+
+  def testFCIEdgeMarkConstants(self):
+    self.assertEqual(gum.EdgeMark_Circle, 0)
+    self.assertEqual(gum.EdgeMark_Tail, 1)
+    self.assertEqual(gum.EdgeMark_Arrowhead, 2)
+
+
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

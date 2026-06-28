@@ -65,7 +65,8 @@ from .pyagrum import (
   NumericalDiscreteVariable,
 )
 from .pyagrum import Tensor, Instantiation, Tensor
-from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, CliqueGraph
+from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, PAG, CliqueGraph
+from .pyagrum import EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
 from .pyagrum import JunctionTreeGenerator
 from .pyagrum import MeekRules
 from .pyagrum import ApproximationScheme

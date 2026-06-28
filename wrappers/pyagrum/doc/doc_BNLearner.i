@@ -103,6 +103,120 @@ Warnings
 "
 
 
+%feature("docstring") gum::learning::IBNLearner::learnPAG
+"
+Learn a Partial Ancestral Graph (PAG) from the BNLearner's database using FCI.
+
+Returns
+-------
+pyagrum.PAG
+    the learned PAG
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If `useFCI()` has not been called first.
+
+See Also
+--------
+useFCI, setFCIAlpha, setFCIMaxPathLength
+"
+
+
+%feature("docstring") gum::learning::BNLearner::useFCI
+"
+Indicate that we wish to use the FCI (Fast Causal Inference) algorithm.
+
+FCI is a constraint-based structure learning algorithm that, unlike PC, handles
+latent confounders and selection bias. It learns a PAG (Partial Ancestral Graph)
+from data via conditional independence tests. Use `learnPAG()` to retrieve the result.
+
+After calling `useFCI()`, configure the independence test with `useFCIChi2Test()`
+(default) or `useFCIG2Test()`, and tune the significance threshold with `setFCIAlpha()`.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+"
+
+
+%feature("docstring") gum::learning::BNLearner::useFCIChi2Test
+"
+Select the chi-squared (χ²) independence test for the FCI algorithm.
+
+This is the default test when `useFCI()` is called.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
+%feature("docstring") gum::learning::BNLearner::useFCIG2Test
+"
+Select the G² (log-likelihood ratio) independence test for the FCI algorithm.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
+%feature("docstring") gum::learning::BNLearner::setFCIAlpha
+"
+Set the significance threshold (alpha) for independence tests used by FCI.
+
+Parameters
+----------
+alpha : float
+    significance level in (0, 1). Lower values produce sparser graphs.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
+%feature("docstring") gum::learning::BNLearner::setFCIMaxPathLength
+"
+Set the maximum conditioning set size for independence tests used by FCI.
+
+Parameters
+----------
+max_len : int
+    maximum path length (conditioning set size). Use -1 for unlimited.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
 %feature("docstring") gum::learning::BNLearner::learnParameters
 "
 Creates a Bayes net whose structure corresponds to that passed in argument or to

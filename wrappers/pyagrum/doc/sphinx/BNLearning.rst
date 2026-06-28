@@ -31,6 +31,9 @@ Class BNLearner
     * - `learnDAG <#pyagrum.BNLearner.learnDAG>`_
       - `learnParameters <#pyagrum.BNLearner.learnParameters>`_
       - `learnPDAG <#pyagrum.BNLearner.learnPDAG>`_
+    * - `learnPAG <#pyagrum.BNLearner.learnPAG>`_
+      -
+      -
 
 
 .. list-table:: Structure learning algorithms:
@@ -48,6 +51,12 @@ Class BNLearner
     * - `useLocalSearchWithTabuList <#pyagrum.BNLearner.useLocalSearchWithTabuList>`_
       - `useMIIC <#pyagrum.BNLearner.useMIIC>`_
       - `usePC <#pyagrum.BNLearner.usePC>`_
+    * - `useFCI <#pyagrum.BNLearner.useFCI>`_
+      - `useFCIChi2Test <#pyagrum.BNLearner.useFCIChi2Test>`_
+      - `useFCIG2Test <#pyagrum.BNLearner.useFCIG2Test>`_
+    * - `setFCIAlpha <#pyagrum.BNLearner.setFCIAlpha>`_
+      - `setFCIMaxPathLength <#pyagrum.BNLearner.setFCIMaxPathLength>`_
+      -
 
 
 .. list-table:: Managing structure learning constraints:

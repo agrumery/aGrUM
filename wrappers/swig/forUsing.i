@@ -98,6 +98,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
 
   using gum::learning::IBNLearner::learnDAG;
   using gum::learning::IBNLearner::learnPDAG;
+  using gum::learning::IBNLearner::learnPAG;
   using gum::learning::IBNLearner::names;
   using gum::learning::IBNLearner::idFromName;
   using gum::learning::IBNLearner::nameFromId;
@@ -173,6 +174,7 @@ ADD_ARCGRAPHPART_API(gum::DAG);
 ADD_NODEGRAPHPART_API(gum::UndiGraph)
 ADD_NODEGRAPHPART_API(gum::MixedGraph)
 ADD_NODEGRAPHPART_API(gum::PDAG)
+ADD_NODEGRAPHPART_API(gum::PAG)
 
 %define ADD_EDGEGRAPHPART_API(classname)
 %extend classname {
@@ -199,6 +201,22 @@ ADD_NODEGRAPHPART_API(gum::PDAG)
 ADD_EDGEGRAPHPART_API(gum::UndiGraph)
 ADD_EDGEGRAPHPART_API(gum::MixedGraph)
 ADD_EDGEGRAPHPART_API(gum::PDAG)
+ADD_EDGEGRAPHPART_API(gum::PAG)
+
+%extend gum::PAG {
+  void addEdge(gum::NodeId x, gum::NodeId y, int markAtX, int markAtY) {
+    self->addEdge(x, y, (gum::EdgeMark)markAtX, (gum::EdgeMark)markAtY);
+  }
+  int markAt(gum::NodeId src, gum::NodeId dst) const {
+    return (int)self->markAt(src, dst);
+  }
+  void setMarkAt(gum::NodeId src, gum::NodeId dst, int m) {
+    self->setMarkAt(src, dst, (gum::EdgeMark)m);
+  }
+  void reorientAllWith(int m) {
+    self->reorientAllWith((gum::EdgeMark)m);
+  }
+}
 
 %define ADD_ARCGRAPHPART_API(classname)
 %extend classname {

@@ -88,6 +88,11 @@
 
 SETPROP_THEN_RETURN_SELF(setNumberOfThreads);
 SETPROP_THEN_RETURN_SELF(copyState);
+SETPROP_THEN_RETURN_SELF(useFCI);
+SETPROP_THEN_RETURN_SELF(useFCIChi2Test);
+SETPROP_THEN_RETURN_SELF(useFCIG2Test);
+SETPROP_THEN_RETURN_SELF(setFCIAlpha);
+SETPROP_THEN_RETURN_SELF(setFCIMaxPathLength);
 
 %extend gum::learning::BNLearner< double > {
   PyAgrumTupleFF *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {

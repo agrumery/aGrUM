@@ -5930,6 +5930,332 @@ class PDAG(MixedGraph):
 
 # Register PDAG in _pyagrum:
 _pyagrum.PDAG_swigregister(PDAG)
+EdgeMark_Circle = _pyagrum.EdgeMark_Circle
+EdgeMark_Tail = _pyagrum.EdgeMark_Tail
+EdgeMark_Arrowhead = _pyagrum.EdgeMark_Arrowhead
+class PAG(UndiGraph):
+    r"""
+
+    PAG represents a Partial Ancestral Graph, the output of the FCI algorithm.
+
+    A PAG is an undirected graph whose edges carry endpoint marks. Each edge
+    between nodes x and y has two marks, one at each endpoint:
+
+    - ``EdgeMark_Circle`` (o): uncertain endpoint
+    - ``EdgeMark_Tail`` (-): definite non-ancestor (tail)
+    - ``EdgeMark_Arrowhead`` (>): definite ancestor (arrowhead)
+
+    PAG() -> PAG
+        default constructor
+
+    PAG(src) -> PAG
+        Parameters:
+            - **src** (*pyagrum.PAG*) -- the PAG to copy
+
+    Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyagrum.PAG_swiginit(self, _pyagrum.new_PAG(*args))
+    __swig_destroy__ = _pyagrum.delete_PAG
+
+    def clearEdges(self) -> None:
+        return _pyagrum.PAG_clearEdges(self)
+
+    def eraseNode(self, id: int) -> None:
+        r"""
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
+        return _pyagrum.PAG_eraseNode(self, id)
+
+    def clear(self) -> None:
+        r"""
+
+        Remove all the nodes and edges from the graph.
+
+        """
+        return _pyagrum.PAG_clear(self)
+
+    def isArrowhead(self, src: int, dst: int) -> bool:
+        r"""
+
+        Return True if the mark at dst (seen from src) is an arrowhead.
+
+        Parameters
+        ----------
+        src : int
+        dst : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isArrowhead(self, src, dst)
+
+    def isTail(self, src: int, dst: int) -> bool:
+        r"""
+
+        Return True if the mark at dst (seen from src) is a tail.
+
+        Parameters
+        ----------
+        src : int
+        dst : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isTail(self, src, dst)
+
+    def isCircle(self, src: int, dst: int) -> bool:
+        r"""
+
+        Return True if the mark at dst (seen from src) is a circle.
+
+        Parameters
+        ----------
+        src : int
+        dst : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isCircle(self, src, dst)
+
+    def isDefinitelyDirected(self, x: int, y: int) -> bool:
+        r"""
+
+        Return True if the edge x-y is definitely directed from x to y.
+
+        An edge is definitely directed from x to y when x has a tail and y has an arrowhead.
+
+        Parameters
+        ----------
+        x : int
+        y : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isDefinitelyDirected(self, x, y)
+
+    def isBidirected(self, x: int, y: int) -> bool:
+        r"""
+
+        Return True if both endpoints of edge (x, y) are arrowheads (bidirected edge).
+
+        Parameters
+        ----------
+        x : int
+        y : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isBidirected(self, x, y)
+
+    def isDefCollider(self, x: int, z: int, y: int) -> bool:
+        r"""
+
+        Return True if z is a definite collider on the path x-z-y.
+
+        z is a definite collider when both marks at z (from x and from y) are arrowheads.
+
+        Parameters
+        ----------
+        x : int
+        z : int
+        y : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrum.PAG_isDefCollider(self, x, z, y)
+
+    def toMixedGraph(self) -> "pyagrum.MixedGraph":
+        r"""
+
+        Convert the PAG to a MixedGraph by interpreting definite edge orientations.
+
+        - Definitely directed edges become arcs.
+        - Bidirected edges become two arcs (one in each direction).
+        - Undirected or circle edges become undirected edges.
+
+        Returns
+        -------
+        pyagrum.MixedGraph
+
+        """
+        return _pyagrum.PAG_toMixedGraph(self)
+
+    def toDot(self) -> str:
+        r"""
+
+        Return a Graphviz dot representation of the PAG.
+
+        Endpoint marks are rendered as:
+        - Circle: ``odot``
+        - Tail: ``none``
+        - Arrowhead: ``normal``
+
+        Returns
+        -------
+        str
+            dot-format string
+
+        """
+        return _pyagrum.PAG_toDot(self)
+
+    def addNode(self) -> int:
+        return _pyagrum.PAG_addNode(self)
+
+    def addNodes(self, n: int) -> list[int]:
+        return _pyagrum.PAG_addNodes(self, n)
+
+    def addNodeWithId(self, id: int) -> None:
+        return _pyagrum.PAG_addNodeWithId(self, id)
+
+    def existsNode(self, id: int) -> bool:
+        return _pyagrum.PAG_existsNode(self, id)
+
+    def size(self) -> int:
+        return _pyagrum.PAG_size(self)
+
+    def empty(self) -> bool:
+        return _pyagrum.PAG_empty(self)
+
+    def eraseEdge(self, *args) -> None:
+        r"""
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
+        return _pyagrum.PAG_eraseEdge(self, *args)
+
+    def existsEdge(self, n1: int, n2: int) -> bool:
+        return _pyagrum.PAG_existsEdge(self, n1, n2)
+
+    def sizeEdges(self) -> int:
+        return _pyagrum.PAG_sizeEdges(self)
+
+    def emptyEdges(self) -> bool:
+        return _pyagrum.PAG_emptyEdges(self)
+
+    def eraseNeighbours(self, n: int) -> None:
+        return _pyagrum.PAG_eraseNeighbours(self, n)
+
+    def addEdge(self, *args) -> None:
+        r"""
+
+        Add an edge between two nodes with specified endpoint marks.
+
+        Signatures:
+
+          ``addEdge(x, y)``
+              Adds a Circle-Circle edge (both endpoints uncertain).
+
+          ``addEdge(x, y, markAtX, markAtY)``
+              Adds an edge with explicit marks. ``markAtX`` is the mark on x's side
+              (visible from y), ``markAtY`` is the mark on y's side (visible from x).
+
+        Parameters
+        ----------
+        x : int
+            id of the first node
+        y : int
+            id of the second node
+        markAtX : int, optional
+            mark at the x endpoint (``EdgeMark_Circle``, ``EdgeMark_Tail``, or ``EdgeMark_Arrowhead``)
+        markAtY : int, optional
+            mark at the y endpoint (``EdgeMark_Circle``, ``EdgeMark_Tail``, or ``EdgeMark_Arrowhead``)
+
+        """
+        return _pyagrum.PAG_addEdge(self, *args)
+
+    def markAt(self, *args) -> int:
+        r"""
+
+        Return the endpoint mark on the dst side of edge (src, dst).
+
+        The mark at dst indicates what the edge says about dst from src's perspective:
+        ``marks_[Arc(src,dst)]`` = mark at the dst endpoint.
+
+        Parameters
+        ----------
+        src : int
+            id of the source node
+        dst : int
+            id of the destination node
+
+        Returns
+        -------
+        int
+            ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+
+        """
+        return _pyagrum.PAG_markAt(self, *args)
+
+    def setMarkAt(self, *args) -> None:
+        r"""
+
+        Set the endpoint mark on the dst side of edge (src, dst).
+
+        Parameters
+        ----------
+        src : int
+            id of the source node
+        dst : int
+            id of the destination node
+        m : int
+            new mark: ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+
+        """
+        return _pyagrum.PAG_setMarkAt(self, *args)
+
+    def reorientAllWith(self, *args) -> None:
+        r"""
+
+        Set all endpoint marks in the PAG to the given mark.
+
+        Parameters
+        ----------
+        m : int
+            mark to set everywhere: ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+
+        """
+        return _pyagrum.PAG_reorientAllWith(self, *args)
+
+# Register PAG in _pyagrum:
+_pyagrum.PAG_swigregister(PAG)
 class CliqueGraph(UndiGraph):
     r"""
 
@@ -27258,6 +27584,46 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_useExtendedGreedyHillClimbing(self)
 
+    def useGreedyThickThinning(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the greedy thick-thinning algorithm.
+
+        This two-phase algorithm first greedily adds arcs (thick phase) until no
+        addition improves the score, then greedily removes arcs (thin phase) until no
+        deletion improves the score. By default the thin phase uses only arc deletions;
+        arc reversals can optionally be allowed via setGreedyThickThinningReversals.
+
+        """
+        return _pyagrum.BNLearner_useGreedyThickThinning(self)
+
+    def setGreedyThickThinningReversals(self, allow: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Enable or disable arc reversals during the thin phase of greedy thick-thinning.
+
+        Parameters
+        ----------
+        allow : bool
+            If True, arc reversals are considered in addition to arc deletions during
+            the thin phase (default: False).
+
+        """
+        return _pyagrum.BNLearner_setGreedyThickThinningReversals(self, allow)
+
+    def greedyThickThinningReversals(self) -> bool:
+        r"""
+
+        Returns whether arc reversals are allowed in the thin phase of greedy thick-thinning.
+
+        Returns
+        -------
+        bool
+            True if arc reversals are enabled in the thin phase, False otherwise.
+
+        """
+        return _pyagrum.BNLearner_greedyThickThinningReversals(self)
+
     def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.BNLearner":
         r"""
 
@@ -27303,6 +27669,140 @@ class BNLearner(object):
 
         """
         return _pyagrum.BNLearner_usePC(self)
+
+    def useFCI(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use the FCI (Fast Causal Inference) algorithm.
+
+        FCI is a constraint-based structure learning algorithm that, unlike PC, handles
+        latent confounders and selection bias. It learns a PAG (Partial Ancestral Graph)
+        from data via conditional independence tests. Use `learnPAG()` to retrieve the result.
+
+        After calling `useFCI()`, configure the independence test with `useFCIChi2Test()`
+        (default) or `useFCIG2Test()`, and tune the significance threshold with `setFCIAlpha()`.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        """
+        val = _pyagrum.BNLearner_useFCI(self)
+
+        return self
+
+
+        return val
+
+
+    def useFCIChi2Test(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Select the chi-squared (χ²) independence test for the FCI algorithm.
+
+        This is the default test when `useFCI()` is called.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrum.BNLearner_useFCIChi2Test(self)
+
+        return self
+
+
+        return val
+
+
+    def useFCIG2Test(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Select the G² (log-likelihood ratio) independence test for the FCI algorithm.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrum.BNLearner_useFCIG2Test(self)
+
+        return self
+
+
+        return val
+
+
+    def setFCIAlpha(self, alpha: float) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the significance threshold (alpha) for independence tests used by FCI.
+
+        Parameters
+        ----------
+        alpha : float
+            significance level in (0, 1). Lower values produce sparser graphs.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrum.BNLearner_setFCIAlpha(self, alpha)
+
+        return self
+
+
+        return val
+
+
+    def setFCIMaxPathLength(self, max_len: int) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the maximum conditioning set size for independence tests used by FCI.
+
+        Parameters
+        ----------
+        max_len : int
+            maximum path length (conditioning set size). Use -1 for unlimited.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrum.BNLearner_setFCIMaxPathLength(self, max_len)
+
+        return self
+
+
+        return val
+
 
     def useChi2Test(self) -> "pyagrum.BNLearner":
         r"""
@@ -27416,7 +27916,7 @@ class BNLearner(object):
 
         PC tests conditional independence of X and Y given subsets S of the
         neighbours of X (or Y). By default all subset sizes are considered
-        (unlimited). Setting a limit k restricts tests to |S| ≤ k, which
+        (unlimited). Setting a limit k restricts tests to :math:`|S| \leq k`, which
         reduces runtime at the cost of possibly missing some independencies.
 
         Parameters
@@ -27437,6 +27937,9 @@ class BNLearner(object):
 
         """
         return _pyagrum.BNLearner_setPCMaxCondSetSize(self, max_k)
+
+    def setPCUnshieldedColliderSorted(self, sorted: bool) -> "pyagrum.BNLearner":
+        return _pyagrum.BNLearner_setPCUnshieldedColliderSorted(self, sorted)
 
     def useNMLCorrection(self) -> "pyagrum.BNLearner":
         r"""
@@ -28023,6 +28526,28 @@ class BNLearner(object):
 
         """
         return _pyagrum.BNLearner_learnPDAG(self)
+
+    def learnPAG(self) -> "pyagrum.PAG":
+        r"""
+
+        Learn a Partial Ancestral Graph (PAG) from the BNLearner's database using FCI.
+
+        Returns
+        -------
+        pyagrum.PAG
+            the learned PAG
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If `useFCI()` has not been called first.
+
+        See Also
+        --------
+        useFCI, setFCIAlpha, setFCIMaxPathLength
+
+        """
+        return _pyagrum.BNLearner_learnPAG(self)
 
     def names(self) -> tuple[str, ...]:
         r"""

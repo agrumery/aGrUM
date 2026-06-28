@@ -36,3 +36,8 @@ Partially Directed Graph (DAG)
 ------------------------------
 
 .. autoclass:: pyagrum.PDAG
+
+Partial Ancestral Graph (PAG)
+------------------------------
+
+.. autoclass:: pyagrum.PAG
