@@ -51,10 +51,7 @@
 #ifndef GUM_LEARNING_PC_H
 #define GUM_LEARNING_PC_H
 
-#include <vector>
-
-#include <agrum/base/stattests/independenceTest.h>
-#include <agrum/BN/learning/ConstraintBasedLearning.h>
+#include <agrum/BN/learning/CIBasedLearning.h>
 
 namespace gum {
 
@@ -64,16 +61,17 @@ namespace gum {
      * @class PC
      * @brief PC (Peter-Clark) constraint-based structure learning algorithm.
      *
-     * Inherits constraint management and template-method orchestration from
-     * ConstraintBasedLearning. Implements learnSkeleton() via conditional
-     * independence tests and learnMixedStructure() via v-structure orientation.
+     * Inherits skeleton discovery, v-structure orientation, and all CI-test
+     * state from CIBasedLearning.  PC only adds learnMixedStructure(), which
+     * calls orientUnshieldedColliders_() then applies Meek rules.
      *
-     * The independence test is injected via setIndependenceTest() and is
-     * non-owning: the caller is responsible for the test object's lifetime.
+     * The independence test is injected via setIndependenceTest() (inherited)
+     * and is non-owning: the caller is responsible for the test object's
+     * lifetime.
      *
      * @ingroup learning_group
      */
-    class PC: public ConstraintBasedLearning {
+    class PC: public CIBasedLearning {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -91,50 +89,17 @@ namespace gum {
       /// @}
 
       // ##########################################################################
-      /// @name Scorer injection
+      /// @name Learning
       // ##########################################################################
       /// @{
 
-      /// injects the independence test (non-owning: caller manages lifetime)
-      void setIndependenceTest(IndependenceTest& test);
-
-      /// @}
-
-      // ##########################################################################
-      /// @name PC parameterization
-      // ##########################################################################
-      /// @{
-
-      void   setAlpha(double alpha);
-      double alpha() const;
-
-      /// maximum size of conditioning sets; Size(-1) = unlimited (default)
-      void setMaxCondSetSize(Size max_k);
-
-      /// stable mode: defer edge removals until end of each depth level (default: true)
-      void setStable(bool stable);
-
-      /// @}
-
-      // ##########################################################################
-      /// @name Learning — override pure virtual interface
-      // ##########################################################################
-      /// @{
-
-      MixedGraph learnSkeleton(MixedGraph graph) override;
+      /// learnSkeleton()  — inherited from CIBasedLearning
+      /// setIndependenceTest(), setAlpha(), setStable(), setMaxCondSetSize(),
+      /// setUCPriority(), alpha(), ucPriority() — all inherited from CIBasedLearning
 
       MixedGraph learnMixedStructure(MixedGraph graph) override;
 
       /// @}
-
-      private:
-      MixedGraph orientVStructures_(MixedGraph graph);
-
-      IndependenceTest*                                               test_{nullptr};
-      double                                                          alpha_          = 0.05;
-      Size                                                            maxCondSetSize_ = Size(-1);
-      bool                                                            stable_         = true;
-      HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > > sepSet_;
     };
 
   } /* namespace learning */

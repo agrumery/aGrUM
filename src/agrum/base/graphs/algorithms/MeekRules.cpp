@@ -336,13 +336,16 @@ namespace gum {
           if (_applyMeekRules_(essentialGraph, next)) {
             continue;
           } else {
-            if (!essentialGraph.existsArc(next,
-                                          n)) {   // Checking that we're not creating a
-                                                  // doubly-oriented arc by adding a "random" arc.
+            if (!essentialGraph.existsArc(next, n)) {
               essentialGraph.eraseEdge(Edge(n, next));
-              essentialGraph.addArc(n, next);
-              _choices_.emplace_back(n, next);
-              // GUM_TRACE(" + add arc (" << n << "->" << next << ")")
+              if (!_existsDirectedPath_(essentialGraph, next, n)) {
+                essentialGraph.addArc(n, next);
+                _choices_.emplace_back(n, next);
+              } else {
+                // n→next would create a cycle; reverse is safe
+                essentialGraph.addArc(next, n);
+                _choices_.emplace_back(next, n);
+              }
             }
           }
         }

@@ -117,10 +117,10 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      void setForbiddenGraph(const gum::DiGraph forbidGraph);
-      void setMandatoryGraph(const gum::DAG mandaGraph);
+      void setForbiddenGraph(const gum::DiGraph& forbidGraph);
+      void setMandatoryGraph(const gum::DAG& mandaGraph);
       void setMaxIndegree(gum::Size n);
-      void addConstraints(HashTable< std::pair< NodeId, NodeId >, char > constraints);
+      void addConstraints(const HashTable< std::pair< NodeId, NodeId >, char >& constraints);
       const std::vector< Arc > latentVariables() const;
 
       /// @}
@@ -164,9 +164,7 @@ namespace gum {
       static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       static bool _existsNonTrivialDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       void        orientDoubleHeadedArcs_(MixedGraph& mg);
-      std::vector< ThreePoints > unshieldedTriples_(
-          const MixedGraph&                                                      graph,
-          const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet);
+      std::vector< ThreePoints > unshieldedTriples_(const MixedGraph& graph);
 
       void applyStructuralConstraints_(MixedGraph& graph);
 

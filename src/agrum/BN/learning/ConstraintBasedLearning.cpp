@@ -111,18 +111,18 @@ namespace gum {
     // Constraint setters
     // ##########################################################################
 
-    void ConstraintBasedLearning::setMandatoryGraph(const gum::DAG mandaGraph) {
+    void ConstraintBasedLearning::setMandatoryGraph(const gum::DAG& mandaGraph) {
       _mandatoryGraph_ = mandaGraph;
     }
 
-    void ConstraintBasedLearning::setForbiddenGraph(const gum::DiGraph forbidGraph) {
+    void ConstraintBasedLearning::setForbiddenGraph(const gum::DiGraph& forbidGraph) {
       _forbiddenGraph_ = forbidGraph;
     }
 
     void ConstraintBasedLearning::setMaxIndegree(gum::Size n) { _maxIndegree_ = n; }
 
     void ConstraintBasedLearning::addConstraints(
-        HashTable< std::pair< NodeId, NodeId >, char > constraints) {
+        const HashTable< std::pair< NodeId, NodeId >, char >& constraints) {
       _initialMarks_ = constraints;
     }
 
@@ -297,9 +297,7 @@ namespace gum {
       return graph;
     }
 
-    std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(
-        const MixedGraph&                                                      graph,
-        const HashTable< std::pair< NodeId, NodeId >, std::vector< NodeId > >& sepSet) {
+    std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(const MixedGraph& graph) {
       std::vector< ThreePoints > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {
