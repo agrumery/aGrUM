@@ -49,8 +49,8 @@
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/graphs/DAG.h>
-#include <agrum/base/graphs/PAG.h>
 #include <agrum/base/graphs/mixedGraph.h>
+#include <agrum/base/graphs/PAG.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/PC.h>
@@ -123,9 +123,9 @@ namespace gum_tests {
     }
 
     static void test_copy_constructor_() {
-      FCIAsiaDB                       db;
-      gum::learning::IndepTestChi2    chi2(db.parser, db.prior);
-      gum::learning::FCI              fci;
+      FCIAsiaDB                    db;
+      gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+      gum::learning::FCI           fci;
       fci.setIndependenceTest(chi2);
       fci.setAlpha(0.01);
       fci.setMaxPathLength(3);
@@ -209,8 +209,7 @@ namespace gum_tests {
 
       bool found_arrowhead = false;
       for (const auto& e: pag.edges()) {
-        if (pag.isArrowhead(e.first(), e.second())
-            || pag.isArrowhead(e.second(), e.first())) {
+        if (pag.isArrowhead(e.first(), e.second()) || pag.isArrowhead(e.second(), e.first())) {
           found_arrowhead = true;
           break;
         }
@@ -462,10 +461,12 @@ namespace gum_tests {
       //   X-B: circle at X from B, arrowhead at B from X → addEdge(0,1, Circle, Arrowhead)
       //   B-C: arrowhead at B from C, circle at C from B → addEdge(1,2, Arrowhead, Circle)
       gum::PAG pag;
-      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
-      pag.addEdge(0, 3, gum::EdgeMark::Circle,    gum::EdgeMark::Circle);    // X o-o Y
-      pag.addEdge(0, 1, gum::EdgeMark::Circle,    gum::EdgeMark::Arrowhead); // X *→ B
-      pag.addEdge(1, 2, gum::EdgeMark::Arrowhead, gum::EdgeMark::Circle);    // C *→ B
+      for (gum::NodeId i = 0; i < 4; ++i) {
+        pag.addNodeWithId(i);
+      }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);      // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Circle, gum::EdgeMark::Arrowhead);   // X *→ B
+      pag.addEdge(1, 2, gum::EdgeMark::Arrowhead, gum::EdgeMark::Circle);   // C *→ B
 
       gum::learning::FCI fci;
       const auto         dsep = fci.possibleDSep(pag, 0, 3);
@@ -481,8 +482,10 @@ namespace gum_tests {
     static void test_fci_possibledsep_unreachable_node_excluded_() {
       // PAG: X(0) o-o Y(1),  Z(2) has no edges → unreachable from X via BFS
       gum::PAG pag;
-      for (gum::NodeId i = 0; i < 3; ++i) { pag.addNodeWithId(i); }
-      pag.addEdge(0, 1, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
+      for (gum::NodeId i = 0; i < 3; ++i) {
+        pag.addNodeWithId(i);
+      }
+      pag.addEdge(0, 1, gum::EdgeMark::Circle, gum::EdgeMark::Circle);   // X o-o Y
 
       gum::learning::FCI fci;
       const auto         dsep = fci.possibleDSep(pag, 0, 1);
@@ -505,10 +508,12 @@ namespace gum_tests {
     // → Zhang criterion: do NOT expand → C must NOT be in possibleDSep(X, Y)
     static void test_fci_possibledsep_circle_tail_node_excluded_() {
       gum::PAG pag;
-      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
-      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
-      pag.addEdge(0, 1, gum::EdgeMark::Tail,   gum::EdgeMark::Circle);  // X -o B
-      pag.addEdge(1, 2, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // B -- C
+      for (gum::NodeId i = 0; i < 4; ++i) {
+        pag.addNodeWithId(i);
+      }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);   // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Tail, gum::EdgeMark::Circle);     // X -o B
+      pag.addEdge(1, 2, gum::EdgeMark::Tail, gum::EdgeMark::Tail);       // B -- C
 
       gum::learning::FCI fci;
       const auto         dsep = fci.possibleDSep(pag, 0, 3);
@@ -532,10 +537,12 @@ namespace gum_tests {
       // A definite non-collider on (X,B,C) means: NOT (both arrowheads at B).
       // The strongest form: both marks at B's endpoint are Tail = X--B--C (undirected chain).
       gum::PAG pag;
-      for (gum::NodeId i = 0; i < 4; ++i) { pag.addNodeWithId(i); }
-      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);  // X o-o Y
-      pag.addEdge(0, 1, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // X -- B (Tail-Tail)
-      pag.addEdge(1, 2, gum::EdgeMark::Tail,   gum::EdgeMark::Tail);    // B -- C (Tail-Tail)
+      for (gum::NodeId i = 0; i < 4; ++i) {
+        pag.addNodeWithId(i);
+      }
+      pag.addEdge(0, 3, gum::EdgeMark::Circle, gum::EdgeMark::Circle);   // X o-o Y
+      pag.addEdge(0, 1, gum::EdgeMark::Tail, gum::EdgeMark::Tail);       // X -- B (Tail-Tail)
+      pag.addEdge(1, 2, gum::EdgeMark::Tail, gum::EdgeMark::Tail);       // B -- C (Tail-Tail)
 
       gum::learning::FCI fci;
       const auto         dsep = fci.possibleDSep(pag, 0, 3);
@@ -543,9 +550,9 @@ namespace gum_tests {
       // B(1): direct neighbor of X → in possibleDSep
       CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(1)) != dsep.end());
       // B has Tail-Tail at B: definite non-collider on (X,B,C)
-      // old criterion: !isTail(X,B) || !isTail(C,B) = !Tail || !Tail = false → does NOT expand → C excluded
-      // new criterion: isDefCollider(X,B,C) || adj(X,C) = false || false = false → does NOT expand → C excluded
-      // BOTH criteria agree: C not in possibleDSep
+      // old criterion: !isTail(X,B) || !isTail(C,B) = !Tail || !Tail = false → does NOT expand → C
+      // excluded new criterion: isDefCollider(X,B,C) || adj(X,C) = false || false = false → does
+      // NOT expand → C excluded BOTH criteria agree: C not in possibleDSep
       CHECK(std::find(dsep.begin(), dsep.end(), gum::NodeId(2)) == dsep.end());
     }
 
@@ -561,7 +568,9 @@ namespace gum_tests {
       fci.setIndependenceTest(chi2);
 
       gum::DiGraph forbid;
-      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
+      for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
+        forbid.addNodeWithId(i);
+      }
       forbid.addArc(0, 1);   // forbid arc 0→1 (one direction only)
       fci.setForbiddenGraph(forbid);
 
@@ -579,9 +588,13 @@ namespace gum_tests {
       // forbid ALL arcs in direction i→j for i < j
       // this prevents any arrowhead at j from i via R0/R1/R2/R4
       gum::DiGraph forbid;
-      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
-      for (int i = 0; i < db.nb_vars; ++i) {
-        for (int j = i + 1; j < db.nb_vars; ++j) { forbid.addArc(i, j); }
+      for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
+        forbid.addNodeWithId(i);
+      }
+      for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
+        for (gum::NodeId j = i + 1; j < static_cast< gum::NodeId >(db.nb_vars); ++j) {
+          forbid.addArc(i, j);
+        }
       }
       fci.setForbiddenGraph(forbid);
 
@@ -608,7 +621,9 @@ namespace gum_tests {
 
       // find a pair not adjacent in ref_pag; add forbidden arc for it
       gum::DiGraph forbid;
-      for (int i = 0; i < db.nb_vars; ++i) { forbid.addNodeWithId(i); }
+      for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
+        forbid.addNodeWithId(i);
+      }
       for (gum::NodeId i = 0; i < static_cast< gum::NodeId >(db.nb_vars); ++i) {
         for (gum::NodeId j = i + 1; j < static_cast< gum::NodeId >(db.nb_vars); ++j) {
           if (!ref_pag.existsEdge(i, j)) {
@@ -618,7 +633,7 @@ namespace gum_tests {
         }
         if (forbid.sizeArcs() > 0) { break; }
       }
-      if (forbid.sizeArcs() == 0) { return; }  // no non-adjacent pair found (trivial pass)
+      if (forbid.sizeArcs() == 0) { return; }   // no non-adjacent pair found (trivial pass)
 
       gum::learning::FCI bk_fci;
       bk_fci.setIndependenceTest(chi2b);

@@ -257,3 +257,143 @@ Returns
 str
     dot-format string
 "
+
+
+%feature("docstring") gum::PAG::addNode
+"
+Add a new node to the PAG and return its id.
+
+Returns
+-------
+int
+    the new NodeId
+"
+
+
+%feature("docstring") gum::PAG::addNodeWithId
+"
+Add a node with a chosen id.
+
+Parameters
+----------
+id : int
+    the id of the new node
+
+Raises
+------
+pyagrum.DuplicateElement
+    if the given id is already used
+"
+
+
+%feature("docstring") gum::PAG::addNodes
+"
+Add n new nodes to the PAG.
+
+Parameters
+----------
+n : int
+    number of nodes to add
+
+Returns
+-------
+list of int
+    the new NodeIds
+"
+
+
+%feature("docstring") gum::PAG::clearEdges
+"
+Remove all edges and their endpoint marks from the PAG.
+
+Nodes are preserved; only edges and their associated marks are removed.
+"
+
+
+%feature("docstring") gum::PAG::empty
+"
+Check whether the PAG has no nodes.
+
+Returns
+-------
+bool
+    True if the PAG contains no nodes
+"
+
+
+%feature("docstring") gum::PAG::emptyEdges
+"
+Check whether the PAG has no edges.
+
+Returns
+-------
+bool
+    True if the PAG contains no edges
+"
+
+
+%feature("docstring") gum::PAG::eraseNeighbours
+"
+Remove all edges adjacent to a given node (and their marks).
+
+Parameters
+----------
+n : int
+    id of the node
+"
+
+
+%feature("docstring") gum::PAG::existsEdge
+"
+Check whether an edge exists between two nodes.
+
+Parameters
+----------
+n1 : int
+    id of one endpoint
+n2 : int
+    id of the other endpoint
+
+Returns
+-------
+bool
+    True if the edge exists
+"
+
+
+%feature("docstring") gum::PAG::existsNode
+"
+Check whether a node with the given id exists in the PAG.
+
+Parameters
+----------
+id : int
+    the id to check
+
+Returns
+-------
+bool
+    True if the node exists
+"
+
+
+%feature("docstring") gum::PAG::size
+"
+Return the number of nodes in the PAG.
+
+Returns
+-------
+int
+    number of nodes
+"
+
+
+%feature("docstring") gum::PAG::sizeEdges
+"
+Return the number of edges in the PAG.
+
+Returns
+-------
+int
+    number of edges
+"

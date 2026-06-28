@@ -297,7 +297,8 @@ namespace gum {
       return graph;
     }
 
-    std::vector< ThreePoints > ConstraintBasedLearning::unshieldedTriples_(const MixedGraph& graph) {
+    std::vector< ThreePoints >
+        ConstraintBasedLearning::unshieldedTriples_(const MixedGraph& graph) {
       std::vector< ThreePoints > triples;
       for (NodeId z: graph) {
         for (NodeId x: graph.neighbours(z)) {

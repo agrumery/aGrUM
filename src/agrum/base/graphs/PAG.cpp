@@ -145,9 +145,7 @@ namespace gum {
 
   bool PAG::isTail(NodeId src, NodeId dst) const { return markAt(src, dst) == EdgeMark::Tail; }
 
-  bool PAG::isCircle(NodeId src, NodeId dst) const {
-    return markAt(src, dst) == EdgeMark::Circle;
-  }
+  bool PAG::isCircle(NodeId src, NodeId dst) const { return markAt(src, dst) == EdgeMark::Circle; }
 
   bool PAG::isDefinitelyDirected(NodeId x, NodeId y) const {
     // Tail at x (from y's perspective) and Arrowhead at y (from x's perspective)
@@ -206,9 +204,9 @@ namespace gum {
   namespace {
     char markChar(EdgeMark m) {
       switch (m) {
-        case EdgeMark::Circle:    return 'o';
-        case EdgeMark::Tail:      return '-';
-        case EdgeMark::Arrowhead: return '>';
+        case EdgeMark::Circle : return 'o';
+        case EdgeMark::Tail : return '-';
+        case EdgeMark::Arrowhead : return '>';
       }
       return '?';
     }
@@ -220,7 +218,7 @@ namespace gum {
     bool first = true;
     for (const Edge& e: edges()) {
       if (!first) { s << ", "; }
-      first         = false;
+      first          = false;
       const NodeId x = e.first();
       const NodeId y = e.second();
       s << x << " " << markChar(markAt(y, x)) << "--" << markChar(markAt(x, y)) << " " << y;
@@ -239,21 +237,18 @@ namespace gum {
     }
 
     for (const Edge& e: edges()) {
-      const NodeId x      = e.first();
-      const NodeId y      = e.second();
-      const bool   xArrow = isArrowhead(y, x);
-      const bool   yArrow = isArrowhead(x, y);
+      const NodeId x       = e.first();
+      const NodeId y       = e.second();
+      const bool   xArrow  = isArrowhead(y, x);
+      const bool   yArrow  = isArrowhead(x, y);
       const bool   xCircle = isCircle(y, x);
       const bool   yCircle = isCircle(x, y);
 
       const std::string arrowhead = yArrow ? "normal" : (yCircle ? "odot" : "none");
       const std::string arrowtail = xArrow ? "normal" : (xCircle ? "odot" : "none");
 
-      out << "  " << x << " -> " << y
-          << " [dir=both"
-          << ", arrowhead=" << arrowhead
-          << ", arrowtail=" << arrowtail
-          << "];\n";
+      out << "  " << x << " -> " << y << " [dir=both"
+          << ", arrowhead=" << arrowhead << ", arrowtail=" << arrowtail << "];\n";
     }
     out << "}\n";
     return out.str();

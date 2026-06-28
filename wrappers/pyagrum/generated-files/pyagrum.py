@@ -5964,6 +5964,13 @@ class PAG(UndiGraph):
     __swig_destroy__ = _pyagrum.delete_PAG
 
     def clearEdges(self) -> None:
+        r"""
+
+        Remove all edges and their endpoint marks from the PAG.
+
+        Nodes are preserved; only edges and their associated marks are removed.
+
+        """
         return _pyagrum.PAG_clearEdges(self)
 
     def eraseNode(self, id: int) -> None:
@@ -6129,21 +6136,96 @@ class PAG(UndiGraph):
         return _pyagrum.PAG_toDot(self)
 
     def addNode(self) -> int:
+        r"""
+
+        Add a new node to the PAG and return its id.
+
+        Returns
+        -------
+        int
+            the new NodeId
+
+        """
         return _pyagrum.PAG_addNode(self)
 
     def addNodes(self, n: int) -> list[int]:
+        r"""
+
+        Add n new nodes to the PAG.
+
+        Parameters
+        ----------
+        n : int
+            number of nodes to add
+
+        Returns
+        -------
+        list of int
+            the new NodeIds
+
+        """
         return _pyagrum.PAG_addNodes(self, n)
 
     def addNodeWithId(self, id: int) -> None:
+        r"""
+
+        Add a node with a chosen id.
+
+        Parameters
+        ----------
+        id : int
+            the id of the new node
+
+        Raises
+        ------
+        pyagrum.DuplicateElement
+            if the given id is already used
+
+        """
         return _pyagrum.PAG_addNodeWithId(self, id)
 
     def existsNode(self, id: int) -> bool:
+        r"""
+
+        Check whether a node with the given id exists in the PAG.
+
+        Parameters
+        ----------
+        id : int
+            the id to check
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
         return _pyagrum.PAG_existsNode(self, id)
 
     def size(self) -> int:
+        r"""
+
+        Return the number of nodes in the PAG.
+
+        Returns
+        -------
+        int
+            number of nodes
+
+        """
         return _pyagrum.PAG_size(self)
 
     def empty(self) -> bool:
+        r"""
+
+        Check whether the PAG has no nodes.
+
+        Returns
+        -------
+        bool
+            True if the PAG contains no nodes
+
+        """
         return _pyagrum.PAG_empty(self)
 
     def eraseEdge(self, *args) -> None:
@@ -6162,15 +6244,62 @@ class PAG(UndiGraph):
         return _pyagrum.PAG_eraseEdge(self, *args)
 
     def existsEdge(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check whether an edge exists between two nodes.
+
+        Parameters
+        ----------
+        n1 : int
+            id of one endpoint
+        n2 : int
+            id of the other endpoint
+
+        Returns
+        -------
+        bool
+            True if the edge exists
+
+        """
         return _pyagrum.PAG_existsEdge(self, n1, n2)
 
     def sizeEdges(self) -> int:
+        r"""
+
+        Return the number of edges in the PAG.
+
+        Returns
+        -------
+        int
+            number of edges
+
+        """
         return _pyagrum.PAG_sizeEdges(self)
 
     def emptyEdges(self) -> bool:
+        r"""
+
+        Check whether the PAG has no edges.
+
+        Returns
+        -------
+        bool
+            True if the PAG contains no edges
+
+        """
         return _pyagrum.PAG_emptyEdges(self)
 
     def eraseNeighbours(self, n: int) -> None:
+        r"""
+
+        Remove all edges adjacent to a given node (and their marks).
+
+        Parameters
+        ----------
+        n : int
+            id of the node
+
+        """
         return _pyagrum.PAG_eraseNeighbours(self, n)
 
     def addEdge(self, *args) -> None:
@@ -27992,6 +28121,32 @@ class BNLearner(object):
         return _pyagrum.BNLearner_setPCMaxCondSetSize(self, max_k)
 
     def setPCUnshieldedColliderSorted(self, sorted: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Set the ordering strategy used when orienting unshielded colliders in the PC algorithm.
+
+        When ``sorted=True``, triples are processed in descending order of the p-value
+        of the separating set test (strongest evidence of collider first). This can
+        reduce orientation conflicts and improve reproducibility.
+
+        When ``sorted=False`` (default), triples are processed in natural traversal order.
+
+        Parameters
+        ----------
+        sorted : bool
+            True to process unshielded colliders by descending p-value; False for natural order.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the PC algorithm has not been selected (call ``usePC()`` first).
+
+        """
         return _pyagrum.BNLearner_setPCUnshieldedColliderSorted(self, sorted)
 
     def useNMLCorrection(self) -> "pyagrum.BNLearner":

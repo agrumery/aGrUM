@@ -626,6 +626,33 @@ pyagrum.OperationNotAllowed
 "
 
 
+%feature("docstring") gum::learning::BNLearner::setPCUnshieldedColliderSorted
+"
+Set the ordering strategy used when orienting unshielded colliders in the PC algorithm.
+
+When ``sorted=True``, triples are processed in descending order of the p-value
+of the separating set test (strongest evidence of collider first). This can
+reduce orientation conflicts and improve reproducibility.
+
+When ``sorted=False`` (default), triples are processed in natural traversal order.
+
+Parameters
+----------
+sorted : bool
+    True to process unshielded colliders by descending p-value; False for natural order.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If the PC algorithm has not been selected (call ``usePC()`` first).
+"
+
+
 %feature("docstring") gum::learning::BNLearner::isScoreBased
 "
 Return wether the current learning method is score-based or not.

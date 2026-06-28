@@ -84,6 +84,7 @@ namespace gum {
     // ##########################################################################
 
     void FCI::setMaxPathLength(Size maxLen) { maxPathLength_ = maxLen; }
+
     Size FCI::maxPathLength() const { return maxPathLength_; }
 
     std::vector< NodeId > FCI::possibleDSep(const PAG& pag, NodeId x, NodeId y) const {
@@ -129,6 +130,7 @@ namespace gum {
           NodeId X, Y, Z;
           double pval;
         };
+
         std::vector< Candidate > candidates;
         candidates.reserve(triples.size());
 
@@ -140,9 +142,9 @@ namespace gum {
           candidates.push_back({X, Y, Z, sepSet_[{X, Y}].pval});
         }
 
-        std::sort(candidates.begin(),
-                  candidates.end(),
-                  [](const Candidate& a, const Candidate& b) { return a.pval > b.pval; });
+        std::sort(candidates.begin(), candidates.end(), [](const Candidate& a, const Candidate& b) {
+          return a.pval > b.pval;
+        });
 
         for (const auto& [X, Y, Z, pval]: candidates) {
           if (pag.existsEdge(X, Z) && !isForbiddenArc_(X, Z)) {
@@ -160,9 +162,9 @@ namespace gum {
     // ##########################################################################
 
     std::vector< NodeId > FCI::computePossibleDSep_(const PAG& pag, NodeId x, NodeId y) const {
-      std::set< NodeId >                              result;
-      std::queue< std::pair< NodeId, NodeId > >       bfsQueue;
-      std::set< std::pair< NodeId, NodeId > >         visited;
+      std::set< NodeId >                        result;
+      std::queue< std::pair< NodeId, NodeId > > bfsQueue;
+      std::set< std::pair< NodeId, NodeId > >   visited;
 
       for (const NodeId b: pag.neighbours(x)) {
         if (b == y) { continue; }
@@ -211,7 +213,9 @@ namespace gum {
 
           for (;;) {
             std::vector< NodeId > cond(k);
-            for (Size i = 0; i < k; ++i) { cond[i] = dsep[idx[i]]; }
+            for (Size i = 0; i < k; ++i) {
+              cond[i] = dsep[idx[i]];
+            }
 
             const double pval = test_->statistics(X, Y, cond).second;
             if (pval > alpha_) {
@@ -225,7 +229,7 @@ namespace gum {
             int i = static_cast< int >(k) - 1;
             while (i >= 0
                    && idx[static_cast< std::size_t >(i)]
-                        == dsep.size() - k + static_cast< std::size_t >(i)) {
+                          == dsep.size() - k + static_cast< std::size_t >(i)) {
               --i;
             }
             if (i < 0) { break; }
@@ -259,7 +263,7 @@ namespace gum {
     namespace {
       // Semi-directed path BFS: traverse edge X→W when no arrowhead at X from W.
       bool existsSemiDirectedPath_(const PAG& pag, NodeId from, NodeId to) {
-        std::set< NodeId > visited{from};
+        std::set< NodeId >   visited{from};
         std::queue< NodeId > q;
         q.push(from);
         while (!q.empty()) {
@@ -291,8 +295,8 @@ namespace gum {
         }
         for (const NodeId w: pag.neighbours(cur)) {
           if (visited.count(w) > 0) { continue; }
-          if (pag.isArrowhead(w, cur)) { continue; }  // endpoint at cur from w is arrowhead
-          if (pag.isTail(cur, w)) { continue; }         // endpoint at w from cur is tail
+          if (pag.isArrowhead(w, cur)) { continue; }   // endpoint at cur from w is arrowhead
+          if (pag.isTail(cur, w)) { continue; }        // endpoint at w from cur is tail
           visited.insert(w);
           path.push_back(w);
           if (uncoveredPdDFS_(pag, to, path, visited)) { return true; }
@@ -312,11 +316,11 @@ namespace gum {
       // DFS collecting all uncovered Circle-Circle paths from path.back() to `to`.
       // excludes: nodes not allowed on path (typically {A, B}).
       // Returns all paths via `result`; each path includes the start node.
-      void findUncoveredCirclePaths_(const PAG&               pag,
-                                     NodeId                    to,
-                                     std::vector< NodeId >&   path,
-                                     std::set< NodeId >&      visited,
-                                     const std::vector< NodeId >& excludes,
+      void findUncoveredCirclePaths_(const PAG&                            pag,
+                                     NodeId                                to,
+                                     std::vector< NodeId >&                path,
+                                     std::set< NodeId >&                   visited,
+                                     const std::vector< NodeId >&          excludes,
                                      std::vector< std::vector< NodeId > >& result) {
         const NodeId cur = path.back();
         if (cur == to) {
@@ -368,9 +372,9 @@ namespace gum {
           for (const NodeId c: pag.neighbours(b)) {
             if (a == c) { continue; }
             if (!pag.existsEdge(a, c)) { continue; }
-            if (!pag.isCircle(a, c)) { continue; }   // circle at c from a
-            if (!pag.isArrowhead(a, b)) { continue; } // a *→ b
-            if (!pag.isArrowhead(b, c)) { continue; } // b *→ c
+            if (!pag.isCircle(a, c)) { continue; }      // circle at c from a
+            if (!pag.isArrowhead(a, b)) { continue; }   // a *→ b
+            if (!pag.isArrowhead(b, c)) { continue; }   // b *→ c
             if (!pag.isTail(b, a) && !pag.isTail(c, b)) { continue; }
             if (isForbiddenArc_(a, c)) { continue; }
             pag.setMarkAt(a, c, EdgeMark::Arrowhead);
@@ -402,12 +406,11 @@ namespace gum {
               if (pag.existsEdge(a, c)) { continue; }   // A, C not adjacent
               if (!pag.existsEdge(a, d)) { continue; }
               if (!pag.existsEdge(c, d)) { continue; }
-              if (!pag.isCircle(a, d)) { continue; }     // circle at d from a
-              if (!pag.isCircle(c, d)) { continue; }     // circle at d from c
+              if (!pag.isCircle(a, d)) { continue; }    // circle at d from a
+              if (!pag.isCircle(c, d)) { continue; }    // circle at d from c
               // D is non-collider on A-D-C: D ∈ sepSet(A,C)
               bool nonCollider = false;
-              for (const auto& key:
-                   {std::make_pair(a, c), std::make_pair(c, a)}) {
+              for (const auto& key: {std::make_pair(a, c), std::make_pair(c, a)}) {
                 if (sepSet_.exists(key)) {
                   const auto& cond = sepSet_[key].cond;
                   if (std::find(cond.begin(), cond.end(), d) != cond.end()) {
@@ -436,16 +439,16 @@ namespace gum {
           if (!pag.isCircle(a, b) || !pag.isCircle(b, a)) { continue; }
           for (const NodeId c: pag.neighbours(a)) {
             if (c == b) { continue; }
-            if (pag.existsEdge(b, c)) { continue; }         // B not adj C
+            if (pag.existsEdge(b, c)) { continue; }   // B not adj C
             if (!pag.isCircle(a, c) || !pag.isCircle(c, a)) { continue; }
             for (const NodeId d: pag.neighbours(b)) {
               if (d == a || d == c) { continue; }
-              if (pag.existsEdge(a, d)) { continue; }        // A not adj D
+              if (pag.existsEdge(a, d)) { continue; }   // A not adj D
               if (!pag.isCircle(b, d) || !pag.isCircle(d, b)) { continue; }
-              const std::vector< NodeId > excludes{a, b};
+              const std::vector< NodeId >          excludes{a, b};
               std::vector< std::vector< NodeId > > paths;
-              std::vector< NodeId > path{c};
-              std::set< NodeId > visited{c};
+              std::vector< NodeId >                path{c};
+              std::set< NodeId >                   visited{c};
               findUncoveredCirclePaths_(pag, d, path, visited, excludes, paths);
               for (const auto& p: paths) {
                 changed = true;
@@ -527,7 +530,7 @@ namespace gum {
                                 const HashTable< NodeId, NodeId >& previous) const {
       // Reconstruct conditioning set: follow previous from d toward b
       std::vector< NodeId > path;
-      NodeId cur = d;
+      NodeId                cur = d;
       while (previous.exists(cur)) {
         cur = previous[cur];
         path.push_back(cur);
@@ -561,8 +564,14 @@ namespace gum {
         return true;
       }
       bool any = false;
-      if (!isForbiddenArc_(a, b)) { pag.setMarkAt(a, b, EdgeMark::Arrowhead); any = true; }
-      if (!isForbiddenArc_(c, b)) { pag.setMarkAt(c, b, EdgeMark::Arrowhead); any = true; }
+      if (!isForbiddenArc_(a, b)) {
+        pag.setMarkAt(a, b, EdgeMark::Arrowhead);
+        any = true;
+      }
+      if (!isForbiddenArc_(c, b)) {
+        pag.setMarkAt(c, b, EdgeMark::Arrowhead);
+        any = true;
+      }
       return any;
     }
 
@@ -588,7 +597,7 @@ namespace gum {
           for (const NodeId c: poss_c) {
             if (a == c) { continue; }
             if (!pag.existsEdge(a, c)) { continue; }
-            if (!pag.isArrowhead(a, c) || !pag.isTail(c, a)) { continue; }  // A→C (parent)
+            if (!pag.isArrowhead(a, c) || !pag.isTail(c, a)) { continue; }   // A→C (parent)
 
             // BFS backward from A to find discriminating path D…A,B,C
             HashTable< NodeId, NodeId > previous;
@@ -653,13 +662,13 @@ namespace gum {
             if (a == c) { continue; }
             if (!pag.existsEdge(a, c)) { continue; }
             if (!pag.isArrowhead(a, c)) { continue; }   // A *→ C
-            if (!pag.isCircle(c, a)) { continue; }       // circle at A from C
+            if (!pag.isCircle(c, a)) { continue; }      // circle at A from C
             if (!pag.isArrowhead(b, c)) { continue; }   // B *→ C
-            if (!pag.isTail(c, b)) { continue; }         // Tail at B from C (B→C directed)
-            const bool case1 = pag.isArrowhead(a, b) && pag.isTail(b, a);  // A→B
-            const bool case2 = pag.isCircle(a, b) && pag.isTail(b, a);     // A-oB
+            if (!pag.isTail(c, b)) { continue; }        // Tail at B from C (B→C directed)
+            const bool case1 = pag.isArrowhead(a, b) && pag.isTail(b, a);   // A→B
+            const bool case2 = pag.isCircle(a, b) && pag.isTail(b, a);      // A-oB
             if (!case1 && !case2) { continue; }
-            pag.setMarkAt(c, a, EdgeMark::Tail);   // A→C: tail at A from C
+            pag.setMarkAt(c, a, EdgeMark::Tail);                            // A→C: tail at A from C
             changed = true;
           }
         }
@@ -673,7 +682,7 @@ namespace gum {
       for (const NodeId c: pag.nodes()) {
         for (const NodeId a: pag.neighbours(c)) {
           if (!pag.isArrowhead(a, c)) { continue; }   // A *→ C
-          if (!pag.isCircle(c, a)) { continue; }       // circle at A from C (A o→ C)
+          if (!pag.isCircle(c, a)) { continue; }      // circle at A from C (A o→ C)
           bool oriented = false;
           for (const NodeId b: pag.neighbours(a)) {
             if (b == c) { continue; }
@@ -681,7 +690,7 @@ namespace gum {
             if (pag.isArrowhead(b, a)) { continue; }   // B must be possible child of A
             if (existsUncoveredPdPath_(pag, a, b, c)) {
               pag.setMarkAt(c, a, EdgeMark::Tail);
-              changed = true;
+              changed  = true;
               oriented = true;
               break;
             }
@@ -728,7 +737,7 @@ namespace gum {
                   if (!existsSemiDirectedPath_(pag, ch1, bd)) { continue; }
                   if (!existsSemiDirectedPath_(pag, ch2, dd)) { continue; }
                   pag.setMarkAt(c, a, EdgeMark::Tail);
-                  changed = true;
+                  changed  = true;
                   oriented = true;
                 }
               }

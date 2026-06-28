@@ -178,11 +178,11 @@ namespace gum {
       // ##########################################################################
 
       IndependenceTest* test_{nullptr};
-      double            alpha_              = 0.05;
-      Size              maxCondSetSize_     = Size(-1);
-      bool              stable_            = true;
-      bool              exhaustiveSepSet_  = false;
-      UCPriority        ucPriority_        = UCPriority::Standard;
+      double            alpha_            = 0.05;
+      Size              maxCondSetSize_   = Size(-1);
+      bool              stable_           = true;
+      bool              exhaustiveSepSet_ = false;
+      UCPriority        ucPriority_       = UCPriority::Standard;
 
       HashTable< std::pair< NodeId, NodeId >, SepSetEntry_ > sepSet_;
     };

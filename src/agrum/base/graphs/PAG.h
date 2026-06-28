@@ -49,9 +49,7 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
-#include <agrum/base/graphs/undiGraph.h>
 
 namespace gum {
 

@@ -358,7 +358,6 @@ class TestGraph(pyAgrumTestCase):
     self.assertIn('1 [label="(1) beta"]', dot)
     self.assertNotIn("0 [label=", dot)
 
-
   def testPAGBasic(self):
     p = gum.PAG()
     for i in range(4):

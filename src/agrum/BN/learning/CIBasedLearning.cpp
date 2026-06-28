@@ -61,14 +61,14 @@ namespace gum {
     CIBasedLearning::CIBasedLearning(const CIBasedLearning& from) :
         ConstraintBasedLearning(from), test_(from.test_), alpha_(from.alpha_),
         maxCondSetSize_(from.maxCondSetSize_), stable_(from.stable_),
-        exhaustiveSepSet_(from.exhaustiveSepSet_),
-        ucPriority_(from.ucPriority_), sepSet_(from.sepSet_) {}
+        exhaustiveSepSet_(from.exhaustiveSepSet_), ucPriority_(from.ucPriority_),
+        sepSet_(from.sepSet_) {}
 
     CIBasedLearning::CIBasedLearning(CIBasedLearning&& from) noexcept :
         ConstraintBasedLearning(std::move(from)), test_(from.test_), alpha_(from.alpha_),
         maxCondSetSize_(from.maxCondSetSize_), stable_(from.stable_),
-        exhaustiveSepSet_(from.exhaustiveSepSet_),
-        ucPriority_(from.ucPriority_), sepSet_(std::move(from.sepSet_)) {
+        exhaustiveSepSet_(from.exhaustiveSepSet_), ucPriority_(from.ucPriority_),
+        sepSet_(std::move(from.sepSet_)) {
       from.test_ = nullptr;
     }
 
@@ -107,14 +107,20 @@ namespace gum {
 
     void CIBasedLearning::setIndependenceTest(IndependenceTest& test) { test_ = &test; }
 
-    void   CIBasedLearning::setAlpha(double alpha) { alpha_ = alpha; }
+    void CIBasedLearning::setAlpha(double alpha) { alpha_ = alpha; }
+
     double CIBasedLearning::alpha() const { return alpha_; }
 
     void CIBasedLearning::setMaxCondSetSize(Size max_k) { maxCondSetSize_ = max_k; }
+
     void CIBasedLearning::setStable(bool stable) { stable_ = stable; }
+
     void CIBasedLearning::setExhaustiveSepSet(bool exhaustive) { exhaustiveSepSet_ = exhaustive; }
+
     bool CIBasedLearning::exhaustiveSepSet() const { return exhaustiveSepSet_; }
+
     void CIBasedLearning::setUCPriority(UCPriority p) { ucPriority_ = p; }
+
     CIBasedLearning::UCPriority CIBasedLearning::ucPriority() const { return ucPriority_; }
 
     // ##########################################################################
@@ -143,8 +149,11 @@ namespace gum {
               anyTested         = true;
               const double pval = test_->statistics(X, Y, _emptySet_).second;
               if (pval <= alpha_) { return; }
-              if (stable_) { toRemove.push_back(edge); }
-              else { graph.eraseEdge(edge); }
+              if (stable_) {
+                toRemove.push_back(edge);
+              } else {
+                graph.eraseEdge(edge);
+              }
               sepSet_.insert({X, Y}, {{}, pval});
               sepSet_.insert({Y, X}, {{}, pval});
               return;
@@ -152,7 +161,7 @@ namespace gum {
 
             bool               exh_found = false;
             std::set< NodeId > exh_union;
-            double             exh_pval  = 0.0;
+            double             exh_pval = 0.0;
 
             for (int dir = 0; dir < 2; ++dir) {
               const NodeId A = (dir == 0) ? X : Y;
@@ -178,15 +187,20 @@ namespace gum {
                 const double pval = test_->statistics(A, B, cond).second;
                 if (pval > alpha_) {
                   if (!exhaustiveSepSet_) {
-                    if (stable_) { toRemove.push_back(edge); }
-                    else { graph.eraseEdge(edge); }
+                    if (stable_) {
+                      toRemove.push_back(edge);
+                    } else {
+                      graph.eraseEdge(edge);
+                    }
                     sepSet_.insert({X, Y}, {cond, pval});
                     sepSet_.insert({Y, X}, {cond, pval});
                     return;
                   }
                   exh_found = true;
                   if (exh_pval == 0.0) { exh_pval = pval; }
-                  for (const NodeId n: cond) { exh_union.insert(n); }
+                  for (const NodeId n: cond) {
+                    exh_union.insert(n);
+                  }
                 }
 
                 int i = static_cast< int >(d) - 1;
@@ -202,8 +216,11 @@ namespace gum {
             }
 
             if (exh_found) {
-              if (stable_) { toRemove.push_back(edge); }
-              else { graph.eraseEdge(edge); }
+              if (stable_) {
+                toRemove.push_back(edge);
+              } else {
+                graph.eraseEdge(edge);
+              }
               const std::vector< NodeId > union_vec(exh_union.begin(), exh_union.end());
               sepSet_.insert({X, Y}, {union_vec, exh_pval});
               sepSet_.insert({Y, X}, {union_vec, exh_pval});
@@ -236,7 +253,10 @@ namespace gum {
           GUM_SL_EMIT(src, dst, "Orient " << src << " -> " << dst, "V-structure collider");
         } else {
           resolveOrientConflict_(src, dst);
-          GUM_SL_EMIT(src, dst, "Conflict " << src << " -> " << dst, "V-structure blocked by constraint");
+          GUM_SL_EMIT(src,
+                      dst,
+                      "Conflict " << src << " -> " << dst,
+                      "V-structure blocked by constraint");
         }
       } else if (graph.existsArc(dst, src)) {
         resolveOrientConflict_(src, dst);
@@ -274,6 +294,7 @@ namespace gum {
           NodeId X, Y, Z;
           double pval;
         };
+
         std::vector< Candidate > candidates;
         candidates.reserve(triples.size());
 

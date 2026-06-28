@@ -40,8 +40,8 @@
 
 #pragma once
 
-#include <agrum/base/graphs/PAG.h>
 #include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/PAG.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -106,10 +106,10 @@ namespace gum_tests {
       g.addNodeWithId(0);
       g.addNodeWithId(1);
       g.addEdge(0, 1, gum::EdgeMark::Tail, gum::EdgeMark::Arrowhead);
-      g.addEdge(0, 1);   // duplicate: should do nothing
+      g.addEdge(0, 1);         // duplicate: should do nothing
 
       CHECK(g.sizeEdges() == 1);
-      CHECK(g.isTail(1, 0));        // marks unchanged
+      CHECK(g.isTail(1, 0));   // marks unchanged
       CHECK(g.isArrowhead(0, 1));
     }
 
@@ -136,7 +136,7 @@ namespace gum_tests {
       g.addEdge(0, 1, gum::EdgeMark::Tail, gum::EdgeMark::Arrowhead);
 
       CHECK(g.markAt(0, 1) == gum::EdgeMark::Arrowhead);   // mark at 1
-      CHECK(g.markAt(1, 0) == gum::EdgeMark::Tail);         // mark at 0
+      CHECK(g.markAt(1, 0) == gum::EdgeMark::Tail);        // mark at 0
     }
 
     // ##########################################################################
@@ -160,7 +160,7 @@ namespace gum_tests {
       g.addEdge(0, 1, gum::EdgeMark::Arrowhead, gum::EdgeMark::Arrowhead);   // 0 ↔ 1
 
       CHECK(g.isBidirected(0, 1));
-      CHECK(g.isBidirected(1, 0));   // symmetric
+      CHECK(g.isBidirected(1, 0));                                           // symmetric
       CHECK(!g.isDefinitelyDirected(0, 1));
     }
 
@@ -174,7 +174,7 @@ namespace gum_tests {
       g.addEdge(1, 2, gum::EdgeMark::Tail, gum::EdgeMark::Arrowhead);   // 1 → 2
 
       CHECK(g.isDefCollider(0, 2, 1));
-      CHECK(!g.isDefCollider(2, 0, 1));   // 0 is not a collider
+      CHECK(!g.isDefCollider(2, 0, 1));                                 // 0 is not a collider
     }
 
     // ##########################################################################
@@ -218,10 +218,10 @@ namespace gum_tests {
     static void test_eraseNode_removes_marks_() {
       gum::PAG g = buildTriangle();   // 0-1-2, node 3 isolated
 
-      g.eraseNode(1);   // removes edges 0-1 and 1-2
+      g.eraseNode(1);                 // removes edges 0-1 and 1-2
 
       CHECK(g.size() == 3);
-      CHECK(g.sizeEdges() == 1);   // only 0-2 remains
+      CHECK(g.sizeEdges() == 1);      // only 0-2 remains
       // re-add 1 and edge 0-1: marks must be fresh Circle-Circle
       g.addNodeWithId(1);
       g.addEdge(0, 1);
@@ -342,7 +342,6 @@ namespace gum_tests {
       gum::PAG g = buildTriangle();
       CHECK(!g.toDot().empty());
     }
-
   };
 
   GUM_TEST_ACTIF(_default_constructor_)

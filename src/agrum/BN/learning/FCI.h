@@ -142,22 +142,26 @@ namespace gum {
       void possibleDSepPhase_(PAG& pag);
 
       // Phase 5: orientation rules (all return true if any mark changed)
-      bool ruleR1_(PAG& pag) const;   ///< away from collider
-      bool ruleR2_(PAG& pag) const;   ///< away from cycle
-      bool ruleR3_(PAG& pag) const;   ///< double triangle
-      bool ruleR5_(PAG& pag) const;   ///< uncovered circle path → undirected
-      bool ruleR6_(PAG& pag) const;   ///< tail propagation from undirected edge
-      bool ruleR7_(PAG& pag) const;   ///< tail propagation from A-oB
-      bool ruleR4_(PAG& pag) const;   ///< discriminating path (uses CI test)
-      bool ruleR8_(PAG& pag) const;   ///< away from ancestor (graph only)
-      bool ruleR9_(PAG& pag) const;   ///< away from ancestor via uncovered pd-path
-      bool ruleR10_(PAG& pag) const;  ///< away from ancestor via two semi-directed paths
+      bool ruleR1_(PAG& pag) const;    ///< away from collider
+      bool ruleR2_(PAG& pag) const;    ///< away from cycle
+      bool ruleR3_(PAG& pag) const;    ///< double triangle
+      bool ruleR5_(PAG& pag) const;    ///< uncovered circle path → undirected
+      bool ruleR6_(PAG& pag) const;    ///< tail propagation from undirected edge
+      bool ruleR7_(PAG& pag) const;    ///< tail propagation from A-oB
+      bool ruleR4_(PAG& pag) const;    ///< discriminating path (uses CI test)
+      bool ruleR8_(PAG& pag) const;    ///< away from ancestor (graph only)
+      bool ruleR9_(PAG& pag) const;    ///< away from ancestor via uncovered pd-path
+      bool ruleR10_(PAG& pag) const;   ///< away from ancestor via two semi-directed paths
 
       /// Phase 5: fixed-point loop over all orientation rules R1–R10.
       void applyOrientationRules_(PAG& pag) const;
 
       /// R4 helper: orient B,C in a detected discriminating path D..A,B,C.
-      bool doDdpOrientation_(PAG& pag, NodeId d, NodeId a, NodeId b, NodeId c,
+      bool doDdpOrientation_(PAG&                               pag,
+                             NodeId                             d,
+                             NodeId                             a,
+                             NodeId                             b,
+                             NodeId                             c,
                              const HashTable< NodeId, NodeId >& previous) const;
 
       Size maxPathLength_ = Size(-1);

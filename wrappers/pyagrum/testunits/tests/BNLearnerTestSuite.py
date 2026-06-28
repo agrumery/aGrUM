@@ -851,7 +851,6 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useNMLCorrection()
     self.assertAlmostEqual(learner.correctedMutualInformation(BRONCHITIS, LUNG, [SMOKING]), -0.00486096, delta=1e-6)
 
-
   def testFCILearnPAG(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
     learner.useFCI().setFCIAlpha(0.05)
@@ -915,8 +914,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     pag = learner.learnPAG()
     self.assertEqual(pag.size(), 8)
     for e in pag.edges():
-      self.assertIn(pag.markAt(e[0], e[1]),
-                    (gum.EdgeMark_Circle, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead))
+      self.assertIn(pag.markAt(e[0], e[1]), (gum.EdgeMark_Circle, gum.EdgeMark_Tail, gum.EdgeMark_Arrowhead))
 
   def testFCIExhaustiveSepSetSameSkeleton(self):
     learner_std = gum.BNLearner(self.agrumSrcDir("asia.csv"))

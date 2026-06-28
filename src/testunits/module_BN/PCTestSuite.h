@@ -69,11 +69,12 @@ namespace gum_tests {
     int forbidden_count{0};
     int mandatory_count{0};
 
-    void whenStructuralModification(const void* src,
-                                    gum::NodeId x,
-                                    gum::NodeId y,
-                                    std::string action,   // NOLINT(performance-unnecessary-value-param)
-                                    std::string explain) {  // NOLINT(performance-unnecessary-value-param)
+    void whenStructuralModification(
+        const void* src,
+        gum::NodeId x,
+        gum::NodeId y,
+        std::string action,      // NOLINT(performance-unnecessary-value-param)
+        std::string explain) {   // NOLINT(performance-unnecessary-value-param)
       if (explain.find("Forbidden edge") != std::string::npos) { ++forbidden_count; }
       if (explain.find("Mandatory") != std::string::npos) { ++mandatory_count; }
     }
@@ -358,8 +359,8 @@ namespace gum_tests {
       search.setIndependenceTest(chi2);
       search.setAlpha(1.0);
 
-      auto         skel = search.learnSkeleton(db.nodeOnlyGraph());
-      auto n = static_cast< gum::Size >(db.nb_vars);
+      auto skel = search.learnSkeleton(db.nodeOnlyGraph());
+      auto n    = static_cast< gum::Size >(db.nb_vars);
       CHECK(skel.sizeEdges() == n * (n - 1) / 2);
     }
 

@@ -890,7 +890,7 @@ namespace gum::learning {
     return mgraph;
   }
 
-  PDAG IBNLearner::learnPDAG() {
+  PDAG IBNLearner::learnPDAG_() {
     if (selectedAlgo_ != AlgoType::MIIC && selectedAlgo_ != AlgoType::PC
         && selectedAlgo_ != AlgoType::FCI) {
       GUM_ERROR(OperationNotAllowed,
@@ -912,7 +912,7 @@ namespace gum::learning {
 
     if (selectedAlgo_ == AlgoType::FCI) {
       BNLearnerListener listener(this, algoFCI_);
-      MixedGraph mgraph = this->prepareFCI_();
+      MixedGraph        mgraph = this->prepareFCI_();
       return algoFCI_.learnPDAG(mgraph);
     }
 
@@ -923,7 +923,15 @@ namespace gum::learning {
     return algoMiic_.learnPDAG(mgraph);
   }
 
-  PAG IBNLearner::learnPAG() {
+  PDAG IBNLearner::learnPDAG() {
+    auto pdag = learnPDAG_();
+    for (const auto i: pdag) {
+      pdag.setName(i, scoreDatabase_.databaseTable().variableName(i));
+    }
+    return pdag;
+  }
+
+  PAG IBNLearner::learnPAG_() {
     if (selectedAlgo_ != AlgoType::FCI) {
       GUM_ERROR(OperationNotAllowed, "learnPAG() is only valid when using the FCI algorithm")
     }
@@ -937,12 +945,20 @@ namespace gum::learning {
     return algoFCI_.learnPAG(mgraph);
   }
 
-  DAG IBNLearner::learnDAG() {
-    // create the score and the prior
-    createPrior_();
-    createScore_();
+  PAG IBNLearner::learnPAG() {
+    auto pag = learnPAG_();
+    for (const auto i: pag) {
+      pag.setName(i, scoreDatabase_.databaseTable().variableName(i));
+    }
+    return pag;
+  }
 
-    return learnDag_();
+  DAG IBNLearner::learnDAG() {
+    auto dag = learnDag_();
+    for (const auto i: dag) {
+      dag.setName(i, scoreDatabase_.databaseTable().variableName(i));
+    }
+    return dag;
   }
 
   void IBNLearner::createCorrectedMutualInformation_() {
@@ -965,6 +981,10 @@ namespace gum::learning {
   }
 
   DAG IBNLearner::learnDag_() {
+    // create the score and the prior
+    createPrior_();
+    createScore_();
+
     // check that the database does not contain any missing value
     if (scoreDatabase_.databaseTable().hasMissingValues()
         || ((priorDatabase_ != nullptr)

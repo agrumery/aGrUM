@@ -73,12 +73,12 @@
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
+#include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/greedyThickThinning.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/PC.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
@@ -1121,6 +1121,9 @@ namespace gum::learning {
     /// @}
 
     protected:
+    PAG  learnPAG_();
+    PDAG learnPDAG_();
+
     /// sets the prior weight
     void _setPriorWeight_(double weight);
 
