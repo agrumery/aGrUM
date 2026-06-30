@@ -1514,10 +1514,8 @@ namespace gum::credal {
   CNLoopyPropagation< GUM_SCALAR >::~CNLoopyPropagation() {
     inference_up_to_date_ = false;
 
-    if (!msg_l_sent_.empty()) {
-      for (auto node: _bnet_->nodes()) {
-        delete msg_l_sent_[node];
-      }
+    for (auto& [node, pset]: msg_l_sent_) {
+      delete pset;
     }
 
     GUM_DESTRUCTOR(CNLoopyPropagation)
