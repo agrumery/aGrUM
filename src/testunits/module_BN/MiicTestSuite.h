@@ -198,6 +198,7 @@ namespace gum_tests {
       gum::learning::NoPrior                    prior(database);
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       gum::learning::Miic                       search;
+      search.setMutualInformation(cI);
 
       SimpleListenerForMiic listener;
       // GUM_CONNECT(search,
@@ -310,6 +311,7 @@ namespace gum_tests {
       gum::learning::NoPrior                    prior(database);
       gum::learning::CorrectedMutualInformation cI(parser, prior);
       gum::learning::Miic                       search;
+      search.setMutualInformation(cI);
 
       /*SimpleListenerForMiic listener;
       GUM_CONNECT(search,

@@ -362,8 +362,7 @@ namespace gum_tests {
 
       lp.makeInference();
 
-      std::string path = std::tmpnam(nullptr);
-      path += "_gum_saveVertices.txt";
+      std::string path = gum_tests::getTempFilePath("_gum_saveVertices.txt");
       lp.saveVertices(path);
 
       std::ifstream f(path);

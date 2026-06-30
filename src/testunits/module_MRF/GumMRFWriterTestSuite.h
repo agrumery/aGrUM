@@ -202,7 +202,7 @@ namespace gum_tests {
       gum::GumMRFWriter< double > writer(false, 2);
       std::string                 str = writer.toString(mrf);
 
-      std::string   tempFileName = std::tmpnam(nullptr);
+      std::string   tempFileName = gum_tests::getTempFilePath();
       std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
       tempFile << str;
       tempFile.close();

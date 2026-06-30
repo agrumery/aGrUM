@@ -92,15 +92,20 @@ def processNotebook(notebook_filename: str) -> tuple[int, str, float]:
             }
           ),
         )
-        # Redirect worker stdout/stderr to /dev/null so that any remaining
-        # chatter from the kernel or nbconvert does not pollute the display.
-        with open(os.devnull, "w") as _devnull:
-          _saved = sys.stdout, sys.stderr
-          sys.stdout = sys.stderr = _devnull
-          try:
-            ep.preprocess(nb, {"metadata": {"path": "../doc/sphinx/notebooks/"}})
-          finally:
-            sys.stdout, sys.stderr = _saved
+        # Redirect fds 1 and 2 to /dev/null so kernel subprocess warnings
+        # (e.g. IPKernelApp TCP encryption) don't pollute the display.
+        _devnull_fd = os.open(os.devnull, os.O_WRONLY)
+        _saved_fds = os.dup(1), os.dup(2)
+        os.dup2(_devnull_fd, 1)
+        os.dup2(_devnull_fd, 2)
+        os.close(_devnull_fd)
+        try:
+          ep.preprocess(nb, {"metadata": {"path": "../doc/sphinx/notebooks/"}})
+        finally:
+          os.dup2(_saved_fds[0], 1)
+          os.dup2(_saved_fds[1], 2)
+          os.close(_saved_fds[0])
+          os.close(_saved_fds[1])
         break
       except RuntimeError as e:
         if str(e) in {"Kernel died before replying to kernel_info", "Kernel didn't respond in 60 seconds"}:

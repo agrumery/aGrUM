@@ -191,7 +191,7 @@ namespace gum_tests {
       gum::GumIDWriter< double > writer(false, 2);
       std::string                str = writer.toString(id);
 
-      std::string   tempFileName = std::tmpnam(nullptr);
+      std::string   tempFileName = gum_tests::getTempFilePath();
       std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
       tempFile << str;
       tempFile.close();

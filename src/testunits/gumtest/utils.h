@@ -42,6 +42,8 @@
 #ifndef TESTSUITE_UTILS_H
 #define TESTSUITE_UTILS_H
 
+#include <atomic>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -73,6 +75,13 @@ namespace gum_tests {
   inline void end_test_waiting() {
     std::cout << backst;
     std::flush(std::cout);
+  }
+
+  inline std::string getTempFilePath(const std::string& suffix = "") {
+    static std::atomic< int > counter{0};
+    auto path = std::filesystem::temp_directory_path()
+                / ("gum_test_" + std::to_string(++counter) + suffix);
+    return path.string();
   }
 
   inline void str2file(const std::string& filename, const std::string& message) {

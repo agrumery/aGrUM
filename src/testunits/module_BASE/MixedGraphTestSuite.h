@@ -132,7 +132,7 @@ namespace gum_tests {
 
       gum::MixedGraph* mixed_graph = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(ug)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(CHECK(*mixed_graph == mg));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(CHECK((*mixed_graph == mg)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete (mixed_graph));
     }
 
@@ -159,7 +159,7 @@ namespace gum_tests {
 
       gum::MixedGraph* mixed_graph = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING((mixed_graph = new gum::MixedGraph(dg)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(CHECK(*mixed_graph == mg));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(CHECK((*mixed_graph == mg)));
       GUM_CHECK_ASSERT_THROWS_NOTHING(delete (mixed_graph));
     }
 

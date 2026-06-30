@@ -276,7 +276,7 @@ namespace gum_tests {
       for (std::size_t i = 0, size = vect.size(); i < size; ++i) {
         if (vect[i].first == elt) return i;
       }
-      throw(gum::NotFound(0));
+      throw gum::NotFound("element not found");
     }
 
     static std::string
