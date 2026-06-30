@@ -209,8 +209,10 @@ namespace gum {
     // incorrectly reports -Warray-bounds on the mutex; #pragma GCC diagnostic cannot
     // suppress warnings whose primary location is in system headers (stl_construct.h),
     // so we disable VRP for this function via optimize pragma instead
+#if defined(__GNUC__) && !defined(__clang__)
 #  pragma GCC push_options
 #  pragma GCC optimize("no-tree-vrp")
+#endif
 
     template < GUM_Numeric GUM_SCALAR >
     std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
@@ -254,7 +256,9 @@ namespace gum {
       return {param_estimator_bootstrap, param_estimator_EM};
     }
 
+#if defined(__GNUC__) && !defined(__clang__)
 #  pragma GCC pop_options
+#endif
 
     // learns a BN (its parameters) with EM when its structure is known
     template < GUM_Numeric GUM_SCALAR >
