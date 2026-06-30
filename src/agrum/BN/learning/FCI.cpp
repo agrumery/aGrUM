@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -47,9 +47,7 @@
 
 #include <agrum/BN/learning/FCI.h>
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     // ##########################################################################
     // Constructors / Destructors
@@ -58,7 +56,6 @@ namespace gum {
     FCI::FCI()  = default;
     FCI::~FCI() = default;
 
-    FCI::FCI(const FCI& from) : CIBasedLearning(from), maxPathLength_(from.maxPathLength_) {}
 
     FCI::FCI(FCI&& from) noexcept :
         CIBasedLearning(std::move(from)), maxPathLength_(from.maxPathLength_) {}
@@ -109,7 +106,7 @@ namespace gum {
       const auto isCollider = [&](NodeId X, NodeId Y, NodeId Z) -> bool {
         if (!sepSet_.exists({X, Y})) { return false; }
         const SepSetEntry_& entry = sepSet_[{X, Y}];
-        return std::find(entry.cond.begin(), entry.cond.end(), Z) == entry.cond.end();
+        return std::ranges::find(entry.cond, Z) == entry.cond.end();
       };
 
       if (ucPriority_ == UCPriority::Standard) {
@@ -139,10 +136,10 @@ namespace gum {
           const NodeId Y = std::get< 1 >(tp);
           const NodeId Z = std::get< 2 >(tp);
           if (!isCollider(X, Y, Z)) { continue; }
-          candidates.push_back({X, Y, Z, sepSet_[{X, Y}].pval});
+          candidates.push_back({.X = X, .Y = Y, .Z = Z, .pval = sepSet_[{X, Y}].pval});
         }
 
-        std::sort(candidates.begin(), candidates.end(), [](const Candidate& a, const Candidate& b) {
+        std::ranges::sort(candidates, [](const Candidate& a, const Candidate& b) {
           return a.pval > b.pval;
         });
 
@@ -158,106 +155,8 @@ namespace gum {
     }
 
     // ##########################################################################
-    // Phase 3 — possibleDSep helpers
-    // ##########################################################################
-
-    std::vector< NodeId > FCI::computePossibleDSep_(const PAG& pag, NodeId x, NodeId y) const {
-      std::set< NodeId >                        result;
-      std::queue< std::pair< NodeId, NodeId > > bfsQueue;
-      std::set< std::pair< NodeId, NodeId > >   visited;
-
-      for (const NodeId b: pag.neighbours(x)) {
-        if (b == y) { continue; }
-        if (visited.insert({x, b}).second) {
-          bfsQueue.push({x, b});
-          result.insert(b);
-        }
-      }
-
-      while (!bfsQueue.empty()) {
-        const auto [a, b] = bfsQueue.front();
-        bfsQueue.pop();
-
-        for (const NodeId c: pag.neighbours(b)) {
-          if (c == x || c == y || c == a) { continue; }
-          // expand if B is a definite collider on (A, B, C) or A and C are adjacent
-          // (Zhang 2008 / Colombo et al. criterion)
-          if (pag.isDefCollider(a, b, c) || pag.existsEdge(a, c)) {
-            if (visited.insert({b, c}).second) {
-              bfsQueue.push({b, c});
-              result.insert(c);
-            }
-          }
-        }
-      }
-
-      result.erase(x);
-      result.erase(y);
-      return std::vector< NodeId >(result.begin(), result.end());
-    }
-
-    void FCI::possibleDSepPhase_(PAG& pag) {
-      // snapshot edges to avoid invalidation during removal
-      const std::vector< Edge > edgeSnap(pag.edges().begin(), pag.edges().end());
-
-      const auto tryRemove = [&](NodeId X, NodeId Y, const std::vector< NodeId >& dsep) {
-        const Size maxK = (maxCondSetSize_ == Size(-1))
-                            ? static_cast< Size >(dsep.size())
-                            : std::min(maxCondSetSize_, static_cast< Size >(dsep.size()));
-
-        for (Size k = 0; k <= maxK; ++k) {
-          if (dsep.size() < k) { break; }
-
-          std::vector< std::size_t > idx(k);
-          std::iota(idx.begin(), idx.end(), std::size_t(0));
-
-          for (;;) {
-            std::vector< NodeId > cond(k);
-            for (Size i = 0; i < k; ++i) {
-              cond[i] = dsep[idx[i]];
-            }
-
-            const double pval = test_->statistics(X, Y, cond).second;
-            if (pval > alpha_) {
-              pag.eraseEdge(Edge(X, Y));
-              sepSet_.set({X, Y}, SepSetEntry_{cond, pval});
-              sepSet_.set({Y, X}, SepSetEntry_{cond, pval});
-              return true;
-            }
-
-            if (k == 0) { break; }
-            int i = static_cast< int >(k) - 1;
-            while (i >= 0
-                   && idx[static_cast< std::size_t >(i)]
-                          == dsep.size() - k + static_cast< std::size_t >(i)) {
-              --i;
-            }
-            if (i < 0) { break; }
-            ++idx[static_cast< std::size_t >(i)];
-            for (int j = i + 1; j < static_cast< int >(k); ++j) {
-              idx[static_cast< std::size_t >(j)] = idx[static_cast< std::size_t >(j - 1)] + 1;
-            }
-          }
-        }
-        return false;
-      };
-
-      for (const Edge& edge: edgeSnap) {
-        if (!pag.existsEdge(edge)) { continue; }
-        const NodeId X = edge.first();
-        const NodeId Y = edge.second();
-
-        const auto dsepXY = computePossibleDSep_(pag, X, Y);
-        if (tryRemove(X, Y, dsepXY)) { continue; }
-
-        if (!pag.existsEdge(edge)) { continue; }
-        const auto dsepYX = computePossibleDSep_(pag, Y, X);
-        tryRemove(X, Y, dsepYX);
-      }
-    }
-
-    // ##########################################################################
-    // Phase 5 — orientation rules helpers
+    // Path helpers (anonymous namespace) — placed before possibleDSep helpers
+    // so that computePossibleDSep_ can call existsSemiDirectedPath_.
     // ##########################################################################
 
     namespace {
@@ -333,7 +232,7 @@ namespace gum {
         }
         for (const NodeId next: pag.neighbours(cur)) {
           if (visited.count(next) > 0) { continue; }
-          if (std::find(excludes.begin(), excludes.end(), next) != excludes.end()) { continue; }
+          if (std::ranges::find(excludes, next) != excludes.end()) { continue; }
           if (!pag.isCircle(cur, next) || !pag.isCircle(next, cur)) { continue; }
           visited.insert(next);
           path.push_back(next);
@@ -343,6 +242,115 @@ namespace gum {
         }
       }
     }   // anonymous namespace
+
+    // ##########################################################################
+    // Phase 3 — possibleDSep helpers
+    // ##########################################################################
+
+    std::vector< NodeId > FCI::computePossibleDSep_(const PAG& pag, NodeId x, NodeId y) const {
+      std::set< NodeId >                        result;
+      std::queue< std::pair< NodeId, NodeId > > bfsQueue;
+      std::set< std::pair< NodeId, NodeId > >   visited;
+
+      for (const NodeId b: pag.neighbours(x)) {
+        if (b == y) { continue; }
+        if (visited.insert({x, b}).second) {
+          bfsQueue.emplace(x, b);
+          result.insert(b);
+        }
+      }
+
+      while (!bfsQueue.empty()) {
+        const auto [a, b] = bfsQueue.front();
+        bfsQueue.pop();
+
+        for (const NodeId c: pag.neighbours(b)) {
+          if (c == x || c == y || c == a) { continue; }
+          // expand if B is a definite collider on (A, B, C) or A and C are adjacent
+          // (Zhang 2008 / Colombo et al. criterion)
+          if (pag.isDefCollider(a, b, c) || pag.existsEdge(a, c)) {
+            if (visited.insert({b, c}).second) {
+              bfsQueue.emplace(b, c);
+              // FIX #3: only add c to PossibleDSep if it has a semi-directed path
+              // back toward x or b (Zhang 2008 §3.2 filter).
+              if (existsSemiDirectedPath_(pag, c, x) || existsSemiDirectedPath_(pag, c, b)) {
+                result.insert(c);
+              }
+            }
+          }
+        }
+      }
+
+      result.erase(x);
+      result.erase(y);
+      return {result.begin(), result.end()};
+    }
+
+    void FCI::possibleDSepPhase_(PAG& pag) {
+      // snapshot edges to avoid invalidation during removal
+      const std::vector< Edge > edgeSnap(pag.edges().begin(), pag.edges().end());
+
+      const auto tryRemove = [&](NodeId X, NodeId Y, const std::vector< NodeId >& dsep) {
+        const Size maxK = (maxCondSetSize_ == Size(-1))
+                            ? static_cast< Size >(dsep.size())
+                            : std::min(maxCondSetSize_, static_cast< Size >(dsep.size()));
+
+        // FIX #4: start at k=2; sizes 0 and 1 were already exhaustively tested
+        // in Phase 1 (FAS skeleton discovery).
+        for (Size k = 2; k <= maxK; ++k) {
+          if (dsep.size() < k) { break; }
+
+          std::vector< std::size_t > idx(k);
+          std::iota(idx.begin(), idx.end(), std::size_t(0));
+
+          for (;;) {
+            std::vector< NodeId > cond(k);
+            for (Size i = 0; i < k; ++i) {
+              cond[i] = dsep[idx[i]];
+            }
+
+            const double pval = test_->statistics(X, Y, cond).second;
+            if (pval > alpha_) {
+              pag.eraseEdge(Edge(X, Y));
+              sepSet_.set({X, Y}, SepSetEntry_{.cond = cond, .pval = pval});
+              sepSet_.set({Y, X}, SepSetEntry_{.cond = cond, .pval = pval});
+              return true;
+            }
+
+            if (k == 0) { break; }
+            int i = static_cast< int >(k) - 1;
+            while (i >= 0
+                   && idx[static_cast< std::size_t >(i)]
+                          == dsep.size() - k + static_cast< std::size_t >(i)) {
+              --i;
+            }
+            if (i < 0) { break; }
+            ++idx[static_cast< std::size_t >(i)];
+            for (int j = i + 1; j < static_cast< int >(k); ++j) {
+              idx[static_cast< std::size_t >(j)] = idx[static_cast< std::size_t >(j - 1)] + 1;
+            }
+          }
+        }
+        return false;
+      };
+
+      for (const Edge& edge: edgeSnap) {
+        if (!pag.existsEdge(edge)) { continue; }
+        const NodeId X = edge.first();
+        const NodeId Y = edge.second();
+
+        const auto dsepXY = computePossibleDSep_(pag, X, Y);
+        if (tryRemove(X, Y, dsepXY)) { continue; }
+
+        if (!pag.existsEdge(edge)) { continue; }
+        const auto dsepYX = computePossibleDSep_(pag, Y, X);
+        tryRemove(X, Y, dsepYX);
+      }
+    }
+
+    // ##########################################################################
+    // Phase 5 — orientation rules
+    // ##########################################################################
 
     // R1: Away from Collider.  A *→ B o-* C, A not adj C  →  B → C
     bool FCI::ruleR1_(PAG& pag) const {
@@ -355,6 +363,10 @@ namespace gum {
             if (!pag.isCircle(c, b)) { continue; }
             if (pag.existsEdge(a, c)) { continue; }
             if (isForbiddenArc_(b, c)) { continue; }
+            // FIX #1: do not overwrite an existing Tail at C (from B) with Arrowhead.
+            // marks_[Arc(B,C)] == Tail means B *— C is already established;
+            // upgrading it to B *→ C would contradict that orientation.
+            if (pag.isTail(b, c)) { continue; }
             pag.setMarkAt(c, b, EdgeMark::Tail);
             pag.setMarkAt(b, c, EdgeMark::Arrowhead);
             changed = true;
@@ -377,6 +389,10 @@ namespace gum {
             if (!pag.isArrowhead(b, c)) { continue; }   // b *→ c
             if (!pag.isTail(b, a) && !pag.isTail(c, b)) { continue; }
             if (isForbiddenArc_(a, c)) { continue; }
+            // FIX #1 (defensive): isCircle(a,c) already ensures the mark at C
+            // from A is Circle, so isTail cannot be true here. Added for symmetry
+            // with R1 and to make the guard explicit.
+            if (pag.isTail(a, c)) { continue; }
             pag.setMarkAt(a, c, EdgeMark::Arrowhead);
             changed = true;
           }
@@ -413,7 +429,7 @@ namespace gum {
               for (const auto& key: {std::make_pair(a, c), std::make_pair(c, a)}) {
                 if (sepSet_.exists(key)) {
                   const auto& cond = sepSet_[key].cond;
-                  if (std::find(cond.begin(), cond.end(), d) != cond.end()) {
+                  if (std::ranges::find(cond, d) != cond.end()) {
                     nonCollider = true;
                     break;
                   }
@@ -554,7 +570,7 @@ namespace gum {
         const bool has_cd = sepSet_.exists({c, d});
         if (!has_dc && !has_cd) { return false; }
         const auto& cond = has_dc ? sepSet_[{d, c}].cond : sepSet_[{c, d}].cond;
-        use_b_in_sep     = (std::find(cond.begin(), cond.end(), b) != cond.end());
+        use_b_in_sep     = (std::ranges::find(cond, b) != cond.end());
       } else {
         use_b_in_sep = ind1;
       }
@@ -613,10 +629,19 @@ namespace gum {
             std::set< NodeId >   visited{a, b};
             q.push(a);
 
+            // FIX #2: track BFS depth to respect maxPathLength_.
+            // cur_lvl_size counts nodes remaining at the current BFS level;
+            // nxt_lvl_size accumulates nodes pushed for the next level.
+            // distance is incremented each time we exhaust the current level.
+            int    distance     = 0;
+            Size   cur_lvl_size = 1;   // node_a is the sole node at level 0
+            Size   nxt_lvl_size = 0;
+
             bool found = false;
             while (!q.empty() && !found) {
               const NodeId t = q.front();
               q.pop();
+
               const NodeId prev_t = previous[t];
 
               // nodes D with arrowhead INTO t
@@ -639,6 +664,20 @@ namespace gum {
                 if (c_parents.count(d) > 0) {
                   q.push(d);
                   visited.insert(d);
+                  ++nxt_lvl_size;
+                }
+              }
+
+              if (!found) {
+                --cur_lvl_size;
+                if (cur_lvl_size == 0) {
+                  ++distance;
+                  if (maxPathLength_ != Size(-1)
+                      && static_cast< Size >(distance) > maxPathLength_) {
+                    break;
+                  }
+                  cur_lvl_size = nxt_lvl_size;
+                  nxt_lvl_size = 0;
                 }
               }
             }
@@ -668,6 +707,9 @@ namespace gum {
             const bool case1 = pag.isArrowhead(a, b) && pag.isTail(b, a);   // A→B
             const bool case2 = pag.isCircle(a, b) && pag.isTail(b, a);      // A-oB
             if (!case1 && !case2) { continue; }
+            // FIX #1 (defensive): isCircle(c,a) already ensures this is not Arrowhead,
+            // but guard explicitly for clarity.
+            if (pag.isArrowhead(c, a)) { continue; }
             pag.setMarkAt(c, a, EdgeMark::Tail);                            // A→C: tail at A from C
             changed = true;
           }
@@ -734,8 +776,15 @@ namespace gum {
                   const NodeId ch1 = a_children[m];
                   const NodeId ch2 = a_children[n2];
                   if (pag.existsEdge(ch1, ch2)) { continue; }
-                  if (!existsSemiDirectedPath_(pag, ch1, bd)) { continue; }
-                  if (!existsSemiDirectedPath_(pag, ch2, dd)) { continue; }
+                  // FIX #6: check both (ch1→bd, ch2→dd) and (ch1→dd, ch2→bd).
+                  // Zhang 2008 R10 requires one path to B and one to D from two
+                  // non-adjacent children; either assignment of children to targets
+                  // is valid.
+                  const bool direct  = existsSemiDirectedPath_(pag, ch1, bd)
+                                    && existsSemiDirectedPath_(pag, ch2, dd);
+                  const bool crossed = existsSemiDirectedPath_(pag, ch1, dd)
+                                    && existsSemiDirectedPath_(pag, ch2, bd);
+                  if (!direct && !crossed) { continue; }
                   pag.setMarkAt(c, a, EdgeMark::Tail);
                   changed  = true;
                   oriented = true;
@@ -829,6 +878,4 @@ namespace gum {
       return mg;
     }
 
-  } /* namespace learning */
-
-} /* namespace gum */
+}   // namespace gum::learning

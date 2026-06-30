@@ -58,9 +58,7 @@
 #include <agrum/base/graphs/PAG.h>
 #include <agrum/BN/learning/CIBasedLearning.h>
 
-namespace gum {
-
-  namespace learning {
+namespace gum::learning {
 
     /**
      * @class FCI
@@ -86,7 +84,7 @@ namespace gum {
       /// @{
 
       FCI();
-      FCI(const FCI&);
+      FCI(const FCI&) = default;
       FCI(FCI&&) noexcept;
       ~FCI() override;
 
@@ -167,8 +165,6 @@ namespace gum {
       Size maxPathLength_ = Size(-1);
     };
 
-  } /* namespace learning */
-
-} /* namespace gum */
+}   // namespace gum::learning
 
 #endif /* GUM_LEARNING_FCI_H */
