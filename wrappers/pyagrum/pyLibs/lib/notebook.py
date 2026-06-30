@@ -156,7 +156,7 @@ class FlowLayout:
     Bio = io.BytesIO()  # bytes buffer for the plot
     fig = oAxes.get_figure()
     assert fig is not None
-    fig.canvas.print_png(Bio)  # make a png of the plot in the buffer
+    fig.savefig(Bio, format="png")  # make a png of the plot in the buffer
 
     # encode the bytes as string using base 64
     sB64Img = base64.b64encode(Bio.getvalue()).decode()

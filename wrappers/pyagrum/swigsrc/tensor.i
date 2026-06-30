@@ -668,7 +668,7 @@ if len(args)>1:
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:
-            arr.shape = tuple(reversed(self.shape))
+            arr = arr.reshape(tuple(reversed(self.shape)))
         return arr
 
     def topandas(self):

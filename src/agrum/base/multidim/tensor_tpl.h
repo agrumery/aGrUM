@@ -249,7 +249,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Tensor< GUM_SCALAR >::mean() const {
     if (this->nbrDim() != 1) { GUM_ERROR(ArgumentError, "The tensor is not a marginal"); }
-    if (sum() != GUM_SCALAR(1)) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
+    if (!gum::isCloseToOne(sum())) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
     if (this->variable(0).isNumerical()) {
       return expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
         return GUM_SCALAR(this->variable(0).numerical(i.val(0)));
@@ -262,7 +262,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Tensor< GUM_SCALAR >::variance() const {
     if (this->nbrDim() != 1) { GUM_ERROR(ArgumentError, "The tensor is not a marginal"); }
-    if (sum() != GUM_SCALAR(1)) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
+    if (!gum::isCloseToOne(sum())) { GUM_ERROR(ArgumentError, "The tensor is not a distribution"); }
     if (this->variable(0).isNumerical()) {
       const auto mu = mean();
       return expectedValue([this, mu](const gum::Instantiation& i) -> GUM_SCALAR {
