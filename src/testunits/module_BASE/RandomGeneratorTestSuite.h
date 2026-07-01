@@ -166,8 +166,8 @@ namespace gum_tests {
 
     // MED-5: int2Pow with exponent >= 64 must throw (1UL << 64 is UB)
     static void testInt2PowBounds() {
-      CHECK_EQ(gum::int2Pow(0), 1UL);
-      CHECK_EQ(gum::int2Pow(63), 1UL << 63);
+      CHECK_EQ(gum::int2Pow(0), static_cast< uint64_t >(1));
+      CHECK_EQ(gum::int2Pow(63), static_cast< uint64_t >(1) << 63);
       CHECK_THROWS_AS(gum::int2Pow(64), const gum::OutOfBounds&);
       CHECK_THROWS_AS(gum::int2Pow(100), const gum::OutOfBounds&);
     }

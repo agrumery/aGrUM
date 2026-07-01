@@ -49,6 +49,8 @@
 #ifndef GUM_MATH_POW_H
 #define GUM_MATH_POW_H
 
+#include <cstdint>
+
 #include <agrum/agrum.h>
 
 namespace gum {
@@ -74,7 +76,7 @@ namespace gum {
    * @param exponent The unsigned long integer exponent used to compute \f$
    * 2^{exponent} \f$ which will hold the result of afterward.
    */
-  unsigned long int2Pow(unsigned long exponent);
+  uint64_t int2Pow(uint64_t exponent);
 
   /**
    * @brief Compute the superior and closest power of two of an integer.

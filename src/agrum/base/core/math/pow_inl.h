@@ -67,12 +67,11 @@ namespace gum {
 
   //@beforeMerging is this really faster ?
   // Specialized base 2 pow function with integer.
-  INLINE unsigned long int2Pow(unsigned long exponent) {
-    if (exponent >= sizeof(unsigned long) * 8) {
-      GUM_ERROR(OutOfBounds,
-                "int2Pow: exponent " << exponent << " >= " << sizeof(unsigned long) * 8)
+  INLINE uint64_t int2Pow(uint64_t exponent) {
+    if (exponent >= 64) {
+      GUM_ERROR(OutOfBounds, "int2Pow: exponent " << exponent << " >= 64")
     }
-    return 1UL << exponent;
+    return static_cast< uint64_t >(1) << exponent;
   }
 
   //@beforeMerging is this really faster ?
