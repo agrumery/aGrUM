@@ -155,7 +155,7 @@ namespace gum {
       IDBInitializer(IDBInitializer&& from);
 
       /// virtual copy constructor
-      virtual IDBInitializer* clone() const = 0;
+      [[nodiscard]] virtual IDBInitializer* clone() const = 0;
 
       /// destructor
       virtual ~IDBInitializer();

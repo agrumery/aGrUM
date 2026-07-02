@@ -104,7 +104,7 @@ namespace gum {
      */
     MultiDimWithOffset< GUM_ELEMENT >& operator=(const MultiDimWithOffset< GUM_ELEMENT >& from);
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
 
     /// @}
     // =========================================================================

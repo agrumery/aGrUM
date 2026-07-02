@@ -287,7 +287,7 @@ namespace gum {
     using HashFuncBase< Key >::operator();
 
     public:
-    virtual Size operator()(const Key& key) const override final;
+    virtual Size operator()(const Key& key) const final;
   };
 
   /**
@@ -318,7 +318,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Key& key) const override final;
+    virtual Size operator()(const Key& key) const final;
 
     protected:
     /**
@@ -356,7 +356,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Key& key) const override final;
+    virtual Size operator()(const Key& key) const final;
   };
 
   /**
@@ -387,7 +387,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Key& key) const override final;
+    virtual Size operator()(const Key& key) const final;
   };
 
   /**
@@ -667,7 +667,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Debug& key) const override final;
+    virtual Size operator()(const Debug& key) const final;
 
     template < typename OTHER_KEY >
     friend class HashFunc;

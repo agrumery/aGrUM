@@ -79,11 +79,11 @@ namespace gum {
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual EliminationSequenceStrategy* newFactory() const = 0;
+    [[nodiscard]] virtual EliminationSequenceStrategy* newFactory() const = 0;
 
     /// virtual copy constructor
     /** @return a full clone of the current object */
-    virtual EliminationSequenceStrategy* copyFactory() const = 0;
+    [[nodiscard]] virtual EliminationSequenceStrategy* copyFactory() const = 0;
 
     /// @}
 

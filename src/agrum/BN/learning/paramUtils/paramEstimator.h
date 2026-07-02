@@ -129,7 +129,7 @@ namespace gum {
       ParamEstimator(ParamEstimator&& from) noexcept;
 
       /// virtual copy constructor
-      virtual ParamEstimator* clone() const = 0;
+      [[nodiscard]] virtual ParamEstimator* clone() const = 0;
 
       /// destructor
       virtual ~ParamEstimator();

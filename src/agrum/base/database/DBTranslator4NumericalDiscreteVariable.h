@@ -183,7 +183,7 @@ namespace gum {
       DBTranslator4NumericalDiscreteVariable(DBTranslator4NumericalDiscreteVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4NumericalDiscreteVariable* clone() const;
+      [[nodiscard]] virtual DBTranslator4NumericalDiscreteVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4NumericalDiscreteVariable();

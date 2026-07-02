@@ -105,7 +105,7 @@ namespace gum {
       DBRow(DBRow< T_DATA >&& from);
 
       /// virtual copy constructor
-      DBRow< T_DATA >* clone() const;
+      [[nodiscard]] DBRow< T_DATA >* clone() const;
 
       /// destructor
       ~DBRow();

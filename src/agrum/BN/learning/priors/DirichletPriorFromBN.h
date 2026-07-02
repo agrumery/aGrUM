@@ -86,7 +86,7 @@ namespace gum::learning {
     DirichletPriorFromBN(DirichletPriorFromBN&& from) noexcept;
 
     /// virtual copy constructor
-    DirichletPriorFromBN* clone() const final;
+    [[nodiscard]] DirichletPriorFromBN* clone() const final;
 
     /// destructor
     virtual ~DirichletPriorFromBN();

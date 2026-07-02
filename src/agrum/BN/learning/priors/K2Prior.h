@@ -97,7 +97,7 @@ namespace gum {
       K2Prior(K2Prior&& from);
 
       /// virtual copy constructor
-      virtual K2Prior* clone() const;
+      [[nodiscard]] virtual K2Prior* clone() const;
 
       /// destructor
       virtual ~K2Prior();

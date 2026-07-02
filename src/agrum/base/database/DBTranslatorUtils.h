@@ -83,10 +83,10 @@ namespace gum {
        * the variable passed in argument.
        * @ingroup learning_database
        */
-      DBTranslator* create(const Variable& var,
-                           const bool      editable_dictionary = false,
-                           std::size_t     max_dico_entries
-                           = std::numeric_limits< std::size_t >::max());
+      [[nodiscard]] DBTranslator* create(const Variable& var,
+                                         const bool      editable_dictionary = false,
+                                         std::size_t     max_dico_entries
+                                         = std::numeric_limits< std::size_t >::max());
 
       /// named constructor
       /**
@@ -111,11 +111,11 @@ namespace gum {
        * the variable passed in argument.
        * @ingroup learning_database
        */
-      DBTranslator* create(const Variable&                   var,
-                           const std::vector< std::string >& missing_symbols,
-                           const bool                        editable_dictionary = false,
-                           std::size_t                       max_dico_entries
-                           = std::numeric_limits< std::size_t >::max());
+      [[nodiscard]] DBTranslator* create(const Variable&                   var,
+                                         const std::vector< std::string >& missing_symbols,
+                                         const bool                        editable_dictionary = false,
+                                         std::size_t                       max_dico_entries
+                                         = std::numeric_limits< std::size_t >::max());
 
     } /* namespace DBTranslators */
 

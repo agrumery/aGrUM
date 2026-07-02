@@ -89,12 +89,12 @@ namespace gum::aggregator {
      * @warning you must deallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    MultiDimContainer< GUM_SCALAR >* newFactory() const final;
+    [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const final;
 
-    [[nodiscard]] std::string aggregatorName() const final;
+    std::string aggregatorName() const final;
 
     protected:
-    [[nodiscard]] Idx neutralElt_() const final;
+    Idx neutralElt_() const final;
     [[nodiscard]] Idx
         fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const final;
 

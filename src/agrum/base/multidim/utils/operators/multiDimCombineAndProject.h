@@ -104,7 +104,7 @@ namespace gum {
      * @return a new fresh MultiDimCombineAndProject with the same combination
      * and projection functions.
      */
-    virtual MultiDimCombineAndProject< TABLE >* clone() const = 0;
+    [[nodiscard]] virtual MultiDimCombineAndProject< TABLE >* clone() const = 0;
 
     /// @}
     // ========================================================================

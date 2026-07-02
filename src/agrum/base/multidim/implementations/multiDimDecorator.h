@@ -225,7 +225,7 @@ namespace gum {
     virtual GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
                                GUM_ELEMENT base) const final;
 
-    virtual MultiDimDecorator< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] virtual MultiDimDecorator< GUM_ELEMENT >* newFactory() const = 0;
 
     virtual void beginMultipleChanges() final;
 

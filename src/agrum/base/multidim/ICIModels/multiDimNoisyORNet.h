@@ -116,7 +116,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    [[nodiscard]] virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
     // ============================================================================
     /// @name Accessors / Modifiers
@@ -125,7 +125,7 @@ namespace gum {
 
     GUM_SCALAR get(const Instantiation& i) const final;
 
-    [[nodiscard]] std::string toString() const final;
+    std::string toString() const final;
 
     ///
     /**
@@ -139,7 +139,7 @@ namespace gum {
      * which is the best functions to use, say, when we wish to use operators
      * such as operator+ on two MultiDimImplementations.
      */
-    [[nodiscard]] const std::string& name() const final;
+    const std::string& name() const final;
 
     /// @}
   };

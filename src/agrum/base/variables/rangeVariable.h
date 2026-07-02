@@ -93,7 +93,7 @@ namespace gum {
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    RangeVariable* clone() const final;
+    [[nodiscard]] RangeVariable* clone() const final;
 
     /// @}
 

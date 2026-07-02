@@ -112,7 +112,7 @@ namespace gum {
      *  orient a residual undirected edge).
      *  @return the list of arbitrarily chosen arcs, in order of selection
      */
-    [[nodiscard]] const std::vector< Arc >& choices() const { return _choices_; }
+    const std::vector< Arc >& choices() const { return _choices_; }
 
     private:
     /// Applies Meek rules R1–R4 exhaustively and returns the resulting graph.

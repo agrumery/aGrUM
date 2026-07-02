@@ -174,10 +174,10 @@ namespace gum {
     IncrementalTriangulation& operator=(IncrementalTriangulation&& from);
 
     /// virtual clone constructor
-    virtual IncrementalTriangulation* newFactory() const final;
+    [[nodiscard]] virtual IncrementalTriangulation* newFactory() const final;
 
     /// virtual copy constructor
-    virtual IncrementalTriangulation* copyFactory() const final;
+    [[nodiscard]] virtual IncrementalTriangulation* copyFactory() const final;
 
     /// checks that the incremental triangulation is consistent
     bool checkConsistency();

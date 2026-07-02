@@ -103,7 +103,7 @@ namespace gum {
                      = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual Prior* clone() const = 0;
+      [[nodiscard]] virtual Prior* clone() const = 0;
 
       /// destructor
       virtual ~Prior();

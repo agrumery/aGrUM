@@ -180,7 +180,7 @@ namespace gum {
 
     virtual Size realSize() const;
 
-    virtual MultiDimBijArray< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] virtual MultiDimBijArray< GUM_ELEMENT >* newFactory() const;
 
     /// @}
 

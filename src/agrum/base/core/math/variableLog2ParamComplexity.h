@@ -102,7 +102,7 @@ namespace gum {
     VariableLog2ParamComplexity(VariableLog2ParamComplexity&& from);
 
     /// virtual copy constructor
-    virtual VariableLog2ParamComplexity* clone() const;
+    [[nodiscard]] virtual VariableLog2ParamComplexity* clone() const;
 
     /// destructor
     virtual ~VariableLog2ParamComplexity();

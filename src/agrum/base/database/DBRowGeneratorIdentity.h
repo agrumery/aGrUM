@@ -110,7 +110,7 @@ namespace gum {
       DBRowGeneratorIdentity(DBRowGeneratorIdentity&& from);
 
       /// virtual copy constructor
-      DBRowGeneratorIdentity* clone() const final;
+      [[nodiscard]] DBRowGeneratorIdentity* clone() const final;
 
       /// destructor
       ~DBRowGeneratorIdentity();

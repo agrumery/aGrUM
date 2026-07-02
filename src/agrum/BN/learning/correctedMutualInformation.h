@@ -136,7 +136,7 @@ namespace gum {
       CorrectedMutualInformation(CorrectedMutualInformation&& from);
 
       /// virtual copy constructor
-      virtual CorrectedMutualInformation* clone() const;
+      [[nodiscard]] virtual CorrectedMutualInformation* clone() const;
 
       /// destructor
       virtual ~CorrectedMutualInformation();

@@ -79,10 +79,10 @@ namespace gum {
     explicit IScheduleMultiDim(const Idx id = 0);
 
     /// virtual copy constructor
-    virtual IScheduleMultiDim* clone() const = 0;
+    [[nodiscard]] virtual IScheduleMultiDim* clone() const = 0;
 
     /// virtual copy constructor enabling to force a copy of the content
-    virtual IScheduleMultiDim* clone(bool force_copy) const = 0;
+    [[nodiscard]] virtual IScheduleMultiDim* clone(bool force_copy) const = 0;
 
     /// destructor
     virtual ~IScheduleMultiDim();

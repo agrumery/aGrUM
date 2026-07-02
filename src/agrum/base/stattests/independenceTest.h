@@ -114,7 +114,7 @@ namespace gum {
                        = Bijection< NodeId, std::size_t >());
 
       /// virtual copy constructor
-      virtual IndependenceTest* clone() const = 0;
+      [[nodiscard]] virtual IndependenceTest* clone() const = 0;
 
       /// destructor
       virtual ~IndependenceTest();

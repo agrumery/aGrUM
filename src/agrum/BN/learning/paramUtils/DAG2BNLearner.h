@@ -84,7 +84,7 @@ namespace gum {
       DAG2BNLearner(DAG2BNLearner&& from) noexcept;
 
       /// virtual copy constructor
-      virtual DAG2BNLearner* clone() const;
+      [[nodiscard]] virtual DAG2BNLearner* clone() const;
 
       /// destructor
       ~DAG2BNLearner() override;

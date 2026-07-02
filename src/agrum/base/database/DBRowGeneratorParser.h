@@ -100,7 +100,7 @@ namespace gum {
       DBRowGeneratorParser(DBRowGeneratorParser&& filter);
 
       /// virtual copy constructor
-      virtual DBRowGeneratorParser* clone() const;
+      [[nodiscard]] virtual DBRowGeneratorParser* clone() const;
 
       /// destructor
       virtual ~DBRowGeneratorParser();

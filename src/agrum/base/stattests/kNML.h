@@ -126,7 +126,7 @@ namespace gum {
       KNML(KNML&& from);
 
       /// virtual copy constructor
-      virtual KNML* clone() const;
+      [[nodiscard]] virtual KNML* clone() const;
 
       /// destructor
       virtual ~KNML();

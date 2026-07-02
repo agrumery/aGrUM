@@ -199,7 +199,7 @@ namespace gum {
       DBInitializerFromSQL(DBInitializerFromSQL&& from);
 
       /// virtual copy constructor
-      virtual DBInitializerFromSQL* clone() const;
+      [[nodiscard]] virtual DBInitializerFromSQL* clone() const;
 
       /// destructor
       virtual ~DBInitializerFromSQL();

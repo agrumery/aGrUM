@@ -113,7 +113,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
 
     void add(const DiscreteVariable& v);
 

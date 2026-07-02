@@ -86,7 +86,7 @@ namespace gum {
      */
     virtual ~MultiDimReadOnly();
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
 
     /// @}
     // =========================================================================

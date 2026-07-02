@@ -134,7 +134,7 @@ namespace gum {
       ScoreK2(ScoreK2&& from);
 
       /// virtual copy constructor
-      virtual ScoreK2* clone() const;
+      [[nodiscard]] virtual ScoreK2* clone() const;
 
       /// destructor
       virtual ~ScoreK2();

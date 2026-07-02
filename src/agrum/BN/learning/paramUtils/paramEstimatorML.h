@@ -127,7 +127,7 @@ namespace gum {
       ParamEstimatorML(ParamEstimatorML&& from);
 
       /// virtual copy constructor
-      virtual ParamEstimatorML* clone() const;
+      [[nodiscard]] virtual ParamEstimatorML* clone() const;
 
       /// destructor
       virtual ~ParamEstimatorML();

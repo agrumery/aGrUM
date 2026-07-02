@@ -125,7 +125,7 @@ namespace gum {
       ScoreLog2Likelihood(ScoreLog2Likelihood&& from);
 
       /// virtual copy constructor
-      virtual ScoreLog2Likelihood* clone() const;
+      [[nodiscard]] virtual ScoreLog2Likelihood* clone() const;
 
       /// destructor
       virtual ~ScoreLog2Likelihood();

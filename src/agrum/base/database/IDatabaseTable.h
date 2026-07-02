@@ -792,7 +792,7 @@ namespace gum {
       IDatabaseTable(IDatabaseTable< T_DATA >&& from);
 
       /// virtual copy constructor
-      virtual IDatabaseTable< T_DATA >* clone() const = 0;
+      [[nodiscard]] virtual IDatabaseTable< T_DATA >* clone() const = 0;
 
       /// destructor
       virtual ~IDatabaseTable();

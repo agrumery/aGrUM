@@ -177,7 +177,7 @@ namespace gum {
       RecordCounter(RecordCounter&& from);
 
       /// virtual copy constructor
-      virtual RecordCounter* clone() const;
+      [[nodiscard]] virtual RecordCounter* clone() const;
 
       /// destructor
       virtual ~RecordCounter();

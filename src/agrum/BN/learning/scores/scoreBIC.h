@@ -125,7 +125,7 @@ namespace gum {
       ScoreBIC(ScoreBIC&& from);
 
       /// virtual copy constructor
-      virtual ScoreBIC* clone() const;
+      [[nodiscard]] virtual ScoreBIC* clone() const;
 
       /// destructor
       virtual ~ScoreBIC();

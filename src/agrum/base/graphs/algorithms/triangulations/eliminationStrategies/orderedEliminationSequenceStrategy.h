@@ -101,10 +101,10 @@ namespace gum {
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual OrderedEliminationSequenceStrategy* newFactory() const final;
+    [[nodiscard]] virtual OrderedEliminationSequenceStrategy* newFactory() const final;
 
     /// virtual copy constructor
-    virtual OrderedEliminationSequenceStrategy* copyFactory() const final;
+    [[nodiscard]] virtual OrderedEliminationSequenceStrategy* copyFactory() const final;
 
     /// @}
 

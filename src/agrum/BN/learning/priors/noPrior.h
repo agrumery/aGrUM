@@ -91,7 +91,7 @@ namespace gum {
       NoPrior(NoPrior&& from);
 
       /// virtual copy constructor
-      virtual NoPrior* clone() const;
+      [[nodiscard]] virtual NoPrior* clone() const;
 
       /// destructor
       virtual ~NoPrior();

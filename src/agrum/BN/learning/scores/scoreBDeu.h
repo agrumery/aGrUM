@@ -132,7 +132,7 @@ namespace gum {
       ScoreBDeu(ScoreBDeu&& from);
 
       /// virtual copy constructor
-      virtual ScoreBDeu* clone() const;
+      [[nodiscard]] virtual ScoreBDeu* clone() const;
 
       /// destructor
       virtual ~ScoreBDeu();

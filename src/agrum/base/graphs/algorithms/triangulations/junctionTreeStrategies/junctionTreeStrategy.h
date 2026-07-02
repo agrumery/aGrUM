@@ -74,13 +74,13 @@ namespace gum {
     virtual ~JunctionTreeStrategy();
 
     /// create a clone not assigned to any triangulation algorithm
-    virtual JunctionTreeStrategy* newFactory() const = 0;
+    [[nodiscard]] virtual JunctionTreeStrategy* newFactory() const = 0;
 
     /// virtual copy constructor
     /** @param triangulation if triangulation is different from nullptr, this
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
-    virtual JunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation = nullptr) const
+    [[nodiscard]] virtual JunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation = nullptr) const
         = 0;
 
     /// @}

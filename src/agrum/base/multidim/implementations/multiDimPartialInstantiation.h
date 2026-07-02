@@ -111,7 +111,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >* newFactory() const;
+    [[nodiscard]] virtual MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >* newFactory() const;
 
     /// @}
     // =========================================================================

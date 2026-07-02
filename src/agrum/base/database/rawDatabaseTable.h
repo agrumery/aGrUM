@@ -191,7 +191,7 @@ namespace gum {
       RawDatabaseTable(RawDatabaseTable&& from);
 
       /// virtual copy constructor
-      virtual RawDatabaseTable* clone() const final;
+      [[nodiscard]] virtual RawDatabaseTable* clone() const final;
 
       /// destructor
       virtual ~RawDatabaseTable();

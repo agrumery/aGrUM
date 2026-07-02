@@ -40,6 +40,8 @@
 
 #pragma once
 
+#include <fstream>
+#include <sstream>
 
 #include <agrum/ID/io/BIFXML/BIFXMLIDWriter.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

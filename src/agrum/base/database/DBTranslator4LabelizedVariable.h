@@ -241,7 +241,7 @@ namespace gum {
       DBTranslator4LabelizedVariable(DBTranslator4LabelizedVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4LabelizedVariable* clone() const;
+      [[nodiscard]] virtual DBTranslator4LabelizedVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4LabelizedVariable();

@@ -115,7 +115,7 @@ namespace gum {
       DBRowGeneratorEM(DBRowGeneratorEM< GUM_SCALAR >&& from) noexcept;
 
       /// virtual copy constructor
-      DBRowGeneratorEM< GUM_SCALAR >* clone() const final;
+      [[nodiscard]] DBRowGeneratorEM< GUM_SCALAR >* clone() const final;
 
       /// destructor
       ~DBRowGeneratorEM();

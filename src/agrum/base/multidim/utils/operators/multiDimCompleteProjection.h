@@ -87,7 +87,7 @@ namespace gum {
      * @return a new fresh MultiDimCombinator with the same projection
      * function.
      */
-    virtual MultiDimCompleteProjection< GUM_ELEMENT, TABLE >* newFactory() const;
+    [[nodiscard]] virtual MultiDimCompleteProjection< GUM_ELEMENT, TABLE >* newFactory() const;
 
     /// @}
     // ========================================================================

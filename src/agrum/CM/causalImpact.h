@@ -86,11 +86,11 @@ namespace gum {
     Tensor< GUM_SCALAR > eval() const { return _resultFormula_.eval(); }
 
     /// @brief Generates a string representation of the formula's AST.
-    [[nodiscard]] std::string toString() const { return _resultFormula_.toString(); }
+    std::string toString() const { return _resultFormula_.toString(); }
 
     /// @brief Generates a full LaTeX equation: Query = Formula.
-    [[nodiscard]] std::string toLatex(std::string_view doOperatorPrefix = "do(",
-                                      std::string_view doOperatorSuffix = ")") const {
+    std::string toLatex(std::string_view doOperatorPrefix = "do(",
+                        std::string_view doOperatorSuffix = ")") const {
       return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
     }
 
@@ -98,8 +98,8 @@ namespace gum {
      * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
      * @note This version does not yet support specific variable values.
      */
-    [[nodiscard]] std::string latexQuery(std::string_view doOperatorPrefix = "do(",
-                                         std::string_view doOperatorSuffix = ")") const {
+    std::string latexQuery(std::string_view doOperatorPrefix = "do(",
+                           std::string_view doOperatorSuffix = ")") const {
       return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
     }
 
@@ -135,22 +135,22 @@ namespace gum {
 
     const CausalModel< GUM_SCALAR >& cm() const { return _resultFormula_.cm(); }
 
-    [[nodiscard]] const NodeSet& on() const { return _resultFormula_.on(); }
+    const NodeSet& on() const { return _resultFormula_.on(); }
 
-    [[nodiscard]] const NodeSet& doing() const { return _resultFormula_.doing(); }
+    const NodeSet& doing() const { return _resultFormula_.doing(); }
 
-    [[nodiscard]] const NodeSet& knowing() const { return _resultFormula_.knowing(); }
+    const NodeSet& knowing() const { return _resultFormula_.knowing(); }
 
-    [[nodiscard]] const std::string& explanation() const { return _resultFormula_.explanation(); }
+    const std::string& explanation() const { return _resultFormula_.explanation(); }
 
     /// Convenience: return names corresponding to stored node ids (sorted).
-    [[nodiscard]] std::vector< std::string > onNames() const { return _resultFormula_.onNames(); }
+    std::vector< std::string > onNames() const { return _resultFormula_.onNames(); }
 
-    [[nodiscard]] std::vector< std::string > doingNames() const {
+    std::vector< std::string > doingNames() const {
       return _resultFormula_.doingNames();
     }
 
-    [[nodiscard]] std::vector< std::string > knowingNames() const {
+    std::vector< std::string > knowingNames() const {
       return _resultFormula_.knowingNames();
     }
 

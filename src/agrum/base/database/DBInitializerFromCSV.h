@@ -180,7 +180,7 @@ namespace gum {
       DBInitializerFromCSV(DBInitializerFromCSV&& from);
 
       /// virtual copy constructor
-      virtual DBInitializerFromCSV* clone() const;
+      [[nodiscard]] virtual DBInitializerFromCSV* clone() const;
 
       /// destructor
       virtual ~DBInitializerFromCSV();

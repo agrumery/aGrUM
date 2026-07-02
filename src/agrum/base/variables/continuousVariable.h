@@ -98,7 +98,7 @@ namespace gum {
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual ContinuousVariable< GUM_SCALAR >* clone() const;
+    [[nodiscard]] virtual ContinuousVariable< GUM_SCALAR >* clone() const;
 
     /// @}
 

@@ -114,7 +114,7 @@ namespace gum {
       DBRowGenerator4CompleteRows(DBRowGenerator4CompleteRows&& from);
 
       /// virtual copy constructor
-      DBRowGenerator4CompleteRows* clone() const final;
+      [[nodiscard]] DBRowGenerator4CompleteRows* clone() const final;
 
       /// destructor
       ~DBRowGenerator4CompleteRows();

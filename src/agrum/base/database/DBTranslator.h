@@ -184,7 +184,7 @@ namespace gum {
       DBTranslator(DBTranslator&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator* clone() const = 0;
+      [[nodiscard]] virtual DBTranslator* clone() const = 0;
 
       /// destructor
       virtual ~DBTranslator();

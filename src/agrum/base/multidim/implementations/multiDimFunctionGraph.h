@@ -175,7 +175,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
 
     virtual GUM_ELEMENT get(const Instantiation& i) const;
 
@@ -350,13 +350,13 @@ namespace gum {
      *
      * @return Returns a reduced and ordered instance.
      */
-    static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getReducedAndOrderedInstance();
+    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getReducedAndOrderedInstance();
 
     /**
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
-    static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getTreeInstance();
+    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getTreeInstance();
 
     /// @}
 

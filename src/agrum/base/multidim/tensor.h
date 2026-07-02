@@ -151,7 +151,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    Tensor< GUM_SCALAR >* newFactory() const final;
+    [[nodiscard]] Tensor< GUM_SCALAR >* newFactory() const final;
 
     /// @}
     // ========================================================================

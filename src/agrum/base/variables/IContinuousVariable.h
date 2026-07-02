@@ -88,7 +88,7 @@ namespace gum {
     virtual ~IContinuousVariable();
 
     /// Copy Factory
-    virtual IContinuousVariable* clone() const = 0;
+    [[nodiscard]] virtual IContinuousVariable* clone() const = 0;
 
     /// @}
 

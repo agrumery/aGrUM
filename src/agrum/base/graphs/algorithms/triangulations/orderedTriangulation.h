@@ -120,10 +120,10 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual OrderedTriangulation* newFactory() const final;
+    [[nodiscard]] virtual OrderedTriangulation* newFactory() const final;
 
     /// virtual copy constructor
-    virtual OrderedTriangulation* copyFactory() const final;
+    [[nodiscard]] virtual OrderedTriangulation* copyFactory() const final;
 
     /// destructor
     virtual ~OrderedTriangulation();

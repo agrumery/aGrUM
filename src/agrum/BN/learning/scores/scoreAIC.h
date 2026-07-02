@@ -125,7 +125,7 @@ namespace gum {
       ScoreAIC(ScoreAIC&& from);
 
       /// virtual copy constructor
-      virtual ScoreAIC* clone() const;
+      [[nodiscard]] virtual ScoreAIC* clone() const;
 
       /// destructor
       virtual ~ScoreAIC();

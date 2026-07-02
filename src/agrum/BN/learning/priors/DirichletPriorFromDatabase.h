@@ -100,7 +100,7 @@ namespace gum {
       DirichletPriorFromDatabase(DirichletPriorFromDatabase&& from) noexcept;
 
       /// virtual copy constructor
-      virtual DirichletPriorFromDatabase* clone() const;
+      [[nodiscard]] virtual DirichletPriorFromDatabase* clone() const;
 
       /// destructor
       virtual ~DirichletPriorFromDatabase();

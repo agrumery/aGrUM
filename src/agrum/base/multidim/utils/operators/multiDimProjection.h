@@ -144,7 +144,7 @@ namespace gum {
      * @return a new fresh MultiDimCombinator with the same projection
      * function.
      */
-    virtual MultiDimProjection< TABLE >* clone() const;
+    [[nodiscard]] virtual MultiDimProjection< TABLE >* clone() const;
 
     /// @}
     // ========================================================================

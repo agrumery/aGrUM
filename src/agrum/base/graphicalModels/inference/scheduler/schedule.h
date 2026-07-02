@@ -93,7 +93,7 @@ namespace gum {
     Schedule(Schedule&& from);
 
     /// virtual copy constructor
-    virtual Schedule* clone() const;
+    [[nodiscard]] virtual Schedule* clone() const;
 
     /// destructor
     virtual ~Schedule();

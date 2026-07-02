@@ -127,7 +127,7 @@ namespace gum {
       ScorefNML(ScorefNML&& from);
 
       /// virtual copy constructor
-      virtual ScorefNML* clone() const;
+      [[nodiscard]] virtual ScorefNML* clone() const;
 
       /// destructor
       virtual ~ScorefNML();

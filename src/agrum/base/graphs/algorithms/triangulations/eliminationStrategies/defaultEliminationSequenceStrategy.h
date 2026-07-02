@@ -147,7 +147,7 @@ namespace gum {
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual DefaultEliminationSequenceStrategy* newFactory() const final;
+    [[nodiscard]] virtual DefaultEliminationSequenceStrategy* newFactory() const final;
 
     /// virtual copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -159,7 +159,7 @@ namespace gum {
      * virtual copy constructor, be sure that either the current or the newly
      * created strategy is used for a triangulation but not both. This will
      * necessarily be OK in DefaultTriangulations. */
-    virtual DefaultEliminationSequenceStrategy* copyFactory() const final;
+    [[nodiscard]] virtual DefaultEliminationSequenceStrategy* copyFactory() const final;
 
     /// @}
 

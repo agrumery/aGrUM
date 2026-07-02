@@ -105,7 +105,7 @@ namespace gum {
     ~LabelizedVariable() final;
 
     /// a virtual clone ...
-    LabelizedVariable* clone() const final;
+    [[nodiscard]] LabelizedVariable* clone() const final;
 
     /// @}
 

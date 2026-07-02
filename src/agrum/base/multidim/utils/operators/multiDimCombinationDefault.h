@@ -148,7 +148,7 @@ namespace gum {
      * @return A new fresh MultiDimCombinator with the same combination
      * function.
      */
-    virtual MultiDimCombinationDefault< TABLE >* clone() const;
+    [[nodiscard]] virtual MultiDimCombinationDefault< TABLE >* clone() const;
 
     /// @}
     // ========================================================================

@@ -246,7 +246,7 @@ namespace gum {
       DBTranslator4ContinuousVariable(DBTranslator4ContinuousVariable&& from);
 
       /// virtual copy constructor
-      virtual DBTranslator4ContinuousVariable* clone() const;
+      [[nodiscard]] virtual DBTranslator4ContinuousVariable* clone() const;
 
       /// destructor
       virtual ~DBTranslator4ContinuousVariable();

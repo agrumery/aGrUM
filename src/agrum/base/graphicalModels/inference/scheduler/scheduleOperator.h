@@ -103,7 +103,7 @@ namespace gum {
                               const bool                 are_results_persistent);
 
     /// virtual copy constructor
-    virtual ScheduleOperator* clone() const = 0;
+    [[nodiscard]] virtual ScheduleOperator* clone() const = 0;
 
     /// destructor
     /** @warning If the ScheduleOperator has created an output ScheduleMultiDim,

@@ -289,7 +289,7 @@ namespace gum {
       IdCondSet(IdCondSet&& from);
 
       /// virtual copy constructor
-      virtual IdCondSet* clone() const;
+      [[nodiscard]] virtual IdCondSet* clone() const;
 
       /// destructor
       virtual ~IdCondSet();

@@ -93,7 +93,7 @@ namespace gum {
       ScoringCache(ScoringCache&& from);
 
       /// virtual copy constructor
-      virtual ScoringCache* clone() const;
+      [[nodiscard]] virtual ScoringCache* clone() const;
 
       /// destructor
       virtual ~ScoringCache();
