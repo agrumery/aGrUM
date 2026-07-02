@@ -120,7 +120,7 @@ namespace gum {
       IndepTestChi2(IndepTestChi2&& from) noexcept;
 
       /// virtual copy constructor
-      IndepTestChi2* clone() const override;
+      [[nodiscard]] IndepTestChi2* clone() const override;
 
       /// destructor
       ~IndepTestChi2() override;

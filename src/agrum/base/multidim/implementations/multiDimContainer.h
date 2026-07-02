@@ -140,7 +140,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    virtual ~MultiDimContainer();
+    ~MultiDimContainer() override;
 
     /// @}
     // =========================================================================
@@ -295,14 +295,14 @@ namespace gum {
      * virtualize the access to master pointer.
      * @return Returns the ref to content as MultiDimAdressable&
      */
-    virtual MultiDimAdressable& getMasterRef();
+    MultiDimAdressable& getMasterRef() override;
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
      */
-    virtual const MultiDimAdressable& getMasterRef() const;
+    const MultiDimAdressable& getMasterRef() const override;
 
 
     /**
@@ -331,7 +331,7 @@ namespace gum {
      *
      * @return Returns an empty clone of this object with the same type.
      */
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
 
     /// @}
     // =========================================================================
@@ -349,7 +349,7 @@ namespace gum {
      * @brief Display the internal representation of i.
      * @return Returns an internal representation of i.
      */
-    virtual std::string toString(const Instantiation* i) const = 0;
+    std::string toString(const Instantiation* i) const override = 0;
 
     /**
      * @brief Test if this MultiDimContainer is equal to p.

@@ -77,10 +77,10 @@ namespace gum {
     ScheduledInference(ScheduledInference&& from);
 
     /// virtual copy constructor
-    virtual ScheduledInference* clone() const;
+    [[nodiscard]] virtual ScheduledInference* clone() const;
 
     /// destructor
-    virtual ~ScheduledInference();
+    ~ScheduledInference() override;
 
     /// @}
 

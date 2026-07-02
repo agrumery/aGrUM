@@ -74,7 +74,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~UGmodel();
+    ~UGmodel() override;
 
     /**
      * Copy constructor. Do nothing.

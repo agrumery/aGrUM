@@ -74,7 +74,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~SimpleUTGenerator();
+    ~SimpleUTGenerator() override;
     /// @}
 
     // ############################################################################
@@ -86,14 +86,14 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx& varId, const Tensor< float >& ut);
+    void generateUT(const Idx& varId, const Tensor< float >& ut) override;
 
     /**
      * Generates a UT using doubles.
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx& varId, const Tensor< double >& ut);
+    void generateUT(const Idx& varId, const Tensor< double >& ut) override;
     /// @}
   };
 

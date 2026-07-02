@@ -103,10 +103,10 @@ namespace gum {
     ScheduleDeletion(ScheduleDeletion< TABLE >&& from);
 
     /// virtual copy constructor
-    ScheduleDeletion< TABLE >* clone() const final;
+    [[nodiscard]] ScheduleDeletion< TABLE >* clone() const final;
 
     /// destructor
-    virtual ~ScheduleDeletion();
+    ~ScheduleDeletion() override;
 
     /// @}
 

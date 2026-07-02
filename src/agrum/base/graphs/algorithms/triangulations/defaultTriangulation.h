@@ -104,7 +104,7 @@ namespace gum {
     DefaultTriangulation(DefaultTriangulation&& from);
 
     /// destructor
-    ~DefaultTriangulation();
+    ~DefaultTriangulation() override;
 
     /// virtual clone constructor
     /** returns a fresh triangulation (over an empty graph) of the same
@@ -113,10 +113,10 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual DefaultTriangulation* newFactory() const;
+    [[nodiscard]] DefaultTriangulation* newFactory() const override;
 
     /// virtual copy constructor
-    virtual DefaultTriangulation* copyFactory() const;
+    [[nodiscard]] DefaultTriangulation* copyFactory() const override;
 
     /// @}
 

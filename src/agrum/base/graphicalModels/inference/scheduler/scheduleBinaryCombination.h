@@ -128,12 +128,12 @@ namespace gum {
     ScheduleBinaryCombination(ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >&& from);
 
     /// virtual copy constructor
-    ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >* clone() const final;
+    [[nodiscard]] ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >* clone() const final;
 
     /// destructor
     /** @warning If the ScheduleOperator has created some output
      * ScheduleMultiDim, upon destruction, it is removed from memory */
-    virtual ~ScheduleBinaryCombination();
+    ~ScheduleBinaryCombination() override;
 
     /// @}
 

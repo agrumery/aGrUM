@@ -116,7 +116,7 @@ namespace gum {
      */
     virtual ~MultiDimArray();
 
-    MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
     /// }
     // =========================================================================

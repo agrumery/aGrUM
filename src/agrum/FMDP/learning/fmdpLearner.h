@@ -99,7 +99,7 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~FMDPLearner();
+    ~FMDPLearner() override;
 
     /// @}
 
@@ -112,7 +112,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    void initialize(FMDP< double >* fmdp);
+    void initialize(FMDP< double >* fmdp) override;
 
     // ==========================================================================
     ///
@@ -201,7 +201,7 @@ namespace gum {
      * (can trigger a new planning)
      */
     // ==========================================================================
-    bool addObservation(Idx actionId, const Observation* obs);
+    bool addObservation(Idx actionId, const Observation* obs) override;
 
 
     // ==========================================================================
@@ -209,7 +209,7 @@ namespace gum {
      * Starts an update of datastructure in the associated FMDP
      */
     // ==========================================================================
-    void updateFMDP();
+    void updateFMDP() override;
 
     /// @}
 
@@ -226,22 +226,22 @@ namespace gum {
      * @return
      */
     // ==========================================================================
-    Size size();
+    Size size() override;
 
     // ==========================================================================
     /// \brief extractCount
     // ==========================================================================
-    const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var) const {
+    const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var) const override {
       return _actionLearners_[actionId]->getWithDefault(var, nullptr);
     }
 
-    virtual double rMax() const { return _rmax_; }
+    double rMax() const override { return _rmax_; }
 
     private:
     double _rmax_;
 
     public:
-    virtual double modaMax() const { return _modaMax_; }
+    double modaMax() const override { return _modaMax_; }
 
     private:
     double _modaMax_;

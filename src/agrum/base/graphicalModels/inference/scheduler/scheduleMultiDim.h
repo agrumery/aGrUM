@@ -160,13 +160,13 @@ namespace gum {
     ScheduleMultiDim(ScheduleMultiDim< TABLE >&& from);
 
     /// virtual copy constructor
-    virtual ScheduleMultiDim< TABLE >* clone() const;
+    [[nodiscard]] ScheduleMultiDim< TABLE >* clone() const override;
 
     /// virtual copy constructor enabling to force a copy of the content
-    virtual ScheduleMultiDim< TABLE >* clone(bool force_copy) const;
+    [[nodiscard]] ScheduleMultiDim< TABLE >* clone(bool force_copy) const override;
 
     /// destructor
-    virtual ~ScheduleMultiDim();
+    ~ScheduleMultiDim() override;
 
     /// @}
 
@@ -191,7 +191,7 @@ namespace gum {
     /// checks whether two ScheduleMultiDim have the same ID and type
     /** Two ScheduleMultiDim having the same ID should imply that they also
      * contain the same sequences of variables and the same tables. */
-    virtual bool operator==(const IScheduleMultiDim&) const;
+    bool operator==(const IScheduleMultiDim&) const override;
 
     /// checks whether two ScheduleMultiDim have different IDs
     /** Two ScheduleMultiDim having different IDs should mean that they either
@@ -201,7 +201,7 @@ namespace gum {
     /// checks whether two ScheduleMultiDim have different IDs or types
     /** Two ScheduleMultiDim having different IDs should mean that they either
      * contain the different sequences of variables and/or different tables. */
-    virtual bool operator!=(const IScheduleMultiDim&) const;
+    bool operator!=(const IScheduleMultiDim&) const override;
 
     /// @}
 
@@ -217,7 +217,7 @@ namespace gum {
      * we do not check for the ScheduleMultiDim's ID nor for the content of
      * the table stored into the IScheduleMultiDim, if any.
      * @param m the ScheduleMultiDim with which we test similarity. */
-    virtual bool hasSameVariables(const IScheduleMultiDim& m) const;
+    bool hasSameVariables(const IScheduleMultiDim& m) const override;
 
     /// checks whether two ScheduleMultiDim have the same variables
     /** Method hasSameVariables tests whether two ScheduleMultiDim contain the same
@@ -232,7 +232,7 @@ namespace gum {
      * pointed to by the ScheduleMultiDim are the same (i.e., either they are
      * both not yet allocated but have the same sequences of variables or they
      * have the same content) */
-    virtual bool hasSameContent(const IScheduleMultiDim&) const;
+    bool hasSameContent(const IScheduleMultiDim&) const override;
 
     /// checks whether two ScheduleMultiDim contain precisely the same table
     /** By "contain precisely the same table", we mean that the actual tables

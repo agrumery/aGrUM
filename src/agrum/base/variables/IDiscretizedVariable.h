@@ -75,10 +75,10 @@ namespace gum {
     IDiscretizedVariable(const IDiscretizedVariable& from);
 
     /// destructor
-    virtual ~IDiscretizedVariable();
+    ~IDiscretizedVariable() override;
 
     /// Copy Factory
-    IDiscretizedVariable* clone() const = 0;
+    [[nodiscard]] IDiscretizedVariable* clone() const override = 0;
 
     /// @}
 

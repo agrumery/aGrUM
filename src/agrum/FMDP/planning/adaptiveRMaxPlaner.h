@@ -127,7 +127,7 @@ namespace gum {
     // ==========================================================================
 
     public:
-    ~AdaptiveRMaxPlaner();
+    ~AdaptiveRMaxPlaner() override;
 
     /// @}
 
@@ -145,7 +145,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    void initialize(const FMDP< double >* fmdp);
+    void initialize(const FMDP< double >* fmdp) override;
 
 
     // ==========================================================================
@@ -158,7 +158,7 @@ namespace gum {
      * or when nbStep have been performed
      */
     // ==========================================================================
-    void makePlanning(Idx nbStep = 1000000);
+    void makePlanning(Idx nbStep = 1000000) override;
 
     /// @}
 
@@ -172,12 +172,12 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    virtual void initVFunction_();
+    void initVFunction_() override;
 
     // ==========================================================================
     /// Performs a single step of value iteration
     // ==========================================================================
-    virtual MultiDimFunctionGraph< double >* valueIteration_();
+    MultiDimFunctionGraph< double >* valueIteration_() override;
 
     /// @}
 
@@ -191,7 +191,7 @@ namespace gum {
     // ==========================================================================
     /// Perform the required tasks to extract an optimal policy
     // ==========================================================================
-    virtual void evalPolicy_();
+    void evalPolicy_() override;
 
     /// @}
 
@@ -219,7 +219,7 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) {
+    void checkState(const Instantiation& newState, Idx actionId) override {
       if (!_initializedTable_[actionId]) {
         _counterTable_[actionId]->reset(newState);
         _initializedTable_[actionId] = true;

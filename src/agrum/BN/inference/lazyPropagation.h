@@ -116,7 +116,7 @@ namespace gum {
     LazyPropagation< GUM_SCALAR >& operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
-    ~LazyPropagation();
+    ~LazyPropagation() override;
 
     /// @}
 

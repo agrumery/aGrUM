@@ -102,7 +102,7 @@ namespace gum {
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    DiscreteVariable* clone() const override = 0;
+    [[nodiscard]] DiscreteVariable* clone() const override = 0;
 
     /// @}
 

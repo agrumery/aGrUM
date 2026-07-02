@@ -109,7 +109,7 @@ namespace gum {
      * @throw FatalError Raised if the state of the factory prevents it to die
      *                   peacefully.
      */
-    ~FMDPFactory();
+    ~FMDPFactory() override;
 
     /// @}
     // ==========================================================================
@@ -125,11 +125,11 @@ namespace gum {
     FMDP< GUM_ELEMENT >* fmdp() const;
 
     /// Returns the current state of the factory.
-    FMDPfactory_state state() const;
+    FMDPfactory_state state() const override;
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    const DiscreteVariable* variable(std::string_view name) const;
+    const DiscreteVariable* variable(std::string_view name) const override;
 
     /// @}
     // ==========================================================================
@@ -138,23 +138,23 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a variable declaration.
-    void startVariableDeclaration();
+    void startVariableDeclaration() override;
 
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    void variableName(std::string_view name);
+    void variableName(std::string_view name) override;
 
     /// Tells the factory the current variable's description.
-    void variableDescription(std::string_view desc);
+    void variableDescription(std::string_view desc) override;
 
     /// Adds a modality to the current variable.
-    void addModality(std::string_view name);
+    void addModality(std::string_view name) override;
 
     /// Tells the factory that we're out of a variable declaration.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
     ///                         enough defined).
-    void endVariableDeclaration();
+    void endVariableDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -163,13 +163,13 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in an action declaration.
-    void startActionDeclaration();
+    void startActionDeclaration() override;
 
     /// Tells the factory to add an action to the current fmdp.
-    void addAction(std::string_view action);
+    void addAction(std::string_view action) override;
 
     /// Tells the factory that we're out of an action declaration.
-    void endActionDeclaration();
+    void endActionDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -178,18 +178,18 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a transition declaration.
-    void startTransitionDeclaration();
+    void startTransitionDeclaration() override;
 
     /// Tells the factory to add a transition table to the current fmdp.
-    void addTransition(std::string_view var, const MultiDimAdressable* transition);
+    void addTransition(std::string_view var, const MultiDimAdressable* transition) override;
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
     /// multiDimFunctionGraph.
-    void addTransition(std::string_view var);
+    void addTransition(std::string_view var) override;
 
     /// Tells the factory that we're out of a transition declaration.
-    void endTransitionDeclaration();
+    void endTransitionDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -198,18 +198,18 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a cost declaration.
-    void startCostDeclaration();
+    void startCostDeclaration() override;
 
     /// Tells the factory to add a cost table to the current fmdp.
-    void addCost(const MultiDimAdressable* cost);
+    void addCost(const MultiDimAdressable* cost) override;
 
     /// Tells the factory to add a cost table to the current fmdp.
     /// This cost table will be extracted from incorporated
     /// multiDimFunctionGraph.
-    void addCost();
+    void addCost() override;
 
     /// Tells the factory that we're out of a cost declaration.
-    void endCostDeclaration();
+    void endCostDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -218,23 +218,23 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a reward declaration.
-    void startRewardDeclaration();
+    void startRewardDeclaration() override;
 
     /// Tells the factory that we're in a reward declaration mode where the
     /// global reward diagram is an operation between
     /// simplier decision diagram..
-    void setOperationModeOn(std::string_view operationType);
+    void setOperationModeOn(std::string_view operationType) override;
 
     /// Tells the factory to add a reward table to the current fmdp.
-    void addReward(const MultiDimAdressable* reward);
+    void addReward(const MultiDimAdressable* reward) override;
 
     /// Tells the factory to add a reward table to the current fmdp.
     /// This reward table will be extracted from incorporated
     /// multiDimFunctionGraph.
-    void addReward();
+    void addReward() override;
 
     /// Tells the factory that we're out of a cost declaration.
-    void endRewardDeclaration();
+    void endRewardDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -243,13 +243,13 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a cost declaration.
-    void startDiscountDeclaration();
+    void startDiscountDeclaration() override;
 
     /// Tells the factory to add a cost table to the current fmdp.
-    void addDiscount(float discount);
+    void addDiscount(float discount) override;
 
     /// Tells the factory that we're out of a cost declaration.
-    void endDiscountDeclaration();
+    void endDiscountDeclaration() override;
 
     /// @}
     // ==========================================================================
@@ -260,16 +260,16 @@ namespace gum {
     /// @{
 
     /// Insert in diagram a non terminal node
-    NodeId addInternalNode(std::string_view name_of_var);
+    NodeId addInternalNode(std::string_view name_of_var) override;
 
     /// Insert in diagram a terminal node
-    NodeId addTerminalNode(float value);
+    NodeId addTerminalNode(float value) override;
 
     ///
-    void addArc(NodeId from, NodeId to, Idx modality);
+    void addArc(NodeId from, NodeId to, Idx modality) override;
 
     /// add an arc in diagram
-    void setRoot(NodeId rootId);
+    void setRoot(NodeId rootId) override;
 
     /// @}
 

@@ -77,16 +77,16 @@ namespace gum {
     DefaultJunctionTreeStrategy(DefaultJunctionTreeStrategy&& from);
 
     /// destructor
-    virtual ~DefaultJunctionTreeStrategy();
+    ~DefaultJunctionTreeStrategy() override;
 
     /// create a clone not assigned to any triangulation algorithm
-    virtual DefaultJunctionTreeStrategy* newFactory() const final;
+    [[nodiscard]] DefaultJunctionTreeStrategy* newFactory() const final;
 
     /// virtual copy constructor
     /** @param triangulation if triangulation is different from nullptr, this
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
-    virtual DefaultJunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation
+    [[nodiscard]] DefaultJunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation
                                                      = nullptr) const final;
 
     /// @}
@@ -103,7 +103,7 @@ namespace gum {
      * If the junctionTreeStrategy needs fill-ins to work properly, its
      * assigned triangulation instance (see method setTriangulation) will be
      * commited to compute them. */
-    virtual bool requiresFillIns() const final;
+    bool requiresFillIns() const final;
 
     /// returns the junction tree computed
     /** The idea behind this method is that the JunctionTreeStrategy asks its
@@ -116,14 +116,14 @@ namespace gum {
      * graph.
      * @throws UndefinedElement is raised if no triangulation has been assigned
      * to the DefaultJunctionTreeStrategy */
-    virtual const CliqueGraph& junctionTree() final;
+    const CliqueGraph& junctionTree() final;
 
     /// assigns the triangulation to the junction tree strategy
     /** @param the triangulation whose resulting cliques will be used to
      * construct the junction tree
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the junction tree strategy. */
-    virtual void setTriangulation(StaticTriangulation* triangulation) final;
+    void setTriangulation(StaticTriangulation* triangulation) final;
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion
@@ -140,7 +140,7 @@ namespace gum {
     virtual NodeId createdClique(const NodeId id) final;
 
     /// resets the current junction tree strategy data structures
-    virtual void clear() final;
+    void clear() final;
 
     /// @}
 

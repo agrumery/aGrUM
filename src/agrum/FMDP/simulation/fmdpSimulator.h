@@ -80,7 +80,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~FMDPSimulator();
+    ~FMDPSimulator() override;
 
     /// @}
 
@@ -90,9 +90,9 @@ namespace gum {
     /// @{
 
     ///
-    double reward() { return _fmdp_->reward()->get(this->currentState_); }
+    double reward() override { return _fmdp_->reward()->get(this->currentState_); }
 
-    void perform(Idx);
+    void perform(Idx) override;
 
     /// @}
 
@@ -101,16 +101,16 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override {
       return _fmdp_->main2prime(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override {
       return _fmdp_->beginVariables();
     }
 
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override {
       return _fmdp_->endVariables();
     }
 
@@ -121,12 +121,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    virtual const std::string& actionName(Idx actionId) { return _fmdp_->actionName(actionId); }
+    const std::string& actionName(Idx actionId) override { return _fmdp_->actionName(actionId); }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() { return _fmdp_->beginActions(); }
+    SequenceIteratorSafe< Idx > beginActions() override { return _fmdp_->beginActions(); }
 
-    SequenceIteratorSafe< Idx > endActions() { return _fmdp_->endActions(); }
+    SequenceIteratorSafe< Idx > endActions() override { return _fmdp_->endActions(); }
 
     /// @}
 

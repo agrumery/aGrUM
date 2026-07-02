@@ -82,7 +82,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~RandomDecider() = default;
+    ~RandomDecider() override = default;
 
     /// @}
 
@@ -93,9 +93,9 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) {}
+    void checkState(const Instantiation& newState, Idx actionId) override {}
 
-    ActionSet stateOptimalPolicy(const Instantiation& curState) { return allActions_; }
+    ActionSet stateOptimalPolicy(const Instantiation& curState) override { return allActions_; }
   };
 }   // namespace gum
 #endif   // GUM_RANDOM_DECIDER_H

@@ -104,7 +104,7 @@ namespace gum {
       virtual IConnector< Args... >* clone() const = 0;
 
       /// @brief Create a duplicate connector pointing to a new target.
-      virtual IConnector< Args... >* duplicate(Listener* newTarget) const = 0;
+      [[nodiscard]] virtual IConnector< Args... >* duplicate(Listener* newTarget) const = 0;
     };
 
     // =========================================================================
@@ -151,7 +151,7 @@ namespace gum {
       }
 
       /// @copydoc IConnector::duplicate
-      IConnector< Args... >* duplicate(Listener* newTarget) const override {
+      [[nodiscard]] IConnector< Args... >* duplicate(Listener* newTarget) const override {
         return new Connector< TargetClass, Args... >(static_cast< TargetClass* >(newTarget),
                                                      _action_);
       }

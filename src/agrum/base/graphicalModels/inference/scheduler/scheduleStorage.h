@@ -134,10 +134,10 @@ namespace gum {
     ScheduleStorage(ScheduleStorage< TABLE, CONTAINER >&& from);
 
     /// virtual copy constructor
-    ScheduleStorage< TABLE, CONTAINER >* clone() const final;
+    [[nodiscard]] ScheduleStorage< TABLE, CONTAINER >* clone() const final;
 
     /// destructor
-    virtual ~ScheduleStorage();
+    ~ScheduleStorage() override;
 
     /// @}
 

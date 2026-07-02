@@ -74,10 +74,10 @@ namespace gum {
     SchedulerSequential(SchedulerSequential&& from);
 
     /// virtual copy constructor
-    SchedulerSequential* clone() const final;
+    [[nodiscard]] SchedulerSequential* clone() const final;
 
     /// destructor
-    virtual ~SchedulerSequential();
+    ~SchedulerSequential() override;
 
     /// @}
 

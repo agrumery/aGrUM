@@ -88,7 +88,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~StatisticalLazyDecider() {
+    ~StatisticalLazyDecider() override {
       GUM_DESTRUCTOR(StatisticalLazyDecider);
       ;
     }
@@ -102,7 +102,7 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId = 0) {
+    void checkState(const Instantiation& newState, Idx actionId = 0) override {
       if (!_initialized_) {
         _counter_.reset(newState);
         _initialized_ = true;

@@ -74,16 +74,16 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual UnconstrainedTriangulation* newFactory() const = 0;
+    [[nodiscard]] UnconstrainedTriangulation* newFactory() const override = 0;
 
     /// virtual copy constructor
     /** note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++. */
-    virtual UnconstrainedTriangulation* copyFactory() const = 0;
+    [[nodiscard]] UnconstrainedTriangulation* copyFactory() const override = 0;
 
     /// destructor
-    virtual ~UnconstrainedTriangulation();
+    ~UnconstrainedTriangulation() override;
 
     /// @}
 

@@ -89,10 +89,10 @@ namespace gum {
     Scheduler(Size nb_threads = 0, double max_megabyte_memory = 0.0);
 
     /// virtual copy constructor
-    virtual Scheduler* clone() const = 0;
+    [[nodiscard]] virtual Scheduler* clone() const = 0;
 
     /// destructor
-    virtual ~Scheduler();
+    ~Scheduler() override;
 
     /// @}
 

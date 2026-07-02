@@ -115,7 +115,7 @@ namespace gum {
      * @throw FatalError Raised if the state of the factory prevents it to die
      *                   peacefully.
      */
-    virtual ~BayesNetFactory();
+    ~BayesNetFactory() override;
 
     /// @}
     // ==========================================================================
@@ -158,7 +158,7 @@ namespace gum {
     void startNetworkDeclaration() final;
 
     /// Tells the factory the current variable's type.
-    void variableType(const VarType& type);
+    void variableType(const VarType& type) override;
 
     /// Tells the factory to add a property to the current network.
     void addNetworkProperty(std::string_view propName, std::string_view propValue) final;
@@ -187,10 +187,10 @@ namespace gum {
     void addModality(std::string_view name) final;
 
     /// Adds the min value of the current range variable.
-    void addMin(const long& min);
+    void addMin(const long& min) override;
 
     /// Adds the max value of the current range variable.
-    void addMax(const long& max);
+    void addMax(const long& max) override;
 
     /// Adds a tick to the current Discretized variable.
     void addTick(const GUM_SCALAR& tick);

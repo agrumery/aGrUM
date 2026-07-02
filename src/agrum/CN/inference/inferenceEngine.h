@@ -278,7 +278,7 @@ namespace gum {
       /**
        * Destructor.
        */
-      virtual ~InferenceEngine();
+      ~InferenceEngine() override;
 
       /// @}
 

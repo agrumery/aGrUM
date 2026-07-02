@@ -132,12 +132,12 @@ namespace gum {
     ScheduleProjection(ScheduleProjection< TABLE >&& from);
 
     /// virtual copy constructor
-    ScheduleProjection< TABLE >* clone() const final;
+    [[nodiscard]] ScheduleProjection< TABLE >* clone() const final;
 
     /// destructor
     /** @warning If the ScheduleProjection has created some output
      * ScheduleTensor, upon destruction, it is removed from memory */
-    virtual ~ScheduleProjection();
+    ~ScheduleProjection() override;
 
     /// @}
 

@@ -93,17 +93,17 @@ namespace gum {
     /// @{
 
     public:
-    MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() {
+    MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() override {
       return MultiDimFunctionGraph< GUM_ELEMENT >::getTreeInstance();
     }
 
     MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
-        getArgMaxFunctionInstance() {
+        getArgMaxFunctionInstance() override {
       return MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
                                     SetTerminalNodePolicy >::getTreeInstance();
     }
 
-    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() {
+    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() override {
       return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
     }
 
@@ -122,56 +122,56 @@ namespace gum {
     MultiDimFunctionGraph< GUM_ELEMENT >* regress(const MultiDimFunctionGraph< GUM_ELEMENT >* Vold,
                                                   Idx                        actionId,
                                                   const FMDP< GUM_ELEMENT >* fmdp,
-                                                  const gum::VariableSet&    elVarSeq);
+                                                  const gum::VariableSet&    elVarSeq) override;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+    MultiDimFunctionGraph< GUM_ELEMENT >*
         maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3);
+                 Idx                                         del = 3) override;
 
     // ==========================================================================
     /// @warning Minimze the two given functions
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+    MultiDimFunctionGraph< GUM_ELEMENT >*
         minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3);
+                 Idx                                         del = 3) override;
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+    MultiDimFunctionGraph< GUM_ELEMENT >*
         multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3);
+                 Idx                                         del = 3) override;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
+    MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
         argmaximize(
             const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
             const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
-            Idx del = 3);
+            Idx del = 3) override;
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+    MultiDimFunctionGraph< GUM_ELEMENT >*
         add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
             const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-            Idx                                         del = 1);
+            Idx                                         del = 1) override;
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
     // ==========================================================================
-    virtual MultiDimFunctionGraph< GUM_ELEMENT >*
+    MultiDimFunctionGraph< GUM_ELEMENT >*
         subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                  const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 0);
+                 Idx                                         del = 0) override;
 
 
     /// @}

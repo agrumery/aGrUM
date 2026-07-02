@@ -130,7 +130,7 @@ namespace gum {
 
     explicit ApproximationScheme(bool verbosity = false);
 
-    virtual ~ApproximationScheme();
+    ~ApproximationScheme() override;
 
     /// @}
     // ========================================================================

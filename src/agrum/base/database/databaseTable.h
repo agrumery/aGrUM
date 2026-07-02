@@ -254,7 +254,7 @@ namespace gum::learning {
     DatabaseTable(DatabaseTable&& from) noexcept;
 
     /// virtual copy constructor
-    DatabaseTable* clone() const override;
+    [[nodiscard]] DatabaseTable* clone() const override;
 
     /// destructor
     ~DatabaseTable() override;

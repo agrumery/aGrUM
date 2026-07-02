@@ -91,7 +91,7 @@ namespace gum {
       SmoothingPrior(SmoothingPrior&& from) noexcept;
 
       /// virtual copy constructor
-      SmoothingPrior* clone() const override;
+      [[nodiscard]] SmoothingPrior* clone() const override;
 
       /// destructor
       virtual ~SmoothingPrior();

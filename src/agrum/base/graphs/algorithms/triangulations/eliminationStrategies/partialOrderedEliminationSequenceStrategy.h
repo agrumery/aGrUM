@@ -78,16 +78,16 @@ namespace gum {
     /// @{
 
     /// destructor
-    virtual ~PartialOrderedEliminationSequenceStrategy();
+    ~PartialOrderedEliminationSequenceStrategy() override;
 
     /** @brief creates a new elimination sequence of the same type as the
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual PartialOrderedEliminationSequenceStrategy* newFactory() const = 0;
+    [[nodiscard]] PartialOrderedEliminationSequenceStrategy* newFactory() const override = 0;
 
     /// virtual copy constructor
-    virtual PartialOrderedEliminationSequenceStrategy* copyFactory() const = 0;
+    [[nodiscard]] PartialOrderedEliminationSequenceStrategy* copyFactory() const override = 0;
 
     /// @}
 
@@ -111,7 +111,7 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes);
+    bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) override;
 
     /// sets a new partial ordering constraint on the elimination sequence
     /** @param subsets the list of the subsets constituting the partial ordering
@@ -127,7 +127,7 @@ namespace gum {
 
     /// clears the sequence (to prepare, for instance, a new elimination
     /// sequence)
-    virtual void clear();
+    void clear() override;
 
     /// returns the current partial ordering
     const List< NodeSet >* partialOrder() const noexcept;

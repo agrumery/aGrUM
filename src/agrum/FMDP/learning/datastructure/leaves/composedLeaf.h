@@ -83,7 +83,7 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ComposedLeaf() {
+    ~ComposedLeaf() override {
       GUM_DESTRUCTOR(ComposedLeaf);
       ;
     }
@@ -102,21 +102,21 @@ namespace gum {
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    double effectif(Idx moda) const { return _l1_->effectif(moda) + _l2_->effectif(moda); }
+    double effectif(Idx moda) const override { return _l1_->effectif(moda) + _l2_->effectif(moda); }
 
-    double total() const { return _l1_->total() + _l2_->total(); }
+    double total() const override { return _l1_->total() + _l2_->total(); }
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    bool contains(NodeId testedId) const {
+    bool contains(NodeId testedId) const override {
       return AbstractLeaf::contains(testedId) || _l1_->contains(testedId)
           || _l2_->contains(testedId);
     }
 
-    Idx nbModa() const { return _l1_->nbModa(); }
+    Idx nbModa() const override { return _l1_->nbModa(); }
 
-    std::string toString();
+    std::string toString() override;
 
     private:
     AbstractLeaf* _l1_;

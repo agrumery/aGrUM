@@ -125,12 +125,12 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~DiscretizedVariable() override final;
+    ~DiscretizedVariable() final;
 
     /// @}
 
     /// a virtual clone
-    DiscretizedVariable< T_TICKS >* clone() const override;
+    [[nodiscard]] DiscretizedVariable< T_TICKS >* clone() const override;
 
     /// returns the type of variable
     VarType varType() const override;
@@ -190,7 +190,7 @@ namespace gum {
     std::string domain() const override;
 
     /// string represent the type of the variable
-    std::string stype() const override final { return "Discretized"; }
+    std::string stype() const final { return "Discretized"; }
 
     /// from the index to the tick.
     /// @throws NotFound

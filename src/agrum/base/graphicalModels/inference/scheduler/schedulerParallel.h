@@ -88,10 +88,10 @@ namespace gum {
     SchedulerParallel(SchedulerParallel&& from);
 
     /// virtual copy constructor
-    SchedulerParallel* clone() const final;
+    [[nodiscard]] SchedulerParallel* clone() const final;
 
     /// destructor
-    virtual ~SchedulerParallel();
+    ~SchedulerParallel() override;
 
     /// @}
 

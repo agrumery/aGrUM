@@ -97,7 +97,7 @@ namespace gum::learning {
     BDeuPrior(BDeuPrior&& from) noexcept;
 
     /// virtual copy constructor
-    BDeuPrior* clone() const override;
+    [[nodiscard]] BDeuPrior* clone() const override;
 
     /// destructor
     virtual ~BDeuPrior();

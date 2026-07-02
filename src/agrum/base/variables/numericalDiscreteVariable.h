@@ -104,10 +104,10 @@ namespace gum {
     NumericalDiscreteVariable(NumericalDiscreteVariable&& from);
 
     /// virtual copy constructor
-    NumericalDiscreteVariable* clone() const final;
+    [[nodiscard]] NumericalDiscreteVariable* clone() const final;
 
     /// destructor
-    virtual ~NumericalDiscreteVariable();
+    ~NumericalDiscreteVariable() override;
 
     /// @}
 
@@ -194,7 +194,7 @@ namespace gum {
      * @param val the desired value
      * @return the value
      */
-    std::string closestLabel(double val) const;
+    std::string closestLabel(double val) const override;
     /// @}
 
     private:

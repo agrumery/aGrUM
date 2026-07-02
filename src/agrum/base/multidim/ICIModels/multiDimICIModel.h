@@ -117,20 +117,20 @@ namespace gum {
     public:
     std::string toString() const override;
 
-    virtual void changeNotification(const gum::Instantiation&,
+    void changeNotification(const gum::Instantiation&,
                                     const gum::DiscreteVariable* const,
                                     gum::Idx,
                                     gum::Idx) override {}
 
-    virtual void setFirstNotification(const gum::Instantiation&) override {}
+    void setFirstNotification(const gum::Instantiation&) override {}
 
-    virtual void setLastNotification(const gum::Instantiation&) override {}
+    void setLastNotification(const gum::Instantiation&) override {}
 
-    virtual void setIncNotification(const gum::Instantiation&) override {}
+    void setIncNotification(const gum::Instantiation&) override {}
 
-    virtual void setDecNotification(const gum::Instantiation&) override {}
+    void setDecNotification(const gum::Instantiation&) override {}
 
-    virtual void setChangeNotification(const gum::Instantiation&) override {}
+    void setChangeNotification(const gum::Instantiation&) override {}
 
     std::string toString(const gum::Instantiation* i) const override { return i->toString(); }
 
@@ -143,7 +143,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      **/
-    virtual void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const override;
+    void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const override;
 
     /**
      * @return the real number of parameters used for this table. This function
@@ -189,7 +189,7 @@ namespace gum {
     mutable HashTable< const DiscreteVariable*, GUM_ELEMENT > _causal_weights_;
     /// @}
 
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
   };
 
 

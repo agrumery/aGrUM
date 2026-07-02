@@ -192,20 +192,20 @@ namespace gum {
 
     virtual Size domainSize() const override;
 
-    virtual void add(const DiscreteVariable& v) override;
+    void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v) override;
+    void erase(const DiscreteVariable& v) override;
 
-    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const override;
+    const Sequence< const DiscreteVariable* >& variablesSequence() const override;
 
     const DiscreteVariable& variable(Idx i) const override;
     const DiscreteVariable& variable(std::string_view name) const override;
 
     virtual Idx pos(const DiscreteVariable& v) const override;
 
-    virtual bool contains(const DiscreteVariable& v) const override;
+    bool contains(const DiscreteVariable& v) const override;
 
-    virtual bool empty() const override;
+    bool empty() const override;
 
     /// @}
     // =========================================================================
@@ -213,9 +213,9 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual bool registerSlave(Instantiation& slave) override;
+    bool registerSlave(Instantiation& slave) override;
 
-    virtual bool unregisterSlave(Instantiation& slave) override;
+    bool unregisterSlave(Instantiation& slave) override;
 
     /// @}
     // =========================================================================
@@ -225,7 +225,7 @@ namespace gum {
 
     using MultiDimContainer< GUM_ELEMENT >::get;
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
     void beginMultipleChanges() override;
 
@@ -281,7 +281,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     /**
      * @brief Inverts variables at position p1 and p2

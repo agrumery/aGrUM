@@ -126,13 +126,13 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    virtual PartialOrderedTriangulation* newFactory() const;
+    [[nodiscard]] PartialOrderedTriangulation* newFactory() const override;
 
     /// virtual copy constructor
-    virtual PartialOrderedTriangulation* copyFactory() const final;
+    [[nodiscard]] PartialOrderedTriangulation* copyFactory() const final;
 
     /// destructor
-    virtual ~PartialOrderedTriangulation();
+    ~PartialOrderedTriangulation() override;
 
     /// @}
 
@@ -172,7 +172,7 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * original_graph_) */
-    virtual void initTriangulation_(UndiGraph& graph) final;
+    void initTriangulation_(UndiGraph& graph) final;
 
     /// the partial ordering to apply to eliminate nodes
     const List< NodeSet >* _partial_order_{nullptr};

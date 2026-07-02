@@ -100,7 +100,7 @@ namespace gum {
     IntegerVariable(IntegerVariable&& from) noexcept;
 
     /// virtual copy constructor
-    IntegerVariable* clone() const override;
+    [[nodiscard]] IntegerVariable* clone() const override;
 
     /// destructor
     ~IntegerVariable() override;

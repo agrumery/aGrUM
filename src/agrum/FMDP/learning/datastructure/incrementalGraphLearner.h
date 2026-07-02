@@ -108,7 +108,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
-    virtual ~IncrementalGraphLearner();
+    ~IncrementalGraphLearner() override;
 
     private:
     // ==========================================================================
@@ -321,32 +321,32 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId root() const { return this->root_; }
+    NodeId root() const override { return this->root_; }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal(NodeId ni) const { return !this->nodeSonsMap_.exists(ni); }
+    bool isTerminal(NodeId ni) const override { return !this->nodeSonsMap_.exists(ni); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    const DiscreteVariable* nodeVar(NodeId ni) const { return this->nodeVarMap_[ni]; }
+    const DiscreteVariable* nodeVar(NodeId ni) const override { return this->nodeVarMap_[ni]; }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId nodeSon(NodeId ni, Idx modality) const { return this->nodeSonsMap_[ni][modality]; }
+    NodeId nodeSon(NodeId ni, Idx modality) const override { return this->nodeSonsMap_[ni][modality]; }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation(NodeId ni) const { return this->nodeId2Database_[ni]->nbObservation(); }
+    Idx nodeNbObservation(NodeId ni) const override { return this->nodeId2Database_[ni]->nbObservation(); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    virtual void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override {
       for (SetIteratorSafe< const DiscreteVariable* > varIter = setOfVars_.beginSafe();
            varIter != setOfVars_.endSafe();
            ++varIter)

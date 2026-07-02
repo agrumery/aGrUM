@@ -85,7 +85,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~E_GreedyDecider();
+    ~E_GreedyDecider() override;
 
     /// @}
 
@@ -98,7 +98,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    void initialize(const FMDP< double >* fmdp);
+    void initialize(const FMDP< double >* fmdp) override;
 
     /// @}
 
@@ -109,9 +109,9 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId);
+    void checkState(const Instantiation& newState, Idx actionId) override;
 
-    ActionSet stateOptimalPolicy(const Instantiation& curState);
+    ActionSet stateOptimalPolicy(const Instantiation& curState) override;
 
     /// @}
 

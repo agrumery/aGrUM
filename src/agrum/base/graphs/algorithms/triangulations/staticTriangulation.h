@@ -77,16 +77,16 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++. */
-    virtual StaticTriangulation* newFactory() const = 0;
+    [[nodiscard]] StaticTriangulation* newFactory() const override = 0;
 
     /// virtual copy constructor
     /** note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++. */
-    virtual StaticTriangulation* copyFactory() const = 0;
+    [[nodiscard]] StaticTriangulation* copyFactory() const override = 0;
 
     /// destructor
-    virtual ~StaticTriangulation();
+    ~StaticTriangulation() override;
 
     /// @}
 
@@ -105,38 +105,38 @@ namespace gum {
      * it is compulsory that all the nodes of graph belong to dom_sizes
      * @warning the graph is not copied but only referenced by the elimination
      * sequence algorithm. */
-    virtual void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes);
+    void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) override;
 
     /// returns the fill-ins added by the triangulation algorithm
-    const EdgeSet& fillIns();
+    const EdgeSet& fillIns() override;
 
     /// returns an elimination ordering compatible with the triangulated graph
-    const std::vector< NodeId >& eliminationOrder();
+    const std::vector< NodeId >& eliminationOrder() override;
 
     /** @brief returns the index of a given node in the elimination order
      * (0 = first node eliminated) */
-    Idx eliminationOrder(const NodeId);
+    Idx eliminationOrder(const NodeId) override;
 
     /** @brief returns a table indicating, for each node, at which step it was
      * deleted by the triangulation process */
     const NodeProperty< NodeId >& reverseEliminationOrder();
 
     /// returns the triangulated graph
-    const UndiGraph& triangulatedGraph();
+    const UndiGraph& triangulatedGraph() override;
 
     /// returns the elimination tree of a compatible ordering
-    const CliqueGraph& eliminationTree();
+    const CliqueGraph& eliminationTree() override;
 
     /// returns a compatible junction tree
-    const CliqueGraph& junctionTree();
+    const CliqueGraph& junctionTree() override;
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdJunctionTreeClique(const NodeId id);
+    NodeId createdJunctionTreeClique(const NodeId id) override;
 
     /** @brief returns the Ids of the cliques of the junction tree created by
      * the elimination of the nodes */
-    const NodeProperty< NodeId >& createdJunctionTreeCliques();
+    const NodeProperty< NodeId >& createdJunctionTreeCliques() override;
 
     /// returns a junction tree of maximal prime subgraphs
     /** @warning Actually, the cliques of the junction tree are guarranteed to
@@ -145,14 +145,14 @@ namespace gum {
      * removing any edge in the triangulated graph results in a nontriangulated
      * graph). This can be ensured by requiring minimality of the
      * triangulation. */
-    const CliqueGraph& maxPrimeSubgraphTree();
+    const CliqueGraph& maxPrimeSubgraphTree() override;
 
     /** @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdMaxPrimeSubgraph(const NodeId id);
+    NodeId createdMaxPrimeSubgraph(const NodeId id) override;
 
     /// reinitialize the graph to be triangulated to an empty graph
-    void clear();
+    void clear() override;
 
     /// sets/unset the minimality requirement
     void setMinimalRequirement(bool);

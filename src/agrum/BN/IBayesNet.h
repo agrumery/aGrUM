@@ -88,7 +88,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~IBayesNet();
+    ~IBayesNet() override;
 
     /**
      * Copy constructor.

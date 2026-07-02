@@ -220,7 +220,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    ~Instantiation();
+    ~Instantiation() override;
 
     /// @}
     // =========================================================================
@@ -512,7 +512,7 @@ namespace gum {
      * @brief Returns true if the instantiation is empty.
      * @return Returns true if the instantiation is empty.
      */
-    virtual bool empty() const final;
+    bool empty() const final;
 
     /// @}
     // =========================================================================
@@ -1118,7 +1118,7 @@ namespace gum {
      * @param x The variable to replace.
      * @param y The variable replacing x.
      */
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) final;
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) final;
 
     private:
     /// The master, if any, contains precisely the set of variables to be
@@ -1258,7 +1258,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Instantiation& key) const override final;
+    virtual Size operator()(const Instantiation& key) const final;
   };
 } /* namespace gum */
 

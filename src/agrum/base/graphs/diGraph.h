@@ -154,7 +154,7 @@ namespace gum {
     DiGraph(DiGraph&& g);
 
     /// destructor
-    virtual ~DiGraph();
+    ~DiGraph() override;
 
     /**
      * @brief Build a complete DiGraph with n nodes
@@ -200,19 +200,19 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    virtual void addArc(const NodeId tail, const NodeId head);
+    void addArc(const NodeId tail, const NodeId head) override;
 
     /// remove a node and its adjacent arcs from the graph
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode(const NodeId id);
+    void eraseNode(const NodeId id) override;
 
     /// removes all the nodes and arcs from the graph
-    virtual void clear();
+    void clear() override;
 
     /// to friendly display the content of the graph
-    virtual std::string toString() const;
+    std::string toString() const override;
 
     /// to friendly display the content of the graph in the DOT syntax
     /** @param name The graph name in the dot syntax. Default is G.

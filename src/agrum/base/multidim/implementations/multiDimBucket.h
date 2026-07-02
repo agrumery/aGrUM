@@ -233,42 +233,42 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
     const std::string& name() const override;
 
-    virtual void add(const DiscreteVariable& v) override;
+    void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v) override;
+    void erase(const DiscreteVariable& v) override;
 
     virtual Size realSize() const override;
 
     bool contains(const DiscreteVariable& v) const override;
 
-    virtual GUM_ELEMENT get(const Instantiation& i) const override;
+    GUM_ELEMENT get(const Instantiation& i) const override;
 
-    virtual void changeNotification(const Instantiation&          i,
+    void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval) override;
 
-    virtual void setFirstNotification(const Instantiation& i) override;
+    void setFirstNotification(const Instantiation& i) override;
 
-    virtual void setLastNotification(const Instantiation& i) override;
+    void setLastNotification(const Instantiation& i) override;
 
-    virtual void setIncNotification(const Instantiation& i) override;
+    void setIncNotification(const Instantiation& i) override;
 
-    virtual void setDecNotification(const Instantiation& i) override;
+    void setDecNotification(const Instantiation& i) override;
 
-    virtual void setChangeNotification(const Instantiation& i) override;
+    void setChangeNotification(const Instantiation& i) override;
 
-    virtual bool registerSlave(Instantiation& i) override;
+    bool registerSlave(Instantiation& i) override;
 
-    virtual bool unregisterSlave(Instantiation& i) override;
+    bool unregisterSlave(Instantiation& i) override;
 
-    virtual MultiDimAdressable& getMasterRef() override;
+    MultiDimAdressable& getMasterRef() override;
 
-    virtual const MultiDimAdressable& getMasterRef() const override;
+    const MultiDimAdressable& getMasterRef() const override;
 
     virtual std::string toString(const Instantiation* i) const override;
 
@@ -281,15 +281,15 @@ namespace gum {
     const HashTable< const MultiDimContainer< GUM_ELEMENT >*, Instantiation* >& multidims() const;
 
     protected:
-    virtual void commitMultipleChanges_() override;
+    void commitMultipleChanges_() override;
 
     /**
      * @warning This will raise en exception, you should directly use the get()
      * and operator[]() methods.
      */
-    virtual GUM_ELEMENT& get_(const Instantiation& i) const override;
+    GUM_ELEMENT& get_(const Instantiation& i) const override;
 
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     private:
     /// The number of element allowed in  _bucket_.

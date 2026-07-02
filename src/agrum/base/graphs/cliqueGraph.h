@@ -102,7 +102,7 @@ namespace gum {
 
     /// destructor
 
-    virtual ~CliqueGraph();
+    ~CliqueGraph() override;
 
     /// @}
 
@@ -120,18 +120,18 @@ namespace gum {
      * exception is raised.
      * @throw InvalidNode if first and/or second do not belong to the
      * graph nodes */
-    virtual void addEdge(NodeId first, NodeId second);
+    void addEdge(NodeId first, NodeId second) override;
 
     /// removes an edge (and its separator) from the clique graph
     /** @param edge the edge to be removed
      * @warning if the edge does not exist, nothing is done. In particular, no
      * exception is thrown. */
 
-    virtual void eraseEdge(const Edge& edge);
+    void eraseEdge(const Edge& edge) override;
 
     /// removes all edges and their separators
 
-    virtual void clearEdges();
+    void clearEdges() override;
 
     /// adds a new clique to the graph
     /** @return the id chosen for the new clique */
@@ -140,28 +140,28 @@ namespace gum {
 
     /// adds a new clique to the graph
     /** @return the id chosen for the new clique */
-    virtual NodeId addNode();
+    NodeId addNode() override;
 
     /// try to add a new clique to the graph
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
-    virtual void addNodeWithId(const NodeId id, const NodeSet& clique);
+    void addNodeWithId(const NodeId id, const NodeSet& clique);
 
     /// try to add a new clique to the graph
     /** @throws DuplicateElement exception is thrown if the id of the clique
      * already exists within the clique graph */
-    virtual void addNodeWithId(const NodeId id);
+    void addNodeWithId(const NodeId id) override;
 
     /// removes a given clique from the clique graph
     /** If the CliqueGraph does not contain the node, then nothing is done. In
      * particular, no exception is raised. */
 
-    virtual void eraseNode(const NodeId node);
+    void eraseNode(const NodeId node) override;
 
     /** @brief removes all the cliques and separators from the graph (as well as
      * their adjacent edges) */
 
-    virtual void clear();
+    void clear() override;
 
     /// returns the set of nodes included into a given clique
     /** @throw NotFound exception is raised if the clique does not belong to
@@ -232,11 +232,11 @@ namespace gum {
 
     /// friendly displays the content of the CliqueGraph
 
-    virtual std::string toString() const;
+    std::string toString() const override;
 
     /// friendly displays the content of the CliqueGraph in DOT format
 
-    virtual std::string toDot() const;
+    std::string toDot() const override;
 
     /// friendly displays the content of the map of the CliqueGraph in DOT format
 

@@ -72,7 +72,7 @@ namespace gum {
     /// @{
 
     DiscreteGraphicalModel();
-    virtual ~DiscreteGraphicalModel();
+    ~DiscreteGraphicalModel() override;
     DiscreteGraphicalModel(const DiscreteGraphicalModel& source);
     DiscreteGraphicalModel(DiscreteGraphicalModel&& source);
 

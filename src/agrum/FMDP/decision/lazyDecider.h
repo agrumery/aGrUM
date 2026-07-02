@@ -82,7 +82,7 @@ namespace gum {
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~LazyDecider() = default;
+    ~LazyDecider() override = default;
 
     /// @}
 
@@ -93,7 +93,7 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) {}
+    void checkState(const Instantiation& newState, Idx actionId) override {}
   };
 }   // namespace gum
 #endif   // GUM_LAZY_DECIDER_H

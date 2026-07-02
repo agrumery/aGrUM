@@ -145,7 +145,7 @@ namespace gum {
     DAG(DAG&& g);
 
     /// destructor
-    virtual ~DAG();
+    ~DAG() override;
 
     /// @}
 

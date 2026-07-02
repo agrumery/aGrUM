@@ -112,7 +112,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~TaxiSimulator();
+    ~TaxiSimulator() override;
 
     /// @}
 
@@ -123,10 +123,10 @@ namespace gum {
 
     protected:
     /// Choses a random state as the first test for a run
-    Instantiation randomState_();
+    Instantiation randomState_() override;
 
     public:
-    bool hasReachEnd();
+    bool hasReachEnd() override;
 
     /// @}
 
@@ -135,16 +135,16 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override {
       return _primeMap_.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override {
       return _taxiVars_.beginSafe();
     }
 
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() { return _taxiVars_.endSafe(); }
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override { return _taxiVars_.endSafe(); }
 
     /// @}
 
@@ -153,14 +153,14 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return *_actionMap_[actionId]; }
+    const std::string& actionName(Idx actionId) override { return *_actionMap_[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() { return _taxiActions_.beginSafe(); }
+    SequenceIteratorSafe< Idx > beginActions() override { return _taxiActions_.beginSafe(); }
 
-    SequenceIteratorSafe< Idx > endActions() { return _taxiActions_.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() override { return _taxiActions_.endSafe(); }
 
-    void perform(Idx);
+    void perform(Idx) override;
 
     private:
     void _performGoNorth_();
@@ -179,7 +179,7 @@ namespace gum {
     /// @{
 
     public:
-    double reward();
+    double reward() override;
 
     private:
     void _evalReward_();

@@ -152,7 +152,7 @@ namespace gum {
     UndiGraph(UndiGraph&& g);
 
     /// destructor
-    virtual ~UndiGraph();
+    ~UndiGraph() override;
 
     /**
      * @brief create a complete UndiGraph with n nodes

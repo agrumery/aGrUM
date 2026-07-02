@@ -88,7 +88,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~IMarkovRandomField();
+    ~IMarkovRandomField() override;
 
     /**
      * Copy constructor.

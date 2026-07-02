@@ -93,7 +93,7 @@ namespace gum {
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ConcreteLeaf() {
+    ~ConcreteLeaf() override {
       GUM_DESTRUCTOR(ConcreteLeaf);
       ;
     }
@@ -112,7 +112,7 @@ namespace gum {
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    virtual double effectif(Idx moda) const { return _effectif_(moda, Int2Type< isScalar >()); }
+    double effectif(Idx moda) const override { return _effectif_(moda, Int2Type< isScalar >()); }
 
     private:
     double _effectif_(Idx moda, Int2Type< true >) const {
@@ -122,9 +122,9 @@ namespace gum {
     double _effectif_(Idx moda, Int2Type< false >) const { return (double)_n1_->effectif(moda); }
 
     public:
-    virtual double total() const { return double(_n1_->nbObservation()); }
+    double total() const override { return double(_n1_->nbObservation()); }
 
-    Idx nbModa() const { return _nbModa_(Int2Type< isScalar >()); }
+    Idx nbModa() const override { return _nbModa_(Int2Type< isScalar >()); }
 
     private:
     Idx _nbModa_(Int2Type< true >) const { return _valueDomain_->size(); }
@@ -132,7 +132,7 @@ namespace gum {
     Idx _nbModa_(Int2Type< false >) const { return _n1_->valueDomain(); }
 
     public:
-    std::string toString() {
+    std::string toString() override {
       std::stringstream ss;
       ss << "{ Id : " << this->id() << "}";
       return ss.str();

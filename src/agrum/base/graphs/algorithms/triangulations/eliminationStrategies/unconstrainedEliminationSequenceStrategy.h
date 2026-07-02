@@ -84,16 +84,16 @@ namespace gum {
     /// @{
 
     /// destructor
-    virtual ~UnconstrainedEliminationSequenceStrategy();
+    ~UnconstrainedEliminationSequenceStrategy() override;
 
     /** @brief creates a new elimination sequence of the same type as the
      * current object, but this sequence contains only an empty graph
      * @warning you must deallocate by yourself the object returned
      * @return an empty clone of the current object with the same type */
-    virtual UnconstrainedEliminationSequenceStrategy* newFactory() const = 0;
+    [[nodiscard]] UnconstrainedEliminationSequenceStrategy* newFactory() const override = 0;
 
     /// virtual copy constructor
-    virtual UnconstrainedEliminationSequenceStrategy* copyFactory() const = 0;
+    [[nodiscard]] UnconstrainedEliminationSequenceStrategy* copyFactory() const override = 0;
 
     /// @}
 

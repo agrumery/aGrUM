@@ -121,7 +121,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
+      [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
       // =======================================================================
       /// @name Accessors / Modifiers
@@ -129,7 +129,7 @@ namespace gum {
       /// @{
 
       public:
-      virtual GUM_ELEMENT get(const Instantiation& i) const override;
+      GUM_ELEMENT get(const Instantiation& i) const override;
 
       virtual std::string aggregatorName() const = 0;
       std::string         toString() const override;
