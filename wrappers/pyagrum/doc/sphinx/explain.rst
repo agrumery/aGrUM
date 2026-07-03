@@ -59,6 +59,8 @@ Three variants are available depending on how feature interactions are handled:
     :undoc-members:
     :show-inheritance:
 
+The causal Shapley values are computed following :cite:t:`heskes2020causal`.
+
 .. autoclass:: pyagrum.explain.CausalShapValues
     :members:
     :undoc-members:
@@ -101,3 +103,6 @@ A structural property of Bayesian networks is the Markov boundary of a node. A M
     :alt: Generalized Markov Blanket in pyAgrum
 
 .. autofunction:: pyagrum.explain.generalizedMarkovBlanket
+
+.. bibliography::
+    :filter: docname in docnames
