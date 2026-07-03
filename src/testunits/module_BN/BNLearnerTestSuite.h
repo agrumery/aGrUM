@@ -2296,6 +2296,64 @@ namespace gum_tests {
                             bn2.idFromName(bn.variable(arc.head()).name())));
       }
     }
+
+    static void testNonRegressionGHCWithInitialDAG() {
+      // Regression: GHC raised DuplicateElement when setInitialDAG was called
+      // with a DAG from a large network (alarm, 37 nodes).
+      const auto initial_bn = gum::BayesNet< double >::fastPrototype(
+          "VENTTUBE{ZERO|LOW|NORMAL|HIGH}->MINVOL{ZERO|LOW|NORMAL|HIGH};"
+          "HYPOVOLEMIA{TRUE|FALSE}->LVEDVOLUME{LOW|NORMAL|HIGH};"
+          "CO{LOW|NORMAL|HIGH}->BP{LOW|NORMAL|HIGH};"
+          "LVFAILURE{TRUE|FALSE}->LVEDVOLUME;"
+          "PAP{LOW|NORMAL|HIGH}->PULMEMBOLUS{TRUE|FALSE};"
+          "VENTALV{ZERO|LOW|NORMAL|HIGH}->ARTCO2{LOW|NORMAL|HIGH};"
+          "PULMEMBOLUS->SHUNT{NORMAL|HIGH};"
+          "HISTORY{TRUE|FALSE}->LVFAILURE;"
+          "ERRCAUTER{TRUE|FALSE}->HREKG{LOW|NORMAL|HIGH};"
+          "VENTLUNG{ZERO|LOW|NORMAL|HIGH}->EXPCO2{ZERO|LOW|NORMAL|HIGH};"
+          "MINVOL->VENTLUNG;"
+          "MINVOLSET{LOW|NORMAL|HIGH}->VENTMACH{ZERO|LOW|NORMAL|HIGH};"
+          "PRESS{ZERO|LOW|NORMAL|HIGH}->KINKEDTUBE{TRUE|FALSE};"
+          "ARTCO2->EXPCO2;"
+          "ANAPHYLAXIS{TRUE|FALSE}->TPR{LOW|NORMAL|HIGH};"
+          "INTUBATION{NORMAL|ESOPHAGEAL|ONESIDED}->SHUNT;"
+          "ARTCO2->CATECHOL{NORMAL|HIGH};"
+          "LVEDVOLUME->PCWP{LOW|NORMAL|HIGH};"
+          "FIO2{LOW|NORMAL}->PVSAT{LOW|NORMAL|HIGH};"
+          "HR{LOW|NORMAL|HIGH}->HREKG;"
+          "VENTTUBE->PRESS;"
+          "DISCONNECT{TRUE|FALSE}->VENTTUBE;"
+          "VENTALV->PVSAT;"
+          "LVFAILURE->STROKEVOLUME{LOW|NORMAL|HIGH};"
+          "HYPOVOLEMIA->STROKEVOLUME;"
+          "STROKEVOLUME->CO;"
+          "ERRCAUTER->HRSAT{LOW|NORMAL|HIGH};"
+          "TPR->CATECHOL;"
+          "VENTMACH->VENTTUBE;"
+          "PVSAT->SAO2{LOW|NORMAL|HIGH};"
+          "TPR->BP;"
+          "STROKEVOLUME->LVEDVOLUME;"
+          "CATECHOL->HR;"
+          "HR->HRSAT;"
+          "LVEDVOLUME->CVP{LOW|NORMAL|HIGH};"
+          "HR->HRBP{LOW|NORMAL|HIGH};"
+          "VENTALV->INTUBATION;"
+          "SHUNT->SAO2;"
+          "HRSAT->HREKG;"
+          "HR->CO;"
+          "MINVOL->VENTALV;"
+          "VENTLUNG->VENTALV;"
+          "ERRLOWOUTPUT{TRUE|FALSE}->HRBP;"
+          "INSUFFANESTH{TRUE|FALSE}");
+
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/alarm.csv"));
+      learner.useGreedyHillClimbing();
+      learner.useNMLCorrection();
+      learner.useScoreBDeu();
+      learner.setInitialDAG(initial_bn.dag());
+      const auto bn4 = learner.learnBN();
+      CHECK_EQ(bn4.size(), static_cast< gum::Size >(37));
+    }
   };   // class BNLearnerTestSuite
 
   GUM_TEST_ACTIF(_asia)
@@ -2355,4 +2413,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(CopyState)
   GUM_TEST_ACTIF(CopyStateMixedNames)
   GUM_TEST_ACTIF(_mapping_DBCOLUMN_NODEID)
+  GUM_TEST_ACTIF(NonRegressionGHCWithInitialDAG)
 } /* namespace gum_tests */
