@@ -145,12 +145,11 @@ namespace gum {
     void add(const Chi2TestPolicy< GUM_ELEMENT >& src);
 
     std::string toString() const {
-      std::stringstream ss;
-      ss << ITestPolicy< GUM_ELEMENT >::toString() << "\t\t\tContingency Table : " << std::endl
-         << _conTab_.toString() << std::endl
-         << "\t\t\tGStat : " << this->score() << std::endl
-         << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
-      return ss.str();
+      return std::format("{}\t\t\tContingency Table : \n{}\n\t\t\tGStat : {}\n\t\t\tGStat : {}\n",
+                         ITestPolicy< GUM_ELEMENT >::toString(),
+                         _conTab_.toString(),
+                         this->score(),
+                         this->secondaryscore());
     }
 
     private:

@@ -181,20 +181,24 @@ namespace gum {
     /// compute and raise the exception when some variables are continuous
     void RecordCounter::_raiseCheckException_(const std::vector< std::string >& bad_vars) const {
       // generate the exception
-      std::stringstream msg;
-      msg << "Counts cannot be performed on continuous variables. ";
-      msg << "Unfortunately the following variable";
-      if (bad_vars.size() == 1) msg << " is continuous: " << bad_vars[0];
-      else {
-        msg << "s are continuous: ";
-        bool deja = false;
+      if (bad_vars.size() == 1) {
+        GUM_ERROR(TypeError,
+                  std::format("Counts cannot be performed on continuous variables. "
+                              "Unfortunately the following variable is continuous: {}",
+                              bad_vars[0]))
+      } else {
+        std::string varList;
+        bool        first = true;
         for (const auto& name: bad_vars) {
-          if (deja) msg << ", ";
-          else deja = true;
-          msg << name;
+          if (!first) varList += ", ";
+          first = false;
+          varList += name;
         }
+        GUM_ERROR(TypeError,
+                  std::format("Counts cannot be performed on continuous variables. "
+                              "Unfortunately the following variables are continuous: {}",
+                              varList))
       }
-      GUM_ERROR(TypeError, msg.str())
     }
 
     /// check that all the variables in an idset are discrete
@@ -590,18 +594,24 @@ namespace gum {
         }
       }
       if (!incorrect_ranges.empty()) {
-        std::stringstream str;
-        str << "It is impossible to set the ranges because the following one";
-        if (incorrect_ranges.size() > 1) str << "s are incorrect: ";
-        else str << " is incorrect: ";
-        bool deja = false;
+        std::string rangeList;
+        bool        first = true;
         for (const auto& range: incorrect_ranges) {
-          if (deja) str << ", ";
-          else deja = true;
-          str << '[' << range.first << ';' << range.second << ')';
+          if (!first) rangeList += ", ";
+          first = false;
+          rangeList += std::format("[{};{})", range.first, range.second);
         }
-
-        GUM_ERROR(OutOfBounds, str.str())
+        if (incorrect_ranges.size() > 1) {
+          GUM_ERROR(OutOfBounds,
+                    std::format("It is impossible to set the ranges because the following ones "
+                                "are incorrect: {}",
+                                rangeList))
+        } else {
+          GUM_ERROR(OutOfBounds,
+                    std::format("It is impossible to set the ranges because the following one "
+                                "is incorrect: {}",
+                                rangeList))
+        }
       }
     }
 

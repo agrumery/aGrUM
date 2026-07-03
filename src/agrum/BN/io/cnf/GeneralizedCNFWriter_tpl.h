@@ -93,10 +93,9 @@ namespace gum {
       const auto& var = bn.variable(node);
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream str;
-        str << var.name() << "_" << var.label(i);
-        vartable.insert(str.str(), ++num);
-        strfile << num << "::" << str.str() << "\n";
+        auto str = std::format("{}_{}", var.name(), var.label(i));
+        vartable.insert(str, ++num);
+        strfile << std::format("{}::{}\n", num, str);
       }
 
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -104,12 +103,10 @@ namespace gum {
       Instantiation inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        std::stringstream strinst;
-        strinst << inst.toString();
-        strinst << "_val=" << this->fromExact(cpt[inst]);
+        auto strinst = std::format("{}_val={}", inst.toString(), this->fromExact(cpt[inst]));
 
         protable.insert(inst.toString(), ++numparam);
-        strfile2 << numparam << "::" << strinst.str() << "\n";
+        strfile2 << std::format("{}::{}\n", numparam, strinst);
       }
     }
 
@@ -118,15 +115,13 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
+        auto stri = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
-        stri << var.name() << "_" << var.label(i);
-        str0 << vartable[stri.str()] << " ";
+        str0 << std::format("{} ", vartable[stri]);
 
         for (Idx j = i + 1; j < var.domainSize(); j++) {
-          std::stringstream strj;
-          strj << var.name() << "_" << var.label(j);
-          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n";
+          auto strj = std::format("{}_{}", var.name(), var.label(j));
+          str1 << std::format("-{} -{} 0\n", vartable[stri], vartable[strj]);
           clause++;
         }
       }
@@ -139,21 +134,20 @@ namespace gum {
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         for (Idx i = 0; i < inst.nbrDim(); i++) {
-          std::stringstream str;
-          str << inst.variable(i).name() << "_" << inst.val(inst.variable(i));
-          str2 << "-" << vartable[str.str()] << " ";
-          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()] << " 0\n";
+          auto str = std::format("{}_{}", inst.variable(i).name(), inst.val(inst.variable(i)));
+          str2 << std::format("-{} ", vartable[str]);
+          str3 << std::format("-{} {} 0\n", protable[inst.toString()], vartable[str]);
           clause++;
         }
 
-        str2 << protable[inst.toString()] << " 0\n";
+        str2 << std::format("{} 0\n", protable[inst.toString()]);
         clause++;
       }
 
       clausstr << str2.str() << str3.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
+    output << std::format("p cnf {} {}\n", num + numparam, clause) << clausstr.str() << '\n';
     output.flush();
   }
 
@@ -194,10 +188,9 @@ namespace gum {
       const auto& var = bn.variable(node);
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream str;
-        str << var.name() << "_" << var.label(i);
-        vartable.insert(str.str(), ++num);
-        strfile << num << "::" << str.str() << "\n";
+        auto str = std::format("{}_{}", var.name(), var.label(i));
+        vartable.insert(str, ++num);
+        strfile << std::format("{}::{}\n", num, str);
       }
 
       const Tensor< GUM_SCALAR >& cpt = bn.cpt(node);
@@ -205,12 +198,10 @@ namespace gum {
       Instantiation inst(cpt);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
-        std::stringstream strinst;
-        strinst << inst.toString();
-        strinst << "_val=" << this->fromExact(cpt[inst]);
+        auto strinst = std::format("{}_val={}", inst.toString(), this->fromExact(cpt[inst]));
 
         protable.insert(inst.toString(), ++numparam);
-        strfile2 << numparam << "::" << strinst.str() << "\n";
+        strfile2 << std::format("{}::{}\n", numparam, strinst);
       }
     }
 
@@ -219,15 +210,13 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        std::stringstream stri;   //= bn.variable(iter).name()+"_"+
+        auto stri = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
-        stri << var.name() << "_" << var.label(i);
-        str0 << vartable[stri.str()] << " ";
+        str0 << std::format("{} ", vartable[stri]);
 
         for (Idx j = i + 1; j < var.domainSize(); j++) {
-          std::stringstream strj;
-          strj << var.name() << "_" << var.label(j);
-          str1 << "-" << vartable[stri.str()] << " -" << vartable[strj.str()] << " 0\n";
+          auto strj = std::format("{}_{}", var.name(), var.label(j));
+          str1 << std::format("-{} -{} 0\n", vartable[stri], vartable[strj]);
           clause++;
         }
       }
@@ -240,21 +229,20 @@ namespace gum {
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         for (Idx i = 0; i < inst.nbrDim(); i++) {
-          std::stringstream str;
-          str << inst.variable(i).name() << "_" << inst.val(inst.variable(i));
-          str2 << "-" << vartable[str.str()] << " ";
-          str3 << "-" << protable[inst.toString()] << " " << vartable[str.str()] << " 0\n";
+          auto str = std::format("{}_{}", inst.variable(i).name(), inst.val(inst.variable(i)));
+          str2 << std::format("-{} ", vartable[str]);
+          str3 << std::format("-{} {} 0\n", protable[inst.toString()], vartable[str]);
           clause++;
         }
 
-        str2 << protable[inst.toString()] << " 0\n";
+        str2 << std::format("{} 0\n", protable[inst.toString()]);
         clause++;
       }
 
       clausstr << str2.str() << str3.str();
     }
 
-    output << "p cnf " << num + numparam << " " << clause << "\n" << clausstr.str() << std::endl;
+    output << std::format("p cnf {} {}\n", num + numparam, clause) << clausstr.str() << '\n';
     output.flush();
     outputvar << strfile.str() << strfile2.str();
     outputvar.flush();

@@ -130,9 +130,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       INLINE std::string O3prmReader< GUM_SCALAR >::_print_(const ParseError& err) const {
-        std::stringstream s;
-        s << err.filename << "|" << err.line << " col " << err.column << "| " << _clean_(err.msg);
-        return s.str();
+        return std::format("{}|{} col {}| {}", err.filename, err.line, err.column, _clean_(err.msg));
       }
 
       template < GUM_Numeric GUM_SCALAR >
@@ -404,10 +402,8 @@ namespace gum {
           }
 
           if (!imported) {
-            const auto&       pos = i.import().position();
-            std::stringstream msg;
-            msg << "Import error: could not resolve import " << i.import().label();
-            _errors_.addError(msg.str(), pos.file(), pos.line(), pos.column());
+            const auto& pos = i.import().position();
+            _errors_.addError(std::format("Import error: could not resolve import {}", i.import().label()), pos.file(), pos.line(), pos.column());
           }
         }
       }

@@ -99,17 +99,17 @@ namespace gum {
 
   ///
   std::string ParseError::toString() const {
-    std::ostringstream s;
+    std::string s;
 
-    if (!filename.empty()) s << filename << ":";
+    if (!filename.empty()) s += filename + ":";
 
-    if (line > 0) s << line << ": ";
+    if (line > 0) s += std::format("{}: ", line);
 
-    if (column > 0) s << column << " : ";
+    if (column > 0) s += std::format("{} : ", column);
 
-    s << (is_error ? "error" : "warning") << " : " << msg;
+    s += std::format("{} : {}", (is_error ? "error" : "warning"), msg);
 
-    return s.str();
+    return s;
   }
 
   ///
@@ -121,13 +121,11 @@ namespace gum {
         std::getline(ifs, code);
     }
 
-    std::ostringstream s;
+    std::string s = toString() + '\n' + code + '\n';
 
-    s << toString() << std::endl << code << std::endl;
+    if (column > 0) s += std::string(column - 1, ' ') + '^';
 
-    if (column > 0) s << std::string(column - 1, ' ') << "^";
-
-    return s.str();
+    return s;
   }
 
   ParseError ErrorsContainer::error(Idx i) const {

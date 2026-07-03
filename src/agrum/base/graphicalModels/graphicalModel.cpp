@@ -105,16 +105,17 @@ namespace gum {
     return res;
   }
 
-  void
-      GraphicalModel::spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem) {
-    if (dSize > 6) s << "domainSize: 10^" << dSize;
-    else s << "domainSize: " << std::round(std::pow(10.0, dSize));
+  std::string GraphicalModel::spaceCplxToString(double dSize, int dim, Size usedMem) {
+    std::string result;
+    if (dSize > 6) result = std::format("domainSize: 10^{:.6g}", dSize);
+    else result = std::format("domainSize: {}", (long long)std::round(std::pow(10.0, dSize)));
 
-    s << ", dim: " << dim << ", mem: ";
+    result += std::format(", dim: {}, mem: ", dim);
 
-    if (const Size go = usedMem / (1024 * 1024 * 1024); go > 0) s << go << "Go ";
-    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0) s << mo << "Mo ";
-    if (const Size ko = (usedMem / 1024) % 1024; ko > 0) s << ko << "Ko ";
-    s << usedMem % 1024 << "o";
+    if (const Size go = usedMem / (1024 * 1024 * 1024); go > 0) result += std::format("{}Go ", go);
+    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0) result += std::format("{}Mo ", mo);
+    if (const Size ko = (usedMem / 1024) % 1024; ko > 0) result += std::format("{}Ko ", ko);
+    result += std::format("{}o", usedMem % 1024);
+    return result;
   }
 }   // namespace gum

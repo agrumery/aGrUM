@@ -151,25 +151,24 @@ namespace gum {
             }
 
             // create the error message
-            std::stringstream str;
-            str << "The conditioning set <";
+            std::string str = "The conditioning set <";
             bool deja = false;
             for (i = std::size_t(0); i < cond_nb; ++i) {
-              if (deja) str << ", ";
+              if (deja) str += ", ";
               else deja = true;
               std::size_t col = node2cols.empty() ? conditioning_nodes[i]
                                                   : node2cols.second(conditioning_nodes[i]);
               const DiscreteVariable& var
                   = dynamic_cast< const DiscreteVariable& >(database.variable(col));
-              str << var.name() << "=" << var.labels()[values[i]];
+              str += std::format("{}={}", var.name(), var.labels()[values[i]]);
             }
             auto target_col     = node2cols.empty() ? target_node : node2cols.second(target_node);
             const Variable& var = database.variable(target_col);
-            str << "> for target node " << var.name()
-                << " never appears in the database. Please consider using "
-                << "priors such as smoothing.";
+            str += std::format("> for target node {} never appears in the database. "
+                               "Please consider using priors such as smoothing.",
+                               var.name());
 
-            GUM_ERROR(DatabaseError, str.str())
+            GUM_ERROR(DatabaseError, str)
           }
         }
 
@@ -207,16 +206,14 @@ namespace gum {
               n_ijk /= sum;
           }
         } else {
-          std::stringstream str;
-
           const auto& node2cols  = this->counter_.nodeId2Columns();
           const auto& database   = this->counter_.database();
           auto        target_col = node2cols.empty() ? target_node : node2cols.second(target_node);
           const Variable& var    = database.variable(target_col);
-          str << "No data for target node " << var.name()
-              << ". It is impossible to estimate the parameters by maximum "
-                 "likelihood";
-          GUM_ERROR(DatabaseError, str.str())
+          GUM_ERROR(DatabaseError,
+                    std::format("No data for target node {}. It is impossible to estimate "
+                                "the parameters by maximum likelihood",
+                                var.name()))
         }
       }
 

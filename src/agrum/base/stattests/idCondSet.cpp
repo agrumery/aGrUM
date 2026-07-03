@@ -88,30 +88,28 @@ namespace gum {
 
     /// returns the content of the set as a string
     std::string IdCondSet::toString() const {
-      std::stringstream str;
-
-      str << '{';
-      bool deja = false;
+      std::string str = "{";
+      bool        deja = false;
 
       for (std::size_t i = std::size_t(0); i < _nb_lhs_ids_; ++i) {
-        if (deja) str << " , ";
+        if (deja) str += " , ";
         else deja = true;
-        str << _ids_[i];
+        str += std::format("{}", _ids_[i]);
       }
 
       deja = false;
       for (auto iter = _ids_.begin() + _nb_lhs_ids_; iter != _ids_.end(); ++iter) {
-        if (deja) str << " , ";
+        if (deja) str += " , ";
         else {
           deja = true;
-          str << " | ";
+          str += " | ";
         }
-        str << *iter;
+        str += std::format("{}", *iter);
       }
 
-      str << '}';
+      str += '}';
 
-      return str.str();
+      return str;
     }
 
     std::pair< NodeSet, NodeSet > IdCondSet::toNodeSets() const {

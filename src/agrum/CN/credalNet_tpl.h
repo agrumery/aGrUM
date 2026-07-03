@@ -45,6 +45,7 @@
 
 #include <agrum/CN/credalNet.h>
 
+#include <agrum/base/core/math/math_utils.h>
 #include <agrum/base/core/utils_string.h>
 
 namespace gum {
@@ -117,7 +118,7 @@ namespace gum {
             sum += prob;
           }
 
-          if (std::fabs(sum - 1) > 1e-6)
+          if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
             GUM_ERROR(CPTError,
                       "setCPTs : a vertex coordinates does not "
                       "sum to one for node id : "
@@ -159,7 +160,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (std::fabs(sum - 1) > 1e-6)
+        if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
           GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                         << id << " at entry " << entry << " with vertex " << vertex);
@@ -248,7 +249,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (std::fabs(sum - 1) > 1e-6)
+        if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
           GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                         << id << " at entry " << entry << " with vertex " << vertex);
@@ -994,9 +995,7 @@ namespace gum {
 
           for (Size bit = 0; bit < nb_bits; bit++) {
             bit_name = current_bn->variable(node).name() + "-b";
-            std::stringstream ss;
-            ss << bit;
-            bit_name += ss.str();
+            bit_name += std::to_string(bit);
 
             LabelizedVariable var_bit(bit_name, "node " + bit_name, 2);
             NodeId            iD = bin_bn->add(var_bit);
@@ -1156,12 +1155,9 @@ namespace gum {
         auto old_card = _src_bn_.variable(i).domainSize();
 
         for (Size mod = 0; mod < old_card; mod++) {
-          std::stringstream ss;
-          ss << _src_bn_.variable(i).name();
-          ss << "-v";
-          ss << mod;
+          auto ss_str = std::format("{}-v{}", _src_bn_.variable(i).name(), mod);
 
-          LabelizedVariable var(ss.str(), "node " + ss.str(), 2);
+          LabelizedVariable var(ss_str, "node " + ss_str, 2);
           const NodeId      indic = bin_bn->add(var);
 
           // arcs from one's bits

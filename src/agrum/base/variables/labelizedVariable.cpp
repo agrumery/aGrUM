@@ -47,20 +47,13 @@
 
 namespace gum {
   std::string LabelizedVariable::domain() const {
-    std::stringstream s;
-    s << "{";
-
+    std::string s = "{";
     if (domainSize() > 0) {
-      s << label(0);
-
-      for (Idx i = 1; i < domainSize(); ++i) {
-        s << "|";
-        s << label(i);
-      }
+      s += label(0);
+      for (Idx i = 1; i < domainSize(); ++i)
+        s += std::format("|{}", label(i));
     }
-
-    s << "}";
-
-    return s.str();
+    s += "}";
+    return s;
   }
 }   // namespace gum

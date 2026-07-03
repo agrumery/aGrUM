@@ -175,9 +175,7 @@ namespace gum {
     ///
     // ============================================================================
     std::string toString() const {
-      std::stringstream ss;
-      ss << "\t\t\tNb Obs : " << _nbObs_ << std::endl;
-      return ss.str();
+      return std::format("\t\t\tNb Obs : {}\n", _nbObs_);
     }
 
     /// @}

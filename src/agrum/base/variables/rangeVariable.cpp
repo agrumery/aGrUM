@@ -89,19 +89,14 @@ namespace gum {
   }
 
   std::string RangeVariable::domain() const {
-    std::stringstream s;
-    s << "[" << minVal() << "," << maxVal() << "]";
-    return s.str();
+    return std::format("[{},{}]", minVal(), maxVal());
   }
 
   std::string RangeVariable::toFast() const {
-    std::stringstream s;
-    s << name();
     if (const auto m = minVal(); m != 0) {
-      s << "[" << m << "," << maxVal() << "]";
+      return std::format("{}[{},{}]", name(), m, maxVal());
     } else {
-      s << "[" << maxVal() + 1 << "]";
+      return std::format("{}[{}]", name(), maxVal() + 1);
     }
-    return s.str();
   }
 } /* namespace gum */

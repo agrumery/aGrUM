@@ -550,17 +550,16 @@ namespace gum {
     stream << "[";
 
     if (!_h_.empty()) {
-      stream << 0 << ":" << *_v_[0];
+      stream << "0:" << *_v_[0];
 
       for (Idx i = 1; i < _h_.size(); ++i) {
-        stream << " - " << i << ":" << *_v_[i];
+        stream << std::format(" - {}:", i) << *_v_[i];
       }
     }
 
     stream << "]";
 
-    std::string res = stream.str();
-    return res;
+    return stream.str();
   }
 
   // returns true if the content of k equals that of *this
@@ -910,17 +909,16 @@ namespace gum {
     stream << "[";
 
     if (!_h_.empty()) {
-      stream << 0 << ":" << _v_[0];
+      stream << "0:" << _v_[0];
 
       for (Idx i = 1; i < _h_.size(); ++i) {
-        stream << " - " << i << ":" << _v_[i];
+        stream << std::format(" - {}:", i) << _v_[i];
       }
     }
 
     stream << "]";
 
-    std::string res = stream.str();
-    return res;
+    return stream.str();
   }
 
   // returns true if the content of k equals that of *this

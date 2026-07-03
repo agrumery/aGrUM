@@ -174,12 +174,11 @@ namespace gum {
     /// @{
 
     std::string toString() const {
-      std::stringstream ss;
-      ss << ITestPolicy< GUM_ELEMENT >::toString() << "\t\t\tContingency Table : " << std::endl
-         << _conTab_.toString() << std::endl
-         << "\t\t\tGStat : " << _GStat_ << std::endl
-         << "\t\t\tGStat : " << this->secondaryscore() << std::endl;
-      return ss.str();
+      return std::format("{}\t\t\tContingency Table : \n{}\n\t\t\tGStat : {}\n\t\t\tGStat : {}\n",
+                         ITestPolicy< GUM_ELEMENT >::toString(),
+                         _conTab_.toString(),
+                         _GStat_,
+                         this->secondaryscore());
     }
 
     /// @}

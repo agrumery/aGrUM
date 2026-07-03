@@ -72,9 +72,8 @@ namespace gum {
         const typename PRMInference< GUM_SCALAR >::Chain& chain) {
       Tensor< GUM_SCALAR >* bn_obs = new Tensor< GUM_SCALAR >();
       // Retrieving the BN's variable
-      std::stringstream var_name;
-      var_name << chain.first->name() << "." << chain.second->safeName();
-      bn_obs->add(_inf_->BN().variableFromName(var_name.str()));
+      auto var_name = std::format("{}.{}", chain.first->name(), chain.second->safeName());
+      bn_obs->add(_inf_->BN().variableFromName(var_name));
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
       const Tensor< GUM_SCALAR >* prm_obs = this->evidence(chain.first)[chain.second->id()];
       Instantiation               i(*bn_obs), j(*prm_obs);

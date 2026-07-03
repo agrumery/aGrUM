@@ -59,8 +59,6 @@ namespace gum {
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {
-      std::stringstream str;
-      str << "In FuncAttribute(" << name << ", " << type.name() << ", " << impl << ")";
       GUM_CONSTRUCTOR(PRMFuncAttribute);
     }
 

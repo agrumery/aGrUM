@@ -48,7 +48,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <sstream>
 // to ease parser in IDEs
 #include <agrum/base/multidim/aggregators/exists.h>
 
@@ -92,13 +91,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE
-
-        std::string
-        Exists< GUM_SCALAR >::aggregatorName() const {
-      std::stringstream ss;
-      ss << "exists[" << _value_ << "]";
-      return ss.str();
+    INLINE std::string Exists< GUM_SCALAR >::aggregatorName() const {
+      return std::format("exists[{}]", _value_);
     }
 
     template < GUM_Numeric GUM_SCALAR >

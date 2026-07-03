@@ -48,7 +48,6 @@
 
 #include <chrono>
 #include <cmath>
-#include <sstream>
 
 #include <agrum/base/core/timer.h>
 
@@ -88,11 +87,9 @@ namespace gum {
     auto minut = fmod(d, 60);
     d          = (d - minut) / 60;
 
-    std::stringstream s;
-    s << std::setfill('0') << std::setw(2) << int(d) << ":";
-    s << std::setfill('0') << std::setw(2) << int(minut) << ":";
-    s << ((sec < 10) ? "0" : "") << sec;
-
-    return s.str();
+    std::string s = std::format("{:02}:{:02}:", int(d), int(minut));
+    if (sec < 10) s += '0';
+    s += std::format("{}", sec);
+    return s;
   }
 } /* namespace gum */

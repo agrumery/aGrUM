@@ -203,19 +203,15 @@ namespace gum {
 
   template < bool isInitial >
   std::string FusionContext< isInitial >::toString() {
-    std::stringstream ss;
+    std::string ss;
     if (_leaf_)
-      ss << "Associated Leaf : " << _leaf_->toString() << std::endl
-         << "Leaves Heap : " << std::endl;
+      ss = std::format("Associated Leaf : {}\nLeaves Heap : \n", _leaf_->toString());
 
-    //      for( HashTableConstIteratorSafe<LeafPair*, std::vector<Size>>
-    //      leafIter =  _pairsHeap_.allValues().cbeginSafe();
-    //           leafIter !=  _pairsHeap_.allValues().cendSafe(); ++leafIter ){
-    //          ss << leafIter.key()->toString() << std::endl;
-    //      }
-    if (!_pairsHeap_.empty()) ss << "Top pair : " << _pairsHeap_.top()->toString() << std::endl;
+    //      ss += std::format("{}\n", leafIter.key()->toString());
+    if (!_pairsHeap_.empty())
+      ss += std::format("Top pair : {}\n", _pairsHeap_.top()->toString());
 
-    return ss.str();
+    return ss;
   }
 
 }   // namespace gum

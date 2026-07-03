@@ -70,9 +70,7 @@ namespace gum {
   INLINE std::string RangeVariable::label(Idx indice) const {
     long target = static_cast< long >(indice) + _minBound_;
     if (belongs(target)) {
-      std::stringstream strBuff;
-      strBuff << target;
-      return strBuff.str();
+      return std::to_string(target);
     } else {
       GUM_ERROR(OutOfBounds, "Indice out of bounds.")
     }

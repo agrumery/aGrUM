@@ -387,27 +387,14 @@ namespace gum {
 
       return retVal;
     } else {
-      std::stringstream msg;
-      msg << "Not enough modalities (";
-
-      if (_stringBag_.size() > 3) {
-        msg << _stringBag_.size() - 3;
-      } else {
-        msg << 0;
-      }
-
-      msg << ") declared for variable ";
-
-      if (_foo_flag_) {
-        msg << _stringBag_[0];
-      } else {
-        msg << "unknown";
-      }
-
+      const auto errMsg
+          = std::format("Not enough modalities ({}) declared for variable {}",
+                        _stringBag_.size() > 3 ? _stringBag_.size() - 3 : std::size_t(0),
+                        _foo_flag_ ? _stringBag_[0] : std::string("unknown"));
       _resetParts_();
 
       _states_.pop_back();
-      GUM_ERROR(OperationNotAllowed, msg.str())
+      GUM_ERROR(OperationNotAllowed, errMsg)
     }
 
     // For noisy compilers

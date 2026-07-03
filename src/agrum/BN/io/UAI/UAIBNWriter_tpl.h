@@ -137,7 +137,7 @@ namespace gum {
           str << bn.idFromName(k->name()) << " ";
         }
       }
-      str << first << "   # " << bn.variable(node).name() << std::endl;
+      str << std::format("{}   # {}\n", first, bn.variable(node).name());
     }
     str << std::endl;
 

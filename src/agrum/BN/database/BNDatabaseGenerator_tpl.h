@@ -157,10 +157,12 @@ namespace gum::learning {
     _drawnSamples_ = true;
 
     if (onProgress.hasListener()) {
-      std::stringstream ss;
-      ss << "Database of size " << idSample << "(" << nbSamples << ") generated in " << timer.step()
-         << " seconds. Log2likelihood : " << _log2likelihood_;
-      GUM_EMIT1(onStop, ss.str());
+      GUM_EMIT1(onStop,
+                std::format("Database of size {}({}) generated in {} seconds. Log2likelihood : {}",
+                            idSample,
+                            nbSamples,
+                            timer.step(),
+                            _log2likelihood_));
     }
 
     return _log2likelihood_;

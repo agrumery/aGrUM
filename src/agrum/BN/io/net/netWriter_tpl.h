@@ -117,7 +117,7 @@ namespace gum {
 
     Instantiation inst(cpt);
     if (cpt.nbrDim() == 1) {
-      str << "potential (" << cpt.variable(0).name() << ") {" << std::endl << tab << "data = ( ";
+      str << std::format("potential ({}) {{\n{}data = ( ", cpt.variable(0).name(), tab);
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         str << std::format(" {}", cpt[inst]);
@@ -132,7 +132,7 @@ namespace gum {
       for (Idx i = 1; i < varsSeq.size(); i++)
         conds.add(*varsSeq[varsSeq.size() - i]);
 
-      str << "potential ( " << (varsSeq[static_cast< Idx >(0)])->name() << " | ";
+      str << std::format("potential ( {} | ", (varsSeq[static_cast< Idx >(0)])->name());
       for (Idx i = 1; i < varsSeq.size(); i++)
         str << varsSeq[i]->name() << "   ";
       str << ") {" << std::endl << tab << "data = \n";
@@ -181,8 +181,8 @@ namespace gum {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << std::endl << "net {" << std::endl;
-    str << "  name = " << bn.propertyWithDefault("name", "unnamedBN") << ";" << std::endl;
-    str << "  software = \"aGrUM " << GUM_VERSION << "\";" << std::endl;
+    str << std::format("  name = {};\n", bn.propertyWithDefault("name", "unnamedBN"));
+    str << std::format("  software = \"aGrUM {}\";\n", GUM_VERSION);
     str << "  node_size = (50 50);" << std::endl;
     str << "}" << std::endl;
     return str.str();
@@ -193,7 +193,7 @@ namespace gum {
   INLINE std::string NetWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
-    str << "node " << var.name() << " {" << std::endl;
+    str << std::format("node {} {{\n", var.name());
     str << tab << "states = (";
 
     for (Idx i = 0; i < var.domainSize(); i++) {
@@ -201,8 +201,8 @@ namespace gum {
     }
 
     str << ");" << std::endl;
-    str << tab << "label = \"" << var.name() << "\";" << std::endl;
-    str << tab << "ID = \"" << var.name() << "\";" << std::endl;
+    str << std::format("{}label = \"{}\";\n", tab, var.name());
+    str << std::format("{}ID = \"{}\";\n", tab, var.name());
 
     str << "}" << std::endl;
 

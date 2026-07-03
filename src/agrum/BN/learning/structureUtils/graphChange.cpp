@@ -60,37 +60,27 @@ namespace gum {
 
     /// put the content of the GraphChange into a string
     std::string GraphChange::toString() const {
-      std::stringstream stream;
       switch (type()) {
         case GraphChangeType::ARC_ADDITION :
-          stream << "ArcAddition ( " << node1() << " , " << node2() << " )";
-          return stream.str();
+          return std::format("ArcAddition ( {} , {} )", node1(), node2());
 
         case GraphChangeType::ARC_DELETION :
-          stream << "ArcDeletion ( " << node1() << " , " << node2() << " )";
-          return stream.str();
+          return std::format("ArcDeletion ( {} , {} )", node1(), node2());
 
         case GraphChangeType::ARC_REVERSAL :
-          stream << "ArcReversal ( " << node1() << " , " << node2() << " )";
-          return stream.str();
+          return std::format("ArcReversal ( {} , {} )", node1(), node2());
 
         case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-          stream << "ArcTriangleDeletion1 ( " << node1() << " , " << node2() << " , " << node3()
-                 << " )";
-          return stream.str();
+          return std::format("ArcTriangleDeletion1 ( {} , {} , {} )", node1(), node2(), node3());
 
         case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-          stream << "ArcTriangleDeletion2 ( " << node1() << " , " << node2() << " , " << node3()
-                 << " )";
-          return stream.str();
+          return std::format("ArcTriangleDeletion2 ( {} , {} , {} )", node1(), node2(), node3());
 
         case GraphChangeType::EDGE_ADDITION :
-          stream << "EdgeAddition ( " << node1() << " , " << node2() << " )";
-          return stream.str();
+          return std::format("EdgeAddition ( {} , {} )", node1(), node2());
 
         case GraphChangeType::EDGE_DELETION :
-          stream << "EdgeDeletion ( " << node1() << " , " << node2() << " )";
-          return stream.str();
+          return std::format("EdgeDeletion ( {} , {} )", node1(), node2());
       }
 
       GUM_ERROR(OperationNotAllowed,

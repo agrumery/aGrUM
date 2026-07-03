@@ -49,6 +49,7 @@
 // WARNING : Do not include this file directly : instead include
 // <agrum/config.h>
 
+#include <format>
 #include <iomanip>
 #include <iostream>
 #include <sstream>

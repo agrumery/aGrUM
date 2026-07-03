@@ -230,7 +230,7 @@ namespace gum {
      * @param dim  the dimension
      * @param usedMem the memory needed for the params
      */
-    static void spaceCplxToStream(std::stringstream& s, double dSize, int dim, Size usedMem);
+    static std::string spaceCplxToString(double dSize, int dim, Size usedMem);
 
     /// returns the family of a noe (parents or neighbours) of a node and the node
     /**

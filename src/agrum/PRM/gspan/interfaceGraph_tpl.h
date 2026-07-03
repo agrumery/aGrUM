@@ -200,15 +200,13 @@ namespace gum {
       template < GUM_Numeric GUM_SCALAR >
       void InterfaceGraph< GUM_SCALAR >::_label_(NodeData< GUM_SCALAR >*               node,
                                                  HashTable< std::string, LabelData* >& label_map) {
-        Size              size = Size(1);
-        std::stringstream sBuff;
-        sBuff << node->n->type().name();
+        Size        size  = Size(1);
+        std::string sBuff = node->n->type().name();
 
         // First we search for multiple inputs
         for (const auto chain: node->n->type().slotChains()) {
           if (chain->isMultiple()) {
-            sBuff << "-" << node->n->getInstances(chain->id()).size();
-            sBuff << chain->name();
+            sBuff += std::format("-{}{}", node->n->getInstances(chain->id()).size(), chain->name());
             size *= node->n->getInstances(chain->id()).size()
                   * chain->lastElt().type().variable().domainSize();
           } else {
@@ -220,23 +218,23 @@ namespace gum {
         for (const auto nn: node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
             if (node->n->hasRefAttr(nn) && node->n->exists(nn)) {
-              sBuff << "-" << node->n->getRefAttr(nn).size() << node->n->get(nn).name();
+              sBuff += std::format("-{}{}", node->n->getRefAttr(nn).size(), node->n->get(nn).name());
               size *= node->n->get(nn).type().variable().domainSize();
             }
           }
         }
 
         // Label is ready
-        auto p_lm = label_map.tryGet(sBuff.str());
+        auto p_lm = label_map.tryGet(sBuff);
         if (!p_lm) {
           LabelData* label = new LabelData();
-          label_map.insert(sBuff.str(), label);
+          label_map.insert(sBuff, label);
           label->id         = ++_counter_;
           label->tree_width = size;
-          label->l          = sBuff.str();
+          label->l          = sBuff;
           _labels_->insert(label->id, label);
           _nodeMap_.insert(label, new Set< NodeData< GUM_SCALAR >* >());
-          p_lm = label_map.tryGet(sBuff.str());
+          p_lm = label_map.tryGet(sBuff);
         }
 
         node->l = *p_lm;
@@ -246,14 +244,13 @@ namespace gum {
       template < GUM_Numeric GUM_SCALAR >
       void InterfaceGraph< GUM_SCALAR >::_label_(EdgeData< GUM_SCALAR >*               edge,
                                                  HashTable< std::string, LabelData* >& label_map) {
-        Size              size = Size(1);
-        std::stringstream sBuff;
-        sBuff << edge->u->type().name() << "-" << edge->v->type().name();
+        Size        size  = Size(1);
+        std::string sBuff = std::format("{}-{}", edge->u->type().name(), edge->v->type().name());
 
         // First looking for edge->u output nodes in v
         for (const auto chain: edge->u->type().slotChains()) {
           if (edge->u->getInstances(chain->id()).exists(edge->v)) {
-            sBuff << "-" << edge->v->type().name() << "." << chain->lastElt().name();
+            sBuff += std::format("-{}.{}", edge->v->type().name(), chain->lastElt().name());
             size *= chain->lastElt().type().variable().domainSize();
           }
         }
@@ -261,21 +258,21 @@ namespace gum {
         // Second looking for edge->v output nodes in u
         for (const auto chain: edge->v->type().slotChains())
           if (edge->v->getInstances(chain->id()).exists(edge->u)) {
-            sBuff << "-" << edge->u->type().name() << "." << chain->lastElt().name();
+            sBuff += std::format("-{}.{}", edge->u->type().name(), chain->lastElt().name());
             size *= chain->lastElt().type().variable().domainSize();
           }
 
         // Label is ready
-        auto p_elm = label_map.tryGet(sBuff.str());
+        auto p_elm = label_map.tryGet(sBuff);
         if (!p_elm) {
           LabelData* label = new LabelData();
-          label_map.insert(sBuff.str(), label);
+          label_map.insert(sBuff, label);
           label->id         = ++_counter_;
-          label->l          = sBuff.str();
+          label->l          = sBuff;
           label->tree_width = size;
           _labels_->insert(label->id, label);
           _edgeMap_.insert(label, new Set< EdgeData< GUM_SCALAR >* >());
-          p_elm = label_map.tryGet(sBuff.str());
+          p_elm = label_map.tryGet(sBuff);
         }
 
         edge->l = *p_elm;

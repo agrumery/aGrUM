@@ -466,10 +466,10 @@ namespace gum {
     std::stringstream nonTerminalStream;
     std::stringstream arcstream;
     //      std::stringstream defaultarcstream;
-    output << std::endl << "digraph \" " << _tableName_ << "\" {" << std::endl;
+    output << '\n' << "digraph \" " << _tableName_ << "\" {" << '\n';
 
-    terminalStream << "node [shape = box];" << std::endl;
-    nonTerminalStream << "node [shape = ellipse];" << std::endl;
+    terminalStream << "node [shape = box];" << '\n';
+    nonTerminalStream << "node [shape = ellipse];" << '\n';
     std::string tab = "  ";
 
     for (NodeGraphPart::NodeIterator nodeIter = _model_.begin(); nodeIter != _model_.end();
@@ -479,12 +479,12 @@ namespace gum {
           terminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\"" << *nodeIter
                          << " - " << std::setprecision(30) << this->terminalNodeValue(*nodeIter)
                          << "\"]"
-                         << ";" << std::endl;
+                         << ";" << '\n';
         else {
           InternalNode* currentNode = _internalNodeMap_[*nodeIter];
           nonTerminalStream << tab << *nodeIter << ";" << tab << *nodeIter << " [label=\""
                             << *nodeIter << " - " << currentNode->nodeVar()->name() << "\"]"
-                            << ";" << std::endl;
+                            << ";" << '\n';
 
           //              if (arcMap_[*nodeIter] != NULL)
           HashTable< NodeId, LinkedList< Idx >* > sonMap;
@@ -502,7 +502,7 @@ namespace gum {
               modaIter = modaIter->nextLink();
             }
             arcstream << "\",color=\"#0000ff\"]"
-                      << ";" << std::endl;
+                      << ";" << '\n';
             delete sonIter.val();
           }
 
@@ -511,17 +511,17 @@ namespace gum {
             while (parentIter != nullptr) {
               arcstream << tab << *nodeIter << " -> " << parentIter->element().parentId
                         << " [label=\"" << parentIter->element().modality << "\",color=\"#ff0000\"]"
-                        << ";" << std::endl;
+                        << ";" << '\n';
               parentIter = parentIter->nextLink();
             }
           }
         }
       }
 
-    output << terminalStream.str() << std::endl
-           << nonTerminalStream.str() << std::endl
-           << arcstream.str() << std::endl
-           << "}" << std::endl;
+    output << terminalStream.str() << '\n'
+           << nonTerminalStream.str() << '\n'
+           << arcstream.str() << '\n'
+           << "}" << '\n';
 
     return output.str();
   }

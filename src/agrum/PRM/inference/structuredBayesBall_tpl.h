@@ -255,13 +255,12 @@ namespace gum {
     std::string
         StructuredBayesBall< GUM_SCALAR >::_buildHashKey_(const PRMInstance< GUM_SCALAR >* i,
                                                           Set< NodeId >& req_nodes) {
-      std::stringstream sBuff;
-      sBuff << i->type().name();
+      std::string result(i->type().name());
 
       for (const auto node: i->type().containerDag().nodes())
-        if (req_nodes.exists(node)) sBuff << "-" << node;
+        if (req_nodes.exists(node)) result += std::format("-{}", node);
 
-      return sBuff.str();
+      return result;
     }
 
     template < GUM_Numeric GUM_SCALAR >

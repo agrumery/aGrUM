@@ -113,10 +113,10 @@ namespace gum {
   std::string VariableNodeMap::toString() const {
     std::stringstream stream;
 
-    stream << "list of associations:" << std::endl;
-    stream << _nodes2vars_ << std::endl << std::endl;
-    stream << "list of variable names:" << std::endl;
-    stream << _names2nodes_ << std::endl;
+    stream << "list of associations:\n";
+    stream << _nodes2vars_ << "\n\n";
+    stream << "list of variable names:\n";
+    stream << _names2nodes_ << '\n';
 
     return stream.str();
   }

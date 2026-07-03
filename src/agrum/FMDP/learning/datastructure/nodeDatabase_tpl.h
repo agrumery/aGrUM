@@ -150,14 +150,12 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   std::string NodeDatabase< AttributeSelection, isScalar >::toString() const {
-    std::stringstream ss;
-
-    ss << "NbObservation : " << this->nbObservation() << std::endl;
+    std::string ss = std::format("NbObservation : {}\n", this->nbObservation());
     for (auto varIter = _attrTable_.beginSafe(); varIter != _attrTable_.endSafe(); ++varIter)
-      ss << "\t\tVariable : " << varIter.key()->name()
-         << " - Associated Test : " << _attrTable_[varIter.key()]->toString() << std::endl;
-
-    return ss.str();
+      ss += std::format("\t\tVariable : {} - Associated Test : {}\n",
+                        varIter.key()->name(),
+                        _attrTable_[varIter.key()]->toString());
+    return ss;
   }
 }   // End of namespace gum
 

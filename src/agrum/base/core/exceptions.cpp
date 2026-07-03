@@ -39,10 +39,7 @@
  ****************************************************************************/
 
 
-#include <cstdio>
-#include <iostream>
-#include <sstream>
-#include <utility>
+#include <cstdlib>
 
 #include <agrum/agrum.h>
 
@@ -61,17 +58,12 @@ namespace gum {
                           std::string_view function,
                           const int        line,
                           std::string_view msg) {
-    std::stringstream stream;
 #  ifdef GUM_FOR_SWIG
-    stream << std::endl << msg << std::endl;
+    return std::format("\n{}\n", msg);
 #  else    // GUM_FOR_SWIG
-    stream << std::endl
-           << filename << ":" << line << " in " << function << "()" << std::endl
-           << "--------------" << std::endl
-           << "! " << msg << std::endl
-           << "--------------" << std::endl;
+    return std::format("\n{}:{} in {}()\n--------------\n! {}\n--------------\n",
+                       filename, line, function, msg);
 #  endif   // GUM_FOR_SWIG
-    return stream.str();
   }
 
   Exception::Exception(const Exception& e) :
@@ -94,14 +86,14 @@ namespace gum {
     size    = backtrace(array, callStackDepth);
     strings = backtrace_symbols(array, size);
 
-    std::stringstream stream;
+    std::string callstack_str;
 
     for (size_t i = 1; i < size; ++i) {
-      stream << i << " :" << strings[i] << std::endl;
+      callstack_str += std::format("{} :{}\n", i, strings[i]);
     }
 
     free(strings);
-    callstack_ = stream.str();
+    callstack_ = callstack_str;
 #    else    // HAVE_EXECINFO_H
     callstack_ = "Callstack only in linux debug mode when execinfo.h available";
 #    endif   // HAVE_EXECINFO_H

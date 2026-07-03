@@ -187,10 +187,8 @@ namespace gum {
   INLINE std::string
          O3prmBNWriter< GUM_SCALAR >::_extractRangeType_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
-    const auto&       var = static_cast< const RangeVariable& >(bn.variable(node));
-    std::stringstream str;
-    str << "int (" << var.minVal() << ", " << var.maxVal() << ")";
-    return str.str();
+    const auto& var = static_cast< const RangeVariable& >(bn.variable(node));
+    return std::format("int ({}, {})", var.minVal(), var.maxVal());
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -226,9 +224,7 @@ namespace gum {
     if (!bn.variable(node).name().empty()) {
       return bn.variable(node).name();
     } else {
-      std::stringstream str;
-      str << node;
-      return str.str();
+      return std::to_string(node);
     }
   }
 

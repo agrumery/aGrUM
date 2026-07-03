@@ -48,7 +48,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <sstream>
 // to ease parser in IDEs
 #include <agrum/base/multidim/aggregators/forall.h>
 
@@ -92,13 +91,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE
-
-        std::string
-        Forall< GUM_SCALAR >::aggregatorName() const {
-      std::stringstream ss;
-      ss << "forall[" << _value_ << "]";
-      return ss.str();
+    INLINE std::string Forall< GUM_SCALAR >::aggregatorName() const {
+      return std::format("forall[{}]", _value_);
     }
 
     template < GUM_Numeric GUM_SCALAR >

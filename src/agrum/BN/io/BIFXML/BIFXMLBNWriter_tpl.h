@@ -154,7 +154,7 @@ namespace gum {
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
-    str << "<NAME>" << bn.propertyWithDefault("name", "unnamedBN") << "</NAME>" << std::endl;
+    str << std::format("<NAME>{}</NAME>\n", bn.propertyWithDefault("name", "unnamedBN"));
     str << "<PROPERTY>software aGrUM</PROPERTY>" << std::endl;
 
     return str.str();
@@ -181,16 +181,16 @@ namespace gum {
     str << "<VARIABLE TYPE=\"nature\">" << std::endl;
 
     // Name and description
-    str << "\t<NAME>" << var.name() << "</NAME>" << std::endl;
-    str << "\t<PROPERTY>description = " << var.description() << "</PROPERTY>" << std::endl;
-    str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
+    str << std::format("\t<NAME>{}</NAME>\n", var.name());
+    str << std::format("\t<PROPERTY>description = {}</PROPERTY>\n", var.description());
+    str << std::format("\t<PROPERTY>fast = {}</PROPERTY>\n", var.toFast());
 
     // Outcomes
     str << "<!--OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
            "compatibility-->"
         << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
-      str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
+      str << std::format("\t<OUTCOME>{}</OUTCOME>\n", var.label(i));
 
     //     //Closing tag
     str << "</VARIABLE>" << std::endl;
@@ -216,7 +216,7 @@ namespace gum {
     str << "<DEFINITION>" << std::endl;
 
     // Variable
-    str << "\t<FOR>" << bn.variable(varNodeId).name() << "</FOR>" << std::endl;
+    str << std::format("\t<FOR>{}</FOR>\n", bn.variable(varNodeId).name());
 
     // Table
     // For historical reason, the code is not the same betwen bIXML for BN and
@@ -226,7 +226,7 @@ namespace gum {
 
     // Conditional Parents
     for (Idx i = 1; i < cpt.nbrDim(); i++)
-      str << "\t<GIVEN>" << cpt.variable(i).name() << "</GIVEN>" << std::endl;
+      str << std::format("\t<GIVEN>{}</GIVEN>\n", cpt.variable(i).name());
 
     Instantiation inst;
     inst << cpt.variable(0);

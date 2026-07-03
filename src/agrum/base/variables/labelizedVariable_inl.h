@@ -47,7 +47,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #include <ostream>
-#include <sstream>
 #include <string>
 
 #include <agrum/agrum.h>
@@ -98,11 +97,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
 
-    for (Idx i = 0; i < nbrLabel; ++i) {
-      std::ostringstream oss;
-      oss << i;
-      addLabel(oss.str());
-    }
+    for (Idx i = 0; i < nbrLabel; ++i)
+      addLabel(std::to_string(i));
   }
 
   INLINE
@@ -175,11 +171,7 @@ namespace gum {
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::LABELIZED; }
 
-  INLINE std::string LabelizedVariable::toFast() const {
-    std::stringstream s;
-    s << name() << domain();
-    return s.str();
-  }
+  INLINE std::string LabelizedVariable::toFast() const { return name() + domain(); }
 
   INLINE bool LabelizedVariable::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a LabelizedVariable

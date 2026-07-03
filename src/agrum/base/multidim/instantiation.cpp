@@ -155,25 +155,27 @@ namespace gum {
 
   // Gives a string version of a Instantiation
   std::string Instantiation::toString() const {
-    std::stringstream sstr;
+    std::string sstr;
     // check if the value of the instantiation is correct
 
-    if (_overflow_) { sstr << "<invalid>"; }
+    if (_overflow_) sstr = "<invalid>";
 
-    sstr << "<";
+    sstr += "<";
 
     bool first = true;
 
     for (const auto var: _vars_) {
-      if (!first) sstr << "|";
+      if (!first) sstr += "|";
 
       first = false;
-      sstr << var->name() << ":" << var->label(val(*var));
+      sstr += var->name();
+      sstr += ":";
+      sstr += var->label(val(*var));
     }
 
-    sstr << ">";
+    sstr += ">";
 
-    return sstr.str();
+    return sstr;
   }
 
   // give a Id value for Hamming distance

@@ -46,7 +46,6 @@
 #pragma once
 
 #include <algorithm>
-#include <sstream>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -99,11 +98,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string ASTBinaryOp< GUM_SCALAR >::toString(std::string_view prefix) const {
-    std::stringstream s;
-    s << prefix << this->_type << "\n";
-    s << _op1->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX) << "\n";
-    s << _op2->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
-    return s.str();
+    std::string cont = std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX;
+    return std::format("{}{}\n{}\n{}", prefix, this->_type,
+                       _op1->toString(cont), _op2->toString(cont));
   }
 
   // ================================================================
@@ -257,8 +254,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string ASTposteriorProba< GUM_SCALAR >::toString(std::string_view prefix) const {
-    std::stringstream s;
-    s << "P(";
+    std::string result = "P(";
 
     // Share the occurrence map across both sides so duplicate
     // names (if any) get consistent LaTeX suffixes.
@@ -268,25 +264,25 @@ namespace gum {
     auto left  = ASTtree< GUM_SCALAR >::_latexCorrect(_vars, occur);
     bool first = true;
     for (const auto& v: left) {
-      if (!first) s << ",";
-      s << v;
+      if (!first) result += ',';
+      result += v;
       first = false;
     }
 
     // RIGHT: conditioning set, sorted & latex-corrected
     if (!_knw.empty()) {
-      s << "|";
+      result += '|';
       auto right = ASTtree< GUM_SCALAR >::_latexCorrect(_knw, occur);
       first      = true;
       for (const auto& k: right) {
-        if (!first) s << ",";
-        s << k;
+        if (!first) result += ',';
+        result += k;
         first = false;
       }
     }
 
-    s << ")";
-    return std::string{prefix} + s.str();
+    result += ')';
+    return std::string{prefix} + result;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -298,34 +294,33 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string
       ASTposteriorProba< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
-    std::stringstream s;
-    s << "P\\left(";
+    std::string result = "P\\left(";
 
     // vars
     {
       auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_vars, nameOccur);
       bool first = true;
       for (const auto& v: corr) {
-        if (!first) s << ",";
-        s << v;
+        if (!first) result += ',';
+        result += v;
         first = false;
       }
     }
 
     // | knw
     if (!_knw.empty()) {
-      s << "\\mid ";
+      result += "\\mid ";
       auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_knw, nameOccur);
       bool first = true;
       for (const auto& k: corr) {
-        if (!first) s << ",";
-        s << k;
+        if (!first) result += ',';
+        result += k;
         first = false;
       }
     }
 
-    s << "\\right)";
-    return s.str();
+    result += "\\right)";
+    return result;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -425,8 +420,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string ASTjointProba< GUM_SCALAR >::toString(std::string_view prefix) const {
-    std::stringstream s;
-    s << "joint P(";
+    std::string result = "joint P(";
 
     // Build a consistent, sorted, LaTeX-corrected list of names
     gum::HashTable< std::string, int > occur;   // tracks suffixes if needed
@@ -434,13 +428,13 @@ namespace gum {
 
     bool first = true;
     for (const auto& v: names) {
-      if (!first) s << ",";
-      s << v;
+      if (!first) result += ',';
+      result += v;
       first = false;
     }
 
-    s << ")";
-    return std::string{prefix} + s.str();
+    result += ')';
+    return std::string{prefix} + result;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -452,17 +446,16 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string
       ASTjointProba< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
-    std::stringstream s;
-    s << "P\\left(";
+    std::string result = "P\\left(";
     auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_varNames, nameOccur);
     bool first = true;
     for (const auto& v: corr) {
-      if (!first) s << ",";
-      s << v;
+      if (!first) result += ',';
+      result += v;
       first = false;
     }
-    s << "\\right)";
-    return s.str();
+    result += "\\right)";
+    return result;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -518,10 +511,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string ASTsum< GUM_SCALAR >::toString(std::string_view prefix) const {
-    std::stringstream s;
-    s << prefix << "sum on " << _var << " for\n";
-    s << _term->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX);
-    return s.str();
+    return std::format("{}sum on {} for\n{}", prefix, _var,
+                       _term->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX));
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -549,15 +540,14 @@ namespace gum {
     auto corr = ASTtree< GUM_SCALAR >::_latexCorrect(varNames, nameOccur);
 
     // Join corrected names with commas
-    std::stringstream names;
+    std::string names;
     for (size_t i = 0; i < corr.size(); ++i) {
-      if (i) names << ",";
-      names << corr[i];
+      if (i) names += ',';
+      names += corr[i];
     }
 
     // Inner formula is the first non-sum node's latex with current nameOccur
-    std::stringstream out;
-    out << "\\sum_{" << names.str() << "}{" << a->protectToLatex(nameOccur) << "}";
+    std::string out = std::format("\\sum_{{{}}}{{{}}}", names, a->protectToLatex(nameOccur));
 
     // Restore nameOccur (decrement each var)
     for (const auto& v: vars) {
@@ -565,7 +555,7 @@ namespace gum {
       nameOccur[v] -= 1;
     }
 
-    return out.str();
+    return out;
   }
 
   template < GUM_Numeric GUM_SCALAR >

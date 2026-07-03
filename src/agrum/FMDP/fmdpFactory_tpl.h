@@ -229,21 +229,14 @@ namespace gum {
       //         VERBOSITY ( "  variable " << var->name() << " OK" );
 
     } else {
-      std::stringstream msg;
-      msg << "Not enough modalities (";
-
-      if (_stringBag_.size() > 2) msg << _stringBag_.size() - 2;
-      else msg << 0;
-
-      msg << ") declared for variable ";
-
-      if (_foo_flag_) msg << _stringBag_[0];
-      else msg << "unknown";
+      const size_t    nModa   = _stringBag_.size() > 2 ? _stringBag_.size() - 2 : size_t{0};
+      const std::string varName = _foo_flag_ ? _stringBag_[0] : "unknown";
 
       _resetParts_();
       _states_.pop_back();
 
-      GUM_ERROR(OperationNotAllowed, msg.str())
+      GUM_ERROR(OperationNotAllowed,
+                std::format("Not enough modalities ({}) declared for variable {}", nModa, varName))
     }
   }
 

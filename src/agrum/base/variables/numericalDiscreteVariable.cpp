@@ -108,16 +108,14 @@ namespace gum {
 
   /// Returns the domain as a string
   std::string NumericalDiscreteVariable::domain() const {
-    std::stringstream s;
-    const Size        size = domainSize();
-
-    s << "{";
+    const Size size = domainSize();
+    std::string s   = "{";
     if (size > 0) {
-      s << _domain_[0];
+      s += std::format("{}", _domain_[0]);
       for (Idx i = 1; i < size; ++i)
-        s << '|' << _domain_[i];
+        s += std::format("|{}", _domain_[i]);
     }
-    s << "}";
-    return s.str();
+    s += "}";
+    return s;
   }
 }   // namespace gum

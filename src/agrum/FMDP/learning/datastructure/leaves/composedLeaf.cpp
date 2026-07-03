@@ -54,9 +54,9 @@
 
 namespace gum {
   std::string ComposedLeaf::toString() {
-    std::stringstream ss;
-    ss << "{ Id : " << this->id() << " - Left : " << _l1_->toString()
-       << " - Right : " << _l2_->toString() << "}";
-    return ss.str();
+    return std::format("{{ Id : {} - Left : {} - Right : {}}}",
+                       this->id(),
+                       _l1_->toString(),
+                       _l2_->toString());
   }
 }   // namespace gum

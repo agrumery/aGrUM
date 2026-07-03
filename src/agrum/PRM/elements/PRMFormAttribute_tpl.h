@@ -224,9 +224,7 @@ namespace gum {
       } catch (OperationNotAllowed const&) {
         GUM_ERROR(OperationNotAllowed, "this ScalarAttribute can not have cast descendant")
       } catch (TypeError const&) {
-        std::stringstream msg;
-        msg << type().name() << " is not a subtype of " << cast->type().name();
-        GUM_ERROR(TypeError, msg.str())
+        GUM_ERROR(TypeError, std::format("{} is not a subtype of {}", type().name(), cast->type().name()))
       }
 
       cast->becomeCastDescendant(type());

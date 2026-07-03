@@ -485,34 +485,30 @@ namespace gum {
       }
 
       std::string LpExpr::toString() const {
-        std::ostringstream s;
-
-        s << std::endl << "left side : " << std::endl;
+        std::string s = "\nleft side : \n";
 
         if (_lCoeffs_ != nullptr)
           for (const auto& elt: *_lCoeffs_)
-            s << elt.first.toString() << " " << elt.second << " | ";
+            s += std::format("{} {} | ", elt.first.toString(), elt.second);
 
-        s << std::endl << "middle side : " << std::endl;
+        s += "\nmiddle side : \n";
 
         if (_mCoeffs_ != nullptr)
           for (const auto& elt: *_mCoeffs_)
-            s << elt.first.toString() << " " << elt.second << " | ";
+            s += std::format("{} {} | ", elt.first.toString(), elt.second);
 
-        s << std::endl << "right side : " << std::endl;
+        s += "\nright side : \n";
 
         if (_rCoeffs_ != nullptr)
           for (const auto& elt: *_rCoeffs_)
-            s << elt.first.toString() << " " << elt.second << " | ";
+            s += std::format("{} {} | ", elt.first.toString(), elt.second);
 
-        s << std::endl
-          << "lvalue : " << _lValue_ << std::endl
-          << "mvalue : " << _mValue_ << std::endl
-          << "rvalue : " << _rValue_ << std::endl;
+        s += std::format("\nlvalue : {}\nmvalue : {}\nrvalue : {}\n\n",
+                         _lValue_,
+                         _mValue_,
+                         _rValue_);
 
-        s << std::endl;
-
-        return s.str();
+        return s;
       }
 
       /**
@@ -637,31 +633,29 @@ namespace gum {
       }
 
       std::string LpRow::toString() const {
-        std::ostringstream s;
-
-        s << "0 <= " << _cste_;
+        std::string s = std::format("0 <= {}", _cste_);
 
         if (_coeffs_ != nullptr) {
           for (const auto& elt: *_coeffs_) {
             if (elt.second > 0) {
               if (elt.second != 1) {
-                s << " +" << elt.second << "*" << elt.first.toString();
+                s += std::format(" +{}*{}", elt.second, elt.first.toString());
               } else {
-                s << " +" << elt.first.toString();
+                s += std::format(" +{}", elt.first.toString());
               }
             } else {
               if (elt.second < 0) {
                 if (elt.second != -1) {
-                  s << " " << elt.second << "*" << elt.first.toString();
+                  s += std::format(" {}*{}", elt.second, elt.first.toString());
                 } else {
-                  s << " -" << elt.first.toString();
+                  s += std::format(" -{}", elt.first.toString());
                 }
               }
             }
           }
         }
 
-        return s.str();
+        return s;
       }
 
     }   // namespace lp

@@ -457,10 +457,7 @@ namespace gum {
     if (i == 0) return "1st";
     else if (i == 1) return "2nd";
     else if (i == 2) return "3rd";
-
-    std::stringstream str;
-    str << (i + 1) << "th";
-    return str.str();
+    return std::format("{}th", i + 1);
   }
 
   /// inserts an operation into the schedule

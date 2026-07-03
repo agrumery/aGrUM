@@ -282,15 +282,15 @@ namespace gum {
 
   std::string CliqueGraph::toString() const {
     std::stringstream stream;
-    stream << "list of nodes:" << std::endl;
+    stream << "list of nodes:\n";
 
     for (const auto node: nodes()) {
-      stream << " -- node: " << node << std::endl << "    clique:";
+      stream << std::format(" -- node: {}\n    clique:", node);
 
       for (const auto cliq: clique(node))
         stream << "  " << cliq;
 
-      stream << std::endl;
+      stream << '\n';
     }
 
     stream << "\n\nlist of edges:\n";
@@ -302,55 +302,48 @@ namespace gum {
   }
 
   std::string expandCliqueContent(const NodeSet& clique, std::string_view delim = "-") {
-    std::stringstream stream;
-    bool              first = true;
+    std::string result;
+    bool        first = true;
 
     std::vector< NodeId > sorted(clique.begin(), clique.end());
     std::sort(sorted.begin(), sorted.end());
     for (auto node: sorted) {
-      if (!first) { stream << delim; }
-
-      stream << node;
+      if (!first) { result += delim; }
+      result += std::to_string(node);
       first = false;
     }
 
-    return stream.str();
+    return result;
   }
 
   std::string expandCliqueTooltip(const NodeSet& clique) {
-    std::stringstream stream;
-    stream << "size : " << clique.size() << "\\n" << expandCliqueContent(clique, "\\n");
-    return stream.str();
+    return std::format("size : {}\\n{}", clique.size(), expandCliqueContent(clique, "\\n"));
   }
 
   std::string expandClique(const NodeId n, const NodeSet& clique) {
-    std::stringstream stream;
-    stream << '(' << n << ") " << expandCliqueContent(clique);
-    return stream.str();
+    return std::format("({}) {}", n, expandCliqueContent(clique));
   }
 
   std::string expandSeparator(const NodeId   n1,
                               const NodeSet& clique1,
                               const NodeId   n2,
                               const NodeSet& clique2) {
-    std::stringstream stream;
-    stream << expandClique(n1, clique1) << "^" << expandClique(n2, clique2);
-    return stream.str();
+    return std::format("{}^{}", expandClique(n1, clique1), expandClique(n2, clique2));
   }
 
   std::string CliqueGraph::toDot() const {
     std::stringstream stream;
-    stream << "graph {" << std::endl;
-    stream << R"(  node [style="filled", fontcolor="black"];)" << std::endl;
+    stream << "graph {" << '\n';
+    stream << R"(  node [style="filled", fontcolor="black"];)" << '\n';
 
     // cliques as nodes
     for (auto node: nodes()) {
       std::string nom = '"' + expandClique(node, clique(node)) + '"';
       stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node)) << "\",tooltip=\""
-             << expandCliqueTooltip(clique(node)) << R"(",fillcolor ="burlywood"];)" << std::endl;
+             << expandCliqueTooltip(clique(node)) << R"(",fillcolor ="burlywood"];)" << '\n';
     }
 
-    stream << std::endl;
+    stream << '\n';
 
     // separator as nodes
     for (const auto& edge: edges()) {
@@ -361,10 +354,10 @@ namespace gum {
                                 clique(edge.second()))
              << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\",tooltip=\""
              << expandCliqueTooltip(separator(edge))
-             << R"(",shape=box,fillcolor="palegreen",fontsize=8,width=0,height=0];)" << std::endl;
+             << R"(",shape=box,fillcolor="palegreen",fontsize=8,width=0,height=0];)" << '\n';
     }
 
-    stream << std::endl;
+    stream << '\n';
 
     // edges now as c1--sep--c2
     for (const auto& edge: edges())
@@ -374,9 +367,9 @@ namespace gum {
                                 edge.second(),
                                 clique(edge.second()))
              << "\"--\"" << expandClique(edge.second(), clique(edge.second())) << "\";"
-             << std::endl;
+             << '\n';
 
-    stream << "}" << std::endl;
+    stream << "}" << '\n';
 
     return stream.str();
   }
@@ -387,22 +380,22 @@ namespace gum {
                                     std::string_view colorClique,
                                     std::string_view colorSep) const {
     std::stringstream stream;
-    stream << "graph {" << std::endl;
-    stream << "  bgcolor=transparent;" << std::endl;
-    stream << "  layout=neato;" << std::endl << std::endl;
-    stream << "  node [shape=point,style=filled, fillcolor =" << colorClique << "];" << std::endl;
-    stream << "  edge [len=" << lenEdge << "];" << std::endl << std::endl;
+    stream << "graph {" << '\n';
+    stream << "  bgcolor=transparent;" << '\n';
+    stream << "  layout=neato;" << '\n' << '\n';
+    stream << "  node [shape=point,style=filled, fillcolor =" << colorClique << "];" << '\n';
+    stream << "  edge [len=" << lenEdge << "];" << '\n' << '\n';
 
     // cliques as nodes
     for (auto node: nodes()) {
       const auto& clik = clique(node);
       stream << "  " << node << " [tooltip=\"" << expandCliqueTooltip(clik)
-             << "\", width=" << scaleClique * double(clik.size()) << "];" << std::endl;
+             << "\", width=" << scaleClique * double(clik.size()) << "];" << '\n';
     }
-    stream << std::endl;
+    stream << '\n';
     stream << "  node [shape=square,style=filled, fillcolor =" << colorSep << ",label=\"\"];"
-           << std::endl
-           << std::endl;
+           << '\n'
+           << '\n';
 
     // separator as nodes and edges
     for (const auto& edge: edges()) {
@@ -410,14 +403,14 @@ namespace gum {
       const auto sep = clique(edge.first()) * clique(edge.second());
       stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
              << expandCliqueTooltip(sep) << "\""
-             << ", width=" << scaleSep * double(sep.size()) << "];" << std::endl;
+             << ", width=" << scaleSep * double(sep.size()) << "];" << '\n';
       // the edges
       stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
-             << "\"--\"" << edge.second() << "\";" << std::endl
-             << std::endl;
+             << "\"--\"" << edge.second() << "\";" << '\n'
+             << '\n';
     }
 
-    stream << "}" << std::endl;
+    stream << "}" << '\n';
 
     return stream.str();
   }

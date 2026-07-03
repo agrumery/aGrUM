@@ -138,27 +138,25 @@ namespace gum {
   }
 
   std::string NodeGraphPart::toString() const {
-    std::stringstream s;
-    bool              first = true;
-    s << "{";
+    std::string s     = "{";
+    bool        first = true;
 
     const bool hasNames = (_names_ != nullptr);
     for (NodeId id = 0; id < _boundVal_; ++id) {
       if (_inHoles_(id)) continue;
 
-      if (first) {
-        first = false;
-      } else {
-        s << ",";
-      }
+      if (!first) s += ",";
+      first = false;
 
-      if (hasNames && _names_->existsFirst(id)) s << id << "<" << _names_->second(id) << ">";
-      else s << id;
+      if (hasNames && _names_->existsFirst(id))
+        s += std::format("{}<{}>", id, _names_->second(id));
+      else
+        s += std::format("{}", id);
     }
 
-    s << "}";
+    s += "}";
 
-    return s.str();
+    return s;
   }
 
   std::string NodeGraphPart::nameFromId(NodeId id) const {

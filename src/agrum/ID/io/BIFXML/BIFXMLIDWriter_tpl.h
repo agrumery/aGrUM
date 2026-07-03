@@ -178,16 +178,16 @@ namespace gum {
     str << "\">" << std::endl;
 
     // Name and description
-    str << "\t<NAME>" << var.name() << "</NAME>" << std::endl;
-    str << "\t<PROPERTY>description = " << var.description() << "</PROPERTY>" << std::endl;
-    str << "\t<PROPERTY>fast = " << var.toFast() << "</PROPERTY>" << std::endl;
+    str << std::format("\t<NAME>{}</NAME>\n", var.name());
+    str << std::format("\t<PROPERTY>description = {}</PROPERTY>\n", var.description());
+    str << std::format("\t<PROPERTY>fast = {}</PROPERTY>\n", var.toFast());
 
     // Outcomes
     str << "<!-- OUTCOME are not used in pyAgrum BIFXML (see fast property) but are kept for "
            "compatibility-->"
         << std::endl;
     for (Idx i = 0; i < var.domainSize(); i++)
-      str << "\t<OUTCOME>" << var.label(i) << "</OUTCOME>" << std::endl;
+      str << std::format("\t<OUTCOME>{}</OUTCOME>\n", var.label(i));
 
     //     //Closing tag
     str << "</VARIABLE>" << std::endl;
@@ -214,9 +214,9 @@ namespace gum {
       str << "<DEFINITION>" << std::endl;
 
       // Variable
-      str << "\t<FOR>" << infdiag.variable(varNodeId).name() << "</FOR>";
+      str << std::format("\t<FOR>{}</FOR>", infdiag.variable(varNodeId).name());
 
-      str << "<!--" << infdiag.variable(varNodeId).name() << " | ";
+      str << std::format("<!--{} | ", infdiag.variable(varNodeId).name());
       for (const auto n: infdiag.parents(varNodeId))
         str << infdiag.variable(n).name() << ",";
       str << "-->\n";
@@ -231,17 +231,15 @@ namespace gum {
 
         for (auto parentListIte = parentList.rbegin(); parentListIte != parentList.rend();
              --parentListIte)
-          str << "\t<GIVEN>" << (*parentListIte) << "</GIVEN>" << std::endl;
+          str << std::format("\t<GIVEN>{}</GIVEN>\n", *parentListIte);
       } else if (infdiag.isChanceNode(varNodeId))   // finding the parents in the cpt
         for (Idx i = infdiag.cpt(varNodeId).nbrDim(); i > 1;
              i--)                                   // the first dimension is not a parent
-          str << "\t<GIVEN>" << infdiag.cpt(varNodeId).variable(i - 1).name() << "</GIVEN>"
-              << std::endl;
+          str << std::format("\t<GIVEN>{}</GIVEN>\n", infdiag.cpt(varNodeId).variable(i - 1).name());
       else if (infdiag.isUtilityNode(varNodeId))    // finding the parents in the utility
         for (Idx i = infdiag.utility(varNodeId).nbrDim(); i > 1;
              i--)                                   // the first dimension is not a parent
-          str << "\t<GIVEN>" << infdiag.utility(varNodeId).variable(i - 1).name() << "</GIVEN>"
-              << std::endl;
+          str << std::format("\t<GIVEN>{}</GIVEN>\n", infdiag.utility(varNodeId).variable(i - 1).name());
 
 
       if (infdiag.isChanceNode(varNodeId)) {

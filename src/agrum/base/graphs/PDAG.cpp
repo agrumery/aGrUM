@@ -127,53 +127,56 @@ namespace gum {
   }
 
   std::string PDAG::toDot() const {
-    std::stringstream output;
-    List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
+    std::string    output;
+    List< NodeId > treatedNodes;
+    output = "digraph \"no_name\" {\n";
 
     std::string tab = "  ";
-    output << tab << "rankdir = TD;" << std::endl;
-    output << tab << "node [style=filled,fillcolor=white,color=black];" << std::endl;
-    output << tab << "graph [style=filled,color=\"#F5F5F5\"];" << std::endl;
+    output += tab + "rankdir = TD;\n";
+    output += tab + "node [style=filled,fillcolor=white,color=black];\n";
+    output += tab + "graph [style=filled,color=\"#F5F5F5\"];\n";
 
-    output << std::endl;
+    output += '\n';
     auto nodeDecl = [&](NodeId n) -> std::string { return std::to_string(n) + dotNodeLabel(n); };
 
     for (const auto node: nodes()) {
       if (neighbours(node).empty()) {
-        output << tab << nodeDecl(node) << ";" << std::endl;
+        output += tab + nodeDecl(node) + ";\n";
         treatedNodes.insert(node);
       }
     }
-    output << std::endl;
+    output += '\n';
 
     int cluster = 0;
     for (const auto node: nodes()) {
       if (!treatedNodes.exists(node)) {
-        output << tab << "subgraph cluster_" << cluster++ << "{{" << std::endl;
-        output << tab << tab << "rank=same;" << std::endl << tab << tab;
+        output += tab + "subgraph cluster_" + std::to_string(cluster++) + "{{\n";
+        output += tab + tab + "rank=same;\n" + tab + tab;
         for (const auto cc: chainComponent(node)) {
-          output << nodeDecl(cc) << ";";
+          output += nodeDecl(cc) + ';';
           treatedNodes.insert(cc);
         }
-        output << std::endl << tab << "}}" << std::endl << std::endl;
+        output += '\n' + tab + "}}\n\n";
       }
     }
 
     for (const auto node: nodes()) {
       for (const auto child: children(node)) {
-        output << tab << node << "->" << child << ";\n";
+        output += std::format("{}{}->{};", tab, node, child);
+        output += '\n';
       }
     }
-    output << std::endl << tab << "edge [dir=none];" << std::endl;
+    output += '\n' + tab + "edge [dir=none];\n";
 
     for (const auto node: nodes()) {
       for (const auto other: neighbours(node))
-        if (other > node) output << tab << node << "->" << other << ";\n";
+        if (other > node) {
+          output += std::format("{}{}->{};", tab, node, other);
+          output += '\n';
+        }
     }
-    output << "}\n";
-    return output.str();
+    output += "}\n";
+    return output;
   }
 
 } /* namespace gum */

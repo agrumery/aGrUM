@@ -214,14 +214,14 @@ namespace gum {
 
   std::string PAG::toString() const {
     std::ostringstream s;
-    s << "PAG{nodes: " << NodeGraphPart::toString() << ", edges: [";
+    s << std::format("PAG{{nodes: {}, edges: [", NodeGraphPart::toString());
     bool first = true;
     for (const Edge& e: edges()) {
       if (!first) { s << ", "; }
       first          = false;
       const NodeId x = e.first();
       const NodeId y = e.second();
-      s << x << " " << markChar(markAt(y, x)) << "--" << markChar(markAt(x, y)) << " " << y;
+      s << std::format("{} {}--{} {}", x, markChar(markAt(y, x)), markChar(markAt(x, y)), y);
     }
     s << "]}";
     return s.str();
@@ -233,7 +233,7 @@ namespace gum {
     out << "  node [shape=ellipse];\n";
 
     for (const NodeId n: nodes()) {
-      out << "  " << n << dotNodeLabel(n) << ";\n";
+      out << std::format("  {}{};\n", n, dotNodeLabel(n));
     }
 
     for (const Edge& e: edges()) {
@@ -247,8 +247,8 @@ namespace gum {
       const std::string arrowhead = yArrow ? "normal" : (yCircle ? "odot" : "none");
       const std::string arrowtail = xArrow ? "normal" : (xCircle ? "odot" : "none");
 
-      out << "  " << x << " -> " << y << " [dir=both"
-          << ", arrowhead=" << arrowhead << ", arrowtail=" << arrowtail << "];\n";
+      out << std::format("  {} -> {} [dir=both, arrowhead={}, arrowtail={}];\n",
+                         x, y, arrowhead, arrowtail);
     }
     out << "}\n";
     return out.str();

@@ -48,7 +48,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <sstream>
 #include <vector>
 
 // to ease parser in IDEs
@@ -76,9 +75,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Amplitude< GUM_SCALAR >::aggregatorName() const {
-      std::stringstream ss;
-      ss << "amplitude";
-      return ss.str();
+      return "amplitude";
     }
 
     template < GUM_Numeric GUM_SCALAR >

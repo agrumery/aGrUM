@@ -104,24 +104,22 @@ namespace gum {
     std::stringstream nodeStream;
     std::stringstream edgeStream;
     List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl
-           << "edge [dir=none]" << std::endl;
-    nodeStream << "node [shape = ellipse];" << std::endl;
+    output << "digraph \"no_name\" {\nedge [dir=none]\n";
+    nodeStream << "node [shape = ellipse];\n";
     std::string tab = "  ";
 
     for (const auto node: nodes()) {
-      nodeStream << tab << node << dotNodeLabel(node) << ";";
+      nodeStream << std::format("{}{}{};", tab, node, dotNodeLabel(node));
 
       if (neighbours(node).size() > 0)
         for (const auto nei: neighbours(node))
           if (!treatedNodes.exists(nei))
-            edgeStream << tab << node << " -> " << nei << ";" << std::endl;
+            edgeStream << std::format("{}{} -> {};\n", tab, node, nei);
 
       treatedNodes.insert(node);
     }
 
-    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
+    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
 
     return output.str();
   }

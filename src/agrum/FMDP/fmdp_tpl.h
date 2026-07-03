@@ -347,33 +347,33 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   INLINE std::string FMDP< GUM_ELEMENT >::toString() const {
-    std::stringstream fmdpCore;
+    std::string fmdpCore;
 
     for (auto actionIter = beginActions(); actionIter != endActions(); ++actionIter) {
       for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
         if (this->transition(*actionIter, *varIter))
-          fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+          fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
                           this->transition(*actionIter, *varIter))
                           ->toDot()
-                   << std::endl;
+                      + '\n';
       if (this->reward(*actionIter))
-        fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+        fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
                         this->reward(*actionIter))
                         ->toDot()
-                 << std::endl;
+                    + '\n';
     }
 
     for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
       if (this->transition(0, *varIter))
-        fmdpCore << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
+        fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
                         this->transition(0, *varIter))
                         ->toDot()
-                 << std::endl;
+                    + '\n';
     if (this->reward())
-      fmdpCore
-          << static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward())->toDot()
-          << std::endl;
-    return fmdpCore.str();
+      fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward())
+                      ->toDot()
+                  + '\n';
+    return fmdpCore;
   }
 
   template < typename GUM_ELEMENT >

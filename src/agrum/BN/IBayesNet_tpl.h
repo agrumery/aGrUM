@@ -188,8 +188,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
     std::stringstream s;
-    s << "BN{nodes: " << size() << ", arcs: " << dag().sizeArcs() << ", ";
-    spaceCplxToStream(s, log10DomainSize(), (int)dim(), memoryFootprint());
+    s << std::format("BN{{nodes: {}, arcs: {}, ", size(), dag().sizeArcs());
+    s << spaceCplxToString(log10DomainSize(), (int)dim(), memoryFootprint());
     s << "}";
     return s.str();
   }
@@ -197,17 +197,15 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string IBayesNet< GUM_SCALAR >::toDot() const {
     std::stringstream output;
-    output << "digraph \"";
 
     std::string bn_name = this->propertyWithDefault("name", "no_name");
 
-    output << bn_name << "\" {" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
+    output << std::format("digraph \"{}\" {{\n", bn_name);
+    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", bn_name);
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
     for (auto node: nodes())
-      output << "\"" << variable(node).name() << "\" [comment=\"" << node << ":"
-             << variable(node).toStringWithDescription() << "\"];" << std::endl;
+      output << std::format("\"{}\" [comment=\"{}:{}\"];\n", variable(node).name(), node, variable(node).toStringWithDescription());
 
     output << std::endl;
 
@@ -216,11 +214,10 @@ namespace gum {
     for (auto node: nodes()) {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
-          output << tab << "\"" << variable(node).name() << "\" -> " << "\""
-                 << variable(child).name() << "\";" << std::endl;
+          output << std::format("  \"{}\" -> \"{}\";\n", variable(node).name(), variable(child).name());
         }
       } else if (parents(node).size() == 0) {
-        output << tab << "\"" << variable(node).name() << "\";" << std::endl;
+        output << std::format("  \"{}\";\n", variable(node).name());
       }
     }
 

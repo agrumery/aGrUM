@@ -95,10 +95,8 @@ namespace gum {
       }
 
       // prior types unsupported by the type checker
-      std::stringstream msg;
-      msg << "The prior '" << priorTypeToString(prior_type)
-          << "' is not yet compatible with the score 'K2'.";
-      return msg.str();
+      return std::format("The prior '{}' is not yet compatible with the score 'K2'.",
+                         priorTypeToString(prior_type));
     }
 
     /// returns the score corresponding to a given nodeset

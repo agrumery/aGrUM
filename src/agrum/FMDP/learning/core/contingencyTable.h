@@ -164,10 +164,10 @@ namespace gum {
         operator+=(const ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >& src);
 
     std::string toString() const {
-      std::stringstream ss;
-      ss << "\t\t\t\t" << _attrAMarginalTable_ << std::endl
-         << "\t\t\t\t" << _attrBMarginalTable_ << std::endl
-         << "\t\t\t\t" << _jointTable_ << std::endl;
+      std::ostringstream ss;
+      ss << "\t\t\t\t" << _attrAMarginalTable_ << "\n"
+         << "\t\t\t\t" << _attrBMarginalTable_ << "\n"
+         << "\t\t\t\t" << _jointTable_ << "\n";
       return ss.str();
     }
 

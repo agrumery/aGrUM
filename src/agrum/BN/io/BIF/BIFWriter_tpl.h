@@ -121,8 +121,7 @@ namespace gum {
 
     if (cpt.nbrDim() == 1) {
       Instantiation inst(cpt);
-      str << "probability (" << this->_onlyValidCharsInName(cpt.variable(0).name()) << ") {"
-          << std::endl;
+      str << std::format("probability ({}) {{\n", this->_onlyValidCharsInName(cpt.variable(0).name()));
       str << tab << "table";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -134,7 +133,7 @@ namespace gum {
       Instantiation inst(cpt);
       Instantiation condVars;   // Instantiation on the conditioning variables
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
-      str << "probability (" << this->_onlyValidCharsInName((varsSeq[(Idx)0])->name()) << " | ";
+      str << std::format("probability ({} | ", this->_onlyValidCharsInName((varsSeq[(Idx)0])->name()));
 
       for (Idx i = 1; i < varsSeq.size(); i++) {
         if (i > 1) str << ", ";
@@ -144,7 +143,7 @@ namespace gum {
       str << ") {" << std::endl;
 
       for (inst.setFirstIn(condVars); !inst.end(); inst.incIn(condVars)) {
-        str << tab << "(" << _variablesLabels_(varsSeq, inst) << ")";
+        str << std::format("{}({})", tab, _variablesLabels_(varsSeq, inst));
         // Writing the probabilities of the variable
 
         for (inst.setFirstOut(condVars); !inst.end(); inst.incOut(condVars)) {
@@ -167,8 +166,8 @@ namespace gum {
   INLINE std::string BIFWriter< GUM_SCALAR >::_header_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
-    str << "network \"" << bn.propertyWithDefault("name", "unnamedBN") << "\" {" << std::endl;
-    str << "// written by aGrUM " << GUM_VERSION << std::endl;
+    str << std::format("network \"{}\" {{\n", bn.propertyWithDefault("name", "unnamedBN"));
+    str << std::format("// written by aGrUM {}\n", GUM_VERSION);
     str << "}" << std::endl;
     return str.str();
   }
@@ -178,8 +177,8 @@ namespace gum {
   INLINE std::string BIFWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
-    str << "variable " << this->_onlyValidCharsInName(var.name()) << " {" << std::endl;
-    str << tab << "type discrete[" << var.domainSize() << "] {";
+    str << std::format("variable {} {{\n", this->_onlyValidCharsInName(var.name()));
+    str << std::format("{}type discrete[{}] {{", tab, var.domainSize());
 
     for (Idx i = 0; i < var.domainSize(); i++) {
       if (i > 0) str << ", ";

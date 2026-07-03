@@ -234,28 +234,21 @@ namespace gum {
 
     // raises an appropriate exception when encountering a type error
     std::string DBCell::_typeErrorMsg_(std::string_view true_type) const {
-      std::stringstream str;
       switch (_type_) {
         case EltType::REAL :
-          str << "The DBCell contains a real number instead of " << true_type;
-          break;
+          return std::format("The DBCell contains a real number instead of {}", true_type);
 
         case EltType::INTEGER :
-          str << "The DBCell contains an integer instead of " << true_type;
-          break;
+          return std::format("The DBCell contains an integer instead of {}", true_type);
 
         case EltType::STRING :
-          str << "The DBCell contains a string instead of " << true_type;
-          break;
+          return std::format("The DBCell contains a string instead of {}", true_type);
 
         case EltType::MISSING :
-          str << "The DBCell contains a missing value instead of " << true_type;
-          break;
+          return std::format("The DBCell contains a missing value instead of {}", true_type);
 
         default : GUM_ERROR(NotImplementedYet, "DBCell type not implemented yet")
       }
-
-      return str.str();
     }
 
     // returns the content of the DBCell as a string, whatever its type

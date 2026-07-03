@@ -51,7 +51,6 @@
 
 #include <algorithm>
 #include <queue>
-#include <sstream>
 #include <utility>
 
 #include <agrum/CM/tools/causalFormula.h>
@@ -68,14 +67,13 @@ namespace gum {
     // format a vector of strings as "{a, b, c}"
     inline std::string _fmtBraceList_(std::vector< std::string > v) {
       std::sort(v.begin(), v.end());
-      std::ostringstream os;
-      os << "{";
+      std::string os = "{";
       for (size_t i = 0; i < v.size(); ++i) {
-        if (i) os << ", ";
-        os << v[i];
+        if (i) os += ", ";
+        os += v[i];
       }
-      os << "}";
-      return os.str();
+      os += "}";
+      return os;
     }
 
   }   // anonymous namespace
@@ -266,16 +264,17 @@ namespace gum {
     const auto vN = namesOf(V);
     const auto sN = namesOf(S);
 
-    std::ostringstream msg;
-    msg << "Not identifiable: hedge detected. "
-        << "Target P" << _fmtBraceList_(yN) << " | do" << _fmtBraceList_(xN)
-        << ". Witness: V = " << _fmtBraceList_(vN)
-        << " is a single c-component and S = " << _fmtBraceList_(sN)
-        << " is a c-component in both G and G\\X (forms a hedge). "
-        << "Interpretation: unblocked confounding remains under intervention; "
-           "the effect cannot be expressed from the observational distribution "
-           "using current graph structure.";
-    return msg.str();
+    return std::format(
+        "Not identifiable: hedge detected. "
+        "Target P{} | do{}. Witness: V = {} is a single c-component and S = {} "
+        "is a c-component in both G and G\\X (forms a hedge). "
+        "Interpretation: unblocked confounding remains under intervention; "
+        "the effect cannot be expressed from the observational distribution "
+        "using current graph structure.",
+        _fmtBraceList_(yN),
+        _fmtBraceList_(xN),
+        _fmtBraceList_(vN),
+        _fmtBraceList_(sN));
   }
 
   template < GUM_Numeric GUM_SCALAR >

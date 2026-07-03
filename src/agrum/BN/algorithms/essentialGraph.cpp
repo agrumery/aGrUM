@@ -154,25 +154,24 @@ namespace gum {
     std::stringstream nodeStream;
     std::stringstream edgeStream;
     List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
-    nodeStream << "node [shape = ellipse];" << std::endl;
+    output << "digraph \"no_name\" {\n";
+    nodeStream << "node [shape = ellipse];\n";
     std::string tab = "  ";
     if (_dagmodel_ != nullptr) {
       for (const auto node: _pdag_.nodes()) {
-        nodeStream << tab << node << "[label=\"" << _dagmodel_->variable(node).name() << "\"];";
+        nodeStream << std::format("{}{}[label=\"{}\"];", tab, node, _dagmodel_->variable(node).name());
 
         for (const auto nei: _pdag_.neighbours(node))
           if (!treatedNodes.exists(nei))
-            edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
+            edgeStream << std::format("{}{} -> {} [dir=none];\n", tab, node, nei);
 
         for (const auto chi: _pdag_.children(node))
-          edgeStream << tab << node << " -> " << chi << " [color=red];" << std::endl;
+          edgeStream << std::format("{}{} -> {} [color=red];\n", tab, node, chi);
 
         treatedNodes.insert(node);
       }
     }
-    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
+    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
 
     return output.str();
   }

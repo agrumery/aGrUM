@@ -39,8 +39,6 @@
  ****************************************************************************/
 
 
-#include <sstream>
-
 #include <agrum/base/variables/discreteVariable.h>
 
 #ifdef GUM_NO_INLINE
@@ -52,18 +50,11 @@
 namespace gum {
 
   std::string DiscreteVariable::toStringWithDescription() const {
-    std::stringstream s;
-    s << description();
-    s << domain();
-
-    return s.str();
+    return description() + domain();
   }
 
   std::string DiscreteVariable::toString() const {
-    std::stringstream s;
-    s << name() << ":" << stype() << "(" << domain() << ")";
-
-    return s.str();
+    return std::format("{}:{}({})", name(), stype(), domain());
   }
 
   /// for friendly displaying the content of the variable

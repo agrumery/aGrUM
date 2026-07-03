@@ -99,16 +99,13 @@ namespace gum::prm::gspan {
   }
 
   std::string Pattern::toDot(size_t name) const {
-    std::stringstream sBuff;
-    sBuff << "digraph " << name << " {\n";
+    std::string result = std::format("digraph {} {{\n", name);
 
-    for (const auto& arc: arcs()) {
-      sBuff << label(arc.tail()).id << " -> ";
-      sBuff << label(arc.head()).id << ";\n";
-    }
+    for (const auto& arc: arcs())
+      result += std::format("{} -> {};\n", label(arc.tail()).id, label(arc.head()).id);
 
-    sBuff << "}\n";
-    return sBuff.str();
+    result += "}\n";
+    return result;
   }
 
   bool Pattern::_expandCodeIsMinimal_(NodeId u, NodeId v) {

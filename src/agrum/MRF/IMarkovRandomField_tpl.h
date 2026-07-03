@@ -155,12 +155,12 @@ namespace gum {
       param += factor.second->content()->realSize();
 
     std::stringstream s;
-    s << "MRF{nodes: " << size() << ", edges: " << graph().sizeEdges() << ", ";
+    s << std::format("MRF{{nodes: {}, edges: {}, ", size(), graph().sizeEdges());
 
-    if (dSize > 6) s << "domainSize: 10^" << dSize;
-    else s << "domainSize: " << std::round(std::pow(10.0, dSize));
+    if (dSize > 6) s << std::format("domainSize: 10^{}", dSize);
+    else s << std::format("domainSize: {}", std::round(std::pow(10.0, dSize)));
 
-    s << ", dim: " << param << "}";
+    s << std::format(", dim: {}}}", param);
 
     return s.str();
   }
@@ -168,17 +168,15 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDot() const {
     std::stringstream output;
-    output << "graph \"";
 
     std::string mn_name = this->propertyWithDefault("name", "no_name");
 
-    output << mn_name << "\" {" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"" << mn_name << "\"];" << std::endl;
+    output << std::format("graph \"{}\" {{\n", mn_name);
+    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", mn_name);
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
     for (auto node: nodes())
-      output << "  \"" << variable(node).name() << "\" [comment=\"" << node << ":"
-             << variable(node).toStringWithDescription() << "\"];" << std::endl;
+      output << std::format("  \"{}\" [comment=\"{}:{}\"];\n", variable(node).name(), node, variable(node).toStringWithDescription());
 
     output << std::endl;
 
@@ -188,12 +186,11 @@ namespace gum {
       if (neighbours(node).size() > 0) {
         for (auto nei: neighbours(node)) {
           if (variable(node).name() < variable(nei).name()) {
-            output << tab << "\"" << variable(node).name() << "\" -- "
-                   << "\"" << variable(nei).name() << "\";" << std::endl;
+            output << std::format("  \"{}\" -- \"{}\";\n", variable(node).name(), variable(nei).name());
           }
         }
       } else {
-        output << tab << "\"" << variable(node).name() << "\";" << std::endl;
+        output << std::format("  \"{}\";\n", variable(node).name());
       }
     }
 
@@ -207,17 +204,16 @@ namespace gum {
     std::stringstream output;
     std::string       mn_name = this->propertyWithDefault("name", "no_name");
 
-    output << "graph FG_" << mn_name << " {" << std::endl;
+    output << std::format("graph FG_{} {{\n", mn_name);
     output << "  layout=neato;" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"factor graph for " << mn_name << "\"];"
-           << std::endl;
+    output << std::format("  graph [bgcolor=transparent,label=\"factor graph for {}\"];\n", mn_name);
 
     // the variables
     output << "  node [shape=rectangle,margin=0.04,width=0,height=0, "
               "style=filled,color=\"coral\"];"
            << std::endl;
     for (auto nod: nodes()) {
-      output << "\"" << variable(nod).name() << "\";" << std::endl;
+      output << std::format("\"{}\";\n", variable(nod).name());
     }
     output << std::endl;
 
@@ -244,7 +240,7 @@ namespace gum {
       clicname += "\"";
 
       for (NodeId nod: kv.first)
-        output << "  " << clicname << " -- \"" << variable(nod).name() << "\";" << std::endl;
+        output << std::format("  {} -- \"{}\";\n", clicname, variable(nod).name());
     }
     output << "}" << std::endl;
 

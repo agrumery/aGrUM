@@ -48,8 +48,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <sstream>
-
 #include <agrum/base/multidim/aggregators/count.h>
 
 namespace gum {
@@ -88,9 +86,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Count< GUM_SCALAR >::aggregatorName() const {
-      std::stringstream ss;
-      ss << "count[" << _value_ << "]";
-      return ss.str();
+      return std::format("count[{}]", _value_);
     }
 
     template < GUM_Numeric GUM_SCALAR >

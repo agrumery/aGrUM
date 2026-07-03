@@ -125,11 +125,10 @@ namespace gum {
     auto influenceDiagram = new InfluenceDiagram< GUM_SCALAR >();
     // First we add nodes
     HashTable< Size, NodeId > map;
-    std::stringstream         strBuff;
     Size                      nb_mod;
 
     for (Idx i = 0; i < nbrNodes; ++i) {
-      strBuff << i;
+      const auto varName = std::format("{}", i);
       nb_mod = (max_modality == 2) ? 2 : 2 + randomValue(max_modality - 1);
 
       GUM_SCALAR cnd = chanceNodeDensity;
@@ -140,15 +139,13 @@ namespace gum {
       if (d < cnd)
         map.insert(
             i,
-            influenceDiagram->addChanceNode(RangeVariable(strBuff.str(), "", 0, nb_mod - 1)));
+            influenceDiagram->addChanceNode(RangeVariable(varName, "", 0, nb_mod - 1)));
       else if (d < (cnd + und))
-        map.insert(i, influenceDiagram->addUtilityNode(RangeVariable(strBuff.str(), "", 0, 0)));
+        map.insert(i, influenceDiagram->addUtilityNode(RangeVariable(varName, "", 0, 0)));
       else
         map.insert(
             i,
-            influenceDiagram->addDecisionNode(RangeVariable(strBuff.str(), "", 0, nb_mod - 1)));
-
-      strBuff.str("");
+            influenceDiagram->addDecisionNode(RangeVariable(varName, "", 0, nb_mod - 1)));
     }
 
     // We add arcs

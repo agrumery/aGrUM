@@ -246,12 +246,7 @@ namespace gum {
   //
   // ###################################################################
   std::string SDYNA::toString() {
-    std::stringstream description;
-
-    description << fmdp_->toString() << std::endl;
-    description << _planer_->optimalPolicy2String() << std::endl;
-
-    return description.str();
+    return fmdp_->toString() + '\n' + _planer_->optimalPolicy2String() + '\n';
   }
 
 }   // End of namespace gum

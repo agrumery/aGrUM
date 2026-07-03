@@ -7867,6 +7867,10 @@ class GraphicalModel(object):
         """
         return _pyagrum.GraphicalModel_isIndependent(self, *args)
 
+    @staticmethod
+    def spaceCplxToString(dSize: float, dim: int, usedMem: int) -> str:
+        return _pyagrum.GraphicalModel_spaceCplxToString(dSize, dim, usedMem)
+
     def family(self, *args) -> list[int]:
         return _pyagrum.GraphicalModel_family(self, *args)
 

@@ -46,7 +46,6 @@
 
 
 #include <algorithm>
-#include <sstream>
 #include <vector>
 
 #include <agrum/CM/tools/causalFormula.h>

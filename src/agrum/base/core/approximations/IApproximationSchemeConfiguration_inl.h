@@ -58,25 +58,26 @@ namespace gum {
 
   INLINE
   std::string IApproximationSchemeConfiguration::messageApproximationScheme() const {
-    std::stringstream s;
-
     switch (stateApproximationScheme()) {
-      case ApproximationSchemeSTATE::Continue : s << "in progress"; break;
+      case ApproximationSchemeSTATE::Continue : return "in progress";
 
-      case ApproximationSchemeSTATE::Epsilon : s << "stopped with epsilon=" << epsilon(); break;
+      case ApproximationSchemeSTATE::Epsilon :
+        return std::format("stopped with epsilon={}", epsilon());
 
-      case ApproximationSchemeSTATE::Rate : s << "stopped with rate=" << minEpsilonRate(); break;
+      case ApproximationSchemeSTATE::Rate :
+        return std::format("stopped with rate={}", minEpsilonRate());
 
-      case ApproximationSchemeSTATE::Limit : s << "stopped with max iteration=" << maxIter(); break;
+      case ApproximationSchemeSTATE::Limit :
+        return std::format("stopped with max iteration={}", maxIter());
 
-      case ApproximationSchemeSTATE::TimeLimit : s << "stopped with timeout=" << maxTime(); break;
+      case ApproximationSchemeSTATE::TimeLimit :
+        return std::format("stopped with timeout={}", maxTime());
 
-      case ApproximationSchemeSTATE::Stopped : s << "stopped on request"; break;
+      case ApproximationSchemeSTATE::Stopped : return "stopped on request";
 
-      case ApproximationSchemeSTATE::Undefined : s << "undefined state"; break;
-    };
-
-    return s.str();
+      case ApproximationSchemeSTATE::Undefined : return "undefined state";
+    }
+    return {};
   }
 
 }   // namespace gum

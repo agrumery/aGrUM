@@ -161,15 +161,11 @@ namespace gum {
           auto rightInstance = ass.rightInstance().label();
 
           if (ass.leftIndex().value() > -1 && real_sys.isArray(leftInstance)) {
-            std::stringstream sBuff;
-            sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
-            leftInstance = sBuff.str();
+            leftInstance = std::format("{}[{}]", leftInstance, ass.leftIndex().value());
           }
 
           if (ass.rightIndex().value() > -1 && real_sys.isArray(rightInstance)) {
-            std::stringstream sBuff;
-            sBuff << rightInstance << "[" << ass.rightIndex().value() << "]";
-            rightInstance = sBuff.str();
+            rightInstance = std::format("{}[{}]", rightInstance, ass.rightIndex().value());
           }
 
           factory.setReferenceSlot(leftInstance, leftReference, rightInstance);
@@ -186,15 +182,11 @@ namespace gum {
           auto rightInstance = inc.rightInstance().label();
 
           if (inc.leftIndex().value() > -1 && real_sys.isArray(leftInstance)) {
-            std::stringstream sBuff;
-            sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
-            leftInstance = sBuff.str();
+            leftInstance = std::format("{}[{}]", leftInstance, inc.leftIndex().value());
           }
 
           if (inc.rightIndex().value() > -1 && real_sys.isArray(rightInstance)) {
-            std::stringstream sBuff;
-            sBuff << rightInstance << "[" << inc.rightIndex().value() << "]";
-            rightInstance = sBuff.str();
+            rightInstance = std::format("{}[{}]", rightInstance, inc.rightIndex().value());
           }
 
           factory.setReferenceSlot(leftInstance, leftReference, rightInstance);

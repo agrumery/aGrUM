@@ -153,22 +153,21 @@ namespace gum {
       std::sort(ids.begin(), ids.end());
 
       if (ids.back() >= scoreDatabase_.names().size()) {
-        std::stringstream str;
-        str << "Learning parameters corresponding to the dag is impossible "
-            << "because the database does not contain the following nodeID";
+        std::string str = "Learning parameters corresponding to the dag is impossible "
+                          "because the database does not contain the following nodeID";
         std::vector< NodeId > bad_ids;
         for (const auto node: ids) {
           if (node >= scoreDatabase_.names().size()) bad_ids.push_back(node);
         }
-        if (bad_ids.size() > 1) str << 's';
-        str << ": ";
+        if (bad_ids.size() > 1) str += 's';
+        str += ": ";
         bool deja = false;
         for (const auto node: bad_ids) {
-          if (deja) str << ", ";
+          if (deja) str += ", ";
           else deja = true;
-          str << node;
+          str += std::to_string(node);
         }
-        GUM_ERROR(MissingVariableInDatabase, str.str())
+        GUM_ERROR(MissingVariableInDatabase, str)
       }
     }
 
@@ -373,14 +372,13 @@ namespace gum {
       for (const auto& tuple: st)
         if (std::get< 0 >(tuple).length() > maxkey) maxkey = std::get< 0 >(tuple).length();
 
-      std::stringstream s;
+      std::string s;
       for (const auto& tuple: st) {
-        s << std::setiosflags(std::ios::left) << std::setw(maxkey) << std::get< 0 >(tuple) << " : "
-          << std::get< 1 >(tuple);
-        if (std::get< 2 >(tuple) != "") s << "  (" << std::get< 2 >(tuple) << ")";
-        s << std::endl;
+        s += std::format("{:<{}} : {}", std::get< 0 >(tuple), maxkey, std::get< 1 >(tuple));
+        if (std::get< 2 >(tuple) != "") s += std::format("  ({})", std::get< 2 >(tuple));
+        s += '\n';
       }
-      return s.str();
+      return s;
     }
 
     template < GUM_Numeric GUM_SCALAR >
@@ -497,30 +495,29 @@ namespace gum {
         comment = "";
         if (!hasMissingValues()) comment = "But no missing values in this database";
         vals.emplace_back("use EM", "True", "");
-        std::stringstream s;
-        s << "[";
+        std::string s = "[";
         bool first = true;
         if (dag2BN_.isEnabledMinEpsilonRate()) {
-          s << "MinRate: " << dag2BN_.minEpsilonRate();
+          s += std::format("MinRate: {}", dag2BN_.minEpsilonRate());
           first = false;
         }
         if (dag2BN_.isEnabledEpsilon()) {
-          if (!first) s << ", ";
+          if (!first) s += ", ";
           first = false;
-          s << "MinDiff: " << dag2BN_.epsilon();
+          s += std::format("MinDiff: {}", dag2BN_.epsilon());
         }
         if (dag2BN_.isEnabledMaxIter()) {
-          if (!first) s << ", ";
+          if (!first) s += ", ";
           first = false;
-          s << "MaxIter: " << dag2BN_.maxIter();
+          s += std::format("MaxIter: {}", dag2BN_.maxIter());
         }
         if (dag2BN_.isEnabledMaxTime()) {
-          if (!first) s << ", ";
+          if (!first) s += ", ";
           first = false;
-          s << "MaxTime: " << dag2BN_.maxTime();
+          s += std::format("MaxTime: {}", dag2BN_.maxTime());
         }
-        s << "]";
-        vals.emplace_back("EM stopping criteria", s.str(), comment);
+        s += "]";
+        vals.emplace_back("EM stopping criteria", s, comment);
       }
 
       std::string res;

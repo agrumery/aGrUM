@@ -166,29 +166,12 @@ namespace gum {
 
   template < typename T_TICKS >
   INLINE std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
-    std::stringstream ss;
-
     if (i + 1 >= _ticks_.size()) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
 
-    if ((i == 0) && _is_empirical) {
-      ss << "(";
-    } else {
-      ss << "[";
-    }
+    const char open  = ((i == 0) && _is_empirical) ? '(' : '[';
+    const char close = (i == _ticks_.size() - 2) ? (_is_empirical ? ')' : ']') : '[';
 
-    ss << std::format("{};{}", _ticks_[i], _ticks_[i + 1]);
-
-    if (i == _ticks_.size() - 2) {
-      if (_is_empirical) {
-        ss << ")";
-      } else {
-        ss << "]";
-      }
-    } else {
-      ss << "[";
-    }
-
-    return ss.str();
+    return std::format("{}{};{}{}", open, _ticks_[i], _ticks_[i + 1], close);
   }
 
   /**  get a numerical representation of he index-the value.
@@ -332,21 +315,20 @@ namespace gum {
 
   template < typename T_TICKS >
   std::string DiscretizedVariable< T_TICKS >::domain() const {
-    std::stringstream s;
-    s << "<";
+    std::string result = "<";
 
     if (domainSize() > 0) {
-      s << label(0);
+      result += label(0);
 
       for (Idx i = 1; i < domainSize(); ++i) {
-        s << ",";
-        s << label(i);
+        result += ",";
+        result += label(i);
       }
     }
 
-    s << ">";
+    result += ">";
 
-    return s.str();
+    return result;
   }
 
   template < typename T_TICKS >
@@ -365,18 +347,17 @@ namespace gum {
 
   template < typename T_TICKS >
   std::string DiscretizedVariable< T_TICKS >::toFast() const {
-    std::stringstream s;
-    bool              first = true;
-    s << name();
-    if (_is_empirical) s << "+";
-    s << "[";
+    std::string result = name();
+    if (_is_empirical) result += "+";
+    result += "[";
+    bool first = true;
     for (const auto& t: _ticks_) {
-      if (!first) s << ",";
+      if (!first) result += ",";
       else first = false;
-      s << std::format("{}", t);
+      result += std::format("{}", t);
     }
-    s << "]";
-    return s.str();
+    result += "]";
+    return result;
   }
 
 } /* namespace gum */

@@ -73,9 +73,7 @@ namespace gum {
       factory.startDiscreteType(name);
 
       for (Size i = 0; i < _domain_size_; ++i) {
-        std::stringstream sBuff;
-        sBuff << i;
-        factory.addLabel(sBuff.str());
+        factory.addLabel(std::format("{}", i));
       }
 
       factory.endDiscreteType();
@@ -137,9 +135,10 @@ namespace gum {
           if (lvl) {
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
-              std::stringstream s;
-              s << l[lvl].r << "." << l[lvl - 1].a[randomValue(l[lvl - 1].a.size())];
-              std::vector< std::string > chain(1, s.str()), param(1, "1");
+              std::vector< std::string > chain(
+                  1,
+                  std::format("{}.{}", l[lvl].r, l[lvl - 1].a[randomValue(l[lvl - 1].a.size())])),
+                  param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
           }
@@ -248,8 +247,7 @@ namespace gum {
           o[lvl].push_back(name);
 
           if (lvl) {
-            std::stringstream chain;
-            chain << name << "." << l[lvl].r;
+            std::string chain = std::format("{}.{}", name, l[lvl].r);
             std::vector< std::string > ref2add;
 
             for (std::vector< std::string >::iterator iter = o[lvl - 1].begin();
@@ -258,7 +256,7 @@ namespace gum {
               if (randomProba() <= density) ref2add.push_back(*iter);
 
             if (ref2add.empty())
-              factory.setReferenceSlot(chain.str(), o[lvl - 1][randomValue(o[lvl - 1].size())]);
+              factory.setReferenceSlot(chain, o[lvl - 1][randomValue(o[lvl - 1].size())]);
 
             while (ref2add.size() > getMaxParents()) {
               idx          = randomValue(ref2add.size());
@@ -268,7 +266,7 @@ namespace gum {
 
             for (std::vector< std::string >::iterator iter = ref2add.begin(); iter != ref2add.end();
                  ++iter)
-              factory.setReferenceSlot(chain.str(), *iter);
+              factory.setReferenceSlot(chain, *iter);
           }
         }
       }

@@ -100,15 +100,11 @@ namespace gum {
   }
 
   std::string LeafPair::toString() {
-    std::stringstream ss;
-    ss << "\t[  Leaf1 : " << _l1_->toString() << " - Leaf2 : " << _l2_->toString();
-    //      ss << " - L1 Total : " <<  _l1_->total() << " - L2 Total : " <<
-    //       _l2_->total();
-    //      for( Idx moda = 0; moda <  _l1_->nbModa(); ++moda )
-    //        ss << "~ M=" << moda << ".L1=" <<  _l1_->effectif(moda) << ".L2="
-    //        <<  _l2_->effectif(moda) << " ~";
-    ss << " - GStat : " << this->likelyhood() << " ]";
-    return ss.str();
+    //      std::format("~ M={}.L1={}.L2={} ~", moda, _l1_->effectif(moda), _l2_->effectif(moda))
+    return std::format("\t[  Leaf1 : {} - Leaf2 : {} - GStat : {} ]",
+                       _l1_->toString(),
+                       _l2_->toString(),
+                       this->likelyhood());
   }
 
 }   // namespace gum

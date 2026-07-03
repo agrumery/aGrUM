@@ -116,13 +116,13 @@ namespace gum {
 
     str << "MARKOV" << std::endl;
 
-    str << MN.size() << " # nbr Nodes" << std::endl;
+    str << std::format("{} # nbr Nodes\n", MN.size());
 
     for (auto node: MN.nodes())
       str << MN.variable(node).domainSize() << " ";
     str << std::endl;
 
-    str << MN.factors().size() << " # nbr Factors " << std::endl;   // number of cliques
+    str << std::format("{} # nbr Factors \n", MN.factors().size());   // number of cliques
 
     for (const auto& kv: MN.factors()) {
       const auto& nodeset = kv.first;
@@ -142,7 +142,7 @@ namespace gum {
                                                   const Tensor< GUM_SCALAR >&             clikpot) {
     std::stringstream str;
 
-    str << clikpot.domainSize() << " # {";
+    str << std::format("{} # {{", clikpot.domainSize());
 
     for (Idx k = 0; k < clikpot.nbrDim(); k++) {
       str << MN.idFromName(clikpot.variable(k).name());

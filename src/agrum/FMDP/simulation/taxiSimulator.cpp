@@ -66,10 +66,8 @@ namespace gum {
     _xPos_->eraseLabels();
     _yPos_->eraseLabels();
     for (Idx pos = 0; pos < 5; pos++) {
-      std::stringstream ss;
-      ss << pos;
-      _xPos_->addLabel(ss.str());
-      _yPos_->addLabel(ss.str());
+      _xPos_->addLabel(std::to_string(pos));
+      _yPos_->addLabel(std::to_string(pos));
     }
 
     // Position et destination passager

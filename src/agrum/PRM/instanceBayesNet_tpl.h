@@ -162,23 +162,22 @@ namespace gum {
     INLINE std::string InstanceBayesNet< GUM_SCALAR >::toDot() const {
       std::string       tab = "  ";
       std::stringstream output;
-      output << "digraph \"";
-      output << _inst_->name() << "\" {" << std::endl;
+      output << std::format("digraph \"{}\" {{\n", _inst_->name());
 
       for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0) {
           const NodeSet& children = this->children(node);
 
           for (const auto chi: children) {
-            output << tab << "\"" << variable(node).name() << "\" -> ";
-            output << "\"" << variable(chi).name() << "\";" << std::endl;
+            output << std::format("{}\"{}\" -> \"{}\";\n",
+                                  tab, variable(node).name(), variable(chi).name());
           }
         } else if (this->parents(node).size() == 0) {
-          output << tab << "\"" << variable(node).name() << "\";" << std::endl;
+          output << std::format("{}\"{}\";\n", tab, variable(node).name());
         }
       }
 
-      output << "}" << std::endl;
+      output << "}\n";
       return output.str();
     }
 

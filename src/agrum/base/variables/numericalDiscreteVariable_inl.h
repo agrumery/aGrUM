@@ -48,7 +48,6 @@
  */
 #include <algorithm>
 #include <ostream>
-#include <sstream>
 #include <string>
 
 #include <agrum/agrum.h>
@@ -240,9 +239,7 @@ namespace gum {
   }
 
   INLINE std::string NumericalDiscreteVariable::toFast() const {
-    std::stringstream s;
-    s << name() << domain();
-    return s.str();
+    return std::format("{}{}", name(), domain());
   }
 } /* namespace gum */
 

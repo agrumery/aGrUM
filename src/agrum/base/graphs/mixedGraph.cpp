@@ -105,25 +105,24 @@ namespace gum {
 
     NodeSet treatedNodes;
 
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
-    nodeStream << "node [shape = ellipse];" << std::endl;
+    output << "digraph \"no_name\" {\n";
+    nodeStream << "node [shape = ellipse];\n";
     std::string tab = "  ";
 
     for (const auto node: nodes()) {
-      nodeStream << tab << node << dotNodeLabel(node) << ";";
+      nodeStream << std::format("{}{}{};", tab, node, dotNodeLabel(node));
 
       for (const auto nei: neighbours(node))
         if (!treatedNodes.exists(nei))
-          edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
+          edgeStream << std::format("{}{} -> {} [dir=none];\n", tab, node, nei);
 
       for (const auto chi: children(node))
-        edgeStream << tab << node << " -> " << chi << ";" << std::endl;
+        edgeStream << std::format("{}{} -> {};\n", tab, node, chi);
 
       treatedNodes.insert(node);
     }
 
-    output << nodeStream.str() << std::endl << edgeStream.str() << std::endl << "}" << std::endl;
+    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
 
     return output.str();
   }

@@ -47,6 +47,8 @@
 
 #include <agrum/CN/polytope/LrsWrapper.h>
 
+#include <agrum/base/core/math/math_utils.h>
+
 namespace gum {
   namespace credal {
 
@@ -311,7 +313,7 @@ namespace gum {
       for (const auto elem: _vertex_)
         sum += elem;
 
-      if (std::fabs(sum - 1) < 1e-6) {
+      if (gum::isCloseToOne(sum, GUM_SCALAR(1e-6))) {
         _output_ = std::vector< std::vector< GUM_SCALAR > >(1, _vertex_);
         return;
       }

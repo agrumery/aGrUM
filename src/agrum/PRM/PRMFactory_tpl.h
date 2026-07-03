@@ -102,9 +102,7 @@ namespace gum {
     INLINE void PRMFactory< GUM_SCALAR >::continueClass(std::string_view name) {
       std::string real_name = _addPrefix_(name);
       if (!(_prm_->_classMap_.exists(real_name))) {
-        std::stringstream msg;
-        msg << "'" << real_name << "' not found";
-        GUM_ERROR(NotFound, msg.str())
+        GUM_ERROR(NotFound, std::format("'{}' not found", real_name))
       }
       _stack_.push_back(&(_prm_->getClass(real_name)));
     }
@@ -130,9 +128,7 @@ namespace gum {
             std::string name = i->get(node).name();
 
             if (!c->exists(name)) {
-              std::stringstream msg;
-              msg << "class " << c->name() << " does not respect interface ";
-              GUM_ERROR(PRMTypeError, msg.str() + i->name())
+              GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
             }
 
             switch (i->get(node).elt_type()) {
@@ -141,14 +137,10 @@ namespace gum {
                 if ((c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute)
                     || (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_aggregate)) {
                   if (!c->get(name).type().isSubTypeOf(i->get(name).type())) {
-                    std::stringstream msg;
-                    msg << "class " << c->name() << " does not respect interface ";
-                    GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                    GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
                   }
                 } else {
-                  std::stringstream msg;
-                  msg << "class " << c->name() << " does not respect interface ";
-                  GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                  GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
                 }
 
                 break;
@@ -162,14 +154,10 @@ namespace gum {
                       = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(c->get(name));
 
                   if (!ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
-                    std::stringstream msg;
-                    msg << "class " << c->name() << " does not respect interface ";
-                    GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                    GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
                   }
                 } else {
-                  std::stringstream msg;
-                  msg << "class " << c->name() << " does not respect interface ";
-                  GUM_ERROR(PRMTypeError, msg.str() + i->name())
+                  GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
                 }
 
                 break;
@@ -867,9 +855,7 @@ namespace gum {
         model->addArray(name_str, *c);
 
         for (Size i = 0; i < size; ++i) {
-          std::stringstream elt_name;
-          elt_name << name << "[" << i << "]";
-          inst = new PRMInstance< GUM_SCALAR >(elt_name.str(), *c);
+          inst = new PRMInstance< GUM_SCALAR >(std::format("{}[{}]", name, i), *c);
           model->add(name_str, inst);
           inst = nullptr;
         }
@@ -1026,9 +1012,7 @@ namespace gum {
               toAdd.push_back(std::make_pair(elt, _buildSlotChain_(c, name.str())));
             }
           } else {
-            std::stringstream name;
-            name << "(" << t->name() << ")" << elt->name();
-            toAdd.push_back(std::make_pair(elt, &(c->get(name.str()))));
+            toAdd.push_back(std::make_pair(elt, &(c->get(std::format("({}){}", t->name(), elt->name())))));
           }
         }
       }
@@ -1502,9 +1486,7 @@ namespace gum {
         PRMFactory< GUM_SCALAR >::addRangeType(std::string_view name, long minVal, long maxVal) {
       std::string real_name = _addPrefix_(name);
       if (_prm_->_typeMap_.exists(real_name)) {
-        std::stringstream msg;
-        msg << "\"" << real_name << "' is already used.";
-        GUM_ERROR(DuplicateElement, msg.str())
+        GUM_ERROR(DuplicateElement, std::format("\"{}' is already used.", real_name))
       }
 
       auto var = RangeVariable(real_name, "", minVal, maxVal);

@@ -42,7 +42,6 @@
 #pragma once
 
 #include <algorithm>
-#include <sstream>
 
 #include <agrum/CM/causalImpact.h>
 
@@ -60,27 +59,27 @@ namespace gum {
     if (names.size() == 1) { return names[0]; }
     if (names.size() == 2) { return names[0] + " and " + names[1]; }
 
-    std::ostringstream os;
+    std::string os;
     for (size_t i = 0; i < names.size(); ++i) {
-      if (i > 0) { os << (i + 1 == names.size() ? ", and " : ", "); }
-      os << names[i];
+      if (i > 0) { os += (i + 1 == names.size() ? ", and " : ", "); }
+      os += names[i];
     }
-    return os.str();
+    return os;
   }
 
   inline std::string _dsepExplanation_(const Set< std::string >& on,
                                        const Set< std::string >& doing,
                                        const Set< std::string >& knowing) {
-    std::ostringstream os;
-    os << "No causal effect of " << _formatVarsForSentence_(doing) << " on "
-       << _formatVarsForSentence_(on)
-       << " because they are d-separated after removing incoming edges into "
-       << _formatVarsForSentence_(doing);
-
-    if (!knowing.empty()) { os << " and conditioning on " << _formatVarsForSentence_(knowing); }
-
-    os << ".";
-    return os.str();
+    std::string os = std::format("No causal effect of {} on {} because they are d-separated "
+                                 "after removing incoming edges into {}",
+                                 _formatVarsForSentence_(doing),
+                                 _formatVarsForSentence_(on),
+                                 _formatVarsForSentence_(doing));
+    if (!knowing.empty()) {
+      os += std::format(" and conditioning on {}", _formatVarsForSentence_(knowing));
+    }
+    os += ".";
+    return os;
   }
 
   inline DAG _removeIncomingIntoLocal_(const DAG& g, const NodeSet& xset) {

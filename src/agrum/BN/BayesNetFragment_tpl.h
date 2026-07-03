@@ -303,7 +303,6 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string BayesNetFragment< GUM_SCALAR >::toDot() const {
     std::stringstream output;
-    output << "digraph \"";
 
     std::string bn_name;
 
@@ -324,8 +323,8 @@ namespace gum {
 
     bn_name = "Fragment of " + bn_name;
 
-    output << bn_name << "\" {" << std::endl;
-    output << "  graph [bgcolor=transparent,label=\"" << bn_name << "\"];" << std::endl;
+    output << std::format("digraph \"{}\" {{\n", bn_name);
+    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", bn_name);
     output << "  node [style=filled];" << std::endl << std::endl;
 
     for (auto node: _bn_.nodes()) {
@@ -349,8 +348,7 @@ namespace gum {
     for (auto node: _bn_.nodes()) {
       if (_bn_.children(node).size() > 0) {
         for (auto child: _bn_.children(node)) {
-          output << tab << "\"" << _bn_.variable(node).name() << "\" -> "
-                 << "\"" << _bn_.variable(child).name() << "\" [";
+          output << std::format("  \"{}\" -> \"{}\" [", _bn_.variable(node).name(), _bn_.variable(child).name());
 
           if (this->internalDag().existsArc(Arc(node, child))) output << inFragmentStyle;
           else output << outFragmentStyle;

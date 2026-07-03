@@ -133,9 +133,7 @@ namespace gum {
 
     public:
     std::string toString() override {
-      std::stringstream ss;
-      ss << "{ Id : " << this->id() << "}";
-      return ss.str();
+      return std::format("{{ Id : {}}}", this->id());
     }
 
     private:

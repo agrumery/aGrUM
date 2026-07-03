@@ -104,11 +104,10 @@ namespace gum {
       const DiscreteVariable* var = &bn.variable(node);
 
       for (Idx i = 0; i < var->domainSize(); i++) {
-        std::stringstream stri;
-        stri << var->name() << "_" << var->label(i);
-        vartable.insert(stri.str(), ++num);
-        strfile << num << "::" << stri.str() << "\n";
-        str0 << vartable[stri.str()] << " ";
+        auto stri = std::format("{}_{}", var->name(), var->label(i));
+        vartable.insert(stri, ++num);
+        strfile << std::format("{}::{}\n", num, stri);
+        str0 << std::format("{} ", vartable[stri]);
       }
 
       str0 << "0\n";
@@ -126,9 +125,7 @@ namespace gum {
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         if (this->fromExact(cpt[inst]) != 1) {
-          std::stringstream strk;
-          strk << this->fromExact(cpt[inst]);
-          std::string valp = strk.str();
+          std::string valp = std::format("{}", this->fromExact(cpt[inst]));
 
           if (!(cptparamval[var])->exists(valp)) {
             (cptparamval[var])
@@ -137,13 +134,11 @@ namespace gum {
             (*(cptparamval[var]))[valp]->insert(new gum::Sequence< gum::Instantiation* >);
 
             if (this->fromExact(cpt[inst])) {
-              std::stringstream strinst;
-              strinst << var->name();
-              strinst << "_val=" << this->fromExact(cpt[inst]);
+              auto strinst = std::format("{}_val={}", var->name(), this->fromExact(cpt[inst]));
 
-              if (!protable.exists(strinst.str())) {
-                protable.insert(strinst.str(), ++num);
-                strfile << num << "::" << strinst.str() << "\n";
+              if (!protable.exists(strinst)) {
+                protable.insert(strinst, ++num);
+                strfile << std::format("{}::{}\n", num, strinst);
               }
             }
           }
@@ -258,16 +253,13 @@ namespace gum {
             auto itseqv = (*itpv)->begin();
 
             for (Idx i = 0; i < (*itseqv)->nbrDim(); i++) {
-              std::stringstream str;
-              str << (*itseqv)->variable(i).name() << "_" << (*itseqv)->val((*itseqv)->variable(i));
-              str2 << "-" << vartable[str.str()] << " ";
+              auto str = std::format("{}_{}", (*itseqv)->variable(i).name(), (*itseqv)->val((*itseqv)->variable(i)));
+              str2 << std::format("-{} ", vartable[str]);
             }
 
             if (itpvall.key() != "0" && itpvall.key() != "0.0") {
-              std::stringstream strinst;
-              strinst << itvar.key()->name();
-              strinst << "_val=" << itpvall.key();
-              str2 << protable[strinst.str()];
+              auto strinst = std::format("{}_val={}", itvar.key()->name(), itpvall.key());
+              str2 << protable[strinst];
             }
 
             str2 << " 0\n";
@@ -290,8 +282,8 @@ namespace gum {
 
     clausstr << str2.str();
 
-    output << "p cnf " << num << " " << clause << "\neclauses " << numvar << "\n"
-           << clausstr.str() << clausstr2.str() << std::endl;
+    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar)
+           << clausstr.str() << clausstr2.str() << '\n';
     output.flush();
   }
 
@@ -338,11 +330,10 @@ namespace gum {
       const DiscreteVariable* var = &bn.variable(node);
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        std::stringstream stri;
-        stri << var->name() << "_" << var->label(i);
-        vartable.insert(stri.str(), ++num);
-        strfile << num << "::" << stri.str() << "\n";
-        str0 << vartable[stri.str()] << " ";
+        auto stri = std::format("{}_{}", var->name(), var->label(i));
+        vartable.insert(stri, ++num);
+        strfile << std::format("{}::{}\n", num, stri);
+        str0 << std::format("{} ", vartable[stri]);
       }
 
       str0 << "0\n";
@@ -360,9 +351,7 @@ namespace gum {
 
       for (inst.setFirst(); !inst.end(); ++inst) {
         if (this->fromExact(cpt[inst]) != 1) {
-          std::stringstream strk;
-          strk << this->fromExact(cpt[inst]);
-          std::string valp = strk.str();
+          std::string valp = std::format("{}", this->fromExact(cpt[inst]));
 
           if (!(cptparamval[var])->exists(valp)) {
             (cptparamval[var])
@@ -377,13 +366,11 @@ namespace gum {
             (*(cptparamval[var]))[valp]->insert(new gum::Sequence< gum::Instantiation* >);
 
             if (this->fromExact(cpt[inst])) {
-              std::stringstream strinst;
-              strinst << var->name();
-              strinst << "_val=" << this->fromExact(cpt[inst]);
+              auto strinst = std::format("{}_val={}", var->name(), this->fromExact(cpt[inst]));
 
-              if (!protable.exists(strinst.str())) {
-                protable.insert(strinst.str(), ++num);
-                strfile << num << "::" << strinst.str() << "\n";
+              if (!protable.exists(strinst)) {
+                protable.insert(strinst, ++num);
+                strfile << std::format("{}::{}\n", num, strinst);
               }
             }
           }
@@ -511,18 +498,15 @@ namespace gum {
             gum::Sequence< gum::Instantiation* >::iterator_safe itseqv = (*itpv)->begin();
 
             for (Idx i = 0; i < (*itseqv)->nbrDim(); i++) {
-              std::stringstream str;
-              str << (*itseqv)->variable(i).name() << "_" << (*itseqv)->val((*itseqv)->variable(i));
-              str2 << "-" << vartable[str.str()] << " ";
+              auto str = std::format("{}_{}", (*itseqv)->variable(i).name(), (*itseqv)->val((*itseqv)->variable(i)));
+              str2 << std::format("-{} ", vartable[str]);
             }
 
             /*if (itpvall.key().compare("0") != 0 &&
                 itpvall.key().compare("0.0") != 0) {  */
             if (itpvall.key() != "0" && itpvall.key() != "0.0") {
-              std::stringstream strinst;
-              strinst << itvar.key()->name();
-              strinst << "_val=" << itpvall.key();
-              str2 << protable[strinst.str()];
+              auto strinst = std::format("{}_val={}", itvar.key()->name(), itpvall.key());
+              str2 << protable[strinst];
             }
 
             str2 << " 0\n";
@@ -545,8 +529,8 @@ namespace gum {
 
     clausstr << str2.str();
 
-    output << "p cnf " << num << " " << clause << "\neclauses " << numvar << "\n"
-           << clausstr.str() << clausstr2.str() << std::endl;
+    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar)
+           << clausstr.str() << clausstr2.str() << '\n';
     output.flush();
     outputvar << strfile.str();
     outputvar.flush();

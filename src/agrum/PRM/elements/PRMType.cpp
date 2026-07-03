@@ -59,10 +59,8 @@ namespace gum {
 
 
     void PRMType::_updateName_() {
-      const void*       address = static_cast< const void* >(this);
-      std::stringstream ss;
-      ss << this->name() << "-" << address;
-      this->_var_->setName(ss.str());
+      const void* address = static_cast< const void* >(this);
+      this->_var_->setName(std::format("{}-{}", this->name(), address));
     }
 
     PRMType::PRMType(const DiscreteVariable& var) :

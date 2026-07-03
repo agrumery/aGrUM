@@ -48,7 +48,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <sstream>
 #include <vector>
 
 // to ease parser in IDEs
@@ -76,9 +75,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     INLINE std::string Median< GUM_SCALAR >::aggregatorName() const {
-      std::stringstream ss;
-      ss << "median";
-      return ss.str();
+      return "median";
     }
 
     template < GUM_Numeric GUM_SCALAR >

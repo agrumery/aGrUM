@@ -131,17 +131,17 @@ namespace gum {
     // Initialisation
 
     // Declaration of the needed string stream
-    std::stringstream output;
-    std::stringstream terminalStream;
-    std::stringstream nonTerminalStream;
-    std::stringstream arcstream;
+    std::string output;
+    std::string terminalStream;
+    std::string nonTerminalStream;
+    std::string arcstream;
 
     // First line for the toDot
-    output << std::endl << "digraph \" OPTIMAL POLICY \" {" << std::endl;
+    output += "\ndigraph \" OPTIMAL POLICY \" {\n";
 
     // Form line for the internal node stream en the terminal node stream
-    terminalStream << "node [shape = box];" << std::endl;
-    nonTerminalStream << "node [shape = ellipse];" << std::endl;
+    terminalStream += "node [shape = box];\n";
+    nonTerminalStream += "node [shape = ellipse];\n";
 
     // For somme clarity in the final string
     std::string tab = "\t";
@@ -170,16 +170,17 @@ namespace gum {
         ActionSet ase = optimalPolicy_->nodeValue(currentNodeId);
 
         // Creating a line for this node
-        terminalStream << tab << currentNodeId << ";" << tab << currentNodeId << " [label=\""
-                       << currentNodeId << " - ";
+        terminalStream += std::format("{0}{1};{0}{1} [label=\"{1} - ", tab, currentNodeId);
 
         // Enumerating and adding to the line the associated optimal actions
         for (SequenceIteratorSafe< Idx > valIter = ase.beginSafe(); valIter != ase.endSafe();
-             ++valIter)
-          terminalStream << fmdp_->actionName(*valIter) << " ";
+             ++valIter) {
+          terminalStream += fmdp_->actionName(*valIter);
+          terminalStream += ' ';
+        }
 
         // Terminating line
-        terminalStream << "\"];" << std::endl;
+        terminalStream += "\"];\n";
         continue;
       }
 
@@ -189,9 +190,8 @@ namespace gum {
         const InternalNode* currentNode = optimalPolicy_->node(currentNodeId);
 
         // Creating a line in internalnode stream for this node
-        nonTerminalStream << tab << currentNodeId << ";" << tab << currentNodeId << " [label=\""
-                          << currentNodeId << " - " << currentNode->nodeVar()->name() << "\"];"
-                          << std::endl;
+        nonTerminalStream += std::format("{0}{1};{0}{1} [label=\"{1} - {2}\"];\n",
+                                         tab, currentNodeId, currentNode->nodeVar()->name());
 
         // Going through the sons and agregating them according the the sons Ids
         HashTable< NodeId, LinkedList< Idx >* > sonMap;
@@ -207,26 +207,23 @@ namespace gum {
 
         // Adding to the arc stram
         for (auto sonIter = sonMap.beginSafe(); sonIter != sonMap.endSafe(); ++sonIter) {
-          arcstream << tab << currentNodeId << " -> " << sonIter.key() << " [label=\" ";
+          arcstream += std::format("{}{} -> {} [label=\" ", tab, currentNodeId, sonIter.key());
           Link< Idx >* modaIter = sonIter.val()->list();
           while (modaIter) {
-            arcstream << currentNode->nodeVar()->label(modaIter->element());
-            if (modaIter->nextLink()) arcstream << ", ";
+            arcstream += currentNode->nodeVar()->label(modaIter->element());
+            if (modaIter->nextLink()) arcstream += ", ";
             modaIter = modaIter->nextLink();
           }
-          arcstream << "\",color=\"#00ff00\"];" << std::endl;
+          arcstream += "\",color=\"#00ff00\"];\n";
           delete sonIter.val();
         }
       }
     }
 
     // Terminating
-    output << terminalStream.str() << std::endl
-           << nonTerminalStream.str() << std::endl
-           << arcstream.str() << std::endl
-           << "}" << std::endl;
+    output += terminalStream + '\n' + nonTerminalStream + '\n' + arcstream + "\n}\n";
 
-    return output.str();
+    return output;
   }
 
   /* **************************************************************************************************

@@ -39,8 +39,6 @@
  ****************************************************************************/
 
 
-#include <sstream>
-
 #include <agrum/base/multidim/implementations/multiDimAdressable.h>
 #include <agrum/base/multidim/setInst.h>
 
@@ -156,57 +154,46 @@ namespace gum {
 
   // Gives a string version of a SetInst
   std::string SetInst::toString() const {
-    std::stringstream sstr;
+    std::string result;
     // check if the value of the SetInst is correct
 
-    if (_overflow_) { sstr << "<invalid>"; }
+    if (_overflow_) { result += "<invalid>"; }
 
-    sstr << "<";
+    result += "<";
 
     Sequence< const DiscreteVariable* >::iterator_safe iter = _vars_.begin();
 
     if (iter != _vars_.end()) {
-      std::stringstream sstr2;
-      sstr2.str("");
-      Size si   = variable(iter.pos()).domainSize();
-      Size valb = vals(iter.pos());
+      Size        si   = variable(iter.pos()).domainSize();
+      Size        valb = vals(iter.pos());
+      std::string bits;
 
       while (si-- != 0) {
-        std::stringstream sstr4;
-        sstr4 << ((valb & 1) ? "1" : "0") << sstr2.str();
+        bits  = std::string(1, (valb & 1) ? '1' : '0') + bits;
         valb >>= 1;
-        sstr2.str("");
-        ;
-        sstr2 << sstr4.str();
       }
 
-      sstr << variable(iter.pos()).name() << ":" << sstr2.str();
+      result += variable(iter.pos()).name() + ":" + bits;
       ++iter;
 
       while (iter != _vars_.end()) {
-        std::stringstream sstr3;
-        sstr3 << "";
-        si = variable(iter.pos()).domainSize();
-
+        si   = variable(iter.pos()).domainSize();
         valb = vals(iter.pos());
+        bits = "";
 
         while (si-- != 0) {
-          std::stringstream sstr4;
-
-          sstr4 << ((valb & 1) ? "1" : "0") << sstr3.str();
+          bits  = std::string(1, (valb & 1) ? '1' : '0') + bits;
           valb >>= 1;
-          sstr3.str("");
-          sstr3 << sstr4.str();
         }
 
-        sstr << "|" << variable(iter.pos()).name() << ":" << sstr3.str();
+        result += "|" + variable(iter.pos()).name() + ":" + bits;
         ++iter;
       }
     }
 
-    sstr << ">";
+    result += ">";
 
-    return sstr.str();
+    return result;
   }
 
   // an operator for user-friendly displaying the content of a SetInst

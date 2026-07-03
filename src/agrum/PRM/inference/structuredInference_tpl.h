@@ -200,21 +200,20 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     std::string StructuredInference< GUM_SCALAR >::info() const {
       std::stringstream s;
-      s << "Triangulation time: " << triang_time << std::endl;
-      s << "Pattern mining time: " << mining_time << std::endl;
-      s << "Pattern elimination time: " << pattern_time << std::endl;
-      s << "Inner node elimination time: " << inner_time << std::endl;
-      s << "Observed node elimination time: " << obs_time << std::endl;
-      s << "Full inference time: " << full_time << std::endl;
-      s << "#patterns: " << _gspan_->patterns().size() << std::endl;
+      s << std::format("Triangulation time: {}\n", triang_time);
+      s << std::format("Pattern mining time: {}\n", mining_time);
+      s << std::format("Pattern elimination time: {}\n", pattern_time);
+      s << std::format("Inner node elimination time: {}\n", inner_time);
+      s << std::format("Observed node elimination time: {}\n", obs_time);
+      s << std::format("Full inference time: {}\n", full_time);
+      s << std::format("#patterns: {}\n", _gspan_->patterns().size());
       Size count = 0;
       using Iter = std::vector< gspan::Pattern* >::const_iterator;
 
       for (Iter p = _gspan_->patterns().begin(); p != _gspan_->patterns().end(); ++p) {
         if (_gspan_->matches(**p).size()) {
-          s << "Pattern n°" << count++ << " match count: " << _gspan_->matches(**p).size()
-            << std::endl;
-          s << "Pattern n°" << count++ << " instance count: " << (**p).size() << std::endl;
+          s << std::format("Pattern n°{} match count: {}\n", count++, _gspan_->matches(**p).size());
+          s << std::format("Pattern n°{} instance count: {}\n", count++, (**p).size());
         }
       }
 

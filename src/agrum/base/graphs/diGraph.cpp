@@ -91,21 +91,18 @@ namespace gum {
   }
 
   std::string DiGraph::toDot() const {
-    std::stringstream strBuff;
-    std::string       tab = "     ";
-    strBuff << "digraph {" << std::endl;
+    std::string strBuff = "digraph {\n";
 
-    for (const auto node: nodes()) {
-      strBuff << tab << node << dotNodeLabel(node) << ";" << std::endl;
-    }
+    for (const auto node: nodes())
+      strBuff += std::format("     {}{};\n", node, dotNodeLabel(node));
 
-    strBuff << std::endl;
+    strBuff += "\n";
 
     for (const auto& arc: arcs())
-      strBuff << tab << arc.tail() << " -> " << arc.head() << ";" << std::endl;
+      strBuff += std::format("     {} -> {};\n", arc.tail(), arc.head());
 
-    strBuff << "}" << std::endl << std::endl;
-    return strBuff.str();
+    strBuff += "}\n\n";
+    return strBuff;
   }
 
   /// for friendly displaying the content of directed graphs

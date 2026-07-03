@@ -123,13 +123,13 @@ namespace gum {
 
     id = bn.idFromName(var.name());
 
-    oss << "\tnode " << this->_onlyValidCharsInName(var.name()) << "\n\t{\n";
+    oss << std::format("\tnode {}\n\t{{\n", this->_onlyValidCharsInName(var.name()));
 
     oss << "\t\tTYPE = CPT;\n";
 
     oss << "\t\tHEADER =\n\t\t{\n";
-    oss << "\t\t\tID = " << this->_onlyValidCharsInName(var.name()) << ";\n";
-    oss << "\t\t\tNAME = \"" << this->_onlyValidCharsInName(var.name()) << "\";\n";
+    oss << std::format("\t\t\tID = {};\n", this->_onlyValidCharsInName(var.name()));
+    oss << std::format("\t\t\tNAME = \"{}\";\n", this->_onlyValidCharsInName(var.name()));
     oss << "\t\t};\n";
 
     oss << "\t\tPARENTS = (";

@@ -270,11 +270,7 @@ namespace gum {
   template < typename GUM_ELEMENT >
   INLINE std::string MultiDimWithOffset< GUM_ELEMENT >::toString(const Instantiation* i) const {
     if (i->isMaster(this)) {
-      std::stringstream s;
-      s << offsets_[i];
-      std::string res;
-      s >> res;
-      return res;
+      return std::to_string(offsets_[i]);
     } else {
       return "--";
     }

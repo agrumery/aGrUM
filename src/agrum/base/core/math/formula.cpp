@@ -161,33 +161,24 @@ namespace gum {
   }
 
   std::string FormulaPart::str() const {
-    std::ostringstream s;
     switch (type) {
       case token_type::NUMBER : {
-        s << number;
-        break;
+        return std::format("{}", number);
       }
 
       case token_type::PARENTHESIS :
       case token_type::OPERATOR : {
-        if (character == '\0') {
-          s << "\\0";
-        } else {
-          s << character;
-        }
-        break;
+        return (character == '\0') ? "\\0" : std::string(1, character);
       }
 
       case token_type::FUNCTION : {
-        s << func2str(function);
-        break;
+        return func2str(function);
       }
 
       default : {
         GUM_ERROR(OperationNotAllowed, "unknown type")
       }
     }
-    return s.str();
   }
 
   // ==========================================================================

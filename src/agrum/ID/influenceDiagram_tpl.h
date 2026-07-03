@@ -273,9 +273,8 @@ namespace gum {
     std::stringstream utilityNode;
     std::stringstream chanceNode;
     std::stringstream arcstream;
-    output << "digraph \"";
 
-    output << this->propertyWithDefault("name", "no_name") << "\" {" << std::endl;
+    output << std::format("digraph \"{}\" {{\n", this->propertyWithDefault("name", "no_name"));
 
     output << "  node [bgcolor=\"#AAAAAA\", style=filled, height=0];" << std::endl;
 
@@ -287,22 +286,17 @@ namespace gum {
 
     for (const auto node: dag_.nodes()) {
       if (isChanceNode(node))
-        chanceNode << tab << "\"" << node << "-" << variable(node).name() << "\""
-                   << ";";
+        chanceNode << std::format("  \"{}-{}\";", node, variable(node).name());
       else if (isUtilityNode(node))
-        utilityNode << tab << "\"" << node << "-" << variable(node).name() << "\""
-                    << ";";
+        utilityNode << std::format("  \"{}-{}\";", node, variable(node).name());
       else
-        decisionNode << tab << "\"" << node << "-" << variable(node).name() << "\""
-                     << ";";
+        decisionNode << std::format("  \"{}-{}\";", node, variable(node).name());
 
       if (dag_.children(node).size() > 0)
         for (const auto chi: dag_.children(node)) {
-          arcstream << "\"" << node << "-" << variable(node).name() << "\""
-                    << " -> "
-                    << "\"" << chi << "-" << variable(chi).name() << "\"";
+          arcstream << std::format("\"{}-{}\" -> \"{}-{}\"", node, variable(node).name(), chi, variable(chi).name());
           if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
-          arcstream << ";" << std::endl;
+          arcstream << ";\n";
         }
     }
 
@@ -321,14 +315,13 @@ namespace gum {
     std::stringstream output;
 
     output << "Influence Diagram{" << std::endl;
-    output << "  chance: " << chanceNodeSize() << "," << std::endl;
-    output << "  utility: " << utilityNodeSize() << "," << std::endl;
-    output << "  decision: " << decisionNodeSize() << "," << std::endl;
-    output << "  arcs: " << dag().sizeArcs() << "," << std::endl;
+    output << std::format("  chance: {},\n", chanceNodeSize());
+    output << std::format("  utility: {},\n", utilityNodeSize());
+    output << std::format("  decision: {},\n", decisionNodeSize());
+    output << std::format("  arcs: {},\n", dag().sizeArcs());
 
-
-    if (double dSize = log10DomainSize(); dSize > 6) output << "  domainSize: 10^" << dSize;
-    else output << "  domainSize: " << std::round(std::pow(10.0, dSize));
+    if (double dSize = log10DomainSize(); dSize > 6) output << std::format("  domainSize: 10^{}", dSize);
+    else output << std::format("  domainSize: {}", std::round(std::pow(10.0, dSize)));
 
     output << std::endl << "}";
 

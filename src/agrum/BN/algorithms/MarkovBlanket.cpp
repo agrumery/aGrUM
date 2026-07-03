@@ -97,29 +97,28 @@ namespace gum {
   }
 
   std::string MarkovBlanket::toDot() const {
-    std::stringstream output;
-    std::stringstream nodeStream;
-    std::stringstream arcStream;
+    std::string output;
+    std::string nodeStream;
+    std::string arcStream;
     List< NodeId >    treatedNodes;
-    output << "digraph \""
-           << "no_name\" {" << std::endl;
-    nodeStream << "node [shape = ellipse];" << std::endl;
+    output    = "digraph \"no_name\" {\n";
+    nodeStream = "node [shape = ellipse];\n";
     std::string tab = "  ";
 
     for (const auto node: _mb_.nodes()) {
-      nodeStream << tab << node << "[label=\"" << _model_.variable(node).name() << "\"";
-      if (node == _node_) { nodeStream << ", color=red"; }
-      nodeStream << "];" << std::endl;
+      nodeStream += std::format("{}{}[label=\"{}\"", tab, node, _model_.variable(node).name());
+      if (node == _node_) { nodeStream += ", color=red"; }
+      nodeStream += "];\n";
 
       for (const auto chi: _mb_.children(node)) {
-        arcStream << tab << node << " -> " << chi;
-        if (_specialArcs_.exists(Arc(node, chi))) { arcStream << " [color=grey]"; }
-        arcStream << ";" << std::endl;
+        arcStream += std::format("{}{} -> {}", tab, node, chi);
+        if (_specialArcs_.exists(Arc(node, chi))) { arcStream += " [color=grey]"; }
+        arcStream += ";\n";
       }
     }
 
-    output << nodeStream.str() << std::endl << arcStream.str() << std::endl << "}" << std::endl;
+    output += nodeStream + '\n' + arcStream + "\n}\n";
 
-    return output.str();
+    return output;
   }
 }   // namespace gum
