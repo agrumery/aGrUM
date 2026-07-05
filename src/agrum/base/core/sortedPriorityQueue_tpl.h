@@ -1050,6 +1050,45 @@ namespace gum {
     else { GUM_ERROR(NotFound, "The sorted priority queue iterator does not point on any value") }
   }
 
+  // ===========================================================================
+  // ===         IMPLEMENTATION OF SortedPriorityQueue::TreeCmp             ===
+  // ===========================================================================
+
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp::TreeCmp(const Cmp& cmp) : _cmp_(cmp) {}
+
+  template < typename Val, typename Priority, typename Cmp >
+  SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp::TreeCmp(Cmp&& cmp) : _cmp_(std::move(cmp)) {}
+
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE const Priority&
+      SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp::getPriority(const Val& v) const {
+    return *((Priority*)((char*)&v + offset_from_value_to_priority));
+  }
+
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE AVLTreeNode< Val >*
+         SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp::getNode(const Val& v) const {
+    return (AVLTreeNode< Val >*)((char*)&v - offset_to_value);
+  }
+
+  template < typename Val, typename Priority, typename Cmp >
+  INLINE bool SortedPriorityQueue< Val, Priority, Cmp >::TreeCmp::operator()(const Val& x,
+                                                                             const Val& y) const {
+    return _cmp_(getPriority(x), getPriority(y));
+  }
+
 }   // namespace gum
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+namespace gum {
+
+  /// display the content of a sorted priority queue
+  template < typename Val, typename Priority, typename Cmp >
+  std::ostream& operator<<(std::ostream&                                    stream,
+                           const SortedPriorityQueue< Val, Priority, Cmp >& queue) {
+    return stream << queue.toString();
+  }
+
+}   // namespace gum

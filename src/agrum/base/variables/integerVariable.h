@@ -158,7 +158,7 @@ namespace gum {
     std::string domain() const override;
 
     /// string represent the type of the variable
-    std::string stype() const override { return "Integer"; }
+    std::string stype() const override;
 
     /// returns the domain as a sequence of values
     const std::vector< int >& integerDomain() const;

@@ -1087,4 +1087,26 @@ namespace gum {
     return stream;
   }
 
+  template < bool gen >
+  template < typename Key >
+  INLINE const Key& SequenceIteratorGet< gen >::op_star(const Key* x) {
+    return *x;
+  }
+
+  template < bool gen >
+  template < typename Key >
+  INLINE const Key* SequenceIteratorGet< gen >::op_arrow(const Key* x) {
+    return x;
+  }
+
+  template < typename Key >
+  INLINE const Key& SequenceIteratorGet< true >::op_star(const Key& x) {
+    return x;
+  }
+
+  template < typename Key >
+  INLINE const Key* SequenceIteratorGet< true >::op_arrow(const Key& x) {
+    return &x;
+  }
+
 } /* namespace gum */

@@ -350,13 +350,15 @@ namespace gum {
      *
      * @return Returns a reduced and ordered instance.
      */
-    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getReducedAndOrderedInstance();
+    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+        getReducedAndOrderedInstance();
 
     /**
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
-    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* getTreeInstance();
+    [[nodiscard]] static MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+        getTreeInstance();
 
     /// @}
 

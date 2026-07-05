@@ -83,13 +83,7 @@ namespace gum {
     static AdaptiveRMaxPlaner* ReducedAndOrderedInstance(const ILearningStrategy* learner,
                                                          double discountFactor = 0.9,
                                                          double epsilon        = 0.00001,
-                                                         bool   verbose        = true) {
-      return new AdaptiveRMaxPlaner(new MDDOperatorStrategy< double >(),
-                                    discountFactor,
-                                    epsilon,
-                                    learner,
-                                    verbose);
-    }
+                                                         bool   verbose        = true);
 
     // ==========================================================================
     ///
@@ -97,13 +91,7 @@ namespace gum {
     static AdaptiveRMaxPlaner* TreeInstance(const ILearningStrategy* learner,
                                             double                   discountFactor = 0.9,
                                             double                   epsilon        = 0.00001,
-                                            bool                     verbose        = true) {
-      return new AdaptiveRMaxPlaner(new TreeOperatorStrategy< double >(),
-                                    discountFactor,
-                                    epsilon,
-                                    learner,
-                                    verbose);
-    }
+                                            bool                     verbose        = true);
 
     /// @}
 
@@ -219,12 +207,7 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) override {
-      if (!_initializedTable_[actionId]) {
-        _counterTable_[actionId]->reset(newState);
-        _initializedTable_[actionId] = true;
-      } else _counterTable_[actionId]->incState(newState);
-    }
+    void checkState(const Instantiation& newState, Idx actionId) override;
 
     private:
     HashTable< Idx, StatesCounter* > _counterTable_;
@@ -236,4 +219,5 @@ namespace gum {
 
 } /* namespace gum */
 
+#include <agrum/FMDP/planning/adaptiveRMaxPlaner_inl.h>
 #endif   // GUM_ADAPTIVE_RMAX_PLANER_H

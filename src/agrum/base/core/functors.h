@@ -79,7 +79,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const { return x >= y ? x : y; }
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const;
 
     /// @}
 
@@ -102,7 +102,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const { return x <= y ? x : y; }
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const;
 
     /// @}
 
@@ -130,9 +130,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
-      return x.first >= y.first ? x : y;
-    }
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const;
 
     /// @}
 
@@ -141,5 +139,7 @@ namespace gum {
     using result_type          = GUM_SCALAR;
   };
 }   // namespace gum
+
+#include <agrum/base/core/functors_tpl.h>
 
 #endif   // GUM_FUNCTORS_H

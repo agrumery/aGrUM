@@ -289,12 +289,15 @@ namespace gum {
         chanceNode << std::format("  \"{}-{}\";", node, variable(node).name());
       else if (isUtilityNode(node))
         utilityNode << std::format("  \"{}-{}\";", node, variable(node).name());
-      else
-        decisionNode << std::format("  \"{}-{}\";", node, variable(node).name());
+      else decisionNode << std::format("  \"{}-{}\";", node, variable(node).name());
 
       if (dag_.children(node).size() > 0)
         for (const auto chi: dag_.children(node)) {
-          arcstream << std::format("\"{}-{}\" -> \"{}-{}\"", node, variable(node).name(), chi, variable(chi).name());
+          arcstream << std::format("\"{}-{}\" -> \"{}-{}\"",
+                                   node,
+                                   variable(node).name(),
+                                   chi,
+                                   variable(chi).name());
           if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
           arcstream << ";\n";
         }
@@ -320,7 +323,8 @@ namespace gum {
     output << std::format("  decision: {},\n", decisionNodeSize());
     output << std::format("  arcs: {},\n", dag().sizeArcs());
 
-    if (double dSize = log10DomainSize(); dSize > 6) output << std::format("  domainSize: 10^{}", dSize);
+    if (double dSize = log10DomainSize(); dSize > 6)
+      output << std::format("  domainSize: 10^{}", dSize);
     else output << std::format("  domainSize: {}", std::round(std::pow(10.0, dSize)));
 
     output << std::endl << "}";
@@ -928,4 +932,66 @@ namespace gum {
 
     return true;
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const Tensor< GUM_SCALAR >&
+               InfluenceDiagram< GUM_SCALAR >::cpt(std::string_view name) const {
+    return cpt(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const Tensor< GUM_SCALAR >&
+               InfluenceDiagram< GUM_SCALAR >::utility(std::string_view name) const {
+    return utility(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool InfluenceDiagram< GUM_SCALAR >::isUtilityNode(std::string_view name) const {
+    return isUtilityNode(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool InfluenceDiagram< GUM_SCALAR >::isDecisionNode(std::string_view name) const {
+    return isDecisionNode(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool InfluenceDiagram< GUM_SCALAR >::isChanceNode(std::string_view name) const {
+    return isChanceNode(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const DiscreteVariable&
+      InfluenceDiagram< GUM_SCALAR >::variable(std::string_view name) const {
+    return variable(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void InfluenceDiagram< GUM_SCALAR >::erase(std::string_view name) {
+    erase(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void InfluenceDiagram< GUM_SCALAR >::changeVariableName(std::string_view name,
+                                                                 std::string_view new_name) {
+    changeVariableName(idFromName(name), new_name);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void InfluenceDiagram< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
+    addArc(idFromName(tail), idFromName(head));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void InfluenceDiagram< GUM_SCALAR >::eraseArc(std::string_view tail,
+                                                       std::string_view head) {
+    eraseArc(idFromName(tail), idFromName(head));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool InfluenceDiagram< GUM_SCALAR >::existsPathBetween(std::string_view src,
+                                                                std::string_view dest) const {
+    return existsPathBetween(idFromName(src), idFromName(dest));
+  }
+
 }   // namespace gum

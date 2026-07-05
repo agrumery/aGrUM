@@ -247,7 +247,7 @@ namespace gum {
           o[lvl].push_back(name);
 
           if (lvl) {
-            std::string chain = std::format("{}.{}", name, l[lvl].r);
+            std::string                chain = std::format("{}.{}", name, l[lvl].r);
             std::vector< std::string > ref2add;
 
             for (std::vector< std::string >::iterator iter = o[lvl - 1].begin();

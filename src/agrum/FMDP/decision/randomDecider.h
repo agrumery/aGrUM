@@ -77,7 +77,7 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    RandomDecider() {}
+    RandomDecider();
 
     // ==========================================================================
     /// Destructor
@@ -93,9 +93,11 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) override {}
+    void checkState(const Instantiation& newState, Idx actionId) override;
 
-    ActionSet stateOptimalPolicy(const Instantiation& curState) override { return allActions_; }
+    ActionSet stateOptimalPolicy(const Instantiation& curState) override;
   };
 }   // namespace gum
+
+#include <agrum/FMDP/decision/randomDecider_inl.h>
 #endif   // GUM_RANDOM_DECIDER_H

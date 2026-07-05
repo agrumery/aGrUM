@@ -121,4 +121,77 @@ namespace gum {
     return *this;
   }
 
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE void* ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE void ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(p, sizeof(ContingencyTable));
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::joint(GUM_ELEMENT_A valueA,
+                                                                     GUM_ELEMENT_B valueB) const {
+    return _jointTable_.exists(std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB))
+             ? _jointTable_[std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB)]
+             : 0;
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE Idx
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAMarginal(GUM_ELEMENT_A valueA) const {
+    return _attrAMarginalTable_.exists(valueA) ? _attrAMarginalTable_[valueA] : 0;
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE Idx
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBMarginal(GUM_ELEMENT_B valueB) const {
+    return _attrAMarginalTable_.exists(valueB) ? _attrAMarginalTable_[valueB] : 0;
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx >
+         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrABeginSafe() const {
+    return _attrAMarginalTable_.cbeginSafe();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx >
+         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAEndSafe() const {
+    return _attrAMarginalTable_.cendSafe();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx >
+         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBBeginSafe() const {
+    return _attrBMarginalTable_.cbeginSafe();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx >
+         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBEndSafe() const {
+    return _attrBMarginalTable_.cendSafe();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrASize() const {
+    return _attrAMarginalTable_.size();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBSize() const {
+    return _attrBMarginalTable_.size();
+  }
+
+  template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
+  INLINE std::string ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::toString() const {
+    std::ostringstream ss;
+    ss << "\t\t\t\t" << _attrAMarginalTable_ << "\n"
+       << "\t\t\t\t" << _attrBMarginalTable_ << "\n"
+       << "\t\t\t\t" << _jointTable_ << "\n";
+    return ss.str();
+  }
+
 }   // End of namespace gum

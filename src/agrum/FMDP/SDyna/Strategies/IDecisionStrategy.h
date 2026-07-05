@@ -90,12 +90,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    virtual void initialize(const FMDP< double >* fmdp) {
-      optPol_ = nullptr;
-      if (allActions_.size() == 0)
-        for (auto actionIter = fmdp->beginActions(); actionIter != fmdp->endActions(); ++actionIter)
-          allActions_ += *actionIter;
-    }
+    virtual void initialize(const FMDP< double >* fmdp);
 
     /// @}
 
@@ -108,13 +103,9 @@ namespace gum {
 
     virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
-    void setOptimalStrategy(MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
-      optPol_ = optPol;
-    }
+    void setOptimalStrategy(MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol);
 
-    virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {
-      return (optPol_ && optPol_->realSize() != 0) ? optPol_->get(curState) : allActions_;
-    }
+    virtual ActionSet stateOptimalPolicy(const Instantiation& curState);
 
     protected:
     ///
@@ -126,4 +117,6 @@ namespace gum {
     /// @}
   };
 }   // namespace gum
+
+#include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy_inl.h>
 #endif   // GUM_SDYNA_DECISION_STRATEGY_H

@@ -361,7 +361,7 @@ namespace gum {
     /**
      * @brief Allows implicit conversion to doubles.
      */
-    explicit operator double() const { return result(); }
+    explicit operator double() const;
 
     /// @}
     // ========================================================================

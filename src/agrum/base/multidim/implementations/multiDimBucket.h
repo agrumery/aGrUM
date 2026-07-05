@@ -248,9 +248,9 @@ namespace gum {
     GUM_ELEMENT get(const Instantiation& i) const override;
 
     void changeNotification(const Instantiation&          i,
-                                    const DiscreteVariable* const var,
-                                    Idx                           oldval,
-                                    Idx                           newval) override;
+                            const DiscreteVariable* const var,
+                            Idx                           oldval,
+                            Idx                           newval) override;
 
     void setFirstNotification(const Instantiation& i) override;
 

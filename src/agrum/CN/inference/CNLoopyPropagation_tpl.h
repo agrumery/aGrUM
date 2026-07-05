@@ -1531,4 +1531,10 @@ namespace gum::credal {
       CNLoopyPropagation< GUM_SCALAR >::inferenceType() {
     return _inferenceType_;
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void CNLoopyPropagation< GUM_SCALAR >::insertEvidenceFile(std::string_view path) {
+    InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
+  }
+
 }   // namespace gum::credal

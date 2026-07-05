@@ -539,7 +539,7 @@ namespace gum {
     /// assigns a model during the inference engine construction
     void setModelDuringConstruction_(const GraphicalModel* model);
 
-    bool hasNoModel_() const { return _model_ == nullptr; }
+    bool hasNoModel_() const;
   };
 }   // namespace gum
 

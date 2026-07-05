@@ -93,20 +93,12 @@ namespace gum {
     // ###################################################################
     /// @{
 
-    MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() override {
-      return MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
-    }
+    MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >* getFunctionInstance() override;
 
     MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
-        getArgMaxFunctionInstance() override {
-      return MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
-                                    SetTerminalNodePolicy >::getReducedAndOrderedInstance();
-    }
+        getArgMaxFunctionInstance() override;
 
-    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() override {
-      return MultiDimFunctionGraph< ActionSet,
-                                    SetTerminalNodePolicy >::getReducedAndOrderedInstance();
-    }
+    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* getAggregatorInstance() override;
 
     /// @}
 
@@ -129,51 +121,45 @@ namespace gum {
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_ELEMENT >*
-        maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3) override;
+    MultiDimFunctionGraph< GUM_ELEMENT >* maximize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                                                   const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                                                   Idx del = 3) override;
 
     // ==========================================================================
     /// @warning Minimze the two given functions
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_ELEMENT >*
-        minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3) override;
+    MultiDimFunctionGraph< GUM_ELEMENT >* minimize(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                                                   const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                                                   Idx del = 3) override;
 
     // ==========================================================================
     /// @warning given f1 and f2 are deleted, returns the new one
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_ELEMENT >*
-        multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 3) override;
+    MultiDimFunctionGraph< GUM_ELEMENT >* multiply(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                                                   const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                                                   Idx del = 3) override;
 
     // ==========================================================================
     /// @warning given vFunction and qAction are deleted, returns the new one
     // ==========================================================================
-    MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
-        argmaximize(
-            const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
-            const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
-            Idx del = 3) override;
+    MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* argmaximize(
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
+        const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
+        Idx del = 3) override;
 
     // ==========================================================================
     /// @warning given function is deleted, returns the new one
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_ELEMENT >*
-        add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-            const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-            Idx                                         del = 1) override;
+    MultiDimFunctionGraph< GUM_ELEMENT >* add(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                                              const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                                              Idx del = 1) override;
 
     // ==========================================================================
     /// @warning this time, nothing is deleted
     // ==========================================================================
-    MultiDimFunctionGraph< GUM_ELEMENT >*
-        subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                 const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                 Idx                                         del = 0) override;
+    MultiDimFunctionGraph< GUM_ELEMENT >* subtract(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                                                   const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                                                   Idx del = 0) override;
 
 
     /// @}
@@ -183,19 +169,13 @@ namespace gum {
     /// Indicates if whether or not given var is to be eliminated.
     /// Called by the evalQaction.
     // ==========================================================================
-    INLINE bool shouldEleminateVar_(const DiscreteVariable* v, const FMDP< GUM_ELEMENT >* fmdp) {
-      return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
-    }
+    bool shouldEleminateVar_(const DiscreteVariable* v, const FMDP< GUM_ELEMENT >* fmdp);
 
     // ==========================================================================
     /// Returns the last var in the var order for given graph function
     /// Called by the evalQaction.
     // ==========================================================================
-    INLINE const DiscreteVariable* lastVar_(const MultiDimFunctionGraph< GUM_ELEMENT >* function) {
-      return function->variablesSequence().size() == 0
-               ? nullptr
-               : function->variablesSequence().atPos(function->variablesSequence().size() - 1);
-    }
+    const DiscreteVariable* lastVar_(const MultiDimFunctionGraph< GUM_ELEMENT >* function);
   };
 } /* namespace gum */
 

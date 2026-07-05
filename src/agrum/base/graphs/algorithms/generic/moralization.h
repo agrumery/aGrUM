@@ -70,13 +70,7 @@ namespace gum::graph {
 
   /// @cond INTERNAL
   /// Add an edge between every pair of nodes in @p parents in @p g.
-  inline void _marryParents_(const NodeSet& parents, UndiGraph& g) {
-    for (auto it1 = parents.begin(); it1 != parents.end(); ++it1) {
-      auto it2 = it1;
-      for (++it2; it2 != parents.end(); ++it2)
-        g.addEdge(*it1, *it2);
-    }
-  }
+  inline void _marryParents_(const NodeSet& parents, UndiGraph& g);
 
   /// @endcond
 
@@ -99,48 +93,7 @@ namespace gum::graph {
    * @return The moral graph as an UndiGraph with the same node set as @p g.
    */
   template < GUM_DiGraphable G >
-  UndiGraph moralGraph(const G& g) {
-    UndiGraph moral;
-    for (const auto node: g.nodes())
-      moral.addNodeWithId(node);
-
-    if constexpr (GUM_MixedGraphable< G >) {
-      // --- mixed graph: arcs + edges → undirected, marry per chain component ---
-      for (const auto node: g.nodes()) {
-        for (const auto p: g.parents(node))
-          moral.addEdge(node, p);
-        for (const auto n: g.neighbours(node))
-          moral.addEdge(node, n);
-      }
-
-      NodeSet already;
-      for (const auto node: g.nodes()) {
-        if (already.contains(node)) continue;
-        already.insert(node);
-
-        NodeSet par      = g.parents(node);
-        NodeSet frontier = g.neighbours(node);
-        while (!frontier.empty()) {
-          const NodeId nei = frontier.popFirst();
-          if (already.contains(nei)) continue;
-          already.insert(nei);
-          par += g.parents(nei);
-          frontier += g.neighbours(nei) - already;
-        }
-
-        _marryParents_(par, moral);
-      }
-    } else {
-      // --- directed graph: arcs → edges, marry per node ---
-      for (const auto node: g.nodes()) {
-        const auto& par = g.parents(node);
-        for (const auto p: par)
-          moral.addEdge(node, p);
-        _marryParents_(par, moral);
-      }
-    }
-    return moral;
-  }
+  UndiGraph moralGraph(const G& g);
 
   /**
    * @brief Returns the moralized ancestral graph of @p query in @p g.
@@ -160,58 +113,10 @@ namespace gum::graph {
    * @return The moralized ancestral graph as an UndiGraph.
    */
   template < GUM_DiGraphable G >
-  UndiGraph moralizedAncestralGraph(const G& g, const NodeSet& query) {
-    if constexpr (GUM_MixedGraphable< G >) {
-      // --- mixed: build ancestral MixedGraph (arcs + edges), then moralize ---
-      MixedGraph ancestral;
-      NodeSet    frontier{query};
-      for (const auto n: query)
-        ancestral.addNodeWithId(n);
-
-      while (!frontier.empty()) {
-        const NodeId current = *frontier.begin();
-        frontier.erase(current);
-
-        for (const auto p: g.parents(current)) {
-          if (!ancestral.existsNode(p)) {
-            ancestral.addNodeWithId(p);
-            frontier.insert(p);
-          }
-          ancestral.addArc(p, current);
-        }
-        for (const auto n: g.neighbours(current)) {
-          if (!ancestral.existsNode(n)) {
-            ancestral.addNodeWithId(n);
-            frontier.insert(n);
-          }
-          ancestral.addEdge(n, current);
-        }
-      }
-      return moralGraph(ancestral);
-
-    } else {
-      // --- directed: BFS backward via parents only ---
-      UndiGraph res;
-      NodeSet   frontier{query};
-
-      while (!frontier.empty()) {
-        const NodeId current = *frontier.begin();
-        frontier.erase(current);
-        res.addNodeWithId(current);
-        for (const auto p: g.parents(current))
-          if (!res.existsNode(p) && !frontier.contains(p)) frontier.insert(p);
-      }
-
-      for (const auto node: res.nodes()) {
-        const auto& par = g.parents(node);
-        for (const auto p: par)
-          res.addEdge(node, p);
-        _marryParents_(par, res);
-      }
-      return res;
-    }
-  }
+  UndiGraph moralizedAncestralGraph(const G& g, const NodeSet& query);
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/moralization_tpl.h>
 
 #endif   // GUM_GRAPH_MORALIZATION_H

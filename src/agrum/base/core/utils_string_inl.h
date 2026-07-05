@@ -107,4 +107,13 @@ namespace gum {
     trim(res);
     return res;
   }
+
+  template < typename T >
+  INLINE std::string compact_tostr(T value) {
+    std::ostringstream s;
+    s.precision(7);
+    s << value;
+    return s.str();
+  }
+
 } /* namespace gum */

@@ -65,16 +65,12 @@ namespace gum {
   // the function used to combine two tables
   template < GUM_Numeric GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > VENewmultiTensor(const Tensor< GUM_SCALAR >& t1,
-                                                      const Tensor< GUM_SCALAR >& t2) {
-    return t1 * t2;
-  }
+                                                      const Tensor< GUM_SCALAR >& t2);
 
   // the function used to combine two tables
   template < GUM_Numeric GUM_SCALAR >
   INLINE static Tensor< GUM_SCALAR > VENewprojTensor(const Tensor< GUM_SCALAR >& t1,
-                                                     const gum::VariableSet&     del_vars) {
-    return t1.sumOut(del_vars);
-  }
+                                                     const gum::VariableSet&     del_vars);
 
   /**
    * @class VariableElimination VariableElimination.h
@@ -195,7 +191,7 @@ namespace gum {
     void onAllTargetsErased_() final;
 
     /// fired when the state of the inference engine is changed
-    void onStateChanged_() final {}
+    void onStateChanged_() final;
 
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily
@@ -259,12 +255,12 @@ namespace gum {
     FindBarrenNodesType _barren_nodes_type_{FindBarrenNodesType::FIND_BARREN_NODES};
 
     /// the operator for performing the projections
-    Tensor< GUM_SCALAR > (*_projection_op_)(const Tensor< GUM_SCALAR >&,
-                                            const gum::VariableSet&){VENewprojTensor};
+    Tensor< GUM_SCALAR > (*_projection_op_)(const Tensor< GUM_SCALAR >&, const gum::VariableSet&)
+        = VENewprojTensor;
 
     /// the operator for performing the combinations
     Tensor< GUM_SCALAR > (*_combination_op_)(const Tensor< GUM_SCALAR >&,
-                                             const Tensor< GUM_SCALAR >&){VENewmultiTensor};
+                                             const Tensor< GUM_SCALAR >&) = VENewmultiTensor;
 
     /// the triangulation class creating the junction tree used for inference
     Triangulation* _triangulation_;

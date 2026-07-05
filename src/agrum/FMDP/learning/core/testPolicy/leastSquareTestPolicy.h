@@ -80,18 +80,14 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    LeastSquareTestPolicy() : ITestPolicy< GUM_ELEMENT >(), _sumO_(0.0), _score_(0) {
-      GUM_CONSTRUCTOR(LeastSquareTestPolicy);
-    }
+    LeastSquareTestPolicy();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(LeastSquareTestPolicy));
-    }
+    void operator delete(void* p);
 
     // ============================================================================
     /// Destructor
@@ -120,7 +116,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const { return (this->nbObservation() > 20); }
+    bool isTestRelevant() const;
 
     /// @}
 
@@ -162,22 +158,22 @@ namespace gum {
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
-    double sumValue() const { return _sumO_; }
+    double sumValue() const;
 
     // ============================================================================
     /// Returns nbobs per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, Idx >& nbObsTable() const { return _nbObsTable_; }
+    const HashTable< Idx, Idx >& nbObsTable() const;
 
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, double >& sumAttrTable() const { return _sumAttrTable_; }
+    const HashTable< Idx, double >& sumAttrTable() const;
 
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
-    const HashTable< Idx, LinkedList< double >* >& obsTable() const { return _obsTable_; }
+    const HashTable< Idx, LinkedList< double >* >& obsTable() const;
 
     private:
     /// Global sum

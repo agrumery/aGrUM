@@ -135,16 +135,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override {
-      return _primeMap_.second(mainVar);
-    }
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override;
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override {
-      return _taxiVars_.beginSafe();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override;
 
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override { return _taxiVars_.endSafe(); }
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override;
 
     /// @}
 
@@ -153,12 +149,11 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) override { return *_actionMap_[actionId]; }
+    const std::string& actionName(Idx actionId) override;
 
-    /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() override { return _taxiActions_.beginSafe(); }
+    SequenceIteratorSafe< Idx > beginActions() override;
 
-    SequenceIteratorSafe< Idx > endActions() override { return _taxiActions_.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() override;
 
     void perform(Idx) override;
 
@@ -213,5 +208,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/simulation/taxiSimulator_inl.h>
 #endif   // GUM_TAXI_SIMULATOR_H

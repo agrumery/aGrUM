@@ -645,5 +645,9 @@ namespace gum {
     setState_(StateOfInference::Done);
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool GraphicalModelInference< GUM_SCALAR >::hasNoModel_() const {
+    return _model_ == nullptr;
+  }
 
 } /* namespace gum */

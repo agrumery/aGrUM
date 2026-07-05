@@ -78,24 +78,19 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    ITestPolicy() : _isModified_(false), _nbObs_(0) { GUM_CONSTRUCTOR(ITestPolicy); }
+    ITestPolicy();
 
     // ============================================================================
     ///
     // ============================================================================
-    virtual ~ITestPolicy() {
-      GUM_DESTRUCTOR(ITestPolicy);
-      ;
-    }
+    virtual ~ITestPolicy();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -108,15 +103,12 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    virtual void addObservation(Idx attr, GUM_ELEMENT value) {
-      _isModified_ = true;
-      _nbObs_++;
-    }
+    virtual void addObservation(Idx attr, GUM_ELEMENT value);
 
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    Idx nbObservation() const { return _nbObs_; }
+    Idx nbObservation() const;
 
     /// @}
 
@@ -135,7 +127,7 @@ namespace gum {
     // ============================================================================
     /// Recomputes the statistic from the beginning
     // ============================================================================
-    virtual void computeScore() const { _isModified_ = false; }
+    virtual void computeScore() const;
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
@@ -158,10 +150,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    void add(const ITestPolicy< GUM_ELEMENT >& src) {
-      _isModified_ = true;
-      _nbObs_ += src.nbObservation();
-    }
+    void add(const ITestPolicy< GUM_ELEMENT >& src);
 
     /// @}
 
@@ -174,14 +163,12 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    std::string toString() const {
-      return std::format("\t\t\tNb Obs : {}\n", _nbObs_);
-    }
+    std::string toString() const;
 
     /// @}
 
     protected:
-    bool isModified_() const { return _isModified_; }
+    bool isModified_() const;
 
     private:
     ///  Booleans indicating if we have to re eval test
@@ -193,4 +180,5 @@ namespace gum {
 
 }   // End of namespace gum
 
+#include <agrum/FMDP/learning/core/testPolicy/ITestPolicy_tpl.h>
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERFACE_TEST_POLICY_H */

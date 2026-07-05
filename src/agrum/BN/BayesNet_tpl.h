@@ -689,4 +689,55 @@ namespace gum {
 
     return bn;
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(std::string_view name) const {
+    return cpt(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::erase(std::string_view name) {
+    erase(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const DiscreteVariable& BayesNet< GUM_SCALAR >::variable(std::string_view name) const {
+    return variable(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableName(std::string_view name,
+                                                         std::string_view new_name) {
+    changeVariableName(idFromName(name), new_name);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(std::string_view name,
+                                                          std::string_view old_label,
+                                                          std::string_view new_label) {
+    changeVariableLabel(idFromName(name), old_label, new_label);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::eraseArc(std::string_view tail, std::string_view head) {
+    eraseArc(idFromName(tail), idFromName(head));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::reverseArc(std::string_view tail, std::string_view head) {
+    reverseArc(idFromName(tail), idFromName(head));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::addWeightedArc(std::string_view tail,
+                                                     std::string_view head,
+                                                     GUM_SCALAR       causalWeight) {
+    addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::generateCPT(std::string_view name) const {
+    generateCPT(idFromName(name));
+  }
+
 } /* namespace gum */

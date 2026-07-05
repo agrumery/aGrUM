@@ -323,7 +323,8 @@ namespace gum {
   }
 
   std::string LeafAggregator::toString() {
-    std::string ss = std::format("################\nTas Initial : \n{}\n", _initialContext_->toString());
+    std::string ss
+        = std::format("################\nTas Initial : \n{}\n", _initialContext_->toString());
     for (auto fusIter = _fusionSeq_.beginSafe(); fusIter != _fusionSeq_.endSafe(); ++fusIter)
       ss += std::format("################\nTas {} : \n{}", fusIter.pos(), (*fusIter)->toString());
     return ss;

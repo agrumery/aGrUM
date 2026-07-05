@@ -75,46 +75,35 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2) :
-        AbstractLeaf(leafId), _l1_(l1), _l2_(l2) {
-      GUM_CONSTRUCTOR(ComposedLeaf);
-    }
+    ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2);
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ComposedLeaf() override {
-      GUM_DESTRUCTOR(ComposedLeaf);
-      ;
-    }
+    ~ComposedLeaf() override;
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(ComposedLeaf));
-    }
+    void operator delete(void* p);
 
     /// @}
 
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    double effectif(Idx moda) const override { return _l1_->effectif(moda) + _l2_->effectif(moda); }
+    double effectif(Idx moda) const override;
 
-    double total() const override { return _l1_->total() + _l2_->total(); }
+    double total() const override;
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    bool contains(NodeId testedId) const override {
-      return AbstractLeaf::contains(testedId) || _l1_->contains(testedId)
-          || _l2_->contains(testedId);
-    }
+    bool contains(NodeId testedId) const override;
 
-    Idx nbModa() const override { return _l1_->nbModa(); }
+    Idx nbModa() const override;
 
     std::string toString() override;
 
@@ -126,5 +115,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/leaves/composedLeaf_inl.h>
 #endif   // GUM_COMPOSED_LEAF_H

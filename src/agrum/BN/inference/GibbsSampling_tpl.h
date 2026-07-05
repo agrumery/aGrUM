@@ -109,4 +109,15 @@ namespace gum {
     *w = 1.0;
     return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void GibbsSampling< GUM_SCALAR >::setBurnIn(Size b) {
+    this->burn_in_ = b;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Size GibbsSampling< GUM_SCALAR >::burnIn() const {
+    return this->burn_in_;
+  }
+
 }   // namespace gum

@@ -71,56 +71,22 @@ namespace gum::graph {
    *        @p id is reachable following arc direction). @p id not included.
    */
   template < GUM_DiGraphable G >
-  NodeSet ancestors(const G& g, NodeId id) {
-    NodeSet res;
-    NodeSet frontier = g.parents(id);
-
-    while (!frontier.empty()) {
-      const NodeId current = *frontier.begin();
-      frontier.erase(current);
-      res.insert(current);
-      for (const auto p: g.parents(current))
-        if (!res.contains(p)) frontier.insert(p);
-    }
-
-    return res;
-  }
+  NodeSet ancestors(const G& g, NodeId id);
 
   /**
    * @brief Returns the set of all descendants of @p id (nodes reachable
    *        from @p id following arc direction). @p id not included.
    */
   template < GUM_DiGraphable G >
-  NodeSet descendants(const G& g, NodeId id) {
-    NodeSet res;
-    NodeSet frontier = g.children(id);
-
-    while (!frontier.empty()) {
-      const NodeId current = *frontier.begin();
-      frontier.erase(current);
-      res.insert(current);
-      for (const auto c: g.children(current))
-        if (!res.contains(c)) frontier.insert(c);
-    }
-
-    return res;
-  }
+  NodeSet descendants(const G& g, NodeId id);
 
   /// @brief Returns the family of @p id : { id } ∪ parents(id).
   template < GUM_DiGraphable G >
-  NodeSet family(const G& g, NodeId id) {
-    NodeSet res{id};
-    return res + g.parents(id);
-  }
+  NodeSet family(const G& g, NodeId id);
 
   /// @brief Returns the union of families of all nodes in @p ids.
   template < GUM_DiGraphable G >
-  NodeSet family(const G& g, const NodeSet& ids) {
-    NodeSet res;
-    for (const auto node: ids)
-      res += family(g, node);
-    return res;
-  }
+  NodeSet family(const G& g, const NodeSet& ids);
 
   // =========================================================================
   // Undirected graphs (GUM_UndiGraphable)
@@ -134,26 +100,7 @@ namespace gum::graph {
    * Component ids are assigned in order of first encounter.
    */
   template < GUM_UndiGraphable G >
-  NodeProperty< NodeId > chainComponents(const G& g) {
-    NodeProperty< NodeId > res;
-    NodeId                 numCC = 0;
-
-    for (const auto node: g.nodes()) {
-      if (res.exists(node)) continue;
-
-      NodeSet frontier{node};
-      while (!frontier.empty()) {
-        const NodeId current = *frontier.begin();
-        frontier.erase(current);
-        res.insert(current, numCC);
-        for (const auto nei: g.neighbours(current))
-          if (!res.exists(nei)) frontier.insert(nei);
-      }
-      ++numCC;
-    }
-
-    return res;
-  }
+  NodeProperty< NodeId > chainComponents(const G& g);
 
   /**
    * @brief Returns a node-to-component-id mapping for the (weakly) connected
@@ -166,35 +113,7 @@ namespace gum::graph {
    * @tparam G Must satisfy GUM_DiGraphable, GUM_UndiGraphable, or both.
    */
   template < GUM_NodeGraphable G >
-  NodeProperty< NodeId > connectedComponents(const G& g) {
-    NodeProperty< NodeId > res;
-    NodeId                 numCC = 0;
-
-    for (const auto node: g.nodes()) {
-      if (res.exists(node)) continue;
-
-      NodeSet frontier{node};
-      while (!frontier.empty()) {
-        const NodeId current = *frontier.begin();
-        frontier.erase(current);
-        res.insert(current, numCC);
-
-        if constexpr (GUM_DiGraphable< G >) {
-          for (const auto n: g.parents(current))
-            if (!res.exists(n)) frontier.insert(n);
-          for (const auto n: g.children(current))
-            if (!res.exists(n)) frontier.insert(n);
-        }
-        if constexpr (GUM_UndiGraphable< G >) {
-          for (const auto n: g.neighbours(current))
-            if (!res.exists(n)) frontier.insert(n);
-        }
-      }
-      ++numCC;
-    }
-
-    return res;
-  }
+  NodeProperty< NodeId > connectedComponents(const G& g);
 
   /**
    * @brief Returns true iff some node in @p A can reach some node in @p B
@@ -211,27 +130,7 @@ namespace gum::graph {
    *         and some `b ∈ B` in @p g.
    */
   template < GUM_UndiGraphable G >
-  bool areConnected(const G& g, const NodeSet& A, const NodeSet& B) {
-    if (A.empty() || B.empty()) return false;
-    if (!(A * B).empty()) return true;
-
-    NodeSet visited;
-    NodeSet frontier = A;
-    for (const auto s: A)
-      visited.insert(s);
-
-    while (!frontier.empty()) {
-      const NodeId u = *frontier.begin();
-      frontier.erase(u);
-      for (const auto v: g.neighbours(u)) {
-        if (visited.exists(v)) continue;
-        if (B.contains(v)) return true;
-        visited.insert(v);
-        frontier.insert(v);
-      }
-    }
-    return false;
-  }
+  bool areConnected(const G& g, const NodeSet& A, const NodeSet& B);
 
   // =========================================================================
   // Mixed graphs (GUM_MixedGraphable)
@@ -244,27 +143,14 @@ namespace gum::graph {
    * (edges only) containing @p node.  Arc orientations are ignored.
    */
   template < GUM_MixedGraphable G >
-  NodeSet chainComponent(const G& g, NodeId node) {
-    NodeSet res;
-    NodeSet frontier{node};
-
-    while (!frontier.empty()) {
-      const NodeId n = *frontier.begin();
-      frontier.erase(n);
-      res.insert(n);
-      for (const auto nei: g.neighbours(n))
-        if (!res.contains(nei)) frontier.insert(nei);
-    }
-
-    return res;
-  }
+  NodeSet chainComponent(const G& g, NodeId node);
 
   /// @brief Returns the boundary of @p node: neighbours ∪ parents ∪ children.
   template < GUM_MixedGraphable G >
-  NodeSet boundary(const G& g, NodeId node) {
-    return g.neighbours(node) + g.parents(node) + g.children(node);
-  }
+  NodeSet boundary(const G& g, NodeId node);
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/reachability_tpl.h>
 
 #endif   // GUM_GRAPH_REACHABILITY_H

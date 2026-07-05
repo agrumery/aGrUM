@@ -104,15 +104,15 @@ namespace gum {
     // ###################################################################
     const DiscreteVariable* select();
 
-    bool isEmpty() const { return _remainingVars_.empty(); }
+    bool isEmpty() const;
 
-    void begin() { _rvi_ = _remainingVars_.beginSafe(); }
+    void begin();
 
-    bool hasNext() const { return _rvi_ != _remainingVars_.endSafe(); }
+    bool hasNext() const;
 
-    void next() { ++_rvi_; }
+    void next();
 
-    const DiscreteVariable* current() const { return *_rvi_; }
+    const DiscreteVariable* current() const;
 
     private:
     void _addVar_(const DiscreteVariable* var);
@@ -138,4 +138,5 @@ namespace gum {
 
 }   // namespace gum
 
+#include <agrum/FMDP/learning/datastructure/variableselector_inl.h>
 #endif   // GUM_VARIABLE_SELECTOR_H

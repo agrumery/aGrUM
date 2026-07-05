@@ -153,8 +153,8 @@ namespace gum {
       std::sort(ids.begin(), ids.end());
 
       if (ids.back() >= scoreDatabase_.names().size()) {
-        std::string str = "Learning parameters corresponding to the dag is impossible "
-                          "because the database does not contain the following nodeID";
+        std::string           str = "Learning parameters corresponding to the dag is impossible "
+                                    "because the database does not contain the following nodeID";
         std::vector< NodeId > bad_ids;
         for (const auto node: ids) {
           if (node >= scoreDatabase_.names().size()) bad_ids.push_back(node);
@@ -208,10 +208,10 @@ namespace gum {
     // incorrectly reports -Warray-bounds on the mutex; #pragma GCC diagnostic cannot
     // suppress warnings whose primary location is in system headers (stl_construct.h),
     // so we disable VRP for this function via optimize pragma instead
-#if defined(__GNUC__) && !defined(__clang__)
-#  pragma GCC push_options
-#  pragma GCC optimize("no-tree-vrp")
-#endif
+#  if defined(__GNUC__) && !defined(__clang__)
+#    pragma GCC push_options
+#    pragma GCC optimize("no-tree-vrp")
+#  endif
 
     template < GUM_Numeric GUM_SCALAR >
     std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
@@ -255,9 +255,9 @@ namespace gum {
       return {param_estimator_bootstrap, param_estimator_EM};
     }
 
-#if defined(__GNUC__) && !defined(__clang__)
-#  pragma GCC pop_options
-#endif
+#  if defined(__GNUC__) && !defined(__clang__)
+#    pragma GCC pop_options
+#  endif
 
     // learns a BN (its parameters) with EM when its structure is known
     template < GUM_Numeric GUM_SCALAR >
@@ -495,8 +495,8 @@ namespace gum {
         comment = "";
         if (!hasMissingValues()) comment = "But no missing values in this database";
         vals.emplace_back("use EM", "True", "");
-        std::string s = "[";
-        bool first = true;
+        std::string s     = "[";
+        bool        first = true;
         if (dag2BN_.isEnabledMinEpsilonRate()) {
           s += std::format("MinRate: {}", dag2BN_.minEpsilonRate());
           first = false;
@@ -766,6 +766,609 @@ namespace gum {
       output << learner.toString();
       return output;
     }
+
+    // =========================================================================
+    // Delegation methods — each calls IBNLearner and returns *this
+    // =========================================================================
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setInitialDAG(const DAG& dag) {
+      IBNLearner::setInitialDAG(dag);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEM(const double epsilon,
+                                                            const double noise) {
+      IBNLearner::useEM(epsilon, noise);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEMWithRateCriterion(const double epsilon,
+                                                                             const double noise) {
+      IBNLearner::useEMWithRateCriterion(epsilon, noise);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEMWithDiffCriterion(const double epsilon,
+                                                                             const double noise) {
+      IBNLearner::useEMWithDiffCriterion(epsilon, noise);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::forbidEM() {
+      IBNLearner::forbidEM();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetEpsilon(const double eps) {
+      IBNLearner::EMsetEpsilon(eps);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMdisableEpsilon() {
+      IBNLearner::EMdisableEpsilon();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMenableEpsilon() {
+      IBNLearner::EMenableEpsilon();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetMinEpsilonRate(const double rate) {
+      IBNLearner::EMsetMinEpsilonRate(rate);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMdisableMinEpsilonRate() {
+      IBNLearner::EMdisableMinEpsilonRate();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMenableMinEpsilonRate() {
+      IBNLearner::EMenableMinEpsilonRate();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetMaxIter(const Size max) {
+      IBNLearner::EMsetMaxIter(max);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMdisableMaxIter() {
+      IBNLearner::EMdisableMaxIter();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMenableMaxIter() {
+      IBNLearner::EMenableMaxIter();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetMaxTime(const double timeout) {
+      IBNLearner::EMsetMaxTime(timeout);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMdisableMaxTime() {
+      IBNLearner::EMdisableMaxTime();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMenableMaxTime() {
+      IBNLearner::EMenableMaxTime();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetPeriodSize(const Size p) {
+      IBNLearner::EMsetPeriodSize(p);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::EMsetVerbosity(const bool v) {
+      IBNLearner::EMsetVerbosity(v);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreAIC() {
+      IBNLearner::useScoreAIC();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreBD() {
+      IBNLearner::useScoreBD();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreBDeu() {
+      IBNLearner::useScoreBDeu();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreBIC() {
+      IBNLearner::useScoreBIC();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreK2() {
+      IBNLearner::useScoreK2();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreLog2Likelihood() {
+      IBNLearner::useScoreLog2Likelihood();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useNoPrior() {
+      IBNLearner::useNoPrior();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useBDeuPrior(double weight) {
+      IBNLearner::useBDeuPrior(weight);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useSmoothingPrior(double weight) {
+      IBNLearner::useSmoothingPrior(weight);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useDirichletPrior(std::string_view filename,
+                                                                        double           weight) {
+      IBNLearner::useDirichletPrior(filename, weight);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
+                                                   double                             weight) {
+      _prior_bn_ = bn;
+      priorType_ = BNLearnerPriorType::DIRICHLET_FROM_BAYESNET;
+      _setPriorWeight_(weight);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useGreedyHillClimbing() {
+      IBNLearner::useGreedyHillClimbing();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useExtendedGreedyHillClimbing() {
+      IBNLearner::useExtendedGreedyHillClimbing();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useGreedyThickThinning() {
+      IBNLearner::useGreedyThickThinning();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setGreedyThickThinningReversals(bool allow) {
+      IBNLearner::setGreedyThickThinningReversals(allow);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    bool BNLearner< GUM_SCALAR >::greedyThickThinningReversals() const {
+      return IBNLearner::greedyThickThinningReversals();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size,
+                                                                                 Size nb_decrease) {
+      IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useK2(const Sequence< NodeId >& order) {
+      IBNLearner::useK2(order);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useK2(const std::vector< NodeId >& order) {
+      IBNLearner::useK2(order);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useMIIC() {
+      IBNLearner::useMIIC();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::usePC() {
+      IBNLearner::usePC();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useFCI() {
+      IBNLearner::useFCI();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useFCIChi2Test() {
+      IBNLearner::useFCIChi2Test();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useFCIG2Test() {
+      IBNLearner::useFCIG2Test();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setFCIAlpha(double alpha) {
+      IBNLearner::setFCIAlpha(alpha);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setFCIMaxPathLength(Size max_len) {
+      IBNLearner::setFCIMaxPathLength(max_len);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setFCIExhaustiveSepSet(bool exhaustive) {
+      IBNLearner::setFCIExhaustiveSepSet(exhaustive);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    bool BNLearner< GUM_SCALAR >::fciExhaustiveSepSet() const {
+      return IBNLearner::fciExhaustiveSepSet();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useChi2Test() {
+      IBNLearner::useChi2Test();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useG2Test() {
+      IBNLearner::useG2Test();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setPCAlpha(double alpha) {
+      IBNLearner::setPCAlpha(alpha);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setPCStable(bool stable) {
+      IBNLearner::setPCStable(stable);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setPCMaxCondSetSize(Size max_k) {
+      IBNLearner::setPCMaxCondSetSize(max_k);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setPCUnshieldedColliderSorted(bool sorted) {
+      IBNLearner::setPCUnshieldedColliderSorted(sorted);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useNMLCorrection() {
+      IBNLearner::useNMLCorrection();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useMDLCorrection() {
+      IBNLearner::useMDLCorrection();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useNoCorrection() {
+      IBNLearner::useNoCorrection();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setMaxIndegree(Size max_indegree) {
+      IBNLearner::setMaxIndegree(max_indegree);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::setSliceOrder(const NodeProperty< NodeId >& slice_order) {
+      IBNLearner::setSliceOrder(slice_order);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setSliceOrder(
+        const std::vector< std::vector< std::string > >& slices) {
+      IBNLearner::setSliceOrder(slices);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::setTotalOrder(const std::vector< std::string >& order) {
+      IBNLearner::setTotalOrder(order);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::setTotalOrder(const Sequence< NodeId >& order) {
+      IBNLearner::setTotalOrder(order);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setForbiddenArcs(const ArcSet& set) {
+      IBNLearner::setForbiddenArcs(set);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addForbiddenArc(const Arc& arc) {
+      IBNLearner::addForbiddenArc(arc);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addForbiddenArc(NodeId tail, NodeId head) {
+      IBNLearner::addForbiddenArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addForbiddenArc(std::string_view tail,
+                                                                      std::string_view head) {
+      IBNLearner::addForbiddenArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseForbiddenArc(const Arc& arc) {
+      IBNLearner::eraseForbiddenArc(arc);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseForbiddenArc(NodeId tail, NodeId head) {
+      IBNLearner::eraseForbiddenArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tail,
+                                                                        std::string_view head) {
+      IBNLearner::eraseForbiddenArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addMandatoryArc(const Arc& arc) {
+      IBNLearner::addMandatoryArc(arc);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addMandatoryArc(NodeId tail, NodeId head) {
+      IBNLearner::addMandatoryArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addMandatoryArc(std::string_view tail,
+                                                                      std::string_view head) {
+      IBNLearner::addMandatoryArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseMandatoryArc(const Arc& arc) {
+      IBNLearner::eraseMandatoryArc(arc);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseMandatoryArc(NodeId tail, NodeId head) {
+      IBNLearner::eraseMandatoryArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tail,
+                                                                        std::string_view head) {
+      IBNLearner::eraseMandatoryArc(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addPossibleEdge(const Edge& edge) {
+      IBNLearner::addPossibleEdge(edge);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addPossibleEdge(NodeId tail, NodeId head) {
+      IBNLearner::addPossibleEdge(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addPossibleEdge(std::string_view tail,
+                                                                      std::string_view head) {
+      IBNLearner::addPossibleEdge(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::erasePossibleEdge(const Edge& edge) {
+      IBNLearner::erasePossibleEdge(edge);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::erasePossibleEdge(NodeId tail, NodeId head) {
+      IBNLearner::erasePossibleEdge(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::erasePossibleEdge(std::string_view tail,
+                                                                        std::string_view head) {
+      IBNLearner::erasePossibleEdge(tail, head);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setMandatoryArcs(const ArcSet& set) {
+      IBNLearner::setMandatoryArcs(set);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setPossibleEdges(const EdgeSet& set) {
+      IBNLearner::setPossibleEdges(set);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::setPossibleSkeleton(const UndiGraph& skeleton) {
+      IBNLearner::setPossibleSkeleton(skeleton);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addNoParentNode(NodeId node) {
+      IBNLearner::addNoParentNode(node);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addNoParentNode(std::string_view name) {
+      IBNLearner::addNoParentNode(name);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseNoParentNode(NodeId node) {
+      IBNLearner::eraseNoParentNode(node);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseNoParentNode(std::string_view name) {
+      IBNLearner::eraseNoParentNode(name);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addNoChildrenNode(NodeId node) {
+      IBNLearner::addNoChildrenNode(node);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::addNoChildrenNode(std::string_view name) {
+      IBNLearner::addNoChildrenNode(name);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseNoChildrenNode(NodeId node) {
+      IBNLearner::eraseNoChildrenNode(node);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::eraseNoChildrenNode(std::string_view name) {
+      IBNLearner::eraseNoChildrenNode(name);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::allowArcAdditions(bool allow) {
+      IBNLearner::allowArcAdditions(allow);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::allowArcDeletions(bool allow) {
+      IBNLearner::allowArcDeletions(allow);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::allowArcReversals(bool allow) {
+      IBNLearner::allowArcReversals(allow);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::allowArcTriangleDeletions(bool allow) {
+      IBNLearner::allowArcTriangleDeletions(allow);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    bool BNLearner< GUM_SCALAR >::isConstraintBased() const {
+      return IBNLearner::isConstraintBased();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    bool BNLearner< GUM_SCALAR >::isScoreBased() const {
+      return IBNLearner::isScoreBased();
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

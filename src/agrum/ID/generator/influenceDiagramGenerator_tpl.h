@@ -129,7 +129,7 @@ namespace gum {
 
     for (Idx i = 0; i < nbrNodes; ++i) {
       const auto varName = std::format("{}", i);
-      nb_mod = (max_modality == 2) ? 2 : 2 + randomValue(max_modality - 1);
+      nb_mod             = (max_modality == 2) ? 2 : 2 + randomValue(max_modality - 1);
 
       GUM_SCALAR cnd = chanceNodeDensity;
       GUM_SCALAR und = utilityNodeDensity;
@@ -137,15 +137,11 @@ namespace gum {
       auto d = (GUM_SCALAR)randomProba();
 
       if (d < cnd)
-        map.insert(
-            i,
-            influenceDiagram->addChanceNode(RangeVariable(varName, "", 0, nb_mod - 1)));
+        map.insert(i, influenceDiagram->addChanceNode(RangeVariable(varName, "", 0, nb_mod - 1)));
       else if (d < (cnd + und))
         map.insert(i, influenceDiagram->addUtilityNode(RangeVariable(varName, "", 0, 0)));
       else
-        map.insert(
-            i,
-            influenceDiagram->addDecisionNode(RangeVariable(varName, "", 0, nb_mod - 1)));
+        map.insert(i, influenceDiagram->addDecisionNode(RangeVariable(varName, "", 0, nb_mod - 1)));
     }
 
     // We add arcs

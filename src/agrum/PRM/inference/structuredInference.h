@@ -151,10 +151,10 @@ namespace gum {
         ~RGData();
 
         /// Returns the set of outputs nodes (which will be eliminated).
-        inline NodeSet& outputs() { return partial_order[0]; }
+        NodeSet& outputs();
 
         /// Returns the set of query nodes (which will not be eliminated).
-        inline NodeSet& queries() { return partial_order[1]; }
+        NodeSet& queries();
       };
 
       /// Private structure to represent data about a pattern.
@@ -191,17 +191,17 @@ namespace gum {
         ~PData();
 
         /// Returns the set of inner nodes
-        inline NodeSet& inners() { return _partial_order_[0]; }
+        NodeSet& inners();
 
         /// Returns the set of inner and observed nodes given all the matches of
         /// pattern
-        inline NodeSet& obs() { return _partial_order_[1]; }
+        NodeSet& obs();
 
         /// Returns the set of outputs nodes given all the matches of pattern
-        inline NodeSet& outputs() { return _partial_order_[2]; }
+        NodeSet& outputs();
 
         /// Returns the set of queried nodes given all the matches of pattern
-        inline NodeSet& queries() { return _partial_order_[3]; }
+        NodeSet& queries();
 
         // We use the first match for computations
         // inline const Sequence<PRMInstance<GUM_SCALAR>*>& match() const {
@@ -240,16 +240,16 @@ namespace gum {
         ~CData();
 
         /// Returns the set of inner nodes.
-        inline NodeSet& inners() { return _inners_; }
+        NodeSet& inners();
 
         /// Returns the set of aggregators and their parents.
-        inline NodeSet& aggregators() { return _aggregators_; }
+        NodeSet& aggregators();
 
         /// Returns the set of outputs nodes.
-        inline NodeSet& outputs() { return _outputs_; }
+        NodeSet& outputs();
 
         /// The elimination order for nodes of this class
-        inline std::vector< NodeId >& elim_order() { return _elim_order_; }
+        std::vector< NodeId >& elim_order();
 
         private:
         std::vector< NodeId >        _elim_order_;

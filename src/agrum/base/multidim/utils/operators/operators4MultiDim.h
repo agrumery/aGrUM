@@ -678,7 +678,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   struct Operators4MultiDimInitialize {
-    void init() { operators4MultiDimInit< GUM_ELEMENT >(); }
+    void init();
   };
 
   /**
@@ -698,7 +698,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   struct Operators4MultiDimInitialize< GUM_ELEMENT* > {
-    void init() { pointerOperators4MultiDimInit< GUM_ELEMENT >(); }
+    void init();
   };
 
   /// @}

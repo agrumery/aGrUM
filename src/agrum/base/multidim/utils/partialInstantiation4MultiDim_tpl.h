@@ -156,6 +156,16 @@ namespace gum {
     });
   }
 
+  template < typename GUM_ELEMENT >
+  void PartialInstantiation4MultiDimInitialize< GUM_ELEMENT >::init() {
+    partialInstantiation4MultiDimInit< GUM_ELEMENT >();
+  }
+
+  template < typename GUM_ELEMENT >
+  void PartialInstantiation4MultiDimInitialize< GUM_ELEMENT* >::init() {
+    pointerPartialInstantiation4MultiDimInit< GUM_ELEMENT >();
+  }
+
 } /* namespace gum */
 
 // remove permission to use operatorsPatterns

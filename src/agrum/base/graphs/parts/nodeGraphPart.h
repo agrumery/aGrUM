@@ -525,9 +525,7 @@ namespace gum {
     /// optional node names — null when no name has been set
     std::unique_ptr< Bijection< NodeId, std::string > > _names_;
 
-    std::unique_ptr< Bijection< NodeId, std::string > > _cloneNames_() const {
-      return _names_ ? std::make_unique< Bijection< NodeId, std::string > >(*_names_) : nullptr;
-    }
+    std::unique_ptr< Bijection< NodeId, std::string > > _cloneNames_() const;
 
     /// value for  _holes_ configuration
     Size _holes_size_;

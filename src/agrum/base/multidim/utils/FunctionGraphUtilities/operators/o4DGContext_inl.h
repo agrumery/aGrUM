@@ -54,6 +54,10 @@
 
 namespace gum {
 
+  INLINE const NodeId& O4DGContext::DG1Node() const { return _DG1ExploredNode_; }
+
+  INLINE const NodeId& O4DGContext::DG2Node() const { return _DG2ExploredNode_; }
+
   // Set DG1 diagram current explored Node
   INLINE void O4DGContext::setDG1Node(const NodeId& exploredNode) {
     _DG1ExploredNode_ = exploredNode;

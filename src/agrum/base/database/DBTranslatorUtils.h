@@ -113,8 +113,8 @@ namespace gum {
        */
       [[nodiscard]] DBTranslator* create(const Variable&                   var,
                                          const std::vector< std::string >& missing_symbols,
-                                         const bool                        editable_dictionary = false,
-                                         std::size_t                       max_dico_entries
+                                         const bool  editable_dictionary = false,
+                                         std::size_t max_dico_entries
                                          = std::numeric_limits< std::size_t >::max());
 
     } /* namespace DBTranslators */

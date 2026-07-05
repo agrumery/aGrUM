@@ -1104,4 +1104,15 @@ namespace gum {
     return stream;
   }
 
+  template < bool gen >
+  template < typename T >
+  INLINE const T& BijectionIteratorGet< gen >::op_second(const T* x) {
+    return *x;
+  }
+
+  template < typename T >
+  INLINE const T& BijectionIteratorGet< true >::op_second(const T& x) {
+    return x;
+  }
+
 } /* namespace gum */

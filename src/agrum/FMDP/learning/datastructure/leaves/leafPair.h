@@ -76,24 +76,19 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2) : _l1_(l1), _l2_(l2) { GUM_CONSTRUCTOR(LeafPair); }
+    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2);
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~LeafPair() {
-      GUM_DESTRUCTOR(LeafPair);
-      ;
-    }
+    ~LeafPair();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(LeafPair));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -117,21 +112,21 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    AbstractLeaf* firstLeaf() { return _l1_; }
+    AbstractLeaf* firstLeaf();
 
-    AbstractLeaf* secondLeaf() { return _l2_; }
+    AbstractLeaf* secondLeaf();
 
     // ###################################################################
     /// Returns true if pair has leaf in it
     // ###################################################################
-    bool contains(NodeId testedId) { return _l1_->contains(testedId) || _l2_->contains(testedId); }
+    bool contains(NodeId testedId);
 
     // ###################################################################
     /// Returns a leaf matching data and having given id as id
     // ###################################################################
-    AbstractLeaf* convert2Leaf(NodeId leafId) const { return new ComposedLeaf(leafId, _l1_, _l2_); }
+    AbstractLeaf* convert2Leaf(NodeId leafId) const;
 
-    AbstractLeaf* otherLeaf(AbstractLeaf* l) const { return l == _l1_ ? _l2_ : _l1_; }
+    AbstractLeaf* otherLeaf(AbstractLeaf* l) const;
 
     std::string toString();
 
@@ -146,5 +141,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/leaves/leafPair_inl.h>
 #endif   // GUM_LEAF_PAIR_H

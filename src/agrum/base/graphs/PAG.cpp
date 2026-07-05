@@ -248,7 +248,10 @@ namespace gum {
       const std::string arrowtail = xArrow ? "normal" : (xCircle ? "odot" : "none");
 
       out << std::format("  {} -> {} [dir=both, arrowhead={}, arrowtail={}];\n",
-                         x, y, arrowhead, arrowtail);
+                         x,
+                         y,
+                         arrowhead,
+                         arrowtail);
     }
     out << "}\n";
     return out.str();

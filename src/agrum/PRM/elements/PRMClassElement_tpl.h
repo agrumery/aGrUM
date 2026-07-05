@@ -98,5 +98,52 @@ namespace gum {
       }
     }
 
+    template < GUM_Numeric GUM_SCALAR >
+    std::string PRMClassElement< GUM_SCALAR >::enum2str(ClassElementType type) {
+      switch (type) {
+        case prm_attribute : return "prm_attribute";
+
+        case prm_aggregate : return "prm_aggregate";
+
+        case prm_refslot : return "prm_refslot";
+
+        case prm_slotchain : return "prm_slotchain";
+
+        case prm_parameter : return "prm_parameter";
+
+        default : return "unknown";
+      }
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE bool
+        PRMClassElement< GUM_SCALAR >::isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
+      return elt.elt_type() == prm_refslot;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE bool
+        PRMClassElement< GUM_SCALAR >::isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
+      return elt.elt_type() == prm_attribute;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE bool
+        PRMClassElement< GUM_SCALAR >::isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
+      return elt.elt_type() == prm_aggregate;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE bool
+        PRMClassElement< GUM_SCALAR >::isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
+      return elt.elt_type() == prm_slotchain;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE bool
+        PRMClassElement< GUM_SCALAR >::isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
+      return elt.elt_type() == prm_parameter;
+    }
+
   } /* namespace prm */
 } /* namespace gum */

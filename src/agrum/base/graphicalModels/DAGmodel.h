@@ -208,15 +208,11 @@ namespace gum {
 
     bool isIndependent(std::string_view                  Xname,
                        std::string_view                  Yname,
-                       const std::vector< std::string >& Znames) const {
-      return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
-    }
+                       const std::vector< std::string >& Znames) const;
 
     bool isIndependent(const std::vector< std::string >& Xnames,
                        const std::vector< std::string >& Ynames,
-                       const std::vector< std::string >& Znames) const {
-      return isIndependent(nodeset(Xnames), nodeset(Ynames), nodeset(Znames));
-    }
+                       const std::vector< std::string >& Znames) const;
 
     /**
      * The node's id are coherent with the variables and nodes of the topology.

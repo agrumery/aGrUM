@@ -141,9 +141,7 @@ namespace gum {
 
       /// unsigned int notOptDelete;
 
-      void insertEvidenceFile(std::string_view path) override {
-        InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
-      }
+      void insertEvidenceFile(std::string_view path) override;
 
       protected:
       bool repetitiveInd_;

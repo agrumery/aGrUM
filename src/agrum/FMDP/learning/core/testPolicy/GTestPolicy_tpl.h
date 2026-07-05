@@ -132,4 +132,45 @@ namespace gum {
     _conTab_ += src.ct();
   }
 
+  template < typename GUM_ELEMENT >
+  INLINE GTestPolicy< GUM_ELEMENT >::GTestPolicy() :
+      ITestPolicy< GUM_ELEMENT >(), _conTab_(), _GStat_(0) {
+    GUM_CONSTRUCTOR(GTestPolicy);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE GTestPolicy< GUM_ELEMENT >::~GTestPolicy() {
+    GUM_DESTRUCTOR(GTestPolicy);
+    ;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void* GTestPolicy< GUM_ELEMENT >::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void GTestPolicy< GUM_ELEMENT >::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE bool GTestPolicy< GUM_ELEMENT >::isTestRelevant() const {
+    return (this->nbObservation() > 20 && this->nbObservation() > _conTab_.attrASize() * 5);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const ContingencyTable< Idx, GUM_ELEMENT >& GTestPolicy< GUM_ELEMENT >::ct() const {
+    return _conTab_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE std::string GTestPolicy< GUM_ELEMENT >::toString() const {
+    return std::format("{}\t\t\tContingency Table : \n{}\n\t\t\tGStat : {}\n\t\t\tGStat : {}\n",
+                       ITestPolicy< GUM_ELEMENT >::toString(),
+                       _conTab_.toString(),
+                       _GStat_,
+                       this->secondaryscore());
+  }
+
 }   // End of namespace gum

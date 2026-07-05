@@ -86,13 +86,13 @@ namespace gum {
      * @param b The number of burn in.
      * @throw OutOfBounds Raised if b < 1.
      */
-    void setBurnIn(Size b) { this->burn_in_ = b; }
+    void setBurnIn(Size b);
 
     /**
      * @brief Returns the number of burn in.
      * @return Returns the number of burn in.
      */
-    Size burnIn() const { return this->burn_in_; }
+    Size burnIn() const;
 
     protected:
     /// draws a defined number of samples without updating the estimators

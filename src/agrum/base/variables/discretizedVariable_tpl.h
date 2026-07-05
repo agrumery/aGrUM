@@ -360,6 +360,10 @@ namespace gum {
     return result;
   }
 
+  template < typename T_TICKS >
+  INLINE std::string DiscretizedVariable< T_TICKS >::stype() const {
+    return "Discretized";
+  }
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

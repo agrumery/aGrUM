@@ -345,5 +345,82 @@ namespace gum {
     return std::make_tuple(std::move(ci), std::move(numeric), std::move(expl));
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > CausalImpact< GUM_SCALAR >::eval() const {
+    return _resultFormula_.eval();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::string CausalImpact< GUM_SCALAR >::toString() const {
+    return _resultFormula_.toString();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::string CausalImpact< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
+                                                         std::string_view doOperatorSuffix) const {
+    return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::string
+         CausalImpact< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
+                                                std::string_view doOperatorSuffix) const {
+    return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool CausalImpact< GUM_SCALAR >::isIdentified() const noexcept {
+    return _resultFormula_.isIdentified();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const ASTtree< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::root() const {
+    return _resultFormula_.root();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const CausalFormula< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::getResult() const {
+    return _resultFormula_;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const CausalModel< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::cm() const {
+    return _resultFormula_.cm();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::on() const {
+    return _resultFormula_.on();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::doing() const {
+    return _resultFormula_.doing();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::knowing() const {
+    return _resultFormula_.knowing();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const std::string& CausalImpact< GUM_SCALAR >::explanation() const {
+    return _resultFormula_.explanation();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::onNames() const {
+    return _resultFormula_.onNames();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::doingNames() const {
+    return _resultFormula_.doingNames();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::knowingNames() const {
+    return _resultFormula_.knowingNames();
+  }
 
 }   // namespace gum

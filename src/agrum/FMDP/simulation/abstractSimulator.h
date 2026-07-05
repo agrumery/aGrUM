@@ -89,7 +89,7 @@ namespace gum {
     /// @{
 
     /// Sets the intial statefrom which we begun the simulation
-    INLINE void setInitialState(const Instantiation& initialState) { currentState_ = initialState; }
+    void setInitialState(const Instantiation& initialState);
 
     void setInitialStateRandomly();
 
@@ -99,13 +99,13 @@ namespace gum {
 
     public:
     /// Sets the final states upon which a run is over
-    INLINE void setEndState(const Instantiation& endState) { endState_ = endState; }
+    void setEndState(const Instantiation& endState);
 
     /// Tests if end state has been reached
     virtual bool hasReachEnd();
 
     ///
-    INLINE const Instantiation& currentState() { return currentState_; }
+    const Instantiation& currentState();
 
     ///
     virtual double reward() = 0;
@@ -148,5 +148,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/simulation/abstractSimulator_inl.h>
 #endif   //  _GUM_ABSTRACT_SIMULATOR_H

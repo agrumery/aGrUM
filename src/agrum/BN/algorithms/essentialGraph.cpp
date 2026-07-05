@@ -159,7 +159,10 @@ namespace gum {
     std::string tab = "  ";
     if (_dagmodel_ != nullptr) {
       for (const auto node: _pdag_.nodes()) {
-        nodeStream << std::format("{}{}[label=\"{}\"];", tab, node, _dagmodel_->variable(node).name());
+        nodeStream << std::format("{}{}[label=\"{}\"];",
+                                  tab,
+                                  node,
+                                  _dagmodel_->variable(node).name());
 
         for (const auto nei: _pdag_.neighbours(node))
           if (!treatedNodes.exists(nei))

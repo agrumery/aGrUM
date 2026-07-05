@@ -97,12 +97,12 @@ namespace gum {
   }
 
   std::string MarkovBlanket::toDot() const {
-    std::string output;
-    std::string nodeStream;
-    std::string arcStream;
-    List< NodeId >    treatedNodes;
-    output    = "digraph \"no_name\" {\n";
-    nodeStream = "node [shape = ellipse];\n";
+    std::string    output;
+    std::string    nodeStream;
+    std::string    arcStream;
+    List< NodeId > treatedNodes;
+    output          = "digraph \"no_name\" {\n";
+    nodeStream      = "node [shape = ellipse];\n";
     std::string tab = "  ";
 
     for (const auto node: _mb_.nodes()) {

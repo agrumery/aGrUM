@@ -72,29 +72,15 @@
 // redefined due to a strange bug in visual c++
 namespace gum {
   template < typename T >
-  bool isCloseToZero(T x, T tol = T(1e-9)) {
-    return std::abs(x) <= tol;
-  }
+  bool isCloseToZero(T x, T tol = T(1e-9));
 
   template < typename T >
-  bool isCloseToOne(T x, T tol = T(1e-9)) {
-    return std::abs(x - T(1)) <= tol;
-  }
+  bool isCloseToOne(T x, T tol = T(1e-9));
 
   template < typename T >
-  bool isfinite(T arg) {
-    if constexpr (std::numeric_limits< T >::has_infinity) {
-      if constexpr (std::numeric_limits< T >::is_signed) {
-        return arg == arg && arg != std::numeric_limits< T >::infinity()
-            && arg != -std::numeric_limits< T >::infinity();   // neither Nan, infty nor -infty
-      } else {
-        return arg == arg
-            && arg != std::numeric_limits< T >::infinity();    // neither Nan nor inftty
-      }
-    } else {
-      return arg == arg;                                       // not Nan
-    }
-  }
+  bool isfinite(T arg);
 }   // namespace gum
+
+#include <agrum/base/core/math/math_utils_tpl.h>
 
 #endif /* GUM_MATH_H */

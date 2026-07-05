@@ -228,4 +228,15 @@ namespace gum {
                                                     const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
   }
+
+  template < typename GUM_SCALAR >
+  const GUM_SCALAR* MultiDimArray< GUM_SCALAR >::data() const noexcept {
+    return values_.data();
+  }
+
+  template < typename GUM_SCALAR >
+  GUM_SCALAR* MultiDimArray< GUM_SCALAR >::data() noexcept {
+    return values_.data();
+  }
+
 } /* namespace gum */

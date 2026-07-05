@@ -91,24 +91,14 @@ namespace gum {
     // ==========================================================================
     static StructuredPlaner< GUM_ELEMENT >* spumddInstance(GUM_ELEMENT discountFactor = 0.9,
                                                            GUM_ELEMENT epsilon        = 0.00001,
-                                                           bool        verbose        = true) {
-      return new StructuredPlaner< GUM_ELEMENT >(new MDDOperatorStrategy< GUM_ELEMENT >(),
-                                                 discountFactor,
-                                                 epsilon,
-                                                 verbose);
-    }
+                                                           bool        verbose        = true);
 
     // ==========================================================================
     ///
     // ==========================================================================
     static StructuredPlaner< GUM_ELEMENT >* sviInstance(GUM_ELEMENT discountFactor = 0.9,
                                                         GUM_ELEMENT epsilon        = 0.00001,
-                                                        bool        verbose        = true) {
-      return new StructuredPlaner< GUM_ELEMENT >(new TreeOperatorStrategy< GUM_ELEMENT >(),
-                                                 discountFactor,
-                                                 epsilon,
-                                                 verbose);
-    }
+                                                        bool        verbose        = true);
 
     /// @}
 
@@ -145,31 +135,27 @@ namespace gum {
     /// Returns a const ptr on the Factored Markov Decision Process on which
     /// we're planning
     // ==========================================================================
-    INLINE const FMDP< GUM_ELEMENT >* fmdp() { return fmdp_; }
+    const FMDP< GUM_ELEMENT >* fmdp();
 
     // ==========================================================================
     /// Returns a const ptr on the value function computed so far
     // ==========================================================================
-    INLINE const MultiDimFunctionGraph< GUM_ELEMENT >* vFunction() { return vFunction_; }
+    const MultiDimFunctionGraph< GUM_ELEMENT >* vFunction();
 
     // ==========================================================================
     /// Returns vFunction computed so far current size
     // ==========================================================================
-    virtual Size vFunctionSize() { return vFunction_ != nullptr ? vFunction_->realSize() : 0; }
+    virtual Size vFunctionSize();
 
     // ==========================================================================
     /// Returns the best policy obtained so far
     // ==========================================================================
-    INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() {
-      return optimalPolicy_;
-    }
+    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy();
 
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
-    virtual Size optimalPolicySize() {
-      return optimalPolicy_ != nullptr ? optimalPolicy_->realSize() : 0;
-    }
+    virtual Size optimalPolicySize();
 
     // ==========================================================================
     /// Provide a better toDot for the optimal policy where the leaves have the

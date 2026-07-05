@@ -122,9 +122,9 @@ namespace gum {
          */
         void addClassPath(std::string_view class_path);
 
-        gum::prm::PRM< GUM_SCALAR >* prm() { return _prm_; }
+        gum::prm::PRM< GUM_SCALAR >* prm();
 
-        const gum::prm::PRM< GUM_SCALAR >* prm() const { return _prm_; }
+        const gum::prm::PRM< GUM_SCALAR >* prm() const;
 
         /// @{
         /// publishing Errors API

@@ -258,13 +258,13 @@ namespace gum {
      * Constructor.
      * @param p The pair to store.
      */
-    explicit HashTableBucket(const std::pair< const Key, Val >& p) : pair(p) {}
+    explicit HashTableBucket(const std::pair< const Key, Val >& p);
 
     /**
      * Constructor.
      * @param p The pair to store.
      */
-    explicit HashTableBucket(std::pair< const Key, Val >&& p) : pair(std::move(p)) {}
+    explicit HashTableBucket(std::pair< const Key, Val >&& p);
 
     /**
      * The emplace constructor.
@@ -273,9 +273,7 @@ namespace gum {
      * @tparam args The types in the construction list.
      */
     template < typename... Args >
-    HashTableBucket(Emplace e, Args&&... args) :
-        // emplace (universal) constructor
-        pair(std::forward< Args >(args)...) {}
+    HashTableBucket(Emplace e, Args&&... args);
 
     /**
      * Class destructor.
@@ -286,19 +284,19 @@ namespace gum {
      * @brief Returns the pair stored in this bucket.
      * @return Returns the pair stored in this bucket.
      */
-    std::pair< const Key, Val >& elt() { return pair; }
+    std::pair< const Key, Val >& elt();
 
     /**
      * @brief Returns the key part of the pair.
      * @return Returns the key part of the pair.
      */
-    Key& key() { return const_cast< Key& >(pair.first); }
+    Key& key();
 
     /**
      * @brief Returns the value part of the pair.
      * @return Returns value key part of the pair.
      */
-    Val& val() { return pair.second; }
+    Val& val();
   };
 
   // ===========================================================================

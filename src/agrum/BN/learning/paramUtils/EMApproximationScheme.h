@@ -71,10 +71,7 @@ namespace gum {
        * @brief initializes the EM parameter learning approximation with the min rate criterion
        * @param verbosity if set to true, EM will keep track of its history
        */
-      explicit EMApproximationScheme(bool verbosity = false) : ApproximationScheme(verbosity) {
-        ApproximationScheme::enableMinEpsilonRate();
-        ApproximationScheme::disableEpsilon();
-      }
+      explicit EMApproximationScheme(bool verbosity = false);
 
       virtual ~EMApproximationScheme() = default;
 
@@ -86,12 +83,7 @@ namespace gum {
        * enabled)
        * @throw OutOfBounds Raised if eps <= 0
        */
-      void setEpsilon(double eps) override {
-        if (eps <= 0)
-          GUM_ERROR(OutOfBounds, "EM's min diff epsilon value must be strictly positive")
-        ApproximationScheme::setEpsilon(eps);
-        ApproximationScheme::disableMinEpsilonRate();
-      }
+      void setEpsilon(double eps) override;
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal difference between two
@@ -101,7 +93,7 @@ namespace gum {
        * enabled)
        * @throw OutOfBounds Raised if eps <= 0
        */
-      void setMinDiffEpsilon(double eps) { setEpsilon(eps); }
+      void setMinDiffEpsilon(double eps);
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
@@ -111,16 +103,15 @@ namespace gum {
        * enabled)
        * @throw OutOfBounds if rate<0
        */
-      void setMinEpsilonRate(double rate) override {
-        if (rate <= 0.0)
-          GUM_ERROR(OutOfBounds, "EM's min log-likelihood evolution rate must be strictly positive")
-        ApproximationScheme::setMinEpsilonRate(rate);
-        ApproximationScheme::disableEpsilon();
-      }
+      void setMinEpsilonRate(double rate) override;
     };
 
   }   // namespace learning
 
 }   // namespace gum
+
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/learning/paramUtils/EMApproximationScheme_inl.h>
+#endif
 
 #endif   // GUM_LEARNING_EM_APPROX_SCHEME_H

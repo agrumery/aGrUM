@@ -104,13 +104,13 @@ namespace gum {
     void setDG1Node(const NodeId&);
 
     /// Get DG1 diagram current explored Node
-    const NodeId& DG1Node() const { return _DG1ExploredNode_; }
+    const NodeId& DG1Node() const;
 
     /// Set DG2 diagram current explored Node
     void setDG2Node(const NodeId&);
 
     /// Get DG2 diagram current explored Node
-    const NodeId& DG2Node() const { return _DG2ExploredNode_; }
+    const NodeId& DG2Node() const;
 
     /// @}
 

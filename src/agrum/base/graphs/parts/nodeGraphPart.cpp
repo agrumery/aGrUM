@@ -148,10 +148,8 @@ namespace gum {
       if (!first) s += ",";
       first = false;
 
-      if (hasNames && _names_->existsFirst(id))
-        s += std::format("{}<{}>", id, _names_->second(id));
-      else
-        s += std::format("{}", id);
+      if (hasNames && _names_->existsFirst(id)) s += std::format("{}<{}>", id, _names_->second(id));
+      else s += std::format("{}", id);
     }
 
     s += "}";

@@ -366,8 +366,7 @@ namespace gum {
                                 clique(edge.first()),
                                 edge.second(),
                                 clique(edge.second()))
-             << "\"--\"" << expandClique(edge.second(), clique(edge.second())) << "\";"
-             << '\n';
+             << "\"--\"" << expandClique(edge.second(), clique(edge.second())) << "\";" << '\n';
 
     stream << "}" << '\n';
 

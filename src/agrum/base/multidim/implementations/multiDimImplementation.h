@@ -172,7 +172,7 @@ namespace gum {
      * @return Pointer to the first element of the contiguous buffer, or
      * nullptr.
      */
-    virtual const GUM_ELEMENT* data() const noexcept { return nullptr; }
+    virtual const GUM_ELEMENT* data() const noexcept;
 
     /**
      * @brief Returns a mutable pointer to the contiguous data buffer, or
@@ -181,7 +181,7 @@ namespace gum {
      * @return Pointer to the first element of the contiguous buffer, or
      * nullptr.
      */
-    virtual GUM_ELEMENT* data() noexcept { return nullptr; }
+    virtual GUM_ELEMENT* data() noexcept;
 
     /// @}
     // ========================================================================

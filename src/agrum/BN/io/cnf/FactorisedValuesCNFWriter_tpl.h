@@ -116,7 +116,9 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        auto stri = std::format("{}_{}", bn.variable(node).name(), bn.variable(node).label(i));   //= bn.variable(iter).name()+"_"+
+        auto stri = std::format("{}_{}",
+                                bn.variable(node).name(),
+                                bn.variable(node).label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         str0 << std::format("{} ", vartable[stri]);
       }
@@ -135,7 +137,8 @@ namespace gum {
           }
 
           if (this->fromExact(cpt[inst])) {
-            auto strinst = std::format("{}_val={}", bn.variable(node).name(), this->fromExact(cpt[inst]));
+            auto strinst
+                = std::format("{}_val={}", bn.variable(node).name(), this->fromExact(cpt[inst]));
             str2 << protable[strinst];
           }
 
@@ -213,7 +216,9 @@ namespace gum {
       std::stringstream str0, str2;
 
       for (Idx i = 0; i < bn.variable(node).domainSize(); i++) {
-        auto stri = std::format("{}_{}", bn.variable(node).name(), bn.variable(node).label(i));   //= bn.variable(iter).name()+"_"+
+        auto stri = std::format("{}_{}",
+                                bn.variable(node).name(),
+                                bn.variable(node).label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         str0 << std::format("{} ", vartable[stri]);
       }
@@ -232,7 +237,8 @@ namespace gum {
           }
 
           if (this->fromExact(cpt[inst])) {
-            auto strinst = std::format("{}_val={}", bn.variable(node).name(), this->fromExact(cpt[inst]));
+            auto strinst
+                = std::format("{}_val={}", bn.variable(node).name(), this->fromExact(cpt[inst]));
             str2 << protable[strinst];
           }
 

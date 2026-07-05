@@ -90,7 +90,7 @@ namespace gum {
     /// @{
 
     ///
-    double reward() override { return _fmdp_->reward()->get(this->currentState_); }
+    double reward() override;
 
     void perform(Idx) override;
 
@@ -101,18 +101,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override {
-      return _fmdp_->main2prime(mainVar);
-    }
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) override;
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override {
-      return _fmdp_->beginVariables();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() override;
 
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override {
-      return _fmdp_->endVariables();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() override;
 
     /// @}
 
@@ -121,23 +115,19 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) override { return _fmdp_->actionName(actionId); }
+    const std::string& actionName(Idx actionId) override;
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() override { return _fmdp_->beginActions(); }
+    SequenceIteratorSafe< Idx > beginActions() override;
 
-    SequenceIteratorSafe< Idx > endActions() override { return _fmdp_->endActions(); }
+    SequenceIteratorSafe< Idx > endActions() override;
 
     /// @}
 
     protected:
     virtual double transitionProbability_(const DiscreteVariable* var,
                                           const Instantiation&    transit,
-                                          Idx                     actionId) {
-      return reinterpret_cast< const MultiDimFunctionGraph< double >* >(
-                 _fmdp_->transition(actionId, var))
-          ->get(transit);
-    }
+                                          Idx                     actionId);
 
     private:
     /// The Factored Markov Decision Process that describes how the system
@@ -150,5 +140,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/simulation/fmdpSimulator_inl.h>
 #endif   // GUM_FMDP_SIMULATOR_H

@@ -80,8 +80,8 @@ namespace gum {
     /** @param triangulation if triangulation is different from nullptr, this
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
-    [[nodiscard]] virtual JunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation = nullptr) const
-        = 0;
+    [[nodiscard]] virtual JunctionTreeStrategy* copyFactory(StaticTriangulation* triangulation
+                                                            = nullptr) const = 0;
 
     /// @}
 

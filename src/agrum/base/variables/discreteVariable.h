@@ -123,7 +123,7 @@ namespace gum {
     /// get a numerical representation of the indice-th value.
     virtual double numerical(Idx indice) const = 0;
 
-    virtual bool isEmpirical() const { return false; }
+    virtual bool isEmpirical() const;
 
     /// @return true if the variable has a meaningful numerical representation (i.e. not Labelized)
     bool isNumerical() const;
@@ -158,7 +158,7 @@ namespace gum {
     ///  @warning This operation may have different complexity in different
     /// subclasses.
     /// @throws NotFound
-    Idx operator[](std::string_view label) const { return index(label); }
+    Idx operator[](std::string_view label) const;
 
     virtual Idx index(std::string_view label) const = 0;
 
@@ -182,7 +182,7 @@ namespace gum {
 
     protected:
     /// (protected) Default constructor
-    DiscreteVariable() { GUM_CONSTRUCTOR(DiscreteVariable) }
+    DiscreteVariable();
   };
 
   /// for friendly displaying the content of the variable

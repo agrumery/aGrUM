@@ -235,11 +235,13 @@ namespace gum {
       } else if (infdiag.isChanceNode(varNodeId))   // finding the parents in the cpt
         for (Idx i = infdiag.cpt(varNodeId).nbrDim(); i > 1;
              i--)                                   // the first dimension is not a parent
-          str << std::format("\t<GIVEN>{}</GIVEN>\n", infdiag.cpt(varNodeId).variable(i - 1).name());
+          str << std::format("\t<GIVEN>{}</GIVEN>\n",
+                             infdiag.cpt(varNodeId).variable(i - 1).name());
       else if (infdiag.isUtilityNode(varNodeId))    // finding the parents in the utility
         for (Idx i = infdiag.utility(varNodeId).nbrDim(); i > 1;
              i--)                                   // the first dimension is not a parent
-          str << std::format("\t<GIVEN>{}</GIVEN>\n", infdiag.utility(varNodeId).variable(i - 1).name());
+          str << std::format("\t<GIVEN>{}</GIVEN>\n",
+                             infdiag.utility(varNodeId).variable(i - 1).name());
 
 
       if (infdiag.isChanceNode(varNodeId)) {

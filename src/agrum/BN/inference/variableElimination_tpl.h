@@ -1549,6 +1549,20 @@ namespace gum {
     return jointPosterior_(wanted_target);
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > VENewmultiTensor(const Tensor< GUM_SCALAR >& t1,
+                                               const Tensor< GUM_SCALAR >& t2) {
+    return t1 * t2;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > VENewprojTensor(const Tensor< GUM_SCALAR >& t1,
+                                              const gum::VariableSet&     del_vars) {
+    return t1.sumOut(del_vars);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void VariableElimination< GUM_SCALAR >::onStateChanged_() {}
 
 } /* namespace gum */
 

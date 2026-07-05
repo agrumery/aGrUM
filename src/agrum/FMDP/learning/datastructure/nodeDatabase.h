@@ -100,11 +100,9 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -131,7 +129,7 @@ namespace gum {
     // ###################################################################
     /// Nb observation taken into account by this instance
     // ###################################################################
-    INLINE Idx nbObservation() const { return _nbObservation_; }
+    INLINE Idx nbObservation() const;
 
     /// @}
 
@@ -144,23 +142,19 @@ namespace gum {
     /// Indicates wether or not, node has sufficient observation so that
     /// any statistic is relevant
     // ###################################################################
-    INLINE bool isTestRelevant(const DiscreteVariable* var) const {
-      return _attrTable_[var]->isTestRelevant();
-    }
+    INLINE bool isTestRelevant(const DiscreteVariable* var) const;
 
     // ###################################################################
     /// Returns the performance of given variables according to selection
     /// criterion
     // ###################################################################
-    INLINE double testValue(const DiscreteVariable* var) const { return _attrTable_[var]->score(); }
+    INLINE double testValue(const DiscreteVariable* var) const;
 
     // ###################################################################
     /// Returns the performance of given variables according to selection
     /// secondary criterion (to break ties)
     // ###################################################################
-    INLINE double testOtherCriterion(const DiscreteVariable* var) const {
-      return _attrTable_[var]->secondaryscore();
-    }
+    INLINE double testOtherCriterion(const DiscreteVariable* var) const;
 
     /// @}
 
@@ -179,20 +173,14 @@ namespace gum {
     /// Returns a reference to nDB test policy for given variable
     /// (so that test policy information can be merged too)
     // ###################################################################
-    const TestPolicy< ValueType >* testPolicy(const DiscreteVariable* var) const {
-      return _attrTable_[var];
-    }
+    const TestPolicy< ValueType >* testPolicy(const DiscreteVariable* var) const;
 
     // ###################################################################
     /// Iterators on value count to recopy correctly its content
     // ###################################################################
-    const HashTableConstIteratorSafe< ValueType, Idx > cbeginValues() const {
-      return _valueCount_.cbeginSafe();
-    }
+    const HashTableConstIteratorSafe< ValueType, Idx > cbeginValues() const;
 
-    const HashTableConstIteratorSafe< ValueType, Idx > cendValues() const {
-      return _valueCount_.cendSafe();
-    }
+    const HashTableConstIteratorSafe< ValueType, Idx > cendValues() const;
 
     /// @}
 
@@ -200,16 +188,14 @@ namespace gum {
     ///
     // ###################################################################
 
-    Idx effectif(Idx moda) const {
-      return _valueCount_.exists(ValueType(moda)) ? _valueCount_[ValueType(moda)] : 0;
-    }
+    Idx effectif(Idx moda) const;
 
-    Idx valueDomain() const { return _valueDomain_(Int2Type< isScalar >()); }
+    Idx valueDomain() const;
 
     private:
-    Idx _valueDomain_(Int2Type< true >) const { return _valueCount_.size(); }
+    Idx _valueDomain_(Int2Type< true >) const;
 
-    Idx _valueDomain_(Int2Type< false >) const { return _value_->domainSize(); }
+    Idx _valueDomain_(Int2Type< false >) const;
 
     std::string toString() const;
 

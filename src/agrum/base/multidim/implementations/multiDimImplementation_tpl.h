@@ -336,4 +336,15 @@ namespace gum {
                MultiDimImplementation< GUM_ELEMENT >::content() const {
     return this;
   }
+
+  template < typename GUM_ELEMENT >
+  const GUM_ELEMENT* MultiDimImplementation< GUM_ELEMENT >::data() const noexcept {
+    return nullptr;
+  }
+
+  template < typename GUM_ELEMENT >
+  GUM_ELEMENT* MultiDimImplementation< GUM_ELEMENT >::data() noexcept {
+    return nullptr;
+  }
+
 } /* namespace gum */

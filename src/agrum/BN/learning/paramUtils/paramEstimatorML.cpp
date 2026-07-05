@@ -151,8 +151,8 @@ namespace gum {
             }
 
             // create the error message
-            std::string str = "The conditioning set <";
-            bool deja = false;
+            std::string str  = "The conditioning set <";
+            bool        deja = false;
             for (i = std::size_t(0); i < cond_nb; ++i) {
               if (deja) str += ", ";
               else deja = true;

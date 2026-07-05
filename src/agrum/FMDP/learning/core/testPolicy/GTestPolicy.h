@@ -81,26 +81,19 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    GTestPolicy() : ITestPolicy< GUM_ELEMENT >(), _conTab_(), _GStat_(0) {
-      GUM_CONSTRUCTOR(GTestPolicy);
-    }
+    GTestPolicy();
 
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~GTestPolicy() {
-      GUM_DESTRUCTOR(GTestPolicy);
-      ;
-    }
+    virtual ~GTestPolicy();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -126,9 +119,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const {
-      return (this->nbObservation() > 20 && this->nbObservation() > _conTab_.attrASize() * 5);
-    }
+    bool isTestRelevant() const;
 
     // ============================================================================
     /// Computes the GStat of current variable according to the test
@@ -163,7 +154,7 @@ namespace gum {
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const { return _conTab_; }
+    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const;
 
     /// @}
 
@@ -173,13 +164,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    std::string toString() const {
-      return std::format("{}\t\t\tContingency Table : \n{}\n\t\t\tGStat : {}\n\t\t\tGStat : {}\n",
-                         ITestPolicy< GUM_ELEMENT >::toString(),
-                         _conTab_.toString(),
-                         _GStat_,
-                         this->secondaryscore());
-    }
+    std::string toString() const;
 
     /// @}
 

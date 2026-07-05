@@ -82,4 +82,10 @@ namespace gum {
 
     this->loopApproxInference_();
   }
+
+  template < GUM_Numeric GUM_SCALAR, template < typename > class APPROX >
+  INLINE void LoopySamplingInference< GUM_SCALAR, APPROX >::setVirtualLBPSize(GUM_SCALAR vlbpsize) {
+    if (vlbpsize > 0) virtualLBPSize_ = vlbpsize;
+  }
+
 }   // namespace gum

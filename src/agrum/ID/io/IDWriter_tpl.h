@@ -71,6 +71,15 @@ namespace gum {
     GUM_DESTRUCTOR(IDWriter);
   }
 
+  /*
+   * Write overload delegating to the const version (allows metadata update).
+   */
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void IDWriter< GUM_SCALAR >::write(std::string_view                filePath,
+                                            InfluenceDiagram< GUM_SCALAR >& infdiag) {
+    write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(infdiag));
+  }
+
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

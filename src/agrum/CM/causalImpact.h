@@ -83,25 +83,21 @@ namespace gum {
     public:
     // --- Forwarded accessors for wrapping ---
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
-    Tensor< GUM_SCALAR > eval() const { return _resultFormula_.eval(); }
+    Tensor< GUM_SCALAR > eval() const;
 
     /// @brief Generates a string representation of the formula's AST.
-    std::string toString() const { return _resultFormula_.toString(); }
+    std::string toString() const;
 
     /// @brief Generates a full LaTeX equation: Query = Formula.
     std::string toLatex(std::string_view doOperatorPrefix = "do(",
-                        std::string_view doOperatorSuffix = ")") const {
-      return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
-    }
+                        std::string_view doOperatorSuffix = ")") const;
 
     /**
      * @brief Generates a LaTeX representation of the original query, e.g., P(Y | do(X), Z).
      * @note This version does not yet support specific variable values.
      */
     std::string latexQuery(std::string_view doOperatorPrefix = "do(",
-                           std::string_view doOperatorSuffix = ")") const {
-      return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
-    }
+                           std::string_view doOperatorSuffix = ")") const;
 
     /**
      * @brief Whether the causal effect has been identified.
@@ -112,7 +108,7 @@ namespace gum {
      *
      * @return true if an identification AST exists, false otherwise.
      */
-    [[nodiscard]] bool isIdentified() const noexcept { return _resultFormula_.isIdentified(); }
+    [[nodiscard]] bool isIdentified() const noexcept;
 
     /**
      * @brief Access the root AST node of the identified formula.
@@ -124,35 +120,31 @@ namespace gum {
      *         is not identifiable with the current methods).
      * @return const ASTtree<GUM_SCALAR>& reference to the AST root.
      */
-    const ASTtree< GUM_SCALAR >& root() const { return _resultFormula_.root(); }
+    const ASTtree< GUM_SCALAR >& root() const;
 
     // --- Accessors ---
     /**
      * @brief Access the underlying CausalFormula result.
      * @return const reference to the identified CausalFormula.
      */
-    const CausalFormula< GUM_SCALAR >& getResult() const { return _resultFormula_; }
+    const CausalFormula< GUM_SCALAR >& getResult() const;
 
-    const CausalModel< GUM_SCALAR >& cm() const { return _resultFormula_.cm(); }
+    const CausalModel< GUM_SCALAR >& cm() const;
 
-    const NodeSet& on() const { return _resultFormula_.on(); }
+    const NodeSet& on() const;
 
-    const NodeSet& doing() const { return _resultFormula_.doing(); }
+    const NodeSet& doing() const;
 
-    const NodeSet& knowing() const { return _resultFormula_.knowing(); }
+    const NodeSet& knowing() const;
 
-    const std::string& explanation() const { return _resultFormula_.explanation(); }
+    const std::string& explanation() const;
 
     /// Convenience: return names corresponding to stored node ids (sorted).
-    std::vector< std::string > onNames() const { return _resultFormula_.onNames(); }
+    std::vector< std::string > onNames() const;
 
-    std::vector< std::string > doingNames() const {
-      return _resultFormula_.doingNames();
-    }
+    std::vector< std::string > doingNames() const;
 
-    std::vector< std::string > knowingNames() const {
-      return _resultFormula_.knowingNames();
-    }
+    std::vector< std::string > knowingNames() const;
 
     /**
      * @brief Constructs a CausalImpact object using variable names.

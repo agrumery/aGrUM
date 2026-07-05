@@ -192,7 +192,7 @@ namespace gum {
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const { return cpt(idFromName(name)); }
+    const Tensor< GUM_SCALAR >& cpt(std::string_view name) const;
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -305,7 +305,7 @@ namespace gum {
     /**
      * @brief Removes a variable from the gum::BayesNet.
      */
-    void erase(std::string_view name) { erase(idFromName(name)); }
+    void erase(std::string_view name);
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -322,9 +322,7 @@ namespace gum {
     /**
      * @brief Returns a gum::DiscreteVariable given its name in the gum::BayesNet.
      */
-    const DiscreteVariable& variable(std::string_view name) const {
-      return variable(idFromName(name));
-    }
+    const DiscreteVariable& variable(std::string_view name) const;
 
     /**
      * @brief Changes a variable's name in the gum::BayesNet.
@@ -340,9 +338,7 @@ namespace gum {
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName(std::string_view name, std::string_view new_name) {
-      changeVariableName(idFromName(name), new_name);
-    }
+    void changeVariableName(std::string_view name, std::string_view new_name);
 
     /**
      * @brief Changes a variable's label in the gum::BayesNet.
@@ -361,9 +357,7 @@ namespace gum {
      */
     void changeVariableLabel(std::string_view name,
                              std::string_view old_label,
-                             std::string_view new_label) {
-      changeVariableLabel(idFromName(name), old_label, new_label);
-    }
+                             std::string_view new_label);
 
     /// @}
 
@@ -409,9 +403,7 @@ namespace gum {
     /**
      * Removes an arc in the BN, and update head's CTP.
      */
-    void eraseArc(std::string_view tail, std::string_view head) {
-      eraseArc(idFromName(tail), idFromName(head));
-    }
+    void eraseArc(std::string_view tail, std::string_view head);
 
     /**
      * When inserting/removing arcs, node CPTs change their dimension with a
@@ -443,9 +435,7 @@ namespace gum {
     /// @{
     void reverseArc(NodeId tail, NodeId head);
 
-    void reverseArc(std::string_view tail, std::string_view head) {
-      reverseArc(idFromName(tail), idFromName(head));
-    }
+    void reverseArc(std::string_view tail, std::string_view head);
 
     void reverseArc(const Arc& arc);
     /// @}
@@ -605,9 +595,7 @@ namespace gum {
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
-    void addWeightedArc(std::string_view tail, std::string_view head, GUM_SCALAR causalWeight) {
-      addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
-    }
+    void addWeightedArc(std::string_view tail, std::string_view head, GUM_SCALAR causalWeight);
 
     /// @}
 
@@ -617,7 +605,7 @@ namespace gum {
     /// randomly generate CPT for a given node in a given structure
     void generateCPT(NodeId node) const;
 
-    void generateCPT(std::string_view name) const { generateCPT(idFromName(name)); }
+    void generateCPT(std::string_view name) const;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.

@@ -85,11 +85,7 @@ namespace gum::graph {
    * @return true if X ⊥ Y | Z in the d-separation sense.
    */
   template < GUM_DiGraphable G >
-  bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
-    NodeSet qX;
-    qX.insert(X);
-    return !graph::dConnected(g, qX, Z).exists(Y);
-  }
+  bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);
 
   /**
    * @brief Returns true iff every node in @p X is d-separated from every
@@ -107,10 +103,7 @@ namespace gum::graph {
    * @throw InvalidArgument if X and Y are not disjoint.
    */
   template < GUM_DiGraphable G >
-  bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
-    if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
-    return (graph::dConnected(g, X, Z) * Y).empty();
-  }
+  bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z);
 
   /**
    * @brief Returns true iff @p X and @p Y are c-separated by @p Z in @p g.
@@ -132,15 +125,7 @@ namespace gum::graph {
    * @return true if X ⊥ Y | Z in the c-separation sense.
    */
   template < GUM_MixedGraphable G >
-  bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
-    NodeSet query{Z};
-    query.insert(X);
-    query.insert(Y);
-    auto moral = moralizedAncestralGraph(g, query);
-    for (const auto node: Z)
-      if (moral.existsNode(node)) moral.eraseNode(node);
-    return !moral.hasUndirectedPath(X, Y);
-  }
+  bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);
 
   /**
    * @brief Returns true iff @p X and @p Y are c-separated by @p Z in @p g.
@@ -157,27 +142,10 @@ namespace gum::graph {
    * @throw InvalidArgument if X and Y are not disjoint.
    */
   template < GUM_MixedGraphable G >
-  bool cSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
-    if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
-
-    NodeSet query{Z};
-    query += X;
-    query += Y;
-    auto moral = moralizedAncestralGraph(g, query);
-    for (const auto node: Z)
-      if (moral.existsNode(node)) moral.eraseNode(node);
-
-    const auto cc = moral.chainComponents();
-
-    NodeSet Xcc, Ycc;
-    for (const auto node: X)
-      if (moral.existsNode(node)) Xcc.insert(cc[node]);
-    for (const auto node: Y)
-      if (moral.existsNode(node)) Ycc.insert(cc[node]);
-
-    return (Xcc * Ycc).empty();
-  }
+  bool cSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z);
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/separation_tpl.h>
 
 #endif   // GUM_GRAPH_SEPARATION_H

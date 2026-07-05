@@ -93,7 +93,7 @@ namespace gum {
     /// Construct an AST node with a descriptive `type` string (used in dumps).
     explicit ASTtree(std::string_view type);
 
-    virtual ~ASTtree() { GUM_DESTRUCTOR(ASTtree) }
+    virtual ~ASTtree();
 
     ASTtree(const ASTtree&)            = delete;
     ASTtree& operator=(const ASTtree&) = delete;
@@ -103,7 +103,7 @@ namespace gum {
     ASTtree& operator=(ASTtree&&) noexcept = default;
 
     /// @return the runtime type tag (human-readable)
-    const std::string& type() const noexcept { return _type; }
+    const std::string& type() const noexcept;
 
     /**
      * @brief Human-readable multi-line rendering (for debugging / logs).
@@ -189,10 +189,10 @@ namespace gum {
     ASTBinaryOp& operator=(ASTBinaryOp&&) noexcept = default;
 
     /// @return left operand
-    const ASTtree< GUM_SCALAR >& op1() const { return *_op1; }
+    const ASTtree< GUM_SCALAR >& op1() const;
 
     /// @return right operand
-    const ASTtree< GUM_SCALAR >& op2() const { return *_op2; }
+    const ASTtree< GUM_SCALAR >& op2() const;
 
     /// @copydoc ASTtree::toString
     std::string toString(std::string_view prefix = "") const override;
@@ -321,10 +321,10 @@ namespace gum {
     explicit ASTposteriorProba(const Set< std::string >& vars, const Set< std::string >& knw);
 
     /// @return names of variables in the left-hand side (the “query” set)
-    const Set< std::string >& vars() const noexcept { return _vars; }
+    const Set< std::string >& vars() const noexcept;
 
     /// @return names in the conditioning set (minimalized)
-    const Set< std::string >& knw() const noexcept { return _knw; }
+    const Set< std::string >& knw() const noexcept;
 
     /// @copydoc ASTtree::toString
     std::string toString(std::string_view prefix = "") const override;
@@ -371,7 +371,7 @@ namespace gum {
     explicit ASTjointProba(const Set< std::string >& varNames);
 
     /// @return variable names in the joint
-    const Set< std::string >& varNames() const noexcept { return _varNames; }
+    const Set< std::string >& varNames() const noexcept;
 
     /// @copydoc ASTtree::toString
     std::string toString(std::string_view prefix = "") const override;
@@ -413,10 +413,10 @@ namespace gum {
     ASTsum(const std::vector< std::string >& vars, std::unique_ptr< ASTtree< GUM_SCALAR > > term);
 
     /// @return the variable being eliminated by this summation
-    [[nodiscard]] const std::string& var() const { return _var; }
+    [[nodiscard]] const std::string& var() const;
 
     /// @return the subterm being summed over
-    const ASTtree< GUM_SCALAR >& term() const { return *_term; }
+    const ASTtree< GUM_SCALAR >& term() const;
 
     /// @copydoc ASTtree::toString
     std::string toString(std::string_view prefix = "") const override;

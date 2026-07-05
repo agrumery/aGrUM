@@ -90,32 +90,30 @@ namespace gum {
     /// publishing Errors API
 
     /// # of errors
-    Size errors() { return _errors_.error_count; }
+    Size errors();
 
     /// # of errors
-    Size warnings() { return _errors_.warning_count; }
+    Size warnings();
 
-    Idx errLine(Idx i) { return _errors_.error(i).line; }
+    Idx errLine(Idx i);
 
     /// col of ith error or warning
-    Idx errCol(Idx i) { return _errors_.error(i).column; }
+    Idx errCol(Idx i);
 
     /// type of ith error or warning
-    bool errIsError(Idx i) { return _errors_.error(i).is_error; }
+    bool errIsError(Idx i);
 
     /// message of ith error or warning
-    std::string errMsg(Idx i) { return _errors_.error(i).msg; }
+    std::string errMsg(Idx i);
 
     /// send on std::cerr the list of errors
-    void showElegantErrors(std::ostream& o = std::cerr) { _errors_.elegantErrors(o); }
+    void showElegantErrors(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) {
-      _errors_.elegantErrorsAndWarnings(o);
-    }
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts(std::ostream& o = std::cerr) { _errors_.syntheticResults(o); }
+    void showErrorCounts(std::ostream& o = std::cerr);
 
     /// @}
 

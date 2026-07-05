@@ -89,9 +89,7 @@ namespace gum {
     /// method after initalizing  estimators with loopy belief propagation
     virtual void makeInference_();
 
-    void setVirtualLBPSize(GUM_SCALAR vlbpsize) {
-      if (vlbpsize > 0) virtualLBPSize_ = vlbpsize;
-    }
+    void setVirtualLBPSize(GUM_SCALAR vlbpsize);
 
     protected:
     GUM_SCALAR virtualLBPSize_;

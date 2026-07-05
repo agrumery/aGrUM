@@ -91,19 +91,7 @@ namespace gum::graph {
                     const NodeSet& soids,
                     NodeSet&       minimal,
                     NodeSet&       visitedUp,
-                    NodeSet&       visitedDn) {
-    if (visitedUp.contains(node)) return;
-    visitedUp << node;
-
-    if (soids.contains(node)) {
-      minimal << node;
-    } else {
-      for (const auto par: g.parents(node))
-        _mcsVisitUp_(g, par, soids, minimal, visitedUp, visitedDn);
-      for (const auto chi: g.children(node))
-        _mcsVisitDn_(g, chi, soids, minimal, visitedUp, visitedDn);
-    }
-  }
+                    NodeSet&       visitedDn);
 
   /**
    * Downward visit: if @p node is in @p soids, add it and continue upward
@@ -115,19 +103,7 @@ namespace gum::graph {
                     const NodeSet& soids,
                     NodeSet&       minimal,
                     NodeSet&       visitedUp,
-                    NodeSet&       visitedDn) {
-    if (visitedDn.contains(node)) return;
-    visitedDn << node;
-
-    if (soids.contains(node)) {
-      minimal << node;
-      for (const auto par: g.parents(node))
-        _mcsVisitUp_(g, par, soids, minimal, visitedUp, visitedDn);
-    } else {
-      for (const auto chi: g.children(node))
-        _mcsVisitDn_(g, chi, soids, minimal, visitedUp, visitedDn);
-    }
-  }
+                    NodeSet&       visitedDn);
 
   /// @endcond
 
@@ -145,20 +121,7 @@ namespace gum::graph {
    * @return The minimal conditioning subset.
    */
   template < GUM_DiGraphable G >
-  NodeSet minimalCondSet(const G& g, NodeId target, const NodeSet& soids) {
-    if (soids.contains(target)) return NodeSet({target});
-
-    NodeSet res, visitedUp, visitedDn;
-    visitedUp << target;
-    visitedDn << target;
-
-    for (const auto par: g.parents(target))
-      _mcsVisitUp_(g, par, soids, res, visitedUp, visitedDn);
-    for (const auto chi: g.children(target))
-      _mcsVisitDn_(g, chi, soids, res, visitedUp, visitedDn);
-
-    return res;
-  }
+  NodeSet minimalCondSet(const G& g, NodeId target, const NodeSet& soids);
 
   /**
    * @brief Returns the minimal subset of @p soids that d-connects all @p targets.
@@ -168,13 +131,10 @@ namespace gum::graph {
    * @tparam G Any GUM_DiGraphable graph.
    */
   template < GUM_DiGraphable G >
-  NodeSet minimalCondSet(const G& g, const NodeSet& targets, const NodeSet& soids) {
-    NodeSet res;
-    for (const auto node: targets)
-      res += minimalCondSet(g, node, soids);
-    return res;
-  }
+  NodeSet minimalCondSet(const G& g, const NodeSet& targets, const NodeSet& soids);
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet_tpl.h>
 
 #endif   // GUM_GRAPH_MINIMAL_CONDITIONING_SET_H

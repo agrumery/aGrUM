@@ -1200,9 +1200,7 @@ namespace gum {
      * @return Returns a reference over x.
      */
     template < typename T >
-    INLINE static const T& op_second(const T* x) {
-      return *x;
-    }
+    static const T& op_second(const T* x);
   };
 
   /**
@@ -1222,9 +1220,7 @@ namespace gum {
      * @return Returns the reference x.
      */
     template < typename T >
-    INLINE static const T& op_second(const T& x) {
-      return x;
-    }
+    static const T& op_second(const T& x);
   };
 
   // ===========================================================================

@@ -153,4 +153,17 @@ namespace gum {
     nbDeallocation++;
   }
 
+  INLINE SmallObjectAllocator& SmallObjectAllocator::operator=(const SmallObjectAllocator&) {
+    return instance();
+  }
+
+  INLINE void SmallObjectAllocator::displayStats() {
+    GUM_TRACE("Nb Small Allocation : " << nbAllocation
+                                       << " -  Nb Small Deallocation : " << nbDeallocation);
+  }
+
+  INLINE Idx SmallObjectAllocator::nbAlloc() { return nbAllocation; }
+
+  INLINE Idx SmallObjectAllocator::nbDealloc() { return nbDeallocation; }
+
 }   // namespace gum

@@ -176,7 +176,7 @@ namespace gum {
     // ============================================================================
     /// Returns the size of block allocated by this FixedAllocator
     // ============================================================================
-    const size_t& objectSize() { return _blockSize_; }
+    const size_t& objectSize();
 
     private:
     // ============================================================================

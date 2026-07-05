@@ -49,9 +49,7 @@
 
 namespace gum {
 
-  std::string DiscreteVariable::toStringWithDescription() const {
-    return description() + domain();
-  }
+  std::string DiscreteVariable::toStringWithDescription() const { return description() + domain(); }
 
   std::string DiscreteVariable::toString() const {
     return std::format("{}:{}({})", name(), stype(), domain());

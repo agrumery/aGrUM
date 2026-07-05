@@ -348,4 +348,24 @@ namespace gum {
     NodeId nody = this->target_->manager()->addTerminalNode(value);
     return nody;
   }
+
+  template < TESTNAME AttributeSelection, bool isScalar >
+  INLINE ITI< AttributeSelection, isScalar >::~ITI() {
+    GUM_DESTRUCTOR(ITI);
+    ;
+  }
+
+  template < TESTNAME AttributeSelection, bool isScalar >
+  INLINE NodeId ITI< AttributeSelection, isScalar >::_insertTerminalNode_(NodeId src) {
+    return _insertTerminalNode_(src, Int2Type< isScalar >());
+  }
+
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::insertSetOfVars_(MultiDimFunctionGraph< double >* ret) {
+    for (SetIteratorSafe< const DiscreteVariable* > varIter = this->setOfVars_.beginSafe();
+         varIter != this->setOfVars_.endSafe();
+         ++varIter)
+      ret->add(**varIter);
+  }
+
 }   // namespace gum

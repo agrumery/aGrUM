@@ -88,7 +88,7 @@ namespace gum {
 
     /// returns the content of the set as a string
     std::string IdCondSet::toString() const {
-      std::string str = "{";
+      std::string str  = "{";
       bool        deja = false;
 
       for (std::size_t i = std::size_t(0); i < _nb_lhs_ids_; ++i) {

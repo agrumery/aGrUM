@@ -233,10 +233,7 @@ namespace gum {
       void copyState(const BNLearner< GUM_SCALAR >& learner);
 
       //=== === add return to certain methods in order to chain command
-      BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag) {
-        IBNLearner::setInitialDAG(dag);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag);
 
       /**
        * @brief use The EM algorithm to learn parameters
@@ -258,10 +255,7 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is strictly negative or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise = default_EM_noise) {
-        IBNLearner::useEM(epsilon, noise);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise = default_EM_noise);
 
       /**
        * @brief use The EM algorithm to learn parameters with the rate stopping criterion
@@ -281,10 +275,7 @@ namespace gum {
        * noise does not belong to interval [0,1].
        */
       BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon,
-                                                      const double noise = default_EM_noise) {
-        IBNLearner::useEMWithRateCriterion(epsilon, noise);
-        return *this;
-      }
+                                                      const double noise = default_EM_noise);
 
       /**
        * @brief use The EM algorithm to learn parameters with the diff stopping criterion
@@ -301,16 +292,10 @@ namespace gum {
        * noise does not belong to interval [0,1].
        */
       BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon,
-                                                      const double noise = default_EM_noise) {
-        IBNLearner::useEMWithDiffCriterion(epsilon, noise);
-        return *this;
-      }
+                                                      const double noise = default_EM_noise);
 
       /// prevent using the EM algorithm for parameter learning
-      BNLearner< GUM_SCALAR >& forbidEM() {
-        IBNLearner::forbidEM();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& forbidEM();
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal difference between two
@@ -320,26 +305,17 @@ namespace gum {
        * enabled)
        * @throw OutOfBounds if eps <= 0
        */
-      BNLearner< GUM_SCALAR >& EMsetEpsilon(const double eps) {
-        IBNLearner::EMsetEpsilon(eps);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetEpsilon(const double eps);
 
       /// Disable the min log-likelihood diff stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableEpsilon() {
-        IBNLearner::EMdisableEpsilon();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMdisableEpsilon();
 
       /**
        * @brief Enable the log-likelihood min diff stopping criterion in EM
        * @warning setting this stopping criterion disables the min rate criterion (if it was
        * enabled)
        */
-      BNLearner< GUM_SCALAR >& EMenableEpsilon() {
-        IBNLearner::EMenableEpsilon();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMenableEpsilon();
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
@@ -349,477 +325,214 @@ namespace gum {
        * enabled)
        * @throw OutOfBounds if rate<=0
        */
-      BNLearner< GUM_SCALAR >& EMsetMinEpsilonRate(const double rate) {
-        IBNLearner::EMsetMinEpsilonRate(rate);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetMinEpsilonRate(const double rate);
 
       /// Disable the log-likelihood evolution rate stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableMinEpsilonRate() {
-        IBNLearner::EMdisableMinEpsilonRate();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMdisableMinEpsilonRate();
 
       /**
        * @brief Enable the log-likelihood evolution rate stopping criterion
        * @warning setting this stopping criterion disables the min diff criterion (if it was
        * enabled)
        */
-      BNLearner< GUM_SCALAR >& EMenableMinEpsilonRate() {
-        IBNLearner::EMenableMinEpsilonRate();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMenableMinEpsilonRate();
 
       /**
        * @brief add a max iteration stopping criterion
        * @param max the max number of iterations that EM is allowed to perform
        * @throw OutOfBounds if max<=1
        */
-      BNLearner< GUM_SCALAR >& EMsetMaxIter(const Size max) {
-        IBNLearner::EMsetMaxIter(max);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetMaxIter(const Size max);
 
       /// Disable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& EMdisableMaxIter() {
-        IBNLearner::EMdisableMaxIter();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMdisableMaxIter();
 
       /// Enable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& EMenableMaxIter() {
-        IBNLearner::EMenableMaxIter();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMenableMaxIter();
 
       /**
        * @brief add a stopping criterion on timeout
        * @param timeout the timeout in milliseconds
        * @throw OutOfBounds if timeout<=0.0
        */
-      BNLearner< GUM_SCALAR >& EMsetMaxTime(const double timeout) {
-        IBNLearner::EMsetMaxTime(timeout);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetMaxTime(const double timeout);
 
       /// Disable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableMaxTime() {
-        IBNLearner::EMdisableMaxTime();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMdisableMaxTime();
 
       /// enable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& EMenableMaxTime() {
-        IBNLearner::EMenableMaxTime();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMenableMaxTime();
 
       /**
        * @brief how many samples between 2 stoppings isEnabled
        * @throw OutOfBounds if p<1
        */
-      BNLearner< GUM_SCALAR >& EMsetPeriodSize(const Size p) {
-        IBNLearner::EMsetPeriodSize(p);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetPeriodSize(const Size p);
 
       // for pyagrum support
       using IBNLearner::EMPeriodSize;
 
       /// sets or unsets EM's verbosity
-      BNLearner< GUM_SCALAR >& EMsetVerbosity(const bool v) {
-        IBNLearner::EMsetVerbosity(v);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& EMsetVerbosity(const bool v);
 
-      BNLearner< GUM_SCALAR >& useScoreAIC() {
-        IBNLearner::useScoreAIC();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreAIC();
 
-      BNLearner< GUM_SCALAR >& useScoreBD() {
-        IBNLearner::useScoreBD();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreBD();
 
-      BNLearner< GUM_SCALAR >& useScoreBDeu() {
-        IBNLearner::useScoreBDeu();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreBDeu();
 
-      BNLearner< GUM_SCALAR >& useScoreBIC() {
-        IBNLearner::useScoreBIC();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreBIC();
 
-      BNLearner< GUM_SCALAR >& useScoreK2() {
-        IBNLearner::useScoreK2();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreK2();
 
-      BNLearner< GUM_SCALAR >& useScoreLog2Likelihood() {
-        IBNLearner::useScoreLog2Likelihood();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useScoreLog2Likelihood();
 
-      BNLearner< GUM_SCALAR >& useNoPrior() {
-        IBNLearner::useNoPrior();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useNoPrior();
 
-      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0) {
-        IBNLearner::useBDeuPrior(weight);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0);
 
-      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1) {
-        IBNLearner::useSmoothingPrior(weight);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1);
 
-      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight = 1) {
-        IBNLearner::useDirichletPrior(filename, weight);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight = 1);
 
       BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
-                                                 double                             weight = 1) {
-        if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
+                                                 double                             weight = 1);
 
-        _prior_bn_ = gum::BayesNet< GUM_SCALAR >(bn);
-        priorType_ = BNLearnerPriorType::DIRICHLET_FROM_BAYESNET;
-        _setPriorWeight_(weight);
+      BNLearner< GUM_SCALAR >& useGreedyHillClimbing();
 
-        checkScorePriorCompatibility();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing();
 
-      BNLearner< GUM_SCALAR >& useGreedyHillClimbing() {
-        IBNLearner::useGreedyHillClimbing();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useGreedyThickThinning();
 
-      BNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() {
-        IBNLearner::useExtendedGreedyHillClimbing();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setGreedyThickThinningReversals(bool allow);
 
-      BNLearner< GUM_SCALAR >& useGreedyThickThinning() {
-        IBNLearner::useGreedyThickThinning();
-        return *this;
-      }
-
-      BNLearner< GUM_SCALAR >& setGreedyThickThinningReversals(bool allow) {
-        IBNLearner::setGreedyThickThinningReversals(allow);
-        return *this;
-      }
-
-      bool greedyThickThinningReversals() const {
-        return IBNLearner::greedyThickThinningReversals();
-      }
+      bool greedyThickThinningReversals() const;
 
       BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                          Size nb_decrease = 2) {
-        IBNLearner::useLocalSearchWithTabuList(tabu_size, nb_decrease);
-        return *this;
-      }
+                                                          Size nb_decrease = 2);
 
-      BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order) {
-        IBNLearner::useK2(order);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order) {
-        IBNLearner::useK2(order);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& useMIIC() {
-        IBNLearner::useMIIC();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useMIIC();
 
-      BNLearner< GUM_SCALAR >& usePC() {
-        IBNLearner::usePC();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& usePC();
 
-      BNLearner< GUM_SCALAR >& useFCI() {
-        IBNLearner::useFCI();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useFCI();
 
-      BNLearner< GUM_SCALAR >& useFCIChi2Test() {
-        IBNLearner::useFCIChi2Test();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useFCIChi2Test();
 
-      BNLearner< GUM_SCALAR >& useFCIG2Test() {
-        IBNLearner::useFCIG2Test();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useFCIG2Test();
 
-      BNLearner< GUM_SCALAR >& setFCIAlpha(double alpha) {
-        IBNLearner::setFCIAlpha(alpha);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setFCIAlpha(double alpha);
 
-      BNLearner< GUM_SCALAR >& setFCIMaxPathLength(Size max_len) {
-        IBNLearner::setFCIMaxPathLength(max_len);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setFCIMaxPathLength(Size max_len);
 
-      BNLearner< GUM_SCALAR >& setFCIExhaustiveSepSet(bool exhaustive) {
-        IBNLearner::setFCIExhaustiveSepSet(exhaustive);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setFCIExhaustiveSepSet(bool exhaustive);
 
-      bool fciExhaustiveSepSet() const { return IBNLearner::fciExhaustiveSepSet(); }
+      bool fciExhaustiveSepSet() const;
 
-      BNLearner< GUM_SCALAR >& useChi2Test() {
-        IBNLearner::useChi2Test();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useChi2Test();
 
-      BNLearner< GUM_SCALAR >& useG2Test() {
-        IBNLearner::useG2Test();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useG2Test();
 
-      BNLearner< GUM_SCALAR >& setPCAlpha(double alpha) {
-        IBNLearner::setPCAlpha(alpha);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPCAlpha(double alpha);
 
-      BNLearner< GUM_SCALAR >& setPCStable(bool stable) {
-        IBNLearner::setPCStable(stable);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPCStable(bool stable);
 
-      BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k) {
-        IBNLearner::setPCMaxCondSetSize(max_k);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k);
 
-      BNLearner< GUM_SCALAR >& setPCUnshieldedColliderSorted(bool sorted) {
-        IBNLearner::setPCUnshieldedColliderSorted(sorted);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPCUnshieldedColliderSorted(bool sorted);
 
-      BNLearner< GUM_SCALAR >& useNMLCorrection() {
-        IBNLearner::useNMLCorrection();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useNMLCorrection();
 
-      BNLearner< GUM_SCALAR >& useMDLCorrection() {
-        IBNLearner::useMDLCorrection();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useMDLCorrection();
 
-      BNLearner< GUM_SCALAR >& useNoCorrection() {
-        IBNLearner::useNoCorrection();
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& useNoCorrection();
 
-      BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree) {
-        IBNLearner::setMaxIndegree(max_indegree);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree);
 
-      BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order) {
-        IBNLearner::setSliceOrder(slice_order);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order);
 
       BNLearner< GUM_SCALAR >&
-          setSliceOrder(const std::vector< std::vector< std::string > >& slices) {
-        IBNLearner::setSliceOrder(slices);
-        return *this;
-      }
+          setSliceOrder(const std::vector< std::vector< std::string > >& slices);
 
-      BNLearner< GUM_SCALAR >& setTotalOrder(const std::vector< std::string >& order) {
-        IBNLearner::setTotalOrder(order);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setTotalOrder(const std::vector< std::string >& order);
 
-      BNLearner< GUM_SCALAR >& setTotalOrder(const Sequence< NodeId >& order) {
-        IBNLearner::setTotalOrder(order);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setTotalOrder(const Sequence< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set) {
-        IBNLearner::setForbiddenArcs(set);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc) {
-        IBNLearner::addForbiddenArc(arc);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(NodeId tail, NodeId head) {
-        IBNLearner::addForbiddenArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tail, std::string_view head) {
-        IBNLearner::addForbiddenArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc) {
-        IBNLearner::eraseForbiddenArc(arc);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(NodeId tail, NodeId head) {
-        IBNLearner::eraseForbiddenArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tail, std::string_view head) {
-        IBNLearner::eraseForbiddenArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc) {
-        IBNLearner::addMandatoryArc(arc);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(NodeId tail, NodeId head) {
-        IBNLearner::addMandatoryArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tail, std::string_view head) {
-        IBNLearner::addMandatoryArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc) {
-        IBNLearner::eraseMandatoryArc(arc);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(NodeId tail, NodeId head) {
-        IBNLearner::eraseMandatoryArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tail, std::string_view head) {
-        IBNLearner::eraseMandatoryArc(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge) {
-        IBNLearner::addPossibleEdge(edge);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(NodeId tail, NodeId head) {
-        IBNLearner::addPossibleEdge(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail, std::string_view head) {
-        IBNLearner::addPossibleEdge(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge) {
-        IBNLearner::erasePossibleEdge(edge);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(NodeId tail, NodeId head) {
-        IBNLearner::erasePossibleEdge(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail, std::string_view head) {
-        IBNLearner::erasePossibleEdge(tail, head);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set) {
-        IBNLearner::setMandatoryArcs(set);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set);
 
-      BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set) {
-        IBNLearner::setPossibleEdges(set);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set);
 
-      BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton) {
-        IBNLearner::setPossibleSkeleton(skeleton);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton);
 
-      BNLearner< GUM_SCALAR >& addNoParentNode(NodeId node) {
-        IBNLearner::addNoParentNode(node);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addNoParentNode(NodeId node);
 
-      BNLearner< GUM_SCALAR >& addNoParentNode(std::string_view name) {
-        IBNLearner::addNoParentNode(name);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addNoParentNode(std::string_view name);
 
-      BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node) {
-        IBNLearner::eraseNoParentNode(node);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node);
 
-      BNLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name) {
-        IBNLearner::eraseNoParentNode(name);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name);
 
-      BNLearner< GUM_SCALAR >& addNoChildrenNode(NodeId node) {
-        IBNLearner::addNoChildrenNode(node);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addNoChildrenNode(NodeId node);
 
-      BNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name) {
-        IBNLearner::addNoChildrenNode(name);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name);
 
-      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node) {
-        IBNLearner::eraseNoChildrenNode(node);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node);
 
-      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name) {
-        IBNLearner::eraseNoChildrenNode(name);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name);
 
-      BNLearner< GUM_SCALAR >& allowArcAdditions(bool allow) {
-        IBNLearner::allowArcAdditions(allow);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& allowArcAdditions(bool allow);
 
-      BNLearner< GUM_SCALAR >& allowArcDeletions(bool allow) {
-        IBNLearner::allowArcDeletions(allow);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& allowArcDeletions(bool allow);
 
-      BNLearner< GUM_SCALAR >& allowArcReversals(bool allow) {
-        IBNLearner::allowArcReversals(allow);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& allowArcReversals(bool allow);
 
-      BNLearner< GUM_SCALAR >& allowArcTriangleDeletions(bool allow) {
-        IBNLearner::allowArcTriangleDeletions(allow);
-        return *this;
-      }
+      BNLearner< GUM_SCALAR >& allowArcTriangleDeletions(bool allow);
 
-      bool isConstraintBased() const { return IBNLearner::isConstraintBased(); }
+      bool isConstraintBased() const;
 
-      bool isScoreBased() const { return IBNLearner::isScoreBased(); }
+      bool isScoreBased() const;
 
       protected:
       /// create the prior used for learning

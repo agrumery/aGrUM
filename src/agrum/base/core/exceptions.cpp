@@ -62,7 +62,10 @@ namespace gum {
     return std::format("\n{}\n", msg);
 #  else    // GUM_FOR_SWIG
     return std::format("\n{}:{} in {}()\n--------------\n! {}\n--------------\n",
-                       filename, line, function, msg);
+                       filename,
+                       line,
+                       function,
+                       msg);
 #  endif   // GUM_FOR_SWIG
   }
 

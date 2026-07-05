@@ -165,7 +165,7 @@ namespace gum {
     std::string domain() const final;
 
     /// string represent the type of the variable
-    std::string stype() const final { return "NumericalDiscrete"; }
+    std::string stype() const final;
 
     /// returns the domain as a sequence of values
     const std::vector< double >& numericalDomain() const;

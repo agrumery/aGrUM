@@ -268,4 +268,32 @@ namespace gum {
     std::sort(out.begin(), out.end());
     return out;
   }
+
+  // ---------- accessors ----------
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const CausalModel< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::cm() const {
+    return _cm;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const NodeSet& CausalFormula< GUM_SCALAR >::on() const {
+    return _on;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const NodeSet& CausalFormula< GUM_SCALAR >::doing() const {
+    return _doing;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const NodeSet& CausalFormula< GUM_SCALAR >::knowing() const {
+    return _knowing;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const std::string& CausalFormula< GUM_SCALAR >::explanation() const {
+    return _explanation;
+  }
+
 }   // namespace gum

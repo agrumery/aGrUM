@@ -623,6 +623,12 @@ namespace gum {
     return *this;
   }
 
+  /// display the content of a tree
+  template < typename Val, typename Cmp >
+  std::ostream& operator<<(std::ostream& stream, const SharedAVLTree< Val, Cmp >& tree) {
+    return stream << tree.toString();
+  }
+
 
 }   // namespace gum
 

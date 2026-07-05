@@ -113,7 +113,7 @@ namespace gum {
 
     ///@}
 
-    DAG reducedGraph() const { return reduced_; }
+    DAG reducedGraph() const;
 
     std::vector< NodeSet > reversePartialOrder() const;
 
@@ -124,9 +124,7 @@ namespace gum {
 
     gum::Tensor< GUM_SCALAR > optimalDecision(NodeId decisionId) final;
 
-    gum::Tensor< GUM_SCALAR > optimalDecision(std::string_view decisionName) final {
-      return optimalDecision(this->influenceDiagram().idFromName(decisionName));
-    }
+    gum::Tensor< GUM_SCALAR > optimalDecision(std::string_view decisionName) final;
 
     /**
      * Return the posterior probability of a node
@@ -136,9 +134,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
 
-    const Tensor< GUM_SCALAR >& posterior(std::string_view name) final {
-      return posterior(this->influenceDiagram().idFromName(name));
-    }
+    const Tensor< GUM_SCALAR >& posterior(std::string_view name) final;
 
     /**
      * Return the posterior utility of a node
@@ -148,9 +144,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& posteriorUtility(NodeId node) final;
 
-    virtual const Tensor< GUM_SCALAR >& posteriorUtility(std::string_view name) final {
-      return posteriorUtility(this->influenceDiagram().idFromName(name));
-    }
+    virtual const Tensor< GUM_SCALAR >& posteriorUtility(std::string_view name) final;
 
     /**
      * Return the pair (mean,variance) for a node
@@ -160,9 +154,7 @@ namespace gum {
      */
     virtual std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(NodeId node) final;
 
-    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(std::string_view name) final {
-      return meanVar(this->influenceDiagram().idFromName(name));
-    }
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar(std::string_view name) final;
 
     /**
      * Return the pair (mean,variance) for the total utility (MEU)

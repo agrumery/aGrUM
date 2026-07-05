@@ -79,24 +79,19 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf(NodeId leafId) : _leafId_(leafId) { GUM_CONSTRUCTOR(AbstractLeaf); }
+    AbstractLeaf(NodeId leafId);
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    virtual ~AbstractLeaf() {
-      GUM_DESTRUCTOR(AbstractLeaf);
-      ;
-    }
+    virtual ~AbstractLeaf();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(AbstractLeaf));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -109,9 +104,9 @@ namespace gum {
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains(NodeId testedId) const { return _leafId_ == testedId; }
+    virtual bool contains(NodeId testedId) const;
 
-    NodeId id() { return _leafId_; }
+    NodeId id();
 
     virtual Idx nbModa() const = 0;
 
@@ -124,5 +119,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf_inl.h>
 #endif   // GUM_ABSTRACT_LEAF_H

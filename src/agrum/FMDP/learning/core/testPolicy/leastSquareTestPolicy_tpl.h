@@ -160,4 +160,47 @@ namespace gum {
     }
   }
 
+  template < typename GUM_ELEMENT >
+  INLINE LeastSquareTestPolicy< GUM_ELEMENT >::LeastSquareTestPolicy() :
+      ITestPolicy< GUM_ELEMENT >(), _sumO_(0.0), _score_(0) {
+    GUM_CONSTRUCTOR(LeastSquareTestPolicy);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void* LeastSquareTestPolicy< GUM_ELEMENT >::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void LeastSquareTestPolicy< GUM_ELEMENT >::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(p, sizeof(LeastSquareTestPolicy));
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE bool LeastSquareTestPolicy< GUM_ELEMENT >::isTestRelevant() const {
+    return (this->nbObservation() > 20);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE double LeastSquareTestPolicy< GUM_ELEMENT >::sumValue() const {
+    return _sumO_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const HashTable< Idx, Idx >& LeastSquareTestPolicy< GUM_ELEMENT >::nbObsTable() const {
+    return _nbObsTable_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const HashTable< Idx, double >&
+               LeastSquareTestPolicy< GUM_ELEMENT >::sumAttrTable() const {
+    return _sumAttrTable_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const HashTable< Idx, LinkedList< double >* >&
+               LeastSquareTestPolicy< GUM_ELEMENT >::obsTable() const {
+    return _obsTable_;
+  }
+
 }   // End of namespace gum

@@ -253,7 +253,9 @@ namespace gum {
             auto itseqv = (*itpv)->begin();
 
             for (Idx i = 0; i < (*itseqv)->nbrDim(); i++) {
-              auto str = std::format("{}_{}", (*itseqv)->variable(i).name(), (*itseqv)->val((*itseqv)->variable(i)));
+              auto str = std::format("{}_{}",
+                                     (*itseqv)->variable(i).name(),
+                                     (*itseqv)->val((*itseqv)->variable(i)));
               str2 << std::format("-{} ", vartable[str]);
             }
 
@@ -282,8 +284,8 @@ namespace gum {
 
     clausstr << str2.str();
 
-    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar)
-           << clausstr.str() << clausstr2.str() << '\n';
+    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar) << clausstr.str()
+           << clausstr2.str() << '\n';
     output.flush();
   }
 
@@ -498,7 +500,9 @@ namespace gum {
             gum::Sequence< gum::Instantiation* >::iterator_safe itseqv = (*itpv)->begin();
 
             for (Idx i = 0; i < (*itseqv)->nbrDim(); i++) {
-              auto str = std::format("{}_{}", (*itseqv)->variable(i).name(), (*itseqv)->val((*itseqv)->variable(i)));
+              auto str = std::format("{}_{}",
+                                     (*itseqv)->variable(i).name(),
+                                     (*itseqv)->val((*itseqv)->variable(i)));
               str2 << std::format("-{} ", vartable[str]);
             }
 
@@ -529,8 +533,8 @@ namespace gum {
 
     clausstr << str2.str();
 
-    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar)
-           << clausstr.str() << clausstr2.str() << '\n';
+    output << std::format("p cnf {} {}\neclauses {}\n", num, clause, numvar) << clausstr.str()
+           << clausstr2.str() << '\n';
     output.flush();
     outputvar << strfile.str();
     outputvar.flush();

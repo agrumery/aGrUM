@@ -109,35 +109,28 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId root() const override { return _counter_->root(); }
+    NodeId root() const override;
 
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal(NodeId ni) const override { return _counter_->isTerminalNode(ni); }
+    bool isTerminal(NodeId ni) const override;
 
     // ==========================================================================
     ///
     // ==========================================================================
-    const DiscreteVariable* nodeVar(NodeId ni) const override { return _counter_->node(ni)->nodeVar(); }
+    const DiscreteVariable* nodeVar(NodeId ni) const override;
 
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId nodeSon(NodeId ni, Idx modality) const override { return _counter_->node(ni)->son(modality); }
+    NodeId nodeSon(NodeId ni, Idx modality) const override;
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    Idx nodeNbObservation(NodeId ni) const override { return _counter_->nodeValue(ni); }
+    // ==========================================================================;
 
-    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override {
-      for (SequenceIteratorSafe< const DiscreteVariable* > varIter
-           = _counter_->variablesSequence().beginSafe();
-           varIter != _counter_->variablesSequence().endSafe();
-           ++varIter)
-        ret->add(**varIter);
-    }
+    Idx nodeNbObservation(NodeId ni) const override;
+
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override;
 
     /// @}
 
@@ -150,4 +143,5 @@ namespace gum {
   };
 } /* namespace gum */
 
+#include <agrum/FMDP/simulation/statesCounter_inl.h>
 #endif   // GUM_STATES_COUNTER_H

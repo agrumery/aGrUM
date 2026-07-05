@@ -65,15 +65,7 @@ namespace gum {
       BDeuPriorType,
     };
 
-    constexpr const char* priorTypeToString(PriorType e) noexcept {
-      switch (e) {
-        case PriorType::NoPriorType : return "No prior";
-        case PriorType::DirichletPriorType : return "Dirichlet prior";
-        case PriorType::SmoothingPriorType : return "TriSmoothing prior";
-        case PriorType::BDeuPriorType : return "BDeu prior";
-      }
-      return "Error in prior";
-    }
+    constexpr const char* priorTypeToString(PriorType e) noexcept;
 
     /** @class Prior
      * @brief the base class for all a priori
@@ -183,8 +175,7 @@ namespace gum {
 } /* namespace gum */
 
 // include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/prior_inl.h>
-#endif /* GUM_NO_INLINE */
+// constexpr priorTypeToString must be visible in all TUs — include unconditionally
+#include <agrum/BN/learning/priors/prior_inl.h>
 
 #endif /* GUM_LEARNING_PRIOR_H */

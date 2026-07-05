@@ -119,9 +119,7 @@ namespace gum {
      * update).
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& infdiag) {
-      write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(infdiag));
-    }
+    virtual void write(std::string_view filePath, InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */
 

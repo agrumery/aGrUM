@@ -169,7 +169,7 @@ namespace gum {
       std::string bits;
 
       while (si-- != 0) {
-        bits  = std::string(1, (valb & 1) ? '1' : '0') + bits;
+        bits = std::string(1, (valb & 1) ? '1' : '0') + bits;
         valb >>= 1;
       }
 
@@ -182,7 +182,7 @@ namespace gum {
         bits = "";
 
         while (si-- != 0) {
-          bits  = std::string(1, (valb & 1) ? '1' : '0') + bits;
+          bits = std::string(1, (valb & 1) ? '1' : '0') + bits;
           valb >>= 1;
         }
 

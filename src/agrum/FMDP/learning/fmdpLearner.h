@@ -117,71 +117,42 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_() {
-      return _instantiateFunctionGraph_(Int2Type< LearnerSelection >());
-    }
+    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_();
 
-    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_(Int2Type< IMDDILEARNER >) {
-      return MultiDimFunctionGraph< double,
-                                    ExactTerminalNodePolicy >::getReducedAndOrderedInstance();
-    }
+    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_(Int2Type< IMDDILEARNER >);
 
-    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_(Int2Type< ITILEARNER >) {
-      return MultiDimFunctionGraph< double, ExactTerminalNodePolicy >::getTreeInstance();
-    }
+    MultiDimFunctionGraph< double >* _instantiateFunctionGraph_(Int2Type< ITILEARNER >);
 
     // ==========================================================================
     ///
     // ==========================================================================
     VariableLearnerType* _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
                                                  gum::VariableSet&                mainVariables,
-                                                 const DiscreteVariable*          learnedVar) {
-      return _instantiateVarLearner_(target,
-                                     mainVariables,
-                                     learnedVar,
-                                     Int2Type< LearnerSelection >());
-    }
+                                                 const DiscreteVariable*          learnedVar);
 
     VariableLearnerType* _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
                                                  gum::VariableSet&                mainVariables,
                                                  const DiscreteVariable*          learnedVar,
-                                                 Int2Type< IMDDILEARNER >) {
-      return new VariableLearnerType(target,
-                                     _learningThreshold_,
-                                     _similarityThreshold_,
-                                     mainVariables,
-                                     learnedVar);
-    }
+                                                 Int2Type< IMDDILEARNER >);
 
     VariableLearnerType* _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
                                                  gum::VariableSet&                mainVariables,
                                                  const DiscreteVariable*          learnedVar,
-                                                 Int2Type< ITILEARNER >) {
-      return new VariableLearnerType(target, _learningThreshold_, mainVariables, learnedVar);
-    }
+                                                 Int2Type< ITILEARNER >);
 
     // ==========================================================================
     ///
     // ==========================================================================
     RewardLearnerType* _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
-                                                  gum::VariableSet&                mainVariables) {
-      return _instantiateRewardLearner_(target, mainVariables, Int2Type< LearnerSelection >());
-    }
+                                                  gum::VariableSet&                mainVariables);
 
     RewardLearnerType* _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
                                                   gum::VariableSet&                mainVariables,
-                                                  Int2Type< IMDDILEARNER >) {
-      return new RewardLearnerType(target,
-                                   _learningThreshold_,
-                                   _similarityThreshold_,
-                                   mainVariables);
-    }
+                                                  Int2Type< IMDDILEARNER >);
 
     RewardLearnerType* _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
                                                   gum::VariableSet&                mainVariables,
-                                                  Int2Type< ITILEARNER >) {
-      return new RewardLearnerType(target, _learningThreshold_, mainVariables);
-    }
+                                                  Int2Type< ITILEARNER >);
 
     /// @}
 
@@ -231,17 +202,16 @@ namespace gum {
     // ==========================================================================
     /// \brief extractCount
     // ==========================================================================
-    const IVisitableGraphLearner* varLearner(Idx actionId, const DiscreteVariable* var) const override {
-      return _actionLearners_[actionId]->getWithDefault(var, nullptr);
-    }
+    const IVisitableGraphLearner* varLearner(Idx                     actionId,
+                                             const DiscreteVariable* var) const override;
 
-    double rMax() const override { return _rmax_; }
+    double rMax() const override;
 
     private:
     double _rmax_;
 
     public:
-    double modaMax() const override { return _modaMax_; }
+    double modaMax() const override;
 
     private:
     double _modaMax_;

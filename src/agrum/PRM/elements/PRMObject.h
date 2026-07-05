@@ -89,41 +89,21 @@ namespace gum {
        */
       enum class prm_type : char { ALL, CLASS, PRM_INTERFACE, CLASS_ELT, TYPE, SYSTEM, INSTANCE };
 
-      static std::string LEFT_CAST() { return "("; }
+      static std::string LEFT_CAST();
 
-      static std::string RIGHT_CAST() { return ")"; }
+      static std::string RIGHT_CAST();
 
       /// Returns the string representation of a PRMObject.
-      static std::string enum2str(prm_type type) {
-        switch (type) {
-          case prm_type::CLASS : return "PRMType::CLASS";
-
-          case prm_type::CLASS_ELT : return "PRMType::CLASS_ELT";
-
-          case prm_type::TYPE : return "PRMType::TYPE";
-
-          case prm_type::SYSTEM : return "PRMType::SYSTEM";
-
-          case prm_type::INSTANCE : return "PRMType::INSTANCE";
-
-          case prm_type::PRM_INTERFACE : return "PRMType::PRM_INTERFACE";
-
-          default : return "unknown";
-        }
-      }
+      static std::string enum2str(prm_type type);
 
       /// Returns true if obj_ptr is of type Class.
-      static INLINE bool isClass(const PRMObject& obj) { return obj.obj_type() == prm_type::CLASS; }
+      static INLINE bool isClass(const PRMObject& obj);
 
       /// Returns true if obj_ptr is of type PRMInterface.
-      static INLINE bool isInterface(const PRMObject& obj) {
-        return obj.obj_type() == prm_type::PRM_INTERFACE;
-      }
+      static INLINE bool isInterface(const PRMObject& obj);
 
       /// Returns true if obj_ptr is of type PRMInstance.
-      static INLINE bool isInstance(const PRMObject& obj) {
-        return obj.obj_type() == prm_type::INSTANCE;
-      }
+      static INLINE bool isInstance(const PRMObject& obj);
 
       /// @}
       // ==========================================================================

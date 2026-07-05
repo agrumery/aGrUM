@@ -90,11 +90,11 @@ namespace gum {
     // ==========================================================================
     /// @{
 
-    bool checkState(const Instantiation& state) { return _checker_->get(state); }
+    bool checkState(const Instantiation& state);
 
     void addState(const Instantiation&);
 
-    Idx nbVisitedStates() { return _nbVisitedStates_; }
+    Idx nbVisitedStates();
 
     void reset(const Instantiation&);
 
@@ -112,4 +112,5 @@ namespace gum {
   };
 } /* namespace gum */
 
+#include <agrum/FMDP/simulation/statesChecker_inl.h>
 #endif   // GUM_STATES_CHECKER_H

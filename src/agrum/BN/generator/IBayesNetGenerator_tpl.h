@@ -132,7 +132,9 @@ namespace gum {
     int         n     = 0;
     const auto& topo  = this->dag_.topologicalOrder();
     for (const auto node: topo) {
-      bn.add(RangeVariable(std::format("X{:0{}}", n++, width), "", 0,
+      bn.add(RangeVariable(std::format("X{:0{}}", n++, width),
+                           "",
+                           0,
                            long(1 + randomValue(this->maxModality_ - 1))),
              node);
     }

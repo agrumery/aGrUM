@@ -2025,4 +2025,37 @@ namespace gum {
       HashTableIterator< Key, Val >::operator*() const {
     return HashTableConstIterator< Key, Val >::operator*();
   }
+
+  // ===========================================================================
+  // ===              IMPLEMENTATION OF HashTableBucket                      ===
+  // ===========================================================================
+
+  template < typename Key, typename Val >
+  HashTableBucket< Key, Val >::HashTableBucket(const std::pair< const Key, Val >& p) : pair(p) {}
+
+  template < typename Key, typename Val >
+  HashTableBucket< Key, Val >::HashTableBucket(std::pair< const Key, Val >&& p) :
+      pair(std::move(p)) {}
+
+  template < typename Key, typename Val >
+  template < typename... Args >
+  HashTableBucket< Key, Val >::HashTableBucket(Emplace e, Args&&... args) :
+      // emplace (universal) constructor
+      pair(std::forward< Args >(args)...) {}
+
+  template < typename Key, typename Val >
+  INLINE std::pair< const Key, Val >& HashTableBucket< Key, Val >::elt() {
+    return pair;
+  }
+
+  template < typename Key, typename Val >
+  INLINE Key& HashTableBucket< Key, Val >::key() {
+    return const_cast< Key& >(pair.first);
+  }
+
+  template < typename Key, typename Val >
+  INLINE Val& HashTableBucket< Key, Val >::val() {
+    return pair.second;
+  }
+
 } /* namespace gum */

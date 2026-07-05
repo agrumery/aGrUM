@@ -97,7 +97,7 @@ namespace gum {
     /// Required constant to compute the cdf
     /// @{
 
-    static double _exp_(double x) { return (((x) < -_BIGX_) ? 0.0 : exp(x)); }
+    static double _exp_(double x);
 
     static double _probaZValue_(double z);
     /// @}
@@ -105,6 +105,7 @@ namespace gum {
 
 } /* namespace gum */
 
+#  include <agrum/FMDP/learning/core/chiSquare_inl.h>
 #endif   // GUM_CHI_SQUARE_H
 
 

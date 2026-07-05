@@ -224,4 +224,134 @@ namespace gum {
 
     if (!_actionReward_) _rewardLearner_->updateFunctionGraph();
   }
+
+  // ==========================================================================
+  // Instantiation methods
+  // ==========================================================================
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE MultiDimFunctionGraph< double >*
+         FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+             _instantiateFunctionGraph_() {
+    return _instantiateFunctionGraph_(Int2Type< LearnerSelection >());
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  MultiDimFunctionGraph< double >*
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+          _instantiateFunctionGraph_(Int2Type< IMDDILEARNER >) {
+    return MultiDimFunctionGraph< double, ExactTerminalNodePolicy >::getReducedAndOrderedInstance();
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE MultiDimFunctionGraph< double >*
+         FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+             _instantiateFunctionGraph_(Int2Type< ITILEARNER >) {
+    return MultiDimFunctionGraph< double, ExactTerminalNodePolicy >::getTreeInstance();
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  auto FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+      _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
+                              gum::VariableSet&                mainVariables,
+                              const DiscreteVariable*          learnedVar) -> VariableLearnerType* {
+    return _instantiateVarLearner_(target,
+                                   mainVariables,
+                                   learnedVar,
+                                   Int2Type< LearnerSelection >());
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  auto FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+      _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
+                              gum::VariableSet&                mainVariables,
+                              const DiscreteVariable*          learnedVar,
+                              Int2Type< IMDDILEARNER >) -> VariableLearnerType* {
+    return new VariableLearnerType(target,
+                                   _learningThreshold_,
+                                   _similarityThreshold_,
+                                   mainVariables,
+                                   learnedVar);
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE auto
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+          _instantiateVarLearner_(MultiDimFunctionGraph< double >* target,
+                                  gum::VariableSet&                mainVariables,
+                                  const DiscreteVariable*          learnedVar,
+                                  Int2Type< ITILEARNER >) -> VariableLearnerType* {
+    return new VariableLearnerType(target, _learningThreshold_, mainVariables, learnedVar);
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE auto
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+          _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
+                                     gum::VariableSet& mainVariables) -> RewardLearnerType* {
+    return _instantiateRewardLearner_(target, mainVariables, Int2Type< LearnerSelection >());
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  auto FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+      _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
+                                 gum::VariableSet&                mainVariables,
+                                 Int2Type< IMDDILEARNER >) -> RewardLearnerType* {
+    return new RewardLearnerType(target, _learningThreshold_, _similarityThreshold_, mainVariables);
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE auto
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+          _instantiateRewardLearner_(MultiDimFunctionGraph< double >* target,
+                                     gum::VariableSet&                mainVariables,
+                                     Int2Type< ITILEARNER >) -> RewardLearnerType* {
+    return new RewardLearnerType(target, _learningThreshold_, mainVariables);
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE const IVisitableGraphLearner*
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::
+          varLearner(Idx actionId, const DiscreteVariable* var) const {
+    return _actionLearners_[actionId]->getWithDefault(var, nullptr);
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE double
+      FMDPLearner< VariableAttributeSelection, RewardAttributeSelection, LearnerSelection >::rMax()
+          const {
+    return _rmax_;
+  }
+
+  template < TESTNAME    VariableAttributeSelection,
+             TESTNAME    RewardAttributeSelection,
+             LEARNERNAME LearnerSelection >
+  INLINE double FMDPLearner< VariableAttributeSelection,
+                             RewardAttributeSelection,
+                             LearnerSelection >::modaMax() const {
+    return _modaMax_;
+  }
+
 }   // End of namespace gum

@@ -133,14 +133,17 @@ namespace gum {
           case PRMClassElement< GUM_SCALAR >::prm_attribute : {
             // TODO: make a special case for noisy-or
             DiscreteVariable* var = instance.get(node).type().variable().clone();
-            var->setName(std::format("{}.{}", instance.name(), instance.type().get(node).safeName()));
+            var->setName(
+                std::format("{}.{}", instance.name(), instance.type().get(node).safeName()));
             factory.setVariable(*var);   // var is copied by the factory
             delete var;
             break;
           }
 
           case PRMClassElement< GUM_SCALAR >::prm_aggregate : {
-            _groundAgg_(instance.type().get(node), std::format("{}.{}", instance.name(), instance.type().get(node).safeName()), factory);
+            _groundAgg_(instance.type().get(node),
+                        std::format("{}.{}", instance.name(), instance.type().get(node).safeName()),
+                        factory);
             break;
           }
 
@@ -267,13 +270,15 @@ namespace gum {
     void PRMSystem< GUM_SCALAR >::_groundRef_(const PRMInstance< GUM_SCALAR >& instance,
                                               BayesNetFactory< GUM_SCALAR >&   factory) const {
       for (const auto& elt: instance) {
-        factory.startParentsDeclaration(std::format("{}.{}", instance.name(), elt.second->safeName()));
+        factory.startParentsDeclaration(
+            std::format("{}.{}", instance.name(), elt.second->safeName()));
 
         for (const auto par: instance.type().containerDag().parents(elt.second->id())) {
           switch (instance.type().get(par).elt_type()) {
             case PRMClassElement< GUM_SCALAR >::prm_aggregate :
             case PRMClassElement< GUM_SCALAR >::prm_attribute : {
-              factory.addParent(std::format("{}.{}", instance.name(), instance.get(par).safeName()));
+              factory.addParent(
+                  std::format("{}.{}", instance.name(), instance.get(par).safeName()));
               break;
             }
 
@@ -322,7 +327,8 @@ namespace gum {
         switch (instance.type().get(parent).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_aggregate :
           case PRMClassElement< GUM_SCALAR >::prm_attribute : {
-            auto parent_name = std::format("{}.{}", instance.name(), instance.get(parent).safeName());
+            auto parent_name
+                = std::format("{}.{}", instance.name(), instance.get(parent).safeName());
             bijection.insert(&(instance.get(parent).type().variable()),
                              &(factory.variable(parent_name)));
             break;
@@ -331,7 +337,9 @@ namespace gum {
           case PRMClassElement< GUM_SCALAR >::prm_slotchain : {
             const PRMSlotChain< GUM_SCALAR >& sc
                 = static_cast< const PRMSlotChain< GUM_SCALAR >& >(instance.type().get(parent));
-            auto parent_name = std::format("{}.{}", instance.getInstance(sc.id()).name(), sc.lastElt().safeName());
+            auto parent_name = std::format("{}.{}",
+                                           instance.getInstance(sc.id()).name(),
+                                           sc.lastElt().safeName());
             bijection.insert(
                 &(instance.getInstance(sc.id()).get(sc.lastElt().safeName()).type().variable()),
                 &(factory.variable(parent_name)));

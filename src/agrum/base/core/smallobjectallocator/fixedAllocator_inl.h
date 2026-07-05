@@ -252,4 +252,9 @@ namespace gum {
     if (chunk_found) { _deallocChunk_->_deallocat_(pDeallocatedBlock, _blockSize_); }
   }
 
+  // ============================================================================
+  // Returns the size of block allocated by this FixedAllocator
+  // ============================================================================
+  INLINE const size_t& FixedAllocator::objectSize() { return _blockSize_; }
+
 }   // namespace gum

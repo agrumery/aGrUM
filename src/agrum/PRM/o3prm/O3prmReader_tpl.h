@@ -130,7 +130,11 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       INLINE std::string O3prmReader< GUM_SCALAR >::_print_(const ParseError& err) const {
-        return std::format("{}|{} col {}| {}", err.filename, err.line, err.column, _clean_(err.msg));
+        return std::format("{}|{} col {}| {}",
+                           err.filename,
+                           err.line,
+                           err.column,
+                           _clean_(err.msg));
       }
 
       template < GUM_Numeric GUM_SCALAR >
@@ -403,7 +407,11 @@ namespace gum {
 
           if (!imported) {
             const auto& pos = i.import().position();
-            _errors_.addError(std::format("Import error: could not resolve import {}", i.import().label()), pos.file(), pos.line(), pos.column());
+            _errors_.addError(
+                std::format("Import error: could not resolve import {}", i.import().label()),
+                pos.file(),
+                pos.line(),
+                pos.column());
           }
         }
       }
@@ -462,6 +470,17 @@ namespace gum {
           } catch (...) { _errors_.addException("an unknown exception occured", file); }
         }
       }
+
+      template < GUM_Numeric GUM_SCALAR >
+      INLINE gum::prm::PRM< GUM_SCALAR >* O3prmReader< GUM_SCALAR >::prm() {
+        return _prm_;
+      }
+
+      template < GUM_Numeric GUM_SCALAR >
+      INLINE const gum::prm::PRM< GUM_SCALAR >* O3prmReader< GUM_SCALAR >::prm() const {
+        return _prm_;
+      }
+
     }   // namespace o3prm
   }   // namespace prm
 }   // namespace gum

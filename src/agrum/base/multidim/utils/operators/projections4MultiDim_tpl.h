@@ -452,6 +452,16 @@ namespace gum {
     });
   }
 
+  template < typename GUM_ELEMENT >
+  void Projections4MultiDimInitialize< GUM_ELEMENT >::init() {
+    projections4MultiDimInit< GUM_ELEMENT >();
+  }
+
+  template < typename GUM_ELEMENT >
+  void Projections4MultiDimInitialize< GUM_ELEMENT* >::init() {
+    pointerProjections4MultiDimInit< GUM_ELEMENT >();
+  }
+
 } /* namespace gum */
 
 // remove permission to use operatorsPatterns

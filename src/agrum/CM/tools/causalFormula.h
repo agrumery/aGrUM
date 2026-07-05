@@ -164,15 +164,15 @@ namespace gum {
     const ASTtree< GUM_SCALAR >& root() const;
 
     // --- Accessors ---
-    const CausalModel< GUM_SCALAR >& cm() const { return _cm; }
+    const CausalModel< GUM_SCALAR >& cm() const;
 
-    const NodeSet& on() const { return _on; }
+    const NodeSet& on() const;
 
-    const NodeSet& doing() const { return _doing; }
+    const NodeSet& doing() const;
 
-    const NodeSet& knowing() const { return _knowing; }
+    const NodeSet& knowing() const;
 
-    const std::string& explanation() const { return _explanation; }
+    const std::string& explanation() const;
 
     /// Convenience: return names corresponding to stored node ids (sorted).
     std::vector< std::string > onNames() const;

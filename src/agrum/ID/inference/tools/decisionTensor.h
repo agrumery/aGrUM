@@ -65,146 +65,60 @@ namespace gum {
     Tensor< GUM_SCALAR > probPot;
     Tensor< GUM_SCALAR > utilPot;
 
-    explicit DecisionTensor() {
-      GUM_CONSTRUCTOR(DecisionTensor);
-      probPot.fillWith(GUM_SCALAR(1));
-      utilPot.fillWith(GUM_SCALAR(0));
-    }
+    explicit DecisionTensor();
 
-    ~DecisionTensor() {
-      GUM_DESTRUCTOR(DecisionTensor);
-      ;
-    }
+    ~DecisionTensor();
 
-    DecisionTensor(const Tensor< GUM_SCALAR >& prob, const Tensor< GUM_SCALAR >& util) :
-        probPot(prob), utilPot(util) {
-      GUM_CONSTRUCTOR(DecisionTensor);
-    }
+    DecisionTensor(const Tensor< GUM_SCALAR >& prob, const Tensor< GUM_SCALAR >& util);
 
-    DecisionTensor(const DecisionTensor< GUM_SCALAR >& dp) :
-        probPot(dp.probPot), utilPot(dp.utilPot) {
-      GUM_CONS_CPY(DecisionTensor);
-    }
+    DecisionTensor(const DecisionTensor< GUM_SCALAR >& dp);
 
-    void clear() {
-      gum::Tensor< GUM_SCALAR > p;
-      p.fillWith(GUM_SCALAR(1));
-      probPot = p;
-      p.fillWith(GUM_SCALAR(0));
-      utilPot = p;
-    }
+    void clear();
 
-    DecisionTensor< GUM_SCALAR >& operator=(const DecisionTensor< GUM_SCALAR >& src) {
-      GUM_OP_CPY(DecisionTensor);
-      if (&src == this) return *this;
-      probPot = src.probPot;
-      utilPot = src.utilPot;
-      return *this;
-    }
+    DecisionTensor< GUM_SCALAR >& operator=(const DecisionTensor< GUM_SCALAR >& src);
 
-    DecisionTensor(DecisionTensor< GUM_SCALAR >&& dp) :
-        probPot(std::forward< Tensor< GUM_SCALAR > >(dp.probPot)),
-        utilPot(std::forward< Tensor< GUM_SCALAR > >(dp.utilPot)) {
-      GUM_CONS_MOV(DecisionTensor);
-    }
+    DecisionTensor(DecisionTensor< GUM_SCALAR >&& dp);
 
-    DecisionTensor< GUM_SCALAR >& operator=(DecisionTensor< GUM_SCALAR >&& src) {
-      GUM_OP_MOV(DecisionTensor);
-      if (&src == this) return *this;
-      probPot = std::forward< Tensor< GUM_SCALAR > >(src.probPot);
-      utilPot = std::forward< Tensor< GUM_SCALAR > >(src.utilPot);
-      return *this;
-    }
+    DecisionTensor< GUM_SCALAR >& operator=(DecisionTensor< GUM_SCALAR >&& src);
 
-    bool operator==(const DecisionTensor< GUM_SCALAR >& p) const {
-      // @see Evaluating Influence Diagrams using LIMIDS (2000) - section 3.3
-      return ((p.probPot == this->probPot)
-              && (p.probPot * p.utilPot == this->probPot * this->utilPot));
-    }
+    bool operator==(const DecisionTensor< GUM_SCALAR >& p) const;
 
-    const DiscreteVariable* variable(std::string_view name) const {
-      for (const auto& v: probPot.variablesSequence()) {
-        if (v->name() == name) return v;
-      }
-      for (const auto& v: utilPot.variablesSequence()) {
-        if (v->name() == name) return v;
-      }
+    const DiscreteVariable* variable(std::string_view name) const;
 
-      GUM_ERROR(NotFound, "'" << name << "' can not be found in DecisionTensor.")
-    }
+    void insertProba(const gum::Tensor< GUM_SCALAR >& proba);
 
-    void insertProba(const gum::Tensor< GUM_SCALAR >& proba) { probPot *= proba; }
+    void insertUtility(const gum::Tensor< GUM_SCALAR >& util);
 
-    void insertUtility(const gum::Tensor< GUM_SCALAR >& util) { utilPot += util; }
+    DecisionTensor< GUM_SCALAR > operator*(const DecisionTensor< GUM_SCALAR >& dp1) const;
 
-    DecisionTensor< GUM_SCALAR > operator*(const DecisionTensor< GUM_SCALAR >& dp1) const {
-      return DecisionTensor< GUM_SCALAR >::combination(*this, dp1);
-    }
+    DecisionTensor< GUM_SCALAR > operator*=(const DecisionTensor< GUM_SCALAR >& dp1);
 
-    DecisionTensor< GUM_SCALAR > operator*=(const DecisionTensor< GUM_SCALAR >& dp1) {
-      *this = DecisionTensor< GUM_SCALAR >::combination(*this, dp1);
-      return *this;
-    }
+    DecisionTensor< GUM_SCALAR > operator^(const gum::VariableSet& onto) const;
 
-    DecisionTensor< GUM_SCALAR > operator^(const gum::VariableSet& onto) const {
-      return DecisionTensor< GUM_SCALAR >::marginalization(*this, onto);
-    }
-
-    DecisionTensor< GUM_SCALAR > operator^(const std::vector< std::string >& ontonames) const {
-      return DecisionTensor< GUM_SCALAR >::marginalization(*this, ontonames);
-    }
+    DecisionTensor< GUM_SCALAR > operator^(const std::vector< std::string >& ontonames) const;
 
     static Tensor< GUM_SCALAR > divideEvenZero(const Tensor< GUM_SCALAR >& p1,
-                                               const Tensor< GUM_SCALAR >& p2) {
-      Tensor< GUM_SCALAR > res(p1);
-      Instantiation        I(res);
-      for (I.setFirst(); !I.end(); I.inc()) {
-        if (p2[I] != 0) res.set(I, res[I] / p2[I]);
-      }
-      return res;
-    }
+                                               const Tensor< GUM_SCALAR >& p2);
 
     static DecisionTensor< GUM_SCALAR > combination(const DecisionTensor< GUM_SCALAR >& dp1,
-                                                    const DecisionTensor< GUM_SCALAR >& dp2) {
-      return DecisionTensor< GUM_SCALAR >(dp1.probPot * dp2.probPot, dp1.utilPot + dp2.utilPot);
-    }
+                                                    const DecisionTensor< GUM_SCALAR >& dp2);
 
     static DecisionTensor< GUM_SCALAR > marginalization(const DecisionTensor< GUM_SCALAR >& dp,
-                                                        const gum::VariableSet&             onto) {
-      const auto pr = dp.probPot.sumIn(onto);
-      return DecisionTensor(pr, divideEvenZero((dp.probPot * dp.utilPot).sumIn(onto), pr));
-    }
+                                                        const gum::VariableSet&             onto);
 
     static DecisionTensor< GUM_SCALAR >
         marginalization(const DecisionTensor< GUM_SCALAR >& dp,
-                        const std::vector< std::string >&   ontonames) {
-      gum::VariableSet onto;
-      for (const auto& varname: ontonames) {
-        onto.insert(dp.variable(varname));
-      }
-      return marginalization(dp, onto);
-    }
+                        const std::vector< std::string >&   ontonames);
 
-    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar() {
-      const auto       tmp = probPot * utilPot;
-      const GUM_SCALAR s   = probPot.sum();
-      const double     m   = tmp.sum() / s;
-      const double     m2  = (tmp * utilPot).sum() / s;
-      double           var = m2 - m * m;
-      if (var < 0.0) var = 0.0;   // var is a small number<0 due to computation errors
-      return std::pair< GUM_SCALAR, GUM_SCALAR >(m, var);
-    }
+    std::pair< GUM_SCALAR, GUM_SCALAR > meanVar();
 
-    virtual std::string toString() const {
-      return "prob : " + probPot.toString() + "    util:" + utilPot.toString();
-    }
+    virtual std::string toString() const;
   };
 
   template < GUM_Numeric GUM_SCALAR >
-  std::ostream& operator<<(std::ostream& out, const DecisionTensor< GUM_SCALAR >& array) {
-    out << array.toString();
-    return out;
-  }
+  std::ostream& operator<<(std::ostream& out, const DecisionTensor< GUM_SCALAR >& array);
 }   // namespace gum
+
+#include <agrum/ID/inference/tools/decisionTensor_tpl.h>
 
 #endif   // GUM_DECISIONTENSOR_H

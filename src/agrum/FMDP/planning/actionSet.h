@@ -79,14 +79,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    const GUM_ELEMENT& operator()(const GUM_ELEMENT& x, const GUM_ELEMENT& y) const {
-      if (x > y) { return x; }
-      if (x < y) { return y; }
-
-      _temp_ = x;
-      _temp_ += y;
-      return _temp_;
-    }
+    const GUM_ELEMENT& operator()(const GUM_ELEMENT& x, const GUM_ELEMENT& y) const;
 
     private:
     mutable GUM_ELEMENT _temp_;
@@ -112,41 +105,23 @@ namespace gum {
     // ============================================================================
     /// Constructor
     // ============================================================================
-    ActionSet() {
-      GUM_CONSTRUCTOR(ActionSet);
-      _actionSeq_ = new Sequence< Idx >();
-    }
+    ActionSet();
 
-    ActionSet(const ActionSet& src) {
-      GUM_CONSTRUCTOR(ActionSet);
-      _actionSeq_ = new Sequence< Idx >();
-      for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
-        _actionSeq_->insert(*idi);
-    }
+    ActionSet(const ActionSet& src);
 
-    ActionSet& operator=(const ActionSet& src) {
-      _actionSeq_ = new Sequence< Idx >();
-      for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
-        _actionSeq_->insert(*idi);
-      return *this;
-    }
+    ActionSet& operator=(const ActionSet& src);
 
     // ============================================================================
     /// Destructor
     // ============================================================================
-    ~ActionSet() {
-      GUM_DESTRUCTOR(ActionSet);
-      delete _actionSeq_;
-    }
+    ~ActionSet();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(ActionSet));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -158,12 +133,12 @@ namespace gum {
     // ============================================================================
     /// Iterator beginning
     // ============================================================================
-    SequenceIteratorSafe< Idx > beginSafe() const { return _actionSeq_->beginSafe(); }
+    SequenceIteratorSafe< Idx > beginSafe() const;
 
     // ============================================================================
     /// Iterator end
     // ============================================================================
-    SequenceIteratorSafe< Idx > endSafe() const { return _actionSeq_->endSafe(); }
+    SequenceIteratorSafe< Idx > endSafe() const;
 
     /// @}
 
@@ -175,28 +150,17 @@ namespace gum {
     // ============================================================================
     /// Ajout d'un élément
     // ============================================================================
-    ActionSet& operator+=(const Idx& elem) {
-      _actionSeq_->insert(elem);
-      return *this;
-    }
+    ActionSet& operator+=(const Idx& elem);
 
     // ============================================================================
     /// Use to insert the content of another set inside this one
     // ============================================================================
-    ActionSet& operator+=(const ActionSet& src) {
-      for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
-        if (!_actionSeq_->exists(*iter)) _actionSeq_->insert(*iter);
-      return *this;
-    }
+    ActionSet& operator+=(const ActionSet& src);
 
     // ============================================================================
     /// Use to insert the content of another set inside this one
     // ============================================================================
-    ActionSet& operator-=(const ActionSet& src) {
-      for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
-        if (_actionSeq_->exists(*iter)) _actionSeq_->erase(*iter);
-      return *this;
-    }
+    ActionSet& operator-=(const ActionSet& src);
 
     // ============================================================================
     /// Gives the ith element
@@ -206,31 +170,24 @@ namespace gum {
     // ============================================================================
     /// Compares two ActionSet to check if they are equals
     // ============================================================================
-    bool operator==(const ActionSet& compared) const {
-      for (auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter)
-        if (!_actionSeq_->exists(*iter)) return false;
-      for (auto iter = this->beginSafe(); iter != this->endSafe(); ++iter)
-        if (!compared.exists(*iter)) return false;
-      return true;
-    }
+    bool operator==(const ActionSet& compared) const;
 
     /// @}
 
     // ============================================================================
     /// Gives the size
     // ============================================================================
-    Size size() const { return _actionSeq_->size(); }
+    Size size() const;
 
-    bool exists(const Idx& elem) const { return _actionSeq_->exists(elem); }
+    bool exists(const Idx& elem) const;
 
     private:
     /// The very bone of the ActionSet
     Sequence< Idx >* _actionSeq_;
 
-    friend std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy) {
-      streamy << objy._actionSeq_->toString();
-      return streamy;
-    }
+    friend std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy);
   };
 }   // namespace gum
+
+#include <agrum/FMDP/planning/actionSet_tpl.h>
 #endif   // GUM_ACTION_SET_H

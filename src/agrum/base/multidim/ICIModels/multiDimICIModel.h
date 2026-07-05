@@ -118,21 +118,21 @@ namespace gum {
     std::string toString() const override;
 
     void changeNotification(const gum::Instantiation&,
-                                    const gum::DiscreteVariable* const,
-                                    gum::Idx,
-                                    gum::Idx) override {}
+                            const gum::DiscreteVariable* const,
+                            gum::Idx,
+                            gum::Idx) override;
 
-    void setFirstNotification(const gum::Instantiation&) override {}
+    void setFirstNotification(const gum::Instantiation&) override;
 
-    void setLastNotification(const gum::Instantiation&) override {}
+    void setLastNotification(const gum::Instantiation&) override;
 
-    void setIncNotification(const gum::Instantiation&) override {}
+    void setIncNotification(const gum::Instantiation&) override;
 
-    void setDecNotification(const gum::Instantiation&) override {}
+    void setDecNotification(const gum::Instantiation&) override;
 
-    void setChangeNotification(const gum::Instantiation&) override {}
+    void setChangeNotification(const gum::Instantiation&) override;
 
-    std::string toString(const gum::Instantiation* i) const override { return i->toString(); }
+    std::string toString(const gum::Instantiation* i) const override;
 
     /**
      * @brief Copy of a multiDimICIModel.
@@ -149,7 +149,7 @@ namespace gum {
      * @return the real number of parameters used for this table. This function
      * is used for compute @see compressionRatio()
      */
-    virtual Size realSize() const override { return this->nbrDim(); }
+    virtual Size realSize() const override;
 
     GUM_ELEMENT causalWeight(const DiscreteVariable& v) const;
 

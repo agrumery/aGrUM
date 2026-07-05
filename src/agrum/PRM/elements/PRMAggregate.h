@@ -111,34 +111,7 @@ namespace gum {
        *
        * @throw Raise NotFound exception if no matches is found.
        */
-      static AggregateType str2enum(std::string_view str) {
-        const auto strLower = toLower(str);
-        if (strLower == "min") {
-          return AggregateType::MIN;
-        } else if (strLower == "max") {
-          return AggregateType::MAX;
-        } else if (strLower == "count") {
-          return AggregateType::COUNT;
-        } else if (strLower == "exists") {
-          return AggregateType::EXISTS;
-        } else if (strLower == "or") {
-          return AggregateType::OR;
-        } else if (strLower == "and") {
-          return AggregateType::AND;
-        } else if (strLower == "forall") {
-          return AggregateType::FORALL;
-        } else if (strLower == "amplitude") {
-          return AggregateType::AMPLITUDE;
-        } else if (strLower == "median") {
-          return AggregateType::MEDIAN;
-        } else if (strLower == "sum") {
-          return AggregateType::SUM;
-        } else {
-          std::string msg = "Unknown aggregate: ";
-          msg.append(str);
-          GUM_ERROR(NotFound, msg)
-        }
-      }
+      static AggregateType str2enum(std::string_view str);
 
       /// @}
       // ========================================================================

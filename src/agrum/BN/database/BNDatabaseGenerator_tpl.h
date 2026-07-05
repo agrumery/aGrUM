@@ -516,4 +516,10 @@ namespace gum::learning {
 
     return varOrder;
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const BayesNet< GUM_SCALAR >& BNDatabaseGenerator< GUM_SCALAR >::bn(void) {
+    return _bn_;
+  }
+
 }   // namespace gum::learning

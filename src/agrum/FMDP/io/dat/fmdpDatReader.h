@@ -49,11 +49,7 @@
   // OPTIONAL LISTENER CLASS
   class aSimpleListener : public gum::Listener {
   public:
-    void whenLoading(const void *buffer,int percent) {
-      // percent goes from 0 to 100 (whenLoading is called at most once for each
- integer between 0 and 100
-      // percent=200 received when End Of File.
-    }
+    void whenLoading(const void *buffer,int percent);
   };
   // END OF OPTIONAL LISTENER
 

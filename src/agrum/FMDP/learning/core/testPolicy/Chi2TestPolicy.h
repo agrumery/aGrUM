@@ -71,23 +71,16 @@ namespace gum {
   template < typename GUM_ELEMENT >
   class Chi2TestPolicy: public ITestPolicy< GUM_ELEMENT > {
     public:
-    Chi2TestPolicy() : ITestPolicy< GUM_ELEMENT >(), _conTab_(), _chi2Score_(0) {
-      GUM_CONSTRUCTOR(Chi2TestPolicy);
-    }
+    Chi2TestPolicy();
 
-    virtual ~Chi2TestPolicy() {
-      GUM_DESTRUCTOR(Chi2TestPolicy);
-      ;
-    }
+    virtual ~Chi2TestPolicy();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(Chi2TestPolicy));
-    }
+    void operator delete(void* p);
 
     // ############################################################################
     /// @name Observation insertion
@@ -111,9 +104,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const {
-      return (this->nbObservation() > 20 && this->nbObservation() > _conTab_.attrASize() * 5);
-    }
+    bool isTestRelevant() const;
 
     /// @}
 
@@ -140,17 +131,11 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const { return _conTab_; }
+    const ContingencyTable< Idx, GUM_ELEMENT >& ct() const;
 
     void add(const Chi2TestPolicy< GUM_ELEMENT >& src);
 
-    std::string toString() const {
-      return std::format("{}\t\t\tContingency Table : \n{}\n\t\t\tGStat : {}\n\t\t\tGStat : {}\n",
-                         ITestPolicy< GUM_ELEMENT >::toString(),
-                         _conTab_.toString(),
-                         this->score(),
-                         this->secondaryscore());
-    }
+    std::string toString() const;
 
     private:
     /// The contingency table used to keeps records of all observation

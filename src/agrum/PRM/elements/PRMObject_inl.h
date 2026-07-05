@@ -68,5 +68,39 @@ namespace gum {
     INLINE
     bool PRMObject::operator!=(const PRMObject& obj) const { return _name_ != obj.name(); }
 
+    INLINE std::string PRMObject::LEFT_CAST() { return "("; }
+
+    INLINE std::string PRMObject::RIGHT_CAST() { return ")"; }
+
+    INLINE std::string PRMObject::enum2str(prm_type type) {
+      switch (type) {
+        case prm_type::CLASS : return "PRMType::CLASS";
+
+        case prm_type::CLASS_ELT : return "PRMType::CLASS_ELT";
+
+        case prm_type::TYPE : return "PRMType::TYPE";
+
+        case prm_type::SYSTEM : return "PRMType::SYSTEM";
+
+        case prm_type::INSTANCE : return "PRMType::INSTANCE";
+
+        case prm_type::PRM_INTERFACE : return "PRMType::PRM_INTERFACE";
+
+        default : return "unknown";
+      }
+    }
+
+    INLINE bool PRMObject::isClass(const PRMObject& obj) {
+      return obj.obj_type() == prm_type::CLASS;
+    }
+
+    INLINE bool PRMObject::isInterface(const PRMObject& obj) {
+      return obj.obj_type() == prm_type::PRM_INTERFACE;
+    }
+
+    INLINE bool PRMObject::isInstance(const PRMObject& obj) {
+      return obj.obj_type() == prm_type::INSTANCE;
+    }
+
   } /* namespace prm */
 } /* namespace gum */

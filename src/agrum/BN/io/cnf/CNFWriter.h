@@ -127,9 +127,7 @@ namespace gum {
      */
     void _doWrite(std::string_view filePath, const IBayesNet< GUM_SCALAR >& bn) override = 0;
 
-    inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const override {
-      return IApproximationPolicy< GUM_SCALAR >::fromExact(value);
-    }
+    GUM_SCALAR fromExact(const GUM_SCALAR& value) const override;
   };
 
 

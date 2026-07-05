@@ -213,6 +213,8 @@ namespace gum::learning {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
+  INLINE Size StructuralConstraintIndegree::maxIndegree() const { return _Indegree_max_indegree_; }
+
 }   // namespace gum::learning
 
 

@@ -196,4 +196,50 @@ namespace gum {
     system.groundedBN(factory);
     _bn_->setProperty("name", _entityName_);
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Size O3prmBNReader< GUM_SCALAR >::errors() {
+    return _errors_.error_count;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Size O3prmBNReader< GUM_SCALAR >::warnings() {
+    return _errors_.warning_count;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Idx O3prmBNReader< GUM_SCALAR >::errLine(Idx i) {
+    return _errors_.error(i).line;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Idx O3prmBNReader< GUM_SCALAR >::errCol(Idx i) {
+    return _errors_.error(i).column;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool O3prmBNReader< GUM_SCALAR >::errIsError(Idx i) {
+    return _errors_.error(i).is_error;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE std::string O3prmBNReader< GUM_SCALAR >::errMsg(Idx i) {
+    return _errors_.error(i).msg;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void O3prmBNReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
+    _errors_.elegantErrors(o);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void O3prmBNReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+    _errors_.elegantErrorsAndWarnings(o);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void O3prmBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
+    _errors_.syntheticResults(o);
+  }
+
 }   // namespace gum

@@ -54,8 +54,19 @@
 namespace gum {
 
   // ===============================
-  // Constructors with descriptors
+  // Constructors / destructor
   // ===============================
+
+  template < GUM_Numeric GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::CausalModel(const BayesNet< GUM_SCALAR >& observationalBN) :
+      _observationalBN_(observationalBN), _causalDAG_(observationalBN.internalDag()) {
+    GUM_CONSTRUCTOR(CausalModel)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::~CausalModel() {
+    GUM_DESTRUCTOR(CausalModel)
+  }
 
   template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >::CausalModel(const BayesNet< GUM_SCALAR >& observationalBN,
@@ -528,6 +539,45 @@ namespace gum {
     }
 
     return result;
+  }
+
+  // ===============================
+  // Inline accessors
+  // ===============================
+
+  template < GUM_Numeric GUM_SCALAR >
+  const BayesNet< GUM_SCALAR >& CausalModel< GUM_SCALAR >::observationalBN() const {
+    return _observationalBN_;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  DAG CausalModel< GUM_SCALAR >::causalDAG() const {
+    DAG g = _causalDAG_;
+    for (auto id: g)
+      g.setName(id, nameFromId(id));
+    return g;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::optional< NodeSet > CausalModel< GUM_SCALAR >::backDoor(std::string_view cause,
+                                                               std::string_view effect) const {
+    return backDoor(idFromName(cause), idFromName(effect));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::optional< NodeSet > CausalModel< GUM_SCALAR >::frontDoor(std::string_view cause,
+                                                                std::string_view effect) const {
+    return frontDoor(idFromName(cause), idFromName(effect));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  const DiscreteVariable& CausalModel< GUM_SCALAR >::variable(NodeId id) const {
+    return _observationalBN_.variable(id);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  const DiscreteVariable& CausalModel< GUM_SCALAR >::variable(std::string_view name) const {
+    return _observationalBN_.variable(idFromName(name));
   }
 
 }   // namespace gum

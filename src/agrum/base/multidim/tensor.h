@@ -518,19 +518,13 @@ namespace gum {
 #endif
 
   template < GUM_Numeric GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_log2();
-  }
+  inline Tensor< GUM_SCALAR > log2(const Tensor< GUM_SCALAR >& arg);
 
   template < GUM_Numeric GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_abs();
-  }
+  inline Tensor< GUM_SCALAR > abs(const Tensor< GUM_SCALAR >& arg);
 
   template < GUM_Numeric GUM_SCALAR >
-  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg) {
-    return arg.new_sq();
-  }
+  inline Tensor< GUM_SCALAR > sq(const Tensor< GUM_SCALAR >& arg);
 } /* namespace gum */
 
 #include <agrum/base/multidim/tensor_tpl.h>

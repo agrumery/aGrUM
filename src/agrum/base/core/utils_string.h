@@ -168,12 +168,7 @@ namespace gum {
   std::string remove_newline(std::string_view s);
 
   template < typename T >
-  inline std::string compact_tostr(T value) {
-    std::ostringstream s;
-    s.precision(7);
-    s << value;
-    return s.str();
-  }
+  std::string compact_tostr(T value);
 
   /// @}
 } /* namespace gum */

@@ -85,56 +85,44 @@ namespace gum {
     // ###################################################################
     ConcreteLeaf(NodeId                                        leafId,
                  NodeDatabase< AttributeSelection, isScalar >* n1,
-                 const Sequence< ValueType >*                  valueDomain) :
-        AbstractLeaf(leafId), _n1_(n1), _valueDomain_(valueDomain) {
-      GUM_CONSTRUCTOR(ConcreteLeaf);
-    }
+                 const Sequence< ValueType >*                  valueDomain);
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ConcreteLeaf() override {
-      GUM_DESTRUCTOR(ConcreteLeaf);
-      ;
-    }
+    ~ConcreteLeaf() override;
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(ConcreteLeaf));
-    }
+    void operator delete(void* p);
 
     /// @}
 
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    double effectif(Idx moda) const override { return _effectif_(moda, Int2Type< isScalar >()); }
+    double effectif(Idx moda) const override;
 
     private:
-    double _effectif_(Idx moda, Int2Type< true >) const {
-      return (double)_n1_->effectif(Idx(_valueDomain_->atPos(moda)));
-    }
+    double _effectif_(Idx moda, Int2Type< true >) const;
 
-    double _effectif_(Idx moda, Int2Type< false >) const { return (double)_n1_->effectif(moda); }
+    double _effectif_(Idx moda, Int2Type< false >) const;
 
     public:
-    double total() const override { return double(_n1_->nbObservation()); }
+    double total() const override;
 
-    Idx nbModa() const override { return _nbModa_(Int2Type< isScalar >()); }
+    Idx nbModa() const override;
 
     private:
-    Idx _nbModa_(Int2Type< true >) const { return _valueDomain_->size(); }
+    Idx _nbModa_(Int2Type< true >) const;
 
-    Idx _nbModa_(Int2Type< false >) const { return _n1_->valueDomain(); }
+    Idx _nbModa_(Int2Type< false >) const;
 
     public:
-    std::string toString() override {
-      return std::format("{{ Id : {}}}", this->id());
-    }
+    std::string toString() override;
 
     private:
     NodeDatabase< AttributeSelection, isScalar >* _n1_;
@@ -144,5 +132,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf_tpl.h>
 #endif   // GUM_CONCRETE_LEAF_H

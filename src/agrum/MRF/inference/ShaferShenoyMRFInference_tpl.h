@@ -2087,6 +2087,23 @@ namespace gum {
     return NodeSet();
   }
 
+  // the function used to combine two tables
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE static Tensor< GUM_SCALAR > SSNewMNmultiTensor(const Tensor< GUM_SCALAR >& t1,
+                                                        const Tensor< GUM_SCALAR >& t2) {
+    return t1 * t2;
+  }
+
+  // the function used to project (marginalize) a table
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE static Tensor< GUM_SCALAR > SSNewMNprojTensor(const Tensor< GUM_SCALAR >& t1,
+                                                       const gum::VariableSet&     del_vars) {
+    return t1.sumOut(del_vars);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onStateChanged_() {}
+
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

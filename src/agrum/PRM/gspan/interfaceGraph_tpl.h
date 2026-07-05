@@ -218,7 +218,8 @@ namespace gum {
         for (const auto nn: node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
             if (node->n->hasRefAttr(nn) && node->n->exists(nn)) {
-              sBuff += std::format("-{}{}", node->n->getRefAttr(nn).size(), node->n->get(nn).name());
+              sBuff
+                  += std::format("-{}{}", node->n->getRefAttr(nn).size(), node->n->get(nn).name());
               size *= node->n->get(nn).type().variable().domainSize();
             }
           }

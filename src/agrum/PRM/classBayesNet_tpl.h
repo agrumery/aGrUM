@@ -174,7 +174,10 @@ namespace gum {
       for (const auto node: this->nodes()) {
         if (this->children(node).size() > 0)
           for (const auto chi: this->children(node)) {
-            output << std::format("{}\"{}\" -> \"{}\";\n", tab, variable(node).name(), variable(chi).name());
+            output << std::format("{}\"{}\" -> \"{}\";\n",
+                                  tab,
+                                  variable(node).name(),
+                                  variable(chi).name());
           }
         else if (this->parents(node).size() == 0) {
           output << std::format("{}\"{}\";\n", tab, variable(node).name());

@@ -60,6 +60,16 @@ namespace gum {
   ASTtree< GUM_SCALAR >::ASTtree(std::string_view type) : _type(type) {}
 
   template < GUM_Numeric GUM_SCALAR >
+  ASTtree< GUM_SCALAR >::~ASTtree() {
+    GUM_DESTRUCTOR(ASTtree)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const std::string& ASTtree< GUM_SCALAR >::type() const noexcept {
+    return _type;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   std::string ASTtree< GUM_SCALAR >::toLatex(HashTable< std::string, int > nameOccur) const {
     // We do not rely on nameOccur mutation at this stage; pass through.
     return fastToLatex(nameOccur);
@@ -97,10 +107,23 @@ namespace gum {
       ASTtree< GUM_SCALAR >(type), _op1(std::move(op1)), _op2(std::move(op2)) {}
 
   template < GUM_Numeric GUM_SCALAR >
+  inline const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op1() const {
+    return *_op1;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op2() const {
+    return *_op2;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   std::string ASTBinaryOp< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::string cont = std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX;
-    return std::format("{}{}\n{}\n{}", prefix, this->_type,
-                       _op1->toString(cont), _op2->toString(cont));
+    return std::format("{}{}\n{}\n{}",
+                       prefix,
+                       this->_type,
+                       _op1->toString(cont),
+                       _op2->toString(cont));
   }
 
   // ================================================================
@@ -250,6 +273,16 @@ namespace gum {
                                                      const Set< std::string >& knw) :
       ASTtree< GUM_SCALAR >("_posterior_"), _vars(vars), _knw(knw) {
     _ensure_nonempty(vars);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::vars() const noexcept {
+    return _vars;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::knw() const noexcept {
+    return _knw;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -419,6 +452,11 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  inline const Set< std::string >& ASTjointProba< GUM_SCALAR >::varNames() const noexcept {
+    return _varNames;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   std::string ASTjointProba< GUM_SCALAR >::toString(std::string_view prefix) const {
     std::string result = "joint P(";
 
@@ -447,8 +485,8 @@ namespace gum {
   std::string
       ASTjointProba< GUM_SCALAR >::fastToLatex(HashTable< std::string, int >& nameOccur) const {
     std::string result = "P\\left(";
-    auto corr  = ASTtree< GUM_SCALAR >::_latexCorrect(_varNames, nameOccur);
-    bool first = true;
+    auto        corr   = ASTtree< GUM_SCALAR >::_latexCorrect(_varNames, nameOccur);
+    bool        first  = true;
     for (const auto& v: corr) {
       if (!first) result += ',';
       result += v;
@@ -510,9 +548,22 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  inline const std::string& ASTsum< GUM_SCALAR >::var() const {
+    return _var;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  inline const ASTtree< GUM_SCALAR >& ASTsum< GUM_SCALAR >::term() const {
+    return *_term;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   std::string ASTsum< GUM_SCALAR >::toString(std::string_view prefix) const {
-    return std::format("{}sum on {} for\n{}", prefix, _var,
-                       _term->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX));
+    return std::format(
+        "{}sum on {} for\n{}",
+        prefix,
+        _var,
+        _term->toString(std::string{prefix} + ASTtree< GUM_SCALAR >::CONTINUE_PREFIX));
   }
 
   template < GUM_Numeric GUM_SCALAR >

@@ -81,17 +81,12 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    StatisticalLazyDecider() : _counter_(), _initialized_(false) {
-      GUM_CONSTRUCTOR(StatisticalLazyDecider);
-    }
+    StatisticalLazyDecider();
 
     // ==========================================================================
     /// Destructor
     // ==========================================================================
-    ~StatisticalLazyDecider() override {
-      GUM_DESTRUCTOR(StatisticalLazyDecider);
-      ;
-    }
+    ~StatisticalLazyDecider() override;
 
     /// @}
 
@@ -102,16 +97,13 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId = 0) override {
-      if (!_initialized_) {
-        _counter_.reset(newState);
-        _initialized_ = true;
-      } else _counter_.incState(newState);
-    }
+    void checkState(const Instantiation& newState, Idx actionId = 0) override;
 
     private:
     StatesCounter _counter_;
     bool          _initialized_;
   };
 }   // namespace gum
+
+#include <agrum/FMDP/decision/statisticalLazyDecider_inl.h>
 #endif   // GUM_STATISTICAL_LAZY_DECIDER_H

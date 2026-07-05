@@ -88,11 +88,9 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(ContingencyTable));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -108,68 +106,46 @@ namespace gum {
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx joint(GUM_ELEMENT_A valueA, GUM_ELEMENT_B valueB) const {
-      return _jointTable_.exists(std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB))
-               ? _jointTable_[std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB)]
-               : 0;
-    }
+    Idx joint(GUM_ELEMENT_A valueA, GUM_ELEMENT_B valueB) const;
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrAMarginal(GUM_ELEMENT_A valueA) const {
-      return _attrAMarginalTable_.exists(valueA) ? _attrAMarginalTable_[valueA] : 0;
-    }
+    Idx attrAMarginal(GUM_ELEMENT_A valueA) const;
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrBMarginal(GUM_ELEMENT_B valueB) const {
-      return _attrAMarginalTable_.exists(valueB) ? _attrAMarginalTable_[valueB] : 0;
-    }
+    Idx attrBMarginal(GUM_ELEMENT_B valueB) const;
 
     /// Returns the number of samples for line iattr
 
     //        Idx aMarginal( GUM_ELEMENT_A iattr ) { return
     //         _attrMarginalTable_[iattr]; }
-    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrABeginSafe() const {
-      return _attrAMarginalTable_.cbeginSafe();
-    }
+    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrABeginSafe() const;
 
-    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrAEndSafe() const {
-      return _attrAMarginalTable_.cendSafe();
-    }
+    HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx > attrAEndSafe() const;
 
     /// Returns the number of samples for column ivalue
 
     //        Idx vMarginal( GUM_ELEMENT_B ivalue ) { return
     //         _valueMarginalTable_[ivalue]; }
-    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBBeginSafe() const {
-      return _attrBMarginalTable_.cbeginSafe();
-    }
+    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBBeginSafe() const;
 
-    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBEndSafe() const {
-      return _attrBMarginalTable_.cendSafe();
-    }
+    HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx > attrBEndSafe() const;
 
     /// Returns the number of samples for line iattr
 
-    Idx attrASize() const { return _attrAMarginalTable_.size(); }
+    Idx attrASize() const;
 
     /// Returns the number of samples for column ivalue
 
-    Idx attrBSize() const { return _attrBMarginalTable_.size(); }
+    Idx attrBSize() const;
 
     /// @}
 
     ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >&
         operator+=(const ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >& src);
 
-    std::string toString() const {
-      std::ostringstream ss;
-      ss << "\t\t\t\t" << _attrAMarginalTable_ << "\n"
-         << "\t\t\t\t" << _attrBMarginalTable_ << "\n"
-         << "\t\t\t\t" << _jointTable_ << "\n";
-      return ss.str();
-    }
+    std::string toString() const;
 
     private:
     /**

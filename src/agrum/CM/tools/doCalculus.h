@@ -87,7 +87,7 @@ namespace gum {
 
     explicit DoCalculus(const CausalModel< GUM_SCALAR >& cm) noexcept : _cm{cm} {}
 
-    inline const CausalModel< GUM_SCALAR >& model() const noexcept { return _cm; }
+    const CausalModel< GUM_SCALAR >& model() const noexcept;
 
     /* -------------------- Backdoor / Frontdoor -------------------- */
 

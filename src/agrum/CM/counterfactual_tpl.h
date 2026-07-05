@@ -363,4 +363,50 @@ namespace gum {
     return twincm;
   }
 
+  // ================================= ACCESSORS ==================================
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::originalModel() const {
+    return _cm;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::twinModel() const {
+    return _twin;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalImpact< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::impact() const {
+    return *_ci;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Tensor< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::value() const {
+    return _adaptedValue;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Set< std::string >& Counterfactual< GUM_ELEMENT >::on() const {
+    return _on;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Set< std::string >& Counterfactual< GUM_ELEMENT >::whatif() const {
+    return _whatif;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
+                   typename Counterfactual< GUM_ELEMENT >::ValName >&
+      Counterfactual< GUM_ELEMENT >::profile() const {
+    return _profile;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
+                   typename Counterfactual< GUM_ELEMENT >::ValName >&
+      Counterfactual< GUM_ELEMENT >::values() const {
+    return _values;
+  }
+
 }   // namespace gum

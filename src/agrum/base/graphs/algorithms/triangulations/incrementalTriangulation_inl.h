@@ -90,6 +90,22 @@ namespace gum {
 
   INLINE const UndiGraph& IncrementalTriangulation::graph() const { return _graph_; }
 
+  /// returns the fill-ins added by the triangulation algorithm
+
+  INLINE const EdgeSet& IncrementalTriangulation::fillIns(){
+      GUM_ERROR(OperationNotAllowed, "Not implemented yet")}
+
+  /// returns the triangulated graph
+
+  INLINE const UndiGraph& IncrementalTriangulation::triangulatedGraph(){
+      GUM_ERROR(OperationNotAllowed, "Not implemented yet")}
+
+  /// returns the elimination tree of a compatible ordering
+
+  INLINE const CliqueGraph& IncrementalTriangulation::eliminationTree() {
+    GUM_ERROR(OperationNotAllowed, "Not implemented yet")
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

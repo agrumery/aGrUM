@@ -139,25 +139,25 @@ namespace gum {
 
     /// @}
 
-    GUM_NODISCARD const char* what() const noexcept override { return what_.c_str(); }
+    GUM_NODISCARD const char* what() const noexcept override;
 
     /**
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    GUM_NODISCARD std::string errorContent() const { return msg_; }
+    GUM_NODISCARD std::string errorContent() const;
 
     /**
      * @brief Returns the error type.
      * @return Returns the error type.
      */
-    GUM_NODISCARD std::string errorType() const { return type_; }
+    GUM_NODISCARD std::string errorType() const;
 
     /**
      * @brief Returns the error call stack.
      * @return Returns the error call stack.
      */
-    GUM_NODISCARD std::string errorCallStack() const { return callstack_; }
+    GUM_NODISCARD std::string errorCallStack() const;
   };
 
 
@@ -662,25 +662,19 @@ namespace gum {
                 std::string        aFilename,
                 Size               nol,
                 Size               noc,
-                const std::string& aType = "Syntax Error") :
-        IOError(aMsg, aType), noLine_(nol), noCol_(noc), filename_(std::move(aFilename)) {
-#  ifdef GUM_FOR_SWIG
-      what_ = "[pyAgrum] " + msg_;
-#  else    // GUM_FOR_SWIG
-      std::ostringstream error_stream;
-      error_stream << type_ << ":" << std::endl;
-      error_stream << filename() << ":" << line() << "," << col() << " : " << msg_;
-      what_ = error_stream.str();
-#  endif   // GUM_FOR_SWIG
-    }
+                const std::string& aType = "Syntax Error");
 
-    GUM_NODISCARD Size col() const { return noCol_; }
+    GUM_NODISCARD Size col() const;
 
-    GUM_NODISCARD Size line() const { return noLine_; }
+    GUM_NODISCARD Size line() const;
 
-    GUM_NODISCARD std::string filename() const { return filename_; }
+    GUM_NODISCARD std::string filename() const;
   };
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 } /* namespace gum */
 
-#endif /* GUM_EXCEPTIONS_H */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#  include <agrum/base/core/exceptions_inl.h>
+#endif   // DOXYGEN_SHOULD_SKIP_THIS
+
+#endif   /* GUM_EXCEPTIONS_H */

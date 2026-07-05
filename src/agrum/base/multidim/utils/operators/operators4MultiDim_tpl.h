@@ -435,6 +435,16 @@ namespace gum {
     });
   }
 
+  template < typename GUM_ELEMENT >
+  void Operators4MultiDimInitialize< GUM_ELEMENT >::init() {
+    operators4MultiDimInit< GUM_ELEMENT >();
+  }
+
+  template < typename GUM_ELEMENT >
+  void Operators4MultiDimInitialize< GUM_ELEMENT* >::init() {
+    pointerOperators4MultiDimInit< GUM_ELEMENT >();
+  }
+
 } /* namespace gum */
 
 // remove permission to use operatorsPatterns

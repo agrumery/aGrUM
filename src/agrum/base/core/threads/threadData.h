@@ -84,16 +84,16 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ThreadData(const T_DATA& theData) : data(theData) {}
+    ThreadData(const T_DATA& theData);
 
     /// default constructor
-    ThreadData(T_DATA&& theData) : data(std::move(theData)) {}
+    ThreadData(T_DATA&& theData);
 
     /// copy constructor
-    ThreadData(const ThreadData< T_DATA >& from) : data(from.data) {}
+    ThreadData(const ThreadData< T_DATA >& from);
 
     /// move constructor
-    ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
+    ThreadData(ThreadData< T_DATA >&& from);
 
     /// destructor
     ~ThreadData() = default;
@@ -107,28 +107,22 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from) {
-      data = from.data;
-      return *this;
-    }
+    ThreadData< T_DATA >& operator=(const ThreadData< T_DATA >& from);
 
     /// move operator
-    ThreadData< T_DATA >& operator=(ThreadData< T_DATA >&& from) {
-      data = std::move(from.data);
-      return *this;
-    }
+    ThreadData< T_DATA >& operator=(ThreadData< T_DATA >&& from);
 
     /// equality operator
-    bool operator==(const ThreadData< T_DATA >& from) const { return data == from.data; }
+    bool operator==(const ThreadData< T_DATA >& from) const;
 
     /// equality operator
-    bool operator==(const T_DATA& from) const { return data == from; }
+    bool operator==(const T_DATA& from) const;
 
     /// inequality operator
-    bool operator!=(const ThreadData< T_DATA >& from) const { return data != from.data; }
+    bool operator!=(const ThreadData< T_DATA >& from) const;
 
     /// inequality operator
-    bool operator!=(const T_DATA& from) const { return data != from; }
+    bool operator!=(const T_DATA& from) const;
 
     /// @}
 
@@ -139,7 +133,7 @@ namespace gum {
     /// @{
 
     /// easy accessor
-    data_type operator*() { return data; }
+    data_type operator*();
 
     using data_pointer =
         typename std::conditional< std::is_pointer< T_DATA >::value,
@@ -147,14 +141,10 @@ namespace gum {
                                    typename std::add_pointer< T_DATA >::type >::type;
 
     template < typename X = T_DATA >
-    std::enable_if_t< std::is_pointer< X >::value, data_pointer > operator->() {
-      return data;
-    }
+    std::enable_if_t< std::is_pointer< X >::value, data_pointer > operator->();
 
     template < typename X = T_DATA >
-    std::enable_if_t< !std::is_pointer< X >::value, data_pointer > operator->() {
-      return &data;
-    }
+    std::enable_if_t< !std::is_pointer< X >::value, data_pointer > operator->();
 
     /// the data we wish to store without cacheline parallel problem
     T_DATA data;
@@ -162,5 +152,7 @@ namespace gum {
 
 
 } /* namespace gum */
+
+#include <agrum/base/core/threads/threadData_tpl.h>
 
 #endif /* GUM_THREAD_DATA_H */

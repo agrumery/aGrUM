@@ -187,7 +187,7 @@ namespace gum {
     std::string domain() const final;
 
     /// string represent the type of the variable
-    std::string stype() const final { return "Labelized"; }
+    std::string stype() const final;
 
     // returns the variable in fast syntax
     std::string toFast() const final;
@@ -204,7 +204,7 @@ namespace gum {
 
     protected:
     /// (protected) Default constructor
-    LabelizedVariable() { GUM_CONSTRUCTOR(LabelizedVariable) }
+    LabelizedVariable();
 
     /// copies the content of aLDRV
 

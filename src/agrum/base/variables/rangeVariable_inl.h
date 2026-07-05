@@ -138,4 +138,6 @@ namespace gum {
     if (_maxBound_ != cv._maxBound_) return false;
     return true;
   }
+
+  INLINE std::string RangeVariable::stype() const { return "Range"; }
 } /* namespace gum */

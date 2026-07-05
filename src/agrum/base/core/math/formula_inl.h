@@ -501,4 +501,7 @@ namespace gum {
     return os;
   }
 
+  INLINE
+  Formula::operator double() const { return result(); }
+
 }   // namespace gum

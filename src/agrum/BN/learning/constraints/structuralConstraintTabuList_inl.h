@@ -318,6 +318,23 @@ namespace gum {
 #  include <agrum/BN/learning/constraints/structuralConstraintPatternRootInline.h>
 #  undef GUM_CONSTRAINT_CLASS_NAME
 
+    INLINE StructuralConstraintTabuList::GraphHash
+           StructuralConstraintTabuList::_hashArc_(NodeId node1, NodeId node2) const {
+      return {HashFuncConst::gold * node1 + HashFuncConst::sqrt3 * node2,
+              HashFuncConst::pi * node2 + HashFuncConst::sqrt3 * node1};
+    }
+
+    INLINE StructuralConstraintTabuList::GraphHash
+           StructuralConstraintTabuList::_xorHashes_(const GraphHash& hash1,
+                                                     const GraphHash& hash2) const {
+      return {hash1.first ^ hash2.first, hash1.second ^ hash2.second};
+    }
+
+    INLINE StructuralConstraintTabuList::GraphHash
+           StructuralConstraintTabuList::_xorWithCurrentGraph_(const GraphHash& hash) const {
+      return _xorHashes_(_current_graph_, hash);
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

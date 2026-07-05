@@ -296,9 +296,7 @@ namespace gum {
      * @brief Returns a gum::DiscreteVariable given its name in the
      *        gum::MarkovRandomField.
      */
-    const DiscreteVariable& variable(std::string_view name) const {
-      return variable(idFromName(name));
-    }
+    const DiscreteVariable& variable(std::string_view name) const;
 
     /**
      * @brief Changes a variable's name in the gum::MarkovRandomField.
@@ -314,9 +312,7 @@ namespace gum {
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName(std::string_view name, std::string_view new_name) {
-      changeVariableName(idFromName(name), new_name);
-    }
+    void changeVariableName(std::string_view name, std::string_view new_name);
 
     /**
      * @brief Changes a variable's label in the gum::MarkovRandomField.
@@ -335,9 +331,7 @@ namespace gum {
      */
     void changeVariableLabel(std::string_view name,
                              std::string_view old_label,
-                             std::string_view new_label) {
-      changeVariableLabel(idFromName(name), old_label, new_label);
-    }
+                             std::string_view new_label);
 
     /// @}
 

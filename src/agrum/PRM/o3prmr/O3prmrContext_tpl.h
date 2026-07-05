@@ -59,6 +59,79 @@ namespace gum {
       /* ******************************************************************* */
 
       template < GUM_Numeric GUM_SCALAR >
+      ObserveCommand< GUM_SCALAR >::ObserveCommand(int              line,
+                                                   std::string_view leftValue,
+                                                   std::string_view rightValue) :
+          O3prmrCommand(line), leftValue(leftValue), rightValue(rightValue), system(0) {}
+
+      template < GUM_Numeric GUM_SCALAR >
+      ObserveCommand< GUM_SCALAR >::ObserveCommand(const ObserveCommand& c) :
+          O3prmrCommand(c), leftValue(c.leftValue), rightValue(c.rightValue), system(c.system),
+          chain(c.chain) {}
+
+      template < GUM_Numeric GUM_SCALAR >
+      O3prmrCommand::RequestType ObserveCommand< GUM_SCALAR >::type() const {
+        return RequestType::Observe;
+      }
+
+      template < GUM_Numeric GUM_SCALAR >
+      std::string ObserveCommand< GUM_SCALAR >::toString() const {
+        return leftValue + " = " + rightValue + ";";
+      }
+
+      /* ******************************************************************* */
+
+      template < GUM_Numeric GUM_SCALAR >
+      UnobserveCommand< GUM_SCALAR >::UnobserveCommand(int line, std::string_view value) :
+          O3prmrCommand(line), value(value), system(0) {}
+
+      template < GUM_Numeric GUM_SCALAR >
+      UnobserveCommand< GUM_SCALAR >::UnobserveCommand(const UnobserveCommand& c) :
+          O3prmrCommand(c), value(c.value), system(c.system), chain(c.chain) {}
+
+      template < GUM_Numeric GUM_SCALAR >
+      O3prmrCommand::RequestType UnobserveCommand< GUM_SCALAR >::type() const {
+        return RequestType::Unobserve;
+      }
+
+      template < GUM_Numeric GUM_SCALAR >
+      std::string UnobserveCommand< GUM_SCALAR >::toString() const {
+        return "unobserve " + value + ";";
+      }
+
+      /* ******************************************************************* */
+
+      template < GUM_Numeric GUM_SCALAR >
+      QueryCommand< GUM_SCALAR >::QueryCommand(int line, std::string_view val) :
+          O3prmrCommand(line), value(val), system(nullptr) {}
+
+      template < GUM_Numeric GUM_SCALAR >
+      O3prmrCommand::RequestType QueryCommand< GUM_SCALAR >::type() const {
+        return RequestType::Query;
+      }
+
+      template < GUM_Numeric GUM_SCALAR >
+      std::string QueryCommand< GUM_SCALAR >::toString() const {
+        return "? " + value + ";";
+      }
+
+      /* ******************************************************************* */
+
+      template < GUM_Numeric GUM_SCALAR >
+      const ImportCommand* O3prmrContext< GUM_SCALAR >::mainImport() const {
+        return m_mainImport;
+      }
+
+      template < GUM_Numeric GUM_SCALAR >
+      void O3prmrContext< GUM_SCALAR >::addImport(const ImportCommand& i) {
+        m_imports.push_back(new ImportCommand(i.line, i.value, i.alias));
+
+        if (i.alias == "default") m_mainImport = m_imports.back();
+      }
+
+      /* ******************************************************************* */
+
+      template < GUM_Numeric GUM_SCALAR >
       O3prmrContext< GUM_SCALAR >::O3prmrContext(std::string_view filename) {
         m_filename   = filename;
         m_mainImport = 0;

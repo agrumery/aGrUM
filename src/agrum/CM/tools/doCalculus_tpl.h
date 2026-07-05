@@ -78,6 +78,11 @@ namespace gum {
 
   }   // anonymous namespace
 
+  template < GUM_Numeric GUM_SCALAR >
+  inline const CausalModel< GUM_SCALAR >& DoCalculus< GUM_SCALAR >::model() const noexcept {
+    return _cm;
+  }
+
   /* ========================================================================== */
   /*                              Backdoor / Frontdoor                          */
   /* ========================================================================== */
@@ -264,17 +269,16 @@ namespace gum {
     const auto vN = namesOf(V);
     const auto sN = namesOf(S);
 
-    return std::format(
-        "Not identifiable: hedge detected. "
-        "Target P{} | do{}. Witness: V = {} is a single c-component and S = {} "
-        "is a c-component in both G and G\\X (forms a hedge). "
-        "Interpretation: unblocked confounding remains under intervention; "
-        "the effect cannot be expressed from the observational distribution "
-        "using current graph structure.",
-        _fmtBraceList_(yN),
-        _fmtBraceList_(xN),
-        _fmtBraceList_(vN),
-        _fmtBraceList_(sN));
+    return std::format("Not identifiable: hedge detected. "
+                       "Target P{} | do{}. Witness: V = {} is a single c-component and S = {} "
+                       "is a c-component in both G and G\\X (forms a hedge). "
+                       "Interpretation: unblocked confounding remains under intervention; "
+                       "the effect cannot be expressed from the observational distribution "
+                       "using current graph structure.",
+                       _fmtBraceList_(yN),
+                       _fmtBraceList_(xN),
+                       _fmtBraceList_(vN),
+                       _fmtBraceList_(sN));
   }
 
   template < GUM_Numeric GUM_SCALAR >

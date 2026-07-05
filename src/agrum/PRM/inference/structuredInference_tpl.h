@@ -1010,5 +1010,55 @@ namespace gum {
       GUM_ASSERT(!data.pots.exists(id));
     }
 
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::RGData::outputs() {
+      return partial_order[0];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::RGData::queries() {
+      return partial_order[1];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::PData::inners() {
+      return _partial_order_[0];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::PData::obs() {
+      return _partial_order_[1];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::PData::outputs() {
+      return _partial_order_[2];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::PData::queries() {
+      return _partial_order_[3];
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::CData::inners() {
+      return _inners_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::CData::aggregators() {
+      return _aggregators_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE NodeSet& StructuredInference< GUM_SCALAR >::CData::outputs() {
+      return _outputs_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE std::vector< NodeId >& StructuredInference< GUM_SCALAR >::CData::elim_order() {
+      return _elim_order_;
+    }
+
   } /* namespace prm */
 } /* namespace gum */

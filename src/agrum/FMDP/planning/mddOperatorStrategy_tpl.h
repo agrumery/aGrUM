@@ -227,5 +227,39 @@ namespace gum {
     return ret;
   }
 
+  template < typename GUM_ELEMENT >
+  INLINE bool
+      MDDOperatorStrategy< GUM_ELEMENT >::shouldEleminateVar_(const DiscreteVariable*    v,
+                                                              const FMDP< GUM_ELEMENT >* fmdp) {
+    return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const DiscreteVariable* MDDOperatorStrategy< GUM_ELEMENT >::lastVar_(
+      const MultiDimFunctionGraph< GUM_ELEMENT >* function) {
+    return function->variablesSequence().size() == 0
+             ? nullptr
+             : function->variablesSequence().atPos(function->variablesSequence().size() - 1);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
+         MDDOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
+    return MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
+  }
+
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
+      MDDOperatorStrategy< GUM_ELEMENT >::getArgMaxFunctionInstance() {
+    return MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
+                                  SetTerminalNodePolicy >::getReducedAndOrderedInstance();
+  }
+
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
+      MDDOperatorStrategy< GUM_ELEMENT >::getAggregatorInstance() {
+    return MultiDimFunctionGraph< ActionSet,
+                                  SetTerminalNodePolicy >::getReducedAndOrderedInstance();
+  }
 
 }   // end of namespace gum

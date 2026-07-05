@@ -91,41 +91,26 @@ namespace gum {
     // a class to enabling emplacing values in AVLNodes
     enum class Emplace { EMPLACE };
 
-    explicit AVLTreeNode(const Val& val) : value(val) { GUM_CONSTRUCTOR(AVLTreeNode); }
+    explicit AVLTreeNode(const Val& val);
 
-    explicit AVLTreeNode(Val&& val) noexcept : value(std::move(val)) {
-      GUM_CONSTRUCTOR(AVLTreeNode);
-    }
+    explicit AVLTreeNode(Val&& val) noexcept;
 
     template < typename... Args >
-    explicit AVLTreeNode(const Emplace& emplace, Args&&... args) :
-        value(std::forward< Args >(args)...) {
-      GUM_CONSTRUCTOR(AVLTreeNode);
-    }
+    explicit AVLTreeNode(const Emplace& emplace, Args&&... args);
 
-    AVLTreeNode(const AVLTreeNode< Val >& from) :
-        parent(from.parent), left_child(from.left_child), right_child(from.right_child),
-        height(from.height), value(from.value) {
-      GUM_CONS_CPY(AVLTreeNode);
-    }
+    AVLTreeNode(const AVLTreeNode< Val >& from);
 
-    AVLTreeNode(AVLTreeNode< Val >&& from) :
-        parent(from.parent), left_child(from.left_child), right_child(from.right_child),
-        height(from.height), value(std::move(from.value)) {
-      GUM_CONS_MOV(AVLTreeNode);
-    }
+    AVLTreeNode(AVLTreeNode< Val >&& from) noexcept;
 
-    ~AVLTreeNode() { GUM_DESTRUCTOR(AVLTreeNode); }
+    ~AVLTreeNode();
 
     // two nodes are equal if and only if they contain the same value
-    bool operator==(const AVLTreeNode< Val >& from) const { return value == from.value; }
+    bool operator==(const AVLTreeNode< Val >& from) const;
   };
 
   /// the content of an AVLTreeNode is just the value it contains
   template < typename Val >
-  std::ostream& operator<<(std::ostream& stream, const AVLTreeNode< Val >& node) {
-    return stream << '<' << node.value << '>';
-  }
+  std::ostream& operator<<(std::ostream& stream, const AVLTreeNode< Val >& node);
 
   /// the hash function for AVLTreeNodes
   template < typename Val >
@@ -136,9 +121,7 @@ namespace gum {
      * @param key The value to return as a Size.
      * @return Returns the value of a key as a Size.
      */
-    static Size castToSize(const AVLTreeNode< Val >& key) {
-      return HashFunc< Val >::castToSize(key.value);
-    }
+    static Size castToSize(const AVLTreeNode< Val >& key);
 
     /// computes the hashed value of a key
 
@@ -146,9 +129,7 @@ namespace gum {
     using HashFunc< Val >::operator();
 
     public:
-    INLINE Size operator()(const AVLTreeNode< Val >& key) const {
-      return HashFunc< Val >::operator()(key.value);
-    }
+    INLINE Size operator()(const AVLTreeNode< Val >& key) const;
   };
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
@@ -910,9 +891,7 @@ namespace gum {
 
   /// display the content of a tree
   template < typename Val, typename Cmp >
-  std::ostream& operator<<(std::ostream& stream, const AVLTree< Val, Cmp >& tree) {
-    return stream << tree.toString();
-  }
+  std::ostream& operator<<(std::ostream& stream, const AVLTree< Val, Cmp >& tree);
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -158,22 +158,6 @@ namespace gum {
        */
       std::ostream& operator<<(std::ostream& out, const DFSCode& code);
 
-      inline bool DFSCode::validNeighbors(EdgeCode* e1, EdgeCode* e2) {
-        if (e1->isBackward()) {
-          if (e2->isForward()) {
-            return (e2->i <= e1->i) && (e2->j = (e1->i + 1));
-          } else {
-            return (e2->i == e1->i) && (e1->j < e2->j);
-          }
-        } else {
-          // e1 is a forward edge
-          if (e2->isForward()) {
-            return (e2->i <= e1->j) && (e2->j == (e1->j + 1));
-          } else {
-            return (e2->i == e1->j) && (e2->j < e1->i);
-          }
-        }
-      }
 
     } /* namespace gspan */
   } /* namespace prm */

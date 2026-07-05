@@ -114,46 +114,22 @@ namespace gum {
         prm_parameter
       };
 
-      static std::string enum2str(ClassElementType type) {
-        switch (type) {
-          case prm_attribute : return "prm_attribute";
-
-          case prm_aggregate : return "prm_aggregate";
-
-          case prm_refslot : return "prm_refslot";
-
-          case prm_slotchain : return "prm_slotchain";
-
-          case prm_parameter : return "prm_parameter";
-
-          default : return "unknown";
-        }
-      }
+      static std::string enum2str(ClassElementType type);
 
       /// Returns true if obj_ptr is of type PRMReferenceSlot.
-      static INLINE bool isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
-        return elt.elt_type() == prm_refslot;
-      }
+      static INLINE bool isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Returns true if obj_ptr is of type PRMAttribute.
-      static INLINE bool isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
-        return elt.elt_type() == prm_attribute;
-      }
+      static INLINE bool isAttribute(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Return true if obj is of type PRMAggregate
-      static INLINE bool isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
-        return elt.elt_type() == prm_aggregate;
-      }
+      static INLINE bool isAggregate(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Return true if obj is of type PRMSlotChain
-      static INLINE bool isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
-        return elt.elt_type() == prm_slotchain;
-      }
+      static INLINE bool isSlotChain(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Return true if obj is of type PRMParameter
-      static INLINE bool isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
-        return elt.elt_type() == prm_parameter;
-      }
+      static INLINE bool isParameter(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// @}
       // ========================================================================

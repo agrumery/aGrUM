@@ -117,4 +117,17 @@ namespace gum {
   }
 
   INLINE NodeSet UGmodel::family(std::string_view name) const { return family(idFromName(name)); }
+
+  INLINE bool UGmodel::isIndependent(std::string_view                  Xname,
+                                     std::string_view                  Yname,
+                                     const std::vector< std::string >& Znames) const {
+    return isIndependent(idFromName(Xname), idFromName(Yname), nodeset(Znames));
+  }
+
+  INLINE bool UGmodel::isIndependent(const std::vector< std::string >& Xnames,
+                                     const std::vector< std::string >& Ynames,
+                                     const std::vector< std::string >& Znames) const {
+    return isIndependent(nodeset(Xnames), nodeset(Ynames), nodeset(Znames));
+  }
+
 } /* namespace gum */

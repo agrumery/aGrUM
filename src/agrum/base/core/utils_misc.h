@@ -146,7 +146,7 @@ namespace gum {
    * @brief Implements a stream with the same behaviour as /dev/null.
    */
   struct NullStream: std::ostream {
-    NullStream() : std::ios(0), std::ostream(0) {}
+    NullStream();
   };
 
   /**
@@ -169,11 +169,7 @@ namespace gum {
    */
   template < typename T >
   struct AlmostDifferent {
-    bool operator()(const T& t1, const T& t2) {
-      if (t1 == t2) return false;
-      else if (t1 == 0) return (std::abs(t2) > 1e-5);
-      else return (std::abs(t2 - t1) / t1 > 1e-5);
-    }
+    bool operator()(const T& t1, const T& t2);
   };
 
   /**
@@ -182,7 +178,7 @@ namespace gum {
    */
   template < typename T >
   struct AlmostDifferent< T* > {
-    bool operator()(const T* t1, const T* t2) { return (t1 != t2); }
+    bool operator()(const T* t1, const T* t2);
   };
 
   /// @}

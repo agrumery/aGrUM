@@ -219,6 +219,8 @@ namespace gum {
   INLINE std::string IntegerVariable::toFast() const {
     return std::format("{}{}", name(), domain());
   }
+
+  INLINE std::string IntegerVariable::stype() const { return "Integer"; }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

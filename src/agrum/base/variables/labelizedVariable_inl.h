@@ -183,6 +183,9 @@ namespace gum {
     return true;
   }
 
+  INLINE std::string LabelizedVariable::stype() const { return "Labelized"; }
+
+  INLINE LabelizedVariable::LabelizedVariable() { GUM_CONSTRUCTOR(LabelizedVariable) }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

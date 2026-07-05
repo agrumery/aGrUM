@@ -411,4 +411,14 @@ namespace gum {
     }
     return this->target_->manager()->addInternalNode(this->value_, sonsMap);
   }
+
+  template < TESTNAME AttributeSelection, bool isScalar >
+  INLINE void IMDDI< AttributeSelection, isScalar >::insertSetOfVars(
+      MultiDimFunctionGraph< double >* ret) const {
+    for (SequenceIteratorSafe< const DiscreteVariable* > varIter = _varOrder_.beginSafe();
+         varIter != _varOrder_.endSafe();
+         ++varIter)
+      ret->add(**varIter);
+  }
+
 }   // namespace gum

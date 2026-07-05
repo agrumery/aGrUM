@@ -134,7 +134,7 @@ namespace gum {
 
     void update();
 
-    bool needsUpdate() { return _needsUpdate_; }
+    bool needsUpdate();
 
     HashTable< NodeId, AbstractLeaf* > leavesMap();
 
@@ -161,5 +161,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/datastructure/leaves/leafAggregator_inl.h>
 #endif   // GUM_LEAF_AGGREGATOR_H

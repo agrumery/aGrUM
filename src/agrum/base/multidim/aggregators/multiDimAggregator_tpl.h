@@ -155,5 +155,37 @@ namespace gum {
     INLINE std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag) {
       return s << ag.toString();
     }
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::changeNotification(const gum::Instantiation&,
+                                                              const gum::DiscreteVariable* const,
+                                                              gum::Idx,
+                                                              gum::Idx) {}
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::setFirstNotification(const gum::Instantiation&) {}
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::setLastNotification(const gum::Instantiation&) {}
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::setIncNotification(const gum::Instantiation&) {}
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::setDecNotification(const gum::Instantiation&) {}
+
+    template < typename GUM_SCALAR >
+    void MultiDimAggregator< GUM_SCALAR >::setChangeNotification(const gum::Instantiation&) {}
+
+    template < typename GUM_SCALAR >
+    std::string MultiDimAggregator< GUM_SCALAR >::toString(const gum::Instantiation* i) const {
+      return i->toString();
+    }
+
+    template < typename GUM_SCALAR >
+    Size MultiDimAggregator< GUM_SCALAR >::realSize() const {
+      return 0;
+    }
+
   } /* namespace aggregator */
 } /* namespace gum */

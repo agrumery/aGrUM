@@ -355,12 +355,12 @@ namespace gum {
           fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
                           this->transition(*actionIter, *varIter))
                           ->toDot()
-                      + '\n';
-      if (this->reward(*actionIter))
-        fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
-                        this->reward(*actionIter))
-                        ->toDot()
                     + '\n';
+      if (this->reward(*actionIter))
+        fmdpCore
+            += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward(*actionIter))
+                   ->toDot()
+             + '\n';
     }
 
     for (auto varIter = beginVariables(); varIter != endVariables(); ++varIter)
@@ -368,11 +368,11 @@ namespace gum {
         fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(
                         this->transition(0, *varIter))
                         ->toDot()
-                    + '\n';
-    if (this->reward())
-      fmdpCore += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward())
-                      ->toDot()
                   + '\n';
+    if (this->reward())
+      fmdpCore
+          += static_cast< const MultiDimFunctionGraph< GUM_ELEMENT >* >(this->reward())->toDot()
+           + '\n';
     return fmdpCore;
   }
 
@@ -391,4 +391,70 @@ namespace gum {
     if (this->reward()) s += this->reward()->realSize();
     return s;
   }
+
+  template < typename GUM_ELEMENT >
+  INLINE SequenceIteratorSafe< const DiscreteVariable* >
+         FMDP< GUM_ELEMENT >::beginVariables() const {
+    return _varSeq_.beginSafe();
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE SequenceIteratorSafe< const DiscreteVariable* > FMDP< GUM_ELEMENT >::endVariables() const {
+    return _varSeq_.endSafe();
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const DiscreteVariable*
+      FMDP< GUM_ELEMENT >::main2prime(const DiscreteVariable* mainVar) const {
+    return _main2primed_.second(mainVar);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
+               FMDP< GUM_ELEMENT >::mapMainPrime() const {
+    return _main2primed_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE SequenceIteratorSafe< Idx > FMDP< GUM_ELEMENT >::beginActions() const {
+    return _actionSeq_.beginSafe();
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE SequenceIteratorSafe< Idx > FMDP< GUM_ELEMENT >::endActions() const {
+    return _actionSeq_.endSafe();
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void
+      FMDP< GUM_ELEMENT >::addTransition(const DiscreteVariable*                      var,
+                                         const MultiDimImplementation< GUM_ELEMENT >* transition) {
+    this->addTransitionForAction(0, var, transition);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void FMDP< GUM_ELEMENT >::addCost(const MultiDimImplementation< GUM_ELEMENT >* cost) {
+    this->addCostForAction(0, cost);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void FMDP< GUM_ELEMENT >::addReward(const MultiDimImplementation< GUM_ELEMENT >* reward) {
+    this->addRewardForAction(0, reward);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void FMDP< GUM_ELEMENT >::setDeleteVariablesOnDestruction(bool b) {
+    _onDestructionDeleteVars_ = b;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE void FMDP< GUM_ELEMENT >::setDiscount(GUM_ELEMENT discount) {
+    _discount_ = discount;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE GUM_ELEMENT FMDP< GUM_ELEMENT >::discount() const {
+    return _discount_;
+  }
+
 }   // namespace gum

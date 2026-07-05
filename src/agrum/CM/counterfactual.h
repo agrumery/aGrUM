@@ -164,9 +164,9 @@ namespace gum {
     void run();
 
     // ---------- Accessors ----------
-    const CausalModel< GUM_ELEMENT >& originalModel() const { return _cm; }
+    const CausalModel< GUM_ELEMENT >& originalModel() const;
 
-    const CausalModel< GUM_ELEMENT >& twinModel() const { return _twin; }
+    const CausalModel< GUM_ELEMENT >& twinModel() const;
 
     /**
      * @brief Symbolic result produced on the twin model.
@@ -176,7 +176,7 @@ namespace gum {
      *
      * @return const CausalImpact<GUM_ELEMENT>& The causal formula.
      */
-    const CausalImpact< GUM_ELEMENT >& impact() const { return *_ci; }
+    const CausalImpact< GUM_ELEMENT >& impact() const;
 
     /**
      * @brief Numeric result adapted to the original model’s variables.
@@ -189,15 +189,15 @@ namespace gum {
      *         empty (nbrDim()==0) if the effect is not identifiable or if
      *         evaluation failed.
      */
-    const Tensor< GUM_ELEMENT >& value() const { return _adaptedValue; }
+    const Tensor< GUM_ELEMENT >& value() const;
 
-    const Set< std::string >& on() const { return _on; }
+    const Set< std::string >& on() const;
 
-    const Set< std::string >& whatif() const { return _whatif; }
+    const Set< std::string >& whatif() const;
 
-    const HashTable< VarName, ValName >& profile() const { return _profile; }
+    const HashTable< VarName, ValName >& profile() const;
 
-    const HashTable< VarName, ValName >& values() const { return _values; }
+    const HashTable< VarName, ValName >& values() const;
 
     std::string toString() const;
 

@@ -69,19 +69,7 @@ namespace gum {
    * @param is The input binary stream.
    * @return   The payload bytes.
    */
-  inline std::vector< uint8_t > _readVector_(std::istream& is) {
-    uint64_t size = 0;
-    is.read(reinterpret_cast< char* >(&size), sizeof(size));
-    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector size");
-    // 256 MB guard: protect against corrupted files with huge size fields
-    constexpr uint64_t kMaxVecSize = uint64_t(256) << 20;
-    if (size > kMaxVecSize)
-      throw std::runtime_error("GumBinaryIO: vector size exceeds 256 MB limit");
-    std::vector< uint8_t > vec(size);
-    is.read(reinterpret_cast< char* >(vec.data()), static_cast< std::streamsize >(size));
-    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector data");
-    return vec;
-  }
+  inline std::vector< uint8_t > _readVector_(std::istream& is);
 
   /**
    * Writes a length-prefixed byte vector to a binary stream (bgum format).
@@ -89,12 +77,12 @@ namespace gum {
    * @param os  The output binary stream.
    * @param vec The payload bytes to write.
    */
-  inline void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec) {
-    uint64_t size = vec.size();
-    os.write(reinterpret_cast< const char* >(&size), sizeof(size));
-    os.write(reinterpret_cast< const char* >(vec.data()), size);
-  }
+  inline void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
 
 } /* namespace gum */
+
+#ifndef GUM_NO_INLINE
+#  include <agrum/base/io/GumBinaryIO_inl.h>
+#endif
 
 #endif   // GUM_BINARY_IO_H

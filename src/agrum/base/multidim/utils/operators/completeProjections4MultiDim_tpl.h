@@ -339,6 +339,16 @@ namespace gum {
     });
   }
 
+  template < typename GUM_ELEMENT >
+  void CompleteProjections4MultiDimInitialize< GUM_ELEMENT >::init() {
+    completeProjections4MultiDimInit< GUM_ELEMENT >();
+  }
+
+  template < typename GUM_ELEMENT >
+  void CompleteProjections4MultiDimInitialize< GUM_ELEMENT* >::init() {
+    pointerCompleteProjections4MultiDimInit< GUM_ELEMENT >();
+  }
+
 } /* namespace gum */
 
 // remove permission to use operatorsPatterns

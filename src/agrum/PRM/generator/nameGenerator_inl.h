@@ -74,26 +74,19 @@ namespace gum {
     std::string NameGenerator::nextName(PRMObject::prm_type type) {
       switch (type) {
         case PRMObject::prm_type::ALL :
-        case PRMObject::prm_type::CLASS :
-          return std::format("class_{}", ++(_counters_[0]));
+        case PRMObject::prm_type::CLASS : return std::format("class_{}", ++(_counters_[0]));
 
-        case PRMObject::prm_type::PRM_INTERFACE :
-          return std::format("iface_{}", ++(_counters_[0]));
+        case PRMObject::prm_type::PRM_INTERFACE : return std::format("iface_{}", ++(_counters_[0]));
 
-        case PRMObject::prm_type::SYSTEM :
-          return std::format("sys_{}", ++(_counters_[0]));
+        case PRMObject::prm_type::SYSTEM : return std::format("sys_{}", ++(_counters_[0]));
 
-        case PRMObject::prm_type::TYPE :
-          return std::format("type_{}", ++(_counters_[0]));
+        case PRMObject::prm_type::TYPE : return std::format("type_{}", ++(_counters_[0]));
 
-        case PRMObject::prm_type::CLASS_ELT :
-          return std::format("elt_{}", ++(_counters_[1]));
+        case PRMObject::prm_type::CLASS_ELT : return std::format("elt_{}", ++(_counters_[1]));
 
-        case PRMObject::prm_type::INSTANCE :
-          return std::format("inst_{}", ++(_counters_[2]));
+        case PRMObject::prm_type::INSTANCE : return std::format("inst_{}", ++(_counters_[2]));
 
-        default :
-          GUM_ERROR(FatalError, "unknown PRMObject type")
+        default : GUM_ERROR(FatalError, "unknown PRMObject type")
       }
     }
 

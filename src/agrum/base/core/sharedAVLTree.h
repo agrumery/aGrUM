@@ -725,9 +725,7 @@ namespace gum {
 
   /// display the content of a tree
   template < typename Val, typename Cmp >
-  std::ostream& operator<<(std::ostream& stream, const SharedAVLTree< Val, Cmp >& tree) {
-    return stream << tree.toString();
-  }
+  std::ostream& operator<<(std::ostream& stream, const SharedAVLTree< Val, Cmp >& tree);
 
 
 #  ifndef DOXYGEN_SHOULD_SKIP_THIS

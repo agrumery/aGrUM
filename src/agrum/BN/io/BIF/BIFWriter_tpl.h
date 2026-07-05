@@ -121,7 +121,8 @@ namespace gum {
 
     if (cpt.nbrDim() == 1) {
       Instantiation inst(cpt);
-      str << std::format("probability ({}) {{\n", this->_onlyValidCharsInName(cpt.variable(0).name()));
+      str << std::format("probability ({}) {{\n",
+                         this->_onlyValidCharsInName(cpt.variable(0).name()));
       str << tab << "table";
 
       for (inst.setFirst(); !inst.end(); ++inst) {
@@ -133,7 +134,8 @@ namespace gum {
       Instantiation inst(cpt);
       Instantiation condVars;   // Instantiation on the conditioning variables
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
-      str << std::format("probability ({} | ", this->_onlyValidCharsInName((varsSeq[(Idx)0])->name()));
+      str << std::format("probability ({} | ",
+                         this->_onlyValidCharsInName((varsSeq[(Idx)0])->name()));
 
       for (Idx i = 1; i < varsSeq.size(); i++) {
         if (i > 1) str << ", ";

@@ -113,7 +113,8 @@ namespace gum {
     result += std::format(", dim: {}, mem: ", dim);
 
     if (const Size go = usedMem / (1024 * 1024 * 1024); go > 0) result += std::format("{}Go ", go);
-    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0) result += std::format("{}Mo ", mo);
+    if (const Size mo = (usedMem / (1024 * 1024)) % 1024; mo > 0)
+      result += std::format("{}Mo ", mo);
     if (const Size ko = (usedMem / 1024) % 1024; ko > 0) result += std::format("{}Ko ", ko);
     result += std::format("{}o", usedMem % 1024);
     return result;

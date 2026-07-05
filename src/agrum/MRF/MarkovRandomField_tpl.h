@@ -165,9 +165,28 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  INLINE const DiscreteVariable&
+      MarkovRandomField< GUM_SCALAR >::variable(std::string_view name) const {
+    return variable(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                   std::string_view new_name) {
     this->varMap_.changeName(id, new_name);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(std::string_view name,
+                                                                  std::string_view new_name) {
+    changeVariableName(idFromName(name), new_name);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(std::string_view name,
+                                                                   std::string_view old_label,
+                                                                   std::string_view new_label) {
+    changeVariableLabel(idFromName(name), old_label, new_label);
   }
 
   template < GUM_Numeric GUM_SCALAR >

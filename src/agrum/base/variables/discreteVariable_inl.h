@@ -93,6 +93,12 @@ namespace gum {
       v.push_back(label(i));
     return v;
   }
+
+  INLINE bool DiscreteVariable::isEmpirical() const { return false; }
+
+  INLINE Idx DiscreteVariable::operator[](std::string_view label) const { return index(label); }
+
+  INLINE DiscreteVariable::DiscreteVariable() { GUM_CONSTRUCTOR(DiscreteVariable) }
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

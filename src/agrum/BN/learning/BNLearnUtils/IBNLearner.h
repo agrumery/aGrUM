@@ -829,22 +829,10 @@ namespace gum::learning {
     bool greedyThickThinningReversals() const;
 
     /// indicate if the selected algorithm is constraint-based
-    bool isConstraintBased() const {
-      switch (selectedAlgo_) {
-        case AlgoType::K2 :
-        case AlgoType::GREEDY_HILL_CLIMBING :
-        case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
-        case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
-        case AlgoType::GREEDY_THICK_THINNING : return false;
-        case AlgoType::MIIC :
-        case AlgoType::PC :
-        case AlgoType::FCI : return true;
-        default : throw OperationNotAllowed("Unknown algorithm");
-      }
-    }
+    bool isConstraintBased() const;
 
     /// indicate if the selected algorithm is score-based
-    bool isScoreBased() const { return !isConstraintBased(); }
+    bool isScoreBased() const;
 
     // ##########################################################################
     /// @name allow/forbid the graph operations used during learning
@@ -1331,26 +1319,15 @@ namespace gum::learning {
     // implement those
     // very simples methods here.
     /// {@    /// distribute signals
-    INLINE void setCurrentApproximationScheme(const ApproximationScheme* approximationScheme) {
-      currentAlgorithm_ = approximationScheme;
-    }
+    void setCurrentApproximationScheme(const ApproximationScheme* approximationScheme);
 
-    INLINE void distributeProgress(const ApproximationScheme* approximationScheme,
-                                   Size                       pourcent,
-                                   double                     error,
-                                   double                     time) {
-      setCurrentApproximationScheme(approximationScheme);
-
-      if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);
-    }
+    void distributeProgress(const ApproximationScheme* approximationScheme,
+                            Size                       pourcent,
+                            double                     error,
+                            double                     time);
 
     /// distribute signals
-    INLINE void distributeStop(const ApproximationScheme* approximationScheme,
-                               std::string_view           message) {
-      setCurrentApproximationScheme(approximationScheme);
-
-      if (onStop.hasListener()) GUM_EMIT1(onStop, message);
-    }
+    void distributeStop(const ApproximationScheme* approximationScheme, std::string_view message);
 
     /// @}
 
@@ -1358,41 +1335,20 @@ namespace gum::learning {
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfBounds if eps<0
-    void setEpsilon(double eps) override {
-      algoK2_.approximationScheme().setEpsilon(eps);
-      greedyHillClimbing_.setEpsilon(eps);
-      localSearchWithTabuList_.setEpsilon(eps);
-      dag2BN_.setEpsilon(eps);
-    }
+    void setEpsilon(double eps) override;
 
     /// Get the value of epsilon
-    double epsilon() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->epsilon();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    double epsilon() const override;
 
     /// Disable stopping criterion on epsilon
-    void disableEpsilon() override {
-      algoK2_.approximationScheme().disableEpsilon();
-      greedyHillClimbing_.disableEpsilon();
-      localSearchWithTabuList_.disableEpsilon();
-      dag2BN_.disableEpsilon();
-    }
+    void disableEpsilon() override;
 
     /// Enable stopping criterion on epsilon
-    void enableEpsilon() override {
-      algoK2_.approximationScheme().enableEpsilon();
-      greedyHillClimbing_.enableEpsilon();
-      localSearchWithTabuList_.enableEpsilon();
-      dag2BN_.enableEpsilon();
-    }
+    void enableEpsilon() override;
 
     /// @return true if stopping criterion on epsilon is enabled, false
     /// otherwise
-    bool isEnabledEpsilon() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledEpsilon();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    bool isEnabledEpsilon() const override;
 
     /// @}
 
@@ -1401,41 +1357,20 @@ namespace gum::learning {
     /// If the criterion was disabled it will be enabled
     /// @{
     /// @throw OutOfBounds if rate<0
-    void setMinEpsilonRate(double rate) override {
-      algoK2_.approximationScheme().setMinEpsilonRate(rate);
-      greedyHillClimbing_.setMinEpsilonRate(rate);
-      localSearchWithTabuList_.setMinEpsilonRate(rate);
-      dag2BN_.setMinEpsilonRate(rate);
-    }
+    void setMinEpsilonRate(double rate) override;
 
     /// Get the value of the minimal epsilon rate
-    double minEpsilonRate() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->minEpsilonRate();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    double minEpsilonRate() const override;
 
     /// Disable stopping criterion on epsilon rate
-    void disableMinEpsilonRate() override {
-      algoK2_.approximationScheme().disableMinEpsilonRate();
-      greedyHillClimbing_.disableMinEpsilonRate();
-      localSearchWithTabuList_.disableMinEpsilonRate();
-      dag2BN_.disableMinEpsilonRate();
-    }
+    void disableMinEpsilonRate() override;
 
     /// Enable stopping criterion on epsilon rate
-    void enableMinEpsilonRate() override {
-      algoK2_.approximationScheme().enableMinEpsilonRate();
-      greedyHillClimbing_.enableMinEpsilonRate();
-      localSearchWithTabuList_.enableMinEpsilonRate();
-      dag2BN_.enableMinEpsilonRate();
-    }
+    void enableMinEpsilonRate() override;
 
     /// @return true if stopping criterion on epsilon rate is enabled, false
     /// otherwise
-    bool isEnabledMinEpsilonRate() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMinEpsilonRate();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    bool isEnabledMinEpsilonRate() const override;
 
     /// @}
 
@@ -1444,41 +1379,20 @@ namespace gum::learning {
     /// If the criterion was disabled it will be enabled
     /// @param max The maximum number of iterations
     /// @throw OutOfBounds if max<=1
-    void setMaxIter(Size max) override {
-      algoK2_.approximationScheme().setMaxIter(max);
-      greedyHillClimbing_.setMaxIter(max);
-      localSearchWithTabuList_.setMaxIter(max);
-      dag2BN_.setMaxIter(max);
-    }
+    void setMaxIter(Size max) override;
 
     /// @return the criterion on number of iterations
-    Size maxIter() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxIter();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    Size maxIter() const override;
 
     /// Disable stopping criterion on max iterations
-    void disableMaxIter() override {
-      algoK2_.approximationScheme().disableMaxIter();
-      greedyHillClimbing_.disableMaxIter();
-      localSearchWithTabuList_.disableMaxIter();
-      dag2BN_.disableMaxIter();
-    }
+    void disableMaxIter() override;
 
     /// Enable stopping criterion on max iterations
-    void enableMaxIter() override {
-      algoK2_.approximationScheme().enableMaxIter();
-      greedyHillClimbing_.enableMaxIter();
-      localSearchWithTabuList_.enableMaxIter();
-      dag2BN_.enableMaxIter();
-    }
+    void enableMaxIter() override;
 
     /// @return true if stopping criterion on max iterations is enabled, false
     /// otherwise
-    bool isEnabledMaxIter() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxIter();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    bool isEnabledMaxIter() const override;
 
     /// @}
 
@@ -1488,101 +1402,52 @@ namespace gum::learning {
     /// @throw OutOfBounds if timeout<=0.0
     /** timeout is time in second (double).
      */
-    void setMaxTime(double timeout) override {
-      algoK2_.approximationScheme().setMaxTime(timeout);
-      greedyHillClimbing_.setMaxTime(timeout);
-      localSearchWithTabuList_.setMaxTime(timeout);
-      dag2BN_.setMaxTime(timeout);
-    }
+    void setMaxTime(double timeout) override;
 
     /// returns the timeout (in seconds)
-    double maxTime() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxTime();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    double maxTime() const override;
 
     /// get the current running time in second (double)
-    double currentTime() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->currentTime();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    double currentTime() const override;
 
     /// Disable stopping criterion on timeout
-    void disableMaxTime() override {
-      algoK2_.approximationScheme().disableMaxTime();
-      greedyHillClimbing_.disableMaxTime();
-      localSearchWithTabuList_.disableMaxTime();
-      dag2BN_.disableMaxTime();
-    }
+    void disableMaxTime() override;
 
-    void enableMaxTime() override {
-      algoK2_.approximationScheme().enableMaxTime();
-      greedyHillClimbing_.enableMaxTime();
-      localSearchWithTabuList_.enableMaxTime();
-      dag2BN_.enableMaxTime();
-    }
+    void enableMaxTime() override;
 
     /// @return true if stopping criterion on timeout is enabled, false
     /// otherwise
-    bool isEnabledMaxTime() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxTime();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    bool isEnabledMaxTime() const override;
 
     /// @}
 
     /// how many samples between 2 stopping isEnableds
     /// @{
     /// @throw OutOfBounds if p<1
-    void setPeriodSize(Size p) override {
-      algoK2_.approximationScheme().setPeriodSize(p);
-      greedyHillClimbing_.setPeriodSize(p);
-      localSearchWithTabuList_.setPeriodSize(p);
-      dag2BN_.setPeriodSize(p);
-    }
+    void setPeriodSize(Size p) override;
 
-    Size periodSize() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    Size periodSize() const override;
 
     /// @}
 
     /// verbosity
     /// @{
-    void setVerbosity(bool v) override {
-      algoK2_.approximationScheme().setVerbosity(v);
-      greedyHillClimbing_.setVerbosity(v);
-      localSearchWithTabuList_.setVerbosity(v);
-      dag2BN_.setVerbosity(v);
-    }
+    void setVerbosity(bool v) override;
 
-    bool verbosity() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    bool verbosity() const override;
 
     /// @}
 
     /// history
     /// @{
 
-    ApproximationSchemeSTATE stateApproximationScheme() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->stateApproximationScheme();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    ApproximationSchemeSTATE stateApproximationScheme() const override;
 
     /// @throw OperationNotAllowed if scheme not performed
-    Size nbrIterations() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->nbrIterations();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    Size nbrIterations() const override;
 
     /// @throw OperationNotAllowed if scheme not performed or verbosity=false
-    const std::vector< double >& history() const override {
-      if (currentAlgorithm_ != nullptr) return currentAlgorithm_->history();
-      else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-    }
+    const std::vector< double >& history() const override;
 
     /// @}
 
@@ -1597,7 +1462,7 @@ namespace gum::learning {
      * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
      * @throw OutOfBounds if eps <= 0
      */
-    void EMsetEpsilon(double eps) { dag2BN_.setEpsilon(eps); }
+    void EMsetEpsilon(double eps);
 
     /// Get the value of EM's min diff epsilon
     /**
@@ -1605,19 +1470,19 @@ namespace gum::learning {
      * @warning Note that this value is not taken into account unless the min diff criterion is
      * enabled
      */
-    double EMEpsilon() const { return dag2BN_.epsilon(); }
+    double EMEpsilon() const;
 
     /// Disable the min log-likelihood diff stopping criterion for EM
-    void EMdisableEpsilon() { dag2BN_.disableEpsilon(); }
+    void EMdisableEpsilon();
 
     /**
      * @brief Enable the log-likelihood min diff stopping criterion in EM
      * @warning setting this stopping criterion disables the min rate criterion (if it was enabled)
      */
-    void EMenableEpsilon() { dag2BN_.enableEpsilon(); }
+    void EMenableEpsilon();
 
     /// return true if EM's stopping criterion is the log-likelihood min diff
-    bool EMisEnabledEpsilon() const { return dag2BN_.isEnabledEpsilon(); }
+    bool EMisEnabledEpsilon() const;
 
     /**
      * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution rate
@@ -1625,103 +1490,101 @@ namespace gum::learning {
      * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
      * @throw OutOfBounds if rate<=0
      */
-    void EMsetMinEpsilonRate(double rate) { dag2BN_.setMinEpsilonRate(rate); }
+    void EMsetMinEpsilonRate(double rate);
 
     /**
      * @brief Get the value of the minimal log-likelihood evolution rate of EM
      * @warning Note that this value is not taken into account unless the min rate criterion is
      * enabled
      */
-    double EMMinEpsilonRate() const { return dag2BN_.minEpsilonRate(); }
+    double EMMinEpsilonRate() const;
 
     /// Disable the log-likelihood evolution rate stopping criterion
-    void EMdisableMinEpsilonRate() { dag2BN_.disableMinEpsilonRate(); }
+    void EMdisableMinEpsilonRate();
 
     /**
      * @brief Enable the log-likelihood evolution rate stopping criterion
      * @warning setting this stopping criterion disables the min diff criterion (if it was enabled)
      */
-    void EMenableMinEpsilonRate() { dag2BN_.enableMinEpsilonRate(); }
+    void EMenableMinEpsilonRate();
 
     /// @return true if EM's stopping criterion is the log-likelihood evolution rate
-    bool EMisEnabledMinEpsilonRate() const { return dag2BN_.isEnabledMinEpsilonRate(); }
+    bool EMisEnabledMinEpsilonRate() const;
 
     /**
      * @brief add a max iteration stopping criterion
      * @param max the max number of iterations that EM is allowed to perform
      * @throw OutOfBounds if max<=1
      */
-    void EMsetMaxIter(Size max) { dag2BN_.setMaxIter(max); }
+    void EMsetMaxIter(Size max);
 
     /**
      * @brief return the max number of iterations criterion
      * @warning Note that this value is not taken into account unless the max iter criterion is
      * enabled
      */
-    Size EMMaxIter() const { return dag2BN_.maxIter(); }
+    Size EMMaxIter() const;
 
     /// Disable stopping criterion on max iterations
-    void EMdisableMaxIter() { dag2BN_.disableMaxIter(); }
+    void EMdisableMaxIter();
 
     /// Enable stopping criterion on max iterations
-    void EMenableMaxIter() { dag2BN_.enableMaxIter(); }
+    void EMenableMaxIter();
 
     /// @return true if stopping criterion on max iterations is enabled, false
     /// otherwise
-    bool EMisEnabledMaxIter() const { return dag2BN_.isEnabledMaxIter(); }
+    bool EMisEnabledMaxIter() const;
 
     /**
      * @brief add a stopping criterion on timeout
      * @param timeout the timeout in milliseconds
      * @throw OutOfBounds if timeout<=0.0
      */
-    void EMsetMaxTime(double timeout) { dag2BN_.setMaxTime(timeout); }
+    void EMsetMaxTime(double timeout);
 
     /**
      * @@brief returns EM's timeout (in milliseconds)
      * @warning Note that this value is not taken into account unless the max time criterion is
      * enabled
      */
-    double EMMaxTime() const { return dag2BN_.maxTime(); }
+    double EMMaxTime() const;
 
     /// get the current running time in second (double)
-    double EMCurrentTime() const { return dag2BN_.currentTime(); }
+    double EMCurrentTime() const;
 
     /// Disable EM's timeout stopping criterion
-    void EMdisableMaxTime() { dag2BN_.disableMaxTime(); }
+    void EMdisableMaxTime();
 
-    void EMenableMaxTime() { dag2BN_.enableMaxTime(); }
+    void EMenableMaxTime();
 
     /// @return true if stopping criterion on timeout is enabled, false otherwise
-    bool EMisEnabledMaxTime() const { return dag2BN_.isEnabledMaxTime(); }
+    bool EMisEnabledMaxTime() const;
 
     /**
      * @brief how many samples between 2 stoppings isEnabled
      * @throw OutOfBounds if p<1
      */
-    void EMsetPeriodSize(Size p) { dag2BN_.setPeriodSize(p); }
+    void EMsetPeriodSize(Size p);
 
-    Size EMPeriodSize() const { return dag2BN_.periodSize(); }
+    Size EMPeriodSize() const;
 
     /// sets or unsets EM's verbosity
-    void EMsetVerbosity(bool v) { dag2BN_.setVerbosity(v); }
+    void EMsetVerbosity(bool v);
 
     /// returns the EM's verbosity status
-    bool EMVerbosity() const { return dag2BN_.verbosity(); }
+    bool EMVerbosity() const;
 
     /// get the current state of EM
-    ApproximationSchemeSTATE EMStateApproximationScheme() const {
-      return dag2BN_.stateApproximationScheme();
-    }
+    ApproximationSchemeSTATE EMStateApproximationScheme() const;
 
     /// returns the number of iterations performed by the last EM execution
-    Size EMnbrIterations() const { return dag2BN_.nbrIterations(); }
+    Size EMnbrIterations() const;
 
     /**
      * @brief returns the history of the last EM execution
      * @warning to activate the history recording, EM's verbosity must be set to true
      */
-    const std::vector< double >& EMHistory() const { return dag2BN_.history(); }
+    const std::vector< double >& EMHistory() const;
 
     /// @}
   };

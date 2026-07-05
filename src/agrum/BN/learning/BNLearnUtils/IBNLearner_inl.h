@@ -743,5 +743,276 @@ namespace gum::learning {
     if (score_ != nullptr) score_->setNumberOfThreads(nb);
   }
 
+  // ===========================================================================
+  // IBNLearner — inline implementations migrated from class body
+  // ===========================================================================
+
+  INLINE bool IBNLearner::isConstraintBased() const {
+    switch (selectedAlgo_) {
+      case AlgoType::K2 :
+      case AlgoType::GREEDY_HILL_CLIMBING :
+      case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING :
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
+      case AlgoType::GREEDY_THICK_THINNING : return false;
+      case AlgoType::MIIC :
+      case AlgoType::PC :
+      case AlgoType::FCI : return true;
+      default : throw OperationNotAllowed("Unknown algorithm");
+    }
+  }
+
+  INLINE bool IBNLearner::isScoreBased() const { return !isConstraintBased(); }
+
+  INLINE void
+      IBNLearner::setCurrentApproximationScheme(const ApproximationScheme* approximationScheme) {
+    currentAlgorithm_ = approximationScheme;
+  }
+
+  INLINE void IBNLearner::distributeProgress(const ApproximationScheme* approximationScheme,
+                                             Size                       pourcent,
+                                             double                     error,
+                                             double                     time) {
+    setCurrentApproximationScheme(approximationScheme);
+    if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);
+  }
+
+  INLINE void IBNLearner::distributeStop(const ApproximationScheme* approximationScheme,
+                                         std::string_view           message) {
+    setCurrentApproximationScheme(approximationScheme);
+    if (onStop.hasListener()) GUM_EMIT1(onStop, message);
+  }
+
+  INLINE void IBNLearner::setEpsilon(double eps) {
+    algoK2_.approximationScheme().setEpsilon(eps);
+    greedyHillClimbing_.setEpsilon(eps);
+    localSearchWithTabuList_.setEpsilon(eps);
+    dag2BN_.setEpsilon(eps);
+  }
+
+  INLINE double IBNLearner::epsilon() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->epsilon();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::disableEpsilon() {
+    algoK2_.approximationScheme().disableEpsilon();
+    greedyHillClimbing_.disableEpsilon();
+    localSearchWithTabuList_.disableEpsilon();
+    dag2BN_.disableEpsilon();
+  }
+
+  INLINE void IBNLearner::enableEpsilon() {
+    algoK2_.approximationScheme().enableEpsilon();
+    greedyHillClimbing_.enableEpsilon();
+    localSearchWithTabuList_.enableEpsilon();
+    dag2BN_.enableEpsilon();
+  }
+
+  INLINE bool IBNLearner::isEnabledEpsilon() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledEpsilon();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::setMinEpsilonRate(double rate) {
+    algoK2_.approximationScheme().setMinEpsilonRate(rate);
+    greedyHillClimbing_.setMinEpsilonRate(rate);
+    localSearchWithTabuList_.setMinEpsilonRate(rate);
+    dag2BN_.setMinEpsilonRate(rate);
+  }
+
+  INLINE double IBNLearner::minEpsilonRate() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->minEpsilonRate();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::disableMinEpsilonRate() {
+    algoK2_.approximationScheme().disableMinEpsilonRate();
+    greedyHillClimbing_.disableMinEpsilonRate();
+    localSearchWithTabuList_.disableMinEpsilonRate();
+    dag2BN_.disableMinEpsilonRate();
+  }
+
+  INLINE void IBNLearner::enableMinEpsilonRate() {
+    algoK2_.approximationScheme().enableMinEpsilonRate();
+    greedyHillClimbing_.enableMinEpsilonRate();
+    localSearchWithTabuList_.enableMinEpsilonRate();
+    dag2BN_.enableMinEpsilonRate();
+  }
+
+  INLINE bool IBNLearner::isEnabledMinEpsilonRate() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMinEpsilonRate();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::setMaxIter(Size max) {
+    algoK2_.approximationScheme().setMaxIter(max);
+    greedyHillClimbing_.setMaxIter(max);
+    localSearchWithTabuList_.setMaxIter(max);
+    dag2BN_.setMaxIter(max);
+  }
+
+  INLINE Size IBNLearner::maxIter() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxIter();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::disableMaxIter() {
+    algoK2_.approximationScheme().disableMaxIter();
+    greedyHillClimbing_.disableMaxIter();
+    localSearchWithTabuList_.disableMaxIter();
+    dag2BN_.disableMaxIter();
+  }
+
+  INLINE void IBNLearner::enableMaxIter() {
+    algoK2_.approximationScheme().enableMaxIter();
+    greedyHillClimbing_.enableMaxIter();
+    localSearchWithTabuList_.enableMaxIter();
+    dag2BN_.enableMaxIter();
+  }
+
+  INLINE bool IBNLearner::isEnabledMaxIter() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxIter();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::setMaxTime(double timeout) {
+    algoK2_.approximationScheme().setMaxTime(timeout);
+    greedyHillClimbing_.setMaxTime(timeout);
+    localSearchWithTabuList_.setMaxTime(timeout);
+    dag2BN_.setMaxTime(timeout);
+  }
+
+  INLINE double IBNLearner::maxTime() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxTime();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE double IBNLearner::currentTime() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->currentTime();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::disableMaxTime() {
+    algoK2_.approximationScheme().disableMaxTime();
+    greedyHillClimbing_.disableMaxTime();
+    localSearchWithTabuList_.disableMaxTime();
+    dag2BN_.disableMaxTime();
+  }
+
+  INLINE void IBNLearner::enableMaxTime() {
+    algoK2_.approximationScheme().enableMaxTime();
+    greedyHillClimbing_.enableMaxTime();
+    localSearchWithTabuList_.enableMaxTime();
+    dag2BN_.enableMaxTime();
+  }
+
+  INLINE bool IBNLearner::isEnabledMaxTime() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxTime();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::setPeriodSize(Size p) {
+    algoK2_.approximationScheme().setPeriodSize(p);
+    greedyHillClimbing_.setPeriodSize(p);
+    localSearchWithTabuList_.setPeriodSize(p);
+    dag2BN_.setPeriodSize(p);
+  }
+
+  INLINE Size IBNLearner::periodSize() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE void IBNLearner::setVerbosity(bool v) {
+    algoK2_.approximationScheme().setVerbosity(v);
+    greedyHillClimbing_.setVerbosity(v);
+    localSearchWithTabuList_.setVerbosity(v);
+    dag2BN_.setVerbosity(v);
+  }
+
+  INLINE bool IBNLearner::verbosity() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
+         IBNLearner::stateApproximationScheme() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->stateApproximationScheme();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE Size IBNLearner::nbrIterations() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->nbrIterations();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  INLINE const std::vector< double >& IBNLearner::history() const {
+    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->history();
+    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+  }
+
+  // EM methods
+
+  INLINE void IBNLearner::EMsetEpsilon(double eps) { dag2BN_.setEpsilon(eps); }
+
+  INLINE double IBNLearner::EMEpsilon() const { return dag2BN_.epsilon(); }
+
+  INLINE void IBNLearner::EMdisableEpsilon() { dag2BN_.disableEpsilon(); }
+
+  INLINE void IBNLearner::EMenableEpsilon() { dag2BN_.enableEpsilon(); }
+
+  INLINE bool IBNLearner::EMisEnabledEpsilon() const { return dag2BN_.isEnabledEpsilon(); }
+
+  INLINE void IBNLearner::EMsetMinEpsilonRate(double rate) { dag2BN_.setMinEpsilonRate(rate); }
+
+  INLINE double IBNLearner::EMMinEpsilonRate() const { return dag2BN_.minEpsilonRate(); }
+
+  INLINE void IBNLearner::EMdisableMinEpsilonRate() { dag2BN_.disableMinEpsilonRate(); }
+
+  INLINE void IBNLearner::EMenableMinEpsilonRate() { dag2BN_.enableMinEpsilonRate(); }
+
+  INLINE bool IBNLearner::EMisEnabledMinEpsilonRate() const {
+    return dag2BN_.isEnabledMinEpsilonRate();
+  }
+
+  INLINE void IBNLearner::EMsetMaxIter(Size max) { dag2BN_.setMaxIter(max); }
+
+  INLINE Size IBNLearner::EMMaxIter() const { return dag2BN_.maxIter(); }
+
+  INLINE void IBNLearner::EMdisableMaxIter() { dag2BN_.disableMaxIter(); }
+
+  INLINE void IBNLearner::EMenableMaxIter() { dag2BN_.enableMaxIter(); }
+
+  INLINE bool IBNLearner::EMisEnabledMaxIter() const { return dag2BN_.isEnabledMaxIter(); }
+
+  INLINE void IBNLearner::EMsetMaxTime(double timeout) { dag2BN_.setMaxTime(timeout); }
+
+  INLINE double IBNLearner::EMMaxTime() const { return dag2BN_.maxTime(); }
+
+  INLINE double IBNLearner::EMCurrentTime() const { return dag2BN_.currentTime(); }
+
+  INLINE void IBNLearner::EMdisableMaxTime() { dag2BN_.disableMaxTime(); }
+
+  INLINE void IBNLearner::EMenableMaxTime() { dag2BN_.enableMaxTime(); }
+
+  INLINE bool IBNLearner::EMisEnabledMaxTime() const { return dag2BN_.isEnabledMaxTime(); }
+
+  INLINE void IBNLearner::EMsetPeriodSize(Size p) { dag2BN_.setPeriodSize(p); }
+
+  INLINE Size IBNLearner::EMPeriodSize() const { return dag2BN_.periodSize(); }
+
+  INLINE void IBNLearner::EMsetVerbosity(bool v) { dag2BN_.setVerbosity(v); }
+
+  INLINE bool IBNLearner::EMVerbosity() const { return dag2BN_.verbosity(); }
+
+  INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
+         IBNLearner::EMStateApproximationScheme() const {
+    return dag2BN_.stateApproximationScheme();
+  }
+
+  INLINE Size IBNLearner::EMnbrIterations() const { return dag2BN_.nbrIterations(); }
+
+  INLINE const std::vector< double >& IBNLearner::EMHistory() const { return dag2BN_.history(); }
+
   /* namespace learning */
 }   // namespace gum::learning

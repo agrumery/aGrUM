@@ -191,7 +191,9 @@ namespace gum {
 
         // Creating a line in internalnode stream for this node
         nonTerminalStream += std::format("{0}{1};{0}{1} [label=\"{1} - {2}\"];\n",
-                                         tab, currentNodeId, currentNode->nodeVar()->name());
+                                         tab,
+                                         currentNodeId,
+                                         currentNode->nodeVar()->name());
 
         // Going through the sons and agregating them according the the sons Ids
         HashTable< NodeId, LinkedList< Idx >* > sonMap;
@@ -606,5 +608,52 @@ namespace gum {
       dest += *idi;
   }
 
+  template < typename GUM_ELEMENT >
+  INLINE StructuredPlaner< GUM_ELEMENT >*
+         StructuredPlaner< GUM_ELEMENT >::spumddInstance(GUM_ELEMENT discountFactor,
+                                                         GUM_ELEMENT epsilon,
+                                                         bool        verbose) {
+    return new StructuredPlaner< GUM_ELEMENT >(new MDDOperatorStrategy< GUM_ELEMENT >(),
+                                               discountFactor,
+                                               epsilon,
+                                               verbose);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE StructuredPlaner< GUM_ELEMENT >*
+         StructuredPlaner< GUM_ELEMENT >::sviInstance(GUM_ELEMENT discountFactor,
+                                                      GUM_ELEMENT epsilon,
+                                                      bool        verbose) {
+    return new StructuredPlaner< GUM_ELEMENT >(new TreeOperatorStrategy< GUM_ELEMENT >(),
+                                               discountFactor,
+                                               epsilon,
+                                               verbose);
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const FMDP< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::fmdp() {
+    return fmdp_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE const MultiDimFunctionGraph< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::vFunction() {
+    return vFunction_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE Size StructuredPlaner< GUM_ELEMENT >::vFunctionSize() {
+    return vFunction_ != nullptr ? vFunction_->realSize() : 0;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
+         StructuredPlaner< GUM_ELEMENT >::optimalPolicy() {
+    return optimalPolicy_;
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE Size StructuredPlaner< GUM_ELEMENT >::optimalPolicySize() {
+    return optimalPolicy_ != nullptr ? optimalPolicy_->realSize() : 0;
+  }
 
 }   // end of namespace gum

@@ -152,6 +152,6 @@ namespace gum {
 
 }   // namespace gum
 
-#include <agrum/BN/algorithms/divergence/GibbsKL_tpl.h>
+#include <agrum/BN/algorithms/divergence/GibbsBNdistance_tpl.h>
 
 #endif

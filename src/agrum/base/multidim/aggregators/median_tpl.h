@@ -122,5 +122,10 @@ namespace gum {
       return 0;
     }
 
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE Idx Median< GUM_SCALAR >::neutralElt_() const {
+      return 0;
+    }
+
   }   // namespace aggregator
 }   // namespace gum

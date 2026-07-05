@@ -128,7 +128,8 @@ namespace gum {
             std::string name = i->get(node).name();
 
             if (!c->exists(name)) {
-              GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
+              GUM_ERROR(PRMTypeError,
+                        std::format("class {} does not respect interface {}", c->name(), i->name()))
             }
 
             switch (i->get(node).elt_type()) {
@@ -137,10 +138,14 @@ namespace gum {
                 if ((c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_attribute)
                     || (c->get(name).elt_type() == PRMClassElement< GUM_SCALAR >::prm_aggregate)) {
                   if (!c->get(name).type().isSubTypeOf(i->get(name).type())) {
-                    GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
+                    GUM_ERROR(
+                        PRMTypeError,
+                        std::format("class {} does not respect interface {}", c->name(), i->name()))
                   }
                 } else {
-                  GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
+                  GUM_ERROR(
+                      PRMTypeError,
+                      std::format("class {} does not respect interface {}", c->name(), i->name()))
                 }
 
                 break;
@@ -154,10 +159,14 @@ namespace gum {
                       = static_cast< const PRMReferenceSlot< GUM_SCALAR >& >(c->get(name));
 
                   if (!ref_this.slotType().isSubTypeOf(ref_i.slotType())) {
-                    GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
+                    GUM_ERROR(
+                        PRMTypeError,
+                        std::format("class {} does not respect interface {}", c->name(), i->name()))
                   }
                 } else {
-                  GUM_ERROR(PRMTypeError, std::format("class {} does not respect interface {}", c->name(), i->name()))
+                  GUM_ERROR(
+                      PRMTypeError,
+                      std::format("class {} does not respect interface {}", c->name(), i->name()))
                 }
 
                 break;
@@ -1012,7 +1021,8 @@ namespace gum {
               toAdd.push_back(std::make_pair(elt, _buildSlotChain_(c, name.str())));
             }
           } else {
-            toAdd.push_back(std::make_pair(elt, &(c->get(std::format("({}){}", t->name(), elt->name())))));
+            toAdd.push_back(
+                std::make_pair(elt, &(c->get(std::format("({}){}", t->name(), elt->name())))));
           }
         }
       }

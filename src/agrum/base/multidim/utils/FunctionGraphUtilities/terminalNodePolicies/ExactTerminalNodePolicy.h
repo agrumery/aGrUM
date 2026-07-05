@@ -74,13 +74,13 @@ namespace gum {
     /// @{
 
     /// Insert a new terminal node with given value
-    void addTerminalNode(const NodeId& n, const GUM_ELEMENT& v) { _map_.insert(n, v); }
+    void addTerminalNode(const NodeId& n, const GUM_ELEMENT& v);
 
     /// Remove node matching given id
-    void eraseTerminalNode(const NodeId& n) { _map_.eraseFirst(n); }
+    void eraseTerminalNode(const NodeId& n);
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes() { _map_.clear(); }
+    void clearAllTerminalNodes();
 
     /// @}
     // ============================================================================
@@ -89,10 +89,10 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNodeWithId(const NodeId& n) const { return _map_.existsFirst(n); }
+    bool existsTerminalNodeWithId(const NodeId& n) const;
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNodeWithValue(const GUM_ELEMENT& v) const { return _map_.existsSecond(v); }
+    bool existsTerminalNodeWithValue(const GUM_ELEMENT& v) const;
 
     /// @}
     // ============================================================================
@@ -101,10 +101,10 @@ namespace gum {
     /// @{
 
     /// Returns the value of the terminal node that has the given id
-    const GUM_ELEMENT& terminalNodeValue(const NodeId& n) const { return _map_.second(n); }
+    const GUM_ELEMENT& terminalNodeValue(const NodeId& n) const;
 
     /// Returns the id of the terminal node that has the given value
-    const NodeId& terminalNodeId(const GUM_ELEMENT& v) const { return _map_.first(v); }
+    const NodeId& terminalNodeId(const GUM_ELEMENT& v) const;
 
     /// @}
     // ============================================================================
@@ -113,21 +113,21 @@ namespace gum {
     /// @{
 
     /// Initializes the constant safe iterator on terminal nodes
-    void beginValues() const { _mappy_ = _map_.beginSafe(); }
+    void beginValues() const;
 
     /// Indicates if constant safe iterator has reach end of terminal nodes list
-    bool hasValue() const { return _mappy_ != _map_.endSafe(); }
+    bool hasValue() const;
 
     /// Increments the constant safe iterator
-    void nextValue() const { ++_mappy_; }
+    void nextValue() const;
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_ELEMENT& value() const { return _mappy_.second(); }
+    const GUM_ELEMENT& value() const;
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
-    const NodeId& id() const { return _mappy_.first(); }
+    const NodeId& id() const;
 
     /// @}
 
@@ -137,5 +137,7 @@ namespace gum {
   };
 
 }   // End of namespace gum
+
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy_tpl.h>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_EXACT_TERMINAL_NODE_POLICY_H */

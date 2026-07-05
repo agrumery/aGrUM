@@ -112,7 +112,7 @@ namespace gum {
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator& operator=(const SmallObjectAllocator&) { return instance(); }
+    SmallObjectAllocator& operator=(const SmallObjectAllocator&);
 
     public:
     // ============================================================================
@@ -146,14 +146,11 @@ namespace gum {
     // ============================================================================
     /// Displays the number of allocation and deallocation made so far
     // ============================================================================
-    void displayStats() {
-      GUM_TRACE("Nb Small Allocation : " << nbAllocation
-                                         << " -  Nb Small Deallocation : " << nbDeallocation);
-    }
+    void displayStats();
 
-    Idx nbAlloc() { return nbAllocation; }
+    Idx nbAlloc();
 
-    Idx nbDealloc() { return nbDeallocation; }
+    Idx nbDealloc();
 
     private:
     // ============================================================================

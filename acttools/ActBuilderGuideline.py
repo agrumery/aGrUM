@@ -375,7 +375,9 @@ class ActBuilderGuideline(ActBuilder):
     return True
 
 
-_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset({"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly"})
+_GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
+  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader"}
+)
 _GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy"}
 
 
@@ -422,6 +424,7 @@ def guideline(
   run_deps = "deps" in active
   run_tidy = "tidy" in active
   run_pyrefly = "pyrefly" in active
+  run_pureheader = "pureheader" in active
 
   effective_correction = correction and not dry_run
   active_checks_label = checks if checks is not None else "default"
@@ -498,6 +501,12 @@ def guideline(
     )
   else:
     notif("  (8-pyrefly) pass")
+
+  if run_pureheader:
+    notif("  [[(9-pureheader) check for function bodies in ]]*.h[[ declaration headers]]")
+    nbrError += _aff_errors(_check_pure_headers(details), "body in declaration header")
+  else:
+    notif("  (9-pureheader) pass")
 
   return nbrError
 
@@ -923,6 +932,181 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
     for line in result.stdout.splitlines():
       notif(line)
 
+  return nbrError
+
+
+# --- pureheader check: module-level compiled patterns ---
+
+# Explicit INLINE-keyword body in a declaration header.
+_PH_INLINE_BODY_RE = re.compile(r"\bINLINE\b.*\{")
+
+# Method/function body: closing paren followed by optional C++ qualifiers
+# (const, volatile, noexcept, noexcept(expr), override, final, -> trailing-return),
+# then the opening brace.
+_PH_METHOD_BODY_RE = re.compile(
+  r"\)"                                    # closing paren of params
+  r"\s*(?:const\s+)?"                      # optional const
+  r"(?:volatile\s+)?"                      # optional volatile
+  r"(?:noexcept\s*(?:\([^)]*\))?\s*)?"     # optional noexcept or noexcept(expr)
+  r"(?:override\s+)?"                      # optional override
+  r"(?:final\s+)?"                         # optional final
+  r"(?:const\s+)?"                         # optional trailing const (rare)
+  r"(?:->[^{]*)?"                          # optional trailing return type  -> T
+  r"\{"
+)
+
+# Control-flow keywords that open a brace but are not function bodies.
+_PH_CONTROL_FLOW_RE = re.compile(r"\b(?:if|for|while|switch|catch|else)\s*\(")
+
+# GUM debug macros: constructor/destructor helpers that open a brace on their line.
+_PH_GUM_MACRO_RE = re.compile(r"\b(?:GUM_CONSTRUCTOR|GUM_DESTRUCTOR|GUM_CONS_MOV|GUM_CONS_CPY)\b")
+
+# consteval (or constexpr) function with an inline empty body — legitimate in headers.
+_PH_CONSTEVAL_RE = re.compile(r"\b(?:consteval|constexpr)\b.*\)\s*[^{]*\{\s*\}")
+
+# requires-expression (C++20 concepts).
+_PH_REQUIRES_RE = re.compile(r"\brequires\b")
+
+# friend declaration or definition — inline friends in template classes are legitimate.
+_PH_FRIEND_BODY_RE = re.compile(r"\bfriend\b.*\{")
+
+# Empty-body pattern for multi-line consteval/constexpr continuation.
+_PH_EMPTY_BODY_RE = re.compile(r"\{\s*\}$")
+
+# Class/struct/namespace/enum opening — not a method body.
+_PH_AGGREGATE_RE = re.compile(r"^(?:class|struct|namespace|enum)\b")
+
+# Lambda: [ captures ]( params ) { — not a method body.
+_PH_LAMBDA_RE = re.compile(r"\]\s*\(")
+
+# Virtual base specifier — not a method body.
+_PH_VIRTUAL_BASE_RE = re.compile(r"\b(?:public|protected|private)\s+virtual\b")
+
+_PH_SKIP_DIRS = frozenset([
+  f"{os.sep}external{os.sep}",
+  f"{os.sep}mvsc{os.sep}",
+  f"{os.sep}cocoR{os.sep}",
+  f"{os.sep}patterns{os.sep}",   # code-pattern fragments included via macros
+])
+
+
+def _check_pure_headers(details: bool) -> int:
+  """Check that *.h declaration headers contain no function/method bodies.
+
+  Skips *_tpl.h, *_inl.h, *TestSuite.h, *Inline.h, and directories
+  external/, mvsc/, cocoR/, patterns/.
+
+  Flags:
+    - INLINE ... {              explicit INLINE-keyword definitions
+    - ) [qualifiers] [-> T] {   any function/method body (incl. trailing return type)
+
+  Does NOT flag:
+    - friend ... {              inline friends in template classes (legitimate)
+    - consteval/constexpr ... {} single-line empty bodies (required in header)
+    - requires(...) {           C++20 concept constraints
+    - GUM_CONSTRUCTOR/DESTRUCTOR/CONS_CPY/CONS_MOV lines
+    - class/struct/namespace/enum openings
+    - control-flow blocks (if/for/while/switch/catch)
+    - lambdas ([captures](...) {)
+  """
+  nbrError = 0
+  for header in recglob(f"src{os.sep}agrum", "*.h"):
+    basename = header.split(os.sep)[-1]
+    if basename.endswith(("_tpl.h", "_inl.h", "Inline.h")):
+      continue
+    if "TestSuite" in basename:
+      continue
+    if any(exc in header for exc in _PH_SKIP_DIRS):
+      continue
+
+    violations: list[tuple[int, str]] = []
+    with open(header, encoding="utf-8", errors="replace") as f:
+      in_macro = False
+      in_code_block = False
+      prev_code_line = ""
+      for lineno, line in enumerate(f, start=1):
+        stripped = line.strip()
+
+        # skip multi-line macro continuations
+        if in_macro:
+          if not stripped.endswith('\\'):
+            in_macro = False
+          continue
+
+        # track @code/@endcode Doxygen blocks (may appear in non-comment context)
+        if "@code" in stripped:
+          in_code_block = True
+        if "@endcode" in stripped:
+          in_code_block = False
+          continue
+        if in_code_block:
+          continue
+
+        # skip preprocessor directives and comment lines
+        if stripped.startswith(("#", "*", "//", "/*")):
+          if stripped.startswith("#") and stripped.endswith('\\'):
+            in_macro = True
+          continue
+
+        # skip C++20 requires-expressions
+        if _PH_REQUIRES_RE.search(stripped):
+          prev_code_line = stripped
+          continue
+
+        # skip consteval/constexpr single-line empty body (required in headers)
+        if _PH_CONSTEVAL_RE.search(stripped):
+          prev_code_line = stripped
+          continue
+
+        # skip multi-line consteval/constexpr continuation (empty {} on next line)
+        if _PH_EMPTY_BODY_RE.search(stripped) and re.search(r"\b(?:consteval|constexpr)\b", prev_code_line):
+          prev_code_line = stripped
+          continue
+
+        # skip inline friend definitions (legitimate C++ pattern in template classes)
+        if _PH_FRIEND_BODY_RE.search(stripped):
+          prev_code_line = stripped
+          continue
+
+        # --- violation detection ---
+        if _PH_INLINE_BODY_RE.search(stripped):
+          violations.append((lineno, stripped))
+
+        elif _PH_METHOD_BODY_RE.search(stripped):
+          # skip class/struct/namespace/enum openings
+          if _PH_AGGREGATE_RE.match(stripped):
+            prev_code_line = stripped
+            continue
+          # skip virtual base class specifiers (class Foo : public virtual Bar {)
+          if _PH_VIRTUAL_BASE_RE.search(stripped):
+            prev_code_line = stripped
+            continue
+          # skip control-flow blocks
+          if _PH_CONTROL_FLOW_RE.search(stripped):
+            prev_code_line = stripped
+            continue
+          # skip lambdas: [captures](...) {
+          if stripped.startswith("[") or _PH_LAMBDA_RE.search(stripped):
+            prev_code_line = stripped
+            continue
+          # skip GUM constructor/destructor macro lines
+          if _PH_GUM_MACRO_RE.search(stripped):
+            prev_code_line = stripped
+            continue
+          violations.append((lineno, stripped))
+
+        prev_code_line = stripped
+
+    if violations:
+      nbrError += len(violations)
+      if details:
+        for lineno, text in violations:
+          notif(f"  err [[{header}:{lineno}]] {text[:80]}")
+      else:
+        notif(f"  err [[{header}]] ({len(violations)} violation{'s' if len(violations) > 1 else ''})")
+
+  if nbrError == 0:
+    notif("    pureheader: [[(✓)]]")
   return nbrError
 
 

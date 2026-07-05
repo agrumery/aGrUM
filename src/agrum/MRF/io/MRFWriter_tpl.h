@@ -64,6 +64,12 @@ namespace gum {
     GUM_DESTRUCTOR(MRFWriter);
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void MRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
+                                             IMarkovRandomField< GUM_SCALAR >& MN) {
+    write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(MN));
+  }
+
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

@@ -176,7 +176,10 @@ namespace gum {
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
     for (auto node: nodes())
-      output << std::format("  \"{}\" [comment=\"{}:{}\"];\n", variable(node).name(), node, variable(node).toStringWithDescription());
+      output << std::format("  \"{}\" [comment=\"{}:{}\"];\n",
+                            variable(node).name(),
+                            node,
+                            variable(node).toStringWithDescription());
 
     output << std::endl;
 
@@ -186,7 +189,9 @@ namespace gum {
       if (neighbours(node).size() > 0) {
         for (auto nei: neighbours(node)) {
           if (variable(node).name() < variable(nei).name()) {
-            output << std::format("  \"{}\" -- \"{}\";\n", variable(node).name(), variable(nei).name());
+            output << std::format("  \"{}\" -- \"{}\";\n",
+                                  variable(node).name(),
+                                  variable(nei).name());
           }
         }
       } else {
@@ -206,7 +211,8 @@ namespace gum {
 
     output << std::format("graph FG_{} {{\n", mn_name);
     output << "  layout=neato;" << std::endl;
-    output << std::format("  graph [bgcolor=transparent,label=\"factor graph for {}\"];\n", mn_name);
+    output << std::format("  graph [bgcolor=transparent,label=\"factor graph for {}\"];\n",
+                          mn_name);
 
     // the variables
     output << "  node [shape=rectangle,margin=0.04,width=0,height=0, "

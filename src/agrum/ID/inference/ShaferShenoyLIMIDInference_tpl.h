@@ -848,6 +848,35 @@ namespace gum {
     return posteriors_[node].meanVar();
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  DAG ShaferShenoyLIMIDInference< GUM_SCALAR >::reducedGraph() const {
+    return reduced_;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  gum::Tensor< GUM_SCALAR >
+      ShaferShenoyLIMIDInference< GUM_SCALAR >::optimalDecision(std::string_view decisionName) {
+    return optimalDecision(this->influenceDiagram().idFromName(decisionName));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  const Tensor< GUM_SCALAR >&
+      ShaferShenoyLIMIDInference< GUM_SCALAR >::posterior(std::string_view name) {
+    return posterior(this->influenceDiagram().idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  const Tensor< GUM_SCALAR >&
+      ShaferShenoyLIMIDInference< GUM_SCALAR >::posteriorUtility(std::string_view name) {
+    return posteriorUtility(this->influenceDiagram().idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::pair< GUM_SCALAR, GUM_SCALAR >
+      ShaferShenoyLIMIDInference< GUM_SCALAR >::meanVar(std::string_view name) {
+    return meanVar(this->influenceDiagram().idFromName(name));
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

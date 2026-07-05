@@ -77,7 +77,7 @@ namespace gum {
     // ==========================================================================
     /// Constructor
     // ==========================================================================
-    LazyDecider() {}
+    LazyDecider();
 
     // ==========================================================================
     /// Destructor
@@ -93,7 +93,9 @@ namespace gum {
     /// @{
 
     public:
-    void checkState(const Instantiation& newState, Idx actionId) override {}
+    void checkState(const Instantiation& newState, Idx actionId) override;
   };
 }   // namespace gum
+
+#include <agrum/FMDP/decision/lazyDecider_inl.h>
 #endif   // GUM_LAZY_DECIDER_H

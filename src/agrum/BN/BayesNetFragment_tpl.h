@@ -348,7 +348,9 @@ namespace gum {
     for (auto node: _bn_.nodes()) {
       if (_bn_.children(node).size() > 0) {
         for (auto child: _bn_.children(node)) {
-          output << std::format("  \"{}\" -> \"{}\" [", _bn_.variable(node).name(), _bn_.variable(child).name());
+          output << std::format("  \"{}\" -> \"{}\" [",
+                                _bn_.variable(node).name(),
+                                _bn_.variable(child).name());
 
           if (this->internalDag().existsArc(Arc(node, child))) output << inFragmentStyle;
           else output << outFragmentStyle;
@@ -381,4 +383,59 @@ namespace gum {
 
     return res;
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const Tensor< GUM_SCALAR >&
+               BayesNetFragment< GUM_SCALAR >::cpt(std::string_view name) const {
+    return cpt(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE const DiscreteVariable&
+      BayesNetFragment< GUM_SCALAR >::variable(std::string_view name) const {
+    return variable(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(std::string_view name) const {
+    return isInstalledNode(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::installNode(std::string_view name) {
+    installNode(_bn_.idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::installAscendants(std::string_view name) {
+    installAscendants(_bn_.idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(std::string_view name) {
+    uninstallNode(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::installMarginal(std::string_view            name,
+                                                              const Tensor< GUM_SCALAR >& pot) {
+    installMarginal(_bn_.idFromName(name), pot);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::installCPT(std::string_view            name,
+                                                         const Tensor< GUM_SCALAR >& pot) {
+    installCPT(_bn_.idFromName(name), pot);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT(std::string_view name) {
+    uninstallCPT(idFromName(name));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency(std::string_view name) const {
+    return checkConsistency(idFromName(name));
+  }
+
 }   // namespace gum

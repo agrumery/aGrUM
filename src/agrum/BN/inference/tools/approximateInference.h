@@ -59,9 +59,10 @@ namespace gum {
       public MarginalTargetedInference< GUM_SCALAR >,
       public ApproximationScheme {
     public:
-    explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn) :
-        MarginalTargetedInference< GUM_SCALAR >(bn) {}
+    explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn);
   };
 }   // namespace gum
+
+#include <agrum/BN/inference/tools/approximateInference_tpl.h>
 
 #endif   // GUM_APPROXIMATE_INFERENCE_H

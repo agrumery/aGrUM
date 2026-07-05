@@ -163,7 +163,10 @@ namespace gum {
           // Adding aggregates
           for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                ++g) {
-            std::vector< std::string > chain(1, std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])), param(1, "1");
+            std::vector< std::string > chain(
+                1,
+                std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])),
+                param(1, "1");
             f.addAggregator(*g, "exists", chain, param);
           }
 
@@ -220,7 +223,10 @@ namespace gum {
             // Adding aggregates
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
-              std::vector< std::string > chain(1, std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])), param(1, "1");
+              std::vector< std::string > chain(
+                  1,
+                  std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])),
+                  param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
 
@@ -268,7 +274,10 @@ namespace gum {
             // Adding aggregates
             for (std::vector< std::string >::iterator g = l[lvl].g.begin(); g != l[lvl].g.end();
                  ++g) {
-              std::vector< std::string > chain(1, std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])), param(1, "1");
+              std::vector< std::string > chain(
+                  1,
+                  std::format("{}.{}", v->back(), l[lvl].a[randomValue(l[lvl].a.size())])),
+                  param(1, "1");
               f.addAggregator(*g, "exists", chain, param);
             }
 
@@ -335,7 +344,10 @@ namespace gum {
       // Adding aggregates
       if (lvl) {
         for (const auto& agg: l[lvl].g) {
-          std::vector< std::string > chain(1, std::format("{}.{}", l[lvl].r, l[lvl - 1].a[randomValue(l[lvl - 1].a.size())])), param(1, "1");
+          std::vector< std::string > chain(
+              1,
+              std::format("{}.{}", l[lvl].r, l[lvl - 1].a[randomValue(l[lvl - 1].a.size())])),
+              param(1, "1");
           f.addAggregator(agg, "exists", chain, param);
         }
       }
@@ -478,7 +490,7 @@ namespace gum {
           o[lvl].push_back(name);
 
           if (lvl) {
-            std::string chain = std::format("{}.{}", name, l[lvl].r);
+            std::string                chain = std::format("{}.{}", name, l[lvl].r);
             std::vector< std::string > ref2add;
 
             for (std::vector< std::string >::iterator iter = o[lvl - 1].begin();

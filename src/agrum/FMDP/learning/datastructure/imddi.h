@@ -171,12 +171,7 @@ namespace gum {
     ///
 
     public:
-    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
-      for (SequenceIteratorSafe< const DiscreteVariable* > varIter = _varOrder_.beginSafe();
-           varIter != _varOrder_.endSafe();
-           ++varIter)
-        ret->add(**varIter);
-    }
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const;
 
     private:
     Sequence< const DiscreteVariable* > _varOrder_;

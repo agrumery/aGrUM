@@ -102,10 +102,7 @@ namespace gum {
      *
      * Initializes the causal DAG as the BN's DAG (observed-only).
      */
-    explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN) :
-        _observationalBN_(observationalBN), _causalDAG_(observationalBN.internalDag()) {
-      GUM_CONSTRUCTOR(CausalModel)
-    }
+    explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN);
 
     /**
      * @brief Construct a causal model and add a list of latent confounders.
@@ -127,7 +124,7 @@ namespace gum {
     CausalModel(CausalModel&& other) noexcept;
 
     /// Destructor
-    ~CausalModel() { GUM_DESTRUCTOR(CausalModel) }
+    ~CausalModel();
 
     /// Copy assignment
     CausalModel& operator=(const CausalModel& other) = default;
@@ -226,9 +223,7 @@ namespace gum {
      */
     std::optional< NodeSet > backDoor(NodeId cause, NodeId effect) const;
 
-    std::optional< NodeSet > backDoor(std::string_view cause, std::string_view effect) const {
-      return backDoor(idFromName(cause), idFromName(effect));
-    }
+    std::optional< NodeSet > backDoor(std::string_view cause, std::string_view effect) const;
 
     /**
      * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
@@ -266,9 +261,7 @@ namespace gum {
      * @return std::optional<NodeSet> The frontdoor adjustment set \(Z\) as NodeIds,
      *                                or std::nullopt if no frontdoor set exists.
      */
-    std::optional< NodeSet > frontDoor(std::string_view cause, std::string_view effect) const {
-      return frontDoor(idFromName(cause), idFromName(effect));
-    }
+    std::optional< NodeSet > frontDoor(std::string_view cause, std::string_view effect) const;
 
     /**
      * @brief Induced causal submodel on a subset of nodes.
@@ -294,15 +287,10 @@ namespace gum {
                       const char* EDGE_COL          = "#4A4A4A") const;
 
     /// @brief Observational BN (observed variables only).
-    const BayesNet< GUM_SCALAR >& observationalBN() const { return _observationalBN_; }
+    const BayesNet< GUM_SCALAR >& observationalBN() const;
 
     /// @brief Causal DAG (observed + latent variables), with node names set.
-    DAG causalDAG() const {
-      DAG g = _causalDAG_;
-      for (auto id: g)
-        g.setName(id, nameFromId(id));
-      return g;
-    }
+    DAG causalDAG() const;
 
     /// @brief All variable names appearing in the causal model (observed + latent).
     Set< std::string > names() const;
@@ -350,7 +338,7 @@ namespace gum {
      *
      * @return the variable if exists
      */
-    const DiscreteVariable& variable(NodeId id) const { return _observationalBN_.variable(id); }
+    const DiscreteVariable& variable(NodeId id) const;
 
     /**
      * From name to variable (observed only, by id). Throws if id does not correspond to an observed
@@ -362,9 +350,7 @@ namespace gum {
      *
      * @return the variable if exists
      */
-    const DiscreteVariable& variable(std::string_view name) const {
-      return _observationalBN_.variable(idFromName(name));
-    }
+    const DiscreteVariable& variable(std::string_view name) const;
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

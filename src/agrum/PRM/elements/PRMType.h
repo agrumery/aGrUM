@@ -92,12 +92,7 @@ namespace gum {
       /// @{
 
       /// Returns a pointer on type boolean.
-      static PRMType* boolean() {
-        LabelizedVariable var("boolean", "Boolean variable", 0);
-        var.addLabel("false");
-        var.addLabel("true");
-        return new PRMType(var);
-      }
+      static PRMType* boolean();
 
       /// @}
       // ==========================================================================

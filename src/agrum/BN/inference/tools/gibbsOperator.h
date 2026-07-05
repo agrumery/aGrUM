@@ -80,13 +80,13 @@ namespace gum {
     virtual ~GibbsOperator();
 
     /** Getters and setters*/
-    Size nbrDrawnVar() const { return nbr_; }
+    Size nbrDrawnVar() const;
 
-    void setNbrDrawnVar(Size nbr) { nbr_ = nbr; }
+    void setNbrDrawnVar(Size nbr);
 
-    bool isDrawnAtRandom() const { return atRandom_; }
+    bool isDrawnAtRandom() const;
 
-    void setDrawnAtRandom(bool atRandom) { atRandom_ = atRandom; }
+    void setDrawnAtRandom(bool atRandom);
 
     /// draws a Monte Carlo sample
     Instantiation monteCarloSample();

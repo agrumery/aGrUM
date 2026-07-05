@@ -2660,6 +2660,27 @@ namespace gum {
     else return {instantiation, proba - std::log2(this->evidenceProbability())};
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > LPNewmultiTensor(const Tensor< GUM_SCALAR >& t1,
+                                               const Tensor< GUM_SCALAR >& t2) {
+    return t1 * t2;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > LPNewprojTensor(const Tensor< GUM_SCALAR >& t1,
+                                              const gum::VariableSet&     del_vars) {
+    return t1.sumOut(del_vars);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  INLINE Tensor< GUM_SCALAR > LPMaxprojTensor(const Tensor< GUM_SCALAR >& t1,
+                                              const gum::VariableSet&     del_vars) {
+    return t1.maxOut(del_vars);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LazyPropagation< GUM_SCALAR >::onStateChanged_() {}
+
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

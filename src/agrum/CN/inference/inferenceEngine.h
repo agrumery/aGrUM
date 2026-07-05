@@ -597,7 +597,7 @@ namespace gum {
        * Get approximation scheme state.
        * @return A constant string about approximation scheme state.
        */
-      const std::string getApproximationSchemeMsg() { return this->messageApproximationScheme(); }
+      const std::string getApproximationSchemeMsg();
 
       /// @}
     };

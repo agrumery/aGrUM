@@ -122,9 +122,7 @@ namespace gum {
      * @param MN The Markov random field written to the file (non-const to allow metadata update).
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string_view filePath, IMarkovRandomField< GUM_SCALAR >& MN) {
-      write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(MN));
-    }
+    virtual void write(std::string_view filePath, IMarkovRandomField< GUM_SCALAR >& MN);
   };
 
 

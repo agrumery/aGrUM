@@ -115,7 +115,8 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        auto stri = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
+        auto stri
+            = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         str0 << std::format("{} ", vartable[stri]);
 
@@ -210,7 +211,8 @@ namespace gum {
       std::stringstream str0, str1, str2, str3;
 
       for (Idx i = 0; i < var.domainSize(); i++) {
-        auto stri = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
+        auto stri
+            = std::format("{}_{}", var.name(), var.label(i));   //= bn.variable(iter).name()+"_"+
         // bn.variable(iter).label( i ) ;
         str0 << std::format("{} ", vartable[stri]);
 

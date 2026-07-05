@@ -385,4 +385,9 @@ namespace gum {
   /// @return the size of  _holes_
   INLINE Size NodeGraphPart::_sizeHoles_() const { return _holes_ ? _holes_->size() : (Size)0; }
 
+  /// clone the names bijection (returns nullptr when no name has been set)
+  INLINE std::unique_ptr< Bijection< NodeId, std::string > > NodeGraphPart::_cloneNames_() const {
+    return _names_ ? std::make_unique< Bijection< NodeId, std::string > >(*_names_) : nullptr;
+  }
+
 } /* namespace gum */

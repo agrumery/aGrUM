@@ -499,31 +499,25 @@ namespace gum {
     struct TreeCmp {
       TreeCmp() = default;
 
-      TreeCmp(const Cmp& cmp) : _cmp_(cmp) {}
+      TreeCmp(const Cmp& cmp);
 
-      TreeCmp(Cmp&& cmp) : _cmp_(std::move(cmp)) {}
+      TreeCmp(Cmp&& cmp);
 
       // get the priority associated with a given AVLTreeNode value. It turns out
       // that the elements stored into the HashTable are of type HashElt defined
       // above. Now, the constexpr offset defined below contains precisely the
       // offset in bytes between Value v and its priority. Function getPriority
       // therefore just computes the location of the priority and returns it.
-      inline const Priority& getPriority(const Val& v) const {
-        return *((Priority*)((char*)&v + offset_from_value_to_priority));
-      }
+      const Priority& getPriority(const Val& v) const;
 
       // from a Val instance stored into memory, get the address of the start of
       // the AVLNode structure that would have contained it. This is useful for
       // comparing elements in the hashTable without having to create dummy AVLNodes
-      inline AVLTreeNode< Val >* getNode(const Val& v) const {
-        return (AVLTreeNode< Val >*)((char*)&v - offset_to_value);
-      }
+      AVLTreeNode< Val >* getNode(const Val& v) const;
 
       // the comparison function between two contents of two nodes of the AVL tree:
       // the nodes should be sorted according to their priority
-      constexpr bool operator()(const Val& x, const Val& y) const {
-        return _cmp_(getPriority(x), getPriority(y));
-      }
+      bool operator()(const Val& x, const Val& y) const;
 
       Cmp _cmp_;
 
@@ -1156,9 +1150,7 @@ namespace gum {
   /// display the content of a sorted priority queue
   template < typename Val, typename Priority, typename Cmp >
   std::ostream& operator<<(std::ostream&                                    stream,
-                           const SortedPriorityQueue< Val, Priority, Cmp >& queue) {
-    return stream << queue.toString();
-  }
+                           const SortedPriorityQueue< Val, Priority, Cmp >& queue);
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -86,61 +86,7 @@ namespace gum::graph {
    *   - true  → full d-connected set semantics (dConnected)
    */
   template < GUM_DiGraphable G, bool CollectAll >
-  NodeSet
-      _bayesBall_(const G& g, const NodeSet& query, const NodeSet& Zhard, const NodeSet& Zsoft) {
-    NodeSet result;
-
-    static constexpr std::pair< bool, bool > empty_mark{false, false};
-    NodeProperty< std::pair< bool, bool > >  marks(g.size());
-
-    List< std::pair< NodeId, bool > > to_visit;
-    for (const auto node: query)
-      to_visit.insert(std::pair{node, true});
-
-    while (!to_visit.empty()) {
-      const NodeId node       = to_visit.front().first;
-      const bool   from_child = to_visit.front().second;
-      to_visit.popFront();
-
-      auto& [top, bot] = marks.getWithDefault(node, empty_mark);
-
-      if (from_child) {
-        result.insert(node);                // always requisite on upward visit
-        if (Zhard.exists(node)) continue;   // hard evidence blocks upward
-
-        if (!top) {
-          top = true;
-          for (const auto par: g.parents(node))
-            to_visit.insert(std::pair{par, true});
-        }
-        if (!bot) {
-          bot = true;
-          for (const auto chi: g.children(node))
-            to_visit.insert(std::pair{chi, false});
-        }
-
-      } else {
-        if constexpr (CollectAll) result.insert(node);   // dConnected: all visits
-
-        const bool is_hard = Zhard.exists(node);
-        const bool is_ev   = is_hard || Zsoft.exists(node);
-
-        if (is_ev && !top) {
-          top = true;
-          if constexpr (!CollectAll) result.insert(node);   // requisiteNodes: collider only
-          for (const auto par: g.parents(node))
-            to_visit.insert(std::pair{par, true});
-        }
-        if (!is_hard && !bot) {
-          bot = true;
-          for (const auto chi: g.children(node))
-            to_visit.insert(std::pair{chi, false});
-        }
-      }
-    }
-
-    return result;
-  }
+  NodeSet _bayesBall_(const G& g, const NodeSet& query, const NodeSet& Zhard, const NodeSet& Zsoft);
 
   /// @endcond
 
@@ -168,9 +114,7 @@ namespace gum::graph {
   NodeSet requisiteNodes(const G&       g,
                          const NodeSet& query,
                          const NodeSet& Zhard = NodeSet(),
-                         const NodeSet& Zsoft = NodeSet()) {
-    return _bayesBall_< G, false >(g, query, Zhard, Zsoft);
-  }
+                         const NodeSet& Zsoft = NodeSet());
 
   /**
    * @brief Returns all nodes d-connected to @p query given evidence.
@@ -192,10 +136,10 @@ namespace gum::graph {
   NodeSet dConnected(const G&       g,
                      const NodeSet& query,
                      const NodeSet& Zhard = NodeSet(),
-                     const NodeSet& Zsoft = NodeSet()) {
-    return _bayesBall_< G, true >(g, query, Zhard, Zsoft);
-  }
+                     const NodeSet& Zsoft = NodeSet());
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/bayesBall_tpl.h>
 
 #endif   // GUM_GRAPH_BAYESBALL_H

@@ -122,3 +122,21 @@ namespace std {
     return std::adjacent_find(vp.begin(), vp.end(), refeq) == vp.end();
   }
 } /* namespace std */
+
+namespace gum {
+
+  INLINE NullStream::NullStream() : std::ios(0), std::ostream(0) {}
+
+  template < typename T >
+  INLINE bool AlmostDifferent< T >::operator()(const T& t1, const T& t2) {
+    if (t1 == t2) return false;
+    else if (t1 == 0) return (std::abs(t2) > 1e-5);
+    else return (std::abs(t2 - t1) / t1 > 1e-5);
+  }
+
+  template < typename T >
+  INLINE bool AlmostDifferent< T* >::operator()(const T* t1, const T* t2) {
+    return (t1 != t2);
+  }
+
+}   // namespace gum

@@ -81,57 +81,10 @@ namespace gum::graph {
    * @throw InvalidArgument if @p node does not exist in @p g, or level < 1.
    */
   template < GUM_DiGraphable G >
-  DAG markovBlanket(const G& g, NodeId node, int level = 1) {
-    if (!g.exists(node))
-      GUM_ERROR(InvalidArgument, "Node " << node << " does not exist in the graph.")
-    if (level < 1) GUM_ERROR(InvalidArgument, "level must be >= 1")
-
-    DAG mb;
-
-    // Expands node n: adds parents, children, co-parents to mb and collects
-    // any newly inserted node into next_frontier.
-    // Guards on existsArc avoid re-triggering DAG::hasDirectedPath on arcs
-    // already present (happens for level > 1 when the same arc is reachable
-    // from both endpoints).
-    auto step = [&](NodeId n, NodeSet& next_frontier) {
-      for (const auto par: g.parents(n)) {
-        if (!mb.existsNode(par)) {
-          mb.addNodeWithId(par);
-          next_frontier.insert(par);
-        }
-        if (!mb.existsArc(par, n)) mb.addArc(par, n);
-      }
-      for (const auto chi: g.children(n)) {
-        if (!mb.existsNode(chi)) {
-          mb.addNodeWithId(chi);
-          next_frontier.insert(chi);
-        }
-        if (!mb.existsArc(n, chi)) mb.addArc(n, chi);
-        for (const auto opar: g.parents(chi)) {
-          if (opar == n) continue;
-          if (!mb.existsNode(opar)) {
-            mb.addNodeWithId(opar);
-            next_frontier.insert(opar);
-          }
-          if (!mb.existsArc(opar, chi)) mb.addArc(opar, chi);
-        }
-      }
-    };
-
-    mb.addNodeWithId(node);
-    NodeSet frontier;
-    step(node, frontier);
-
-    for (int lv = 1; lv < level && !frontier.empty(); ++lv) {
-      NodeSet next;
-      for (const auto n: frontier)
-        step(n, next);
-      frontier = std::move(next);
-    }
-
-    return mb;
-  }
+  DAG markovBlanket(const G& g, NodeId node, int level = 1);
 
 }   // namespace gum::graph
+
+#include <agrum/base/graphs/algorithms/generic/markovBlanket_tpl.h>
 
 #endif   // GUM_GRAPH_MARKOV_BLANKET_H

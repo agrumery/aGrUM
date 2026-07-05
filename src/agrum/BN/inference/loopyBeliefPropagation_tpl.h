@@ -254,6 +254,43 @@ namespace gum {
 
     return _posteriors_[id];
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onStateChanged_() {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
+                                                              bool         isHardEvidence) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
+                                                               bool         isHardEvidence) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onAllEvidenceErased_(bool contains_hard_evidence) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
+                                                                bool         hasChangedSoftHard) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedTensors_() {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
+
 } /* namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

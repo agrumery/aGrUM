@@ -167,20 +167,16 @@ namespace gum {
     /// @}
 
     protected:
-    INLINE void deleteFunctionGraph_(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
-                                     const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
-                                     Idx                                         del) {
-      if (del == 1 || del == 3) delete f1;
-      if (del >= 2) delete f2;
-    }
+    void deleteFunctionGraph_(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
+                              const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
+                              Idx                                         del);
 
-    INLINE void deleteFunctionGraph_(
+    void deleteFunctionGraph_(
         const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
         const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
-        Idx                                                                                  del) {
-      if (del == 1 || del == 3) delete f1;
-      if (del >= 2) delete f2;
-    }
+        Idx                                                                                  del);
   };
 }   // namespace gum
+
+#include <agrum/FMDP/planning/IOperatorStrategy_tpl.h>
 #endif   // GUM_SDYNA_OPERATOR_STRATEGY_H

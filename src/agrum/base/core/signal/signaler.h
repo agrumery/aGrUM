@@ -126,35 +126,25 @@ namespace gum {
       Connector() : _target_(nullptr), _action_(nullptr) { GUM_CONSTRUCTOR(Connector); }
 
       /// Construct with target and action.
-      Connector(TargetClass* target, ActionType action) : _target_(target), _action_(action) {
-        GUM_CONSTRUCTOR(Connector);
-      }
+      Connector(TargetClass* target, ActionType action);
 
       /// Copy constructor.
-      Connector(const Connector& src) :
-          IConnector< Args... >(), _target_(src._target_), _action_(src._action_) {
-        GUM_CONS_CPY(Connector);
-      }
+      Connector(const Connector& src);
 
       /// Destructor.
       ~Connector() override { GUM_DESTRUCTOR(Connector); }
 
       /// @copydoc IConnector::target
-      Listener* target() const override { return _target_; }
+      Listener* target() const override;
 
       /// @copydoc IConnector::notify
-      void notify(const void* src, Args... args) override { (_target_->*_action_)(src, args...); }
+      void notify(const void* src, Args... args) override;
 
       /// @copydoc IConnector::clone
-      IConnector< Args... >* clone() const override {
-        return new Connector< TargetClass, Args... >(*this);
-      }
+      IConnector< Args... >* clone() const override;
 
       /// @copydoc IConnector::duplicate
-      [[nodiscard]] IConnector< Args... >* duplicate(Listener* newTarget) const override {
-        return new Connector< TargetClass, Args... >(static_cast< TargetClass* >(newTarget),
-                                                     _action_);
-      }
+      [[nodiscard]] IConnector< Args... >* duplicate(Listener* newTarget) const override;
 
       private:
       TargetClass* _target_;
@@ -178,70 +168,26 @@ namespace gum {
       BasicSignaler() { GUM_CONSTRUCTOR(BasicSignaler); }
 
       /// Copy constructor: duplicates all connectors and re-attaches to targets.
-      BasicSignaler(const BasicSignaler& other) : ISignaler() {
-        GUM_CONS_CPY(BasicSignaler);
-        for (const auto* connector: other._connectors_) {
-          auto* cloned = connector->clone();
-          _connectors_.push_back(cloned);
-          cloned->target()->_attachSignal_(this);
-        }
-      }
+      BasicSignaler(const BasicSignaler& other);
 
       public:
       /// Destructor: detaches from all targets and deletes connectors.
-      ~BasicSignaler() override {
-        GUM_DESTRUCTOR(BasicSignaler);
-        for (auto* connector: _connectors_) {
-          connector->target()->_detachSignal_(this);
-          delete connector;
-        }
-        _connectors_.clear();
-      }
+      ~BasicSignaler() override;
 
       /// @return true if at least one listener is attached.
-      bool hasListener() override { return !_connectors_.empty(); }
+      bool hasListener() override;
 
       /// @brief Detach a specific listener from this signaler.
-      void detach(Listener* target) {
-        for (auto it = _connectors_.rbegin(); it != _connectors_.rend(); ++it) {
-          if ((*it)->target() == target) {
-            auto* conn = *it;
-            _connectors_.erase(std::next(it).base());
-            target->_detachSignal_(this);
-            delete conn;
-            return;
-          }
-        }
-      }
+      void detach(Listener* target);
 
       protected:
       friend class gum::Listener;
 
       /// @brief Called by Listener to detach when the listener is destroyed.
-      void detachFromTarget(Listener* target) override {
-        for (auto it = _connectors_.begin(); it != _connectors_.end();) {
-          if ((*it)->target() == target) {
-            delete *it;
-            it = _connectors_.erase(it);
-          } else {
-            ++it;
-          }
-        }
-      }
+      void detachFromTarget(Listener* target) override;
 
       /// @brief Called by Listener copy constructor to duplicate connections.
-      void duplicateTarget(const Listener* oldTarget, Listener* newTarget) override {
-        // Create a copy of connectors to iterate safely
-        ConnectorList toAdd;
-        for (auto* connector: _connectors_) {
-          if (connector->target() == oldTarget) {
-            toAdd.push_back(connector->duplicate(newTarget));
-          }
-        }
-        for (auto* newConn: toAdd) {
-          _connectors_.push_back(newConn);
-        }
-      }
+      void duplicateTarget(const Listener* oldTarget, Listener* newTarget) override;
 
       ConnectorList _connectors_;
     };
@@ -293,9 +239,7 @@ namespace gum {
     Signaler() { GUM_CONSTRUCTOR(Signaler); }
 
     /// Copy constructor.
-    Signaler(const Signaler& other) : __sig__::BasicSignaler< Args... >(other) {
-      GUM_CONS_CPY(Signaler);
-    }
+    Signaler(const Signaler& other);
 
     /// Destructor.
     ~Signaler() override { GUM_DESTRUCTOR(Signaler); }
@@ -307,25 +251,14 @@ namespace gum {
      * @param action Pointer to the member function to call on signal emission.
      */
     template < class TargetClass >
-    void attach(TargetClass* target, void (TargetClass::*action)(const void*, Args...)) {
-      auto* conn = new __sig__::Connector< TargetClass, Args... >(target, action);
-      this->_connectors_.push_back(conn);
-      target->_attachSignal_(this);
-    }
+    void attach(TargetClass* target, void (TargetClass::*action)(const void*, Args...));
 
     /**
      * @brief Emit the signal, notifying all attached listeners.
      * @param src Pointer to the source object (typically `this` of the emitter).
      * @param args The arguments to pass to each listener's callback.
      */
-    void operator()(const void* src, Args... args) {
-      if (this->_connectors_.empty()) {
-        return;   // No listeners attached, do nothing
-      }
-      for (const auto connectors = this->_connectors_; auto* connector: connectors) {
-        connector->notify(src, args...);
-      }
-    }
+    void operator()(const void* src, Args... args);
   };
 
   // ===========================================================================
@@ -366,5 +299,7 @@ namespace gum {
 
 /// @brief Macro to connect a signal to a listener's member function.
 #define GUM_CONNECT(sender, signal, receiver, target) (sender).signal.attach(&(receiver), &target)
+
+#include <agrum/base/core/signal/signaler_tpl.h>
 
 #endif   // GUM_SIGNALER_H

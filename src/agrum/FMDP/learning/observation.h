@@ -80,27 +80,19 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    Observation() {
-      GUM_CONSTRUCTOR(Observation);
-      ;
-    }
+    Observation();
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~Observation() {
-      GUM_DESTRUCTOR(Observation);
-      ;
-    }
+    ~Observation();
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
+    void* operator new(size_t s);
 
-    void operator delete(void* p) {
-      SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));
-    }
+    void operator delete(void* p);
 
     /// @}
 
@@ -116,9 +108,9 @@ namespace gum {
      * @throws NotFound if variable is not in this observation
      */
     // ###################################################################
-    INLINE Idx modality(const DiscreteVariable* var) const { return _varInst_[var]; }
+    Idx modality(const DiscreteVariable* var) const;
 
-    INLINE Idx rModality(const DiscreteVariable* var) const { return _rInst_[var]; }
+    Idx rModality(const DiscreteVariable* var) const;
 
     // ###################################################################
     /**
@@ -128,23 +120,19 @@ namespace gum {
      * this variable
      */
     // ###################################################################
-    INLINE void setModality(const DiscreteVariable* var, Idx modality) {
-      _varInst_.insert(var, modality);
-    }
+    void setModality(const DiscreteVariable* var, Idx modality);
 
-    INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
-      _rInst_.insert(var, modality);
-    }
+    void setRModality(const DiscreteVariable* var, Idx modality);
 
     // ###################################################################
     // Returns the reward obtained during this observation
     // ###################################################################
-    double reward() const { return _reward_; }
+    double reward() const;
 
     // ###################################################################
     // Sets the reward obtained during this observation
     // ###################################################################
-    void setReward(double reward) { _reward_ = reward; }
+    void setReward(double reward);
 
     /// @}
     ///
@@ -159,17 +147,13 @@ namespace gum {
     /// Returns an const safe iterator on the beginning of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cbeginVariablesSafe() const {
-      return _varInst_.cbeginSafe();
-    }
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cbeginVariablesSafe() const;
 
     // ###################################################################
     /// Returns an const safe iterator on the end of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cendVariablesSafe() const {
-      return _varInst_.cendSafe();
-    }
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx > cendVariablesSafe() const;
 
     /// @}
 
@@ -184,5 +168,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/learning/observation_inl.h>
 #endif   // GUM_OBSERVATION_H

@@ -143,12 +143,7 @@ namespace gum {
                                                   NodeId         Y,
                                                   const NodeSet& excluded_nodes  = NodeSet(),
                                                   std::size_t    max_cardinality = 0,
-                                                  bool           only_minimal    = true) {
-      auto bds
-          = enumerateBackdoorSets(dag, X, Y, excluded_nodes, max_cardinality, only_minimal, true);
-      if (bds.empty()) { return std::nullopt; }
-      return bds.front();
-    }
+                                                  bool           only_minimal    = true);
 
     /* ------------------------- Frontdoor -------------------------- */
 
@@ -212,12 +207,7 @@ namespace gum {
                                                    NodeId         Y,
                                                    const NodeSet& excluded_nodes  = NodeSet(),
                                                    std::size_t    max_cardinality = 0,
-                                                   bool           only_minimal    = true) {
-      auto fds
-          = enumerateFrontdoorSets(dag, X, Y, excluded_nodes, max_cardinality, only_minimal, true);
-      if (fds.empty()) { return std::nullopt; }
-      return fds.front();
-    }
+                                                   bool           only_minimal    = true);
 
     /* -------------------------- Utilities ------------------------- */
 
@@ -296,5 +286,7 @@ namespace gum {
   };
 
 }   // namespace gum
+
+#include <agrum/CM/doorCriteria_inl.h>
 
 #endif   // GUM_DOOR_CRITERIA_H

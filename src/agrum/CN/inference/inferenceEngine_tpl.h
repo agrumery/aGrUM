@@ -1203,5 +1203,11 @@ namespace gum {
       }
       addEvidence(id, vals);
     }
+
+    template < GUM_Numeric GUM_SCALAR >
+    INLINE const std::string InferenceEngine< GUM_SCALAR >::getApproximationSchemeMsg() {
+      return this->messageApproximationScheme();
+    }
+
   }   // namespace credal
 }   // namespace gum

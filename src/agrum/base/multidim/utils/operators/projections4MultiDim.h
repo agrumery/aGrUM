@@ -724,7 +724,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   struct Projections4MultiDimInitialize {
-    void init() { projections4MultiDimInit< GUM_ELEMENT >(); }
+    void init();
   };
 
   /**
@@ -743,7 +743,7 @@ namespace gum {
    */
   template < typename GUM_ELEMENT >
   struct Projections4MultiDimInitialize< GUM_ELEMENT* > {
-    void init() { pointerProjections4MultiDimInit< GUM_ELEMENT >(); }
+    void init();
   };
 
 } /* namespace gum */

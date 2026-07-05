@@ -101,13 +101,12 @@ namespace gum {
                                          const O3Label&   super_type,
                                          ErrorsContainer& errors) {
         const auto& pos = sub_type.position();
-        errors.addError(
-            std::format("Error : Cyclic inheritance between type {} and type {}",
-                        sub_type.label(),
-                        super_type.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Cyclic inheritance between type {} and type {}",
+                                    sub_type.label(),
+                                    super_type.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void
@@ -130,12 +129,11 @@ namespace gum {
 
       void O3PRM_TYPE_INVALID_RANGE(const O3RealType& val, ErrorsContainer& errors) {
         const auto& pos = val.position();
-        errors.addError(
-            std::format("Error : Found {} values in range expected at least 3",
-                        val.values().size()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Found {} values in range expected at least 3",
+                                    val.values().size()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
@@ -154,11 +152,10 @@ namespace gum {
           matchList += matches[i] + ", ";
         }
         matchList += matches.back();
-        errors.addError(
-            std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_DUPLICATE(const O3Label& val, ErrorsContainer& errors) {
@@ -175,13 +172,12 @@ namespace gum {
                                          ErrorsContainer& errors) {
         // Cyclic inheritance
         const auto& pos = sub.position();
-        errors.addError(
-            std::format("Error : Cyclic inheritance between class {} and class {}",
-                        sub.label(),
-                        super.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Cyclic inheritance between class {} and class {}",
+                                    sub.label(),
+                                    super.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_ATTR_IMPLEMENTATION(const O3Label&   c,
@@ -189,14 +185,13 @@ namespace gum {
                                            const O3Label&   attr,
                                            ErrorsContainer& errors) {
         const auto& pos = attr.position();
-        errors.addError(
-            std::format("Error : Class {} attribute {} does not respect interface {}",
-                        c.label(),
-                        attr.label(),
-                        i.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Class {} attribute {} does not respect interface {}",
+                                    c.label(),
+                                    attr.label(),
+                                    i.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_AGG_IMPLEMENTATION(const O3Label&   c,
@@ -204,14 +199,13 @@ namespace gum {
                                           const O3Label&   attr,
                                           ErrorsContainer& errors) {
         const auto& pos = attr.position();
-        errors.addError(
-            std::format("Error : Class {} aggregate {} does not respect interface {}",
-                        c.label(),
-                        attr.label(),
-                        i.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Class {} aggregate {} does not respect interface {}",
+                                    c.label(),
+                                    attr.label(),
+                                    i.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_REF_IMPLEMENTATION(const O3Label&   c,
@@ -219,14 +213,13 @@ namespace gum {
                                           const O3Label&   ref,
                                           ErrorsContainer& errors) {
         const auto& pos = ref.position();
-        errors.addError(
-            std::format("Error : Class {} reference {} does not respect interface {}",
-                        c.label(),
-                        ref.label(),
-                        i.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Class {} reference {} does not respect interface {}",
+                                    c.label(),
+                                    ref.label(),
+                                    i.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_MISSING_ATTRIBUTES(const O3Label&   c,
@@ -320,9 +313,9 @@ namespace gum {
                                          ErrorsContainer& errors) {
         const auto& pos = f.position();
         auto        msg = std::format("Error : Illegal CPT value \"{}\" in attribute {}.{}",
-                               f.formula().formula(),
-                               c,
-                               attr.label());
+                                      f.formula().formula(),
+                                      c,
+                                      attr.label());
         try {
           auto result = f.formula().result();
           msg += std::format(", formula resolve to {}", result);
@@ -338,14 +331,13 @@ namespace gum {
                                              float            f,
                                              ErrorsContainer& errors) {
         const auto& pos = attr.position();
-        errors.addError(
-            std::format("Error : PRMAttribute {}.{} CPT does not sum to 1, found {}",
-                        c,
-                        attr.label(),
-                        f),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : PRMAttribute {}.{} CPT does not sum to 1, found {}",
+                                    c,
+                                    attr.label(),
+                                    f),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(std::string_view c,
@@ -380,9 +372,7 @@ namespace gum {
                                           ErrorsContainer&         errors) {
         const auto& pos = label.position();
         errors.addError(
-            std::format("Error : Label {} is not part of {} domain",
-                        label.label(),
-                        parent.label()),
+            std::format("Error : Label {} is not part of {} domain", label.label(), parent.label()),
             pos.file(),
             pos.line(),
             pos.column());
@@ -401,27 +391,25 @@ namespace gum {
                                          std::string_view found,
                                          ErrorsContainer& errors) {
         const auto& pos = prnt.position();
-        errors.addError(
-            std::format("Error : Expected type {} for parent {}, found {}",
-                        expected,
-                        prnt.label(),
-                        found),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Expected type {} for parent {}, found {}",
+                                    expected,
+                                    prnt.label(),
+                                    found),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_ILLEGAL_OVERLOAD(const O3Label&   elt,
                                         const O3Label&   c,
                                         ErrorsContainer& errors) {
         const auto& pos = elt.position();
-        errors.addError(
-            std::format("Error : Illegal overload of element {} from class {}",
-                        elt.label(),
-                        c.label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Illegal overload of element {} from class {}",
+                                    elt.label(),
+                                    c.label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_AGG_PARAMETERS(const O3Label&   agg,
@@ -429,11 +417,10 @@ namespace gum {
                                       Size             found,
                                       ErrorsContainer& errors) {
         const auto& pos = agg.position();
-        errors.addError(
-            std::format("Error : Expected {} parameters , found {}", expected, found),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Expected {} parameters , found {}", expected, found),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_CLASS_AGG_PARAMETER_NOT_FOUND(const O3Label&   agg,
@@ -474,11 +461,10 @@ namespace gum {
           matchList += matches[i] + ", ";
         }
         matchList += matches.back();
-        errors.addError(
-            std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_INTERFACE_DUPLICATE(const O3Label& val, ErrorsContainer& errors) {
@@ -526,23 +512,21 @@ namespace gum {
                                                  const O3InterfaceElement& ref,
                                                  ErrorsContainer&          errors) {
         const auto& pos = ref.type().position();
-        errors.addError(
-            std::format("Error : Interface {} cannot reference subinterface {}",
-                        i.name().label(),
-                        ref.type().label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Interface {} cannot reference subinterface {}",
+                                    i.name().label(),
+                                    ref.type().label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_INTERFACE_ILLEGAL_OVERLOAD(const O3InterfaceElement& elt,
                                             ErrorsContainer&          errors) {
         const auto& pos = elt.type().position();
-        errors.addError(
-            std::format("Error : Illegal overload of element {}", elt.name().label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Illegal overload of element {}", elt.name().label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_REFERENCE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors) {
@@ -562,11 +546,10 @@ namespace gum {
           matchList += matches[i] + ", ";
         }
         matchList += matches.back();
-        errors.addError(
-            std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Name {} is ambiguous: {}", val.label(), matchList),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System& sys, ErrorsContainer& errors) {
@@ -597,11 +580,10 @@ namespace gum {
 
       void O3PRM_SYSTEM_NOT_A_PARAMETER(const O3InstanceParameter& param, ErrorsContainer& errors) {
         const auto& pos = param.name().position();
-        errors.addError(
-            std::format("Instance error : {} is not a parameter", param.name().label()),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Instance error : {} is not a parameter", param.name().label()),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_SYSTEM_PARAMETER_NOT_FOUND(const O3InstanceParameter& param,

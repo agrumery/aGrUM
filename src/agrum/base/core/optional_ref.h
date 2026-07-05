@@ -65,26 +65,25 @@ namespace gum {
     public:
     optional_ref() noexcept = default;
 
-    optional_ref(std::nullopt_t) noexcept {}
+    optional_ref(std::nullopt_t) noexcept;
 
-    optional_ref(T& ref) noexcept : _ptr_(&ref) {}
+    optional_ref(T& ref) noexcept;
 
     optional_ref(T&&) = delete;
 
-    explicit operator bool() const noexcept { return _ptr_ != nullptr; }
+    explicit operator bool() const noexcept;
 
-    bool has_value() const noexcept { return _ptr_ != nullptr; }
+    bool has_value() const noexcept;
 
-    T& value() const {
-      if (!_ptr_) throw std::bad_optional_access();
-      return *_ptr_;
-    }
+    T& value() const;
 
-    T& operator*() const { return value(); }
+    T& operator*() const;
 
-    T* operator->() const noexcept { return _ptr_; }
+    T* operator->() const noexcept;
   };
 
 }   // namespace gum
+
+#include <agrum/base/core/optional_ref_tpl.h>
 
 #endif   // GUM_OPTIONAL_REF_H

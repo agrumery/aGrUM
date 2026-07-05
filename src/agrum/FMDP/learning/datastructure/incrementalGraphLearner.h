@@ -114,19 +114,19 @@ namespace gum {
     // ==========================================================================
     /// Template function dispatcher
     // ==========================================================================
-    void _clearValue_() { _clearValue_(Int2Type< isScalar >()); }
+    void _clearValue_();
 
     // ==========================================================================
     /// In the case where we're learning a function of real values
     /// this has to be wiped out upon destruction (to be deprecated)
     // ==========================================================================
-    void _clearValue_(Int2Type< true >) { delete value_; }
+    void _clearValue_(Int2Type< true >);
 
     // ==========================================================================
     /// In case where we're learning function of variable behaviour,
     /// this should do nothing
     // ==========================================================================
-    void _clearValue_(Int2Type< false >) {}
+    void _clearValue_(Int2Type< false >);
 
     /// @}
 
@@ -150,32 +150,22 @@ namespace gum {
      * Get value assumed by studied variable for current observation
      */
     // ==========================================================================
-    void _assumeValue_(const Observation* obs) { _assumeValue_(obs, Int2Type< isScalar >()); }
+    void _assumeValue_(const Observation* obs);
 
-    void _assumeValue_(const Observation* obs, Int2Type< true >) {
-      if (!valueAssumed_.exists(obs->reward())) valueAssumed_ << obs->reward();
-    }
+    void _assumeValue_(const Observation* obs, Int2Type< true >);
 
-    void _assumeValue_(const Observation* obs, Int2Type< false >) {
-      if (!valueAssumed_.exists(obs->modality(value_))) valueAssumed_ << obs->modality(value_);
-    }
+    void _assumeValue_(const Observation* obs, Int2Type< false >);
 
     // ==========================================================================
     /**
      * Seek modality assumed in obs for given var
      */
     // ==========================================================================
-    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var) {
-      return _branchObs_(obs, var, Int2Type< isScalar >());
-    }
+    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var);
 
-    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< true >) {
-      return obs->rModality(var);
-    }
+    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< true >);
 
-    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< false >) {
-      return obs->modality(var);
-    }
+    Idx _branchObs_(const Observation* obs, const DiscreteVariable* var, Int2Type< false >);
 
     protected:
     // ==========================================================================
@@ -186,9 +176,7 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    virtual void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId) {
-      nodeId2Database_[currentNodeId]->addObservation(newObs);
-    }
+    virtual void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId);
 
     /// @}
 
@@ -307,51 +295,24 @@ namespace gum {
 
 
     public:
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    Size size() { return nodeVarMap_.size(); }
-
     // ###################################################################
     /// @name Visit Methods
     // ###################################################################
     /// @{
 
-    public:
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    NodeId root() const override { return this->root_; }
+    Size size();
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    bool isTerminal(NodeId ni) const override { return !this->nodeSonsMap_.exists(ni); }
+    NodeId root() const override;
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    const DiscreteVariable* nodeVar(NodeId ni) const override { return this->nodeVarMap_[ni]; }
+    bool isTerminal(NodeId ni) const override;
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    NodeId nodeSon(NodeId ni, Idx modality) const override { return this->nodeSonsMap_[ni][modality]; }
+    const DiscreteVariable* nodeVar(NodeId ni) const override;
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    Idx nodeNbObservation(NodeId ni) const override { return this->nodeId2Database_[ni]->nbObservation(); }
+    NodeId nodeSon(NodeId ni, Idx modality) const override;
 
-    // ==========================================================================
-    ///
-    // ==========================================================================
-    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override {
-      for (SetIteratorSafe< const DiscreteVariable* > varIter = setOfVars_.beginSafe();
-           varIter != setOfVars_.endSafe();
-           ++varIter)
-        ret->add(**varIter);
-    }
+    Idx nodeNbObservation(NodeId ni) const override;
+
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override;
 
     /// @}
 

@@ -153,9 +153,7 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
 
-    virtual const Tensor< GUM_SCALAR >& cpt(std::string_view name) const final {
-      return cpt(idFromName(name));
-    }
+    virtual const Tensor< GUM_SCALAR >& cpt(std::string_view name) const final;
 
     /**
      * Returns the utility table of a utility node.
@@ -163,30 +161,28 @@ namespace gum {
      */
     virtual const Tensor< GUM_SCALAR >& utility(NodeId varId) const;
 
-    virtual const Tensor< GUM_SCALAR >& utility(std::string_view name) const final {
-      return utility(idFromName(name));
-    }
+    virtual const Tensor< GUM_SCALAR >& utility(std::string_view name) const final;
 
     /**
      * Returns true if node is a utility one
      */
     bool isUtilityNode(NodeId varId) const;
 
-    bool isUtilityNode(std::string_view name) const { return isUtilityNode(idFromName(name)); }
+    bool isUtilityNode(std::string_view name) const;
 
     /**
      * Returns true if node is a decision one
      */
     bool isDecisionNode(NodeId varId) const;
 
-    bool isDecisionNode(std::string_view name) const { return isDecisionNode(idFromName(name)); }
+    bool isDecisionNode(std::string_view name) const;
 
     /**
      * Returns true if node is a chance one
      */
     bool isChanceNode(NodeId varId) const;
 
-    bool isChanceNode(std::string_view name) const { return isChanceNode(idFromName(name)); }
+    bool isChanceNode(std::string_view name) const;
 
     /**
      * Returns the number of utility nodes
@@ -203,9 +199,7 @@ namespace gum {
      */
     Size decisionNodeSize() const;
 
-    const DiscreteVariable& variable(std::string_view name) const {
-      return variable(idFromName(name));
-    }
+    const DiscreteVariable& variable(std::string_view name) const;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -380,7 +374,7 @@ namespace gum {
      */
     void erase(NodeId id);
 
-    void erase(std::string_view name) { erase(idFromName(name)); }
+    void erase(std::string_view name);
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -397,9 +391,7 @@ namespace gum {
      */
     void changeVariableName(NodeId id, std::string_view new_name);
 
-    void changeVariableName(std::string_view name, std::string_view new_name) {
-      changeVariableName(idFromName(name), new_name);
-    }
+    void changeVariableName(std::string_view name, std::string_view new_name);
 
     /// @}
     // ===========================================================================
@@ -418,9 +410,7 @@ namespace gum {
      */
     void addArc(NodeId tail, NodeId head);
 
-    void addArc(std::string_view tail, std::string_view head) {
-      addArc(idFromName(tail), idFromName(head));
-    }
+    void addArc(std::string_view tail, std::string_view head);
 
     /**
      * Removes an arc in the ID, and update diagram's tensor nodes cpt if
@@ -441,9 +431,7 @@ namespace gum {
      */
     void eraseArc(NodeId tail, NodeId head);
 
-    void eraseArc(std::string_view tail, std::string_view head) {
-      eraseArc(idFromName(tail), idFromName(head));
-    }
+    void eraseArc(std::string_view tail, std::string_view head);
 
     /// @}
 
@@ -473,9 +461,7 @@ namespace gum {
      */
     bool existsPathBetween(NodeId src, NodeId dest) const;
 
-    bool existsPathBetween(std::string_view src, std::string_view dest) const {
-      return existsPathBetween(idFromName(src), idFromName(dest));
-    }
+    bool existsPathBetween(std::string_view src, std::string_view dest) const;
 
     /**
      * Returns partial temporal ordering

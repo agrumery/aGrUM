@@ -111,6 +111,12 @@ namespace gum {
 
     INLINE bool PRMType::operator==(const PRMType& obj) const { return name() == obj.name(); }
 
+    INLINE PRMType* PRMType::boolean() {
+      LabelizedVariable var("boolean", "Boolean variable", 0);
+      var.addLabel("false");
+      var.addLabel("true");
+      return new PRMType(var);
+    }
 
   } /* namespace prm */
 } /* namespace gum */

@@ -205,7 +205,10 @@ namespace gum {
     output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
 
     for (auto node: nodes())
-      output << std::format("\"{}\" [comment=\"{}:{}\"];\n", variable(node).name(), node, variable(node).toStringWithDescription());
+      output << std::format("\"{}\" [comment=\"{}:{}\"];\n",
+                            variable(node).name(),
+                            node,
+                            variable(node).toStringWithDescription());
 
     output << std::endl;
 
@@ -214,7 +217,9 @@ namespace gum {
     for (auto node: nodes()) {
       if (children(node).size() > 0) {
         for (auto child: children(node)) {
-          output << std::format("  \"{}\" -> \"{}\";\n", variable(node).name(), variable(child).name());
+          output << std::format("  \"{}\" -> \"{}\";\n",
+                                variable(node).name(),
+                                variable(child).name());
         }
       } else if (parents(node).size() == 0) {
         output << std::format("  \"{}\";\n", variable(node).name());

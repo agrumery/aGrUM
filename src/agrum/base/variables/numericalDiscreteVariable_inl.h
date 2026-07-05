@@ -241,6 +241,8 @@ namespace gum {
   INLINE std::string NumericalDiscreteVariable::toFast() const {
     return std::format("{}{}", name(), domain());
   }
+
+  INLINE std::string NumericalDiscreteVariable::stype() const { return "NumericalDiscrete"; }
 } /* namespace gum */
 
 #endif /* DOXYGEN SHOULD SKIP THIS */

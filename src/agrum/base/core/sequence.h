@@ -1092,27 +1092,19 @@ namespace gum {
   template < bool gen >
   struct SequenceIteratorGet {
     template < typename Key >
-    INLINE static const Key& op_star(const Key* x) {
-      return *x;
-    }
+    static const Key& op_star(const Key* x);
 
     template < typename Key >
-    INLINE static const Key* op_arrow(const Key* x) {
-      return x;
-    }
+    static const Key* op_arrow(const Key* x);
   };
 
   template <>
   struct SequenceIteratorGet< true > {
     template < typename Key >
-    INLINE static const Key& op_star(const Key& x) {
-      return x;
-    }
+    static const Key& op_star(const Key& x);
 
     template < typename Key >
-    INLINE static const Key* op_arrow(const Key& x) {
-      return &x;
-    }
+    static const Key* op_arrow(const Key& x);
   };
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

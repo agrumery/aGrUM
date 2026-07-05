@@ -75,12 +75,12 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    ApproximationPolicy() {}
+    ApproximationPolicy();
 
     /**
      *  @brief Copy constructor.
      */
-    ApproximationPolicy(const ApproximationPolicy< GUM_SCALAR >* md) {}
+    ApproximationPolicy(const ApproximationPolicy< GUM_SCALAR >* md);
 
     /// @}
     // ===========================================================================
@@ -137,5 +137,7 @@ namespace gum {
     /// @}
   };
 }   // namespace gum
+
+#include <agrum/base/core/approximations/approximationPolicy_tpl.h>
 
 #endif /* GUM_APPROXIMATION_POLICY_H */

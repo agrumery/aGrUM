@@ -79,8 +79,8 @@ namespace gum_tests {
 
   inline std::string getTempFilePath(const std::string& suffix = "") {
     static std::atomic< int > counter{0};
-    auto path = std::filesystem::temp_directory_path()
-                / ("gum_test_" + std::to_string(++counter) + suffix);
+    auto                      path = std::filesystem::temp_directory_path()
+                                   / ("gum_test_" + std::to_string(++counter) + suffix);
     return path.string();
   }
 

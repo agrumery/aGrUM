@@ -229,7 +229,7 @@ namespace gum {
       //         VERBOSITY ( "  variable " << var->name() << " OK" );
 
     } else {
-      const size_t    nModa   = _stringBag_.size() > 2 ? _stringBag_.size() - 2 : size_t{0};
+      const size_t      nModa   = _stringBag_.size() > 2 ? _stringBag_.size() - 2 : size_t{0};
       const std::string varName = _foo_flag_ ? _stringBag_[0] : "unknown";
 
       _resetParts_();

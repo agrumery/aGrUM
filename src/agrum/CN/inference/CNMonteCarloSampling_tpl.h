@@ -372,4 +372,10 @@ namespace gum::credal {
     }
   }
 
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::insertEvidenceFile(
+      std::string_view path) {
+    InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
+  }
+
 }   // namespace gum::credal

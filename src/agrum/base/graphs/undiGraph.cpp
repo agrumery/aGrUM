@@ -113,8 +113,7 @@ namespace gum {
 
       if (neighbours(node).size() > 0)
         for (const auto nei: neighbours(node))
-          if (!treatedNodes.exists(nei))
-            edgeStream << std::format("{}{} -> {};\n", tab, node, nei);
+          if (!treatedNodes.exists(nei)) edgeStream << std::format("{}{} -> {};\n", tab, node, nei);
 
       treatedNodes.insert(node);
     }

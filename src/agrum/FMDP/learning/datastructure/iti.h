@@ -119,10 +119,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
-    ~ITI() {
-      GUM_DESTRUCTOR(ITI);
-      ;
-    }
+    ~ITI();
 
     /// @}
 
@@ -226,9 +223,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId _insertTerminalNode_(NodeId src) {
-      return _insertTerminalNode_(src, Int2Type< isScalar >());
-    }
+    NodeId _insertTerminalNode_(NodeId src);
 
     // ==========================================================================
     /**
@@ -262,12 +257,7 @@ namespace gum {
      * @param ret
      */
     // ==========================================================================
-    void insertSetOfVars_(MultiDimFunctionGraph< double >* ret) {
-      for (SetIteratorSafe< const DiscreteVariable* > varIter = this->setOfVars_.beginSafe();
-           varIter != this->setOfVars_.endSafe();
-           ++varIter)
-        ret->add(**varIter);
-    }
+    void insertSetOfVars_(MultiDimFunctionGraph< double >* ret);
 
     private:
     /// Hashtable indicating if given node has been modified (upon receiving new

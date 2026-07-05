@@ -88,9 +88,7 @@ namespace gum {
     ;
   }
 
-  std::string RangeVariable::domain() const {
-    return std::format("[{},{}]", minVal(), maxVal());
-  }
+  std::string RangeVariable::domain() const { return std::format("[{},{}]", minVal(), maxVal()); }
 
   std::string RangeVariable::toFast() const {
     if (const auto m = minVal(); m != 0) {

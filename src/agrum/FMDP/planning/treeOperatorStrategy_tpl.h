@@ -229,5 +229,23 @@ namespace gum {
     return ret;
   }
 
+  template < typename GUM_ELEMENT >
+  INLINE MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
+         TreeOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
+    return MultiDimFunctionGraph< GUM_ELEMENT >::getTreeInstance();
+  }
+
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >*
+      TreeOperatorStrategy< GUM_ELEMENT >::getArgMaxFunctionInstance() {
+    return MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >,
+                                  SetTerminalNodePolicy >::getTreeInstance();
+  }
+
+  template < typename GUM_ELEMENT >
+  INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
+         TreeOperatorStrategy< GUM_ELEMENT >::getAggregatorInstance() {
+    return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
+  }
 
 }   // end of namespace gum

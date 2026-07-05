@@ -147,4 +147,49 @@ namespace gum {
     return true;
   }
 
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  auto ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator<=>(
+      const ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >& compared) const {
+    return _val_ <=> compared.value();
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  void* ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  void ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(
+        p,
+        sizeof(ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >));
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  SequenceIteratorSafe< GUM_SCALAR_SEQ >
+      ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::beginSafe() const {
+    return _argMaxSeq_->beginSafe();
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  SequenceIteratorSafe< GUM_SCALAR_SEQ >
+      ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::endSafe() const {
+    return _argMaxSeq_->endSafe();
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  const GUM_SCALAR_VAL& ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::value() const {
+    return _val_;
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  bool ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::exists(const GUM_SCALAR_SEQ& elem) const {
+    return _argMaxSeq_->exists(elem);
+  }
+
+  template < GUM_Numeric GUM_SCALAR_VAL, GUM_Numeric GUM_SCALAR_SEQ >
+  Idx ArgMaxSet< GUM_SCALAR_VAL, GUM_SCALAR_SEQ >::size() const {
+    return _argMaxSeq_->size();
+  }
+
 }   // End of namespace gum

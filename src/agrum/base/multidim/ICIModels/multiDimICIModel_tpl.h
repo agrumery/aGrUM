@@ -176,4 +176,35 @@ namespace gum {
     _causal_weights_.erase(x);
   }
 
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::changeNotification(const gum::Instantiation&,
+                                                          const gum::DiscreteVariable* const,
+                                                          gum::Idx,
+                                                          gum::Idx) {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::setFirstNotification(const gum::Instantiation&) {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::setLastNotification(const gum::Instantiation&) {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::setIncNotification(const gum::Instantiation&) {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::setDecNotification(const gum::Instantiation&) {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::setChangeNotification(const gum::Instantiation&) {}
+
+  template < typename GUM_SCALAR >
+  std::string MultiDimICIModel< GUM_SCALAR >::toString(const gum::Instantiation* i) const {
+    return i->toString();
+  }
+
+  template < typename GUM_SCALAR >
+  Size MultiDimICIModel< GUM_SCALAR >::realSize() const {
+    return this->nbrDim();
+  }
+
 } /* namespace gum */

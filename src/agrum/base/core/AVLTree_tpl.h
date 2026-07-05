@@ -54,6 +54,46 @@
 
 namespace gum {
 
+  // =========================================================================
+  // AVLTreeNode constructors
+  // =========================================================================
+
+  template < typename Val >
+  AVLTreeNode< Val >::AVLTreeNode(const Val& val) : value(val) {}
+
+  template < typename Val >
+  AVLTreeNode< Val >::AVLTreeNode(Val&& val) noexcept : value(std::move(val)) {}
+
+  template < typename Val >
+  template < typename... Args >
+  AVLTreeNode< Val >::AVLTreeNode(const Emplace& emplace, Args&&... args) :
+      value(std::forward< Args >(args)...) {}
+
+  template < typename Val >
+  AVLTreeNode< Val >::AVLTreeNode(const AVLTreeNode< Val >& from) :
+      parent(from.parent), left_child(from.left_child), right_child(from.right_child),
+      height(from.height), value(from.value) {}
+
+  template < typename Val >
+  AVLTreeNode< Val >::AVLTreeNode(AVLTreeNode< Val >&& from) noexcept :
+      parent(from.parent), left_child(from.left_child), right_child(from.right_child),
+      height(from.height), value(std::move(from.value)) {}
+
+  template < typename Val >
+  AVLTreeNode< Val >::~AVLTreeNode() {
+    GUM_DESTRUCTOR(AVLTreeNode);
+  }
+
+  template < typename Val >
+  INLINE bool AVLTreeNode< Val >::operator==(const AVLTreeNode< Val >& from) const {
+    return value == from.value;
+  }
+
+  template < typename Val >
+  std::ostream& operator<<(std::ostream& stream, const AVLTreeNode< Val >& node) {
+    return stream << '<' << node.value << '>';
+  }
+
   /// copies recursively the nodes of the tree
   template < typename Val, typename Cmp >
   typename AVLTree< Val, Cmp >::AVLNode* AVLTree< Val, Cmp >::copySubtree_(const AVLNode* from_node,
@@ -1400,6 +1440,16 @@ namespace gum {
     return *this;
   }
 
+  template < typename Val, typename Cmp >
+  std::ostream& operator<<(std::ostream& stream, const AVLTree< Val, Cmp >& tree) {
+    return stream << tree.toString();
+  }
+
+  // HashFunc specialization for AVLTreeNode
+  template < typename Val >
+  INLINE Size HashFunc< AVLTreeNode< Val > >::operator()(const AVLTreeNode< Val >& key) const {
+    return HashFunc< Val >::operator()(key.value);
+  }
 
 }   // namespace gum
 

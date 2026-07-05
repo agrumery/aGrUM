@@ -286,11 +286,11 @@ namespace gum {
      * @name verbosity control
      * @{
      */
-    void setVerbose() { _verbose_ = true; }
+    void setVerbose();
 
-    void resetVerbose() { _verbose_ = false; }
+    void resetVerbose();
 
-    bool isVerbose() { return _verbose_; }
+    bool isVerbose();
 
     /// @}
 
@@ -299,5 +299,5 @@ namespace gum {
   };
 } /* namespace gum */
 
-
+#include <agrum/FMDP/IfmdpFactory_inl.h>
 #endif   // GUM_ABSTRACT_FMDP_FACTORY_H

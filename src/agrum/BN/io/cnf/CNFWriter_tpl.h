@@ -64,6 +64,12 @@ namespace gum {
     GUM_DESTRUCTOR(CNFWriter);
   }
 
+  template < GUM_Numeric GUM_SCALAR, template < typename > class IApproximationPolicy >
+  INLINE GUM_SCALAR
+      CNFWriter< GUM_SCALAR, IApproximationPolicy >::fromExact(const GUM_SCALAR& value) const {
+    return IApproximationPolicy< GUM_SCALAR >::fromExact(value);
+  }
+
 } /*namespace gum */
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS

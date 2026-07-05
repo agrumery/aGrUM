@@ -137,18 +137,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
-      return _primeMap_.second(mainVar);
-    }
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar);
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
-      return _FactoryVars_.beginSafe();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables();
 
-    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
-      return _FactoryVars_.endSafe();
-    }
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables();
 
     /// @}
 
@@ -157,12 +151,12 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName(Idx actionId) { return *_actionMap_[actionId]; }
+    const std::string& actionName(Idx actionId);
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe< Idx > beginActions() { return _FactoryActions_.beginSafe(); }
+    SequenceIteratorSafe< Idx > beginActions();
 
-    SequenceIteratorSafe< Idx > endActions() { return _FactoryActions_.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions();
 
     /// @}
 
@@ -194,5 +188,5 @@ namespace gum {
 
 } /* namespace gum */
 
-
+#include <agrum/FMDP/simulation/factorySimulator_inl.h>
 #endif   // GUM_FACTORY_SIMULATOR_H
