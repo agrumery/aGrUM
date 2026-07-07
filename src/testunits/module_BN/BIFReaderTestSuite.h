@@ -47,6 +47,7 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
+#include <agrum/BN/io/BIF/BIFWriter.h>
 
 #include "agrum/base/variables/discreteVariable.h"
 
@@ -977,6 +978,25 @@ namespace gum_tests {
       if (net) delete net;
     }
 
+    static void testBIFNameRoundtrip() {
+      // Regression: BIFReader::proceed() was adding quote characters around
+      // the BN name when updating the "name" property.
+      gum::BayesNet< double > savedBN("SavedBN");
+      gum::LabelizedVariable  n0("node0", "", 2);
+      savedBN.add(n0);
+
+      std::string              file = GET_RESSOURCES_PATH("outputs/BIFReader_name_roundtrip.bif");
+      gum::BIFWriter< double > writer;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, savedBN));
+
+      gum::BayesNet< double >  loadedBN("LoadedBN");
+      gum::BIFReader< double > reader(&loadedBN, file);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+      CHECK_EQ(savedBN.property("name"), "SavedBN");
+      CHECK_EQ(loadedBN.property("name"), "SavedBN");
+    }
+
     static void testBenchFillingCpt() {
       std::string              file = GET_RESSOURCES_PATH("bif/Diabetes.bif");
       gum::BayesNet< double >  net;
@@ -1011,5 +1031,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Munin1)
   GUM_TEST_ACTIF(Pigs)
   GUM_TEST_ACTIF(Water)
+  GUM_TEST_ACTIF(BIFNameRoundtrip)
   GUM_TEST_ACTIF(BenchFillingCpt)
 }   // namespace gum_tests

@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -215,6 +216,21 @@ namespace gum_tests {
         delete net;
       }
     }
+
+    static void testNetNameRoundtrip() {
+      // Regression: NetReader STRING rule must strip surrounding quotes from
+      // property values — a net file with 'name = "SavedBN";' was producing
+      // '"SavedBN"' instead of 'SavedBN'.
+      std::string file = GET_RESSOURCES_PATH("outputs/NetReader_name_roundtrip.net");
+      {
+        std::ofstream out(file);
+        out << "net {\n  name = \"SavedBN\";\n}\n";
+      }
+      gum::BayesNet< double >  loadedBN;
+      gum::NetReader< double > reader(&loadedBN, file);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+      CHECK_EQ(loadedBN.property("name"), "SavedBN");
+    }
   };
 
   GUM_TEST_ACTIF(Constuctor)
@@ -223,4 +239,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Read_file2)
   GUM_TEST_ACTIF(Read_file3)
   GUM_TEST_ACTIF(Read_file_with_xp)
+  GUM_TEST_ACTIF(NetNameRoundtrip)
 }   // namespace gum_tests

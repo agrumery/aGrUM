@@ -337,7 +337,7 @@ FLOAT_LIST<. std::vector<float>& v .> =   	(. float value=0.0; .)
 
 
 //==============
-STRING<std::string& str> = string	(. str=narrow(t->val); .).
+STRING<std::string& str> = string (. str=narrow(t->val); if (str.size()>=2 && str.front()=='"' && str.back()=='"') str=str.substr(1,str.size()-2); .).
 
 //==============
 IDENT<std::string& name> = ident	(. name=narrow(t->val); .).

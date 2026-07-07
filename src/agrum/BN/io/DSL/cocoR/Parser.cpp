@@ -165,7 +165,7 @@ void Parser::IDENT(std::string& name) {
 
 void Parser::STRING(std::string& str) {
 		Expect(_string);
-		str=narrow(t->val); 
+		str=narrow(t->val); if (str.size()>=2 && str.front()=='"' && str.back()=='"') str=str.substr(1,str.size()-2); 
 }
 
 void Parser::HEADER_PART() {

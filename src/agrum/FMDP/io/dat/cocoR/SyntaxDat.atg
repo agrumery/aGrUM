@@ -365,7 +365,7 @@ PRODUCTIONS
         /// String rule
         /// *************************************************************************************
         STRING<std::string& str> =
-                        string        (. str=narrow(t->val); .).
+                        string        (. str=narrow(t->val); if (str.size()>=2 && str.front()=='"' && str.back()=='"') str=str.substr(1,str.size()-2); .).
 
         /// *************************************************************************************
         /// Identifier rule

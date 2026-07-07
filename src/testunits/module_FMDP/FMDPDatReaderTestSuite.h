@@ -42,8 +42,10 @@
 
 
 // =====================================================================
+#include <algorithm>
 #include <iostream>
 #include <string>
+#include <vector>
 // =====================================================================
 #include <utils.h>
 
@@ -155,6 +157,28 @@ namespace gum_tests {
       CHECK(std::abs(fmdp.discount() - 0.9) < 1e-6);
     }
 
+    void testFMDPQuotedActionName() {
+      // Regression: FMDPDatReader STRING rule was not stripping surrounding
+      // quotes from action names, producing e.g. '"move"' instead of 'move'.
+      gum::FMDP< double >          fmdp(true);
+      gum::FMDPDatReader< double > reader(&fmdp,
+                                          GET_RESSOURCES_PATH("FMDP/coffee/coffee_quoted.dat"));
+      reader.trace(false);
+      gum::Size nbrErr = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+      const std::vector< std::string > expected = {"move", "delc", "getu", "buyc"};
+      std::vector< std::string >       actual;
+      for (auto actIter = fmdp.beginActions(); actIter != fmdp.endActions(); ++actIter)
+        actual.push_back(fmdp.actionName(*actIter));
+
+      CHECK_EQ(actual.size(), expected.size());
+      for (const auto& name: expected)
+        CHECK(std::find(actual.begin(), actual.end(), name) != actual.end());
+    }
+
     void testRewardCompositionSingleDiagram() {
       // Bug1: single-element _ddBag_ with setOperationModeOn used to call
       // add2MultiDimFunctionGraphs(nullptr, elt) -> UB
@@ -185,5 +209,6 @@ namespace gum_tests {
   GUM_TEST_ACTIF(ReadFileFactory)
   GUM_TEST_ACTIF(ReadFileTaxi)
   GUM_TEST_ACTIF(DiscountStoredAfterRead)
+  GUM_TEST_ACTIF(FMDPQuotedActionName)
   GUM_TEST_ACTIF(RewardCompositionSingleDiagram)
 }   // namespace gum_tests

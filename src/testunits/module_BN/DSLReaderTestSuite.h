@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -508,6 +509,20 @@ namespace gum_tests {
 
       if (net) delete net;
     }
+
+    static void testDSLNameRoundtrip() {
+      // Regression: DSLReader STRING rule was not stripping surrounding quotes
+      // from the network name token, producing e.g. '"SavedBN"' instead of 'SavedBN'.
+      std::string file = GET_RESSOURCES_PATH("outputs/DSLReader_name_roundtrip.txt");
+      {
+        std::ofstream out(file);
+        out << "net \"SavedBN\"\n{\n};\n";
+      }
+      gum::BayesNet< double >  loadedBN;
+      gum::DSLReader< double > reader(&loadedBN, file);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+      CHECK_EQ(loadedBN.property("name"), "SavedBN");
+    }
   };
 
   GUM_TEST_ACTIF(Constuctor)
@@ -527,4 +542,5 @@ namespace gum_tests {
   GUM_TEST_ACTIF(Munin1)
   GUM_TEST_ACTIF(Pigs)
   GUM_TEST_ACTIF(Water)
+  GUM_TEST_ACTIF(DSLNameRoundtrip)
 }   // namespace gum_tests
