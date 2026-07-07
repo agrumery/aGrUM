@@ -44,7 +44,7 @@ import numpy
 import os
 import tempfile
 import warnings
-
+import copy
 import sklearn
 
 import pyagrum as gum
@@ -402,7 +402,8 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     # fromTrainedModel) or not
     self.fromModel_ = False
     variableNames = None
-    self.type_processor.clear()
+    type_processor_ = copy.deepcopy(self.type_processor)
+    type_processor_.clear()
 
     if isinstance(y, pandas.DataFrame):  # type(y) == pandas.DataFrame:
       self.target_ = y.columns.tolist()[0]
@@ -476,7 +477,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.bn_.add(var)
 
     for i in range(d):
-      var = self.type_processor._createVariable(variableNames[i], X[:, i], y, self.classes_)
+      var = type_processor_._createVariable(variableNames[i], X[:, i], y, self.classes_)
       self.bn_.add(var)
 
     csvfile = tempfile.NamedTemporaryFile(delete=False)

@@ -41,6 +41,8 @@
 import pickle
 import unittest
 
+from sklearn.utils.estimator_checks import check_estimator
+
 import numpy as np
 import pandas as pd
 
@@ -131,7 +133,9 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertEqual((bnc.predict_proba(dftest_X) - bnc2.predict_proba(dftest_X)).max(), 0)
     self.assertEqual((bnc.predict_proba(dftest_X) - bnc2.predict_proba(dftest_X)).min(), 0)
     self.assertTrue(all(bnc.predict(dftest_X) == bnc2.predict(dftest_X)))
-
+    
+  def testSklearnCompliance(self):
+    check_estimator(skbn.createBNClassifier(),)
 
 ts = unittest.TestSuite()
 addTests(ts, BNCLassifierTestCase)

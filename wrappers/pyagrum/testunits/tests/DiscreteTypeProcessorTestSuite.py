@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import copy
 import unittest
 
 import pandas as pd
@@ -326,6 +327,46 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
       discretizer.setDiscretizationParameters("var2", "expert", [0, 5, 10, 15])
       template = discretizer.discretizedTemplate(X)
       self.assertEqual(template.toFast(), "var1{1|2|3|5|6|7};var2+[0,5,10,15]")
+
+  def testDeepCopyPreservesRulesAndIsIndependent(self):
+    discretizer = DiscreteTypeProcessor(
+      defaultDiscretizationMethod="uniform",
+      defaultNumberOfBins=5,
+      discretizationThreshold=10,
+    )
+    discretizer.setDiscretizationParameters("var1", "kmeans", 4)
+    discretizer.setDiscretizationParameters("var2", "quantile", 3)
+    discretizer.setDiscretizationParameters("var3", "NoDiscretization", "[1,5]")
+
+    discretizerCopy = copy.deepcopy(discretizer)
+
+    # same content right after the copy
+    self.assertIsNot(discretizerCopy, discretizer)
+    self.assertEqual(discretizerCopy.discretizationParametersDictionary, discretizer.discretizationParametersDictionary)
+    self.assertEqual(discretizerCopy.defaultMethod, discretizer.defaultMethod)
+    self.assertEqual(discretizerCopy.defaultParamDiscretizationMethod, discretizer.defaultParamDiscretizationMethod)
+    self.assertEqual(discretizerCopy.discretizationThreshold, discretizer.discretizationThreshold)
+
+    # mutating the copy (as BNClassifier.fit does) must not affect the original: this is exactly
+    # the property that lets fit() work on a deepcopy of type_processor without mutating the
+    # constructor parameter (see check_estimators_overwrite_params compliance)
+    discretizerCopy.setDiscretizationParameters("var4", "MDLP")
+    discretizerCopy.numberOfContinuous += 3
+    discretizerCopy.totalNumberOfBins += 12
+    discretizerCopy.clear()
+
+    self.assertNotIn("var4", discretizer.discretizationParametersDictionary)
+    self.assertIn("var4", discretizerCopy.discretizationParametersDictionary)
+    self.assertEqual(discretizer.numberOfContinuous, 0)
+    self.assertEqual(discretizer.totalNumberOfBins, 0)
+    self.assertEqual(
+      discretizer.discretizationParametersDictionary,
+      {
+        "var1": {"method": "kmeans", "param": 4},
+        "var2": {"method": "quantile", "param": 3},
+        "var3": {"method": "NoDiscretization", "param": "[1,5]"},
+      },
+    )
 
 
 ts = unittest.TestSuite()
