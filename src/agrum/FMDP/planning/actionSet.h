@@ -189,5 +189,8 @@ namespace gum {
   };
 }   // namespace gum
 
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/planning/actionSet_inl.h>
+#endif
 #include <agrum/FMDP/planning/actionSet_tpl.h>
 #endif   // GUM_ACTION_SET_H

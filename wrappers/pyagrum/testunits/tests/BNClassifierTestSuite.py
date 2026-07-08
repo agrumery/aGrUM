@@ -133,9 +133,12 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertEqual((bnc.predict_proba(dftest_X) - bnc2.predict_proba(dftest_X)).max(), 0)
     self.assertEqual((bnc.predict_proba(dftest_X) - bnc2.predict_proba(dftest_X)).min(), 0)
     self.assertTrue(all(bnc.predict(dftest_X) == bnc2.predict(dftest_X)))
-    
+
   def testSklearnCompliance(self):
-    check_estimator(skbn.createBNClassifier(),)
+    check_estimator(
+      skbn.createBNClassifier(),
+    )
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNCLassifierTestCase)

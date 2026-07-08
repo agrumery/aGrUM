@@ -159,13 +159,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  MarkovRandomField< GUM_SCALAR >&
-      MarkovRandomField< GUM_SCALAR >::operator=(MarkovRandomField< GUM_SCALAR >&& source) noexcept {
+  MarkovRandomField< GUM_SCALAR >& MarkovRandomField< GUM_SCALAR >::operator=(
+      MarkovRandomField< GUM_SCALAR >&& source) noexcept {
     if (this != &source) {
       _clearFactors_();
       UGmodel::operator=(std::move(source));
       _topologyTransformationInProgress_ = false;
-      _factors_ = std::move(source._factors_);
+      _factors_                          = std::move(source._factors_);
       source._rebuildGraph_();
       GUM_OP_MOV(MarkovRandomField);
     }

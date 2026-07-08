@@ -48,6 +48,10 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/variableselector.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/variableselector_inl.h>
+#endif   // GUM_NO_INLINE
+
 // =========================================================================
 
 namespace gum {

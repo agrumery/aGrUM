@@ -119,5 +119,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   // GUM_ABSTRACT_LEAF_H

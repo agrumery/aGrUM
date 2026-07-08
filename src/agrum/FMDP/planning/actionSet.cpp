@@ -47,3 +47,7 @@
  */
 
 #include <agrum/FMDP/planning/actionSet.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/planning/actionSet_inl.h>
+#endif

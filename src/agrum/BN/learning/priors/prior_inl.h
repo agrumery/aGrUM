@@ -86,17 +86,6 @@ namespace gum::learning {
   /// returns the weight assigned to the prior
   INLINE double Prior::weight() const { return weight_; }
 
-  constexpr const char* priorTypeToString(PriorType e) noexcept {
-    switch (e) {
-      case PriorType::NoPriorType : return "No prior";
-      case PriorType::DirichletPriorType : return "Dirichlet prior";
-      case PriorType::SmoothingPriorType : return "TriSmoothing prior";
-      case PriorType::BDeuPriorType : return "BDeu prior";
-    }
-    return "Error in prior";
-  }
-
-
 }   // namespace gum::learning
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

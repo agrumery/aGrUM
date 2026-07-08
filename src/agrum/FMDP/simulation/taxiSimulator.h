@@ -208,5 +208,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/simulation/taxiSimulator_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/taxiSimulator_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   // GUM_TAXI_SIMULATOR_H

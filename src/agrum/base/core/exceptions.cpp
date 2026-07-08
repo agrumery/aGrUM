@@ -44,6 +44,9 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/exceptions.h>
+#ifdef GUM_NO_INLINE
+#  include <agrum/base/core/exceptions_inl.h>
+#endif   // GUM_NO_INLINE
 #ifdef GUM_DEBUG_MODE
 #  ifdef HAVE_EXECINFO_H
 #    include <execinfo.h>

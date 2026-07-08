@@ -400,3 +400,7 @@
 //      currentState_.chgVal( _fuelLevel_, 13);
 //  }
 //} // End of namespace gum
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/factorySimulator_inl.h>
+#endif   // GUM_NO_INLINE

@@ -49,4 +49,8 @@
 
 // =========================================================================
 #include <agrum/FMDP/decision/lazyDecider.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/decision/lazyDecider_inl.h>
+#endif   // GUM_NO_INLINE
 // =========================================================================

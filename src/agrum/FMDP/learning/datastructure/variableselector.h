@@ -138,5 +138,7 @@ namespace gum {
 
 }   // namespace gum
 
-#include <agrum/FMDP/learning/datastructure/variableselector_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/variableselector_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   // GUM_VARIABLE_SELECTOR_H

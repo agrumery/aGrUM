@@ -47,3 +47,7 @@
  */
 
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy_inl.h>
+#endif   // GUM_NO_INLINE

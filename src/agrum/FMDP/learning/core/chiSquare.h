@@ -105,7 +105,9 @@ namespace gum {
 
 } /* namespace gum */
 
-#  include <agrum/FMDP/learning/core/chiSquare_inl.h>
+#  ifndef GUM_NO_INLINE
+#    include <agrum/FMDP/learning/core/chiSquare_inl.h>
+#  endif
 #endif   // GUM_CHI_SQUARE_H
 
 

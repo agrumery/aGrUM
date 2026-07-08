@@ -69,7 +69,7 @@ namespace gum {
    * @param is The input binary stream.
    * @return   The payload bytes.
    */
-  inline std::vector< uint8_t > _readVector_(std::istream& is);
+  std::vector< uint8_t > _readVector_(std::istream& is);
 
   /**
    * Writes a length-prefixed byte vector to a binary stream (bgum format).
@@ -77,7 +77,7 @@ namespace gum {
    * @param os  The output binary stream.
    * @param vec The payload bytes to write.
    */
-  inline void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+  void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
 
 } /* namespace gum */
 

@@ -51,6 +51,10 @@
 #include <agrum/CM/doorCriteria.h>
 #include <agrum/CM/tools/separation.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/CM/doorCriteria_inl.h>
+#endif   // GUM_NO_INLINE
+
 namespace gum {
 
   namespace {

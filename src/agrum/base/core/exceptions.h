@@ -674,7 +674,9 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#  include <agrum/base/core/exceptions_inl.h>
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+#  ifndef GUM_NO_INLINE
+#    include <agrum/base/core/exceptions_inl.h>
+#  endif   // GUM_NO_INLINE
+#endif     // DOXYGEN_SHOULD_SKIP_THIS
 
-#endif   /* GUM_EXCEPTIONS_H */
+#endif     /* GUM_EXCEPTIONS_H */

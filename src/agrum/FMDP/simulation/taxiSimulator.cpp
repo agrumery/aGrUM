@@ -50,6 +50,10 @@
 //======================================================================
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/taxiSimulator_inl.h>
+#endif   // GUM_NO_INLINE
+
 //======================================================================
 
 namespace gum {

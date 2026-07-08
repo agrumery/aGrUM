@@ -40,3 +40,7 @@
 
 
 #include "agrum/BN/learning/paramUtils/EMApproximationScheme.h"
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/BN/learning/paramUtils/EMApproximationScheme_inl.h>
+#endif   // GUM_NO_INLINE

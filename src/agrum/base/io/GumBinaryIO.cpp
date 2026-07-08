@@ -40,3 +40,7 @@
 
 
 #include "agrum/base/io/GumBinaryIO.h"
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/base/io/GumBinaryIO_inl.h>
+#endif   // GUM_NO_INLINE

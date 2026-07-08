@@ -48,4 +48,8 @@
  */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf_inl.h>
+#endif   // GUM_NO_INLINE
 // =======================================================

@@ -41,6 +41,10 @@
 
 #include <agrum/FMDP/simulation/statesChecker.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/statesChecker_inl.h>
+#endif   // GUM_NO_INLINE
+
 namespace gum {
 
   StatesChecker::StatesChecker() :

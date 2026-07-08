@@ -161,5 +161,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/leaves/leafAggregator_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/leaves/leafAggregator_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   // GUM_LEAF_AGGREGATOR_H

@@ -48,6 +48,10 @@
 // =========================================================================
 #include <agrum/FMDP/learning/core/chiSquare.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/core/chiSquare_inl.h>
+#endif
+
 #include <agrum/base/core/math/math_utils.h>
 
 // =========================================================================

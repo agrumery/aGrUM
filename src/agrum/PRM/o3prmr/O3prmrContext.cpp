@@ -48,6 +48,10 @@
 
 #include <agrum/PRM/o3prmr/O3prmrContext.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/PRM/o3prmr/O3prmrContext_inl.h>
+#endif   // GUM_NO_INLINE
+
 namespace gum {
 
   namespace prm {

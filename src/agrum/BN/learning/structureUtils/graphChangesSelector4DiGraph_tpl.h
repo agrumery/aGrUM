@@ -881,7 +881,7 @@ namespace gum {
     INLINE const GraphChange&
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
                                       VARIABLE_CONSTRAINT_TYPE >::bestChange() {
-      for (const auto& _sorted_change : _sorted_changes_) {
+      for (const auto& _sorted_change: _sorted_changes_) {
         if (_variable_constraints_->checkModification(_sorted_change)) { return _sorted_change; }
       }
 

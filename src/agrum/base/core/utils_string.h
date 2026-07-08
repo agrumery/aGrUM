@@ -177,4 +177,6 @@ namespace gum {
 #  include <agrum/base/core/utils_string_inl.h>
 #endif   // GUM_NO_INLINE
 
-#endif   /* GUM_UTILS_STRING_H */
+#include <agrum/base/core/utils_string_tpl.h>
+
+#endif /* GUM_UTILS_STRING_H */

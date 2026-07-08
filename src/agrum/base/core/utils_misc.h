@@ -143,13 +143,6 @@ namespace gum {
   using forbidden_type = typename std::enable_if< !std::is_same< T1, T2 >::value, int >::type;
 
   /**
-   * @brief Implements a stream with the same behaviour as /dev/null.
-   */
-  struct NullStream: std::ostream {
-    NullStream();
-  };
-
-  /**
    * @brief Cross-platform replacement for memcmp.
    * @param in_ A pointer to the block of memory to copy.
    * @param out_ A pointer to the block of memory receiving copy.

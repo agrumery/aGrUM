@@ -47,3 +47,7 @@
  */
 
 #include <agrum/FMDP/IfmdpFactory.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/IfmdpFactory_inl.h>
+#endif   // GUM_NO_INLINE

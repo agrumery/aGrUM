@@ -55,6 +55,10 @@
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/fmdpSimulator_inl.h>
+#endif   // GUM_NO_INLINE
+
 //======================================================================
 
 namespace gum {

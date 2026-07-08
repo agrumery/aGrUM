@@ -49,4 +49,8 @@
 
 // =========================================================================
 #include <agrum/FMDP/decision/randomDecider.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/decision/randomDecider_inl.h>
+#endif   // GUM_NO_INLINE
 // =========================================================================

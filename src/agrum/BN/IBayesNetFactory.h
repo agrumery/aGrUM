@@ -152,5 +152,7 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/BN/IBayesNetFactory_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/BN/IBayesNetFactory_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   // GUM_ASBTRACT_BAYESNET_FACTORY_H

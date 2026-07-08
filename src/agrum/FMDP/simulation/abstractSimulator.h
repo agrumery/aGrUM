@@ -148,5 +148,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/simulation/abstractSimulator_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/simulation/abstractSimulator_inl.h>
+#endif   // GUM_NO_INLINE
 #endif   //  _GUM_ABSTRACT_SIMULATOR_H

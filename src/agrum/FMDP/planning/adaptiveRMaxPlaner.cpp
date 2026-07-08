@@ -63,6 +63,10 @@
 #include <agrum/base/multidim/tensor.h>
 // =========================================================================
 #include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/planning/adaptiveRMaxPlaner_inl.h>
+#endif   // GUM_NO_INLINE
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only

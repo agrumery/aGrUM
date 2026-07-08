@@ -38,19 +38,21 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
 
-/**
- * @file
- * @brief Sources of the class.
- *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Jean-Christophe MAGNAN and Christophe
- * GONZALES(_at_AMU)
- */
+#include <sstream>
 
-// =========================================================================
-#include <agrum/FMDP/decision/statisticalLazyDecider.h>
+// to ease IDE parser
+#include <agrum/base/core/utils_string.h>
 
-#ifdef GUM_NO_INLINE
-#  include <agrum/FMDP/decision/statisticalLazyDecider_inl.h>
-#endif   // GUM_NO_INLINE
-// =========================================================================
+namespace gum {
+
+  template < typename T >
+  std::string compact_tostr(T value) {
+    std::ostringstream s;
+    s.precision(7);
+    s << value;
+    return s.str();
+  }
+
+} /* namespace gum */

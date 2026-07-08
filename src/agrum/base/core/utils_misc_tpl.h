@@ -125,8 +125,6 @@ namespace std {
 
 namespace gum {
 
-  INLINE NullStream::NullStream() : std::ios(0), std::ostream(0) {}
-
   template < typename T >
   INLINE bool AlmostDifferent< T >::operator()(const T& t1, const T& t2) {
     if (t1 == t2) return false;

@@ -49,6 +49,10 @@
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/leaves/composedLeaf_inl.h>
+#endif   // GUM_NO_INLINE
+
 // =======================================================
 
 

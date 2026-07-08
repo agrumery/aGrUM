@@ -287,6 +287,8 @@ namespace gum {
 
 }   // namespace gum
 
-#include <agrum/CM/doorCriteria_inl.h>
+#ifndef GUM_NO_INLINE
+#  include <agrum/CM/doorCriteria_inl.h>
+#endif   // GUM_NO_INLINE
 
 #endif   // GUM_DOOR_CRITERIA_H

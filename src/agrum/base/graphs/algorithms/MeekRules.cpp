@@ -48,6 +48,10 @@
 
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/base/graphs/algorithms/MeekRules_inl.h>
+#endif   // GUM_NO_INLINE
+
 namespace gum {
 
   /// default constructor

@@ -52,6 +52,10 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
+#ifdef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/datastructure/leaves/leafPair_inl.h>
+#endif   // GUM_NO_INLINE
+
 // =======================================================
 
 

@@ -49,3 +49,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/IBayesNetFactory.h>
+
+#ifdef GUM_NO_INLINE
+#  include <agrum/BN/IBayesNetFactory_inl.h>
+#endif   // GUM_NO_INLINE
