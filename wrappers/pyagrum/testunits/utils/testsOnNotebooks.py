@@ -130,7 +130,7 @@ def _nb_line(icon: str, dur_str: str, name: str) -> str:
   return f"  {icon} [{dur_str}] {name[:_NB_NAME_WIDTH]:{_NB_NAME_WIDTH}}"
 
 
-def runNotebooks(lonb: list[str] = None):
+def runNotebooks(lonb: list[str] = None, name_filter: str = None):
   # 80-Applications_ipywidgets.ipynb requires ipywidgets and a live kernel display;
   # it cannot run headlessly under nbconvert.
   excludes = {"80-Applications_ipywidgets.ipynb"}
@@ -141,6 +141,7 @@ def runNotebooks(lonb: list[str] = None):
         filename
         for filename in glob.glob("../doc/sphinx/notebooks/*.ipynb")
         if os.path.basename(filename) not in excludes
+        and (name_filter is None or name_filter in os.path.basename(filename))
       ]
     )
   else:

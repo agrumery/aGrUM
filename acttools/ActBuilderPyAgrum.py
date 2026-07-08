@@ -220,13 +220,9 @@ class ActBuilderPyAgrum(ActBuilder):
     if self.current["action"] == "test":
       gumTest = "gumTest.py " + self.current["mode"] + " " + self.current["test_build_path"]
 
-      if self.current["tests"] not in {"", "all"}:
-        gumTest += " -m all -t " + self.current["tests"]
-      else:
-        if self.current["modules"] in {"", "all"}:
-          gumTest += " -m all -t all"
-        else:
-          gumTest += " -m " + self.current["modules"].lower() + " -t all"
+      mod_arg = "all" if self.current["modules"] in {"", "all"} else self.current["modules"].lower()
+      test_arg = "all" if self.current["tests"] in {"", "all"} else self.current["tests"]
+      gumTest += f" -m {mod_arg} -t {test_arg}"
 
       line = f"{cfg.python} ../../../wrappers/pyagrum/testunits/{gumTest}"
 

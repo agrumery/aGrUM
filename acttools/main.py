@@ -206,12 +206,19 @@ def main() -> int:
   extract_cmd_from_args(current, options.cmds)
   update_options_from_args(current, options)
 
-  # Resolve per-target modules/tests: if not explicitly provided on CLI, use the target-specific stored value
+  # Resolve per-target modules/tests: if not explicitly provided on CLI, use the target-specific stored value.
+  # Exception: for the 'test' action, -m given alone (without -t) drops the persisted -t, since a test
+  # suite name from a previous module selection is not meaningful for a newly-chosen module. This only
+  # applies to 'test': -m also selects build modules for 'lib'/'install', where -t has no meaning and
+  # must not be touched.
   target = current["target"]
   if options.modules is None:
     current["modules"] = current.get(f"_modules_{target}", cfg.default["modules"])
   if options.tests is None:
-    current["tests"] = current.get(f"_tests_{target}", cfg.default["tests"])
+    if current["action"] == "test" and options.modules is not None:
+      current["tests"] = cfg.default["tests"]
+    else:
+      current["tests"] = current.get(f"_tests_{target}", cfg.default["tests"])
 
   original_current = current.copy()  # keep a copy of the original current before any modification
 

@@ -266,6 +266,9 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
   notif("## Profiling : %5.0f ms ##" % (1000.0 * t.elapsed))
   notif_module_stats(result.module_stats)
+  if result.testsRun == 0:
+    error(f"No test matched (module='{test_module or 'all'}', suite='{test_suite or 'all'}')")
+    return 1
   (error if errs > 0 else notif)("Failed %d of %d tests" % (errs, result.testsRun))
   notif("Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun))
   notif()

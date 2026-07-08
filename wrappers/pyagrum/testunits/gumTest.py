@@ -150,7 +150,7 @@ def go():
     from utils.testsOnNotebooks import runNotebooks
 
     try:
-      total_errs += runNotebooks()
+      total_errs += runNotebooks(name_filter=test_suite if test_suite else None)
     except NameError:
       pass
     except Exception as e:
