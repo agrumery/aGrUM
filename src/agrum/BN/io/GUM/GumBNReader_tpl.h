@@ -92,7 +92,6 @@ namespace gum {
       return ++nberrors;
     }
 
-    auto& bn = *_bn_;
     if (!content.contains("nodes") || !content.contains("parents") || !content.contains("cpt")) {
       addError("Invalid GUM file format: missing 'nodes', 'parents' or 'cpt' sections",
                _streamName_,
@@ -101,30 +100,37 @@ namespace gum {
       return ++nberrors;
     }
 
-    // iterate on nodes in json
-    for (const auto& node: content["nodes"]) {
-      bn.add(node.template get< std::string >());
-    }
-    // iterate on parents in json
-    for (const auto& parent: content["parents"].items()) {
-      const auto& nodeName = parent.key();
-      for (const auto& p: parent.value()) {
-        bn.addArc(p.template get< std::string >(), nodeName);
+    try {
+      BayesNet< GUM_SCALAR > tmp;
+      // iterate on nodes in json
+      for (const auto& node: content["nodes"]) {
+        tmp.add(node.template get< std::string >());
       }
-    }
-    // iterate on cpt in json
-    for (const auto& cpt: content["cpt"].items()) {
-      const auto& nodeName = cpt.key();
-      const auto& values   = cpt.value();
-      bn.cpt(nodeName).fillWith(values.template get< std::vector< double > >());
-    }
-    // iterate on properties in json (optional section)
-    if (content.contains("properties")) {
-      for (const auto& prop: content["properties"].items()) {
-        bn.setProperty(prop.key(), prop.value().template get< std::string >());
+      // iterate on parents in json
+      for (const auto& parent: content["parents"].items()) {
+        const auto& nodeName = parent.key();
+        for (const auto& p: parent.value()) {
+          tmp.addArc(p.template get< std::string >(), nodeName);
+        }
       }
+      // iterate on cpt in json
+      for (const auto& cpt: content["cpt"].items()) {
+        const auto& nodeName = cpt.key();
+        const auto& values   = cpt.value();
+        tmp.cpt(nodeName).fillWith(values.template get< std::vector< double > >());
+      }
+      // iterate on properties in json (optional section)
+      if (content.contains("properties")) {
+        for (const auto& prop: content["properties"].items()) {
+          tmp.setProperty(prop.key(), prop.value().template get< std::string >());
+        }
+      }
+      *_bn_       = std::move(tmp);
+      _parseDone_ = true;
+    } catch (const gum::Exception& e) {
+      addError(e.errorContent(), _streamName_, 0, 0);
+      return ++nberrors;
     }
-    _parseDone_ = true;
     return nberrors;
   }
 
@@ -143,15 +149,19 @@ namespace gum {
       addException("No such file " + _streamName_, _streamName_);
       return ++nberrors;
     }
-    const auto content
-        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
-    file.close();
-
-    if (content.is_discarded()) {
-      addException("Error parsing file", _streamName_);
+    try {
+      const auto content
+          = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+      file.close();
+      if (content.is_discarded()) {
+        addException("Error parsing file", _streamName_);
+        return ++nberrors;
+      }
+      return _proceedFromJson_(content);
+    } catch (const std::exception& e) {
+      addException(std::string("Error reading binary file: ") + e.what(), _streamName_);
       return ++nberrors;
     }
-    return _proceedFromJson_(content);
   }
 
   template < GUM_Numeric GUM_SCALAR >

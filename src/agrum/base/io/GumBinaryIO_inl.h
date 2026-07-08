@@ -40,6 +40,9 @@
 
 #pragma once
 
+#include <agrum/config.h>
+
+#include <agrum/base/core/inline.h>
 #include <agrum/base/io/GumBinaryIO.h>
 
 namespace gum {

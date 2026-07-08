@@ -161,6 +161,14 @@ namespace gum {
      */
     MarkovRandomField< GUM_SCALAR >& operator=(const MarkovRandomField< GUM_SCALAR >& source);
 
+    /**
+     * @brief Move operator.
+     *
+     * @param source The moved MarkovRandomField.
+     * @return *this.
+     */
+    MarkovRandomField< GUM_SCALAR >& operator=(MarkovRandomField< GUM_SCALAR >&& source) noexcept;
+
     /// @}
     // ===========================================================================
     /// @name Variable manipulation methods

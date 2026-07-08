@@ -102,53 +102,59 @@ namespace gum {
       return ++nberrors;
     }
 
-    auto& id = *_id_;
+    try {
+      InfluenceDiagram< GUM_SCALAR > tmp;
 
-    // add chance nodes
-    for (const auto& node: content["chance"]) {
-      id.addChanceNode(node.template get< std::string >());
-    }
-    // add utility nodes
-    for (const auto& node: content["utility"]) {
-      id.addUtilityNode(node.template get< std::string >());
-    }
-    // add decision nodes
-    for (const auto& node: content["decision"]) {
-      id.addDecisionNode(node.template get< std::string >());
-    }
-
-    // add arcs
-    id.beginTopologyTransformation();
-    for (const auto& entry: content["parents"].items()) {
-      const auto& nodeName = entry.key();
-      for (const auto& p: entry.value()) {
-        id.addArc(p.template get< std::string >(), nodeName);
+      // add chance nodes
+      for (const auto& node: content["chance"]) {
+        tmp.addChanceNode(node.template get< std::string >());
       }
-    }
-    id.endTopologyTransformation();
-
-    // fill CPTs for chance nodes
-    if (content.contains("cpt")) {
-      for (const auto& entry: content["cpt"].items()) {
-        id.cpt(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
+      // add utility nodes
+      for (const auto& node: content["utility"]) {
+        tmp.addUtilityNode(node.template get< std::string >());
       }
-    }
-
-    // fill utility tables
-    if (content.contains("reward")) {
-      for (const auto& entry: content["reward"].items()) {
-        id.utility(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
+      // add decision nodes
+      for (const auto& node: content["decision"]) {
+        tmp.addDecisionNode(node.template get< std::string >());
       }
-    }
 
-    // properties
-    if (content.contains("properties")) {
-      for (const auto& prop: content["properties"].items()) {
-        id.setProperty(prop.key(), prop.value().template get< std::string >());
+      // add arcs
+      tmp.beginTopologyTransformation();
+      for (const auto& entry: content["parents"].items()) {
+        const auto& nodeName = entry.key();
+        for (const auto& p: entry.value()) {
+          tmp.addArc(p.template get< std::string >(), nodeName);
+        }
       }
-    }
+      tmp.endTopologyTransformation();
 
-    _parseDone_ = true;
+      // fill CPTs for chance nodes
+      if (content.contains("cpt")) {
+        for (const auto& entry: content["cpt"].items()) {
+          tmp.cpt(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
+        }
+      }
+
+      // fill utility tables
+      if (content.contains("reward")) {
+        for (const auto& entry: content["reward"].items()) {
+          tmp.utility(entry.key()).fillWith(entry.value().template get< std::vector< double > >());
+        }
+      }
+
+      // properties
+      if (content.contains("properties")) {
+        for (const auto& prop: content["properties"].items()) {
+          tmp.setProperty(prop.key(), prop.value().template get< std::string >());
+        }
+      }
+
+      *_id_       = std::move(tmp);
+      _parseDone_ = true;
+    } catch (const gum::Exception& e) {
+      addError(e.errorContent(), _streamName_, 0, 0);
+      return ++nberrors;
+    }
     return nberrors;
   }
 
@@ -167,16 +173,19 @@ namespace gum {
       addException("No such file " + _streamName_, _streamName_);
       return ++nberrors;
     }
-
-    const auto content
-        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
-    file.close();
-
-    if (content.is_discarded()) {
-      addException("Error parsing file", _streamName_);
+    try {
+      const auto content
+          = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+      file.close();
+      if (content.is_discarded()) {
+        addException("Error parsing file", _streamName_);
+        return ++nberrors;
+      }
+      return _proceedFromJson_(content);
+    } catch (const std::exception& e) {
+      addException(std::string("Error reading binary file: ") + e.what(), _streamName_);
       return ++nberrors;
     }
-    return _proceedFromJson_(content);
   }
 
   template < GUM_Numeric GUM_SCALAR >

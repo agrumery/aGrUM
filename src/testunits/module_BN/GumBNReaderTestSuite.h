@@ -305,6 +305,42 @@ namespace gum_tests {
       CHECK_EQ(bn2, bn);
     }
 
+    static void testJgumPreservesStateOnMidParseError() {
+      gum::BayesNet< double > bn;
+      bn.add("existing[2]");
+
+      // Valid JSON, correct type, but CPT for Y has 3 values instead of 4
+      const std::string bad    = R"({
+        "type": "BN",
+        "nodes": ["X[2]", "Y[2]"],
+        "parents": {"X": [], "Y": ["X"]},
+        "cpt": {"X": [0.3, 0.7], "Y": [0.1, 0.9, 0.4]}
+      })";
+      auto              reader = gum::GumBNReader< double >(&bn);
+      CHECK_NE(reader.proceedFromString(bad), 0u);
+      CHECK_EQ(bn.size(), 1u);
+      CHECK(bn.exists("existing"));
+    }
+
+    static void testBgumPreservesStateOnCorruptBytes() {
+      const auto              path = GET_RESSOURCES_PATH("outputs/corrupt_bn.bgum");
+      gum::BayesNet< double > bn;
+      bn.add("existing[2]");
+
+      // Valid size field, garbage msgpack payload
+      {
+        std::ofstream out(path, std::ios::binary);
+        uint64_t      size = 10;
+        out.write(reinterpret_cast< const char* >(&size), sizeof(size));
+        out.write("GARBAGE!!!", 10);
+      }
+      auto reader = gum::GumBNReader< double >(&bn, path, true);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_EQ(bn.size(), 1u);
+      CHECK(bn.exists("existing"));
+    }
+
     // regression tests for CRIT-16: _readVector_ size validation
     static void testReadVectorTruncatedSizeField() {
       // Only 4 bytes instead of 8 for the size field
@@ -344,6 +380,8 @@ namespace gum_tests {
   GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
+  GUM_TEST_ACTIF(JgumPreservesStateOnMidParseError)
+  GUM_TEST_ACTIF(BgumPreservesStateOnCorruptBytes)
   GUM_TEST_ACTIF(ReadVectorTruncatedSizeField)
   GUM_TEST_ACTIF(ReadVectorOversizedField)
   GUM_TEST_ACTIF(ReadVectorTruncatedData)

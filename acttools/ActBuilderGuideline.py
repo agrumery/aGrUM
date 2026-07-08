@@ -944,14 +944,14 @@ _PH_INLINE_BODY_RE = re.compile(r"\bINLINE\b.*\{")
 # (const, volatile, noexcept, noexcept(expr), override, final, -> trailing-return),
 # then the opening brace.
 _PH_METHOD_BODY_RE = re.compile(
-  r"\)"                                    # closing paren of params
-  r"\s*(?:const\s+)?"                      # optional const
-  r"(?:volatile\s+)?"                      # optional volatile
-  r"(?:noexcept\s*(?:\([^)]*\))?\s*)?"     # optional noexcept or noexcept(expr)
-  r"(?:override\s+)?"                      # optional override
-  r"(?:final\s+)?"                         # optional final
-  r"(?:const\s+)?"                         # optional trailing const (rare)
-  r"(?:->[^{]*)?"                          # optional trailing return type  -> T
+  r"\)"  # closing paren of params
+  r"\s*(?:const\s+)?"  # optional const
+  r"(?:volatile\s+)?"  # optional volatile
+  r"(?:noexcept\s*(?:\([^)]*\))?\s*)?"  # optional noexcept or noexcept(expr)
+  r"(?:override\s+)?"  # optional override
+  r"(?:final\s+)?"  # optional final
+  r"(?:const\s+)?"  # optional trailing const (rare)
+  r"(?:->[^{]*)?"  # optional trailing return type  -> T
   r"\{"
 )
 
@@ -982,12 +982,14 @@ _PH_LAMBDA_RE = re.compile(r"\]\s*\(")
 # Virtual base specifier — not a method body.
 _PH_VIRTUAL_BASE_RE = re.compile(r"\b(?:public|protected|private)\s+virtual\b")
 
-_PH_SKIP_DIRS = frozenset([
-  f"{os.sep}external{os.sep}",
-  f"{os.sep}mvsc{os.sep}",
-  f"{os.sep}cocoR{os.sep}",
-  f"{os.sep}patterns{os.sep}",   # code-pattern fragments included via macros
-])
+_PH_SKIP_DIRS = frozenset(
+  [
+    f"{os.sep}external{os.sep}",
+    f"{os.sep}mvsc{os.sep}",
+    f"{os.sep}cocoR{os.sep}",
+    f"{os.sep}patterns{os.sep}",  # code-pattern fragments included via macros
+  ]
+)
 
 
 def _check_pure_headers(details: bool) -> int:
@@ -1029,7 +1031,7 @@ def _check_pure_headers(details: bool) -> int:
 
         # skip multi-line macro continuations
         if in_macro:
-          if not stripped.endswith('\\'):
+          if not stripped.endswith("\\"):
             in_macro = False
           continue
 
@@ -1044,7 +1046,7 @@ def _check_pure_headers(details: bool) -> int:
 
         # skip preprocessor directives and comment lines
         if stripped.startswith(("#", "*", "//", "/*")):
-          if stripped.startswith("#") and stripped.endswith('\\'):
+          if stripped.startswith("#") and stripped.endswith("\\"):
             in_macro = True
           continue
 

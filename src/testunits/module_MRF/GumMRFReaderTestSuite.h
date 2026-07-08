@@ -38,8 +38,10 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <sstream>
 #include <string>
 
+#include <agrum/base/io/GumBinaryIO.h>
 #include <agrum/MRF/io/GUM/GumMRFReader.h>
 #include <agrum/MRF/io/GUM/GumMRFWriter.h>
 #include <agrum/MRF/MarkovRandomField.h>
@@ -155,6 +157,66 @@ namespace gum_tests {
       CHECK_EQ(reader.proceedFromString(str), 0u);
       CHECK_EQ(mrf2, mrf);
     }
+
+    static void testJgumPreservesStateOnMidParseError() {
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("existing[2]");
+
+      // Valid JSON, correct type, but factor values count is wrong (1 instead of 4)
+      const std::string bad    = R"({
+        "type": "MRF",
+        "nodes": ["X[2]", "Y[2]"],
+        "factors": [{"vars": ["X", "Y"], "values": [0.5, 0.2, 0.3]}]
+      })";
+      auto              reader = gum::GumMRFReader< double >(&mrf);
+      CHECK_NE(reader.proceedFromString(bad), 0u);
+      CHECK_EQ(mrf.size(), 1u);
+      CHECK(mrf.exists("existing"));
+    }
+
+    static void testBgumPreservesStateOnCorruptBytes() {
+      const auto                       path = GET_RESSOURCES_PATH("outputs/corrupt_mrf.bgum");
+      gum::MarkovRandomField< double > mrf;
+      mrf.add("existing[2]");
+
+      {
+        std::ofstream out(path, std::ios::binary);
+        uint64_t      size = 10;
+        out.write(reinterpret_cast< const char* >(&size), sizeof(size));
+        out.write("GARBAGE!!!", 10);
+      }
+      auto reader = gum::GumMRFReader< double >(&mrf, path, true);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_EQ(mrf.size(), 1u);
+      CHECK(mrf.exists("existing"));
+    }
+
+    // regression tests for CRIT-16: _readVector_ size validation
+    static void testReadVectorTruncatedSizeField() {
+      // Only 4 bytes instead of 8 for the size field
+      std::istringstream iss(std::string(4, '\0'));
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
+
+    static void testReadVectorOversizedField() {
+      // Size = UINT64_MAX → far above 256 MB guard
+      std::ostringstream oss;
+      uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
+      oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));
+      std::istringstream iss(oss.str());
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
+
+    static void testReadVectorTruncatedData() {
+      // Announce 100 bytes but only write 10
+      std::ostringstream oss;
+      uint64_t           size = 100;
+      oss.write(reinterpret_cast< const char* >(&size), sizeof(size));
+      oss.write(std::string(10, 'x').c_str(), 10);
+      std::istringstream iss(oss.str());
+      CHECK_THROWS(gum::_readVector_(iss));
+    }
   };
 
   GUM_TEST_ACTIF(BuildingMRFFromJson)
@@ -164,4 +226,9 @@ namespace gum_tests {
   GUM_TEST_ACTIF(WrongModelType)
   GUM_TEST_ACTIF(ProceedWithoutFilename)
   GUM_TEST_ACTIF(ProceedFromString)
+  GUM_TEST_ACTIF(JgumPreservesStateOnMidParseError)
+  GUM_TEST_ACTIF(BgumPreservesStateOnCorruptBytes)
+  GUM_TEST_ACTIF(ReadVectorTruncatedSizeField)
+  GUM_TEST_ACTIF(ReadVectorOversizedField)
+  GUM_TEST_ACTIF(ReadVectorTruncatedData)
 }   // namespace gum_tests

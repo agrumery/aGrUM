@@ -100,42 +100,48 @@ namespace gum {
       return ++nberrors;
     }
 
-    auto& mrf = *_mrf_;
+    try {
+      MarkovRandomField< GUM_SCALAR > tmp;
 
-    // add nodes
-    for (const auto& node: content["nodes"]) {
-      mrf.add(node.template get< std::string >());
-    }
-
-    // parse all factor data once, then add topology, then fill values
-    struct FactorData {
-      std::vector< std::string > varnames;
-      std::vector< double >      values;
-    };
-
-    std::vector< FactorData > factors;
-    factors.reserve(content["factors"].size());
-    for (const auto& factor: content["factors"]) {
-      factors.push_back({factor["vars"].template get< std::vector< std::string > >(),
-                         factor["values"].template get< std::vector< double > >()});
-    }
-
-    mrf.beginTopologyTransformation();
-    for (const auto& fd: factors)
-      mrf.addFactor(fd.varnames);
-    mrf.endTopologyTransformation();
-
-    for (const auto& fd: factors)
-      mrf.factor(fd.varnames).fillWith(fd.values);
-
-    // properties
-    if (content.contains("properties")) {
-      for (const auto& prop: content["properties"].items()) {
-        mrf.setProperty(prop.key(), prop.value().template get< std::string >());
+      // add nodes
+      for (const auto& node: content["nodes"]) {
+        tmp.add(node.template get< std::string >());
       }
-    }
 
-    _parseDone_ = true;
+      // parse all factor data once, then add topology, then fill values
+      struct FactorData {
+        std::vector< std::string > varnames;
+        std::vector< double >      values;
+      };
+
+      std::vector< FactorData > factors;
+      factors.reserve(content["factors"].size());
+      for (const auto& factor: content["factors"]) {
+        factors.push_back({factor["vars"].template get< std::vector< std::string > >(),
+                           factor["values"].template get< std::vector< double > >()});
+      }
+
+      tmp.beginTopologyTransformation();
+      for (const auto& fd: factors)
+        tmp.addFactor(fd.varnames);
+      tmp.endTopologyTransformation();
+
+      for (const auto& fd: factors)
+        tmp.factor(fd.varnames).fillWith(fd.values);
+
+      // properties
+      if (content.contains("properties")) {
+        for (const auto& prop: content["properties"].items()) {
+          tmp.setProperty(prop.key(), prop.value().template get< std::string >());
+        }
+      }
+
+      *_mrf_      = std::move(tmp);
+      _parseDone_ = true;
+    } catch (const gum::Exception& e) {
+      addError(e.errorContent(), _streamName_, 0, 0);
+      return ++nberrors;
+    }
     return nberrors;
   }
 
@@ -154,16 +160,19 @@ namespace gum {
       addException("No such file " + _streamName_, _streamName_);
       return ++nberrors;
     }
-
-    const auto content
-        = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
-    file.close();
-
-    if (content.is_discarded()) {
-      addException("Error parsing file", _streamName_);
+    try {
+      const auto content
+          = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+      file.close();
+      if (content.is_discarded()) {
+        addException("Error parsing file", _streamName_);
+        return ++nberrors;
+      }
+      return _proceedFromJson_(content);
+    } catch (const std::exception& e) {
+      addException(std::string("Error reading binary file: ") + e.what(), _streamName_);
       return ++nberrors;
     }
-    return _proceedFromJson_(content);
   }
 
   template < GUM_Numeric GUM_SCALAR >
