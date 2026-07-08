@@ -189,7 +189,7 @@ namespace gum {
 
       _removed_nodes_.clear();
       if (nodeId2Columns.empty()) {
-        const NodeId nb_nodes = NodeId(database.nbVariables());
+        const auto nb_nodes = NodeId(database.nbVariables());
         for (auto node: graph) {
           if (node >= nb_nodes) {
             graph.eraseNode(node);
@@ -208,8 +208,8 @@ namespace gum {
       // fill the DAG with all the missing nodes. This is convenient to allow the user
       // to just specify a partial graph
       if (nodeId2Columns.empty()) {
-        const NodeId nb_nodes = NodeId(database.nbVariables());
-        for (NodeId i = NodeId(0); i < nb_nodes; ++i) {
+        const auto nb_nodes = NodeId(database.nbVariables());
+        for (auto i = NodeId(0); i < nb_nodes; ++i) {
           if (!graph.existsNode(i)) { graph.addNodeWithId(i); }
         }
       } else {
@@ -812,7 +812,8 @@ namespace gum {
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
         _initSortedChangesWithArcAdditions_(const DiGraph& graph) {
-      // for each pair of nodes (node1,node2) that are not adjacent, try an arc addition
+      // for each pair of nodes (node1,node2) that are not linked by an arc node1 -> node2 or
+      // node2 -> node1, try the addition of this missing arc
       for (auto iter1 = graph.begin(); iter1 != graph.end(); ++iter1) {
         const NodeId node1 = *iter1;
 
@@ -821,8 +822,12 @@ namespace gum {
         auto iter2 = iter1;
         for (++iter2; iter2 != graph.end(); ++iter2) {
           const NodeId node2 = *iter2;
-          _addArcAdditionToSortedChanges_(ArcAddition(node1, node2));
-          _addArcAdditionToSortedChanges_(ArcAddition(node2, node1));
+          if (!graph.existsArc(node1, node2)) {
+            _addArcAdditionToSortedChanges_(ArcAddition(node1, node2));
+          }
+          if (!graph.existsArc(node2, node1)) {
+            _addArcAdditionToSortedChanges_(ArcAddition(node2, node1));
+          }
         }
       }
     }
@@ -876,8 +881,8 @@ namespace gum {
     INLINE const GraphChange&
         GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
                                       VARIABLE_CONSTRAINT_TYPE >::bestChange() {
-      for (auto iter = _sorted_changes_.begin(); iter != _sorted_changes_.end(); ++iter) {
-        if (_variable_constraints_->checkModification(*iter)) { return *iter; }
+      for (const auto& _sorted_change : _sorted_changes_) {
+        if (_variable_constraints_->checkModification(_sorted_change)) { return _sorted_change; }
       }
 
       GUM_ERROR(NotFound, "there exists no graph change applicable")
