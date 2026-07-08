@@ -331,3 +331,22 @@ Raises
 pyagrum.NotFound
     if no variable with this name exists in the model
 "
+
+%feature("docstring") gum::GraphicalModel::spaceCplxToString
+"
+Return a human-readable string summarising the space complexity of a graphical model.
+
+Parameters
+----------
+dSize : float
+    log10 of the joint domain size
+dim : int
+    number of independent parameters
+usedMem : int
+    memory footprint in bytes
+
+Returns
+-------
+str
+    a string of the form ``'domainSize: X, dim: Y, mem: Z'``
+"

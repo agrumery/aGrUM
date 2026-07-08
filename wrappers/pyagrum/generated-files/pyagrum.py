@@ -7869,6 +7869,25 @@ class GraphicalModel(object):
 
     @staticmethod
     def spaceCplxToString(dSize: float, dim: int, usedMem: int) -> str:
+        r"""
+
+        Return a human-readable string summarising the space complexity of a graphical model.
+
+        Parameters
+        ----------
+        dSize : float
+            log10 of the joint domain size
+        dim : int
+            number of independent parameters
+        usedMem : int
+            memory footprint in bytes
+
+        Returns
+        -------
+        str
+            a string of the form ``'domainSize: X, dim: Y, mem: Z'``
+
+        """
         return _pyagrum.GraphicalModel_spaceCplxToString(dSize, dim, usedMem)
 
     def family(self, *args) -> list[int]:
