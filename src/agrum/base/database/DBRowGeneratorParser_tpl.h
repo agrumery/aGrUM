@@ -36,7 +36,7 @@ namespace gum {
 
     /// assign a new Bayes net to all the generators that depend on a BN
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void DBRowGeneratorParser::setBayesNet (
+    void DBRowGeneratorParser::setBayesNet (
                 const BayesNet<GUM_SCALAR>& new_bn) {
        _generator_set_.setBayesNet(new_bn);
     }

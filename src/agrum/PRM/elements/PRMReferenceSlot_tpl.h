@@ -84,58 +84,58 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
+    typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMReferenceSlot< GUM_SCALAR >::elt_type() const {
       return this->prm_refslot;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::slotType() {
+    PRMClassElementContainer< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::slotType() {
       return _slotType_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElementContainer< GUM_SCALAR >&
+    const PRMClassElementContainer< GUM_SCALAR >&
                  PRMReferenceSlot< GUM_SCALAR >::slotType() const {
       return _slotType_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMReferenceSlot< GUM_SCALAR >::isArray() const {
+    bool PRMReferenceSlot< GUM_SCALAR >::isArray() const {
       return _isArray_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMType& PRMReferenceSlot< GUM_SCALAR >::type() {
+    PRMType& PRMReferenceSlot< GUM_SCALAR >::type() {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMType& PRMReferenceSlot< GUM_SCALAR >::type() const {
+    const PRMType& PRMReferenceSlot< GUM_SCALAR >::type() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() {
+    Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() const {
+    const Tensor< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMAttribute< GUM_SCALAR >* PRMReferenceSlot< GUM_SCALAR >::getCastDescendant() const {
+    PRMAttribute< GUM_SCALAR >* PRMReferenceSlot< GUM_SCALAR >::getCastDescendant() const {
       GUM_ERROR(OperationNotAllowed, "This is a ReferenceSlot.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
+    void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
     }
 
   } /* namespace prm */

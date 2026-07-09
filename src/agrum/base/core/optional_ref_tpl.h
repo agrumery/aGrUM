@@ -48,34 +48,34 @@ namespace gum {
 
 
   template < typename T >
-  INLINE optional_ref< T >::optional_ref(std::nullopt_t) noexcept {}
+  optional_ref< T >::optional_ref(std::nullopt_t) noexcept {}
 
   template < typename T >
-  INLINE optional_ref< T >::optional_ref(T& ref) noexcept : _ptr_(&ref) {}
+  optional_ref< T >::optional_ref(T& ref) noexcept : _ptr_(&ref) {}
 
   template < typename T >
-  INLINE optional_ref< T >::operator bool() const noexcept {
+  optional_ref< T >::operator bool() const noexcept {
     return _ptr_ != nullptr;
   }
 
   template < typename T >
-  INLINE bool optional_ref< T >::has_value() const noexcept {
+  bool optional_ref< T >::has_value() const noexcept {
     return _ptr_ != nullptr;
   }
 
   template < typename T >
-  INLINE T& optional_ref< T >::value() const {
+  T& optional_ref< T >::value() const {
     if (!_ptr_) throw std::bad_optional_access();
     return *_ptr_;
   }
 
   template < typename T >
-  INLINE T& optional_ref< T >::operator*() const {
+  T& optional_ref< T >::operator*() const {
     return value();
   }
 
   template < typename T >
-  INLINE T* optional_ref< T >::operator->() const noexcept {
+  T* optional_ref< T >::operator->() const noexcept {
     return _ptr_;
   }
 

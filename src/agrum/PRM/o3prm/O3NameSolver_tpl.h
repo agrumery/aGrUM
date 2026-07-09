@@ -56,7 +56,7 @@ namespace gum {
     namespace o3prm {
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >::O3NameSolver(PRM< GUM_SCALAR >& prm,
+      O3NameSolver< GUM_SCALAR >::O3NameSolver(PRM< GUM_SCALAR >& prm,
                                                       O3PRM&             o3_prm,
                                                       ErrorsContainer&   errors) :
           _prm_(&prm), _o3_prm_(&o3_prm), _errors_(&errors) {
@@ -64,7 +64,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >::O3NameSolver(const O3NameSolver< GUM_SCALAR >& src) :
+      O3NameSolver< GUM_SCALAR >::O3NameSolver(const O3NameSolver< GUM_SCALAR >& src) :
           _prm_(src._prm_), _o3_prm_(src._o3_prm_), _errors_(src._errors_),
           _typeName_(src._typeName_), _eltName_(src._eltName_), _refName_(src._refName_),
           _interfaceName_(src._interfaceName_), _className_(src._className_) {
@@ -72,7 +72,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >::O3NameSolver(O3NameSolver< GUM_SCALAR >&& src) :
+      O3NameSolver< GUM_SCALAR >::O3NameSolver(O3NameSolver< GUM_SCALAR >&& src) :
           _prm_(std::move(src._prm_)), _o3_prm_(std::move(src._o3_prm_)),
           _errors_(std::move(src._errors_)), _typeName_(std::move(src._typeName_)),
           _eltName_(std::move(src._eltName_)), _refName_(std::move(src._refName_)),
@@ -81,12 +81,12 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >::~O3NameSolver() {
+      O3NameSolver< GUM_SCALAR >::~O3NameSolver() {
         GUM_DESTRUCTOR(O3NameSolver);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >&
+      O3NameSolver< GUM_SCALAR >&
              O3NameSolver< GUM_SCALAR >::operator=(const O3NameSolver< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_           = src._prm_;
@@ -101,7 +101,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE O3NameSolver< GUM_SCALAR >&
+      O3NameSolver< GUM_SCALAR >&
              O3NameSolver< GUM_SCALAR >::operator=(O3NameSolver< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_           = std::move(src._prm_);
@@ -116,7 +116,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool O3NameSolver< GUM_SCALAR >::resolveClassElement(O3Label& name) {
+      bool O3NameSolver< GUM_SCALAR >::resolveClassElement(O3Label& name) {
         // If empty string, we return an empty string
         if (name.label().empty()) { return true; }
         // If we've already found the element real name
@@ -242,7 +242,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool O3NameSolver< GUM_SCALAR >::resolveType(O3Label& name) {
+      bool O3NameSolver< GUM_SCALAR >::resolveType(O3Label& name) {
         // If empty string, we return an empty string
         if (name.label().empty()) { return true; }
 
@@ -312,7 +312,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool O3NameSolver< GUM_SCALAR >::resolveInterface(O3Label& name) {
+      bool O3NameSolver< GUM_SCALAR >::resolveInterface(O3Label& name) {
         // If empty string, we return an empty string
         if (name.label().empty()) { return true; }
 
@@ -382,7 +382,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool O3NameSolver< GUM_SCALAR >::resolveClass(O3Label& name) {
+      bool O3NameSolver< GUM_SCALAR >::resolveClass(O3Label& name) {
         // If empty string, we return an empty string
         if (name.label().empty()) { return true; }
 
@@ -452,7 +452,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool O3NameSolver< GUM_SCALAR >::resolveSlotType(O3Label& name) {
+      bool O3NameSolver< GUM_SCALAR >::resolveSlotType(O3Label& name) {
         // If empty string, we return an empty string
         if (name.label().empty()) { return true; }
         // If we've already found the reference real name

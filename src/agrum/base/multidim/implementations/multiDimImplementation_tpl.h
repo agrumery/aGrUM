@@ -56,7 +56,7 @@ namespace gum {
   // Default constructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >::MultiDimImplementation() :
+  MultiDimImplementation< GUM_ELEMENT >::MultiDimImplementation() :
       MultiDimContainer< GUM_ELEMENT >(), _vars_(), _slaveInstantiations_() {
     GUM_CONSTRUCTOR(MultiDimImplementation);
     _internalChangeMethod_ = _InternalChangeMethod_::DIRECT_CHANGE;
@@ -67,7 +67,7 @@ namespace gum {
   // Copy constructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >::MultiDimImplementation(
+  MultiDimImplementation< GUM_ELEMENT >::MultiDimImplementation(
       const MultiDimImplementation< GUM_ELEMENT >& from) :
       MultiDimContainer< GUM_ELEMENT >(from), _vars_(from._vars_),
       _internalChangeMethod_(from._internalChangeMethod_),
@@ -79,7 +79,7 @@ namespace gum {
   // destructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >::~MultiDimImplementation() {
+  MultiDimImplementation< GUM_ELEMENT >::~MultiDimImplementation() {
     GUM_DESTRUCTOR(MultiDimImplementation);
     // unregister all remaining slave instantiations
 
@@ -92,7 +92,7 @@ namespace gum {
   // add a new var to the sequence of  _vars_.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::add(const DiscreteVariable& v) {
+  void MultiDimImplementation< GUM_ELEMENT >::add(const DiscreteVariable& v) {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
     if (_vars_.exists(&v)) {
@@ -124,7 +124,7 @@ namespace gum {
   // removes a var from the variables of the multidimensional matrix
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
+  void MultiDimImplementation< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
     // check that the variable does actually belong to the
     // MultiDimImplementation
     if (!_vars_.exists(&v)) { GUM_ERROR(NotFound, "Var does not exist in this implementation") }
@@ -145,7 +145,7 @@ namespace gum {
 
   // adds a new var to the sequence of  _vars_
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >&
+  MultiDimImplementation< GUM_ELEMENT >&
          operator<<(MultiDimImplementation< GUM_ELEMENT >& array, const DiscreteVariable& v) {
     array.add(v);
     return array;
@@ -154,7 +154,7 @@ namespace gum {
   // add a Instantiation to the list of slave instantiations
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::registerSlave(Instantiation& slave) {
+  bool MultiDimImplementation< GUM_ELEMENT >::registerSlave(Instantiation& slave) {
     // check that the Instantiation has the same variables as this
     if (slave.nbrDim() != _vars_.size()) return false;
 
@@ -173,28 +173,28 @@ namespace gum {
   // removes a Instantiation from the list of slave instantiations
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::unregisterSlave(Instantiation& slave) {
+  bool MultiDimImplementation< GUM_ELEMENT >::unregisterSlave(Instantiation& slave) {
     _slaveInstantiations_.eraseByVal(&slave);
     return true;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Idx MultiDimImplementation< GUM_ELEMENT >::nbrDim() const {
+  Idx MultiDimImplementation< GUM_ELEMENT >::nbrDim() const {
     return _vars_.size();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Size MultiDimImplementation< GUM_ELEMENT >::domainSize() const {
+  Size MultiDimImplementation< GUM_ELEMENT >::domainSize() const {
     return _domainSize_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable& MultiDimImplementation< GUM_ELEMENT >::variable(Idx i) const {
+  const DiscreteVariable& MultiDimImplementation< GUM_ELEMENT >::variable(Idx i) const {
     return *(_vars_.atPos(i));
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable&
+  const DiscreteVariable&
       MultiDimImplementation< GUM_ELEMENT >::variable(std::string_view name) const {
     for (const auto& v: _vars_) {
       if (v->name() == name) return *v;
@@ -204,37 +204,37 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Idx MultiDimImplementation< GUM_ELEMENT >::pos(const DiscreteVariable& v) const {
+  Idx MultiDimImplementation< GUM_ELEMENT >::pos(const DiscreteVariable& v) const {
     return _vars_.pos(&v);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::contains(const DiscreteVariable& v) const {
+  bool MultiDimImplementation< GUM_ELEMENT >::contains(const DiscreteVariable& v) const {
     return _vars_.exists(&v);
   }
 
   // returns a const ref to the sequence of DiscreteVariable*
 
   template < typename GUM_ELEMENT >
-  INLINE const Sequence< const DiscreteVariable* >&
+  const Sequence< const DiscreteVariable* >&
                MultiDimImplementation< GUM_ELEMENT >::variablesSequence() const {
     return _vars_;
   }
 
   // is this empty ?
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::empty() const {
+  bool MultiDimImplementation< GUM_ELEMENT >::empty() const {
     GUM_ASSERT(!this->isCommitNeeded_());
     return _vars_.empty();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::beginMultipleChanges() {
+  void MultiDimImplementation< GUM_ELEMENT >::beginMultipleChanges() {
     _internalChangeMethod_ = _InternalChangeMethod_::MULTIPLE_CHANGE;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::endMultipleChanges() {
+  void MultiDimImplementation< GUM_ELEMENT >::endMultipleChanges() {
     if (_internalChangeState_ == _InternalChangeState_::NOT_COMMITTED_CHANGE) {
       commitMultipleChanges_();
       _internalChangeState_ = _InternalChangeState_::NO_CHANGE;
@@ -244,7 +244,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::endMultipleChanges(const GUM_ELEMENT& x) {
+  void MultiDimImplementation< GUM_ELEMENT >::endMultipleChanges(const GUM_ELEMENT& x) {
     if (_internalChangeState_ == _InternalChangeState_::NOT_COMMITTED_CHANGE) {
       commitMultipleChanges_(x);
       _internalChangeState_ = _InternalChangeState_::NO_CHANGE;
@@ -254,42 +254,42 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::commitMultipleChanges_() {
+  void MultiDimImplementation< GUM_ELEMENT >::commitMultipleChanges_() {
     // empty!
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::commitMultipleChanges_(const GUM_ELEMENT&) {
+  void MultiDimImplementation< GUM_ELEMENT >::commitMultipleChanges_(const GUM_ELEMENT&) {
     // empty!
   }
 
   // get the actual change method of *this
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::isInMultipleChangeMethod_() const {
+  bool MultiDimImplementation< GUM_ELEMENT >::isInMultipleChangeMethod_() const {
     return (_internalChangeMethod_ == _InternalChangeMethod_::MULTIPLE_CHANGE);
   }
 
   // get the actual state of *this
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimImplementation< GUM_ELEMENT >::isCommitNeeded_() const {
+  bool MultiDimImplementation< GUM_ELEMENT >::isCommitNeeded_() const {
     return (_internalChangeState_ == _InternalChangeState_::NOT_COMMITTED_CHANGE);
   }
 
   // Returns a constant reference over the list of slaved instantiations.
   template < typename GUM_ELEMENT >
-  INLINE const List< Instantiation* >& MultiDimImplementation< GUM_ELEMENT >::slaves_() const {
+  const List< Instantiation* >& MultiDimImplementation< GUM_ELEMENT >::slaves_() const {
     return _slaveInstantiations_;
   }
 
   // get the actual state of *this
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::_setNotCommitedChange_() {
+  void MultiDimImplementation< GUM_ELEMENT >::_setNotCommitedChange_() {
     _internalChangeState_ = _InternalChangeState_::NOT_COMMITTED_CHANGE;
   }
 
   // get the actual state of *this
   template < typename GUM_ELEMENT >
-  INLINE float MultiDimImplementation< GUM_ELEMENT >::compressionRate() const {
+  float MultiDimImplementation< GUM_ELEMENT >::compressionRate() const {
     return ((float)1) - (float)realSize() / (float)domainSize();
   }
 
@@ -301,7 +301,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
+  void MultiDimImplementation< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
                                                               const DiscreteVariable* y) {
     _vars_.setAtPos(_vars_.pos(x), y);
 
@@ -313,26 +313,26 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimImplementation< GUM_ELEMENT >::invert_(Idx p1, Idx p2) {
+  void MultiDimImplementation< GUM_ELEMENT >::invert_(Idx p1, Idx p2) {
     _vars_.swap(p1, p2);
   }
 
   // for friendly displaying the content of the array
   template < typename GUM_ELEMENT >
-  INLINE std::ostream& operator<<(std::ostream&                                out,
+  std::ostream& operator<<(std::ostream&                                out,
                                   const MultiDimImplementation< GUM_ELEMENT >& array) {
     return out << static_cast< const MultiDimContainer< GUM_ELEMENT >& >(array);
   }
 
   // protected access to content_
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >* MultiDimImplementation< GUM_ELEMENT >::content() {
+  MultiDimImplementation< GUM_ELEMENT >* MultiDimImplementation< GUM_ELEMENT >::content() {
     return this;
   }
 
   // protected access to content_
   template < typename GUM_ELEMENT >
-  INLINE const MultiDimImplementation< GUM_ELEMENT >*
+  const MultiDimImplementation< GUM_ELEMENT >*
                MultiDimImplementation< GUM_ELEMENT >::content() const {
     return this;
   }

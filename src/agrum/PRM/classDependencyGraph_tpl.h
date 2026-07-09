@@ -121,13 +121,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(const PRM< GUM_SCALAR >& prm) {
+    ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(const PRM< GUM_SCALAR >& prm) {
       GUM_CONSTRUCTOR(ClassDependencyGraph);
       _buildGraph_(prm);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(
+    ClassDependencyGraph< GUM_SCALAR >::ClassDependencyGraph(
         const ClassDependencyGraph< GUM_SCALAR >& source) :
         _graph_(source._graph_), _modalitites_(source._modalitites_), _elt_map_(source._elt_map_) {
       GUM_CONS_CPY(ClassDependencyGraph);
@@ -140,30 +140,30 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DAG& ClassDependencyGraph< GUM_SCALAR >::internalDag() const {
+    const DAG& ClassDependencyGraph< GUM_SCALAR >::internalDag() const {
       return _graph_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename ClassDependencyGraph< GUM_SCALAR >::EltPair&
+    const typename ClassDependencyGraph< GUM_SCALAR >::EltPair&
         ClassDependencyGraph< GUM_SCALAR >::get(NodeId id) const {
       return *(_elt_map_[id]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId
+    NodeId
         ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
                                                 const PRMClassElement< GUM_SCALAR >& elt) const {
       return (*(_node_map_[&c]))[&elt];
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const NodeProperty< Size >& ClassDependencyGraph< GUM_SCALAR >::modalities() const {
+    const NodeProperty< Size >& ClassDependencyGraph< GUM_SCALAR >::modalities() const {
       return _modalitites_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ClassDependencyGraph< GUM_SCALAR >::_addNode_(
+    void ClassDependencyGraph< GUM_SCALAR >::_addNode_(
         const PRMClassElementContainer< GUM_SCALAR >* c,
         const PRMClassElement< GUM_SCALAR >&          elt) {
       switch (elt.elt_type()) {

@@ -46,10 +46,10 @@ namespace gum {
 
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy() {}
+  ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy() {}
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy(
+  ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy(
       const ApproximationPolicy< GUM_SCALAR >* md) {}
 
 }   // namespace gum

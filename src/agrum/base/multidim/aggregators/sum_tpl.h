@@ -52,30 +52,30 @@
 
 namespace gum::aggregator {
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Sum< GUM_SCALAR >::Sum() : MultiDimAggregator< GUM_SCALAR >() {
+  Sum< GUM_SCALAR >::Sum() : MultiDimAggregator< GUM_SCALAR >() {
     this->decomposable_ = true;
     this->_value_       = this->neutralElt_();
     GUM_CONSTRUCTOR(Sum);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
+  Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
       MultiDimAggregator< GUM_SCALAR >(from) {
     GUM_CONS_CPY(Sum);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Sum< GUM_SCALAR >::~Sum() {
+  Sum< GUM_SCALAR >::~Sum() {
     GUM_DESTRUCTOR(Sum);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx Sum< GUM_SCALAR >::neutralElt_() const {
+  Idx Sum< GUM_SCALAR >::neutralElt_() const {
     return (Idx)0;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+  Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                       Idx                     i1,
                                       Idx                     i2,
                                       bool&                   stop_iteration) const {
@@ -88,12 +88,12 @@ namespace gum::aggregator {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string Sum< GUM_SCALAR >::aggregatorName() const {
+  std::string Sum< GUM_SCALAR >::aggregatorName() const {
     return "sum";
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >* Sum< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* Sum< GUM_SCALAR >::newFactory() const {
     return new Sum< GUM_SCALAR >;
   }
 

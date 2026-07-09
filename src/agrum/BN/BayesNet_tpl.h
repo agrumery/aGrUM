@@ -125,12 +125,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BayesNet< GUM_SCALAR >::BayesNet() : IBayesNet< GUM_SCALAR >() {
+  BayesNet< GUM_SCALAR >::BayesNet() : IBayesNet< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(BayesNet)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BayesNet< GUM_SCALAR >::BayesNet(std::string_view name) : IBayesNet< GUM_SCALAR >(name) {
+  BayesNet< GUM_SCALAR >::BayesNet(std::string_view name) : IBayesNet< GUM_SCALAR >(name) {
     GUM_CONSTRUCTOR(BayesNet)
   }
 
@@ -180,12 +180,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
+  void BayesNet< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
     this->varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId           id,
+  void BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId           id,
                                                           std::string_view old_label,
                                                           std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED)
@@ -198,7 +198,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
     auto ptr = new MultiDimArray< GUM_SCALAR >();
     try {
       return add(var, ptr);
@@ -209,7 +209,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(std::string_view fast_description,
+  NodeId BayesNet< GUM_SCALAR >::add(std::string_view fast_description,
                                             unsigned int     default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
@@ -217,7 +217,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
+  NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
                                             MultiDimImplementation< GUM_SCALAR >* aContent) {
     NodeId proposedId = dag().nextNodeId();
 
@@ -225,7 +225,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId id) {
+  NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId id) {
     auto ptr = new MultiDimArray< GUM_SCALAR >();
 
     try {
@@ -250,12 +250,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+  const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
     return *(_probaMap_[varId]);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
+  void BayesNet< GUM_SCALAR >::erase(const DiscreteVariable& var) {
     erase(this->varMap_.get(var));
   }
 
@@ -286,7 +286,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::addArc(NodeId tail, NodeId head) {
+  void BayesNet< GUM_SCALAR >::addArc(NodeId tail, NodeId head) {
     if (this->dag_.existsArc(tail, head)) {
       GUM_ERROR(DuplicateElement, "The arc (" << tail << "," << head << ") already exists.")
     }
@@ -297,7 +297,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
+  void BayesNet< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
     try {
       addArc(this->idFromName(tail), this->idFromName(head));
     } catch (DuplicateElement const&) {
@@ -306,7 +306,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::eraseArc(const Arc& arc) {
+  void BayesNet< GUM_SCALAR >::eraseArc(const Arc& arc) {
     if (this->varMap_.exists(arc.tail()) && this->varMap_.exists(arc.head())) {
       NodeId head = arc.head();
       NodeId tail = arc.tail();
@@ -317,7 +317,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::eraseArc(NodeId tail, NodeId head) {
+  void BayesNet< GUM_SCALAR >::eraseArc(NodeId tail, NodeId head) {
     eraseArc(Arc(tail, head));
   }
 
@@ -386,7 +386,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::reverseArc(NodeId tail, NodeId head) {
+  void BayesNet< GUM_SCALAR >::reverseArc(NodeId tail, NodeId head) {
     reverseArc(Arc(tail, head));
   }
 
@@ -394,60 +394,60 @@ namespace gum {
   // Aggregators
   //=============================================
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addAMPLITUDE(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addAMPLITUDE(const DiscreteVariable& var) {
     return add(var, new aggregator::Amplitude< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addAND(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addAND(const DiscreteVariable& var) {
     if (var.domainSize() > 2) GUM_ERROR(SizeError, "an AND has to be boolean")
 
     return add(var, new aggregator::And< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addCOUNT(const DiscreteVariable& var, Idx value) {
+  NodeId BayesNet< GUM_SCALAR >::addCOUNT(const DiscreteVariable& var, Idx value) {
     return add(var, new aggregator::Count< GUM_SCALAR >(value));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addEXISTS(const DiscreteVariable& var, Idx value) {
+  NodeId BayesNet< GUM_SCALAR >::addEXISTS(const DiscreteVariable& var, Idx value) {
     if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean")
 
     return add(var, new aggregator::Exists< GUM_SCALAR >(value));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addFORALL(const DiscreteVariable& var, Idx value) {
+  NodeId BayesNet< GUM_SCALAR >::addFORALL(const DiscreteVariable& var, Idx value) {
     if (var.domainSize() > 2) GUM_ERROR(SizeError, "an EXISTS has to be boolean")
 
     return add(var, new aggregator::Forall< GUM_SCALAR >(value));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addMAX(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addMAX(const DiscreteVariable& var) {
     return add(var, new aggregator::Max< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addMEDIAN(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addMEDIAN(const DiscreteVariable& var) {
     return add(var, new aggregator::Median< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addMIN(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addMIN(const DiscreteVariable& var) {
     return add(var, new aggregator::Min< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addOR(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addOR(const DiscreteVariable& var) {
     if (var.domainSize() > 2) GUM_ERROR(SizeError, "an OR has to be boolean")
 
     return add(var, new aggregator::Or< GUM_SCALAR >());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addSUM(const DiscreteVariable& var) {
+  NodeId BayesNet< GUM_SCALAR >::addSUM(const DiscreteVariable& var) {
     return add(var, new aggregator::Sum< GUM_SCALAR >());
   }
 
@@ -455,65 +455,65 @@ namespace gum {
   // ICIModels
   //================================
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
                                                    GUM_SCALAR              external_weight) {
     return addNoisyORCompound(var, external_weight);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
                                                            GUM_SCALAR external_weight) {
     return add(var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
                                                       GUM_SCALAR              external_weight) {
     return add(var, new MultiDimNoisyORNet< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
                                                     GUM_SCALAR              external_weight) {
     return add(var, new MultiDimNoisyAND< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
                                                  GUM_SCALAR              external_weight) {
     return add(var, new MultiDimLogit< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
                                                    GUM_SCALAR              external_weight,
                                                    NodeId                  id) {
     return addNoisyORCompound(var, external_weight, id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
                                                     GUM_SCALAR              external_weight,
                                                     NodeId                  id) {
     return add(var, new MultiDimNoisyAND< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
                                                  GUM_SCALAR              external_weight,
                                                  NodeId                  id) {
     return add(var, new MultiDimLogit< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
                                                            GUM_SCALAR              external_weight,
                                                            NodeId                  id) {
     return add(var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
+  NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
                                                       GUM_SCALAR              external_weight,
                                                       NodeId                  id) {
     return add(var, new MultiDimNoisyORNet< GUM_SCALAR >(external_weight), id);
@@ -534,7 +534,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn) {
+  std::ostream& operator<<(std::ostream& output, const BayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }
@@ -585,13 +585,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::generateCPTs() const {
+  void BayesNet< GUM_SCALAR >::generateCPTs() const {
     for (const auto node: nodes())
       generateCPT(node);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::generateCPT(NodeId node) const {
+  void BayesNet< GUM_SCALAR >::generateCPT(NodeId node) const {
     SimpleCPTGenerator< GUM_SCALAR > generator;
 
     generator.generateCPT(cpt(node).pos(variable(node)), cpt(node));
@@ -691,52 +691,52 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(std::string_view name) const {
+  const Tensor< GUM_SCALAR >& BayesNet< GUM_SCALAR >::cpt(std::string_view name) const {
     return cpt(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::erase(std::string_view name) {
+  void BayesNet< GUM_SCALAR >::erase(std::string_view name) {
     erase(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable& BayesNet< GUM_SCALAR >::variable(std::string_view name) const {
+  const DiscreteVariable& BayesNet< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableName(std::string_view name,
+  void BayesNet< GUM_SCALAR >::changeVariableName(std::string_view name,
                                                          std::string_view new_name) {
     changeVariableName(idFromName(name), new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(std::string_view name,
+  void BayesNet< GUM_SCALAR >::changeVariableLabel(std::string_view name,
                                                           std::string_view old_label,
                                                           std::string_view new_label) {
     changeVariableLabel(idFromName(name), old_label, new_label);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::eraseArc(std::string_view tail, std::string_view head) {
+  void BayesNet< GUM_SCALAR >::eraseArc(std::string_view tail, std::string_view head) {
     eraseArc(idFromName(tail), idFromName(head));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::reverseArc(std::string_view tail, std::string_view head) {
+  void BayesNet< GUM_SCALAR >::reverseArc(std::string_view tail, std::string_view head) {
     reverseArc(idFromName(tail), idFromName(head));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::addWeightedArc(std::string_view tail,
+  void BayesNet< GUM_SCALAR >::addWeightedArc(std::string_view tail,
                                                      std::string_view head,
                                                      GUM_SCALAR       causalWeight) {
     addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNet< GUM_SCALAR >::generateCPT(std::string_view name) const {
+  void BayesNet< GUM_SCALAR >::generateCPT(std::string_view name) const {
     generateCPT(idFromName(name));
   }
 

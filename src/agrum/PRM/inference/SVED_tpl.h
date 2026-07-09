@@ -482,27 +482,27 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE SVED< GUM_SCALAR >::SVED(const PRM< GUM_SCALAR >&       prm,
+    SVED< GUM_SCALAR >::SVED(const PRM< GUM_SCALAR >&       prm,
                                     const PRMSystem< GUM_SCALAR >& model) :
         PRMInference< GUM_SCALAR >(prm, model), _class_elim_order_(0), _bb_(*this) {
       GUM_CONSTRUCTOR(SVED);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void SVED< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,
+    void SVED< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,
                                                      BucketSet&                       pool) {
       for (const auto& elt: this->evidence(i))
         pool.insert(const_cast< Tensor< GUM_SCALAR >* >(elt.second));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::vector< NodeId >&
+    std::vector< NodeId >&
            SVED< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
       return *(_elim_orders_[&c]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string SVED< GUM_SCALAR >::_trim_(std::string_view s) {
+    std::string SVED< GUM_SCALAR >::_trim_(std::string_view s) {
       if (auto pos = s.find_first_of("<"); pos != std::string::npos) {
         return std::string{s.substr(0, pos)};
       }
@@ -510,7 +510,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool SVED< GUM_SCALAR >::_checkElimOrder_(const PRMInstance< GUM_SCALAR >* first,
+    bool SVED< GUM_SCALAR >::_checkElimOrder_(const PRMInstance< GUM_SCALAR >* first,
                                                      const PRMInstance< GUM_SCALAR >* second) {
       if (_class_elim_order_ == 0) { _initElimOrder_(); }
 
@@ -520,26 +520,26 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Tensor< GUM_SCALAR >*
+    Tensor< GUM_SCALAR >*
            SVED< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
                                               const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->safeName()).cpf()));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         SVED< GUM_SCALAR >::evidenceAdded_(const typename SVED< GUM_SCALAR >::Chain& chain) {
       // Do nothing
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         SVED< GUM_SCALAR >::evidenceRemoved_(const typename SVED< GUM_SCALAR >::Chain& chain) {
       // Do nothing
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
+    Set< NodeId >& SVED< GUM_SCALAR >::_getAttrSet_(const PRMInstance< GUM_SCALAR >* i) {
       auto p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       if (!p) {
         _initReqSets_(i);
@@ -549,7 +549,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
+    Set< NodeId >& SVED< GUM_SCALAR >::_getSCSet_(const PRMInstance< GUM_SCALAR >* i) {
       auto p = _req_set_.tryGet(&(_bb_.requisiteNodes(i)));
       if (!p) {
         _initReqSets_(i);
@@ -559,7 +559,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         SVED< GUM_SCALAR >::_reduceElimList_(const PRMInstance< GUM_SCALAR >*          i,
                                              List< const PRMInstance< GUM_SCALAR >* >& elim_list,
                                              List< const PRMInstance< GUM_SCALAR >* >& reduced_list,
@@ -580,7 +580,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string SVED< GUM_SCALAR >::name() const {
+    std::string SVED< GUM_SCALAR >::name() const {
       return "SVED";
     }
 

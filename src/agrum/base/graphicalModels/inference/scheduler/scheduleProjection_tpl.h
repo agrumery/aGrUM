@@ -120,7 +120,7 @@ namespace gum {
 
   /// virtual copy constructor
   template < typename TABLE >
-  INLINE ScheduleProjection< TABLE >* ScheduleProjection< TABLE >::clone() const {
+  ScheduleProjection< TABLE >* ScheduleProjection< TABLE >::clone() const {
     return new ScheduleProjection< TABLE >(*this);
   }
 
@@ -180,7 +180,7 @@ namespace gum {
 
   /// operator ==
   template < typename TABLE >
-  INLINE bool ScheduleProjection< TABLE >::operator==(const ScheduleProjection< TABLE >& op) const {
+  bool ScheduleProjection< TABLE >::operator==(const ScheduleProjection< TABLE >& op) const {
     return (_project_ == op._project_) && (*_arg_ == *op._arg_) && (_del_vars_ == op._del_vars_);
   }
 
@@ -198,19 +198,19 @@ namespace gum {
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperator& op) const {
+  bool ScheduleProjection< TABLE >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleProjection< TABLE >::operator==(op);
   }
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleProjection< TABLE >::operator!=(const ScheduleProjection< TABLE >& op) const {
+  bool ScheduleProjection< TABLE >::operator!=(const ScheduleProjection< TABLE >& op) const {
     return !ScheduleProjection< TABLE >::operator==(op);
   }
 
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
-  INLINE bool ScheduleProjection< TABLE >::hasSimilarArguments(
+  bool ScheduleProjection< TABLE >::hasSimilarArguments(
       const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && (_del_vars_ == op._del_vars_));
   }
@@ -227,7 +227,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
-  INLINE bool
+  bool
       ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_)
             && (_del_vars_ == op._del_vars_));
@@ -245,7 +245,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
-  INLINE bool
+  bool
       ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
@@ -262,25 +262,25 @@ namespace gum {
 
   /// returns the argument of the projection
   template < typename TABLE >
-  INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::arg() const {
+  const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::arg() const {
     return *_arg_;
   }
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
-  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::args() const {
+  const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::args() const {
     return _args_;
   }
 
   /// returns the result of the projection
   template < typename TABLE >
-  INLINE const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::result() const {
+  const ScheduleMultiDim< TABLE >& ScheduleProjection< TABLE >::result() const {
     return *_result_;
   }
 
   /// returns the result of the projection
   template < typename TABLE >
-  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::results() const {
+  const Sequence< const IScheduleMultiDim* >& ScheduleProjection< TABLE >::results() const {
     return _results_;
   }
 
@@ -352,7 +352,7 @@ namespace gum {
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
   template < typename TABLE >
-  INLINE double ScheduleProjection< TABLE >::nbOperations() const {
+  double ScheduleProjection< TABLE >::nbOperations() const {
     return double(_arg_->domainSize());
   }
 

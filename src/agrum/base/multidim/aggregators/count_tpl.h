@@ -54,30 +54,30 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Count< GUM_SCALAR >::Count(Idx value) :
+    Count< GUM_SCALAR >::Count(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Count);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from) :
+    Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Count);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Count< GUM_SCALAR >::~Count() {
+    Count< GUM_SCALAR >::~Count() {
       GUM_DESTRUCTOR(Count);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Count< GUM_SCALAR >::neutralElt_() const {
+    Idx Count< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Count< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+    Idx Count< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                           Idx                     i1,
                                           Idx                     i2,
                                           bool&                   stop_iteration) const {
@@ -85,12 +85,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string Count< GUM_SCALAR >::aggregatorName() const {
+    std::string Count< GUM_SCALAR >::aggregatorName() const {
       return std::format("count[{}]", _value_);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >* Count< GUM_SCALAR >::newFactory() const {
+    MultiDimContainer< GUM_SCALAR >* Count< GUM_SCALAR >::newFactory() const {
       return new Count< GUM_SCALAR >(_value_);
     }
 

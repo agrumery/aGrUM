@@ -73,7 +73,7 @@ namespace gum {
 
   // Returns a constant reference over the IMarkovRandomField referenced by this class
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const IMarkovRandomField< GUM_SCALAR >& MRFInference< GUM_SCALAR >::MRF() const {
+  const IMarkovRandomField< GUM_SCALAR >& MRFInference< GUM_SCALAR >::MRF() const {
     return static_cast< const IMarkovRandomField< GUM_SCALAR >& >(this->model());
   }
 

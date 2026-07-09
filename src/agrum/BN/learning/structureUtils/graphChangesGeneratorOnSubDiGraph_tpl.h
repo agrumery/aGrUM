@@ -175,7 +175,7 @@ namespace gum {
 
     /// sets a new graph from which the operator will compute possible changes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setGraph(const DiGraph& graph) {
       // generate the set of all changes
       createChanges_();
@@ -183,33 +183,33 @@ namespace gum {
 
     /// assign a set of target nodes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTargets(const NodeSet& nodes) {
       target_nodes_ = nodes;
     }
 
     /// adds a new target node
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTarget(NodeId node) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTarget(NodeId node) {
       target_nodes_.insert(node);
     }
 
     /// removes a target
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTarget(NodeId node) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTarget(NodeId node) {
       target_nodes_.erase(node);
     }
 
     /// assign a set of "tail" nodes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTails(const NodeSet& nodes) {
       tail_nodes_ = nodes;
     }
 
     /// assign a set of "tail" nodes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTails(Size nb_nodes) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTails(Size nb_nodes) {
       tail_nodes_.clear();
       for (Idx i = 0; i < nb_nodes; ++i) {
         tail_nodes_.insert(i);
@@ -218,65 +218,65 @@ namespace gum {
 
     /// adds a new "tail" node
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTail(NodeId node) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::addTail(NodeId node) {
       tail_nodes_.insert(node);
     }
 
     /// removes a tail node
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTail(NodeId node) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::eraseTail(NodeId node) {
       tail_nodes_.erase(node);
     }
 
     /// empty the set of possible change operators that can be applied
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::clearChanges() noexcept {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::clearChanges() noexcept {
       legal_changes_.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
-    INLINE typename GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::iterator
+    typename GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::iterator
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::begin() const {
       return legal_changes_.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
     template < typename STRUCT_CONSTRAINT >
-    INLINE const typename GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::iterator&
+    const typename GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::iterator&
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::end() const {
       return legal_changes_.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
         const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
         const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
         const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::modifyGraph(
         const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::notifyGetCompleted() {
       if (legal_changes_.size()) legal_changes_.clear();
     }
 
     /// sets the maximum number of threads used to perform counts
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
       if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
@@ -284,7 +284,7 @@ namespace gum {
 
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
-    INLINE STRUCT_CONSTRAINT&
+    STRUCT_CONSTRAINT&
         GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }

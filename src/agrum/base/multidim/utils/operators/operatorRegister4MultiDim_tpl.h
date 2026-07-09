@@ -99,7 +99,7 @@ namespace gum {
 
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
-  INLINE bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view operation_name,
+  bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view operation_name,
                                                                std::string_view type1,
                                                                std::string_view type2) const {
     if (!_set_.exists(operation_name)) return false;
@@ -111,7 +111,7 @@ namespace gum {
   /** @brief returns the specialized operator assigned to a given pair of
    * MultiDimImplementations */
   template < typename GUM_ELEMENT >
-  INLINE typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr
+  typename OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorPtr
       OperatorRegister4MultiDim< GUM_ELEMENT >::get(std::string_view operation_name,
                                                     std::string_view type1,
                                                     std::string_view type2) const {

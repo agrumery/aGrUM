@@ -62,7 +62,7 @@ namespace gum {
    * Note that an ID as to be created before and given in parameter.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IDReader< GUM_SCALAR >::IDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
+  IDReader< GUM_SCALAR >::IDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
                                           std::string_view                filePath) {
     GUM_CONSTRUCTOR(IDReader);
   }
@@ -71,7 +71,7 @@ namespace gum {
    * Default destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IDReader< GUM_SCALAR >::~IDReader() {
+  IDReader< GUM_SCALAR >::~IDReader() {
     GUM_DESTRUCTOR(IDReader);
   }
 

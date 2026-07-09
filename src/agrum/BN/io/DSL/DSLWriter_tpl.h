@@ -59,13 +59,13 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE DSLWriter< GUM_SCALAR >::DSLWriter() {
+  DSLWriter< GUM_SCALAR >::DSLWriter() {
     GUM_CONSTRUCTOR(DSLWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE DSLWriter< GUM_SCALAR >::~DSLWriter() {
+  DSLWriter< GUM_SCALAR >::~DSLWriter() {
     GUM_DESTRUCTOR(DSLWriter);
   }
 

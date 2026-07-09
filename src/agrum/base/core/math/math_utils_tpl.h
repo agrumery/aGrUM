@@ -44,12 +44,12 @@
 
 namespace gum {
   template < typename T >
-  INLINE bool isCloseToZero(T x, T tol) {
+  bool isCloseToZero(T x, T tol) {
     return std::abs(x) <= tol;
   }
 
   template < typename T >
-  INLINE bool isCloseToOne(T x, T tol) {
+  bool isCloseToOne(T x, T tol) {
     return std::abs(x - T(1)) <= tol;
   }
 

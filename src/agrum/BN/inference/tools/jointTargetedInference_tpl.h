@@ -84,7 +84,7 @@ namespace gum {
 
   // return true if target is a nodeset target.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool JointTargetedInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
+  bool JointTargetedInference< GUM_SCALAR >::isJointTarget(const NodeSet& vars) const {
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
@@ -100,13 +100,13 @@ namespace gum {
 
   // Clear all previously defined single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllMarginalTargets() {
+  void JointTargetedInference< GUM_SCALAR >::eraseAllMarginalTargets() {
     MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets();
   }
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllJointTargets() {
+  void JointTargetedInference< GUM_SCALAR >::eraseAllJointTargets() {
     if (_joint_targets_.size() > 0) {
       // we already are in target mode. So no this->setTargetedMode_();  is needed
       onAllJointTargetsErased_();
@@ -117,7 +117,7 @@ namespace gum {
 
   // Clear all previously defined targets (single and joint targets)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void JointTargetedInference< GUM_SCALAR >::eraseAllTargets() {
+  void JointTargetedInference< GUM_SCALAR >::eraseAllTargets() {
     eraseAllMarginalTargets();
     eraseAllJointTargets();
   }
@@ -188,13 +188,13 @@ namespace gum {
 
   /// returns the list of target sets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Set< NodeSet >& JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
+  const Set< NodeSet >& JointTargetedInference< GUM_SCALAR >::jointTargets() const noexcept {
     return _joint_targets_;
   }
 
   /// returns the number of target sets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
+  Size JointTargetedInference< GUM_SCALAR >::nbrJointTargets() const noexcept {
     return _joint_targets_.size();
   }
 

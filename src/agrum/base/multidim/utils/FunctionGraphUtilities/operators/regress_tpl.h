@@ -62,7 +62,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
+  Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::Regress(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG1,
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* DG2,
       const gum::VariableSet*                                         primedVars,
@@ -83,7 +83,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::~Regress() {
+  Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::~Regress() {
     GUM_DESTRUCTOR(Regress);
 
     for (auto instIter = _DG1InstantiationNeeded_.beginSafe();
@@ -105,7 +105,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+  MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
          Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
     _establishVarOrder_();
     _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
@@ -139,7 +139,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+  void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       _establishVarOrder_() {
     SequenceIteratorSafe< const DiscreteVariable* > fite = _DG1_->variablesSequence().beginSafe();
     SequenceIteratorSafe< const DiscreteVariable* > site = _DG2_->variablesSequence().beginSafe();
@@ -219,7 +219,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
+  void Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::
       _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
                                 HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
@@ -308,7 +308,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE NodeId
+  NodeId
       Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
           O4DGContext& currentSituation,
           Idx          lastInstVarPos) {

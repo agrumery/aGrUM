@@ -74,25 +74,25 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(const PRMInstance< GUM_SCALAR >& i) :
+    InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(const PRMInstance< GUM_SCALAR >& i) :
         IBayesNet< GUM_SCALAR >(), _inst_(&i) {
       GUM_CONSTRUCTOR(InstanceBayesNet);
       _init_(i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(const InstanceBayesNet& from) :
+    InstanceBayesNet< GUM_SCALAR >::InstanceBayesNet(const InstanceBayesNet& from) :
         IBayesNet< GUM_SCALAR >(from), _varNodeMap_(from._varNodeMap_), _inst_(from._inst_) {
       GUM_CONS_CPY(InstanceBayesNet);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE InstanceBayesNet< GUM_SCALAR >::~InstanceBayesNet() {
+    InstanceBayesNet< GUM_SCALAR >::~InstanceBayesNet() {
       GUM_DESTRUCTOR(InstanceBayesNet);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE InstanceBayesNet< GUM_SCALAR >&
+    InstanceBayesNet< GUM_SCALAR >&
            InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
@@ -104,51 +104,51 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Tensor< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+    const Tensor< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return _get_(varId).cpf();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const VariableNodeMap& InstanceBayesNet< GUM_SCALAR >::variableNodeMap() const {
+    const VariableNodeMap& InstanceBayesNet< GUM_SCALAR >::variableNodeMap() const {
       GUM_ERROR(NotFound, "no VariableNodeMap in an InstanceBayesNet")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DiscreteVariable& InstanceBayesNet< GUM_SCALAR >::variable(NodeId id) const {
+    const DiscreteVariable& InstanceBayesNet< GUM_SCALAR >::variable(NodeId id) const {
       return _get_(id).type().variable();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+    NodeId InstanceBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return _varNodeMap_[&var]->id();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId InstanceBayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
+    NodeId InstanceBayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
       return _get_(name).id();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DiscreteVariable&
+    const DiscreteVariable&
         InstanceBayesNet< GUM_SCALAR >::variableFromName(std::string_view name) const {
       return _get_(name).type().variable();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  InstanceBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       return _inst_->get(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  InstanceBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
       if (!_inst_->exists(name)) GUM_ERROR(NotFound, "no element found with that name")
       return _inst_->get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const NodeProperty< Size >& InstanceBayesNet< GUM_SCALAR >::modalities() const {
+    const NodeProperty< Size >& InstanceBayesNet< GUM_SCALAR >::modalities() const {
       if (_modalities_.empty()) {
         for (const auto node: this->nodes()) {
           _modalities_.insert(node, variable(node).domainSize());
@@ -159,7 +159,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string InstanceBayesNet< GUM_SCALAR >::toDot() const {
+    std::string InstanceBayesNet< GUM_SCALAR >::toDot() const {
       std::string       tab = "  ";
       std::stringstream output;
       output << std::format("digraph \"{}\" {{\n", _inst_->name());

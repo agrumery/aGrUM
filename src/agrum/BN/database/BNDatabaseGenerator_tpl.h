@@ -169,27 +169,27 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbRows() const {
+  Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbRows() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
     return _database_.size();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbCols() const {
+  Size BNDatabaseGenerator< GUM_SCALAR >::samplesNbCols() const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
 
     return _nbVars_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row, Idx col) const {
+  Idx BNDatabaseGenerator< GUM_SCALAR >::samplesAt(Idx row, Idx col) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
     return _database_.at(row).at(_varOrder_.at(col));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BNDatabaseGenerator< GUM_SCALAR >::samplesLabelAt(Idx row, Idx col) const {
+  std::string BNDatabaseGenerator< GUM_SCALAR >::samplesLabelAt(Idx row, Idx col) const {
     if (!_drawnSamples_) { GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.") }
     const auto j = _varOrder_.at(col);
     return _label_(_database_.at(row), _bn_.variable(j), j);
@@ -518,7 +518,7 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const BayesNet< GUM_SCALAR >& BNDatabaseGenerator< GUM_SCALAR >::bn(void) {
+  const BayesNet< GUM_SCALAR >& BNDatabaseGenerator< GUM_SCALAR >::bn(void) {
     return _bn_;
   }
 

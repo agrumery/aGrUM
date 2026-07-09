@@ -60,7 +60,7 @@ namespace gum {
 
   /// remove the table if it is contained in th ScheduleMultiDim
   template < typename TABLE >
-  INLINE void ScheduleMultiDim< TABLE >::_removeTable_() {
+  void ScheduleMultiDim< TABLE >::_removeTable_() {
     if (_table_contained_ && (_table_ != nullptr)) delete _table_;
     _table_ = nullptr;
   }
@@ -147,7 +147,7 @@ namespace gum {
 
   /// virtual copy constructor
   template < typename TABLE >
-  INLINE ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone() const {
+  ScheduleMultiDim< TABLE >* ScheduleMultiDim< TABLE >::clone() const {
     return new ScheduleMultiDim< TABLE >(*this);
   }
 
@@ -246,7 +246,7 @@ namespace gum {
 
   /// checks whether two ScheduleMultiDim have exactly the same ID
   template < typename TABLE >
-  INLINE bool ScheduleMultiDim< TABLE >::operator==(const ScheduleMultiDim< TABLE >& m) const {
+  bool ScheduleMultiDim< TABLE >::operator==(const ScheduleMultiDim< TABLE >& m) const {
     return IScheduleMultiDim::operator==(m);
   }
 
@@ -261,19 +261,19 @@ namespace gum {
 
   /// checks whether two ScheduleMultiDim have different IDs
   template < typename TABLE >
-  INLINE bool ScheduleMultiDim< TABLE >::operator!=(const ScheduleMultiDim< TABLE >& m) const {
+  bool ScheduleMultiDim< TABLE >::operator!=(const ScheduleMultiDim< TABLE >& m) const {
     return !ScheduleMultiDim< TABLE >::operator==(m);
   }
 
   /// checks whether two ScheduleMultiDim have different IDs or types
   template < typename TABLE >
-  INLINE bool ScheduleMultiDim< TABLE >::operator!=(const IScheduleMultiDim& m) const {
+  bool ScheduleMultiDim< TABLE >::operator!=(const IScheduleMultiDim& m) const {
     return !ScheduleMultiDim< TABLE >::operator==(m);
   }
 
   /// checks whether two ScheduleMultiDim have the same variables
   template < typename TABLE >
-  INLINE bool
+  bool
       ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
     return ((_domain_size_ == m._domain_size_) && (_var_sequence_ == m._var_sequence_));
   }
@@ -311,7 +311,7 @@ namespace gum {
   /// returns the multiDimImplementation actually contained in the
   /// ScheduleMultiDim
   template < typename TABLE >
-  INLINE const TABLE& ScheduleMultiDim< TABLE >::multiDim() const {
+  const TABLE& ScheduleMultiDim< TABLE >::multiDim() const {
     if (_table_ == nullptr) {
       GUM_ERROR(NullElement,
                 "the ScheduleMultiDim is abstract, so its table " << "cannot be returned");
@@ -321,19 +321,19 @@ namespace gum {
 
   /// returns whether the ScheduleMultiDim contains a real table
   template < typename TABLE >
-  INLINE bool ScheduleMultiDim< TABLE >::isAbstract() const {
+  bool ScheduleMultiDim< TABLE >::isAbstract() const {
     return (_table_ == nullptr);
   }
 
   /// indicates whether the ScheduleMultiDim contains a table and possess it
   template < typename TABLE >
-  INLINE bool ScheduleMultiDim< TABLE >::containsMultiDim() const {
+  bool ScheduleMultiDim< TABLE >::containsMultiDim() const {
     return _table_contained_ && (_table_ != nullptr);
   }
 
   /// if the ScheduleMultiDim is not abstract, make it abstract again
   template < typename TABLE >
-  INLINE void ScheduleMultiDim< TABLE >::makeAbstract() {
+  void ScheduleMultiDim< TABLE >::makeAbstract() {
     _removeTable_();
   }
 
@@ -358,20 +358,20 @@ namespace gum {
 
   /// returns the set of variables involved in the multidim
   template < typename TABLE >
-  INLINE const Sequence< const DiscreteVariable* >&
+  const Sequence< const DiscreteVariable* >&
                ScheduleMultiDim< TABLE >::variablesSequence() const {
     return _var_sequence_;
   }
 
   /// returns the domain size of the multidim
   template < typename TABLE >
-  INLINE Size ScheduleMultiDim< TABLE >::domainSize() const {
+  Size ScheduleMultiDim< TABLE >::domainSize() const {
     return _domain_size_;
   }
 
   /// returns the sizeof of the elements stored into the ScheduleMultiDim
   template < typename TABLE >
-  INLINE double ScheduleMultiDim< TABLE >::sizeOfContent() const {
+  double ScheduleMultiDim< TABLE >::sizeOfContent() const {
     return double(sizeof(typename ElementType< TABLE >::value_type));
   }
 

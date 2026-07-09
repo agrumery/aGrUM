@@ -54,13 +54,13 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::GeneralizedCNFWriter() {
+  GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::GeneralizedCNFWriter() {
     GUM_CONSTRUCTOR(GeneralizedCNFWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::~GeneralizedCNFWriter() {
+  GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::~GeneralizedCNFWriter() {
     GUM_DESTRUCTOR(GeneralizedCNFWriter);
   }
 
@@ -71,7 +71,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::ostream&                  output,
       const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
@@ -160,7 +160,7 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void GeneralizedCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::string_view               filePath,
       const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
@@ -258,7 +258,6 @@ namespace gum {
 
   // Returns a bloc defining a variable's CPT in the BN format.
   /*template<GumScalar GUM_SCALAR, template<class> class IApproximationPolicy >
-  INLINE
     std::string
     CNFWriter<GUM_SCALAR>:: _variableCPT_( const Tensor<GUM_SCALAR>& cpt ) {
     std::stringstream str;

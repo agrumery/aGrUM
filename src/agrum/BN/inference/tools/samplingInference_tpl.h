@@ -87,7 +87,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::samplingBN() {
+  const IBayesNet< GUM_SCALAR >& SamplingInference< GUM_SCALAR >::samplingBN() {
     this->prepareInference();
     if (_samplingBN_ == nullptr) return this->BN();
     else return *_samplingBN_;

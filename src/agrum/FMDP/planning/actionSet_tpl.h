@@ -46,7 +46,7 @@ namespace gum {
 
 
   template < typename GUM_ELEMENT >
-  INLINE const GUM_ELEMENT&
+  const GUM_ELEMENT&
       ArgumentMaximisesAction< GUM_ELEMENT >::operator()(const GUM_ELEMENT& x,
                                                          const GUM_ELEMENT& y) const {
     if (x > y) { return x; }

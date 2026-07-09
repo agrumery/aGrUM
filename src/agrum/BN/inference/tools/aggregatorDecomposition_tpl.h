@@ -56,7 +56,7 @@
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
+  AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
     GUM_CONSTRUCTOR(AggregatorDecomposition)
   }
 
@@ -366,7 +366,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
+  void AggregatorDecomposition< GUM_SCALAR >::setMaximumArity(gum::Size arity) {
     if (arity < 2) { GUM_ERROR(OperationNotAllowed, "Maximum arity should be at least 2") }
     _arity_ = arity;
   }
@@ -377,7 +377,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string AggregatorDecomposition< GUM_SCALAR >::name() const {
+  std::string AggregatorDecomposition< GUM_SCALAR >::name() const {
     return "aggregator decomposition";
   }
 

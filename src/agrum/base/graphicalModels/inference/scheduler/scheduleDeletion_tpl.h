@@ -93,7 +93,7 @@ namespace gum {
 
   /// virtual copy constructor
   template < typename TABLE >
-  INLINE ScheduleDeletion< TABLE >* ScheduleDeletion< TABLE >::clone() const {
+  ScheduleDeletion< TABLE >* ScheduleDeletion< TABLE >::clone() const {
     return new ScheduleDeletion< TABLE >(*this);
   }
 
@@ -129,7 +129,7 @@ namespace gum {
 
   /// operator ==
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::operator==(const ScheduleDeletion< TABLE >& op) const {
+  bool ScheduleDeletion< TABLE >::operator==(const ScheduleDeletion< TABLE >& op) const {
     return (*_arg_ == *op._arg_);
   }
 
@@ -145,19 +145,19 @@ namespace gum {
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::operator!=(const ScheduleDeletion< TABLE >& op) const {
+  bool ScheduleDeletion< TABLE >::operator!=(const ScheduleDeletion< TABLE >& op) const {
     return !ScheduleDeletion< TABLE >::operator==(op);
   }
 
   /// operator !=
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::operator!=(const ScheduleOperator& op) const {
+  bool ScheduleDeletion< TABLE >::operator!=(const ScheduleOperator& op) const {
     return !ScheduleDeletion< TABLE >::operator==(op);
   }
 
   /// checks whether two ScheduleOperator have similar parameters
   template < typename TABLE >
-  INLINE bool
+  bool
       ScheduleDeletion< TABLE >::hasSimilarArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_);
   }
@@ -174,7 +174,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
-  INLINE bool
+  bool
       ScheduleDeletion< TABLE >::hasSameArguments(const ScheduleDeletion< TABLE >& op) const {
     return _arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_);
   }
@@ -191,7 +191,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::isSameOperator(const ScheduleDeletion< TABLE >& op) const {
+  bool ScheduleDeletion< TABLE >::isSameOperator(const ScheduleDeletion< TABLE >& op) const {
     return true;
   }
 
@@ -207,19 +207,19 @@ namespace gum {
 
   /// returns the argument of the deletion
   template < typename TABLE >
-  INLINE const ScheduleMultiDim< TABLE >& ScheduleDeletion< TABLE >::arg() const {
+  const ScheduleMultiDim< TABLE >& ScheduleDeletion< TABLE >::arg() const {
     return *_arg_;
   }
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE >
-  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::args() const {
+  const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::args() const {
     return _args_;
   }
 
   /// returns the result of the combination
   template < typename TABLE >
-  INLINE const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::results() const {
+  const Sequence< const IScheduleMultiDim* >& ScheduleDeletion< TABLE >::results() const {
     return _results_;
   }
 
@@ -252,13 +252,13 @@ namespace gum {
 
   /// indicates whether the operator has been executed
   template < typename TABLE >
-  INLINE bool ScheduleDeletion< TABLE >::isExecuted() const {
+  bool ScheduleDeletion< TABLE >::isExecuted() const {
     return _is_executed_;
   }
 
   /// executes the operator
   template < typename TABLE >
-  INLINE void ScheduleDeletion< TABLE >::execute() {
+  void ScheduleDeletion< TABLE >::execute() {
     _arg_->makeAbstract();
     _is_executed_ = true;
   }
@@ -272,13 +272,13 @@ namespace gum {
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperator */
   template < typename TABLE >
-  INLINE double ScheduleDeletion< TABLE >::nbOperations() const {
+  double ScheduleDeletion< TABLE >::nbOperations() const {
     return 1.0;
   }
 
   /// returns the memory consumption used during the operator
   template < typename TABLE >
-  INLINE std::pair< double, double > ScheduleDeletion< TABLE >::memoryUsage() const {
+  std::pair< double, double > ScheduleDeletion< TABLE >::memoryUsage() const {
     const double size_table = double(_arg_->domainSize()) * _arg_->sizeOfContent() + sizeof(TABLE);
     return {-size_table, -size_table};
   }

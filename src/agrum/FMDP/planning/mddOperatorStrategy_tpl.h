@@ -85,7 +85,7 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE MDDOperatorStrategy< GUM_ELEMENT >::MDDOperatorStrategy() {
+  MDDOperatorStrategy< GUM_ELEMENT >::MDDOperatorStrategy() {
     GUM_CONSTRUCTOR(MDDOperatorStrategy);
   }
 
@@ -93,7 +93,7 @@ namespace gum {
   // Default destructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE MDDOperatorStrategy< GUM_ELEMENT >::~MDDOperatorStrategy() {
+  MDDOperatorStrategy< GUM_ELEMENT >::~MDDOperatorStrategy() {
     GUM_DESTRUCTOR(MDDOperatorStrategy);
   }
 
@@ -228,14 +228,14 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool
+  bool
       MDDOperatorStrategy< GUM_ELEMENT >::shouldEleminateVar_(const DiscreteVariable*    v,
                                                               const FMDP< GUM_ELEMENT >* fmdp) {
     return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable* MDDOperatorStrategy< GUM_ELEMENT >::lastVar_(
+  const DiscreteVariable* MDDOperatorStrategy< GUM_ELEMENT >::lastVar_(
       const MultiDimFunctionGraph< GUM_ELEMENT >* function) {
     return function->variablesSequence().size() == 0
              ? nullptr
@@ -243,7 +243,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
+  MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
          MDDOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
     return MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
   }

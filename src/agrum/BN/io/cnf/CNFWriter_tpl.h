@@ -54,18 +54,18 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE CNFWriter< GUM_SCALAR, IApproximationPolicy >::CNFWriter() {
+  CNFWriter< GUM_SCALAR, IApproximationPolicy >::CNFWriter() {
     GUM_CONSTRUCTOR(CNFWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE CNFWriter< GUM_SCALAR, IApproximationPolicy >::~CNFWriter() {
+  CNFWriter< GUM_SCALAR, IApproximationPolicy >::~CNFWriter() {
     GUM_DESTRUCTOR(CNFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR, template < typename > class IApproximationPolicy >
-  INLINE GUM_SCALAR
+  GUM_SCALAR
       CNFWriter< GUM_SCALAR, IApproximationPolicy >::fromExact(const GUM_SCALAR& value) const {
     return IApproximationPolicy< GUM_SCALAR >::fromExact(value);
   }

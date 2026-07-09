@@ -134,22 +134,22 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size GibbsOperator< GUM_SCALAR >::nbrDrawnVar() const {
+  Size GibbsOperator< GUM_SCALAR >::nbrDrawnVar() const {
     return nbr_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GibbsOperator< GUM_SCALAR >::setNbrDrawnVar(Size nbr) {
+  void GibbsOperator< GUM_SCALAR >::setNbrDrawnVar(Size nbr) {
     nbr_ = nbr;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool GibbsOperator< GUM_SCALAR >::isDrawnAtRandom() const {
+  bool GibbsOperator< GUM_SCALAR >::isDrawnAtRandom() const {
     return atRandom_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GibbsOperator< GUM_SCALAR >::setDrawnAtRandom(bool atRandom) {
+  void GibbsOperator< GUM_SCALAR >::setDrawnAtRandom(bool atRandom) {
     atRandom_ = atRandom;
   }
 

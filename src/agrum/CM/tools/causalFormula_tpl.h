@@ -129,12 +129,12 @@ namespace gum {
 
   // causalFormula_tpl.h (or inline in the header)
   template < GUM_Numeric GUM_SCALAR >
-  inline bool CausalFormula< GUM_SCALAR >::isIdentified() const noexcept {
+  bool CausalFormula< GUM_SCALAR >::isIdentified() const noexcept {
     return static_cast< bool >(_root);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const ASTtree< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::root() const {
+  const ASTtree< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::root() const {
     if (!_root) GUM_ERROR(OperationNotAllowed, "No AST: effect not identified.");
     return *_root;
   }
@@ -272,27 +272,27 @@ namespace gum {
   // ---------- accessors ----------
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const CausalModel< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::cm() const {
+  const CausalModel< GUM_SCALAR >& CausalFormula< GUM_SCALAR >::cm() const {
     return _cm;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const NodeSet& CausalFormula< GUM_SCALAR >::on() const {
+  const NodeSet& CausalFormula< GUM_SCALAR >::on() const {
     return _on;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const NodeSet& CausalFormula< GUM_SCALAR >::doing() const {
+  const NodeSet& CausalFormula< GUM_SCALAR >::doing() const {
     return _doing;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const NodeSet& CausalFormula< GUM_SCALAR >::knowing() const {
+  const NodeSet& CausalFormula< GUM_SCALAR >::knowing() const {
     return _knowing;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const std::string& CausalFormula< GUM_SCALAR >::explanation() const {
+  const std::string& CausalFormula< GUM_SCALAR >::explanation() const {
     return _explanation;
   }
 

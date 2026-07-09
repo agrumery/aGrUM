@@ -518,13 +518,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator() :
+    ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator() :
         _layers_(), _domain_size_(2), _max_parents_(INT_MAX), _cluster_ratio_(0.0) {
       GUM_CONSTRUCTOR(ClusteredLayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator(
+    ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator(
         const ClusteredLayerGenerator< GUM_SCALAR >& source) :
         _layers_(source._layers_), _domain_size_(source._domain_size_),
         _max_parents_(source._max_parents_) {
@@ -532,12 +532,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClusteredLayerGenerator< GUM_SCALAR >::~ClusteredLayerGenerator() {
+    ClusteredLayerGenerator< GUM_SCALAR >::~ClusteredLayerGenerator() {
       GUM_DESTRUCTOR(ClusteredLayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClusteredLayerGenerator< GUM_SCALAR >& ClusteredLayerGenerator< GUM_SCALAR >::operator=(
+    ClusteredLayerGenerator< GUM_SCALAR >& ClusteredLayerGenerator< GUM_SCALAR >::operator=(
         const ClusteredLayerGenerator< GUM_SCALAR >& source) {
       _layers_      = source._layers_;
       _domain_size_ = source._domain_size_;
@@ -546,50 +546,50 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size ClusteredLayerGenerator< GUM_SCALAR >::getDomainSize() const {
+    Size ClusteredLayerGenerator< GUM_SCALAR >::getDomainSize() const {
       return _domain_size_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ClusteredLayerGenerator< GUM_SCALAR >::setDomainSize(Size s) {
+    void ClusteredLayerGenerator< GUM_SCALAR >::setDomainSize(Size s) {
       _domain_size_ = s;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size ClusteredLayerGenerator< GUM_SCALAR >::getMaxParents() const {
+    Size ClusteredLayerGenerator< GUM_SCALAR >::getMaxParents() const {
       return _max_parents_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ClusteredLayerGenerator< GUM_SCALAR >::setMaxParents(Size s) {
+    void ClusteredLayerGenerator< GUM_SCALAR >::setMaxParents(Size s) {
       _max_parents_ = s;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ClusteredLayerGenerator< GUM_SCALAR >::setLayers(
+    void ClusteredLayerGenerator< GUM_SCALAR >::setLayers(
         const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >& v) {
       _layers_ = v;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
+    std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
            ClusteredLayerGenerator< GUM_SCALAR >::getLayer() {
       return _layers_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
+    const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
                  ClusteredLayerGenerator< GUM_SCALAR >::getLayer() const {
       return _layers_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE double ClusteredLayerGenerator< GUM_SCALAR >::getClusterRatio() const {
+    double ClusteredLayerGenerator< GUM_SCALAR >::getClusterRatio() const {
       return _cluster_ratio_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ClusteredLayerGenerator< GUM_SCALAR >::setClusterRatio(double ratio) {
+    void ClusteredLayerGenerator< GUM_SCALAR >::setClusterRatio(double ratio) {
       _cluster_ratio_ = ratio;
     }
 

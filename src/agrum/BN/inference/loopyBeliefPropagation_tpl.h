@@ -82,7 +82,7 @@ namespace gum {
 
   /// destructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE LoopyBeliefPropagation< GUM_SCALAR >::~LoopyBeliefPropagation() {
+  LoopyBeliefPropagation< GUM_SCALAR >::~LoopyBeliefPropagation() {
     GUM_DESTRUCTOR(LoopyBeliefPropagation)
   }
 
@@ -215,7 +215,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void LoopyBeliefPropagation< GUM_SCALAR >::_initStats_() {
+  void LoopyBeliefPropagation< GUM_SCALAR >::_initStats_() {
     _init_messages_();
     for (const auto& node: this->BN().topologicalOrder()) {
       _updateNodeMessage_(node);
@@ -247,7 +247,7 @@ namespace gum {
 
   /// Returns the probability of the variable.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >& LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
+  const Tensor< GUM_SCALAR >& LoopyBeliefPropagation< GUM_SCALAR >::posterior_(NodeId id) {
     auto p = _computeProdPi_(id) * _computeProdLambda_(id);
     p.normalize();
     _posteriors_.set(id, p);

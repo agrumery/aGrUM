@@ -90,24 +90,24 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIF::Scanner& BIFReader< GUM_SCALAR >::scanner() {
+  BIF::Scanner& BIFReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& BIFReader< GUM_SCALAR >::streamName() const {
+  const std::string& BIFReader< GUM_SCALAR >::streamName() const {
     return _streamName_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BIFReader< GUM_SCALAR >::trace() const {
+  bool BIFReader< GUM_SCALAR >::trace() const {
     return _traceScanning_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFReader< GUM_SCALAR >::trace(bool b) {
+  void BIFReader< GUM_SCALAR >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
@@ -132,54 +132,54 @@ namespace gum {
   /// @{
   /// publishing Errors API
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx BIFReader< GUM_SCALAR >::errLine(Idx i) const {
+  Idx BIFReader< GUM_SCALAR >::errLine(Idx i) const {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx BIFReader< GUM_SCALAR >::errCol(Idx i) const {
+  Idx BIFReader< GUM_SCALAR >::errCol(Idx i) const {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BIFReader< GUM_SCALAR >::errIsError(Idx i) const {
+  bool BIFReader< GUM_SCALAR >::errIsError(Idx i) const {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFReader< GUM_SCALAR >::errMsg(Idx i) const {
+  std::string BIFReader< GUM_SCALAR >::errMsg(Idx i) const {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
+  void BIFReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) const {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) const {
+  void BIFReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) const {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
+  void BIFReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) const {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else { GUM_ERROR(OperationNotAllowed, "BIF file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BIFReader< GUM_SCALAR >::errors() const {
+  Size BIFReader< GUM_SCALAR >::errors() const {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BIFReader< GUM_SCALAR >::warnings() const {
+  Size BIFReader< GUM_SCALAR >::warnings() const {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 

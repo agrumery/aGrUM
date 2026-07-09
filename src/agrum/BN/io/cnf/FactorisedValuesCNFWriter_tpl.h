@@ -54,14 +54,12 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE
       FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE
       FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
     GUM_DESTRUCTOR(FactorisedValuesCNFWriter);
   }
@@ -73,7 +71,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::ostream&                  output,
       const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
@@ -162,7 +160,7 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::string_view               filePath,
       const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);

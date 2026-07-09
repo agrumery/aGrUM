@@ -54,7 +54,7 @@ namespace gum {
    * Note that an BN as to be created before and given in parameter.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
+  BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                       std::string_view        filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
@@ -66,7 +66,7 @@ namespace gum {
    * Constructor from an input stream.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
+  BIFXMLBNReader< GUM_SCALAR >::BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                       std::istream&           stream) :
       BNReader< GUM_SCALAR >(bn, "<stream>") {
     GUM_CONSTRUCTOR(BIFXMLBNReader);
@@ -80,7 +80,7 @@ namespace gum {
    * Default destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLBNReader< GUM_SCALAR >::~BIFXMLBNReader() {
+  BIFXMLBNReader< GUM_SCALAR >::~BIFXMLBNReader() {
     GUM_DESTRUCTOR(BIFXMLBNReader);
   }
 

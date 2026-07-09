@@ -83,7 +83,7 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE TreeOperatorStrategy< GUM_ELEMENT >::TreeOperatorStrategy() {
+  TreeOperatorStrategy< GUM_ELEMENT >::TreeOperatorStrategy() {
     GUM_CONSTRUCTOR(TreeOperatorStrategy);
   }
 
@@ -91,7 +91,7 @@ namespace gum {
   // Default destructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE TreeOperatorStrategy< GUM_ELEMENT >::~TreeOperatorStrategy() {
+  TreeOperatorStrategy< GUM_ELEMENT >::~TreeOperatorStrategy() {
     GUM_DESTRUCTOR(TreeOperatorStrategy);
   }
 
@@ -230,7 +230,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
+  MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
          TreeOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
     return MultiDimFunctionGraph< GUM_ELEMENT >::getTreeInstance();
   }
@@ -243,7 +243,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
+  MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
          TreeOperatorStrategy< GUM_ELEMENT >::getAggregatorInstance() {
     return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
   }

@@ -275,13 +275,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE LayerGenerator< GUM_SCALAR >::LayerGenerator() :
+    LayerGenerator< GUM_SCALAR >::LayerGenerator() :
         _layers_(), _domain_size_(2), _max_parents_(INT_MAX) {
       GUM_CONSTRUCTOR(LayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE
         LayerGenerator< GUM_SCALAR >::LayerGenerator(const LayerGenerator< GUM_SCALAR >& source) :
         _layers_(source._layers_), _domain_size_(source._domain_size_),
         _max_parents_(source._max_parents_) {
@@ -289,12 +288,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE LayerGenerator< GUM_SCALAR >::~LayerGenerator() {
+    LayerGenerator< GUM_SCALAR >::~LayerGenerator() {
       GUM_DESTRUCTOR(LayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE LayerGenerator< GUM_SCALAR >&
+    LayerGenerator< GUM_SCALAR >&
            LayerGenerator< GUM_SCALAR >::operator=(const LayerGenerator< GUM_SCALAR >& source) {
       _layers_      = source._layers_;
       _domain_size_ = source._domain_size_;
@@ -303,39 +302,39 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size LayerGenerator< GUM_SCALAR >::getDomainSize() const {
+    Size LayerGenerator< GUM_SCALAR >::getDomainSize() const {
       return _domain_size_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void LayerGenerator< GUM_SCALAR >::setDomainSize(Size s) {
+    void LayerGenerator< GUM_SCALAR >::setDomainSize(Size s) {
       _domain_size_ = s;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size LayerGenerator< GUM_SCALAR >::getMaxParents() const {
+    Size LayerGenerator< GUM_SCALAR >::getMaxParents() const {
       return _max_parents_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void LayerGenerator< GUM_SCALAR >::setMaxParents(Size s) {
+    void LayerGenerator< GUM_SCALAR >::setMaxParents(Size s) {
       _max_parents_ = s;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void LayerGenerator< GUM_SCALAR >::setLayers(
+    void LayerGenerator< GUM_SCALAR >::setLayers(
         const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >& v) {
       _layers_ = v;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
+    std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
            LayerGenerator< GUM_SCALAR >::getLayer() {
       return _layers_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
+    const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
                  LayerGenerator< GUM_SCALAR >::getLayer() const {
       return _layers_;
     }

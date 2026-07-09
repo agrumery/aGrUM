@@ -182,7 +182,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
+  void GumBNReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
     if (_parseDone_ || count() > 0) syntheticResults(stream);
     else { GUM_ERROR(OperationNotAllowed, "File not parsed yet") }
   }

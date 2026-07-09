@@ -362,7 +362,7 @@ namespace gum {
   // returns the value of a given test from the cache
 
   template < typename Key, typename Data >
-  INLINE Data& IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
+  Data& IndexedTree< Key, Data >::getData(const std::vector< Key >& index) const {
     IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)
@@ -376,7 +376,7 @@ namespace gum {
   // returns a given node of the tree
 
   template < typename Key, typename Data >
-  INLINE IndexedTree< Key, Data >&
+  IndexedTree< Key, Data >&
          IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
     IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 

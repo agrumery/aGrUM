@@ -58,7 +58,7 @@ namespace gum {
 
     /// assign a new Bayes net to all the counter's generators depending on a BN
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void RecordCounter::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+    void RecordCounter::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       // remove the caches
       clear();
 

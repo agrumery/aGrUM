@@ -58,31 +58,31 @@ namespace gum {
 
     // Default constructor
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
+    Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Min);
     }
 
     // Default constructor
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from) :
+    Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Min);
     }
 
     // destructor
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Min< GUM_SCALAR >::~Min() {
+    Min< GUM_SCALAR >::~Min() {
       GUM_DESTRUCTOR(Min);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Min< GUM_SCALAR >::neutralElt_() const {
+    Idx Min< GUM_SCALAR >::neutralElt_() const {
       return std::numeric_limits< Idx >::max();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Min< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+    Idx Min< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                         Idx                     i1,
                                         Idx                     i2,
                                         bool&                   stop_iteration) const {
@@ -90,12 +90,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string Min< GUM_SCALAR >::aggregatorName() const {
+    std::string Min< GUM_SCALAR >::aggregatorName() const {
       return "min";
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >* Min< GUM_SCALAR >::newFactory() const {
+    MultiDimContainer< GUM_SCALAR >* Min< GUM_SCALAR >::newFactory() const {
       return new Min< GUM_SCALAR >;
     }
 

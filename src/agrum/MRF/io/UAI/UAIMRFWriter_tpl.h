@@ -52,7 +52,7 @@ namespace gum {
    * Default constructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE UAIMRFWriter< GUM_SCALAR >::UAIMRFWriter() {
+  UAIMRFWriter< GUM_SCALAR >::UAIMRFWriter() {
     GUM_CONSTRUCTOR(UAIMRFWriter);
   }
 
@@ -60,7 +60,7 @@ namespace gum {
    * Destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE UAIMRFWriter< GUM_SCALAR >::~UAIMRFWriter() {
+  UAIMRFWriter< GUM_SCALAR >::~UAIMRFWriter() {
     GUM_DESTRUCTOR(UAIMRFWriter);
   }
 
@@ -72,7 +72,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
+  void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
                                                 const IMarkovRandomField< GUM_SCALAR >& MN) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
@@ -98,7 +98,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void UAIMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
+  void UAIMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
@@ -110,7 +110,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          UAIMRFWriter< GUM_SCALAR >::_preambule_(const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::stringstream str;
 
@@ -137,7 +137,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
                                                   const Tensor< GUM_SCALAR >&             clikpot) {
     std::stringstream str;

@@ -59,7 +59,7 @@ namespace gum {
    * Default constructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IDWriter< GUM_SCALAR >::IDWriter() {
+  IDWriter< GUM_SCALAR >::IDWriter() {
     GUM_CONSTRUCTOR(IDWriter);
   }
 
@@ -67,7 +67,7 @@ namespace gum {
    * Default destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IDWriter< GUM_SCALAR >::~IDWriter() {
+  IDWriter< GUM_SCALAR >::~IDWriter() {
     GUM_DESTRUCTOR(IDWriter);
   }
 
@@ -75,7 +75,7 @@ namespace gum {
    * Write overload delegating to the const version (allows metadata update).
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void IDWriter< GUM_SCALAR >::write(std::string_view                filePath,
+  void IDWriter< GUM_SCALAR >::write(std::string_view                filePath,
                                             InfluenceDiagram< GUM_SCALAR >& infdiag) {
     write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(infdiag));
   }

@@ -46,67 +46,67 @@ namespace gum {
 
 
   template < typename GUM_ELEMENT >
-  INLINE void ExactTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
+  void ExactTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
                                                                       const GUM_ELEMENT& v) {
     _map_.insert(n, v);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ExactTerminalNodePolicy< GUM_ELEMENT >::eraseTerminalNode(const NodeId& n) {
+  void ExactTerminalNodePolicy< GUM_ELEMENT >::eraseTerminalNode(const NodeId& n) {
     _map_.eraseFirst(n);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ExactTerminalNodePolicy< GUM_ELEMENT >::clearAllTerminalNodes() {
+  void ExactTerminalNodePolicy< GUM_ELEMENT >::clearAllTerminalNodes() {
     _map_.clear();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool
+  bool
       ExactTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
     return _map_.existsFirst(n);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool ExactTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithValue(
+  bool ExactTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithValue(
       const GUM_ELEMENT& v) const {
     return _map_.existsSecond(v);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const GUM_ELEMENT&
+  const GUM_ELEMENT&
       ExactTerminalNodePolicy< GUM_ELEMENT >::terminalNodeValue(const NodeId& n) const {
     return _map_.second(n);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const NodeId&
+  const NodeId&
       ExactTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
     return _map_.first(v);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ExactTerminalNodePolicy< GUM_ELEMENT >::beginValues() const {
+  void ExactTerminalNodePolicy< GUM_ELEMENT >::beginValues() const {
     _mappy_ = _map_.beginSafe();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool ExactTerminalNodePolicy< GUM_ELEMENT >::hasValue() const {
+  bool ExactTerminalNodePolicy< GUM_ELEMENT >::hasValue() const {
     return _mappy_ != _map_.endSafe();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ExactTerminalNodePolicy< GUM_ELEMENT >::nextValue() const {
+  void ExactTerminalNodePolicy< GUM_ELEMENT >::nextValue() const {
     ++_mappy_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const GUM_ELEMENT& ExactTerminalNodePolicy< GUM_ELEMENT >::value() const {
+  const GUM_ELEMENT& ExactTerminalNodePolicy< GUM_ELEMENT >::value() const {
     return _mappy_.second();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const NodeId& ExactTerminalNodePolicy< GUM_ELEMENT >::id() const {
+  const NodeId& ExactTerminalNodePolicy< GUM_ELEMENT >::id() const {
     return _mappy_.first();
   }
 

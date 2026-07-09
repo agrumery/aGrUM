@@ -90,7 +90,7 @@ namespace gum {
 
   // return true if variable is a target
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
+  bool MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the bn
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -105,13 +105,13 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
+  bool MarginalTargetedInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
     return isTarget(this->BN().idFromName(nodeName));
   }
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets() {
+  void MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets() {
     onAllMarginalTargetsErased_();
 
     _targets_.clear();
@@ -211,19 +211,19 @@ namespace gum {
 
   // returns the list of single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const NodeSet& MarginalTargetedInference< GUM_SCALAR >::targets() const noexcept {
+  const NodeSet& MarginalTargetedInference< GUM_SCALAR >::targets() const noexcept {
     return _targets_;
   }
 
   // returns the list of single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size MarginalTargetedInference< GUM_SCALAR >::nbrTargets() const noexcept {
+  Size MarginalTargetedInference< GUM_SCALAR >::nbrTargets() const noexcept {
     return _targets_.size();
   }
 
   // indicates whether the inference is in a target mode
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isInTargetMode() const noexcept {
+  bool MarginalTargetedInference< GUM_SCALAR >::isInTargetMode() const noexcept {
     return _targeted_mode_;
   }
 
@@ -267,7 +267,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(NodeId X) {
+  GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(NodeId X) {
     return posterior(X).entropy();
   }
 
@@ -275,7 +275,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(std::string_view nodeName) {
+  GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(std::string_view nodeName) {
     return H(this->BN().idFromName(nodeName));
   }
 
@@ -327,12 +327,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTargetedMode_() const {
+  bool MarginalTargetedInference< GUM_SCALAR >::isTargetedMode_() const {
     return _targeted_mode_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarginalTargetedInference< GUM_SCALAR >::setTargetedMode_() {
+  void MarginalTargetedInference< GUM_SCALAR >::setTargetedMode_() {
     if (!_targeted_mode_) {
       _targets_.clear();
       _targeted_mode_ = true;

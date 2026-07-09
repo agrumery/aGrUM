@@ -425,13 +425,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Tensor< GUM_SCALAR >
+    Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMin(std::string_view varName) const {
       return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Tensor< GUM_SCALAR >
+    Tensor< GUM_SCALAR >
            InferenceEngine< GUM_SCALAR >::marginalMax(std::string_view varName) const {
       return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
@@ -976,7 +976,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    inline const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
+    const GUM_SCALAR InferenceEngine< GUM_SCALAR >::computeEpsilon_() {
       // compute the number of threads and prepare for the result
       const Size                nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
                                                ? this->threadRanges_.size() - 1
@@ -1205,7 +1205,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::string InferenceEngine< GUM_SCALAR >::getApproximationSchemeMsg() {
+    const std::string InferenceEngine< GUM_SCALAR >::getApproximationSchemeMsg() {
       return this->messageApproximationScheme();
     }
 

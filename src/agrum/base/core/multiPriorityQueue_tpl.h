@@ -169,7 +169,7 @@ namespace gum {
 
   // returns the element at the top of the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp >::top() const {
+  const Val& MultiPriorityQueue< Val, Priority, Cmp >::top() const {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return *(_heap_[0].second);
@@ -177,7 +177,7 @@ namespace gum {
 
   // returns the priority of the top element
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Priority& MultiPriorityQueue< Val, Priority, Cmp >::topPriority() const {
+  const Priority& MultiPriorityQueue< Val, Priority, Cmp >::topPriority() const {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return _heap_[0].first;
@@ -185,19 +185,19 @@ namespace gum {
 
   // returns the number of elements in the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE Size MultiPriorityQueue< Val, Priority, Cmp >::size() const noexcept {
+  Size MultiPriorityQueue< Val, Priority, Cmp >::size() const noexcept {
     return _nb_elements_;
   }
 
   // return the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE Size MultiPriorityQueue< Val, Priority, Cmp >::capacity() const noexcept {
+  Size MultiPriorityQueue< Val, Priority, Cmp >::capacity() const noexcept {
     return Size(_heap_.capacity());
   }
 
   // changes the size of the array storing the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE void MultiPriorityQueue< Val, Priority, Cmp >::resize(Size new_size) {
+  void MultiPriorityQueue< Val, Priority, Cmp >::resize(Size new_size) {
     if (new_size < _nb_elements_) return;
 
     _heap_.reserve(new_size);
@@ -272,19 +272,19 @@ namespace gum {
 
   // removes a given element from the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
-  INLINE void MultiPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
+  void MultiPriorityQueue< Val, Priority, Cmp >::erase(const Val& val) {
     if (auto p = _indices_.tryGet(val)) eraseByPos((*p)[0]);
   }
 
   // removes the top of the priority queue (but does not return it)
   template < typename Val, typename Priority, typename Cmp >
-  INLINE void MultiPriorityQueue< Val, Priority, Cmp >::eraseTop() {
+  void MultiPriorityQueue< Val, Priority, Cmp >::eraseTop() {
     eraseByPos(0);
   }
 
   // removes the top element from the priority queue and return it
   template < typename Val, typename Priority, typename Cmp >
-  INLINE Val MultiPriorityQueue< Val, Priority, Cmp >::pop() {
+  Val MultiPriorityQueue< Val, Priority, Cmp >::pop() {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty priority queue") }
 
     Val v = *(_heap_[0].second);
@@ -295,7 +295,7 @@ namespace gum {
 
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const HashTable< Val, std::vector< Size > >&
+  const HashTable< Val, std::vector< Size > >&
                MultiPriorityQueue< Val, Priority, Cmp >::allValues() const {
     return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
   }
@@ -413,7 +413,7 @@ namespace gum {
   // emplace a new element into the priority queue
   template < typename Val, typename Priority, typename Cmp >
   template < typename... Args >
-  INLINE Size MultiPriorityQueue< Val, Priority, Cmp >::emplace(Args&&... args) {
+  Size MultiPriorityQueue< Val, Priority, Cmp >::emplace(Args&&... args) {
     std::pair< Val, Priority > new_elt
         = std::make_pair< Val, Priority >(std::forward< Args >(args)...);
     return insert(std::move(new_elt.first), std::move(new_elt.second));
@@ -421,19 +421,19 @@ namespace gum {
 
   // indicates whether the priority queue is empty
   template < typename Val, typename Priority, typename Cmp >
-  INLINE bool MultiPriorityQueue< Val, Priority, Cmp >::empty() const noexcept {
+  bool MultiPriorityQueue< Val, Priority, Cmp >::empty() const noexcept {
     return (_nb_elements_ == 0);
   }
 
   // indicates whether the priority queue contains a given value
   template < typename Val, typename Priority, typename Cmp >
-  INLINE bool MultiPriorityQueue< Val, Priority, Cmp >::contains(const Val& val) const {
+  bool MultiPriorityQueue< Val, Priority, Cmp >::contains(const Val& val) const {
     return _indices_.exists(val);
   }
 
   // returns the element at position "index" in the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Val& MultiPriorityQueue< Val, Priority, Cmp >::operator[](Size index) const {
+  const Val& MultiPriorityQueue< Val, Priority, Cmp >::operator[](Size index) const {
     if (index >= _nb_elements_) {
       GUM_ERROR(NotFound, "not enough elements in the MultiPriorityQueue")
     }
@@ -594,13 +594,13 @@ namespace gum {
 
   // modifies the priority of each instance of a given element
   template < typename Val, typename Priority, typename Cmp >
-  INLINE const Priority& MultiPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
+  const Priority& MultiPriorityQueue< Val, Priority, Cmp >::priority(const Val& elt) const {
     return _heap_[_indices_[elt][0]].first;
   }
 
   // A \c << operator for priority queues
   template < typename Val, typename Priority, typename Cmp >
-  INLINE std::ostream& operator<<(std::ostream&                                   stream,
+  std::ostream& operator<<(std::ostream&                                   stream,
                                   const MultiPriorityQueue< Val, Priority, Cmp >& queue) {
     stream << queue.toString();
     return stream;

@@ -99,7 +99,7 @@ namespace gum {
 
   // data access operator
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR& MultiDimArray< GUM_SCALAR >::get_(const Instantiation& i) const {
+  GUM_SCALAR& MultiDimArray< GUM_SCALAR >::get_(const Instantiation& i) const {
     if (i.isMaster(this)) {
       return values_[this->offsets_[&i]];
     } else {
@@ -109,7 +109,7 @@ namespace gum {
 
   // add a new dimension, needed for updating the offsets_ & gaps_
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::add(const DiscreteVariable& v) {
+  void MultiDimArray< GUM_SCALAR >::add(const DiscreteVariable& v) {
     Size lg = MultiDimWithOffset< GUM_SCALAR >::domainSize();
     MultiDimWithOffset< GUM_SCALAR >::add(v);
 
@@ -118,7 +118,7 @@ namespace gum {
 
   // removes a dimension, needed for updating the offsets_ & gaps_
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::erase(const DiscreteVariable& v) {
+  void MultiDimArray< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     Sequence< const DiscreteVariable* > variables = this->variablesSequence();
     Idx                                 pos = variables.pos(&v);   // throw a NotFound if necessary
 
@@ -157,13 +157,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimArray< GUM_SCALAR >::realSize() const {
+  Size MultiDimArray< GUM_SCALAR >::realSize() const {
     return this->domainSize();
   }
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::commitMultipleChanges_() {
+  void MultiDimArray< GUM_SCALAR >::commitMultipleChanges_() {
     if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != values_.size()) {
       values_.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize());
     }
@@ -171,7 +171,7 @@ namespace gum {
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::commitMultipleChanges_(const GUM_SCALAR& x) {
+  void MultiDimArray< GUM_SCALAR >::commitMultipleChanges_(const GUM_SCALAR& x) {
     if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != values_.size()) {
       values_.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize(), x);
     }
@@ -179,37 +179,37 @@ namespace gum {
 
   // fill the array with the arg
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::fill(const GUM_SCALAR& d) const {
+  void MultiDimArray< GUM_SCALAR >::fill(const GUM_SCALAR& d) const {
     if (!this->empty()) std::fill(values_.begin(), values_.end(), d);
   }
 
   // virtual constructor
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimArray< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* MultiDimArray< GUM_SCALAR >::newFactory() const {
     return new MultiDimArray< GUM_SCALAR >;
   }
 
   // returns the element stored in the multidimArray at a given offset
   template < typename GUM_SCALAR >
-  INLINE const GUM_SCALAR& MultiDimArray< GUM_SCALAR >::unsafeGet(Idx offset) const {
+  const GUM_SCALAR& MultiDimArray< GUM_SCALAR >::unsafeGet(Idx offset) const {
     return values_[offset];
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::unsafeSet(Idx offset, const GUM_SCALAR& val) {
+  void MultiDimArray< GUM_SCALAR >::unsafeSet(Idx offset, const GUM_SCALAR& val) {
     values_[offset] = val;
   }
 
   // returns the element stored in the multidimArray at a given offset
   template < typename GUM_SCALAR >
-  INLINE const GUM_SCALAR& MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
+  const GUM_SCALAR& MultiDimArray< GUM_SCALAR >::getByOffset(Idx offset) const {
     if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large") }
 
     return values_[offset];
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::setByOffset(Idx offset, const GUM_SCALAR& data) {
+  void MultiDimArray< GUM_SCALAR >::setByOffset(Idx offset, const GUM_SCALAR& data) {
     if (offset >= values_.size()) { GUM_ERROR(OutOfBounds, "offset too large") }
 
     values_[offset] = data;
@@ -224,7 +224,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::replace_(const DiscreteVariable* x,
+  void MultiDimArray< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                     const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
   }

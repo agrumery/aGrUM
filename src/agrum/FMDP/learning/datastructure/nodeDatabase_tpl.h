@@ -163,7 +163,7 @@ namespace gum {
   // ==========================================================================
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void* NodeDatabase< AttributeSelection, isScalar >::operator new(size_t s) {
+  void* NodeDatabase< AttributeSelection, isScalar >::operator new(size_t s) {
     return SmallObjectAllocator::instance().allocate(s);
   }
 
@@ -177,7 +177,7 @@ namespace gum {
   // ==========================================================================
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx NodeDatabase< AttributeSelection, isScalar >::nbObservation() const {
+  Idx NodeDatabase< AttributeSelection, isScalar >::nbObservation() const {
     return _nbObservation_;
   }
 
@@ -186,19 +186,19 @@ namespace gum {
   // ==========================================================================
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE bool NodeDatabase< AttributeSelection, isScalar >::isTestRelevant(
+  bool NodeDatabase< AttributeSelection, isScalar >::isTestRelevant(
       const DiscreteVariable* var) const {
     return _attrTable_[var]->isTestRelevant();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE double
+  double
       NodeDatabase< AttributeSelection, isScalar >::testValue(const DiscreteVariable* var) const {
     return _attrTable_[var]->score();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE double NodeDatabase< AttributeSelection, isScalar >::testOtherCriterion(
+  double NodeDatabase< AttributeSelection, isScalar >::testOtherCriterion(
       const DiscreteVariable* var) const {
     return _attrTable_[var]->secondaryscore();
   }
@@ -208,41 +208,41 @@ namespace gum {
   // ==========================================================================
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE auto
+  auto
       NodeDatabase< AttributeSelection, isScalar >::testPolicy(const DiscreteVariable* var) const
       -> const TestPolicy< ValueType >* {
     return _attrTable_[var];
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE auto NodeDatabase< AttributeSelection, isScalar >::cbeginValues() const
+  auto NodeDatabase< AttributeSelection, isScalar >::cbeginValues() const
       -> const HashTableConstIteratorSafe< ValueType, Idx > {
     return _valueCount_.cbeginSafe();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE auto NodeDatabase< AttributeSelection, isScalar >::cendValues() const
+  auto NodeDatabase< AttributeSelection, isScalar >::cendValues() const
       -> const HashTableConstIteratorSafe< ValueType, Idx > {
     return _valueCount_.cendSafe();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx NodeDatabase< AttributeSelection, isScalar >::effectif(Idx moda) const {
+  Idx NodeDatabase< AttributeSelection, isScalar >::effectif(Idx moda) const {
     return _valueCount_.exists(ValueType(moda)) ? _valueCount_[ValueType(moda)] : 0;
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx NodeDatabase< AttributeSelection, isScalar >::valueDomain() const {
+  Idx NodeDatabase< AttributeSelection, isScalar >::valueDomain() const {
     return _valueDomain_(Int2Type< isScalar >());
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx NodeDatabase< AttributeSelection, isScalar >::_valueDomain_(Int2Type< true >) const {
+  Idx NodeDatabase< AttributeSelection, isScalar >::_valueDomain_(Int2Type< true >) const {
     return _valueCount_.size();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx NodeDatabase< AttributeSelection, isScalar >::_valueDomain_(Int2Type< false >) const {
+  Idx NodeDatabase< AttributeSelection, isScalar >::_valueDomain_(Int2Type< false >) const {
     return _value_->domainSize();
   }
 

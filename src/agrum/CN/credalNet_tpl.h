@@ -398,12 +398,12 @@ namespace gum {
     /// bnet accessors / shortcuts
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Instantiation CredalNet< GUM_SCALAR >::instantiation(const NodeId& id) {
+    Instantiation CredalNet< GUM_SCALAR >::instantiation(const NodeId& id) {
       return Instantiation(_src_bn_.cpt(id));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size CredalNet< GUM_SCALAR >::domainSize(const NodeId& id) {
+    Size CredalNet< GUM_SCALAR >::domainSize(const NodeId& id) {
       return _src_bn_.variable(id).domainSize();
     }
 

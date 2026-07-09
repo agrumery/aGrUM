@@ -193,7 +193,7 @@ namespace gum {
 
     /// generates new lines from those the generator gets in input
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DBRow< DBTranslatedValue >& DBRowGeneratorEM< GUM_SCALAR >::generate() {
+    const DBRow< DBTranslatedValue >& DBRowGeneratorEM< GUM_SCALAR >::generate() {
       this->decreaseRemainingRows();
 
       // if everything is observed, return the input row
@@ -228,7 +228,7 @@ namespace gum {
 
     /// computes the rows it will provide in output
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::size_t
+    std::size_t
            DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check if there are unobserved values among the columns of interest.
       // If this is the case, save in _missing_cols_ all the columns with unobserved values

@@ -57,89 +57,89 @@ namespace gum {
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem) : _element_(elem) {
+  Link< T >::Link(const T& elem) : _element_(elem) {
     GUM_CONSTRUCTOR(Link);
   }
 
   // Constructor
   template < typename T >
-  INLINE Link< T >::Link(const T& elem, Link< T >* nextLink) :
+  Link< T >::Link(const T& elem, Link< T >* nextLink) :
       _element_(elem), _nextLink_(nextLink) {
     GUM_CONSTRUCTOR(Link);
   }
 
   // Destructor
   template < typename T >
-  INLINE Link< T >::~Link() {
+  Link< T >::~Link() {
     GUM_DESTRUCTOR(Link);
   }
 
   template < typename T >
-  INLINE void* Link< T >::operator new(size_t s) {
+  void* Link< T >::operator new(size_t s) {
     return SmallObjectAllocator::instance().allocate(Size(s));
   }
 
   template < typename T >
-  INLINE void Link< T >::operator delete(void* p) {
+  void Link< T >::operator delete(void* p) {
     SmallObjectAllocator::instance().deallocate(p, sizeof(Link< T >));
   }
 
   template < typename T >
-  INLINE const T& Link< T >::element() const {
+  const T& Link< T >::element() const {
     return _element_;
   }
 
   template < typename T >
-  INLINE T& Link< T >::element() {
+  T& Link< T >::element() {
     return _element_;
   }
 
   template < typename T >
-  INLINE const Link< T >* Link< T >::nextLink() const {
+  const Link< T >* Link< T >::nextLink() const {
     return _nextLink_;
   }
 
   template < typename T >
-  INLINE Link< T >* Link< T >::nextLink() {
+  Link< T >* Link< T >::nextLink() {
     return _nextLink_;
   }
 
   template < typename T >
-  INLINE void Link< T >::setNextLink(Link< T >* newLink) {
+  void Link< T >::setNextLink(Link< T >* newLink) {
     _nextLink_ = newLink;
   }
 
   // Constructor
   template < typename T >
-  INLINE LinkedList< T >::LinkedList() {
+  LinkedList< T >::LinkedList() {
     GUM_CONSTRUCTOR(LinkedList);
     _firstLink_ = nullptr;
   }
 
   // Destructor
   template < typename T >
-  INLINE LinkedList< T >::~LinkedList() {
+  LinkedList< T >::~LinkedList() {
     clear();
     GUM_DESTRUCTOR(LinkedList);
   }
 
   template < typename T >
-  INLINE void* LinkedList< T >::operator new(size_t s) {
+  void* LinkedList< T >::operator new(size_t s) {
     return SmallObjectAllocator::instance().allocate(Size(s));
   }
 
   template < typename T >
-  INLINE void LinkedList< T >::operator delete(void* p) {
+  void LinkedList< T >::operator delete(void* p) {
     SmallObjectAllocator::instance().deallocate(p, sizeof(LinkedList< T >));
   }
 
   template < typename T >
-  INLINE const Link< T >* LinkedList< T >::list() const {
+  const Link< T >* LinkedList< T >::list() const {
     return _firstLink_;
   }
 
   template < typename T >
-  INLINE Link< T >* LinkedList< T >::list() {
+  Link< T >* LinkedList< T >::list() {
     return _firstLink_;
   }
 
@@ -155,13 +155,13 @@ namespace gum {
   }
 
   template < typename T >
-  INLINE void LinkedList< T >::addLink(const T& elem) {
+  void LinkedList< T >::addLink(const T& elem) {
     Link< T >* newLink = new Link< T >(elem, _firstLink_);
     _firstLink_        = newLink;
   }
 
   template < typename T >
-  INLINE void LinkedList< T >::searchAndRemoveLink(const T& elem) {
+  void LinkedList< T >::searchAndRemoveLink(const T& elem) {
     Link< T >* curLink  = _firstLink_;
     Link< T >* prevLink = nullptr;
     while (curLink && curLink->element() != elem) {

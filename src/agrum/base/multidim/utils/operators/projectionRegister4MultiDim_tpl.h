@@ -95,7 +95,7 @@ namespace gum {
 
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
-  INLINE bool
+  bool
       ProjectionRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view projection_name,
                                                          std::string_view type_multidim) const {
     if (!_set_.exists(projection_name)) return false;
@@ -107,7 +107,7 @@ namespace gum {
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
   template < typename GUM_ELEMENT >
-  INLINE typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr
+  typename ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionPtr
       ProjectionRegister4MultiDim< GUM_ELEMENT >::get(std::string_view projection_name,
                                                       std::string_view type_multidim) const {
     const ProjectionSet& theset = *(_set_[projection_name]);

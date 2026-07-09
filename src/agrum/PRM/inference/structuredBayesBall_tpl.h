@@ -264,90 +264,90 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
+    StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
         const PRMInference< GUM_SCALAR >& inference) : _inf_(&inference) {
       GUM_CONSTRUCTOR(StructuredBayesBall);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
+    StructuredBayesBall< GUM_SCALAR >::StructuredBayesBall(
         const StructuredBayesBall< GUM_SCALAR >& source) : _inf_(0) {
       GUM_CONS_CPY(StructuredBayesBall);
       GUM_ERROR(FatalError, "Not allowed.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE StructuredBayesBall< GUM_SCALAR >& StructuredBayesBall< GUM_SCALAR >::operator=(
+    StructuredBayesBall< GUM_SCALAR >& StructuredBayesBall< GUM_SCALAR >::operator=(
         const StructuredBayesBall< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "Not allowed.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::string&
+    const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >* i) const {
       return _keyMap_[i].first;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::string&
+    const std::string&
                  StructuredBayesBall< GUM_SCALAR >::key(const PRMInstance< GUM_SCALAR >& i) const {
       return _keyMap_[&i].first;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< NodeId >& StructuredBayesBall< GUM_SCALAR >::requisiteNodes(
+    const Set< NodeId >& StructuredBayesBall< GUM_SCALAR >::requisiteNodes(
         const PRMInstance< GUM_SCALAR >* i) const {
       return *(_keyMap_[i].second);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< NodeId >& StructuredBayesBall< GUM_SCALAR >::requisiteNodes(
+    const Set< NodeId >& StructuredBayesBall< GUM_SCALAR >::requisiteNodes(
         const PRMInstance< GUM_SCALAR >& i) const {
       return *(_keyMap_[&i].second);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size StructuredBayesBall< GUM_SCALAR >::occurrence(std::string_view key) const {
+    Size StructuredBayesBall< GUM_SCALAR >::occurrence(std::string_view key) const {
       return _reqMap_[std::string{key}].second;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE float StructuredBayesBall< GUM_SCALAR >::liftRatio() const {
+    float StructuredBayesBall< GUM_SCALAR >::liftRatio() const {
       return ((float)_reqMap_.size()) / ((float)_keyMap_.size());
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         StructuredBayesBall< GUM_SCALAR >::exists(const PRMInstance< GUM_SCALAR >* i) const {
       return _keyMap_.exists(i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         StructuredBayesBall< GUM_SCALAR >::exists(const PRMInstance< GUM_SCALAR >& i) const {
       return _keyMap_.exists(&i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void StructuredBayesBall< GUM_SCALAR >::compute(const PRMInstance< GUM_SCALAR >* i,
+    void StructuredBayesBall< GUM_SCALAR >::compute(const PRMInstance< GUM_SCALAR >* i,
                                                            NodeId                           n) {
       _compute_(i, n);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void StructuredBayesBall< GUM_SCALAR >::compute(const PRMInstance< GUM_SCALAR >& i,
+    void StructuredBayesBall< GUM_SCALAR >::compute(const PRMInstance< GUM_SCALAR >& i,
                                                            NodeId                           n) {
       _compute_(&i, n);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMSlotChain< GUM_SCALAR >&
+    const PRMSlotChain< GUM_SCALAR >&
         StructuredBayesBall< GUM_SCALAR >::_getSC_(const PRMInstance< GUM_SCALAR >* i, NodeId n) {
       return static_cast< const PRMSlotChain< GUM_SCALAR >& >(i->type().get(n));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::pair< bool, bool >&
+    std::pair< bool, bool >&
            StructuredBayesBall< GUM_SCALAR >::_getMark_(InstanceMap&                     marks,
                                                         const PRMInstance< GUM_SCALAR >* i,
                                                         NodeId                           n) {

@@ -138,7 +138,7 @@ namespace gum {
 
   // returns the element at the top of the heap
   template < typename Val, typename Cmp >
-  INLINE const Val& Heap< Val, Cmp >::top() const {
+  const Val& Heap< Val, Cmp >::top() const {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty heap") }
 
     return _heap_[0];
@@ -146,19 +146,19 @@ namespace gum {
 
   // returns the number of elements in the heap
   template < typename Val, typename Cmp >
-  INLINE Size Heap< Val, Cmp >::size() const noexcept {
+  Size Heap< Val, Cmp >::size() const noexcept {
     return _nb_elements_;
   }
 
   // return the size of the array storing the heap
   template < typename Val, typename Cmp >
-  INLINE Size Heap< Val, Cmp >::capacity() const noexcept {
+  Size Heap< Val, Cmp >::capacity() const noexcept {
     return Size(_heap_.size());
   }
 
   // changes the size of the array storing the heap
   template < typename Val, typename Cmp >
-  INLINE void Heap< Val, Cmp >::resize(Size new_size) {
+  void Heap< Val, Cmp >::resize(Size new_size) {
     if (new_size > _nb_elements_) _heap_.reserve(new_size);
   }
 
@@ -192,7 +192,7 @@ namespace gum {
 
   // removes a given element from the heap (but does not return it)
   template < typename Val, typename Cmp >
-  INLINE void Heap< Val, Cmp >::erase(const Val& val) {
+  void Heap< Val, Cmp >::erase(const Val& val) {
     // find val in the heap
     for (Size i = 0; i < _nb_elements_; ++i)
       if (_heap_[i] == val) {
@@ -203,7 +203,7 @@ namespace gum {
 
   // removes the top of the heap (but does not return it)
   template < typename Val, typename Cmp >
-  INLINE void Heap< Val, Cmp >::eraseTop() {
+  void Heap< Val, Cmp >::eraseTop() {
     // if the heap is empty, do nothing
     if (!_nb_elements_) return;
     eraseByPos(0);
@@ -211,7 +211,7 @@ namespace gum {
 
   // removes the top element from the heap and return it
   template < typename Val, typename Cmp >
-  INLINE Val Heap< Val, Cmp >::pop() {
+  Val Heap< Val, Cmp >::pop() {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty heap") }
 
     Val v = _heap_[0];
@@ -237,7 +237,7 @@ namespace gum {
 
   // inserts a new (a copy) element in the heap
   template < typename Val, typename Cmp >
-  INLINE Size Heap< Val, Cmp >::insert(const Val& val) {
+  Size Heap< Val, Cmp >::insert(const Val& val) {
     // create a new element at the end of the heap
     _heap_.push_back(val);
     ++_nb_elements_;
@@ -265,13 +265,13 @@ namespace gum {
 
   // indicates whether the heap is empty
   template < typename Val, typename Cmp >
-  INLINE bool Heap< Val, Cmp >::empty() const noexcept {
+  bool Heap< Val, Cmp >::empty() const noexcept {
     return (_nb_elements_ == 0);
   }
 
   // indicates whether the heap contains a given value
   template < typename Val, typename Cmp >
-  INLINE bool Heap< Val, Cmp >::contains(const Val& val) const {
+  bool Heap< Val, Cmp >::contains(const Val& val) const {
     for (Size i = 0; i < _nb_elements_; ++i)
       if (_heap_[i] == val) return true;
 
@@ -280,7 +280,7 @@ namespace gum {
 
   // returns the element at index elt from the heap
   template < typename Val, typename Cmp >
-  INLINE const Val& Heap< Val, Cmp >::operator[](Size index) const {
+  const Val& Heap< Val, Cmp >::operator[](Size index) const {
     // check if the element exists
     if (index >= _nb_elements_) { GUM_ERROR(NotFound, "not enough elements in the heap") }
 
@@ -307,7 +307,7 @@ namespace gum {
 
   // A \c << operator for Heap
   template < typename Val, typename Cmp >
-  INLINE std::ostream& operator<<(std::ostream& stream, const Heap< Val, Cmp >& heap) {
+  std::ostream& operator<<(std::ostream& stream, const Heap< Val, Cmp >& heap) {
     stream << heap.toString();
     return stream;
   }

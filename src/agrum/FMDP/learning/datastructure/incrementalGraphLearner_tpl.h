@@ -466,49 +466,49 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_() {
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_() {
     _clearValue_(Int2Type< isScalar >());
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void
+  void
       IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< true >) {
     delete value_;
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void
+  void
       IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< false >) {}
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void IncrementalGraphLearner< AttributeSelection, isScalar >::_assumeValue_(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::_assumeValue_(
       const Observation* obs) {
     _assumeValue_(obs, Int2Type< isScalar >());
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void
+  void
       IncrementalGraphLearner< AttributeSelection, isScalar >::_assumeValue_(const Observation* obs,
                                                                              Int2Type< true >) {
     if (!valueAssumed_.exists(obs->reward())) valueAssumed_ << obs->reward();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void
+  void
       IncrementalGraphLearner< AttributeSelection, isScalar >::_assumeValue_(const Observation* obs,
                                                                              Int2Type< false >) {
     if (!valueAssumed_.exists(obs->modality(value_))) valueAssumed_ << obs->modality(value_);
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
+  Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
       const Observation*      obs,
       const DiscreteVariable* var) {
     return _branchObs_(obs, var, Int2Type< isScalar >());
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
+  Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
       const Observation*      obs,
       const DiscreteVariable* var,
       Int2Type< true >) {
@@ -516,7 +516,7 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
+  Idx IncrementalGraphLearner< AttributeSelection, isScalar >::_branchObs_(
       const Observation*      obs,
       const DiscreteVariable* var,
       Int2Type< false >) {
@@ -524,48 +524,48 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Size IncrementalGraphLearner< AttributeSelection, isScalar >::size() {
+  Size IncrementalGraphLearner< AttributeSelection, isScalar >::size() {
     return nodeVarMap_.size();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::root() const {
+  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::root() const {
     return this->root_;
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE bool IncrementalGraphLearner< AttributeSelection, isScalar >::isTerminal(NodeId ni) const {
+  bool IncrementalGraphLearner< AttributeSelection, isScalar >::isTerminal(NodeId ni) const {
     return !this->nodeSonsMap_.exists(ni);
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE const DiscreteVariable*
+  const DiscreteVariable*
       IncrementalGraphLearner< AttributeSelection, isScalar >::nodeVar(NodeId ni) const {
     return this->nodeVarMap_[ni];
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE NodeId
+  NodeId
       IncrementalGraphLearner< AttributeSelection, isScalar >::nodeSon(NodeId ni,
                                                                        Idx    modality) const {
     return this->nodeSonsMap_[ni][modality];
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE Idx
+  Idx
       IncrementalGraphLearner< AttributeSelection, isScalar >::nodeNbObservation(NodeId ni) const {
     return this->nodeId2Database_[ni]->nbObservation();
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void IncrementalGraphLearner< AttributeSelection, isScalar >::updateNodeWithObservation_(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::updateNodeWithObservation_(
       const Observation* newObs,
       NodeId             currentNodeId) {
     nodeId2Database_[currentNodeId]->addObservation(newObs);
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE void IncrementalGraphLearner< AttributeSelection, isScalar >::insertSetOfVars(
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::insertSetOfVars(
       MultiDimFunctionGraph< double >* ret) const {
     for (SetIteratorSafe< const DiscreteVariable* > varIter = setOfVars_.beginSafe();
          varIter != setOfVars_.endSafe();

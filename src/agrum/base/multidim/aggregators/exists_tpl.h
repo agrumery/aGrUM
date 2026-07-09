@@ -55,30 +55,30 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Exists< GUM_SCALAR >::Exists(Idx value) :
+    Exists< GUM_SCALAR >::Exists(Idx value) :
         MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Exists);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from) :
+    Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Exists);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Exists< GUM_SCALAR >::~Exists() {
+    Exists< GUM_SCALAR >::~Exists() {
       GUM_DESTRUCTOR(Exists);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Exists< GUM_SCALAR >::neutralElt_() const {
+    Idx Exists< GUM_SCALAR >::neutralElt_() const {
       return (Idx)0;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Exists< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+    Idx Exists< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
                                            bool&                   stop_iteration) const {
@@ -91,12 +91,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string Exists< GUM_SCALAR >::aggregatorName() const {
+    std::string Exists< GUM_SCALAR >::aggregatorName() const {
       return std::format("exists[{}]", _value_);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >* Exists< GUM_SCALAR >::newFactory() const {
+    MultiDimContainer< GUM_SCALAR >* Exists< GUM_SCALAR >::newFactory() const {
       return new Exists< GUM_SCALAR >(_value_);
     }
 

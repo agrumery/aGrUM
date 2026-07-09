@@ -127,13 +127,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MarkovRandomField< GUM_SCALAR >::MarkovRandomField() :
+  MarkovRandomField< GUM_SCALAR >::MarkovRandomField() :
       IMarkovRandomField< GUM_SCALAR >(), _topologyTransformationInProgress_(false) {
     GUM_CONSTRUCTOR(MarkovRandomField);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MarkovRandomField< GUM_SCALAR >::MarkovRandomField(std::string_view name) :
+  MarkovRandomField< GUM_SCALAR >::MarkovRandomField(std::string_view name) :
       IMarkovRandomField< GUM_SCALAR >(name), _topologyTransformationInProgress_(false) {
     GUM_CONSTRUCTOR(MarkovRandomField);
   }
@@ -179,32 +179,32 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
+  const DiscreteVariable&
       MarkovRandomField< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
+  void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
                                                                   std::string_view new_name) {
     this->varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableName(std::string_view name,
+  void MarkovRandomField< GUM_SCALAR >::changeVariableName(std::string_view name,
                                                                   std::string_view new_name) {
     changeVariableName(idFromName(name), new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(std::string_view name,
+  void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(std::string_view name,
                                                                    std::string_view old_label,
                                                                    std::string_view new_label) {
     changeVariableLabel(idFromName(name), old_label, new_label);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId           id,
+  void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId           id,
                                                                    std::string_view old_label,
                                                                    std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED) {
@@ -252,7 +252,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(std::string_view fast_description,
+  NodeId MarkovRandomField< GUM_SCALAR >::add(std::string_view fast_description,
                                                      unsigned int     default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(std::string{fast_description}, default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
@@ -260,7 +260,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::_rebuildGraph_() {
+  void MarkovRandomField< GUM_SCALAR >::_rebuildGraph_() {
     if (_topologyTransformationInProgress_) return;
 
     this->graph_.clearEdges();
@@ -274,24 +274,24 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var) {
+  NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var) {
     return add(var, graph().nextNodeId());
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId id) {
+  NodeId MarkovRandomField< GUM_SCALAR >::add(const DiscreteVariable& var, NodeId id) {
     this->varMap_.insert(id, var);
     this->graph_.addNodeWithId(id);
     return id;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::erase(const DiscreteVariable& var) {
+  void MarkovRandomField< GUM_SCALAR >::erase(const DiscreteVariable& var) {
     erase(this->varMap_.get(var));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::erase(std::string_view name) {
+  void MarkovRandomField< GUM_SCALAR >::erase(std::string_view name) {
     erase(idFromName(name));
   }
 
@@ -330,7 +330,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& output, const MarkovRandomField< GUM_SCALAR >& mn) {
+  std::ostream& operator<<(std::ostream& output, const MarkovRandomField< GUM_SCALAR >& mn) {
     output << mn.toString();
     return output;
   }
@@ -361,7 +361,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
                MarkovRandomField< GUM_SCALAR >::addFactor(const NodeSet& vars) {
     // in order to be deterministic, the Tensor contains all the vars sorted by id.
     std::vector< NodeId > sorted_nodes;
@@ -374,7 +374,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
       MarkovRandomField< GUM_SCALAR >::addFactor(const std::vector< std::string >& varnames) {
     std::vector< NodeId > sorted_nodes;
     for (const auto& v: varnames) {
@@ -385,7 +385,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
                MarkovRandomField< GUM_SCALAR >::addFactor(const Tensor< GUM_SCALAR >& factor) {
     std::vector< NodeId > sorted_nodes;
     for (Idx i = 0; i < factor.nbrDim(); i++) {
@@ -398,19 +398,19 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::generateFactors() const {
+  void MarkovRandomField< GUM_SCALAR >::generateFactors() const {
     for (const auto& elt: _factors_) {
       elt.second->random();
     }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::generateFactor(const NodeSet& vars) const {
+  void MarkovRandomField< GUM_SCALAR >::generateFactor(const NodeSet& vars) const {
     _factors_[vars]->random();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::eraseFactor(const NodeSet& vars) {
+  void MarkovRandomField< GUM_SCALAR >::eraseFactor(const NodeSet& vars) {
     if (_factors_.exists(vars)) {
       _eraseFactor_(vars);
       _rebuildGraph_();
@@ -420,7 +420,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void
+  void
       MarkovRandomField< GUM_SCALAR >::eraseFactor(const std::vector< std::string >& varnames) {
     auto vars = this->nodeset(varnames);
     if (_factors_.exists(vars)) {
@@ -432,7 +432,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::_eraseFactor_(const NodeSet& vars) {
+  void MarkovRandomField< GUM_SCALAR >::_eraseFactor_(const NodeSet& vars) {
     delete _factors_[vars];
     _factors_.erase(vars);
   }
@@ -457,12 +457,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::beginTopologyTransformation() {
+  void MarkovRandomField< GUM_SCALAR >::beginTopologyTransformation() {
     _topologyTransformationInProgress_ = true;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarkovRandomField< GUM_SCALAR >::endTopologyTransformation() {
+  void MarkovRandomField< GUM_SCALAR >::endTopologyTransformation() {
     if (_topologyTransformationInProgress_) {
       _topologyTransformationInProgress_ = false;   // before rebuildGraph of course
       _rebuildGraph_();

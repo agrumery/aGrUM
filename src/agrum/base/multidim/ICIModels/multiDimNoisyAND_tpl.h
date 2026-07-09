@@ -55,7 +55,7 @@ namespace gum {
 
   // Default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
+  MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
                                                           GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     if (external_weight == 0) {
@@ -67,7 +67,6 @@ namespace gum {
 
   // Default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE
       MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(const MultiDimNoisyAND< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimNoisyAND);
@@ -75,7 +74,7 @@ namespace gum {
 
   // Copy constructor using a bijection to replace variables from source.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
+  MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const MultiDimNoisyAND< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimNoisyAND);
@@ -83,7 +82,7 @@ namespace gum {
 
   // destructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimNoisyAND< GUM_SCALAR >::~MultiDimNoisyAND() {
+  MultiDimNoisyAND< GUM_SCALAR >::~MultiDimNoisyAND() {
     GUM_DESTRUCTOR(MultiDimNoisyAND);
   }
 
@@ -129,18 +128,18 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& s, const MultiDimNoisyAND< GUM_SCALAR >& ag) {
+  std::ostream& operator<<(std::ostream& s, const MultiDimNoisyAND< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimNoisyAND< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* MultiDimNoisyAND< GUM_SCALAR >::newFactory() const {
     return new MultiDimNoisyAND< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& MultiDimNoisyAND< GUM_SCALAR >::name() const {
+  const std::string& MultiDimNoisyAND< GUM_SCALAR >::name() const {
     static const std::string str = "MultiDimNoisyAND";
     return str;
   }

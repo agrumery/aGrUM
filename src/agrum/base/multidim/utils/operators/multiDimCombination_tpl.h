@@ -105,7 +105,7 @@ namespace gum {
 
   // add to a given schedule the set of operations needed to perform the combination
   template < class TABLE >
-  INLINE const IScheduleMultiDim*
+  const IScheduleMultiDim*
       MultiDimCombination< TABLE >::schedule(Schedule&                              schedule,
                                              const Set< const IScheduleMultiDim* >& set,
                                              const bool is_result_persistent) const {

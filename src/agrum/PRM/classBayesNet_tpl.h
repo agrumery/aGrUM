@@ -77,25 +77,25 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
+    ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const PRMClass< GUM_SCALAR >& c) :
         IBayesNet< GUM_SCALAR >(), _class_(&c) {
       GUM_CONSTRUCTOR(ClassBayesNet);
       _init_(c);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const ClassBayesNet< GUM_SCALAR >& from) :
+    ClassBayesNet< GUM_SCALAR >::ClassBayesNet(const ClassBayesNet< GUM_SCALAR >& from) :
         IBayesNet< GUM_SCALAR >(from), _class_(from._class_) {
       GUM_CONS_CPY(ClassBayesNet);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >::~ClassBayesNet() {
+    ClassBayesNet< GUM_SCALAR >::~ClassBayesNet() {
       GUM_DESTRUCTOR(ClassBayesNet);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE ClassBayesNet< GUM_SCALAR >&
+    ClassBayesNet< GUM_SCALAR >&
            ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
@@ -107,38 +107,38 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Tensor< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
+    const Tensor< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::cpt(NodeId varId) const {
       return _get_(varId).cpf();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const VariableNodeMap& ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
+    const VariableNodeMap& ClassBayesNet< GUM_SCALAR >::variableNodeMap() const {
       GUM_ERROR(FatalError, "Sorry no VarMap in a ClassBayesNet.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
+    const DiscreteVariable& ClassBayesNet< GUM_SCALAR >::variable(NodeId id) const {
       return _get_(id).type().variable();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+    NodeId ClassBayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
       return _varNodeMap_[&var]->id();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId ClassBayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
+    NodeId ClassBayesNet< GUM_SCALAR >::idFromName(std::string_view name) const {
       return _get_(name).id();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DiscreteVariable&
+    const DiscreteVariable&
         ClassBayesNet< GUM_SCALAR >::variableFromName(std::string_view name) const {
       return _get_(name).type().variable();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       if (this->dag_.exists(id)) {
         return _class_->get(id);
@@ -148,14 +148,14 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  ClassBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
       if (!_class_->exists(name)) GUM_ERROR(NotFound, "no element found with that id.")
       return _class_->get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const NodeProperty< Size >& ClassBayesNet< GUM_SCALAR >::modalities() const {
+    const NodeProperty< Size >& ClassBayesNet< GUM_SCALAR >::modalities() const {
       if (_modalities_.empty()) {
         for (const auto node: this->nodes()) {
           _modalities_.insert(node, (Size)variable(node).domainSize());
@@ -166,7 +166,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string ClassBayesNet< GUM_SCALAR >::toDot() const {
+    std::string ClassBayesNet< GUM_SCALAR >::toDot() const {
       std::string       tab = "  ";
       std::stringstream output;
       output << std::format("digraph \"{}\" {{\n", _class_->name());

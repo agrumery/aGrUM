@@ -53,7 +53,7 @@ namespace gum {
    * Default constructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE O3prmBNWriter< GUM_SCALAR >::O3prmBNWriter() {
+  O3prmBNWriter< GUM_SCALAR >::O3prmBNWriter() {
     GUM_CONSTRUCTOR(O3prmBNWriter)
   }
 
@@ -61,7 +61,7 @@ namespace gum {
    * Destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE O3prmBNWriter< GUM_SCALAR >::~O3prmBNWriter() {
+  O3prmBNWriter< GUM_SCALAR >::~O3prmBNWriter() {
     GUM_DESTRUCTOR(O3prmBNWriter)
   }
 
@@ -73,7 +73,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+  void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
     std::string bnName = bn.propertyWithDefault("name", "");
@@ -95,7 +95,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          O3prmBNWriter< GUM_SCALAR >::_extractAttribute_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
     std::stringstream str;
@@ -108,7 +108,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          O3prmBNWriter< GUM_SCALAR >::_extractParents_(const IBayesNet< GUM_SCALAR >& bn,
                                                        NodeId                         node) {
     std::stringstream str;
@@ -120,7 +120,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractCPT_(const IBayesNet< GUM_SCALAR >& bn,
+  std::string O3prmBNWriter< GUM_SCALAR >::_extractCPT_(const IBayesNet< GUM_SCALAR >& bn,
                                                                NodeId node) {
     std::stringstream str;
     bool              first = true;
@@ -167,7 +167,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractType_(const IBayesNet< GUM_SCALAR >& bn,
+  std::string O3prmBNWriter< GUM_SCALAR >::_extractType_(const IBayesNet< GUM_SCALAR >& bn,
                                                                 NodeId node) {
     switch (bn.variable(node).varType()) {
       case gum::VarType::DISCRETIZED : {
@@ -184,7 +184,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          O3prmBNWriter< GUM_SCALAR >::_extractRangeType_(const IBayesNet< GUM_SCALAR >& bn,
                                                          NodeId                         node) {
     const auto& var = static_cast< const RangeVariable& >(bn.variable(node));
@@ -192,7 +192,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          O3prmBNWriter< GUM_SCALAR >::_extractLabelizedType_(const IBayesNet< GUM_SCALAR >& bn,
                                                              NodeId                         node) {
     std::stringstream str;
@@ -205,7 +205,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   template < typename VARTYPE >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractDiscretizedType_(const VARTYPE* var) {
+  std::string O3prmBNWriter< GUM_SCALAR >::_extractDiscretizedType_(const VARTYPE* var) {
     std::stringstream str;
     if (var->ticks().size() >= 3) {
       str << "real(" << var->ticks()[0];
@@ -219,7 +219,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string O3prmBNWriter< GUM_SCALAR >::_extractName_(const IBayesNet< GUM_SCALAR >& bn,
+  std::string O3prmBNWriter< GUM_SCALAR >::_extractName_(const IBayesNet< GUM_SCALAR >& bn,
                                                                 NodeId node) {
     if (!bn.variable(node).name().empty()) {
       return bn.variable(node).name();
@@ -238,7 +238,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
+  void O3prmBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 

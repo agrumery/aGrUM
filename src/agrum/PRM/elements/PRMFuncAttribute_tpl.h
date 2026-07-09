@@ -54,7 +54,7 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
+    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
         std::string_view                      name,
         const PRMType&                        type,
         MultiDimImplementation< GUM_SCALAR >* impl) :
@@ -63,33 +63,33 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMFuncAttribute< GUM_SCALAR >::~PRMFuncAttribute() {
+    PRMFuncAttribute< GUM_SCALAR >::~PRMFuncAttribute() {
       GUM_DESTRUCTOR(PRMFuncAttribute);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         PRMFuncAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMFuncAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
+    void PRMFuncAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
+    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
         const PRMFuncAttribute< GUM_SCALAR >& source) : PRMScalarAttribute< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMFuncAttribute);
       GUM_ERROR(FatalError, "illegal call to copy constructor")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMFuncAttribute< GUM_SCALAR >&
+    PRMFuncAttribute< GUM_SCALAR >&
            PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMFuncAttribute< GUM_SCALAR >::setCpf_(Tensor< GUM_SCALAR >* cpf) {
+    void PRMFuncAttribute< GUM_SCALAR >::setCpf_(Tensor< GUM_SCALAR >* cpf) {
       GUM_ERROR(OperationNotAllowed, "Cannot change CPF of a functional attribute")
     }
 

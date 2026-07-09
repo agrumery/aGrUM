@@ -84,7 +84,7 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE StructuredPlaner< GUM_ELEMENT >::StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
+  StructuredPlaner< GUM_ELEMENT >::StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
                                                            GUM_ELEMENT discountFactor,
                                                            GUM_ELEMENT epsilon,
                                                            bool        verbose) :
@@ -100,7 +100,7 @@ namespace gum {
   // Default destructor
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  INLINE StructuredPlaner< GUM_ELEMENT >::~StructuredPlaner() {
+  StructuredPlaner< GUM_ELEMENT >::~StructuredPlaner() {
     GUM_DESTRUCTOR(StructuredPlaner);
 
     if (vFunction_) { delete vFunction_; }
@@ -609,7 +609,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE StructuredPlaner< GUM_ELEMENT >*
+  StructuredPlaner< GUM_ELEMENT >*
          StructuredPlaner< GUM_ELEMENT >::spumddInstance(GUM_ELEMENT discountFactor,
                                                          GUM_ELEMENT epsilon,
                                                          bool        verbose) {
@@ -620,7 +620,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE StructuredPlaner< GUM_ELEMENT >*
+  StructuredPlaner< GUM_ELEMENT >*
          StructuredPlaner< GUM_ELEMENT >::sviInstance(GUM_ELEMENT discountFactor,
                                                       GUM_ELEMENT epsilon,
                                                       bool        verbose) {
@@ -631,28 +631,28 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const FMDP< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::fmdp() {
+  const FMDP< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::fmdp() {
     return fmdp_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const MultiDimFunctionGraph< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::vFunction() {
+  const MultiDimFunctionGraph< GUM_ELEMENT >* StructuredPlaner< GUM_ELEMENT >::vFunction() {
     return vFunction_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Size StructuredPlaner< GUM_ELEMENT >::vFunctionSize() {
+  Size StructuredPlaner< GUM_ELEMENT >::vFunctionSize() {
     return vFunction_ != nullptr ? vFunction_->realSize() : 0;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
+  MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
          StructuredPlaner< GUM_ELEMENT >::optimalPolicy() {
     return optimalPolicy_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Size StructuredPlaner< GUM_ELEMENT >::optimalPolicySize() {
+  Size StructuredPlaner< GUM_ELEMENT >::optimalPolicySize() {
     return optimalPolicy_ != nullptr ? optimalPolicy_->realSize() : 0;
   }
 

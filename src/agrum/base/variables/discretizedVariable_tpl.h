@@ -53,7 +53,7 @@
 
 namespace gum {
   template < typename T_TICKS >
-  INLINE void DiscretizedVariable< T_TICKS >::copy_(const DiscretizedVariable< T_TICKS >& aDRV) {
+  void DiscretizedVariable< T_TICKS >::copy_(const DiscretizedVariable< T_TICKS >& aDRV) {
     eraseTicks();
     IDiscretizedVariable::copy_(aDRV);
     _is_empirical = aDRV._is_empirical;
@@ -61,7 +61,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
+  Idx DiscretizedVariable< T_TICKS >::pos_(const T_TICKS& target) const {
     if (_ticks_.empty()) { GUM_ERROR(OutOfBounds, "No tick defined for variable " << name()) }
 
     if (target < _ticks_[0]) return static_cast< Idx >(0);
@@ -75,7 +75,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE Idx DiscretizedVariable< T_TICKS >::index(const T_TICKS target) const {
+  Idx DiscretizedVariable< T_TICKS >::index(const T_TICKS target) const {
     const Idx ind = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
     if (ind + 1 >= _ticks_.size()) {
       GUM_ERROR(OutOfBounds, target << " is not a tick in " << *this)
@@ -86,14 +86,14 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE bool DiscretizedVariable< T_TICKS >::isTick(const T_TICKS& target) const {
+  bool DiscretizedVariable< T_TICKS >::isTick(const T_TICKS& target) const {
     const Size ind = std::lower_bound(_ticks_.begin(), _ticks_.end(), target) - _ticks_.begin();
     if (ind >= _ticks_.size()) { return false; }
     return (_ticks_[ind] == target);
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view aName,
+  DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view aName,
                                                              std::string_view aDesc) :
       IDiscretizedVariable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
@@ -102,7 +102,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view              aName,
+  DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view              aName,
                                                              std::string_view              aDesc,
                                                              const std::vector< T_TICKS >& ticks,
                                                              bool is_empirical) :
@@ -137,7 +137,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscretizedVariable< T_TICKS >&
+  DiscretizedVariable< T_TICKS >&
          DiscretizedVariable< T_TICKS >::operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
     copy_(aDRV);
     return *this;
@@ -160,12 +160,12 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE void DiscretizedVariable< T_TICKS >::eraseTicks() {
+  void DiscretizedVariable< T_TICKS >::eraseTicks() {
     _ticks_.clear();
   }
 
   template < typename T_TICKS >
-  INLINE std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
+  std::string DiscretizedVariable< T_TICKS >::label(Idx i) const {
     if (i + 1 >= _ticks_.size()) { GUM_ERROR(OutOfBounds, "Unexisting label index") }
 
     const char open  = ((i == 0) && _is_empirical) ? '(' : '[';
@@ -180,7 +180,7 @@ namespace gum {
    * @throw OutOfBound if indice is not compatible
    */
   template < typename T_TICKS >
-  INLINE double DiscretizedVariable< T_TICKS >::numerical(Idx index) const {
+  double DiscretizedVariable< T_TICKS >::numerical(Idx index) const {
     if (index >= _ticks_.size() - 1) {
       GUM_ERROR(OutOfBounds, "Unexisting label index (" << index << ") for " << *this << ".")
     }
@@ -196,7 +196,7 @@ namespace gum {
    * @throw OutOfBound if indice is not compatible
    */
   template < typename T_TICKS >
-  INLINE double DiscretizedVariable< T_TICKS >::draw(Idx indice) const {
+  double DiscretizedVariable< T_TICKS >::draw(Idx indice) const {
     if (indice >= _ticks_.size() - 1) {
       GUM_ERROR(OutOfBounds, "Unexisting label index (" << indice << ") for " << *this << ".")
     }
@@ -215,7 +215,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE Idx DiscretizedVariable< T_TICKS >::index(std::string_view label) const {
+  Idx DiscretizedVariable< T_TICKS >::index(std::string_view label) const {
     if (empty()) { GUM_ERROR(OutOfBounds, "empty variable : " + toString()) }
 
     // first check if label contains a numeric value
@@ -276,7 +276,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE bool DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
+  bool DiscretizedVariable< T_TICKS >::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a DiscretizedVariable
     const auto& cv = static_cast< const DiscretizedVariable< T_TICKS >& >(aRV);
     if (domainSize() != cv.domainSize()) { return false; }
@@ -284,7 +284,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE Idx DiscretizedVariable< T_TICKS >::closestIndex(double val) const {
+  Idx DiscretizedVariable< T_TICKS >::closestIndex(double val) const {
     if (val <= _ticks_[0]) { return 0; }
     if (val >= _ticks_[_ticks_.size() - 1]) { return _ticks_.size() - 2; }
     return pos_(static_cast< T_TICKS >(val));
@@ -295,17 +295,17 @@ namespace gum {
    * @return the size of the random discrete variable domain
    */
   template < typename T_TICKS >
-  INLINE Size DiscretizedVariable< T_TICKS >::domainSize() const {
+  Size DiscretizedVariable< T_TICKS >::domainSize() const {
     return (_ticks_.size() < 2) ? static_cast< Size >(0) : static_cast< Size >(_ticks_.size() - 1);
   }
 
   template < typename T_TICKS >
-  INLINE VarType DiscretizedVariable< T_TICKS >::varType() const {
+  VarType DiscretizedVariable< T_TICKS >::varType() const {
     return VarType::DISCRETIZED;
   }
 
   template < typename T_TICKS >
-  INLINE const T_TICKS& DiscretizedVariable< T_TICKS >::tick(Idx i) const {
+  const T_TICKS& DiscretizedVariable< T_TICKS >::tick(Idx i) const {
     if (i >= _ticks_.size()) {
       GUM_ERROR(OutOfBounds, "There is no such tick " << i << " for " << *this << ".")
     }
@@ -332,12 +332,12 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE const std::vector< T_TICKS >& DiscretizedVariable< T_TICKS >::ticks() const {
+  const std::vector< T_TICKS >& DiscretizedVariable< T_TICKS >::ticks() const {
     return this->_ticks_;
   }
 
   template < typename T_TICKS >
-  INLINE std::vector< double > DiscretizedVariable< T_TICKS >::ticksAsDoubles() const {
+  std::vector< double > DiscretizedVariable< T_TICKS >::ticksAsDoubles() const {
     const std::size_t     size = _ticks_.size();
     std::vector< double > ticks(size);
     for (auto i = static_cast< std::size_t >(0); i < size; ++i)
@@ -361,7 +361,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE std::string DiscretizedVariable< T_TICKS >::stype() const {
+  std::string DiscretizedVariable< T_TICKS >::stype() const {
     return "Discretized";
   }
 } /* namespace gum */

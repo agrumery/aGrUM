@@ -92,84 +92,84 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isType(std::string_view name) const {
+    bool PRM< GUM_SCALAR >::isType(std::string_view name) const {
       return _typeMap_.exists(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isClass(std::string_view name) const {
+    bool PRM< GUM_SCALAR >::isClass(std::string_view name) const {
       return _classMap_.exists(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isInterface(std::string_view name) const {
+    bool PRM< GUM_SCALAR >::isInterface(std::string_view name) const {
       return _interfaceMap_.exists(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isSystem(std::string_view name) const {
+    bool PRM< GUM_SCALAR >::isSystem(std::string_view name) const {
       return _systemMap_.exists(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMType& PRM< GUM_SCALAR >::type(std::string_view name) {
+    PRMType& PRM< GUM_SCALAR >::type(std::string_view name) {
       return *(_typeMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMType& PRM< GUM_SCALAR >::type(std::string_view name) const {
+    const PRMType& PRM< GUM_SCALAR >::type(std::string_view name) const {
       return *(_typeMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMType* >& PRM< GUM_SCALAR >::types() const {
+    const Set< PRMType* >& PRM< GUM_SCALAR >::types() const {
       return _types_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClass< GUM_SCALAR >& PRM< GUM_SCALAR >::getClass(std::string_view name) {
+    PRMClass< GUM_SCALAR >& PRM< GUM_SCALAR >::getClass(std::string_view name) {
       return *(_classMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClass< GUM_SCALAR >& PRM< GUM_SCALAR >::getClass(std::string_view name) const {
+    const PRMClass< GUM_SCALAR >& PRM< GUM_SCALAR >::getClass(std::string_view name) const {
       return *(_classMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMClass< GUM_SCALAR >* >& PRM< GUM_SCALAR >::classes() const {
+    const Set< PRMClass< GUM_SCALAR >* >& PRM< GUM_SCALAR >::classes() const {
       return _classes_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMInterface< GUM_SCALAR >& PRM< GUM_SCALAR >::getInterface(std::string_view name) {
+    PRMInterface< GUM_SCALAR >& PRM< GUM_SCALAR >::getInterface(std::string_view name) {
       return *_interfaceMap_[name];
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMInterface< GUM_SCALAR >&
+    const PRMInterface< GUM_SCALAR >&
                  PRM< GUM_SCALAR >::getInterface(std::string_view name) const {
       return *_interfaceMap_[name];
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMInterface< GUM_SCALAR >* >& PRM< GUM_SCALAR >::interfaces() const {
+    const Set< PRMInterface< GUM_SCALAR >* >& PRM< GUM_SCALAR >::interfaces() const {
       return _interfaces_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMSystem< GUM_SCALAR >& PRM< GUM_SCALAR >::getSystem(std::string_view name) {
+    PRMSystem< GUM_SCALAR >& PRM< GUM_SCALAR >::getSystem(std::string_view name) {
       return *(_systemMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMSystem< GUM_SCALAR >&
+    const PRMSystem< GUM_SCALAR >&
                  PRM< GUM_SCALAR >::getSystem(std::string_view name) const {
       return *(_systemMap_[name]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMSystem< GUM_SCALAR >* >& PRM< GUM_SCALAR >::systems() const {
+    const Set< PRMSystem< GUM_SCALAR >* >& PRM< GUM_SCALAR >::systems() const {
       return _systems_;
     }
 

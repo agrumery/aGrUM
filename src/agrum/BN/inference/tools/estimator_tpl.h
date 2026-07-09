@@ -72,7 +72,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Estimator< GUM_SCALAR >::~Estimator() {
+  Estimator< GUM_SCALAR >::~Estimator() {
     GUM_DESTRUCTOR(Estimator);
     // remove all the posteriors computed
     clear();

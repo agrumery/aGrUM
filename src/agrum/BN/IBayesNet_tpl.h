@@ -64,12 +64,12 @@ namespace gum {
   //                                  IBayesNet
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() {
+  IBayesNet< GUM_SCALAR >::IBayesNet() : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet)
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE IBayesNet< GUM_SCALAR >::IBayesNet(std::string_view name) : DAGmodel() {
+  IBayesNet< GUM_SCALAR >::IBayesNet(std::string_view name) : DAGmodel() {
     GUM_CONSTRUCTOR(IBayesNet)
     this->setProperty("name", name);
   }
@@ -177,7 +177,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size IBayesNet< GUM_SCALAR >::memoryFootprint() const {
+  Size IBayesNet< GUM_SCALAR >::memoryFootprint() const {
     Size usedMem = 0;
 
     for (auto node: nodes())
@@ -186,7 +186,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
+  std::string IBayesNet< GUM_SCALAR >::toString() const {
     std::stringstream s;
     s << std::format("BN{{nodes: {}, arcs: {}, ", size(), dag().sizeArcs());
     s << spaceCplxToString(log10DomainSize(), (int)dim(), memoryFootprint());
@@ -313,7 +313,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
+  std::ostream& operator<<(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }

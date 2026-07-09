@@ -105,7 +105,6 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE
         GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
                                                            const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system), _inf_(0) {
@@ -113,7 +112,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GroundedInference< GUM_SCALAR >::GroundedInference(
+    GroundedInference< GUM_SCALAR >::GroundedInference(
         const GroundedInference< GUM_SCALAR >& source) :
         PRMInference< GUM_SCALAR >(source), _inf_(0) {
       GUM_CONS_CPY(GroundedInference);
@@ -121,13 +120,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GroundedInference< GUM_SCALAR >&
+    GroundedInference< GUM_SCALAR >&
         GroundedInference< GUM_SCALAR >::operator=(const GroundedInference< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MarginalTargetedInference< GUM_SCALAR >&
+    MarginalTargetedInference< GUM_SCALAR >&
            GroundedInference< GUM_SCALAR >::getBNInference() {
       if (_inf_ != 0) {
         return *_inf_;
@@ -137,7 +136,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::setBNInference(
+    void GroundedInference< GUM_SCALAR >::setBNInference(
         MarginalTargetedInference< GUM_SCALAR >* bn_inf) {
       if (_inf_ != 0) { delete _inf_; }
 
@@ -145,7 +144,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::posterior_(
+    void GroundedInference< GUM_SCALAR >::posterior_(
         const typename PRMInference< GUM_SCALAR >::Chain& chain,
         Tensor< GUM_SCALAR >&                             m) {
       if (_inf_ == 0) { GUM_ERROR(OperationNotAllowed, "no inference engine defined") }
@@ -165,14 +164,14 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void GroundedInference< GUM_SCALAR >::joint_(
+    void GroundedInference< GUM_SCALAR >::joint_(
         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
         Tensor< GUM_SCALAR >&                                            j) {
       GUM_ERROR(FatalError, "not yet implemented")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string GroundedInference< GUM_SCALAR >::name() const {
+    std::string GroundedInference< GUM_SCALAR >::name() const {
       return "grounded inference";
     }
 

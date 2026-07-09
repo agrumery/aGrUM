@@ -65,7 +65,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const std::string& ASTtree< GUM_SCALAR >::type() const noexcept {
+  const std::string& ASTtree< GUM_SCALAR >::type() const noexcept {
     return _type;
   }
 
@@ -107,12 +107,12 @@ namespace gum {
       ASTtree< GUM_SCALAR >(type), _op1(std::move(op1)), _op2(std::move(op2)) {}
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op1() const {
+  const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op1() const {
     return *_op1;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op2() const {
+  const ASTtree< GUM_SCALAR >& ASTBinaryOp< GUM_SCALAR >::op2() const {
     return *_op2;
   }
 
@@ -276,12 +276,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::vars() const noexcept {
+  const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::vars() const noexcept {
     return _vars;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::knw() const noexcept {
+  const Set< std::string >& ASTposteriorProba< GUM_SCALAR >::knw() const noexcept {
     return _knw;
   }
 
@@ -402,7 +402,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ASTposteriorProba< GUM_SCALAR >::_ensure_nonempty(const Set< std::string >& vars) {
+  void ASTposteriorProba< GUM_SCALAR >::_ensure_nonempty(const Set< std::string >& vars) {
     if (vars.empty()) { GUM_ERROR(InvalidArgument, "ASTposteriorProba: vars must not be empty"); }
   }
 
@@ -452,7 +452,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const Set< std::string >& ASTjointProba< GUM_SCALAR >::varNames() const noexcept {
+  const Set< std::string >& ASTjointProba< GUM_SCALAR >::varNames() const noexcept {
     return _varNames;
   }
 
@@ -548,12 +548,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const std::string& ASTsum< GUM_SCALAR >::var() const {
+  const std::string& ASTsum< GUM_SCALAR >::var() const {
     return _var;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const ASTtree< GUM_SCALAR >& ASTsum< GUM_SCALAR >::term() const {
+  const ASTtree< GUM_SCALAR >& ASTsum< GUM_SCALAR >::term() const {
     return *_term;
   }
 

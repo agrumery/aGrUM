@@ -79,7 +79,7 @@ namespace gum {
   }   // anonymous namespace
 
   template < GUM_Numeric GUM_SCALAR >
-  inline const CausalModel< GUM_SCALAR >& DoCalculus< GUM_SCALAR >::model() const noexcept {
+  const CausalModel< GUM_SCALAR >& DoCalculus< GUM_SCALAR >::model() const noexcept {
     return _cm;
   }
 

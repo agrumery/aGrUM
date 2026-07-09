@@ -55,13 +55,13 @@ namespace gum {
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MRFReader< GUM_SCALAR >::MRFReader(MarkovRandomField< GUM_SCALAR >* MN,
+  MRFReader< GUM_SCALAR >::MRFReader(MarkovRandomField< GUM_SCALAR >* MN,
                                             std::string_view                 filename) {
     GUM_CONSTRUCTOR(MRFReader);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MRFReader< GUM_SCALAR >::~MRFReader() {
+  MRFReader< GUM_SCALAR >::~MRFReader() {
     GUM_DESTRUCTOR(MRFReader);
   }
 

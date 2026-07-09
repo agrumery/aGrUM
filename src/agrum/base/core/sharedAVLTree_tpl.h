@@ -56,7 +56,7 @@ namespace gum {
 
   /// Basic constructor. Creates an empty tree.
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTree< Val, Cmp >::SharedAVLTree(const Cmp& compare) :
+  SharedAVLTree< Val, Cmp >::SharedAVLTree(const Cmp& compare) :
       AVLTree< Val, Cmp >(compare) {
     this->owns_nodes_ = false;
 
@@ -66,7 +66,7 @@ namespace gum {
 
   /// Move constructor.
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTree< Val, Cmp >::SharedAVLTree(SharedAVLTree< Val, Cmp >&& from) noexcept :
+  SharedAVLTree< Val, Cmp >::SharedAVLTree(SharedAVLTree< Val, Cmp >&& from) noexcept :
       AVLTree< Val, Cmp >(std::move(from)) {
     // for debugging purposes
     GUM_CONS_MOV(SharedAVLTree);
@@ -74,14 +74,14 @@ namespace gum {
 
   /// destructor.
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTree< Val, Cmp >::~SharedAVLTree() {
+  SharedAVLTree< Val, Cmp >::~SharedAVLTree() {
     // for debugging purposes
     GUM_DESTRUCTOR(SharedAVLTree);
   }
 
   /// Move operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTree< Val, Cmp >&
+  SharedAVLTree< Val, Cmp >&
          SharedAVLTree< Val, Cmp >::operator=(SharedAVLTree< Val, Cmp >&& from) {
     operator=(std::move(from));
     return *this;
@@ -89,21 +89,21 @@ namespace gum {
 
   /// returns the node containing the max element (w.r.t. Cmp) in the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::AVLNode*
+  typename SharedAVLTree< Val, Cmp >::AVLNode*
       SharedAVLTree< Val, Cmp >::highestNode() const noexcept {
     return this->highest_node_;
   }
 
   /// returns the node containing the min element (w.r.t. Cmp) in the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::AVLNode*
+  typename SharedAVLTree< Val, Cmp >::AVLNode*
       SharedAVLTree< Val, Cmp >::lowestNode() const noexcept {
     return this->lowest_node_;
   }
 
   /// adds a new node into the tree
   template < typename Val, typename Cmp >
-  INLINE void SharedAVLTree< Val, Cmp >::insert(AVLNode* node) {
+  void SharedAVLTree< Val, Cmp >::insert(AVLNode* node) {
     // the insert_ method will update the parent of node, but we should also
     // guarantee that the children are null pointers before the insertion (as the
     // node will be added to the
@@ -114,25 +114,25 @@ namespace gum {
 
   /// remove an element from the tree
   template < typename Val, typename Cmp >
-  INLINE void SharedAVLTree< Val, Cmp >::erase(AVLNode* node) {
+  void SharedAVLTree< Val, Cmp >::erase(AVLNode* node) {
     this->removeNodeFromTree_(node);
   }
 
   /// remove the element pointed to by an iterator
   template < typename Val, typename Cmp >
-  INLINE void SharedAVLTree< Val, Cmp >::erase(iterator_safe& iter) {
+  void SharedAVLTree< Val, Cmp >::erase(iterator_safe& iter) {
     this->removeNodeFromTree_(iter.node_);
   }
 
   /// remove the element pointed to by an iterator
   template < typename Val, typename Cmp >
-  INLINE void SharedAVLTree< Val, Cmp >::erase(reverse_iterator_safe& iter) {
+  void SharedAVLTree< Val, Cmp >::erase(reverse_iterator_safe& iter) {
     this->removeNodeFromTree_(iter.node_);
   }
 
   /// returns a new iterator pointing to the minimal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::iterator SharedAVLTree< Val, Cmp >::begin() const {
+  typename SharedAVLTree< Val, Cmp >::iterator SharedAVLTree< Val, Cmp >::begin() const {
     return SharedAVLTreeIterator(*this);
   }
 
@@ -145,7 +145,7 @@ namespace gum {
 
   /// returns a new iterator pointing to the maximal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator
+  typename SharedAVLTree< Val, Cmp >::reverse_iterator
       SharedAVLTree< Val, Cmp >::rbegin() const {
     return SharedAVLTreeReverseIterator(*this, true);
   }
@@ -159,7 +159,7 @@ namespace gum {
 
   /// returns a new safe iterator pointing to the minimal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::iterator_safe SharedAVLTree< Val, Cmp >::beginSafe() {
+  typename SharedAVLTree< Val, Cmp >::iterator_safe SharedAVLTree< Val, Cmp >::beginSafe() {
     return SharedAVLTreeIteratorSafe(*this);
   }
 
@@ -172,7 +172,7 @@ namespace gum {
 
   /// returns a safe iterator pointing to the maximal element of the tree
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTree< Val, Cmp >::reverse_iterator_safe
+  typename SharedAVLTree< Val, Cmp >::reverse_iterator_safe
       SharedAVLTree< Val, Cmp >::rbeginSafe() {
     return SharedAVLTreeReverseIteratorSafe(*this, true);
   }
@@ -188,7 +188,7 @@ namespace gum {
 
   /// constructor for begin iterators
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
+  SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
       const SharedAVLTree< Val, Cmp >& tree,
       const bool                       begin) noexcept : AVLTreeIterator< Val, Cmp >(tree, begin) {
     GUM_CONSTRUCTOR(SharedAVLTreeIterator)
@@ -196,14 +196,14 @@ namespace gum {
 
   /// copy constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
+  SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
       const SharedAVLTreeIterator< Val, Cmp >& from) noexcept : AVLTreeIterator< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeIterator)
   }
 
   /// move constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
+  SharedAVLTreeIterator< Val, Cmp >::SharedAVLTreeIterator(
       SharedAVLTreeIterator< Val, Cmp >&& from) noexcept :
       AVLTreeIterator< Val, Cmp >(std::move(from)) {
     GUM_CONS_MOV(SharedAVLTreeIterator)
@@ -211,13 +211,13 @@ namespace gum {
 
   /// destructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >::~SharedAVLTreeIterator() noexcept {
+  SharedAVLTreeIterator< Val, Cmp >::~SharedAVLTreeIterator() noexcept {
     GUM_DESTRUCTOR(SharedAVLTreeIterator)
   }
 
   /// copy operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >& SharedAVLTreeIterator< Val, Cmp >::operator=(
+  SharedAVLTreeIterator< Val, Cmp >& SharedAVLTreeIterator< Val, Cmp >::operator=(
       const SharedAVLTreeIterator< Val, Cmp >& from) noexcept {
     AVLTreeIterator< Val, Cmp >::operator=(from);
     return *this;
@@ -225,7 +225,7 @@ namespace gum {
 
   /// move operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >& SharedAVLTreeIterator< Val, Cmp >::operator=(
+  SharedAVLTreeIterator< Val, Cmp >& SharedAVLTreeIterator< Val, Cmp >::operator=(
       SharedAVLTreeIterator< Val, Cmp >&& from) noexcept {
     AVLTreeIterator< Val, Cmp >::operator=(std::move(from));
     return *this;
@@ -233,21 +233,21 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeIterator< Val, Cmp >::operator==(
+  bool SharedAVLTreeIterator< Val, Cmp >::operator==(
       const SharedAVLTreeIterator< Val, Cmp >& from) const {
     return AVLTreeIterator< Val, Cmp >::operator==(from);
   }
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeIterator< Val, Cmp >::operator!=(
+  bool SharedAVLTreeIterator< Val, Cmp >::operator!=(
       const SharedAVLTreeIterator< Val, Cmp >& from) const {
     return !SharedAVLTreeIterator< Val, Cmp >::operator==(from);
   }
 
   /// move to the next element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >&
+  SharedAVLTreeIterator< Val, Cmp >&
          SharedAVLTreeIterator< Val, Cmp >::operator++() noexcept {
     AVLTreeIterator< Val, Cmp >::operator++();
     return *this;
@@ -255,7 +255,7 @@ namespace gum {
 
   /// move to the next k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >&
+  SharedAVLTreeIterator< Val, Cmp >&
          SharedAVLTreeIterator< Val, Cmp >::operator+=(const Size k) noexcept {
     AVLTreeIterator< Val, Cmp >::operator+=(k);
     return *this;
@@ -263,7 +263,7 @@ namespace gum {
 
   /// move to the preceding element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >&
+  SharedAVLTreeIterator< Val, Cmp >&
          SharedAVLTreeIterator< Val, Cmp >::operator--() noexcept {
     AVLTreeIterator< Val, Cmp >::operator--();
     return *this;
@@ -271,7 +271,7 @@ namespace gum {
 
   /// move to the preceding k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIterator< Val, Cmp >&
+  SharedAVLTreeIterator< Val, Cmp >&
          SharedAVLTreeIterator< Val, Cmp >::operator-=(const Size k) noexcept {
     AVLTreeIterator< Val, Cmp >::operator-=(k);
     return *this;
@@ -279,7 +279,7 @@ namespace gum {
 
   /// returns the element pointed to by the iterator
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTreeIterator< Val, Cmp >::const_reference
+  typename SharedAVLTreeIterator< Val, Cmp >::const_reference
       SharedAVLTreeIterator< Val, Cmp >::operator*() const {
     if (this->node_ != nullptr) return *(this->node_);
     else {
@@ -293,7 +293,7 @@ namespace gum {
 
   /// returns a pointer on the node pointed to by the iterator
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTreeIterator< Val, Cmp >::const_pointer
+  typename SharedAVLTreeIterator< Val, Cmp >::const_pointer
       SharedAVLTreeIterator< Val, Cmp >::operator->() const {
     return this->node_;
   }
@@ -302,7 +302,7 @@ namespace gum {
 
   /// constructor for begin safe iterators
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
+  SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
       SharedAVLTree< Val, Cmp >& tree,
       const bool                 rbegin) : AVLTreeIteratorSafe< Val, Cmp >(tree, rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeIteratorSafe)
@@ -310,14 +310,14 @@ namespace gum {
 
   /// copy constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
+  SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
       const SharedAVLTreeIteratorSafe< Val, Cmp >& from) : AVLTreeIteratorSafe< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeIteratorSafe)
   }
 
   /// move constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
+  SharedAVLTreeIteratorSafe< Val, Cmp >::SharedAVLTreeIteratorSafe(
       SharedAVLTreeIteratorSafe< Val, Cmp >&& from) :
       AVLTreeIteratorSafe< Val, Cmp >(std::move(from)) {
     GUM_CONS_CPY(SharedAVLTreeIteratorSafe)
@@ -325,13 +325,13 @@ namespace gum {
 
   /// destructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >::~SharedAVLTreeIteratorSafe() noexcept {
+  SharedAVLTreeIteratorSafe< Val, Cmp >::~SharedAVLTreeIteratorSafe() noexcept {
     GUM_DESTRUCTOR(SharedAVLTreeIteratorSafe)
   }
 
   /// copy operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >& SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(
+  SharedAVLTreeIteratorSafe< Val, Cmp >& SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(
       const SharedAVLTreeIteratorSafe< Val, Cmp >& from) {
     AVLTreeIteratorSafe< Val, Cmp >::operator=(from);
     return *this;
@@ -339,7 +339,7 @@ namespace gum {
 
   /// move operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >& SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(
+  SharedAVLTreeIteratorSafe< Val, Cmp >& SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(
       SharedAVLTreeIteratorSafe< Val, Cmp >&& from) {
     AVLTreeIteratorSafe< Val, Cmp >::operator=(std::move(from));
     return *this;
@@ -347,21 +347,21 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeIteratorSafe< Val, Cmp >::operator==(
+  bool SharedAVLTreeIteratorSafe< Val, Cmp >::operator==(
       const SharedAVLTreeIteratorSafe< Val, Cmp >& from) const {
     return AVLTreeIteratorSafe< Val, Cmp >::operator==(from);
   }
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeIteratorSafe< Val, Cmp >::operator!=(
+  bool SharedAVLTreeIteratorSafe< Val, Cmp >::operator!=(
       const SharedAVLTreeIteratorSafe< Val, Cmp >& from) const {
     return !SharedAVLTreeIteratorSafe< Val, Cmp >::operator==(from);
   }
 
   /// move to the next element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >&
+  SharedAVLTreeIteratorSafe< Val, Cmp >&
          SharedAVLTreeIteratorSafe< Val, Cmp >::operator++() noexcept {
     AVLTreeIteratorSafe< Val, Cmp >::operator++();
     return *this;
@@ -369,7 +369,7 @@ namespace gum {
 
   /// move to the next k elements
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >&
+  SharedAVLTreeIteratorSafe< Val, Cmp >&
          SharedAVLTreeIteratorSafe< Val, Cmp >::operator+=(const Size k) noexcept {
     AVLTreeIteratorSafe< Val, Cmp >::operator+=(k);
     return *this;
@@ -377,7 +377,7 @@ namespace gum {
 
   /// move to the preceding element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >&
+  SharedAVLTreeIteratorSafe< Val, Cmp >&
          SharedAVLTreeIteratorSafe< Val, Cmp >::operator--() noexcept {
     AVLTreeIteratorSafe< Val, Cmp >::operator--();
     return *this;
@@ -385,7 +385,7 @@ namespace gum {
 
   /// move to the preceding k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeIteratorSafe< Val, Cmp >&
+  SharedAVLTreeIteratorSafe< Val, Cmp >&
          SharedAVLTreeIteratorSafe< Val, Cmp >::operator-=(const Size k) noexcept {
     AVLTreeIteratorSafe< Val, Cmp >::operator-=(k);
     return *this;
@@ -393,7 +393,7 @@ namespace gum {
 
   /// returns the element pointed to by the iterator
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTreeIteratorSafe< Val, Cmp >::const_reference
+  typename SharedAVLTreeIteratorSafe< Val, Cmp >::const_reference
       SharedAVLTreeIteratorSafe< Val, Cmp >::operator*() const {
     if (this->node_ != nullptr) return *(this->node_);
     else {
@@ -407,7 +407,7 @@ namespace gum {
 
   /// returns a pointer on the node pointed to by the iterator
   template < typename Val, typename Cmp >
-  INLINE typename SharedAVLTreeIteratorSafe< Val, Cmp >::const_pointer
+  typename SharedAVLTreeIteratorSafe< Val, Cmp >::const_pointer
       SharedAVLTreeIteratorSafe< Val, Cmp >::operator->() const {
     return this->node_;
   }
@@ -416,7 +416,7 @@ namespace gum {
 
   /// constructor for rbegin iterators
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
+  SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
       const SharedAVLTree< Val, Cmp >& tree,
       const bool rbegin) noexcept : SharedAVLTreeIterator< Val, Cmp >(tree, !rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeReverseIterator)
@@ -424,7 +424,7 @@ namespace gum {
 
   /// copy constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
+  SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
       const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept :
       SharedAVLTreeIterator< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeReverseIterator)
@@ -432,7 +432,7 @@ namespace gum {
 
   /// move constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
+  SharedAVLTreeReverseIterator< Val, Cmp >::SharedAVLTreeReverseIterator(
       SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept :
       SharedAVLTreeIterator< Val, Cmp >(std::move(from)) {
     GUM_CONS_CPY(SharedAVLTreeReverseIterator)
@@ -440,13 +440,13 @@ namespace gum {
 
   /// destructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >::~SharedAVLTreeReverseIterator() noexcept {
+  SharedAVLTreeReverseIterator< Val, Cmp >::~SharedAVLTreeReverseIterator() noexcept {
     GUM_DESTRUCTOR(SharedAVLTreeReverseIterator)
   }
 
   /// copy operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator=(
              const SharedAVLTreeReverseIterator< Val, Cmp >& from) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator=(from);
@@ -455,7 +455,7 @@ namespace gum {
 
   /// move operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator=(
              SharedAVLTreeReverseIterator< Val, Cmp >&& from) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator=(std::move(from));
@@ -464,7 +464,7 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeReverseIterator< Val, Cmp >::operator==(
+  bool SharedAVLTreeReverseIterator< Val, Cmp >::operator==(
       const SharedAVLTreeReverseIterator< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
@@ -480,14 +480,14 @@ namespace gum {
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeReverseIterator< Val, Cmp >::operator!=(
+  bool SharedAVLTreeReverseIterator< Val, Cmp >::operator!=(
       const SharedAVLTreeReverseIterator< Val, Cmp >& from) const {
     return !SharedAVLTreeReverseIterator< Val, Cmp >::operator==(from);
   }
 
   /// move to the next element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator++() noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator--();
     return *this;
@@ -495,7 +495,7 @@ namespace gum {
 
   /// move to the next k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator+=(const Size k) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator-=(k);
     return *this;
@@ -503,7 +503,7 @@ namespace gum {
 
   /// move to the preceding element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator--() noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator++();
     return *this;
@@ -511,7 +511,7 @@ namespace gum {
 
   /// move to the preceding k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIterator< Val, Cmp >&
+  SharedAVLTreeReverseIterator< Val, Cmp >&
          SharedAVLTreeReverseIterator< Val, Cmp >::operator-=(const Size k) noexcept {
     SharedAVLTreeIterator< Val, Cmp >::operator+=(k);
     return *this;
@@ -521,7 +521,7 @@ namespace gum {
 
   /// constructor for rbegin safe iterators
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
       SharedAVLTree< Val, Cmp >& tree,
       const bool                 rbegin) : SharedAVLTreeIteratorSafe< Val, Cmp >(tree, !rbegin) {
     GUM_CONSTRUCTOR(SharedAVLTreeReverseIteratorSafe)
@@ -529,7 +529,7 @@ namespace gum {
 
   /// copy constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
       const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) :
       SharedAVLTreeIteratorSafe< Val, Cmp >(from) {
     GUM_CONS_CPY(SharedAVLTreeReverseIteratorSafe)
@@ -537,7 +537,7 @@ namespace gum {
 
   /// move constructor
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >::SharedAVLTreeReverseIteratorSafe(
       SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from) :
       SharedAVLTreeIteratorSafe< Val, Cmp >(std::move(from)) {
     GUM_CONS_MOV(SharedAVLTreeReverseIteratorSafe)
@@ -545,14 +545,13 @@ namespace gum {
 
   /// destructor
   template < typename Val, typename Cmp >
-  INLINE
       SharedAVLTreeReverseIteratorSafe< Val, Cmp >::~SharedAVLTreeReverseIteratorSafe() noexcept {
     GUM_DESTRUCTOR(SharedAVLTreeReverseIteratorSafe)
   }
 
   /// copy operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator=(
              const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(from);
@@ -561,7 +560,7 @@ namespace gum {
 
   /// move operator
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator=(
              SharedAVLTreeReverseIteratorSafe< Val, Cmp >&& from) {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator=(std::move(from));
@@ -570,7 +569,7 @@ namespace gum {
 
   /// indicates whether two iterator point to the same element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator==(
+  bool SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator==(
       const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) const {
     // when node_ is different from nullptr, testing whether "this" is equal to from
     // simply amounts to comparing their node_ fields. However, due to erasures in
@@ -586,14 +585,14 @@ namespace gum {
 
   /// indicates whether two iterator point to different element
   template < typename Val, typename Cmp >
-  INLINE bool SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator!=(
+  bool SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator!=(
       const SharedAVLTreeReverseIteratorSafe< Val, Cmp >& from) const {
     return !SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator==(from);
   }
 
   /// move to the next element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator++() noexcept {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator--();
     return *this;
@@ -601,7 +600,7 @@ namespace gum {
 
   /// move to the next k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator+=(const Size k) noexcept {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator-=(k);
     return *this;
@@ -609,7 +608,7 @@ namespace gum {
 
   /// move to the preceding element in the tree
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator--() noexcept {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator++();
     return *this;
@@ -617,7 +616,7 @@ namespace gum {
 
   /// move to the preceding k element
   template < typename Val, typename Cmp >
-  INLINE SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
+  SharedAVLTreeReverseIteratorSafe< Val, Cmp >&
          SharedAVLTreeReverseIteratorSafe< Val, Cmp >::operator-=(const Size k) noexcept {
     SharedAVLTreeIteratorSafe< Val, Cmp >::operator+=(k);
     return *this;

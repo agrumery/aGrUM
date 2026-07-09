@@ -112,26 +112,26 @@ namespace gum::learning {
   /// returns the type of the prior
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE PriorType DirichletPriorFromBN< GUM_SCALAR >::getType() const {
+  PriorType DirichletPriorFromBN< GUM_SCALAR >::getType() const {
     return PriorType::DirichletPriorType;
   }
 
   /// indicates whether the prior is potentially informative
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool DirichletPriorFromBN< GUM_SCALAR >::isInformative() const {
+  bool DirichletPriorFromBN< GUM_SCALAR >::isInformative() const {
     return (this->weight_ != 0.0);
   }
 
   /// sets the weight of the a prior(kind of effective sample size)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
+  void DirichletPriorFromBN< GUM_SCALAR >::setWeight(const double weight) {
     Prior::setWeight(weight);
   }
 
   /// returns the prior vector all the variables in the idset
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void
+  void
       DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
                                                               std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
@@ -147,7 +147,7 @@ namespace gum::learning {
 
   /// returns the prior vector over only the conditioning set of an idset
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DirichletPriorFromBN< GUM_SCALAR >::addConditioningPseudoCount(
+  void DirichletPriorFromBN< GUM_SCALAR >::addConditioningPseudoCount(
       const IdCondSet&       idset,
       std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;

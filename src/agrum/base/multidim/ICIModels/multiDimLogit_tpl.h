@@ -54,7 +54,7 @@ namespace gum {
 
   // Default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(GUM_SCALAR external_weight,
+  MultiDimLogit< GUM_SCALAR >::MultiDimLogit(GUM_SCALAR external_weight,
                                                     GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimLogit);
@@ -62,14 +62,14 @@ namespace gum {
 
   // Default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(const MultiDimLogit< GUM_SCALAR >& from) :
+  MultiDimLogit< GUM_SCALAR >::MultiDimLogit(const MultiDimLogit< GUM_SCALAR >& from) :
       MultiDimICIModel< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimLogit);
   }
 
   // Copy constructor using a bijection to replace variables from source.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
+  MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
       const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
       const MultiDimLogit< GUM_SCALAR >& from) : MultiDimICIModel< GUM_SCALAR >(bij, from) {
     GUM_CONSTRUCTOR(MultiDimLogit);
@@ -77,7 +77,7 @@ namespace gum {
 
   // destructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimLogit< GUM_SCALAR >::~MultiDimLogit() {
+  MultiDimLogit< GUM_SCALAR >::~MultiDimLogit() {
     GUM_DESTRUCTOR(MultiDimLogit);
   }
 
@@ -126,18 +126,18 @@ namespace gum {
 
   // For friendly displaying the content of the variable.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::ostream& operator<<(std::ostream& s, const MultiDimLogit< GUM_SCALAR >& ag) {
+  std::ostream& operator<<(std::ostream& s, const MultiDimLogit< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimLogit< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* MultiDimLogit< GUM_SCALAR >::newFactory() const {
     return new MultiDimLogit< GUM_SCALAR >(this->_external_weight_, this->_default_weight_);
   }
 
   // returns the name of the implementation
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& MultiDimLogit< GUM_SCALAR >::name() const {
+  const std::string& MultiDimLogit< GUM_SCALAR >::name() const {
     static const std::string str = "MultiDimLogit";
     return str;
   }

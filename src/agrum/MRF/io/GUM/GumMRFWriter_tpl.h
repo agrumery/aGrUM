@@ -54,7 +54,7 @@ using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumMRFWriter< GUM_SCALAR >::GumMRFWriter(bool binary, int indent) :
+  GumMRFWriter< GUM_SCALAR >::GumMRFWriter(bool binary, int indent) :
       MRFWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
@@ -62,12 +62,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumMRFWriter< GUM_SCALAR >::~GumMRFWriter() {
+  GumMRFWriter< GUM_SCALAR >::~GumMRFWriter() {
     GUM_DESTRUCTOR(GumMRFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
+  void GumMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
                                                 const IMarkovRandomField< GUM_SCALAR >& mrf) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
@@ -117,14 +117,14 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
+  void GumMRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
                                                 IMarkovRandomField< GUM_SCALAR >& mrf) {
     mrf.updateMetaData();
     write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(mrf));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
+  void GumMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
                                                 const IMarkovRandomField< GUM_SCALAR >& mrf) {
     std::ofstream output(std::string(filePath),
                          _binary_ ? (std::ios_base::trunc | std::ios::binary)
@@ -135,7 +135,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          GumMRFWriter< GUM_SCALAR >::toString(const IMarkovRandomField< GUM_SCALAR >& mrf) {
     std::ostringstream oss;
     write(oss, mrf);

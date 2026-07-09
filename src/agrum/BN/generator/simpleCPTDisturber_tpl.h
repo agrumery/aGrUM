@@ -53,13 +53,13 @@ namespace gum {
 
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE SimpleCPTDisturber< GUM_SCALAR >::SimpleCPTDisturber() : ICPTDisturber< GUM_SCALAR >() {
+  SimpleCPTDisturber< GUM_SCALAR >::SimpleCPTDisturber() : ICPTDisturber< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTDisturber);
   }
 
   // Destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE SimpleCPTDisturber< GUM_SCALAR >::~SimpleCPTDisturber() {
+  SimpleCPTDisturber< GUM_SCALAR >::~SimpleCPTDisturber() {
     GUM_DESTRUCTOR(SimpleCPTDisturber);
   }
 

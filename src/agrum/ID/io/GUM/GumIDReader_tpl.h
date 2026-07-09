@@ -209,7 +209,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
+  void GumIDReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
     if (_parseDone_ || count() > 0) {
       syntheticResults(stream);
     } else {

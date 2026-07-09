@@ -99,14 +99,14 @@ namespace gum {
 
   /// returns the combination function currently used by the combinator
   template < class TABLE >
-  INLINE TABLE (*MultiDimCombinationDefault< TABLE >::combinationFunction())(const TABLE&,
+  TABLE (*MultiDimCombinationDefault< TABLE >::combinationFunction())(const TABLE&,
                                                                              const TABLE&) {
     return _combine_;
   }
 
   /// returns the result of the combination
   template < class TABLE >
-  INLINE void MultiDimCombinationDefault< TABLE >::execute(TABLE&                     container,
+  void MultiDimCombinationDefault< TABLE >::execute(TABLE&                     container,
                                                            const Set< const TABLE* >& set) const {
     TABLE* res = execute(set);
     container  = std::move(*res);
@@ -245,7 +245,7 @@ namespace gum {
   // returns the domain size of the Cartesian product of the union of all the
   // variables in seq1 and seq2
   template < class TABLE >
-  INLINE double
+  double
       MultiDimCombinationDefault< TABLE >::_combinedSize_(const IScheduleMultiDim& table1,
                                                           const IScheduleMultiDim& table2) const {
     auto        size  = double(table1.domainSize());
@@ -394,7 +394,7 @@ namespace gum {
 
   /// free scheduing memory
   template < class TABLE >
-  INLINE void MultiDimCombinationDefault< TABLE >::_freeData_(
+  void MultiDimCombinationDefault< TABLE >::_freeData_(
       std::vector< const IScheduleMultiDim* >& tables,
       std::vector< ScheduleOperator* >&        operations) const {
     for (auto op: operations)

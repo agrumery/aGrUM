@@ -67,7 +67,7 @@ namespace gum {
 
   // default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE VariableElimination< GUM_SCALAR >::VariableElimination(
+  VariableElimination< GUM_SCALAR >::VariableElimination(
       const IBayesNet< GUM_SCALAR >* BN,
       RelevantTensorsFinderType      relevant_type,
       FindBarrenNodesType            barren_type) : JointTargetedInference< GUM_SCALAR >(BN) {
@@ -86,7 +86,7 @@ namespace gum {
 
   // destructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE VariableElimination< GUM_SCALAR >::~VariableElimination() {
+  VariableElimination< GUM_SCALAR >::~VariableElimination() {
     // remove the junction tree and the triangulation algorithm
     if (_JT_ != nullptr) delete _JT_;
     delete _triangulation_;
@@ -105,7 +105,7 @@ namespace gum {
 
   /// returns the current join tree used
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const JunctionTree* VariableElimination< GUM_SCALAR >::junctionTree(NodeId id) {
+  const JunctionTree* VariableElimination< GUM_SCALAR >::junctionTree(NodeId id) {
     _createNewJT_(NodeSet{id});
 
     return _JT_;
@@ -148,14 +148,14 @@ namespace gum {
 
   /// sets the operator for performing the projections
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_setProjectionFunction_(
+  void VariableElimination< GUM_SCALAR >::_setProjectionFunction_(
       Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
   }
 
   /// sets the operator for performing the combinations
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(
+  void VariableElimination< GUM_SCALAR >::_setCombinationFunction_(
       Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
   }
@@ -182,11 +182,11 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onEvidenceAdded_(const NodeId, bool) {}
+  void VariableElimination< GUM_SCALAR >::onEvidenceAdded_(const NodeId, bool) {}
 
   /// fired when an evidence is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onEvidenceErased_(const NodeId, bool) {}
+  void VariableElimination< GUM_SCALAR >::onEvidenceErased_(const NodeId, bool) {}
 
   /// fired when all the evidence are erased
   template < GUM_Numeric GUM_SCALAR >
@@ -194,43 +194,43 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onEvidenceChanged_(const NodeId, bool) {}
+  void VariableElimination< GUM_SCALAR >::onEvidenceChanged_(const NodeId, bool) {}
 
   /// fired after a new target is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId) {}
+  void VariableElimination< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId) {}
 
   /// fired before a target is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onMarginalTargetErased_(const NodeId) {}
+  void VariableElimination< GUM_SCALAR >::onMarginalTargetErased_(const NodeId) {}
 
   /// fired after a new Bayes net has been assigned to the engine
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
+  void VariableElimination< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
   /// fired after a new set target is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onJointTargetAdded_(const NodeSet&) {}
+  void VariableElimination< GUM_SCALAR >::onJointTargetAdded_(const NodeSet&) {}
 
   /// fired before a set target is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onJointTargetErased_(const NodeSet&) {}
+  void VariableElimination< GUM_SCALAR >::onJointTargetErased_(const NodeSet&) {}
 
   /// fired after all the nodes of the BN are added as single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
+  void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
 
   /// fired before a all the single_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
+  void VariableElimination< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
 
   /// fired before a all the joint_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onAllJointTargetsErased_() {}
+  void VariableElimination< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
   /// fired before a all the single and joint_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::onAllTargetsErased_() {}
+  void VariableElimination< GUM_SCALAR >::onAllTargetsErased_() {}
 
   /// create a new junction tree as well as its related data structures
   template < GUM_Numeric GUM_SCALAR >
@@ -1128,7 +1128,7 @@ namespace gum {
 
   // performs a whole inference
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::makeInference_() {}
+  void VariableElimination< GUM_SCALAR >::makeInference_() {}
 
   /// returns a fresh tensor equal to P(1st arg,evidence)
   template < GUM_Numeric GUM_SCALAR >
@@ -1550,13 +1550,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR > VENewmultiTensor(const Tensor< GUM_SCALAR >& t1,
+  Tensor< GUM_SCALAR > VENewmultiTensor(const Tensor< GUM_SCALAR >& t1,
                                                const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR > VENewprojTensor(const Tensor< GUM_SCALAR >& t1,
+  Tensor< GUM_SCALAR > VENewprojTensor(const Tensor< GUM_SCALAR >& t1,
                                               const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
   }

@@ -74,7 +74,7 @@ namespace gum {
   // this factory.
 
   template < typename GUM_ELEMENT >
-  INLINE FMDPFactory< GUM_ELEMENT >::FMDPFactory(FMDP< GUM_ELEMENT >* fmdp) : _fmdp_(fmdp) {
+  FMDPFactory< GUM_ELEMENT >::FMDPFactory(FMDP< GUM_ELEMENT >* fmdp) : _fmdp_(fmdp) {
     GUM_CONSTRUCTOR(FMDPFactory);
 
     _states_.push_back(FMDPfactory_state::NONE);
@@ -85,7 +85,7 @@ namespace gum {
   // Destructor
 
   template < typename GUM_ELEMENT >
-  INLINE FMDPFactory< GUM_ELEMENT >::~FMDPFactory() {
+  FMDPFactory< GUM_ELEMENT >::~FMDPFactory() {
     GUM_DESTRUCTOR(FMDPFactory);
   }
 
@@ -102,7 +102,7 @@ namespace gum {
   // Returns the IBayesNet created by this factory.
 
   template < typename GUM_ELEMENT >
-  INLINE FMDP< GUM_ELEMENT >* FMDPFactory< GUM_ELEMENT >::fmdp() const {
+  FMDP< GUM_ELEMENT >* FMDPFactory< GUM_ELEMENT >::fmdp() const {
     if (state() != FMDPfactory_state::NONE)
       GUM_ERROR(OperationNotAllowed,
                 "Illegal state to return the factored "
@@ -115,7 +115,7 @@ namespace gum {
   // Returns the current state of the factory.
 
   template < typename GUM_ELEMENT >
-  INLINE FMDPfactory_state FMDPFactory< GUM_ELEMENT >::state() const {
+  FMDPfactory_state FMDPFactory< GUM_ELEMENT >::state() const {
     // This is ok because there is alway at least the state
     // FMDPfactory_state::NONE in the stack.
     return _states_.back();
@@ -125,7 +125,7 @@ namespace gum {
   // @throw NotFound Raised if no variable matches the name.
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable* FMDPFactory< GUM_ELEMENT >::variable(std::string_view name) const {
+  const DiscreteVariable* FMDPFactory< GUM_ELEMENT >::variable(std::string_view name) const {
     for (const auto& elt: _varNameMap_)
       if (elt.first.compare(name) == 0) return elt.second;
 
@@ -147,7 +147,7 @@ namespace gum {
   // Tells the factory that we're in a variable declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startVariableDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startVariableDeclaration() {
     if (state() != FMDPfactory_state::NONE) _illegalStateError_("startVariableDeclaration");
     else {
       _states_.push_back(FMDPfactory_state::VARIABLE);
@@ -161,7 +161,7 @@ namespace gum {
   // Tells the factory the current variable's name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::variableName(std::string_view name) {
+  void FMDPFactory< GUM_ELEMENT >::variableName(std::string_view name) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("variableName");
     else {
       if (_varNameMap_.exists(name)) GUM_ERROR(DuplicateElement, "Name already used: " << name)
@@ -175,7 +175,7 @@ namespace gum {
   // Tells the factory the current variable's description.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::variableDescription(std::string_view desc) {
+  void FMDPFactory< GUM_ELEMENT >::variableDescription(std::string_view desc) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("variableDescription");
     else {
       _bar_flag_     = true;
@@ -188,7 +188,7 @@ namespace gum {
   //                         with the same name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addModality(std::string_view name) {
+  void FMDPFactory< GUM_ELEMENT >::addModality(std::string_view name) {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("addModality");
     else {
       _checkModalityInBag_(name);
@@ -199,7 +199,7 @@ namespace gum {
   // Check if in  _stringBag_ there is no other modality with the same name.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_checkModalityInBag_(std::string_view mod) {
+  void FMDPFactory< GUM_ELEMENT >::_checkModalityInBag_(std::string_view mod) {
     for (size_t i = 2; i < _stringBag_.size(); ++i)
       if (mod == _stringBag_[i])
         GUM_ERROR(DuplicateElement, "Modality" << mod << " already exists.")
@@ -208,7 +208,7 @@ namespace gum {
   // Tells the factory that we're out of a variable declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endVariableDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endVariableDeclaration() {
     if (state() != FMDPfactory_state::VARIABLE) _illegalStateError_("endVariableDeclaration");
     else if (_foo_flag_ && (_stringBag_.size() > 3)) {
       LabelizedVariable* var
@@ -253,7 +253,7 @@ namespace gum {
   // Tells the factory that we're declaring action
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startActionDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startActionDeclaration() {
     if (state() != FMDPfactory_state::NONE) _illegalStateError_("startActionDeclaration");
     else {
       _foo_flag_ = true;
@@ -266,7 +266,7 @@ namespace gum {
   // Tells the factory to add an action
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addAction(std::string_view action) {
+  void FMDPFactory< GUM_ELEMENT >::addAction(std::string_view action) {
     if (state() != FMDPfactory_state::ACTION) _illegalStateError_("addAction");
     else {
       _stringBag_.emplace_back(action);
@@ -277,7 +277,7 @@ namespace gum {
   // Tells the factory that we're out of an action declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endActionDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endActionDeclaration() {
     if (state() != FMDPfactory_state::ACTION) _illegalStateError_("endActionDeclaration");
     else {
       _states_.pop_back();
@@ -301,7 +301,7 @@ namespace gum {
   // Tells the factory that we're declaring transition
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startTransitionDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startTransitionDeclaration() {
     if (state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION)
       _illegalStateError_("startTransitionDeclaration");
     else _states_.push_back(FMDPfactory_state::TRANSITION);
@@ -313,7 +313,7 @@ namespace gum {
   // Tells the factory to add an action
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view          var,
+  void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view          var,
                                                         const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_ELEMENT >* t
         = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
@@ -329,7 +329,7 @@ namespace gum {
   // multiDimFunctionGraph.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view var) {
+  void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view var) {
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("addTransition");
     else {
       this->_finalizeFunctionGraph_();
@@ -349,7 +349,7 @@ namespace gum {
   // Tells the factory that we're out of a transition declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endTransitionDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endTransitionDeclaration() {
     if (state() != FMDPfactory_state::TRANSITION) _illegalStateError_("endTransitionDeclaration");
     else _states_.pop_back();
 
@@ -370,7 +370,7 @@ namespace gum {
   // Tells the factory that we're declaring cost
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startCostDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startCostDeclaration() {
     if (state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION)
       _illegalStateError_("startTransitionDeclaration");
     else _states_.push_back(FMDPfactory_state::COST);
@@ -382,7 +382,7 @@ namespace gum {
   // Tells the factory to add a cost
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addCost(const MultiDimAdressable* cost) {
+  void FMDPFactory< GUM_ELEMENT >::addCost(const MultiDimAdressable* cost) {
     const MultiDimImplementation< GUM_ELEMENT >* c
         = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(cost);
 
@@ -395,7 +395,7 @@ namespace gum {
   // This cost table will be extracted from incorporated multiDimFunctionGraph.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addCost() {
+  void FMDPFactory< GUM_ELEMENT >::addCost() {
     if (state() != FMDPfactory_state::COST) _illegalStateError_("addCost");
     else {
       this->_finalizeFunctionGraph_();
@@ -409,7 +409,7 @@ namespace gum {
   // Tells the factory that we're out of a cost declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endCostDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endCostDeclaration() {
     if (state() != FMDPfactory_state::COST) _illegalStateError_("endCostDeclaration");
     else _states_.pop_back();
 
@@ -430,7 +430,7 @@ namespace gum {
   // Tells the factory that we're declaring reward
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startRewardDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startRewardDeclaration() {
     if (state() != FMDPfactory_state::NONE && state() != FMDPfactory_state::ACTION)
       _illegalStateError_("startRewardDeclaration");
     else _states_.push_back(FMDPfactory_state::REWARD);
@@ -443,7 +443,7 @@ namespace gum {
   // reward diagram is an operation between simplier dd
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::setOperationModeOn(std::string_view operationType) {
+  void FMDPFactory< GUM_ELEMENT >::setOperationModeOn(std::string_view operationType) {
     _foo_flag_ = true;
     _stringBag_.push_back(std::string{operationType});
   }
@@ -451,7 +451,7 @@ namespace gum {
   // Tells the factory to add a reward
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addReward(const MultiDimAdressable* reward) {
+  void FMDPFactory< GUM_ELEMENT >::addReward(const MultiDimAdressable* reward) {
     const MultiDimImplementation< GUM_ELEMENT >* r
         = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(reward);
 
@@ -464,7 +464,7 @@ namespace gum {
   // multiDimFunctionGraph.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addReward() {
+  void FMDPFactory< GUM_ELEMENT >::addReward() {
     if (state() != FMDPfactory_state::REWARD) _illegalStateError_("addReward");
     else {
       this->_finalizeFunctionGraph_();
@@ -478,7 +478,7 @@ namespace gum {
   // Tells the factory that we're out of a reward declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endRewardDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endRewardDeclaration() {
     if (state() != FMDPfactory_state::REWARD) _illegalStateError_("endRewardDeclaration");
     else {
       if (_foo_flag_) {
@@ -532,7 +532,7 @@ namespace gum {
 
   // Tells the factory that we're declaring discount
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::startDiscountDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::startDiscountDeclaration() {
     if (state() != FMDPfactory_state::NONE) _illegalStateError_("startDiscountDeclaration");
     else _states_.push_back(FMDPfactory_state::DISCOUNT);
 
@@ -542,7 +542,7 @@ namespace gum {
   // Tells the factory to add a discount
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addDiscount(float discount) {
+  void FMDPFactory< GUM_ELEMENT >::addDiscount(float discount) {
     if (state() != FMDPfactory_state::DISCOUNT) _illegalStateError_("addDiscount");
     else _fmdp_->setDiscount((GUM_ELEMENT)discount);
   }
@@ -550,7 +550,7 @@ namespace gum {
   // Tells the factory that we're out of a discount declaration.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::endDiscountDeclaration() {
+  void FMDPFactory< GUM_ELEMENT >::endDiscountDeclaration() {
     if (state() != FMDPfactory_state::DISCOUNT) _illegalStateError_("endDiscountDeclaration");
     else _states_.pop_back();
 
@@ -571,25 +571,25 @@ namespace gum {
   // Insert in diagram a non terminal node
 
   template < typename GUM_ELEMENT >
-  INLINE NodeId FMDPFactory< GUM_ELEMENT >::addInternalNode(std::string_view name_of_var) {
+  NodeId FMDPFactory< GUM_ELEMENT >::addInternalNode(std::string_view name_of_var) {
     return _FunctionGraph_->manager()->addInternalNode(variable(name_of_var));
   }
 
   // Insert in diagram a terminal node
 
   template < typename GUM_ELEMENT >
-  INLINE NodeId FMDPFactory< GUM_ELEMENT >::addTerminalNode(float value) {
+  NodeId FMDPFactory< GUM_ELEMENT >::addTerminalNode(float value) {
     return _FunctionGraph_->manager()->addTerminalNode((GUM_ELEMENT)value);
   }
 
   // Insert an arc in diagram
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::addArc(NodeId from, NodeId to, Idx modality) {
+  void FMDPFactory< GUM_ELEMENT >::addArc(NodeId from, NodeId to, Idx modality) {
     _FunctionGraph_->manager()->setSon(from, modality, to);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::setRoot(NodeId rootId) {
+  void FMDPFactory< GUM_ELEMENT >::setRoot(NodeId rootId) {
     _FunctionGraph_->manager()->setRootNode(rootId);
   }
 
@@ -605,7 +605,7 @@ namespace gum {
   // Raise an OperationNotAllowed with the message "Illegal state."
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_illegalStateError_(std::string_view s) {
+  void FMDPFactory< GUM_ELEMENT >::_illegalStateError_(std::string_view s) {
     std::string msg = "Illegal state call (";
     msg += s;
     msg += ") in state ";
@@ -634,7 +634,7 @@ namespace gum {
   // Reset the different parts used to constructed the IBayesNet.
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_resetParts_() {
+  void FMDPFactory< GUM_ELEMENT >::_resetParts_() {
     _foo_flag_ = false;
     _bar_flag_ = false;
     _stringBag_.clear();
@@ -642,7 +642,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_initializeFunctionGraph_() {
+  void FMDPFactory< GUM_ELEMENT >::_initializeFunctionGraph_() {
     this->_FunctionGraph_ = MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
     // Recopie des variables principales dans le graphe de décision
     for (auto varIter = _fmdp_->beginVariables(); varIter != _fmdp_->endVariables(); ++varIter) {
@@ -656,7 +656,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void FMDPFactory< GUM_ELEMENT >::_finalizeFunctionGraph_() {
+  void FMDPFactory< GUM_ELEMENT >::_finalizeFunctionGraph_() {
     this->_FunctionGraph_->manager()->reduce();
     this->_FunctionGraph_->manager()->clean();
   }
@@ -677,7 +677,7 @@ namespace gum {
   // Copy operator is illegal, use only copy constructor.
 
   template < typename GUM_ELEMENT >
-  INLINE FMDPFactory< GUM_ELEMENT >&
+  FMDPFactory< GUM_ELEMENT >&
          FMDPFactory< GUM_ELEMENT >::operator=(const FMDPFactory< GUM_ELEMENT >& source) {
     GUM_ERROR(FatalError, "Illegal!")
     // For noisy compilers

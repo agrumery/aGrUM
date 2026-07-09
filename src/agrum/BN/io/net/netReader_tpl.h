@@ -82,24 +82,24 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE net::Scanner& NetReader< GUM_SCALAR >::scanner() {
+  net::Scanner& NetReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& NetReader< GUM_SCALAR >::streamName() const {
+  const std::string& NetReader< GUM_SCALAR >::streamName() const {
     return _streamName_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool NetReader< GUM_SCALAR >::trace() const {
+  bool NetReader< GUM_SCALAR >::trace() const {
     return _traceScanning_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void NetReader< GUM_SCALAR >::trace(bool b) {
+  void NetReader< GUM_SCALAR >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
@@ -125,60 +125,60 @@ namespace gum {
   // @{
   // publishing Errors API
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx NetReader< GUM_SCALAR >::errLine(Idx i) {
+  Idx NetReader< GUM_SCALAR >::errLine(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx NetReader< GUM_SCALAR >::errCol(Idx i) {
+  Idx NetReader< GUM_SCALAR >::errCol(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool NetReader< GUM_SCALAR >::errIsError(Idx i) {
+  bool NetReader< GUM_SCALAR >::errIsError(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string NetReader< GUM_SCALAR >::errMsg(Idx i) {
+  std::string NetReader< GUM_SCALAR >::errMsg(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void NetReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
+  void NetReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void NetReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+  void NetReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void NetReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
+  void NetReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().simpleErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void NetReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
+  void NetReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else { GUM_ERROR(OperationNotAllowed, "Net file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size NetReader< GUM_SCALAR >::errors() {
+  Size NetReader< GUM_SCALAR >::errors() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size NetReader< GUM_SCALAR >::warnings() {
+  Size NetReader< GUM_SCALAR >::warnings() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 

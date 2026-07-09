@@ -46,7 +46,6 @@ namespace gum {
 
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE
       ApproximateInference< GUM_SCALAR >::ApproximateInference(const IBayesNet< GUM_SCALAR >* bn) :
       MarginalTargetedInference< GUM_SCALAR >(bn) {}
 

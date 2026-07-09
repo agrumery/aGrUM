@@ -73,7 +73,7 @@ namespace gum {
 
   // Returns a constant reference over the IBayesNet referenced by this class
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& BayesNetInference< GUM_SCALAR >::BN() const {
+  const IBayesNet< GUM_SCALAR >& BayesNetInference< GUM_SCALAR >::BN() const {
     return static_cast< const IBayesNet< GUM_SCALAR >& >(this->model());
   }
 

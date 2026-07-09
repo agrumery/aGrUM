@@ -58,28 +58,28 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
+    Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Median);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from) :
+    Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from) :
         MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Median);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Median< GUM_SCALAR >::~Median() {
+    Median< GUM_SCALAR >::~Median() {
       GUM_DESTRUCTOR(Median);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string Median< GUM_SCALAR >::aggregatorName() const {
+    std::string Median< GUM_SCALAR >::aggregatorName() const {
       return "median";
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MultiDimContainer< GUM_SCALAR >* Median< GUM_SCALAR >::newFactory() const {
+    MultiDimContainer< GUM_SCALAR >* Median< GUM_SCALAR >::newFactory() const {
       return new Median< GUM_SCALAR >();
     }
 
@@ -115,7 +115,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
+    Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
                                            Idx                     i1,
                                            Idx                     i2,
                                            bool&                   stop_iteration) const {
@@ -123,7 +123,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx Median< GUM_SCALAR >::neutralElt_() const {
+    Idx Median< GUM_SCALAR >::neutralElt_() const {
       return 0;
     }
 

@@ -62,32 +62,32 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(std::string_view name) :
+    PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(std::string_view name) :
         PRMObject(name) {
       GUM_CONSTRUCTOR(PRMClassElementContainer);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >::~PRMClassElementContainer() {
+    PRMClassElementContainer< GUM_SCALAR >::~PRMClassElementContainer() {
       GUM_DESTRUCTOR(PRMClassElementContainer);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >&
+    PRMClassElementContainer< GUM_SCALAR >&
            PRMClassElementContainer< GUM_SCALAR >::operator=(
                const PRMClassElementContainer< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
+    PRMClassElementContainer< GUM_SCALAR >::PRMClassElementContainer(
         const PRMClassElementContainer< GUM_SCALAR >& source) : PRMObject(source) {
       GUM_CONS_CPY(PRMClassElementContainer);
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy constructor")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInputNode(
+    bool PRMClassElementContainer< GUM_SCALAR >::isInputNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       auto p = _IOFlags_.tryGet(elt.safeName());
       if (!p) return false;
@@ -95,7 +95,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMClassElementContainer< GUM_SCALAR >::setInputNode(
+    void PRMClassElementContainer< GUM_SCALAR >::setInputNode(
         const PRMClassElement< GUM_SCALAR >& elt,
         bool                                 b) {
       if (!exists(elt.safeName())) {
@@ -113,7 +113,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMClassElementContainer< GUM_SCALAR >::setOutputNode(
+    void PRMClassElementContainer< GUM_SCALAR >::setOutputNode(
         const PRMClassElement< GUM_SCALAR >& elt,
         bool                                 b) {
       if (!exists(elt.safeName())) {
@@ -135,7 +135,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::isInnerNode(
+    bool PRMClassElementContainer< GUM_SCALAR >::isInnerNode(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       auto p = _IOFlags_.tryGet(elt.safeName());
       if (!p) return true;
@@ -143,13 +143,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::isSuperTypeOf(
+    bool PRMClassElementContainer< GUM_SCALAR >::isSuperTypeOf(
         const PRMClassElementContainer< GUM_SCALAR >& cec) const {
       return cec.isSubTypeOf(*this);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
+    std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) {
       auto p = _IOFlags_.tryGet(elt.safeName());
       if (!p) GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
@@ -157,7 +157,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
+    const std::pair< bool, bool >& PRMClassElementContainer< GUM_SCALAR >::getIOFlag_(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       auto p = _IOFlags_.tryGet(elt.safeName());
       if (!p) GUM_ERROR(NotFound, "this ClassElement<GUM_SCALAR> does not have any IO flags")
@@ -165,7 +165,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         PRMClassElementContainer< GUM_SCALAR >::setIOFlag_(const PRMClassElement< GUM_SCALAR >& elt,
                                                            const std::pair< bool, bool >& flags) {
       if (auto p = _IOFlags_.tryGet(elt.safeName())) {
@@ -176,12 +176,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(NodeId id) const {
+    bool PRMClassElementContainer< GUM_SCALAR >::exists(NodeId id) const {
       return containerDag().exists(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(std::string_view name) const {
+    bool PRMClassElementContainer< GUM_SCALAR >::exists(std::string_view name) const {
       try {
         get(name);
         return true;
@@ -189,7 +189,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMClassElementContainer< GUM_SCALAR >::belongsTo(
+    bool PRMClassElementContainer< GUM_SCALAR >::belongsTo(
         const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         return &elt == &(get(elt.safeName()));
@@ -197,7 +197,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DAG& PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
+    const DAG& PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
       return dag_();
     }
 

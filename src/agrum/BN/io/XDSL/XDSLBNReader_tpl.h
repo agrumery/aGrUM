@@ -54,7 +54,7 @@ namespace gum {
    * Note that an BN has to be created before and given in parameter.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE XDSLBNReader< GUM_SCALAR >::XDSLBNReader(BayesNet< GUM_SCALAR >* bn,
+  XDSLBNReader< GUM_SCALAR >::XDSLBNReader(BayesNet< GUM_SCALAR >* bn,
                                                   std::string_view        filePath) :
       BNReader< GUM_SCALAR >(bn, filePath) {
     GUM_CONSTRUCTOR(XDSLBNReader);
@@ -66,7 +66,7 @@ namespace gum {
    * Default destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE XDSLBNReader< GUM_SCALAR >::~XDSLBNReader() {
+  XDSLBNReader< GUM_SCALAR >::~XDSLBNReader() {
     GUM_DESTRUCTOR(XDSLBNReader);
   }
 

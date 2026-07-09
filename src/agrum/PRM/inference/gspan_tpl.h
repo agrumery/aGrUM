@@ -363,7 +363,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
+    GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
                                       const PRMSystem< GUM_SCALAR >&       sys,
                                       gspan::SearchStrategy< GUM_SCALAR >* strategy) :
         _graph_(new gspan::InterfaceGraph< GUM_SCALAR >(sys)), _tree_(*_graph_, strategy),
@@ -372,7 +372,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::~GSpan() {
+    GSpan< GUM_SCALAR >::~GSpan() {
       GUM_DESTRUCTOR(GSpan);
 
       for (const auto& elt: _matched_instances_)
@@ -382,64 +382,64 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Size GSpan< GUM_SCALAR >::getMaxDFSDepth() const {
+    Size GSpan< GUM_SCALAR >::getMaxDFSDepth() const {
       return _depth_stop_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void GSpan< GUM_SCALAR >::setMaxDFSDepth(Size depth) {
+    void GSpan< GUM_SCALAR >::setMaxDFSDepth(Size depth) {
       _depth_stop_ = depth;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() {
+    gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() {
       return _tree_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() const {
+    const gspan::DFSTree< GUM_SCALAR >& GSpan< GUM_SCALAR >::tree() const {
       return _tree_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx GSpan< GUM_SCALAR >::_cost_func_(Size interface_size, Size frequency) {
+    Idx GSpan< GUM_SCALAR >::_cost_func_(Size interface_size, Size frequency) {
       return Idx(interface_size * frequency);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() {
+    std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() {
       return _patterns_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() const {
+    const std::vector< gspan::Pattern* >& GSpan< GUM_SCALAR >::patterns() const {
       return _patterns_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename GSpan< GUM_SCALAR >::MatchedInstances&
+    typename GSpan< GUM_SCALAR >::MatchedInstances&
         GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename GSpan< GUM_SCALAR >::MatchedInstances&
+    const typename GSpan< GUM_SCALAR >::MatchedInstances&
         GSpan< GUM_SCALAR >::matches(const gspan::Pattern& p) const {
       return *(_matched_instances_[const_cast< gspan::Pattern* >(&p)]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() {
+    gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() {
       return *_graph_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() const {
+    const gspan::InterfaceGraph< GUM_SCALAR >& GSpan< GUM_SCALAR >::interfaceGraph() const {
       return *_graph_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool GSpan< GUM_SCALAR >::_isEdgeEligible_(gspan::EdgeData< GUM_SCALAR >* e) {
+    bool GSpan< GUM_SCALAR >::_isEdgeEligible_(gspan::EdgeData< GUM_SCALAR >* e) {
       return (_graph_->edges(e->l).size() >= 2) && (_graph_->nodes(e->l_u).size() >= 2)
           && (_graph_->nodes(e->l_v).size() >= 2);
     }
@@ -447,23 +447,23 @@ namespace gum {
     // LalbeSort
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(GSpan* my_gspan) : gspan(my_gspan) {
+    GSpan< GUM_SCALAR >::LabelSort::LabelSort(GSpan* my_gspan) : gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::LabelSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) :
+    GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) :
         gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::LabelSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::LabelSort::~LabelSort() {
+    GSpan< GUM_SCALAR >::LabelSort::~LabelSort() {
       GUM_DESTRUCTOR(GSpan< GUM_SCALAR >::LabelSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool GSpan< GUM_SCALAR >::LabelSort::operator()(gspan::LabelData* i,
+    bool GSpan< GUM_SCALAR >::LabelSort::operator()(gspan::LabelData* i,
                                                            gspan::LabelData* j) {
       // We want a descending order
       // return gspan-> _cost_[i] > gspan-> _cost_[j];
@@ -473,23 +473,23 @@ namespace gum {
     // PatternSort
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(GSpan* my_gspan) : gspan(my_gspan) {
+    GSpan< GUM_SCALAR >::PatternSort::PatternSort(GSpan* my_gspan) : gspan(my_gspan) {
       GUM_CONSTRUCTOR(GSpan< GUM_SCALAR >::PatternSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
+    GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
         gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::PatternSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE GSpan< GUM_SCALAR >::PatternSort::~PatternSort() {
+    GSpan< GUM_SCALAR >::PatternSort::~PatternSort() {
       GUM_DESTRUCTOR(GSpan< GUM_SCALAR >::PatternSort);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool GSpan< GUM_SCALAR >::PatternSort::operator()(gspan::Pattern* i, gspan::Pattern* j) {
+    bool GSpan< GUM_SCALAR >::PatternSort::operator()(gspan::Pattern* i, gspan::Pattern* j) {
       // We want a descending order
       return gspan->tree().strategy().operator()(i, j);
     }

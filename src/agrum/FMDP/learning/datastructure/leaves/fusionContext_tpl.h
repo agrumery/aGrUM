@@ -213,109 +213,109 @@ namespace gum {
   }
 
   template < bool isInitial >
-  INLINE void* FusionContext< isInitial >::operator new(size_t s) {
+  void* FusionContext< isInitial >::operator new(size_t s) {
     return SmallObjectAllocator::instance().allocate(s);
   }
 
   template < bool isInitial >
-  INLINE void FusionContext< isInitial >::operator delete(void* p) {
+  void FusionContext< isInitial >::operator delete(void* p) {
     SmallObjectAllocator::instance().deallocate(p, sizeof(FusionContext));
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::containsAssociatedLeaf(AbstractLeaf* l) {
+  bool FusionContext< isInitial >::containsAssociatedLeaf(AbstractLeaf* l) {
     return _containsAssociatedLeaf_(l, Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf* l,
+  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf* l,
                                                                    Int2Type< false >) {
     return _leaf2Pair_.exists(l);
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf*,
+  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf*,
                                                                    Int2Type< true >) {
     return false;
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::associateLeaf(AbstractLeaf* l) {
+  bool FusionContext< isInitial >::associateLeaf(AbstractLeaf* l) {
     return _associateLeaf_(l, Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_associateLeaf_(AbstractLeaf*, Int2Type< true >) {
+  bool FusionContext< isInitial >::_associateLeaf_(AbstractLeaf*, Int2Type< true >) {
     return false;
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::updateAssociatedLeaf(AbstractLeaf* l) {
+  bool FusionContext< isInitial >::updateAssociatedLeaf(AbstractLeaf* l) {
     return _updateAssociatedLeaf_(l, Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_updateAssociatedLeaf_(AbstractLeaf*, Int2Type< true >) {
+  bool FusionContext< isInitial >::_updateAssociatedLeaf_(AbstractLeaf*, Int2Type< true >) {
     return false;
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::updateAllAssociatedLeaves() {
+  bool FusionContext< isInitial >::updateAllAssociatedLeaves() {
     return _updateAllAssociatedLeaves_(Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_updateAllAssociatedLeaves_(Int2Type< true >) {
+  bool FusionContext< isInitial >::_updateAllAssociatedLeaves_(Int2Type< true >) {
     return false;
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::deassociateLeaf(AbstractLeaf* l) {
+  bool FusionContext< isInitial >::deassociateLeaf(AbstractLeaf* l) {
     return _deassociateLeaf_(l, Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE bool FusionContext< isInitial >::_deassociateLeaf_(AbstractLeaf*, Int2Type< true >) {
+  bool FusionContext< isInitial >::_deassociateLeaf_(AbstractLeaf*, Int2Type< true >) {
     return false;
   }
 
   template < bool isInitial >
-  INLINE pair_iterator FusionContext< isInitial >::beginPairs() {
+  pair_iterator FusionContext< isInitial >::beginPairs() {
     return _pairsHeap_.allValues().beginSafe();
   }
 
   template < bool isInitial >
-  INLINE pair_iterator FusionContext< isInitial >::endPairs() {
+  pair_iterator FusionContext< isInitial >::endPairs() {
     return _pairsHeap_.allValues().endSafe();
   }
 
   template < bool isInitial >
-  INLINE LeafPair* FusionContext< isInitial >::top() {
+  LeafPair* FusionContext< isInitial >::top() {
     return !_pairsHeap_.empty() ? _pairsHeap_.top() : nullptr;
   }
 
   template < bool isInitial >
-  INLINE double FusionContext< isInitial >::topLikelyhood() {
+  double FusionContext< isInitial >::topLikelyhood() {
     return !_pairsHeap_.empty() ? _pairsHeap_.topPriority() : 1.0;
   }
 
   template < bool isInitial >
-  INLINE AbstractLeaf* FusionContext< isInitial >::leaf() {
+  AbstractLeaf* FusionContext< isInitial >::leaf() {
     return _leaf_;
   }
 
   template < bool isInitial >
-  INLINE LeafPair* FusionContext< isInitial >::leafAssociatedPair(AbstractLeaf* l) {
+  LeafPair* FusionContext< isInitial >::leafAssociatedPair(AbstractLeaf* l) {
     return _leaf2Pair_.getWithDefault(l, nullptr);
   }
 
   template < bool isInitial >
-  INLINE Set< LeafPair* > FusionContext< isInitial >::associatedPairs() {
+  Set< LeafPair* > FusionContext< isInitial >::associatedPairs() {
     return _associatedPairs_(Int2Type< isInitial >());
   }
 
   template < bool isInitial >
-  INLINE Set< LeafPair* > FusionContext< isInitial >::_associatedPairs_(Int2Type< true >) {
+  Set< LeafPair* > FusionContext< isInitial >::_associatedPairs_(Int2Type< true >) {
     return Set< LeafPair* >();
   }
 

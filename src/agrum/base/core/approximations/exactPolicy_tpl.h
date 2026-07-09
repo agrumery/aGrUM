@@ -60,7 +60,7 @@ namespace gum {
 
   // @brief Convert value to approximation representation.
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT ExactPolicy< GUM_ELEMENT >::fromExact(const GUM_ELEMENT& value) const {
+  GUM_ELEMENT ExactPolicy< GUM_ELEMENT >::fromExact(const GUM_ELEMENT& value) const {
     return value;
   }
 

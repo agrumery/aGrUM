@@ -61,7 +61,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
+  TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2) :
       _dt1_(dt1), _dt2_(dt2), _combine_() {
@@ -73,7 +73,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
+  TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::TreeOperator(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt1,
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dt2,
       const HashTable< const DiscreteVariable*, Idx >                 givenContext) :
@@ -86,7 +86,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::~TreeOperator() {
+  TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::~TreeOperator() {
     GUM_DESTRUCTOR(TreeOperator);
   }
 
@@ -95,7 +95,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
+  MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
          TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
     _rd_->manager()->setRootNode(_xPloreDT1_(_dt1_->root()));
 
@@ -107,7 +107,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_xPloreDT1_(
+  NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_xPloreDT1_(
       NodeId currentNodeId) {
     if (_dt1_->isTerminalNode(currentNodeId)) {
       _curDT1Leaf_ = currentNodeId;
@@ -132,7 +132,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_xPloreDT2_(
+  NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_xPloreDT2_(
       NodeId currentNodeId) {
     if (_dt2_->isTerminalNode(currentNodeId))
       return _rd_->manager()->addTerminalNode(
@@ -159,7 +159,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
-  INLINE NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_checkRedundancy_(
+  NodeId TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::_checkRedundancy_(
       const DiscreteVariable* var,
       NodeId*                 sonsMap) {
     bool diff = false;

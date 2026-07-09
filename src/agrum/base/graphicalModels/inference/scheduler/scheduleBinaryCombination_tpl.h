@@ -122,7 +122,7 @@ namespace gum {
 
   /// virtual copy constructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >*
+  ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >*
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::clone() const {
     return new ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(*this);
   }
@@ -178,7 +178,7 @@ namespace gum {
 
   /// operator ==
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return (_combine_ == op._combine_) && (*_arg1_ == *op._arg1_) && (*_arg2_ == *op._arg2_);
   }
@@ -198,21 +198,21 @@ namespace gum {
 
   /// operator !=
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
       const ScheduleOperator& op) const {
     return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(op);
   }
 
   /// operator !=
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator!=(
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return !ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::operator==(op);
   }
 
   /// checks whether two ScheduleCombination have the same parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSameArguments(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSameArguments(
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_)
             && _arg1_->hasSameContent(*op._arg1_) && _arg2_->hasSameContent(*op._arg2_));
@@ -231,7 +231,7 @@ namespace gum {
 
   /// checks whether two ScheduleCombination have similar parameters
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSimilarArguments(
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::hasSimilarArguments(
       const ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >& op) const {
     return (_arg1_->hasSameVariables(*op._arg1_) && _arg2_->hasSameVariables(*op._arg2_));
   }
@@ -267,35 +267,35 @@ namespace gum {
 
   /// returns the first argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE const ScheduleMultiDim< TABLE1 >&
+  const ScheduleMultiDim< TABLE1 >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg1() const {
     return *_arg1_;
   }
 
   /// returns the second argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE const ScheduleMultiDim< TABLE2 >&
+  const ScheduleMultiDim< TABLE2 >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg2() const {
     return *_arg2_;
   }
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE const Sequence< const IScheduleMultiDim* >&
+  const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
     return _args_;
   }
 
   /// returns the result of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE const ScheduleMultiDim< TABLE_RES >&
+  const ScheduleMultiDim< TABLE_RES >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::result() const {
     return *_result_;
   }
 
   /// returns the sequence of ScheduleMultidim output by the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE const Sequence< const IScheduleMultiDim* >&
+  const Sequence< const IScheduleMultiDim* >&
                ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
     return _results_;
   }
@@ -341,7 +341,7 @@ namespace gum {
 
   /// indicates whether the operator has been executed
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isExecuted() const {
+  bool ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::isExecuted() const {
     return !_result_->isAbstract();
   }
 
@@ -374,7 +374,7 @@ namespace gum {
 
   /// returns the memory consumption used during the execution of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
-  INLINE std::pair< double, double >
+  std::pair< double, double >
          ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::memoryUsage() const {
     const double domsize
         = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE_RES);

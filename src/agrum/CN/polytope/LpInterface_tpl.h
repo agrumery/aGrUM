@@ -492,7 +492,7 @@ namespace gum {
 
       ///////////////////////////////////////////////////////
       template < typename SCALAR >
-      INLINE LpExpr LpExpr::multiply(const SCALAR& lhs, const LpCol& rhs) {
+      LpExpr LpExpr::multiply(const SCALAR& lhs, const LpCol& rhs) {
         LpExpr expr;
         expr._mCoeffs_->insert(rhs, lhs);
         expr._imiddle_ = true;
@@ -511,7 +511,7 @@ namespace gum {
 
       ///////////////////////////////////////////////////////
       template < typename T1, typename T2 >
-      INLINE LpExpr LpExpr::lessThan(T1&& lhs, T2&& rhs) {
+      LpExpr LpExpr::lessThan(T1&& lhs, T2&& rhs) {
         LpExpr expr;
         expr._addSide_(std::forward< T1 >(lhs));
         expr._addSide_(std::forward< T2 >(rhs));

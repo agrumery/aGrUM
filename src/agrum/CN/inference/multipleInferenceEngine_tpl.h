@@ -60,7 +60,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::initThreadsData_(
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::initThreadsData_(
         const Size& num_threads,
         const bool  _storeVertices_,
         const bool  _storeBNOpt_) {
@@ -113,7 +113,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    inline bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateThread_(
+    bool MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateThread_(
         Size                             tId,
         const NodeId&                    id,
         const std::vector< GUM_SCALAR >& vertex,
@@ -215,7 +215,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThreadCredalSets_(
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::_updateThreadCredalSets_(
         Size                             tId,
         const NodeId&                    id,
         const std::vector< GUM_SCALAR >& vertex,
@@ -291,7 +291,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    inline void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
+    void MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::updateMarginals_() {
       // compute the max number of threads to use (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
                                 ? this->threadRanges_.size() - 1
@@ -366,7 +366,7 @@ namespace gum {
 
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    inline const GUM_SCALAR
+    const GUM_SCALAR
         MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
       // compute the number of threads (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0

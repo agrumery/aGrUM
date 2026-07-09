@@ -46,49 +46,49 @@ namespace gum {
 
 
   template < typename GUM_ELEMENT >
-  INLINE SetTerminalNodePolicy< GUM_ELEMENT >::~SetTerminalNodePolicy() {
+  SetTerminalNodePolicy< GUM_ELEMENT >::~SetTerminalNodePolicy() {
     clearAllTerminalNodes();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void SetTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
+  void SetTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
                                                                     const GUM_ELEMENT& v) {
     if (_map_.exists(n)) *(_map_[n]) += v;
     _map_.insert(n, new GUM_ELEMENT(v));
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void SetTerminalNodePolicy< GUM_ELEMENT >::eraseTerminalNode(const NodeId& n) {
+  void SetTerminalNodePolicy< GUM_ELEMENT >::eraseTerminalNode(const NodeId& n) {
     if (_map_.exists(n)) _map_.erase(n);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void SetTerminalNodePolicy< GUM_ELEMENT >::clearAllTerminalNodes() {
+  void SetTerminalNodePolicy< GUM_ELEMENT >::clearAllTerminalNodes() {
     for (auto nodeIter = _map_.beginSafe(); nodeIter != _map_.endSafe(); ++nodeIter)
       delete nodeIter.val();
     _map_.clear();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool
+  bool
       SetTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
     return _map_.exists(n);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool SetTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithValue(
+  bool SetTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithValue(
       const GUM_ELEMENT& v) const {
     return terminalNodeId(v) != 0;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const GUM_ELEMENT&
+  const GUM_ELEMENT&
       SetTerminalNodePolicy< GUM_ELEMENT >::terminalNodeValue(const NodeId& n) const {
     return *(_map_[n]);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const NodeId&
+  const NodeId&
       SetTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
     for (auto nodeIter = _map_.beginSafe(); nodeIter != _map_.endSafe(); ++nodeIter)
       if (*(nodeIter.val()) == v) return nodeIter.key();
@@ -96,27 +96,27 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void SetTerminalNodePolicy< GUM_ELEMENT >::beginValues() const {
+  void SetTerminalNodePolicy< GUM_ELEMENT >::beginValues() const {
     _mappy_ = _map_.cbeginSafe();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool SetTerminalNodePolicy< GUM_ELEMENT >::hasValue() const {
+  bool SetTerminalNodePolicy< GUM_ELEMENT >::hasValue() const {
     return _mappy_ != _map_.cendSafe();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void SetTerminalNodePolicy< GUM_ELEMENT >::nextValue() const {
+  void SetTerminalNodePolicy< GUM_ELEMENT >::nextValue() const {
     ++_mappy_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const GUM_ELEMENT& SetTerminalNodePolicy< GUM_ELEMENT >::value() const {
+  const GUM_ELEMENT& SetTerminalNodePolicy< GUM_ELEMENT >::value() const {
     return *(_mappy_.val());
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const NodeId& SetTerminalNodePolicy< GUM_ELEMENT >::id() const {
+  const NodeId& SetTerminalNodePolicy< GUM_ELEMENT >::id() const {
     return _mappy_.key();
   }
 

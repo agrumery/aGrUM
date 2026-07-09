@@ -62,7 +62,7 @@
 namespace gum {
   // default constructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE ShaferShenoyMRFInference< GUM_SCALAR >::ShaferShenoyMRFInference(
+  ShaferShenoyMRFInference< GUM_SCALAR >::ShaferShenoyMRFInference(
       const IMarkovRandomField< GUM_SCALAR >* MN,
       bool                                    use_binary_join_tree) :
       JointTargetedMRFInference< GUM_SCALAR >(MN), EvidenceMRFInference< GUM_SCALAR >(MN),
@@ -88,7 +88,7 @@ namespace gum {
 
   // destructor
   template < GUM_Numeric GUM_SCALAR >
-  INLINE ShaferShenoyMRFInference< GUM_SCALAR >::~ShaferShenoyMRFInference() {
+  ShaferShenoyMRFInference< GUM_SCALAR >::~ShaferShenoyMRFInference() {
     // remove all the tensors created during the last message passing
     for (const auto& pot: _arc_to_created_tensors_)
       delete pot.second;
@@ -134,7 +134,7 @@ namespace gum {
 
   /// returns the current join tree used
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const JoinTree* ShaferShenoyMRFInference< GUM_SCALAR >::joinTree() {
+  const JoinTree* ShaferShenoyMRFInference< GUM_SCALAR >::joinTree() {
     if (_is_new_jt_needed_) _createNewJT_();
 
     return _JT_;
@@ -142,7 +142,7 @@ namespace gum {
 
   /// returns the current junction tree
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const JunctionTree* ShaferShenoyMRFInference< GUM_SCALAR >::junctionTree() {
+  const JunctionTree* ShaferShenoyMRFInference< GUM_SCALAR >::junctionTree() {
     if (_is_new_jt_needed_) _createNewJT_();
 
     return _junctionTree_;
@@ -150,7 +150,7 @@ namespace gum {
 
   /// sets the operator for performing the projections
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_setProjectionFunction_(
+  void ShaferShenoyMRFInference< GUM_SCALAR >::_setProjectionFunction_(
       Tensor< GUM_SCALAR > (*proj)(const Tensor< GUM_SCALAR >&, const gum::VariableSet&)) {
     _projection_op_ = proj;
 
@@ -161,7 +161,7 @@ namespace gum {
 
   /// sets the operator for performing the combinations
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_setCombinationFunction_(
+  void ShaferShenoyMRFInference< GUM_SCALAR >::_setCombinationFunction_(
       Tensor< GUM_SCALAR > (*comb)(const Tensor< GUM_SCALAR >&, const Tensor< GUM_SCALAR >&)) {
     _combination_op_ = comb;
 
@@ -199,7 +199,7 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
                                                                        bool isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
@@ -220,7 +220,7 @@ namespace gum {
 
   /// fired when an evidence is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
                                                                         bool isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
@@ -265,7 +265,7 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
                                                                          bool hasChangedSoftHard) {
     if (hasChangedSoftHard) _is_new_jt_needed_ = true;
     else {
@@ -281,40 +281,40 @@ namespace gum {
 
   /// fired after a new target is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {}
 
   /// fired before a target is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onMarginalTargetErased_(const NodeId id) {}
 
   /// fired after a new set target is inserted
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetAdded_(const NodeSet& set) {}
 
   /// fired before a set target is removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetErased_(const NodeSet& set) {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onJointTargetErased_(const NodeSet& set) {}
 
   /// fired after all the nodes of the MRF are added as single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onAllMarginalTargetsAdded_() {}
 
   /// fired before a all the single_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onAllMarginalTargetsErased_() {}
 
   /// fired after a new Markov net has been assigned to the engine
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onMRFChanged_(
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onMRFChanged_(
       const IMarkovRandomField< GUM_SCALAR >* mn) {}
 
   /// fired before a all the joint_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllJointTargetsErased_() {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onAllJointTargetsErased_() {}
 
   /// fired before a all the single and joint_targets are removed
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onAllTargetsErased_() {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onAllTargetsErased_() {}
 
   // check whether a new junction tree is really needed for the next inference
   template < GUM_Numeric GUM_SCALAR >
@@ -1242,7 +1242,7 @@ namespace gum {
 
   // performs the collect phase of Shafer-Shenoy using schedules
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
+  void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
                                                                        NodeId    id,
                                                                        NodeId    from) {
     for (const auto other: _JT_->neighbours(id)) {
@@ -1257,7 +1257,7 @@ namespace gum {
 
   // performs the collect phase of Shafer-Shenoy without schedules
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
+  void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(NodeId id, NodeId from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)]) _collectMessage_(other, id);
     }
@@ -1432,13 +1432,13 @@ namespace gum {
 
   // fired after a new Markov net has been assigned to the inference engine
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
     JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
   }
 
   // performs a whole inference
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::makeInference_() {
+  void ShaferShenoyMRFInference< GUM_SCALAR >::makeInference_() {
     if (_use_schedules_) {
       Schedule schedule;
 
@@ -2089,20 +2089,20 @@ namespace gum {
 
   // the function used to combine two tables
   template < GUM_Numeric GUM_SCALAR >
-  INLINE static Tensor< GUM_SCALAR > SSNewMNmultiTensor(const Tensor< GUM_SCALAR >& t1,
+  static Tensor< GUM_SCALAR > SSNewMNmultiTensor(const Tensor< GUM_SCALAR >& t1,
                                                         const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   // the function used to project (marginalize) a table
   template < GUM_Numeric GUM_SCALAR >
-  INLINE static Tensor< GUM_SCALAR > SSNewMNprojTensor(const Tensor< GUM_SCALAR >& t1,
+  static Tensor< GUM_SCALAR > SSNewMNprojTensor(const Tensor< GUM_SCALAR >& t1,
                                                        const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void ShaferShenoyMRFInference< GUM_SCALAR >::onStateChanged_() {}
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onStateChanged_() {}
 
 } /* namespace gum */
 

@@ -80,24 +80,24 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE DSL::Scanner& DSLReader< GUM_SCALAR >::scanner() {
+  DSL::Scanner& DSLReader< GUM_SCALAR >::scanner() {
     if (_ioerror_) { GUM_ERROR(gum::IOError, "No such file " + streamName()) }
 
     return *_scanner_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& DSLReader< GUM_SCALAR >::streamName() const {
+  const std::string& DSLReader< GUM_SCALAR >::streamName() const {
     return _streamName_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool DSLReader< GUM_SCALAR >::trace() const {
+  bool DSLReader< GUM_SCALAR >::trace() const {
     return _traceScanning_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DSLReader< GUM_SCALAR >::trace(bool b) {
+  void DSLReader< GUM_SCALAR >::trace(bool b) {
     _traceScanning_ = b;
     scanner().setTrace(b);
   }
@@ -122,60 +122,60 @@ namespace gum {
   /// @{
   /// publishing Errors API
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx DSLReader< GUM_SCALAR >::errLine(Idx i) {
+  Idx DSLReader< GUM_SCALAR >::errLine(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).line;
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Idx DSLReader< GUM_SCALAR >::errCol(Idx i) {
+  Idx DSLReader< GUM_SCALAR >::errCol(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).column;
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool DSLReader< GUM_SCALAR >::errIsError(Idx i) {
+  bool DSLReader< GUM_SCALAR >::errIsError(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).is_error;
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string DSLReader< GUM_SCALAR >::errMsg(Idx i) {
+  std::string DSLReader< GUM_SCALAR >::errMsg(Idx i) {
     if (_parseDone_) return _parser_->errors().error(i).msg;
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DSLReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
+  void DSLReader< GUM_SCALAR >::showElegantErrors(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrors(o);
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DSLReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
+  void DSLReader< GUM_SCALAR >::showElegantErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().elegantErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DSLReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
+  void DSLReader< GUM_SCALAR >::showErrorsAndWarnings(std::ostream& o) {
     if (_parseDone_) _parser_->errors().simpleErrorsAndWarnings(o);
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void DSLReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
+  void DSLReader< GUM_SCALAR >::showErrorCounts(std::ostream& o) {
     if (_parseDone_) _parser_->errors().syntheticResults(o);
     else { GUM_ERROR(OperationNotAllowed, "DSL file not parsed yet") }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size DSLReader< GUM_SCALAR >::errors() {
+  Size DSLReader< GUM_SCALAR >::errors() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().error_count;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size DSLReader< GUM_SCALAR >::warnings() {
+  Size DSLReader< GUM_SCALAR >::warnings() {
     return (!_parseDone_) ? (Size)0 : _parser_->errors().warning_count;
   }
 

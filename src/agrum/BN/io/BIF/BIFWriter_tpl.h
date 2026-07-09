@@ -56,13 +56,13 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFWriter< GUM_SCALAR >::BIFWriter() {
+  BIFWriter< GUM_SCALAR >::BIFWriter() {
     GUM_CONSTRUCTOR(BIFWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFWriter< GUM_SCALAR >::~BIFWriter() {
+  BIFWriter< GUM_SCALAR >::~BIFWriter() {
     GUM_DESTRUCTOR(BIFWriter);
   }
 
@@ -73,7 +73,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+  void BIFWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                 const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
@@ -103,7 +103,7 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
+  void BIFWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                 const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
@@ -115,7 +115,7 @@ namespace gum {
 
   // Returns a bloc defining a variable's CPT in the BIF format.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFWriter< GUM_SCALAR >::_variableCPT_(const Tensor< GUM_SCALAR >& cpt) {
+  std::string BIFWriter< GUM_SCALAR >::_variableCPT_(const Tensor< GUM_SCALAR >& cpt) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
 
@@ -165,7 +165,7 @@ namespace gum {
 
   // Returns the header of the BIF file.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFWriter< GUM_SCALAR >::_header_(const IBayesNet< GUM_SCALAR >& bn) {
+  std::string BIFWriter< GUM_SCALAR >::_header_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << std::format("network \"{}\" {{\n", bn.propertyWithDefault("name", "unnamedBN"));
@@ -176,7 +176,7 @@ namespace gum {
 
   // Returns a bloc defining a variable in the BIF format.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
+  std::string BIFWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     std::stringstream str;
     std::string       tab = "   ";   // poor tabulation
     str << std::format("variable {} {{\n", this->_onlyValidCharsInName(var.name()));
@@ -195,7 +195,7 @@ namespace gum {
 
   // Returns the modalities labels of the variables in varsSeq
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
       BIFWriter< GUM_SCALAR >::_variablesLabels_(const Sequence< const DiscreteVariable* >& varsSeq,
                                                  const Instantiation&                       inst) {
     std::stringstream       str;

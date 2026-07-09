@@ -46,55 +46,55 @@ namespace gum {
 
 
   template < typename GUM_ELEMENT >
-  INLINE ITestPolicy< GUM_ELEMENT >::ITestPolicy() : _isModified_(false), _nbObs_(0) {
+  ITestPolicy< GUM_ELEMENT >::ITestPolicy() : _isModified_(false), _nbObs_(0) {
     GUM_CONSTRUCTOR(ITestPolicy);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE ITestPolicy< GUM_ELEMENT >::~ITestPolicy() {
+  ITestPolicy< GUM_ELEMENT >::~ITestPolicy() {
     GUM_DESTRUCTOR(ITestPolicy);
     ;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void* ITestPolicy< GUM_ELEMENT >::operator new(size_t s) {
+  void* ITestPolicy< GUM_ELEMENT >::operator new(size_t s) {
     return SmallObjectAllocator::instance().allocate(s);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ITestPolicy< GUM_ELEMENT >::operator delete(void* p) {
+  void ITestPolicy< GUM_ELEMENT >::operator delete(void* p) {
     SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ITestPolicy< GUM_ELEMENT >::addObservation(Idx attr, GUM_ELEMENT value) {
+  void ITestPolicy< GUM_ELEMENT >::addObservation(Idx attr, GUM_ELEMENT value) {
     _isModified_ = true;
     _nbObs_++;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Idx ITestPolicy< GUM_ELEMENT >::nbObservation() const {
+  Idx ITestPolicy< GUM_ELEMENT >::nbObservation() const {
     return _nbObs_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ITestPolicy< GUM_ELEMENT >::computeScore() const {
+  void ITestPolicy< GUM_ELEMENT >::computeScore() const {
     _isModified_ = false;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void ITestPolicy< GUM_ELEMENT >::add(const ITestPolicy< GUM_ELEMENT >& src) {
+  void ITestPolicy< GUM_ELEMENT >::add(const ITestPolicy< GUM_ELEMENT >& src) {
     _isModified_ = true;
     _nbObs_ += src.nbObservation();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE std::string ITestPolicy< GUM_ELEMENT >::toString() const {
+  std::string ITestPolicy< GUM_ELEMENT >::toString() const {
     return std::format("\t\t\tNb Obs : {}\n", _nbObs_);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool ITestPolicy< GUM_ELEMENT >::isModified_() const {
+  bool ITestPolicy< GUM_ELEMENT >::isModified_() const {
     return _isModified_;
   }
 

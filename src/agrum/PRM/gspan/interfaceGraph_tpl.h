@@ -56,57 +56,57 @@ namespace gum {
       // NodeData
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeData< GUM_SCALAR >::NodeData() : n(0), l(0) {
+      NodeData< GUM_SCALAR >::NodeData() : n(0), l(0) {
         GUM_CONSTRUCTOR(NodeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeData< GUM_SCALAR >::NodeData(const NodeData< GUM_SCALAR >& from) :
+      NodeData< GUM_SCALAR >::NodeData(const NodeData< GUM_SCALAR >& from) :
           n(from.n), l(from.l) {
         GUM_CONS_CPY(NodeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeData< GUM_SCALAR >::~NodeData() {
+      NodeData< GUM_SCALAR >::~NodeData() {
         GUM_DESTRUCTOR(NodeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool NodeData< GUM_SCALAR >::operator==(const NodeData< GUM_SCALAR >& from) const {
+      bool NodeData< GUM_SCALAR >::operator==(const NodeData< GUM_SCALAR >& from) const {
         return (n == from.n) && (l == from.l);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool NodeData< GUM_SCALAR >::operator!=(const NodeData< GUM_SCALAR >& from) const {
+      bool NodeData< GUM_SCALAR >::operator!=(const NodeData< GUM_SCALAR >& from) const {
         return (n != from.n) && (l != from.l);
       }
 
       // EdgeData<GUM_SCALAR>
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeData< GUM_SCALAR >::EdgeData() : u(0), v(0), l(0) {
+      EdgeData< GUM_SCALAR >::EdgeData() : u(0), v(0), l(0) {
         GUM_CONSTRUCTOR(EdgeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeData< GUM_SCALAR >::EdgeData(const EdgeData< GUM_SCALAR >& from) :
+      EdgeData< GUM_SCALAR >::EdgeData(const EdgeData< GUM_SCALAR >& from) :
           u(from.u), v(from.v), l(from.l) {
         GUM_CONS_CPY(EdgeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeData< GUM_SCALAR >::~EdgeData() {
+      EdgeData< GUM_SCALAR >::~EdgeData() {
         GUM_DESTRUCTOR(EdgeData);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool EdgeData< GUM_SCALAR >::operator==(const EdgeData< GUM_SCALAR >& from) const {
+      bool EdgeData< GUM_SCALAR >::operator==(const EdgeData< GUM_SCALAR >& from) const {
         return (u == from.u) && (l_u == from.l_u) && (v == from.v) && (l_v == from.l_v)
             && (l == from.l);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool EdgeData< GUM_SCALAR >::operator!=(const EdgeData< GUM_SCALAR >& from) const {
+      bool EdgeData< GUM_SCALAR >::operator!=(const EdgeData< GUM_SCALAR >& from) const {
         return (u != from.u) && (l_u != from.l_u) && (v != from.v) && (l_v != from.l_v)
             && (l != from.l);
       }
@@ -281,113 +281,113 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() {
+      UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() {
         return _graph_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() const {
+      const UndiGraph& InterfaceGraph< GUM_SCALAR >::internalGraph() const {
         return _graph_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Bijection< Idx, LabelData* >& InterfaceGraph< GUM_SCALAR >::labels() {
+      Bijection< Idx, LabelData* >& InterfaceGraph< GUM_SCALAR >::labels() {
         return *_labels_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const Bijection< Idx, LabelData* >& InterfaceGraph< GUM_SCALAR >::labels() const {
+      const Bijection< Idx, LabelData* >& InterfaceGraph< GUM_SCALAR >::labels() const {
         return *_labels_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
+      Size InterfaceGraph< GUM_SCALAR >::size(const LabelData* l) const {
         if (auto p = _nodeMap_.tryGet(const_cast< LabelData* >(l))) return (*p)->size();
         return _edgeMap_[const_cast< LabelData* >(l)]->size();
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Set< NodeData< GUM_SCALAR >* >&
+      Set< NodeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) {
         return *(_nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const Set< NodeData< GUM_SCALAR >* >&
+      const Set< NodeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::nodes(const LabelData* l) const {
         return *(_nodeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Set< EdgeData< GUM_SCALAR >* >&
+      Set< EdgeData< GUM_SCALAR >* >&
              InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) {
         return *(_edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const Set< EdgeData< GUM_SCALAR >* >&
+      const Set< EdgeData< GUM_SCALAR >* >&
                    InterfaceGraph< GUM_SCALAR >::edges(const LabelData* l) const {
         return *(_edgeMap_[const_cast< LabelData* >(l)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE LabelData* InterfaceGraph< GUM_SCALAR >::label(Idx id) {
+      LabelData* InterfaceGraph< GUM_SCALAR >::label(Idx id) {
         return _labels_->second(id);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(const PRMInstance< GUM_SCALAR >& i) const {
+      NodeId InterfaceGraph< GUM_SCALAR >::id(const PRMInstance< GUM_SCALAR >& i) const {
         return _idMap_[const_cast< PRMInstance< GUM_SCALAR >* >(&i)];
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeId InterfaceGraph< GUM_SCALAR >::id(const PRMInstance< GUM_SCALAR >* i) const {
+      NodeId InterfaceGraph< GUM_SCALAR >::id(const PRMInstance< GUM_SCALAR >* i) const {
         return _idMap_[const_cast< PRMInstance< GUM_SCALAR >* >(i)];
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeData< GUM_SCALAR >&
+      NodeData< GUM_SCALAR >&
              InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) {
         return node(id(i));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const NodeData< GUM_SCALAR >&
+      const NodeData< GUM_SCALAR >&
                    InterfaceGraph< GUM_SCALAR >::node(const PRMInstance< GUM_SCALAR >* i) const {
         return node(id(i));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE NodeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::node(NodeId id) {
+      NodeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::node(NodeId id) {
         return *(_nodes_[id]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const NodeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::node(NodeId id) const {
+      const NodeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::node(NodeId id) const {
         return *(_nodes_[id]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
+      EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u, NodeId v) {
         if (auto p = _edges_.tryGet(Edge(u, v))) return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
+      const EdgeData< GUM_SCALAR >& InterfaceGraph< GUM_SCALAR >::edge(NodeId u,
                                                                               NodeId v) const {
         if (auto p = _edges_.tryGet(Edge(u, v))) return *(*p);
         return *(_edges_[Edge(v, u)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::ostream& operator<<(std::ostream& out, const NodeData< GUM_SCALAR >& data) {
+      std::ostream& operator<<(std::ostream& out, const NodeData< GUM_SCALAR >& data) {
         out << data.n->name() << "(" << data.l->l << ")";
         return out;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::ostream& operator<<(std::ostream& out, const EdgeData< GUM_SCALAR >& data) {
+      std::ostream& operator<<(std::ostream& out, const EdgeData< GUM_SCALAR >& data) {
         out << data.u->name() << " -> " << data.v->name() << "(" << data.l->l << ")";
         return out;
       }

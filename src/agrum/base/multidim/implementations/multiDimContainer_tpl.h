@@ -57,7 +57,6 @@
 namespace gum {
 
   template < typename GUM_ELEMENT >
-  INLINE
       MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(MultiDimContainer< GUM_ELEMENT >&& from) :
       MultiDimAdressable(std::forward< MultiDimAdressable >(from)) {
     GUM_CONS_MOV(MultiDimContainer);
@@ -65,26 +64,26 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >::MultiDimContainer() : MultiDimAdressable() {
+  MultiDimContainer< GUM_ELEMENT >::MultiDimContainer() : MultiDimAdressable() {
     GUM_CONSTRUCTOR(MultiDimContainer);
   }
 
   // Copy constructor
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(
+  MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(
       const MultiDimContainer< GUM_ELEMENT >& src) : MultiDimAdressable(src) {
     GUM_CONS_CPY(MultiDimContainer);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >&
+  MultiDimContainer< GUM_ELEMENT >&
          MultiDimContainer< GUM_ELEMENT >::operator=(const MultiDimContainer< GUM_ELEMENT >& from) {
     MultiDimAdressable::operator=(from);
     return *this;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >&
+  MultiDimContainer< GUM_ELEMENT >&
          MultiDimContainer< GUM_ELEMENT >::operator=(MultiDimContainer< GUM_ELEMENT >&& from) {
     GUM_OP_MOV(MultiDimContainer);
     MultiDimAdressable::operator=(std::forward< MultiDimAdressable >(from));
@@ -94,21 +93,21 @@ namespace gum {
   // destructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >::~MultiDimContainer() {
+  MultiDimContainer< GUM_ELEMENT >::~MultiDimContainer() {
     GUM_DESTRUCTOR(MultiDimContainer);
   }
 
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT MultiDimContainer< GUM_ELEMENT >::operator[](const Instantiation& i) const {
+  GUM_ELEMENT MultiDimContainer< GUM_ELEMENT >::operator[](const Instantiation& i) const {
     return get(i);
   }
 
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimContainer< GUM_ELEMENT >::set(const Instantiation& i,
+  void MultiDimContainer< GUM_ELEMENT >::set(const Instantiation& i,
                                                     const GUM_ELEMENT&   value) const {
     get_(i) = value;
   }
@@ -116,7 +115,7 @@ namespace gum {
   // an [] operator using a Instantiation as argument
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT MultiDimContainer< GUM_ELEMENT >::get(const Instantiation& i) const {
+  GUM_ELEMENT MultiDimContainer< GUM_ELEMENT >::get(const Instantiation& i) const {
     return get_(i);
   }
 
@@ -300,12 +299,12 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimAdressable& MultiDimContainer< GUM_ELEMENT >::getMasterRef() {
+  MultiDimAdressable& MultiDimContainer< GUM_ELEMENT >::getMasterRef() {
     return static_cast< MultiDimAdressable& >(*content());
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const MultiDimAdressable& MultiDimContainer< GUM_ELEMENT >::getMasterRef() const {
+  const MultiDimAdressable& MultiDimContainer< GUM_ELEMENT >::getMasterRef() const {
     return static_cast< const MultiDimAdressable& >(*content());
   }
 

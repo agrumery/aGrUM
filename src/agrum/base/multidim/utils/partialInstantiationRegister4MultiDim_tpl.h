@@ -98,7 +98,7 @@ namespace gum {
 
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
-  INLINE bool PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::exists(
+  bool PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::exists(
       std::string_view instantiation_func_name,
       std::string_view type_multidim) const {
     if (!_set_.exists(instantiation_func_name)) return false;
@@ -110,7 +110,7 @@ namespace gum {
   /** @brief returns the specialized operator assigned to a given subtype of
    * MultiDimImplementation */
   template < typename GUM_ELEMENT >
-  INLINE typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
+  typename PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationPtr
       PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::get(
           std::string_view instantiation_func_name,
           std::string_view type_multidim) const {

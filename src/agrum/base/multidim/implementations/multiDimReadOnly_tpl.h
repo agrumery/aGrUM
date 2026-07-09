@@ -54,7 +54,7 @@ namespace gum {
   // Default constructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly() :
+  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly() :
       MultiDimImplementation< GUM_ELEMENT >() {
     GUM_CONSTRUCTOR(MultiDimReadOnly);
   }
@@ -62,7 +62,7 @@ namespace gum {
   // Default constructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly(
+  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly(
       const MultiDimReadOnly< GUM_ELEMENT >& from) : MultiDimImplementation< GUM_ELEMENT >(from) {
     GUM_CONS_CPY(MultiDimReadOnly);
   }
@@ -70,14 +70,14 @@ namespace gum {
   // destructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimReadOnly< GUM_ELEMENT >::~MultiDimReadOnly() {
+  MultiDimReadOnly< GUM_ELEMENT >::~MultiDimReadOnly() {
     GUM_DESTRUCTOR(MultiDimReadOnly);
   }
 
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimReadOnly< GUM_ELEMENT >::set(const Instantiation& i,
+  void MultiDimReadOnly< GUM_ELEMENT >::set(const Instantiation& i,
                                                    const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed, "Write access to an aggregator")
   }

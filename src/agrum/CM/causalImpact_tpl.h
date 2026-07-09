@@ -296,7 +296,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  inline Instantiation
+  Instantiation
       makeInstantiationFromValues(const Tensor< GUM_SCALAR >&                  tensor,
                                   const HashTable< std::string, std::string >& values) {
     Instantiation I;   // start empty (partial instantiation)
@@ -346,80 +346,80 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Tensor< GUM_SCALAR > CausalImpact< GUM_SCALAR >::eval() const {
+  Tensor< GUM_SCALAR > CausalImpact< GUM_SCALAR >::eval() const {
     return _resultFormula_.eval();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string CausalImpact< GUM_SCALAR >::toString() const {
+  std::string CausalImpact< GUM_SCALAR >::toString() const {
     return _resultFormula_.toString();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string CausalImpact< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
+  std::string CausalImpact< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
                                                          std::string_view doOperatorSuffix) const {
     return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          CausalImpact< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
                                                 std::string_view doOperatorSuffix) const {
     return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool CausalImpact< GUM_SCALAR >::isIdentified() const noexcept {
+  bool CausalImpact< GUM_SCALAR >::isIdentified() const noexcept {
     return _resultFormula_.isIdentified();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const ASTtree< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::root() const {
+  const ASTtree< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::root() const {
     return _resultFormula_.root();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const CausalFormula< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::getResult() const {
+  const CausalFormula< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::getResult() const {
     return _resultFormula_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const CausalModel< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::cm() const {
+  const CausalModel< GUM_SCALAR >& CausalImpact< GUM_SCALAR >::cm() const {
     return _resultFormula_.cm();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::on() const {
+  const NodeSet& CausalImpact< GUM_SCALAR >::on() const {
     return _resultFormula_.on();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::doing() const {
+  const NodeSet& CausalImpact< GUM_SCALAR >::doing() const {
     return _resultFormula_.doing();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const NodeSet& CausalImpact< GUM_SCALAR >::knowing() const {
+  const NodeSet& CausalImpact< GUM_SCALAR >::knowing() const {
     return _resultFormula_.knowing();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::string& CausalImpact< GUM_SCALAR >::explanation() const {
+  const std::string& CausalImpact< GUM_SCALAR >::explanation() const {
     return _resultFormula_.explanation();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::onNames() const {
+  std::vector< std::string > CausalImpact< GUM_SCALAR >::onNames() const {
     return _resultFormula_.onNames();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::doingNames() const {
+  std::vector< std::string > CausalImpact< GUM_SCALAR >::doingNames() const {
     return _resultFormula_.doingNames();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::vector< std::string > CausalImpact< GUM_SCALAR >::knowingNames() const {
+  std::vector< std::string > CausalImpact< GUM_SCALAR >::knowingNames() const {
     return _resultFormula_.knowingNames();
   }
 

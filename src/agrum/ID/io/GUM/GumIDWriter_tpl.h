@@ -54,7 +54,7 @@ using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumIDWriter< GUM_SCALAR >::GumIDWriter(bool binary, int indent) :
+  GumIDWriter< GUM_SCALAR >::GumIDWriter(bool binary, int indent) :
       IDWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
@@ -62,12 +62,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumIDWriter< GUM_SCALAR >::~GumIDWriter() {
+  GumIDWriter< GUM_SCALAR >::~GumIDWriter() {
     GUM_DESTRUCTOR(GumIDWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
+  void GumIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
                                                const InfluenceDiagram< GUM_SCALAR >& id) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
@@ -149,14 +149,14 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                filePath,
+  void GumIDWriter< GUM_SCALAR >::write(std::string_view                filePath,
                                                InfluenceDiagram< GUM_SCALAR >& id) {
     id.updateMetaData();
     write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(id));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
+  void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
                                                const InfluenceDiagram< GUM_SCALAR >& id) {
     std::ofstream output(std::string(filePath),
                          _binary_ ? (std::ios_base::trunc | std::ios::binary)
@@ -167,7 +167,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string GumIDWriter< GUM_SCALAR >::toString(const InfluenceDiagram< GUM_SCALAR >& id) {
+  std::string GumIDWriter< GUM_SCALAR >::toString(const InfluenceDiagram< GUM_SCALAR >& id) {
     std::ostringstream oss;
     write(oss, id);
     return oss.str();

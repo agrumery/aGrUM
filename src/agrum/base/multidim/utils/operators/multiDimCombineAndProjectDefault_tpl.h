@@ -132,21 +132,21 @@ namespace gum {
 
   // changes the function used for combining two TABLES
   template < class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setCombinationFunction(
+  void MultiDimCombineAndProjectDefault< TABLE >::setCombinationFunction(
       TABLE (*combine)(const TABLE&, const TABLE&)) {
     _combination_->setCombinationFunction(combine);
   }
 
   // returns the current combination function
   template < class TABLE >
-  INLINE TABLE (*MultiDimCombineAndProjectDefault< TABLE >::combinationFunction())(const TABLE&,
+  TABLE (*MultiDimCombineAndProjectDefault< TABLE >::combinationFunction())(const TABLE&,
                                                                                    const TABLE&) {
     return _combination_->combinationFunction();
   }
 
   // changes the class that performs the combinations
   template < class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setCombinationClass(
+  void MultiDimCombineAndProjectDefault< TABLE >::setCombinationClass(
       const MultiDimCombination< TABLE >& comb_class) {
     delete _combination_;
     _combination_ = comb_class.clone();
@@ -154,14 +154,14 @@ namespace gum {
 
   // changes the function used for projecting TABLES
   template < class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setProjectionFunction(
+  void MultiDimCombineAndProjectDefault< TABLE >::setProjectionFunction(
       TABLE (*proj)(const TABLE&, const gum::VariableSet&)) {
     _projection_->setProjectionFunction(proj);
   }
 
   // returns the current projection function
   template < class TABLE >
-  INLINE TABLE (*MultiDimCombineAndProjectDefault< TABLE >::projectionFunction())(
+  TABLE (*MultiDimCombineAndProjectDefault< TABLE >::projectionFunction())(
       const TABLE&,
       const gum::VariableSet&) {
     return _projection_->projectionFunction();
@@ -169,7 +169,7 @@ namespace gum {
 
   // changes the class that performs the projections
   template < class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< TABLE >::setProjectionClass(
+  void MultiDimCombineAndProjectDefault< TABLE >::setProjectionClass(
       const MultiDimProjection< TABLE >& proj_class) {
     delete _projection_;
     _projection_ = proj_class.clone();
@@ -543,7 +543,7 @@ namespace gum {
 
   /// free scheduing memory
   template < class TABLE >
-  INLINE void MultiDimCombineAndProjectDefault< TABLE >::_freeData_(
+  void MultiDimCombineAndProjectDefault< TABLE >::_freeData_(
       std::vector< const IScheduleMultiDim* >& tables,
       std::vector< ScheduleOperator* >&        operations) const {
     for (auto op: operations)

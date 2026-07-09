@@ -126,14 +126,14 @@ namespace std {
 namespace gum {
 
   template < typename T >
-  INLINE bool AlmostDifferent< T >::operator()(const T& t1, const T& t2) {
+  bool AlmostDifferent< T >::operator()(const T& t1, const T& t2) {
     if (t1 == t2) return false;
     else if (t1 == 0) return (std::abs(t2) > 1e-5);
     else return (std::abs(t2 - t1) / t1 > 1e-5);
   }
 
   template < typename T >
-  INLINE bool AlmostDifferent< T* >::operator()(const T* t1, const T* t2) {
+  bool AlmostDifferent< T* >::operator()(const T* t1, const T* t2) {
     return (t1 != t2);
   }
 

@@ -55,7 +55,7 @@ namespace gum {
     namespace gspan {
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeGrowth< GUM_SCALAR >::EdgeGrowth(NodeId     a_u,
+      EdgeGrowth< GUM_SCALAR >::EdgeGrowth(NodeId     a_u,
                                                   LabelData* an_edge,
                                                   LabelData* a_l_v,
                                                   NodeId     a_v) :
@@ -64,7 +64,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeGrowth< GUM_SCALAR >::EdgeGrowth(const EdgeGrowth< GUM_SCALAR >& from) :
+      EdgeGrowth< GUM_SCALAR >::EdgeGrowth(const EdgeGrowth< GUM_SCALAR >& from) :
           u(from.u), edge(from.edge), v(from.v), matches(from.matches), iso_graph(from.iso_graph),
           degree_list(0), max_indep_set(from.max_indep_set) {
         GUM_CONS_CPY(EdgeGrowth);
@@ -73,14 +73,14 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE EdgeGrowth< GUM_SCALAR >::~EdgeGrowth() {
+      EdgeGrowth< GUM_SCALAR >::~EdgeGrowth() {
         GUM_DESTRUCTOR(EdgeGrowth);
 
         if (degree_list != 0) { delete degree_list; }
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::string EdgeGrowth< GUM_SCALAR >::toString() {
+      std::string EdgeGrowth< GUM_SCALAR >::toString() {
         std::stringstream str;
         str << u << "-" << edge << "-" << l_v << "-" << v;
         return str.str();

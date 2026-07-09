@@ -84,7 +84,7 @@ namespace gum {
 
   // constructors
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
+  MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
       MultiDimImplementation< GUM_ELEMENT >* aContent,
       GUM_ELEMENT empty_value) : content_(aContent), empty_value_(empty_value) {
     _initTensorOperators__< GUM_ELEMENT >();
@@ -92,7 +92,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
+  MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
       const MultiDimDecorator< GUM_ELEMENT >& from) : MultiDimContainer< GUM_ELEMENT >(from) {
     GUM_CONS_CPY(MultiDimDecorator);
     _initTensorOperators__< GUM_ELEMENT >();
@@ -101,7 +101,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >&
+  MultiDimDecorator< GUM_ELEMENT >&
          MultiDimDecorator< GUM_ELEMENT >::operator=(MultiDimDecorator< GUM_ELEMENT >&& from) {
     MultiDimContainer< GUM_ELEMENT >::operator=(
         std::forward< MultiDimContainer< GUM_ELEMENT > >(from));
@@ -118,7 +118,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
+  MultiDimDecorator< GUM_ELEMENT >::MultiDimDecorator(
       MultiDimDecorator< GUM_ELEMENT >&& from) noexcept :
       MultiDimContainer< GUM_ELEMENT >(std::forward< MultiDimContainer< GUM_ELEMENT > >(from)) {
     GUM_CONS_MOV(MultiDimDecorator);
@@ -129,7 +129,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >& MultiDimDecorator< GUM_ELEMENT >::operator=(
+  MultiDimDecorator< GUM_ELEMENT >& MultiDimDecorator< GUM_ELEMENT >::operator=(
       const MultiDimDecorator< GUM_ELEMENT >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
     _initTensorOperators__< GUM_ELEMENT >();
@@ -145,7 +145,7 @@ namespace gum {
   // destructor
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimDecorator< GUM_ELEMENT >::~MultiDimDecorator() {
+  MultiDimDecorator< GUM_ELEMENT >::~MultiDimDecorator() {
     if (content_ != nullptr) { delete (content_); }
 
     GUM_DESTRUCTOR(MultiDimDecorator);
@@ -154,12 +154,12 @@ namespace gum {
   // return a data, given a Instantiation - final method
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT& MultiDimDecorator< GUM_ELEMENT >::get_(const Instantiation& i) const {
+  GUM_ELEMENT& MultiDimDecorator< GUM_ELEMENT >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "_get in the implementation !")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT MultiDimDecorator< GUM_ELEMENT >::get(const Instantiation& i) const {
+  GUM_ELEMENT MultiDimDecorator< GUM_ELEMENT >::get(const Instantiation& i) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->empty()) {
       return empty_value_;
     } else {
@@ -168,7 +168,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::set(const Instantiation& i,
+  void MultiDimDecorator< GUM_ELEMENT >::set(const Instantiation& i,
                                                     const GUM_ELEMENT&   value) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->nbrDim() == 0) {
       empty_value_ = value;
@@ -180,14 +180,14 @@ namespace gum {
   // get the size of domains - final method
 
   template < typename GUM_ELEMENT >
-  INLINE Size MultiDimDecorator< GUM_ELEMENT >::domainSize() const {
+  Size MultiDimDecorator< GUM_ELEMENT >::domainSize() const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->domainSize();
   }
 
   // add a new var to the sequence of vars - final method
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::add(const DiscreteVariable& v) {
+  void MultiDimDecorator< GUM_ELEMENT >::add(const DiscreteVariable& v) {
     if (v.domainSize() < 1) {
       GUM_ERROR(InvalidArgument, "Empty variable " << v << " cannot be added in a Tensor")
     }
@@ -197,7 +197,7 @@ namespace gum {
   // listen to change in each recorded Instantiation. final method
 
   template < typename GUM_ELEMENT >
-  INLINE void
+  void
       MultiDimDecorator< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
                                                            const DiscreteVariable* const var,
                                                            Idx                           oldval,
@@ -211,89 +211,89 @@ namespace gum {
   // listen to an assignment of a value in a Instantiation
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::setChangeNotification(const Instantiation& i) {
+  void MultiDimDecorator< GUM_ELEMENT >::setChangeNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->setChangeNotification(i);
   }
 
   // listen to setFirst in each recorded Instantiation. final method.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::setFirstNotification(const Instantiation& i) {
+  void MultiDimDecorator< GUM_ELEMENT >::setFirstNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->setFirstNotification(i);
   }
 
   // listen to setLast in each recorded Instantiation. final method.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::setLastNotification(const Instantiation& i) {
+  void MultiDimDecorator< GUM_ELEMENT >::setLastNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->setLastNotification(i);
   }
 
   // listen to increment in each recorded Instantiation. final method.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::setIncNotification(const Instantiation& i) {
+  void MultiDimDecorator< GUM_ELEMENT >::setIncNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->setIncNotification(i);
   }
 
   // listen to increment in each recorded Instantiation. final method.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::setDecNotification(const Instantiation& i) {
+  void MultiDimDecorator< GUM_ELEMENT >::setDecNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->setDecNotification(i);
   }
 
   // add a Instantiation as a slave of this
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimDecorator< GUM_ELEMENT >::registerSlave(Instantiation& i) {
+  bool MultiDimDecorator< GUM_ELEMENT >::registerSlave(Instantiation& i) {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->registerSlave(i);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::erase(const DiscreteVariable& var) {
+  void MultiDimDecorator< GUM_ELEMENT >::erase(const DiscreteVariable& var) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->erase(var);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::erase(std::string_view name) {
+  void MultiDimDecorator< GUM_ELEMENT >::erase(std::string_view name) {
     erase(variable(name));
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable& MultiDimDecorator< GUM_ELEMENT >::variable(Idx i) const {
+  const DiscreteVariable& MultiDimDecorator< GUM_ELEMENT >::variable(Idx i) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variable(i);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const DiscreteVariable&
+  const DiscreteVariable&
       MultiDimDecorator< GUM_ELEMENT >::variable(std::string_view name) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variable(name);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Idx MultiDimDecorator< GUM_ELEMENT >::pos(const DiscreteVariable& var) const {
+  Idx MultiDimDecorator< GUM_ELEMENT >::pos(const DiscreteVariable& var) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->pos(var);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimDecorator< GUM_ELEMENT >::contains(const DiscreteVariable& var) const {
+  bool MultiDimDecorator< GUM_ELEMENT >::contains(const DiscreteVariable& var) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->contains(var);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimDecorator< GUM_ELEMENT >::empty() const {
+  bool MultiDimDecorator< GUM_ELEMENT >::empty() const {
     if (content_ == nullptr) return true;
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->empty();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE bool MultiDimDecorator< GUM_ELEMENT >::unregisterSlave(Instantiation& i) {
+  bool MultiDimDecorator< GUM_ELEMENT >::unregisterSlave(Instantiation& i) {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->unregisterSlave(i);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
+  void MultiDimDecorator< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->empty()) {
       empty_value_ = d;
     } else {
@@ -304,7 +304,7 @@ namespace gum {
   // notification modification on vars to all Instantiation listeners.
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::notifyChange() const {
+  void MultiDimDecorator< GUM_ELEMENT >::notifyChange() const {
     /*( (MultiDimContainer<GUM_ELEMENT> *) content_)->notifyChange();*/
     GUM_ERROR(OperationNotAllowed, "Not implemented yet")
   }
@@ -312,7 +312,7 @@ namespace gum {
   // give a const ref to the sequence of DiscreteVariable*. final method.
 
   template < typename GUM_ELEMENT >
-  INLINE const Sequence< const DiscreteVariable* >&
+  const Sequence< const DiscreteVariable* >&
                MultiDimDecorator< GUM_ELEMENT >::variablesSequence() const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variablesSequence();
   }
@@ -320,7 +320,7 @@ namespace gum {
   // get the nbr of vars in the sequence. final method
 
   template < typename GUM_ELEMENT >
-  INLINE Idx MultiDimDecorator< GUM_ELEMENT >::nbrDim() const {
+  Idx MultiDimDecorator< GUM_ELEMENT >::nbrDim() const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->nbrDim();
   }
 
@@ -359,34 +359,34 @@ namespace gum {
 
   // protected access to content_
   template < typename GUM_ELEMENT >
-  INLINE MultiDimImplementation< GUM_ELEMENT >* MultiDimDecorator< GUM_ELEMENT >::content() {
+  MultiDimImplementation< GUM_ELEMENT >* MultiDimDecorator< GUM_ELEMENT >::content() {
     return content_;
   }
 
   // protected access to content_
   template < typename GUM_ELEMENT >
-  INLINE const MultiDimImplementation< GUM_ELEMENT >*
+  const MultiDimImplementation< GUM_ELEMENT >*
                MultiDimDecorator< GUM_ELEMENT >::content() const {
     return content_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::beginMultipleChanges() {
+  void MultiDimDecorator< GUM_ELEMENT >::beginMultipleChanges() {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->beginMultipleChanges();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::endMultipleChanges() {
+  void MultiDimDecorator< GUM_ELEMENT >::endMultipleChanges() {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->endMultipleChanges();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::endMultipleChanges(const GUM_ELEMENT& x) {
+  void MultiDimDecorator< GUM_ELEMENT >::endMultipleChanges(const GUM_ELEMENT& x) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->endMultipleChanges(x);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::swapContent_(
+  void MultiDimDecorator< GUM_ELEMENT >::swapContent_(
       MultiDimImplementation< GUM_ELEMENT >* aContent) const {
     if (aContent != nullptr) {
       // TODO : frees all slave instantiations
@@ -400,18 +400,18 @@ namespace gum {
 
   // string representation of internal data about i in this.
   template < typename GUM_ELEMENT >
-  INLINE std::string MultiDimDecorator< GUM_ELEMENT >::toString(const Instantiation* i) const {
+  std::string MultiDimDecorator< GUM_ELEMENT >::toString(const Instantiation* i) const {
     return content_->toString(i);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimDecorator< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
+  void MultiDimDecorator< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
                                                          const DiscreteVariable* y) {
     this->content()->replace(*x, *y);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE std::string MultiDimDecorator< GUM_ELEMENT >::toString() const {
+  std::string MultiDimDecorator< GUM_ELEMENT >::toString() const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->empty()) {
       std::stringstream ss;
       ss << "<> :: " << empty_value_;

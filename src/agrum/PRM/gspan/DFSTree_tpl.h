@@ -381,7 +381,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE DFSTree< GUM_SCALAR >::DFSTree(const InterfaceGraph< GUM_SCALAR >&  graph,
+      DFSTree< GUM_SCALAR >::DFSTree(const InterfaceGraph< GUM_SCALAR >&  graph,
                                             gspan::SearchStrategy< GUM_SCALAR >* strategy) :
           _graph_(&graph), _strategy_(strategy) {
         GUM_CONSTRUCTOR(DFSTree);
@@ -392,17 +392,17 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::list< NodeId >& DFSTree< GUM_SCALAR >::roots() {
+      std::list< NodeId >& DFSTree< GUM_SCALAR >::roots() {
         return _roots_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const std::list< NodeId >& DFSTree< GUM_SCALAR >::roots() const {
+      const std::list< NodeId >& DFSTree< GUM_SCALAR >::roots() const {
         return _roots_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) {
+      Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) {
         if (!_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
@@ -413,7 +413,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) const {
+      const Pattern& DFSTree< GUM_SCALAR >::parent(const Pattern& p) const {
         if (!_node_map_.existsSecond(const_cast< Pattern* >(&p))) {
           GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         }
@@ -424,40 +424,40 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) {
+      std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->children;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) const {
+      const std::list< NodeId >& DFSTree< GUM_SCALAR >::children(const Pattern& p) const {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->children;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) {
+      Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) {
         if (!_node_map_.existsFirst(id)) GUM_ERROR(NotFound, "no pattern matching the given id")
         return *(_node_map_.second(id));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) const {
+      const Pattern& DFSTree< GUM_SCALAR >::pattern(NodeId id) const {
         if (!_node_map_.existsFirst(id)) GUM_ERROR(NotFound, "no pattern matching the given id")
         return *(_node_map_.second(id));
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE UndiGraph& DFSTree< GUM_SCALAR >::iso_graph(const Pattern& p) {
+      UndiGraph& DFSTree< GUM_SCALAR >::iso_graph(const Pattern& p) {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->iso_graph;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Sequence< PRMInstance< GUM_SCALAR >* >&
+      Sequence< PRMInstance< GUM_SCALAR >* >&
              DFSTree< GUM_SCALAR >::iso_map(const Pattern& p, NodeId node) {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
@@ -467,78 +467,78 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE Set< NodeId >& DFSTree< GUM_SCALAR >::max_indep_set(const Pattern& p) {
+      Set< NodeId >& DFSTree< GUM_SCALAR >::max_indep_set(const Pattern& p) {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         return (*pd)->max_indep_set;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const InterfaceGraph< GUM_SCALAR >& DFSTree< GUM_SCALAR >::internalGraph() const {
+      const InterfaceGraph< GUM_SCALAR >& DFSTree< GUM_SCALAR >::internalGraph() const {
         return *_graph_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE std::ostream& operator<<(std::ostream& out, const EdgeGrowth< GUM_SCALAR >& edge) {
+      std::ostream& operator<<(std::ostream& out, const EdgeGrowth< GUM_SCALAR >& edge) {
         out << edge.u << ", " << *(edge.edge) << ", " << *(edge.l_v) << ", " << edge.v;
         return out;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE double DFSTree< GUM_SCALAR >::frequency(const Pattern& p) const {
+      double DFSTree< GUM_SCALAR >::frequency(const Pattern& p) const {
         return (double)_data_[const_cast< Pattern* >(&p)]->max_indep_set.size();
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE typename DFSTree< GUM_SCALAR >::PatternData&
+      typename DFSTree< GUM_SCALAR >::PatternData&
           DFSTree< GUM_SCALAR >::data(const Pattern& p) {
         return *(_data_[const_cast< Pattern* >(&p)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const typename DFSTree< GUM_SCALAR >::PatternData&
+      const typename DFSTree< GUM_SCALAR >::PatternData&
           DFSTree< GUM_SCALAR >::data(const Pattern& p) const {
         return *(_data_[const_cast< Pattern* >(&p)]);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE SearchStrategy< GUM_SCALAR >& DFSTree< GUM_SCALAR >::strategy() {
+      SearchStrategy< GUM_SCALAR >& DFSTree< GUM_SCALAR >::strategy() {
         return *_strategy_;
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE const SearchStrategy< GUM_SCALAR >& DFSTree< GUM_SCALAR >::strategy() const {
+      const SearchStrategy< GUM_SCALAR >& DFSTree< GUM_SCALAR >::strategy() const {
         return *_strategy_;
       }
 
       // NeighborDegreeSort
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(UndiGraph& graph) :
+      DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(UndiGraph& graph) :
           g(graph) {
         GUM_CONSTRUCTOR(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(
+      DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(
           const NeighborDegreeSort& source) : g(source.g) {
         GUM_CONS_CPY(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE DFSTree< GUM_SCALAR >::NeighborDegreeSort::~NeighborDegreeSort() {
+      DFSTree< GUM_SCALAR >::NeighborDegreeSort::~NeighborDegreeSort() {
         GUM_DESTRUCTOR(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE bool DFSTree< GUM_SCALAR >::NeighborDegreeSort::operator()(NodeId i, NodeId j) {
+      bool DFSTree< GUM_SCALAR >::NeighborDegreeSort::operator()(NodeId i, NodeId j) {
         return g.neighbours(i).size() < g.neighbours(j).size();
       }
 
       // PatternData
 
       template < GUM_Numeric GUM_SCALAR >
-      INLINE DFSTree< GUM_SCALAR >::PatternData::PatternData(Pattern* p) :
+      DFSTree< GUM_SCALAR >::PatternData::PatternData(Pattern* p) :
           pattern(p), cost(0), gain(0) {
         GUM_CONSTRUCTOR(DFSTree< GUM_SCALAR >::PatternData);
       }

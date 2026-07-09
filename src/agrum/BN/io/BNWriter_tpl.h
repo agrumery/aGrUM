@@ -56,22 +56,22 @@ namespace gum {
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BNWriter< GUM_SCALAR >::BNWriter() {
+  BNWriter< GUM_SCALAR >::BNWriter() {
     GUM_CONSTRUCTOR(BNWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BNWriter< GUM_SCALAR >::~BNWriter() {
+  BNWriter< GUM_SCALAR >::~BNWriter() {
     GUM_DESTRUCTOR(BNWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BNWriter< GUM_SCALAR >::isModificationAllowed() const {
+  bool BNWriter< GUM_SCALAR >::isModificationAllowed() const {
     return _allowModification_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BNWriter< GUM_SCALAR >::setAllowModification(bool am) {
+  void BNWriter< GUM_SCALAR >::setAllowModification(bool am) {
     _allowModification_ = am;
   }
 

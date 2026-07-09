@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimBijArray< GUM_ELEMENT >::~MultiDimBijArray() {
+  MultiDimBijArray< GUM_ELEMENT >::~MultiDimBijArray() {
     GUM_DESTRUCTOR(MultiDimBijArray);
   }
 
@@ -97,42 +97,42 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimBijArray< GUM_ELEMENT >* MultiDimBijArray< GUM_ELEMENT >::newFactory() const {
+  MultiDimBijArray< GUM_ELEMENT >* MultiDimBijArray< GUM_ELEMENT >::newFactory() const {
     return new MultiDimBijArray< GUM_ELEMENT >(*this);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE const std::string& MultiDimBijArray< GUM_ELEMENT >::name() const {
+  const std::string& MultiDimBijArray< GUM_ELEMENT >::name() const {
     return _name_;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::add(const DiscreteVariable& v) {
+  void MultiDimBijArray< GUM_ELEMENT >::add(const DiscreteVariable& v) {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
+  void MultiDimBijArray< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Size MultiDimBijArray< GUM_ELEMENT >::realSize() const {
+  Size MultiDimBijArray< GUM_ELEMENT >::realSize() const {
     return (Size)0;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
+  void MultiDimBijArray< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::commitMultipleChanges_() {
+  void MultiDimBijArray< GUM_ELEMENT >::commitMultipleChanges_() {
     // Do nothing
   }
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT MultiDimBijArray< GUM_ELEMENT >::get(const Instantiation& i) const {
+  GUM_ELEMENT MultiDimBijArray< GUM_ELEMENT >::get(const Instantiation& i) const {
     if (i.isMaster(this)) {
       return _array_.values_[this->offsets_[&i]];
     } else {
@@ -141,29 +141,29 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::set(const Instantiation& i,
+  void MultiDimBijArray< GUM_ELEMENT >::set(const Instantiation& i,
                                                    const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::populate(const std::vector< GUM_ELEMENT >& v) const {
+  void MultiDimBijArray< GUM_ELEMENT >::populate(const std::vector< GUM_ELEMENT >& v) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void
+  void
       MultiDimBijArray< GUM_ELEMENT >::populate(std::initializer_list< GUM_ELEMENT > l) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT& MultiDimBijArray< GUM_ELEMENT >::get_(const Instantiation& i) const {
+  GUM_ELEMENT& MultiDimBijArray< GUM_ELEMENT >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimBijArray< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
+  void MultiDimBijArray< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
                                                         const DiscreteVariable* y) {
     MultiDimImplementation< GUM_ELEMENT >::replace_(x, y);
   }

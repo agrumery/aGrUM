@@ -350,13 +350,13 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE ITI< AttributeSelection, isScalar >::~ITI() {
+  ITI< AttributeSelection, isScalar >::~ITI() {
     GUM_DESTRUCTOR(ITI);
     ;
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  INLINE NodeId ITI< AttributeSelection, isScalar >::_insertTerminalNode_(NodeId src) {
+  NodeId ITI< AttributeSelection, isScalar >::_insertTerminalNode_(NodeId src) {
     return _insertTerminalNode_(src, Int2Type< isScalar >());
   }
 

@@ -327,117 +327,117 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMInterface< GUM_SCALAR >::ClassEltIterator
+    typename PRMInterface< GUM_SCALAR >::ClassEltIterator
         PRMInterface< GUM_SCALAR >::begin() {
       return _nodeIdMap_.begin();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename PRMInterface< GUM_SCALAR >::ClassEltIterator&
+    const typename PRMInterface< GUM_SCALAR >::ClassEltIterator&
         PRMInterface< GUM_SCALAR >::end() {
       return _nodeIdMap_.end();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator
+    typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator
         PRMInterface< GUM_SCALAR >::begin() const {
       return _nodeIdMap_.begin();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator&
+    const typename PRMInterface< GUM_SCALAR >::const_ClassEltIterator&
         PRMInterface< GUM_SCALAR >::end() const {
       return _nodeIdMap_.end();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
+    void PRMInterface< GUM_SCALAR >::addArc(std::string_view tail, std::string_view head) {
       GUM_ERROR(OperationNotAllowed, "an Interface does ! have arcs")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMInterface< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::super() {
+    PRMInterface< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::super() {
       if (_superInterface_) return *_superInterface_;
       else GUM_ERROR(NotFound, "this Interface is ! a sub interface")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMInterface< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::super() const {
+    const PRMInterface< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::super() const {
       if (_superInterface_) return *_superInterface_;
       else GUM_ERROR(NotFound, "this Interface is ! a sub interface")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::_addImplementation_(PRMClass< GUM_SCALAR >* c) {
+    void PRMInterface< GUM_SCALAR >::_addImplementation_(PRMClass< GUM_SCALAR >* c) {
       _implementations_.insert(c);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInterface< GUM_SCALAR >::_addExtension_(PRMInterface< GUM_SCALAR >* i) {
+    void PRMInterface< GUM_SCALAR >::_addExtension_(PRMInterface< GUM_SCALAR >* i) {
       _extensions_.insert(i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::operator[](NodeId id) {
+    PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::operator[](NodeId id) {
       return get(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >&
+    PRMClassElement< GUM_SCALAR >&
            PRMInterface< GUM_SCALAR >::operator[](std::string_view name) {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::operator[](std::string_view name) const {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMObject::prm_type PRMInterface< GUM_SCALAR >::obj_type() const {
+    typename PRMObject::prm_type PRMInterface< GUM_SCALAR >::obj_type() const {
       return PRMObject::prm_type::PRM_INTERFACE;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const DAG& PRMInterface< GUM_SCALAR >::dag_() const {
+    const DAG& PRMInterface< GUM_SCALAR >::dag_() const {
       return _dag_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE DAG& PRMInterface< GUM_SCALAR >::dag_() {
+    DAG& PRMInterface< GUM_SCALAR >::dag_() {
       return _dag_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) {
+    PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) {
       auto p = _nodeIdMap_.tryGet(id);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) const {
+    const PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(NodeId id) const {
       auto p = _nodeIdMap_.tryGet(id);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given NodeId") }
       return **p;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(std::string_view name) {
+    PRMClassElement< GUM_SCALAR >& PRMInterface< GUM_SCALAR >::get(std::string_view name) {
       auto p = _nameMap_.tryGet(name);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
       return **p;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMClassElement< GUM_SCALAR >&
+    const PRMClassElement< GUM_SCALAR >&
                  PRMInterface< GUM_SCALAR >::get(std::string_view name) const {
       auto p = _nameMap_.tryGet(name);
       if (!p) { GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name") }
@@ -445,24 +445,24 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMAttribute< GUM_SCALAR >* >&
+    const Set< PRMAttribute< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::attributes() const {
       return _attributes_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMReferenceSlot< GUM_SCALAR >* >&
+    const Set< PRMReferenceSlot< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::referenceSlots() const {
       return _referenceSlots_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Set< PRMClass< GUM_SCALAR >* >& PRMInterface< GUM_SCALAR >::implementations() {
+    Set< PRMClass< GUM_SCALAR >* >& PRMInterface< GUM_SCALAR >::implementations() {
       return _implementations_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Set< PRMClass< GUM_SCALAR >* >&
+    const Set< PRMClass< GUM_SCALAR >* >&
                  PRMInterface< GUM_SCALAR >::implementations() const {
       return _implementations_;
     }
@@ -482,7 +482,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMInterface< GUM_SCALAR >::isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         if (!this->getIOFlag_(elt).second) {

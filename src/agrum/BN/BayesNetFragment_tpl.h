@@ -69,23 +69,23 @@ namespace gum {
   //============================================================
   // signals to keep consistency with the referred BayesNet
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeAdded(const void* src, NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::whenNodeAdded(const void* src, NodeId id) {
     // nothing to do
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::whenNodeDeleted(const void* src, NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::whenNodeDeleted(const void* src, NodeId id) {
     uninstallNode(id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void
+  void
       BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
     // nothing to do
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void
+  void
       BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
     if (this->internalDag().existsArc(from, to)) uninstallArc_(from, to);
   }
@@ -94,7 +94,7 @@ namespace gum {
   // IBayesNet interface : BayesNetFragment here is a decorator for the bn
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
+  const Tensor< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
     if (_localCPTs_.exists(id)) return *_localCPTs_[id];
@@ -102,19 +102,19 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const VariableNodeMap& BayesNetFragment< GUM_SCALAR >::variableNodeMap() const {
+  const VariableNodeMap& BayesNetFragment< GUM_SCALAR >::variableNodeMap() const {
     return this->_bn_.variableNodeMap();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
+  const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variable(NodeId id) const {
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "NodeId " << id << " is not installed")
 
     return _bn_.variable(id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
+  NodeId BayesNetFragment< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     NodeId id = _bn_.nodeId(var);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << var.name() << " is not installed")
@@ -123,7 +123,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE NodeId BayesNetFragment< GUM_SCALAR >::idFromName(std::string_view name) const {
+  NodeId BayesNetFragment< GUM_SCALAR >::idFromName(std::string_view name) const {
     NodeId id = _bn_.idFromName(name);
 
     if (!isInstalledNode(id)) GUM_ERROR(NotFound, "variable " << name << " is not installed")
@@ -132,7 +132,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
+  const DiscreteVariable&
       BayesNetFragment< GUM_SCALAR >::variableFromName(std::string_view name) const {
     NodeId id = idFromName(name);
 
@@ -144,7 +144,7 @@ namespace gum {
   //============================================================
   // specific API for BayesNetFragment
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const {
+  bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(NodeId id) const {
     return this->internalDag().existsNode(id);
   }
 
@@ -168,7 +168,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installAscendants(NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::installAscendants(NodeId id) {
     installNode(id);
 
     // bn is a dag => this will have an end ...
@@ -177,7 +177,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallNode(NodeId id) {
     if (isInstalledNode(id)) {
       uninstallCPT(id);
       this->dag_.eraseNode(id);
@@ -185,12 +185,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallArc_(NodeId from, NodeId to) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallArc_(NodeId from, NodeId to) {
     this->dag_.eraseArc(Arc(from, to));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installArc_(NodeId from, NodeId to) {
+  void BayesNetFragment< GUM_SCALAR >::installArc_(NodeId from, NodeId to) {
     this->dag_.addArc(from, to);
   }
 
@@ -237,13 +237,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT_(NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallCPT_(NodeId id) {
     delete _localCPTs_[id];
     _localCPTs_.erase(id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT(NodeId id) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallCPT(NodeId id) {
     if (_localCPTs_.exists(id)) {
       uninstallCPT_(id);
 
@@ -293,7 +293,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency() const {
+  bool BayesNetFragment< GUM_SCALAR >::checkConsistency() const {
     for (auto node: nodes())
       if (!checkConsistency(node)) return false;
 
@@ -385,56 +385,56 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const Tensor< GUM_SCALAR >&
+  const Tensor< GUM_SCALAR >&
                BayesNetFragment< GUM_SCALAR >::cpt(std::string_view name) const {
     return cpt(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const DiscreteVariable&
+  const DiscreteVariable&
       BayesNetFragment< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(std::string_view name) const {
+  bool BayesNetFragment< GUM_SCALAR >::isInstalledNode(std::string_view name) const {
     return isInstalledNode(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installNode(std::string_view name) {
+  void BayesNetFragment< GUM_SCALAR >::installNode(std::string_view name) {
     installNode(_bn_.idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installAscendants(std::string_view name) {
+  void BayesNetFragment< GUM_SCALAR >::installAscendants(std::string_view name) {
     installAscendants(_bn_.idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallNode(std::string_view name) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallNode(std::string_view name) {
     uninstallNode(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installMarginal(std::string_view            name,
+  void BayesNetFragment< GUM_SCALAR >::installMarginal(std::string_view            name,
                                                               const Tensor< GUM_SCALAR >& pot) {
     installMarginal(_bn_.idFromName(name), pot);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::installCPT(std::string_view            name,
+  void BayesNetFragment< GUM_SCALAR >::installCPT(std::string_view            name,
                                                          const Tensor< GUM_SCALAR >& pot) {
     installCPT(_bn_.idFromName(name), pot);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BayesNetFragment< GUM_SCALAR >::uninstallCPT(std::string_view name) {
+  void BayesNetFragment< GUM_SCALAR >::uninstallCPT(std::string_view name) {
     uninstallCPT(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool BayesNetFragment< GUM_SCALAR >::checkConsistency(std::string_view name) const {
+  bool BayesNetFragment< GUM_SCALAR >::checkConsistency(std::string_view name) const {
     return checkConsistency(idFromName(name));
   }
 

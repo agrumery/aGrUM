@@ -58,7 +58,6 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE
       MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::MultiDimFunctionGraphManager(
           MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* mddg) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphManager);
@@ -67,21 +66,21 @@ namespace gum {
 
   // Destructor
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE MultiDimFunctionGraphManager< GUM_ELEMENT,
+  MultiDimFunctionGraphManager< GUM_ELEMENT,
                                        TerminalNodePolicy >::~MultiDimFunctionGraphManager() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphManager);
   }
 
   /// Sets root node of decision diagram
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::setRootNode(
+  void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::setRootNode(
       const NodeId& root) {
     _functionGraph_->_root_ = root;
   }
 
   // Inserts a new non terminal node in graph.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode(
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode(
       const DiscreteVariable* var,
       NodeId                  nid) {
     InternalNode* newNodeStruct = new InternalNode(var);
@@ -94,7 +93,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode(
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode(
       const DiscreteVariable* var) {
     InternalNode* newNodeStruct = new InternalNode(var);
     NodeId        nid           = _functionGraph_->_model_.addNode();
@@ -105,7 +104,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode_(
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addInternalNode_(
       const DiscreteVariable* var,
       NodeId*                 sons) {
     InternalNode* newNodeStruct = new InternalNode(var, sons);
@@ -121,7 +120,7 @@ namespace gum {
 
   // Adds a value to the MultiDimFunctionGraph.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addTerminalNode(
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::addTerminalNode(
       const GUM_ELEMENT& value) {
     if (_functionGraph_->existsTerminalNodeWithValue(value))
       return _functionGraph_->terminalNodeId(value);
@@ -180,7 +179,7 @@ namespace gum {
 
   /// Sets nodes son for given modality to designated son node
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::setSon(
+  void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::setSon(
       const NodeId& node,
       const Idx&    modality,
       const NodeId& sonNode) {
@@ -411,7 +410,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::migrateNode_(
+  void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::migrateNode_(
       const NodeId& origin,
       const NodeId& destination) {
     InternalNode* org = _functionGraph_->_internalNodeMap_[origin];
@@ -437,7 +436,7 @@ namespace gum {
   // Checks if a similar node does not already exists in the graph or
   // if it has the same child for every variable value.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId
+  NodeId
       MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::nodeRedundancyCheck_(
           const DiscreteVariable* var,
           NodeId*                 sonsIds) {
@@ -459,7 +458,7 @@ namespace gum {
 
   // Checks if a similar node does not already exists in the graph.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::_checkIsomorphism_(
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::_checkIsomorphism_(
       const DiscreteVariable* var,
       NodeId*                 sons) {
     const InternalNode* nody = nullptr;
@@ -483,7 +482,7 @@ namespace gum {
 
   // Checks if node has the same child for every variable value
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE bool MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::_isRedundant_(
+  bool MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::_isRedundant_(
       const DiscreteVariable* var,
       NodeId*                 sons) {
     for (Idx m = 1; m < var->domainSize(); m++)
@@ -493,7 +492,7 @@ namespace gum {
 
   // Ensures that every isomorphic subgraphs are merged together.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::reduce_() {
+  void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::reduce_() {
     Link< NodeId >* currentNodeId = nullptr;
     Link< NodeId >* nextNodeId    = nullptr;
     InternalNode*   currentNode   = nullptr;
@@ -556,7 +555,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::clean() {
+  void MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::clean() {
     Sequence< const DiscreteVariable* > oldSequence(_functionGraph_->variablesSequence());
     for (SequenceIterator< const DiscreteVariable* > varIter = oldSequence.begin();
          varIter != oldSequence.end();

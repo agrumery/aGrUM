@@ -88,7 +88,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::add(const MultiDimContainer< GUM_SCALAR >& impl) {
+  void MultiDimBucket< GUM_SCALAR >::add(const MultiDimContainer< GUM_SCALAR >& impl) {
     this->add(&impl);
   }
 
@@ -106,7 +106,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::erase(const MultiDimContainer< GUM_SCALAR >& impl) {
+  void MultiDimBucket< GUM_SCALAR >::erase(const MultiDimContainer< GUM_SCALAR >& impl) {
     this->erase(&impl);
   }
 
@@ -127,38 +127,38 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool
+  bool
       MultiDimBucket< GUM_SCALAR >::contains(const MultiDimContainer< GUM_SCALAR >& impl) const {
     return _multiDims_.exists(&impl);
   }
 
   template < typename GUM_SCALAR >
-  INLINE const gum::VariableSet& MultiDimBucket< GUM_SCALAR >::allVariables() const {
+  const gum::VariableSet& MultiDimBucket< GUM_SCALAR >::allVariables() const {
     return _allVariables_;
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimBucket< GUM_SCALAR >::bucketSize() const {
+  Size MultiDimBucket< GUM_SCALAR >::bucketSize() const {
     return _multiDims_.size();
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimBucket< GUM_SCALAR >::isBucketEmpty() const {
+  bool MultiDimBucket< GUM_SCALAR >::isBucketEmpty() const {
     return _multiDims_.empty();
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimBucket< GUM_SCALAR >::bucketChanged() const {
+  bool MultiDimBucket< GUM_SCALAR >::bucketChanged() const {
     return _changed_;
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimBucket< GUM_SCALAR >::bufferSize() const {
+  Size MultiDimBucket< GUM_SCALAR >::bufferSize() const {
     return _bufferSize_;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setBufferSize(Size ammount) {
+  void MultiDimBucket< GUM_SCALAR >::setBufferSize(Size ammount) {
     _bufferSize_ = ammount;
 
     if ((this->domainSize() > _bufferSize_) && (_bucket_ != 0)) {
@@ -190,7 +190,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::add(const DiscreteVariable& v) {
+  void MultiDimBucket< GUM_SCALAR >::add(const DiscreteVariable& v) {
     MultiDimImplementation< GUM_SCALAR >::add(v);
 
     if (!MultiDimImplementation< GUM_SCALAR >::isInMultipleChangeMethod_()) {
@@ -204,7 +204,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::erase(const DiscreteVariable& v) {
+  void MultiDimBucket< GUM_SCALAR >::erase(const DiscreteVariable& v) {
     MultiDimImplementation< GUM_SCALAR >::erase(v);
 
     if ((!MultiDimImplementation< GUM_SCALAR >::isInMultipleChangeMethod_())
@@ -218,17 +218,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimBucket< GUM_SCALAR >::realSize() const {
+  Size MultiDimBucket< GUM_SCALAR >::realSize() const {
     return (_bucket_) ? _bucket_->realSize() : (Size)0;
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimBucket< GUM_SCALAR >::contains(const DiscreteVariable& v) const {
+  bool MultiDimBucket< GUM_SCALAR >::contains(const DiscreteVariable& v) const {
     return MultiDimImplementation< GUM_SCALAR >::contains(v);
   }
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR MultiDimBucket< GUM_SCALAR >::get(const Instantiation& i) const {
+  GUM_SCALAR MultiDimBucket< GUM_SCALAR >::get(const Instantiation& i) const {
     compute();
 
     if (_bucket_) {
@@ -247,7 +247,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::changeNotification(const Instantiation&          i,
+  void MultiDimBucket< GUM_SCALAR >::changeNotification(const Instantiation&          i,
                                                                const DiscreteVariable* const var,
                                                                Idx                           oldval,
                                                                Idx newval) {
@@ -265,7 +265,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
+  void MultiDimBucket< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setFirstNotification(
@@ -278,7 +278,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
+  void MultiDimBucket< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setLastNotification(*(_instantiations_).second(const_cast< Instantiation* >(&i)));
@@ -290,7 +290,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
+  void MultiDimBucket< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setIncNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
@@ -302,7 +302,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
+  void MultiDimBucket< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setDecNotification(*(_instantiations_.second(const_cast< Instantiation* >(&i))));
@@ -314,7 +314,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
+  void MultiDimBucket< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->setChangeNotification(
@@ -327,7 +327,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimBucket< GUM_SCALAR >::registerSlave(Instantiation& i) {
+  bool MultiDimBucket< GUM_SCALAR >::registerSlave(Instantiation& i) {
     if (_bucket_) {
       try {
         _instantiations_.insert(&i, new Instantiation(*_bucket_));
@@ -338,7 +338,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool MultiDimBucket< GUM_SCALAR >::unregisterSlave(Instantiation& i) {
+  bool MultiDimBucket< GUM_SCALAR >::unregisterSlave(Instantiation& i) {
     MultiDimReadOnly< GUM_SCALAR >::unregisterSlave(i);
 
     if (_bucket_) {
@@ -360,7 +360,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimAdressable& MultiDimBucket< GUM_SCALAR >::getMasterRef() {
+  MultiDimAdressable& MultiDimBucket< GUM_SCALAR >::getMasterRef() {
     if (_bucket_) {
       return *_bucket_;
     } else {
@@ -369,7 +369,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const MultiDimAdressable& MultiDimBucket< GUM_SCALAR >::getMasterRef() const {
+  const MultiDimAdressable& MultiDimBucket< GUM_SCALAR >::getMasterRef() const {
     if (_bucket_) {
       return *_bucket_;
     } else {
@@ -378,7 +378,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string MultiDimBucket< GUM_SCALAR >::toString(const Instantiation* i) const {
+  std::string MultiDimBucket< GUM_SCALAR >::toString(const Instantiation* i) const {
     std::stringstream sBuff;
     sBuff << (*i) << " = " << get(*i);
     return sBuff.str();
@@ -412,12 +412,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR& MultiDimBucket< GUM_SCALAR >::get_(const Instantiation& i) const {
+  GUM_SCALAR& MultiDimBucket< GUM_SCALAR >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "a MultiDimBucket is a read only MultiDim")
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::_addVariable_(const DiscreteVariable* var) {
+  void MultiDimBucket< GUM_SCALAR >::_addVariable_(const DiscreteVariable* var) {
     try {
       _allVariables_.insert(var);
       _allVarsInst_.add(*var);
@@ -516,12 +516,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimContainer< GUM_SCALAR >* MultiDimBucket< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* MultiDimBucket< GUM_SCALAR >::newFactory() const {
     return new MultiDimBucket< GUM_SCALAR >;
   }
 
   template < typename GUM_SCALAR >
-  INLINE const MultiDimArray< GUM_SCALAR >& MultiDimBucket< GUM_SCALAR >::bucket() const {
+  const MultiDimArray< GUM_SCALAR >& MultiDimBucket< GUM_SCALAR >::bucket() const {
     if (_bucket_) {
       return *_bucket_;
     } else {
@@ -530,7 +530,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::replace_(const DiscreteVariable* x,
+  void MultiDimBucket< GUM_SCALAR >::replace_(const DiscreteVariable* x,
                                                      const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
     for (auto iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
@@ -546,7 +546,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
+  const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
                MultiDimBucket< GUM_SCALAR >::multidims() const {
     return _multiDims_;
   }

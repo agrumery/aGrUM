@@ -196,7 +196,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumMRFReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
+  void GumMRFReader< GUM_SCALAR >::showErrorCounts(std::ostream& stream) const {
     if (_parseDone_ || count() > 0) {
       syntheticResults(stream);
     } else {

@@ -55,7 +55,7 @@ namespace gum {
 
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
+  SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::SimpleBayesNetGenerator(
       Size nbrNodes,
       Size maxArcs,
       Size maxModality) :
@@ -77,7 +77,7 @@ namespace gum {
 
   // Destructor.
   template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
-  INLINE SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::~SimpleBayesNetGenerator() {
+  SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::~SimpleBayesNetGenerator() {
     GUM_DESTRUCTOR(SimpleBayesNetGenerator);
   }
 

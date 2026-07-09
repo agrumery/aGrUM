@@ -89,54 +89,54 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE double BNdistance< GUM_SCALAR >::klPQ() {
+  double BNdistance< GUM_SCALAR >::klPQ() {
     process_();
     return klPQ_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE double BNdistance< GUM_SCALAR >::klQP() {
+  double BNdistance< GUM_SCALAR >::klQP() {
     process_();
     return klQP_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE double BNdistance< GUM_SCALAR >::hellinger() {
+  double BNdistance< GUM_SCALAR >::hellinger() {
     process_();
     return hellinger_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE double BNdistance< GUM_SCALAR >::bhattacharya() {
+  double BNdistance< GUM_SCALAR >::bhattacharya() {
     process_();
     return bhattacharya_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE double BNdistance< GUM_SCALAR >::jsd() {
+  double BNdistance< GUM_SCALAR >::jsd() {
     process_();
     return jsd_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BNdistance< GUM_SCALAR >::errorPQ() {
+  Size BNdistance< GUM_SCALAR >::errorPQ() {
     process_();
     return errorPQ_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size BNdistance< GUM_SCALAR >::errorQP() {
+  Size BNdistance< GUM_SCALAR >::errorQP() {
     process_();
     return errorQP_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::p() const {
+  const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::p() const {
     return p_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::q() const {
+  const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::q() const {
     return q_;
   }
 

@@ -81,7 +81,7 @@ namespace gum {
   // data access operator
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT MultiDimSparse< GUM_ELEMENT >::get(const Instantiation& i) const {
+  GUM_ELEMENT MultiDimSparse< GUM_ELEMENT >::get(const Instantiation& i) const {
     Size key;
 
     if (i.isMaster(this)) {
@@ -94,7 +94,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::set(const Instantiation& i,
+  void MultiDimSparse< GUM_ELEMENT >::set(const Instantiation& i,
                                                  const GUM_ELEMENT&   value) const {
     Size key;
 
@@ -114,7 +114,7 @@ namespace gum {
   // add a new dimension, needed for updating the offsets_ & gaps_
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::add(const DiscreteVariable& v) {
+  void MultiDimSparse< GUM_ELEMENT >::add(const DiscreteVariable& v) {
     MultiDimWithOffset< GUM_ELEMENT >::add(v);
     fill(default_);
   }
@@ -122,49 +122,49 @@ namespace gum {
   // removes a dimension, needed for updating the offsets_ & gaps_
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
+  void MultiDimSparse< GUM_ELEMENT >::erase(const DiscreteVariable& v) {
     MultiDimWithOffset< GUM_ELEMENT >::erase(v);
     fill(default_);
   }
 
   // synchronise content after MultipleChanges
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::commitMultipleChanges_() {
+  void MultiDimSparse< GUM_ELEMENT >::commitMultipleChanges_() {
     fill(default_);
   }
 
   // fill the array with the arg
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
+  void MultiDimSparse< GUM_ELEMENT >::fill(const GUM_ELEMENT& d) const {
     params_.clear();
     default_ = d;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE Size MultiDimSparse< GUM_ELEMENT >::realSize() const {
+  Size MultiDimSparse< GUM_ELEMENT >::realSize() const {
     return params_.size();
   }
 
   template < typename GUM_ELEMENT >
-  INLINE MultiDimContainer< GUM_ELEMENT >* MultiDimSparse< GUM_ELEMENT >::newFactory() const {
+  MultiDimContainer< GUM_ELEMENT >* MultiDimSparse< GUM_ELEMENT >::newFactory() const {
     return new MultiDimSparse< GUM_ELEMENT >(default_);
   }
 
   // returns the name of the implementation
   template < typename GUM_ELEMENT >
-  INLINE const std::string& MultiDimSparse< GUM_ELEMENT >::name() const {
+  const std::string& MultiDimSparse< GUM_ELEMENT >::name() const {
     static const std::string str = "MultiDimSparse";
     return str;
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void MultiDimSparse< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
+  void MultiDimSparse< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
                                                       const DiscreteVariable* y) {
     MultiDimImplementation< GUM_ELEMENT >::replace_(x, y);
   }
 
   template < typename GUM_ELEMENT >
-  INLINE GUM_ELEMENT& MultiDimSparse< GUM_ELEMENT >::get_(const Instantiation& i) const {
+  GUM_ELEMENT& MultiDimSparse< GUM_ELEMENT >::get_(const Instantiation& i) const {
     GUM_ERROR(OperationNotAllowed, "Do not use this with the MultiDimSparse class.")
   }
 

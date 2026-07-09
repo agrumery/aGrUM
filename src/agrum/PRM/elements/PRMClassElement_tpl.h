@@ -70,27 +70,27 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE NodeId PRMClassElement< GUM_SCALAR >::id() const {
+    NodeId PRMClassElement< GUM_SCALAR >::id() const {
       return _id_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMObject::prm_type PRMClassElement< GUM_SCALAR >::obj_type() const {
+    PRMObject::prm_type PRMClassElement< GUM_SCALAR >::obj_type() const {
       return prm_type::CLASS_ELT;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMClassElement< GUM_SCALAR >::setId(NodeId id) {
+    void PRMClassElement< GUM_SCALAR >::setId(NodeId id) {
       _id_ = id;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::string& PRMClassElement< GUM_SCALAR >::safeName() const {
+    const std::string& PRMClassElement< GUM_SCALAR >::safeName() const {
       return safeName_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::string PRMClassElement< GUM_SCALAR >::cast(const PRMType& t) const {
+    std::string PRMClassElement< GUM_SCALAR >::cast(const PRMType& t) const {
       if (type().isSubTypeOf(t)) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() + name();
       } else {
@@ -116,31 +116,31 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMClassElement< GUM_SCALAR >::isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_refslot;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMClassElement< GUM_SCALAR >::isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_attribute;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMClassElement< GUM_SCALAR >::isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_aggregate;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMClassElement< GUM_SCALAR >::isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_slotchain;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool
+    bool
         PRMClassElement< GUM_SCALAR >::isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_parameter;
     }

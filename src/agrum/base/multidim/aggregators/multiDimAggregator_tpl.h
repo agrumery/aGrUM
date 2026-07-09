@@ -56,14 +56,14 @@ namespace gum {
 
     // Default constructor
     template < typename GUM_SCALAR >
-    INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator() :
+    MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator() :
         MultiDimReadOnly< GUM_SCALAR >(), decomposable_(false) {
       GUM_CONSTRUCTOR(MultiDimAggregator);
     }
 
     // Default constructor
     template < typename GUM_SCALAR >
-    INLINE MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
+    MultiDimAggregator< GUM_SCALAR >::MultiDimAggregator(
         const MultiDimAggregator< GUM_SCALAR >& from) :
         MultiDimReadOnly< GUM_SCALAR >(from), decomposable_(from.decomposable_) {
       GUM_CONS_CPY(MultiDimAggregator);
@@ -71,7 +71,7 @@ namespace gum {
 
     // destructor
     template < typename GUM_SCALAR >
-    INLINE MultiDimAggregator< GUM_SCALAR >::~MultiDimAggregator() {
+    MultiDimAggregator< GUM_SCALAR >::~MultiDimAggregator() {
       GUM_DESTRUCTOR(MultiDimAggregator);
     }
 
@@ -139,7 +139,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool MultiDimAggregator< GUM_SCALAR >::isDecomposable() const {
+    bool MultiDimAggregator< GUM_SCALAR >::isDecomposable() const {
       return decomposable_;
     }
 
@@ -152,7 +152,7 @@ namespace gum {
 
     // For friendly displaying the content of the variable.
     template < typename GUM_SCALAR >
-    INLINE std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag) {
+    std::ostream& operator<<(std::ostream& s, const MultiDimAggregator< GUM_SCALAR >& ag) {
       return s << ag.toString();
     }
 

@@ -52,7 +52,7 @@ namespace gum {
    * Default constructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE XDSLBNWriter< GUM_SCALAR >::XDSLBNWriter() {
+  XDSLBNWriter< GUM_SCALAR >::XDSLBNWriter() {
     GUM_CONSTRUCTOR(XDSLBNWriter);
   }
 
@@ -60,7 +60,7 @@ namespace gum {
    * Destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE XDSLBNWriter< GUM_SCALAR >::~XDSLBNWriter() {
+  XDSLBNWriter< GUM_SCALAR >::~XDSLBNWriter() {
     GUM_DESTRUCTOR(XDSLBNWriter);
   }
 
@@ -72,7 +72,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+  void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                    const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
@@ -110,7 +110,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
+  void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                    const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
@@ -124,7 +124,7 @@ namespace gum {
    * Send to output the header of the XDSL file.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_heading_(std::ostream&                  output,
+  void XDSLBNWriter< GUM_SCALAR >::_heading_(std::ostream&                  output,
                                                     const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
     output << "<?xml version=\"1.0\" ?>" << std::endl;
@@ -139,7 +139,7 @@ namespace gum {
    * Send to output the header of the extension section
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_headingExtension_(std::ostream&                  output,
+  void XDSLBNWriter< GUM_SCALAR >::_headingExtension_(std::ostream&                  output,
                                                              const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
     output << "  <extensions>" << std::endl;
@@ -151,7 +151,7 @@ namespace gum {
    * Send to output a bloc defining a variable in the XDSL format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_variableBloc_(std::ostream&                  output,
+  void XDSLBNWriter< GUM_SCALAR >::_variableBloc_(std::ostream&                  output,
                                                          const NodeId&                  varNodeId,
                                                          const IBayesNet< GUM_SCALAR >& bn) {
     //<cpt id="Org_arrangements">
@@ -208,7 +208,7 @@ namespace gum {
    * Send to output a bloc defining a variable's CPT in the XDSL format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_variableExtension_(std::ostream& output,
+  void XDSLBNWriter< GUM_SCALAR >::_variableExtension_(std::ostream& output,
                                                               const NodeId& varNodeId,
                                                               const IBayesNet< GUM_SCALAR >& bn) {
     //<node id="Vendor_support">
@@ -224,7 +224,7 @@ namespace gum {
    * Send to output the end of the XDSL file.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_endExtension_(std::ostream& output) {
+  void XDSLBNWriter< GUM_SCALAR >::_endExtension_(std::ostream& output) {
     output << "    </genie>" << std::endl;
     output << "  </extensions>" << std::endl;
   }
@@ -233,7 +233,7 @@ namespace gum {
    * Send to output the end of the XDSL file.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void XDSLBNWriter< GUM_SCALAR >::_documentEnd_(std::ostream& output) {
+  void XDSLBNWriter< GUM_SCALAR >::_documentEnd_(std::ostream& output) {
     output << "</smile>" << std::endl;
   }
 

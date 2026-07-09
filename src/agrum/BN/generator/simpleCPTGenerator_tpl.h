@@ -55,13 +55,13 @@ namespace gum {
 
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator() : ICPTGenerator< GUM_SCALAR >() {
+  SimpleCPTGenerator< GUM_SCALAR >::SimpleCPTGenerator() : ICPTGenerator< GUM_SCALAR >() {
     GUM_CONSTRUCTOR(SimpleCPTGenerator);
   }
 
   // Destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE SimpleCPTGenerator< GUM_SCALAR >::~SimpleCPTGenerator() {
+  SimpleCPTGenerator< GUM_SCALAR >::~SimpleCPTGenerator() {
     GUM_DESTRUCTOR(SimpleCPTGenerator);
   }
 

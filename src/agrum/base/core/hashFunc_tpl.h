@@ -59,7 +59,7 @@ namespace gum {
 
   // Update the hash function to take into account a resize of the hash table
   template < typename Key >
-  INLINE void HashFuncBase< Key >::resize(const Size new_size) {
+  void HashFuncBase< Key >::resize(const Size new_size) {
     // things work properly only for hashtables with at least 2 elements
     if (new_size < 2) {
       GUM_ERROR(SizeError,
@@ -75,7 +75,7 @@ namespace gum {
 
   // Returns the hash table size as known by the hash function
   template < typename Key >
-  INLINE Size HashFuncBase< Key >::size() const {
+  Size HashFuncBase< Key >::size() const {
     return hash_size_;
   }
 
@@ -83,7 +83,7 @@ namespace gum {
 
   // constructor
   template < typename Key >
-  INLINE HashFuncSmallKey< Key >::HashFuncSmallKey() {
+  HashFuncSmallKey< Key >::HashFuncSmallKey() {
     static_assert(std::is_integral_v< Key > && sizeof(Key) <= sizeof(Size),
                   "Error: you used HashFuncSmallKey for a key which cannot be "
                   "converted (without narrowing) into a gum::Size");
@@ -91,13 +91,13 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key >
-  INLINE Size HashFuncSmallKey< Key >::castToSize(const Key& key) {
+  Size HashFuncSmallKey< Key >::castToSize(const Key& key) {
     return Size(key);
   }
 
   // Returns the hashed value of a key.
   template < typename Key >
-  INLINE Size HashFuncSmallKey< Key >::operator()(const Key& key) const {
+  Size HashFuncSmallKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -105,7 +105,7 @@ namespace gum {
 
   // constructor
   template < typename Key >
-  INLINE HashFuncSmallCastKey< Key >::HashFuncSmallCastKey() {
+  HashFuncSmallCastKey< Key >::HashFuncSmallCastKey() {
     static_assert(sizeof(Key) < sizeof(Size),
                   "Error: you used HashFuncSmallCastKey for a key whose size "
                   "is longer than or equal to that of gum::Size");
@@ -113,7 +113,7 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key >
-  INLINE Size HashFuncSmallCastKey< Key >::castToSize(const Key& key) {
+  Size HashFuncSmallCastKey< Key >::castToSize(const Key& key) {
     // the code for MVSC differs from the code of the other compilers for
     // speed-up reasons: according to godbolt.org, the first code
     // should be twice faster than the second one
@@ -128,7 +128,7 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Key >
-  INLINE Size HashFuncSmallCastKey< Key >::operator()(const Key& key) const {
+  Size HashFuncSmallCastKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -136,7 +136,7 @@ namespace gum {
 
   // constructor
   template < typename Key >
-  INLINE HashFuncMediumCastKey< Key >::HashFuncMediumCastKey() {
+  HashFuncMediumCastKey< Key >::HashFuncMediumCastKey() {
     static_assert(sizeof(Key) == sizeof(Size),
                   "Error: using HashFuncMediumCastKey for a key whose size "
                   "is different from that of a gum::Size");
@@ -144,13 +144,13 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key >
-  INLINE Size HashFuncMediumCastKey< Key >::castToSize(const Key& key) {
+  Size HashFuncMediumCastKey< Key >::castToSize(const Key& key) {
     return *((Size*)(&key));
   }
 
   // Returns the hashed value of a key.
   template < typename Key >
-  INLINE Size HashFuncMediumCastKey< Key >::operator()(const Key& key) const {
+  Size HashFuncMediumCastKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -158,7 +158,7 @@ namespace gum {
 
   // constructor
   template < typename Key >
-  INLINE HashFuncLargeCastKey< Key >::HashFuncLargeCastKey() {
+  HashFuncLargeCastKey< Key >::HashFuncLargeCastKey() {
     static_assert(sizeof(Key) == 2 * sizeof(Size),
                   "Error: you used HashFuncLargeCastKey for a key whose size "
                   "is different from twice that of a gum::Size");
@@ -166,14 +166,14 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key >
-  INLINE Size HashFuncLargeCastKey< Key >::castToSize(const Key& key) {
+  Size HashFuncLargeCastKey< Key >::castToSize(const Key& key) {
     const Size* ptr = reinterpret_cast< const Size* >(&key);
     return ptr[0] ^ ptr[1];
   }
 
   // Returns the hashed value of a key.
   template < typename Key >
-  INLINE Size HashFuncLargeCastKey< Key >::operator()(const Key& key) const {
+  Size HashFuncLargeCastKey< Key >::operator()(const Key& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -181,14 +181,14 @@ namespace gum {
 
   // Returns the value of a key as a Size
   template < typename Key1, typename Key2 >
-  INLINE Size HashFunc< std::pair< Key1, Key2 > >::castToSize(const std::pair< Key1, Key2 >& key) {
+  Size HashFunc< std::pair< Key1, Key2 > >::castToSize(const std::pair< Key1, Key2 >& key) {
     return HashFunc< Key1 >::castToSize(key.first) * HashFuncConst::pi
          + HashFunc< Key2 >::castToSize(key.second);
   }
 
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
-  INLINE Size
+  Size
       HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
@@ -197,13 +197,13 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size HashFunc< std::shared_ptr< Type > >::castToSize(const std::shared_ptr< Type >& key) {
+  Size HashFunc< std::shared_ptr< Type > >::castToSize(const std::shared_ptr< Type >& key) {
     return HashFunc< Type* >::castToSize(key.get());
   }
 
   // Returns the hashed value of a key.
   template < typename Type >
-  INLINE Size
+  Size
       HashFunc< std::shared_ptr< Type > >::operator()(const std::shared_ptr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }

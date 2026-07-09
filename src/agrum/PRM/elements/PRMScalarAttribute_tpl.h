@@ -138,28 +138,28 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
+    typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMScalarAttribute< GUM_SCALAR >::elt_type() const {
       return this->prm_attribute;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMType& PRMScalarAttribute< GUM_SCALAR >::type() {
+    PRMType& PRMScalarAttribute< GUM_SCALAR >::type() {
       return *_type_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMType& PRMScalarAttribute< GUM_SCALAR >::type() const {
+    const PRMType& PRMScalarAttribute< GUM_SCALAR >::type() const {
       return *_type_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Tensor< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::cpf() const {
+    const Tensor< GUM_SCALAR >& PRMScalarAttribute< GUM_SCALAR >::cpf() const {
       return *_cpf_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         _cpf_->add(elt.type().variable());
@@ -172,7 +172,7 @@ namespace gum {
 
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void
+    void
         PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >

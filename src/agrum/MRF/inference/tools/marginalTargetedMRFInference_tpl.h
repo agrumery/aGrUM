@@ -88,7 +88,7 @@ namespace gum {
 
   // return true if variable is a target
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(NodeId node) const {
+  bool MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the mn
     if (this->hasNoModel_())
       GUM_ERROR(NullElement,
@@ -103,14 +103,14 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool
+  bool
       MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
     return isTarget(this->MRF().idFromName(nodeName));
   }
 
   // Clear all previously defined targets (single targets and sets of targets)
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
+  void MarginalTargetedMRFInference< GUM_SCALAR >::eraseAllTargets() {
     onAllMarginalTargetsErased_();
 
     _targets_.clear();
@@ -210,13 +210,13 @@ namespace gum {
 
   // returns the list of single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const NodeSet& MarginalTargetedMRFInference< GUM_SCALAR >::targets() const noexcept {
+  const NodeSet& MarginalTargetedMRFInference< GUM_SCALAR >::targets() const noexcept {
     return _targets_;
   }
 
   // returns the list of single targets
   template < GUM_Numeric GUM_SCALAR >
-  INLINE Size MarginalTargetedMRFInference< GUM_SCALAR >::nbrTargets() const noexcept {
+  Size MarginalTargetedMRFInference< GUM_SCALAR >::nbrTargets() const noexcept {
     return _targets_.size();
   }
 
@@ -260,7 +260,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(NodeId X) {
+  GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(NodeId X) {
     return posterior(X).entropy();
   }
 
@@ -268,7 +268,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(std::string_view nodeName) {
+  GUM_SCALAR MarginalTargetedMRFInference< GUM_SCALAR >::H(std::string_view nodeName) {
     return H(this->MRF().idFromName(nodeName));
   }
 
@@ -320,12 +320,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE bool MarginalTargetedMRFInference< GUM_SCALAR >::isTargetedMode_() const {
+  bool MarginalTargetedMRFInference< GUM_SCALAR >::isTargetedMode_() const {
     return _targeted_mode_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MarginalTargetedMRFInference< GUM_SCALAR >::setTargetedMode_() {
+  void MarginalTargetedMRFInference< GUM_SCALAR >::setTargetedMode_() {
     if (!_targeted_mode_) {
       _targets_.clear();
       _targeted_mode_ = true;

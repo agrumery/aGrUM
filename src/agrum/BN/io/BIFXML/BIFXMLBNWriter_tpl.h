@@ -51,7 +51,7 @@ namespace gum {
    * Default constructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLBNWriter< GUM_SCALAR >::BIFXMLBNWriter() {
+  BIFXMLBNWriter< GUM_SCALAR >::BIFXMLBNWriter() {
     GUM_CONSTRUCTOR(BIFXMLBNWriter);
   }
 
@@ -59,7 +59,7 @@ namespace gum {
    * Destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLBNWriter< GUM_SCALAR >::~BIFXMLBNWriter() {
+  BIFXMLBNWriter< GUM_SCALAR >::~BIFXMLBNWriter() {
     GUM_DESTRUCTOR(BIFXMLBNWriter);
   }
 
@@ -71,7 +71,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+  void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                      const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
@@ -106,7 +106,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
+  void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                      const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
@@ -120,7 +120,7 @@ namespace gum {
    * Returns the header of the BIF file.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::_heading_(const IBayesNet< GUM_SCALAR >& bn) {
+  std::string BIFXMLBNWriter< GUM_SCALAR >::_heading_(const IBayesNet< GUM_SCALAR >& bn) {
     std::stringstream str;
 
     // Header for every xml
@@ -164,7 +164,7 @@ namespace gum {
    * Returns a bloc defining a variable in the BIF format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
+  std::string BIFXMLBNWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<PROPERTY>description = ...</PROPERTY>
@@ -202,7 +202,7 @@ namespace gum {
    * Returns a bloc defining a variable's CPT in the BIF format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string
+  std::string
          BIFXMLBNWriter< GUM_SCALAR >::_variableDefinition_(const NodeId&                  varNodeId,
                                                             const IBayesNet< GUM_SCALAR >& bn) {
     //<DEFINITION>
@@ -255,7 +255,7 @@ namespace gum {
    * Returns the end of the BIF file.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE std::string BIFXMLBNWriter< GUM_SCALAR >::_documentend_() {
+  std::string BIFXMLBNWriter< GUM_SCALAR >::_documentend_() {
     std::stringstream str;
 
     str << "</NETWORK>" << std::endl;

@@ -221,7 +221,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::_distance_(
+  Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::_distance_(
       const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* d,
       const DiscreteVariable*                                         from,
       const DiscreteVariable*                                         to) {
@@ -241,7 +241,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
+  void MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
       _findRetrogradeVariables_(const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* dg,
                                 HashTable< NodeId, short int* >& dgInstNeed) {
     HashTable< NodeId, short int* > nodesVarDescendant;
@@ -533,14 +533,14 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::nbCall() {
+  Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::nbCall() {
     return _nbCall_;
   }
 
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Idx
+  Idx
       MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::nbVarRetro() {
     return _nbVarRetro_;
   }
@@ -548,7 +548,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  INLINE Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
+  Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::
       sizeVarRetroDomain() {
     return _sizeVarRetro_;
   }

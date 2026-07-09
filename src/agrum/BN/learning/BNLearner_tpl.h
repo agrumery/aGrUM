@@ -762,7 +762,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {
+    std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner) {
       output << learner.toString();
       return output;
     }

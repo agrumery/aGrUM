@@ -156,68 +156,68 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMInference< GUM_SCALAR >::PRMInference(const PRM< GUM_SCALAR >&       prm,
+    PRMInference< GUM_SCALAR >::PRMInference(const PRM< GUM_SCALAR >&       prm,
                                                     const PRMSystem< GUM_SCALAR >& system) :
         prm_(&prm), sys_(&system) {
       GUM_CONSTRUCTOR(PRMInference);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMInference< GUM_SCALAR >::~PRMInference() {
+    PRMInference< GUM_SCALAR >::~PRMInference() {
       GUM_DESTRUCTOR(PRMInference);
       clearEvidence();
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMInference< GUM_SCALAR >::EMap&
+    typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) {
       if (!_evidences_.exists(&i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[&i]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename PRMInference< GUM_SCALAR >::EMap&
+    const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >& i) const {
       if (!_evidences_.exists(&i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[&i]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMInference< GUM_SCALAR >::EMap&
+    typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) {
       if (!_evidences_.exists(i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[i]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const typename PRMInference< GUM_SCALAR >::EMap&
+    const typename PRMInference< GUM_SCALAR >::EMap&
         PRMInference< GUM_SCALAR >::evidence(const PRMInstance< GUM_SCALAR >* i) const {
       if (!_evidences_.exists(i)) GUM_ERROR(NotFound, "this instance has no evidence.")
       return *(_evidences_[i]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >& i) const {
+    bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >& i) const {
       return _evidences_.exists(&i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >* i) const {
+    bool PRMInference< GUM_SCALAR >::hasEvidence(const PRMInstance< GUM_SCALAR >* i) const {
       return _evidences_.exists(i);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence(const Chain& chain) const {
+    bool PRMInference< GUM_SCALAR >::hasEvidence(const Chain& chain) const {
       return (hasEvidence(chain.first)) ? evidence(chain.first).exists(chain.second->id()) : false;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMInference< GUM_SCALAR >::hasEvidence() const {
+    bool PRMInference< GUM_SCALAR >::hasEvidence() const {
       return (_evidences_.size() != (Size)0);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInference< GUM_SCALAR >::removeEvidence(const Chain& chain) {
+    void PRMInference< GUM_SCALAR >::removeEvidence(const Chain& chain) {
       if (hasEvidence(chain.first)) {
         if (_EMap_(chain.first).exists(chain.second->id())) {
           evidenceRemoved_(chain);
@@ -228,7 +228,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInference< GUM_SCALAR >::posterior(
+    void PRMInference< GUM_SCALAR >::posterior(
         const typename PRMInference< GUM_SCALAR >::Chain& chain,
         Tensor< GUM_SCALAR >&                             m) {
       if (m.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }
@@ -254,7 +254,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMInference< GUM_SCALAR >::joint(
+    void PRMInference< GUM_SCALAR >::joint(
         const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& chains,
         Tensor< GUM_SCALAR >&                                            j) {
       if (j.nbrDim() > 0) { GUM_ERROR(OperationNotAllowed, "the given Tensor is not empty.") }

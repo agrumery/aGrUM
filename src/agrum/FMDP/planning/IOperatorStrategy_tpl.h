@@ -46,7 +46,7 @@ namespace gum {
 
 
   template < typename GUM_ELEMENT >
-  INLINE void IOperatorStrategy< GUM_ELEMENT >::deleteFunctionGraph_(
+  void IOperatorStrategy< GUM_ELEMENT >::deleteFunctionGraph_(
       const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
       const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
       Idx                                         del) {
@@ -55,7 +55,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  INLINE void IOperatorStrategy< GUM_ELEMENT >::deleteFunctionGraph_(
+  void IOperatorStrategy< GUM_ELEMENT >::deleteFunctionGraph_(
       const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f1,
       const MultiDimFunctionGraph< ArgMaxSet< GUM_ELEMENT, Idx >, SetTerminalNodePolicy >* f2,
       Idx                                                                                  del) {

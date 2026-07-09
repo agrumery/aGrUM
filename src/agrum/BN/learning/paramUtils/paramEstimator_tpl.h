@@ -160,7 +160,7 @@ namespace gum {
 
     /// sets the CPT's parameters corresponding to a given nodeset
     template < GUM_Numeric GUM_SCALAR >
-    INLINE double ParamEstimator::setParameters(const NodeId                 target_node,
+    double ParamEstimator::setParameters(const NodeId                 target_node,
                                                 const std::vector< NodeId >& conditioning_nodes,
                                                 Tensor< GUM_SCALAR >&        pot,
                                                 const bool compute_log_likelihood) {
@@ -169,7 +169,7 @@ namespace gum {
 
     /// assign a new Bayes net to all the counter's generators depending on a BN
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void ParamEstimator::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
+    void ParamEstimator::setBayesNet(const BayesNet< GUM_SCALAR >& new_bn) {
       counter_.setBayesNet(new_bn);
     }
 

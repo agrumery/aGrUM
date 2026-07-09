@@ -175,14 +175,14 @@ namespace gum {
 
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const Sequence< NodeId >& order) {
       order_ = order;
     }
 
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(
         const std::vector< NodeId >& order) {
       order_.clear();
       for (const auto node: order) {
@@ -192,60 +192,60 @@ namespace gum {
 
     /// empty the set of possible change operators that can be applied
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::clearChanges() noexcept {
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::clearChanges() noexcept {
       legal_changes_.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template < typename STRUCT_CONSTRAINT >
-    INLINE typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator
+    typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::begin() const {
       return legal_changes_.cbegin();
     }
 
     /// returns an (unsafe) iterator on the end of the list of operators
     template < typename STRUCT_CONSTRAINT >
-    INLINE const typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator&
+    const typename GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::iterator&
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::end() const {
       return legal_changes_.cend();
     }
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    INLINE void
+    void
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::notifyGetCompleted() {
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::notifyGetCompleted() {
       if (legal_changes_.size()) legal_changes_.clear();
     }
 
     /// sets the maximum number of threads used to perform counts
     template < typename STRUCT_CONSTRAINT >
-    INLINE void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
       if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
     }
 
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
-    INLINE STRUCT_CONSTRAINT&
+    STRUCT_CONSTRAINT&
         GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }

@@ -59,7 +59,7 @@ namespace gum {
    * Note that an ID as to be created before and given in parameter.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
+  BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
                                                       std::string_view                filePath) :
       IDReader< GUM_SCALAR >(infdiag, filePath) {
     GUM_CONSTRUCTOR(BIFXMLIDReader);
@@ -71,7 +71,7 @@ namespace gum {
    * Default destructor.
    */
   template < GUM_Numeric GUM_SCALAR >
-  INLINE BIFXMLIDReader< GUM_SCALAR >::~BIFXMLIDReader() {
+  BIFXMLIDReader< GUM_SCALAR >::~BIFXMLIDReader() {
     GUM_DESTRUCTOR(BIFXMLIDReader);
   }
 

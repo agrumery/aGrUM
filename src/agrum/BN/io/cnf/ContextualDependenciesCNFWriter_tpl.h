@@ -53,7 +53,6 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE
       ContextualDependenciesCNFWriter< GUM_SCALAR,
                                        IApproximationPolicy >::ContextualDependenciesCNFWriter() {
     GUM_CONSTRUCTOR(ContextualDependenciesCNFWriter)
@@ -61,7 +60,6 @@ namespace gum {
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE
       ContextualDependenciesCNFWriter< GUM_SCALAR,
                                        IApproximationPolicy >::~ContextualDependenciesCNFWriter() {
     GUM_DESTRUCTOR(ContextualDependenciesCNFWriter)
@@ -74,7 +72,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::ostream&                  output,
       const IBayesNet< GUM_SCALAR >& bn) {
     Instantiation Order;
@@ -297,7 +295,7 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-  INLINE void ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
+  void ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::_doWrite(
       std::string_view               filePath,
       const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);

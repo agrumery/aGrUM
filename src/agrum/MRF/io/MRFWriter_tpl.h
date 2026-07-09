@@ -55,17 +55,17 @@ namespace gum {
   /* ===                           GUM_BN_WRITER                         === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MRFWriter< GUM_SCALAR >::MRFWriter() {
+  MRFWriter< GUM_SCALAR >::MRFWriter() {
     GUM_CONSTRUCTOR(MRFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE MRFWriter< GUM_SCALAR >::~MRFWriter() {
+  MRFWriter< GUM_SCALAR >::~MRFWriter() {
     GUM_DESTRUCTOR(MRFWriter);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void MRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
+  void MRFWriter< GUM_SCALAR >::write(std::string_view                  filePath,
                                              IMarkovRandomField< GUM_SCALAR >& MN) {
     write(filePath, static_cast< const IMarkovRandomField< GUM_SCALAR >& >(MN));
   }

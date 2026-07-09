@@ -110,45 +110,45 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMClassElement< GUM_SCALAR >::ClassElementType
+    typename PRMClassElement< GUM_SCALAR >::ClassElementType
         PRMAggregate< GUM_SCALAR >::elt_type() const {
       return this->prm_aggregate;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE typename PRMAggregate< GUM_SCALAR >::AggregateType
+    typename PRMAggregate< GUM_SCALAR >::AggregateType
         PRMAggregate< GUM_SCALAR >::agg_type() const {
       return _agg_type_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Idx PRMAggregate< GUM_SCALAR >::label() const {
+    Idx PRMAggregate< GUM_SCALAR >::label() const {
       if (*_label_ != INT_MAX) return *_label_;
       GUM_ERROR(OperationNotAllowed, "no label defined for this aggregate")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const std::string& PRMAggregate< GUM_SCALAR >::labelValue() const {
+    const std::string& PRMAggregate< GUM_SCALAR >::labelValue() const {
       return _label_value_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMAggregate< GUM_SCALAR >::setLabel(Idx idx) {
+    void PRMAggregate< GUM_SCALAR >::setLabel(Idx idx) {
       (*_label_) = idx;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMAggregate< GUM_SCALAR >::setLabel(std::string_view value) {
+    void PRMAggregate< GUM_SCALAR >::setLabel(std::string_view value) {
       _label_value_ = value;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMAggregate< GUM_SCALAR >::hasLabel() const {
+    bool PRMAggregate< GUM_SCALAR >::hasLabel() const {
       return *_label_ != INT_MAX;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE bool PRMAggregate< GUM_SCALAR >::isDecomposable() const {
+    bool PRMAggregate< GUM_SCALAR >::isDecomposable() const {
       switch (agg_type()) {
         case AggregateType::MIN : {
           return aggregator::Min< GUM_SCALAR >().isDecomposable();
@@ -187,27 +187,27 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE PRMType& PRMAggregate< GUM_SCALAR >::type() {
+    PRMType& PRMAggregate< GUM_SCALAR >::type() {
       return *_type_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const PRMType& PRMAggregate< GUM_SCALAR >::type() const {
+    const PRMType& PRMAggregate< GUM_SCALAR >::type() const {
       return *_type_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() {
+    Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() {
       GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE const Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() const {
+    const Tensor< GUM_SCALAR >& PRMAggregate< GUM_SCALAR >::cpf() const {
       GUM_ERROR(OperationNotAllowed, "This is an aggregate.")
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE MultiDimImplementation< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::buildImpl() const {
+    MultiDimImplementation< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::buildImpl() const {
       switch (agg_type()) {
         case AggregateType::MIN : {
           return new aggregator::Min< GUM_SCALAR >();
@@ -248,11 +248,11 @@ namespace gum {
 
     // See gum::PRMClassElement<GUM_SCALAR>::addParent_().
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMAggregate< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
+    void PRMAggregate< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMAggregate< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
+    void PRMAggregate< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMAggregate< GUM_SCALAR >::getCastDescendant() const {
@@ -278,12 +278,12 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE std::shared_ptr< Idx > PRMAggregate< GUM_SCALAR >::sharedLabel() const {
+    std::shared_ptr< Idx > PRMAggregate< GUM_SCALAR >::sharedLabel() const {
       return _label_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    INLINE void PRMAggregate< GUM_SCALAR >::sharedLabel(std::shared_ptr< Idx > label) {
+    void PRMAggregate< GUM_SCALAR >::sharedLabel(std::shared_ptr< Idx > label) {
       this->_label_ = label;
     }
 

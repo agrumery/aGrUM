@@ -55,7 +55,7 @@ using ordered_json = nlohmann::ordered_json;
 namespace gum {
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
+  GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
       BNWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
@@ -64,7 +64,7 @@ namespace gum {
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE GumBNWriter< GUM_SCALAR >::~GumBNWriter() {
+  GumBNWriter< GUM_SCALAR >::~GumBNWriter() {
     GUM_DESTRUCTOR(GumBNWriter);
   }
 
@@ -75,7 +75,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
+  void GumBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.");
 
@@ -135,7 +135,7 @@ namespace gum {
   // @param bn The Bayesian network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  INLINE void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
+  void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
                                                   const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::string(filePath),
                          _binary_ ? (std::ios_base::trunc | std::ios::binary)

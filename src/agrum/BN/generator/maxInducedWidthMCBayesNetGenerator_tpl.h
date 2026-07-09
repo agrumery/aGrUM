@@ -59,7 +59,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
                                          Size maxArcs,
                                          Size maxModality,
@@ -80,7 +80,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
                                          Size                   maxInducedWidth,
                                          Idx                    iteration,
@@ -108,7 +108,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       ~MaxInducedWidthMCBayesNetGenerator() {
     GUM_DESTRUCTOR(MaxInducedWidthMCBayesNetGenerator);
     //    delete BayesNetGenerator<GUM_SCALAR>::cptGenerator_;
@@ -136,7 +136,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE Size MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  Size MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       maxlog10InducedWidth() const {
     return maxlog10InducedWidth_;
   }
@@ -144,7 +144,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  INLINE void MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
+  void MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
       setMaxlog10InducedWidth(Size maxlog10InducedWidth) {
     if (maxlog10InducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
