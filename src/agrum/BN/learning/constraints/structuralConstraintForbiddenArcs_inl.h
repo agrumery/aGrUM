@@ -118,31 +118,6 @@ namespace gum::learning {
   }
 
   /// checks whether the constraints enable to perform a graph change
-  INLINE bool
-      StructuralConstraintForbiddenArcs::checkModificationAlone(const GraphChange& change) const {
-    switch (change.type()) {
-      case GraphChangeType::ARC_ADDITION :
-        return checkArcAdditionAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_DELETION :
-        return checkArcDeletionAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_REVERSAL :
-        return checkArcReversalAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-
-      default :
-        GUM_ERROR(OperationNotAllowed,
-                  "Graph change operation "
-                      << change.typeAsString()
-                      << " is not supported by the Forbidden Arcs structural constraint");
-    }
-  }
 
   /// notify the constraint of a modification of the graph
   INLINE void StructuralConstraintForbiddenArcs::modifyGraphAlone(const ArcAddition& change) {}
@@ -165,30 +140,6 @@ namespace gum::learning {
       StructuralConstraintForbiddenArcs::modifyGraphAlone(const ArcTriangleDeletion2& change) {}
 
   /// indicates whether a change will always violate the constraint
-  INLINE bool
-      StructuralConstraintForbiddenArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
-    switch (change.type()) {
-      case GraphChangeType::ARC_ADDITION :
-        return _forbidden_arcs_.exists(Arc(change.node1(), change.node2()));
-
-      case GraphChangeType::ARC_DELETION : return false;
-
-      case GraphChangeType::ARC_REVERSAL :
-        return _forbidden_arcs_.exists(Arc(change.node2(), change.node1()));
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-        return !checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-        return !checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-
-      default :
-        GUM_ERROR(OperationNotAllowed,
-                  "Graph change operation "
-                      << change.typeAsString()
-                      << " is not supported by the Forbidden Arcs structural constraint");
-    }
-  }
 
   /// assign a set of forbidden arcs
   INLINE void StructuralConstraintForbiddenArcs::setArcs(const ArcSet& set) {

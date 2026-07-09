@@ -29,55 +29,8 @@ namespace gum {
   namespace learning {
 
     // gets the next line of the csv stream and parses it
-    INLINE bool CSVParser::next() {
-      while (getline(*_instream_, _line_)) {
-        _nbLine_++;
-
-        if (_line_.size() == static_cast< std::size_t >(0)) { continue; }
-
-        // fast recognition of commented or empty lines lines
-        const std::size_t lastPos
-            = _line_.find_first_not_of(_spaces_, static_cast< std::size_t >(0));
-
-        if (lastPos == std::string::npos) { continue; }
-
-        if (_line_.at(lastPos) == _commentMarker_) { continue; }
-
-        _tokenize_(_line_);
-        return true;
-      }
-
-      if (_instream_->bad()) {
-        GUM_ERROR(IOError, "CSVParser: stream I/O error at line " << _nbLine_)
-      }
-
-      return false;
-    }
 
     // search for quote taking into account the '\'...
-    INLINE std::size_t CSVParser::_correspondingQuoteMarker_(const std::string_view str,
-                                                             const std::size_t      pos) const {
-      auto res = pos;
-
-      while (true) {
-        res = str.find_first_of(_quoteMarker_, res + 1);
-
-        if (res == std::string::npos) {
-          return res;   // no quote found
-        }
-
-        const std::size_t before = str.find_last_not_of('\\', res - 1);
-
-        if ((before == std::string::npos) && (res % 2 == 0)) {
-          return res;   // quote found: preceded by an odd number of '\'
-        }
-
-        if ((res - before) % 2 == 1) {
-          return res;   // the quote is the good one, even if there are some '\'
-        }
-        // before
-      }
-    }
 
     // returns the current parsed line
     INLINE const std::vector< std::string >& CSVParser::current() const {

@@ -152,30 +152,6 @@ namespace gum {
     INLINE IdCondSet::IdCondSet() : _end_safe_(*this) { GUM_CONSTRUCTOR(IdCondSet); }
 
     /// default constructor with no variable on the left side
-    INLINE IdCondSet::IdCondSet(const std::vector< NodeId >& ids,
-                                const bool                   rhs_ids,
-                                const bool                   ordered_ids) : _end_safe_(*this) {
-      _ids_.resize(ids.size());
-
-      // if the rhs_ids should be considered as unordered, we sort them by
-      // increasing order so that we can compare easily two different rhs_ids
-      if (!ordered_ids) {
-        std::vector< NodeId > vect(ids);
-        std::sort(vect.begin(), vect.end());
-        for (const auto id: vect)
-          _ids_ << id;
-      } else {
-        for (const auto id: ids)
-          _ids_ << id;
-      }
-
-      if (!rhs_ids) _nb_lhs_ids_ = _ids_.size();
-
-      // update the end iterator
-      _end_safe_._gotoEnd_();
-
-      GUM_CONSTRUCTOR(IdCondSet);
-    }
 
     /// default constructor with one variable on the left side
     INLINE IdCondSet::IdCondSet(NodeId                       var1,
@@ -204,76 +180,8 @@ namespace gum {
     }
 
     /// default constructor with two variables on the left side
-    INLINE IdCondSet::IdCondSet(NodeId                       var1,
-                                NodeId                       var2,
-                                const std::vector< NodeId >& rhs_ids,
-                                const bool                   ordered_lhs_vars,
-                                const bool                   ordered_rhs_ids) :
-        _nb_lhs_ids_(std::size_t(2)), _end_safe_(*this) {
-      _ids_.resize(rhs_ids.size() + std::size_t(2));
-
-      // if the variables on the left side are unordered, sort them by
-      // increasing order
-      if (!ordered_lhs_vars && (var1 > var2)) std::swap(var1, var2);
-      _ids_ << var1;
-      _ids_ << var2;
-
-      // if the rhs_ids should be considered as unordered, we sort them by
-      // increasing order so that we can compare easily two different rhs_ids
-      if (!ordered_rhs_ids) {
-        std::vector< NodeId > vect(rhs_ids);
-        std::sort(vect.begin(), vect.end());
-        for (const auto id: vect)
-          _ids_ << id;
-      } else {
-        for (const auto id: rhs_ids)
-          _ids_ << id;
-      }
-
-      // update the end iterator
-      _end_safe_._gotoEnd_();
-
-      GUM_CONSTRUCTOR(IdCondSet);
-    }
 
     /// default constructor with three variables on the left side
-    INLINE IdCondSet::IdCondSet(NodeId                       var1,
-                                NodeId                       var2,
-                                NodeId                       var3,
-                                const std::vector< NodeId >& rhs_ids,
-                                const bool                   ordered_lhs_vars,
-                                const bool                   ordered_rhs_ids) :
-        _nb_lhs_ids_(std::size_t(3)), _end_safe_(*this) {
-      _ids_.resize(rhs_ids.size() + std::size_t(3));
-
-      // if the variables on the left side are unordered, sort them by
-      // increasing order
-      if (!ordered_lhs_vars) {
-        if (var1 > var2) std::swap(var1, var2);
-        if (var1 > var3) std::swap(var1, var3);
-        if (var2 > var3) std::swap(var2, var3);
-      }
-      _ids_ << var1;
-      _ids_ << var2;
-      _ids_ << var3;
-
-      // if the rhs_ids should be considered as unordered, we sort them by
-      // increasing order so that we can compare easily two different rhs_ids
-      if (!ordered_rhs_ids) {
-        std::vector< NodeId > vect(rhs_ids);
-        std::sort(vect.begin(), vect.end());
-        for (const auto id: vect)
-          _ids_ << id;
-      } else {
-        for (const auto id: rhs_ids)
-          _ids_ << id;
-      }
-
-      // update the end iterator
-      _end_safe_._gotoEnd_();
-
-      GUM_CONSTRUCTOR(IdCondSet);
-    }
 
     /// copy constructor
     INLINE IdCondSet::IdCondSet(const IdCondSet& from) :

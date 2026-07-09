@@ -275,4 +275,308 @@ namespace gum {
     return aStream;
   }
 
+
+  void Instantiation::add(const DiscreteVariable& v) {
+    // if  _master_ : not allowed
+    if (_master_) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }
+
+    // check if the variable already belongs to the tuple of variables
+    // of the Instantiation
+    if (_vars_.exists(&v)) {
+      GUM_ERROR(DuplicateElement, "Var <" << v.name() << "> already exists in this instantiation")
+    }
+
+    for (const auto& vv: _vars_) {
+      if (vv->name() == v.name()) {
+        GUM_ERROR(InvalidArgument,
+                  "Var with name <" << v.name() << "> already exists in this instantiation");
+      }
+    }
+
+    // actually add the new dimension
+    _add_(v);
+  }
+
+  void Instantiation::inc() {
+    Size p = nbrDim();
+    if (p == 0) { _overflow_ = true; }
+
+    if (_overflow_) return;
+    p -= 1;
+    Idx cpt = 0;
+    // if we are in overflow, do nothing
+
+    // perform the increment
+    while (true) {
+      Idx v = _vals_[cpt];
+
+      if (v + 1 == _vars_[cpt]->domainSize()) {
+        _vals_[cpt] = 0;
+
+        if (cpt == p) {
+          _overflow_ = true;
+          _masterFirstNotification_();
+          return;
+        } else ++cpt;
+      } else {
+        ++_vals_[cpt];
+        break;
+      }
+    }
+
+    _masterIncNotification_();
+  }
+
+  void Instantiation::dec() {
+    Size p = nbrDim();
+    if (p == 0) { _overflow_ = true; }
+
+    if (_overflow_) return;
+    p -= 1;
+    Idx cpt = 0;
+    // if we are in overflow, do nothing
+
+    // perform the increment
+    while (true) {
+      Idx v = _vals_[cpt];
+
+      if (v == 0) {
+        _vals_[cpt] = _vars_[cpt]->domainSize() - 1;
+
+        if (cpt == p) {
+          _overflow_ = true;
+
+          _masterLastNotification_();
+
+          return;
+        } else ++cpt;
+      } else {
+        --_vals_[cpt];
+        break;
+      }
+    }
+
+    _masterDecNotification_();
+  }
+
+  void Instantiation::incIn(const Instantiation& i) {
+    // if i is empty, overflow and do nothing
+    if (i.nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+
+    // if we are in overflow, do nothing
+    if (_overflow_) return;
+
+    Size p = i.nbrDim() - 1;
+
+    Idx i_cpt = 0;
+
+    while (true) {
+      // verify that  _vars_[cpt] belongs to i before incrementing its value
+      const DiscreteVariable& v = i.variable(i_cpt);
+
+      if (!contains(v)) {
+        if (i_cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++i_cpt;
+      } else {
+        Idx cpt = pos(v);
+        Idx iv  = _vals_[cpt];
+
+        if (iv + 1 == _vars_[cpt]->domainSize()) {
+          _chgVal_(cpt, 0);
+
+          if (i_cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++i_cpt;
+        } else {
+          _chgVal_(cpt, iv + 1);
+          return;
+        }
+      }
+    }
+  }
+
+  void Instantiation::decIn(const Instantiation& i) {
+    if (i.nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+    Size p     = i.nbrDim() - 1;
+    Idx  i_cpt = 0;
+    // if we are in overflow, do nothing
+
+    if (_overflow_) return;
+
+    while (true) {
+      // verify that  _vars_[cpt] belongs to i before incrementing its value
+      const DiscreteVariable& v = i.variable(i_cpt);
+
+      if (!contains(v)) {
+        if (i_cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++i_cpt;
+      } else {
+        Idx cpt = pos(v);
+        Idx iv  = _vals_[cpt];
+
+        if (iv == 0) {
+          _chgVal_(cpt, _vars_[cpt]->domainSize() - 1);
+
+          if (i_cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++i_cpt;
+        } else {
+          _chgVal_(cpt, iv - 1);
+          return;
+        }
+      }
+    }
+  }
+
+  void Instantiation::incOut(const Instantiation& i) {
+    if (nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+    Size p   = nbrDim() - 1;
+    Idx  cpt = 0;
+    // if we are in overflow, do nothing
+
+    if (_overflow_) return;
+
+    while (true) {
+      if (i.contains(_vars_[cpt])) {
+        if (cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++cpt;
+      } else {
+        Idx v = _vals_[cpt];
+
+        if (v + 1 == _vars_[cpt]->domainSize()) {
+          _chgVal_(cpt, 0);
+
+          if (cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++cpt;
+        } else {
+          _chgVal_(cpt, v + 1);
+          return;
+        }
+      }
+    }
+  }
+
+  void Instantiation::decOut(const Instantiation& i) {
+    if (nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+    Size p   = nbrDim() - 1;
+    Idx  cpt = 0;
+    // if we are in overflow, do nothing
+
+    if (_overflow_) return;
+
+    while (true) {
+      if (i.contains(_vars_[cpt])) {
+        if (cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++cpt;
+      } else {
+        Idx v = _vals_[cpt];
+
+        if (v == 0) {
+          _chgVal_(cpt, _vars_[cpt]->domainSize() - 1);
+
+          if (cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++cpt;
+        } else {
+          _chgVal_(cpt, v - 1);
+          return;
+        }
+      }
+    }
+  }
+
+  void Instantiation::incNotVar(const DiscreteVariable& v) {
+    if (nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+    Size p   = nbrDim() - 1;
+    Idx  cpt = 0;
+    // if we are in overflow, do nothing
+
+    if (_overflow_) return;
+
+    while (true) {
+      if (_vars_[cpt] == &v) {
+        if (cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++cpt;
+      } else {
+        Idx iv = _vals_[cpt];
+
+        if (iv + 1 == _vars_[cpt]->domainSize()) {
+          _chgVal_(cpt, 0);
+
+          if (cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++cpt;
+        } else {
+          _chgVal_(cpt, iv + 1);
+          return;
+        }
+      }
+    }
+  }
+
+  void Instantiation::decNotVar(const DiscreteVariable& v) {
+    if (nbrDim() == 0) {
+      _overflow_ = true;
+      return;
+    }
+    Size p   = nbrDim() - 1;
+    Idx  cpt = 0;
+    // if we are in overflow, do nothing
+
+    if (_overflow_) return;
+
+    while (true) {
+      if (_vars_[cpt] == &v) {
+        if (cpt == p) {
+          _overflow_ = true;
+          return;
+        } else ++cpt;
+      } else {
+        Idx iv = _vals_[cpt];
+
+        if (iv == 0) {
+          _chgVal_(cpt, _vars_[cpt]->domainSize() - 1);
+
+          if (cpt == p) {
+            _overflow_ = true;
+            return;
+          } else ++cpt;
+        } else {
+          _chgVal_(cpt, iv - 1);
+          return;
+        }
+      }
+    }
+  }
 } /* namespace gum */

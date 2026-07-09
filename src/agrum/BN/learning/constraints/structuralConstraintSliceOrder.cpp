@@ -131,6 +131,56 @@ namespace gum {
       return *this;
     }
 
+
+    bool
+        StructuralConstraintSliceOrder::isAlwaysInvalidAlone(const GraphChange& change) const {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION :
+          return !checkArcAdditionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_DELETION : return false;
+
+        case GraphChangeType::ARC_REVERSAL :
+          return !checkArcAdditionAlone(change.node2(), change.node1());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return !checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return !checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by the SliceOrder structural constraint");
+      }
+    }
+
+    bool
+        StructuralConstraintSliceOrder::checkModificationAlone(const GraphChange& change) const {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION :
+          return checkArcAdditionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_DELETION :
+          return checkArcDeletionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_REVERSAL :
+          return checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "edge modifications are not "
+                    "supported by the Slice Order structural constraint");
+      }
+    }
   } /* namespace learning */
 
 } /* namespace gum */

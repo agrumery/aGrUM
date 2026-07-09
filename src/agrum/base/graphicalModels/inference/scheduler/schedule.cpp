@@ -670,6 +670,23 @@ namespace gum {
     _version_number_ = _newVersionNumber_();
   }
 
+
+  void Schedule::updateAfterExecution(const ScheduleOperator& op,
+                                             std::vector< NodeId >&  new_available_nodes,
+                                             const bool              check) {
+    /// check that the node belongs to the schedule
+    if (check) {
+      if (!_node2op_.existsSecond(const_cast< ScheduleOperator* >(&op))) {
+        GUM_ERROR(UnknownScheduleOperation,
+                  "the schedule cannot be updated because Operation "
+                      << op.toString() << " that has been executed does not belong to its DAG.");
+      }
+    }
+
+    updateAfterExecution(_node2op_.first(const_cast< ScheduleOperator* >(&op)),
+                         new_available_nodes,
+                         check);
+  }
 }   // namespace gum
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

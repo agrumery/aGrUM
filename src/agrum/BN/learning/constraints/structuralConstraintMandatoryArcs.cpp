@@ -103,6 +103,57 @@ namespace gum {
       return *this;
     }
 
+
+    bool
+        StructuralConstraintMandatoryArcs::checkModificationAlone(const GraphChange& change) const {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION :
+          return checkArcAdditionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_DELETION :
+          return checkArcDeletionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_REVERSAL :
+          return checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by the Mandatory Arcs structural constraint");
+      }
+    }
+
+    bool
+        StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION : return false;
+
+        case GraphChangeType::ARC_DELETION :
+          return !checkArcDeletionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_REVERSAL :
+          return !checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return !checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return !checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by the Mandatory Arcs structural constraint");
+      }
+    }
   } /* namespace learning */
 
 } /* namespace gum */

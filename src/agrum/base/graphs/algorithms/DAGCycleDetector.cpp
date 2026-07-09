@@ -373,4 +373,20 @@ namespace gum {
     }
   }
 
+
+  void DAGCycleDetector::_delWeightedSet_(NodeProperty< Size >&       nodeset,
+                                          const NodeProperty< Size >& set_to_del,
+                                          Size                        multiplier) const {
+    for (auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter) {
+      if (nodeset.exists(iter.key())) {
+        const Size delta  = iter.val() * multiplier;
+        Size&      weight = nodeset[iter.key()];
+        if (delta >= weight) {
+          nodeset.erase(iter.key());
+        } else {
+          weight -= delta;
+        }
+      }
+    }
+  }
 } /* namespace gum */

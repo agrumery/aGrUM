@@ -114,30 +114,6 @@ namespace gum::learning {
   }
 
   /// checks whether the constraints enable to perform a graph change
-  INLINE bool StructuralConstraintDiGraph::checkModificationAlone(const GraphChange& change) const {
-    switch (change.type()) {
-      case GraphChangeType::ARC_ADDITION :
-        return checkArcAdditionAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_DELETION :
-        return checkArcDeletionAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_REVERSAL :
-        return checkArcReversalAlone(change.node1(), change.node2());
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
-
-      default :
-        GUM_ERROR(OperationNotAllowed,
-                  "Graph change operation "
-                      << change.typeAsString()
-                      << " is not supported by the DiGraph structural constraint");
-    }
-  }
 
   /// notify the constraint of a modification of the graph
   INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const ArcAddition& change) {
@@ -172,35 +148,6 @@ namespace gum::learning {
   }
 
   /// notify the constraint of a modification of the graph
-  INLINE void StructuralConstraintDiGraph::modifyGraphAlone(const GraphChange& change) {
-    switch (change.type()) {
-      case GraphChangeType::ARC_ADDITION :
-        modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
-        break;
-
-      case GraphChangeType::ARC_DELETION :
-        modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
-        break;
-
-      case GraphChangeType::ARC_REVERSAL :
-        modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
-        break;
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
-        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion1& >(change));
-        break;
-
-      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
-        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion2& >(change));
-        break;
-
-      default :
-        GUM_ERROR(OperationNotAllowed,
-                  "Graph change operation "
-                      << change.typeAsString()
-                      << " is not supported by the DiGraph structural constraint")
-    }
-  }
 
   /// indicates whether a change will always violate the constraint
   INLINE bool StructuralConstraintDiGraph::isAlwaysInvalidAlone(const GraphChange&) const {

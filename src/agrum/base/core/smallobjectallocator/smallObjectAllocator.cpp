@@ -70,6 +70,30 @@ namespace gum {
   const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 
 
+
+  void* SmallObjectAllocator::allocate(const size_t& objectSize) {
+    // Small Object Allocator called for an object of size equals to 0
+    GUM_ASSERT(objectSize > 0);
+
+    std::lock_guard< std::mutex > lock(_mutex_);
+
+    // If objectSize is greater than maxObjectSize, normal new is called
+    if (objectSize > _maxObjectSize_) return new unsigned char[objectSize];
+
+    //
+    if (!_pool_.exists(Size(objectSize))) {
+      // Calcul du nombre de block par chunk pour des objets de cette taille
+      std::size_t nb = _chunkSize_ / Size(objectSize);
+      if (nb > UCHAR_MAX) nb = UCHAR_MAX;
+      auto numBlocks = static_cast< unsigned char >(nb);
+
+      auto* newFa = new FixedAllocator(Size(objectSize), numBlocks);
+      _pool_.set(Size(objectSize), newFa);
+    }
+    nbAllocation++;
+
+    return _pool_[Size(objectSize)]->allocate();
+  }
 }   // namespace gum
 
 #ifdef GUM_NO_INLINE

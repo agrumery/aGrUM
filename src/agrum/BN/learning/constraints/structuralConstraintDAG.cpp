@@ -98,6 +98,79 @@ namespace gum {
       return *this;
     }
 
+
+  void StructuralConstraintDAG::setGraphAlone(const DiGraph& graph) {
+    // check that the digraph contains no directed cycle
+    DiGraph g;
+
+    for (auto node: graph)
+      g.addNodeWithId(node);
+
+    for (auto& arc: graph.arcs()) {
+      if (graph::hasDirectedPath(g, arc.head(), arc.tail())) {
+        GUM_ERROR(InvalidDirectedCycle,
+                  "Graphs with directed cycles cannot be passed to StructuralConstraintDAG");
+      }
+      g.addArc(arc.tail(), arc.head());
+    }
+
+    // ok, here, there is no directed cycle
+    _graph_ = std::move(g);
+  }
+
+  bool StructuralConstraintDAG::checkModificationAlone(const GraphChange& change) const {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        return checkArcAdditionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_DELETION :
+        return checkArcDeletionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_REVERSAL :
+        return checkArcReversalAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation " << change.typeAsString()
+                                            << "is not supported by the DAG structural constraint");
+    }
+  }
+
+  void StructuralConstraintDAG::modifyGraphAlone(const GraphChange& change) {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        modifyGraphAlone(reinterpret_cast< const ArcAddition& >(change));
+        break;
+
+      case GraphChangeType::ARC_DELETION :
+        modifyGraphAlone(reinterpret_cast< const ArcDeletion& >(change));
+        break;
+
+      case GraphChangeType::ARC_REVERSAL :
+        modifyGraphAlone(reinterpret_cast< const ArcReversal& >(change));
+        break;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion1& >(change));
+        break;
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        modifyGraphAlone(reinterpret_cast< const ArcTriangleDeletion2& >(change));
+        break;
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "Graph change operation "
+                      << change.typeAsString()
+                      << " is not supported by the DAG structural constraints")
+    }
+  }
   } /* namespace learning */
 
 } /* namespace gum */

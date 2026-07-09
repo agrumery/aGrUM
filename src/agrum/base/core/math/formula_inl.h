@@ -50,28 +50,6 @@ namespace gum {
   // ==========================================================================
 
 
-  INLINE
-  bool FormulaPart::isLeftAssociative() const {
-    switch (character) {
-      case '+' :
-      case '-' :
-      case '*' :
-      case '/' : {
-        return true;
-      }
-
-      case '_' : {
-        return false;
-      }
-      case '^' : {
-        return false;
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "A - not an operator")
-      }
-    }
-  }
 
   INLINE
   bool FormulaPart::isRightAssociative() const {
@@ -85,172 +63,15 @@ namespace gum {
     }
   }
 
-  INLINE
-  int FormulaPart::precedence() const {
-    switch (character) {
-      case '+' :
-      case '-' : {
-        return 2;
-      }
 
-      case '*' :
-      case '/' : {
-        return 3;
-      }
 
-      case '^' : {
-        return 4;
-      }
 
-      case '_' : {
-        return 5;
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "B - not an operator")
-      }
-    }
-  }
-
-  INLINE
-  size_t FormulaPart::argc() const {
-    switch (type) {
-      case OPERATOR : {
-        return _operator_argc_();
-      }
-
-      case FUNCTION : {
-        return _function_argc_();
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "expecting a function or an operator")
-      }
-    }
-  }
-
-  INLINE
-  size_t FormulaPart::_operator_argc_() const {
-    switch (character) {
-      case '_' : {
-        return (size_t)1;
-      }
-      case '+' :
-      case '-' :
-      case '*' :
-      case '/' :
-      case '^' : {
-        return (size_t)2;
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "C - not an operator")
-      }
-    }
-  }
-
-  INLINE
-  size_t FormulaPart::_function_argc_() const {
-    switch (function) {
-      case FormulaPart::token_function::exp : {
-        return 1;
-      }
-      case FormulaPart::token_function::log : {
-        return 1;
-      }
-      case FormulaPart::token_function::ln : {
-        return 1;
-      }
-      case FormulaPart::token_function::pow : {
-        return 2;
-      }
-      case FormulaPart::token_function::sqrt : {
-        return 1;
-      }
-      // case FormulaPart::token_function::nil: { return "nil"; }
-      default : {
-        GUM_ERROR(OperationNotAllowed, "unknown function")
-      }
-    }
-  }
 
   /// Args are backwards !
-  INLINE
-  double FormulaPart::_operator_eval_(const std::vector< FormulaPart >& args) const {
-    switch (character) {
-      case '+' : {
-        return args[1].number + args[0].number;
-      }
-
-      case '-' : {
-        return args[1].number - args[0].number;
-      }
-
-      case '*' : {
-        return args[1].number * args[0].number;
-      }
-
-      case '/' : {
-        return args[1].number / args[0].number;
-      }
-
-      case '^' : {
-        return std::pow(args[1].number, args[0].number);
-      }
-
-      case '_' : {
-        return 0 - args[0].number;
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "D - not an operator")
-      }
-    }
-  }
 
   /// Args are backwards !
-  INLINE
-  double FormulaPart::_function_eval_(const std::vector< FormulaPart >& args) const {
-    switch (function) {
-      case FormulaPart::token_function::exp : {
-        return std::exp(args[0].number);
-      }
-      case FormulaPart::token_function::log : {
-        return std::log(args[0].number);
-      }
-      case FormulaPart::token_function::ln : {
-        return std::log(args[0].number);
-      }
-      case FormulaPart::token_function::pow : {
-        return std::pow(args[1].number, args[0].number);
-      }
-      case FormulaPart::token_function::sqrt : {
-        return std::sqrt(args[0].number);
-      }
-      // case FormulaPart::token_function::nil: { return "nil"; }
-      default : {
-        GUM_ERROR(OperationNotAllowed, "unknown function")
-      }
-    }
-  }
 
   /// Args are backwards !
-  INLINE
-  FormulaPart FormulaPart::eval(const std::vector< FormulaPart >& args) const {
-    switch (type) {
-      case OPERATOR : {
-        return FormulaPart(token_type::NUMBER, _operator_eval_(args));
-      }
-
-      case FUNCTION : {
-        return FormulaPart(token_type::NUMBER, _function_eval_(args));
-      }
-
-      default : {
-        GUM_ERROR(OperationNotAllowed, "cannot evaluate expression")
-      }
-    }
-  }
 
   // ==========================================================================
   // ===                        Class Formula                               ===
@@ -358,15 +179,6 @@ namespace gum {
     _last_token_ = FormulaPart(FormulaPart::token_type::PARENTHESIS, ')');
   }
 
-  INLINE
-  void Formula::_finalize_() {
-    while (!_stack_.empty()) {
-      if (_stack_.top().character == '(') { GUM_ERROR(OperationNotAllowed, "expecting ')'") }
-
-      _push_output_(_stack_.top());
-      _stack_.pop();
-    }
-  }
 
   INLINE
   void Formula::_reduceOperatorOrFunction_(FormulaPart                item,
@@ -395,32 +207,6 @@ namespace gum {
     _last_token_ = t;
   }
 
-  INLINE
-  void Formula::_push_function_(std::string_view func) {
-    if (func == "exp") {
-      FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::exp);
-      _push_stack_(t);
-
-    } else if (func == "log") {
-      FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::log);
-      _push_stack_(t);
-
-    } else if (func == "ln") {
-      FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::ln);
-      _push_stack_(t);
-
-    } else if (func == "pow") {
-      FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::pow);
-      _push_stack_(t);
-
-    } else if (func == "sqrt") {
-      FormulaPart t(FormulaPart::token_type::FUNCTION, FormulaPart::token_function::sqrt);
-      _push_stack_(t);
-
-    } else {
-      GUM_ERROR(OperationNotAllowed, "unknown function")
-    }
-  }
 
   INLINE
   void Formula::_push_comma_() {
@@ -452,18 +238,6 @@ namespace gum {
     }
   }
 
-  INLINE
-  void Formula::_push_identifier_(std::string_view ident) {
-    try {
-      _push_function_(ident);
-
-    } catch (OperationNotAllowed const&) {
-      try {
-        _push_variable_(ident);
-
-      } catch (OperationNotAllowed const&) { GUM_ERROR(OperationNotAllowed, "unknown identifier") }
-    }
-  }
 
   // ========================================================================
   //  @name Arithmetic Operators

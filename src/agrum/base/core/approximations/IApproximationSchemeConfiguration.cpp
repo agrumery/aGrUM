@@ -61,6 +61,29 @@ namespace gum {
     GUM_DESTRUCTOR(IApproximationSchemeConfiguration);
   }
 
+
+  std::string IApproximationSchemeConfiguration::messageApproximationScheme() const {
+    switch (stateApproximationScheme()) {
+      case ApproximationSchemeSTATE::Continue : return "in progress";
+
+      case ApproximationSchemeSTATE::Epsilon :
+        return std::format("stopped with epsilon={}", epsilon());
+
+      case ApproximationSchemeSTATE::Rate :
+        return std::format("stopped with rate={}", minEpsilonRate());
+
+      case ApproximationSchemeSTATE::Limit :
+        return std::format("stopped with max iteration={}", maxIter());
+
+      case ApproximationSchemeSTATE::TimeLimit :
+        return std::format("stopped with timeout={}", maxTime());
+
+      case ApproximationSchemeSTATE::Stopped : return "stopped on request";
+
+      case ApproximationSchemeSTATE::Undefined : return "undefined state";
+    }
+    return {};
+  }
 }   // namespace gum
 
 #ifdef GUM_NO_INLINE

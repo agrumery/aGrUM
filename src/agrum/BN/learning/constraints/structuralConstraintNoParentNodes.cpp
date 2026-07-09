@@ -98,4 +98,29 @@ namespace gum::learning {
     return *this;
   }
 
+
+  bool
+      StructuralConstraintNoParentNodes::checkModificationAlone(const GraphChange& change) const {
+    switch (change.type()) {
+      case GraphChangeType::ARC_ADDITION :
+        return checkArcAdditionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_DELETION :
+        return checkArcDeletionAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_REVERSAL :
+        return checkArcReversalAlone(change.node1(), change.node2());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+        return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+      case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+        return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+      default :
+        GUM_ERROR(OperationNotAllowed,
+                  "edge modifications are not "
+                  "supported by the No-Parent Nodes structural constraint");
+    }
+  }
 }   // namespace gum::learning

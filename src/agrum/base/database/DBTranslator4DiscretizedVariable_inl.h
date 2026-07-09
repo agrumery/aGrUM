@@ -58,33 +58,6 @@ namespace gum {
     }
 
     /// returns the translation of a string, as found in the current dictionary
-    INLINE DBTranslatedValue DBTranslator4DiscretizedVariable::translate(std::string_view str) {
-      // try to get the index of str within the discretized variable.
-      try {
-        return DBTranslatedValue{std::size_t(_variable_[str])};
-      } catch (gum::Exception& e) {
-        // check for a missing symbol
-        if (this->isMissingSymbol(str))
-          return DBTranslatedValue{std::numeric_limits< std::size_t >::max()};
-
-        // check if the back_dictionary does not contain str. This enables
-        // to execute translate ( translateBack ( translate ( str ) ) )
-        // without raising an exception
-        try {
-          return DBTranslatedValue{this->back_dico_.first(std::string(str))};
-        } catch (const gum::Exception&) {
-          if (!DBCell::isReal(str)) {
-            GUM_ERROR(TypeError,
-                      "String \"" << str << "\" cannot be translated because it is not a value for "
-                                  << _variable_);
-          } else {
-            GUM_ERROR(UnknownLabelInDatabase,
-                      "The translation of \"" << str << "\" could not be found : " << e.what()
-                                              << " for variable " << _variable_);
-          }
-        }
-      }
-    }
 
     /// returns the original value for a given translation
     INLINE std::string DBTranslator4DiscretizedVariable::translateBack(

@@ -85,34 +85,6 @@ namespace gum {
     }
 
     /// returns a mapping to reorder the current dictionary and updates it
-    INLINE HashTable< std::size_t, std::size_t > DBTranslator4RangeVariable::reorder() {
-      // assign to each label the index it had before reordering
-      const auto&                                          labels = _variable_.labels();
-      const std::size_t                                    size   = labels.size();
-      std::vector< std::pair< std::size_t, std::string > > xlabels;
-      xlabels.reserve(size);
-      bool modifications = false;
-      for (std::size_t i = std::size_t(0); i < size; ++i) {
-        const std::size_t old_val = this->back_dico_.first(labels[i]);
-        xlabels.push_back(std::make_pair(old_val, labels[i]));
-        if (old_val != i) modifications = true;
-      }
-
-
-      // if there were no modification, return an empty update hashtable
-      if (!modifications) { return HashTable< std::size_t, std::size_t >(); }
-
-      // create the hashTable corresponding to the mapping from the old
-      // indices to the new one
-      this->back_dico_.clear();
-      HashTable< std::size_t, std::size_t > mapping((Size)size);
-      for (std::size_t i = std::size_t(0); i < size; ++i) {
-        mapping.insert(xlabels[i].first, i);
-        this->back_dico_.insert(i, xlabels[i].second);
-      }
-
-      return mapping;
-    }
 
     /// returns the domain size of a variable corresponding to the translations
     INLINE std::size_t DBTranslator4RangeVariable::domainSize() const {

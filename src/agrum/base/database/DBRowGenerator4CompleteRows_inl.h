@@ -62,35 +62,6 @@ namespace gum {
     }
 
     /// computes the rows it will provide in output
-    INLINE std::size_t
-           DBRowGenerator4CompleteRows::computeRows_(const DBRow< DBTranslatedValue >& row) {
-      // check that all the values are observed
-      const auto& xrow = row.row();
-      for (const auto col: this->columns_of_interest_) {
-        switch (this->column_types_[col]) {
-          case DBTranslatedValueType::DISCRETE :
-            if (xrow[col].discr_val == std::numeric_limits< std::size_t >::max()) {
-              _input_row_ = nullptr;
-              return std::size_t(0);
-            }
-            break;
-
-          case DBTranslatedValueType::CONTINUOUS :
-            if (xrow[col].cont_val == std::numeric_limits< float >::max()) {
-              _input_row_ = nullptr;
-              return std::size_t(0);
-            }
-            break;
-
-          default :
-            GUM_ERROR(NotImplementedYet,
-                      "DBTranslatedValueType " << int(this->column_types_[col])
-                                               << " is not supported yet");
-        }
-      }
-      _input_row_ = &row;
-      return std::size_t(1);
-    }
 
 
   } /* namespace learning */

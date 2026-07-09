@@ -316,22 +316,6 @@ namespace gum {
   }
 
   /// removes a weighted nodeset from another (weights are subtracted)
-  INLINE
-  void DAGCycleDetector::_delWeightedSet_(NodeProperty< Size >&       nodeset,
-                                          const NodeProperty< Size >& set_to_del,
-                                          Size                        multiplier) const {
-    for (auto iter = set_to_del.cbegin(); iter != set_to_del.cend(); ++iter) {
-      if (nodeset.exists(iter.key())) {
-        const Size delta  = iter.val() * multiplier;
-        Size&      weight = nodeset[iter.key()];
-        if (delta >= weight) {
-          nodeset.erase(iter.key());
-        } else {
-          weight -= delta;
-        }
-      }
-    }
-  }
 
   /** @brief put into a weighted nodeset the nodes of another weighted set that
    * belong to a set of arc extremities */

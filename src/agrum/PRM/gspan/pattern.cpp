@@ -279,4 +279,17 @@ namespace gum::prm::gspan {
     return false;
   }
 
+
+      void Pattern::rightmostPath(std::list< NodeId >& r_path) const {
+        r_path.push_back(NodeId(size()));
+
+        while (r_path.front() != 1) {
+          for (const auto par: parents(r_path.front())) {
+            if (par < r_path.front()) {
+              r_path.push_front(par);
+              break;
+            }
+          }
+        }
+      }
 }   // namespace gum::prm::gspan

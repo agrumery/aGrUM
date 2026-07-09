@@ -162,19 +162,6 @@ namespace gum {
       INLINE
       Size Pattern::sizeArcs() const { return DiGraph::sizeArcs(); }
 
-      INLINE
-      void Pattern::rightmostPath(std::list< NodeId >& r_path) const {
-        r_path.push_back(NodeId(size()));
-
-        while (r_path.front() != 1) {
-          for (const auto par: parents(r_path.front())) {
-            if (par < r_path.front()) {
-              r_path.push_front(par);
-              break;
-            }
-          }
-        }
-      }
 
       INLINE const NodeGraphPart& Pattern::nodes() const { return DiGraph::nodes(); }
 

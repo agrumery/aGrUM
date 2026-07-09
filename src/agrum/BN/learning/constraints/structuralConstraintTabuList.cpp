@@ -132,6 +132,98 @@ namespace gum {
       return *this;
     }
 
+
+    void StructuralConstraintTabuList::setTabuListSize(Size new_size) {
+      if (new_size == _tabuList_size_) return;
+
+      if (_graph_tabuList_.size() > new_size) {
+        // here, there are more graphs than allowed by the new size.
+        // So remove the oldest elements, so that only new_size elements remain
+        while (_graph_tabuList_.size() > new_size) {
+          _graph_tabuList_.eraseSecond(_tabuList_offset_);
+          ++_tabuList_offset_;
+        }
+      } else {
+        // here, we should keep all the elements in _graph_tabuList_ but we must
+        // ensure that the difference between the max offset in _graph_tabuList_ and
+        // _tabuList_offset_ is equal to new_size
+        if (_tabuList_offset_ + _tabuList_size_ >= new_size) {
+          // we can modify _tabuList_offset_ so that the aforementioned difference
+          // is now equal to new_size
+          _tabuList_offset_ = (_tabuList_offset_ + _tabuList_size_) - new_size;
+        } else {
+          // basically, we should add _tabuList_size_ - new_size to _tabuList_offset_,
+          // except that the value of _tabuList_offset_ would be strictly negative,
+          // which is impossible for an attribute of type Size. Hence, here, instead
+          // of changing _tabuList_offset_, we will add (new_size - _tabuList_size_)
+          // to all the offsets in the tabu list
+          const Size                   delta = new_size - _tabuList_size_;
+          Bijection< GraphHash, Size > new_tabuList(2 * new_size);
+          for (auto iter = _graph_tabuList_.begin(); iter != _graph_tabuList_.end(); ++iter) {
+            new_tabuList.emplace(iter.first(), iter.second() + delta);
+          }
+          _graph_tabuList_ = std::move(new_tabuList);
+        }
+      }
+
+      _tabuList_size_ = new_size;
+    }
+
+    bool
+        StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION :
+          return checkArcAdditionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_DELETION :
+          return checkArcDeletionAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_REVERSAL :
+          return checkArcReversalAlone(change.node1(), change.node2());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          return checkArcTriangleDeletion1Alone(change.node1(), change.node2(), change.node3());
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          return checkArcTriangleDeletion2Alone(change.node1(), change.node2(), change.node3());
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << "is not supported by the Tabu List structural constraint");
+      }
+    }
+
+    void StructuralConstraintTabuList::modifyGraphAlone(const GraphChange& change) {
+      switch (change.type()) {
+        case GraphChangeType::ARC_ADDITION :
+          modifyGraphAlone(static_cast< const ArcAddition& >(change));
+          break;
+
+        case GraphChangeType::ARC_DELETION :
+          modifyGraphAlone(static_cast< const ArcDeletion& >(change));
+          break;
+
+        case GraphChangeType::ARC_REVERSAL :
+          modifyGraphAlone(static_cast< const ArcReversal& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION1 :
+          modifyGraphAlone(static_cast< const ArcTriangleDeletion1& >(change));
+          break;
+
+        case GraphChangeType::ARC_TRIANGLE_DELETION2 :
+          modifyGraphAlone(static_cast< const ArcTriangleDeletion2& >(change));
+          break;
+
+        default :
+          GUM_ERROR(OperationNotAllowed,
+                    "Graph change operation "
+                        << change.typeAsString()
+                        << " is not supported by Tabu List structural constraint")
+      }
+    }
   } /* namespace learning */
 
 } /* namespace gum */
