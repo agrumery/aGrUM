@@ -954,6 +954,8 @@ namespace gum::learning {
   }
 
   DAG IBNLearner::learnDAG() {
+    createPrior_();
+    createScore_();
     auto dag = learnDag_();
     for (const auto i: dag) {
       dag.setName(i, scoreDatabase_.databaseTable().variableName(i));
@@ -981,10 +983,6 @@ namespace gum::learning {
   }
 
   DAG IBNLearner::learnDag_() {
-    // create the score and the prior
-    createPrior_();
-    createScore_();
-
     // check that the database does not contain any missing value
     if (scoreDatabase_.databaseTable().hasMissingValues()
         || ((priorDatabase_ != nullptr)
