@@ -224,7 +224,7 @@ namespace gum {
           const _StructuralConstraintSetStatic_< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// destructor
-      ~_StructuralConstraintSetStatic_();
+      ~_StructuralConstraintSetStatic_() override;
 
       /// @}
 
@@ -362,7 +362,7 @@ namespace gum {
       _StructuralConstraintSetStatic_(const _StructuralConstraintSetStatic_< CONSTRAINT >&);
 
       /// destructor
-      ~_StructuralConstraintSetStatic_();
+      ~_StructuralConstraintSetStatic_() override;
 
       /// @}
 
@@ -511,7 +511,7 @@ namespace gum {
           const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// destructor
-      ~StructuralConstraintSetStatic();
+      ~StructuralConstraintSetStatic() override;
 
       /// @}
 
@@ -629,7 +629,7 @@ namespace gum {
       StructuralConstraintSetStatic(const StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// destructor
-      ~StructuralConstraintSetStatic();
+      ~StructuralConstraintSetStatic() override;
 
       /// @}
 

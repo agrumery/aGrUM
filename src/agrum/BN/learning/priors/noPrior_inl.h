@@ -77,10 +77,7 @@ namespace gum {
     INLINE NoPrior::~NoPrior() { GUM_DESTRUCTOR(NoPrior); }
 
     /// copy operator
-    INLINE NoPrior& NoPrior::operator=(const NoPrior& from) {
-      Prior::operator=(from);
-      return *this;
-    }
+    INLINE NoPrior& NoPrior::operator=(const NoPrior& from) = default;
 
     /// move operator
     INLINE NoPrior& NoPrior::operator=(NoPrior&& from) {

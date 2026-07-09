@@ -73,10 +73,7 @@ namespace gum::learning {
   INLINE BDeuPrior::~BDeuPrior() { GUM_DESTRUCTOR(BDeuPrior) }
 
   /// copy operator
-  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) {
-    Prior::operator=(from);
-    return *this;
-  }
+  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) = default;
 
   /// move operator
   INLINE BDeuPrior& BDeuPrior::operator=(BDeuPrior&& from) noexcept {

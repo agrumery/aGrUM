@@ -243,14 +243,14 @@ namespace gum {
     if (graph.parents(x).size() < graph.parents(y).size()) {
       // If the number of parents of x is less than the number of parents of y.
       // We want to keep y->x, so we return x->y for erasure.
-      return Arc(x, y);
+      return {x, y};
     } else if (graph.parents(x).size() > graph.parents(y).size()) {
-      return Arc(y, x);
+      return {y, x};
     } else {   // If they have the same number of parents, we choose the one with less neighbours.
       if (graph.neighbours(x).size() < graph.neighbours(y).size()) {
-        return Arc(x, y);
+        return {x, y};
       } else {
-        return Arc(y, x);
+        return {y, x};
       }
     }
   }

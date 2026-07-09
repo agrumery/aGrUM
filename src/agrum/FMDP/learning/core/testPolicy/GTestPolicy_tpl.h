@@ -133,8 +133,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  GTestPolicy< GUM_ELEMENT >::GTestPolicy() :
-      ITestPolicy< GUM_ELEMENT >(), _conTab_(), _GStat_(0) {
+  GTestPolicy< GUM_ELEMENT >::GTestPolicy() : ITestPolicy< GUM_ELEMENT >(), _conTab_(), _GStat_(0) {
     GUM_CONSTRUCTOR(GTestPolicy);
   }
 

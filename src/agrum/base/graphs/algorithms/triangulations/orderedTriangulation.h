@@ -120,13 +120,13 @@ namespace gum {
      * note that we return a pointer as it enables subclasses to return
      * pointers to their types, not Triangulation pointers. See item 25 of the
      * more effective C++.*/
-    [[nodiscard]] virtual OrderedTriangulation* newFactory() const final;
+    [[nodiscard]] OrderedTriangulation* newFactory() const final;
 
     /// virtual copy constructor
-    [[nodiscard]] virtual OrderedTriangulation* copyFactory() const final;
+    [[nodiscard]] OrderedTriangulation* copyFactory() const final;
 
     /// destructor
-    virtual ~OrderedTriangulation();
+    ~OrderedTriangulation() override;
 
     /// @}
 
@@ -143,7 +143,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not
      *  notcopied but only referenced by the triangulation algorithm. */
-    virtual void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) final;
+    void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) final;
 
     /// sets the sequence of elimination (only the reference is stored)
     /** The elimination sequence is kept outside this class for efficiency
@@ -163,7 +163,7 @@ namespace gum {
      * elimination sequence class).
      * @param graph the very graph that is triangulated (this is a copy of
      * original_graph_) */
-    virtual void initTriangulation_(UndiGraph& graph) final;
+    void initTriangulation_(UndiGraph& graph) final;
 
 
     /// the elimination sequence to apply

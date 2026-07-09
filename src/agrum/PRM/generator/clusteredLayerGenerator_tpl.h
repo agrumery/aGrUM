@@ -573,13 +573,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
-           ClusteredLayerGenerator< GUM_SCALAR >::getLayer() {
+        ClusteredLayerGenerator< GUM_SCALAR >::getLayer() {
       return _layers_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
-                 ClusteredLayerGenerator< GUM_SCALAR >::getLayer() const {
+        ClusteredLayerGenerator< GUM_SCALAR >::getLayer() const {
       return _layers_;
     }
 

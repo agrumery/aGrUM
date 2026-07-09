@@ -259,7 +259,7 @@ namespace gum {
         case EltType::REAL : {
           char buffer[100];
           snprintf(buffer, 100, "%g", _val_real_);
-          return std::string(buffer);
+          return {buffer};
         }
 
         case EltType::INTEGER : return std::to_string(_val_integer_);

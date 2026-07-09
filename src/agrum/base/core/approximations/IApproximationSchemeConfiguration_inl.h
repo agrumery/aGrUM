@@ -54,7 +54,4 @@
 // To help IDE parsers
 #include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 
-namespace gum {
-
-
-}   // namespace gum
+namespace gum {}   // namespace gum

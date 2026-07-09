@@ -375,16 +375,16 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    ~MultiDimFunctionGraphTreeManager();
+    ~MultiDimFunctionGraphTreeManager() override;
 
     /// @}
     // ========================================================================
     /// @name Inherited methods
     // ========================================================================
     /// @{
-    virtual NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons);
+    NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons) override;
 
-    virtual void reduce();
+    void reduce() override;
     /// @}
   };
 
@@ -423,7 +423,7 @@ namespace gum {
         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* master);
 
     public:
-    ~MultiDimFunctionGraphROManager();
+    ~MultiDimFunctionGraphROManager() override;
 
     /// @}
     // ========================================================================
@@ -431,9 +431,9 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons);
+    NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons) override;
 
-    virtual void reduce();
+    void reduce() override;
 
     /// @}
   };

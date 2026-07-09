@@ -173,7 +173,7 @@ namespace gum {
         for (Idx i = Size(m_imports.size()); i > 0; i--)
           if (m_imports[i - 1]->alias == alias) return m_imports[i - 1]->value;
 
-        return std::string();
+        return {};
       }
 
       template < GUM_Numeric GUM_SCALAR >

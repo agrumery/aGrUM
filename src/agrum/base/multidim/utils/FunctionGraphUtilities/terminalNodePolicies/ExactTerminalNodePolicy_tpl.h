@@ -47,7 +47,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void ExactTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
-                                                                      const GUM_ELEMENT& v) {
+                                                               const GUM_ELEMENT& v) {
     _map_.insert(n, v);
   }
 
@@ -62,8 +62,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  bool
-      ExactTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
+  bool ExactTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
     return _map_.existsFirst(n);
   }
 
@@ -80,8 +79,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  const NodeId&
-      ExactTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
+  const NodeId& ExactTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
     return _map_.first(v);
   }
 

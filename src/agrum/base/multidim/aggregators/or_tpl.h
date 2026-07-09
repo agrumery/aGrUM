@@ -62,8 +62,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+    Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Or);
     }
 
@@ -79,9 +78,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Or< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                       Idx                     i1,
-                                       Idx                     i2,
-                                       bool&                   stop_iteration) const {
+                                Idx                     i1,
+                                Idx                     i2,
+                                bool&                   stop_iteration) const {
       if (i1 != 1) {
         return (Idx)0;
       } else {
@@ -92,7 +91,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::string Or< GUM_SCALAR >::aggregatorName() const {
-      return std::string("or");
+      return {"or"};
     }
 
     template < GUM_Numeric GUM_SCALAR >

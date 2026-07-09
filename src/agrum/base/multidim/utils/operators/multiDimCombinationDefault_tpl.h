@@ -99,15 +99,14 @@ namespace gum {
 
   /// returns the combination function currently used by the combinator
   template < class TABLE >
-  TABLE (*MultiDimCombinationDefault< TABLE >::combinationFunction())(const TABLE&,
-                                                                             const TABLE&) {
+  TABLE (*MultiDimCombinationDefault< TABLE >::combinationFunction())(const TABLE&, const TABLE&) {
     return _combine_;
   }
 
   /// returns the result of the combination
   template < class TABLE >
   void MultiDimCombinationDefault< TABLE >::execute(TABLE&                     container,
-                                                           const Set< const TABLE* >& set) const {
+                                                    const Set< const TABLE* >& set) const {
     TABLE* res = execute(set);
     container  = std::move(*res);
     delete (res);

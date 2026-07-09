@@ -104,7 +104,7 @@ namespace gum {
 
     explicit BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn);
 
-    virtual ~BayesNetFragment();
+    ~BayesNetFragment() override;
     /// @}
 
     /// @name signals
@@ -113,24 +113,24 @@ namespace gum {
     /// the action to take when a new node is inserted into the graph
     /** @param src the object that sent the signal
      * @param id the id of the new node inserted into the graph */
-    virtual void whenNodeAdded(const void* src, NodeId id) final;
+    void whenNodeAdded(const void* src, NodeId id) final;
 
     /// the action to take when a node has just been removed from the graph
     /** @param src the object that sent the signal
      * @param id the id of the node has just been removed from the graph */
-    virtual void whenNodeDeleted(const void* src, NodeId id) final;
+    void whenNodeDeleted(const void* src, NodeId id) final;
 
     /// the action to take when a new arc is inserted into the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
-    virtual void whenArcAdded(const void* src, NodeId from, NodeId to) final;
+    void whenArcAdded(const void* src, NodeId from, NodeId to) final;
 
     /// the action to take when an arc has just been removed from the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
-    virtual void whenArcDeleted(const void* src, NodeId from, NodeId to) final;
+    void whenArcDeleted(const void* src, NodeId from, NodeId to) final;
     /// @}
 
     /// @name IBayesNet interface
@@ -155,7 +155,7 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const DiscreteVariable& variable(NodeId id) const final;
+    const DiscreteVariable& variable(NodeId id) const final;
 
     virtual const DiscreteVariable& variable(std::string_view name) const final;
 
@@ -164,27 +164,27 @@ namespace gum {
      *
      * @throw NotFound If no variable match var.
      */
-    virtual NodeId nodeId(const DiscreteVariable& var) const final;
+    NodeId nodeId(const DiscreteVariable& var) const final;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual NodeId idFromName(std::string_view name) const final;
+    NodeId idFromName(std::string_view name) const final;
 
     /**
      * Getter by name
      *
      * @throw NotFound if no such name exists in the graph.
      */
-    virtual const DiscreteVariable& variableFromName(std::string_view name) const final;
+    const DiscreteVariable& variableFromName(std::string_view name) const final;
 
     /**
      * creates a dot representing the whole referred BN hilighting the fragment.
      * @return Returns a dot representation of this fragment
      */
-    virtual std::string toDot() const final;
+    std::string toDot() const final;
 
     /// @}
 

@@ -186,8 +186,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::changeVariableLabel(NodeId           id,
-                                                          std::string_view old_label,
-                                                          std::string_view new_label) {
+                                                   std::string_view old_label,
+                                                   std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED)
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
 
@@ -210,7 +210,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::add(std::string_view fast_description,
-                                            unsigned int     default_nbrmod) {
+                                     unsigned int     default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(std::string(fast_description), default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);
@@ -218,7 +218,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable&               var,
-                                            MultiDimImplementation< GUM_SCALAR >* aContent) {
+                                     MultiDimImplementation< GUM_SCALAR >* aContent) {
     NodeId proposedId = dag().nextNodeId();
 
     return add(var, aContent, proposedId);
@@ -456,66 +456,65 @@ namespace gum {
   //================================
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
-                                                   GUM_SCALAR              external_weight) {
+                                            GUM_SCALAR              external_weight) {
     return addNoisyORCompound(var, external_weight);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
-                                                           GUM_SCALAR external_weight) {
+                                                    GUM_SCALAR              external_weight) {
     return add(var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
-                                                      GUM_SCALAR              external_weight) {
+                                               GUM_SCALAR              external_weight) {
     return add(var, new MultiDimNoisyORNet< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
-                                                    GUM_SCALAR              external_weight) {
+                                             GUM_SCALAR              external_weight) {
     return add(var, new MultiDimNoisyAND< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
-                                                 GUM_SCALAR              external_weight) {
+  NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight) {
     return add(var, new MultiDimLogit< GUM_SCALAR >(external_weight));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyOR(const DiscreteVariable& var,
-                                                   GUM_SCALAR              external_weight,
-                                                   NodeId                  id) {
+                                            GUM_SCALAR              external_weight,
+                                            NodeId                  id) {
     return addNoisyORCompound(var, external_weight, id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyAND(const DiscreteVariable& var,
-                                                    GUM_SCALAR              external_weight,
-                                                    NodeId                  id) {
+                                             GUM_SCALAR              external_weight,
+                                             NodeId                  id) {
     return add(var, new MultiDimNoisyAND< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var,
-                                                 GUM_SCALAR              external_weight,
-                                                 NodeId                  id) {
+                                          GUM_SCALAR              external_weight,
+                                          NodeId                  id) {
     return add(var, new MultiDimLogit< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyORCompound(const DiscreteVariable& var,
-                                                           GUM_SCALAR              external_weight,
-                                                           NodeId                  id) {
+                                                    GUM_SCALAR              external_weight,
+                                                    NodeId                  id) {
     return add(var, new MultiDimNoisyORCompound< GUM_SCALAR >(external_weight), id);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addNoisyORNet(const DiscreteVariable& var,
-                                                      GUM_SCALAR              external_weight,
-                                                      NodeId                  id) {
+                                               GUM_SCALAR              external_weight,
+                                               NodeId                  id) {
     return add(var, new MultiDimNoisyORNet< GUM_SCALAR >(external_weight), id);
   }
 
@@ -707,14 +706,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::changeVariableName(std::string_view name,
-                                                         std::string_view new_name) {
+                                                  std::string_view new_name) {
     changeVariableName(idFromName(name), new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::changeVariableLabel(std::string_view name,
-                                                          std::string_view old_label,
-                                                          std::string_view new_label) {
+                                                   std::string_view old_label,
+                                                   std::string_view new_label) {
     changeVariableLabel(idFromName(name), old_label, new_label);
   }
 
@@ -730,8 +729,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::addWeightedArc(std::string_view tail,
-                                                     std::string_view head,
-                                                     GUM_SCALAR       causalWeight) {
+                                              std::string_view head,
+                                              GUM_SCALAR       causalWeight) {
     addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
   }
 

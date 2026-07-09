@@ -620,22 +620,19 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    SVE< GUM_SCALAR >::SVE(const PRM< GUM_SCALAR >&       prm,
-                                  const PRMSystem< GUM_SCALAR >& system) :
+    SVE< GUM_SCALAR >::SVE(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system), _class_elim_order_(0) {
       GUM_CONSTRUCTOR(SVE);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void SVE< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i,
-                                                    BucketSet&                       pool) {
+    void SVE< GUM_SCALAR >::_insertEvidence_(const PRMInstance< GUM_SCALAR >* i, BucketSet& pool) {
       for (const auto& elt: this->evidence(i))
         pool.insert(const_cast< Tensor< GUM_SCALAR >* >(elt.second));
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    std::vector< NodeId >&
-           SVE< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
+    std::vector< NodeId >& SVE< GUM_SCALAR >::_getElimOrder_(const PRMClass< GUM_SCALAR >& c) {
       return *(_elim_orders_[&c]);
     }
 
@@ -649,7 +646,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     bool SVE< GUM_SCALAR >::_checkElimOrder_(const PRMInstance< GUM_SCALAR >* first,
-                                                    const PRMInstance< GUM_SCALAR >* second) {
+                                             const PRMInstance< GUM_SCALAR >* second) {
       if (_class_elim_order_ == 0) { _initElimOrder_(); }
 
       auto first_name  = _trim_(first->type().name());
@@ -658,9 +655,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Tensor< GUM_SCALAR >*
-           SVE< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
-                                             const PRMAggregate< GUM_SCALAR >* agg) {
+    Tensor< GUM_SCALAR >* SVE< GUM_SCALAR >::_getAggTensor_(const PRMInstance< GUM_SCALAR >*  i,
+                                                            const PRMAggregate< GUM_SCALAR >* agg) {
       return &(const_cast< Tensor< GUM_SCALAR >& >(i->get(agg->id()).cpf()));
     }
 
@@ -676,8 +672,8 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void SVE< GUM_SCALAR >::_addDelayedVariable_(const PRMInstance< GUM_SCALAR >* i,
-                                                        const PRMInstance< GUM_SCALAR >* j,
-                                                        NodeId                           id) {
+                                                 const PRMInstance< GUM_SCALAR >* j,
+                                                 NodeId                           id) {
       auto p_dv = _delayedVariables_.tryGet(i);
       if (!p_dv) {
         _delayedVariables_.insert(i, new gum::VariableSet());

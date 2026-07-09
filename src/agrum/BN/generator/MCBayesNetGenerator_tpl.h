@@ -352,9 +352,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  void
-      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_insertArc_(NodeId i,
-                                                                                   NodeId j) {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_insertArc_(NodeId i,
+                                                                                    NodeId j) {
     if (_directedPath_(j, i)) return;
 
     /*if (disturbing_) {
@@ -395,9 +394,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < typename > class ICPTGenerator,
              template < typename > class ICPTDisturber >
-  void
-      MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_chooseNodes_(NodeId& i,
-                                                                                     NodeId& j) {
+  void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::_chooseNodes_(NodeId& i,
+                                                                                      NodeId& j) {
     if (this->dag_.size() < 3) {
       GUM_ERROR(ArgumentError, "This dag has only " << this->dag_.size() << " nodes.")
     }

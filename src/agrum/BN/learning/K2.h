@@ -77,7 +77,7 @@ namespace gum {
       K2(K2&& from);
 
       /// destructor
-      ~K2();
+      ~K2() override;
 
       /// @}
 

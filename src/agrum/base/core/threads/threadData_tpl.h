@@ -58,10 +58,7 @@ namespace gum {
   ThreadData< T_DATA >::ThreadData(ThreadData< T_DATA >&& from) : data(std::move(from.data)) {}
 
   template < typename T_DATA >
-  ThreadData< T_DATA >& ThreadData< T_DATA >::operator=(const ThreadData< T_DATA >& from) {
-    data = from.data;
-    return *this;
-  }
+  ThreadData< T_DATA >& ThreadData< T_DATA >::operator=(const ThreadData< T_DATA >& from) = default;
 
   template < typename T_DATA >
   ThreadData< T_DATA >& ThreadData< T_DATA >::operator=(ThreadData< T_DATA >&& from) {

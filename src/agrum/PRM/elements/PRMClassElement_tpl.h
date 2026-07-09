@@ -116,32 +116,27 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClassElement< GUM_SCALAR >::isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
+    bool PRMClassElement< GUM_SCALAR >::isReferenceSlot(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_refslot;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClassElement< GUM_SCALAR >::isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
+    bool PRMClassElement< GUM_SCALAR >::isAttribute(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_attribute;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClassElement< GUM_SCALAR >::isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
+    bool PRMClassElement< GUM_SCALAR >::isAggregate(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_aggregate;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClassElement< GUM_SCALAR >::isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
+    bool PRMClassElement< GUM_SCALAR >::isSlotChain(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_slotchain;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClassElement< GUM_SCALAR >::isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
+    bool PRMClassElement< GUM_SCALAR >::isParameter(const PRMClassElement< GUM_SCALAR >& elt) {
       return elt.elt_type() == prm_parameter;
     }
 

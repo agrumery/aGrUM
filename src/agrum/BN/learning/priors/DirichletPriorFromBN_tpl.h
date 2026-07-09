@@ -131,9 +131,8 @@ namespace gum::learning {
 
   /// returns the prior vector all the variables in the idset
   template < GUM_Numeric GUM_SCALAR >
-  void
-      DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
-                                                              std::vector< double >& counts) {
+  void DirichletPriorFromBN< GUM_SCALAR >::addJointPseudoCount(const IdCondSet&       idset,
+                                                               std::vector< double >& counts) {
     if (this->weight_ == 0.0) return;
     const auto [X, Y] = idset.toNodeSets();
 

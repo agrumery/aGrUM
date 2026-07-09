@@ -62,8 +62,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    And< GUM_SCALAR >::And(const And< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+    And< GUM_SCALAR >::And(const And< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(And);
     }
 
@@ -79,9 +78,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx And< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                        Idx                     i1,
-                                        Idx                     i2,
-                                        bool&                   stop_iteration) const {
+                                 Idx                     i1,
+                                 Idx                     i2,
+                                 bool&                   stop_iteration) const {
       if (i1 == 1) {
         return (Idx)1;
       } else {
@@ -92,7 +91,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::string And< GUM_SCALAR >::aggregatorName() const {
-      return std::string("and");
+      return {"and"};
     }
 
     template < GUM_Numeric GUM_SCALAR >

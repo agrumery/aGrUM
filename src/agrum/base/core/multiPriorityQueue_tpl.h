@@ -296,7 +296,7 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp >
   const HashTable< Val, std::vector< Size > >&
-               MultiPriorityQueue< Val, Priority, Cmp >::allValues() const {
+      MultiPriorityQueue< Val, Priority, Cmp >::allValues() const {
     return reinterpret_cast< const HashTable< Val, std::vector< Size > >& >(_indices_);
   }
 
@@ -601,7 +601,7 @@ namespace gum {
   // A \c << operator for priority queues
   template < typename Val, typename Priority, typename Cmp >
   std::ostream& operator<<(std::ostream&                                   stream,
-                                  const MultiPriorityQueue< Val, Priority, Cmp >& queue) {
+                           const MultiPriorityQueue< Val, Priority, Cmp >& queue) {
     stream << queue.toString();
     return stream;
   }

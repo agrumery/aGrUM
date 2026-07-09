@@ -79,7 +79,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~ApproximationSchemeListener();
+    ~ApproximationSchemeListener() override;
 
     /**
      * @brief When progress was made.

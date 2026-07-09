@@ -144,7 +144,7 @@ namespace gum {
     public:
     BIFReader(BayesNet< GUM_SCALAR >* bn, std::string_view filename);
 
-    ~BIFReader();
+    ~BIFReader() override;
 
     /// Direct access to BIF scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
@@ -160,7 +160,7 @@ namespace gum {
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed();
+    Size proceed() override;
 
     /// @{
     /// publishing Errors API

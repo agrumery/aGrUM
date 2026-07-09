@@ -96,7 +96,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     ClassBayesNet< GUM_SCALAR >&
-           ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
+        ClassBayesNet< GUM_SCALAR >::operator=(const ClassBayesNet< GUM_SCALAR >& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
@@ -138,8 +138,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
+    const PRMClassElement< GUM_SCALAR >& ClassBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       if (this->dag_.exists(id)) {
         return _class_->get(id);
       } else {
@@ -149,7 +148,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMClassElement< GUM_SCALAR >&
-                 ClassBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
+        ClassBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
       if (!_class_->exists(name)) GUM_ERROR(NotFound, "no element found with that id.")
       return _class_->get(name);
     }

@@ -85,7 +85,7 @@ namespace gum {
       explicit PRMAttribute(std::string_view name);
 
       /// Destructor.
-      virtual ~PRMAttribute();
+      ~PRMAttribute() override;
 
       /// @}
       // ========================================================================
@@ -101,22 +101,22 @@ namespace gum {
                            const PRMAttribute< GUM_SCALAR >& source) = 0;
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const = 0;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override = 0;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType& type() = 0;
+      PRMType& type() override = 0;
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType& type() const = 0;
+      const PRMType& type() const override = 0;
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Tensor< GUM_SCALAR >& cpf() const = 0;
+      const Tensor< GUM_SCALAR >& cpf() const override = 0;
 
       /// See gum::PRMClassElement::addParent_().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt) = 0;
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override = 0;
 
       /// See gum::PRMClassElement::addChild_().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt) = 0;
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override = 0;
 
       /**
        * @brief Returns a proper cast descendant of this PRMAttribute.
@@ -134,7 +134,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if it is not possible to create a
        *                            cast descendant for this PRMAttribute.
        */
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const = 0;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override = 0;
 
       /**
        * @brief Define attr as a cast descendant of this PRMAttribute.

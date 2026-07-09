@@ -55,20 +55,15 @@ namespace gum {
 
   /// Copy Constructor
   INLINE
-  IDiscretizedVariable::IDiscretizedVariable(const IDiscretizedVariable& from) :
-      DiscreteVariable(from), _is_empirical(from._is_empirical) {}
+  IDiscretizedVariable::IDiscretizedVariable(const IDiscretizedVariable& from) = default;
 
   /// destructor
   INLINE
-  IDiscretizedVariable::~IDiscretizedVariable() {}
+  IDiscretizedVariable::~IDiscretizedVariable() = default;
 
   /// copy assignment
   INLINE
-  IDiscretizedVariable& IDiscretizedVariable::operator=(const IDiscretizedVariable& from) {
-    DiscreteVariable::operator=(from);
-    _is_empirical = from._is_empirical;
-    return *this;
-  }
+  IDiscretizedVariable& IDiscretizedVariable::operator=(const IDiscretizedVariable& from) = default;
 
   INLINE bool IDiscretizedVariable::isEmpirical() const { return _is_empirical; }
 

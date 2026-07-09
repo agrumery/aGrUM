@@ -107,8 +107,8 @@ namespace gum {
 
     /// destructor
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::~GraphChangesSelector4DiGraph() {
+    GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                  VARIABLE_CONSTRAINT_TYPE >::~GraphChangesSelector4DiGraph() {
       GUM_DESTRUCTOR(GraphChangesSelector4DiGraph);
     }
 
@@ -362,42 +362,37 @@ namespace gum {
 
     // indicates whether the selector allows the application of arc additions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::arcAdditionsEnabled() const {
+    bool GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::arcAdditionsEnabled() const {
       return _use_arc_additions_;
     }
 
     // indicates whether the selector allows the application of arc deletions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::arcDeletionsEnabled() const {
+    bool GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::arcDeletionsEnabled() const {
       return _use_arc_deletions_;
     }
 
     // indicates whether the selector allows the application of arc reversals
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::arcReversalsEnabled() const {
+    bool GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::arcReversalsEnabled() const {
       return _use_arc_reversals_;
     }
 
     // indicates whether the selector allows the application of arc triangle deletions
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::arcTriangleDeletionsEnabled()
-            const {
+    bool GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                       VARIABLE_CONSTRAINT_TYPE >::arcTriangleDeletionsEnabled()
+        const {
       return _use_arc_triangle_deletions_;
     }
 
     // compute the new score of node given that we added it a new parent
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    double
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent) {
+    double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _scoreAfterAddingParent_(const NodeId node, const NodeId new_parent) {
       auto& parents = _node_parents_[node];
       parents.push_back(new_parent);
       const double new_score = _score_->score(node, parents);
@@ -416,9 +411,8 @@ namespace gum {
 
     /// compute the new score of node given that we removed a parent
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    double
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _scoreAfterRemovingParent_(const NodeId node, const NodeId parent) {
+    double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _scoreAfterRemovingParent_(const NodeId node, const NodeId parent) {
       auto& parents = _node_parents_[node];
       for (auto& par: parents) {
         if (par == parent) {
@@ -434,11 +428,10 @@ namespace gum {
 
     /// compute the new score of node given that we added it a new parent
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    double
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _scoreAfterAddingParents_(const NodeId node,
-                                      const NodeId new_parent1,
-                                      const NodeId new_parent2) {
+    double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _scoreAfterAddingParents_(const NodeId node,
+                                  const NodeId new_parent1,
+                                  const NodeId new_parent2) {
       auto& parents = _node_parents_[node];
       parents.push_back(new_parent1);
       parents.push_back(new_parent2);
@@ -450,11 +443,8 @@ namespace gum {
 
     /// compute the new score of node given that we removed two parents
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    double
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _scoreAfterRemovingParents_(const NodeId node,
-                                        const NodeId parent1,
-                                        const NodeId parent2) {
+    double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _scoreAfterRemovingParents_(const NodeId node, const NodeId parent1, const NodeId parent2) {
       auto& parents = _node_parents_[node];
       for (auto& par: parents) {
         if (par == parent1) {
@@ -478,9 +468,8 @@ namespace gum {
 
     /// adds an ArcAddition to _sorted_changes_ if possible
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _addArcAdditionToSortedChanges_(const ArcAddition& change) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _addArcAdditionToSortedChanges_(const ArcAddition& change) {
       // only add the arc addition if this is allowed by the graph and the constraints
       if (!_invariable_constraints_->isAlwaysInvalid(change)) {
         const NodeId node1 = change.node1();
@@ -498,9 +487,8 @@ namespace gum {
 
     /// adds an ArcDeletion to _sorted_changes_ if possible
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _addArcDeletionToSortedChanges_(const ArcDeletion& change) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _addArcDeletionToSortedChanges_(const ArcDeletion& change) {
       // only add the arc reversal if this is allowed by the constraints
       if (!_invariable_constraints_->isAlwaysInvalid(change)) {
         const NodeId tail = change.node1();
@@ -518,9 +506,8 @@ namespace gum {
 
     /// adds an ArcReversal to _sorted_changes_ if possible
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _addArcReversalToSortedChanges_(const ArcReversal& change) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _addArcReversalToSortedChanges_(const ArcReversal& change) {
       // only add the arc reversal if this is allowed by the constraints
       if (!_invariable_constraints_->isAlwaysInvalid(change)) {
         const NodeId tail = change.node1();
@@ -541,9 +528,8 @@ namespace gum {
 
     /// adds an ArcTriangleDeletion1 to _sorted_changes_ if possible
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _addArcTriangleDeletion1ToSortedChanges_(const ArcTriangleDeletion1& change) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _addArcTriangleDeletion1ToSortedChanges_(const ArcTriangleDeletion1& change) {
       // only add the arc reversal if this is allowed by the constraints
       if (!_invariable_constraints_->isAlwaysInvalid(change)) {
         const auto node1 = change.node1();
@@ -574,9 +560,8 @@ namespace gum {
 
     /// adds an ArcTriangleDeletion2 to _sorted_changes_ if possible
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _addArcTriangleDeletion2ToSortedChanges_(const ArcTriangleDeletion2& change) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _addArcTriangleDeletion2ToSortedChanges_(const ArcTriangleDeletion2& change) {
       // only add the arc reversal if this is allowed by the constraints
       if (!_invariable_constraints_->isAlwaysInvalid(change)) {
         const auto node1 = change.node1();
@@ -604,9 +589,8 @@ namespace gum {
 
     /// updates the score of a given ArcAddition
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _updateArcAdditionScore_(const NodeId tail, const NodeId head) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _updateArcAdditionScore_(const NodeId tail, const NodeId head) {
       const auto addition = _sorted_changes_.tryGet(ArcAddition(tail, head));
       if (addition.has_value()) {
         // currently unavailable changes have a -infty priority
@@ -619,9 +603,8 @@ namespace gum {
 
     /// updates the score of a given ArcDeletion
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _updateArcDeletionScore_(const NodeId tail, const NodeId head) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _updateArcDeletionScore_(const NodeId tail, const NodeId head) {
       const auto deletion = _sorted_changes_.tryGet(ArcDeletion(tail, head));
       if (deletion.has_value()) {
         // currently unavailable changes have a -infty priority
@@ -634,9 +617,8 @@ namespace gum {
 
     /// updates the score of a given ArcReversal
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    void
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            _updateArcReversalScore_(const NodeId tail, const NodeId head) {
+    void GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        _updateArcReversalScore_(const NodeId tail, const NodeId head) {
       const auto reversal = _sorted_changes_.tryGet(ArcReversal(tail, head));
       if (reversal.has_value()) {
         const double delta = _graph_->existsArc(tail, head) && !_graph_->existsArc(head, tail)
@@ -877,9 +859,8 @@ namespace gum {
 
     /// returns the best graph change that can be applied
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    const GraphChange&
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                      VARIABLE_CONSTRAINT_TYPE >::bestChange() {
+    const GraphChange& GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
+                                                     VARIABLE_CONSTRAINT_TYPE >::bestChange() {
       for (const auto& _sorted_change: _sorted_changes_) {
         if (_variable_constraints_->checkModification(_sorted_change)) { return _sorted_change; }
       }
@@ -890,7 +871,7 @@ namespace gum {
     /// return the score of the best graph change
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
     double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE,
-                                                VARIABLE_CONSTRAINT_TYPE >::bestDeltaScore() {
+                                         VARIABLE_CONSTRAINT_TYPE >::bestDeltaScore() {
       for (auto iter = _sorted_changes_.begin(); iter != _sorted_changes_.end(); ++iter) {
         if (_variable_constraints_->checkModification(*iter)) { return iter.priority(); }
       }
@@ -900,9 +881,8 @@ namespace gum {
 
     /// return the delta score of a change in the ith queue
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    double
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            deltaScore(const GraphChange& change, const bool internal_change) const {
+    double GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        deltaScore(const GraphChange& change, const bool internal_change) const {
       try {
         return _sorted_changes_.priority(change, internal_change);
       } catch (NotFound&) {
@@ -920,9 +900,8 @@ namespace gum {
 
     /// indicates whether a given change is valid or not
     template < typename INVARIABLE_CONSTRAINT_TYPE, typename VARIABLE_CONSTRAINT_TYPE >
-    bool
-        GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
-            isChangeValid(const GraphChange& change) const {
+    bool GraphChangesSelector4DiGraph< INVARIABLE_CONSTRAINT_TYPE, VARIABLE_CONSTRAINT_TYPE >::
+        isChangeValid(const GraphChange& change) const {
       return !_invariable_constraints_->isAlwaysInvalid(change)
           && _variable_constraints_->checkModification(change);
     }

@@ -56,10 +56,10 @@ namespace gum {
     namespace o3prm {
 
       template < GUM_Numeric GUM_SCALAR >
-          O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(PRM< GUM_SCALAR >&          prm,
-                                                               O3PRM&                      o3_prm,
-                                                               O3NameSolver< GUM_SCALAR >& solver,
-                                                               ErrorsContainer&            errors) :
+      O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(PRM< GUM_SCALAR >&          prm,
+                                                           O3PRM&                      o3_prm,
+                                                           O3NameSolver< GUM_SCALAR >& solver,
+                                                           ErrorsContainer&            errors) :
           _prm_(&prm), _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
         GUM_CONSTRUCTOR(O3InterfaceFactory);
       }
@@ -72,8 +72,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(
-          O3InterfaceFactory< GUM_SCALAR >&& src) :
+      O3InterfaceFactory< GUM_SCALAR >::O3InterfaceFactory(O3InterfaceFactory< GUM_SCALAR >&& src) :
           _prm_(std::move(src._prm_)), _o3_prm_(std::move(src._o3_prm_)),
           _solver_(std::move(src._solver_)), _errors_(std::move(src._errors_)) {
         GUM_CONS_MOV(O3InterfaceFactory);
@@ -97,7 +96,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3InterfaceFactory< GUM_SCALAR >&
-             O3InterfaceFactory< GUM_SCALAR >::operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
+          O3InterfaceFactory< GUM_SCALAR >::operator=(O3InterfaceFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_    = std::move(src._prm_);
         _o3_prm_ = std::move(src._o3_prm_);
@@ -205,9 +204,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      bool
-          O3InterfaceFactory< GUM_SCALAR >::_checkInterfaceElement_(O3Interface&        i,
-                                                                    O3InterfaceElement& elt) {
+      bool O3InterfaceFactory< GUM_SCALAR >::_checkInterfaceElement_(O3Interface&        i,
+                                                                     O3InterfaceElement& elt) {
         if (!_solver_->resolveClassElement(elt.type())) { return false; }
 
         if (_prm_->isType(elt.type().label()) && elt.isArray()) {
@@ -227,9 +225,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      bool
-          O3InterfaceFactory< GUM_SCALAR >::_checkOverloadLegality_(O3Interface&        i,
-                                                                    O3InterfaceElement& elt) {
+      bool O3InterfaceFactory< GUM_SCALAR >::_checkOverloadLegality_(O3Interface&        i,
+                                                                     O3InterfaceElement& elt) {
         const auto& real_i   = _prm_->getInterface(i.name().label());
         const auto& real_elt = real_i.get(elt.name().label());
 
@@ -299,9 +296,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      bool
-          O3InterfaceFactory< GUM_SCALAR >::_checkCyclicReference_(O3Interface&        i,
-                                                                   O3InterfaceElement& elt) {
+      bool O3InterfaceFactory< GUM_SCALAR >::_checkCyclicReference_(O3Interface&        i,
+                                                                    O3InterfaceElement& elt) {
         if (_prm_->isInterface(elt.type().label()) || _prm_->isClass(elt.type().label())) {
           auto ref_type = (const PRMClassElementContainer< GUM_SCALAR >*)nullptr;
 

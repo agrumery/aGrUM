@@ -73,7 +73,7 @@ namespace gum {
     public:
     Chi2TestPolicy();
 
-    virtual ~Chi2TestPolicy();
+    ~Chi2TestPolicy() override;
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
@@ -90,7 +90,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation(Idx attr, GUM_ELEMENT value);
+    void addObservation(Idx attr, GUM_ELEMENT value) override;
 
     /// @}
 
@@ -104,7 +104,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const;
+    bool isTestRelevant() const override;
 
     /// @}
 
@@ -117,17 +117,17 @@ namespace gum {
     // ============================================================================
     /// Recomputes the statistic from the beginning
     // ============================================================================
-    void computeScore() const;
+    void computeScore() const override;
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    double score() const;
+    double score() const override;
 
     // ============================================================================
     /// Returns a second criterion to severe ties
     // ============================================================================
-    virtual double secondaryscore() const;
+    double secondaryscore() const override;
 
     /// @}
 

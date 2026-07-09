@@ -87,7 +87,7 @@ namespace gum {
                 SearchStrategy< GUM_SCALAR >*       strategy = 0);
 
         /// Destructor.
-        ~DFSTree();
+        ~DFSTree() override;
 
         /// @}
         // =========================================================================

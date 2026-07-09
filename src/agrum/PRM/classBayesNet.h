@@ -95,7 +95,7 @@ namespace gum {
       ClassBayesNet< GUM_SCALAR >& operator=(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Destructor.
-      virtual ~ClassBayesNet();
+      ~ClassBayesNet() override;
 
       /// @}
       // ===========================================================================
@@ -116,22 +116,22 @@ namespace gum {
        *                 IBayesNet.
        * @throw OperationNotAllowed raised if varId is an PRMAggregate.
        */
-      virtual const Tensor< GUM_SCALAR >& cpt(NodeId varId) const;
+      const Tensor< GUM_SCALAR >& cpt(NodeId varId) const override;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
-      virtual const VariableNodeMap& variableNodeMap() const;
+      const VariableNodeMap& variableNodeMap() const override;
 
       /// See gum::IBaseBayesNet::variable().
-      virtual const DiscreteVariable& variable(NodeId id) const;
+      const DiscreteVariable& variable(NodeId id) const override;
 
       /// See gum::IBaseBayesNet::nodeId().
-      virtual NodeId nodeId(const DiscreteVariable& var) const;
+      NodeId nodeId(const DiscreteVariable& var) const override;
 
       /// See gum::IBaseBayesNet::idFromName().
-      virtual NodeId idFromName(std::string_view name) const;
+      NodeId idFromName(std::string_view name) const override;
 
       /// See gum::IBaseBayesNet::variableFromName().
-      virtual const DiscreteVariable& variableFromName(std::string_view name) const;
+      const DiscreteVariable& variableFromName(std::string_view name) const override;
 
       /// See gum::IBaseBayesNet::modalities().
       const NodeProperty< Size >& modalities() const;
@@ -142,7 +142,7 @@ namespace gum {
       // ===========================================================================
       /// @{
       /// @return Returns a dot representation of this IBayesNet.
-      virtual std::string toDot() const;
+      std::string toDot() const override;
 
       /// @}
 

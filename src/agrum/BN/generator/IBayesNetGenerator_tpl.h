@@ -57,9 +57,8 @@ namespace gum {
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::IBayesNetGenerator(Size nbrNodes,
-                                                                             Size maxArcs,
-                                                                             Size maxModality) :
-      dag_() {
+                                                                      Size maxArcs,
+                                                                      Size maxModality) : dag_() {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
     nbrNodes_ = nbrNodes;
 

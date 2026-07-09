@@ -231,7 +231,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
-         TreeOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
+      TreeOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
     return MultiDimFunctionGraph< GUM_ELEMENT >::getTreeInstance();
   }
 
@@ -244,7 +244,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-         TreeOperatorStrategy< GUM_ELEMENT >::getAggregatorInstance() {
+      TreeOperatorStrategy< GUM_ELEMENT >::getAggregatorInstance() {
     return MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >::getTreeInstance();
   }
 

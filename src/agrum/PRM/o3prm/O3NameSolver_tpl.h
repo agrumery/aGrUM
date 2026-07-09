@@ -57,8 +57,8 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3NameSolver< GUM_SCALAR >::O3NameSolver(PRM< GUM_SCALAR >& prm,
-                                                      O3PRM&             o3_prm,
-                                                      ErrorsContainer&   errors) :
+                                               O3PRM&             o3_prm,
+                                               ErrorsContainer&   errors) :
           _prm_(&prm), _o3_prm_(&o3_prm), _errors_(&errors) {
         GUM_CONSTRUCTOR(O3NameSolver);
       }
@@ -87,7 +87,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3NameSolver< GUM_SCALAR >&
-             O3NameSolver< GUM_SCALAR >::operator=(const O3NameSolver< GUM_SCALAR >& src) {
+          O3NameSolver< GUM_SCALAR >::operator=(const O3NameSolver< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_           = src._prm_;
         _o3_prm_        = src._o3_prm_;
@@ -102,7 +102,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3NameSolver< GUM_SCALAR >&
-             O3NameSolver< GUM_SCALAR >::operator=(O3NameSolver< GUM_SCALAR >&& src) {
+          O3NameSolver< GUM_SCALAR >::operator=(O3NameSolver< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_           = std::move(src._prm_);
         _o3_prm_        = std::move(src._o3_prm_);

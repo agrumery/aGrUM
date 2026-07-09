@@ -77,7 +77,7 @@ namespace gum {
 
     // move constructor
     template < typename T_DATA >
-        IDatabaseTable< T_DATA >::Handler::Handler(typename IDatabaseTable< T_DATA >::Handler&& h) :
+    IDatabaseTable< T_DATA >::Handler::Handler(typename IDatabaseTable< T_DATA >::Handler&& h) :
         DBHandler< T_DATA >(), _db_(h._db_), _row_(h._row_), _index_(h._index_),
         _begin_index_(h._begin_index_), _end_index_(h._end_index_) {
       GUM_CONS_MOV(IDatabaseTable::Handler);
@@ -129,16 +129,14 @@ namespace gum {
 
     // makes the handler point to the next row
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::Handler&
-        IDatabaseTable< T_DATA >::Handler::operator++() {
+    typename IDatabaseTable< T_DATA >::Handler& IDatabaseTable< T_DATA >::Handler::operator++() {
       ++_index_;
       return *this;
     }
 
     // makes the handler point to the previous row
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::Handler&
-        IDatabaseTable< T_DATA >::Handler::operator--() {
+    typename IDatabaseTable< T_DATA >::Handler& IDatabaseTable< T_DATA >::Handler::operator--() {
       if (_index_ > _begin_index_) --_index_;
       return *this;
     }
@@ -212,8 +210,7 @@ namespace gum {
 
     // returns the current row pointed to by the handler (unsafe version)
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::Handler::reference
-        IDatabaseTable< T_DATA >::Handler::row() {
+    typename IDatabaseTable< T_DATA >::Handler::reference IDatabaseTable< T_DATA >::Handler::row() {
       return const_cast< Matrix< T_DATA >* >(_row_)->operator[](_index_);
     }
 
@@ -244,8 +241,7 @@ namespace gum {
     // returns a new handler that points to the beginning of the
     // database area of the current handler */
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::Handler
-        IDatabaseTable< T_DATA >::Handler::begin() const {
+    typename IDatabaseTable< T_DATA >::Handler IDatabaseTable< T_DATA >::Handler::begin() const {
       Handler handler(*this);
       handler.reset();
       return handler;
@@ -254,8 +250,7 @@ namespace gum {
     // returns a new handler that points to the end of the
     // database area of the current handler */
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::Handler
-        IDatabaseTable< T_DATA >::Handler::end() const {
+    typename IDatabaseTable< T_DATA >::Handler IDatabaseTable< T_DATA >::Handler::end() const {
       Handler handler(*this);
       handler._index_ = _end_index_;
       return handler;
@@ -551,8 +546,7 @@ namespace gum {
 
     // returns a new safe handler pointing to the beginning of the database
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::HandlerSafe
-        IDatabaseTable< T_DATA >::beginSafe() const {
+    typename IDatabaseTable< T_DATA >::HandlerSafe IDatabaseTable< T_DATA >::beginSafe() const {
       return HandlerSafe(*this);
     }
 
@@ -578,8 +572,7 @@ namespace gum {
 
     // returns a new safe handler on the database
     template < typename T_DATA >
-    typename IDatabaseTable< T_DATA >::HandlerSafe
-        IDatabaseTable< T_DATA >::handlerSafe() const {
+    typename IDatabaseTable< T_DATA >::HandlerSafe IDatabaseTable< T_DATA >::handlerSafe() const {
       return HandlerSafe(*this);
     }
 
@@ -606,8 +599,7 @@ namespace gum {
 
     // returns the variable names for all the columns
     template < typename T_DATA >
-    const std::vector< std::string >&
-                 IDatabaseTable< T_DATA >::variableNames() const noexcept {
+    const std::vector< std::string >& IDatabaseTable< T_DATA >::variableNames() const noexcept {
       return variable_names_;
     }
 
@@ -621,8 +613,7 @@ namespace gum {
 
     /// returns the index of the column whose name is passed in argument
     template < typename T_DATA >
-    std::size_t
-           IDatabaseTable< T_DATA >::columnFromVariableName(std::string_view name) const {
+    std::size_t IDatabaseTable< T_DATA >::columnFromVariableName(std::string_view name) const {
       const std::size_t size = variable_names_.size();
       for (std::size_t i = 0; i < size; ++i)
         if (variable_names_[i] == name) return i;

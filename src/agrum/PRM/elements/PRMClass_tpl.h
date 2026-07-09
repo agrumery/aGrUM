@@ -1008,8 +1008,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMClassElement< GUM_SCALAR >&
-                 PRMClass< GUM_SCALAR >::get(std::string_view name) const {
+    const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::get(std::string_view name) const {
       auto p = _nameMap_.tryGet(name);
       if (!p) {
         GUM_ERROR(NotFound, "no ClassElement<GUM_SCALAR> with the given name (" << name << ")");
@@ -1041,7 +1040,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     HashTable< std::string, const PRMParameter< GUM_SCALAR >* >
-           PRMClass< GUM_SCALAR >::scope() const {
+        PRMClass< GUM_SCALAR >::scope() const {
       HashTable< std::string, const PRMParameter< GUM_SCALAR >* > params;
 
       for (const auto p: parameters()) {
@@ -1085,8 +1084,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const Set< PRMReferenceSlot< GUM_SCALAR >* >&
-                 PRMClass< GUM_SCALAR >::referenceSlots() const {
+    const Set< PRMReferenceSlot< GUM_SCALAR >* >& PRMClass< GUM_SCALAR >::referenceSlots() const {
       return _referenceSlots_;
     }
 
@@ -1119,27 +1117,24 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMClassElement< GUM_SCALAR >&
-                 PRMClass< GUM_SCALAR >::operator[](NodeId id) const {
+    const PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::operator[](NodeId id) const {
       return get(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClassElement< GUM_SCALAR >&
-           PRMClass< GUM_SCALAR >::operator[](std::string_view name) {
+    PRMClassElement< GUM_SCALAR >& PRMClass< GUM_SCALAR >::operator[](std::string_view name) {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMClassElement< GUM_SCALAR >&
-                 PRMClass< GUM_SCALAR >::operator[](std::string_view name) const {
+        PRMClass< GUM_SCALAR >::operator[](std::string_view name) const {
       return get(name);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void
-        PRMClass< GUM_SCALAR >::_overloadAggregate_(PRMAggregate< GUM_SCALAR >*    overloader,
-                                                    PRMClassElement< GUM_SCALAR >* overloaded) {
+    void PRMClass< GUM_SCALAR >::_overloadAggregate_(PRMAggregate< GUM_SCALAR >*    overloader,
+                                                     PRMClassElement< GUM_SCALAR >* overloaded) {
       _nameMap_.insert(overloader->safeName(), overloader);
       _aggregates_.insert(overloader);
     }
@@ -1204,8 +1199,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool
-        PRMClass< GUM_SCALAR >::isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const {
+    bool PRMClass< GUM_SCALAR >::isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const {
       try {
         if (!this->getIOFlag_(elt).second) {
           if (_implements_) {

@@ -98,8 +98,8 @@ namespace gum {
 
   // assignment operator
   template < typename Key >
-  SetIteratorSafe< Key >&
-         SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from) = default;
+  SetIteratorSafe< Key >& SetIteratorSafe< Key >::operator=(const SetIteratorSafe< Key >& from)
+      = default;
 
   // assignment operator
   template < typename Key >
@@ -111,7 +111,7 @@ namespace gum {
   // move operator
   template < typename Key >
   SetIteratorSafe< Key >&
-         SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
+      SetIteratorSafe< Key >::operator=(SetIteratorSafe< Key >&& from) noexcept {
     _ht_iter_ = std::move(from._ht_iter_);
     return *this;
   }
@@ -243,8 +243,7 @@ namespace gum {
   // indicates whether two iterators point toward the same element of a same
   // set
   template < typename Key >
-  bool SetIterator< Key >::operator==(const SetIterator< Key >& from) const noexcept
-      = default;
+  bool SetIterator< Key >::operator==(const SetIterator< Key >& from) const noexcept = default;
 
   // returns the element pointed to by the iterator
   template < typename Key >

@@ -89,7 +89,7 @@ namespace gum::learning {
     [[nodiscard]] DirichletPriorFromBN* clone() const final;
 
     /// destructor
-    virtual ~DirichletPriorFromBN();
+    ~DirichletPriorFromBN() override;
 
     /// @}
 

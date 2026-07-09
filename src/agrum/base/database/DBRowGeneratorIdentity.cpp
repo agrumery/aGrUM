@@ -86,11 +86,8 @@ namespace gum {
     DBRowGeneratorIdentity::~DBRowGeneratorIdentity() { GUM_DESTRUCTOR(DBRowGeneratorIdentity); }
 
     /// copy operator
-    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from) {
-      DBRowGenerator::operator=(from);
-      _input_row_ = from._input_row_;
-      return *this;
-    }
+    DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(const DBRowGeneratorIdentity& from)
+        = default;
 
     /// move operator
     DBRowGeneratorIdentity& DBRowGeneratorIdentity::operator=(DBRowGeneratorIdentity&& from) {

@@ -74,7 +74,7 @@ namespace gum {
       GroundedInference(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& system);
 
       /// Destructor.
-      virtual ~GroundedInference();
+      ~GroundedInference() override;
 
       /// @}
       // ========================================================================
@@ -103,7 +103,7 @@ namespace gum {
        */
       void setBNInference(MarginalTargetedInference< GUM_SCALAR >* bn_inf);
 
-      virtual std::string name() const;
+      std::string name() const override;
 
       /// @}
 
@@ -115,25 +115,25 @@ namespace gum {
 
       /// This method is called whenever an evidence is added, but AFTER
       /// any processing made by PRMInference.
-      virtual void evidenceAdded_(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+      void evidenceAdded_(const typename PRMInference< GUM_SCALAR >::Chain& chain) override;
 
       /// This method is called whenever an evidence is removed, but BEFORE
       /// any processing made by PRMInference.
-      virtual void evidenceRemoved_(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+      void evidenceRemoved_(const typename PRMInference< GUM_SCALAR >::Chain& chain) override;
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param chain
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
-      virtual void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                              Tensor< GUM_SCALAR >&                             m);
+      void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
+                      Tensor< GUM_SCALAR >&                             m) override;
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
-      virtual void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-                          Tensor< GUM_SCALAR >&                                            j);
+      void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
+                  Tensor< GUM_SCALAR >&                                            j) override;
 
       /// @}
 

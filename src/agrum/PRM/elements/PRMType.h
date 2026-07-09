@@ -124,7 +124,7 @@ namespace gum {
       /**
        * Destructor.
        */
-      virtual ~PRMType();
+      ~PRMType() override;
 
       /// @}
       // ==========================================================================
@@ -180,7 +180,7 @@ namespace gum {
       /**
        * Implementation of the pure virtual method of PRMObject.
        */
-      virtual prm_type obj_type() const;
+      prm_type obj_type() const override;
 
       /**
        * Returns the name of this object.

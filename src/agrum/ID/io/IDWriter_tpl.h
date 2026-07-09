@@ -76,7 +76,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void IDWriter< GUM_SCALAR >::write(std::string_view                filePath,
-                                            InfluenceDiagram< GUM_SCALAR >& infdiag) {
+                                     InfluenceDiagram< GUM_SCALAR >& infdiag) {
     write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(infdiag));
   }
 

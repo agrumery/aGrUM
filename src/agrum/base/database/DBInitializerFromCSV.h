@@ -180,10 +180,10 @@ namespace gum {
       DBInitializerFromCSV(DBInitializerFromCSV&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual DBInitializerFromCSV* clone() const;
+      [[nodiscard]] DBInitializerFromCSV* clone() const override;
 
       /// destructor
-      virtual ~DBInitializerFromCSV();
+      ~DBInitializerFromCSV() override;
 
       /// @}
 
@@ -209,13 +209,13 @@ namespace gum {
 
       protected:
       /// returns the names of the variables
-      virtual std::vector< std::string > variableNames_() final;
+      std::vector< std::string > variableNames_() final;
 
       /// returns the content of the current row using strings
-      virtual const std::vector< std::string >& currentStringRow_() final;
+      const std::vector< std::string >& currentStringRow_() final;
 
       /// indicates whether there is a next row to read (and point on it)
-      virtual bool nextRow_() final;
+      bool nextRow_() final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

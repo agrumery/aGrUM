@@ -60,7 +60,7 @@ namespace gum {
   // Default constructor
   template < typename GUM_SCALAR >
   MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(GUM_SCALAR external_weight,
-                                                          GUM_SCALAR default_weight) :
+                                                   GUM_SCALAR default_weight) :
       MultiDimReadOnly< GUM_SCALAR >(), _external_weight_(external_weight),
       _default_weight_(default_weight) {
     GUM_CONSTRUCTOR(MultiDimICIModel);
@@ -68,7 +68,7 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_SCALAR >
-      MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from) :
+  MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from) :
       MultiDimReadOnly< GUM_SCALAR >(from) {
     GUM_CONS_CPY(MultiDimICIModel);
     _default_weight_  = from._default_weight_;
@@ -110,8 +110,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v,
-                                                           GUM_SCALAR              w) const {
+  void MultiDimICIModel< GUM_SCALAR >::causalWeight(const DiscreteVariable& v, GUM_SCALAR w) const {
     if (!this->contains(v)) {
       GUM_ERROR(InvalidArgument, v.name() << " is not a cause for this CI Model")
     }
@@ -169,7 +168,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::replace_(const DiscreteVariable* x,
-                                                       const DiscreteVariable* y) {
+                                                const DiscreteVariable* y) {
     MultiDimReadOnly< GUM_SCALAR >::replace_(x, y);
     _causal_weights_.insert(y, _causal_weights_[x]);
     _causal_weights_.erase(x);

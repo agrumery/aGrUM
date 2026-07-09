@@ -101,7 +101,7 @@ namespace gum {
         Pattern(const Pattern& source);
 
         /// Destructor.
-        ~Pattern();
+        ~Pattern() override;
 
         /// @}
         // =========================================================================

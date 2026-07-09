@@ -84,7 +84,7 @@ namespace gum {
       PRMParameter(std::string_view name, ParameterType type, GUM_SCALAR value);
 
       /// Destructor.
-      virtual ~PRMParameter();
+      ~PRMParameter() override;
 
       /// @}
       // ========================================================================
@@ -93,7 +93,7 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       GUM_SCALAR value() const;
 
@@ -102,26 +102,26 @@ namespace gum {
       ParameterType valueType() const;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       /// See gum::PRMClassElement::cpf().
       virtual Tensor< GUM_SCALAR >& cpf();
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /// See gum::PRMClassElement::addParent().
-      void addParent(const gum::prm::PRMClassElement< GUM_SCALAR >&);
+      void addParent(const gum::prm::PRMClassElement< GUM_SCALAR >&) override;
 
       /// See gum::PRMClassElement::addChild().
-      void addChild(const gum::prm::PRMClassElement< GUM_SCALAR >&);
+      void addChild(const gum::prm::PRMClassElement< GUM_SCALAR >&) override;
 
       /// @brief Raise a gum::OperationNotAllowed
       /// See gum::PRMClassElement::getCastDescendant()
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
 
       /// @}
 

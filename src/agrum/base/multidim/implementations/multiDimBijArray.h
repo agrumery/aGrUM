@@ -108,7 +108,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~MultiDimBijArray();
+    ~MultiDimBijArray() override;
 
     /// @}
     // ========================================================================
@@ -127,7 +127,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised since you can't change a readonly
      * structure.
      */
-    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
+    void set(const Instantiation& i, const GUM_ELEMENT& value) const override;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -135,7 +135,7 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -143,14 +143,14 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
     /**
      * This will raise an exception: you can't change the data
      * @param d the value changed
      * @throw OperationNotAllowed You can't change data.
      */
-    virtual void fill(const GUM_ELEMENT& d) const;
+    void fill(const GUM_ELEMENT& d) const override;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -158,7 +158,7 @@ namespace gum {
      * @param v The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void populate(const std::vector< GUM_ELEMENT >& v) const;
+    void populate(const std::vector< GUM_ELEMENT >& v) const override;
 
     /**
      * This will raise an exception: you can't change the variables in a
@@ -166,7 +166,7 @@ namespace gum {
      * @param l The variable not added.
      * @throw OperationNotAllowed You can't add variable in a MultiDimBijArray.
      */
-    virtual void populate(std::initializer_list< GUM_ELEMENT > l) const;
+    void populate(std::initializer_list< GUM_ELEMENT > l) const override;
 
     /// @}
     // ========================================================================
@@ -174,22 +174,22 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual const std::string& name() const;
+    const std::string& name() const override;
 
-    virtual GUM_ELEMENT get(const Instantiation& i) const;
+    GUM_ELEMENT get(const Instantiation& i) const override;
 
-    virtual Size realSize() const;
+    Size realSize() const override;
 
-    [[nodiscard]] virtual MultiDimBijArray< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] MultiDimBijArray< GUM_ELEMENT >* newFactory() const override;
 
     /// @}
 
     protected:
-    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
+    GUM_ELEMENT& get_(const Instantiation& i) const override;
 
-    virtual void commitMultipleChanges_();
+    void commitMultipleChanges_() override;
 
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     private:
     /// The true data.

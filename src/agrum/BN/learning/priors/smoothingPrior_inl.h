@@ -78,10 +78,7 @@ namespace gum {
     INLINE SmoothingPrior::~SmoothingPrior() { GUM_DESTRUCTOR(SmoothingPrior); }
 
     /// copy operator
-    INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) {
-      Prior::operator=(from);
-      return *this;
-    }
+    INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) = default;
 
     /// move operator
     INLINE SmoothingPrior& SmoothingPrior::operator=(SmoothingPrior&& from) {

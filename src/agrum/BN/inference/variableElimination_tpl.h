@@ -67,10 +67,10 @@ namespace gum {
 
   // default constructor
   template < GUM_Numeric GUM_SCALAR >
-  VariableElimination< GUM_SCALAR >::VariableElimination(
-      const IBayesNet< GUM_SCALAR >* BN,
-      RelevantTensorsFinderType      relevant_type,
-      FindBarrenNodesType            barren_type) : JointTargetedInference< GUM_SCALAR >(BN) {
+  VariableElimination< GUM_SCALAR >::VariableElimination(const IBayesNet< GUM_SCALAR >* BN,
+                                                         RelevantTensorsFinderType relevant_type,
+                                                         FindBarrenNodesType       barren_type) :
+      JointTargetedInference< GUM_SCALAR >(BN) {
     // sets the relevant tensor and the barren nodes finding algorithm
     _findRelevantTensors_
         = &VariableElimination< GUM_SCALAR >::_findRelevantTensorsWithdSeparation2_;
@@ -1551,13 +1551,13 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > VENewmultiTensor(const Tensor< GUM_SCALAR >& t1,
-                                               const Tensor< GUM_SCALAR >& t2) {
+                                        const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   Tensor< GUM_SCALAR > VENewprojTensor(const Tensor< GUM_SCALAR >& t1,
-                                              const gum::VariableSet&     del_vars) {
+                                       const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
   }
 

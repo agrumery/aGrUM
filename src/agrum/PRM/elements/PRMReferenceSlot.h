@@ -98,7 +98,7 @@ namespace gum {
       /**
        * Destructor.
        */
-      virtual ~PRMReferenceSlot();
+      ~PRMReferenceSlot() override;
 
       /// @}
       // ========================================================================
@@ -109,7 +109,7 @@ namespace gum {
       /**
        * Implementation of the pure virtual method of PRMObject.
        */
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer
@@ -129,10 +129,10 @@ namespace gum {
       bool isArray() const;
 
       /// See gum::PRMClassElement::addParent().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement::addChild().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// @}
       // ========================================================================
@@ -142,11 +142,11 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
@@ -154,11 +154,11 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::getCastDescendant().
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
 
       /// @}
 

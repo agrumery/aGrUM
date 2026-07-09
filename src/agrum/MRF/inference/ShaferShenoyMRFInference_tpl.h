@@ -200,7 +200,7 @@ namespace gum {
   /// fired when a new evidence is inserted
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceAdded_(const NodeId id,
-                                                                       bool isHardEvidence) {
+                                                                bool         isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -221,7 +221,7 @@ namespace gum {
   /// fired when an evidence is removed
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id,
-                                                                        bool isHardEvidence) {
+                                                                 bool         isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence) _is_new_jt_needed_ = true;
@@ -266,7 +266,7 @@ namespace gum {
   /// fired when an evidence is changed
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
-                                                                         bool hasChangedSoftHard) {
+                                                                  bool         hasChangedSoftHard) {
     if (hasChangedSoftHard) _is_new_jt_needed_ = true;
     else {
       try {
@@ -1243,8 +1243,8 @@ namespace gum {
   // performs the collect phase of Shafer-Shenoy using schedules
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyMRFInference< GUM_SCALAR >::_collectMessage_(Schedule& schedule,
-                                                                       NodeId    id,
-                                                                       NodeId    from) {
+                                                                NodeId    id,
+                                                                NodeId    from) {
     for (const auto other: _JT_->neighbours(id)) {
       if ((other != from) && !_messages_computed_[Arc(other, id)])
         _collectMessage_(schedule, other, id);
@@ -2090,14 +2090,14 @@ namespace gum {
   // the function used to combine two tables
   template < GUM_Numeric GUM_SCALAR >
   static Tensor< GUM_SCALAR > SSNewMNmultiTensor(const Tensor< GUM_SCALAR >& t1,
-                                                        const Tensor< GUM_SCALAR >& t2) {
+                                                 const Tensor< GUM_SCALAR >& t2) {
     return t1 * t2;
   }
 
   // the function used to project (marginalize) a table
   template < GUM_Numeric GUM_SCALAR >
   static Tensor< GUM_SCALAR > SSNewMNprojTensor(const Tensor< GUM_SCALAR >& t1,
-                                                       const gum::VariableSet&     del_vars) {
+                                                const gum::VariableSet&     del_vars) {
     return t1.sumOut(del_vars);
   }
 

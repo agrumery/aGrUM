@@ -54,10 +54,9 @@ namespace gum {
   namespace prm {
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-        std::string_view                      name,
-        const PRMType&                        type,
-        MultiDimImplementation< GUM_SCALAR >* impl) :
+    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(std::string_view                      name,
+                                                     const PRMType&                        type,
+                                                     MultiDimImplementation< GUM_SCALAR >* impl) :
         PRMScalarAttribute< GUM_SCALAR >(name, type, impl) {
       GUM_CONSTRUCTOR(PRMFuncAttribute);
     }
@@ -68,23 +67,21 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void
-        PRMFuncAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
+    void PRMFuncAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
-    void PRMFuncAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
-    }
+    void PRMFuncAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(
-        const PRMFuncAttribute< GUM_SCALAR >& source) : PRMScalarAttribute< GUM_SCALAR >(source) {
+    PRMFuncAttribute< GUM_SCALAR >::PRMFuncAttribute(const PRMFuncAttribute< GUM_SCALAR >& source) :
+        PRMScalarAttribute< GUM_SCALAR >(source) {
       GUM_CONS_CPY(PRMFuncAttribute);
       GUM_ERROR(FatalError, "illegal call to copy constructor")
     }
 
     template < GUM_Numeric GUM_SCALAR >
     PRMFuncAttribute< GUM_SCALAR >&
-           PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
+        PRMFuncAttribute< GUM_SCALAR >::operator=(const PRMFuncAttribute< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "illegal call to copy operator")
     }
 

@@ -79,7 +79,7 @@ namespace gum {
     UndiGraphListener(UndiGraph* g);
 
     /// destructor
-    ~UndiGraphListener();
+    ~UndiGraphListener() override;
 
     /// @}
 

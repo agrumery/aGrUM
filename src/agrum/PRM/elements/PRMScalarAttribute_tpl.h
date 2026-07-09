@@ -159,8 +159,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void
-        PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
+    void PRMScalarAttribute< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {
       try {
         _cpf_->add(elt.type().variable());
       } catch (DuplicateElement const&) {
@@ -172,8 +171,7 @@ namespace gum {
 
     // See gum::PRMClassElement<GUM_SCALAR>::addChild_().
     template < GUM_Numeric GUM_SCALAR >
-    void
-        PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
+    void PRMScalarAttribute< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
     PRMAttribute< GUM_SCALAR >* PRMScalarAttribute< GUM_SCALAR >::getCastDescendant() const {

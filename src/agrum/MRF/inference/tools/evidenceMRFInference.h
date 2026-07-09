@@ -81,7 +81,7 @@ namespace gum {
     explicit EvidenceMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~EvidenceMRFInference();
+    ~EvidenceMRFInference() override;
 
     /// @}
 

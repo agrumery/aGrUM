@@ -87,11 +87,7 @@ namespace gum {
     }
 
     /// copy operator
-    INLINE IdCondSetIterator& IdCondSetIterator::operator=(const IdCondSetIterator& from) {
-      _seq_   = from._seq_;
-      _index_ = from._index_;
-      return *this;
-    }
+    INLINE IdCondSetIterator& IdCondSetIterator::operator=(const IdCondSetIterator& from) = default;
 
     /// move operator
     INLINE IdCondSetIterator& IdCondSetIterator::operator=(IdCondSetIterator&& from) {

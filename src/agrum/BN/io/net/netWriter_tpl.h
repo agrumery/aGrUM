@@ -72,8 +72,7 @@ namespace gum {
   // @param bn The Bayesian network writen in output.
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
-  void NetWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                const IBayesNet< GUM_SCALAR >& bn) {
+  void NetWriter< GUM_SCALAR >::_doWrite(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     output << _header_(bn) << std::endl;
@@ -100,7 +99,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
   void NetWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                const IBayesNet< GUM_SCALAR >& bn) {
+                                         const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);

@@ -95,7 +95,7 @@ namespace gum {
     /**
      * @brief Class destrucor.
      */
-    virtual ~MultiDimWithOffset();
+    ~MultiDimWithOffset() override;
 
     /**
      * Copy operator.
@@ -104,7 +104,7 @@ namespace gum {
      */
     MultiDimWithOffset< GUM_ELEMENT >& operator=(const MultiDimWithOffset< GUM_ELEMENT >& from);
 
-    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
     /// @}
     // =========================================================================
@@ -112,32 +112,32 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
-    virtual void fill(const GUM_ELEMENT& d) const = 0;
+    void fill(const GUM_ELEMENT& d) const override = 0;
 
-    virtual std::string toString(const Instantiation* i) const;
+    std::string toString(const Instantiation* i) const override;
 
-    virtual void changeNotification(const Instantiation&          i,
-                                    const DiscreteVariable* const var,
-                                    Idx                           oldval,
-                                    Idx                           newval);
+    void changeNotification(const Instantiation&          i,
+                            const DiscreteVariable* const var,
+                            Idx                           oldval,
+                            Idx                           newval) override;
 
-    virtual void setChangeNotification(const Instantiation& i);
+    void setChangeNotification(const Instantiation& i) override;
 
-    virtual void setFirstNotification(const Instantiation& i);
+    void setFirstNotification(const Instantiation& i) override;
 
-    virtual void setLastNotification(const Instantiation& i);
+    void setLastNotification(const Instantiation& i) override;
 
-    void setIncNotification(const Instantiation& i);
+    void setIncNotification(const Instantiation& i) override;
 
-    void setDecNotification(const Instantiation& i);
+    void setDecNotification(const Instantiation& i) override;
 
-    virtual bool registerSlave(Instantiation& i);
+    bool registerSlave(Instantiation& i) override;
 
-    virtual bool unregisterSlave(Instantiation& i);
+    bool unregisterSlave(Instantiation& i) override;
 
     /// @}
     // =========================================================================
@@ -214,7 +214,7 @@ namespace gum {
      */
     void computeInstantiationValue_(Instantiation& result, Size indice) const;
 
-    virtual GUM_ELEMENT& get_(const Instantiation& i) const = 0;
+    GUM_ELEMENT& get_(const Instantiation& i) const override = 0;
   };
 } /* namespace gum */
 

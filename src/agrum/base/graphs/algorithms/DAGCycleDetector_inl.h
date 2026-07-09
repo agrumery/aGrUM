@@ -80,12 +80,7 @@ namespace gum {
 
   // copy operator
   INLINE DAGCycleDetector::Change&
-         DAGCycleDetector::Change::operator=(const DAGCycleDetector::Change& from) noexcept {
-    _type_ = from._type_;
-    _tail_ = from._tail_;
-    _head_ = from._head_;
-    return *this;
-  }
+      DAGCycleDetector::Change::operator=(const DAGCycleDetector::Change& from) noexcept = default;
 
   // move operator
   INLINE DAGCycleDetector::Change&
@@ -138,10 +133,7 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcAdd&
-         DAGCycleDetector::ArcAdd::operator=(const DAGCycleDetector::ArcAdd& from) noexcept {
-    DAGCycleDetector::Change::operator=(from);
-    return *this;
-  }
+      DAGCycleDetector::ArcAdd::operator=(const DAGCycleDetector::ArcAdd& from) noexcept = default;
 
   /// move operator
   INLINE DAGCycleDetector::ArcAdd&
@@ -181,10 +173,7 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcDel&
-         DAGCycleDetector::ArcDel::operator=(const DAGCycleDetector::ArcDel& from) noexcept {
-    DAGCycleDetector::Change::operator=(from);
-    return *this;
-  }
+      DAGCycleDetector::ArcDel::operator=(const DAGCycleDetector::ArcDel& from) noexcept = default;
 
   /// move operator
   INLINE DAGCycleDetector::ArcDel&
@@ -226,10 +215,8 @@ namespace gum {
 
   /// copy operator
   INLINE DAGCycleDetector::ArcReverse&
-      DAGCycleDetector::ArcReverse::operator=(const DAGCycleDetector::ArcReverse& from) noexcept {
-    DAGCycleDetector::Change::operator=(from);
-    return *this;
-  }
+         DAGCycleDetector::ArcReverse::operator=(const DAGCycleDetector::ArcReverse& from) noexcept
+      = default;
 
   /// move operator
   INLINE DAGCycleDetector::ArcReverse&

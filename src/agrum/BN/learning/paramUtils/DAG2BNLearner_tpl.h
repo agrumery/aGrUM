@@ -73,8 +73,7 @@ namespace gum {
 
     /// create a BN
     template < GUM_Numeric GUM_SCALAR >
-    BayesNet< GUM_SCALAR > DAG2BNLearner::createBN(ParamEstimator& estimator,
-                                                          const DAG&      dag) {
+    BayesNet< GUM_SCALAR > DAG2BNLearner::createBN(ParamEstimator& estimator, const DAG& dag) {
       return DAG2BNLearner()._createBN_(estimator, dag, false);
     }
 
@@ -131,8 +130,8 @@ namespace gum {
     /// create a BN with EM: initialized by an estimator
     template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > DAG2BNLearner::createBNwithEM(ParamEstimator& bootstrap_estimator,
-                                                                ParamEstimator& EM_estimator,
-                                                                const DAG&      dag) {
+                                                         ParamEstimator& EM_estimator,
+                                                         const DAG&      dag) {
       // for EM estimations, we need to disable caches
       bootstrap_estimator.clear();
       EM_estimator.clear();
@@ -146,8 +145,8 @@ namespace gum {
     /// create a BN with EM: initialized by the parameters of a BN
     template < GUM_Numeric GUM_SCALAR >
     BayesNet< GUM_SCALAR > DAG2BNLearner::createBNwithEM(ParamEstimator& bootstrap_estimator,
-                                                                ParamEstimator& EM_estimator,
-                                                                const BayesNet< GUM_SCALAR >& bn) {
+                                                         ParamEstimator& EM_estimator,
+                                                         const BayesNet< GUM_SCALAR >& bn) {
       // for EM estimations, we need to disable caches
       bootstrap_estimator.clear();
       EM_estimator.clear();

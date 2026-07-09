@@ -83,11 +83,11 @@ namespace gum {
     /**
      * destructor
      */
-    virtual ~LoopySamplingInference();
+    ~LoopySamplingInference() override;
 
     /// makes the inference by generating samples w.r.t the mother class' sampling
     /// method after initalizing  estimators with loopy belief propagation
-    virtual void makeInference_();
+    void makeInference_() override;
 
     void setVirtualLBPSize(GUM_SCALAR vlbpsize);
 

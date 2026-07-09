@@ -287,7 +287,7 @@ namespace gum {
     using HashFuncBase< Key >::operator();
 
     public:
-    virtual Size operator()(const Key& key) const final;
+    Size operator()(const Key& key) const final;
   };
 
   /**
@@ -318,7 +318,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Key& key) const final;
+    Size operator()(const Key& key) const final;
 
     protected:
     /**
@@ -356,7 +356,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Key& key) const final;
+    Size operator()(const Key& key) const final;
   };
 
   /**
@@ -514,7 +514,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const std::pair< Key1, Key2 >& key) const override final;
+    Size operator()(const std::pair< Key1, Key2 >& key) const final;
   };
 
   // ===========================================================================
@@ -618,7 +618,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const std::string& key) const override final;
+    Size operator()(const std::string& key) const final;
 
     /// @brief Non-virtual overload for heterogeneous lookup with string_view.
     Size operator()(std::string_view key) const;
@@ -644,7 +644,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const std::vector< Idx >& key) const override final;
+    Size operator()(const std::vector< Idx >& key) const final;
   };
 
   /**
@@ -667,7 +667,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Debug& key) const final;
+    Size operator()(const Debug& key) const final;
 
     template < typename OTHER_KEY >
     friend class HashFunc;
@@ -694,7 +694,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const std::shared_ptr< Type >& key) const override final;
+    Size operator()(const std::shared_ptr< Type >& key) const final;
   };
 
 } /* namespace gum */

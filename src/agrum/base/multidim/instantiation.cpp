@@ -275,7 +275,6 @@ namespace gum {
     return aStream;
   }
 
-
   void Instantiation::add(const DiscreteVariable& v) {
     // if  _master_ : not allowed
     if (_master_) { GUM_ERROR(OperationNotAllowed, "in slave Instantiation") }

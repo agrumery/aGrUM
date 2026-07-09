@@ -103,7 +103,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~MultiDimImplementation();
+    ~MultiDimImplementation() override;
 
     /// @}
     // =========================================================================
@@ -188,9 +188,9 @@ namespace gum {
     /// @name MultiDimInterface implementation
     // ========================================================================
     /// @{
-    virtual Idx nbrDim() const override;
+    Idx nbrDim() const override;
 
-    virtual Size domainSize() const override;
+    Size domainSize() const override;
 
     void add(const DiscreteVariable& v) override;
 
@@ -201,7 +201,7 @@ namespace gum {
     const DiscreteVariable& variable(Idx i) const override;
     const DiscreteVariable& variable(std::string_view name) const override;
 
-    virtual Idx pos(const DiscreteVariable& v) const override;
+    Idx pos(const DiscreteVariable& v) const override;
 
     bool contains(const DiscreteVariable& v) const override;
 
@@ -299,12 +299,12 @@ namespace gum {
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual const MultiDimImplementation< GUM_ELEMENT >* content() const final;
+    const MultiDimImplementation< GUM_ELEMENT >* content() const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation< GUM_ELEMENT >* content() final;
+    MultiDimImplementation< GUM_ELEMENT >* content() final;
 
     private:
     /// List of discrete variables (dimensions).

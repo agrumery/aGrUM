@@ -382,7 +382,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       DFSTree< GUM_SCALAR >::DFSTree(const InterfaceGraph< GUM_SCALAR >&  graph,
-                                            gspan::SearchStrategy< GUM_SCALAR >* strategy) :
+                                     gspan::SearchStrategy< GUM_SCALAR >* strategy) :
           _graph_(&graph), _strategy_(strategy) {
         GUM_CONSTRUCTOR(DFSTree);
 
@@ -457,8 +457,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      Sequence< PRMInstance< GUM_SCALAR >* >&
-             DFSTree< GUM_SCALAR >::iso_map(const Pattern& p, NodeId node) {
+      Sequence< PRMInstance< GUM_SCALAR >* >& DFSTree< GUM_SCALAR >::iso_map(const Pattern& p,
+                                                                             NodeId         node) {
         auto pd = _data_.tryGet(const_cast< Pattern* >(&p));
         if (!pd) GUM_ERROR(NotFound, "pattern not found in this DFSTree")
         auto p_iso = (*pd)->iso_map.tryGet(node);
@@ -490,8 +490,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      typename DFSTree< GUM_SCALAR >::PatternData&
-          DFSTree< GUM_SCALAR >::data(const Pattern& p) {
+      typename DFSTree< GUM_SCALAR >::PatternData& DFSTree< GUM_SCALAR >::data(const Pattern& p) {
         return *(_data_[const_cast< Pattern* >(&p)]);
       }
 
@@ -514,8 +513,7 @@ namespace gum {
       // NeighborDegreeSort
 
       template < GUM_Numeric GUM_SCALAR >
-      DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(UndiGraph& graph) :
-          g(graph) {
+      DFSTree< GUM_SCALAR >::NeighborDegreeSort::NeighborDegreeSort(UndiGraph& graph) : g(graph) {
         GUM_CONSTRUCTOR(DFSTree< GUM_SCALAR >::NeighborDegreeSort);
       }
 
@@ -538,8 +536,7 @@ namespace gum {
       // PatternData
 
       template < GUM_Numeric GUM_SCALAR >
-      DFSTree< GUM_SCALAR >::PatternData::PatternData(Pattern* p) :
-          pattern(p), cost(0), gain(0) {
+      DFSTree< GUM_SCALAR >::PatternData::PatternData(Pattern* p) : pattern(p), cost(0), gain(0) {
         GUM_CONSTRUCTOR(DFSTree< GUM_SCALAR >::PatternData);
       }
 

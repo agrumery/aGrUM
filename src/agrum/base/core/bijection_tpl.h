@@ -84,8 +84,7 @@ namespace gum {
 
   // Default constructor: creates a bijection without association
   template < typename T1, typename T2, bool Gen >
-  BijectionImplementation< T1, T2, Gen >::BijectionImplementation(Size size,
-                                                                         bool resize_policy) :
+  BijectionImplementation< T1, T2, Gen >::BijectionImplementation(Size size, bool resize_policy) :
       // warning: below, we create the internal hashTables with a key
       // uniqueness
       // policy set to false because we will do the uniqueness tests ourselves
@@ -275,7 +274,7 @@ namespace gum {
   // returns an optional reference to the first value or empty if not found
   template < typename T1, typename T2, bool Gen >
   optional_ref< const T1 >
-         BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
+      BijectionImplementation< T1, T2, Gen >::tryFirst(const T2& second) const {
     auto ptr = _secondToFirst_.tryGet(second);
     if (!ptr) return {};
     return optional_ref< const T1 >(**ptr);
@@ -284,7 +283,7 @@ namespace gum {
   // returns an optional reference to the second value or empty if not found
   template < typename T1, typename T2, bool Gen >
   optional_ref< const T2 >
-         BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
+      BijectionImplementation< T1, T2, Gen >::trySecond(const T1& first) const {
     auto ptr = _firstToSecond_.tryGet(first);
     if (!ptr) return {};
     return optional_ref< const T2 >(**ptr);
@@ -294,8 +293,7 @@ namespace gum {
   template < typename K >
     requires(std::same_as< T1, std::string > && std::convertible_to< K, std::string_view >
              && !std::same_as< std::decay_t< K >, std::string >)
-  optional_ref< const T2 >
-         BijectionImplementation< T1, T2, Gen >::trySecond(const K& first) const {
+  optional_ref< const T2 > BijectionImplementation< T1, T2, Gen >::trySecond(const K& first) const {
     auto ptr = _firstToSecond_.tryGet(first);
     if (!ptr) return {};
     return optional_ref< const T2 >(**ptr);
@@ -361,7 +359,7 @@ namespace gum {
    * value is inserted into the bijection */
   template < typename T1, typename T2, bool Gen >
   const T1& BijectionImplementation< T1, T2, Gen >::firstWithDefault(const T2& second,
-                                                                            const T1& val) const {
+                                                                     const T1& val) const {
     if (auto ptr = tryFirst(second)) return *ptr;
     return _insert_(val, second)->first;
   }
@@ -370,7 +368,7 @@ namespace gum {
    * value is inserted into the bijection */
   template < typename T1, typename T2, bool Gen >
   const T2& BijectionImplementation< T1, T2, Gen >::secondWithDefault(const T1& first,
-                                                                             const T2& val) const {
+                                                                      const T2& val) const {
     if (auto ptr = trySecond(first)) return *ptr;
     return *(_insert_(first, val)->second);
   }
@@ -442,8 +440,7 @@ namespace gum {
 
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2, bool Gen >
-  void
-      BijectionImplementation< T1, T2, Gen >::setResizePolicy(const bool new_policy) noexcept {
+  void BijectionImplementation< T1, T2, Gen >::setResizePolicy(const bool new_policy) noexcept {
     _firstToSecond_.setResizePolicy(new_policy);
     _secondToFirst_.setResizePolicy(new_policy);
   }
@@ -478,8 +475,7 @@ namespace gum {
 
   // Default constructor: creates a bijection without association
   template < typename T1, typename T2 >
-  BijectionImplementation< T1, T2, true >::BijectionImplementation(Size size,
-                                                                          bool resize_policy) :
+  BijectionImplementation< T1, T2, true >::BijectionImplementation(Size size, bool resize_policy) :
       // warning: below, we create the internal hashTables with a key
       // uniqueness
       // policy set to false because we will do the uniqueness tests ourselves
@@ -615,9 +611,8 @@ namespace gum {
 
   // Copy operator
   template < typename T1, typename T2 >
-  BijectionImplementation< T1, T2, true >&
-         BijectionImplementation< T1, T2, true >::operator=(
-             const BijectionImplementation< T1, T2, true >& toCopy) {
+  BijectionImplementation< T1, T2, true >& BijectionImplementation< T1, T2, true >::operator=(
+      const BijectionImplementation< T1, T2, true >& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -632,9 +627,8 @@ namespace gum {
 
   // move operator
   template < typename T1, typename T2 >
-  BijectionImplementation< T1, T2, true >&
-         BijectionImplementation< T1, T2, true >::operator=(
-             BijectionImplementation< T1, T2, true >&& toCopy) {
+  BijectionImplementation< T1, T2, true >& BijectionImplementation< T1, T2, true >::operator=(
+      BijectionImplementation< T1, T2, true >&& toCopy) {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -674,15 +668,13 @@ namespace gum {
 
   // returns an optional reference to the first value or empty if not found
   template < typename T1, typename T2 >
-  optional_ref< const T1 >
-         BijectionImplementation< T1, T2, true >::tryFirst(T2 second) const {
+  optional_ref< const T1 > BijectionImplementation< T1, T2, true >::tryFirst(T2 second) const {
     return _secondToFirst_.tryGet(second);
   }
 
   // returns an optional reference to the second value or empty if not found
   template < typename T1, typename T2 >
-  optional_ref< const T2 >
-         BijectionImplementation< T1, T2, true >::trySecond(T1 first) const {
+  optional_ref< const T2 > BijectionImplementation< T1, T2, true >::trySecond(T1 first) const {
     return _firstToSecond_.tryGet(first);
   }
 
@@ -724,8 +716,7 @@ namespace gum {
   /* @brief Same method as first, but if the value is not found, a default
    * value is inserted into the bijection */
   template < typename T1, typename T2 >
-  const T1& BijectionImplementation< T1, T2, true >::firstWithDefault(T2 second,
-                                                                             T1 val) const {
+  const T1& BijectionImplementation< T1, T2, true >::firstWithDefault(T2 second, T1 val) const {
     if (auto ptr = tryFirst(second)) return *ptr;
     _insert_(val, second);
     return val;
@@ -734,8 +725,7 @@ namespace gum {
   /* @brief Same method as second, but if the value is not found, a default
    * value is inserted into the bijection */
   template < typename T1, typename T2 >
-  const T2& BijectionImplementation< T1, T2, true >::secondWithDefault(T1 first,
-                                                                              T2 val) const {
+  const T2& BijectionImplementation< T1, T2, true >::secondWithDefault(T1 first, T2 val) const {
     if (auto ptr = trySecond(first)) return *ptr;
     _insert_(first, val);
     return val;
@@ -788,8 +778,7 @@ namespace gum {
 
   // enables the user to change dynamically the resizing policy
   template < typename T1, typename T2 >
-  void
-      BijectionImplementation< T1, T2, true >::setResizePolicy(const bool new_policy) noexcept {
+  void BijectionImplementation< T1, T2, true >::setResizePolicy(const bool new_policy) noexcept {
     _firstToSecond_.setResizePolicy(new_policy);
     _secondToFirst_.setResizePolicy(new_policy);
   }
@@ -839,7 +828,7 @@ namespace gum {
 
   /// Constructor
   template < typename T1, typename T2 >
-      BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(const Bijection< T1, T2 >& bijection) :
+  BijectionIteratorSafe< T1, T2 >::BijectionIteratorSafe(const Bijection< T1, T2 >& bijection) :
       _iter_{bijection._firstToSecond_.cbeginSafe()} {
     GUM_CONSTRUCTOR(BijectionIteratorSafe);
   }
@@ -867,10 +856,8 @@ namespace gum {
   /// Copy operator
   template < typename T1, typename T2 >
   BijectionIteratorSafe< T1, T2 >&
-         BijectionIteratorSafe< T1, T2 >::operator=(const BijectionIteratorSafe< T1, T2 >& toCopy) {
-    _iter_ = toCopy._iter_;
-    return *this;
-  }
+      BijectionIteratorSafe< T1, T2 >::operator=(const BijectionIteratorSafe< T1, T2 >& toCopy)
+      = default;
 
   /// move operator
   template < typename T1, typename T2 >
@@ -889,16 +876,14 @@ namespace gum {
 
   /// moves the iterator by nb elements
   template < typename T1, typename T2 >
-  BijectionIteratorSafe< T1, T2 >&
-         BijectionIteratorSafe< T1, T2 >::operator+=(Size nb) noexcept {
+  BijectionIteratorSafe< T1, T2 >& BijectionIteratorSafe< T1, T2 >::operator+=(Size nb) noexcept {
     _iter_ += nb;
     return *this;
   }
 
   /// returns a new iterator
   template < typename T1, typename T2 >
-  BijectionIteratorSafe< T1, T2 >
-         BijectionIteratorSafe< T1, T2 >::operator+(Size nb) noexcept {
+  BijectionIteratorSafe< T1, T2 > BijectionIteratorSafe< T1, T2 >::operator+(Size nb) noexcept {
     return BijectionIteratorSafe< T1, T2 >{*this} += nb;
   }
 
@@ -966,8 +951,8 @@ namespace gum {
 
   /// move constructor
   template < typename T1, typename T2 >
-  BijectionIterator< T1, T2 >::BijectionIterator(BijectionIterator< T1, T2 >&& from) noexcept
-      : _iter_{std::move(from._iter_)} {
+  BijectionIterator< T1, T2 >::BijectionIterator(BijectionIterator< T1, T2 >&& from) noexcept :
+      _iter_{std::move(from._iter_)} {
     GUM_CONS_MOV(BijectionIterator);
   }
 
@@ -980,15 +965,12 @@ namespace gum {
   /// Copy operator
   template < typename T1, typename T2 >
   BijectionIterator< T1, T2 >&
-         BijectionIterator< T1, T2 >::operator=(const BijectionIterator< T1, T2 >& toCopy) {
-    _iter_ = toCopy._iter_;
-    return *this;
-  }
+      BijectionIterator< T1, T2 >::operator=(const BijectionIterator< T1, T2 >& toCopy) = default;
 
   /// move operator
   template < typename T1, typename T2 >
   BijectionIterator< T1, T2 >&
-         BijectionIterator< T1, T2 >::operator=(BijectionIterator< T1, T2 >&& toCopy) noexcept {
+      BijectionIterator< T1, T2 >::operator=(BijectionIterator< T1, T2 >&& toCopy) noexcept {
     _iter_ = std::move(toCopy._iter_);
     return *this;
   }

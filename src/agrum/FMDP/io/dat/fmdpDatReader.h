@@ -108,7 +108,7 @@ namespace gum {
   class FMDPDatReader: public FMDPReader< GUM_ELEMENT > {
     public:
     FMDPDatReader(FMDP< GUM_ELEMENT >* fmdp, std::string_view filename);
-    ~FMDPDatReader();
+    ~FMDPDatReader() override;
 
     /// Direct access to FMDPDat scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
@@ -124,7 +124,7 @@ namespace gum {
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed();
+    Size proceed() override;
 
     /// @{
     /// publishing Errors API

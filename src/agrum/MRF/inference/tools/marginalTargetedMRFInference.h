@@ -89,7 +89,7 @@ namespace gum {
     explicit MarginalTargetedMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~MarginalTargetedMRFInference();
+    ~MarginalTargetedMRFInference() override;
 
     /// @}
 
@@ -246,7 +246,7 @@ namespace gum {
     virtual void onAllMarginalTargetsErased_() = 0;
 
     /// fired after a new Markov net has been assigned to the engine
-    virtual void onModelChanged_(const GraphicalModel* mn);
+    void onModelChanged_(const GraphicalModel* mn) override;
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

@@ -124,11 +124,10 @@ namespace gum {
   // listen to change in each recorded Instantiation.
 
   template < typename GUM_ELEMENT >
-  void
-      MultiDimWithOffset< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
-                                                            const DiscreteVariable* const var,
-                                                            Idx                           oldval,
-                                                            Idx                           newval) {
+  void MultiDimWithOffset< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
+                                                             const DiscreteVariable* const var,
+                                                             Idx                           oldval,
+                                                             Idx                           newval) {
     GUM_ASSERT(offsets_.exists(&i));
     GUM_ASSERT(offsets_[&i] < this->domainSize());
     GUM_ASSERT(newval < var->domainSize());
@@ -255,7 +254,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimWithOffset< GUM_ELEMENT >::computeInstantiationValue_(Instantiation& result,
-                                                                            Size indice) const {
+                                                                     Size           indice) const {
     for (Idx i = 0; i < this->nbrDim(); ++i) {
       const DiscreteVariable& var        = this->variable(i);
       Idx                     domainSize = var.domainSize();
@@ -285,7 +284,7 @@ namespace gum {
   // array)
   template < typename GUM_ELEMENT >
   Instantiation& MultiDimWithOffset< GUM_ELEMENT >::fromOffset(Instantiation& i,
-                                                                      Size           offset) const {
+                                                               Size           offset) const {
     this->computeInstantiationValue_(i, offset);
     return i;
   }

@@ -54,13 +54,13 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-      FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
+  FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::FactorisedValuesCNFWriter() {
     GUM_CONSTRUCTOR(FactorisedValuesCNFWriter);
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-      FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
+  FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::~FactorisedValuesCNFWriter() {
     GUM_DESTRUCTOR(FactorisedValuesCNFWriter);
   }
 

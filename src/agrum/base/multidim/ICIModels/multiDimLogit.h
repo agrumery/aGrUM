@@ -95,7 +95,7 @@ namespace gum {
                   const MultiDimLogit< GUM_SCALAR >&                                   from);
 
     /// Destructor.
-    virtual ~MultiDimLogit();
+    ~MultiDimLogit() override;
 
     /// @}
 
@@ -113,7 +113,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    [[nodiscard]] virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
     // ============================================================================
     /// @name Accessors / Modifiers
@@ -121,9 +121,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    GUM_SCALAR get(const Instantiation& i) const override;
 
-    std::string toString() const;
+    std::string toString() const override;
 
     /**
      * @brief Returns the real name of the multiDimArray.
@@ -136,7 +136,7 @@ namespace gum {
      * which is the best functions to use, say, when we wish to use operators
      * such as operator+ on two MultiDimImplementations.
      */
-    virtual const std::string& name() const;
+    const std::string& name() const override;
 
     /// @}
   };

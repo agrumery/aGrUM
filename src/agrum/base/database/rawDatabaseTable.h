@@ -191,10 +191,10 @@ namespace gum {
       RawDatabaseTable(RawDatabaseTable&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual RawDatabaseTable* clone() const final;
+      [[nodiscard]] RawDatabaseTable* clone() const final;
 
       /// destructor
-      virtual ~RawDatabaseTable();
+      ~RawDatabaseTable() override;
 
       /// @}
 
@@ -300,7 +300,7 @@ namespace gum {
       void insertRow(const std::vector< std::string >& new_row) final;
 
       /// erase the content of the database, including the names of the variables
-      virtual void clear() final;
+      void clear() final;
 
       /// @}
 

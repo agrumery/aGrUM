@@ -132,10 +132,10 @@ namespace gum {
       ScoreBDeu(ScoreBDeu&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual ScoreBDeu* clone() const;
+      [[nodiscard]] ScoreBDeu* clone() const override;
 
       /// destructor
-      virtual ~ScoreBDeu();
+      ~ScoreBDeu() override;
 
       /// @}
 
@@ -206,7 +206,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet& idset) final;
+      double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

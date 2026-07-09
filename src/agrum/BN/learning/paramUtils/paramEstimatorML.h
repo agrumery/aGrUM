@@ -127,10 +127,10 @@ namespace gum {
       ParamEstimatorML(ParamEstimatorML&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual ParamEstimatorML* clone() const;
+      [[nodiscard]] ParamEstimatorML* clone() const override;
 
       /// destructor
-      virtual ~ParamEstimatorML();
+      ~ParamEstimatorML() override;
 
       /// @}
 
@@ -165,8 +165,8 @@ namespace gum {
        * order in which they were specified).
        * @throw DatabaseError is raised if some values of the conditioning sets
        * were not observed in the database. */
-      virtual std::vector< double > parameters(const NodeId                 target_node,
-                                               const std::vector< NodeId >& conditioning_nodes);
+      std::vector< double > parameters(const NodeId                 target_node,
+                                       const std::vector< NodeId >& conditioning_nodes) override;
 
       /**
        * @brief returns the parameters of a CPT as well as its log-likelihood
@@ -180,9 +180,9 @@ namespace gum {
        * @param conditioning_nodes  thes nodes on the right side of the conditioning bar
        * @return a pair containing i) the vector of parameters and ii) the log-likelihood
        */
-      virtual std::pair< std::vector< double >, double >
+      std::pair< std::vector< double >, double >
           parametersAndLogLikelihood(const NodeId                 target_node,
-                                     const std::vector< NodeId >& conditioning_nodes);
+                                     const std::vector< NodeId >& conditioning_nodes) override;
 
       /// @}
 

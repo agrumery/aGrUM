@@ -259,7 +259,7 @@ namespace gum {
     // returns the DBCell with the best type for an element encoded as a string
     INLINE DBCell DBCell::bestDBCell(std::string_view                  str,
                                      const std::vector< std::string >& missingVals) {
-      if (isMissing(str, missingVals)) return DBCell();
+      if (isMissing(str, missingVals)) return {};
       if (isInteger(str)) return DBCell(std::stoi(std::string(str)));
       if (isReal(str)) return DBCell(std::stof(std::string(str)));
 

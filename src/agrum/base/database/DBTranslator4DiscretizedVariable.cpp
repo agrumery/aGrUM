@@ -204,7 +204,6 @@ namespace gum {
       return *this;
     }
 
-
     DBTranslatedValue DBTranslator4DiscretizedVariable::translate(std::string_view str) {
       // try to get the index of str within the discretized variable.
       try {

@@ -117,7 +117,7 @@ namespace gum {
       [[nodiscard]] virtual IndependenceTest* clone() const = 0;
 
       /// destructor
-      virtual ~IndependenceTest();
+      ~IndependenceTest() override;
 
       /// @name Statistics
       /// @{

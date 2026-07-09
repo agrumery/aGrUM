@@ -82,7 +82,7 @@ namespace gum {
       StructuredInference(const StructuredInference& source);
 
       /// Destructor.
-      virtual ~StructuredInference();
+      ~StructuredInference() override;
 
       /// Copy operator.
       StructuredInference& operator=(const StructuredInference& source);
@@ -96,7 +96,7 @@ namespace gum {
       /// Tells this algorithm to use pattern mining or not.
       void setPatternMining(bool b);
 
-      virtual std::string name() const;
+      std::string name() const override;
 
       /// Returns the instance of gspan used to search patterns.
       GSpan< GUM_SCALAR >& gspan();
@@ -116,18 +116,18 @@ namespace gum {
       /// @{
 
       /// See PRMInference::evidenceAdded_().
-      virtual void evidenceAdded_(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+      void evidenceAdded_(const typename PRMInference< GUM_SCALAR >::Chain& chain) override;
 
       /// See PRMInference::evidenceRemoved_().
-      virtual void evidenceRemoved_(const typename PRMInference< GUM_SCALAR >::Chain& chain);
+      void evidenceRemoved_(const typename PRMInference< GUM_SCALAR >::Chain& chain) override;
 
       /// See PRMInference::posterior_().
-      virtual void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
-                              Tensor< GUM_SCALAR >&                             m);
+      void posterior_(const typename PRMInference< GUM_SCALAR >::Chain& chain,
+                      Tensor< GUM_SCALAR >&                             m) override;
 
       /// See PRMInference::joint_().
-      virtual void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
-                          Tensor< GUM_SCALAR >&                                            j);
+      void joint_(const std::vector< typename PRMInference< GUM_SCALAR >::Chain >& queries,
+                  Tensor< GUM_SCALAR >&                                            j) override;
 
       /// @}
 

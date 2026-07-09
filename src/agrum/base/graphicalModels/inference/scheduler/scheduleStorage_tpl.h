@@ -67,7 +67,7 @@ namespace gum {
     // storing tables into a vector<Table>
     template < typename TABLE >
     void Execution< TABLE, TABLE, std::vector >::execute(TABLE&                table,
-                                                                std::vector< TABLE >& container) {
+                                                         std::vector< TABLE >& container) {
       container.push_back(std::move(table));
     }
 
@@ -251,7 +251,7 @@ namespace gum {
   /// returns the argument of the Store
   template < typename TABLE, template < typename... > class CONTAINER >
   const ScheduleMultiDim< typename std::remove_pointer< TABLE >::type >&
-               ScheduleStorage< TABLE, CONTAINER >::arg() const {
+      ScheduleStorage< TABLE, CONTAINER >::arg() const {
     return *_arg_;
   }
 

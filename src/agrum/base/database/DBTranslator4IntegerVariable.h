@@ -183,10 +183,10 @@ namespace gum {
       DBTranslator4IntegerVariable(DBTranslator4IntegerVariable&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual DBTranslator4IntegerVariable* clone() const;
+      [[nodiscard]] DBTranslator4IntegerVariable* clone() const override;
 
       /// destructor
-      virtual ~DBTranslator4IntegerVariable();
+      ~DBTranslator4IntegerVariable() override;
 
       /// @}
 
@@ -230,38 +230,38 @@ namespace gum {
        * found.
        * @throws TypeError is raised if the translation cannot be found in
        * the translator and the string does not correspond to a number. */
-      virtual DBTranslatedValue translate(std::string_view str) final;
+      DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
-      virtual std::string translateBack(const DBTranslatedValue translated_val) const final;
+      std::string translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of the variable used for translations
       /** @warning Note that missing values are encoded as
        * std::numeric_limits<>::max () and are not taken into account in the
        * domain sizes. */
-      virtual std::size_t domainSize() const final;
+      std::size_t domainSize() const final;
 
       /// indicates that the translator is never in editable dictionary mode
-      virtual bool hasEditableDictionary() const final;
+      bool hasEditableDictionary() const final;
 
       /// sets/unset the editable dictionary mode
-      virtual void setEditableDictionaryMode(bool new_mode) final;
+      void setEditableDictionaryMode(bool new_mode) final;
 
       /// indicates that the translations should never be reordered
-      virtual bool needsReordering() const final;
+      bool needsReordering() const final;
 
       /** @brief returns an empty HashTable to indicate that no reordering
        * is needed. */
-      virtual HashTable< std::size_t, std::size_t > reorder() final;
+      HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const IntegerVariable* variable() const final;
+      const IntegerVariable* variable() const final;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue() const final;
+      DBTranslatedValue missingValue() const final;
 
       /// @}
 

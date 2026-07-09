@@ -88,7 +88,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~ProgressListener();
+    ~ProgressListener() override;
 
     /**
      * @brief When progress was made.

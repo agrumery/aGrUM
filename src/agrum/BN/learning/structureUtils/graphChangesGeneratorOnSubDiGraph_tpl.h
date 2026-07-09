@@ -175,16 +175,14 @@ namespace gum {
 
     /// sets a new graph from which the operator will compute possible changes
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setGraph(const DiGraph& graph) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setGraph(const DiGraph& graph) {
       // generate the set of all changes
       createChanges_();
     }
 
     /// assign a set of target nodes
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTargets(const NodeSet& nodes) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTargets(const NodeSet& nodes) {
       target_nodes_ = nodes;
     }
 
@@ -202,8 +200,7 @@ namespace gum {
 
     /// assign a set of "tail" nodes
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTails(const NodeSet& nodes) {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setTails(const NodeSet& nodes) {
       tail_nodes_ = nodes;
     }
 
@@ -276,8 +273,7 @@ namespace gum {
 
     /// sets the maximum number of threads used to perform counts
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
+    void GraphChangesGeneratorOnSubDiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
       if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
     }

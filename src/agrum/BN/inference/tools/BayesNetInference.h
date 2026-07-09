@@ -223,7 +223,7 @@ namespace gum {
     BayesNetInference();
 
     /// destructor
-    virtual ~BayesNetInference();
+    ~BayesNetInference() override;
 
     /// @}
 

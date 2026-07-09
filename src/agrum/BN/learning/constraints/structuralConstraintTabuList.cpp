@@ -132,7 +132,6 @@ namespace gum {
       return *this;
     }
 
-
     void StructuralConstraintTabuList::setTabuListSize(Size new_size) {
       if (new_size == _tabuList_size_) return;
 
@@ -169,8 +168,7 @@ namespace gum {
       _tabuList_size_ = new_size;
     }
 
-    bool
-        StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
+    bool StructuralConstraintTabuList::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return checkArcAdditionAlone(change.node1(), change.node2());

@@ -57,7 +57,7 @@ namespace gum {
 
       INLINE O3prmrCommand::O3prmrCommand(int line) : line(line) {}
 
-      INLINE O3prmrCommand::O3prmrCommand(const O3prmrCommand& c) : line(c.line) {}
+      INLINE O3prmrCommand::O3prmrCommand(const O3prmrCommand& c) = default;
 
       /* ImportCommand */
 
@@ -65,8 +65,7 @@ namespace gum {
       ImportCommand::ImportCommand(int line, std::string_view value, std::string_view alias) :
           line(line), value(value), alias(alias) {}
 
-      INLINE ImportCommand::ImportCommand(const ImportCommand& c) :
-          line(c.line), value(c.value), alias(c.alias) {}
+      INLINE ImportCommand::ImportCommand(const ImportCommand& c) = default;
 
       INLINE std::string ImportCommand::toString() const {
         return "import " + value + (alias.empty() ? "" : "as " + alias) + ";";
@@ -77,8 +76,7 @@ namespace gum {
       INLINE SetEngineCommand::SetEngineCommand(int line, std::string_view value) :
           O3prmrCommand(line), value(value) {}
 
-      INLINE SetEngineCommand::SetEngineCommand(const SetEngineCommand& c) :
-          O3prmrCommand(c), value(c.value) {}
+      INLINE SetEngineCommand::SetEngineCommand(const SetEngineCommand& c) = default;
 
       INLINE O3prmrCommand::RequestType SetEngineCommand::type() const {
         return RequestType::SetEngine;
@@ -91,8 +89,7 @@ namespace gum {
       INLINE SetGndEngineCommand::SetGndEngineCommand(int line, std::string_view value) :
           O3prmrCommand(line), value(value) {}
 
-      INLINE SetGndEngineCommand::SetGndEngineCommand(const SetGndEngineCommand& c) :
-          O3prmrCommand(c), value(c.value) {}
+      INLINE SetGndEngineCommand::SetGndEngineCommand(const SetGndEngineCommand& c) = default;
 
       INLINE O3prmrCommand::RequestType SetGndEngineCommand::type() const {
         return RequestType::SetGndEngine;

@@ -180,7 +180,7 @@ namespace gum {
       [[nodiscard]] virtual RecordCounter* clone() const;
 
       /// destructor
-      virtual ~RecordCounter();
+      ~RecordCounter() override;
 
       /// @}
 
@@ -214,7 +214,7 @@ namespace gum {
        * @param nb the number max of threads to be used. If this number is set to 0, then
        * it is defaulted to aGrUM's max number of threads
        */
-      virtual void setNumberOfThreads(Size nb);
+      void setNumberOfThreads(Size nb) override;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context

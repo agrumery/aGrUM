@@ -192,7 +192,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) final;
+    bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes) final;
 
     /// clears the sequence (to prepare, for instance, a new elimination
     /// sequence)
@@ -201,7 +201,7 @@ namespace gum {
     /// returns the new node to be eliminated within the triangulation algorithm
     /** @throws NotFound exception is thrown if there is no more node to
      * eliminate in the graph */
-    virtual NodeId nextNodeToEliminate() final;
+    NodeId nextNodeToEliminate() final;
 
     /** @brief if the elimination sequence is able to compute fill-ins, we
      * indicate whether we want this feature to be activated
@@ -227,7 +227,7 @@ namespace gum {
     /// performs all the graph/fill-ins updates provided (if any)
     /** @param node the node the elimination of which requires the graph update
      */
-    virtual void eliminationUpdate(const NodeId node) final;
+    void eliminationUpdate(const NodeId node) final;
 
     /** @brief in case fill-ins are provided, this function returns the fill-ins
      * due to all the nodes eliminated so far */

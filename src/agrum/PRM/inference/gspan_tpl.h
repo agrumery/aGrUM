@@ -364,8 +364,8 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     GSpan< GUM_SCALAR >::GSpan(const PRM< GUM_SCALAR >&             prm,
-                                      const PRMSystem< GUM_SCALAR >&       sys,
-                                      gspan::SearchStrategy< GUM_SCALAR >* strategy) :
+                               const PRMSystem< GUM_SCALAR >&       sys,
+                               gspan::SearchStrategy< GUM_SCALAR >* strategy) :
         _graph_(new gspan::InterfaceGraph< GUM_SCALAR >(sys)), _tree_(*_graph_, strategy),
         _depth_stop_(INT_MAX) {
       GUM_CONSTRUCTOR(GSpan);
@@ -452,8 +452,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) :
-        gspan(source.gspan) {
+    GSpan< GUM_SCALAR >::LabelSort::LabelSort(const LabelSort& source) : gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::LabelSort);
     }
 
@@ -463,8 +462,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    bool GSpan< GUM_SCALAR >::LabelSort::operator()(gspan::LabelData* i,
-                                                           gspan::LabelData* j) {
+    bool GSpan< GUM_SCALAR >::LabelSort::operator()(gspan::LabelData* i, gspan::LabelData* j) {
       // We want a descending order
       // return gspan-> _cost_[i] > gspan-> _cost_[j];
       return gspan->_tree_.strategy()(i, j);
@@ -478,8 +476,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) :
-        gspan(source.gspan) {
+    GSpan< GUM_SCALAR >::PatternSort::PatternSort(const PatternSort& source) : gspan(source.gspan) {
       GUM_CONS_CPY(GSpan< GUM_SCALAR >::PatternSort);
     }
 

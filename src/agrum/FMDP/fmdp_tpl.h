@@ -223,7 +223,7 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   const MultiDimImplementation< GUM_ELEMENT >*
-               FMDP< GUM_ELEMENT >::transition(Idx actionId, const DiscreteVariable* v) const {
+      FMDP< GUM_ELEMENT >::transition(Idx actionId, const DiscreteVariable* v) const {
     if (!_actionTransitionTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -247,9 +247,8 @@ namespace gum {
   // @throw DuplicateElement if action already has a cost
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  void
-      FMDP< GUM_ELEMENT >::addCostForAction(Idx                                          actionId,
-                                            const MultiDimImplementation< GUM_ELEMENT >* cost) {
+  void FMDP< GUM_ELEMENT >::addCostForAction(Idx                                          actionId,
+                                             const MultiDimImplementation< GUM_ELEMENT >* cost) {
     if (!_actionCostTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -264,8 +263,7 @@ namespace gum {
   // action
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  const MultiDimImplementation< GUM_ELEMENT >*
-               FMDP< GUM_ELEMENT >::cost(Idx actionId) const {
+  const MultiDimImplementation< GUM_ELEMENT >* FMDP< GUM_ELEMENT >::cost(Idx actionId) const {
     if (!_actionCostTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -304,8 +302,7 @@ namespace gum {
   // action
   // ===========================================================================
   template < typename GUM_ELEMENT >
-  const MultiDimImplementation< GUM_ELEMENT >*
-               FMDP< GUM_ELEMENT >::reward(Idx actionId) const {
+  const MultiDimImplementation< GUM_ELEMENT >* FMDP< GUM_ELEMENT >::reward(Idx actionId) const {
     if (!_actionRewardTable_.exists(actionId))
       GUM_ERROR(NotFound, " Action " << actionName(actionId) << " has not been declared before.");
 
@@ -393,8 +390,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  SequenceIteratorSafe< const DiscreteVariable* >
-         FMDP< GUM_ELEMENT >::beginVariables() const {
+  SequenceIteratorSafe< const DiscreteVariable* > FMDP< GUM_ELEMENT >::beginVariables() const {
     return _varSeq_.beginSafe();
   }
 
@@ -404,14 +400,13 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  const DiscreteVariable*
-      FMDP< GUM_ELEMENT >::main2prime(const DiscreteVariable* mainVar) const {
+  const DiscreteVariable* FMDP< GUM_ELEMENT >::main2prime(const DiscreteVariable* mainVar) const {
     return _main2primed_.second(mainVar);
   }
 
   template < typename GUM_ELEMENT >
   const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-               FMDP< GUM_ELEMENT >::mapMainPrime() const {
+      FMDP< GUM_ELEMENT >::mapMainPrime() const {
     return _main2primed_;
   }
 
@@ -426,9 +421,8 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  void
-      FMDP< GUM_ELEMENT >::addTransition(const DiscreteVariable*                      var,
-                                         const MultiDimImplementation< GUM_ELEMENT >* transition) {
+  void FMDP< GUM_ELEMENT >::addTransition(const DiscreteVariable*                      var,
+                                          const MultiDimImplementation< GUM_ELEMENT >* transition) {
     this->addTransitionForAction(0, var, transition);
   }
 

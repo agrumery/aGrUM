@@ -92,7 +92,7 @@ namespace gum {
       GreedyThickThinning(GreedyThickThinning&& from);
 
       /// destructor
-      ~GreedyThickThinning();
+      ~GreedyThickThinning() override;
 
       /// @}
 

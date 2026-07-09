@@ -188,8 +188,7 @@ namespace gum {
 
   /// returns the list of target sets
   template < GUM_Numeric GUM_SCALAR >
-  const Set< NodeSet >&
-               JointTargetedMRFInference< GUM_SCALAR >::jointTargets() const noexcept {
+  const Set< NodeSet >& JointTargetedMRFInference< GUM_SCALAR >::jointTargets() const noexcept {
     return _joint_targets_;
   }
 

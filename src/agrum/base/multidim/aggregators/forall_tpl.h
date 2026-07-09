@@ -55,8 +55,7 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Forall< GUM_SCALAR >::Forall(Idx value) :
-        MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
+    Forall< GUM_SCALAR >::Forall(Idx value) : MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Forall);
     }
 
@@ -79,9 +78,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Forall< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                           Idx                     i1,
-                                           Idx                     i2,
-                                           bool&                   stop_iteration) const {
+                                    Idx                     i1,
+                                    Idx                     i2,
+                                    bool&                   stop_iteration) const {
       if (i1 == _value_) {
         return (Idx)1;
       } else {

@@ -270,7 +270,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMInstance< GUM_SCALAR >& /**/
-           PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
+        PRMInstance< GUM_SCALAR >::operator=(const PRMClass< GUM_SCALAR >& from) {
       GUM_ERROR(FatalError, "do not copy Instance")
     }
 
@@ -320,15 +320,14 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMAttribute< GUM_SCALAR >&
-                 PRMInstance< GUM_SCALAR >::get(std::string_view name) const {
+    const PRMAttribute< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::get(std::string_view name) const {
       if (!exists(name)) GUM_ERROR(NotFound, "no PRMAttribute<GUM_SCALAR> with the given name")
       return *(_nodeIdMap_[type().get(name).id()]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     void PRMInstance< GUM_SCALAR >::_addReferingInstance_(PRMSlotChain< GUM_SCALAR >* sc,
-                                                                 PRMInstance< GUM_SCALAR >*  i) {
+                                                          PRMInstance< GUM_SCALAR >*  i) {
       NodeId      id   = i->get(sc->lastElt().safeName()).id();
       std::string name = sc->lastElt().safeName();
 
@@ -344,13 +343,12 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
-                 PRMInstance< GUM_SCALAR >::bijection() const {
+        PRMInstance< GUM_SCALAR >::bijection() const {
       return _bijection_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMInstance< GUM_SCALAR >&
-                 PRMInstance< GUM_SCALAR >::getInstance(NodeId id) const {
+    const PRMInstance< GUM_SCALAR >& PRMInstance< GUM_SCALAR >::getInstance(NodeId id) const {
       auto p = _referenceMap_.tryGet(id);
       if (!p)
         GUM_ERROR(NotFound,
@@ -365,7 +363,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const Set< PRMInstance< GUM_SCALAR >* >&
-                 PRMInstance< GUM_SCALAR >::getInstances(NodeId id) const {
+        PRMInstance< GUM_SCALAR >::getInstances(NodeId id) const {
       auto p = _referenceMap_.tryGet(id);
       if (!p)
         GUM_ERROR(NotFound,
@@ -385,8 +383,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    typename PRMInstance< GUM_SCALAR >::const_iterator
-        PRMInstance< GUM_SCALAR >::begin() const {
+    typename PRMInstance< GUM_SCALAR >::const_iterator PRMInstance< GUM_SCALAR >::begin() const {
       return _nodeIdMap_.begin();
     }
 
@@ -397,8 +394,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    typename PRMInstance< GUM_SCALAR >::RefIterator
-        PRMInstance< GUM_SCALAR >::begin(NodeId id) {
+    typename PRMInstance< GUM_SCALAR >::RefIterator PRMInstance< GUM_SCALAR >::begin(NodeId id) {
       auto p = _referenceMap_.tryGet(id);
       if (!p) GUM_ERROR(NotFound, "no referred instances from this NodeId")
       return PRMInstance< GUM_SCALAR >::RefIterator(*(*p));
@@ -413,8 +409,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMInstance< GUM_SCALAR >::RefIterator::RefIterator(
-        Set< PRMInstance< GUM_SCALAR >* >& set) : _set_(set), _iter_(set.begin()) {
+    PRMInstance< GUM_SCALAR >::RefIterator::RefIterator(Set< PRMInstance< GUM_SCALAR >* >& set) :
+        _set_(set), _iter_(set.begin()) {
       GUM_CONSTRUCTOR(PRMInstance< GUM_SCALAR >::RefIterator);
     }
 
@@ -475,8 +471,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(
-        const RefConstIterator& from) : _set_(from._set_), _iter_(from._iter_) {
+    PRMInstance< GUM_SCALAR >::RefConstIterator::RefConstIterator(const RefConstIterator& from) :
+        _set_(from._set_), _iter_(from._iter_) {
       GUM_CONS_CPY(PRMInstance< GUM_SCALAR >::RefConstIterator);
     }
 
@@ -518,19 +514,18 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMInstance< GUM_SCALAR >&
-                 PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
+        PRMInstance< GUM_SCALAR >::RefConstIterator::operator*() const {
       return **_iter_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMInstance< GUM_SCALAR >*
-                 PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
+        PRMInstance< GUM_SCALAR >::RefConstIterator::operator->() const {
       return *_iter_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    typename PRMInstance< GUM_SCALAR >::InvRefIterator
-        PRMInstance< GUM_SCALAR >::beginInvRef() {
+    typename PRMInstance< GUM_SCALAR >::InvRefIterator PRMInstance< GUM_SCALAR >::beginInvRef() {
       return _referingAttr_.begin();
     }
 
@@ -554,13 +549,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-           PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) {
+        PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) {
       return *(_referingAttr_[id]);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const std::vector< std::pair< PRMInstance< GUM_SCALAR >*, std::string > >&
-                 PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) const {
+        PRMInstance< GUM_SCALAR >::getRefAttr(NodeId id) const {
       return *(_referingAttr_[id]);
     }
 

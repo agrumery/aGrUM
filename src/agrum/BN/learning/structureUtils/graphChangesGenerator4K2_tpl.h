@@ -175,8 +175,7 @@ namespace gum {
 
     /// set a new order on the random variables
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const Sequence< NodeId >& order) {
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::setOrder(const Sequence< NodeId >& order) {
       order_ = order;
     }
 
@@ -212,23 +211,19 @@ namespace gum {
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcAddition& change) {}
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcAddition& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcDeletion& change) {}
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcDeletion& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcReversal& change) {}
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const ArcReversal& change) {}
 
     /// notify the operator set of a change applied to the graph
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const GraphChange& change) {}
+    void GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::modifyGraph(const GraphChange& change) {}
 
     /// notifies the generator that we have parsed all its legal changes
     template < typename STRUCT_CONSTRAINT >
@@ -245,8 +240,7 @@ namespace gum {
 
     /// returns the constraint that is used by the generator
     template < typename STRUCT_CONSTRAINT >
-    STRUCT_CONSTRAINT&
-        GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
+    STRUCT_CONSTRAINT& GraphChangesGenerator4K2< STRUCT_CONSTRAINT >::constraint() const noexcept {
       return *constraint_;
     }
 

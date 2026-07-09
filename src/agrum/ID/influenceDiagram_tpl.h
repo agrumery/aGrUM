@@ -566,8 +566,7 @@ namespace gum {
   /* we allow the user to change the name of a variable
    */
   template < GUM_Numeric GUM_SCALAR >
-  void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId           id,
-                                                                 std::string_view new_name) {
+  void InfluenceDiagram< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
     this->varMap_.changeName(id, new_name);
   }
 
@@ -934,14 +933,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const Tensor< GUM_SCALAR >&
-               InfluenceDiagram< GUM_SCALAR >::cpt(std::string_view name) const {
+  const Tensor< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::cpt(std::string_view name) const {
     return cpt(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const Tensor< GUM_SCALAR >&
-               InfluenceDiagram< GUM_SCALAR >::utility(std::string_view name) const {
+  const Tensor< GUM_SCALAR >& InfluenceDiagram< GUM_SCALAR >::utility(std::string_view name) const {
     return utility(idFromName(name));
   }
 
@@ -961,8 +958,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const DiscreteVariable&
-      InfluenceDiagram< GUM_SCALAR >::variable(std::string_view name) const {
+  const DiscreteVariable& InfluenceDiagram< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
@@ -973,7 +969,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::changeVariableName(std::string_view name,
-                                                                 std::string_view new_name) {
+                                                          std::string_view new_name) {
     changeVariableName(idFromName(name), new_name);
   }
 
@@ -983,14 +979,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void InfluenceDiagram< GUM_SCALAR >::eraseArc(std::string_view tail,
-                                                       std::string_view head) {
+  void InfluenceDiagram< GUM_SCALAR >::eraseArc(std::string_view tail, std::string_view head) {
     eraseArc(idFromName(tail), idFromName(head));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   bool InfluenceDiagram< GUM_SCALAR >::existsPathBetween(std::string_view src,
-                                                                std::string_view dest) const {
+                                                         std::string_view dest) const {
     return existsPathBetween(idFromName(src), idFromName(dest));
   }
 

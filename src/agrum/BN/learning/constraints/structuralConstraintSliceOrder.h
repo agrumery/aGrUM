@@ -108,7 +108,7 @@ namespace gum {
       StructuralConstraintSliceOrder(StructuralConstraintSliceOrder&& from);
 
       /// destructor
-      virtual ~StructuralConstraintSliceOrder();
+      ~StructuralConstraintSliceOrder() override;
 
       /// @}
 

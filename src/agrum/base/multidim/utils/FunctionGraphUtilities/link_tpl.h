@@ -63,8 +63,7 @@ namespace gum {
 
   // Constructor
   template < typename T >
-  Link< T >::Link(const T& elem, Link< T >* nextLink) :
-      _element_(elem), _nextLink_(nextLink) {
+  Link< T >::Link(const T& elem, Link< T >* nextLink) : _element_(elem), _nextLink_(nextLink) {
     GUM_CONSTRUCTOR(Link);
   }
 

@@ -77,11 +77,7 @@ namespace gum {
     GreedyThickThinning::~GreedyThickThinning() { GUM_DESTRUCTOR(GreedyThickThinning); }
 
     /// copy operator
-    GreedyThickThinning& GreedyThickThinning::operator=(const GreedyThickThinning& from) {
-      ApproximationScheme::operator=(from);
-      _allowReversalsInThinPhase_ = from._allowReversalsInThinPhase_;
-      return *this;
-    }
+    GreedyThickThinning& GreedyThickThinning::operator=(const GreedyThickThinning& from) = default;
 
     /// move operator
     GreedyThickThinning& GreedyThickThinning::operator=(GreedyThickThinning&& from) {

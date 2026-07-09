@@ -114,7 +114,7 @@ namespace gum {
      * Note that, when the multidimensional array is removed src memory, its
      * variables are not removed as well.
      */
-    virtual ~MultiDimArray();
+    ~MultiDimArray() override;
 
     [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 

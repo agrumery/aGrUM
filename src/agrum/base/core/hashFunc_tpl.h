@@ -188,8 +188,7 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Key1, typename Key2 >
-  Size
-      HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
+  Size HashFunc< std::pair< Key1, Key2 > >::operator()(const std::pair< Key1, Key2 >& key) const {
     return (castToSize(key) * HashFuncConst::gold) >> this->right_shift_;
   }
 
@@ -203,8 +202,7 @@ namespace gum {
 
   // Returns the hashed value of a key.
   template < typename Type >
-  Size
-      HashFunc< std::shared_ptr< Type > >::operator()(const std::shared_ptr< Type >& key) const {
+  Size HashFunc< std::shared_ptr< Type > >::operator()(const std::shared_ptr< Type >& key) const {
     return (castToSize(key) * HashFuncConst::gold) & this->hash_mask_;
   }
 

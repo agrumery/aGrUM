@@ -86,7 +86,7 @@ namespace gum {
     explicit JointTargetedMRFInference(const IMarkovRandomField< GUM_SCALAR >* mn);
 
     /// destructor
-    virtual ~JointTargetedMRFInference();
+    ~JointTargetedMRFInference() override;
 
     /// @}
 
@@ -130,7 +130,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
+    const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
 
     /// Computes and returns the posterior of a node.
     /**
@@ -147,7 +147,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
+    const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
     /// @}
 
 
@@ -163,7 +163,7 @@ namespace gum {
      * joint
      * targets that have been added by the user).
      */
-    virtual void eraseAllTargets() final;
+    void eraseAllTargets() final;
 
     /// Clear all previously defined joint targets
     virtual void eraseAllJointTargets() final;

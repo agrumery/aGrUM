@@ -54,8 +54,7 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Count< GUM_SCALAR >::Count(Idx value) :
-        MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
+    Count< GUM_SCALAR >::Count(Idx value) : MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Count);
     }
 
@@ -78,9 +77,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Count< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                          Idx                     i1,
-                                          Idx                     i2,
-                                          bool&                   stop_iteration) const {
+                                   Idx                     i1,
+                                   Idx                     i2,
+                                   bool&                   stop_iteration) const {
       return (i1 == _value_) ? 1 + i2 : i2;
     }
 

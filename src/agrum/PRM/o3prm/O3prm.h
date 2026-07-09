@@ -533,7 +533,7 @@ namespace gum {
                  const O3FormulaList&            values);
         O3RawCPT(const O3RawCPT& src);
         O3RawCPT(O3RawCPT&& src);
-        ~O3RawCPT();
+        ~O3RawCPT() override;
 
         private:   // best attempt to get rid of overloaded virtual warnings
         using O3Attribute::operator=;
@@ -545,7 +545,7 @@ namespace gum {
         virtual O3FormulaList&       values();
         virtual const O3FormulaList& values() const;
 
-        virtual std::unique_ptr< O3Attribute > copy() const;
+        std::unique_ptr< O3Attribute > copy() const override;
 
         private:
         std::unique_ptr< O3FormulaList > _values_;
@@ -572,7 +572,7 @@ namespace gum {
                   O3RuleList&&                    rules);
         O3RuleCPT(const O3RuleCPT& src);
         O3RuleCPT(O3RuleCPT&& src);
-        ~O3RuleCPT();
+        ~O3RuleCPT() override;
 
         private:   // best attempt to get rid of overloaded virtual warnings
         using O3Attribute::operator=;
@@ -584,7 +584,7 @@ namespace gum {
         virtual O3RuleList&       rules();
         virtual const O3RuleList& rules() const;
 
-        virtual std::unique_ptr< O3Attribute > copy() const;
+        std::unique_ptr< O3Attribute > copy() const override;
 
         private:
         std::unique_ptr< O3RuleList > _rules_;

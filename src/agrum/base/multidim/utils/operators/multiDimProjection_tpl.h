@@ -91,7 +91,7 @@ namespace gum {
   /// creates and returns the projection of the table over a subset of its vars
   template < class TABLE >
   TABLE* MultiDimProjection< TABLE >::execute(const TABLE&            table,
-                                                     const gum::VariableSet& del_vars) const {
+                                              const gum::VariableSet& del_vars) const {
     // projected constants are equal to the same constant
     if (table.variablesSequence().empty()) return new TABLE(table);
     else return new TABLE(proj_(table, del_vars));
@@ -100,8 +100,8 @@ namespace gum {
   /// creates and returns the projection of the table over a subset of its vars
   template < class TABLE >
   void MultiDimProjection< TABLE >::execute(TABLE&                  container,
-                                                   const TABLE&            table,
-                                                   const gum::VariableSet& del_vars) const {
+                                            const TABLE&            table,
+                                            const gum::VariableSet& del_vars) const {
     if (table.variablesSequence().empty()) container = table;
     else container = proj_(table, del_vars);
   }
@@ -142,7 +142,7 @@ namespace gum {
   /// returns the projection function currently used by the projector
   template < class TABLE >
   TABLE (*MultiDimProjection< TABLE >::projectionFunction())(const TABLE&,
-                                                                    const gum::VariableSet&) {
+                                                             const gum::VariableSet&) {
     return proj_;
   }
 
@@ -150,16 +150,15 @@ namespace gum {
    * performed to compute the projection */
   template < class TABLE >
   double MultiDimProjection< TABLE >::nbOperations(const TABLE&            table,
-                                                          const gum::VariableSet& del_vars) const {
+                                                   const gum::VariableSet& del_vars) const {
     return double(table.domainSize());
   }
 
   /** @brief returns a rough estimate of the number of operations that will be
    * performed to compute the projection */
   template < class TABLE >
-  double
-      MultiDimProjection< TABLE >::nbOperations(const Sequence< const DiscreteVariable* >& vars,
-                                                const gum::VariableSet& del_vars) const {
+  double MultiDimProjection< TABLE >::nbOperations(const Sequence< const DiscreteVariable* >& vars,
+                                                   const gum::VariableSet& del_vars) const {
     double res = 1.0;
     for (const auto var: vars) {
       res *= double(var->domainSize());
@@ -170,8 +169,8 @@ namespace gum {
   /// returns the memory consumption used during the projection
   template < class TABLE >
   std::pair< double, double >
-         MultiDimProjection< TABLE >::memoryUsage(const Sequence< const DiscreteVariable* >& vars,
-                                                  const gum::VariableSet& del_vars) const {
+      MultiDimProjection< TABLE >::memoryUsage(const Sequence< const DiscreteVariable* >& vars,
+                                               const gum::VariableSet& del_vars) const {
     auto res = double(sizeof(value_type));
 
     for (const auto var: vars) {
@@ -185,8 +184,8 @@ namespace gum {
   /// returns the memory consumption used during the projection
   template < class TABLE >
   std::pair< double, double >
-         MultiDimProjection< TABLE >::memoryUsage(const TABLE&            table,
-                                                  const gum::VariableSet& del_vars) const {
+      MultiDimProjection< TABLE >::memoryUsage(const TABLE&            table,
+                                               const gum::VariableSet& del_vars) const {
     return memoryUsage(table.variablesSequence(), del_vars);
   }
 

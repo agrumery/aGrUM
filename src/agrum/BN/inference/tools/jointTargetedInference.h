@@ -88,7 +88,7 @@ namespace gum {
     explicit JointTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
-    virtual ~JointTargetedInference();
+    ~JointTargetedInference() override;
 
     /// @}
 
@@ -130,7 +130,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
+    const Tensor< GUM_SCALAR >& posterior(NodeId node) final;
 
     /// Computes and returns the posterior of a node.
     /**
@@ -147,7 +147,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
+    const Tensor< GUM_SCALAR >& posterior(std::string_view nodeName) final;
     /// @}
 
 
@@ -163,7 +163,7 @@ namespace gum {
      * joint
      * targets that have been added by the user).
      */
-    virtual void eraseAllTargets();
+    void eraseAllTargets() override;
 
     /// Clear all previously defined joint targets
     virtual void eraseAllJointTargets() final;
@@ -277,7 +277,7 @@ namespace gum {
 
     protected:
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void onModelChanged_(const GraphicalModel* bn);
+    void onModelChanged_(const GraphicalModel* bn) override;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

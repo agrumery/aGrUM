@@ -84,10 +84,7 @@ namespace gum {
     }
 
     // Copy operator.
-    PRMObject& PRMObject::operator=(const PRMObject& source) {
-      _name_ = source._name_;
-      return *this;
-    }
+    PRMObject& PRMObject::operator=(const PRMObject& source) = default;
 
     // Move operator.
     PRMObject& PRMObject::operator=(PRMObject&& source) {

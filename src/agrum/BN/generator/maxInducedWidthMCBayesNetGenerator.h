@@ -145,7 +145,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~MaxInducedWidthMCBayesNetGenerator();
+    ~MaxInducedWidthMCBayesNetGenerator() override;
 
     /// @}
 

@@ -1258,7 +1258,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()(const Instantiation& key) const final;
+    Size operator()(const Instantiation& key) const final;
   };
 } /* namespace gum */
 

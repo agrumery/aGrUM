@@ -73,7 +73,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void UAIBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
+                                           const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(bn) << std::endl;
@@ -99,7 +99,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void UAIBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
+                                           const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);
@@ -145,8 +145,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string UAIBNWriter< GUM_SCALAR >::_cptBloc_(const IBayesNet< GUM_SCALAR >& bn,
-                                                          NodeId                         node) {
+  std::string UAIBNWriter< GUM_SCALAR >::_cptBloc_(const IBayesNet< GUM_SCALAR >& bn, NodeId node) {
     std::stringstream str;
 
     const auto& p = bn.cpt(node);

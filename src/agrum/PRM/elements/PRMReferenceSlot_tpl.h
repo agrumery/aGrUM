@@ -95,8 +95,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMClassElementContainer< GUM_SCALAR >&
-                 PRMReferenceSlot< GUM_SCALAR >::slotType() const {
+    const PRMClassElementContainer< GUM_SCALAR >& PRMReferenceSlot< GUM_SCALAR >::slotType() const {
       return _slotType_;
     }
 
@@ -131,12 +130,10 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    void
-        PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
+    void PRMReferenceSlot< GUM_SCALAR >::addParent(const PRMClassElement< GUM_SCALAR >& elt) {}
 
     template < GUM_Numeric GUM_SCALAR >
-    void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {
-    }
+    void PRMReferenceSlot< GUM_SCALAR >::addChild(const PRMClassElement< GUM_SCALAR >& elt) {}
 
   } /* namespace prm */
 } /* namespace gum */

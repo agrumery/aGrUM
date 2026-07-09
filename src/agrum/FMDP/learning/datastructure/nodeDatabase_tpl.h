@@ -208,8 +208,7 @@ namespace gum {
   // ==========================================================================
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  auto
-      NodeDatabase< AttributeSelection, isScalar >::testPolicy(const DiscreteVariable* var) const
+  auto NodeDatabase< AttributeSelection, isScalar >::testPolicy(const DiscreteVariable* var) const
       -> const TestPolicy< ValueType >* {
     return _attrTable_[var];
   }

@@ -81,7 +81,7 @@ namespace gum {
     explicit EvidenceInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
-    virtual ~EvidenceInference();
+    ~EvidenceInference() override;
 
     /// @}
 

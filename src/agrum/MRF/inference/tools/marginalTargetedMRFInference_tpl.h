@@ -103,8 +103,7 @@ namespace gum {
 
   // Add a single target to the list of targets
   template < GUM_Numeric GUM_SCALAR >
-  bool
-      MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
+  bool MarginalTargetedMRFInference< GUM_SCALAR >::isTarget(std::string_view nodeName) const {
     return isTarget(this->MRF().idFromName(nodeName));
   }
 

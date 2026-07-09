@@ -133,10 +133,10 @@ namespace gum {
       PRMClass< GUM_SCALAR >& operator=(const PRMClass< GUM_SCALAR >&& source) = delete;
 
       /// Destructor.
-      virtual ~PRMClass();
+      ~PRMClass() override;
 
       /// Implementation of pure virtual method of PRMObject.
-      virtual PRMObject::prm_type obj_type() const;
+      PRMObject::prm_type obj_type() const override;
       /// @}
       // ========================================================================
       /// @name Graphical operator
@@ -144,10 +144,10 @@ namespace gum {
       /// @{
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(NodeId).
-      PRMClassElement< GUM_SCALAR >& get(NodeId id);
+      PRMClassElement< GUM_SCALAR >& get(NodeId id) override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(NodeId).
-      const PRMClassElement< GUM_SCALAR >& get(NodeId id) const;
+      const PRMClassElement< GUM_SCALAR >& get(NodeId id) const override;
 
       /// @}
       // ========================================================================
@@ -160,7 +160,7 @@ namespace gum {
        * @param elt A node of this class.
        * @return Returns true if elt is an output node.
        */
-      virtual bool isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const;
+      bool isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const override;
 
       /**
        * @brief Return true if the attribute named safe_name is a cast
@@ -178,20 +178,20 @@ namespace gum {
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      PRMClassElement< GUM_SCALAR >& get(std::string_view name);
+      PRMClassElement< GUM_SCALAR >& get(std::string_view name) override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::get(const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >& get(std::string_view name) const;
+      const PRMClassElement< GUM_SCALAR >& get(std::string_view name) const override;
 
       /// See gum::prm::add(PRMClassElement<GUM_SCALAR>*).
-      virtual NodeId add(PRMClassElement< GUM_SCALAR >* elt);
+      NodeId add(PRMClassElement< GUM_SCALAR >* elt) override;
 
       /// See gum::prm::overload(PRMClassElement<GUM_SCALAR>*).
-      virtual NodeId overload(PRMClassElement< GUM_SCALAR >* elt);
+      NodeId overload(PRMClassElement< GUM_SCALAR >* elt) override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::addArc().
-      virtual void addArc(std::string_view tail, std::string_view head);
+      void addArc(std::string_view tail, std::string_view head) override;
 
       /**
        * Returns the set of PRMAttribute<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -260,7 +260,7 @@ namespace gum {
        *            Class<GUM_SCALAR> is a subclass of it.
        * @return Returns true if this Class<GUM_SCALAR> is a subclass of cec.
        */
-      virtual bool isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const;
+      bool isSubTypeOf(const PRMClassElementContainer< GUM_SCALAR >& cec) const override;
 
       /**
        * @brief Returns the super Class<GUM_SCALAR> of this Class<GUM_SCALAR>.
@@ -291,19 +291,19 @@ namespace gum {
 
       /// See
       /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      PRMClassElement< GUM_SCALAR >& operator[](NodeId id);
+      PRMClassElement< GUM_SCALAR >& operator[](NodeId id) override;
 
       /// See
       /// gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](NodeId).
-      const PRMClassElement< GUM_SCALAR >& operator[](NodeId id) const;
+      const PRMClassElement< GUM_SCALAR >& operator[](NodeId id) const override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      PRMClassElement< GUM_SCALAR >& operator[](std::string_view name);
+      PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>::operator[](const
       /// std::string&).
-      const PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) const;
+      const PRMClassElement< GUM_SCALAR >& operator[](std::string_view name) const override;
 
       /// @}
 
@@ -320,18 +320,18 @@ namespace gum {
 
       protected:
       /// returns a constant reference over this interface's dag.
-      virtual const DAG& dag_() const;
+      const DAG& dag_() const override;
 
       /// Returns a non constant reference over this PRMInterface<GUM_SCALAR>'s
       /// DAG.
-      virtual DAG& dag_();
+      DAG& dag_() override;
 
       /// Fills set with all the subtypes of this Class<GUM_SCALAR>.
-      void findAllSubtypes_(Set< PRMClassElementContainer< GUM_SCALAR >* >& set);
+      void findAllSubtypes_(Set< PRMClassElementContainer< GUM_SCALAR >* >& set) override;
 
       /// See gum::prm::PRMClassElementContainer<GUM_SCALAR>(const
       /// PRMClassElement<GUM_SCALAR>&).
-      void updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt);
+      void updateDescendants_(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       private:
       /// Proceed with the copy of c in this.

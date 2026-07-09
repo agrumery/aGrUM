@@ -50,7 +50,6 @@ namespace gum {
   // ==========================================================================
 
 
-
   INLINE
   bool FormulaPart::isRightAssociative() const {
     switch (character) {
@@ -62,10 +61,6 @@ namespace gum {
       }
     }
   }
-
-
-
-
 
   /// Args are backwards !
 
@@ -179,7 +174,6 @@ namespace gum {
     _last_token_ = FormulaPart(FormulaPart::token_type::PARENTHESIS, ')');
   }
 
-
   INLINE
   void Formula::_reduceOperatorOrFunction_(FormulaPart                item,
                                            std::stack< FormulaPart >& stack) const {
@@ -206,7 +200,6 @@ namespace gum {
     _stack_.push(t);
     _last_token_ = t;
   }
-
 
   INLINE
   void Formula::_push_comma_() {
@@ -237,7 +230,6 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "unknonw variable")
     }
   }
-
 
   // ========================================================================
   //  @name Arithmetic Operators

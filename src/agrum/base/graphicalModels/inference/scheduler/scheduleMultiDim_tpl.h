@@ -273,8 +273,7 @@ namespace gum {
 
   /// checks whether two ScheduleMultiDim have the same variables
   template < typename TABLE >
-  bool
-      ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
+  bool ScheduleMultiDim< TABLE >::hasSameVariables(const ScheduleMultiDim< TABLE >& m) const {
     return ((_domain_size_ == m._domain_size_) && (_var_sequence_ == m._var_sequence_));
   }
 
@@ -358,8 +357,7 @@ namespace gum {
 
   /// returns the set of variables involved in the multidim
   template < typename TABLE >
-  const Sequence< const DiscreteVariable* >&
-               ScheduleMultiDim< TABLE >::variablesSequence() const {
+  const Sequence< const DiscreteVariable* >& ScheduleMultiDim< TABLE >::variablesSequence() const {
     return _var_sequence_;
   }
 

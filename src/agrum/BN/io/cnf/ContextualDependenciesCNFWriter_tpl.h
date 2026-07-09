@@ -53,15 +53,15 @@ namespace gum {
   /* =========================================================================*/
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-      ContextualDependenciesCNFWriter< GUM_SCALAR,
-                                       IApproximationPolicy >::ContextualDependenciesCNFWriter() {
+  ContextualDependenciesCNFWriter< GUM_SCALAR,
+                                   IApproximationPolicy >::ContextualDependenciesCNFWriter() {
     GUM_CONSTRUCTOR(ContextualDependenciesCNFWriter)
   }
 
   // Default destructor.
   template < GUM_Numeric GUM_SCALAR, template < class > class IApproximationPolicy >
-      ContextualDependenciesCNFWriter< GUM_SCALAR,
-                                       IApproximationPolicy >::~ContextualDependenciesCNFWriter() {
+  ContextualDependenciesCNFWriter< GUM_SCALAR,
+                                   IApproximationPolicy >::~ContextualDependenciesCNFWriter() {
     GUM_DESTRUCTOR(ContextualDependenciesCNFWriter)
   }
 

@@ -189,7 +189,7 @@ namespace gum {
     MRFInference();
 
     /// destructor
-    virtual ~MRFInference();
+    ~MRFInference() override;
 
     /// @}
 

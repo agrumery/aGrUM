@@ -94,8 +94,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  void MultiDimSparse< GUM_ELEMENT >::set(const Instantiation& i,
-                                                 const GUM_ELEMENT&   value) const {
+  void MultiDimSparse< GUM_ELEMENT >::set(const Instantiation& i, const GUM_ELEMENT& value) const {
     Size key;
 
     if (i.isMaster(this)) {
@@ -159,7 +158,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimSparse< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                      const DiscreteVariable* y) {
+                                               const DiscreteVariable* y) {
     MultiDimImplementation< GUM_ELEMENT >::replace_(x, y);
   }
 

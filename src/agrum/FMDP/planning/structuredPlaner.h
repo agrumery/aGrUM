@@ -121,7 +121,7 @@ namespace gum {
     // ==========================================================================
 
     public:
-    virtual ~StructuredPlaner();
+    ~StructuredPlaner() override;
 
     /// @}
 
@@ -145,24 +145,24 @@ namespace gum {
     // ==========================================================================
     /// Returns vFunction computed so far current size
     // ==========================================================================
-    virtual Size vFunctionSize();
+    Size vFunctionSize() override;
 
     // ==========================================================================
     /// Returns the best policy obtained so far
     // ==========================================================================
-    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy();
+    MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optimalPolicy() override;
 
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
-    virtual Size optimalPolicySize();
+    Size optimalPolicySize() override;
 
     // ==========================================================================
     /// Provide a better toDot for the optimal policy where the leaves have the
     /// action
     /// name instead of its id
     // ==========================================================================
-    std::string optimalPolicy2String();
+    std::string optimalPolicy2String() override;
 
     /// @}
 
@@ -180,7 +180,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    virtual void initialize(const FMDP< GUM_ELEMENT >* fmdp);
+    void initialize(const FMDP< GUM_ELEMENT >* fmdp) override;
 
 
     // ==========================================================================
@@ -193,7 +193,7 @@ namespace gum {
      * or when nbStep have been performed
      */
     // ==========================================================================
-    virtual void makePlanning(Idx nbStep = 1000000);
+    void makePlanning(Idx nbStep = 1000000) override;
 
     /// @}
 

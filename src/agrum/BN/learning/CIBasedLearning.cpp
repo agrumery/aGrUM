@@ -58,11 +58,7 @@ namespace gum {
     CIBasedLearning::CIBasedLearning()  = default;
     CIBasedLearning::~CIBasedLearning() = default;
 
-    CIBasedLearning::CIBasedLearning(const CIBasedLearning& from) :
-        ConstraintBasedLearning(from), test_(from.test_), alpha_(from.alpha_),
-        maxCondSetSize_(from.maxCondSetSize_), stable_(from.stable_),
-        exhaustiveSepSet_(from.exhaustiveSepSet_), ucPriority_(from.ucPriority_),
-        sepSet_(from.sepSet_) {}
+    CIBasedLearning::CIBasedLearning(const CIBasedLearning& from) = default;
 
     CIBasedLearning::CIBasedLearning(CIBasedLearning&& from) noexcept :
         ConstraintBasedLearning(std::move(from)), test_(from.test_), alpha_(from.alpha_),

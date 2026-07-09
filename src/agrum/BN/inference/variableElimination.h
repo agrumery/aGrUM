@@ -102,7 +102,7 @@ namespace gum {
     VariableElimination< GUM_SCALAR >& operator=(const VariableElimination< GUM_SCALAR >&) = delete;
 
     /// destructor
-    ~VariableElimination();
+    ~VariableElimination() override;
 
     /// @}
 
@@ -168,7 +168,7 @@ namespace gum {
     void onMarginalTargetErased_(const NodeId id) final;
 
     /// fired after a new Bayes net has been assigned to the inference engine
-    virtual void onModelChanged_(const GraphicalModel* bn) final;
+    void onModelChanged_(const GraphicalModel* bn) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */

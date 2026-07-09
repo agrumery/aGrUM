@@ -144,7 +144,7 @@ namespace gum {
       ArcAdd(ArcAdd&& from) noexcept;
 
       /// destructor
-      ~ArcAdd() noexcept;
+      ~ArcAdd() noexcept override;
 
       /// @}
 
@@ -184,7 +184,7 @@ namespace gum {
       ArcDel(ArcDel&& from) noexcept;
 
       /// destructor
-      ~ArcDel() noexcept;
+      ~ArcDel() noexcept override;
 
       /// @}
 
@@ -223,7 +223,7 @@ namespace gum {
       ArcReverse(ArcReverse&& from) noexcept;
 
       /// destructor
-      ~ArcReverse() noexcept;
+      ~ArcReverse() noexcept override;
 
       /// @}
 

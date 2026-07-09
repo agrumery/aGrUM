@@ -300,8 +300,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                           output,
-                                  const IMarkovRandomField< GUM_SCALAR >& bn) {
+  std::ostream& operator<<(std::ostream& output, const IMarkovRandomField< GUM_SCALAR >& bn) {
     output << bn.toString();
     return output;
   }

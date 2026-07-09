@@ -61,8 +61,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+    Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Max);
     }
 
@@ -78,9 +77,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Max< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                        Idx                     i1,
-                                        Idx                     i2,
-                                        bool&                   stop_iteration) const {
+                                 Idx                     i1,
+                                 Idx                     i2,
+                                 bool&                   stop_iteration) const {
       return (i1 > i2) ? i1 : i2;
     }
 

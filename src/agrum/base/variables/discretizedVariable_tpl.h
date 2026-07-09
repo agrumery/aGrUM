@@ -94,7 +94,7 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view aName,
-                                                             std::string_view aDesc) :
+                                                      std::string_view aDesc) :
       IDiscretizedVariable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
     _is_empirical = false;
@@ -103,9 +103,9 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >::DiscretizedVariable(std::string_view              aName,
-                                                             std::string_view              aDesc,
-                                                             const std::vector< T_TICKS >& ticks,
-                                                             bool is_empirical) :
+                                                      std::string_view              aDesc,
+                                                      const std::vector< T_TICKS >& ticks,
+                                                      bool                          is_empirical) :
       IDiscretizedVariable(aName, aDesc) {
     GUM_CONSTRUCTOR(DiscretizedVariable)
     _is_empirical = is_empirical;
@@ -138,7 +138,7 @@ namespace gum {
 
   template < typename T_TICKS >
   DiscretizedVariable< T_TICKS >&
-         DiscretizedVariable< T_TICKS >::operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
+      DiscretizedVariable< T_TICKS >::operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
     copy_(aDRV);
     return *this;
   }

@@ -212,7 +212,7 @@ namespace gum {
      * @param key The constant reference to the variable whose hash we want to
      * compute.
      */
-    virtual Size operator()(const credal::lp::LpCol& key) const final;
+    Size operator()(const credal::lp::LpCol& key) const final;
   };
 }   // end of namespace gum
 

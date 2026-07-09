@@ -129,8 +129,8 @@ namespace gum {
     protected:
     /// check if the vars form a possible computable joint (can be redefined by
     /// subclass)
-    virtual bool    isExactJointComputable_(const NodeSet& vars) final;
-    virtual NodeSet superForJointComputable_(const NodeSet& vars) final;
+    bool    isExactJointComputable_(const NodeSet& vars) final;
+    NodeSet superForJointComputable_(const NodeSet& vars) final;
 
     /// fired after a new evidence is inserted
     void onEvidenceAdded_(const NodeId id, bool isHardEvidence) final;

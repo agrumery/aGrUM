@@ -120,7 +120,7 @@ namespace gum {
       BNLearner(BNLearner&&);
 
       /// destructor
-      virtual ~BNLearner();
+      ~BNLearner() override;
 
       /// @}
 
@@ -536,7 +536,7 @@ namespace gum {
 
       protected:
       /// create the prior used for learning
-      void createPrior_();
+      void createPrior_() override;
 
       private:
       BayesNet< GUM_SCALAR > _prior_bn_;

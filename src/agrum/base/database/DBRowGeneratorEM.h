@@ -118,7 +118,7 @@ namespace gum {
       [[nodiscard]] DBRowGeneratorEM< GUM_SCALAR >* clone() const final;
 
       /// destructor
-      ~DBRowGeneratorEM();
+      ~DBRowGeneratorEM() override;
 
       /// @}
 

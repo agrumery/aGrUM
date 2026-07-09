@@ -99,7 +99,7 @@ namespace gum {
       PRMInstance(std::string_view name, PRMClass< GUM_SCALAR >& type);
 
       /// Destructor.
-      virtual ~PRMInstance();
+      ~PRMInstance() override;
 
       /// @}
       // ========================================================================
@@ -110,7 +110,7 @@ namespace gum {
       /**
        * Returns the PRM type of this object.
        */
-      virtual prm_type obj_type() const;
+      prm_type obj_type() const override;
 
       /**
        * Returns the type of this instance

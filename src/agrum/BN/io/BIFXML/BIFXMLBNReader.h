@@ -140,7 +140,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~BIFXMLBNReader();
+    ~BIFXMLBNReader() override;
 
     /**
      * Reads the bayes net from the file referenced by filePath  given at the

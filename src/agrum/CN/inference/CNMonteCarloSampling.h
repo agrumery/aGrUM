@@ -128,7 +128,7 @@ namespace gum {
        */
       explicit CNMonteCarloSampling(const CredalNet< GUM_SCALAR >& credalNet);
       /** Destructor. */
-      virtual ~CNMonteCarloSampling();
+      ~CNMonteCarloSampling() override;
       /// @}
 
       /// @name Public algorithm methods

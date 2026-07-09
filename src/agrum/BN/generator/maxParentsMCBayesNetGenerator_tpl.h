@@ -116,18 +116,16 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
-  Size
-      MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::maxParents()
-          const {
+  Size MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::maxParents()
+      const {
     return maxParents_;
   }
 
   template < GUM_Numeric GUM_SCALAR,
              template < class > class ICPTGenerator,
              template < class > class ICPTDisturber >
-  void
-      MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setMaxParents(
-          Size maxParents) {
+  void MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::setMaxParents(
+      Size maxParents) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph")

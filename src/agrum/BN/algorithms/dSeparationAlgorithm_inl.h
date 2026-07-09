@@ -75,9 +75,8 @@ namespace gum {
   }
 
   // copy operator
-  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from) {
-    return *this;
-  }
+  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from)
+      = default;
 
   // move operator
   INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) {

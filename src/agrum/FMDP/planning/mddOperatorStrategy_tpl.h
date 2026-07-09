@@ -228,9 +228,8 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  bool
-      MDDOperatorStrategy< GUM_ELEMENT >::shouldEleminateVar_(const DiscreteVariable*    v,
-                                                              const FMDP< GUM_ELEMENT >* fmdp) {
+  bool MDDOperatorStrategy< GUM_ELEMENT >::shouldEleminateVar_(const DiscreteVariable*    v,
+                                                               const FMDP< GUM_ELEMENT >* fmdp) {
     return v == nullptr ? false : fmdp->mapMainPrime().existsSecond(v);
   }
 
@@ -244,7 +243,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimFunctionGraph< GUM_ELEMENT, ExactTerminalNodePolicy >*
-         MDDOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
+      MDDOperatorStrategy< GUM_ELEMENT >::getFunctionInstance() {
     return MultiDimFunctionGraph< GUM_ELEMENT >::getReducedAndOrderedInstance();
   }
 

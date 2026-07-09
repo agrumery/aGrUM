@@ -125,7 +125,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    ~MultiDimFunctionGraph();
+    ~MultiDimFunctionGraph() override;
 
     /// @}
     // =========================================================================
@@ -137,37 +137,37 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
+    void set(const Instantiation& i, const GUM_ELEMENT& value) const override;
 
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void fill(const GUM_ELEMENT& d) const;
+    void fill(const GUM_ELEMENT& d) const override;
 
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void populate(const std::vector< GUM_ELEMENT >& v) const;
+    void populate(const std::vector< GUM_ELEMENT >& v) const override;
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void populate(std::initializer_list< GUM_ELEMENT > v) const;
+    void populate(std::initializer_list< GUM_ELEMENT > v) const override;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph
      * can't copy other multiDim.
      */
-    virtual void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src,
-                          Instantiation*                          p_i = (Instantiation*)0) const;
+    void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src,
+                  Instantiation*                          p_i = (Instantiation*)0) const override;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph
      * can't copy other multiDim.
      */
-    virtual void copy(const MultiDimContainer< GUM_ELEMENT >& src);
+    void copy(const MultiDimContainer< GUM_ELEMENT >& src) override;
 
     /// @}
     // =========================================================================
@@ -175,34 +175,34 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
-    virtual GUM_ELEMENT get(const Instantiation& i) const;
+    GUM_ELEMENT get(const Instantiation& i) const override;
 
-    virtual const std::string& name() const;
+    const std::string& name() const override;
 
-    virtual void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
-    virtual Size realSize() const;
+    Size realSize() const override;
 
-    virtual void changeNotification(const Instantiation&          i,
-                                    const DiscreteVariable* const var,
-                                    Idx                           oldval,
-                                    Idx                           newval);
+    void changeNotification(const Instantiation&          i,
+                            const DiscreteVariable* const var,
+                            Idx                           oldval,
+                            Idx                           newval) override;
 
-    virtual void setFirstNotification(const Instantiation& i);
+    void setFirstNotification(const Instantiation& i) override;
 
-    virtual void setLastNotification(const Instantiation& i);
+    void setLastNotification(const Instantiation& i) override;
 
-    virtual void setIncNotification(const Instantiation& i);
+    void setIncNotification(const Instantiation& i) override;
 
-    virtual void setDecNotification(const Instantiation& i);
+    void setDecNotification(const Instantiation& i) override;
 
-    virtual void setChangeNotification(const Instantiation& i);
+    void setChangeNotification(const Instantiation& i) override;
 
-    virtual std::string toString(const Instantiation* i) const;
+    std::string toString(const Instantiation* i) const override;
 
     /// @}
     // =========================================================================
@@ -367,14 +367,14 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed as this method has not
      * yet been implemented.
      */
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     /**
      * @warning This will raise an OperationNotAllowed as you should not use
      * this method as MultiDimFunctionGraph use its own internal structure for
      * storing data.
      */
-    GUM_ELEMENT& get_(const Instantiation& inst) const;
+    GUM_ELEMENT& get_(const Instantiation& inst) const override;
 
     private:
     /// The name of the data structure

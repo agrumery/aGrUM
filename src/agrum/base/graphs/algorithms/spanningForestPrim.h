@@ -87,7 +87,7 @@ namespace gum {
     SpanningForestPrim(SpanningForestPrim&& from);
 
     /// Destructor
-    virtual ~SpanningForestPrim();
+    ~SpanningForestPrim() override;
 
     /// @}
 
@@ -98,15 +98,15 @@ namespace gum {
 
     /// Returns the edges in a min cost spanning forest
     /** @returns edges in the spanning forest */
-    const EdgeSet& edgesInSpanningForest();
+    const EdgeSet& edgesInSpanningForest() override;
 
     /// Construct the spanning forest
     /** @return the spanning forest */
-    const UndiGraph& spanningForest();
+    const UndiGraph& spanningForest() override;
 
     /// Returns the cost of the spanning forest
     /** @return cost of the spanning forest */
-    float costOfSpanningForest();
+    float costOfSpanningForest() override;
 
     /// @}
 

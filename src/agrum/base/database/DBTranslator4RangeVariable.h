@@ -237,10 +237,10 @@ namespace gum {
       DBTranslator4RangeVariable(DBTranslator4RangeVariable&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual DBTranslator4RangeVariable* clone() const;
+      [[nodiscard]] DBTranslator4RangeVariable* clone() const override;
 
       /// destructor
-      virtual ~DBTranslator4RangeVariable();
+      ~DBTranslator4RangeVariable() override;
 
       /// @}
 
@@ -307,17 +307,17 @@ namespace gum {
        * a translator that contains a variable whose domain is {x,y,z,t} as
        * well as a missing value symbol z).
        */
-      virtual DBTranslatedValue translate(std::string_view str) final;
+      DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
        * @throws UnknownLabelInDatabase is raised if this original value cannot
        * be found */
-      virtual std::string translateBack(const DBTranslatedValue translated_val) const final;
+      std::string translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Returns the size of the range of the variable. */
-      virtual std::size_t domainSize() const final;
+      std::size_t domainSize() const final;
 
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted by increasing numbers
@@ -334,7 +334,7 @@ namespace gum {
        * whether such a reordering should be performed or whether the current
        * order is OK.
        */
-      virtual bool needsReordering() const final;
+      bool needsReordering() const final;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.
@@ -344,13 +344,13 @@ namespace gum {
        * changed. It updates accordingly the dictionary and returns the mapping
        * that enables changing the old dictionary values into the new ones.
        */
-      virtual HashTable< std::size_t, std::size_t > reorder() final;
+      HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const RangeVariable* variable() const final;
+      const RangeVariable* variable() const final;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue() const final;
+      DBTranslatedValue missingValue() const final;
 
       /// @}
 

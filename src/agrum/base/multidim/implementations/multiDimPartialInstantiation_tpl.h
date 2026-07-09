@@ -90,9 +90,7 @@ namespace gum {
   template < typename GUM_ELEMENT, template < typename > class TABLE >
   MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >&
       MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >::operator=(
-          const MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >& from) {
-    return *this;
-  }
+          const MultiDimPartialInstantiation< GUM_ELEMENT, TABLE >& from) = default;
 
   // creates and returns the partial instantiation of the table
   template < typename GUM_ELEMENT, template < typename > class TABLE >

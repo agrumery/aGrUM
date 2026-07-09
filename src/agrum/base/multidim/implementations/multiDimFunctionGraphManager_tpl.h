@@ -58,16 +58,15 @@ namespace gum {
 
   // Default constructor
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-      MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::MultiDimFunctionGraphManager(
-          MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* mddg) {
+  MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::MultiDimFunctionGraphManager(
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >* mddg) {
     GUM_CONSTRUCTOR(MultiDimFunctionGraphManager);
     _functionGraph_ = mddg;
   }
 
   // Destructor
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  MultiDimFunctionGraphManager< GUM_ELEMENT,
-                                       TerminalNodePolicy >::~MultiDimFunctionGraphManager() {
+  MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::~MultiDimFunctionGraphManager() {
     GUM_DESTRUCTOR(MultiDimFunctionGraphManager);
   }
 
@@ -436,10 +435,9 @@ namespace gum {
   // Checks if a similar node does not already exists in the graph or
   // if it has the same child for every variable value.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  NodeId
-      MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::nodeRedundancyCheck_(
-          const DiscreteVariable* var,
-          NodeId*                 sonsIds) {
+  NodeId MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >::nodeRedundancyCheck_(
+      const DiscreteVariable* var,
+      NodeId*                 sonsIds) {
     NodeId newNode = sonsIds[0];
 
     if (_isRedundant_(var, sonsIds)) {

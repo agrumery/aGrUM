@@ -112,13 +112,13 @@ namespace gum {
       /// @{
 
       /// sets the number max of threads that can be used
-      virtual void setNumberOfThreads(Size nb);
+      void setNumberOfThreads(Size nb) override;
 
       /// returns the current max number of threads of the scheduler
-      virtual Size getNumberOfThreads() const;
+      Size getNumberOfThreads() const override;
 
       /// indicates whether the user set herself the number of threads
-      virtual bool isGumNumberOfThreadsOverriden() const;
+      bool isGumNumberOfThreadsOverriden() const override;
 
       /** @brief changes the number min of rows a thread should process in a
        * multithreading context */

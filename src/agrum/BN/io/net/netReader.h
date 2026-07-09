@@ -86,7 +86,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~NetReader();
+    ~NetReader() override;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

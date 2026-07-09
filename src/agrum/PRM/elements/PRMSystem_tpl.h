@@ -369,8 +369,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    NodeId PRMSystem< GUM_SCALAR >::add(std::string_view           array,
-                                               PRMInstance< GUM_SCALAR >& i) {
+    NodeId PRMSystem< GUM_SCALAR >::add(std::string_view array, PRMInstance< GUM_SCALAR >& i) {
       return add(array, &i);
     }
 
@@ -442,8 +441,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMInstance< GUM_SCALAR >&
-                 PRMSystem< GUM_SCALAR >::get(std::string_view name) const {
+    const PRMInstance< GUM_SCALAR >& PRMSystem< GUM_SCALAR >::get(std::string_view name) const {
       auto p = nameMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no Instance<GUM_SCALAR> matching the given name")
       return *(*p);
@@ -469,7 +467,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMClassElementContainer< GUM_SCALAR >&
-           PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) {
+        PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) {
       auto p = arrayMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
@@ -477,15 +475,14 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMClassElementContainer< GUM_SCALAR >&
-                 PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) const {
+        PRMSystem< GUM_SCALAR >::getArrayType(std::string_view name) const {
       auto p = arrayMap_.tryGet(name);
       if (!p) GUM_ERROR(NotFound, "found no array matching the given name")
       return *(p->first);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    NodeId PRMSystem< GUM_SCALAR >::add(std::string_view           array,
-                                               PRMInstance< GUM_SCALAR >* i) {
+    NodeId PRMSystem< GUM_SCALAR >::add(std::string_view array, PRMInstance< GUM_SCALAR >* i) {
       auto p_arr = arrayMap_.tryGet(array);
       if (!p_arr) GUM_ERROR(NotFound, "found no array matching the given name")
       if (i->type().isSubTypeOf(*(p_arr->first))) {
@@ -501,7 +498,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void PRMSystem< GUM_SCALAR >::addArray(std::string_view                        array,
-                                                  PRMClassElementContainer< GUM_SCALAR >& type) {
+                                           PRMClassElementContainer< GUM_SCALAR >& type) {
       if (arrayMap_.exists(array)) {
         GUM_ERROR(DuplicateElement, "an array '" << array << "' is already in this System")
       }
@@ -527,8 +524,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const typename PRMSystem< GUM_SCALAR >::const_iterator&
-        PRMSystem< GUM_SCALAR >::end() const {
+    const typename PRMSystem< GUM_SCALAR >::const_iterator& PRMSystem< GUM_SCALAR >::end() const {
       return nodeIdMap_.end();
     }
 

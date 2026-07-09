@@ -219,8 +219,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const Sequence< PRMClassElement< GUM_SCALAR >* >&
-                 PRMSlotChain< GUM_SCALAR >::chain() const {
+    const Sequence< PRMClassElement< GUM_SCALAR >* >& PRMSlotChain< GUM_SCALAR >::chain() const {
       return *_chain_;
     }
 

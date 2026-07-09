@@ -403,8 +403,6 @@ namespace gum {
       return false;
     }
 
-
-
     HashTable< std::size_t, std::size_t > DBTranslator4RangeVariable::reorder() {
       // assign to each label the index it had before reordering
       const auto&                                          labels = _variable_.labels();

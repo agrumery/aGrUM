@@ -76,7 +76,7 @@ namespace gum {
   // Copy constructor.
   // The copy will have an exact copy of the constructed BayesNet in source.
   template < GUM_Numeric GUM_SCALAR >
-      BayesNetFactory< GUM_SCALAR >::BayesNetFactory(const BayesNetFactory< GUM_SCALAR >& source) :
+  BayesNetFactory< GUM_SCALAR >::BayesNetFactory(const BayesNetFactory< GUM_SCALAR >& source) :
       _parents_(nullptr), _impl_(nullptr), _bn_(nullptr) {
     GUM_CONS_CPY(BayesNetFactory);
 
@@ -136,8 +136,7 @@ namespace gum {
   // Returns a constant reference on a variable given it's name.
   // @throw NotFound Raised if no variable matches the name.
   template < GUM_Numeric GUM_SCALAR >
-  const DiscreteVariable&
-      BayesNetFactory< GUM_SCALAR >::variable(std::string_view name) const {
+  const DiscreteVariable& BayesNetFactory< GUM_SCALAR >::variable(std::string_view name) const {
     auto p = _varNameMap_.tryGet(name);
     if (!p) { GUM_ERROR(NotFound, name) }
     return _bn_->variable(*p);
@@ -164,7 +163,7 @@ namespace gum {
   // Tells the factory to add a property to the current network.
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFactory< GUM_SCALAR >::addNetworkProperty(std::string_view propName,
-                                                                std::string_view propValue) {
+                                                         std::string_view propValue) {
     _bn_->setProperty(propName, propValue);
   }
 
@@ -300,8 +299,7 @@ namespace gum {
   // @throw OperationNotAllowed If an implementation is already defined for the
   //                            current variable.
   template < GUM_Numeric GUM_SCALAR >
-  void
-      BayesNetFactory< GUM_SCALAR >::setVariableCPTImplementation(MultiDimAdressable* adressable) {
+  void BayesNetFactory< GUM_SCALAR >::setVariableCPTImplementation(MultiDimAdressable* adressable) {
     auto impl = dynamic_cast< MultiDimImplementation< GUM_SCALAR >* >(adressable);
 
     if (state() != factory_state::VARIABLE) {
@@ -519,8 +517,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void
-      BayesNetFactory< GUM_SCALAR >::rawConditionalTable(const std::vector< float >& rawTable) {
+  void BayesNetFactory< GUM_SCALAR >::rawConditionalTable(const std::vector< float >& rawTable) {
     if (state() != factory_state::RAW_CPT) {
       _illegalStateError_("rawConditionalTable");
     } else {
@@ -551,9 +548,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  bool
-      BayesNetFactory< GUM_SCALAR >::_increment_(std::vector< gum::Idx >&         modCounter,
-                                                 List< const DiscreteVariable* >& varList) const {
+  bool BayesNetFactory< GUM_SCALAR >::_increment_(std::vector< gum::Idx >&         modCounter,
+                                                  List< const DiscreteVariable* >& varList) const {
     bool last = true;
 
     for (NodeId j = 0; j < modCounter.size(); j++) {
@@ -597,8 +593,7 @@ namespace gum {
 
   // Tells the factory that we're starting a factorized declaration.
   template < GUM_Numeric GUM_SCALAR >
-  void
-      BayesNetFactory< GUM_SCALAR >::startFactorizedProbabilityDeclaration(std::string_view var) {
+  void BayesNetFactory< GUM_SCALAR >::startFactorizedProbabilityDeclaration(std::string_view var) {
     if (state() != factory_state::NONE) {
       _illegalStateError_("startFactorizedProbabilityDeclaration");
     } else {
@@ -637,7 +632,7 @@ namespace gum {
   // variable's parent.
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFactory< GUM_SCALAR >::setParentModality(std::string_view parent,
-                                                               std::string_view modality) {
+                                                        std::string_view modality) {
     if (state() != factory_state::FACT_ENTRY) {
       _illegalStateError_("string");
     } else {
@@ -796,8 +791,8 @@ namespace gum {
   //                            of the BayesNet.
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFactory< GUM_SCALAR >::setVariableCPT(std::string_view    varName,
-                                                            MultiDimAdressable* table,
-                                                            bool                redefineParents) {
+                                                     MultiDimAdressable* table,
+                                                     bool                redefineParents) {
     auto pot = dynamic_cast< Tensor< GUM_SCALAR >* >(table);
 
     if (state() != factory_state::NONE) {
@@ -886,7 +881,7 @@ namespace gum {
   // NotFound exception.
   template < GUM_Numeric GUM_SCALAR >
   Idx BayesNetFactory< GUM_SCALAR >::_checkVariableModality_(std::string_view name,
-                                                                    std::string_view mod) {
+                                                             std::string_view mod) {
     auto p = _varNameMap_.tryGet(name);
     if (!p) { GUM_ERROR(NotFound, name) }
     const DiscreteVariable& var = _bn_->variable(*p);
@@ -910,7 +905,7 @@ namespace gum {
   // respect to table.
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFactory< GUM_SCALAR >::_setCPTAndParents_(const DiscreteVariable& var,
-                                                                Tensor< GUM_SCALAR >*   table) {
+                                                         Tensor< GUM_SCALAR >*   table) {
     NodeId varId = _varNameMap_[var.name()];
     _bn_->dag_.eraseParents(varId);
 

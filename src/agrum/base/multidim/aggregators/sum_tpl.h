@@ -59,8 +59,7 @@ namespace gum::aggregator {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
-      MultiDimAggregator< GUM_SCALAR >(from) {
+  Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
     GUM_CONS_CPY(Sum);
   }
 
@@ -76,9 +75,9 @@ namespace gum::aggregator {
 
   template < GUM_Numeric GUM_SCALAR >
   Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                      Idx                     i1,
-                                      Idx                     i2,
-                                      bool&                   stop_iteration) const {
+                               Idx                     i1,
+                               Idx                     i2,
+                               bool&                   stop_iteration) const {
     if (auto max_val = this->variable((Idx)0).numerical(this->variable((Idx)0).domainSize() - 1);
         i1 + i2 > max_val) {
       stop_iteration = true;

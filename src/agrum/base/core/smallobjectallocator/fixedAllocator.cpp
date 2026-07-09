@@ -57,7 +57,7 @@
 
 namespace gum {
   void FixedAllocator::_Chunk_::_init_(const std::size_t&   blockSize,
-                                              const unsigned char& numBlocks) {
+                                       const unsigned char& numBlocks) {
     // Chunk memory space allocation. A chunk allocates a memory of blockSize *
     // numBlocks size.
     // The chunk will then give us numBlocks distinct blocks of blockSize from
@@ -79,6 +79,7 @@ namespace gum {
       *p = ++indexBlock;
     }
   }
+
   void* FixedAllocator::_Chunk_::_allocate_(const std::size_t& blockSize) {
     if (!_blocksAvailable_) {
       // If no block is available return nullptr
@@ -102,8 +103,8 @@ namespace gum {
 
     return pResult;
   }
-  void FixedAllocator::_Chunk_::_deallocat_(void*              pDeallocatedBlock,
-                                                   const std::size_t& blockSize) {
+
+  void FixedAllocator::_Chunk_::_deallocat_(void* pDeallocatedBlock, const std::size_t& blockSize) {
     // first, ensure that deallocated is in this chunk
     GUM_ASSERT(pDeallocatedBlock >= _pData_);
 
@@ -126,6 +127,7 @@ namespace gum {
     // We gain one block, yeah
     ++_blocksAvailable_;
   }
+
   void* FixedAllocator::allocate() {
     if (_chunks_.empty() || _allocChunk_->_blocksAvailable_ == 0) {
       // no available memory in this chunk
@@ -151,6 +153,7 @@ namespace gum {
     }
     return _allocChunk_->_allocate_(_blockSize_);
   }
+
   void FixedAllocator::deallocate(void* pDeallocatedBlock) {
     bool chunk_found = true;
     if (_deallocChunk_->_pData_ > pDeallocatedBlock
@@ -197,4 +200,4 @@ namespace gum {
     if (chunk_found) { _deallocChunk_->_deallocat_(pDeallocatedBlock, _blockSize_); }
   }
 
-}  // namespace gum
+}   // namespace gum

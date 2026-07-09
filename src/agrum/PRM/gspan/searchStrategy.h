@@ -144,7 +144,7 @@ namespace gum {
         FrequenceSearch(const FrequenceSearch& from);
 
         /// Destructor.
-        virtual ~FrequenceSearch();
+        ~FrequenceSearch() override;
 
         /// Copy operator.
         FrequenceSearch& operator=(const FrequenceSearch& from);
@@ -155,14 +155,14 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        virtual bool accept_root(const Pattern* r);
+        bool accept_root(const Pattern* r) override;
 
-        virtual bool accept_growth(const Pattern*                  parent,
-                                   const Pattern*                  child,
-                                   const EdgeGrowth< GUM_SCALAR >& growth);
+        bool accept_growth(const Pattern*                  parent,
+                           const Pattern*                  child,
+                           const EdgeGrowth< GUM_SCALAR >& growth) override;
 
-        virtual bool operator()(LabelData* i, LabelData* j);
-        virtual bool operator()(Pattern* i, Pattern* j);
+        bool operator()(LabelData* i, LabelData* j) override;
+        bool operator()(Pattern* i, Pattern* j) override;
         /// @}
 
         private:
@@ -194,7 +194,7 @@ namespace gum {
         StrictSearch(const StrictSearch& from);
 
         /// Destructor.
-        virtual ~StrictSearch();
+        ~StrictSearch() override;
 
         /// Copy operator.
         StrictSearch& operator=(const StrictSearch& from);
@@ -205,14 +205,14 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        virtual bool accept_root(const Pattern* r);
+        bool accept_root(const Pattern* r) override;
 
-        virtual bool accept_growth(const Pattern*                  parent,
-                                   const Pattern*                  child,
-                                   const EdgeGrowth< GUM_SCALAR >& growth);
+        bool accept_growth(const Pattern*                  parent,
+                           const Pattern*                  child,
+                           const EdgeGrowth< GUM_SCALAR >& growth) override;
 
-        virtual bool operator()(LabelData* i, LabelData* j);
-        virtual bool operator()(Pattern* i, Pattern* j);
+        bool operator()(LabelData* i, LabelData* j) override;
+        bool operator()(Pattern* i, Pattern* j) override;
         /// @}
 
         private:
@@ -281,7 +281,7 @@ namespace gum {
         TreeWidthSearch(const TreeWidthSearch& from);
 
         /// Destructor.
-        virtual ~TreeWidthSearch();
+        ~TreeWidthSearch() override;
 
         /// Copy operator.
         TreeWidthSearch& operator=(const TreeWidthSearch& from);
@@ -294,14 +294,14 @@ namespace gum {
 
         double cost(const Pattern& p);
 
-        virtual bool accept_root(const Pattern* r);
+        bool accept_root(const Pattern* r) override;
 
-        virtual bool accept_growth(const Pattern*                  parent,
-                                   const Pattern*                  child,
-                                   const EdgeGrowth< GUM_SCALAR >& growth);
+        bool accept_growth(const Pattern*                  parent,
+                           const Pattern*                  child,
+                           const EdgeGrowth< GUM_SCALAR >& growth) override;
 
-        virtual bool operator()(LabelData* i, LabelData* j);
-        virtual bool operator()(Pattern* i, Pattern* j);
+        bool operator()(LabelData* i, LabelData* j) override;
+        bool operator()(Pattern* i, Pattern* j) override;
         /// @}
 
         private:

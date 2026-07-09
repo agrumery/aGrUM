@@ -69,8 +69,7 @@ namespace gum {
     static Size castToSize(const std::tuple< unsigned int, unsigned int, unsigned int >& key);
 
     /// computes the hashed value of a key
-    virtual Size operator()(
-        const std::tuple< unsigned int, unsigned int, unsigned int >& key) const override final;
+    Size operator()(const std::tuple< unsigned int, unsigned int, unsigned int >& key) const final;
   };
 }   // namespace gum
 

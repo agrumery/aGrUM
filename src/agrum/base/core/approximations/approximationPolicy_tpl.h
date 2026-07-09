@@ -46,7 +46,7 @@ namespace gum {
 
 
   template < GUM_Numeric GUM_SCALAR >
-  ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy() {}
+  ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy() = default;
 
   template < GUM_Numeric GUM_SCALAR >
   ApproximationPolicy< GUM_SCALAR >::ApproximationPolicy(

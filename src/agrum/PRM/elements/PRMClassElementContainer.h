@@ -90,7 +90,7 @@ namespace gum {
       PRMClassElementContainer(std::string_view name);
 
       /// Destructor.
-      virtual ~PRMClassElementContainer();
+      ~PRMClassElementContainer() override;
 
       /// @}
       // ========================================================================

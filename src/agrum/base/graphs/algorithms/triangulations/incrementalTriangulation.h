@@ -85,7 +85,7 @@ namespace gum {
     IncrementalTriangulation(IncrementalTriangulation&& from);
 
     /// destructor
-    ~IncrementalTriangulation();
+    ~IncrementalTriangulation() override;
 
     /// @}
 
@@ -114,47 +114,47 @@ namespace gum {
     void eraseEdge(const Edge& edge);
 
     /// returns the fill-ins added by the triangulation algorithm
-    const EdgeSet& fillIns();
+    const EdgeSet& fillIns() override;
 
     /// returns an elimination ordering compatible with the triangulated graph
-    const std::vector< NodeId >& eliminationOrder();
+    const std::vector< NodeId >& eliminationOrder() override;
 
     /** @brief returns the number of a given node in the elimination order
      * (0 = first node eliminated) */
-    Idx eliminationOrder(const NodeId);
+    Idx eliminationOrder(const NodeId) override;
 
     /// returns the triangulated graph
-    const UndiGraph& triangulatedGraph();
+    const UndiGraph& triangulatedGraph() override;
 
     /// returns the current graph (that which is incrementally triangulated)
     const UndiGraph& graph() const;
 
     /// returns the elimination tree of a compatible ordering
-    const CliqueGraph& eliminationTree();
+    const CliqueGraph& eliminationTree() override;
 
     /// returns a junction tree corresponding to the current graph
-    const CliqueGraph& junctionTree();
+    const CliqueGraph& junctionTree() override;
 
     /** @brief returns the Id of the clique created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdJunctionTreeClique(const NodeId id);
+    NodeId createdJunctionTreeClique(const NodeId id) override;
 
     /** @brief returns the Ids of the cliques of the junction tree created by
      * the elimination of the nodes */
-    const NodeProperty< NodeId >& createdJunctionTreeCliques();
+    const NodeProperty< NodeId >& createdJunctionTreeCliques() override;
 
     /// returns the junction tree of the maximal prime subgraphs
-    const CliqueGraph& maxPrimeSubgraphTree();
+    const CliqueGraph& maxPrimeSubgraphTree() override;
 
     /** @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
-    NodeId createdMaxPrimeSubgraph(const NodeId id);
+    NodeId createdMaxPrimeSubgraph(const NodeId id) override;
 
     /// sets the graph to the empty graph
-    void clear();
+    void clear() override;
 
     /// changes the current graph
-    void setGraph(const UndiGraph* theGraph, const NodeProperty< Size >* domain_sizes);
+    void setGraph(const UndiGraph* theGraph, const NodeProperty< Size >* domain_sizes) override;
 
     /// returns the triangulation algorithm (useful for fine tuning it)
     const UnconstrainedTriangulation& triangulationAlgo() const;
@@ -174,10 +174,10 @@ namespace gum {
     IncrementalTriangulation& operator=(IncrementalTriangulation&& from);
 
     /// virtual clone constructor
-    [[nodiscard]] virtual IncrementalTriangulation* newFactory() const final;
+    [[nodiscard]] IncrementalTriangulation* newFactory() const final;
 
     /// virtual copy constructor
-    [[nodiscard]] virtual IncrementalTriangulation* copyFactory() const final;
+    [[nodiscard]] IncrementalTriangulation* copyFactory() const final;
 
     /// checks that the incremental triangulation is consistent
     bool checkConsistency();

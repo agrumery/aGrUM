@@ -228,14 +228,12 @@ namespace gum {
   }
 
   template < bool isInitial >
-  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf* l,
-                                                                   Int2Type< false >) {
+  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf* l, Int2Type< false >) {
     return _leaf2Pair_.exists(l);
   }
 
   template < bool isInitial >
-  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf*,
-                                                                   Int2Type< true >) {
+  bool FusionContext< isInitial >::_containsAssociatedLeaf_(AbstractLeaf*, Int2Type< true >) {
     return false;
   }
 

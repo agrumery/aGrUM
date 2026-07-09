@@ -76,10 +76,7 @@ namespace gum {
     GreedyHillClimbing::~GreedyHillClimbing() { GUM_DESTRUCTOR(GreedyHillClimbing); }
 
     /// copy operator
-    GreedyHillClimbing& GreedyHillClimbing::operator=(const GreedyHillClimbing& from) {
-      ApproximationScheme::operator=(from);
-      return *this;
-    }
+    GreedyHillClimbing& GreedyHillClimbing::operator=(const GreedyHillClimbing& from) = default;
 
     /// move operator
     GreedyHillClimbing& GreedyHillClimbing::operator=(GreedyHillClimbing&& from) {

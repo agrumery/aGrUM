@@ -92,7 +92,7 @@ namespace gum {
       GreedyHillClimbing(GreedyHillClimbing&& from);
 
       /// destructor
-      ~GreedyHillClimbing();
+      ~GreedyHillClimbing() override;
 
       /// @}
 

@@ -112,7 +112,7 @@ namespace gum {
       /**
        * Destructor.
        */
-      virtual ~PRMFactory();
+      ~PRMFactory() override;
 
       /// @}
       // ========================================================================
@@ -132,14 +132,14 @@ namespace gum {
        * @return Returns the PRMObject type of the object begin built.
        * @throw NotFound if no type is being built.
        */
-      virtual PRMObject::prm_type currentType() const override;
+      PRMObject::prm_type currentType() const override;
 
       /**
        * @return the current PRMObject being built by this factory.
        * @throw NotFound if nothing is being built.
        */
-      virtual PRMObject*       getCurrent() override;
-      virtual const PRMObject* getCurrent() const override;
+      PRMObject*       getCurrent() override;
+      const PRMObject* getCurrent() const override;
 
       /**
        * @brief Close current object being built.
@@ -152,12 +152,12 @@ namespace gum {
        * @return Returns the top most object removed in this factory's stack
        *         before. If their is no such object, 0 is returned.
        */
-      virtual PRMObject* closeCurrent() override;
+      PRMObject* closeCurrent() override;
 
       /**
        * @return Returns the current package name.
        */
-      virtual std::string currentPackage() const override;
+      std::string currentPackage() const override;
 
       /**
        * @brief Returns a reference over a Class<GUM_SCALAR> given its name.
@@ -220,14 +220,14 @@ namespace gum {
        *
        * @param name The name of the package for all further objects.
        */
-      virtual void pushPackage(std::string_view name) override;
+      void pushPackage(std::string_view name) override;
 
       /**
        * @brief Pop the current package from the package stack.
        * @return the popped package or an empty string if there was
        *         nothing to pop.
        */
-      virtual std::string popPackage() override;
+      std::string popPackage() override;
 
       /// @}
       // ======================================================================
@@ -248,7 +248,7 @@ namespace gum {
        *
        * @param name The name of the package for all further objects.
        */
-      virtual void addImport(std::string_view name) override;
+      void addImport(std::string_view name) override;
 
       /// @}
       // ======================================================================
@@ -265,7 +265,7 @@ namespace gum {
        * @throw DuplicateElement Raised if an object with the same name
        *                         already exists.
        */
-      virtual void startDiscreteType(std::string_view name, std::string_view super = "") override;
+      void startDiscreteType(std::string_view name, std::string_view super = "") override;
 
       /**
        * Add a label to the current discrete type.
@@ -280,7 +280,7 @@ namespace gum {
        * @throw NotFound Raised if ext does not match any label in the
        * current type's super type.
        */
-      virtual void addLabel(std::string_view l, std::string_view ext = "") override;
+      void addLabel(std::string_view l, std::string_view ext = "") override;
 
       /**
        * End the current discrete type declaration.
@@ -288,7 +288,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the current type is not a valid
        *                            discrete type.
        */
-      virtual void endDiscreteType() override;
+      void endDiscreteType() override;
 
       /**
        * Start a discretized type declaration.
@@ -298,14 +298,14 @@ namespace gum {
        * @throw DuplicateElement Raised if an object with the same name
        *                         already exists.
        */
-      virtual void startDiscretizedType(std::string_view name) override;
+      void startDiscretizedType(std::string_view name) override;
 
       /**
        * Add a tick to the current discretized type.
        *
        * @param tick The tick value.
        */
-      virtual void addTick(double tick) override;
+      void addTick(double tick) override;
 
       /**
        * End the current discretized type declaration.
@@ -313,7 +313,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the current type is not a valid
        *                            discrete type.
        */
-      virtual void endDiscretizedType() override;
+      void endDiscretizedType() override;
 
       /**
        * Add a range variable type declaration.
@@ -327,13 +327,13 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the range variable is not a valid
        * discrete type.
        */
-      virtual void addRangeType(std::string_view name, long minVal, long maxVal) override;
+      void addRangeType(std::string_view name, long minVal, long maxVal) override;
       /// @}
 
       ///@name several checks for parsers
       /// @{
-      virtual bool isClassOrInterface(std::string_view type) const override;
-      virtual bool isArrayInCurrentSystem(std::string_view name) const override;
+      bool isClassOrInterface(std::string_view type) const override;
+      bool isArrayInCurrentSystem(std::string_view name) const override;
       /// @}
 
 
@@ -354,15 +354,15 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void startClass(std::string_view          c,
-                              std::string_view          ext              = "",
-                              const Set< std::string >* implements       = nullptr,
-                              bool                      delayInheritance = false) override;
+      void startClass(std::string_view          c,
+                      std::string_view          ext              = "",
+                      const Set< std::string >* implements       = nullptr,
+                      bool                      delayInheritance = false) override;
 
       /**
        * Continue the declaration of a class.
        */
-      virtual void continueClass(std::string_view c) override;
+      void continueClass(std::string_view c) override;
 
       /**
        * Tells the factory that we finished a class declaration.
@@ -371,7 +371,7 @@ namespace gum {
        *respect one of
        *                  it's PRMInterface<GUM_SCALAR>.
        */
-      virtual void endClass(bool checkImplementations = true) override;
+      void endClass(bool checkImplementations = true) override;
 
       /// @}
       // ======================================================================
@@ -393,25 +393,25 @@ namespace gum {
        * @throw NotFound Raised if ext does not match any declared
        *                 PRMInterface<GUM_SCALAR>.
        */
-      virtual void startInterface(std::string_view i,
-                                  std::string_view ext              = "",
-                                  bool             delayInheritance = false) override;
+      void startInterface(std::string_view i,
+                          std::string_view ext              = "",
+                          bool             delayInheritance = false) override;
 
       /**
        * Continue the declaration of an interface.
        */
-      virtual void continueInterface(std::string_view name) override;
+      void continueInterface(std::string_view name) override;
 
       /**
        * @brief Add an attribute to an interface.
        *
        */
-      virtual void addAttribute(std::string_view type, std::string_view name) override;
+      void addAttribute(std::string_view type, std::string_view name) override;
 
       /**
        * Tells the factory that we finished an interface declaration.
        */
-      virtual void endInterface() override;
+      void endInterface() override;
 
       /// @}
       // ======================================================================
@@ -445,14 +445,14 @@ namespace gum {
        * Tells the factory that we start an attribute declaration.
        * @throw FatalError Raised if the given operation is illegal.
        */
-      virtual void startAttribute(std::string_view type,
-                                  std::string_view name,
-                                  bool             scalar_atttr = false) override;
+      void startAttribute(std::string_view type,
+                          std::string_view name,
+                          bool             scalar_atttr = false) override;
 
       /**
        * Continues the declaration of an attribute.
        */
-      virtual void continueAttribute(std::string_view name) override;
+      void continueAttribute(std::string_view name) override;
 
       /**
        * Tells the factory that we add a parent to the current declared
@@ -462,7 +462,7 @@ namespace gum {
        * reference in it.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void addParent(std::string_view name) override;
+      void addParent(std::string_view name) override;
 
       /**
        * Gives the factory the CPF in its raw form.
@@ -534,8 +534,8 @@ namespace gum {
        * @param values The probability values of the current attribute given
        *               the values in parents.
        */
-      virtual void setCPFByRule(const std::vector< std::string >& labels,
-                                const std::vector< std::string >& values) override;
+      void setCPFByRule(const std::vector< std::string >& labels,
+                        const std::vector< std::string >& values) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form.
@@ -556,7 +556,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void setRawCPFByFloatLines(const std::vector< float >& array) override;
+      void setRawCPFByFloatLines(const std::vector< float >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form.
@@ -578,7 +578,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void setRawCPFByFloatColumns(const std::vector< float >& array) override;
+      void setRawCPFByFloatColumns(const std::vector< float >& array) override;
 
       /**
        * @brief  Gives the factory the CPF in its raw form use gum::Formula.
@@ -600,7 +600,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void setRawCPFByColumns(const std::vector< std::string >& array) override;
+      void setRawCPFByColumns(const std::vector< std::string >& array) override;
 
       /**
        * @brief Gives the factory the CPF in its raw form using gum::Formula.
@@ -621,7 +621,7 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void setRawCPFByLines(const std::vector< std::string >& array) override;
+      void setRawCPFByLines(const std::vector< std::string >& array) override;
 
       /**
        * @brief Fills the CPF using a rule.
@@ -635,14 +635,14 @@ namespace gum {
        * @param values The probability values of the current attribute given
        *               the values in parenst.
        */
-      virtual void setCPFByFloatRule(const std::vector< std::string >& labels,
-                                     const std::vector< float >&       values) override;
+      void setCPFByFloatRule(const std::vector< std::string >& labels,
+                             const std::vector< float >&       values) override;
 
       /**
        * Tells the factory that we finished declaring an attribute.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void endAttribute() override;
+      void endAttribute() override;
 
       /// @}
       // ======================================================================
@@ -690,11 +690,11 @@ namespace gum {
        * @throw TypeError Raised if the aggregator's type or one or more of the
        * chains are not of the good type.
        */
-      virtual void addAggregator(std::string_view                  name,
-                                 std::string_view                  agg_type,
-                                 const std::vector< std::string >& chains,
-                                 const std::vector< std::string >& params,
-                                 std::string_view                  type = "") override;
+      void addAggregator(std::string_view                  name,
+                         std::string_view                  agg_type,
+                         const std::vector< std::string >& chains,
+                         const std::vector< std::string >& params,
+                         std::string_view                  type = "") override;
 
       /**
        * @brief Start an aggregator declaration.
@@ -745,11 +745,11 @@ namespace gum {
        *are
        *                            invalid.
        */
-      virtual void addNoisyOrCompound(std::string_view                  name,
-                                      const std::vector< std::string >& chains,
-                                      const std::vector< float >&       numbers,
-                                      float                             leak,
-                                      const std::vector< std::string >& label) override;
+      void addNoisyOrCompound(std::string_view                  name,
+                              const std::vector< std::string >& chains,
+                              const std::vector< float >&       numbers,
+                              float                             leak,
+                              const std::vector< std::string >& label) override;
       /// @}
       // ======================================================================
       /// @name PRMReferenceSlot<GUM_SCALAR> construction methods.
@@ -760,8 +760,7 @@ namespace gum {
        * Tells the factory that we started declaring a slot.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void
-          addReferenceSlot(std::string_view type, std::string_view name, bool isArray) override;
+      void addReferenceSlot(std::string_view type, std::string_view name, bool isArray) override;
 
       /// @}
       // ======================================================================
@@ -773,18 +772,18 @@ namespace gum {
        * Tells the factory that we started declaring a model.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void startSystem(std::string_view name) override;
+      void startSystem(std::string_view name) override;
 
       /**
        * Tells the factory that we finished declaring a model.
        * @throw OperationNotAllowed Raised if the given operation is illegal.
        */
-      virtual void endSystem() override;
+      void endSystem() override;
 
       /**
        * Add an instance to the model.
        */
-      virtual void addInstance(std::string_view type, std::string_view name) override;
+      void addInstance(std::string_view type, std::string_view name) override;
 
       /**
        * Add an instance with params as values of type's parameters.
@@ -799,12 +798,12 @@ namespace gum {
        * suffix "[i]",
        * with "i" being the position of the instance in the array.
        */
-      virtual void addArray(std::string_view type, std::string_view name, Size size) override;
+      void addArray(std::string_view type, std::string_view name, Size size) override;
 
       /**
        * Add an instance to an array.
        */
-      virtual void incArray(std::string_view l_i, std::string_view r_i) override;
+      void incArray(std::string_view l_i, std::string_view r_i) override;
 
       /**
        * @brief Instantiate a reference in the current model.
@@ -820,9 +819,9 @@ namespace gum {
        * @param right_instance The name of an instance or an array of instances
        *                       in the model.
        */
-      virtual void setReferenceSlot(std::string_view left_instance,
-                                    std::string_view left_reference,
-                                    std::string_view right_instance) override;
+      void setReferenceSlot(std::string_view left_instance,
+                            std::string_view left_reference,
+                            std::string_view right_instance) override;
 
       /**
        * @brief Instantiate a reference in the current model.
@@ -838,7 +837,7 @@ namespace gum {
        * @param r_i The name of an instance or an array of instances in the
        *model.
        */
-      virtual void setReferenceSlot(std::string_view l_i, std::string_view r_i) override;
+      void setReferenceSlot(std::string_view l_i, std::string_view r_i) override;
 
       /// @}
 

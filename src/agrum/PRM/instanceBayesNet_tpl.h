@@ -93,7 +93,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     InstanceBayesNet< GUM_SCALAR >&
-           InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
+        InstanceBayesNet< GUM_SCALAR >::operator=(const InstanceBayesNet& from) {
       if (this != &from) {
         IBayesNet< GUM_SCALAR >::operator=(from);
 
@@ -135,14 +135,13 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMClassElement< GUM_SCALAR >&
-                 InstanceBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
+    const PRMClassElement< GUM_SCALAR >& InstanceBayesNet< GUM_SCALAR >::_get_(NodeId id) const {
       return _inst_->get(id);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const PRMClassElement< GUM_SCALAR >&
-                 InstanceBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
+        InstanceBayesNet< GUM_SCALAR >::_get_(std::string_view name) const {
       if (!_inst_->exists(name)) GUM_ERROR(NotFound, "no element found with that name")
       return _inst_->get(name);
     }

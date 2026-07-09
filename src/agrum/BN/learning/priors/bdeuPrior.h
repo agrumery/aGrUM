@@ -100,7 +100,7 @@ namespace gum::learning {
     [[nodiscard]] BDeuPrior* clone() const override;
 
     /// destructor
-    virtual ~BDeuPrior();
+    ~BDeuPrior() override;
 
     /// @}
 

@@ -145,8 +145,8 @@ namespace gum {
 
   // adds a new var to the sequence of  _vars_
   template < typename GUM_ELEMENT >
-  MultiDimImplementation< GUM_ELEMENT >&
-         operator<<(MultiDimImplementation< GUM_ELEMENT >& array, const DiscreteVariable& v) {
+  MultiDimImplementation< GUM_ELEMENT >& operator<<(MultiDimImplementation< GUM_ELEMENT >& array,
+                                                    const DiscreteVariable&                v) {
     array.add(v);
     return array;
   }
@@ -217,7 +217,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   const Sequence< const DiscreteVariable* >&
-               MultiDimImplementation< GUM_ELEMENT >::variablesSequence() const {
+      MultiDimImplementation< GUM_ELEMENT >::variablesSequence() const {
     return _vars_;
   }
 
@@ -302,7 +302,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimImplementation< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                              const DiscreteVariable* y) {
+                                                       const DiscreteVariable* y) {
     _vars_.setAtPos(_vars_.pos(x), y);
 
     for (List< Instantiation* >::iterator_safe iter = _slaveInstantiations_.beginSafe();
@@ -319,8 +319,7 @@ namespace gum {
 
   // for friendly displaying the content of the array
   template < typename GUM_ELEMENT >
-  std::ostream& operator<<(std::ostream&                                out,
-                                  const MultiDimImplementation< GUM_ELEMENT >& array) {
+  std::ostream& operator<<(std::ostream& out, const MultiDimImplementation< GUM_ELEMENT >& array) {
     return out << static_cast< const MultiDimContainer< GUM_ELEMENT >& >(array);
   }
 
@@ -333,7 +332,7 @@ namespace gum {
   // protected access to content_
   template < typename GUM_ELEMENT >
   const MultiDimImplementation< GUM_ELEMENT >*
-               MultiDimImplementation< GUM_ELEMENT >::content() const {
+      MultiDimImplementation< GUM_ELEMENT >::content() const {
     return this;
   }
 

@@ -73,7 +73,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void UAIMRFWriter< GUM_SCALAR >::write(std::ostream&                           output,
-                                                const IMarkovRandomField< GUM_SCALAR >& MN) {
+                                         const IMarkovRandomField< GUM_SCALAR >& MN) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _preambule_(MN) << std::endl;
@@ -99,7 +99,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void UAIMRFWriter< GUM_SCALAR >::write(std::string_view                        filePath,
-                                                const IMarkovRandomField< GUM_SCALAR >& MN) {
+                                         const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     write(output, MN);
@@ -110,8 +110,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string
-         UAIMRFWriter< GUM_SCALAR >::_preambule_(const IMarkovRandomField< GUM_SCALAR >& MN) {
+  std::string UAIMRFWriter< GUM_SCALAR >::_preambule_(const IMarkovRandomField< GUM_SCALAR >& MN) {
     std::stringstream str;
 
     str << "MARKOV" << std::endl;
@@ -137,9 +136,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string
-         UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
-                                                  const Tensor< GUM_SCALAR >&             clikpot) {
+  std::string UAIMRFWriter< GUM_SCALAR >::_factorBloc_(const IMarkovRandomField< GUM_SCALAR >& MN,
+                                                       const Tensor< GUM_SCALAR >& clikpot) {
     std::stringstream str;
 
     str << std::format("{} # {{", clikpot.domainSize());

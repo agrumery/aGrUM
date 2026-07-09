@@ -76,7 +76,7 @@ namespace gum {
 
       char buffer[100];
       snprintf(buffer, 100, "%g", translated_val.cont_val);
-      return std::string(buffer);
+      return {buffer};
     }
 
     /// indicates whether the translations should be reordered

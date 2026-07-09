@@ -140,7 +140,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    virtual ~MarkovRandomField();
+    ~MarkovRandomField() override;
 
     /**
      * @brief Copy constructor.
@@ -182,7 +182,7 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Tensor< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
+    const Tensor< GUM_SCALAR >& factor(const NodeSet& varIds) const final;
 
     virtual const Tensor< GUM_SCALAR >&
         factor(const std::vector< std::string >& varnames) const final;
@@ -192,13 +192,13 @@ namespace gum {
      *
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const NodeSet& smallestFactorFromNode(NodeId node) const final;
+    const NodeSet& smallestFactorFromNode(NodeId node) const final;
 
     /**
      * Returns the set of factors as a IMarkovRandomField::FactorTable
      *
      */
-    virtual const FactorTable< GUM_SCALAR >& factors() const final;
+    const FactorTable< GUM_SCALAR >& factors() const final;
 
     /**
      * @brief Add a variable to the gum::MarkovRandomField.

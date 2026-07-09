@@ -72,7 +72,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                     const IBayesNet< GUM_SCALAR >& bn) {
+                                              const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _heading_(bn) << std::endl;
@@ -107,7 +107,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void BIFXMLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                     const IBayesNet< GUM_SCALAR >& bn) {
+                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);
@@ -203,8 +203,8 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   std::string
-         BIFXMLBNWriter< GUM_SCALAR >::_variableDefinition_(const NodeId&                  varNodeId,
-                                                            const IBayesNet< GUM_SCALAR >& bn) {
+      BIFXMLBNWriter< GUM_SCALAR >::_variableDefinition_(const NodeId&                  varNodeId,
+                                                         const IBayesNet< GUM_SCALAR >& bn) {
     //<DEFINITION>
     //<FOR>var</FOR>
     //<GIVEN>conditional var</GIVEN>

@@ -48,7 +48,7 @@ namespace gum {
     PC::PC()  = default;
     PC::~PC() = default;
 
-    PC::PC(const PC& from) : CIBasedLearning(from) {}
+    PC::PC(const PC& from) = default;
 
     PC::PC(PC&& from) noexcept : CIBasedLearning(std::move(from)) {}
 

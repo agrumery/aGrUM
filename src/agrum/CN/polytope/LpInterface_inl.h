@@ -76,11 +76,7 @@ namespace gum {
 
       INLINE bool LpCol::operator!=(const LpCol& col) const { return (_id_ != col.id()); }
 
-      INLINE LpCol& LpCol::operator=(const LpCol& col) {
-        _id_ = col._id_;
-
-        return *this;
-      }
+      INLINE LpCol& LpCol::operator=(const LpCol& col) = default;
 
       INLINE std::ostream& operator<<(std::ostream& out, const LpCol& col) {
         out << col.toString();

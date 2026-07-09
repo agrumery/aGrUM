@@ -377,7 +377,7 @@ namespace gum {
 
   template < typename Key, typename Data >
   IndexedTree< Key, Data >&
-         IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
+      IndexedTree< Key, Data >::getNode(const std::vector< Key >& index) const {
     IndexedTree< Key, Data >* current_node = const_cast< IndexedTree< Key, Data >* >(this);
 
     for (unsigned int i = 0; i < index.size(); ++i)

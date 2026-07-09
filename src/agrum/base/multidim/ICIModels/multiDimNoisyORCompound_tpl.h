@@ -55,7 +55,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(GUM_SCALAR external_weight,
-                                                                        GUM_SCALAR default_weight) :
+                                                                 GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
   }
@@ -134,14 +134,12 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template < GUM_Numeric GUM_SCALAR >
-  std::ostream& operator<<(std::ostream&                                s,
-                                  const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
+  std::ostream& operator<<(std::ostream& s, const MultiDimNoisyORCompound< GUM_SCALAR >& ag) {
     return s << ag.toString();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  MultiDimContainer< GUM_SCALAR >*
-         MultiDimNoisyORCompound< GUM_SCALAR >::newFactory() const {
+  MultiDimContainer< GUM_SCALAR >* MultiDimNoisyORCompound< GUM_SCALAR >::newFactory() const {
     return new MultiDimNoisyORCompound< GUM_SCALAR >(this->_external_weight_,
                                                      this->_default_weight_);
   }

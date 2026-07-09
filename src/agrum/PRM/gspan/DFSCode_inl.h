@@ -86,9 +86,6 @@ namespace gum {
         return *this;
       }
 
-
-
-
       INLINE
       bool DFSCode::operator<=(const DFSCode& from) const {
         DFSCode::const_iterator iter = codes.begin();

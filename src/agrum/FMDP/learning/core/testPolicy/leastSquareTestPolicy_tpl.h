@@ -192,14 +192,13 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  const HashTable< Idx, double >&
-               LeastSquareTestPolicy< GUM_ELEMENT >::sumAttrTable() const {
+  const HashTable< Idx, double >& LeastSquareTestPolicy< GUM_ELEMENT >::sumAttrTable() const {
     return _sumAttrTable_;
   }
 
   template < typename GUM_ELEMENT >
   const HashTable< Idx, LinkedList< double >* >&
-               LeastSquareTestPolicy< GUM_ELEMENT >::obsTable() const {
+      LeastSquareTestPolicy< GUM_ELEMENT >::obsTable() const {
     return _obsTable_;
   }
 

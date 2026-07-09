@@ -136,10 +136,9 @@ namespace gum {
       return stream << idset.toString();
     }
 
-
     IdCondSet::IdCondSet(const std::vector< NodeId >& ids,
-                                const bool                   rhs_ids,
-                                const bool                   ordered_ids) : _end_safe_(*this) {
+                         const bool                   rhs_ids,
+                         const bool                   ordered_ids) : _end_safe_(*this) {
       _ids_.resize(ids.size());
 
       // if the rhs_ids should be considered as unordered, we sort them by
@@ -163,10 +162,10 @@ namespace gum {
     }
 
     IdCondSet::IdCondSet(NodeId                       var1,
-                                NodeId                       var2,
-                                const std::vector< NodeId >& rhs_ids,
-                                const bool                   ordered_lhs_vars,
-                                const bool                   ordered_rhs_ids) :
+                         NodeId                       var2,
+                         const std::vector< NodeId >& rhs_ids,
+                         const bool                   ordered_lhs_vars,
+                         const bool                   ordered_rhs_ids) :
         _nb_lhs_ids_(std::size_t(2)), _end_safe_(*this) {
       _ids_.resize(rhs_ids.size() + std::size_t(2));
 
@@ -195,11 +194,11 @@ namespace gum {
     }
 
     IdCondSet::IdCondSet(NodeId                       var1,
-                                NodeId                       var2,
-                                NodeId                       var3,
-                                const std::vector< NodeId >& rhs_ids,
-                                const bool                   ordered_lhs_vars,
-                                const bool                   ordered_rhs_ids) :
+                         NodeId                       var2,
+                         NodeId                       var3,
+                         const std::vector< NodeId >& rhs_ids,
+                         const bool                   ordered_lhs_vars,
+                         const bool                   ordered_rhs_ids) :
         _nb_lhs_ids_(std::size_t(3)), _end_safe_(*this) {
       _ids_.resize(rhs_ids.size() + std::size_t(3));
 

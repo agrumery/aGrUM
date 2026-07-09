@@ -57,15 +57,15 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3SystemFactory< GUM_SCALAR >::O3SystemFactory(PRM< GUM_SCALAR >&          prm,
-                                                            O3PRM&                      o3_prm,
-                                                            O3NameSolver< GUM_SCALAR >& solver,
-                                                            ErrorsContainer&            errors) :
+                                                     O3PRM&                      o3_prm,
+                                                     O3NameSolver< GUM_SCALAR >& solver,
+                                                     ErrorsContainer&            errors) :
           _prm_(&prm), _o3_prm_(&o3_prm), _solver_(&solver), _errors_(&errors) {
         GUM_CONSTRUCTOR(O3SystemFactory);
       }
 
       template < GUM_Numeric GUM_SCALAR >
-          O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
+      O3SystemFactory< GUM_SCALAR >::O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src) :
           _prm_(src._prm_), _o3_prm_(src._o3_prm_), _solver_(src._solver_), _errors_(src._errors_),
           _nameMap_(src._nameMap_) {
         GUM_CONS_CPY(O3SystemFactory);
@@ -86,7 +86,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3SystemFactory< GUM_SCALAR >&
-             O3SystemFactory< GUM_SCALAR >::operator=(const O3SystemFactory< GUM_SCALAR >& src) {
+          O3SystemFactory< GUM_SCALAR >::operator=(const O3SystemFactory< GUM_SCALAR >& src) {
         if (this == &src) { return *this; }
         _prm_    = src._prm_;
         _o3_prm_ = src._o3_prm_;
@@ -97,7 +97,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       O3SystemFactory< GUM_SCALAR >&
-             O3SystemFactory< GUM_SCALAR >::operator=(O3SystemFactory< GUM_SCALAR >&& src) {
+          O3SystemFactory< GUM_SCALAR >::operator=(O3SystemFactory< GUM_SCALAR >&& src) {
         if (this == &src) { return *this; }
         _prm_    = std::move(src._prm_);
         _o3_prm_ = std::move(src._o3_prm_);
@@ -130,7 +130,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3SystemFactory< GUM_SCALAR >::_addInstances_(PRMFactory< GUM_SCALAR >& factory,
-                                                                O3System&                 sys) {
+                                                         O3System&                 sys) {
         for (auto& i: sys.instances()) {
           if (i.parameters().size() > 0) {
             auto params = HashTable< std::string, double >();
@@ -151,7 +151,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3SystemFactory< GUM_SCALAR >::_addAssignments_(PRMFactory< GUM_SCALAR >& factory,
-                                                                  O3System&                 sys) {
+                                                           O3System&                 sys) {
         const auto& real_sys = _prm_->getSystem(sys.name().label());
 
         for (auto& ass: sys.assignments()) {
@@ -173,7 +173,7 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3SystemFactory< GUM_SCALAR >::_addIncrements_(PRMFactory< GUM_SCALAR >& factory,
-                                                                 O3System&                 sys) {
+                                                          O3System&                 sys) {
         const auto& real_sys = _prm_->getSystem(sys.name().label());
         for (auto& inc: sys.increments()) {
           auto leftInstance  = inc.leftInstance().label();
@@ -223,9 +223,8 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      bool
-          O3SystemFactory< GUM_SCALAR >::_checkParameters_(const PRMClass< GUM_SCALAR >& type,
-                                                           const O3Instance&             inst) {
+      bool O3SystemFactory< GUM_SCALAR >::_checkParameters_(const PRMClass< GUM_SCALAR >& type,
+                                                            const O3Instance&             inst) {
         for (const auto& param: inst.parameters()) {
           if (!type.exists(param.name().label())) {
             O3PRM_SYSTEM_PARAMETER_NOT_FOUND(param, *_errors_);

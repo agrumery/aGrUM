@@ -101,7 +101,7 @@ namespace gum {
     /**
      * Returns the number of variables in this Directed Graphical Model.
      */
-    virtual Size size() const final;
+    Size size() const final;
 
     /**
      * Returns the number of arcs in this Directed Graphical Model.

@@ -83,7 +83,7 @@ namespace gum {
     /**
      * Default destructor
      */
-    ~MDDOperatorStrategy();
+    ~MDDOperatorStrategy() override;
 
     /// @}
 

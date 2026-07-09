@@ -59,9 +59,8 @@ namespace gum {
   // a function used to perform copies of HashTableLists
 
   template < class Element >
-  void
-      SplayBinaryNode< Element >::copy_(const SplayBinaryNode< Element >&                  from,
-                                        HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+  void SplayBinaryNode< Element >::copy_(const SplayBinaryNode< Element >&                  from,
+                                         HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     if (addr.exists(from.elt)) addr[from.elt] = this;
     else addr.insert(from.elt, this);
 
@@ -276,8 +275,8 @@ namespace gum {
 
   template < class Element >
   SplayBinaryNode< Element >*
-         SplayBinaryNode< Element >::join(const SplayBinaryNode< Element >*                  e,
-                                          HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+      SplayBinaryNode< Element >::join(const SplayBinaryNode< Element >*                  e,
+                                       HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     SplayBinaryNode< Element >* b = new SplayBinaryNode< Element >(*e, addr);
     GUM_ASSERT(b != 0);
     SplayBinaryNode< Element >* act = this;
@@ -663,7 +662,7 @@ namespace gum {
 
   template < class Element >
   static void removeInfo(const SplayBinaryNode< Element >*                  e,
-                                HashTable< Element, SplayBinaryNode< Element >* >& addr) {
+                         HashTable< Element, SplayBinaryNode< Element >* >& addr) {
     GUM_ASSERT(addr.exists(e->getElement()));
     addr.erase(e->getElement());
 

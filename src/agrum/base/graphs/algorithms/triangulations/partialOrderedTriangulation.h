@@ -150,7 +150,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not
      *  notcopied but only referenced by the triangulation algorithm. */
-    virtual void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) final;
+    void setGraph(const UndiGraph* graph, const NodeProperty< Size >* domsizes) final;
 
     /// sets the elimination sequence's partial order (only a reference is
     /// stored)

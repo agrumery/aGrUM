@@ -91,11 +91,7 @@ namespace gum {
 
     /// copy operator
     DBRowGenerator4CompleteRows&
-        DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) {
-      DBRowGenerator::operator=(from);
-      _input_row_ = from._input_row_;
-      return *this;
-    }
+        DBRowGenerator4CompleteRows::operator=(const DBRowGenerator4CompleteRows& from) = default;
 
     /// move operator
     DBRowGenerator4CompleteRows&
@@ -105,10 +101,7 @@ namespace gum {
       return *this;
     }
 
-
-
-    std::size_t
-           DBRowGenerator4CompleteRows::computeRows_(const DBRow< DBTranslatedValue >& row) {
+    std::size_t DBRowGenerator4CompleteRows::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check that all the values are observed
       const auto& xrow = row.row();
       for (const auto col: this->columns_of_interest_) {

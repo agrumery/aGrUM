@@ -179,10 +179,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcAddition& ArcAddition::operator=(const ArcAddition& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+    INLINE ArcAddition& ArcAddition::operator=(const ArcAddition& from) noexcept = default;
 
     /// move operator
     INLINE ArcAddition& ArcAddition::operator=(ArcAddition&& from) noexcept {
@@ -229,10 +226,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcDeletion& ArcDeletion::operator=(const ArcDeletion& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+    INLINE ArcDeletion& ArcDeletion::operator=(const ArcDeletion& from) noexcept = default;
 
     /// move operator
     INLINE ArcDeletion& ArcDeletion::operator=(ArcDeletion&& from) noexcept {
@@ -279,10 +273,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE ArcReversal& ArcReversal::operator=(const ArcReversal& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+    INLINE ArcReversal& ArcReversal::operator=(const ArcReversal& from) noexcept = default;
 
     /// move operator
     INLINE ArcReversal& ArcReversal::operator=(ArcReversal&& from) noexcept {
@@ -333,10 +324,7 @@ namespace gum {
 
     /// copy constructor
     INLINE ArcTriangleDeletion1&
-        ArcTriangleDeletion1::operator=(const ArcTriangleDeletion1& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+        ArcTriangleDeletion1::operator=(const ArcTriangleDeletion1& from) noexcept = default;
 
     /// move operator
     INLINE ArcTriangleDeletion1&
@@ -391,10 +379,7 @@ namespace gum {
 
     /// copy constructor
     INLINE ArcTriangleDeletion2&
-        ArcTriangleDeletion2::operator=(const ArcTriangleDeletion2& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+        ArcTriangleDeletion2::operator=(const ArcTriangleDeletion2& from) noexcept = default;
 
     /// move operator
     INLINE ArcTriangleDeletion2&
@@ -447,10 +432,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeAddition& EdgeAddition::operator=(const EdgeAddition& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+    INLINE EdgeAddition& EdgeAddition::operator=(const EdgeAddition& from) noexcept = default;
 
     /// move operator
     INLINE EdgeAddition& EdgeAddition::operator=(EdgeAddition&& from) noexcept {
@@ -499,10 +481,7 @@ namespace gum {
     }
 
     /// copy constructor
-    INLINE EdgeDeletion& EdgeDeletion::operator=(const EdgeDeletion& from) noexcept {
-      GraphChange::operator=(from);
-      return *this;
-    }
+    INLINE EdgeDeletion& EdgeDeletion::operator=(const EdgeDeletion& from) noexcept = default;
 
     /// move operator
     INLINE EdgeDeletion& EdgeDeletion::operator=(EdgeDeletion&& from) noexcept {

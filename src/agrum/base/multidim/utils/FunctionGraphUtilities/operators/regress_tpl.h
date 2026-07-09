@@ -106,7 +106,7 @@ namespace gum {
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
-         Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
+      Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::compute() {
     _establishVarOrder_();
     _findRetrogradeVariables_(_DG1_, _DG1InstantiationNeeded_);
     _findRetrogradeVariables_(_DG2_, _DG2InstantiationNeeded_);
@@ -308,10 +308,9 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class PROJECTOPERATOR,
              template < typename > class TerminalNodePolicy >
-  NodeId
-      Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
-          O4DGContext& currentSituation,
-          Idx          lastInstVarPos) {
+  NodeId Regress< GUM_ELEMENT, COMBINEOPERATOR, PROJECTOPERATOR, TerminalNodePolicy >::_compute_(
+      O4DGContext& currentSituation,
+      Idx          lastInstVarPos) {
     NodeId newNode = 0;
 
     // If both current nodes are terminal,

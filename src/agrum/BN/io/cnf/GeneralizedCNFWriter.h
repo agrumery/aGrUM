@@ -88,7 +88,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~GeneralizedCNFWriter();
+    ~GeneralizedCNFWriter() override;
 
     /// @}
 

@@ -135,7 +135,7 @@ namespace gum {
 
     Exception(const Exception& e);
 
-    virtual ~Exception() = default;
+    ~Exception() override = default;
 
     /// @}
 

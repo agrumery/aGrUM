@@ -79,14 +79,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void
-      BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
+  void BayesNetFragment< GUM_SCALAR >::whenArcAdded(const void* src, NodeId from, NodeId to) {
     // nothing to do
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void
-      BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
+  void BayesNetFragment< GUM_SCALAR >::whenArcDeleted(const void* src, NodeId from, NodeId to) {
     if (this->internalDag().existsArc(from, to)) uninstallArc_(from, to);
   }
 
@@ -385,14 +383,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const Tensor< GUM_SCALAR >&
-               BayesNetFragment< GUM_SCALAR >::cpt(std::string_view name) const {
+  const Tensor< GUM_SCALAR >& BayesNetFragment< GUM_SCALAR >::cpt(std::string_view name) const {
     return cpt(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const DiscreteVariable&
-      BayesNetFragment< GUM_SCALAR >::variable(std::string_view name) const {
+  const DiscreteVariable& BayesNetFragment< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
@@ -418,13 +414,13 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installMarginal(std::string_view            name,
-                                                              const Tensor< GUM_SCALAR >& pot) {
+                                                       const Tensor< GUM_SCALAR >& pot) {
     installMarginal(_bn_.idFromName(name), pot);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNetFragment< GUM_SCALAR >::installCPT(std::string_view            name,
-                                                         const Tensor< GUM_SCALAR >& pot) {
+                                                  const Tensor< GUM_SCALAR >& pot) {
     installCPT(_bn_.idFromName(name), pot);
   }
 

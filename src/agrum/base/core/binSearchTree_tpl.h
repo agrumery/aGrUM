@@ -142,9 +142,8 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::operator=(
-             const BinSearchTreeIterator< Val, Cmp, Node >& from) {
+  BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTreeIterator< Val, Cmp, Node >::operator=(
+      const BinSearchTreeIterator< Val, Cmp, Node >& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_CPY(BinSearchTreeIterator);
@@ -231,8 +230,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::operator++() {
+  BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTreeIterator< Val, Cmp, Node >::operator++() {
     // if there is a current node, use it to compute the next node, else use
     // directly next_node_ (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator++)
@@ -250,8 +248,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::operator--() {
+  BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTreeIterator< Val, Cmp, Node >::operator--() {
     // if there is a current node, use it to compute the preceding node, else
     // use
     // directly prev_node_ (this case obtains when the iterator was pointing
@@ -308,8 +305,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::downLeft() {
+  BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTreeIterator< Val, Cmp, Node >::downLeft() {
     // if there is a current node, use it to compute its left child, else use
     // directly left_child_ (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downLeft)
@@ -327,8 +323,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  BinSearchTreeIterator< Val, Cmp, Node >&
-         BinSearchTreeIterator< Val, Cmp, Node >::downRight() {
+  BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTreeIterator< Val, Cmp, Node >::downRight() {
     // if there is a current node, use it to compute its right child, else use
     // directly right_child_ (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downRight)
@@ -615,8 +610,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  const BinSearchTreeIterator< Val, Cmp, Node >&
-               BinSearchTree< Val, Cmp, Node >::end() const {
+  const BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTree< Val, Cmp, Node >::end() const {
     return iter_end_;
   }
 
@@ -626,8 +620,7 @@ namespace gum {
   }
 
   template < typename Val, class Cmp, class Node >
-  const BinSearchTreeIterator< Val, Cmp, Node >&
-               BinSearchTree< Val, Cmp, Node >::rend() const {
+  const BinSearchTreeIterator< Val, Cmp, Node >& BinSearchTree< Val, Cmp, Node >::rend() const {
     return iter_end_;
   }
 

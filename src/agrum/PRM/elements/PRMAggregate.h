@@ -139,7 +139,7 @@ namespace gum {
       PRMAggregate(std::string_view name, AggregateType aggType, const PRMType& rvType, Idx label);
 
       /// Destructor.
-      virtual ~PRMAggregate();
+      ~PRMAggregate() override;
 
       /// @}
       // ========================================================================
@@ -148,7 +148,7 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       /// Returns the aggregate of *this.
       AggregateType agg_type() const;
@@ -192,16 +192,16 @@ namespace gum {
       bool isDecomposable() const;
 
       /// See gum::PRMClassElement::addParent_().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement::addChild_().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       /**
        * @brief Aggregates don't have Tensor until they are instantiated as
@@ -215,7 +215,7 @@ namespace gum {
        * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /**
        * Returns a pointer over an empty gum::MultiDimImplementation of the good
@@ -225,7 +225,7 @@ namespace gum {
        */
       MultiDimImplementation< GUM_SCALAR >* buildImpl() const;
 
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
       /// @}
 
       private:

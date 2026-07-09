@@ -92,7 +92,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~ContextualDependenciesCNFWriter();
+    ~ContextualDependenciesCNFWriter() override;
 
     /// @}
 

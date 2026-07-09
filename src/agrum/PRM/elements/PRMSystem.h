@@ -80,7 +80,7 @@ namespace gum {
       explicit PRMSystem(std::string_view name);
 
       /// Destructor.
-      virtual ~PRMSystem();
+      ~PRMSystem() override;
 
       /// @}
       // ========================================================================
@@ -114,7 +114,7 @@ namespace gum {
       /// @{
 
       /// Returns the PRM type of this object.
-      virtual PRMObject::prm_type obj_type() const;
+      PRMObject::prm_type obj_type() const override;
 
       /// Returns the number of PRMInstance in this PRMSystem.
       Size size() const;

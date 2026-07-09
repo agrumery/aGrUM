@@ -102,7 +102,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimDecorator< GUM_ELEMENT >&
-         MultiDimDecorator< GUM_ELEMENT >::operator=(MultiDimDecorator< GUM_ELEMENT >&& from) {
+      MultiDimDecorator< GUM_ELEMENT >::operator=(MultiDimDecorator< GUM_ELEMENT >&& from) {
     MultiDimContainer< GUM_ELEMENT >::operator=(
         std::forward< MultiDimContainer< GUM_ELEMENT > >(from));
     GUM_OP_MOV(MultiDimDecorator);
@@ -169,7 +169,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimDecorator< GUM_ELEMENT >::set(const Instantiation& i,
-                                                    const GUM_ELEMENT&   value) const {
+                                             const GUM_ELEMENT&   value) const {
     if (static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->nbrDim() == 0) {
       empty_value_ = value;
     } else {
@@ -197,11 +197,10 @@ namespace gum {
   // listen to change in each recorded Instantiation. final method
 
   template < typename GUM_ELEMENT >
-  void
-      MultiDimDecorator< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
-                                                           const DiscreteVariable* const var,
-                                                           Idx                           oldval,
-                                                           Idx                           newval) {
+  void MultiDimDecorator< GUM_ELEMENT >::changeNotification(const Instantiation&          i,
+                                                            const DiscreteVariable* const var,
+                                                            Idx                           oldval,
+                                                            Idx                           newval) {
     static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->changeNotification(i,
                                                                                    var,
                                                                                    oldval,
@@ -266,8 +265,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  const DiscreteVariable&
-      MultiDimDecorator< GUM_ELEMENT >::variable(std::string_view name) const {
+  const DiscreteVariable& MultiDimDecorator< GUM_ELEMENT >::variable(std::string_view name) const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variable(name);
   }
 
@@ -313,7 +311,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   const Sequence< const DiscreteVariable* >&
-               MultiDimDecorator< GUM_ELEMENT >::variablesSequence() const {
+      MultiDimDecorator< GUM_ELEMENT >::variablesSequence() const {
     return static_cast< MultiDimContainer< GUM_ELEMENT >* >(content_)->variablesSequence();
   }
 
@@ -365,8 +363,7 @@ namespace gum {
 
   // protected access to content_
   template < typename GUM_ELEMENT >
-  const MultiDimImplementation< GUM_ELEMENT >*
-               MultiDimDecorator< GUM_ELEMENT >::content() const {
+  const MultiDimImplementation< GUM_ELEMENT >* MultiDimDecorator< GUM_ELEMENT >::content() const {
     return content_;
   }
 
@@ -406,7 +403,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimDecorator< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                         const DiscreteVariable* y) {
+                                                  const DiscreteVariable* y) {
     this->content()->replace(*x, *y);
   }
 

@@ -296,9 +296,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Instantiation
-      makeInstantiationFromValues(const Tensor< GUM_SCALAR >&                  tensor,
-                                  const HashTable< std::string, std::string >& values) {
+  Instantiation makeInstantiationFromValues(const Tensor< GUM_SCALAR >&                  tensor,
+                                            const HashTable< std::string, std::string >& values) {
     Instantiation I;   // start empty (partial instantiation)
 
     for (const auto& [k, v]: values) {
@@ -357,14 +356,13 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string CausalImpact< GUM_SCALAR >::toLatex(std::string_view doOperatorPrefix,
-                                                         std::string_view doOperatorSuffix) const {
+                                                  std::string_view doOperatorSuffix) const {
     return _resultFormula_.toLatex(doOperatorPrefix, doOperatorSuffix);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string
-         CausalImpact< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
-                                                std::string_view doOperatorSuffix) const {
+  std::string CausalImpact< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
+                                                     std::string_view doOperatorSuffix) const {
     return _resultFormula_.latexQuery(doOperatorPrefix, doOperatorSuffix);
   }
 

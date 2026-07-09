@@ -366,8 +366,7 @@ namespace gum {
 
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    const GUM_SCALAR
-        MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
+    const GUM_SCALAR MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >::computeEpsilon_() {
       // compute the number of threads (avoid nested threads)
       const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
                                 ? this->threadRanges_.size() - 1

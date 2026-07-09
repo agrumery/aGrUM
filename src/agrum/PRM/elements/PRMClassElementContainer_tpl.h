@@ -73,9 +73,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    PRMClassElementContainer< GUM_SCALAR >&
-           PRMClassElementContainer< GUM_SCALAR >::operator=(
-               const PRMClassElementContainer< GUM_SCALAR >& source) {
+    PRMClassElementContainer< GUM_SCALAR >& PRMClassElementContainer< GUM_SCALAR >::operator=(
+        const PRMClassElementContainer< GUM_SCALAR >& source) {
       GUM_ERROR(FatalError, "illegal call to ClassElementContainer copy operator")
     }
 

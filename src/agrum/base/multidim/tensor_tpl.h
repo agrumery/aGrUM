@@ -67,8 +67,7 @@ namespace gum {
   // Default constructor: creates an empty null dimensional matrix
   // choose a MultiDimArray<> as decorated implementation
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR >::Tensor(const std::vector< const DiscreteVariable* >& vars) :
-      Tensor() {
+  Tensor< GUM_SCALAR >::Tensor(const std::vector< const DiscreteVariable* >& vars) : Tensor() {
     for (const auto& var: vars) {
       this->add(*var);
     }
@@ -289,7 +288,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& data) const {
+      Tensor< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& data) const {
     this->populate(data);
     return *this;
   }
@@ -302,7 +301,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >& src) const {
+      Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
       GUM_ERROR(InvalidArgument, "Tensor to copy has not the same domainSize.")
     }
@@ -344,8 +343,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-               Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
-                                              const std::vector< std::string >& mapSrc) const {
+      Tensor< GUM_SCALAR >::fillWith(const Tensor< GUM_SCALAR >&       src,
+                                     const std::vector< std::string >& mapSrc) const {
     if (src.nbrDim() != this->nbrDim()) {
       GUM_ERROR(InvalidArgument, "Tensor to copy has not the same size.")
     }
@@ -517,8 +516,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::prodOut(const gum::VariableSet& del_vars) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::prodOut(const gum::VariableSet& del_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }
@@ -597,8 +595,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Tensor< GUM_SCALAR >
-         Tensor< GUM_SCALAR >::prodIn(const gum::VariableSet& kept_vars) const {
+  Tensor< GUM_SCALAR > Tensor< GUM_SCALAR >::prodIn(const gum::VariableSet& kept_vars) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->content_)->empty()) {
       return Tensor< GUM_SCALAR >().fillWith(this->empty_value_);
     }

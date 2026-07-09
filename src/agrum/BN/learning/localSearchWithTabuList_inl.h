@@ -81,11 +81,7 @@ namespace gum {
 
     /// copy operator
     INLINE LocalSearchWithTabuList&
-        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) {
-      ApproximationScheme::operator=(from);
-      _MaxNbDecreasing_ = from._MaxNbDecreasing_;
-      return *this;
-    }
+        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) = default;
 
     /// move operator
     INLINE LocalSearchWithTabuList&

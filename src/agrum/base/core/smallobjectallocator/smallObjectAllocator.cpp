@@ -69,8 +69,6 @@ namespace gum {
    */
   const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 
-
-
   void* SmallObjectAllocator::allocate(const size_t& objectSize) {
     // Small Object Allocator called for an object of size equals to 0
     GUM_ASSERT(objectSize > 0);

@@ -98,7 +98,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
-    ~IMDDI();
+    ~IMDDI() override;
 
     /// @}
 
@@ -110,25 +110,25 @@ namespace gum {
     // ==========================================================================
     /// Adds a new observation to the structure
     // ==========================================================================
-    void addObservation(const Observation*);
+    void addObservation(const Observation*) override;
 
     protected:
-    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId);
+    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId) override;
 
     public:
     // ==========================================================================
     /// Updates the tree after a new observation has been added
     // ==========================================================================
-    void updateGraph();
+    void updateGraph() override;
 
     protected:
     NodeId insertLeafNode_(NodeDatabase< AttributeSelection, isScalar >* nDB,
                            const DiscreteVariable*                       boundVar,
-                           Set< const Observation* >*                    sonsMap);
+                           Set< const Observation* >*                    sonsMap) override;
 
-    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
+    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar) override;
 
-    void removeNode_(NodeId removedNodeId);
+    void removeNode_(NodeId removedNodeId) override;
 
     private:
     void _addLeaf_(NodeId);
@@ -160,7 +160,7 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    void updateFunctionGraph();
+    void updateFunctionGraph() override;
 
     private:
     void   _rebuildFunctionGraph_();
@@ -171,7 +171,7 @@ namespace gum {
     ///
 
     public:
-    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const;
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const override;
 
     private:
     Sequence< const DiscreteVariable* > _varOrder_;

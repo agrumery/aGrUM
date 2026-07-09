@@ -81,7 +81,7 @@ namespace gum {
     MixedGraphListener(MixedGraph* g);
 
     /// destructor
-    ~MixedGraphListener();
+    ~MixedGraphListener() override;
 
     /// @}
 

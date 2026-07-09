@@ -347,7 +347,7 @@ namespace gum::learning {
     IBNLearner(IBNLearner&&);
 
     /// destructor
-    virtual ~IBNLearner();
+    ~IBNLearner() override;
 
     /// @}
 

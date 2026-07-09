@@ -95,9 +95,8 @@ namespace gum {
 
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
-  bool
-      ProjectionRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view projection_name,
-                                                         std::string_view type_multidim) const {
+  bool ProjectionRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view projection_name,
+                                                          std::string_view type_multidim) const {
     if (!_set_.exists(projection_name)) return false;
 
     const ProjectionSet& theset = *(_set_[projection_name]);
@@ -141,7 +140,7 @@ namespace gum {
 
   // Default constructor: creates an empty register
   template < typename GUM_ELEMENT >
-  ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionRegister4MultiDim() {}
+  ProjectionRegister4MultiDim< GUM_ELEMENT >::ProjectionRegister4MultiDim() = default;
 
   // destructor
   template < typename GUM_ELEMENT >

@@ -85,9 +85,9 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   StructuredPlaner< GUM_ELEMENT >::StructuredPlaner(IOperatorStrategy< GUM_ELEMENT >* opi,
-                                                           GUM_ELEMENT discountFactor,
-                                                           GUM_ELEMENT epsilon,
-                                                           bool        verbose) :
+                                                    GUM_ELEMENT discountFactor,
+                                                    GUM_ELEMENT epsilon,
+                                                    bool        verbose) :
       discountFactor_(discountFactor), operator_(opi), verbose_(verbose) {
     GUM_CONSTRUCTOR(StructuredPlaner);
 
@@ -610,9 +610,9 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   StructuredPlaner< GUM_ELEMENT >*
-         StructuredPlaner< GUM_ELEMENT >::spumddInstance(GUM_ELEMENT discountFactor,
-                                                         GUM_ELEMENT epsilon,
-                                                         bool        verbose) {
+      StructuredPlaner< GUM_ELEMENT >::spumddInstance(GUM_ELEMENT discountFactor,
+                                                      GUM_ELEMENT epsilon,
+                                                      bool        verbose) {
     return new StructuredPlaner< GUM_ELEMENT >(new MDDOperatorStrategy< GUM_ELEMENT >(),
                                                discountFactor,
                                                epsilon,
@@ -621,9 +621,9 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   StructuredPlaner< GUM_ELEMENT >*
-         StructuredPlaner< GUM_ELEMENT >::sviInstance(GUM_ELEMENT discountFactor,
-                                                      GUM_ELEMENT epsilon,
-                                                      bool        verbose) {
+      StructuredPlaner< GUM_ELEMENT >::sviInstance(GUM_ELEMENT discountFactor,
+                                                   GUM_ELEMENT epsilon,
+                                                   bool        verbose) {
     return new StructuredPlaner< GUM_ELEMENT >(new TreeOperatorStrategy< GUM_ELEMENT >(),
                                                discountFactor,
                                                epsilon,
@@ -647,7 +647,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
-         StructuredPlaner< GUM_ELEMENT >::optimalPolicy() {
+      StructuredPlaner< GUM_ELEMENT >::optimalPolicy() {
     return optimalPolicy_;
   }
 

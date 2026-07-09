@@ -227,8 +227,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator have the same parameters
   template < typename TABLE >
-  bool
-      ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
+  bool ScheduleProjection< TABLE >::hasSameArguments(const ScheduleProjection< TABLE >& op) const {
     return (_arg_->hasSameVariables(*op._arg_) && _arg_->hasSameContent(*op._arg_)
             && (_del_vars_ == op._del_vars_));
   }
@@ -245,8 +244,7 @@ namespace gum {
 
   /// checks whether two ScheduleOperator perform the same operation
   template < typename TABLE >
-  bool
-      ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
+  bool ScheduleProjection< TABLE >::isSameOperator(const ScheduleProjection< TABLE >& op) const {
     return _project_ == op._project_;
   }
 

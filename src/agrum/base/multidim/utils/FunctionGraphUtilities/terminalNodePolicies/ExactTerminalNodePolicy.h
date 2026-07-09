@@ -74,13 +74,13 @@ namespace gum {
     /// @{
 
     /// Insert a new terminal node with given value
-    void addTerminalNode(const NodeId& n, const GUM_ELEMENT& v);
+    void addTerminalNode(const NodeId& n, const GUM_ELEMENT& v) override;
 
     /// Remove node matching given id
-    void eraseTerminalNode(const NodeId& n);
+    void eraseTerminalNode(const NodeId& n) override;
 
     /// Erase all terminal nodes
-    void clearAllTerminalNodes();
+    void clearAllTerminalNodes() override;
 
     /// @}
     // ============================================================================
@@ -89,10 +89,10 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNodeWithId(const NodeId& n) const;
+    bool existsTerminalNodeWithId(const NodeId& n) const override;
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNodeWithValue(const GUM_ELEMENT& v) const;
+    bool existsTerminalNodeWithValue(const GUM_ELEMENT& v) const override;
 
     /// @}
     // ============================================================================
@@ -101,10 +101,10 @@ namespace gum {
     /// @{
 
     /// Returns the value of the terminal node that has the given id
-    const GUM_ELEMENT& terminalNodeValue(const NodeId& n) const;
+    const GUM_ELEMENT& terminalNodeValue(const NodeId& n) const override;
 
     /// Returns the id of the terminal node that has the given value
-    const NodeId& terminalNodeId(const GUM_ELEMENT& v) const;
+    const NodeId& terminalNodeId(const GUM_ELEMENT& v) const override;
 
     /// @}
     // ============================================================================
@@ -113,21 +113,21 @@ namespace gum {
     /// @{
 
     /// Initializes the constant safe iterator on terminal nodes
-    void beginValues() const;
+    void beginValues() const override;
 
     /// Indicates if constant safe iterator has reach end of terminal nodes list
-    bool hasValue() const;
+    bool hasValue() const override;
 
     /// Increments the constant safe iterator
-    void nextValue() const;
+    void nextValue() const override;
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_ELEMENT& value() const;
+    const GUM_ELEMENT& value() const override;
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
-    const NodeId& id() const;
+    const NodeId& id() const override;
 
     /// @}
 

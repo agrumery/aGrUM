@@ -100,7 +100,7 @@ namespace gum {
     explicit ExactBNdistance(const BNdistance< GUM_SCALAR >& kl);
 
     /** destructor */
-    virtual ~ExactBNdistance();
+    ~ExactBNdistance() override;
 
     protected:
     void computeKL_() final;

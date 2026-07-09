@@ -54,9 +54,9 @@
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string O3prmBNReader< GUM_SCALAR >::_getVariableName_(std::string_view path,
-                                                                    std::string_view type,
-                                                                    std::string_view name,
-                                                                    std::string_view toRemove) {
+                                                             std::string_view type,
+                                                             std::string_view name,
+                                                             std::string_view toRemove) {
     std::string res(path);
     res.append(name);   // path ends up with a "."
     if (!toRemove.empty()) {

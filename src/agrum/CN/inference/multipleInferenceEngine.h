@@ -195,7 +195,7 @@ namespace gum {
        *
        * @return Epsilon.
        */
-      inline const GUM_SCALAR computeEpsilon_();
+      inline const GUM_SCALAR computeEpsilon_() override;
 
       /**
        * Update old marginals (from current marginals). Call this once to
@@ -231,7 +231,7 @@ namespace gum {
       explicit MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
 
       /** Destructor. */
-      virtual ~MultipleInferenceEngine();
+      ~MultipleInferenceEngine() override;
 
       /// @}
 
@@ -244,13 +244,13 @@ namespace gum {
        * ones by
        * using the appropriate method which will delete the old ones.
        */
-      virtual void eraseAllEvidence();
+      void eraseAllEvidence() override;
       /// @}
 
       /// @name Pure virtual methods
       /// @{
       /** To be redefined by each credal net algorithm. Starts the inference. */
-      virtual void makeInference() = 0;
+      void makeInference() override = 0;
 
       /// @}
     };

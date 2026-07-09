@@ -141,7 +141,7 @@ namespace gum {
       PRMSlotChain(const PRMSlotChain< GUM_SCALAR >& source);
 
       /// Destructor.
-      virtual ~PRMSlotChain();
+      ~PRMSlotChain() override;
 
       /// @}
       // ========================================================================
@@ -150,19 +150,19 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement<GUM_SCALAR>::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// This is similar to the following call: this->lastElt().type()
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       // /// This is similar to the following call: this->lastElt().cpf()
       // virtual Tensor<GUM_SCALAR>& cpf();
 
       /// This is similar to the following call: this->lastElt().cpf()
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /// Return true if this slot chain contains at least one multiple
       /// reference slot.
@@ -193,14 +193,14 @@ namespace gum {
       const Sequence< PRMClassElement< GUM_SCALAR >* >& chain() const;
 
       /// See gum::PRMClassElement<GUM_SCALAR>::addParent_().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement<GUM_SCALAR>::addChild_().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// @brief Raise a gum::OperationNotAllowed exception
       /// See gum::PRMClassElement<GUM_SCALAR>::getCastDescendant()
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
       /// @}
 
       private:

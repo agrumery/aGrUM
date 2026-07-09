@@ -74,8 +74,7 @@ namespace gum {
 
   // @brief Convert value to his approximation.
   template < typename GUM_ELEMENT >
-  GUM_ELEMENT
-      LinearApproximationPolicy< GUM_ELEMENT >::fromExact(const GUM_ELEMENT& value) const {
+  GUM_ELEMENT LinearApproximationPolicy< GUM_ELEMENT >::fromExact(const GUM_ELEMENT& value) const {
     return _decode_(GUM_ELEMENT(encode(value)));
   }
 
@@ -287,8 +286,7 @@ namespace gum {
   // Convert value to his approximation. This method is slower than @ref
   // fromExact since it verifies the bounds
   template < typename GUM_ELEMENT >
-  GUM_ELEMENT
-      LinearApproximationPolicy< GUM_ELEMENT >::safeFromExact(const GUM_ELEMENT& value) {
+  GUM_ELEMENT LinearApproximationPolicy< GUM_ELEMENT >::safeFromExact(const GUM_ELEMENT& value) {
     if (value > this->highLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is higher than high limit")
     }
@@ -340,7 +338,7 @@ namespace gum {
   // set bounds in a whole
   template < typename GUM_ELEMENT >
   void LinearApproximationPolicy< GUM_ELEMENT >::setLimits(const GUM_ELEMENT& newLowLimit,
-                                                                  const GUM_ELEMENT& newHighLimit) {
+                                                           const GUM_ELEMENT& newHighLimit) {
     if (newLowLimit > newHighLimit) {
       GUM_ERROR(OutOfBounds, "Asked low value is higher than asked high value")
     }
@@ -352,8 +350,7 @@ namespace gum {
 
   // Sets lowest possible value
   template < typename GUM_ELEMENT >
-  void
-      LinearApproximationPolicy< GUM_ELEMENT >::setLowLimit(const GUM_ELEMENT& newLowLimit) {
+  void LinearApproximationPolicy< GUM_ELEMENT >::setLowLimit(const GUM_ELEMENT& newLowLimit) {
     if (newLowLimit > this->highLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is higher than High limit")
     }
@@ -371,8 +368,7 @@ namespace gum {
 
   // Sets Highest possible value
   template < typename GUM_ELEMENT >
-  void
-      LinearApproximationPolicy< GUM_ELEMENT >::setHighLimit(const GUM_ELEMENT& newHighLimit) {
+  void LinearApproximationPolicy< GUM_ELEMENT >::setHighLimit(const GUM_ELEMENT& newHighLimit) {
     if (newHighLimit < this->lowLimit_) {
       GUM_ERROR(OutOfBounds, "Value asked is lower than low limit")
     }

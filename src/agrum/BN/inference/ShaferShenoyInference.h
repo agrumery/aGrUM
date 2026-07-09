@@ -107,7 +107,7 @@ namespace gum {
         = delete;
 
     /// destructor
-    ~ShaferShenoyInference();
+    ~ShaferShenoyInference() override;
 
     /// @}
 

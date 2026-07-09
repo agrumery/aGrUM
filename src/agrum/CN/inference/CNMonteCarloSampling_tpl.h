@@ -232,8 +232,7 @@ namespace gum::credal {
   }
 
   template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-  void
-      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_verticesSampling_(Size this_thread) {
     IBayesNet< GUM_SCALAR >* working_bn       = this->workingSet_[this_thread];
     auto&                    random_generator = this->generators_[this_thread];
     const auto               cpt              = &this->credalNet_->credalNet_currentCpt();
@@ -336,8 +335,7 @@ namespace gum::credal {
   }
 
   template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-  void
-      CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_insertEvidence_(Size this_thread) {
     if (this->evidence_.size() == 0) { return; }
 
     BNInferenceEngine* inference_engine = this->l_inferenceEngine_[this_thread];

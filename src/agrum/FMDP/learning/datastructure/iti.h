@@ -119,7 +119,7 @@ namespace gum {
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
-    ~ITI();
+    ~ITI() override;
 
     /// @}
 
@@ -135,7 +135,7 @@ namespace gum {
      * @param obs the new observation to learn
      */
     // ==========================================================================
-    void addObservation(const Observation* obs);
+    void addObservation(const Observation* obs) override;
 
     protected:
     // ==========================================================================
@@ -146,7 +146,7 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId);
+    void updateNodeWithObservation_(const Observation* newObs, NodeId currentNodeId) override;
 
     /// @}
 
@@ -159,7 +159,7 @@ namespace gum {
     // ==========================================================================
     /// Updates the internal graph after a new observation has been added
     // ==========================================================================
-    void updateGraph();
+    void updateGraph() override;
 
     protected:
     // ==========================================================================
@@ -171,7 +171,7 @@ namespace gum {
      */
     // ==========================================================================
     NodeId insertNode_(NodeDatabase< AttributeSelection, isScalar >* nDB,
-                       const DiscreteVariable*                       boundVar);
+                       const DiscreteVariable*                       boundVar) override;
 
     // ==========================================================================
     /**
@@ -180,7 +180,7 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
+    void chgNodeBoundVar_(NodeId chgedNodeId, const DiscreteVariable* desiredVar) override;
 
     // ==========================================================================
     /**
@@ -188,7 +188,7 @@ namespace gum {
      * @param removedNodeId : the node to remove
      */
     // ==========================================================================
-    void removeNode_(NodeId removedNodeId);
+    void removeNode_(NodeId removedNodeId) override;
 
     /// @}
 
@@ -201,7 +201,7 @@ namespace gum {
     // ==========================================================================
     /// Updates target to currently learned graph structure
     // ==========================================================================
-    void updateFunctionGraph();
+    void updateFunctionGraph() override;
 
     private:
     // ==========================================================================

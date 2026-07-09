@@ -73,7 +73,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                   const IBayesNet< GUM_SCALAR >& bn) {
+                                            const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     _heading_(output, bn);
@@ -111,7 +111,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void XDSLBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                   const IBayesNet< GUM_SCALAR >& bn) {
+                                            const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     _doWrite(output, bn);
@@ -125,7 +125,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void XDSLBNWriter< GUM_SCALAR >::_heading_(std::ostream&                  output,
-                                                    const IBayesNet< GUM_SCALAR >& bn) {
+                                             const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
     output << "<?xml version=\"1.0\" ?>" << std::endl;
     output << "<!-- This network was created by pyAgrum " << GUM_VERSION
@@ -140,7 +140,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void XDSLBNWriter< GUM_SCALAR >::_headingExtension_(std::ostream&                  output,
-                                                             const IBayesNet< GUM_SCALAR >& bn) {
+                                                      const IBayesNet< GUM_SCALAR >& bn) {
     // Header for every xml
     output << "  <extensions>" << std::endl;
     output << "    <genie version=\"1.0\" app=\"aGrUM " << GUM_VERSION << "\" name=\""
@@ -152,8 +152,8 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void XDSLBNWriter< GUM_SCALAR >::_variableBloc_(std::ostream&                  output,
-                                                         const NodeId&                  varNodeId,
-                                                         const IBayesNet< GUM_SCALAR >& bn) {
+                                                  const NodeId&                  varNodeId,
+                                                  const IBayesNet< GUM_SCALAR >& bn) {
     //<cpt id="Org_arrangements">
     //   <state id="LOW" />
     //   <state id="HIGH" />
@@ -208,9 +208,9 @@ namespace gum {
    * Send to output a bloc defining a variable's CPT in the XDSL format.
    */
   template < GUM_Numeric GUM_SCALAR >
-  void XDSLBNWriter< GUM_SCALAR >::_variableExtension_(std::ostream& output,
-                                                              const NodeId& varNodeId,
-                                                              const IBayesNet< GUM_SCALAR >& bn) {
+  void XDSLBNWriter< GUM_SCALAR >::_variableExtension_(std::ostream&                  output,
+                                                       const NodeId&                  varNodeId,
+                                                       const IBayesNet< GUM_SCALAR >& bn) {
     //<node id="Vendor_support">
     //   <name>Vendor support</name>
     //</node>

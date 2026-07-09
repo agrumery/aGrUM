@@ -101,9 +101,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Amplitude< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                              Idx                     i1,
-                                              Idx                     i2,
-                                              bool&                   stop_iteration) const {
+                                       Idx                     i1,
+                                       Idx                     i2,
+                                       bool&                   stop_iteration) const {
       return 0;
     }
 

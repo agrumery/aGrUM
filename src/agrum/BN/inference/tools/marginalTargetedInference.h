@@ -89,7 +89,7 @@ namespace gum {
     explicit MarginalTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
-    virtual ~MarginalTargetedInference();
+    ~MarginalTargetedInference() override;
 
     /// @}
 
@@ -248,7 +248,7 @@ namespace gum {
     virtual void onAllMarginalTargetsErased_() = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void onModelChanged_(const GraphicalModel* bn);
+    void onModelChanged_(const GraphicalModel* bn) override;
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */

@@ -65,9 +65,8 @@ namespace gum {
 
     /// constructor with a given size for the row
     template < typename T_DATA >
-    DBRow< T_DATA >::DBRow(const std::size_t size,
-                                  const T_DATA      default_cell,
-                                  const double weight) : row_(size, default_cell), weight_(weight) {
+    DBRow< T_DATA >::DBRow(const std::size_t size, const T_DATA default_cell, const double weight) :
+        row_(size, default_cell), weight_(weight) {
       GUM_CONSTRUCTOR(DBRow);
     }
 
@@ -118,8 +117,7 @@ namespace gum {
 
     /// copy constructor
     template < typename T_DATA >
-    DBRow< T_DATA >::DBRow(const DBRow< T_DATA >& from) :
-        row_(from.row_), weight_(from.weight_) {
+    DBRow< T_DATA >::DBRow(const DBRow< T_DATA >& from) : row_(from.row_), weight_(from.weight_) {
       GUM_CONS_CPY(DBRow);
     }
 

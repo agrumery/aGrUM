@@ -119,7 +119,7 @@ namespace gum {
       DBRowGeneratorWithBN(DBRowGeneratorWithBN< GUM_SCALAR >&& from);
 
       /// destructor
-      ~DBRowGeneratorWithBN();
+      ~DBRowGeneratorWithBN() override;
 
       /// @}
 

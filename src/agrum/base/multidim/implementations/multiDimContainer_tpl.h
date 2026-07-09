@@ -57,7 +57,7 @@
 namespace gum {
 
   template < typename GUM_ELEMENT >
-      MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(MultiDimContainer< GUM_ELEMENT >&& from) :
+  MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(MultiDimContainer< GUM_ELEMENT >&& from) :
       MultiDimAdressable(std::forward< MultiDimAdressable >(from)) {
     GUM_CONS_MOV(MultiDimContainer);
   }
@@ -70,21 +70,21 @@ namespace gum {
 
   // Copy constructor
   template < typename GUM_ELEMENT >
-  MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(
-      const MultiDimContainer< GUM_ELEMENT >& src) : MultiDimAdressable(src) {
+  MultiDimContainer< GUM_ELEMENT >::MultiDimContainer(const MultiDimContainer< GUM_ELEMENT >& src) :
+      MultiDimAdressable(src) {
     GUM_CONS_CPY(MultiDimContainer);
   }
 
   template < typename GUM_ELEMENT >
   MultiDimContainer< GUM_ELEMENT >&
-         MultiDimContainer< GUM_ELEMENT >::operator=(const MultiDimContainer< GUM_ELEMENT >& from) {
+      MultiDimContainer< GUM_ELEMENT >::operator=(const MultiDimContainer< GUM_ELEMENT >& from) {
     MultiDimAdressable::operator=(from);
     return *this;
   }
 
   template < typename GUM_ELEMENT >
   MultiDimContainer< GUM_ELEMENT >&
-         MultiDimContainer< GUM_ELEMENT >::operator=(MultiDimContainer< GUM_ELEMENT >&& from) {
+      MultiDimContainer< GUM_ELEMENT >::operator=(MultiDimContainer< GUM_ELEMENT >&& from) {
     GUM_OP_MOV(MultiDimContainer);
     MultiDimAdressable::operator=(std::forward< MultiDimAdressable >(from));
     return *this;
@@ -108,7 +108,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimContainer< GUM_ELEMENT >::set(const Instantiation& i,
-                                                    const GUM_ELEMENT&   value) const {
+                                             const GUM_ELEMENT&   value) const {
     get_(i) = value;
   }
 

@@ -74,7 +74,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void BIFXMLIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
-                                                  const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+                                           const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     if (!output.good()) { GUM_ERROR(IOError, "Input/Output error : stream not writable.") }
 
     output << _heading_() << std::endl;
@@ -112,7 +112,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   void BIFXMLIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
-                                                  const InfluenceDiagram< GUM_SCALAR >& infdiag) {
+                                           const InfluenceDiagram< GUM_SCALAR >& infdiag) {
     std::ofstream output(std::filesystem::path{filePath}, std::ios_base::trunc);
 
     write(output, infdiag);
@@ -149,7 +149,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   std::string BIFXMLIDWriter< GUM_SCALAR >::_variableBloc_(const DiscreteVariable& var,
-                                                                  int                     varType) {
+                                                           int                     varType) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<PROPERTY>description = ...</PROPERTY>

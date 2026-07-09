@@ -147,8 +147,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMInterface< GUM_SCALAR >&
-                 PRM< GUM_SCALAR >::getInterface(std::string_view name) const {
+    const PRMInterface< GUM_SCALAR >& PRM< GUM_SCALAR >::getInterface(std::string_view name) const {
       return *_interfaceMap_[name];
     }
 
@@ -163,8 +162,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    const PRMSystem< GUM_SCALAR >&
-                 PRM< GUM_SCALAR >::getSystem(std::string_view name) const {
+    const PRMSystem< GUM_SCALAR >& PRM< GUM_SCALAR >::getSystem(std::string_view name) const {
       return *(_systemMap_[name]);
     }
 

@@ -62,9 +62,9 @@ namespace gum {
   /// Default constructor
   template < GUM_Numeric GUM_SCALAR >
   ContinuousVariable< GUM_SCALAR >::ContinuousVariable(std::string_view aName,
-                                                              std::string_view aDesc,
-                                                              GUM_SCALAR       lower_bound,
-                                                              GUM_SCALAR       upper_bound) :
+                                                       std::string_view aDesc,
+                                                       GUM_SCALAR       lower_bound,
+                                                       GUM_SCALAR       upper_bound) :
       IContinuousVariable(aName, aDesc), _lower_bound_(lower_bound), _upper_bound_(upper_bound) {
     if (_lower_bound_ > _upper_bound_) { std::swap(_upper_bound_, _lower_bound_); }
     GUM_CONSTRUCTOR(ContinuousVariable);
@@ -82,8 +82,7 @@ namespace gum {
   /// generalized copy constructor
   template < GUM_Numeric GUM_SCALAR >
   template < typename TX_VAL >
-  ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
-      const ContinuousVariable< TX_VAL >& from) :
+  ContinuousVariable< GUM_SCALAR >::ContinuousVariable(const ContinuousVariable< TX_VAL >& from) :
       IContinuousVariable(from), _lower_bound_(GUM_SCALAR(from._lower_bound_)),
       _upper_bound_(GUM_SCALAR(from._upper_bound_)) {
     GUM_CONS_CPY(ContinuousVariable);
@@ -91,8 +90,7 @@ namespace gum {
 
   /// move constructor
   template < GUM_Numeric GUM_SCALAR >
-  ContinuousVariable< GUM_SCALAR >::ContinuousVariable(
-      ContinuousVariable< GUM_SCALAR >&& from) :
+  ContinuousVariable< GUM_SCALAR >::ContinuousVariable(ContinuousVariable< GUM_SCALAR >&& from) :
       IContinuousVariable(std::move(from)), _lower_bound_(from._lower_bound_),
       _upper_bound_(from._upper_bound_) {
     GUM_CONS_MOV(ContinuousVariable);
@@ -113,7 +111,7 @@ namespace gum {
   /// copy operator
   template < GUM_Numeric GUM_SCALAR >
   ContinuousVariable< GUM_SCALAR >&
-         ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< GUM_SCALAR >& from) {
+      ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< GUM_SCALAR >& from) {
     IContinuousVariable::operator=(from);
     _lower_bound_ = from._lower_bound_;
     _upper_bound_ = from._upper_bound_;
@@ -124,7 +122,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   template < typename TX_VAL >
   ContinuousVariable< GUM_SCALAR >&
-         ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< TX_VAL >& from) {
+      ContinuousVariable< GUM_SCALAR >::operator=(const ContinuousVariable< TX_VAL >& from) {
     IContinuousVariable::operator=(from);
     _lower_bound_ = GUM_SCALAR(from._lower_bound_);
     _upper_bound_ = GUM_SCALAR(from._upper_bound_);
@@ -134,7 +132,7 @@ namespace gum {
   /// move operator
   template < GUM_Numeric GUM_SCALAR >
   ContinuousVariable< GUM_SCALAR >&
-         ContinuousVariable< GUM_SCALAR >::operator=(ContinuousVariable< GUM_SCALAR >&& from) {
+      ContinuousVariable< GUM_SCALAR >::operator=(ContinuousVariable< GUM_SCALAR >&& from) {
     IContinuousVariable::operator=(std::move(from));
     _lower_bound_ = from._lower_bound_;
     _upper_bound_ = from._upper_bound_;

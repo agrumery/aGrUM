@@ -215,7 +215,7 @@ namespace gum {
   // Copy operator
   template < typename Val >
   ListConstIterator< Val >&
-         ListConstIterator< Val >::operator=(const ListConstIterator< Val >& src) noexcept {
+      ListConstIterator< Val >::operator=(const ListConstIterator< Val >& src) noexcept {
     // for debugging purposes
     GUM_OP_CPY(ListConstIterator);
 
@@ -226,7 +226,7 @@ namespace gum {
   // move operator
   template < typename Val >
   ListConstIterator< Val >&
-         ListConstIterator< Val >::operator=(ListConstIterator< Val >&& src) noexcept {
+      ListConstIterator< Val >::operator=(ListConstIterator< Val >&& src) noexcept {
     // for debugging purposes
     GUM_OP_MOV(ListConstIterator);
     _bucket_ = src._bucket_;
@@ -318,15 +318,13 @@ namespace gum {
 
   // checks whether two iterators point toward different elements
   template < typename Val >
-  bool
-      ListConstIterator< Val >::operator!=(const ListConstIterator< Val >& src) const noexcept {
+  bool ListConstIterator< Val >::operator!=(const ListConstIterator< Val >& src) const noexcept {
     return (_bucket_ != src._bucket_);
   }
 
   // checks whether two iterators point toward the same elements.
   template < typename Val >
-  bool
-      ListConstIterator< Val >::operator==(const ListConstIterator< Val >& src) const noexcept {
+  bool ListConstIterator< Val >::operator==(const ListConstIterator< Val >& src) const noexcept {
     return (_bucket_ == src._bucket_);
   }
 
@@ -398,8 +396,7 @@ namespace gum {
 
   // Copy operator
   template < typename Val >
-  ListIterator< Val >&
-         ListIterator< Val >::operator=(const ListIterator< Val >& src) noexcept {
+  ListIterator< Val >& ListIterator< Val >::operator=(const ListIterator< Val >& src) noexcept {
     GUM_OP_CPY(ListIterator);
     ListConstIterator< Val >::operator=(src);
     return *this;
@@ -441,7 +438,7 @@ namespace gum {
   // makes the iterator point to i elements further in the List
   template < typename Val >
   ListIterator< Val >&
-         ListIterator< Val >::operator+=(typename ListIterator< Val >::difference_type i) noexcept {
+      ListIterator< Val >::operator+=(typename ListIterator< Val >::difference_type i) noexcept {
     ListConstIterator< Val >::operator+=(i);
     return *this;
   }
@@ -456,7 +453,7 @@ namespace gum {
   // makes the iterator point to i elements before in the List
   template < typename Val >
   ListIterator< Val >&
-         ListIterator< Val >::operator-=(typename ListIterator< Val >::difference_type i) noexcept {
+      ListIterator< Val >::operator-=(typename ListIterator< Val >::difference_type i) noexcept {
     ListConstIterator< Val >::operator-=(i);
     return *this;
   }
@@ -464,14 +461,14 @@ namespace gum {
   // returns a new iterator
   template < typename Val >
   ListIterator< Val >
-         ListIterator< Val >::operator+(typename ListIterator< Val >::difference_type i) noexcept {
+      ListIterator< Val >::operator+(typename ListIterator< Val >::difference_type i) noexcept {
     return ListIterator< Val >(*this) += i;
   }
 
   // returns a new iterator
   template < typename Val >
   ListIterator< Val >
-         ListIterator< Val >::operator-(typename ListIterator< Val >::difference_type i) noexcept {
+      ListIterator< Val >::operator-(typename ListIterator< Val >::difference_type i) noexcept {
     return ListIterator< Val >(*this) -= i;
   }
 
@@ -525,7 +522,7 @@ namespace gum {
 
   // copy constructor
   template < typename Val >
-      ListConstIteratorSafe< Val >::ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src) :
+  ListConstIteratorSafe< Val >::ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src) :
       _list_{src._list_}, _bucket_{src._bucket_}, _next_current_bucket_{src._next_current_bucket_},
       _prev_current_bucket_{src._prev_current_bucket_}, _null_pointing_{src._null_pointing_} {
     // for debugging purposes
@@ -913,8 +910,7 @@ namespace gum {
 
   // checks whether two iterators point toward different elements
   template < typename Val >
-  bool
-      ListConstIteratorSafe< Val >::operator!=(const ListConstIteratorSafe< Val >& src) const {
+  bool ListConstIteratorSafe< Val >::operator!=(const ListConstIteratorSafe< Val >& src) const {
     return _null_pointing_ ? (_next_current_bucket_ != src._next_current_bucket_)
                                  || (_prev_current_bucket_ != src._prev_current_bucket_)
                            : (_bucket_ != src._bucket_);
@@ -922,8 +918,7 @@ namespace gum {
 
   // checks whether two iterators point toward the same elements.
   template < typename Val >
-  bool
-      ListConstIteratorSafe< Val >::operator==(const ListConstIteratorSafe< Val >& src) const {
+  bool ListConstIteratorSafe< Val >::operator==(const ListConstIteratorSafe< Val >& src) const {
     return _null_pointing_ ? (_next_current_bucket_ == src._next_current_bucket_)
                                  && (_prev_current_bucket_ == src._prev_current_bucket_)
                            : (_bucket_ == src._bucket_);
@@ -1000,8 +995,7 @@ namespace gum {
 
   // Copy operator
   template < typename Val >
-  ListIteratorSafe< Val >&
-         ListIteratorSafe< Val >::operator=(const ListIteratorSafe< Val >& src) {
+  ListIteratorSafe< Val >& ListIteratorSafe< Val >::operator=(const ListIteratorSafe< Val >& src) {
     // for debugging purposes
     GUM_OP_CPY(ListIteratorSafe);
     ListConstIteratorSafe< Val >::operator=(src);
@@ -1010,8 +1004,7 @@ namespace gum {
 
   // move operator
   template < typename Val >
-  ListIteratorSafe< Val >&
-         ListIteratorSafe< Val >::operator=(ListIteratorSafe< Val >&& src) {
+  ListIteratorSafe< Val >& ListIteratorSafe< Val >::operator=(ListIteratorSafe< Val >&& src) {
     // for debugging purposes
     GUM_OP_MOV(ListIteratorSafe);
     ListConstIteratorSafe< Val >::operator=(std::move(src));
@@ -1538,8 +1531,7 @@ namespace gum {
 
   // insert a new bucket before another one
   template < typename Val >
-  Val& List< Val >::_insertBefore_(ListBucket< Val >* new_elt,
-                                          ListBucket< Val >* current_elt) {
+  Val& List< Val >::_insertBefore_(ListBucket< Val >* new_elt, ListBucket< Val >* current_elt) {
     new_elt->_next_     = current_elt;
     new_elt->_prev_     = current_elt->_prev_;
     current_elt->_prev_ = new_elt;
@@ -1556,8 +1548,7 @@ namespace gum {
 
   // insert a new bucket after another one
   template < typename Val >
-  Val& List< Val >::_insertAfter_(ListBucket< Val >* new_elt,
-                                         ListBucket< Val >* current_elt) {
+  Val& List< Val >::_insertAfter_(ListBucket< Val >* new_elt, ListBucket< Val >* current_elt) {
     new_elt->_prev_     = current_elt;
     new_elt->_next_     = current_elt->_next_;
     current_elt->_next_ = new_elt;
@@ -1594,8 +1585,8 @@ namespace gum {
   // iterator
   template < typename Val >
   Val& List< Val >::_insert_(const const_iterator_safe& iter,
-                                    ListBucket< Val >*         new_elt,
-                                    location                   place) {
+                             ListBucket< Val >*         new_elt,
+                             location                   place) {
     // find the location around which the new element should be inserted
     ListBucket< Val >* ptr;
 
@@ -1627,8 +1618,8 @@ namespace gum {
   // iterator
   template < typename Val >
   Val& List< Val >::_insert_(const const_iterator& iter,
-                                    ListBucket< Val >*    new_elt,
-                                    location              place) {
+                             ListBucket< Val >*    new_elt,
+                             location              place) {
     // find the location around which the new element should be inserted
     ListBucket< Val >* ptr = iter._getBucket_();
 

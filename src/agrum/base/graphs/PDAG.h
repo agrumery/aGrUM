@@ -160,7 +160,7 @@ namespace gum {
     PDAG(PDAG&& g);
 
     /// destructor
-    virtual ~PDAG();
+    ~PDAG() override;
 
     /// @}
 

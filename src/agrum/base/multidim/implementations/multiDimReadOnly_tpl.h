@@ -54,16 +54,15 @@ namespace gum {
   // Default constructor
 
   template < typename GUM_ELEMENT >
-  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly() :
-      MultiDimImplementation< GUM_ELEMENT >() {
+  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly() : MultiDimImplementation< GUM_ELEMENT >() {
     GUM_CONSTRUCTOR(MultiDimReadOnly);
   }
 
   // Default constructor
 
   template < typename GUM_ELEMENT >
-  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly(
-      const MultiDimReadOnly< GUM_ELEMENT >& from) : MultiDimImplementation< GUM_ELEMENT >(from) {
+  MultiDimReadOnly< GUM_ELEMENT >::MultiDimReadOnly(const MultiDimReadOnly< GUM_ELEMENT >& from) :
+      MultiDimImplementation< GUM_ELEMENT >(from) {
     GUM_CONS_CPY(MultiDimReadOnly);
   }
 
@@ -78,7 +77,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimReadOnly< GUM_ELEMENT >::set(const Instantiation& i,
-                                                   const GUM_ELEMENT&   value) const {
+                                            const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed, "Write access to an aggregator")
   }
 

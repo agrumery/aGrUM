@@ -66,7 +66,6 @@ namespace gum {
 
   ApproximationScheme::~ApproximationScheme() { GUM_DESTRUCTOR(ApproximationScheme); }
 
-
   bool ApproximationScheme::continueApproximationScheme(double error) {
     // For coherence, we fix the time used in the method
 

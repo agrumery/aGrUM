@@ -92,13 +92,13 @@ namespace gum {
                        = new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
-      virtual ~PRMFuncAttribute();
+      ~PRMFuncAttribute() override;
 
       /// See gum::PRMClassElement::addParent_().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement::addChild_().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       protected:
       /// Copy constructor. Don't use it.

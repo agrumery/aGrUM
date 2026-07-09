@@ -493,44 +493,44 @@ namespace gum {
          * reported by method "size" is therefore the number of rows managed
          * by the handler. If you wish to retrieve the size of the whole database,
          * then use method DBSize instead. */
-        virtual std::size_t size() const final;
+        std::size_t size() const final;
 
         /// returns the number of rows of the whole database
-        virtual std::size_t DBSize() const final;
+        std::size_t DBSize() const final;
 
         /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
-        virtual const_reference rowSafe() const final;
+        const_reference rowSafe() const final;
 
         /// returns the current row pointed to by the handler (safe version)
         /** @throws OutOfBounds if the handler points to the end of its area */
-        virtual reference rowSafe() final;
+        reference rowSafe() final;
 
         /// returns the current row pointed to by the handler (unsafe version)
         /** @warning The method does not check whether the handler already
          * points to the end of its area. It is thus faster than method
          * rowSafe () but, when you call it, you must be sure that the row
          * actually exists, i.e., that the handler has not reached its end. */
-        virtual const_reference row() const final;
+        const_reference row() const final;
 
         /// returns the current row pointed to by the handler (unsafe version)
         /** @warning The method does not check whether the handler already
          * points to the end of its area. It is thus faster than method
          * rowSafe () but, when you call it, you must be sure that the row
          * actually exists, i.e., that the handler has not reached its end. */
-        virtual reference row() final;
+        reference row() final;
 
         /// makes the handler point to the next row, equivalent to operator++
-        virtual void nextRow() final;
+        void nextRow() final;
 
         /// the number of the current row (0 = the 1st row managed by the handler)
-        virtual std::size_t numRow() const final;
+        std::size_t numRow() const final;
 
         /// indicates whether the handler has reached its end or not
-        virtual bool hasRows() const final;
+        bool hasRows() const final;
 
         /// puts the handler to the beginning of the database's area it handles
-        virtual void reset() final;
+        void reset() final;
 
         /** @brief returns a new handler that points to the beginning of the
          * database's area of the current handler
@@ -557,16 +557,16 @@ namespace gum {
          * any database
          * @throw SizeError is raised if end is greater than the number of
          * rows of the database */
-        virtual void setRange(std::size_t first, std::size_t last) final;
+        void setRange(std::size_t first, std::size_t last) final;
 
         /// returns the current range of the handler [begin,end)
-        virtual std::pair< std::size_t, std::size_t > range() const final;
+        std::pair< std::size_t, std::size_t > range() const final;
 
         /// returns the names of the variables
-        virtual const DBVector< std::string >& variableNames() const final;
+        const DBVector< std::string >& variableNames() const final;
 
         /// returns the number of variables (columns) of the database
-        virtual std::size_t nbVariables() const final;
+        std::size_t nbVariables() const final;
 
         /// returns a pointer on the database
         /** @throw NullElement is raised if the handler does not point toward
@@ -722,7 +722,7 @@ namespace gum {
         HandlerSafe(HandlerSafe&& h);
 
         /// destructor
-        virtual ~HandlerSafe();
+        ~HandlerSafe() override;
 
         /// @}
 
@@ -735,13 +735,13 @@ namespace gum {
         virtual HandlerSafe& operator=(const HandlerSafe&);
 
         /// copy operator
-        virtual HandlerSafe& operator=(const Handler&);
+        HandlerSafe& operator=(const Handler&) override;
 
         /// move operator
         virtual HandlerSafe& operator=(HandlerSafe&&);
 
         /// move operator
-        virtual HandlerSafe& operator=(Handler&&);
+        HandlerSafe& operator=(Handler&&) override;
 
         /// @}
 
@@ -945,7 +945,7 @@ namespace gum {
        * @throw SizeError is raised if the vector of string cannot be inserted
        * in the IDatabaseTable because its size does not allow a matching with the
        * columns of the IDatabaseTable (taking into account the ignored columns) */
-      virtual void insertRow(const std::vector< std::string >& new_row) = 0;
+      void insertRow(const std::vector< std::string >& new_row) override = 0;
 
       /// insert a new DBRow at the end of the database
       /** Unlike methods insertRow for data whose type is different from T_DATA,

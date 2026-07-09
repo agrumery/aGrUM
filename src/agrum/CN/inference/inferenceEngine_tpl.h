@@ -426,13 +426,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR >
-           InferenceEngine< GUM_SCALAR >::marginalMin(std::string_view varName) const {
+        InferenceEngine< GUM_SCALAR >::marginalMin(std::string_view varName) const {
       return marginalMin(credalNet_->current_bn().idFromName(varName));
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Tensor< GUM_SCALAR >
-           InferenceEngine< GUM_SCALAR >::marginalMax(std::string_view varName) const {
+        InferenceEngine< GUM_SCALAR >::marginalMax(std::string_view varName) const {
       return marginalMax(credalNet_->current_bn().idFromName(varName));
     }
 

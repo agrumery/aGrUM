@@ -84,9 +84,9 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~MultiDimReadOnly();
+    ~MultiDimReadOnly() override;
 
-    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override = 0;
 
     /// @}
     // =========================================================================
@@ -98,13 +98,13 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
+    void set(const Instantiation& i, const GUM_ELEMENT& value) const override;
 
     /**
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void fill(const GUM_ELEMENT&) const;
+    void fill(const GUM_ELEMENT&) const override;
 
     /// @}
 
@@ -113,7 +113,7 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
+    GUM_ELEMENT& get_(const Instantiation& i) const override;
   };
 } /* namespace gum */
 

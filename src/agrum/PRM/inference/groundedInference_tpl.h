@@ -105,8 +105,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-        GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
-                                                           const PRMSystem< GUM_SCALAR >& system) :
+    GroundedInference< GUM_SCALAR >::GroundedInference(const PRM< GUM_SCALAR >&       prm,
+                                                       const PRMSystem< GUM_SCALAR >& system) :
         PRMInference< GUM_SCALAR >(prm, system), _inf_(0) {
       GUM_CONSTRUCTOR(GroundedInference);
     }
@@ -126,8 +126,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    MarginalTargetedInference< GUM_SCALAR >&
-           GroundedInference< GUM_SCALAR >::getBNInference() {
+    MarginalTargetedInference< GUM_SCALAR >& GroundedInference< GUM_SCALAR >::getBNInference() {
       if (_inf_ != 0) {
         return *_inf_;
       } else {

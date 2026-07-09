@@ -234,21 +234,20 @@ namespace gum {
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::addEvidence(std::string_view nodeName,
-                                                                 const Idx        val) {
+                                                          const Idx        val) {
     addEvidence(this->model().idFromName(nodeName), val);
   }
 
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::addEvidence(NodeId           id,
-                                                                 std::string_view label) {
+  void GraphicalModelInference< GUM_SCALAR >::addEvidence(NodeId id, std::string_view label) {
     addEvidence(id, this->model().variable(id)[label]);
   }
 
   // adds a new hard evidence on node id
   template < GUM_Numeric GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::addEvidence(std::string_view nodeName,
-                                                                 std::string_view label) {
+                                                          std::string_view label) {
     const NodeId id = this->model().idFromName(nodeName);
     addEvidence(id, this->model().variable(id)[label]);
   }
@@ -374,15 +373,13 @@ namespace gum {
 
   // indicates whether node id has received a hard evidence
   template < GUM_Numeric GUM_SCALAR >
-  bool
-      GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(std::string_view nodeName) const {
+  bool GraphicalModelInference< GUM_SCALAR >::hasHardEvidence(std::string_view nodeName) const {
     return hasHardEvidence(this->model().idFromName(nodeName));
   }
 
   // indicates whether node id has received a soft evidence
   template < GUM_Numeric GUM_SCALAR >
-  bool
-      GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(std::string_view nodeName) const {
+  bool GraphicalModelInference< GUM_SCALAR >::hasSoftEvidence(std::string_view nodeName) const {
     return hasSoftEvidence(this->model().idFromName(nodeName));
   }
 
@@ -395,30 +392,28 @@ namespace gum {
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view nodeName,
-                                                                 const Idx        val) {
+                                                          const Idx        val) {
     chgEvidence(this->model().idFromName(nodeName), val);
   }
 
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
-  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId           id,
-                                                                 std::string_view label) {
+  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId id, std::string_view label) {
     chgEvidence(id, this->model().variable(id)[label]);
   }
 
   // change the value of an already existing hard evidence
   template < GUM_Numeric GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view nodeName,
-                                                                 std::string_view label) {
+                                                          std::string_view label) {
     NodeId id = this->model().idFromName(nodeName);
     chgEvidence(id, this->model().variable(id)[label]);
   }
 
   // change the value of an already existing evidence (might be soft or hard)
   template < GUM_Numeric GUM_SCALAR >
-  void
-      GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId                           id,
-                                                         const std::vector< GUM_SCALAR >& vals) {
+  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(NodeId                           id,
+                                                          const std::vector< GUM_SCALAR >& vals) {
     // check whether this corresponds to an evidence
     if (_model_ == nullptr)
       GUM_ERROR(NullElement,
@@ -441,9 +436,8 @@ namespace gum {
 
   // change the value of an already existing evidence (might be soft or hard)
   template < GUM_Numeric GUM_SCALAR >
-  void
-      GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view                 nodeName,
-                                                         const std::vector< GUM_SCALAR >& vals) {
+  void GraphicalModelInference< GUM_SCALAR >::chgEvidence(std::string_view                 nodeName,
+                                                          const std::vector< GUM_SCALAR >& vals) {
     chgEvidence(this->model().idFromName(nodeName), vals);
   }
 
@@ -584,7 +578,7 @@ namespace gum {
   // the set of evidence entered into the network
   template < GUM_Numeric GUM_SCALAR >
   const NodeProperty< const Tensor< GUM_SCALAR >* >&
-               GraphicalModelInference< GUM_SCALAR >::evidence() const {
+      GraphicalModelInference< GUM_SCALAR >::evidence() const {
     return _evidence_;
   }
 

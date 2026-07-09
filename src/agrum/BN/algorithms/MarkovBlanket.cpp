@@ -76,7 +76,7 @@ namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, std::string_view name, int level) :
       MarkovBlanket(m, m.idFromName(name), level) {}
 
-  MarkovBlanket::~MarkovBlanket() {}
+  MarkovBlanket::~MarkovBlanket() = default;
 
   bool MarkovBlanket::hasSameStructure(const DAGmodel& other) const {
     if (size() != other.size()) return false;

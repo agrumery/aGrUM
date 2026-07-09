@@ -115,7 +115,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    ~MultiDimDecorator();
+    ~MultiDimDecorator() override;
 
     /// @}
     // =========================================================================
@@ -123,24 +123,24 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual Idx nbrDim() const final;
+    Idx nbrDim() const final;
 
-    virtual Size domainSize() const final;
+    Size domainSize() const final;
 
-    virtual void add(const DiscreteVariable& v) final;
+    void add(const DiscreteVariable& v) final;
 
-    virtual void erase(const DiscreteVariable& var) final;
+    void         erase(const DiscreteVariable& var) final;
     virtual void erase(std::string_view name) final;
 
-    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const final;
-    virtual const DiscreteVariable&                    variable(Idx) const final;
-    virtual const DiscreteVariable&                    variable(std::string_view name) const final;
+    const Sequence< const DiscreteVariable* >& variablesSequence() const final;
+    const DiscreteVariable&                    variable(Idx) const final;
+    const DiscreteVariable&                    variable(std::string_view name) const final;
 
-    virtual Idx pos(const DiscreteVariable& var) const final;
+    Idx pos(const DiscreteVariable& var) const final;
 
-    virtual bool contains(const DiscreteVariable& var) const final;
+    bool contains(const DiscreteVariable& var) const final;
 
-    virtual bool empty() const final;
+    bool empty() const final;
 
     /// @}
     // ========================================================================
@@ -148,24 +148,24 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual bool unregisterSlave(Instantiation& i) final;
+    bool unregisterSlave(Instantiation& i) final;
 
-    virtual bool registerSlave(Instantiation& i) final;
+    bool registerSlave(Instantiation& i) final;
 
-    virtual void changeNotification(const Instantiation&          i,
-                                    const DiscreteVariable* const var,
-                                    Idx                           oldval,
-                                    Idx                           newval) final;
+    void changeNotification(const Instantiation&          i,
+                            const DiscreteVariable* const var,
+                            Idx                           oldval,
+                            Idx                           newval) final;
 
-    virtual void setChangeNotification(const Instantiation& i) final;
+    void setChangeNotification(const Instantiation& i) final;
 
-    virtual void setFirstNotification(const Instantiation& i) final;
+    void setFirstNotification(const Instantiation& i) final;
 
-    virtual void setLastNotification(const Instantiation& i) final;
+    void setLastNotification(const Instantiation& i) final;
 
-    virtual void setIncNotification(const Instantiation& i) final;
+    void setIncNotification(const Instantiation& i) final;
 
-    virtual void setDecNotification(const Instantiation& i) final;
+    void setDecNotification(const Instantiation& i) final;
 
     virtual void notifyChange() const final;
 
@@ -180,16 +180,16 @@ namespace gum {
      *
      * Calls get_ as a r-value.
      */
-    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const final;
+    void set(const Instantiation& i, const GUM_ELEMENT& value) const final;
 
     /**
      * @brief Default implementation of MultiDimContainer::get().
      *
      * Calls get_ as a l-value.
      */
-    virtual GUM_ELEMENT get(const Instantiation& i) const final;
+    GUM_ELEMENT get(const Instantiation& i) const final;
 
-    virtual void fill(const GUM_ELEMENT& d) const final;
+    void fill(const GUM_ELEMENT& d) const final;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -209,33 +209,33 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate(const std::vector< GUM_ELEMENT >& v) const final;
+    void populate(const std::vector< GUM_ELEMENT >& v) const final;
 
     /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply(std::function< GUM_ELEMENT(GUM_ELEMENT) > f) const final;
+    void apply(std::function< GUM_ELEMENT(GUM_ELEMENT) > f) const final;
 
     /**
      * @brief compute lfold for this container
      * @param f the function to apply
      * @param base the initial value
      */
-    virtual GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
-                               GUM_ELEMENT base) const final;
+    GUM_ELEMENT reduce(std::function< GUM_ELEMENT(GUM_ELEMENT, GUM_ELEMENT) > f,
+                       GUM_ELEMENT                                            base) const final;
 
-    [[nodiscard]] virtual MultiDimDecorator< GUM_ELEMENT >* newFactory() const = 0;
+    [[nodiscard]] MultiDimDecorator< GUM_ELEMENT >* newFactory() const override = 0;
 
-    virtual void beginMultipleChanges() final;
+    void beginMultipleChanges() final;
 
-    virtual void endMultipleChanges() final;
+    void endMultipleChanges() final;
 
-    virtual void endMultipleChanges(const GUM_ELEMENT&) final;
+    void endMultipleChanges(const GUM_ELEMENT&) final;
 
-    virtual std::string toString(const Instantiation* i) const;
+    std::string toString(const Instantiation* i) const override;
 
-    virtual std::string toString() const;
+    std::string toString() const override;
 
     /// @}
     // =========================================================================
@@ -247,17 +247,17 @@ namespace gum {
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual const MultiDimImplementation< GUM_ELEMENT >* content() const final;
+    const MultiDimImplementation< GUM_ELEMENT >* content() const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation< GUM_ELEMENT >* content() final;
+    MultiDimImplementation< GUM_ELEMENT >* content() final;
 
     /// @}
 
     protected:
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     /**
      * protected method to swap the implementation behind the Tensor

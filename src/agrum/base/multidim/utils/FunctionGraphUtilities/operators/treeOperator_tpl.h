@@ -96,7 +96,7 @@ namespace gum {
              template < typename > class COMBINEOPERATOR,
              template < typename > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
-         TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
+      TreeOperator< GUM_ELEMENT, COMBINEOPERATOR, TerminalNodePolicy >::compute() {
     _rd_->manager()->setRootNode(_xPloreDT1_(_dt1_->root()));
 
     return _rd_;

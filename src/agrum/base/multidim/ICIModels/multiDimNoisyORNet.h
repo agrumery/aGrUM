@@ -116,7 +116,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    [[nodiscard]] virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
     // ============================================================================
     /// @name Accessors / Modifiers

@@ -85,10 +85,10 @@ namespace gum {
     IContinuousVariable(IContinuousVariable&& from);
 
     /// destructor
-    virtual ~IContinuousVariable();
+    ~IContinuousVariable() override;
 
     /// Copy Factory
-    [[nodiscard]] virtual IContinuousVariable* clone() const = 0;
+    [[nodiscard]] IContinuousVariable* clone() const override = 0;
 
     /// @}
 

@@ -68,38 +68,38 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~LoopyBeliefPropagation();
+    ~LoopyBeliefPropagation() override;
 
     protected:
-    virtual void onStateChanged_();
+    void onStateChanged_() override;
 
-    virtual void onEvidenceAdded_(const NodeId id, bool isHardEvidence);
+    void onEvidenceAdded_(const NodeId id, bool isHardEvidence) override;
 
-    virtual void onEvidenceErased_(const NodeId id, bool isHardEvidence);
+    void onEvidenceErased_(const NodeId id, bool isHardEvidence) override;
 
-    virtual void onAllEvidenceErased_(bool contains_hard_evidence);
+    void onAllEvidenceErased_(bool contains_hard_evidence) override;
 
-    virtual void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard);
+    void onEvidenceChanged_(const NodeId id, bool hasChangedSoftHard) override;
 
-    virtual void onModelChanged_(const GraphicalModel* bn);
+    void onModelChanged_(const GraphicalModel* bn) override;
 
-    virtual void updateOutdatedStructure_();
+    void updateOutdatedStructure_() override;
 
-    virtual void updateOutdatedTensors_();
+    void updateOutdatedTensors_() override;
 
-    virtual void onMarginalTargetAdded_(const NodeId id);
+    void onMarginalTargetAdded_(const NodeId id) override;
 
-    virtual void onMarginalTargetErased_(const NodeId id);
+    void onMarginalTargetErased_(const NodeId id) override;
 
-    virtual void onAllMarginalTargetsAdded_();
+    void onAllMarginalTargetsAdded_() override;
 
-    virtual void onAllMarginalTargetsErased_();
+    void onAllMarginalTargetsErased_() override;
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Tensor< GUM_SCALAR >& posterior_(NodeId id);
+    const Tensor< GUM_SCALAR >& posterior_(NodeId id) override;
 
-    virtual void makeInference_();
+    void makeInference_() override;
 
     // will be used in both directions :
     // for x->y, (x,y) and (y,x) will be in  _messages_

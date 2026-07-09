@@ -104,9 +104,9 @@ namespace gum {
 
         std::string value;
 
-        RequestType type() const;
+        RequestType type() const override;
 
-        std::string toString() const;
+        std::string toString() const override;
       };
 
       ///
@@ -118,9 +118,9 @@ namespace gum {
 
         std::string value;
 
-        RequestType type() const;
+        RequestType type() const override;
 
-        std::string toString() const;
+        std::string toString() const override;
       };
 
       ///
@@ -137,9 +137,9 @@ namespace gum {
         typename PRMInference< GUM_SCALAR >::Chain chain;
         Tensor< GUM_SCALAR >                       potentiel;
 
-        RequestType type() const;
+        RequestType type() const override;
 
-        std::string toString() const;
+        std::string toString() const override;
       };
 
       ///
@@ -154,9 +154,9 @@ namespace gum {
 
         UnobserveCommand(const UnobserveCommand& c);
 
-        RequestType type() const;
+        RequestType type() const override;
 
-        std::string toString() const;
+        std::string toString() const override;
       };
 
       ///
@@ -169,9 +169,9 @@ namespace gum {
         const PRMSystem< GUM_SCALAR >*             system;
         typename PRMInference< GUM_SCALAR >::Chain chain;
 
-        RequestType type() const;
+        RequestType type() const override;
 
-        std::string toString() const;
+        std::string toString() const override;
       };
 
       /**

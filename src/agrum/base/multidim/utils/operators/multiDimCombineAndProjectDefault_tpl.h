@@ -140,7 +140,7 @@ namespace gum {
   // returns the current combination function
   template < class TABLE >
   TABLE (*MultiDimCombineAndProjectDefault< TABLE >::combinationFunction())(const TABLE&,
-                                                                                   const TABLE&) {
+                                                                            const TABLE&) {
     return _combination_->combinationFunction();
   }
 

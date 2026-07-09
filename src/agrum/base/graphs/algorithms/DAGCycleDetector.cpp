@@ -373,7 +373,6 @@ namespace gum {
     }
   }
 
-
   void DAGCycleDetector::_delWeightedSet_(NodeProperty< Size >&       nodeset,
                                           const NodeProperty< Size >& set_to_del,
                                           Size                        multiplier) const {

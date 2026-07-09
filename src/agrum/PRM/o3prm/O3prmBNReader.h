@@ -79,12 +79,12 @@ namespace gum {
                   const std::string&      entityName = "",
                   const std::string&      classPath  = "");
 
-    ~O3prmBNReader();
+    ~O3prmBNReader() override;
 
     /// parse the file
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
-    Size proceed();
+    Size proceed() override;
 
     /// @{
     /// publishing Errors API

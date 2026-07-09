@@ -65,10 +65,7 @@ namespace gum {
     }
 
     INLINE
-    NameGenerator& NameGenerator::operator=(const NameGenerator& source) {
-      _counters_ = source._counters_;
-      return *this;
-    }
+    NameGenerator& NameGenerator::operator=(const NameGenerator& source) = default;
 
     INLINE
     std::string NameGenerator::nextName(PRMObject::prm_type type) {

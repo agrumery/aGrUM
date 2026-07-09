@@ -89,7 +89,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~UAIMRFWriter();
+    ~UAIMRFWriter() override;
 
     /// @}
 

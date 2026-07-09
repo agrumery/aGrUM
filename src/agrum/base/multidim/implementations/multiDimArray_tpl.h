@@ -224,8 +224,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimArray< GUM_SCALAR >::replace_(const DiscreteVariable* x,
-                                                    const DiscreteVariable* y) {
+  void MultiDimArray< GUM_SCALAR >::replace_(const DiscreteVariable* x, const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
   }
 

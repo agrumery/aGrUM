@@ -151,9 +151,8 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    NodeId
-        ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
-                                                const PRMClassElement< GUM_SCALAR >& elt) const {
+    NodeId ClassDependencyGraph< GUM_SCALAR >::get(const PRMClassElementContainer< GUM_SCALAR >& c,
+                                                   const PRMClassElement< GUM_SCALAR >& elt) const {
       return (*(_node_map_[&c]))[&elt];
     }
 

@@ -54,8 +54,7 @@ using ordered_json = nlohmann::ordered_json;
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  GumIDWriter< GUM_SCALAR >::GumIDWriter(bool binary, int indent) :
-      IDWriter< GUM_SCALAR >() {
+  GumIDWriter< GUM_SCALAR >::GumIDWriter(bool binary, int indent) : IDWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
     GUM_CONSTRUCTOR(GumIDWriter);
@@ -68,7 +67,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void GumIDWriter< GUM_SCALAR >::write(std::ostream&                         output,
-                                               const InfluenceDiagram< GUM_SCALAR >& id) {
+                                        const InfluenceDiagram< GUM_SCALAR >& id) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.")
 
     ordered_json content;
@@ -150,14 +149,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void GumIDWriter< GUM_SCALAR >::write(std::string_view                filePath,
-                                               InfluenceDiagram< GUM_SCALAR >& id) {
+                                        InfluenceDiagram< GUM_SCALAR >& id) {
     id.updateMetaData();
     write(filePath, static_cast< const InfluenceDiagram< GUM_SCALAR >& >(id));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void GumIDWriter< GUM_SCALAR >::write(std::string_view                      filePath,
-                                               const InfluenceDiagram< GUM_SCALAR >& id) {
+                                        const InfluenceDiagram< GUM_SCALAR >& id) {
     std::ofstream output(std::string(filePath),
                          _binary_ ? (std::ios_base::trunc | std::ios::binary)
                                   : std::ios_base::trunc);

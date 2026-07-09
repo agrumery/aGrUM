@@ -1192,57 +1192,54 @@ namespace gum::learning {
     IDatabaseTable< DBTranslatedValue >::clear();
   }
 
+  std::size_t DatabaseTable::_getKthIndex_(const std::size_t k, const bool k_is_input_col) const {
+    if (k_is_input_col) {
+      const std::size_t nb_trans = _translators_.size();
+      for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
+        if (_translators_.inputColumn(i) == k) { return i; }
+      }
+      return nb_trans + 1;
+    } else {
+      return k;
+    }
+  }
 
-    std::size_t DatabaseTable::_getKthIndex_(const std::size_t k,
-                                                    const bool        k_is_input_col) const {
-      if (k_is_input_col) {
-        const std::size_t nb_trans = _translators_.size();
-        for (std::size_t i = std::size_t(0); i < nb_trans; ++i) {
-          if (_translators_.inputColumn(i) == k) { return i; }
-        }
-        return nb_trans + 1;
+  void DatabaseTable::insertRow(typename DatabaseTable::template Row< DBTranslatedValue >&& new_row,
+                                const typename DatabaseTable::IsMissing contains_missing_data) {
+    // check that the new rows values are compatible with the values of
+    // the variables stored within the translators
+    if (!_isRowCompatible_(new_row)) {
+      if (new_row.size() != _translators_.size()) {
+        GUM_ERROR(SizeError,
+                  "The new row has " << new_row.size()
+                                     << " elements whereas the database table has "
+                                     << _translators_.size() << " columns")
       } else {
-        return k;
+        GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
       }
     }
 
-    void DatabaseTable::insertRow(
-        typename DatabaseTable::template Row< DBTranslatedValue >&& new_row,
-        const typename DatabaseTable::IsMissing                     contains_missing_data) {
-      // check that the new rows values are compatible with the values of
-      // the variables stored within the translators
-      if (!_isRowCompatible_(new_row)) {
-        if (new_row.size() != _translators_.size()) {
-          GUM_ERROR(SizeError,
-                    "The new row has " << new_row.size()
-                                       << " elements whereas the database table has "
-                                       << _translators_.size() << " columns")
-        } else {
-          GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
-        }
-      }
+    IDatabaseTable< DBTranslatedValue >::insertRow(std::move(new_row), contains_missing_data);
+  }
 
-      IDatabaseTable< DBTranslatedValue >::insertRow(std::move(new_row), contains_missing_data);
+  void DatabaseTable::insertRow(
+      const typename DatabaseTable::template Row< DBTranslatedValue >& new_row,
+      const typename DatabaseTable::IsMissing                          contains_missing_data) {
+    // check that the new rows values are compatible with the values of
+    // the variables stored within the translators
+    if (!_isRowCompatible_(new_row)) {
+      if (new_row.size() != _translators_.size()) {
+        GUM_ERROR(SizeError,
+                  "The new row has " << new_row.size()
+                                     << " elements whereas the database table has "
+                                     << _translators_.size() << " columns")
+      } else {
+        GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
+      }
     }
 
-    void DatabaseTable::insertRow(
-        const typename DatabaseTable::template Row< DBTranslatedValue >& new_row,
-        const typename DatabaseTable::IsMissing                          contains_missing_data) {
-      // check that the new rows values are compatible with the values of
-      // the variables stored within the translators
-      if (!_isRowCompatible_(new_row)) {
-        if (new_row.size() != _translators_.size()) {
-          GUM_ERROR(SizeError,
-                    "The new row has " << new_row.size()
-                                       << " elements whereas the database table has "
-                                       << _translators_.size() << " columns")
-        } else {
-          GUM_ERROR(InvalidArgument, "the new row is not compatible with the current translators")
-        }
-      }
-
-      IDatabaseTable< DBTranslatedValue >::insertRow(new_row, contains_missing_data);
-    }
+    IDatabaseTable< DBTranslatedValue >::insertRow(new_row, contains_missing_data);
+  }
 }   // namespace gum::learning
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

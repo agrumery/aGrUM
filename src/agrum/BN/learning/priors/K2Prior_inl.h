@@ -78,10 +78,7 @@ namespace gum {
     INLINE K2Prior::~K2Prior() { GUM_DESTRUCTOR(K2Prior); }
 
     /// copy operator
-    INLINE K2Prior& K2Prior::operator=(const K2Prior& from) {
-      SmoothingPrior::operator=(from);
-      return *this;
-    }
+    INLINE K2Prior& K2Prior::operator=(const K2Prior& from) = default;
 
     /// move operator
     INLINE K2Prior& K2Prior::operator=(K2Prior&& from) {

@@ -55,8 +55,7 @@ using ordered_json = nlohmann::ordered_json;
 namespace gum {
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
-  GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) :
-      BNWriter< GUM_SCALAR >() {
+  GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) : BNWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;
     GUM_CONSTRUCTOR(GumBNWriter);
@@ -76,7 +75,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
   void GumBNWriter< GUM_SCALAR >::_doWrite(std::ostream&                  output,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
+                                           const IBayesNet< GUM_SCALAR >& bn) {
     if (!output.good()) GUM_ERROR(IOError, "Input/Output error : stream not writable.");
 
     ordered_json content;
@@ -136,7 +135,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < GUM_Numeric GUM_SCALAR >
   void GumBNWriter< GUM_SCALAR >::_doWrite(std::string_view               filePath,
-                                                  const IBayesNet< GUM_SCALAR >& bn) {
+                                           const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(std::string(filePath),
                          _binary_ ? (std::ios_base::trunc | std::ios::binary)
                                   : std::ios_base::trunc);

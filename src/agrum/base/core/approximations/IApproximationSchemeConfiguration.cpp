@@ -61,7 +61,6 @@ namespace gum {
     GUM_DESTRUCTOR(IApproximationSchemeConfiguration);
   }
 
-
   std::string IApproximationSchemeConfiguration::messageApproximationScheme() const {
     switch (stateApproximationScheme()) {
       case ApproximationSchemeSTATE::Continue : return "in progress";

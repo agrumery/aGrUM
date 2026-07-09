@@ -86,7 +86,7 @@ namespace gum {
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~GTestPolicy();
+    ~GTestPolicy() override;
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
@@ -105,7 +105,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation(Idx iattr, GUM_ELEMENT ivalue);
+    void addObservation(Idx iattr, GUM_ELEMENT ivalue) override;
 
     /// @}
 
@@ -119,22 +119,22 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const;
+    bool isTestRelevant() const override;
 
     // ============================================================================
     /// Computes the GStat of current variable according to the test
     // ============================================================================
-    void computeScore() const;
+    void computeScore() const override;
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    double score() const;
+    double score() const override;
 
     // ============================================================================
     /// Returns a second criterion to severe ties
     // ============================================================================
-    double secondaryscore() const;
+    double secondaryscore() const override;
 
 
     /// @}

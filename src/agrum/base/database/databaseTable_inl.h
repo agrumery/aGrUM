@@ -77,7 +77,7 @@ namespace gum {
       const std::size_t nb_trans = _translators_.size();
       if (!k_is_input_col) {
         if (k < nb_trans) return DBVector< std::size_t >{k};
-        else return DBVector< std::size_t >();
+        else return {};
       } else {
         DBVector< std::size_t > trans;
         for (std::size_t i = std::size_t(0), kk = nb_trans - 1; i < nb_trans; ++i, --kk) {

@@ -45,7 +45,7 @@
 namespace gum {
 
 
-  INLINE LazyDecider::LazyDecider() {}
+  INLINE LazyDecider::LazyDecider() = default;
 
   INLINE void LazyDecider::checkState(const Instantiation& newState, Idx actionId) {}
 

@@ -82,7 +82,7 @@ namespace gum {
       SVED(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& model);
 
       /// Destructor.
-      ~SVED();
+      ~SVED() override;
 
       /// @}
       // ========================================================================
@@ -91,7 +91,7 @@ namespace gum {
       /// @{
 
       /// Returns the name of the current inference algorithm
-      virtual std::string name() const;
+      std::string name() const override;
 
       /// @}
 
@@ -105,16 +105,16 @@ namespace gum {
       using Chain = typename PRMInference< GUM_SCALAR >::Chain;
 
       /// See PRMInference::evidenceAdded_().
-      virtual void evidenceAdded_(const Chain& chain);
+      void evidenceAdded_(const Chain& chain) override;
 
       /// See PRMInference::evidenceRemoved_().
-      virtual void evidenceRemoved_(const Chain& chain);
+      void evidenceRemoved_(const Chain& chain) override;
 
       /// See PRMInference::posterior_().
-      virtual void posterior_(const Chain& chain, Tensor< GUM_SCALAR >& m);
+      void posterior_(const Chain& chain, Tensor< GUM_SCALAR >& m) override;
 
       /// See PRMInference::joint_().
-      virtual void joint_(const std::vector< Chain >& queries, Tensor< GUM_SCALAR >& j);
+      void joint_(const std::vector< Chain >& queries, Tensor< GUM_SCALAR >& j) override;
 
       /// @}
 

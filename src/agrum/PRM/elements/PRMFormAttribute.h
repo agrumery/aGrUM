@@ -75,53 +75,53 @@ namespace gum {
                        MultiDimImplementation< std::string >* impl
                        = new MultiDimArray< std::string >());
 
-      virtual ~PRMFormAttribute();
+      ~PRMFormAttribute() override;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const;
+      PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMAttribute< GUM_SCALAR >*
-          copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+      PRMAttribute< GUM_SCALAR >*
+          copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-                           const PRMAttribute< GUM_SCALAR >& source);
+      void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+                   const PRMAttribute< GUM_SCALAR >& source) override;
 
       /// See gum::prm::PRMAttribute.
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// See gum::prm::PRMAttribute.
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::prm::PRMAttribute.
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
 
       /// See gum::prm::PRMAttribute.
-      virtual void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void becomeCastDescendant(PRMType& subtype);
+      void setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr) override;
+      void becomeCastDescendant(PRMType& subtype) override;
 
       virtual MultiDimImplementation< std::string >&       formulas();
       virtual const MultiDimImplementation< std::string >& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType& old_type, const PRMType& new_type);
+      void swap(const PRMType& old_type, const PRMType& new_type) override;
 
       protected:
-      virtual PRMType* type_();
-      virtual void     type_(PRMType* t);
+      PRMType* type_() override;
+      void     type_(PRMType* t) override;
 
       private:
       PRMFormAttribute(const PRMFormAttribute& source);

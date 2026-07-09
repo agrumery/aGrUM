@@ -52,7 +52,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void SetTerminalNodePolicy< GUM_ELEMENT >::addTerminalNode(const NodeId&      n,
-                                                                    const GUM_ELEMENT& v) {
+                                                             const GUM_ELEMENT& v) {
     if (_map_.exists(n)) *(_map_[n]) += v;
     _map_.insert(n, new GUM_ELEMENT(v));
   }
@@ -70,8 +70,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  bool
-      SetTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
+  bool SetTerminalNodePolicy< GUM_ELEMENT >::existsTerminalNodeWithId(const NodeId& n) const {
     return _map_.exists(n);
   }
 
@@ -88,8 +87,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  const NodeId&
-      SetTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
+  const NodeId& SetTerminalNodePolicy< GUM_ELEMENT >::terminalNodeId(const GUM_ELEMENT& v) const {
     for (auto nodeIter = _map_.beginSafe(); nodeIter != _map_.endSafe(); ++nodeIter)
       if (*(nodeIter.val()) == v) return nodeIter.key();
     return jocker;

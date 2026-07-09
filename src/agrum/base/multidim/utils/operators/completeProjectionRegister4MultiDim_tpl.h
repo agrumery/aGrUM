@@ -143,7 +143,8 @@ namespace gum {
 
   // Default constructor: creates an empty register
   template < typename GUM_ELEMENT >
-  CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionRegister4MultiDim() {}
+  CompleteProjectionRegister4MultiDim< GUM_ELEMENT >::CompleteProjectionRegister4MultiDim()
+      = default;
 
   // destructor
   template < typename GUM_ELEMENT >

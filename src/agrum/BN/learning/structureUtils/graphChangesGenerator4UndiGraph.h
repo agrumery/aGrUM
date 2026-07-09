@@ -175,10 +175,10 @@ namespace gum {
       /// @{
 
       /// returns an (unsafe) iterator on the beginning of the list of operators
-      iterator begin() const;
+      iterator begin() const override;
 
       /// returns an (unsafe) iterator on the end of the list of operators
-      const iterator& end() const;
+      const iterator& end() const override;
 
       /// @}
 
@@ -191,22 +191,22 @@ namespace gum {
       STRUCT_CONSTRAINT& constraint() const noexcept;
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph(const UndiGraph& graph);
+      void setGraph(const UndiGraph& graph) override;
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const EdgeAddition& change);
+      void modifyGraph(const EdgeAddition& change) override;
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const EdgeDeletion& change);
+      void modifyGraph(const EdgeDeletion& change) override;
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph(const GraphChange& change);
+      void modifyGraph(const GraphChange& change) override;
 
       /// empty the set of possible change operators that can be applied
-      void clearChanges() noexcept;
+      void clearChanges() noexcept override;
 
       /// notifies the generator that we have parsed all its legal changes
-      void notifyGetCompleted();
+      void notifyGetCompleted() override;
 
       /// sets the maximum number of threads used to compute the set of changes
       void setMaxNbThreads(Size nb) noexcept;

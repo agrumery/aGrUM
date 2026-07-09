@@ -55,7 +55,7 @@ namespace gum {
   // Default constructor
   template < GUM_Numeric GUM_SCALAR >
   MultiDimLogit< GUM_SCALAR >::MultiDimLogit(GUM_SCALAR external_weight,
-                                                    GUM_SCALAR default_weight) :
+                                             GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
     GUM_CONSTRUCTOR(MultiDimLogit);
   }

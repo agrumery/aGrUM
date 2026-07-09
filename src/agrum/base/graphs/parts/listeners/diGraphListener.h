@@ -79,7 +79,7 @@ namespace gum {
     DiGraphListener(const DiGraph* g);
 
     /// destructor
-    ~DiGraphListener();
+    ~DiGraphListener() override;
 
     /// @}
 

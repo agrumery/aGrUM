@@ -246,10 +246,10 @@ namespace gum {
       DBTranslator4ContinuousVariable(DBTranslator4ContinuousVariable&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual DBTranslator4ContinuousVariable* clone() const;
+      [[nodiscard]] DBTranslator4ContinuousVariable* clone() const override;
 
       /// destructor
-      virtual ~DBTranslator4ContinuousVariable();
+      ~DBTranslator4ContinuousVariable() override;
 
       /// @}
 
@@ -311,30 +311,30 @@ namespace gum {
        * @throws TypeError is raised if the translation cannot be found and
        * the insertion of the string into the translator's dictionary fails
        * due to str being impossible to be converted into an appropriate type. */
-      virtual DBTranslatedValue translate(std::string_view str) final;
+      DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
        * @throws UnknownLabelInDatabase is raised if this original value is
        * outside the domain of the continuous variable stored within the
        * translator */
-      virtual std::string translateBack(const DBTranslatedValue translated_val) const final;
+      std::string translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns std::numeric_limits<std::size_t>::max ()
-      virtual std::size_t domainSize() const final;
+      std::size_t domainSize() const final;
 
       /// indicates that the translations should never be reordered
-      virtual bool needsReordering() const final;
+      bool needsReordering() const final;
 
       /** @brief returns an empty mapping, indicating that old tanslations
        * are equal to the newly reordered ones. */
-      virtual HashTable< std::size_t, std::size_t > reorder() final;
+      HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const IContinuousVariable* variable() const final;
+      const IContinuousVariable* variable() const final;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue() const final;
+      DBTranslatedValue missingValue() const final;
 
       /// @}
 

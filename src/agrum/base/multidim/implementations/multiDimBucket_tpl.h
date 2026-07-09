@@ -127,8 +127,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  bool
-      MultiDimBucket< GUM_SCALAR >::contains(const MultiDimContainer< GUM_SCALAR >& impl) const {
+  bool MultiDimBucket< GUM_SCALAR >::contains(const MultiDimContainer< GUM_SCALAR >& impl) const {
     return _multiDims_.exists(&impl);
   }
 
@@ -248,9 +247,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::changeNotification(const Instantiation&          i,
-                                                               const DiscreteVariable* const var,
-                                                               Idx                           oldval,
-                                                               Idx newval) {
+                                                        const DiscreteVariable* const var,
+                                                        Idx                           oldval,
+                                                        Idx                           newval) {
     if (_bucket_) {
       if (_instantiations_.existsFirst(const_cast< Instantiation* >(&i))) {
         _bucket_->changeNotification(*(_instantiations_).second(const_cast< Instantiation* >(&i)),
@@ -531,7 +530,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimBucket< GUM_SCALAR >::replace_(const DiscreteVariable* x,
-                                                     const DiscreteVariable* y) {
+                                              const DiscreteVariable* y) {
     MultiDimImplementation< GUM_SCALAR >::replace_(x, y);
     for (auto iter = _instantiations_.beginSafe(); iter != _instantiations_.endSafe(); ++iter) {
       iter.first()->replace(*x, *y);
@@ -547,7 +546,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const HashTable< const MultiDimContainer< GUM_SCALAR >*, Instantiation* >&
-               MultiDimBucket< GUM_SCALAR >::multidims() const {
+      MultiDimBucket< GUM_SCALAR >::multidims() const {
     return _multiDims_;
   }
 

@@ -161,9 +161,9 @@ namespace gum {
     /// sets the CPT's parameters corresponding to a given nodeset
     template < GUM_Numeric GUM_SCALAR >
     double ParamEstimator::setParameters(const NodeId                 target_node,
-                                                const std::vector< NodeId >& conditioning_nodes,
-                                                Tensor< GUM_SCALAR >&        pot,
-                                                const bool compute_log_likelihood) {
+                                         const std::vector< NodeId >& conditioning_nodes,
+                                         Tensor< GUM_SCALAR >&        pot,
+                                         const bool                   compute_log_likelihood) {
       return _setParameters_(target_node, conditioning_nodes, pot, compute_log_likelihood);
     }
 

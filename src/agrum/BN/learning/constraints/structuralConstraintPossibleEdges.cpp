@@ -103,7 +103,6 @@ namespace gum {
       return *this;
     }
 
-
     bool
         StructuralConstraintPossibleEdges::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
@@ -130,8 +129,7 @@ namespace gum {
       }
     }
 
-    bool
-        StructuralConstraintPossibleEdges::isAlwaysInvalidAlone(const GraphChange& change) const {
+    bool StructuralConstraintPossibleEdges::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION :
           return !checkArcAdditionAlone(change.node1(), change.node2());

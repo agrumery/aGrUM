@@ -157,7 +157,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     PRMInference< GUM_SCALAR >::PRMInference(const PRM< GUM_SCALAR >&       prm,
-                                                    const PRMSystem< GUM_SCALAR >& system) :
+                                             const PRMSystem< GUM_SCALAR >& system) :
         prm_(&prm), sys_(&system) {
       GUM_CONSTRUCTOR(PRMInference);
     }

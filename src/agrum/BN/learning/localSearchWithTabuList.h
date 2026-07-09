@@ -93,7 +93,7 @@ namespace gum {
       LocalSearchWithTabuList(LocalSearchWithTabuList&& from);
 
       /// destructor
-      virtual ~LocalSearchWithTabuList();
+      ~LocalSearchWithTabuList() override;
 
       /// @}
 

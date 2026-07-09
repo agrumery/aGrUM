@@ -81,13 +81,7 @@ namespace gum {
     INLINE DBRowGenerator::~DBRowGenerator() { GUM_DESTRUCTOR(DBRowGenerator); }
 
     /// copy operator
-    INLINE DBRowGenerator& DBRowGenerator::operator=(const DBRowGenerator& from) {
-      nb_remaining_output_rows_ = from.nb_remaining_output_rows_;
-      column_types_             = from.column_types_;
-      columns_of_interest_      = from.columns_of_interest_;
-      goal_                     = from.goal_;
-      return *this;
-    }
+    INLINE DBRowGenerator& DBRowGenerator::operator=(const DBRowGenerator& from) = default;
 
     /// move operator
     INLINE DBRowGenerator& DBRowGenerator::operator=(DBRowGenerator&& from) {

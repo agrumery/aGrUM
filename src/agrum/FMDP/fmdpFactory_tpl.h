@@ -314,7 +314,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void FMDPFactory< GUM_ELEMENT >::addTransition(std::string_view          var,
-                                                        const MultiDimAdressable* transition) {
+                                                 const MultiDimAdressable* transition) {
     const MultiDimImplementation< GUM_ELEMENT >* t
         = static_cast< const MultiDimImplementation< GUM_ELEMENT >* >(transition);
 
@@ -678,7 +678,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   FMDPFactory< GUM_ELEMENT >&
-         FMDPFactory< GUM_ELEMENT >::operator=(const FMDPFactory< GUM_ELEMENT >& source) {
+      FMDPFactory< GUM_ELEMENT >::operator=(const FMDPFactory< GUM_ELEMENT >& source) {
     GUM_ERROR(FatalError, "Illegal!")
     // For noisy compilers
     return *this;

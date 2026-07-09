@@ -80,7 +80,7 @@ namespace gum {
     MultiDimCombineAndProjectDefault(const MultiDimCombineAndProjectDefault< TABLE >&);
 
     /// Destructor
-    virtual ~MultiDimCombineAndProjectDefault();
+    ~MultiDimCombineAndProjectDefault() override;
 
     /**
      * @brief virtual constructor
@@ -88,7 +88,7 @@ namespace gum {
      * @return a new fresh MultiDimCombineAndProjectDefault with the same
      * combination and projection functions.
      */
-    [[nodiscard]] virtual MultiDimCombineAndProjectDefault< TABLE >* clone() const;
+    [[nodiscard]] MultiDimCombineAndProjectDefault< TABLE >* clone() const override;
 
     /// @}
     // ========================================================================

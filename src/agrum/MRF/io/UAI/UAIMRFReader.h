@@ -97,7 +97,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~UAIMRFReader();
+    ~UAIMRFReader() override;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

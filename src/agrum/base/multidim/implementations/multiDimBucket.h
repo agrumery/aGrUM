@@ -113,7 +113,7 @@ namespace gum {
     /**
      * @brief Destructor.
      */
-    virtual ~MultiDimBucket();
+    ~MultiDimBucket() override;
 
     /// @}
     // ========================================================================
@@ -241,7 +241,7 @@ namespace gum {
 
     void erase(const DiscreteVariable& v) override;
 
-    virtual Size realSize() const override;
+    Size realSize() const override;
 
     bool contains(const DiscreteVariable& v) const override;
 
@@ -270,7 +270,7 @@ namespace gum {
 
     const MultiDimAdressable& getMasterRef() const override;
 
-    virtual std::string toString(const Instantiation* i) const override;
+    std::string toString(const Instantiation* i) const override;
 
     /// @}
 

@@ -92,7 +92,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~FactorisedValuesCNFWriter();
+    ~FactorisedValuesCNFWriter() override;
 
     /// @}
 

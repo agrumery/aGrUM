@@ -73,7 +73,7 @@ namespace gum {
        */
       explicit EMApproximationScheme(bool verbosity = false);
 
-      virtual ~EMApproximationScheme() = default;
+      ~EMApproximationScheme() override = default;
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal difference between two

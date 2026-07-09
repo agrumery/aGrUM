@@ -87,7 +87,7 @@ namespace gum::learning {
     StructuralConstraintIndegree(StructuralConstraintIndegree&& from);
 
     /// destructor
-    virtual ~StructuralConstraintIndegree();
+    ~StructuralConstraintIndegree() override;
 
     /// @}
 

@@ -241,10 +241,10 @@ namespace gum {
       DBTranslator4LabelizedVariable(DBTranslator4LabelizedVariable&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual DBTranslator4LabelizedVariable* clone() const;
+      [[nodiscard]] DBTranslator4LabelizedVariable* clone() const override;
 
       /// destructor
-      virtual ~DBTranslator4LabelizedVariable();
+      ~DBTranslator4LabelizedVariable() override;
 
       /// @}
 
@@ -297,7 +297,7 @@ namespace gum {
        * @throws SizeError is raised if the number of entries in the dictionary
        * has already reached its maximum.
        */
-      virtual DBTranslatedValue translate(std::string_view str) final;
+      DBTranslatedValue translate(std::string_view str) final;
 
       /// returns the original value for a given translation
       /** @return the string that was translated into a given DBTranslatedValue.
@@ -306,7 +306,7 @@ namespace gum {
        * translator. The method should return this label
        * @throws UnknownLabelInDatabase is raised if this original value
        * cannot be found */
-      virtual std::string translateBack(const DBTranslatedValue translated_val) const final;
+      std::string translateBack(const DBTranslatedValue translated_val) const final;
 
       /// returns the domain size of a variable corresponding to the translations
       /** Assume that the translator has been fed with the observed values of
@@ -316,7 +316,7 @@ namespace gum {
        * labels of the LabelizedVariable contained in the translator.
        * Note that missing values are not taken into account in the domain
        * sizes. */
-      virtual std::size_t domainSize() const final;
+      std::size_t domainSize() const final;
 
       /** @brief indicates whether a reordering is needed to make the
        * translations sorted
@@ -338,7 +338,7 @@ namespace gum {
        * reordering. Method needsReodering() returns a Boolean indicating
        * whether such a reordering should be performed or whether the current
        * order is OK. */
-      virtual bool needsReordering() const final;
+      bool needsReordering() const final;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.
@@ -349,13 +349,13 @@ namespace gum {
        * that enables changing the old dictionary values into the new ones.
        * @warning If there is no reordering to perform, the method returns
        * an empty hashtable. */
-      virtual HashTable< std::size_t, std::size_t > reorder() final;
+      HashTable< std::size_t, std::size_t > reorder() final;
 
       /// returns the variable stored into the translator
-      virtual const LabelizedVariable* variable() const final;
+      const LabelizedVariable* variable() const final;
 
       /// returns the translation of a missing value
-      virtual DBTranslatedValue missingValue() const final;
+      DBTranslatedValue missingValue() const final;
 
       /// @}
 

@@ -88,45 +88,45 @@ namespace gum {
      * @param value The converted value.
      * @return The value approximation representation.
      */
-    INLINE GUM_ELEMENT fromExact(const GUM_ELEMENT& value) const;
+    INLINE GUM_ELEMENT fromExact(const GUM_ELEMENT& value) const override;
 
     /**
      * @brief Combine using addition with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineAdd(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineAdd(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /**
      * @brief Combine using subtraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineSub(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineSub(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /**
      * @brief Combine using multiplication with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMult(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineMult(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /**
      * @brief Combine using division with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineDiv(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineDiv(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /**
      * @brief Combine using max with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMax(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineMax(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /**
      * @brief Combine using min with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMin(const ApproximationPolicy< GUM_ELEMENT >* ap);
+    void combineMin(const ApproximationPolicy< GUM_ELEMENT >* ap) override;
 
     /// @}
   };

@@ -104,7 +104,7 @@ namespace gum {
     /**
      * @brief Class destructor.
      */
-    virtual ~MultiDimSparse();
+    ~MultiDimSparse() override;
 
 
     /// @}
@@ -113,21 +113,21 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    [[nodiscard]] virtual MultiDimContainer< GUM_ELEMENT >* newFactory() const;
+    [[nodiscard]] MultiDimContainer< GUM_ELEMENT >* newFactory() const override;
 
-    void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
-    void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
-    virtual void fill(const GUM_ELEMENT& d) const;
+    void fill(const GUM_ELEMENT& d) const override;
 
-    virtual GUM_ELEMENT get(const Instantiation& i) const;
+    GUM_ELEMENT get(const Instantiation& i) const override;
 
-    virtual void set(const Instantiation& i, const GUM_ELEMENT& value) const;
+    void set(const Instantiation& i, const GUM_ELEMENT& value) const override;
 
-    virtual const std::string& name() const;
+    const std::string& name() const override;
 
-    virtual Size realSize() const;
+    Size realSize() const override;
 
     /// @}
 
@@ -140,20 +140,20 @@ namespace gum {
     mutable GUM_ELEMENT default_;
 
     /// Synchronise content after MultipleChanges.
-    virtual void commitMultipleChanges_();
+    void commitMultipleChanges_() override;
 
     /**
      * @warning Will raise an OperationNotAllowed as this use its own internal
      * datastructure.
      */
-    virtual GUM_ELEMENT& get_(const Instantiation& i) const;
+    GUM_ELEMENT& get_(const Instantiation& i) const override;
 
     // =========================================================================
     /// @name Inherited methods
     // =========================================================================
     /// @{
 
-    virtual void replace_(const DiscreteVariable* x, const DiscreteVariable* y);
+    void replace_(const DiscreteVariable* x, const DiscreteVariable* y) override;
 
     /// @}
   };

@@ -114,7 +114,7 @@ namespace gum {
     explicit GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl);
 
     /** destructor */
-    ~GibbsBNdistance();
+    ~GibbsBNdistance() override;
 
     /**
      * @brief Number of burn in for one iteration.

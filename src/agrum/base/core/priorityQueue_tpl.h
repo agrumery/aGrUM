@@ -146,8 +146,8 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   PriorityQueueImplementation< Val, Priority, Cmp, Gen >&
-         PriorityQueueImplementation< Val, Priority, Cmp, Gen >::operator=(
-             PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from) {
+      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::operator=(
+          PriorityQueueImplementation< Val, Priority, Cmp, Gen >&& from) {
     // avoid self assignment
     if (this != &from) {
       GUM_OP_MOV(PriorityQueueImplementation)
@@ -171,8 +171,7 @@ namespace gum {
 
   // returns the priority of the top element
   template < typename Val, typename Priority, typename Cmp, bool Gen >
-  const Priority&
-      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::topPriority() const {
+  const Priority& PriorityQueueImplementation< Val, Priority, Cmp, Gen >::topPriority() const {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return _heap_[0].first;
@@ -268,15 +267,14 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   const HashTable< Val, Size >&
-               PriorityQueueImplementation< Val, Priority, Cmp, Gen >::allValues() const noexcept {
+      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::allValues() const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue
   template < typename Val, typename Priority, typename Cmp, bool Gen >
-  Size
-      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::insert(const Val&      val,
-                                                                     const Priority& priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, Gen >::insert(const Val&      val,
+                                                                      const Priority& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     //  _indices_.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size >::value_type& new_elt = _indices_.insert(val, 0);
@@ -311,7 +309,7 @@ namespace gum {
   // inserts by move a new element in the priority queue
   template < typename Val, typename Priority, typename Cmp, bool Gen >
   Size PriorityQueueImplementation< Val, Priority, Cmp, Gen >::insert(Val&&      val,
-                                                                             Priority&& priority) {
+                                                                      Priority&& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     //  _indices_.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size >::value_type& new_elt = _indices_.insert(std::move(val), 0);
@@ -360,15 +358,13 @@ namespace gum {
 
   // indicates whether the priority queue contains a given value
   template < typename Val, typename Priority, typename Cmp, bool Gen >
-  bool
-      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::contains(const Val& val) const {
+  bool PriorityQueueImplementation< Val, Priority, Cmp, Gen >::contains(const Val& val) const {
     return _indices_.exists(val);
   }
 
   // returns the element at position "index" in the priority queue
   template < typename Val, typename Priority, typename Cmp, bool Gen >
-  const Val&
-      PriorityQueueImplementation< Val, Priority, Cmp, Gen >::operator[](Size index) const {
+  const Val& PriorityQueueImplementation< Val, Priority, Cmp, Gen >::operator[](Size index) const {
     if (index >= _nb_elements_) {
       GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
@@ -605,8 +601,8 @@ namespace gum {
   // move operator
   template < typename Val, typename Priority, typename Cmp >
   PriorityQueueImplementation< Val, Priority, Cmp, true >&
-         PriorityQueueImplementation< Val, Priority, Cmp, true >::operator=(
-             PriorityQueueImplementation< Val, Priority, Cmp, true >&& from) {
+      PriorityQueueImplementation< Val, Priority, Cmp, true >::operator=(
+          PriorityQueueImplementation< Val, Priority, Cmp, true >&& from) {
     // avoid self assignment
     if (this != &from) {
       // for debugging purposes
@@ -631,8 +627,7 @@ namespace gum {
 
   // returns the priority of the top element
   template < typename Val, typename Priority, typename Cmp >
-  const Priority&
-      PriorityQueueImplementation< Val, Priority, Cmp, true >::topPriority() const {
+  const Priority& PriorityQueueImplementation< Val, Priority, Cmp, true >::topPriority() const {
     if (!_nb_elements_) { GUM_ERROR(NotFound, "empty priority queue") }
 
     return _heap_[0].first;
@@ -728,15 +723,14 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template < typename Val, typename Priority, typename Cmp >
   const HashTable< Val, Size >&
-               PriorityQueueImplementation< Val, Priority, Cmp, true >::allValues() const noexcept {
+      PriorityQueueImplementation< Val, Priority, Cmp, true >::allValues() const noexcept {
     return reinterpret_cast< const HashTable< Val, Size >& >(_indices_);
   }
 
   // inserts a new (a copy) element in the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  Size
-      PriorityQueueImplementation< Val, Priority, Cmp, true >::insert(Val             val,
-                                                                      const Priority& priority) {
+  Size PriorityQueueImplementation< Val, Priority, Cmp, true >::insert(Val             val,
+                                                                       const Priority& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     //  _indices_.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size >::value_type& new_elt = _indices_.insert(val, 0);
@@ -771,7 +765,7 @@ namespace gum {
   // inserts by move a new element in the priority queue
   template < typename Val, typename Priority, typename Cmp >
   Size PriorityQueueImplementation< Val, Priority, Cmp, true >::insert(Val        val,
-                                                                              Priority&& priority) {
+                                                                       Priority&& priority) {
     // create the entry in the indices hashtable (if the element already exists,
     //  _indices_.insert will raise a Duplicateelement exception)
     typename HashTable< Val, Size >::value_type& new_elt = _indices_.insert(val, 0);
@@ -826,8 +820,7 @@ namespace gum {
 
   // returns the element at position "index" in the priority queue
   template < typename Val, typename Priority, typename Cmp >
-  const Val&
-      PriorityQueueImplementation< Val, Priority, Cmp, true >::operator[](Size index) const {
+  const Val& PriorityQueueImplementation< Val, Priority, Cmp, true >::operator[](Size index) const {
     if (index >= _nb_elements_) {
       GUM_ERROR(NotFound, "not enough elements in the PriorityQueueImplementation")
     }
@@ -959,8 +952,7 @@ namespace gum {
 
   // returns the priority of a given element
   template < typename Val, typename Priority, typename Cmp >
-  const Priority&
-      PriorityQueueImplementation< Val, Priority, Cmp, true >::priority(Val elt) const {
+  const Priority& PriorityQueueImplementation< Val, Priority, Cmp, true >::priority(Val elt) const {
     return _heap_[_indices_[elt]].first;
   }
 
@@ -1006,8 +998,7 @@ namespace gum {
 
   // move constructor
   template < typename Val, typename Priority, typename Cmp >
-  PriorityQueue< Val, Priority, Cmp >::PriorityQueue(
-      PriorityQueue< Val, Priority, Cmp >&& from) :
+  PriorityQueue< Val, Priority, Cmp >::PriorityQueue(PriorityQueue< Val, Priority, Cmp >&& from) :
       PriorityQueue< Val, Priority, Cmp >::Implementation(std::move(from)) {
     // for debugging purposes
     GUM_CONS_MOV(PriorityQueue);
@@ -1038,8 +1029,7 @@ namespace gum {
 
   // A \c << operator for priority queues
   template < typename Val, typename Priority, typename Cmp >
-  std::ostream& operator<<(std::ostream&                              stream,
-                                  const PriorityQueue< Val, Priority, Cmp >& queue) {
+  std::ostream& operator<<(std::ostream& stream, const PriorityQueue< Val, Priority, Cmp >& queue) {
     stream << queue.toString();
     return stream;
   }

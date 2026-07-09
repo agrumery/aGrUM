@@ -45,7 +45,7 @@
 namespace gum {
 
 
-  INLINE RandomDecider::RandomDecider() {}
+  INLINE RandomDecider::RandomDecider() = default;
 
   INLINE void RandomDecider::checkState(const Instantiation& newState, Idx actionId) {}
 

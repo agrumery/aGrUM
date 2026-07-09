@@ -103,7 +103,7 @@ namespace gum {
      * Destructor.
      */
 
-    virtual ~IBayesNetGenerator();
+    ~IBayesNetGenerator() override;
     /// @}
 
     // ############################################################################

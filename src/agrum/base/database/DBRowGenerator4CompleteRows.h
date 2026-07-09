@@ -117,7 +117,7 @@ namespace gum {
       [[nodiscard]] DBRowGenerator4CompleteRows* clone() const final;
 
       /// destructor
-      ~DBRowGenerator4CompleteRows();
+      ~DBRowGenerator4CompleteRows() override;
 
       /// @}
 

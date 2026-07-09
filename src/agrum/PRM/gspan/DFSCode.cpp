@@ -70,7 +70,6 @@ namespace gum {
         return out;
       }
 
-
       bool DFSCode::operator==(const DFSCode& from) const {
         if (codes.size() == from.codes.size()) {
           for (size_t idx = 0; idx < codes.size(); ++idx) {

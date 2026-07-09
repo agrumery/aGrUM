@@ -97,10 +97,10 @@ namespace gum {
       K2Prior(K2Prior&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual K2Prior* clone() const;
+      [[nodiscard]] K2Prior* clone() const override;
 
       /// destructor
-      virtual ~K2Prior();
+      ~K2Prior() override;
 
       /// @}
 
@@ -125,7 +125,7 @@ namespace gum {
       /// @{
 
       /// dummy set weight function: in K2, weights are always equal to 1
-      virtual void setWeight(const double weight) final;
+      void setWeight(const double weight) final;
 
       /// @}
     };

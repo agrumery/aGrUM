@@ -77,13 +77,13 @@ namespace gum {
 
   template < TESTNAME AttributeSelection, bool isScalar >
   double ConcreteLeaf< AttributeSelection, isScalar >::_effectif_(Idx moda,
-                                                                         Int2Type< true >) const {
+                                                                  Int2Type< true >) const {
     return (double)_n1_->effectif(Idx(_valueDomain_->atPos(moda)));
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
   double ConcreteLeaf< AttributeSelection, isScalar >::_effectif_(Idx moda,
-                                                                         Int2Type< false >) const {
+                                                                  Int2Type< false >) const {
     return (double)_n1_->effectif(moda);
   }
 

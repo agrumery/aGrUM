@@ -98,7 +98,7 @@ namespace gum {
       /**
        * Destructor of this class.
        */
-      virtual ~PRMClassElement();
+      ~PRMClassElement() override;
 
       /// @}
       // ========================================================================
@@ -160,7 +160,7 @@ namespace gum {
       virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       /// @see gum::PRMObject::obj_type().
-      virtual typename PRMObject::prm_type obj_type() const;
+      typename PRMObject::prm_type obj_type() const override;
 
       /// Return the type of class element this object is.
       virtual ClassElementType elt_type() const = 0;

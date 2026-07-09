@@ -56,7 +56,7 @@ namespace gum {
 
   // Default constructor.
   template < typename GUM_ELEMENT >
-  ExactPolicy< GUM_ELEMENT >::ExactPolicy() {}
+  ExactPolicy< GUM_ELEMENT >::ExactPolicy() = default;
 
   // @brief Convert value to approximation representation.
   template < typename GUM_ELEMENT >

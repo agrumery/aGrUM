@@ -91,10 +91,10 @@ namespace gum {
       NoPrior(NoPrior&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual NoPrior* clone() const;
+      [[nodiscard]] NoPrior* clone() const override;
 
       /// destructor
-      virtual ~NoPrior();
+      ~NoPrior() override;
 
       /// @}
 

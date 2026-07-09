@@ -146,7 +146,8 @@ namespace gum {
 
   // Default constructor: creates an empty register
   template < typename GUM_ELEMENT >
-  PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationRegister4MultiDim() {}
+  PartialInstantiationRegister4MultiDim< GUM_ELEMENT >::PartialInstantiationRegister4MultiDim()
+      = default;
 
   // destructor
   template < typename GUM_ELEMENT >

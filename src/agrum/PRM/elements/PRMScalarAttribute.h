@@ -106,7 +106,7 @@ namespace gum {
                          = new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
-      virtual ~PRMScalarAttribute();
+      ~PRMScalarAttribute() override;
 
       /// @}
       // ========================================================================
@@ -114,37 +114,37 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const;
-      virtual PRMAttribute< GUM_SCALAR >*
-          copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const;
+      PRMAttribute< GUM_SCALAR >* newFactory(const PRMClass< GUM_SCALAR >& c) const override;
+      PRMAttribute< GUM_SCALAR >*
+          copy(Bijection< const DiscreteVariable*, const DiscreteVariable* > bij) const override;
 
-      virtual void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
-                           const PRMAttribute< GUM_SCALAR >& source);
+      void copyCpf(const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bif,
+                   const PRMAttribute< GUM_SCALAR >& source) override;
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const;
+      typename PRMClassElement< GUM_SCALAR >::ClassElementType elt_type() const override;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType& type();
+      PRMType& type() override;
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType& type() const;
+      const PRMType& type() const override;
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Tensor< GUM_SCALAR >& cpf() const;
+      const Tensor< GUM_SCALAR >& cpf() const override;
 
       /// See gum::PRMClassElement::addParent_().
-      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
+      void addParent(const PRMClassElement< GUM_SCALAR >& elt) override;
 
       /// See gum::PRMClassElement::addChild_().
-      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
+      void addChild(const PRMClassElement< GUM_SCALAR >& elt) override;
 
-      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
-      virtual void                        setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr);
-      virtual void                        becomeCastDescendant(PRMType& subtype);
+      PRMAttribute< GUM_SCALAR >* getCastDescendant() const override;
+      void                        setAsCastDescendant(PRMAttribute< GUM_SCALAR >* attr) override;
+      void                        becomeCastDescendant(PRMType& subtype) override;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.
-      virtual void swap(const PRMType& old_type, const PRMType& new_type);
+      void swap(const PRMType& old_type, const PRMType& new_type) override;
 
       /// @}
 
@@ -155,8 +155,8 @@ namespace gum {
       /// Copy operator. Don't use it.
       PRMScalarAttribute& operator=(const PRMScalarAttribute& from);
 
-      virtual PRMType* type_();
-      virtual void     type_(PRMType* t);
+      PRMType* type_() override;
+      void     type_(PRMType* t) override;
 
       private:
       // ========================================================================

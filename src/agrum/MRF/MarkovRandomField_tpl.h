@@ -179,34 +179,32 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const DiscreteVariable&
-      MarkovRandomField< GUM_SCALAR >::variable(std::string_view name) const {
+  const DiscreteVariable& MarkovRandomField< GUM_SCALAR >::variable(std::string_view name) const {
     return variable(idFromName(name));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId           id,
-                                                                  std::string_view new_name) {
+  void MarkovRandomField< GUM_SCALAR >::changeVariableName(NodeId id, std::string_view new_name) {
     this->varMap_.changeName(id, new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::changeVariableName(std::string_view name,
-                                                                  std::string_view new_name) {
+                                                           std::string_view new_name) {
     changeVariableName(idFromName(name), new_name);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(std::string_view name,
-                                                                   std::string_view old_label,
-                                                                   std::string_view new_label) {
+                                                            std::string_view old_label,
+                                                            std::string_view new_label) {
     changeVariableLabel(idFromName(name), old_label, new_label);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::changeVariableLabel(NodeId           id,
-                                                                   std::string_view old_label,
-                                                                   std::string_view new_label) {
+                                                            std::string_view old_label,
+                                                            std::string_view new_label) {
     if (variable(id).varType() != VarType::LABELIZED) {
       GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.")
     }
@@ -253,7 +251,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId MarkovRandomField< GUM_SCALAR >::add(std::string_view fast_description,
-                                                     unsigned int     default_nbrmod) {
+                                              unsigned int     default_nbrmod) {
     auto v = fastVariable< GUM_SCALAR >(std::string{fast_description}, default_nbrmod);
     if (v->domainSize() < 2) GUM_ERROR(OperationNotAllowed, v->name() << " has a domain size <2")
     return add(*v);
@@ -361,8 +359,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const Tensor< GUM_SCALAR >&
-               MarkovRandomField< GUM_SCALAR >::addFactor(const NodeSet& vars) {
+  const Tensor< GUM_SCALAR >& MarkovRandomField< GUM_SCALAR >::addFactor(const NodeSet& vars) {
     // in order to be deterministic, the Tensor contains all the vars sorted by id.
     std::vector< NodeId > sorted_nodes;
     for (auto node: vars) {
@@ -386,7 +383,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >&
-               MarkovRandomField< GUM_SCALAR >::addFactor(const Tensor< GUM_SCALAR >& factor) {
+      MarkovRandomField< GUM_SCALAR >::addFactor(const Tensor< GUM_SCALAR >& factor) {
     std::vector< NodeId > sorted_nodes;
     for (Idx i = 0; i < factor.nbrDim(); i++) {
       sorted_nodes.push_back(idFromName(factor.variable(i).name()));
@@ -420,8 +417,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void
-      MarkovRandomField< GUM_SCALAR >::eraseFactor(const std::vector< std::string >& varnames) {
+  void MarkovRandomField< GUM_SCALAR >::eraseFactor(const std::vector< std::string >& varnames) {
     auto vars = this->nodeset(varnames);
     if (_factors_.exists(vars)) {
       _eraseFactor_(vars);

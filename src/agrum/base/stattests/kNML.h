@@ -129,7 +129,7 @@ namespace gum {
       [[nodiscard]] virtual KNML* clone() const;
 
       /// destructor
-      virtual ~KNML();
+      ~KNML() override;
 
       /// @}
 
@@ -161,13 +161,13 @@ namespace gum {
       double score(NodeId var1, NodeId var2, const std::vector< NodeId >& rhs_ids);
 
       /// clears all the data structures from memory, including the C_n^r cache
-      virtual void clear();
+      void clear() override;
 
       /// clears the current C_n^r cache
-      virtual void clearCache();
+      void clearCache() override;
 
       /// turn on/off the use of the C_n^r cache
-      virtual void useCache(const bool on_off);
+      void useCache(const bool on_off) override;
 
       /// @}
 

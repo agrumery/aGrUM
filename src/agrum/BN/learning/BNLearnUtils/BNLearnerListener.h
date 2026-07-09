@@ -87,13 +87,13 @@ namespace gum {
     class BNLearnerListener: public ApproximationSchemeListener {
       public:
       BNLearnerListener(IBNLearner* bnl, ApproximationScheme& sch);
-      virtual ~BNLearnerListener();
+      ~BNLearnerListener() override;
 
-      virtual void whenProgress(const void*  src,
-                                const Size   pourcent,
-                                const double error,
-                                const double time) final;
-      virtual void whenStop(const void* src, std::string_view message) override;
+      void whenProgress(const void*  src,
+                        const Size   pourcent,
+                        const double error,
+                        const double time) final;
+      void whenStop(const void* src, std::string_view message) override;
 
       private:
       BNLearnerListener(const BNLearnerListener& other);

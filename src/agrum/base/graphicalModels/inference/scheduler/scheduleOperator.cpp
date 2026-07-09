@@ -90,12 +90,7 @@ namespace gum {
   }
 
   /// copy operator
-  ScheduleOperator& ScheduleOperator::operator=(const ScheduleOperator& from) {
-    _op_type_           = from._op_type_;
-    _imply_deletion_    = from._imply_deletion_;
-    _result_persistent_ = from._result_persistent_;
-    return *this;
-  }
+  ScheduleOperator& ScheduleOperator::operator=(const ScheduleOperator& from) = default;
 
   /// move operator
   ScheduleOperator& ScheduleOperator::operator=(ScheduleOperator&& from) {

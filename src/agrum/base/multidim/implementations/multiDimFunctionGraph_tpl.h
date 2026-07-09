@@ -55,8 +55,7 @@ namespace gum {
 
   // Default constructor.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::MultiDimFunctionGraph(
-      bool isReduced) :
+  MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::MultiDimFunctionGraph(bool isReduced) :
       MultiDimImplementation< GUM_ELEMENT >(), _name_("MultiDimFunctionGraph"),
       _tableName_("NO NAME"), _model_(500, true), _manager_(nullptr), _root_(0),
       _internalNodeMap_(500, true, false), _var2NodeIdMap_(500, true, false),
@@ -82,8 +81,8 @@ namespace gum {
   // Copy Operator.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >&
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::operator=(
-             const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& from) {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::operator=(
+          const MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >& from) {
     copy(from);
     return *this;
   }
@@ -106,7 +105,7 @@ namespace gum {
 #endif
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   MultiDimContainer< GUM_ELEMENT >*
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::newFactory() const {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::newFactory() const {
     if (_isReduced_)
       return MultiDimFunctionGraph< GUM_ELEMENT,
                                     TerminalNodePolicy >::getReducedAndOrderedInstance();
@@ -133,8 +132,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  void
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::fill(const GUM_ELEMENT& d) const {
+  void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::fill(const GUM_ELEMENT& d) const {
     GUM_ERROR(OperationNotAllowed,
               "Function Graph can't be edited so "
               "easily.\nMultiDimFunctionGraphManager "
@@ -163,16 +161,14 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  void
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::add(const DiscreteVariable& v) {
+  void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::add(const DiscreteVariable& v) {
     if (!this->variablesSequence().exists(&v)) MultiDimImplementation< GUM_ELEMENT >::add(v);
 
     if (!this->_var2NodeIdMap_.exists(&v)) _var2NodeIdMap_.insert(&v, new LinkedList< NodeId >());
   }
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  void
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::erase(const DiscreteVariable& v) {
+  void MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::erase(const DiscreteVariable& v) {
     if (this->_var2NodeIdMap_.exists(&v)) {
       while (_var2NodeIdMap_[&v]->list() != nullptr) {
         manager()->eraseNode(_var2NodeIdMap_[&v]->list()->element());
@@ -460,7 +456,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   std::string
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::toDot(bool withBackArcs) const {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::toDot(bool withBackArcs) const {
     std::stringstream output;
     std::stringstream terminalStream;
     std::stringstream nonTerminalStream;
@@ -528,15 +524,14 @@ namespace gum {
 
   // Returns a const reference to the manager of this diagram
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  const NodeGraphPart&
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::model() const {
+  const NodeGraphPart& MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::model() const {
     return _model_;
   }
 
   // Returns a const reference to the manager of this diagram
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >*
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::manager() {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::manager() {
     if (_manager_ == nullptr) {
       if (_isReduced_)
         _manager_ = new MultiDimFunctionGraphROManager< GUM_ELEMENT, TerminalNodePolicy >(this);
@@ -587,8 +582,8 @@ namespace gum {
   // Returns the list of node associated to given variable
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   const LinkedList< NodeId >*
-               MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::varNodeListe(
-                   const DiscreteVariable* var) const {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::varNodeListe(
+          const DiscreteVariable* var) const {
     if (!this->variablesSequence().exists(var))
       GUM_ERROR(InvalidArgument,
                 "Var " << var->name() << " has not been inserted in the function graph")
@@ -597,8 +592,7 @@ namespace gum {
 
   // Returns the name of the table represented by this structure.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  const std::string&
-               MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::tableName() const {
+  const std::string& MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::tableName() const {
     return _tableName_;
   }
 
@@ -611,22 +605,21 @@ namespace gum {
 
   // Returns true if this MultiDimFunctionGraph is reduced and Ordered.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
-  bool
-      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::isReducedAndOrdered() const {
+  bool MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::isReducedAndOrdered() const {
     return _isReduced_;
   }
 
   // Returns a reduced and ordered instance.
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getReducedAndOrderedInstance() {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getReducedAndOrderedInstance() {
     return new MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >();
   }
 
   // Returns an arborescent instance
   template < typename GUM_ELEMENT, template < class > class TerminalNodePolicy >
   MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >*
-         MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getTreeInstance() {
+      MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >::getTreeInstance() {
     return new MultiDimFunctionGraph< GUM_ELEMENT, TerminalNodePolicy >(false);
   }
 

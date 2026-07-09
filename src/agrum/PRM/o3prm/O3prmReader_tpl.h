@@ -191,8 +191,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      O3prmReader< GUM_SCALAR >&
-             O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
+      O3prmReader< GUM_SCALAR >& O3prmReader< GUM_SCALAR >::operator=(const O3prmReader& src) {
         if (this == &src) { return *this; }
         _prm_        = src._prm_;
         _o3_prm_     = std::unique_ptr< O3PRM >(new O3PRM(*(src._o3_prm_)));
@@ -314,8 +313,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      Size O3prmReader< GUM_SCALAR >::readFile(std::string_view file,
-                                                      std::string_view module) {
+      Size O3prmReader< GUM_SCALAR >::readFile(std::string_view file, std::string_view module) {
         try {
           auto const lastSlashIndex = file.find_last_of('/');
 
@@ -350,8 +348,8 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3prmReader< GUM_SCALAR >::parseStream(std::istream& input,
-                                                         std::ostream& output,
-                                                         std::string   module) {
+                                                  std::ostream& output,
+                                                  std::string   module) {
         _readStream_(input, "", module);
 
         showElegantErrorsAndWarnings(output);
@@ -359,8 +357,8 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3prmReader< GUM_SCALAR >::_parseStream_(std::istream&      input,
-                                                           const std::string& filename,
-                                                           const std::string& module) {
+                                                    const std::string& filename,
+                                                    const std::string& module) {
         auto sBuff  = _readStream_(input);
         auto buffer = std::unique_ptr< unsigned char[] >(new unsigned char[sBuff.length() + 1]);
         strcpy((char*)buffer.get(), sBuff.c_str());
@@ -373,8 +371,7 @@ namespace gum {
       }
 
       template < GUM_Numeric GUM_SCALAR >
-      void O3prmReader< GUM_SCALAR >::_parseImport_(const O3Import&    i,
-                                                           const std::string& module) {
+      void O3prmReader< GUM_SCALAR >::_parseImport_(const O3Import& i, const std::string& module) {
         if (!_imported_.exists(i.import().label())) {
           _imported_.insert(i.import().label());
 
@@ -427,8 +424,8 @@ namespace gum {
 
       template < GUM_Numeric GUM_SCALAR >
       void O3prmReader< GUM_SCALAR >::_readStream_(std::istream&      input,
-                                                          const std::string& file,
-                                                          std::string        module) {
+                                                   const std::string& file,
+                                                   std::string        module) {
         if (module.size() > 0 && module.back() != '.') { module.append("."); }
 
         _parseStream_(input, file, module);

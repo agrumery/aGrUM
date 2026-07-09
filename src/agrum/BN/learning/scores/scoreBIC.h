@@ -125,10 +125,10 @@ namespace gum {
       ScoreBIC(ScoreBIC&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] virtual ScoreBIC* clone() const;
+      [[nodiscard]] ScoreBIC* clone() const override;
 
       /// destructor
-      virtual ~ScoreBIC();
+      ~ScoreBIC() override;
 
       /// @}
 
@@ -163,7 +163,7 @@ namespace gum {
        * you is meaningful or not.
        * @returns a non empty string if the prior is compatible with the
        * score.*/
-      virtual std::string isPriorCompatible() const final;
+      std::string isPriorCompatible() const final;
 
       /// returns the internal prior of the score
       /** Some scores include an prior. For instance, the K2 score is a BD
@@ -176,7 +176,7 @@ namespace gum {
        * note that, to be meaningful, a structure + parameter learning requires
        * that the same priors are taken into account during structure learning
        * and parameter learning. */
-      virtual const Prior& internalPrior() const final;
+      const Prior& internalPrior() const final;
 
       /// returns the size of the database w.r.t. a given idset
       /** Usually, the size of the database should be a constant. But some
@@ -207,7 +207,7 @@ namespace gum {
       /** @throws OperationNotAllowed is raised if the score does not support
        * calling method score such an idset (due to too many/too few variables
        * in the left hand side or the right hand side of the idset). */
-      virtual double score_(const IdCondSet& idset) final;
+      double score_(const IdCondSet& idset) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

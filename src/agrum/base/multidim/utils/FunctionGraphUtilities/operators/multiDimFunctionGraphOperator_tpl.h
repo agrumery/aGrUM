@@ -540,8 +540,7 @@ namespace gum {
   template < typename GUM_ELEMENT,
              template < typename > class FUNCTOR,
              template < typename > class TerminalNodePolicy >
-  Idx
-      MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::nbVarRetro() {
+  Idx MultiDimFunctionGraphOperator< GUM_ELEMENT, FUNCTOR, TerminalNodePolicy >::nbVarRetro() {
     return _nbVarRetro_;
   }
 

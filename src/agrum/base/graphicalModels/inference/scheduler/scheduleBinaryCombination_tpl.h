@@ -123,7 +123,7 @@ namespace gum {
   /// virtual copy constructor
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >*
-         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::clone() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::clone() const {
     return new ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >(*this);
   }
 
@@ -268,35 +268,35 @@ namespace gum {
   /// returns the first argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const ScheduleMultiDim< TABLE1 >&
-               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg1() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg1() const {
     return *_arg1_;
   }
 
   /// returns the second argument of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const ScheduleMultiDim< TABLE2 >&
-               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg2() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::arg2() const {
     return *_arg2_;
   }
 
   /// returns the sequence of arguments passed to the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const Sequence< const IScheduleMultiDim* >&
-               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::args() const {
     return _args_;
   }
 
   /// returns the result of the combination
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const ScheduleMultiDim< TABLE_RES >&
-               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::result() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::result() const {
     return *_result_;
   }
 
   /// returns the sequence of ScheduleMultidim output by the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   const Sequence< const IScheduleMultiDim* >&
-               ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::results() const {
     return _results_;
   }
 
@@ -375,7 +375,7 @@ namespace gum {
   /// returns the memory consumption used during the execution of the operator
   template < typename TABLE1, typename TABLE2, typename TABLE_RES >
   std::pair< double, double >
-         ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::memoryUsage() const {
+      ScheduleBinaryCombination< TABLE1, TABLE2, TABLE_RES >::memoryUsage() const {
     const double domsize
         = double(_result_->domainSize()) * _result_->sizeOfContent() + sizeof(TABLE_RES);
     return {domsize, domsize};

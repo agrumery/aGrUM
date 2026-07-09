@@ -166,8 +166,7 @@ namespace gum {
 
     /// sets a new graph from which the operator will compute possible changes
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setGraph(const UndiGraph& graph) {
+    void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setGraph(const UndiGraph& graph) {
       // sets the current graph
       graph_ = graph;
 
@@ -218,8 +217,7 @@ namespace gum {
 
     /// sets the maximum number of threads used to perform counts
     template < typename STRUCT_CONSTRAINT >
-    void
-        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
+    void GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >::setMaxNbThreads(Size nb) noexcept {
       if (nb == 0) nb = gum::getNumberOfThreads();
       _max_threads_number_ = nb;
     }

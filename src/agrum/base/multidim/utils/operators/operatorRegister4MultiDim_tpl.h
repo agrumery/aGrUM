@@ -100,8 +100,8 @@ namespace gum {
   // indicates whether a given entry exists in the register
   template < typename GUM_ELEMENT >
   bool OperatorRegister4MultiDim< GUM_ELEMENT >::exists(std::string_view operation_name,
-                                                               std::string_view type1,
-                                                               std::string_view type2) const {
+                                                        std::string_view type1,
+                                                        std::string_view type2) const {
     if (!_set_.exists(operation_name)) return false;
     const OperatorSet&                          theset = *(_set_[operation_name]);
     const std::pair< std::string, std::string > key(std::string{type1}, std::string{type2});
@@ -146,7 +146,7 @@ namespace gum {
 
   // Default constructor: creates an empty register
   template < typename GUM_ELEMENT >
-  OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorRegister4MultiDim() {}
+  OperatorRegister4MultiDim< GUM_ELEMENT >::OperatorRegister4MultiDim() = default;
 
   // destructor
   template < typename GUM_ELEMENT >

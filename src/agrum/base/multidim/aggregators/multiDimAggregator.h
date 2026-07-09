@@ -100,7 +100,7 @@ namespace gum {
       /**
        * Class destructor.
        */
-      virtual ~MultiDimAggregator();
+      ~MultiDimAggregator() override;
 
       /// @}
 

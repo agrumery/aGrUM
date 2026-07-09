@@ -46,20 +46,18 @@ namespace gum {
 
 
   template < class GUM_SCALAR >
-  GUM_SCALAR Maximizes< GUM_SCALAR >::operator()(const GUM_SCALAR& x,
-                                                        const GUM_SCALAR& y) const {
+  GUM_SCALAR Maximizes< GUM_SCALAR >::operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
     return x >= y ? x : y;
   }
 
   template < class GUM_SCALAR >
-  GUM_SCALAR Minimizes< GUM_SCALAR >::operator()(const GUM_SCALAR& x,
-                                                        const GUM_SCALAR& y) const {
+  GUM_SCALAR Minimizes< GUM_SCALAR >::operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
     return x <= y ? x : y;
   }
 
   template < class GUM_SCALAR >
   GUM_SCALAR ArgumentMaximises< GUM_SCALAR >::operator()(const GUM_SCALAR& x,
-                                                                const GUM_SCALAR& y) const {
+                                                         const GUM_SCALAR& y) const {
     return x.first >= y.first ? x : y;
   }
 

@@ -62,7 +62,7 @@ namespace gum {
 
   /// Copy Constructor
   INLINE
-  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) : Variable(from) {}
+  IContinuousVariable::IContinuousVariable(const IContinuousVariable& from) = default;
 
   /// move constructor
   INLINE
@@ -71,13 +71,11 @@ namespace gum {
 
   /// destructor
   INLINE
-  IContinuousVariable::~IContinuousVariable() {}
+  IContinuousVariable::~IContinuousVariable() = default;
 
   /// copy operator
-  INLINE IContinuousVariable& IContinuousVariable::operator=(const IContinuousVariable& from) {
-    Variable::operator=(from);
-    return *this;
-  }
+  INLINE IContinuousVariable& IContinuousVariable::operator=(const IContinuousVariable& from)
+      = default;
 
   /// move operator
   INLINE IContinuousVariable& IContinuousVariable::operator=(IContinuousVariable&& from) {

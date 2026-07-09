@@ -103,7 +103,6 @@ namespace gum {
       return *this;
     }
 
-
     bool
         StructuralConstraintMandatoryArcs::checkModificationAlone(const GraphChange& change) const {
       switch (change.type()) {
@@ -130,8 +129,7 @@ namespace gum {
       }
     }
 
-    bool
-        StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
+    bool StructuralConstraintMandatoryArcs::isAlwaysInvalidAlone(const GraphChange& change) const {
       switch (change.type()) {
         case GraphChangeType::ARC_ADDITION : return false;
 

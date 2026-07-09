@@ -94,10 +94,7 @@ namespace gum {
   }
 
   /// copy operator
-  INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(const IScheduleMultiDim& from) {
-    id_ = from.id_;
-    return *this;
-  }
+  INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(const IScheduleMultiDim& from) = default;
 
   /// move operator
   INLINE IScheduleMultiDim& IScheduleMultiDim::operator=(IScheduleMultiDim&& from) {

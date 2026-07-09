@@ -176,7 +176,7 @@ namespace gum {
     MixedGraph(MixedGraph&& g);
 
     /// destructor
-    virtual ~MixedGraph();
+    ~MixedGraph() override;
 
     /// @}
 

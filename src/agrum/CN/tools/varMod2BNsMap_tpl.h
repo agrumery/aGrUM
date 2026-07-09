@@ -231,8 +231,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed,
                   "No CredalNet associated to me ! Can't get FullBNOptsFromKey : " << key);
 
-      if (!myVarHashs_.exists(key))
-        return std::vector< std::vector< std::vector< std::vector< bool > > > >();
+      if (!myVarHashs_.exists(key)) return {};
 
       std::list< Size >& netsHash = myVarHashs_[key];   //.at(key);
 

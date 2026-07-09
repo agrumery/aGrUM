@@ -142,7 +142,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimBijArray< GUM_ELEMENT >::set(const Instantiation& i,
-                                                   const GUM_ELEMENT&   value) const {
+                                            const GUM_ELEMENT&   value) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
@@ -152,8 +152,7 @@ namespace gum {
   }
 
   template < typename GUM_ELEMENT >
-  void
-      MultiDimBijArray< GUM_ELEMENT >::populate(std::initializer_list< GUM_ELEMENT > l) const {
+  void MultiDimBijArray< GUM_ELEMENT >::populate(std::initializer_list< GUM_ELEMENT > l) const {
     GUM_ERROR(OperationNotAllowed, "MultiDimBijArray<GUM_ELEMENT> are read only.")
   }
 
@@ -164,7 +163,7 @@ namespace gum {
 
   template < typename GUM_ELEMENT >
   void MultiDimBijArray< GUM_ELEMENT >::replace_(const DiscreteVariable* x,
-                                                        const DiscreteVariable* y) {
+                                                 const DiscreteVariable* y) {
     MultiDimImplementation< GUM_ELEMENT >::replace_(x, y);
   }
 

@@ -335,7 +335,6 @@ namespace gum {
     return stack.top().number;
   }
 
-
   bool FormulaPart::isLeftAssociative() const {
     switch (character) {
       case '+' :
@@ -502,11 +501,11 @@ namespace gum {
   FormulaPart FormulaPart::eval(const std::vector< FormulaPart >& args) const {
     switch (type) {
       case OPERATOR : {
-        return FormulaPart(token_type::NUMBER, _operator_eval_(args));
+        return {token_type::NUMBER, _operator_eval_(args)};
       }
 
       case FUNCTION : {
-        return FormulaPart(token_type::NUMBER, _function_eval_(args));
+        return {token_type::NUMBER, _function_eval_(args)};
       }
 
       default : {

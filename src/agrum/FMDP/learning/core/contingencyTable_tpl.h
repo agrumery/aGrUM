@@ -133,45 +133,43 @@ namespace gum {
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::joint(GUM_ELEMENT_A valueA,
-                                                                     GUM_ELEMENT_B valueB) const {
+                                                              GUM_ELEMENT_B valueB) const {
     return _jointTable_.exists(std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB))
              ? _jointTable_[std::pair< GUM_ELEMENT_A, GUM_ELEMENT_B >(valueA, valueB)]
              : 0;
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
-  Idx
-      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAMarginal(GUM_ELEMENT_A valueA) const {
+  Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAMarginal(GUM_ELEMENT_A valueA) const {
     return _attrAMarginalTable_.exists(valueA) ? _attrAMarginalTable_[valueA] : 0;
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
-  Idx
-      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBMarginal(GUM_ELEMENT_B valueB) const {
+  Idx ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBMarginal(GUM_ELEMENT_B valueB) const {
     return _attrAMarginalTable_.exists(valueB) ? _attrAMarginalTable_[valueB] : 0;
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx >
-         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrABeginSafe() const {
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrABeginSafe() const {
     return _attrAMarginalTable_.cbeginSafe();
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   HashTableConstIteratorSafe< GUM_ELEMENT_A, Idx >
-         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAEndSafe() const {
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrAEndSafe() const {
     return _attrAMarginalTable_.cendSafe();
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx >
-         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBBeginSafe() const {
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBBeginSafe() const {
     return _attrBMarginalTable_.cbeginSafe();
   }
 
   template < typename GUM_ELEMENT_A, typename GUM_ELEMENT_B >
   HashTableConstIteratorSafe< GUM_ELEMENT_B, Idx >
-         ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBEndSafe() const {
+      ContingencyTable< GUM_ELEMENT_A, GUM_ELEMENT_B >::attrBEndSafe() const {
     return _attrBMarginalTable_.cendSafe();
   }
 

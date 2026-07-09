@@ -105,7 +105,7 @@ namespace gum {
       explicit ConstraintBasedLearning(int maxLog);
       ConstraintBasedLearning(const ConstraintBasedLearning&);
       ConstraintBasedLearning(ConstraintBasedLearning&&);
-      virtual ~ConstraintBasedLearning();
+      ~ConstraintBasedLearning() override;
 
       /// @}
 

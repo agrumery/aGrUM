@@ -471,14 +471,12 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  void
-      IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< true >) {
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< true >) {
     delete value_;
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  void
-      IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< false >) {}
+  void IncrementalGraphLearner< AttributeSelection, isScalar >::_clearValue_(Int2Type< false >) {}
 
   template < TESTNAME AttributeSelection, bool isScalar >
   void IncrementalGraphLearner< AttributeSelection, isScalar >::_assumeValue_(
@@ -545,15 +543,13 @@ namespace gum {
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  NodeId
-      IncrementalGraphLearner< AttributeSelection, isScalar >::nodeSon(NodeId ni,
-                                                                       Idx    modality) const {
+  NodeId IncrementalGraphLearner< AttributeSelection, isScalar >::nodeSon(NodeId ni,
+                                                                          Idx    modality) const {
     return this->nodeSonsMap_[ni][modality];
   }
 
   template < TESTNAME AttributeSelection, bool isScalar >
-  Idx
-      IncrementalGraphLearner< AttributeSelection, isScalar >::nodeNbObservation(NodeId ni) const {
+  Idx IncrementalGraphLearner< AttributeSelection, isScalar >::nodeNbObservation(NodeId ni) const {
     return this->nodeId2Database_[ni]->nbObservation();
   }
 

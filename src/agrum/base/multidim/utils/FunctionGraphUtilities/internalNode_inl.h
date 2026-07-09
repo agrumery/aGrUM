@@ -58,7 +58,7 @@ namespace gum {
   Parent::Parent(NodeId pi, Idx m) : parentId(pi), modality(m) {}
 
   INLINE
-  Parent::Parent(const Parent& src) : parentId(src.parentId), modality(src.modality) {}
+  Parent::Parent(const Parent& src) = default;
 
   INLINE
   void* Parent::operator new(size_t s) { return SmallObjectAllocator::instance().allocate(s); }
@@ -75,11 +75,7 @@ namespace gum {
   }
 
   INLINE
-  Parent& Parent::operator=(const Parent& src) {
-    this->parentId = src.parentId;
-    this->modality = src.modality;
-    return *this;
-  }
+  Parent& Parent::operator=(const Parent& src) = default;
 
   INLINE
   void* InternalNode::operator new(size_t s) {

@@ -113,7 +113,7 @@ namespace gum {
       [[nodiscard]] DBRowGeneratorIdentity* clone() const final;
 
       /// destructor
-      ~DBRowGeneratorIdentity();
+      ~DBRowGeneratorIdentity() override;
 
       /// @}
 
@@ -140,14 +140,14 @@ namespace gum {
       /// @{
 
       /// generates one output DBRow for each DBRow passed to method setInputRow
-      virtual const DBRow< DBTranslatedValue >& generate() final;
+      const DBRow< DBTranslatedValue >& generate() final;
 
       /// @}
 
 
       protected:
       /// computes the rows it will provide as output
-      virtual std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) final;
+      std::size_t computeRows_(const DBRow< DBTranslatedValue >& row) final;
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

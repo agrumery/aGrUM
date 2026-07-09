@@ -129,7 +129,7 @@ namespace gum {
      * created by its deletion
      * @throws UndefinedElement is raised if no triangulation has been assigned
      * to the DefaultJunctionTreeStrategy */
-    virtual const NodeProperty< NodeId >& createdCliques() final;
+    const NodeProperty< NodeId >& createdCliques() final;
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process
@@ -137,7 +137,7 @@ namespace gum {
      * created clique's id is looked for
      * @throws UndefinedElement is raised if no triangulation has been assigned
      * to the DefaultJunctionTreeStrategy */
-    virtual NodeId createdClique(const NodeId id) final;
+    NodeId createdClique(const NodeId id) final;
 
     /// resets the current junction tree strategy data structures
     void clear() final;

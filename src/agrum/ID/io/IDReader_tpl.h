@@ -63,7 +63,7 @@ namespace gum {
    */
   template < GUM_Numeric GUM_SCALAR >
   IDReader< GUM_SCALAR >::IDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
-                                          std::string_view                filePath) {
+                                   std::string_view                filePath) {
     GUM_CONSTRUCTOR(IDReader);
   }
 

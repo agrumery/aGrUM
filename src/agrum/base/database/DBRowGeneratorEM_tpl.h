@@ -229,7 +229,7 @@ namespace gum {
     /// computes the rows it will provide in output
     template < GUM_Numeric GUM_SCALAR >
     std::size_t
-           DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
+        DBRowGeneratorEM< GUM_SCALAR >::computeRows_(const DBRow< DBTranslatedValue >& row) {
       // check if there are unobserved values among the columns of interest.
       // If this is the case, save in _missing_cols_ all the columns with unobserved values
       bool        found_unobserved = false;

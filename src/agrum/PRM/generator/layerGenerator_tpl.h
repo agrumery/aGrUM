@@ -281,7 +281,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-        LayerGenerator< GUM_SCALAR >::LayerGenerator(const LayerGenerator< GUM_SCALAR >& source) :
+    LayerGenerator< GUM_SCALAR >::LayerGenerator(const LayerGenerator< GUM_SCALAR >& source) :
         _layers_(source._layers_), _domain_size_(source._domain_size_),
         _max_parents_(source._max_parents_) {
       GUM_CONS_CPY(LayerGenerator);
@@ -294,7 +294,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     LayerGenerator< GUM_SCALAR >&
-           LayerGenerator< GUM_SCALAR >::operator=(const LayerGenerator< GUM_SCALAR >& source) {
+        LayerGenerator< GUM_SCALAR >::operator=(const LayerGenerator< GUM_SCALAR >& source) {
       _layers_      = source._layers_;
       _domain_size_ = source._domain_size_;
       _max_parents_ = source._max_parents_;
@@ -329,13 +329,13 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
-           LayerGenerator< GUM_SCALAR >::getLayer() {
+        LayerGenerator< GUM_SCALAR >::getLayer() {
       return _layers_;
     }
 
     template < GUM_Numeric GUM_SCALAR >
     const std::vector< typename LayerGenerator< GUM_SCALAR >::LayerData >&
-                 LayerGenerator< GUM_SCALAR >::getLayer() const {
+        LayerGenerator< GUM_SCALAR >::getLayer() const {
       return _layers_;
     }
 

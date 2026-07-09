@@ -140,7 +140,7 @@ namespace gum {
     MultiDimCombinationDefault(const MultiDimCombinationDefault< TABLE >&);
 
     /// Destructor
-    virtual ~MultiDimCombinationDefault();
+    ~MultiDimCombinationDefault() override;
 
     /**
      * @brief virtual constructor
@@ -148,7 +148,7 @@ namespace gum {
      * @return A new fresh MultiDimCombinator with the same combination
      * function.
      */
-    [[nodiscard]] virtual MultiDimCombinationDefault< TABLE >* clone() const;
+    [[nodiscard]] MultiDimCombinationDefault< TABLE >* clone() const override;
 
     /// @}
     // ========================================================================

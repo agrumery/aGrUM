@@ -162,7 +162,6 @@ namespace gum {
       INLINE
       Size Pattern::sizeArcs() const { return DiGraph::sizeArcs(); }
 
-
       INLINE const NodeGraphPart& Pattern::nodes() const { return DiGraph::nodes(); }
 
       INLINE const ArcSet& Pattern::arcs() const { return DiGraph::arcs(); }

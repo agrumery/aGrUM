@@ -943,22 +943,22 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     std::string
-           StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMAttribute< GUM_SCALAR >* a) const {
+        StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
+                                                 const PRMAttribute< GUM_SCALAR >* a) const {
       return i->name() + _dot_ + a->safeName();
     }
 
     template < GUM_Numeric GUM_SCALAR >
     std::string
-           StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMAttribute< GUM_SCALAR >& a) const {
+        StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
+                                                 const PRMAttribute< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.safeName();
     }
 
     template < GUM_Numeric GUM_SCALAR >
     std::string
-           StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
-                                                    const PRMSlotChain< GUM_SCALAR >& a) const {
+        StructuredInference< GUM_SCALAR >::_str_(const PRMInstance< GUM_SCALAR >*  i,
+                                                 const PRMSlotChain< GUM_SCALAR >& a) const {
       return i->name() + _dot_ + a.lastElt().safeName();
     }
 

@@ -74,7 +74,7 @@ namespace gum {
       public:
       Exists(Idx value);
       Exists(const Exists< GUM_SCALAR >& from);
-      virtual ~Exists();
+      ~Exists() override;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -93,13 +93,13 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      [[nodiscard]] virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+      [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
-      virtual std::string aggregatorName() const;
+      std::string aggregatorName() const override;
 
       protected:
-      virtual Idx neutralElt_() const;
-      virtual Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
+      Idx neutralElt_() const override;
+      Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const override;
 
       private:
       Idx _value_;
