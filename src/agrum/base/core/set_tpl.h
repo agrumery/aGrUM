@@ -382,49 +382,49 @@ namespace gum {
 
   // the usual begin iterator to parse the set
   template < typename Key >
-  Set< Key >::iterator_safe Set< Key >::beginSafe() const {
+  typename Set< Key >::iterator_safe Set< Key >::beginSafe() const {
     return SetIteratorSafe< Key >{*this};
   }
 
   // the usual begin iterator to parse the set
   template < typename Key >
-  Set< Key >::const_iterator_safe Set< Key >::cbeginSafe() const {
+  typename Set< Key >::const_iterator_safe Set< Key >::cbeginSafe() const {
     return SetIteratorSafe< Key >{*this};
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
-  const Set< Key >::iterator_safe& Set< Key >::endSafe() noexcept {
+  const typename Set< Key >::iterator_safe& Set< Key >::endSafe() noexcept {
     return *(static_cast< const SetIteratorSafe< Key >* >(_Set_end_safe_));
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
-  const Set< Key >::const_iterator_safe& Set< Key >::cendSafe() noexcept {
+  const typename Set< Key >::const_iterator_safe& Set< Key >::cendSafe() noexcept {
     return *(static_cast< const SetIteratorSafe< Key >* >(_Set_end_safe_));
   }
 
   // the usual begin iterator to parse the set
   template < typename Key >
-  Set< Key >::iterator Set< Key >::begin() const {
+  typename Set< Key >::iterator Set< Key >::begin() const {
     return SetIterator< Key >{*this};
   }
 
   // the usual begin iterator to parse the set
   template < typename Key >
-  Set< Key >::const_iterator Set< Key >::cbegin() const {
+  typename Set< Key >::const_iterator Set< Key >::cbegin() const {
     return SetIterator< Key >{*this};
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
-  const Set< Key >::iterator& Set< Key >::end() noexcept {
+  const typename Set< Key >::iterator& Set< Key >::end() noexcept {
     return *(static_cast< const SetIterator< Key >* >(_Set_end_));
   }
 
   // the usual end iterator to parse the set
   template < typename Key >
-  const Set< Key >::const_iterator& Set< Key >::cend() noexcept {
+  const typename Set< Key >::const_iterator& Set< Key >::cend() noexcept {
     return *(static_cast< const SetIterator< Key >* >(_Set_end_));
   }
 
