@@ -376,9 +376,9 @@ class ActBuilderGuideline(ActBuilder):
 
 
 _GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
-  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader"}
+  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline"}
 )
-_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy"}
+_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy", "inline"}
 
 
 def _parse_checks(spec: str) -> frozenset[str]:
@@ -425,6 +425,7 @@ def guideline(
   run_tidy = "tidy" in active
   run_pyrefly = "pyrefly" in active
   run_pureheader = "pureheader" in active
+  run_inline = "inline" in active
 
   effective_correction = correction and not dry_run
   active_checks_label = checks if checks is not None else "default"
@@ -508,6 +509,12 @@ def guideline(
   else:
     notif("  (9-pureheader) pass")
 
+  if run_inline:
+    notif("  [[(10-inline) check for oversized functions in ]]*.h_inl[[ files (readability-function-size)]]")
+    nbrError += _aff_errors(_check_inline_size(details, dry_run), "oversized inline function")
+  else:
+    notif("  (10-inline) pass")
+
   return nbrError
 
 
@@ -586,6 +593,28 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -
 
 
 _TIDY_PROGRESS_RE = re.compile(r"^\[(\d+)/(\d+)\].*? (\S+\.cpp)$")
+
+
+def _run_tidy_cmd(cmd: str, details: bool) -> tuple[int, dict[str, int]]:
+  nbrError = 0
+  warnings_by_file: dict[str, int] = {}
+  proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT, text=True)
+  for line in proc.stdout:
+    line = line.rstrip()
+    m_prog = _TIDY_PROGRESS_RE.match(line)
+    m_warn = _TIDY_WARNING_RE.match(line)
+    if m_prog:
+      notif_oneline(f"[[{os.path.basename(m_prog.group(3))}]]")
+    elif m_warn:
+      nbrError += 1
+      if details:
+        fname = os.path.basename(m_warn.group(1))
+        warnings_by_file[fname] = warnings_by_file.get(fname, 0) + 1
+        notif(line)
+  proc.wait()
+  return nbrError, warnings_by_file
+
+
 _TIDY_WARNING_RE = re.compile(r"^(.+?):\d+:\d+: warning:")
 
 
@@ -607,23 +636,7 @@ def _check_clang_tidy(details: bool, correction: bool, dry_run: bool = False) ->
     notif(f"  {cmd}")
     return 0
 
-  nbrError = 0
-  warnings_by_file: dict[str, int] = {}
-
-  proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT, text=True)
-  for line in proc.stdout:
-    line = line.rstrip()
-    m_prog = _TIDY_PROGRESS_RE.match(line)
-    m_warn = _TIDY_WARNING_RE.match(line)
-    if m_prog:
-      notif_oneline(f"[[{os.path.basename(m_prog.group(3))}]]")
-    elif m_warn:
-      nbrError += 1
-      if details:
-        fname = os.path.basename(m_warn.group(1))
-        warnings_by_file[fname] = warnings_by_file.get(fname, 0) + 1
-        notif(line)
-  proc.wait()
+  nbrError, warnings_by_file = _run_tidy_cmd(cmd, details)
 
   if details:
     for fname, count in sorted(warnings_by_file.items()):
@@ -633,6 +646,37 @@ def _check_clang_tidy(details: bool, correction: bool, dry_run: bool = False) ->
 
   if nbrError == 0:
     notif("    clang-tidy: [[(✓)]]")
+
+  return nbrError
+
+
+def _check_inline_size(details: bool, dry_run: bool = False) -> int:
+  tool = cfg.run_clang_tidy
+  if tool is None:
+    warn("No [[run-clang-tidy]] tool found. Skipping inline check.")
+    return 0
+
+  build_dir = os.path.join("build", "aGrUM", cfg.buildPath["Release"])
+  if not os.path.isfile(os.path.join(build_dir, "compile_commands.json")):
+    warn(f"No [[compile_commands.json]] in {build_dir}. Run 'act lib release aGrUM' first.")
+    return 0
+
+  cmd = f"{tool} -config-file=.clang-tidy-inline -p {build_dir} 'src/agrum/(?!base/external)'"
+
+  if dry_run:
+    notif(f"  {cmd}")
+    return 0
+
+  nbrError, warnings_by_file = _run_tidy_cmd(cmd, details)
+
+  if details:
+    for fname, count in sorted(warnings_by_file.items()):
+      notif(f"  err [[{fname}]] ({count} warning{'s' if count > 1 else ''})")
+  elif nbrError > 0:
+    notif(f"  {nbrError} oversized inline function{'s' if nbrError > 1 else ''}")
+
+  if nbrError == 0:
+    notif("    inline size: [[(✓)]]")
 
   return nbrError
 

@@ -501,9 +501,9 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     "--check",
     help=(
       "act guideline: select checks using +/- syntax "
-      "(checks: cpp,python,header,coverage,deps,tidy,pyrefly,all). "
-      "Default: all checks except tidy (slow). "
-      "Examples: --check tidy  --check all  --check all-cpp  --check cpp+tidy"
+      "(checks: cpp,python,header,coverage,deps,tidy,pyrefly,pureheader,inline,all). "
+      "Default: all checks except tidy and inline (slow, require compile_commands.json). "
+      "Examples: --check tidy  --check all  --check all-cpp  --check inline+tidy"
     ),
     dest="guideline_check",
     default=None,
