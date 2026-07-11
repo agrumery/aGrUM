@@ -557,9 +557,10 @@ def showProba(p: pyagrum.Tensor, scale: float | None = None) -> None:
   scale: float
     the zoom factor
   """
-  _ = proba2histo(p, scale)
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
-  plt.show()
+  # plt.show() relies on the inline backend's display formatter, which can leave the cell's
+  # saved output with only the Figure's text repr instead of the image (requiring a re-run
+  # to see it again). Embedding the PNG as HTML makes the rendering immediate and self-contained.
+  IPython.display.display(IPython.display.HTML(getProba(p, scale)))
 
 
 def _getMatplotFig(fig: "mpl.figure.Figure") -> str:
@@ -609,9 +610,10 @@ def showProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1
   scale: float
     the zoom factor
   """
-  _ = probaMinMaxH(pmin, pmax, scale)
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
-  plt.show()
+  # plt.show() relies on the inline backend's display formatter, which can leave the cell's
+  # saved output with only the Figure's text repr instead of the image (requiring a re-run
+  # to see it again). Embedding the PNG as HTML makes the rendering immediate and self-contained.
+  IPython.display.display(IPython.display.HTML(getProbaMinMax(pmin, pmax, scale)))
 
 
 def getProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.0) -> str:
