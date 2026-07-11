@@ -83,18 +83,17 @@ namespace gum {
         std::chrono::system_clock::now());
     auto const currentdate = std::format("{:%Y-%m-%d %T}", time);
 
-    if (!_propertiesMap_.exists("software")) {
-#ifdef SWIG
-      _propertiesMap_.insert("software", "pyAgrum " GUM_VERSION);
-#else
-      _propertiesMap_.insert("software", "aGrUM " GUM_VERSION);
-#endif   // SWIG
-    }
+    const std::string currentSoftware = "aGrUM " GUM_VERSION;
+    if (auto software = _propertiesMap_.tryGet("software")) { *software = currentSoftware; }
+    else { _propertiesMap_.insert("software", currentSoftware); }
 
-    if (!_propertiesMap_.exists("creation")) { _propertiesMap_.insert("creation", currentdate); }
-    if (_propertiesMap_.exists("lastModification"))
-      _propertiesMap_["lastModification"] = currentdate;
-    else _propertiesMap_.insert("lastModification", currentdate);
+    if (!_propertiesMap_.tryGet("creation")) { _propertiesMap_.insert("creation", currentdate); }
+
+    if (auto lastModification = _propertiesMap_.tryGet("lastModification")) {
+      *lastModification = currentdate;
+    } else {
+      _propertiesMap_.insert("lastModification", currentdate);
+    }
   }
 
   NodeSet GraphicalModel::nodeset(const std::vector< std::string >& names) const {
