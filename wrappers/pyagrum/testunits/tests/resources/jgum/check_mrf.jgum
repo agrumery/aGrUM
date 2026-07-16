@@ -39,9 +39,9 @@
     }
   ],
   "properties": {
-    "name": "anonymousMRF",
-    "software": "aGrUM 2.3.2.9",
     "creation": "2026-06-13 16:44:45.635",
-    "lastModification": "2026-06-13 16:44:45.635"
+    "name": "anonymousMRF",
+    "software": "aGrUM 3.0.0",
+    "lastModification": "2026-07-16 16:30:46.097"
   }
 }

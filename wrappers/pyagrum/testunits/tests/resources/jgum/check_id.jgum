@@ -16,12 +16,12 @@
     "C": [
       "A"
     ],
-    "D": [
-      "C"
-    ],
     "U": [
       "D",
       "A"
+    ],
+    "D": [
+      "C"
     ]
   },
   "cpt": {
@@ -45,8 +45,9 @@
     ]
   },
   "properties": {
-    "software": "aGrUM 2.3.2.9",
     "creation": "2026-06-13 16:42:08.702",
-    "lastModification": "2026-06-13 16:42:08.702"
+    "software": "aGrUM 3.0.0",
+    "name": "check_id",
+    "lastModification": "2026-07-16 16:30:46.097"
   }
 }

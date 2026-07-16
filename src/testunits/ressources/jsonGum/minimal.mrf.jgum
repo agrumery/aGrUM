@@ -7,12 +7,35 @@
     "C[2]"
   ],
   "factors": [
-    {"vars": ["A", "B"], "values": [0.5, 0.2, 0.3, 0.8]},
-    {"vars": ["B", "C"], "values": [0.9, 0.1, 0.4, 0.6]}
+    {
+      "vars": [
+        "A",
+        "B"
+      ],
+      "values": [
+        0.5,
+        0.2,
+        0.3,
+        0.8
+      ]
+    },
+    {
+      "vars": [
+        "B",
+        "C"
+      ],
+      "values": [
+        0.9,
+        0.1,
+        0.4,
+        0.6
+      ]
+    }
   ],
   "properties": {
     "creation": "2025-01-01 00:00:00",
-    "lastModification": "2025-01-01 00:00:00",
-    "software": "aGrUM test"
+    "software": "aGrUM 3.0.0",
+    "name": "minimal.mrf",
+    "lastModification": "2026-07-16 16:30:46.030"
   }
 }

@@ -55,9 +55,9 @@
     ]
   },
   "properties": {
-    "name": "anonymousBN",
-    "software": "aGrUM 2.3.2.9",
     "creation": "2026-05-30 21:42:07.982",
-    "lastModification": "2026-05-30 21:42:07.982"
+    "name": "anonymousBN",
+    "software": "aGrUM 3.0.0",
+    "lastModification": "2026-07-16 16:30:46.097"
   }
 }

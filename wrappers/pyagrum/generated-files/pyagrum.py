@@ -32989,7 +32989,7 @@ _pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 #                                                                          #
 ############################################################################
 
-__version__ = '2.3.2.9'
+__version__ = '3.0.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
