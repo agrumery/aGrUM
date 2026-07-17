@@ -2,7 +2,7 @@
 wrappers/pyagrum/testunits/tests/resources/test_model.pkl
 wrappers/pyagrum/testunits/tests/resources/test_model.sem
 .options.*
-wrappers/pyagrum/sphinx/_build
+wrappers/pyagrum/doc/sphinx/_build/
 wrappers/pyagrum/generated-files/*.pyold.py
 *.patch
 *.pyc
@@ -52,6 +52,7 @@ wrappers/pyagrum/testunits/tests/resources/genere.csv
 wrappers/pyagrum/testunits/tests/resources/o3prm/BNO3PRMIO_file.o3prm
 wrappers/pyagrum/doc/sphinx/site.zip
 wrappers/pyagrum/doc/sphinx/site/
+wrappers/pyagrum/doc/sphinx/generated/
 
 
 
