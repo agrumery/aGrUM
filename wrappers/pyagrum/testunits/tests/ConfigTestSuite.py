@@ -73,7 +73,13 @@ class TestConfig(pyAgrumTestCase):
 
       with self.assertRaises(ValueError):
         gum.config["notebook", "tensor_with_colors"] = "maybe"
+      # boolean values are canonicalized to True/False whatever the accepted spelling used
       gum.config["notebook", "tensor_with_colors"] = "off"
+      self.assertEqual(gum.config["notebook", "tensor_with_colors"], "False")
+      gum.config["notebook", "tensor_with_colors"] = "YES"
+      self.assertEqual(gum.config["notebook", "tensor_with_colors"], "True")
+      gum.config["notebook", "tensor_with_colors"] = "1"
+      self.assertEqual(gum.config["notebook", "tensor_with_colors"], "True")
 
       with self.assertRaises(ValueError):
         gum.config["notebook", "graph_format"] = "jpg"

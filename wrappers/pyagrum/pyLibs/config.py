@@ -154,7 +154,9 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
   ``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation ``deprecated -> section.key``.
   Setting a value that does not respect the declared type raises a ``ValueError``. Accessing a deprecated key
   emits a ``DeprecationWarning`` and transparently uses the replacement key. While values are always stored as
-  strings, ``config.typed[section, key]`` gives the value converted according to the declared type.
+  strings, ``config.typed[section, key]`` gives the value converted according to the declared type. Boolean and
+  enumerated values are canonicalized when set: any accepted boolean spelling (``yes``/``on``/``1``/...) is
+  stored as ``True`` or ``False``, an enumerated value is stored with the casing declared in ``defaults.ini``.
 
   See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
 
@@ -270,14 +272,24 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       raise ValueError(f"'{s}' must be an int for '{section}.{option}'.")
     if meta.kind == "float" and not self._check_float(s):
       raise ValueError(f"'{s}' must be a float for '{section}.{option}'.")
-    if meta.kind == "bool" and not self._check_bool(s):
-      raise ValueError(f"'{s}' must be a boolean (False/True, 0/1, Off/On) for '{section}.{option}'.")
+    if meta.kind == "bool":
+      return self.__validatedBool(s, section, option)
     if meta.kind == "enum":
-      for v in meta.values:
-        if v.lower() == s.lower():
-          return v
-      raise ValueError(f"'{s}' must be one of {'|'.join(meta.values)} for '{section}.{option}'.")
+      return self.__validatedEnum(s, meta, section, option)
     return s
+
+  def __validatedBool(self, s, section, option):
+    """Canonicalize an accepted boolean spelling (yes/on/1/...) to 'True' or 'False'."""
+    if not self._check_bool(s):
+      raise ValueError(f"'{s}' must be a boolean (False/True, 0/1, Off/On, No/Yes) for '{section}.{option}'.")
+    return "True" if self._check_bool_true(s) else "False"
+
+  def __validatedEnum(self, s, meta, section, option):
+    """Canonicalize a value to the declared casing of its enumeration."""
+    for v in meta.values:
+      if v.lower() == s.lower():
+        return v
+    raise ValueError(f"'{s}' must be one of {'|'.join(meta.values)} for '{section}.{option}'.")
 
   def __deprecationMessage(self, section, option, meta):
     return (
