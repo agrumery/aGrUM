@@ -168,7 +168,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
   if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.config.asBool["core", "allow_modification_when_saving"]
+    allowModificationWhenSaving = pyagrum.config.typed["core", "allow_modification_when_saving"]
 
   extension = filename.split('.')[-1].upper()
 

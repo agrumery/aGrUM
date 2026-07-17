@@ -182,16 +182,16 @@ def LIMIDinference2dot(
   dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
   fmt = "." + pyagrum.config["influenceDiagram", "utility_visible_digits"] + "f"
-  if pyagrum.config.asBool["influenceDiagram", "utility_show_loss"]:
+  if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
     titut = f"mEL {-meu['mean']:{fmt}}"
   else:
     titut = f"MEU {meu['mean']:{fmt}}"
-  if pyagrum.config.asBool["influenceDiagram", "utility_show_stdev"]:
+  if pyagrum.config.typed["influenceDiagram", "utility_show_stdev"]:
     titut += f" (stdev={math.sqrt(meu['variance']):{fmt}})"
 
   slabel = f'label="{titut}'
 
-  if pyagrum.config.asBool["notebook", "show_inference_time"]:
+  if pyagrum.config.typed["notebook", "show_inference_time"]:
     slabel += f"\nInference in {1000 * (stopTime - startTime):6.2f}ms"
   dotstr += slabel + '";\n'
 
@@ -236,14 +236,14 @@ def LIMIDinference2dot(
     else:  # utility node
       mv = ie.meanVar(name)
 
-      if pyagrum.config.asBool["influenceDiagram", "utility_show_loss"]:
+      if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
         coef = -1
       else:
         coef = 1
 
-      fmt = f".{pyagrum.config.asInt['influenceDiagram', 'utility_visible_digits']}f"
+      fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
       labut = f"{name} : {coef * mv['mean']:{fmt}}"
-      if pyagrum.config.asBool["influenceDiagram", "utility_show_stdev"]:
+      if pyagrum.config.typed["influenceDiagram", "utility_show_stdev"]:
         labut += f" ({math.sqrt(mv['variance']):{fmt}})"
 
       dotstr += f' "{name}" [label="{labut}",{colorattribute},{styleattribute},shape={shape}]'

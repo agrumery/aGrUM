@@ -146,8 +146,8 @@ async def async_html2image(htmlcontent: str, filename: str):
     try:
       await page.screenshot(path=tmp_path, full_page=True, type="png")
       _, (x0, y0, x1, y1) = _white_bbox(tmp_path)
-      w = x1 - x0 + pyagrum.config.asInt["notebook", "export_pdf_margin_x"]
-      h = y1 - y0 + pyagrum.config.asInt["notebook", "export_pdf_margin_y"]
+      w = x1 - x0 + pyagrum.config.typed["notebook", "export_pdf_margin_x"]
+      h = y1 - y0 + pyagrum.config.typed["notebook", "export_pdf_margin_y"]
     finally:
       os.unlink(tmp_path)
     await page.add_style_tag(

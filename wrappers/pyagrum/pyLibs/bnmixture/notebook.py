@@ -286,7 +286,7 @@ def BNMixtureInference2dot(
 
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
-  if pyagrum.config.asBool["notebook", "show_inference_time"]:
+  if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
@@ -436,7 +436,7 @@ def BootstrapInference2dot(
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
   lab = ""
-  if pyagrum.config.asBool["notebook", "show_inference_time"]:
+  if pyagrum.config.typed["notebook", "show_inference_time"]:
     lab += f"Inference in {1000 * (stopTime - startTime):6.2f}ms"
 
   if quantiles:
@@ -907,7 +907,7 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
   ax = fig.add_subplot(111)
   ax.set_facecolor("white")
 
-  if pyagrum.config.asBool["notebook", "histogram_use_percent"]:
+  if pyagrum.config.typed["notebook", "histogram_use_percent"]:
     perc = 100
     suffix = "%"
   else:
@@ -935,7 +935,7 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
 
     for b in barmean:
       txt = (
-        f"{b.get_width() * perc:.{pyagrum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+        f"{b.get_width() * perc:.{pyagrum.config.typed['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       )
       # ax.text(0.5, b.get_y(), txt, ha='center', va='bottom')
       if b.get_width() >= 0.2 * (2 / scale):
@@ -956,7 +956,7 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
 
     for b in barmean:
       txt = (
-        f"{b.get_width() * perc:.{pyagrum.config.asInt['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+        f"{b.get_width() * perc:.{pyagrum.config.typed['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
       )
       if b.get_width() >= 0.2 * (2 / scale):
         ax.text(b.get_width(), b.get_y(), txt, ha="right", va="bottom", fontsize=10, color="white")

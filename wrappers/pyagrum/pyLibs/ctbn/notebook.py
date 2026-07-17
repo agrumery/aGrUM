@@ -186,7 +186,7 @@ def CTBNinference2dot(
 
   dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
 
-  if pyagrum.config.asBool["notebook", "show_inference_time"]:
+  if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()

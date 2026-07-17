@@ -103,7 +103,7 @@ class FlowLayout:
       display: inline-block;
       margin: 7px;
       padding : 3px;
-      border: {pyagrum.config.asInt["notebook", "flow_border_width"]}px solid {pyagrum.config["notebook", "flow_border_color"]};  
+      border: {pyagrum.config.typed["notebook", "flow_border_width"]}px solid {pyagrum.config["notebook", "flow_border_color"]};  
       valign:middle;
       background-color: {pyagrum.config["notebook", "flow_background_color"]};
       }}
@@ -1245,10 +1245,10 @@ def _reprTensor(
   r1, g1, b1 = gumcols.hex2rgb(pyagrum.config["notebook", "tensor_color_1"])
 
   if digits is None:
-    digits = pyagrum.config.asInt["notebook", "tensor_visible_digits"]
+    digits = pyagrum.config.typed["notebook", "tensor_visible_digits"]
 
   if withColors is None:
-    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
 
   with_fraction = pyagrum.config["notebook", "tensor_with_fraction"] == "True"
   if with_fraction:
@@ -1428,7 +1428,7 @@ def showTensor(
     the aliases for variables name in the table
   """
   if withColors is None:
-    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1461,7 +1461,7 @@ def getTensor(
     the html representation of the Tensor (as a string)
   """
   if withColors is None:
-    withColors = pyagrum.config.asBool["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1615,7 +1615,7 @@ def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
     the pydot.Dot representation of the junction tree
 
   """
-  if pyagrum.config.asBool["notebook", "junctiontree_with_names"]:
+  if pyagrum.config.typed["notebook", "junctiontree_with_names"]:
 
     def cliqlabels(c):
       labels = ",".join(sorted([model.variable(n).name() for n in jt.clique(c)]))

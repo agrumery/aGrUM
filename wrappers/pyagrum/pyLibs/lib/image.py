@@ -81,8 +81,8 @@ def export(obj: Any, filename: str | None = None, **kwargs) -> Any:
 
     pdf export with custom margin :
     ```
-    pyagrum.config.asInt["notebook", "export_pdf_margin_x"] = 40
-    pyagrum.config.asInt["notebook", "export_pdf_margin_y"] = 37
+    pyagrum.config.typed["notebook", "export_pdf_margin_x"] = 40
+    pyagrum.config.typed["notebook", "export_pdf_margin_y"] = 37
     ```
   """
   try:

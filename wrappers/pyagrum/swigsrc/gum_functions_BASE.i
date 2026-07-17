@@ -52,7 +52,7 @@ initRandom(0)
 
 def _update_config_core():
   # hook to control some parameters for core params
-  setNumberOfThreads(config.asInt['core', 'default_maxNumberOfThreads'])
+  setNumberOfThreads(config.typed['core', 'default_maxNumberOfThreads'])
 
 # configuration object
 from .config import PyAgrumConfiguration
