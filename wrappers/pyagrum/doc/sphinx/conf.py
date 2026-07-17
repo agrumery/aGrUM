@@ -21,7 +21,14 @@
 #
 # sys.path.insert(0,os.path.abspath('../../../../build/pyAgrum/release/wrappers/'))
 
+import os
+
 import pyagrum
+
+# generate the configuration reference (generated/config-reference.inc) from defaults.ini
+import gen_config_reference
+
+gen_config_reference.generate(os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated"))
 
 # The master toctree document.
 master_doc = "index"
