@@ -84,8 +84,11 @@ namespace gum {
     auto const currentdate = std::format("{:%Y-%m-%d %T}", time);
 
     const std::string currentSoftware = "aGrUM " GUM_VERSION;
-    if (auto software = _propertiesMap_.tryGet("software")) { *software = currentSoftware; }
-    else { _propertiesMap_.insert("software", currentSoftware); }
+    if (auto software = _propertiesMap_.tryGet("software")) {
+      *software = currentSoftware;
+    } else {
+      _propertiesMap_.insert("software", currentSoftware);
+    }
 
     if (!_propertiesMap_.tryGet("creation")) { _propertiesMap_.insert("creation", currentdate); }
 
