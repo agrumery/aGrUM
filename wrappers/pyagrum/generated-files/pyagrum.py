@@ -11228,7 +11228,7 @@ initRandom(0)
 
 def _update_config_core():
 # hook to control some parameters for core params
-  setNumberOfThreads(config.asInt['core', 'default_maxNumberOfThreads'])
+  setNumberOfThreads(config.typed['core', 'default_maxNumberOfThreads'])
 
 # configuration object
 from .config import PyAgrumConfiguration
@@ -15364,7 +15364,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_loadGUM(self, name, l, binary)
 
-    def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         r"""
 
         Save the BayesNet in a jgum (JSON) or bgum (binary/msgpack) file.
@@ -15385,7 +15385,7 @@ class BayesNet(IBayesNet):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.BayesNet_saveGUM(self, name, binary, indent)
+        return _pyagrum.BayesNet__saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
         r"""
@@ -15743,6 +15743,25 @@ class BayesNet(IBayesNet):
         self.__init__()
         self.loadGUMstring(state)
         return self
+
+    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+      """
+      Save the Bayesian network as a .jgum (text) or .bgum (binary) file.
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool
+        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+        compact output, N>=0 to pretty-print with N spaces. Defaults to
+        ``pyagrum.config["core","default_jgumIndent"]``.
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      self._saveGUM(name, binary, indent)
 
     def toFast(self, filename: str = None) -> str:
       """
@@ -29625,7 +29644,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
   if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.config.asBool["core", "allow_modification_when_saving"]
+    allowModificationWhenSaving = pyagrum.config.typed["core", "allow_modification_when_saving"]
 
   extension = filename.split('.')[-1].upper()
 
@@ -32186,7 +32205,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram_loadGUM(self, name, binary)
 
-    def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         r"""
 
         Save the InfluenceDiagram in a jgum (JSON) or bgum (binary/msgpack) file.
@@ -32207,7 +32226,7 @@ class InfluenceDiagram(DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.InfluenceDiagram_saveGUM(self, name, binary, indent)
+        return _pyagrum.InfluenceDiagram__saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
         r"""
@@ -32361,6 +32380,26 @@ class InfluenceDiagram(DAGmodel):
         self.__init__()
         self.loadGUMstring(state)
         return self
+
+
+    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+      """
+      Save the influence diagram as a .jgum (text) or .bgum (binary) file.
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool
+        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+        compact output, N>=0 to pretty-print with N spaces. Defaults to
+        ``pyagrum.config["core","default_jgumIndent"]``.
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      self._saveGUM(name, binary, indent)
 
 
     def toFast(self, filename: str = None) -> str:
@@ -34006,7 +34045,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField_loadGUM(self, name, binary)
 
-    def saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         r"""
 
         Save the MarkovRandomField in a jgum (JSON) or bgum (binary/msgpack) file.
@@ -34027,7 +34066,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.MarkovRandomField_saveGUM(self, name, binary, indent)
+        return _pyagrum.MarkovRandomField__saveGUM(self, name, binary, indent)
 
     def saveGUMstring(self, indent: int=2) -> str:
         r"""
@@ -34117,6 +34156,25 @@ class MarkovRandomField(IMarkovRandomField):
         self.__init__()
         self.loadGUMstring(state)
         return self
+
+    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+      """
+      Save the Markov random field as a .jgum (text) or .bgum (binary) file.
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool
+        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+        compact output, N>=0 to pretty-print with N spaces. Defaults to
+        ``pyagrum.config["core","default_jgumIndent"]``.
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      self._saveGUM(name, binary, indent)
 
     def toFast(self, filename: str = None) -> str:
       """

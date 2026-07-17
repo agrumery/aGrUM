@@ -59,6 +59,11 @@
 
 IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);
 
+// Renamed so the public saveGUM (added below in %pythoncode) can default indent to None and
+// fall back to pyagrum.config["core","default_jgumIndent"] -- a plain C++ int argument can't
+// have a None default, so the config lookup has to happen on the Python side.
+%rename(_saveGUM) gum::InfluenceDiagram::saveGUM;
+
 %extend gum::InfluenceDiagram {
   void loadGUM(std::string name, bool binary=false) {
     std::stringstream stream;
@@ -188,6 +193,26 @@ def __setstate__(self,state):
     self.__init__()
     self.loadGUMstring(state)
     return self
+
+
+def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+  """
+  Save the influence diagram as a .jgum (text) or .bgum (binary) file.
+
+  Parameters
+  ----------
+  name : str
+    the name of the file
+  binary : bool
+    if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+  indent : int, optional
+    JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+    compact output, N>=0 to pretty-print with N spaces. Defaults to
+    ``pyagrum.config["core","default_jgumIndent"]``.
+  """
+  if indent is None:
+    indent = pyagrum.config.typed["core", "default_jgumIndent"]
+  self._saveGUM(name, binary, indent)
 
 
 def toFast(self, filename: str = None) -> str:
