@@ -41,13 +41,7 @@
 option(USE_SWIG "use swig to generate bindings" ON)
 
 if (USE_SWIG)
-
-    find_package(SWIG 4.1)
-    if (SWIG_FOUND)
-        message(STATUS "** aGrUM notification : Swig 4.1 found")
-    else ()
-        message(STATUS "** aGrUM notification : Swig >4.1 not found : you cannot change *.i files !")
-    endif ()
+    find_package(SWIG 4.3)
 else ()
     message(STATUS "** aGrUM notification : Swig not used : you cannot change *.i files !")
 endif ()
