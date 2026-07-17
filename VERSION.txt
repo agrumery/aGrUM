@@ -1,4 +1,4 @@
 # update pyAgrum and run testss when changes are made
 set(AGRUM_VERSION_MAJOR "3")
 set(AGRUM_VERSION_MINOR "0")
-set(AGRUM_VERSION_PATCH "0")
+set(AGRUM_VERSION_PATCH "0.9")
