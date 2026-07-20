@@ -3,9 +3,10 @@
 ################################
 matplotlib
 matplotlib-inline
-pydot
+pydot>=2
 numpy>=1.7
 scikit-learn>=1.7
+
 #### optional requirements #####
 nbformat
 nbconvert
