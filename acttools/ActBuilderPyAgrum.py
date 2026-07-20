@@ -160,9 +160,9 @@ class ActBuilderPyAgrum(ActBuilder):
     line += cmake_compiler_flags(self.current)
 
     if self.current["threads"] == "omp":
-      line += " -DCMAKE_GUM_THREADS=omp"
+      line += " -DGUM_THREADS=omp"
     else:
-      line += " -DCMAKE_GUM_THREADS=stl"
+      line += " -DGUM_THREADS=stl"
 
     if self.current["profiling"]:
       line += " -DUSE_PROFILE=ON"

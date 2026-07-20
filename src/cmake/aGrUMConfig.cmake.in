@@ -30,7 +30,11 @@ set (AGRUM_VERSION_MAJOR "@AGRUM_VERSION_MAJOR@")
 set (AGRUM_VERSION_MINOR "@AGRUM_VERSION_MINOR@")
 set (AGRUM_VERSION_PATCH "@AGRUM_VERSION_PATCH@")
 
-find_package(OpenMP QUIET)
+if ("@GUM_THREADS@" MATCHES "stl")
+  find_dependency(Threads QUIET)
+elseif ("@GUM_THREADS@" MATCHES "omp")
+  find_dependency(OpenMP QUIET)
+endif ()
 
 # Our library dependencies (contains definitions for IMPORTED targets)
 foreach (MODULE @LIST_OF_MODULES@)
