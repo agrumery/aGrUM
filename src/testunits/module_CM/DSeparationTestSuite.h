@@ -54,8 +54,6 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CM/tools/separation.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  DSeparation
 #define GUM_CURRENT_MODULE CM
 

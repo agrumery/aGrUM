@@ -58,8 +58,6 @@
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/counterfactual.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  Counterfactual
 #define GUM_CURRENT_MODULE CM
 

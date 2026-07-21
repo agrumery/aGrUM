@@ -53,8 +53,6 @@
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  StructuredPlaner
 #define GUM_CURRENT_MODULE FMDP
 

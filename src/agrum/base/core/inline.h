@@ -58,6 +58,8 @@
 #ifndef GUM_INLINE_H
 #define GUM_INLINE_H
 
+#include <agrum/config.h>
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #  ifndef GUM_NO_INLINE

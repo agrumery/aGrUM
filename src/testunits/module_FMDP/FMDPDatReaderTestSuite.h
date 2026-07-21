@@ -59,8 +59,6 @@
 #include <agrum/FMDP/fmdpFactory.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  FMDPDatReader
 #define GUM_CURRENT_MODULE FMDP
 

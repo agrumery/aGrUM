@@ -58,8 +58,6 @@
 // ==========================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  MultiDimProjectors4FunctionGraph
 #define GUM_CURRENT_MODULE GUMBASE
 

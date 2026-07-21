@@ -48,8 +48,6 @@
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CausalModel
 #define GUM_CURRENT_MODULE CM
 

@@ -25,8 +25,6 @@
 
 #include <agrum/base/database/CSVParser.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CSVParser
 #define GUM_CURRENT_MODULE BN
 

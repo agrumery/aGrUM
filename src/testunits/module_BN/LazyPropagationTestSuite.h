@@ -57,8 +57,6 @@
 #include <testunits/gumtest/utils.h>
 
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  LazyPropagation
 #define GUM_CURRENT_MODULE BN
 

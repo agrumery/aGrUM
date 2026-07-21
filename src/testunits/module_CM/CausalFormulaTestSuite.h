@@ -50,8 +50,6 @@
 #include <agrum/CM/tools/causalFormula.h>
 #include <agrum/CM/tools/doCalculus.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CausalFormula
 #define GUM_CURRENT_MODULE CM
 

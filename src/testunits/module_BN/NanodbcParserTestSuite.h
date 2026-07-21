@@ -25,8 +25,6 @@
 
 #include <agrum/base/database/nanodbcParser.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  NanodbcParser
 #define GUM_CURRENT_MODULE BN
 

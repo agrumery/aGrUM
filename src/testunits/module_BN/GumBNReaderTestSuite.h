@@ -54,8 +54,6 @@
 
 using json = nlohmann::json;
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  GumBNReader
 #define GUM_CURRENT_MODULE BN
 

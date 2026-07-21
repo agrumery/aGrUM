@@ -48,8 +48,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  DBTranslator4IntegerVariable
 #define GUM_CURRENT_MODULE GUMBASE
 

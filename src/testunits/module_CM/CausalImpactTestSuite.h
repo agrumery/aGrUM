@@ -55,8 +55,6 @@
 
 #include <agrum/base/core/utils_string.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CausalImpact
 #define GUM_CURRENT_MODULE CM
 

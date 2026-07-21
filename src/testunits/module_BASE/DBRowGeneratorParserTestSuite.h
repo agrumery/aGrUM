@@ -33,8 +33,6 @@
 #include <ressources/include/evenDebugGenerator.h>
 #include <ressources/include/simpleDebugGenerator.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  DBRowGeneratorParser
 #define GUM_CURRENT_MODULE GUMBASE
 

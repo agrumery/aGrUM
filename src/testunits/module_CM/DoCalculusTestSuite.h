@@ -46,8 +46,6 @@
 #include <agrum/CM/tools/doAST.h>
 #include <agrum/CM/tools/doCalculus.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  DoCalculus
 #define GUM_CURRENT_MODULE CM
 

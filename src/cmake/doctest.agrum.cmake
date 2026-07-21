@@ -12,19 +12,28 @@ else ()
             ${CMAKE_CURRENT_SOURCE_DIR}/testunits/module_*/*TestSuite.h)
 endif ()
 
-# Generate a file that includes all test headers
-# This is necessary because doctest registers tests at compile time via macros
-set(TEST_INCLUDES_FILE "${AGRUM_BINARY_DIR}/gumTestIncludes.cpp")
-file(WRITE ${TEST_INCLUDES_FILE} "// Auto-generated file - includes all test headers\n")
-file(APPEND ${TEST_INCLUDES_FILE} "// Do not edit manually\n\n")
+# Generate one translation unit per test header instead of concatenating them
+# all into a single .cpp file. doctest registers tests at compile time via
+# macros that generate identifiers from __LINE__/__COUNTER__; those are only
+# guaranteed unique within a single translation unit, so a unity build risks
+# identifier collisions between unrelated test files that happen to share a
+# line number (observed with Clang >= 22, where doctest falls back to
+# __LINE__ instead of __COUNTER__). Compiling each header as its own .cpp
+# keeps every TU independent while still linking into a single gumTest binary.
+set(TEST_INCLUDES_DIR "${AGRUM_BINARY_DIR}/gumTestIncludes")
+file(MAKE_DIRECTORY ${TEST_INCLUDES_DIR})
+set(TEST_INCLUDES_FILES "")
 foreach (test_file ${AGRUM_TESTS})
-    file(APPEND ${TEST_INCLUDES_FILE} "#include <${test_file}>\n")
+    string(REPLACE "/" "_" test_stub_name "${test_file}")
+    set(test_stub_file "${TEST_INCLUDES_DIR}/${test_stub_name}.cpp")
+    file(WRITE ${test_stub_file} "// Auto-generated file - do not edit manually\n#include <${test_file}>\n")
+    list(APPEND TEST_INCLUDES_FILES ${test_stub_file})
 endforeach ()
 
-# Add the main.cpp and the generated includes file
+# Add the main.cpp and the generated per-test translation units
 add_executable(gumTest EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/testunits/gumtest/main.cpp
-    ${TEST_INCLUDES_FILE}
+    ${TEST_INCLUDES_FILES}
 )
 
 target_include_directories(gumTest PRIVATE

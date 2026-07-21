@@ -51,8 +51,6 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CM/doorCriteria.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  DoorCriteria
 #define GUM_CURRENT_MODULE CM
 

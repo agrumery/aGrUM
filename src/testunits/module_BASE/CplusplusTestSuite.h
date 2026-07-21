@@ -47,8 +47,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  CPlusPlus
 #define GUM_CURRENT_MODULE GUMBASE
 

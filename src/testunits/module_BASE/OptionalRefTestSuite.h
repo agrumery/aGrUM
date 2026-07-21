@@ -51,8 +51,6 @@
 #include <agrum/base/core/optional_ref.h>
 #include <type_traits>
 
-#undef GUM_CURRENT_SUITE
-#undef GUM_CURRENT_MODULE
 #define GUM_CURRENT_SUITE  OptionalRef
 #define GUM_CURRENT_MODULE GUMBASE
 
