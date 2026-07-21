@@ -123,24 +123,6 @@ Coco/R itself) does not fall under the GNU General Public License.
 #  define MIN_BUFFER_LENGTH 1024
 #  define MAX_BUFFER_LENGTH COCO_LARGE_BUFFER_SIZE
 
-// MappedBuffer system headers — must be included outside any namespace to avoid
-// polluting gum:: with syscall() and related POSIX symbols (GCC 14 RHEL issue).
-#  if defined(_WIN32)
-#    ifndef NOGDI
-#      define NOGDI
-#      include <windows.h>
-#      undef NOGDI
-#    else
-#      include <windows.h>
-#    endif
-#  else
-#    include <fcntl.h>
-#    include <unistd.h>
-
-#    include <sys/mman.h>
-#    include <sys/stat.h>
-#  endif
-
 namespace gum {
 
   /// string handling, wide character
@@ -229,9 +211,8 @@ namespace gum {
   // Buffer - Abstract base class for input buffering
   // ==========================================================================
   // Hybrid I/O strategy based on file size:
-  // - Small files (< 2MB): InMemoryBuffer - entire file loaded at once
-  // - Medium files (2-64MB): StreamBuffer - large buffer with chunked reading
-  // - Large files (>= 64MB): MappedBuffer - memory-mapped I/O
+  // Concrete buffer classes (InMemoryBuffer, StreamBuffer, MappedBuffer) are
+  // declared in an anonymous namespace in common.cpp (internal linkage).
   // ==========================================================================
   class Buffer {
     protected:
@@ -262,100 +243,7 @@ namespace gum {
     int GetFileLen() const { return fileLen_; }
   };
 
-  // ==========================================================================
-  // InMemoryBuffer - For small files (< COCO_SMALL_FILE_THRESHOLD)
-  // ==========================================================================
-  // Loads entire file into memory at once. Fastest for small files.
-  class InMemoryBuffer: public Buffer {
-    private:
-    unsigned char* buf_;
-    bool           ownsData_;
 
-    public:
-    InMemoryBuffer(const unsigned char* data, int len, bool copy = true);
-    InMemoryBuffer(FILE* s);
-    ~InMemoryBuffer() override;
-
-    void Close() override {}
-
-    int Read() override { return (bufPos_ < fileLen_) ? buf_[bufPos_++] : EoF; }
-
-    int Peek() override { return (bufPos_ < fileLen_) ? buf_[bufPos_] : EoF; }
-
-    wchar_t* GetString(int beg, int end) override;
-
-    int GetPos() override { return bufPos_; }
-
-    void SetPos(int value) override {
-      bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
-    }
-  };
-
-  // ==========================================================================
-  // StreamBuffer - For medium files (COCO_SMALL_FILE_THRESHOLD to COCO_MMAP_FILE_THRESHOLD)
-  // ==========================================================================
-  // Uses a large buffer with chunked reading from file stream.
-  class StreamBuffer: public Buffer {
-    private:
-    unsigned char* buf_;
-    int            bufCapacity_;
-    int            bufStart_;   // position of first byte in buffer relative to input stream
-    int            bufLen_;     // length of valid data in buffer
-    FILE*          stream_;
-    bool           isUserStream_;
-
-    int  ReadNextStreamChunk();
-    bool CanSeek();
-
-    public:
-    StreamBuffer(FILE* s, bool isUserStream);
-    StreamBuffer(StreamBuffer* b);   // for UTF8Buffer wrapping
-    ~StreamBuffer() override;
-
-    void     Close() override;
-    int      Read() override;
-    int      Peek() override;
-    wchar_t* GetString(int beg, int end) override;
-
-    int GetPos() override { return bufPos_ + bufStart_; }
-
-    void SetPos(int value) override;
-  };
-
-  // ==========================================================================
-  // MappedBuffer - For large files (>= COCO_MMAP_FILE_THRESHOLD)
-  // ==========================================================================
-  // Uses memory-mapped I/O for efficient access to very large files.
-  // (System headers for mmap/fcntl/unistd are included above, outside namespace gum.)
-
-  class MappedBuffer: public Buffer {
-    private:
-    unsigned char* mappedData_;
-#  if defined(_WIN32)
-    HANDLE fileHandle_;
-    HANDLE mappingHandle_;
-#  else
-    int fd_;
-#  endif
-
-    public:
-    explicit MappedBuffer(const char* fileName);
-    ~MappedBuffer() override;
-
-    void Close() override;
-
-    int Read() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_++] : EoF; }
-
-    int Peek() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_] : EoF; }
-
-    wchar_t* GetString(int beg, int end) override;
-
-    int GetPos() override { return bufPos_; }
-
-    void SetPos(int value) override {
-      bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
-    }
-  };
 
   // ==========================================================================
   // UTF8Buffer - Wrapper for UTF-8 decoding (works with any buffer type)
