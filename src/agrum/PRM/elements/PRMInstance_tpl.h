@@ -329,7 +329,7 @@ namespace gum {
     void PRMInstance< GUM_SCALAR >::_addReferingInstance_(PRMSlotChain< GUM_SCALAR >* sc,
                                                           PRMInstance< GUM_SCALAR >*  i) {
       NodeId      id   = i->get(sc->lastElt().safeName()).id();
-      std::string name = sc->lastElt().safeName();
+      std::string name = sc->name();
 
       auto p_rm = i->_referenceMap_.tryGet(id);
       if (!p_rm) {
@@ -338,7 +338,7 @@ namespace gum {
         p_rm = i->_referenceMap_.tryGet(id);
       }
       (*p_rm)->insert(this);
-      (*i->_referingAttr_.tryGet(id))->push_back(std::make_pair(this, sc->lastElt().safeName()));
+      (*i->_referingAttr_.tryGet(id))->push_back(std::make_pair(this, name));
     }
 
     template < GUM_Numeric GUM_SCALAR >
