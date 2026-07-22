@@ -48,6 +48,7 @@ import pyagrum
 import random
 
 from .GaussianVariable import GaussianVariable
+from .canonicalForm import CanonicalForm
 
 import pyagrum.lib.bn_vs_bn as gcm
 
@@ -633,7 +634,7 @@ class CLG:
     cmp = gcm.GraphicalBNComparator(self.asDiscreteBN(), other.asDiscreteBN())
     return cmp.scores()["fscore"]
 
-  def _build_canonical_forms(self) -> dict[int, "CanonicalForm"]:
+  def _build_canonical_forms(self) -> dict[int, CanonicalForm]:
     from .canonicalForm import CanonicalForm
 
     cf_dict = {}
