@@ -108,18 +108,18 @@ namespace gum_tests {
     gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
     GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
     // Checking existing nodes
-    CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
-    CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
-    CHECK(ig->graph().existsNode(ig->id(m.get("p"))));
-    CHECK(ig->graph().existsNode(ig->id(m.get("c"))));
-    CHECK(ig->graph().existsNode(ig->id(m.get("e"))));
-    CHECK_EQ(ig->graph().size(), static_cast< gum::Size >(5));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("pow"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("r"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("p"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("c"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("e"))));
+    CHECK_EQ(ig->internalGraph().size(), static_cast< gum::Size >(5));
     // Checking existing edges
-    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("p"))));
-    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("c"))));
-    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))));
-    CHECK(ig->graph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))));
-    CHECK_EQ(ig->graph().sizeEdges(), static_cast< gum::Size >(4));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("p"))));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("c"))));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))));
+    CHECK_EQ(ig->internalGraph().sizeEdges(), static_cast< gum::Size >(4));
     GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
   }
 
@@ -162,65 +162,65 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
     // Checking existing nodes
     int node_count = 0;
-    CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
-    CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("pow"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("r"))));
     node_count += 2;
 
     for (int i = 0; i < 2; ++i, ++node_count) {
-      CHECK(ig->graph().existsNode(ig->id(m.get(getPrinter(i)))));
+      CHECK(ig->internalGraph().existsNode(ig->id(m.get(getPrinter(i)))));
     }
 
-    CHECK(ig->graph().existsNode(ig->id(m.get("another_printer"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("another_printer"))));
 
     ++node_count;
 
     for (int i = 0; i < 4; ++i, ++node_count) {
-      CHECK(ig->graph().existsNode(ig->id(m.get(getComputer(i)))));
+      CHECK(ig->internalGraph().existsNode(ig->id(m.get(getComputer(i)))));
     }
 
-    CHECK(ig->graph().existsNode(ig->id(m.get("another_computer"))));
+    CHECK(ig->internalGraph().existsNode(ig->id(m.get("another_computer"))));
 
     ++node_count;
-    CHECK_EQ(ig->graph().size(), (gum::Size)node_count);
+    CHECK_EQ(ig->internalGraph().size(), (gum::Size)node_count);
     // Checking existing edges from pow
     int edge_count = 0;
 
     for (int i = 0; i < 2; ++i, ++edge_count) {
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getPrinter(i)))));
+      CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getPrinter(i)))));
     }
 
-    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))));
 
     ++edge_count;
 
     for (int i = 0; i < 4; ++i, ++edge_count) {
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getComputer(i)))));
+      CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getComputer(i)))));
     }
 
-    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))));
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))));
 
     ++edge_count;
     // Checking existing edges from printers
 
     for (int i = 0; i < 2; ++i, ++edge_count) {
       for (int j = 0; j < 4; ++j, ++edge_count) {
-        CHECK(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
+        CHECK(ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
       }
 
       CHECK(
-          ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
+          ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
     }
 
     for (int i = 0; i < 4; ++i, ++edge_count) {
       CHECK(
-          ig->graph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
+          ig->internalGraph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
     }
 
-    CHECK(ig->graph().existsEdge(ig->id(m.get("another_printer")),
+    CHECK(ig->internalGraph().existsEdge(ig->id(m.get("another_printer")),
                                  ig->id(m.get("another_computer"))));
 
     ++edge_count;
-    CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+    CHECK_EQ(ig->internalGraph().sizeEdges(), (gum::Size)edge_count);
     GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
   }
 
@@ -254,7 +254,7 @@ namespace gum_tests {
         (ig->size(ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l))
         == (static_cast< gum::Size >(15)));
     edge_count += 15;
-    CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+    CHECK_EQ(ig->internalGraph().sizeEdges(), (gum::Size)edge_count);
     GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
   }
 

@@ -88,9 +88,9 @@ namespace gum_tests {
   GUM_TEST(InterfaceGraph) {
     try {
       _local_setUp();
-      CHECK((_ig_->graph().size())
+      CHECK((_ig_->internalGraph().size())
             == (static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4));
-      CHECK((_ig_->graph().sizeEdges())
+      CHECK((_ig_->internalGraph().sizeEdges())
             == ((gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2));
       _local_tearDown();
     } catch (gum::Exception& e) { GUM_SHOWERROR(e); }

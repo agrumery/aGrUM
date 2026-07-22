@@ -98,7 +98,7 @@ namespace gum_tests {
           }
         }
 
-      } catch (gum::Exception&) { TS_ASSERT(false) }
+      } catch (gum::Exception&) { CHECK(false); }
     }
 
     ~O3SystemTestSuite() {

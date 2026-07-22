@@ -485,7 +485,7 @@ namespace gum_tests {
     // Act
     CHECK_NOTHROW(c.setInputNode(*a, true));
     // Assert
-    CHECK(after = c.isInputNode(*a));
+    after = c.isInputNode(*a);
     CHECK_NE(before, after);
     CHECK(after);
   }
@@ -512,7 +512,7 @@ namespace gum_tests {
     // Act
     CHECK_NOTHROW(c.setOutputNode(*a, true));
     // Assert
-    CHECK(after = c.isOutputNode(*a));
+    after = c.isOutputNode(*a);
     CHECK_NE(before, after);
     CHECK(after);
   }
