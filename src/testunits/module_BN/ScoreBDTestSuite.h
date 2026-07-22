@@ -59,12 +59,13 @@ namespace gum_tests {
     gum::GammaLog2 _gammalog2_;
     bool           _gum_destructor_increased_{false};
 
-    double _score_(const std::vector< double >& N_ijk, const std::vector< double >& N_ij) const {
+    [[nodiscard]] double _score_(const std::vector< double >& N_ijk,
+                                 const std::vector< double >& N_ij) const {
       double score = 0.0;
 
       if (!N_ij.empty()) {
-        const double ri = double(N_ijk.size() / N_ij.size());
-        score           = N_ij.size() * _gammalog2_(ri);
+        const auto ri = static_cast< double >(N_ijk.size() / N_ij.size());
+        score         = N_ij.size() * _gammalog2_(ri);
 
         for (const auto n_ij: N_ij) {
           score -= _gammalog2_(n_ij + ri);
@@ -73,9 +74,9 @@ namespace gum_tests {
           score += _gammalog2_(n_ijk + 1);
         }
       } else {
-        const double ri = double(N_ijk.size());
-        score           = _gammalog2_(ri);
-        double N        = 0;
+        const auto ri = static_cast< double >(N_ijk.size());
+        score         = _gammalog2_(ri);
+        double N      = 0;
         for (const auto n_ijk: N_ijk) {
           score += _gammalog2_(n_ijk + 1);
           N += n_ijk;
@@ -107,7 +108,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = static_cast< std::size_t >(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }
@@ -120,16 +121,21 @@ namespace gum_tests {
       std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
       std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
       std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
+      for (int i = 0; i < 1000; ++i) {
         database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
+      }
+      for (int i = 0; i < 50; ++i) {
         database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
+      }
+      for (int i = 0; i < 200; ++i) {
         database.insertRow(row4);
+      }
 
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
@@ -235,7 +241,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = static_cast< std::size_t >(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }
@@ -248,16 +254,21 @@ namespace gum_tests {
       std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
       std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
       std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
+      for (int i = 0; i < 1000; ++i) {
         database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
+      }
+      for (int i = 0; i < 50; ++i) {
         database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
+      }
+      for (int i = 0; i < 200; ++i) {
         database.insertRow(row4);
+      }
 
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
@@ -270,12 +281,12 @@ namespace gum_tests {
       gum::NodeId                                node3 = 3;
       gum::NodeId                                node4 = 4;
       gum::NodeId                                node5 = 5;
-      nodeId2columns.insert(node0, std::size_t(4));
-      nodeId2columns.insert(node1, std::size_t(3));
-      nodeId2columns.insert(node2, std::size_t(0));
-      nodeId2columns.insert(node3, std::size_t(2));
-      nodeId2columns.insert(node4, std::size_t(5));
-      nodeId2columns.insert(node5, std::size_t(1));
+      nodeId2columns.insert(node0, static_cast< std::size_t >(4));
+      nodeId2columns.insert(node1, static_cast< std::size_t >(3));
+      nodeId2columns.insert(node2, static_cast< std::size_t >(0));
+      nodeId2columns.insert(node3, static_cast< std::size_t >(2));
+      nodeId2columns.insert(node4, static_cast< std::size_t >(5));
+      nodeId2columns.insert(node5, static_cast< std::size_t >(1));
 
       gum::learning::SmoothingPrior prior(database, nodeId2columns);
       gum::learning::ScoreBD        score(parser, prior, nodeId2columns);
@@ -376,7 +387,7 @@ namespace gum_tests {
         gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
         std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        for (auto i = static_cast< std::size_t >(0); i < names.size(); ++i) {
           translator.setVariableName(names[i]);
           trans_set.insertTranslator(translator, i);
         }
@@ -389,16 +400,21 @@ namespace gum_tests {
       std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
       std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
       std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
+      for (int i = 0; i < 1000; ++i) {
         database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
+      }
+      for (int i = 0; i < 50; ++i) {
         database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
+      }
+      for (int i = 0; i < 75; ++i) {
         database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
+      }
+      for (int i = 0; i < 200; ++i) {
         database.insertRow(row4);
+      }
 
       // create the parser
       gum::learning::DBRowGeneratorSet    genset;
