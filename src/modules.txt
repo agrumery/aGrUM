@@ -5,6 +5,7 @@
 set(MODULES)
 list(APPEND MODULES "BASE") # tools
 list(APPEND MODULES "BN") # Bayesian Networks
+list(APPEND MODULES "PRM") # Probabilistic Relational Models
 list(APPEND MODULES "MRF") # Markov Random Fields
 list(APPEND MODULES "CN") # Credal Networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
@@ -14,6 +15,7 @@ list(APPEND MODULES "CM") # Causal Model
 # list of required modules
 set(BASE_DEPS)
 set(BN_DEPS "BASE")
+set(PRM_DEPS "BN")
 set(MRF_DEPS "BN")
 set(CN_DEPS "BN")
 set(FMDP_DEPS "BASE")
@@ -22,7 +24,8 @@ set(CM_DEPS "BN")
 
 # list of all folders by module
 set(BASE_DIRS "base")
-set(BN_DIRS "BN" "BN/learning" "PRM")
+set(BN_DIRS "BN" "BN/learning")
+set(PRM_DIRS "PRM")
 set(MRF_DIRS "MRF")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
