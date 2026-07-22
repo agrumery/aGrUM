@@ -72,6 +72,12 @@ class GraphicalBNComparator:
     a BN or a filename for reference
   bn2 : str or pyagrum.BayesNet
     another BN or antoher filename for comparison
+
+  See Also
+  --------
+  pyagrum.StructuralMetrics
+    the lower-level C++ class computing precision, recall, F-score, SHD and SID,
+    used internally by :meth:`skeletonScores`, :meth:`scores` and :meth:`hamming`.
   """
 
   def __init__(self, bn1: str | pyagrum.BayesNet, bn2: str | pyagrum.BayesNet, delta=1e-6):

@@ -16,5 +16,6 @@ with Bayesian networks.
   BNToolsInformationTheory
   BNToolsMeekRules
   BNToolsCompar
+  BNToolsStructuralMetrics
   BNToolsExplain
   BNToolsFragment
