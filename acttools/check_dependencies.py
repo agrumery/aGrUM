@@ -148,7 +148,6 @@ def draw_gum_dependencies(deps: dict[str, list[str]]):
     "PRM": ("set38", 2),
     "MRF": ("set38", 3),
     "BN": ("set38", 4),
-    "learning": ("set38", 6),
     "FMDP": ("set38", 7),
     "ID": ("set38", 8),
     "CM": ("set38", 9),
@@ -211,12 +210,9 @@ def draw_gum_dependencies(deps: dict[str, list[str]]):
 
   for k in deps.keys():
     parts = k.split("/")
-    if len(parts) > 1 and parts[1] == "learning":
-      theme = "learning"
-    else:
-      theme = parts[0]
-      if theme == "base":
-        theme += "/" + parts[1]
+    theme = parts[0]
+    if theme == "base":
+      theme += "/" + parts[1]
 
     nod = _get_node(k, parts[-1][:-2], theme)
     deps_graph.add_node(nod)
