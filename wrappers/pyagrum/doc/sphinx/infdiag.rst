@@ -33,3 +33,4 @@ Influence diagrams can be saved and loaded using the native :ref:`jgum-bgum-form
 
    infdiagModel
    infdiagInference
+   infdiagTools
