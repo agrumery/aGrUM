@@ -75,3 +75,6 @@ consistent with the evidence is obtained.
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. bibliography::
+    :filter: docname in docnames
