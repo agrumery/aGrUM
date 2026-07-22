@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import re
 import sys
 from pathlib import Path
 from collections.abc import Iterator
@@ -100,8 +101,21 @@ def printutf8(s: str, end="\n"):
         print(s.encode("utf-8", "ignore"), end=end)
 
 
+_OPEN_MARKER_RE = re.compile(r"\[\[(?!\[)")
+
+
 def colFormat(v: str, col: str) -> str:
-  return col + v.replace("[[", cfg.C_VALUE).replace("]]", col)
+  # When the interpolated value itself starts with a bracket (e.g. a list repr
+  # like "['BN']"), a plain left-to-right "[[".replace() grabs the leftmost two
+  # "[" of a "[[[" run, leaving the stray extra "[" colored as part of the
+  # value instead of staying in the surrounding base color. The negative
+  # lookahead forces the match onto the pair closest to the value (rightmost
+  # of the run), so any extra bracket stays uncolored, matching how the
+  # closing "]]" side already behaves (leftmost pair, extra "]" stays
+  # uncolored after the reset).
+  v = _OPEN_MARKER_RE.sub(cfg.C_VALUE, v)
+  v = v.replace("]]", col)
+  return col + v
 
 
 def trace(current: dict[str, str | bool], cde: str):

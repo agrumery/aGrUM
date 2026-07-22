@@ -26,7 +26,11 @@ set(TEST_INCLUDES_FILES "")
 foreach (test_file ${AGRUM_TESTS})
     string(REPLACE "/" "_" test_stub_name "${test_file}")
     set(test_stub_file "${TEST_INCLUDES_DIR}/${test_stub_name}.cpp")
-    file(WRITE ${test_stub_file} "// Auto-generated file - do not edit manually\n#include <${test_file}>\n")
+    # file(GENERATE), unlike file(WRITE), only touches the output when its
+    # content actually changes -- file(WRITE) reruns unconditionally on every
+    # configure (i.e. every `act test`) and bumps every stub's mtime, forcing
+    # a full rebuild even when no test file changed.
+    file(GENERATE OUTPUT ${test_stub_file} CONTENT "// Auto-generated file - do not edit manually\n#include <${test_file}>\n")
     list(APPEND TEST_INCLUDES_FILES ${test_stub_file})
 
     # Derive the doctest [Module][Suite] tags from the test file's own path

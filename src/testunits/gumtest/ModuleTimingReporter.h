@@ -108,24 +108,25 @@ namespace gum_test {
     }
 
     void test_run_end(const doctest::TestRunStats& /*stats*/) override {
-      if (!_lastSuite.empty())
-        _out << " (" << _currentSuiteCount << " tests, " << std::fixed << std::setprecision(1)
-             << _currentSuiteTime << "s)\n";
+      if (!_lastSuite.empty()) {
+        _out << " ([[" << _currentSuiteCount << "]] tests, [[" << std::fixed << std::setprecision(1)
+             << _currentSuiteTime << "]]s)\n";
+      }
 
       gum::_atexit_();
 
-      if (_modules.empty()) return;
+      if (_modules.empty()) { return; }
 
       printTimingSummary();
     }
 
     void test_case_start(const doctest::TestCaseData& tc) override {
       // Extract module and suite from test name like "[BN][BayesNet] TestName"
-      std::string name = tc.m_name;
+      const std::string name = tc.m_name;
 
       // Extract first tag as module (e.g., [BN])
-      std::regex  moduleRegex(R"(\[([A-Z_]+)\])");
-      std::smatch match;
+      const std::regex moduleRegex(R"(\[([A-Z_]+)\])");
+      std::smatch      match;
       if (std::regex_search(name, match, moduleRegex)) {
         _currentModule = match[1].str();
       } else {
@@ -142,10 +143,11 @@ namespace gum_test {
 
       // Print suite header when module or suite changes
       if (_currentSuite != _lastSuite || _currentModule != _lastModule) {
-        if (!_lastSuite.empty())
-          _out << " (" << _currentSuiteCount << " tests, " << std::fixed << std::setprecision(1)
-               << _currentSuiteTime << "s)\n";
-        _out << "  [" << _currentModule << "]->[" << _currentSuite << ">] ";
+        if (!_lastSuite.empty()) {
+          _out << " ([[" << _currentSuiteCount << "]] tests, [[" << std::fixed
+               << std::setprecision(1) << _currentSuiteTime << "]]s)\n";
+        }
+        _out << "  [[[" << _currentModule << "]]]->[[[" << _currentSuite << ">]]] ";
         _out.flush();
         _lastModule        = _currentModule;
         _lastSuite         = _currentSuite;
@@ -157,7 +159,7 @@ namespace gum_test {
     void test_case_reenter(const doctest::TestCaseData&) override {}
 
     void test_case_end(const doctest::CurrentTestCaseStats& stats) override {
-      double seconds = stats.seconds;
+      const double seconds = stats.seconds;
 
       auto& mod = _modules[_currentModule];
       mod.testCount++;
