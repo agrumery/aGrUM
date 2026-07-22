@@ -204,20 +204,21 @@ namespace gum_tests {
 
     for (int i = 0; i < 2; ++i, ++edge_count) {
       for (int j = 0; j < 4; ++j, ++edge_count) {
-        CHECK(ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
+        CHECK(ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))),
+                                             ig->id(m.get(getComputer(j)))));
       }
 
-      CHECK(
-          ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
+      CHECK(ig->internalGraph().existsEdge(ig->id(m.get(getPrinter(i))),
+                                           ig->id(m.get("another_computer"))));
     }
 
     for (int i = 0; i < 4; ++i, ++edge_count) {
-      CHECK(
-          ig->internalGraph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
+      CHECK(ig->internalGraph().existsEdge(ig->id(m.get("another_printer")),
+                                           ig->id(m.get(getComputer(i)))));
     }
 
     CHECK(ig->internalGraph().existsEdge(ig->id(m.get("another_printer")),
-                                 ig->id(m.get("another_computer"))));
+                                         ig->id(m.get("another_computer"))));
 
     ++edge_count;
     CHECK_EQ(ig->internalGraph().sizeEdges(), (gum::Size)edge_count);

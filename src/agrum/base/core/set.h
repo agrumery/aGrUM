@@ -620,14 +620,14 @@ namespace gum {
     explicit SetIteratorSafe();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#ifndef SWIG
+#  ifndef SWIG
     // constructor for the static endSafe iterator
     // only set.cpp should use this constructor
     // hidden from SWIG: it does not understand consteval and mistakes this
     // overload for a redefinition of the default constructor above (warning 302)
     explicit consteval SetIteratorSafe(StaticInitializer init) noexcept : _ht_iter_(init) {}
-#endif   // SWIG
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+#  endif   // SWIG
+#endif     // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Creates an iterator for a given set.
@@ -834,14 +834,14 @@ namespace gum {
     explicit SetIterator() noexcept;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#ifndef SWIG
+#  ifndef SWIG
     // constructor for the static end iterator
     // only set.cpp should use this constructor
     // hidden from SWIG: it does not understand consteval and mistakes this
     // overload for a redefinition of the default constructor above (warning 302)
     explicit consteval SetIterator(StaticInitializer init) noexcept : _ht_iter_(init) {}
-#endif   // SWIG
-#endif   // DOXYGEN_SHOULD_SKIP_THIS
+#  endif   // SWIG
+#endif     // DOXYGEN_SHOULD_SKIP_THIS
 
     /**
      * @brief Creates an iterator for a given set.
