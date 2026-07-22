@@ -70,7 +70,7 @@ namespace gum {
     }
 
     /// move operator
-    Prior& Prior::operator=(Prior&& from) {
+    Prior& Prior::operator=(Prior&& from) noexcept {
       if (this != &from) {
         nodeId2columns_ = std::move(from.nodeId2columns_);
         weight_         = from.weight_;

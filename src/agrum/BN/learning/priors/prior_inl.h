@@ -66,7 +66,7 @@ namespace gum::learning {
   }
 
   /// move constructor
-  INLINE Prior::Prior(Prior&& from) :
+  INLINE Prior::Prior(Prior&& from) noexcept :
       weight_(from.weight_), database_(from.database_),
       nodeId2columns_(std::move(from.nodeId2columns_)) {
     GUM_CONS_MOV(Prior);

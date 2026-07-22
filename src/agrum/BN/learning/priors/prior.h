@@ -55,132 +55,128 @@
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/base/stattests/idCondSet.h>
 
-namespace gum {
+namespace gum::learning {
+  enum class PriorType : uint8_t {
+    DirichletPriorType,
+    SmoothingPriorType,
+    NoPriorType,
+    BDeuPriorType,
+  };
 
-  namespace learning {
-    enum class PriorType {
-      DirichletPriorType,
-      SmoothingPriorType,
-      NoPriorType,
-      BDeuPriorType,
-    };
-
-    constexpr const char* priorTypeToString(PriorType e) noexcept {
-      switch (e) {
-        case PriorType::NoPriorType : return "No prior";
-        case PriorType::DirichletPriorType : return "Dirichlet prior";
-        case PriorType::SmoothingPriorType : return "TriSmoothing prior";
-        case PriorType::BDeuPriorType : return "BDeu prior";
-      }
-      return "Error in prior";
+  constexpr const char* priorTypeToString(PriorType e) noexcept {
+    switch (e) {
+      case PriorType::NoPriorType : return "No prior";
+      case PriorType::DirichletPriorType : return "Dirichlet prior";
+      case PriorType::SmoothingPriorType : return "TriSmoothing prior";
+      case PriorType::BDeuPriorType : return "BDeu prior";
     }
+    return "Error in prior";
+  }
 
-    /** @class Prior
-     * @brief the base class for all a priori
-     * @headerfile prior.h <agrum/BN/learning/priors/prior.h>
-     * @ingroup learning_priors
+  /** @class Prior
+   * @brief the base class for all a priori
+   * @headerfile prior.h <agrum/BN/learning/priors/prior.h>
+   * @ingroup learning_priors
+   */
+  class Prior {
+    public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
+
+    /// default constructor
+    /** @param database the database from which learning is performed. This is
+     * useful to get access to the random variables
+     * @param nodeId2columns a mapping from the ids of the nodes in the
+     * graphical model to the corresponding column in the DatabaseTable.
+     * This enables estimating from a database in which variable A corresponds
+     * to the 2nd column the parameters of a BN in which variable A has a
+     * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
+     * is an identity, i.e., the value of a NodeId is equal to the index of
+     * the column in the DatabaseTable.
      */
-    class Prior {
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
+    explicit Prior(const DatabaseTable&                    database,
+                   const Bijection< NodeId, std::size_t >& nodeId2columns
+                   = Bijection< NodeId, std::size_t >());
 
-      /// default constructor
-      /** @param database the database from which learning is performed. This is
-       * useful to get access to the random variables
-       * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable.
-       * This enables estimating from a database in which variable A corresponds
-       * to the 2nd column the parameters of a BN in which variable A has a
-       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
-       * is an identity, i.e., the value of a NodeId is equal to the index of
-       * the column in the DatabaseTable.
-       */
-      explicit Prior(const DatabaseTable&                    database,
-                     const Bijection< NodeId, std::size_t >& nodeId2columns
-                     = Bijection< NodeId, std::size_t >());
+    /// virtual copy constructor
+    [[nodiscard]] virtual Prior* clone() const = 0;
 
-      /// virtual copy constructor
-      [[nodiscard]] virtual Prior* clone() const = 0;
+    /// destructor
+    virtual ~Prior();
 
-      /// destructor
-      virtual ~Prior();
+    /// @}
 
-      /// @}
+    // ##########################################################################
+    /// @name Accessors / Modifiers
+    // ##########################################################################
+    /// @{
 
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
+    /// sets the weight of the a prior(kind of effective sample size)
+    virtual void setWeight(double weight);
 
-      /// sets the weight of the a prior(kind of effective sample size)
-      virtual void setWeight(double weight);
+    /// returns the weight assigned to the prior
+    double weight() const;
 
-      /// returns the weight assigned to the prior
-      double weight() const;
+    /// returns the type of the prior
+    virtual PriorType getType() const = 0;
 
-      /// returns the type of the prior
-      virtual PriorType getType() const = 0;
+    /// indicates whether the prior is potentially informative
+    /** Basically, only the NoPrior is uninformative. However, it may happen
+     * that, under some circumstances, an prior, which is usually not equal
+     * to the NoPrior, becomes equal to it (e.g., when the weight is equal
+     * to zero). In this case, if the prior can detect this case, it shall
+     * inform the classes that use it that it is temporarily uninformative.
+     * These classes will then be able to speed-up their code by avoiding to
+     * take into account the prior in their computations. */
+    virtual bool isInformative() const = 0;
 
-      /// indicates whether the prior is potentially informative
-      /** Basically, only the NoPrior is uninformative. However, it may happen
-       * that, under some circumstances, an prior, which is usually not equal
-       * to the NoPrior, becomes equal to it (e.g., when the weight is equal
-       * to zero). In this case, if the prior can detect this case, it shall
-       * inform the classes that use it that it is temporarily uninformative.
-       * These classes will then be able to speed-up their code by avoiding to
-       * take into account the prior in their computations. */
-      virtual bool isInformative() const = 0;
+    /// adds the prior to a counting vector corresponding to the idset
+    /** adds the prior to an already created counting vector defined over
+     * the union of the variables on both the left and right hand side of the
+     * conditioning bar of the idset.
+     * @warning the method assumes that the size of the vector is exactly
+     * the domain size of the joint variables set. */
+    virtual void addJointPseudoCount(const IdCondSet& idset, std::vector< double >& counts) = 0;
 
-      /// adds the prior to a counting vector corresponding to the idset
-      /** adds the prior to an already created counting vector defined over
-       * the union of the variables on both the left and right hand side of the
-       * conditioning bar of the idset.
-       * @warning the method assumes that the size of the vector is exactly
-       * the domain size of the joint variables set. */
-      virtual void addJointPseudoCount(const IdCondSet& idset, std::vector< double >& counts) = 0;
+    /** @brief adds the prior to a counting vector defined over the right
+     * hand side of the idset
+     *
+     * @warning the method assumes that the size of the vector is exactly
+     * the domain size of the joint RHS variables of the idset. */
+    virtual void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts)
+        = 0;
 
-      /** @brief adds the prior to a counting vector defined over the right
-       * hand side of the idset
-       *
-       * @warning the method assumes that the size of the vector is exactly
-       * the domain size of the joint RHS variables of the idset. */
-      virtual void addConditioningPseudoCount(const IdCondSet& idset, std::vector< double >& counts)
-          = 0;
-
-      /// @}
+    /// @}
 
 
-      protected:
-      /// the weight of the prior
-      double weight_{1.0};
+    protected:
+    /// the weight of the prior
+    double weight_{1.0};
 
-      /// a reference to the database in order to have access to its variables
-      const DatabaseTable* database_;
+    /// a reference to the database in order to have access to its variables
+    const DatabaseTable* database_;
 
-      /** @brief a mapping from the NodeIds of the variables to the indices of
-       * the columns in the database */
-      Bijection< NodeId, std::size_t > nodeId2columns_;
+    /** @brief a mapping from the NodeIds of the variables to the indices of
+     * the columns in the database */
+    Bijection< NodeId, std::size_t > nodeId2columns_;
 
 
-      /// copy constructor
-      Prior(const Prior& from);
+    /// copy constructor
+    Prior(const Prior& from);
 
-      /// move constructor
-      Prior(Prior&& from);
+    /// move constructor
+    Prior(Prior&& from) noexcept;
 
-      /// copy operator
-      Prior& operator=(const Prior& from);
+    /// copy operator
+    Prior& operator=(const Prior& from);
 
-      /// move operator
-      Prior& operator=(Prior&& from);
-    };
+    /// move operator
+    Prior& operator=(Prior&& from) noexcept;
+  };
 
-  } /* namespace learning */
-
-} /* namespace gum */
+} /* namespace gum::learning */
 
 // include the inlined functions if necessary
 // constexpr priorTypeToString must be visible in all TUs — include unconditionally
