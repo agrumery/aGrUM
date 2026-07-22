@@ -39,6 +39,8 @@
 ############################################################################
 
 import unittest
+from collections.abc import Callable
+
 import numpy as np
 
 import pyagrum as gum
@@ -52,7 +54,7 @@ class TestGraph(pyAgrumTestCase):
     g.eraseNode(2)
     g.eraseNode(4)
     self.assertEqual(g.nodes(), {0, 3, 5})
-    self.assertEqual(g.addNodes(4), set([1, 2, 4, 6]))
+    self.assertEqual(g.addNodes(4), {1, 2, 4, 6})
     self.assertEqual(g.nodes(), set(range(7)))
 
   def testAddNodes(self):
@@ -145,7 +147,12 @@ class TestGraph(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidNode):
       ug.addEdge(6, 7)
 
-  def _testConnectedComponents(self, g, add_arc=None, add_edge=None):
+  def _testConnectedComponents(
+    self,
+    g: gum.Graph,
+    add_arc: Callable[[gum.Graph, int, int], None] | None = None,
+    add_edge: Callable[[gum.Graph, int, int], None] | None = None,
+  ):
     """
     Helper: tests connectedComponents / connectedComponentsList / connectedComponentsCount
     on any graph supporting both arc-like or edge-like connections.
@@ -153,9 +160,16 @@ class TestGraph(pyAgrumTestCase):
     add_edge(g, u, v) -- callable that adds an undirected edge (or same as add_arc)
     """
     if add_arc is None:
-      add_arc = lambda g, u, v: g.addArc(u, v)
+
+      def add_arc(g: gum.Graph, u: int, v: int) -> None:
+        if hasattr(g, "addArc"):
+          g.addArc(u, v)
+
     if add_edge is None:
-      add_edge = add_arc
+
+      def add_edge(g: gum.Graph, u: int, v: int) -> None:
+        if hasattr(g, "addEdge"):
+          g.addEdge(u, v)
 
     # Empty graph: no nodes → no components
     self.assertEqual(g.connectedComponents(), {})
