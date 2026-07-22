@@ -50,9 +50,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  PRMSystem
-#define GUM_CURRENT_MODULE PRM
-
 /**
  * This class is used to test gum::prm::PRMClassElement, since it is an abstrac
  * class, tests defined here should be called by each sub class of
@@ -182,307 +179,292 @@ namespace gum_tests {
 
       delete _asia_;
     }
-
-    static void testClassConstruction() {
-      CHECK_EQ(_asia_->attributes().size(), static_cast< gum::Size >(8));
-    }
-
-    static void testAddInstance() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      // Act
-      CHECK_NOTHROW(sys.add(inst));
-      // Assert
-      CHECK(sys.exists("asia"));
-      CHECK(sys.isInstantiated(*_asia_));
-      CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
-    }
-
-    static void testInstantiate() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      // Act
-      CHECK_NOTHROW(sys.instantiate());
-      // Assert
-      CHECK(sys.exists("asia"));
-      CHECK(sys.isInstantiated(*_asia_));
-      CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
-    }
-
-    static void testGroundBN() {
-      // Arrange
-      std::string x0, y0, x1, y1;
-      auto        bn = new gum::BayesNet< double >("asia");
-      {
-        PRMSystem sys("asia");
-        auto      inst = new PRMInstance("asia", *_asia_);
-        sys.add(inst);
-        sys.instantiate();
-        gum::BayesNetFactory< double > factory(bn);
-        // Act
-        CHECK_NOTHROW(sys.groundedBN(factory));
-        x0 = bn->cpt(0).toString();
-        y0 = bn->cpt(1).toString();
-      }
-      // Assert
-      CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-      CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
-      x1 = bn->cpt(0).toString();
-      y1 = bn->cpt(1).toString();
-      CHECK_EQ(x0, x1);
-      CHECK_EQ(y0, y1);
-      delete bn;
-    }
-
-    static void testGroundBNAfterDelete() {
-      // Arrange
-      PRMSystem* sys  = new PRMSystem("asia");
-      auto       inst = new PRMInstance("asia", *_asia_);
-      sys->add(inst);
-      sys->instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys->groundedBN(factory);
-      // Act
-      CHECK_NOTHROW(delete sys);
-      // Assert
-      CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
-      CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
-      for (auto node: bn->dag()) {
-        const gum::Tensor< double >* cpt = nullptr;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
-        gum::Instantiation inst(*cpt);
-        for (inst.setFirst(); !inst.end(); inst.inc()) {
-          GUM_CHECK_ASSERT_THROWS_NOTHING(cpt->get(inst));
-        }
-      }
-      delete bn;
-    }
-
-    static void testVisitToAsiaId() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      // Act
-      CHECK_NOTHROW(bn->idFromName("asia.(boolean)visitToAsia"));
-      // Assert
-      delete bn;
-    }
-
-    static void testVisitToAsia() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)visitToAsia");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("visitToAsia").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testTuberculosis() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)tuberculosis");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("tuberculosis").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testSmoking() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)smoking");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("smoking").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testLungCancer() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)lungCancer");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("lungCancer").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testBronchitis() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)bronchitis");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("bronchitis").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testTubOrCancer() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)tubOrCancer");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("tubOrCancer").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testPositiveXRay() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)positiveXRay");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("positiveXRay").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
-
-    static void testDyspnea() {
-      // Arrange
-      PRMSystem sys("asia");
-      auto      inst = new PRMInstance("asia", *_asia_);
-      sys.add(inst);
-      sys.instantiate();
-      auto                           bn = new gum::BayesNet< double >("asia");
-      gum::BayesNetFactory< double > factory(bn);
-      sys.groundedBN(factory);
-      auto                         id = bn->idFromName("asia.(boolean)dyspnea");
-      std::vector< double >        values;
-      const auto&                  cpf = _asia_->get("dyspnea").cpf();
-      gum::Tensor< double > const* cpt = nullptr;
-      // Act
-      CHECK_NOTHROW(cpt = &(bn->cpt(id)));
-      // Assert
-      gum::Instantiation i(cpf);
-      gum::Instantiation j(cpt);
-      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
-        CHECK_EQ(cpf.get(i), cpt->get(j));
-      }
-      delete bn;
-    }
   };
 
-  GUM_TEST_ACTIF(ClassConstruction)
-  GUM_TEST_ACTIF(AddInstance)
-  GUM_TEST_ACTIF(Instantiate)
-  GUM_TEST_ACTIF(GroundBN)
-  GUM_TEST_ACTIF(GroundBNAfterDelete)
-  GUM_TEST_ACTIF(VisitToAsiaId)
-  GUM_TEST_ACTIF(VisitToAsia)
-  GUM_TEST_ACTIF(Tuberculosis)
-  GUM_TEST_ACTIF(Smoking)
-  GUM_TEST_ACTIF(LungCancer)
-  GUM_TEST_ACTIF(Bronchitis)
-  GUM_TEST_ACTIF(TubOrCancer)
-  GUM_TEST_ACTIF(PositiveXRay)
-  GUM_TEST_ACTIF(Dyspnea)
+  GUM_TEST(ClassConstruction) {
+    CHECK_EQ(_asia_->attributes().size(), static_cast< gum::Size >(8));
+  }
+
+  GUM_TEST(AddInstance) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    // Act
+    CHECK_NOTHROW(sys.add(inst));
+    // Assert
+    CHECK(sys.exists("asia"));
+    CHECK(sys.isInstantiated(*_asia_));
+    CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
+  }
+
+  GUM_TEST(Instantiate) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    // Act
+    CHECK_NOTHROW(sys.instantiate());
+    // Assert
+    CHECK(sys.exists("asia"));
+    CHECK(sys.isInstantiated(*_asia_));
+    CHECK_EQ(sys.size(), static_cast< gum::Size >(1));
+  }
+
+  GUM_TEST(GroundBN) {
+    // Arrange
+    std::string x0, y0, x1, y1;
+    auto        bn = new gum::BayesNet< double >("asia");
+    {
+      PRMSystem sys("asia");
+      auto      inst = new PRMInstance("asia", *_asia_);
+      sys.add(inst);
+      sys.instantiate();
+      gum::BayesNetFactory< double > factory(bn);
+      // Act
+      CHECK_NOTHROW(sys.groundedBN(factory));
+      x0 = bn->cpt(0).toString();
+      y0 = bn->cpt(1).toString();
+    }
+    // Assert
+    CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+    CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+    x1 = bn->cpt(0).toString();
+    y1 = bn->cpt(1).toString();
+    CHECK_EQ(x0, x1);
+    CHECK_EQ(y0, y1);
+    delete bn;
+  }
+
+  GUM_TEST(GroundBNAfterDelete) {
+    // Arrange
+    PRMSystem* sys  = new PRMSystem("asia");
+    auto       inst = new PRMInstance("asia", *_asia_);
+    sys->add(inst);
+    sys->instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys->groundedBN(factory);
+    // Act
+    CHECK_NOTHROW(delete sys);
+    // Assert
+    CHECK_EQ(bn->size(), static_cast< gum::Size >(8));
+    CHECK_EQ(bn->sizeArcs(), static_cast< gum::Size >(8));
+    for (auto node: bn->dag()) {
+      const gum::Tensor< double >* cpt = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(cpt = &(bn->cpt(node)));
+      gum::Instantiation inst(*cpt);
+      for (inst.setFirst(); !inst.end(); inst.inc()) {
+        GUM_CHECK_ASSERT_THROWS_NOTHING(cpt->get(inst));
+      }
+    }
+    delete bn;
+  }
+
+  GUM_TEST(VisitToAsiaId) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    // Act
+    CHECK_NOTHROW(bn->idFromName("asia.(boolean)visitToAsia"));
+    // Assert
+    delete bn;
+  }
+
+  GUM_TEST(VisitToAsia) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)visitToAsia");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("visitToAsia").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(Tuberculosis) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)tuberculosis");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("tuberculosis").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(Smoking) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)smoking");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("smoking").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(LungCancer) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)lungCancer");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("lungCancer").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(Bronchitis) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)bronchitis");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("bronchitis").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(TubOrCancer) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)tubOrCancer");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("tubOrCancer").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(PositiveXRay) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)positiveXRay");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("positiveXRay").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
+
+  GUM_TEST(Dyspnea) {
+    // Arrange
+    PRMSystem sys("asia");
+    auto      inst = new PRMInstance("asia", *_asia_);
+    sys.add(inst);
+    sys.instantiate();
+    auto                           bn = new gum::BayesNet< double >("asia");
+    gum::BayesNetFactory< double > factory(bn);
+    sys.groundedBN(factory);
+    auto                         id = bn->idFromName("asia.(boolean)dyspnea");
+    std::vector< double >        values;
+    const auto&                  cpf = _asia_->get("dyspnea").cpf();
+    gum::Tensor< double > const* cpt = nullptr;
+    // Act
+    CHECK_NOTHROW(cpt = &(bn->cpt(id)));
+    // Assert
+    gum::Instantiation i(cpf);
+    gum::Instantiation j(cpt);
+    for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+      CHECK_EQ(cpf.get(i), cpt->get(j));
+    }
+    delete bn;
+  }
 
 }   // namespace gum_tests

@@ -52,114 +52,114 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  MultiDimLogit
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct MultiDimLogitTestSuite {
     public:
-    static void testCreationLogit() {
-      gum::LabelizedVariable       a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
-      gum::MultiDimLogit< double > p(0.2f);
+    // namespace gum_tests
+  };
 
-      // trying to change weight for a non cause
-      CHECK_THROWS_AS(p.causalWeight(b, 0.4f), const gum::InvalidArgument&);
-      CHECK_THROWS_AS(p.causalWeight(d, 0.0f), const gum::InvalidArgument&);
+  GUM_TEST(CreationLogit) {
+    gum::LabelizedVariable       a("a", "", 2), b("b", "", 2), c("c", "", 2), d("d", "", 2);
+    gum::MultiDimLogit< double > p(0.2f);
 
-      // adding causes
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+    // trying to change weight for a non cause
+    CHECK_THROWS_AS(p.causalWeight(b, 0.4f), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(p.causalWeight(d, 0.0f), const gum::InvalidArgument&);
 
-      // doing the right stuff :)
-      CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2)");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
-      CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}))");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
-      CHECK((p.toString())
-            == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
+    // adding causes
+    GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
-      CHECK_EQ(p.nbrDim(), static_cast< gum::Size >(4));
-      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+    // doing the right stuff :)
+    CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2)");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(b, 0.4f));
+    CHECK_EQ(p.toString(), "a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}))");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(p.causalWeight(d, 0.7f));
+    CHECK((p.toString())
+          == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
 
-      gum::MultiDimLogit< double > q(p);
-      CHECK((q.toString())
-            == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
-      CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(p.nbrDim(), static_cast< gum::Size >(4));
+    CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
-      GUM_CHECK_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
-      CHECK((q.toString())
-            == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) "
-                "-1.3*c:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
-    }   // namespace gum_tests
+    gum::MultiDimLogit< double > q(p);
+    CHECK((q.toString())
+          == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
+    CHECK_EQ(p.realSize(), static_cast< gum::Size >(4));
 
-    static void testComputationInLogit() {
-      // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
-      gum::RangeVariable     age("age", "", 35, 67);
-      gum::RangeVariable     taux("taux", "", 115, 171);
-      gum::LabelizedVariable angine("angine", "", 2);
-      gum::LabelizedVariable coeur("coeur", "", 0);
-      coeur.addLabel("NON").addLabel("OUI");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(q.causalWeight(c, -1.3f));
+    CHECK((q.toString())
+          == ("a:Labelized({0|1})=logit(0.2 +0.4*b:Labelized({0|1}) "
+              "-1.3*c:Labelized({0|1}) +0.7*d:Labelized({0|1}))"));
+  }
 
-      gum::MultiDimLogit< double > p(14.4937f);
-      // taux, angine and coeur are causes of coeur
-      p << coeur << age << taux << angine;
-      p.causalWeight(age, -0.1256f);
-      p.causalWeight(taux, -0.0636f);
-      p.causalWeight(angine, 1.779f);
+  GUM_TEST(ComputationInLogit) {
+    // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
+    gum::RangeVariable     age("age", "", 35, 67);
+    gum::RangeVariable     taux("taux", "", 115, 171);
+    gum::LabelizedVariable angine("angine", "", 2);
+    gum::LabelizedVariable coeur("coeur", "", 0);
+    coeur.addLabel("NON").addLabel("OUI");
 
-      gum::Instantiation i(p);
+    gum::MultiDimLogit< double > p(14.4937f);
+    // taux, angine and coeur are causes of coeur
+    p << coeur << age << taux << angine;
+    p.causalWeight(age, -0.1256f);
+    p.causalWeight(taux, -0.0636f);
+    p.causalWeight(angine, 1.779f);
 
-      std::string witness_age[]  = {"50", "49", "46", "49", "62", "35", "67", "65", "47"};
-      std::string witness_taux[] = {"126", "126", "144", "139", "154", "156", "160", "140", "143"};
-      std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
-      std::string witness_coeur[] = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
-      float       witness_proba[] = {0.8786f,
-                                     0.5807f,
-                                     0.3912f,
-                                     0.3773f,
-                                     0.2127f,
-                                     0.8760f,
-                                     1 - 0.0163f,
-                                     1 - 0.0710f,
-                                     1 - 0.3765f};
-      int         nbr             = 9;
+    gum::Instantiation i(p);
 
-      for (int l = 0; l < nbr; l++) {
-        try {
-          i.chgVal(age, age[witness_age[l]]);
-          i.chgVal(taux, taux[witness_taux[l]]);
-          i.chgVal(angine, angine[witness_angine[l]]);
-          i.chgVal(coeur, coeur[witness_coeur[l]]);
-          CHECK((witness_proba[l]) == doctest::Approx(p[i]).epsilon(15e-3));
-        } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-      }
+    std::string witness_age[]    = {"50", "49", "46", "49", "62", "35", "67", "65", "47"};
+    std::string witness_taux[]   = {"126", "126", "144", "139", "154", "156", "160", "140", "143"};
+    std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
+    std::string witness_coeur[]  = {"OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
+    float       witness_proba[]  = {0.8786f,
+                                    0.5807f,
+                                    0.3912f,
+                                    0.3773f,
+                                    0.2127f,
+                                    0.8760f,
+                                    1 - 0.0163f,
+                                    1 - 0.0710f,
+                                    1 - 0.3765f};
+    int         nbr              = 9;
 
-      gum::MultiDimLogit< double > q(p);
-      gum::Instantiation           j(p);
-      for (i.setFirst(), j.setFirst(); !i.end(); ++i, ++j) {
-        CHECK((q[i]) == doctest::Approx(p[j]).epsilon(1e-6));
-      }
+    for (int l = 0; l < nbr; l++) {
+      try {
+        i.chgVal(age, age[witness_age[l]]);
+        i.chgVal(taux, taux[witness_taux[l]]);
+        i.chgVal(angine, angine[witness_angine[l]]);
+        i.chgVal(coeur, coeur[witness_coeur[l]]);
+        CHECK((witness_proba[l]) == doctest::Approx(p[i]).epsilon(15e-3));
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
     }
 
-    static void testComputationInLogit2() {
-      gum::LabelizedVariable lazy("lazy", "", 2);
-      gum::LabelizedVariable degree("degree", "", 2);
-      gum::LabelizedVariable motivation("motivation", "", 2);
-      gum::LabelizedVariable requirement("requirement", "", 2);
-      gum::LabelizedVariable competition("competition", "", 2);
-      gum::LabelizedVariable unemployment("unemployment", "", 2);
+    gum::MultiDimLogit< double > q(p);
+    gum::Instantiation           j(p);
+    for (i.setFirst(), j.setFirst(); !i.end(); ++i, ++j) {
+      CHECK((q[i]) == doctest::Approx(p[j]).epsilon(1e-6));
+    }
+  }
 
-      gum::MultiDimLogit< double > p(1 - 0.0001f);
-      p << unemployment << competition << requirement << motivation << degree << lazy;
-      p.causalWeight(lazy, 0.8f);
-      p.causalWeight(degree, 0.7f);
-      p.causalWeight(motivation, 0.9f);
-      p.causalWeight(requirement, 0.8f);
-      p.causalWeight(competition, 0.9f);
+  GUM_TEST(ComputationInLogit2) {
+    gum::LabelizedVariable lazy("lazy", "", 2);
+    gum::LabelizedVariable degree("degree", "", 2);
+    gum::LabelizedVariable motivation("motivation", "", 2);
+    gum::LabelizedVariable requirement("requirement", "", 2);
+    gum::LabelizedVariable competition("competition", "", 2);
+    gum::LabelizedVariable unemployment("unemployment", "", 2);
 
-      gum::Instantiation i(p);
-      float              witness[] = {
-          // clang-format off
+    gum::MultiDimLogit< double > p(1 - 0.0001f);
+    p << unemployment << competition << requirement << motivation << degree << lazy;
+    p.causalWeight(lazy, 0.8f);
+    p.causalWeight(degree, 0.7f);
+    p.causalWeight(motivation, 0.9f);
+    p.causalWeight(requirement, 0.8f);
+    p.causalWeight(competition, 0.9f);
+
+    gum::Instantiation i(p);
+    float              witness[] = {
+        // clang-format off
               0.26896108301760213f,0.7310389169823979f,
               0.13011979280757435f,0.8698802071924256f,
               0.14186323827049419f,0.8581367617295058f,
@@ -192,25 +192,20 @@ namespace gum_tests {
               0.013388238662763174f,0.9866117613372368f,
               0.014775487339871773f,0.9852245126601282f,
               0.006060403829365346f,0.9939395961706347f   // clang-format on
-      };
+    };
 
-      int j = 0;
+    int j = 0;
 
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
-      }
-
-      gum::MultiDimLogit< double > q(p);
-
-      j = 0;
-
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
-      }
+    for (i.setFirst(); !i.end(); ++i, j++) {
+      CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
     }
-  };
 
-  GUM_TEST_ACTIF(CreationLogit)
-  GUM_TEST_ACTIF(ComputationInLogit)
-  GUM_TEST_ACTIF(ComputationInLogit2)
+    gum::MultiDimLogit< double > q(p);
+
+    j = 0;
+
+    for (i.setFirst(); !i.end(); ++i, j++) {
+      CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+    }
+  }
 }   // namespace gum_tests

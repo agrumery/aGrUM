@@ -47,70 +47,140 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  O3prmBNReader
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct O3prmBNReaderTestSuite {
     public:
-    static void testClassWithoutSystem() {
+    // namespace gum_tests
+  };
+
+  GUM_TEST(ClassWithoutSystem) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(bn.property("name"), "Asia");
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
+  }
+
+  GUM_TEST(ClassWithoutSystemWithOtherClassName) {
+    try {
       gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+      gum::O3prmBNReader< double > reader(&bn,
+                                          GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
       CHECK_EQ(bn.property("name"), "Asia");
       CHECK_EQ(res, static_cast< gum::Size >(0));
       CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
       CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
-    }   // namespace gum_tests
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
 
-    static void testClassWithoutSystemWithOtherClassName() {
-      try {
-        gum::BayesNet< double >      bn;
-        gum::O3prmBNReader< double > reader(&bn,
-                                            GET_RESSOURCES_PATH("o3prm/AsiaOtherClassName.o3prm"));
-        gum::Size                    res = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK_EQ(bn.property("name"), "Asia");
-        CHECK_EQ(res, static_cast< gum::Size >(0));
-        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
+  GUM_TEST(DoublingClassWithoutSystem) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
 
-    static void testDoublingClassWithoutSystem() {
-      gum::BayesNet< double >      bn;
+
+    gum::BayesNet< double >      bn2;
+    gum::O3prmBNReader< double > reader2(&bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+    gum::Size                    res2 = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+    CHECK_EQ(res2, static_cast< gum::Size >(0));
+    CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(1));   // no system
+    CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
+  }
+
+  GUM_TEST(ClassWithoutSystemAfterDeletingReader) {
+    gum::BayesNet< double > bn;
+    {
       gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
       gum::Size                    res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
       CHECK_EQ(res, static_cast< gum::Size >(0));
       CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
       CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
-
-
-      gum::BayesNet< double >      bn2;
-      gum::O3prmBNReader< double > reader2(&bn2, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-      gum::Size                    res2 = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK_EQ(res2, static_cast< gum::Size >(0));
-      CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(1));   // no system
-      CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
     }
+  }
 
-    static void testClassWithoutSystemAfterDeletingReader() {
-      gum::BayesNet< double > bn;
-      {
-        gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-        gum::Size                    res = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK_EQ(res, static_cast< gum::Size >(0));
-        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
+  GUM_TEST(ClassesWithSystem) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(
+        &bn,
+        GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
+        "Asia");
+    gum::Size res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(bn.property("name"), "Asia");
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
+  }
+
+  GUM_TEST(WithError) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn,
+                                        GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
+                                        "Asia");
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(1));               // file not found
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(1));   // file not found
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
+
+    gum::O3prmBNReader< double > reader2(&bn,
+                                         GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"),
+                                         "Asia");
+    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader2.proceed());   // class plop not existing
+    CHECK_EQ(reader2.errors(), static_cast< gum::Size >(1));    // class plop not existing
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(WithCplxFile) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/inference.o3prm"), "aSys");
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(72));
+  }
+
+  GUM_TEST(WithClassPathAndSystem) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(
+        &bn,
+        GET_RESSOURCES_PATH("/o3prmr/ComplexPrinters/fr/lip6/printers/system.o3prm"),
+        "Work",
+        GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
+    gum::Size res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(144));
+    reader.showElegantErrorsAndWarnings();
+  }
+
+  GUM_TEST(NameWithOrWithoutSystem) {
+    // in a file with only one class and no system, there should not be any "."
+    // in the names
+    {
+      gum::BayesNet< double >      bn;
+      gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+      gum::Size                    res = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+      CHECK_EQ(res, static_cast< gum::Size >(0));
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+      for (auto n: bn.nodes()) {
+        CHECK_EQ(bn.variable(n).name().find("."), std::string::npos);
       }
     }
-
-    static void testClassesWithSystem() {
+    {
       gum::BayesNet< double >      bn;
       gum::O3prmBNReader< double > reader(
           &bn,
@@ -118,105 +188,21 @@ namespace gum_tests {
           "Asia");
       gum::Size res = 0;
       GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(bn.property("name"), "Asia");
       CHECK_EQ(res, static_cast< gum::Size >(0));
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
-    }
-
-    static void testWithError() {
-      gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(&bn,
-                                          GET_RESSOURCES_PATH("o3prm/DoesNotExists.o3prm"),
-                                          "Asia");
-      gum::Size                    res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(res, static_cast< gum::Size >(1));               // file not found
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(1));   // file not found
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
-
-      gum::O3prmBNReader< double > reader2(&bn,
-                                           GET_RESSOURCES_PATH("o3prm/AsiaWithError.o3prm"),
-                                           "Asia");
-      res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader2.proceed());   // class plop not existing
-      CHECK_EQ(reader2.errors(), static_cast< gum::Size >(1));    // class plop not existing
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
-    }
-
-    static void testWithCplxFile() {
-      gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(&bn,
-                                          GET_RESSOURCES_PATH("o3prm/inference.o3prm"),
-                                          "aSys");
-      gum::Size                    res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(res, static_cast< gum::Size >(0));
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(72));
-    }
-
-    static void testWithClassPathAndSystem() {
-      gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(
-          &bn,
-          GET_RESSOURCES_PATH("/o3prmr/ComplexPrinters/fr/lip6/printers/system.o3prm"),
-          "Work",
-          GET_RESSOURCES_PATH("o3prmr/ComplexPrinters"));
-      gum::Size res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(res, static_cast< gum::Size >(0));
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(144));
-      reader.showElegantErrorsAndWarnings();
-    }
-
-    static void testNameWithOrWithoutSystem() {
-      // in a file with only one class and no system, there should not be any "."
-      // in the names
-      {
-        gum::BayesNet< double >      bn;
-        gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-        gum::Size                    res = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK_EQ(res, static_cast< gum::Size >(0));
-        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
-        for (auto n: bn.nodes()) {
-          CHECK_EQ(bn.variable(n).name().find("."), std::string::npos);
-        }
-      }
-      {
-        gum::BayesNet< double >      bn;
-        gum::O3prmBNReader< double > reader(
-            &bn,
-            GET_RESSOURCES_PATH("o3prm/AsiaClassAndSystemWithTwoClasses.o3prm"),
-            "Asia");
-        gum::Size res = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-        CHECK_EQ(res, static_cast< gum::Size >(0));
-        CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-        for (auto n: bn.nodes()) {
-          CHECK_NE(bn.variable(n).name().find("."), std::string::npos);
-        }
+      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+      for (auto n: bn.nodes()) {
+        CHECK_NE(bn.variable(n).name().find("."), std::string::npos);
       }
     }
+  }
 
-    static void testReadAndWriteAndRead() {
-      gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
-      gum::Size                    res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(res, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
-    }
-  };
-
-  GUM_TEST_ACTIF(ClassWithoutSystem)
-  GUM_TEST_ACTIF(ClassWithoutSystemWithOtherClassName)
-  GUM_TEST_ACTIF(DoublingClassWithoutSystem)
-  GUM_TEST_ACTIF(ClassWithoutSystemAfterDeletingReader)
-  GUM_TEST_ACTIF(ClassesWithSystem)
-  GUM_TEST_ACTIF(WithError)
-  GUM_TEST_ACTIF(WithCplxFile)
-  GUM_TEST_ACTIF(WithClassPathAndSystem)
-  GUM_TEST_ACTIF(NameWithOrWithoutSystem)
-  GUM_TEST_ACTIF(ReadAndWriteAndRead)
+  GUM_TEST(ReadAndWriteAndRead) {
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn, GET_RESSOURCES_PATH("o3prm/Asia.o3prm"));
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(1));   // no system
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(8));
+  }
 }   // namespace gum_tests

@@ -54,9 +54,6 @@
 
 using json = nlohmann::json;
 
-#define GUM_CURRENT_SUITE  GumBNReader
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct GumBNReaderTestSuite {
     static const std::string& jsondemo() {
@@ -155,232 +152,215 @@ namespace gum_tests {
     }
 
     public:
-    static void testFirstTest() {
-      const auto ref = json::parse(jsondemo());
-      const auto k   = json::parse(ref.dump());
-      CHECK_EQ(ref, k);
-    }
+    // regression tests for CRIT-16: _readVector_ size validation
+  };
 
-    static void testGetNames() {
-      const auto  ref = json::parse(jsondemo());
-      const auto& k   = ref["nodes"];
-      CHECK_EQ(k.size(), 3u);
-      CHECK_EQ(k[0], "A{yes|maybe|no}");
-      CHECK_EQ(k[1], "B[3,7]");
-      CHECK_EQ(k[2], "C[1.3,1.6,1.9,2.2,2.5]");
-    }
+  GUM_TEST(FirstTest) {
+    const auto ref = json::parse(jsondemo());
+    const auto k   = json::parse(ref.dump());
+    CHECK_EQ(ref, k);
+  }
 
-    static void testGetParents() {
-      const auto  ref = json::parse(jsondemo());
-      const auto& k   = ref["parents"];
-      CHECK_EQ(k.size(), 3u);
-      CHECK_EQ(k["A"].size(), 0u);
-      CHECK_EQ(k["B"].size(), 2u);
-      CHECK_EQ(k["B"][0], "A");
-      CHECK_EQ(k["B"][1], "C");
-      CHECK_EQ(k["C"].size(), 0u);
-    }
+  GUM_TEST(GetNames) {
+    const auto  ref = json::parse(jsondemo());
+    const auto& k   = ref["nodes"];
+    CHECK_EQ(k.size(), 3u);
+    CHECK_EQ(k[0], "A{yes|maybe|no}");
+    CHECK_EQ(k[1], "B[3,7]");
+    CHECK_EQ(k[2], "C[1.3,1.6,1.9,2.2,2.5]");
+  }
 
-    static void testGetCPTs() {
-      const auto  ref = json::parse(jsondemo());
-      const auto& k   = ref["cpt"];
-      CHECK_EQ(k.size(), 3u);
-      CHECK_EQ(k["A"].size(), 3u);
-      CHECK_EQ(k["A"][0], 0.16257016307560487);
-      CHECK_EQ(k["B"].size(), 60u);
-      CHECK_EQ(k["B"][59], 0.16353655177517026);
-      CHECK_EQ(k["C"].size(), 4u);
-      CHECK_EQ(k["C"][0], 0.018974912112612926);
-    }
+  GUM_TEST(GetParents) {
+    const auto  ref = json::parse(jsondemo());
+    const auto& k   = ref["parents"];
+    CHECK_EQ(k.size(), 3u);
+    CHECK_EQ(k["A"].size(), 0u);
+    CHECK_EQ(k["B"].size(), 2u);
+    CHECK_EQ(k["B"][0], "A");
+    CHECK_EQ(k["B"][1], "C");
+    CHECK_EQ(k["C"].size(), 0u);
+  }
 
-    static void testExistence() {
-      const auto ref = json::parse(jsondemo());
-      CHECK(ref.contains("nodes"));
-      CHECK(ref.contains("parents"));
-      CHECK(ref.contains("cpt"));
-      CHECK_FALSE(ref.contains("utility"));
-    }
+  GUM_TEST(GetCPTs) {
+    const auto  ref = json::parse(jsondemo());
+    const auto& k   = ref["cpt"];
+    CHECK_EQ(k.size(), 3u);
+    CHECK_EQ(k["A"].size(), 3u);
+    CHECK_EQ(k["A"][0], 0.16257016307560487);
+    CHECK_EQ(k["B"].size(), 60u);
+    CHECK_EQ(k["B"][59], 0.16353655177517026);
+    CHECK_EQ(k["C"].size(), 4u);
+    CHECK_EQ(k["C"][0], 0.018974912112612926);
+  }
 
-    static void testBuildingBayesNetFromJson() {
-      const auto              ref = json::parse(jsondemo());
-      gum::BayesNet< double > bn;
-      // iterate on nodes in json
-      for (const auto& node: ref["nodes"]) {
-        bn.add(node.get< std::string >());
+  GUM_TEST(Existence) {
+    const auto ref = json::parse(jsondemo());
+    CHECK(ref.contains("nodes"));
+    CHECK(ref.contains("parents"));
+    CHECK(ref.contains("cpt"));
+    CHECK_FALSE(ref.contains("utility"));
+  }
+
+  GUM_TEST(BuildingBayesNetFromJson) {
+    const auto              ref = json::parse(jsondemo());
+    gum::BayesNet< double > bn;
+    // iterate on nodes in json
+    for (const auto& node: ref["nodes"]) {
+      bn.add(node.get< std::string >());
+    }
+    // iterate on parents in json
+    for (const auto& parent: ref["parents"].items()) {
+      const auto& nodeName = parent.key();
+      for (const auto& p: parent.value()) {
+        const auto& pName = p.get< std::string >();
+        bn.addArc(pName, nodeName);
       }
-      // iterate on parents in json
-      for (const auto& parent: ref["parents"].items()) {
-        const auto& nodeName = parent.key();
-        for (const auto& p: parent.value()) {
-          const auto& pName = p.get< std::string >();
-          bn.addArc(pName, nodeName);
-        }
-      }
-      // iterate on cpt in json
-      for (const auto& cpt: ref["cpt"].items()) {
-        const auto& nodeName = cpt.key();
-        const auto& values   = cpt.value();
-        bn.cpt(nodeName).fillWith(values.get< std::vector< double > >());
-      }
-
-      const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.gum");
-      gum::BayesNet< double > bn2;
-
-      auto reader = gum::GumBNReader< double >(&bn2, filename);
-
-      CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(bn2.size(), 3u);
-      CHECK_EQ(bn2.variable(0).toFast(), "A{yes|maybe|no}");
-      CHECK_EQ(bn2.variable(1).toFast(), "B[3,7]");
-      CHECK_EQ(bn2.variable(2).toFast(), "C[1.3,1.6,1.9,2.2,2.5]");
-      CHECK_EQ(bn2.parents(0).size(), 0u);
-      CHECK_EQ(bn2.parents(1).size(), 2u);
-      CHECK_EQ(bn2.parents(2).size(), 0u);
-      CHECK(bn2.existsArc("A", "B"));
-      CHECK(bn2.existsArc("C", "B"));
-
-      CHECK_EQ(bn2, bn);
-
-      CHECK_EQ(bn.properties().size(), 0u);
-      CHECK_EQ(bn2.properties().size(), 3u);
+    }
+    // iterate on cpt in json
+    for (const auto& cpt: ref["cpt"].items()) {
+      const auto& nodeName = cpt.key();
+      const auto& values   = cpt.value();
+      bn.cpt(nodeName).fillWith(values.get< std::vector< double > >());
     }
 
-    static void testInvalidJsonString() {
-      gum::BayesNet< double > bn;
-      auto                    reader = gum::GumBNReader< double >(&bn);
-      CHECK_NE(reader.proceedFromString("not valid json at all"), 0u);
-      CHECK_EQ(reader.count(), 1u);
-      CHECK_NE(reader.error(0).msg.find("Invalid JSON"), std::string::npos);
+    const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.gum");
+    gum::BayesNet< double > bn2;
+
+    auto reader = gum::GumBNReader< double >(&bn2, filename);
+
+    CHECK_EQ(reader.proceed(), 0u);
+    CHECK_EQ(bn2.size(), 3u);
+    CHECK_EQ(bn2.variable(0).toFast(), "A{yes|maybe|no}");
+    CHECK_EQ(bn2.variable(1).toFast(), "B[3,7]");
+    CHECK_EQ(bn2.variable(2).toFast(), "C[1.3,1.6,1.9,2.2,2.5]");
+    CHECK_EQ(bn2.parents(0).size(), 0u);
+    CHECK_EQ(bn2.parents(1).size(), 2u);
+    CHECK_EQ(bn2.parents(2).size(), 0u);
+    CHECK(bn2.existsArc("A", "B"));
+    CHECK(bn2.existsArc("C", "B"));
+
+    CHECK_EQ(bn2, bn);
+
+    CHECK_EQ(bn.properties().size(), 0u);
+    CHECK_EQ(bn2.properties().size(), 3u);
+  }
+
+  GUM_TEST(InvalidJsonString) {
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn);
+    CHECK_NE(reader.proceedFromString("not valid json at all"), 0u);
+    CHECK_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("Invalid JSON"), std::string::npos);
+  }
+
+  GUM_TEST(FileNotFound) {
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn, "/no/such/file.jgum");
+    CHECK_NE(reader.proceed(), 0u);
+    CHECK_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("No such file"), std::string::npos);
+  }
+
+  GUM_TEST(BinaryRoundtrip) {
+    const auto              path = GET_RESSOURCES_PATH("outputs/reader_bn.bgum");
+    gum::BayesNet< double > bn;
+    {
+      auto r = gum::GumBNReader< double >(&bn, GET_RESSOURCES_PATH("jsonGum/minimal.gum"));
+      CHECK_EQ(r.proceed(), 0u);
     }
+    gum::GumBNWriter< double > writer(true, 2);
+    writer.write(path, bn);
+    gum::BayesNet< double > bn2;
+    auto                    reader = gum::GumBNReader< double >(&bn2, path, true);
+    CHECK_EQ(reader.proceed(), 0u);
+    CHECK_EQ(bn, bn2);
+  }
 
-    static void testFileNotFound() {
-      gum::BayesNet< double > bn;
-      auto                    reader = gum::GumBNReader< double >(&bn, "/no/such/file.jgum");
-      CHECK_NE(reader.proceed(), 0u);
-      CHECK_EQ(reader.count(), 1u);
-      CHECK_NE(reader.error(0).msg.find("No such file"), std::string::npos);
-    }
+  GUM_TEST(WrongModelType) {
+    const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum");
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn, filename);
+    CHECK_NE(reader.proceed(), 0u);
+    CHECK_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("expected 'BN'"), std::string::npos);
+    CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
+  }
 
-    static void testBinaryRoundtrip() {
-      const auto              path = GET_RESSOURCES_PATH("outputs/reader_bn.bgum");
-      gum::BayesNet< double > bn;
-      {
-        auto r = gum::GumBNReader< double >(&bn, GET_RESSOURCES_PATH("jsonGum/minimal.gum"));
-        CHECK_EQ(r.proceed(), 0u);
-      }
-      gum::GumBNWriter< double > writer(true, 2);
-      writer.write(path, bn);
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2, path, true);
-      CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(bn, bn2);
-    }
+  GUM_TEST(ProceedWithoutFilename) {
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn);
+    CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
+  }
 
-    static void testWrongModelType() {
-      const std::string       filename = GET_RESSOURCES_PATH("jsonGum/minimal.id.jgum");
-      gum::BayesNet< double > bn;
-      auto                    reader = gum::GumBNReader< double >(&bn, filename);
-      CHECK_NE(reader.proceed(), 0u);
-      CHECK_EQ(reader.count(), 1u);
-      CHECK_NE(reader.error(0).msg.find("expected 'BN'"), std::string::npos);
-      CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
-    }
+  GUM_TEST(ProceedFromString) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+    gum::GumBNWriter< double > writer(false, 2);
+    const std::string          str = writer.toString(bn);
 
-    static void testProceedWithoutFilename() {
-      gum::BayesNet< double > bn;
-      auto                    reader = gum::GumBNReader< double >(&bn);
-      CHECK_THROWS_AS(reader.proceed(), const gum::OperationNotAllowed&);
-    }
+    gum::BayesNet< double > bn2;
+    auto                    reader = gum::GumBNReader< double >(&bn2);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(bn2, bn);
+  }
 
-    static void testProceedFromString() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      gum::GumBNWriter< double > writer(false, 2);
-      const std::string          str = writer.toString(bn);
+  GUM_TEST(JgumPreservesStateOnMidParseError) {
+    gum::BayesNet< double > bn;
+    bn.add("existing[2]");
 
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2);
-      CHECK_EQ(reader.proceedFromString(str), 0u);
-      CHECK_EQ(bn2, bn);
-    }
-
-    static void testJgumPreservesStateOnMidParseError() {
-      gum::BayesNet< double > bn;
-      bn.add("existing[2]");
-
-      // Valid JSON, correct type, but CPT for Y has 3 values instead of 4
-      const std::string bad    = R"({
+    // Valid JSON, correct type, but CPT for Y has 3 values instead of 4
+    const std::string bad    = R"({
         "type": "BN",
         "nodes": ["X[2]", "Y[2]"],
         "parents": {"X": [], "Y": ["X"]},
         "cpt": {"X": [0.3, 0.7], "Y": [0.1, 0.9, 0.4]}
       })";
-      auto              reader = gum::GumBNReader< double >(&bn);
-      CHECK_NE(reader.proceedFromString(bad), 0u);
-      CHECK_EQ(bn.size(), 1u);
-      CHECK(bn.exists("existing"));
+    auto              reader = gum::GumBNReader< double >(&bn);
+    CHECK_NE(reader.proceedFromString(bad), 0u);
+    CHECK_EQ(bn.size(), 1u);
+    CHECK(bn.exists("existing"));
+  }
+
+  GUM_TEST(BgumPreservesStateOnCorruptBytes) {
+    const auto              path = GET_RESSOURCES_PATH("outputs/corrupt_bn.bgum");
+    gum::BayesNet< double > bn;
+    bn.add("existing[2]");
+
+    // Valid size field, garbage msgpack payload
+    {
+      std::ofstream out(path, std::ios::binary);
+      uint64_t      size = 10;
+      out.write(reinterpret_cast< const char* >(&size), sizeof(size));
+      out.write("GARBAGE!!!", 10);
     }
+    auto reader = gum::GumBNReader< double >(&bn, path, true);
+    CHECK_NE(reader.proceed(), 0u);
+    CHECK_EQ(reader.count(), 1u);
+    CHECK_EQ(bn.size(), 1u);
+    CHECK(bn.exists("existing"));
+  }
 
-    static void testBgumPreservesStateOnCorruptBytes() {
-      const auto              path = GET_RESSOURCES_PATH("outputs/corrupt_bn.bgum");
-      gum::BayesNet< double > bn;
-      bn.add("existing[2]");
+  GUM_TEST(ReadVectorTruncatedSizeField) {
+    // Only 4 bytes instead of 8 for the size field
+    std::istringstream iss(std::string(4, '\0'));
+    CHECK_THROWS(gum::_readVector_(iss));
+  }
 
-      // Valid size field, garbage msgpack payload
-      {
-        std::ofstream out(path, std::ios::binary);
-        uint64_t      size = 10;
-        out.write(reinterpret_cast< const char* >(&size), sizeof(size));
-        out.write("GARBAGE!!!", 10);
-      }
-      auto reader = gum::GumBNReader< double >(&bn, path, true);
-      CHECK_NE(reader.proceed(), 0u);
-      CHECK_EQ(reader.count(), 1u);
-      CHECK_EQ(bn.size(), 1u);
-      CHECK(bn.exists("existing"));
-    }
+  GUM_TEST(ReadVectorOversizedField) {
+    // Size = UINT64_MAX → far above 256 MB guard
+    std::ostringstream oss;
+    uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
+    oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));
+    std::istringstream iss(oss.str());
+    CHECK_THROWS(gum::_readVector_(iss));
+  }
 
-    // regression tests for CRIT-16: _readVector_ size validation
-    static void testReadVectorTruncatedSizeField() {
-      // Only 4 bytes instead of 8 for the size field
-      std::istringstream iss(std::string(4, '\0'));
-      CHECK_THROWS(gum::_readVector_(iss));
-    }
-
-    static void testReadVectorOversizedField() {
-      // Size = UINT64_MAX → far above 256 MB guard
-      std::ostringstream oss;
-      uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
-      oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));
-      std::istringstream iss(oss.str());
-      CHECK_THROWS(gum::_readVector_(iss));
-    }
-
-    static void testReadVectorTruncatedData() {
-      // Announce 100 bytes but only write 10
-      std::ostringstream oss;
-      uint64_t           size = 100;
-      oss.write(reinterpret_cast< const char* >(&size), sizeof(size));
-      oss.write(std::string(10, 'x').c_str(), 10);
-      std::istringstream iss(oss.str());
-      CHECK_THROWS(gum::_readVector_(iss));
-    }
-  };
-
-  GUM_TEST_ACTIF(FirstTest)
-  GUM_TEST_ACTIF(GetNames)
-  GUM_TEST_ACTIF(GetParents)
-  GUM_TEST_ACTIF(GetCPTs)
-  GUM_TEST_ACTIF(Existence)
-  GUM_TEST_ACTIF(BuildingBayesNetFromJson)
-  GUM_TEST_ACTIF(InvalidJsonString)
-  GUM_TEST_ACTIF(FileNotFound)
-  GUM_TEST_ACTIF(BinaryRoundtrip)
-  GUM_TEST_ACTIF(WrongModelType)
-  GUM_TEST_ACTIF(ProceedWithoutFilename)
-  GUM_TEST_ACTIF(ProceedFromString)
-  GUM_TEST_ACTIF(JgumPreservesStateOnMidParseError)
-  GUM_TEST_ACTIF(BgumPreservesStateOnCorruptBytes)
-  GUM_TEST_ACTIF(ReadVectorTruncatedSizeField)
-  GUM_TEST_ACTIF(ReadVectorOversizedField)
-  GUM_TEST_ACTIF(ReadVectorTruncatedData)
+  GUM_TEST(ReadVectorTruncatedData) {
+    // Announce 100 bytes but only write 10
+    std::ostringstream oss;
+    uint64_t           size = 100;
+    oss.write(reinterpret_cast< const char* >(&size), sizeof(size));
+    oss.write(std::string(10, 'x').c_str(), 10);
+    std::istringstream iss(oss.str());
+    CHECK_THROWS(gum::_readVector_(iss));
+  }
 }   // namespace gum_tests

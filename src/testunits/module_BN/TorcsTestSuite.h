@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Torcs
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct TorcsTestSuite {
@@ -183,18 +180,8 @@ namespace gum_tests {
       delete evidence;
     }
 
-    void testInference() const {
-      gum::LazyPropagation< double > inf(bn);
 
-      try {
-        inf.makeInference();
-      } catch (const gum::Exception& e) {
-        GUM_UNUSED(e);
-        CHECK(false);
-      }
-    }
-
-    private:
+    protected:
     // Uncomment this to have some outputs.
     static void printProba(const gum::Tensor< double >&) {
       // gum::Instantiation inst(p);
@@ -207,5 +194,14 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Inference)
+  GUM_TEST(Inference) {
+    gum::LazyPropagation< double > inf(bn);
+
+    try {
+      inf.makeInference();
+    } catch (const gum::Exception& e) {
+      GUM_UNUSED(e);
+      CHECK(false);
+    }
+  }
 }   // namespace gum_tests

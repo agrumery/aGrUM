@@ -51,13 +51,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DirichletPriorFromBN
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct DirichletPriorFromBNTestSuite {
-    private:
+    protected:
     static void _test_prior_(gum::learning::DirichletPriorFromBN< double >& prior) {
       prior.setWeight(100.0);
       CHECK_EQ(prior.weight(), 100.0);
@@ -195,60 +192,59 @@ namespace gum_tests {
     }   // namespace gum_tests
 
     public:
-    static void test1() {
-      std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
-      gum::BayesNet< double >    bn
-          = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");
-      for (const auto& nom: names)
-        bn.cpt(nom).fillWith(1).normalizeAsCPT();
-      bn.cpt("B").fillWith({0.2, 0.3, 0.5});
-      bn.cpt("C").fillWith({0.1, 0.9, 0.3, 0.7, 0.5, 0.5});
-
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      // create the translator set
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the (useless) database
-      gum::learning::DatabaseTable database(trans_set);
-      database.insertRow({"0", "1", "0", "2", "1", "1"});
-      database.insertRow({"1", "2", "0", "1", "2", "2"});
-      database.insertRow({"2", "1", "0", "1", "1", "0"});
-      database.insertRow({"1", "0", "0", "0", "0", "0"});
-      database.insertRow({"0", "0", "0", "1", "1", "1"});
-
-      gum::learning::DirichletPriorFromBN< double > prior(database, &bn);
-      CHECK_EQ(prior.weight(), 1.0);
-      _test_prior_(prior);
-
-      gum::learning::DirichletPriorFromBN prior2(prior);
-      CHECK_EQ(prior2.weight(), 100.0);
-      _test_prior_(prior2);
-
-      gum::learning::DirichletPriorFromBN prior3(std::move(prior2));
-      CHECK_EQ(prior3.weight(), 100.0);
-      _test_prior_(prior3);
-
-      gum::learning::DirichletPriorFromBN< double >* prior4 = prior3.clone();
-      CHECK_EQ(prior4->weight(), 100.0);
-      _test_prior_(*prior4);
-      delete (prior4);
-    }
   };
 
-  GUM_TEST_ACTIF(1)
+  GUM_TEST(1) {
+    std::vector< std::string > names{"A", "B", "C", "D", "E", "F"};
+    gum::BayesNet< double >    bn
+        = gum::BayesNet< double >::fastPrototype("A[3];B[3];C<-D[3];E[3];F[3]");
+    for (const auto& nom: names)
+      bn.cpt(nom).fillWith(1).normalizeAsCPT();
+    bn.cpt("B").fillWith({0.2, 0.3, 0.5});
+    bn.cpt("C").fillWith({0.1, 0.9, 0.3, 0.7, 0.5, 0.5});
+
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    // create the translator set
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the (useless) database
+    gum::learning::DatabaseTable database(trans_set);
+    database.insertRow({"0", "1", "0", "2", "1", "1"});
+    database.insertRow({"1", "2", "0", "1", "2", "2"});
+    database.insertRow({"2", "1", "0", "1", "1", "0"});
+    database.insertRow({"1", "0", "0", "0", "0", "0"});
+    database.insertRow({"0", "0", "0", "1", "1", "1"});
+
+    gum::learning::DirichletPriorFromBN< double > prior(database, &bn);
+    CHECK_EQ(prior.weight(), 1.0);
+    _test_prior_(prior);
+
+    gum::learning::DirichletPriorFromBN prior2(prior);
+    CHECK_EQ(prior2.weight(), 100.0);
+    _test_prior_(prior2);
+
+    gum::learning::DirichletPriorFromBN prior3(std::move(prior2));
+    CHECK_EQ(prior3.weight(), 100.0);
+    _test_prior_(prior3);
+
+    gum::learning::DirichletPriorFromBN< double >* prior4 = prior3.clone();
+    CHECK_EQ(prior4->weight(), 100.0);
+    _test_prior_(*prior4);
+    delete (prior4);
+  }
 
 
 } /* namespace gum_tests */

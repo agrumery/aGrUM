@@ -54,736 +54,14 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  MultiDimOperators
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct MultiDimOperatorsTestSuite {
     public:
-    static void test_op_multidimArray() {
-      std::vector< gum::LabelizedVariable* > vars(10);
+    // namespace gum_tests
 
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
 
-      gum::MultiDimArray< double > t1, t2, t3, *t4, *t5, *t6, *t7;
-
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInit(&t1);
-      randomInit(&t2);
-      randomInit(&t3);
-
-      t4 = add2MultiDimArrays(&t1, &t2);
-      t5 = add_test_arrays(&t1, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = add2MultiDimArrays(&t3, &t2);
-      t5 = add_test_arrays(&t3, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = add2MultiDimArrays(&t2, &t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      t4 = subtract2MultiDimArrays(&t1, &t2);
-      t5 = sub_test_arrays(&t1, &t2);
-      CHECK(*t4 == *t5);
-      t6 = subtract2MultiDimArrays(&t2, &t1);
-      t7 = sub_test_arrays(&t2, &t1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      t4 = multiply2MultiDimArrays(&t1, &t2);
-      t5 = mult_test_arrays(&t1, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = multiply2MultiDimArrays(&t3, &t2);
-      t5 = mult_test_arrays(&t3, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = multiply2MultiDimArrays(&t2, &t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      t4 = divide2MultiDimArrays(&t1, &t2);
-      t5 = div_test_arrays(&t1, &t2);
-      CHECK(*t4 == *t5);
-      t6 = divide2MultiDimArrays(&t2, &t1);
-      t7 = div_test_arrays(&t2, &t1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }   // namespace gum_tests
-
-    static void test_op_multidimImplementationOfMultiDimArray() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double > tt1, tt2, tt3;
-
-      gum::MultiDimImplementation< double >*t4, *t5, *t6, *t7;
-      tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInit(&tt1);
-      randomInit(&tt2);
-      randomInit(&tt3);
-      gum::MultiDimImplementation< double >& t1 = tt1;
-      gum::MultiDimImplementation< double >& t2 = tt2;
-      gum::MultiDimImplementation< double >& t3 = tt3;
-
-      t4 = add2MultiDimArrays(&t1, &t2);
-      t5 = add_test_arrays(&tt1, &tt2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = add2MultiDimArrays(&t3, &t2);
-      t5 = add_test_arrays(&tt3, &tt2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = add2MultiDimArrays(&t2, &t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      // TS_ASSERT_{EQUALS|DIFFERS} can not be used here.
-      t4 = subtract2MultiDimArrays(&t1, &t2);
-      t5 = sub_test_arrays(&tt1, &tt2);
-      CHECK(*t4 == *t5);
-      t6 = subtract2MultiDimArrays(&t2, &t1);
-      t7 = sub_test_arrays(&tt2, &tt1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      t4 = multiply2MultiDimArrays(&t1, &t2);
-      t5 = mult_test_arrays(&tt1, &tt2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = multiply2MultiDimArrays(&t3, &t2);
-      t5 = mult_test_arrays(&tt3, &tt2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = multiply2MultiDimArrays(&t2, &t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      t4 = divide2MultiDimArrays(&t1, &t2);
-      t5 = div_test_arrays(&tt1, &tt2);
-      CHECK(*t4 == *t5);
-      t6 = divide2MultiDimArrays(&t2, &t1);
-      t7 = div_test_arrays(&tt2, &tt1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_operators_init() {
-      gum::operators4MultiDimInit< double >();
-      // why 3 times ?
-      // gum::operators4MultiDimInit<double> ();
-      // gum::operators4MultiDimInit<double> ();
-
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double > t1, t2, t3;
-
-      gum::MultiDimImplementation< double >*t4, *t5;
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInit(&t1);
-      randomInit(&t2);
-      randomInit(&t3);
-
-      t4 = t1 + t2;
-      t5 = add_test_arrays(&t1, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = t3 + t2;
-      t5 = add_test_arrays(&t3, &t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = t2 + t3;
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_tensors() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::Tensor< double > t1, t2, t3;
-
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-
-      randomInitP(t1);
-      randomInitP(t2);
-      randomInitP(t3);
-
-      gum::Tensor< double >*t4, *t6;
-      gum::Tensor< double >*t5, *t7;
-
-      t4 = new gum::Tensor< double >(t1 + t2);
-      t5 = add_test_tensors(t1, t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = new gum::Tensor< double >(t3 + t2);
-      t5 = add_test_tensors(t3, t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = new gum::Tensor< double >(t2 + t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      t4 = new gum::Tensor< double >(t1 - t2);
-      t5 = sub_test_tensors(t1, t2);
-      CHECK(*t4 == *t5);
-      t6 = new gum::Tensor< double >(t2 - t1);
-      t7 = sub_test_tensors(t2, t1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      t4 = new gum::Tensor< double >(t1 * t2);
-      t5 = mult_test_tensors(t1, t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-      t4 = new gum::Tensor< double >(t3 * t2);
-      t5 = mult_test_tensors(t3, t2);
-      CHECK(*t4 == *t5);
-      delete t4;
-      t4 = new gum::Tensor< double >(t2 * t3);
-      CHECK(*t4 == *t5);
-      delete t4;
-      delete t5;
-
-      t4 = new gum::Tensor< double >(t1 / t2);
-      t5 = div_test_tensors(t1, t2);
-      CHECK(*t4 == *t5);
-      t6 = new gum::Tensor< double >(t2 / t1);
-      t7 = div_test_tensors(t2, t1);
-      CHECK(*t6 == *t7);
-      CHECK(*t5 != *t7);
-      CHECK(*t6 != *t4);
-      delete t4;
-      delete t5;
-      delete t6;
-      delete t7;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_op_multidimArray4Pointers() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double* > t1, t2, t3, *t4, *t5, *t6, *t7;
-
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInitPointer(&t1);
-      randomInitPointer(&t2);
-      randomInitPointer(&t3);
-
-      t4 = add2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = add_test_arrays4Pointers(&t1, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-      t4 = add2MultiDimArrays4Pointers(&t3, &t2);
-      t5 = add_test_arrays4Pointers(&t3, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-
-      t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = sub_test_arrays4Pointers(&t1, &t2);
-      CHECK(equal(*t4, *t5));
-      t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
-      t7 = sub_test_arrays4Pointers(&t2, &t1);
-      CHECK(equal(*t6, *t7));
-      CHECK(!equal(*t5, *t7));
-      CHECK(!equal(*t6, *t4));
-      mydelete(t4);
-      mydelete(t5);
-      mydelete(t6);
-      mydelete(t7);
-
-      t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = mult_test_arrays4Pointers(&t1, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-      t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
-      t5 = mult_test_arrays4Pointers(&t3, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-
-      t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = div_test_arrays4Pointers(&t1, &t2);
-      CHECK(equal(*t4, *t5));
-      t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
-      t7 = div_test_arrays4Pointers(&t2, &t1);
-      CHECK(equal(*t6, *t7));
-      CHECK(!equal(*t5, *t7));
-      CHECK(!equal(*t6, *t4));
-      mydelete(t4);
-      mydelete(t5);
-      mydelete(t6);
-      mydelete(t7);
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_op_multidimImplementationOfMultiDimArray4Pointers() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double* > tt1, tt2, tt3;
-
-      gum::MultiDimImplementation< double* >*t4, *t5, *t6, *t7;
-      tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInitPointer(&tt1);
-      randomInitPointer(&tt2);
-      randomInitPointer(&tt3);
-      gum::MultiDimImplementation< double* >& t1 = tt1;
-      gum::MultiDimImplementation< double* >& t2 = tt2;
-      gum::MultiDimImplementation< double* >& t3 = tt3;
-
-      t4 = add2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = add_test_arrays4Pointers(&tt1, &tt2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-      t4 = add2MultiDimArrays4Pointers(&t3, &t2);
-      t5 = add_test_arrays4Pointers(&tt3, &tt2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      t4 = add2MultiDimArrays4Pointers(&t2, &t3);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-
-      t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = sub_test_arrays4Pointers(&tt1, &tt2);
-      CHECK(equal(*t4, *t5));
-      t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
-      t7 = sub_test_arrays4Pointers(&tt2, &tt1);
-      CHECK(equal(*t6, *t7));
-      CHECK(!equal(*t5, *t7));
-      CHECK(!equal(*t6, *t4));
-      mydelete(t4);
-      mydelete(t5);
-      mydelete(t6);
-      mydelete(t7);
-
-      t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = mult_test_arrays4Pointers(&tt1, &tt2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-      t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
-      t5 = mult_test_arrays4Pointers(&tt3, &tt2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-
-      t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
-      t5 = div_test_arrays4Pointers(&tt1, &tt2);
-      CHECK(equal(*t4, *t5));
-      t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
-      t7 = div_test_arrays4Pointers(&tt2, &tt1);
-      CHECK(equal(*t6, *t7));
-      CHECK(!equal(*t5, *t7));
-      CHECK(!equal(*t6, *t4));
-      mydelete(t4);
-      mydelete(t5);
-      mydelete(t6);
-      mydelete(t7);
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_operators_init4Pointers() {
-      gum::pointerOperators4MultiDimInit< double >();
-      // why 3 times ?
-      // gum::pointerOperators4MultiDimInit<double> ();
-      // gum::pointerOperators4MultiDimInit<double> ();
-
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double* > t1, t2, t3;
-
-      gum::MultiDimImplementation< double* >*t4, *t5;
-      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-      randomInitPointer(&t1);
-      randomInitPointer(&t2);
-      randomInitPointer(&t3);
-
-      t4 = t1 + t2;
-      t5 = add_test_arrays4Pointers(&t1, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-      t4 = t3 + t2;
-      t5 = add_test_arrays4Pointers(&t3, &t2);
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      t4 = t2 + t3;
-      CHECK(equal(*t4, *t5));
-      mydelete(t4);
-      mydelete(t5);
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_op_optimizeArrays() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double > t1, t2, t3, t4, *t5, *t6;
-
-      t1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      t2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      t3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
-      t4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
-      randomInit(&t1);
-      randomInit(&t2);
-      randomInit(&t3);
-      randomInit(&t4);
-      t5 = add2MultiDimArrays(&t1, &t2);
-      t6 = add_test_arrays(&t1, &t2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t3, &t4);
-      t6 = add_test_arrays(&t3, &t4);
-      CHECK(*t6 == *t5);
-      delete t6;
-      t6 = add2MultiDimArrays(&t4, &t3);
-      CHECK(*t6 == *t5);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t1, &t2);
-      t6 = add_test_arrays(&t1, &t2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t3, &t2);
-      t6 = add_test_arrays(&t3, &t2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      gum::MultiDimArray< double > t7, t8, t9;
-      t7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      t8 << *(vars[0]) << *(vars[2]);
-      t9 << *(vars[0]);
-      randomInit(&t7);
-      randomInit(&t8);
-      randomInit(&t9);
-
-      t5 = add2MultiDimArrays(&t7, &t8);
-      t6 = add_test_arrays(&t7, &t8);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t8, &t7);
-      t6 = add_test_arrays(&t8, &t7);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      t5 = add2MultiDimArrays(&t7, &t9);
-      t6 = add_test_arrays(&t7, &t9);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t9, &t7);
-      t6 = add_test_arrays(&t9, &t7);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      t5 = add2MultiDimArrays(&t8, &t9);
-      t6 = add_test_arrays(&t8, &t9);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t9, &t8);
-      t6 = add_test_arrays(&t9, &t8);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      gum::MultiDimArray< double > t10, t11, t12;
-      t10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      t11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
-      t12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
-      randomInit(&t10);
-      randomInit(&t11);
-      randomInit(&t12);
-
-      t5 = add2MultiDimArrays(&t10, &t11);
-      t6 = add_test_arrays(&t10, &t11);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t10, &t12);
-      t6 = add_test_arrays(&t10, &t12);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t11, &t12);
-      t6 = add_test_arrays(&t11, &t12);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    static void test_op_optimizeMultiDimImplementations() {
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (gum::Idx i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 4);
-      }
-
-      gum::MultiDimArray< double > tt1, tt2, tt3, tt4;
-
-      gum::MultiDimImplementation< double >*t5, *t6;
-      tt1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      tt2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-      tt3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
-      tt4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
-      randomInit(&tt1);
-      randomInit(&tt2);
-      randomInit(&tt3);
-      randomInit(&tt4);
-      gum::MultiDimImplementation< double >& t1 = tt1;
-      gum::MultiDimImplementation< double >& t2 = tt2;
-      gum::MultiDimImplementation< double >& t3 = tt3;
-      gum::MultiDimImplementation< double >& t4 = tt4;
-
-      t5 = add2MultiDimArrays(&t1, &t2);
-      t6 = add_test_arrays(&tt1, &tt2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t3, &t4);
-      t6 = add_test_arrays(&tt3, &tt4);
-      CHECK(*t6 == *t5);
-      delete t6;
-      t6 = add2MultiDimArrays(&t4, &t3);
-      CHECK(*t6 == *t5);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t1, &t2);
-      t6 = add_test_arrays(&tt1, &tt2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t3, &t2);
-      t6 = add_test_arrays(&tt3, &tt2);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      gum::MultiDimArray< double > tt7, tt8, tt9;
-      tt7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      tt8 << *(vars[0]) << *(vars[2]);
-      tt9 << *(vars[0]);
-      randomInit(&tt7);
-      randomInit(&tt8);
-      randomInit(&tt9);
-      gum::MultiDimImplementation< double >& t7 = tt7;
-      gum::MultiDimImplementation< double >& t8 = tt8;
-      gum::MultiDimImplementation< double >& t9 = tt9;
-
-      t5 = add2MultiDimArrays(&t7, &t8);
-      t6 = add_test_arrays(&tt7, &tt8);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t8, &t7);
-      t6 = add_test_arrays(&tt8, &tt7);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      t5 = add2MultiDimArrays(&t7, &t9);
-      t6 = add_test_arrays(&tt7, &tt9);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t9, &t7);
-      t6 = add_test_arrays(&tt9, &tt7);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      t5 = add2MultiDimArrays(&t8, &t9);
-      t6 = add_test_arrays(&tt8, &tt9);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t9, &t8);
-      t6 = add_test_arrays(&tt9, &tt8);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      gum::MultiDimArray< double > tt10, tt11, tt12;
-      tt10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
-      tt11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
-      tt12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
-      randomInit(&tt10);
-      randomInit(&tt11);
-      randomInit(&tt12);
-      gum::MultiDimImplementation< double >& t10 = tt10;
-      gum::MultiDimImplementation< double >& t11 = tt11;
-      gum::MultiDimImplementation< double >& t12 = tt12;
-
-      t5 = add2MultiDimArrays(&t10, &t11);
-      t6 = add_test_arrays(&tt10, &tt11);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t10, &t12);
-      t6 = add_test_arrays(&tt10, &tt12);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-      t5 = add2MultiDimArrays(&t11, &t12);
-      t6 = add_test_arrays(&tt11, &tt12);
-      CHECK(*t5 == *t6);
-      delete t6;
-      delete t5;
-
-      for (gum::Idx i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }
-
-    private:
+    protected:
     // ==========================================================================
     // ==========================================================================
     template < typename T >
@@ -1229,13 +507,725 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(_op_multidimArray)
-  GUM_TEST_ACTIF(_op_multidimImplementationOfMultiDimArray)
-  GUM_TEST_ACTIF(_operators_init)
-  GUM_TEST_ACTIF(_tensors)
-  GUM_TEST_ACTIF(_op_multidimArray4Pointers)
-  GUM_TEST_ACTIF(_op_multidimImplementationOfMultiDimArray4Pointers)
-  GUM_TEST_ACTIF(_operators_init4Pointers)
-  GUM_TEST_ACTIF(_op_optimizeArrays)
-  GUM_TEST_ACTIF(_op_optimizeMultiDimImplementations)
+  GUM_TEST(_op_multidimArray) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double > t1, t2, t3, *t4, *t5, *t6, *t7;
+
+    t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInit(&t1);
+    randomInit(&t2);
+    randomInit(&t3);
+
+    t4 = add2MultiDimArrays(&t1, &t2);
+    t5 = add_test_arrays(&t1, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = add2MultiDimArrays(&t3, &t2);
+    t5 = add_test_arrays(&t3, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = add2MultiDimArrays(&t2, &t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    t4 = subtract2MultiDimArrays(&t1, &t2);
+    t5 = sub_test_arrays(&t1, &t2);
+    CHECK(*t4 == *t5);
+    t6 = subtract2MultiDimArrays(&t2, &t1);
+    t7 = sub_test_arrays(&t2, &t1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    t4 = multiply2MultiDimArrays(&t1, &t2);
+    t5 = mult_test_arrays(&t1, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = multiply2MultiDimArrays(&t3, &t2);
+    t5 = mult_test_arrays(&t3, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = multiply2MultiDimArrays(&t2, &t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    t4 = divide2MultiDimArrays(&t1, &t2);
+    t5 = div_test_arrays(&t1, &t2);
+    CHECK(*t4 == *t5);
+    t6 = divide2MultiDimArrays(&t2, &t1);
+    t7 = div_test_arrays(&t2, &t1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_multidimImplementationOfMultiDimArray) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double > tt1, tt2, tt3;
+
+    gum::MultiDimImplementation< double >*t4, *t5, *t6, *t7;
+    tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInit(&tt1);
+    randomInit(&tt2);
+    randomInit(&tt3);
+    gum::MultiDimImplementation< double >& t1 = tt1;
+    gum::MultiDimImplementation< double >& t2 = tt2;
+    gum::MultiDimImplementation< double >& t3 = tt3;
+
+    t4 = add2MultiDimArrays(&t1, &t2);
+    t5 = add_test_arrays(&tt1, &tt2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = add2MultiDimArrays(&t3, &t2);
+    t5 = add_test_arrays(&tt3, &tt2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = add2MultiDimArrays(&t2, &t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    // TS_ASSERT_{EQUALS|DIFFERS} can not be used here.
+    t4 = subtract2MultiDimArrays(&t1, &t2);
+    t5 = sub_test_arrays(&tt1, &tt2);
+    CHECK(*t4 == *t5);
+    t6 = subtract2MultiDimArrays(&t2, &t1);
+    t7 = sub_test_arrays(&tt2, &tt1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    t4 = multiply2MultiDimArrays(&t1, &t2);
+    t5 = mult_test_arrays(&tt1, &tt2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = multiply2MultiDimArrays(&t3, &t2);
+    t5 = mult_test_arrays(&tt3, &tt2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = multiply2MultiDimArrays(&t2, &t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    t4 = divide2MultiDimArrays(&t1, &t2);
+    t5 = div_test_arrays(&tt1, &tt2);
+    CHECK(*t4 == *t5);
+    t6 = divide2MultiDimArrays(&t2, &t1);
+    t7 = div_test_arrays(&tt2, &tt1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_operators_init) {
+    gum::operators4MultiDimInit< double >();
+    // why 3 times ?
+    // gum::operators4MultiDimInit<double> ();
+    // gum::operators4MultiDimInit<double> ();
+
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double > t1, t2, t3;
+
+    gum::MultiDimImplementation< double >*t4, *t5;
+    t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInit(&t1);
+    randomInit(&t2);
+    randomInit(&t3);
+
+    t4 = t1 + t2;
+    t5 = add_test_arrays(&t1, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = t3 + t2;
+    t5 = add_test_arrays(&t3, &t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = t2 + t3;
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_tensors) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::Tensor< double > t1, t2, t3;
+
+    t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+    randomInitP(t1);
+    randomInitP(t2);
+    randomInitP(t3);
+
+    gum::Tensor< double >*t4, *t6;
+    gum::Tensor< double >*t5, *t7;
+
+    t4 = new gum::Tensor< double >(t1 + t2);
+    t5 = add_test_tensors(t1, t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = new gum::Tensor< double >(t3 + t2);
+    t5 = add_test_tensors(t3, t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = new gum::Tensor< double >(t2 + t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    t4 = new gum::Tensor< double >(t1 - t2);
+    t5 = sub_test_tensors(t1, t2);
+    CHECK(*t4 == *t5);
+    t6 = new gum::Tensor< double >(t2 - t1);
+    t7 = sub_test_tensors(t2, t1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    t4 = new gum::Tensor< double >(t1 * t2);
+    t5 = mult_test_tensors(t1, t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+    t4 = new gum::Tensor< double >(t3 * t2);
+    t5 = mult_test_tensors(t3, t2);
+    CHECK(*t4 == *t5);
+    delete t4;
+    t4 = new gum::Tensor< double >(t2 * t3);
+    CHECK(*t4 == *t5);
+    delete t4;
+    delete t5;
+
+    t4 = new gum::Tensor< double >(t1 / t2);
+    t5 = div_test_tensors(t1, t2);
+    CHECK(*t4 == *t5);
+    t6 = new gum::Tensor< double >(t2 / t1);
+    t7 = div_test_tensors(t2, t1);
+    CHECK(*t6 == *t7);
+    CHECK(*t5 != *t7);
+    CHECK(*t6 != *t4);
+    delete t4;
+    delete t5;
+    delete t6;
+    delete t7;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_multidimArray4Pointers) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double* > t1, t2, t3, *t4, *t5, *t6, *t7;
+
+    t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInitPointer(&t1);
+    randomInitPointer(&t2);
+    randomInitPointer(&t3);
+
+    t4 = add2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = add_test_arrays4Pointers(&t1, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+    t4 = add2MultiDimArrays4Pointers(&t3, &t2);
+    t5 = add_test_arrays4Pointers(&t3, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    t4 = add2MultiDimArrays4Pointers(&t2, &t3);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+
+    t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = sub_test_arrays4Pointers(&t1, &t2);
+    CHECK(equal(*t4, *t5));
+    t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
+    t7 = sub_test_arrays4Pointers(&t2, &t1);
+    CHECK(equal(*t6, *t7));
+    CHECK(!equal(*t5, *t7));
+    CHECK(!equal(*t6, *t4));
+    mydelete(t4);
+    mydelete(t5);
+    mydelete(t6);
+    mydelete(t7);
+
+    t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = mult_test_arrays4Pointers(&t1, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+    t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
+    t5 = mult_test_arrays4Pointers(&t3, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+
+    t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = div_test_arrays4Pointers(&t1, &t2);
+    CHECK(equal(*t4, *t5));
+    t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
+    t7 = div_test_arrays4Pointers(&t2, &t1);
+    CHECK(equal(*t6, *t7));
+    CHECK(!equal(*t5, *t7));
+    CHECK(!equal(*t6, *t4));
+    mydelete(t4);
+    mydelete(t5);
+    mydelete(t6);
+    mydelete(t7);
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_multidimImplementationOfMultiDimArray4Pointers) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double* > tt1, tt2, tt3;
+
+    gum::MultiDimImplementation< double* >*t4, *t5, *t6, *t7;
+    tt1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    tt2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    tt3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInitPointer(&tt1);
+    randomInitPointer(&tt2);
+    randomInitPointer(&tt3);
+    gum::MultiDimImplementation< double* >& t1 = tt1;
+    gum::MultiDimImplementation< double* >& t2 = tt2;
+    gum::MultiDimImplementation< double* >& t3 = tt3;
+
+    t4 = add2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = add_test_arrays4Pointers(&tt1, &tt2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+    t4 = add2MultiDimArrays4Pointers(&t3, &t2);
+    t5 = add_test_arrays4Pointers(&tt3, &tt2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    t4 = add2MultiDimArrays4Pointers(&t2, &t3);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+
+    t4 = subtract2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = sub_test_arrays4Pointers(&tt1, &tt2);
+    CHECK(equal(*t4, *t5));
+    t6 = subtract2MultiDimArrays4Pointers(&t2, &t1);
+    t7 = sub_test_arrays4Pointers(&tt2, &tt1);
+    CHECK(equal(*t6, *t7));
+    CHECK(!equal(*t5, *t7));
+    CHECK(!equal(*t6, *t4));
+    mydelete(t4);
+    mydelete(t5);
+    mydelete(t6);
+    mydelete(t7);
+
+    t4 = multiply2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = mult_test_arrays4Pointers(&tt1, &tt2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+    t4 = multiply2MultiDimArrays4Pointers(&t3, &t2);
+    t5 = mult_test_arrays4Pointers(&tt3, &tt2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    t4 = multiply2MultiDimArrays4Pointers(&t2, &t3);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+
+    t4 = divide2MultiDimArrays4Pointers(&t1, &t2);
+    t5 = div_test_arrays4Pointers(&tt1, &tt2);
+    CHECK(equal(*t4, *t5));
+    t6 = divide2MultiDimArrays4Pointers(&t2, &t1);
+    t7 = div_test_arrays4Pointers(&tt2, &tt1);
+    CHECK(equal(*t6, *t7));
+    CHECK(!equal(*t5, *t7));
+    CHECK(!equal(*t6, *t4));
+    mydelete(t4);
+    mydelete(t5);
+    mydelete(t6);
+    mydelete(t7);
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_operators_init4Pointers) {
+    gum::pointerOperators4MultiDimInit< double >();
+    // why 3 times ?
+    // gum::pointerOperators4MultiDimInit<double> ();
+    // gum::pointerOperators4MultiDimInit<double> ();
+
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double* > t1, t2, t3;
+
+    gum::MultiDimImplementation< double* >*t4, *t5;
+    t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+    t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+    randomInitPointer(&t1);
+    randomInitPointer(&t2);
+    randomInitPointer(&t3);
+
+    t4 = t1 + t2;
+    t5 = add_test_arrays4Pointers(&t1, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+    t4 = t3 + t2;
+    t5 = add_test_arrays4Pointers(&t3, &t2);
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    t4 = t2 + t3;
+    CHECK(equal(*t4, *t5));
+    mydelete(t4);
+    mydelete(t5);
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_optimizeArrays) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double > t1, t2, t3, t4, *t5, *t6;
+
+    t1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    t2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    t3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+    t4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+    randomInit(&t1);
+    randomInit(&t2);
+    randomInit(&t3);
+    randomInit(&t4);
+    t5 = add2MultiDimArrays(&t1, &t2);
+    t6 = add_test_arrays(&t1, &t2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t3, &t4);
+    t6 = add_test_arrays(&t3, &t4);
+    CHECK(*t6 == *t5);
+    delete t6;
+    t6 = add2MultiDimArrays(&t4, &t3);
+    CHECK(*t6 == *t5);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t1, &t2);
+    t6 = add_test_arrays(&t1, &t2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t3, &t2);
+    t6 = add_test_arrays(&t3, &t2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    gum::MultiDimArray< double > t7, t8, t9;
+    t7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    t8 << *(vars[0]) << *(vars[2]);
+    t9 << *(vars[0]);
+    randomInit(&t7);
+    randomInit(&t8);
+    randomInit(&t9);
+
+    t5 = add2MultiDimArrays(&t7, &t8);
+    t6 = add_test_arrays(&t7, &t8);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t8, &t7);
+    t6 = add_test_arrays(&t8, &t7);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    t5 = add2MultiDimArrays(&t7, &t9);
+    t6 = add_test_arrays(&t7, &t9);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t9, &t7);
+    t6 = add_test_arrays(&t9, &t7);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    t5 = add2MultiDimArrays(&t8, &t9);
+    t6 = add_test_arrays(&t8, &t9);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t9, &t8);
+    t6 = add_test_arrays(&t9, &t8);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    gum::MultiDimArray< double > t10, t11, t12;
+    t10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    t11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
+    t12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
+    randomInit(&t10);
+    randomInit(&t11);
+    randomInit(&t12);
+
+    t5 = add2MultiDimArrays(&t10, &t11);
+    t6 = add_test_arrays(&t10, &t11);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t10, &t12);
+    t6 = add_test_arrays(&t10, &t12);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t11, &t12);
+    t6 = add_test_arrays(&t11, &t12);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_optimizeMultiDimImplementations) {
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (gum::Idx i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 4);
+    }
+
+    gum::MultiDimArray< double > tt1, tt2, tt3, tt4;
+
+    gum::MultiDimImplementation< double >*t5, *t6;
+    tt1 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    tt2 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+    tt3 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+    tt4 << *(vars[6]) << *(vars[0]) << *(vars[2]);
+    randomInit(&tt1);
+    randomInit(&tt2);
+    randomInit(&tt3);
+    randomInit(&tt4);
+    gum::MultiDimImplementation< double >& t1 = tt1;
+    gum::MultiDimImplementation< double >& t2 = tt2;
+    gum::MultiDimImplementation< double >& t3 = tt3;
+    gum::MultiDimImplementation< double >& t4 = tt4;
+
+    t5 = add2MultiDimArrays(&t1, &t2);
+    t6 = add_test_arrays(&tt1, &tt2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t3, &t4);
+    t6 = add_test_arrays(&tt3, &tt4);
+    CHECK(*t6 == *t5);
+    delete t6;
+    t6 = add2MultiDimArrays(&t4, &t3);
+    CHECK(*t6 == *t5);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t1, &t2);
+    t6 = add_test_arrays(&tt1, &tt2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t3, &t2);
+    t6 = add_test_arrays(&tt3, &tt2);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    gum::MultiDimArray< double > tt7, tt8, tt9;
+    tt7 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    tt8 << *(vars[0]) << *(vars[2]);
+    tt9 << *(vars[0]);
+    randomInit(&tt7);
+    randomInit(&tt8);
+    randomInit(&tt9);
+    gum::MultiDimImplementation< double >& t7 = tt7;
+    gum::MultiDimImplementation< double >& t8 = tt8;
+    gum::MultiDimImplementation< double >& t9 = tt9;
+
+    t5 = add2MultiDimArrays(&t7, &t8);
+    t6 = add_test_arrays(&tt7, &tt8);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t8, &t7);
+    t6 = add_test_arrays(&tt8, &tt7);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    t5 = add2MultiDimArrays(&t7, &t9);
+    t6 = add_test_arrays(&tt7, &tt9);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t9, &t7);
+    t6 = add_test_arrays(&tt9, &tt7);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    t5 = add2MultiDimArrays(&t8, &t9);
+    t6 = add_test_arrays(&tt8, &tt9);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t9, &t8);
+    t6 = add_test_arrays(&tt9, &tt8);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    gum::MultiDimArray< double > tt10, tt11, tt12;
+    tt10 << *(vars[0]) << *(vars[2]) << *(vars[1]);
+    tt11 << *(vars[1]) << *(vars[0]) << *(vars[2]);
+    tt12 << *(vars[0]) << *(vars[3]) << *(vars[1]);
+    randomInit(&tt10);
+    randomInit(&tt11);
+    randomInit(&tt12);
+    gum::MultiDimImplementation< double >& t10 = tt10;
+    gum::MultiDimImplementation< double >& t11 = tt11;
+    gum::MultiDimImplementation< double >& t12 = tt12;
+
+    t5 = add2MultiDimArrays(&t10, &t11);
+    t6 = add_test_arrays(&tt10, &tt11);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t10, &t12);
+    t6 = add_test_arrays(&tt10, &tt12);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+    t5 = add2MultiDimArrays(&t11, &t12);
+    t6 = add_test_arrays(&tt11, &tt12);
+    CHECK(*t5 == *t6);
+    delete t6;
+    delete t5;
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
 } /* namespace gum_tests */

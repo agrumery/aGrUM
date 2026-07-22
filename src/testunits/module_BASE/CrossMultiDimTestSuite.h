@@ -51,57 +51,53 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  CrossMultiDim
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct CrossMultiDimTestSuite {
     public:
-    static void testComparaisonMin() {
-      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
-      gum::MultiDimArray< double >   full;
-      gum::MultiDimSparse< double >  sparse(static_cast< float >(0));
-      gum::aggregator::Min< double > agg;
-      agg << a << b << c << d;
-      full << a << b << c << d;
-      sparse << a << b << c << d;
-
-      gum::Instantiation i(agg);
-
-      for (i.setFirst(); !i.end(); ++i) {
-        double res = agg[i];
-        full.set(i, res);
-        sparse.set(i, res);
-      }
-
-      for (i.setFirst(); !i.end(); ++i) {
-        CHECK_EQ(sparse[i], agg[i]);
-        CHECK_EQ(full[i], agg[i]);
-      }
-
-      gum::Instantiation j(sparse);
-
-      for (j.setFirst(); !j.end(); ++j) {
-        CHECK_EQ(agg[j], sparse[j]);
-        CHECK_EQ(full[j], sparse[j]);
-      }
-
-      gum::Instantiation k(full);
-
-      for (k.setFirst(); !k.end(); ++k) {
-        CHECK_EQ(agg[k], full[k]);
-        CHECK_EQ(sparse[k], full[k]);
-      }
-
-      CHECK_EQ(agg.compressionRate(), static_cast< float >(1.0));   // 100% de compression
-
-      CHECK(
-          (sparse.compressionRate())
-          == (static_cast< float >(0.75)));   // deterministic as a sparse : 75% parameters are 0...
-      CHECK_EQ(full.compressionRate(), static_cast< float >(0));   // 0% de compression...
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(ComparaisonMin)
+  GUM_TEST(ComparaisonMin) {
+    gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3);
+    gum::MultiDimArray< double >   full;
+    gum::MultiDimSparse< double >  sparse(static_cast< float >(0));
+    gum::aggregator::Min< double > agg;
+    agg << a << b << c << d;
+    full << a << b << c << d;
+    sparse << a << b << c << d;
+
+    gum::Instantiation i(agg);
+
+    for (i.setFirst(); !i.end(); ++i) {
+      double res = agg[i];
+      full.set(i, res);
+      sparse.set(i, res);
+    }
+
+    for (i.setFirst(); !i.end(); ++i) {
+      CHECK_EQ(sparse[i], agg[i]);
+      CHECK_EQ(full[i], agg[i]);
+    }
+
+    gum::Instantiation j(sparse);
+
+    for (j.setFirst(); !j.end(); ++j) {
+      CHECK_EQ(agg[j], sparse[j]);
+      CHECK_EQ(full[j], sparse[j]);
+    }
+
+    gum::Instantiation k(full);
+
+    for (k.setFirst(); !k.end(); ++k) {
+      CHECK_EQ(agg[k], full[k]);
+      CHECK_EQ(sparse[k], full[k]);
+    }
+
+    CHECK_EQ(agg.compressionRate(), static_cast< float >(1.0));   // 100% de compression
+
+    CHECK((sparse.compressionRate())
+          == (static_cast< float >(0.75)));   // deterministic as a sparse : 75% parameters are 0...
+    CHECK_EQ(full.compressionRate(), static_cast< float >(0));   // 0% de compression...
+  }
 }   // namespace gum_tests

@@ -52,9 +52,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  FactorisedValuesCNFWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -94,45 +91,8 @@ namespace gum_tests {
 
     ~FactorisedValuesCNFWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
-      gum::FactorisedValuesCNFWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::FactorisedValuesCNFWriter< double >());
-      delete writer;
-    }
 
-    static void testWriter_ostream() {
-      gum::FactorisedValuesCNFWriter< double > writer;
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    static void testWriter_ostream_With_Approximation() {
-      gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy > writer;
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    void testWriter_string() {
-      gum::FactorisedValuesCNFWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-    }
-
-    void testWriter_string_With_Approximation() const {
-      gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy > writer;
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-      std::string file
-          = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.2, 0.8});
@@ -156,9 +116,37 @@ namespace gum_tests {
     }
   };
 
-GUM_TEST_ACTIF(Constuctor)
-GUM_TEST_ACTIF(Writer_ostream)
-GUM_TEST_ACTIF(Writer_ostream_With_Approximation)
-GUM_TEST_ACTIF(Writer_string)
-GUM_TEST_ACTIF(Writer_string_With_Approximation)
+GUM_TEST(Constuctor) {
+      gum::FactorisedValuesCNFWriter< double >* writer = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::FactorisedValuesCNFWriter< double >());
+      delete writer;
+    }
+GUM_TEST(Writer_ostream) {
+      gum::FactorisedValuesCNFWriter< double > writer;
+      // Uncomment this to check the ouput
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+    }
+GUM_TEST(Writer_ostream_With_Approximation) {
+      gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy > writer;
+      writer.setEpsilon(0.2);
+      writer.setLowLimit(0);
+      writer.setHighLimit(1);
+
+      // Uncomment this to check the ouput
+      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+    }
+GUM_TEST(Writer_string) {
+      gum::FactorisedValuesCNFWriter< double > writer;
+      std::string file = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile.cnf");
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+    }
+GUM_TEST(Writer_string_With_Approximation) {
+      gum::FactorisedValuesCNFWriter< double, gum::LinearApproximationPolicy > writer;
+      writer.setEpsilon(0.2);
+      writer.setLowLimit(0);
+      writer.setHighLimit(1);
+      std::string file
+          = GET_RESSOURCES_PATH("outputs/FactorisedValuesCNFWriter_TestFile_Approximation.cnf");
+      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+    }
 }

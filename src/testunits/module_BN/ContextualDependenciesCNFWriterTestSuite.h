@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  ContextualDependenciesCNFWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -95,68 +92,8 @@ namespace gum_tests {
 
     ~ContextualDependenciesCNFWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
-      gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer
-                                      = new gum::ContextualDependenciesCNFWriter< double >());
-      delete writer;
-    }
 
-    static void testConstuctor_With_Aproximation() {
-      using typCNF   = gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy >;
-      typCNF* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new typCNF());
-      //   writer->setEpsilon( 0.2 );
-      //         writer->setLowLimit ( 0 );
-      //         writer->setHighLimit ( 0.5 );
-
-      delete writer;
-    }
-
-    void testWriter_ostream() const {
-      gum::ContextualDependenciesCNFWriter< double > writer;
-      std::stringstream                              sstream;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn));
-    }
-
-    static void testWriter_ostream_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    void testWriter_string() const {
-      gum::ContextualDependenciesCNFWriter< double > writer;
-      std::string                                    file
-          = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-    }
-
-    void testWriter_string_With_Approximation() const {
-      gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
-
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-      std::string file = GET_RESSOURCES_PATH(
-          "outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-
-      file = GET_RESSOURCES_PATH(
-          "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
-
-      try {
-        writer.write(file, *bn);
-        // CHECK(false);
-      } catch (gum::IOError&) { CHECK(true); }
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.5, 0.5});
@@ -179,10 +116,62 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Constuctor_With_Aproximation)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Writer_ostream_With_Approximation)
-  GUM_TEST_ACTIF(Writer_string)
-  GUM_TEST_ACTIF(Writer_string_With_Approximation)
+  GUM_TEST(Constuctor) {
+    gum::ContextualDependenciesCNFWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::ContextualDependenciesCNFWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Constuctor_With_Aproximation) {
+    using typCNF   = gum::ContextualDependenciesCNFWriter< double, gum::ExactPolicy >;
+    typCNF* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new typCNF());
+    //   writer->setEpsilon( 0.2 );
+    //         writer->setLowLimit ( 0 );
+    //         writer->setHighLimit ( 0.5 );
+
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::ContextualDependenciesCNFWriter< double > writer;
+    std::stringstream                              sstream;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(sstream, *bn));
+  }
+
+  GUM_TEST(Writer_ostream_With_Approximation) {
+    gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
+    writer.setEpsilon(0.2);
+    writer.setLowLimit(0);
+    writer.setHighLimit(1);
+
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+  }
+
+  GUM_TEST(Writer_string) {
+    gum::ContextualDependenciesCNFWriter< double > writer;
+    std::string file = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile.cnf");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+  }
+
+  GUM_TEST(Writer_string_With_Approximation) {
+    gum::ContextualDependenciesCNFWriter< double, gum::LinearApproximationPolicy > writer;
+
+    writer.setEpsilon(0.2);
+    writer.setLowLimit(0);
+    writer.setHighLimit(1);
+    std::string file
+        = GET_RESSOURCES_PATH("outputs/ContextualDependenciesCNFWriter_TestFile_Approximation.cnf");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+
+    file = GET_RESSOURCES_PATH(
+        "outputs/ContextualDependenciesCNFWriter_RO_TestFile_Approximation.cnf");
+
+    try {
+      writer.write(file, *bn);
+      // CHECK(false);
+    } catch (gum::IOError&) { CHECK(true); }
+  }
 }   // namespace gum_tests

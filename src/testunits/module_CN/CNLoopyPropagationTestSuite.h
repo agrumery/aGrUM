@@ -55,9 +55,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  CNLoopyPropagation
-#define GUM_CURRENT_MODULE CN
-
 /**
  * @file
  * @brief Mono-threaded version
@@ -70,7 +67,7 @@ namespace gum_tests {
 
   ////////////////////////////////////////////////////////////////////
   class L2UListener: public gum::ApproximationSchemeListener {
-    private:
+    protected:
     int         nbr_;
     std::string msg_;
 
@@ -138,255 +135,257 @@ namespace gum_tests {
     void clearCNet() { delete cn; }
 
     // not dynamic (2U network) - with evidence
-    void testL2UInference() {
-      initCNet();
-
-      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
-
-      // evidence from file
-      try {
-        lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      // evidence from map
-      std::map< std::string, std::vector< double > > eviMap;
-      std::vector< double >                          evi0(2, 0);
-      evi0[0] = 1;
-      std::vector< double > evi1(2, 0);
-      evi1[1]     = 1;
-      eviMap["L"] = evi1;
-      eviMap["G"] = evi0;
-
-      try {
-        lp.insertEvidence(eviMap);
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      std::map< std::string, std::vector< double > > modals;
-      std::vector< double >                          binaryModal(2, 0);
-      binaryModal[1] = 1;
-
-      // modalities from map
-      // from file with dynamic network, not 2U
-      try {
-        for (const auto node: cn->current_bn().nodes())
-          modals[cn->current_bn().variable(node).name()] = binaryModal;
-      } catch (gum::Exception&) { CHECK(false); }
-
-      /*try {
-        lp.insertModals( modals );
-      } catch ( gum::Exception & ) {
-        CHECK( false );
-      }*/
-
-      try {
-        lp.makeInference();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto tmin = lp.marginalMin(node);
-          auto tmax = lp.marginalMax(node);
-          for (gum::Instantiation i(tmin); !i.end(); ++i) {
-            CHECK(tmin.get(i) >= 0.0);
-            CHECK(tmin.get(i) <= 1.0);
-            CHECK(tmax.get(i) >= 0.0);
-            CHECK(tmax.get(i) <= 1.0);
-            CHECK(tmin.get(i) <= tmax.get(i));
-          }
-        }
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      clearCNet();
-    }   // end of : testL2UInference (2U network)
+    // end of : testL2UInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
-    void testL2UInferenceD() {
-      initDCNet();
-
-      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
-
-      //////////////////////////////////////////////////////
-      // strong independence
-      //////////////////////////////////////////////////////
-
-      // evidence from file
-      try {
-        lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) { CHECK(false); }
-
-      // modalities from file
-      /*try {
-        lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
-      } catch ( gum::Exception & ) {
-        CHECK( false );
-      }*/
-
-      try {
-        lp.makeInference();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto tmin(lp.marginalMin(node));
-          auto tmax(lp.marginalMax(node));
-          for (gum::Instantiation i(tmin); !i.end(); ++i) {
-            CHECK(tmin.get(i) >= 0.0);
-            CHECK(tmin.get(i) <= 1.0);
-            CHECK(tmax.get(i) >= 0.0);
-            CHECK(tmax.get(i) <= 1.0);
-            CHECK(tmin.get(i) <= tmax.get(i));
-          }
-        }
-      } catch (gum::Exception&) { CHECK(false); }
-
-      /*
-      try {
-        lp.dynamicExpectations();
-      } catch ( gum::Exception & ) {
-        CHECK( false );
-      }*/
-      /*
-              try {
-                //std::vector< double >  ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-                //std::vector< double >  ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-                //std::vector< double >  elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-                //std::vector< double >  elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-                //std::vector< double >  etemp_inf ( lp.dynamicExpMin ( "temp" )
-         );
-                //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
-         );
-              } catch ( gum::Exception & ) {
-                CHECK( false );
-              }*/
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      clearCNet();
-    }   // end of : testL2UInferenceD
+    // end of : testL2UInferenceD
 
     // with dynamic network
-    void testL2UListener() {
-      initDCNet();
-      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
-
-      // evidence from file
-      try {
-        lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
-      } catch (gum::Exception&) { CHECK(false); }
-
-      // lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
-      L2UListener mcl(lp);
-
-      try {
-        lp.makeInference();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      CHECK_EQ(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
-      CHECK_NE(mcl.msg(), std::string(""));
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      clearCNet();
-    }   // end of : testL2UListener
+    // end of : testL2UListener
 
     // not dynamic (2U network) - with evidence
-    void testL2UInferenceFromBug() {
-      initCNet();
 
-      gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
-
-      // evidence from file
-      lp.eraseAllEvidence();
-      try {
-        lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        lp.makeInference();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto tmin(lp.marginalMin(node));
-          auto tmax(lp.marginalMax(node));
-          for (gum::Instantiation i(tmin); !i.end(); ++i) {
-            CHECK(tmin.get(i) >= 0.0);
-            CHECK(tmin.get(i) <= 1.0);
-            CHECK(tmax.get(i) >= 0.0);
-            CHECK(tmax.get(i) <= 1.0);
-            CHECK(tmin.get(i) <= tmax.get(i));
-          }
-        }
-      } catch (gum::Exception&) { CHECK(false); }
-
-      try {
-        lp.eraseAllEvidence();
-      } catch (gum::Exception&) { CHECK(false); }
-
-      clearCNet();
-    }
-
-    void testSaveVerticesFormat() {
-      // Bug5: saveVertices wrote [v0v1] instead of [v0,v1] because first=false was
-      // only set inside the if(!first) block and never triggered.
-      initCNet();
-
-      gum::credal::CNLoopyPropagation< double > lp(*cn);
-      lp.storeVertices(true);
-
-      // insertModals required so computeExpectations_() fills marginalSets_
-      std::map< std::string, std::vector< double > > modals;
-      std::vector< double >                          binaryModal(2, 0.0);
-      binaryModal[1] = 1.0;
-      for (const auto node: cn->current_bn().nodes())
-        modals[cn->current_bn().variable(node).name()] = binaryModal;
-      lp.insertModals(modals);
-
-      lp.makeInference();
-
-      std::string path = gum_tests::getTempFilePath("_gum_saveVertices.txt");
-      lp.saveVertices(path);
-
-      std::ifstream f(path);
-      CHECK(f.good());
-
-      std::string line;
-      bool        found_vertex_line = false;
-      while (std::getline(f, line)) {
-        if (!line.empty() && line.front() == '[') {
-          found_vertex_line = true;
-          CHECK(line.find(',') != std::string::npos);
-        }
-      }
-      f.close();
-      CHECK(found_vertex_line);
-      std::remove(path.c_str());
-
-      clearCNet();
-    }
 
   };   // end of : class L2UInferenceTestSuite
 
-  GUM_TEST_ACTIF(L2UInference)
-  GUM_TEST_ACTIF(L2UInferenceD)
-  GUM_TEST_ACTIF(L2UListener)
-  GUM_TEST_ACTIF(L2UInferenceFromBug)
-  GUM_TEST_ACTIF(SaveVerticesFormat)
+  GUM_TEST(L2UInference) {
+    initCNet();
+
+    gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
+
+    // evidence from file
+    try {
+      lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    // evidence from map
+    std::map< std::string, std::vector< double > > eviMap;
+    std::vector< double >                          evi0(2, 0);
+    evi0[0] = 1;
+    std::vector< double > evi1(2, 0);
+    evi1[1]     = 1;
+    eviMap["L"] = evi1;
+    eviMap["G"] = evi0;
+
+    try {
+      lp.insertEvidence(eviMap);
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    std::map< std::string, std::vector< double > > modals;
+    std::vector< double >                          binaryModal(2, 0);
+    binaryModal[1] = 1;
+
+    // modalities from map
+    // from file with dynamic network, not 2U
+    try {
+      for (const auto node: cn->current_bn().nodes())
+        modals[cn->current_bn().variable(node).name()] = binaryModal;
+    } catch (gum::Exception&) { CHECK(false); }
+
+    /*try {
+      lp.insertModals( modals );
+    } catch ( gum::Exception & ) {
+      CHECK( false );
+    }*/
+
+    try {
+      lp.makeInference();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto tmin = lp.marginalMin(node);
+        auto tmax = lp.marginalMax(node);
+        for (gum::Instantiation i(tmin); !i.end(); ++i) {
+          CHECK(tmin.get(i) >= 0.0);
+          CHECK(tmin.get(i) <= 1.0);
+          CHECK(tmax.get(i) >= 0.0);
+          CHECK(tmax.get(i) <= 1.0);
+          CHECK(tmin.get(i) <= tmax.get(i));
+        }
+      }
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    clearCNet();
+  }
+
+  GUM_TEST(L2UInferenceD) {
+    initDCNet();
+
+    gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
+
+    //////////////////////////////////////////////////////
+    // strong independence
+    //////////////////////////////////////////////////////
+
+    // evidence from file
+    try {
+      lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
+    } catch (gum::Exception&) { CHECK(false); }
+
+    // modalities from file
+    /*try {
+      lp.insertModalsFile( GET_RESSOURCES_PATH ( modalities.modal ) );
+    } catch ( gum::Exception & ) {
+      CHECK( false );
+    }*/
+
+    try {
+      lp.makeInference();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto tmin(lp.marginalMin(node));
+        auto tmax(lp.marginalMax(node));
+        for (gum::Instantiation i(tmin); !i.end(); ++i) {
+          CHECK(tmin.get(i) >= 0.0);
+          CHECK(tmin.get(i) <= 1.0);
+          CHECK(tmax.get(i) >= 0.0);
+          CHECK(tmax.get(i) <= 1.0);
+          CHECK(tmin.get(i) <= tmax.get(i));
+        }
+      }
+    } catch (gum::Exception&) { CHECK(false); }
+
+    /*
+    try {
+      lp.dynamicExpectations();
+    } catch ( gum::Exception & ) {
+      CHECK( false );
+    }*/
+    /*
+            try {
+              //std::vector< double >  ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+              //std::vector< double >  ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+              //std::vector< double >  elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+              //std::vector< double >  elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+              //std::vector< double >  etemp_inf ( lp.dynamicExpMin ( "temp" )
+       );
+              //std::vector< double >  etemp_sup ( lp.dynamicExpMax ( "temp" )
+       );
+            } catch ( gum::Exception & ) {
+              CHECK( false );
+            }*/
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    clearCNet();
+  }
+
+  GUM_TEST(L2UListener) {
+    initDCNet();
+    gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
+
+    // evidence from file
+    try {
+      lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/dbn_bin_evi.evi"));
+    } catch (gum::Exception&) { CHECK(false); }
+
+    // lp.inferenceType(gum::CNLoopyPropagation<double>::InferenceType::randomOrder);
+    L2UListener mcl(lp);
+
+    try {
+      lp.makeInference();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    CHECK_EQ(mcl.nbr() * lp.periodSize(), lp.nbrIterations());
+    CHECK_NE(mcl.msg(), std::string(""));
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    clearCNet();
+  }
+
+  GUM_TEST(L2UInferenceFromBug) {
+    initCNet();
+
+    gum::credal::CNLoopyPropagation< double > lp = gum::credal::CNLoopyPropagation< double >(*cn);
+
+    // evidence from file
+    lp.eraseAllEvidence();
+    try {
+      lp.insertEvidenceFile(GET_RESSOURCES_PATH("cn/L2U.evi"));
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      lp.makeInference();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto tmin(lp.marginalMin(node));
+        auto tmax(lp.marginalMax(node));
+        for (gum::Instantiation i(tmin); !i.end(); ++i) {
+          CHECK(tmin.get(i) >= 0.0);
+          CHECK(tmin.get(i) <= 1.0);
+          CHECK(tmax.get(i) >= 0.0);
+          CHECK(tmax.get(i) <= 1.0);
+          CHECK(tmin.get(i) <= tmax.get(i));
+        }
+      }
+    } catch (gum::Exception&) { CHECK(false); }
+
+    try {
+      lp.eraseAllEvidence();
+    } catch (gum::Exception&) { CHECK(false); }
+
+    clearCNet();
+  }
+
+  GUM_TEST(SaveVerticesFormat) {
+    // Bug5: saveVertices wrote [v0v1] instead of [v0,v1] because first=false was
+    // only set inside the if(!first) block and never triggered.
+    initCNet();
+
+    gum::credal::CNLoopyPropagation< double > lp(*cn);
+    lp.storeVertices(true);
+
+    // insertModals required so computeExpectations_() fills marginalSets_
+    std::map< std::string, std::vector< double > > modals;
+    std::vector< double >                          binaryModal(2, 0.0);
+    binaryModal[1] = 1.0;
+    for (const auto node: cn->current_bn().nodes())
+      modals[cn->current_bn().variable(node).name()] = binaryModal;
+    lp.insertModals(modals);
+
+    lp.makeInference();
+
+    std::string path = gum_tests::getTempFilePath("_gum_saveVertices.txt");
+    lp.saveVertices(path);
+
+    std::ifstream f(path);
+    CHECK(f.good());
+
+    std::string line;
+    bool        found_vertex_line = false;
+    while (std::getline(f, line)) {
+      if (!line.empty() && line.front() == '[') {
+        found_vertex_line = true;
+        CHECK(line.find(',') != std::string::npos);
+      }
+    }
+    f.close();
+    CHECK(found_vertex_line);
+    std::remove(path.c_str());
+
+    clearCNet();
+  }
 
 }   // namespace gum_tests

@@ -59,16 +59,13 @@
 #include <agrum/FMDP/fmdpFactory.h>
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 
-#define GUM_CURRENT_SUITE  FMDPDatReader
-#define GUM_CURRENT_MODULE FMDP
-
 // =====================================================================
 
 
 namespace gum_tests {
 
   struct FMDPDatReaderTestSuite {
-    private:
+    protected:
     std::string _file_;
 
     void _run_() {
@@ -112,101 +109,93 @@ namespace gum_tests {
     }
 
     public:
-    void testConstuctor() {
-      std::string _file_ = GET_RESSOURCES_PATH("FMDP/nonexistent_file.dat");
-
-      gum::FMDP< double >           fmdp(true);
-      gum::FMDPDatReader< double >* reader = nullptr;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, _file_));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
-    }
-
-    void testReadFileCoffeeRobot() {
-      _file_ = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
-      _run_();
-    }
-
-    void testReadFileTinyFactory() {
-      _file_ = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
-      _run_();
-    }
-
-    void testReadFileFactory() {
-      _file_ = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
-      _run_();
-    }
-
-    void testReadFileTaxi() {
-      _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
-      _run_();
-    }
-
-    void testDiscountStoredAfterRead() {
-      // coffee.dat declares "discount 0.9" — verify addDiscount() stores the value
-      gum::FMDP< double >          fmdp(true);
-      gum::FMDPDatReader< double > reader(&fmdp, GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
-      reader.trace(false);
-      gum::Size nbrErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-      CHECK(std::abs(fmdp.discount() - 0.9) < 1e-6);
-    }
-
-    void testFMDPQuotedActionName() {
-      // Regression: FMDPDatReader STRING rule was not stripping surrounding
-      // quotes from action names, producing e.g. '"move"' instead of 'move'.
-      gum::FMDP< double >          fmdp(true);
-      gum::FMDPDatReader< double > reader(&fmdp,
-                                          GET_RESSOURCES_PATH("FMDP/coffee/coffee_quoted.dat"));
-      reader.trace(false);
-      gum::Size nbrErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-      const std::vector< std::string > expected = {"move", "delc", "getu", "buyc"};
-      std::vector< std::string >       actual;
-      for (auto actIter = fmdp.beginActions(); actIter != fmdp.endActions(); ++actIter)
-        actual.push_back(fmdp.actionName(*actIter));
-
-      CHECK_EQ(actual.size(), expected.size());
-      for (const auto& name: expected)
-        CHECK(std::find(actual.begin(), actual.end(), name) != actual.end());
-    }
-
-    void testRewardCompositionSingleDiagram() {
-      // Bug1: single-element _ddBag_ with setOperationModeOn used to call
-      // add2MultiDimFunctionGraphs(nullptr, elt) -> UB
-      gum::FMDP< double >        fmdp;
-      gum::FMDPFactory< double > factory(&fmdp);
-
-      factory.startVariableDeclaration();
-      factory.variableName("x");
-      factory.variableDescription("test");
-      factory.addModality("a");
-      factory.addModality("b");
-      factory.endVariableDeclaration();
-
-      factory.startRewardDeclaration();
-      factory.setOperationModeOn("+");
-      gum::NodeId root = factory.addTerminalNode(1.0f);
-      factory.setRoot(root);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.addReward());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.endRewardDeclaration());
-
-      CHECK(fmdp.reward() != nullptr);
-    }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(ReadFileCoffeeRobot)
-  GUM_TEST_ACTIF(ReadFileTinyFactory)
-  GUM_TEST_ACTIF(ReadFileFactory)
-  GUM_TEST_ACTIF(ReadFileTaxi)
-  GUM_TEST_ACTIF(DiscountStoredAfterRead)
-  GUM_TEST_ACTIF(FMDPQuotedActionName)
-  GUM_TEST_ACTIF(RewardCompositionSingleDiagram)
+  GUM_TEST(Constuctor) {
+    std::string _file_ = GET_RESSOURCES_PATH("FMDP/nonexistent_file.dat");
+
+    gum::FMDP< double >           fmdp(true);
+    gum::FMDPDatReader< double >* reader = nullptr;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::FMDPDatReader< double >(&fmdp, _file_));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
+  }
+
+  GUM_TEST(ReadFileCoffeeRobot) {
+    _file_ = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
+    _run_();
+  }
+
+  GUM_TEST(ReadFileTinyFactory) {
+    _file_ = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
+    _run_();
+  }
+
+  GUM_TEST(ReadFileFactory) {
+    _file_ = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
+    _run_();
+  }
+
+  GUM_TEST(ReadFileTaxi) {
+    _file_ = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
+    _run_();
+  }
+
+  GUM_TEST(DiscountStoredAfterRead) {
+    // coffee.dat declares "discount 0.9" — verify addDiscount() stores the value
+    gum::FMDP< double >          fmdp(true);
+    gum::FMDPDatReader< double > reader(&fmdp, GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
+    reader.trace(false);
+    gum::Size nbrErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+    CHECK(std::abs(fmdp.discount() - 0.9) < 1e-6);
+  }
+
+  GUM_TEST(FMDPQuotedActionName) {
+    // Regression: FMDPDatReader STRING rule was not stripping surrounding
+    // quotes from action names, producing e.g. '"move"' instead of 'move'.
+    gum::FMDP< double >          fmdp(true);
+    gum::FMDPDatReader< double > reader(&fmdp,
+                                        GET_RESSOURCES_PATH("FMDP/coffee/coffee_quoted.dat"));
+    reader.trace(false);
+    gum::Size nbrErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+    const std::vector< std::string > expected = {"move", "delc", "getu", "buyc"};
+    std::vector< std::string >       actual;
+    for (auto actIter = fmdp.beginActions(); actIter != fmdp.endActions(); ++actIter)
+      actual.push_back(fmdp.actionName(*actIter));
+
+    CHECK_EQ(actual.size(), expected.size());
+    for (const auto& name: expected)
+      CHECK(std::find(actual.begin(), actual.end(), name) != actual.end());
+  }
+
+  GUM_TEST(RewardCompositionSingleDiagram) {
+    // Bug1: single-element _ddBag_ with setOperationModeOn used to call
+    // add2MultiDimFunctionGraphs(nullptr, elt) -> UB
+    gum::FMDP< double >        fmdp;
+    gum::FMDPFactory< double > factory(&fmdp);
+
+    factory.startVariableDeclaration();
+    factory.variableName("x");
+    factory.variableDescription("test");
+    factory.addModality("a");
+    factory.addModality("b");
+    factory.endVariableDeclaration();
+
+    factory.startRewardDeclaration();
+    factory.setOperationModeOn("+");
+    gum::NodeId root = factory.addTerminalNode(1.0f);
+    factory.setRoot(root);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.addReward());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.endRewardDeclaration());
+
+    CHECK(fmdp.reward() != nullptr);
+  }
 }   // namespace gum_tests

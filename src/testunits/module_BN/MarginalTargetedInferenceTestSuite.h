@@ -52,9 +52,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  MarginalTargetedInference
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -67,31 +64,31 @@ namespace gum_tests {
 
   struct MarginalTargetedInferenceTestSuite {
     public:
-    static void testAddTarget() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
-
-      gum::LazyPropagation< double > lazy(&bn);
-      CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
-      lazy.addTarget("A");
-      CHECK_EQ(lazy.targets(), gum::NodeSet({0}));
-      lazy.addTarget("B");
-      CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1}));
-
-      gum::ShaferShenoyInference< double > shafer(&bn);
-      CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
-      shafer.addTarget("A");
-      CHECK_EQ(shafer.targets(), gum::NodeSet({0}));
-      shafer.addTarget("B");
-      CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1}));
-
-      gum::VariableElimination< double > ve(&bn);
-      CHECK_EQ(ve.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
-      ve.addTarget("A");
-      CHECK_EQ(ve.targets(), gum::NodeSet({0}));
-      ve.addTarget("B");
-      CHECK_EQ(ve.targets(), gum::NodeSet({0, 1}));
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(AddTarget)
+  GUM_TEST(AddTarget) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
+
+    gum::LazyPropagation< double > lazy(&bn);
+    CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+    lazy.addTarget("A");
+    CHECK_EQ(lazy.targets(), gum::NodeSet({0}));
+    lazy.addTarget("B");
+    CHECK_EQ(lazy.targets(), gum::NodeSet({0, 1}));
+
+    gum::ShaferShenoyInference< double > shafer(&bn);
+    CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+    shafer.addTarget("A");
+    CHECK_EQ(shafer.targets(), gum::NodeSet({0}));
+    shafer.addTarget("B");
+    CHECK_EQ(shafer.targets(), gum::NodeSet({0, 1}));
+
+    gum::VariableElimination< double > ve(&bn);
+    CHECK_EQ(ve.targets(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+    ve.addTarget("A");
+    CHECK_EQ(ve.targets(), gum::NodeSet({0}));
+    ve.addTarget("B");
+    CHECK_EQ(ve.targets(), gum::NodeSet({0, 1}));
+  }
 }   // namespace gum_tests

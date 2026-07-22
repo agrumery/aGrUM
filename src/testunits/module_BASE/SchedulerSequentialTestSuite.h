@@ -51,143 +51,140 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  SchedulerSequential
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct SchedulerSequentialTestSuite {
     public:
-    static void test_construct1() {
-      // reset the ids of the ScheduleMultiDim to avoid conflicts with other
-      // testunits
-      gum::IScheduleMultiDim::resetIdGenerator();
+    // namespace gum_tests
 
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (unsigned int i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 10);
-      }
-
-      gum::Tensor< double > pot1;
-      pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
-      pot1.random();
-      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, false);
-
-      gum::Tensor< double > pot2;
-      pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
-      pot2.random();
-      gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot2, false);
-
-      gum::Tensor< double > pot3;
-      pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
-      pot3.random();
-      gum::ScheduleMultiDim< gum::Tensor< double > > f3(pot3, false);
-
-      gum::Tensor< double > pot4;
-      pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
-      pot4.random();
-      gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot4, false);
-
-      gum::ScheduleBinaryCombination< gum::Tensor< double >,
-                                      gum::Tensor< double >,
-                                      gum::Tensor< double > >
-                                                            comb1(f1, f2, myadd);
-      const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
-
-      gum::ScheduleBinaryCombination< gum::Tensor< double >,
-                                      gum::Tensor< double >,
-                                      gum::Tensor< double > >
-                                                            comb2(f2, f3, myadd);
-      const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = comb2.result();
-
-      gum::ScheduleBinaryCombination< gum::Tensor< double >,
-                                      gum::Tensor< double >,
-                                      gum::Tensor< double > >
-                                                            comb3(result2, f4, myadd);
-      const gum::ScheduleMultiDim< gum::Tensor< double > >& result3 = comb3.result();
-
-      gum::ScheduleBinaryCombination< gum::Tensor< double >,
-                                      gum::Tensor< double >,
-                                      gum::Tensor< double > >
-                                                            comb4(result1, result3, myadd);
-      const gum::ScheduleMultiDim< gum::Tensor< double > >& result4 = comb4.result();
-
-      gum::ScheduleDeletion< gum::Tensor< double > > del1(result1);
-      gum::ScheduleDeletion< gum::Tensor< double > > del2(result2);
-      gum::ScheduleDeletion< gum::Tensor< double > > del3(result3);
-
-      gum::Schedule schedule;
-
-      schedule.insertScheduleMultiDim(f1);
-      schedule.insertScheduleMultiDim(f2);
-      schedule.insertScheduleMultiDim(f3);
-      schedule.insertScheduleMultiDim(f4);
-
-      schedule.insertOperation(comb1);
-      schedule.insertOperation(comb2);
-      schedule.insertOperation(comb3);
-      schedule.insertOperation(comb4);
-      schedule.insertOperation(del1);
-      schedule.insertOperation(del2);
-      schedule.insertOperation(del3);
-
-      comb1.execute();
-      comb2.execute();
-      comb3.execute();
-      comb4.execute();
-      del1.execute();
-      del2.execute();
-      del3.execute();
-
-      gum::Schedule schedule2 = schedule;
-      gum::Schedule schedule3 = schedule;
-      gum::Schedule schedule4 = schedule;
-
-      gum::SchedulerSequential scheduler;
-      CHECK((scheduler.nbOperations(schedule)) == doctest::Approx(2200000.0).epsilon(10));
-      scheduler.execute(schedule);
-
-      auto&       op4 = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
-      const auto& op4_res = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(
-          *op4.results()[0]);
-      CHECK(result4.hasSameVariables(op4_res));
-      CHECK(result4.hasSameContent(op4_res));
-      CHECK(!result4.isAbstract());
-      CHECK(!op4_res.isAbstract());
-
-      scheduler.setMaxMemory(2.15 * sizeof(double));
-      CHECK((scheduler.nbOperations(schedule2)) == doctest::Approx(2200000.0).epsilon(10));
-
-      bool fail = false;
-      try {
-        scheduler.execute(schedule2);
-      } catch (std::bad_alloc&) { fail = true; }
-      CHECK(!fail);
-
-      scheduler.setMaxMemory(2.5 * sizeof(double));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
-      CHECK((scheduler.memoryUsage(schedule4).first)
-            == doctest::Approx(2100000.0 * sizeof(double) + 3 * sizeof(gum::Tensor< double >))
-                   .epsilon(10));
-      CHECK((scheduler.memoryUsage(schedule4).second)
-            == doctest::Approx(1000000.0 * sizeof(double) + 1 * sizeof(gum::Tensor< double >))
-                   .epsilon(10));
-
-      for (unsigned int i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }   // namespace gum_tests
-
-    private:
+    protected:
     static gum::Tensor< double > myadd(const gum::Tensor< double >& f1,
                                        const gum::Tensor< double >& f2) {
       return f1 + f2;
     }
   };
 
-  GUM_TEST_ACTIF(_construct1)
+  GUM_TEST(_construct1) {
+    // reset the ids of the ScheduleMultiDim to avoid conflicts with other
+    // testunits
+    gum::IScheduleMultiDim::resetIdGenerator();
+
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (unsigned int i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 10);
+    }
+
+    gum::Tensor< double > pot1;
+    pot1 << *(vars[0]) << *(vars[2]) << *(vars[4]);
+    pot1.random();
+    gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, false);
+
+    gum::Tensor< double > pot2;
+    pot2 << *(vars[1]) << *(vars[2]) << *(vars[3]);
+    pot2.random();
+    gum::ScheduleMultiDim< gum::Tensor< double > > f2(pot2, false);
+
+    gum::Tensor< double > pot3;
+    pot3 << *(vars[0]) << *(vars[3]) << *(vars[5]);
+    pot3.random();
+    gum::ScheduleMultiDim< gum::Tensor< double > > f3(pot3, false);
+
+    gum::Tensor< double > pot4;
+    pot4 << *(vars[3]) << *(vars[4]) << *(vars[5]);
+    pot4.random();
+    gum::ScheduleMultiDim< gum::Tensor< double > > f4(pot4, false);
+
+    gum::ScheduleBinaryCombination< gum::Tensor< double >,
+                                    gum::Tensor< double >,
+                                    gum::Tensor< double > >
+                                                          comb1(f1, f2, myadd);
+    const gum::ScheduleMultiDim< gum::Tensor< double > >& result1 = comb1.result();
+
+    gum::ScheduleBinaryCombination< gum::Tensor< double >,
+                                    gum::Tensor< double >,
+                                    gum::Tensor< double > >
+                                                          comb2(f2, f3, myadd);
+    const gum::ScheduleMultiDim< gum::Tensor< double > >& result2 = comb2.result();
+
+    gum::ScheduleBinaryCombination< gum::Tensor< double >,
+                                    gum::Tensor< double >,
+                                    gum::Tensor< double > >
+                                                          comb3(result2, f4, myadd);
+    const gum::ScheduleMultiDim< gum::Tensor< double > >& result3 = comb3.result();
+
+    gum::ScheduleBinaryCombination< gum::Tensor< double >,
+                                    gum::Tensor< double >,
+                                    gum::Tensor< double > >
+                                                          comb4(result1, result3, myadd);
+    const gum::ScheduleMultiDim< gum::Tensor< double > >& result4 = comb4.result();
+
+    gum::ScheduleDeletion< gum::Tensor< double > > del1(result1);
+    gum::ScheduleDeletion< gum::Tensor< double > > del2(result2);
+    gum::ScheduleDeletion< gum::Tensor< double > > del3(result3);
+
+    gum::Schedule schedule;
+
+    schedule.insertScheduleMultiDim(f1);
+    schedule.insertScheduleMultiDim(f2);
+    schedule.insertScheduleMultiDim(f3);
+    schedule.insertScheduleMultiDim(f4);
+
+    schedule.insertOperation(comb1);
+    schedule.insertOperation(comb2);
+    schedule.insertOperation(comb3);
+    schedule.insertOperation(comb4);
+    schedule.insertOperation(del1);
+    schedule.insertOperation(del2);
+    schedule.insertOperation(del3);
+
+    comb1.execute();
+    comb2.execute();
+    comb3.execute();
+    comb4.execute();
+    del1.execute();
+    del2.execute();
+    del3.execute();
+
+    gum::Schedule schedule2 = schedule;
+    gum::Schedule schedule3 = schedule;
+    gum::Schedule schedule4 = schedule;
+
+    gum::SchedulerSequential scheduler;
+    CHECK((scheduler.nbOperations(schedule)) == doctest::Approx(2200000.0).epsilon(10));
+    scheduler.execute(schedule);
+
+    auto&       op4 = const_cast< gum::ScheduleOperator& >(schedule.operation(gum::NodeId(4)));
+    const auto& op4_res
+        = dynamic_cast< const gum::ScheduleMultiDim< gum::Tensor< double > >& >(*op4.results()[0]);
+    CHECK(result4.hasSameVariables(op4_res));
+    CHECK(result4.hasSameContent(op4_res));
+    CHECK(!result4.isAbstract());
+    CHECK(!op4_res.isAbstract());
+
+    scheduler.setMaxMemory(2.15 * sizeof(double));
+    CHECK((scheduler.nbOperations(schedule2)) == doctest::Approx(2200000.0).epsilon(10));
+
+    bool fail = false;
+    try {
+      scheduler.execute(schedule2);
+    } catch (std::bad_alloc&) { fail = true; }
+    CHECK(!fail);
+
+    scheduler.setMaxMemory(2.5 * sizeof(double));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(scheduler.execute(schedule3));
+    CHECK((scheduler.memoryUsage(schedule4).first)
+          == doctest::Approx(2100000.0 * sizeof(double) + 3 * sizeof(gum::Tensor< double >))
+                 .epsilon(10));
+    CHECK((scheduler.memoryUsage(schedule4).second)
+          == doctest::Approx(1000000.0 * sizeof(double) + 1 * sizeof(gum::Tensor< double >))
+                 .epsilon(10));
+
+    for (unsigned int i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
 
 } /* namespace gum_tests */

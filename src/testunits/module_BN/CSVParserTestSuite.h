@@ -25,13 +25,11 @@
 
 #include <agrum/base/database/CSVParser.h>
 
-#define GUM_CURRENT_SUITE  CSVParser
-#define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
 
   struct CSVParserTestSuite {
-    private:
+    protected:
     std::size_t _noParsedLine_ = 0u;
 
     std::size_t testParseString(std::string csvstring, std::string& res) {
@@ -60,7 +58,19 @@ namespace gum_tests {
     }
 
     public:
-    void testSimpleCSV() {
+
+
+
+    
+
+    
+
+    
+
+    
+  };
+
+  GUM_TEST(SimpleCSV) {
       std::string res;
       std::size_t count;
 
@@ -90,9 +100,8 @@ namespace gum_tests {
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(3));
       CHECK_EQ(res, std::string("::::|::::|::::|"));
-    };
-
-    void testSimpleCSVwithComment() {
+    }
+  GUM_TEST(SimpleCSVwithComment) {
       std::string res;
       std::size_t count;
 
@@ -131,9 +140,8 @@ namespace gum_tests {
       CHECK((count) == static_cast< std::size_t >(3));
       CHECK((_noParsedLine_) == static_cast< std::size_t >(4));
       CHECK_EQ(res, std::string("1:2|5:6:7:8|9:10:11:12|"));
-    };
-
-    void testSimpleCSVwithDoubleQuote() {
+    }
+  GUM_TEST(SimpleCSVwithDoubleQuote) {
       std::string res;
       std::size_t count;
 
@@ -202,9 +210,8 @@ namespace gum_tests {
         CHECK((f.col()) == static_cast< std::size_t >(12));
         CHECK((f.line()) == static_cast< std::size_t >(1));
       }
-    };
-
-    void testSimpleCSVwithLabelsBeginningWithNumbers() {
+    }
+  GUM_TEST(SimpleCSVwithLabelsBeginningWithNumbers) {
       std::string res;
       std::size_t count;
 
@@ -214,8 +221,7 @@ namespace gum_tests {
       CHECK((_noParsedLine_) == static_cast< std::size_t >(2));
       CHECK_EQ(res, std::string("1:1a:1b|2a:2:3c|"));
     }
-
-    static void testUseNewStream() {
+  GUM_TEST(UseNewStream) {
       std::string              csvstring1 = "1,2,3,4 \n 5,6,7,8 \n 9,10,11,12";
       std::istringstream       in1(csvstring1);
       gum::learning::CSVParser parser(in1, "(stream)");
@@ -240,8 +246,7 @@ namespace gum_tests {
       CHECK_EQ(v2[0], "a");
       CHECK_EQ(v2[2], "c");
     }
-
-    static void testGuillemet() {
+  GUM_TEST(Guillemet) {
       {
         std::string              csvstring1 = "\"a\",\"b\",\"c d,e\" \n 9,10,11";
         std::istringstream       in1(csvstring1);
@@ -271,8 +276,7 @@ namespace gum_tests {
         CHECK_EQ(v1[2], "c d,e");
       }
     }
-
-    static void testApostrophe() {
+  GUM_TEST(Apostrophe) {
       {
         std::string              csvstring1 = "'a','b','c d,e' \n 9,10,11";
         std::istringstream       in1(csvstring1);
@@ -303,14 +307,5 @@ namespace gum_tests {
         CHECK_EQ(v1[2], "c d,e");
       }
     }
-  };
-
-  GUM_TEST_ACTIF(SimpleCSV)
-  GUM_TEST_ACTIF(SimpleCSVwithComment)
-  GUM_TEST_ACTIF(SimpleCSVwithDoubleQuote)
-  GUM_TEST_ACTIF(SimpleCSVwithLabelsBeginningWithNumbers)
-  GUM_TEST_ACTIF(UseNewStream)
-  GUM_TEST_ACTIF(Guillemet)
-  GUM_TEST_ACTIF(Apostrophe)
 
 }   // namespace gum_tests

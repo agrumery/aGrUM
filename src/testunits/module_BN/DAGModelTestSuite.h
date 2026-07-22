@@ -50,149 +50,117 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DAGModel
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct DAGModelTestSuite {
     public:
-    static void testEquality() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
+    // namespace gum_tests
+  };
 
-      CHECK(bn.hasSameStructure(bn));
-      CHECK(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
-      CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->c;b->c")));
-      CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
-      CHECK(!bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
-      CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->d")));
+  GUM_TEST(Equality) {
+    auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
 
-      CHECK(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b[1,5]->c;a->c")));
-      CHECK(
-          bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a ->b  [1,5]->c ;  a->c  ")));
-      CHECK(bn.hasSameStructure(
-          gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
-    }   // namespace gum_tests
+    CHECK(bn.hasSameStructure(bn));
+    CHECK(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b->c;a->c")));
+    CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->c;b->c")));
+    CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
+    CHECK(!bn.hasSameStructure(gum::BayesNet< double >::fastPrototype("b->a")));
+    CHECK(!bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a->d")));
 
-    static void testAncestors() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
-      CHECK_EQ(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
-      CHECK_EQ(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
+    CHECK(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a->b[1,5]->c;a->c")));
+    CHECK(bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("a ->b  [1,5]->c ;  a->c  ")));
+    CHECK(bn.hasSameStructure(
+        gum::BayesNet< float >::fastPrototype("a ->b  [1,\n5]->c ;\n  a->c  ")));
+  }
 
-      CHECK_EQ(bn.descendants(1), gum::NodeSet());
-      CHECK_EQ(bn.descendants("B"), gum::NodeSet());
+  GUM_TEST(Ancestors) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+    CHECK_EQ(bn.descendants(6), gum::NodeSet({0, 1, 4, 5}));
+    CHECK_EQ(bn.descendants("G"), gum::NodeSet({0, 1, 4, 5}));
 
-      CHECK_EQ(bn.ancestors(1), gum::NodeSet({0, 2, 6, 8, 9}));
-      CHECK_EQ(bn.ancestors("B"), gum::NodeSet({0, 2, 6, 8, 9}));
+    CHECK_EQ(bn.descendants(1), gum::NodeSet());
+    CHECK_EQ(bn.descendants("B"), gum::NodeSet());
 
-      CHECK_EQ(bn.ancestors(9), gum::NodeSet());
-      CHECK_EQ(bn.ancestors("J"), gum::NodeSet());
-    }
+    CHECK_EQ(bn.ancestors(1), gum::NodeSet({0, 2, 6, 8, 9}));
+    CHECK_EQ(bn.ancestors("B"), gum::NodeSet({0, 2, 6, 8, 9}));
 
-    static void testMoralizedAncestralGraph() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+    CHECK_EQ(bn.ancestors(9), gum::NodeSet());
+    CHECK_EQ(bn.ancestors("J"), gum::NodeSet());
+  }
 
-      auto g = bn.moralizedAncestralGraph({"I", "J"});
-      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
-      CHECK_EQ(g.edges(), gum::EdgeSet({}));
+  GUM_TEST(MoralizedAncestralGraph) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
-      g = bn.moralizedAncestralGraph({"A"});
-      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
-      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
-      // just for the fun
-      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
+    auto g = bn.moralizedAncestralGraph({"I", "J"});
+    CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({8, 9}));
+    CHECK_EQ(g.edges(), gum::EdgeSet({}));
 
-      // V-structure
-      g = bn.moralizedAncestralGraph({"C"});
-      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
-      CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
+    g = bn.moralizedAncestralGraph({"A"});
+    CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 6, 8}));
+    CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(0, 6), gum::Edge(6, 8)}));
+    // just for the fun
+    CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(8, 6), gum::Edge(6, 0)}));
 
-      g = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
-      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
-      CHECK((g.edges())
-            == (gum::EdgeSet({gum::Edge(2, 8),
-                              gum::Edge(2, 9),
-                              gum::Edge(8, 9),
-                              gum::Edge(2, 3),
-                              gum::Edge(3, 7),
-                              gum::Edge(0, 6),
-                              gum::Edge(6, 8)})));
+    // V-structure
+    g = bn.moralizedAncestralGraph({"C"});
+    CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({2, 8, 9}));
+    CHECK_EQ(g.edges(), gum::EdgeSet({gum::Edge(2, 8), gum::Edge(2, 9), gum::Edge(8, 9)}));
 
-      g = bn.moralizedAncestralGraph({"F", "B", "E", "H"});
-      CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
-      CHECK((g.edges())
-            == (gum::EdgeSet({gum::Edge(2, 8),
-                              gum::Edge(2, 9),
-                              gum::Edge(8, 9),
-                              gum::Edge(2, 3),
-                              gum::Edge(3, 7),
-                              gum::Edge(0, 6),
-                              gum::Edge(6, 8),
-                              gum::Edge(0, 5),
-                              gum::Edge(0, 1),
-                              gum::Edge(3, 4),
-                              gum::Edge(0, 2),
-                              gum::Edge(0, 3),
-                              gum::Edge(0, 4),
-                              gum::Edge(1, 2)})));
-    }
+    g = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
+    CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 2, 3, 6, 7, 8, 9}));
+    CHECK((g.edges())
+          == (gum::EdgeSet({gum::Edge(2, 8),
+                            gum::Edge(2, 9),
+                            gum::Edge(8, 9),
+                            gum::Edge(2, 3),
+                            gum::Edge(3, 7),
+                            gum::Edge(0, 6),
+                            gum::Edge(6, 8)})));
 
-    static void testIndependence() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+    g = bn.moralizedAncestralGraph({"F", "B", "E", "H"});
+    CHECK_EQ(g.nodes().asNodeSet(), gum::NodeSet({0, 1, 2, 3, 4, 5, 6, 7, 8, 9}));
+    CHECK((g.edges())
+          == (gum::EdgeSet({gum::Edge(2, 8),
+                            gum::Edge(2, 9),
+                            gum::Edge(8, 9),
+                            gum::Edge(2, 3),
+                            gum::Edge(3, 7),
+                            gum::Edge(0, 6),
+                            gum::Edge(6, 8),
+                            gum::Edge(0, 5),
+                            gum::Edge(0, 1),
+                            gum::Edge(3, 4),
+                            gum::Edge(0, 2),
+                            gum::Edge(0, 3),
+                            gum::Edge(0, 4),
+                            gum::Edge(1, 2)})));
+  }
 
-      CHECK(bn.isIndependent("I", "J", {}));
-      CHECK(!bn.isIndependent("I", "J", {"C"}));
-      CHECK(!bn.isIndependent("I", "J", {"H"}));
-      CHECK(bn.isIndependent("I", "J", {"F"}));
-      CHECK(!bn.isIndependent("I", "J", {"E"}));
-      CHECK(!bn.isIndependent("I", "J", {"E", "G"}));
-      CHECK(!bn.isIndependent("I", "J", {"E", "G", "H"}));
+  GUM_TEST(Independence) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
 
-      CHECK(!bn.isIndependent("I", "H", {}));
-      CHECK(bn.isIndependent("I", "H", {"C"}));
-      CHECK(bn.isIndependent("I", "H", {"C", "B"}));
-      CHECK(!bn.isIndependent("I", "H", {"C", "E"}));
-      CHECK(!bn.isIndependent("I", "H", {"C", "E", "B"}));
-      CHECK(bn.isIndependent("I", "H", {"C", "E", "B", "G"}));
-    }
+    CHECK(bn.isIndependent("I", "J", {}));
+    CHECK(!bn.isIndependent("I", "J", {"C"}));
+    CHECK(!bn.isIndependent("I", "J", {"H"}));
+    CHECK(bn.isIndependent("I", "J", {"F"}));
+    CHECK(!bn.isIndependent("I", "J", {"E"}));
+    CHECK(!bn.isIndependent("I", "J", {"E", "G"}));
+    CHECK(!bn.isIndependent("I", "J", {"E", "G", "H"}));
 
-    static void testNamedGraphs() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+    CHECK(!bn.isIndependent("I", "H", {}));
+    CHECK(bn.isIndependent("I", "H", {"C"}));
+    CHECK(bn.isIndependent("I", "H", {"C", "B"}));
+    CHECK(!bn.isIndependent("I", "H", {"C", "E"}));
+    CHECK(!bn.isIndependent("I", "H", {"C", "E", "B"}));
+    CHECK(bn.isIndependent("I", "H", {"C", "E", "B", "G"}));
+  }
 
-      // dag() returns a named copy: nameFromId/idFromName work
-      auto dag = bn.dag();
-      for (auto id: dag) {
-        CHECK(dag.hasName(id));
-        CHECK_EQ(dag.nameFromId(id), bn.variable(id).name());
-        CHECK(dag.idFromName(bn.variable(id).name()).has_value());
-        CHECK_EQ(dag.idFromName(bn.variable(id).name()).value(), id);
-      }
+  GUM_TEST(MultiIndependence) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
 
-      // internalDag() returns an unnamed const reference: no names attached
-      const auto& idag = bn.internalDag();
-      for (auto id: idag) {
-        CHECK_FALSE(idag.hasName(id));
-        CHECK_EQ(idag.nameFromId(id), std::to_string(id));
-        CHECK_FALSE(idag.idFromName(bn.variable(id).name()).has_value());
-      }
+    CHECK_THROWS_AS(bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
+                    const gum::InvalidArgument&);
 
-      // moralGraph() returns named UndiGraph
-      auto mg = bn.moralGraph();
-      for (auto id: mg.nodes())
-        CHECK_EQ(mg.nameFromId(id), bn.variable(id).name());
-
-      // moralizedAncestralGraph() returns named UndiGraph
-      auto ag = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
-      for (auto id: ag.nodes())
-        CHECK_EQ(ag.nameFromId(id), bn.variable(id).name());
-    }
-
-    static void testMultiIndependence() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B->C<-F;C->G;D->B->E");
-
-      CHECK_THROWS_AS(bn.isIndependent(std::vector< std::string >{"A", "E"}, {"A", "G"}, {"F"}),
-                      const gum::InvalidArgument&);
-
-      // clang-format off
+    // clang-format off
       CHECK( bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {}));
       CHECK(!bn.isIndependent(std::vector<std::string>{"A"}        , {"D"}        , {"B"}));
       CHECK(!bn.isIndependent(std::vector<std::string>{"A","B"}    , {"D"}        , {"B"}));
@@ -204,14 +172,37 @@ namespace gum_tests {
       CHECK(!bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G"}    , {"C","D"}));
       CHECK(!bn.isIndependent(std::vector<std::string>{"A","E","C"}, {"F","G"}    , {"C","D"}));
       CHECK(!bn.isIndependent(std::vector<std::string>{"A","E"}    , {"F","G","C"}, {"C","D"}));
-      // clang-format on
-    }
-  };
+    // clang-format on
+  }
 
-  GUM_TEST_ACTIF(Equality)
-  GUM_TEST_ACTIF(Ancestors)
-  GUM_TEST_ACTIF(MoralizedAncestralGraph)
-  GUM_TEST_ACTIF(Independence)
-  GUM_TEST_ACTIF(MultiIndependence)
-  GUM_TEST_ACTIF(NamedGraphs)
+  GUM_TEST(NamedGraphs) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B<-C->D->E<-A->F;G->A;D->H;G<-I->C<-J");
+
+    // dag() returns a named copy: nameFromId/idFromName work
+    auto dag = bn.dag();
+    for (auto id: dag) {
+      CHECK(dag.hasName(id));
+      CHECK_EQ(dag.nameFromId(id), bn.variable(id).name());
+      CHECK(dag.idFromName(bn.variable(id).name()).has_value());
+      CHECK_EQ(dag.idFromName(bn.variable(id).name()).value(), id);
+    }
+
+    // internalDag() returns an unnamed const reference: no names attached
+    const auto& idag = bn.internalDag();
+    for (auto id: idag) {
+      CHECK_FALSE(idag.hasName(id));
+      CHECK_EQ(idag.nameFromId(id), std::to_string(id));
+      CHECK_FALSE(idag.idFromName(bn.variable(id).name()).has_value());
+    }
+
+    // moralGraph() returns named UndiGraph
+    auto mg = bn.moralGraph();
+    for (auto id: mg.nodes())
+      CHECK_EQ(mg.nameFromId(id), bn.variable(id).name());
+
+    // moralizedAncestralGraph() returns named UndiGraph
+    auto ag = bn.moralizedAncestralGraph({"A", "D", "I", "H"});
+    for (auto id: ag.nodes())
+      CHECK_EQ(ag.nameFromId(id), bn.variable(id).name());
+  }
 }   // namespace gum_tests

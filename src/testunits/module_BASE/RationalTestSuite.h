@@ -51,57 +51,51 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Rational
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct RationalTestSuite {
     public:
-    static void testFareyBasic() {
-      int64_t num = 0, den = 0;
-
-      // 0.5 -> 1/2
-      gum::Rational< double >::farey(num, den, 0.5, 100LL, 1e-6);
-      CHECK_EQ(num, int64_t(1));
-      CHECK_EQ(den, int64_t(2));
-
-      // 0.333... -> 1/3
-      gum::Rational< double >::farey(num, den, 1.0 / 3.0, 100LL, 1e-6);
-      CHECK_EQ(num, int64_t(1));
-      CHECK_EQ(den, int64_t(3));
-
-      // negative
-      gum::Rational< double >::farey(num, den, -0.25, 100LL, 1e-6);
-      CHECK_EQ(num, int64_t(-1));
-      CHECK_EQ(den, int64_t(4));
-
-      // zero
-      gum::Rational< double >::farey(num, den, 0.0, 100LL, 1e-10);
-      CHECK_EQ(num, int64_t(0));
-      CHECK_EQ(den, int64_t(1));
-    }
-
     // MED-7: farey must not invoke UB (int64_t overflow) with very large den_max.
     // Before the fix, a+c or b+d could overflow int64_t silently.
-    static void testFareyLargeDenMaxNoOverflow() {
-      int64_t num = 0, den = 0;
-      // Use den_max close to INT64_MAX/2 to trigger the overflow guard.
-      const int64_t big = std::numeric_limits< int64_t >::max() / 2;
-
-      // sqrt(2)-1 is irrational; with large den_max the Farey sequence will
-      // iterate many times and previously could overflow before the guard.
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          gum::Rational< double >::farey(num, den, std::sqrt(2.0) - 1.0, big, 1e-9));
-      // result must be a valid (non-degenerate) fraction
-      CHECK(den > int64_t(0));
-      CHECK(
-          std::abs(static_cast< double >(num) / static_cast< double >(den) - (std::sqrt(2.0) - 1.0))
-          < 1e-6);
-    }
   };
 
-  GUM_TEST_ACTIF(FareyBasic)
-  GUM_TEST_ACTIF(FareyLargeDenMaxNoOverflow)
+  GUM_TEST(FareyBasic) {
+    int64_t num = 0, den = 0;
+
+    // 0.5 -> 1/2
+    gum::Rational< double >::farey(num, den, 0.5, 100LL, 1e-6);
+    CHECK_EQ(num, int64_t(1));
+    CHECK_EQ(den, int64_t(2));
+
+    // 0.333... -> 1/3
+    gum::Rational< double >::farey(num, den, 1.0 / 3.0, 100LL, 1e-6);
+    CHECK_EQ(num, int64_t(1));
+    CHECK_EQ(den, int64_t(3));
+
+    // negative
+    gum::Rational< double >::farey(num, den, -0.25, 100LL, 1e-6);
+    CHECK_EQ(num, int64_t(-1));
+    CHECK_EQ(den, int64_t(4));
+
+    // zero
+    gum::Rational< double >::farey(num, den, 0.0, 100LL, 1e-10);
+    CHECK_EQ(num, int64_t(0));
+    CHECK_EQ(den, int64_t(1));
+  }
+
+  GUM_TEST(FareyLargeDenMaxNoOverflow) {
+    int64_t num = 0, den = 0;
+    // Use den_max close to INT64_MAX/2 to trigger the overflow guard.
+    const int64_t big = std::numeric_limits< int64_t >::max() / 2;
+
+    // sqrt(2)-1 is irrational; with large den_max the Farey sequence will
+    // iterate many times and previously could overflow before the guard.
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        gum::Rational< double >::farey(num, den, std::sqrt(2.0) - 1.0, big, 1e-9));
+    // result must be a valid (non-degenerate) fraction
+    CHECK(den > int64_t(0));
+    CHECK(std::abs(static_cast< double >(num) / static_cast< double >(den) - (std::sqrt(2.0) - 1.0))
+          < 1e-6);
+  }
 
 }   // namespace gum_tests

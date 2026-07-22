@@ -50,66 +50,13 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  ScheduleOperation
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct ScheduleOperationTestSuite {
     public:
-    static void test_construct() {
-      // reset the ids of the ScheduleMultiDim to avoid conflicts with other
-      // testunits
-      gum::IScheduleMultiDim::resetIdGenerator();
+    // namespace gum_tests
 
-      std::vector< gum::LabelizedVariable* > vars(10);
-
-      for (unsigned int i = 0; i < 10; ++i) {
-        std::stringstream str;
-        str << "x" << i;
-        const std::string& s = str.str();
-        vars[i]              = new gum::LabelizedVariable(s, s, 2);
-      }
-
-      gum::Tensor< double > pot1;
-      pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
-      pot1.random();
-      gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, true);
-      gum::VariableSet                               del_vars;
-      del_vars << vars[0] << vars[3];
-
-      gum::ScheduleProjection< gum::Tensor< double > >      real_myproj(f1, del_vars, myProjectMax);
-      const gum::ScheduleMultiDim< gum::Tensor< double > >& res    = real_myproj.result();
-      gum::ScheduleOperator&                                myproj = real_myproj;
-
-      const gum::Sequence< const gum::IScheduleMultiDim* >& multidims = myproj.args();
-      CHECK(multidims.size() == 1);
-      CHECK(*(multidims.atPos(0)) == f1);
-
-      std::stringstream s1;
-      s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
-         << " )";
-      CHECK(s1.str() == myproj.toString());
-
-      gum::ScheduleProjection< gum::Tensor< double > > real_myproj2 = real_myproj;
-      gum::ScheduleOperator&                           myproj2      = real_myproj2;
-      CHECK(real_myproj2.result().isAbstract());
-      CHECK(myproj2 == myproj);
-      CHECK(!(myproj2 != myproj));
-
-      myproj.execute();
-      CHECK(!res.isAbstract());
-      CHECK(real_myproj2.result().isAbstract());
-      gum::Tensor< double >* res2 = proj(pot1, del_vars, 0);
-      CHECK(*(res2->content()) == res.multiDim());
-
-      delete res2;
-
-      for (unsigned int i = 0; i < vars.size(); ++i)
-        delete vars[i];
-    }   // namespace gum_tests
-
-    private:
+    protected:
     static gum::Tensor< double > myProjectMax(const gum::Tensor< double >& pot,
                                               const gum::VariableSet&      del_vars) {
       return gum::Tensor< double >(gum::projectMax(*(pot.content()), del_vars));
@@ -142,6 +89,56 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(_construct)
+  GUM_TEST(_construct) {
+    // reset the ids of the ScheduleMultiDim to avoid conflicts with other
+    // testunits
+    gum::IScheduleMultiDim::resetIdGenerator();
+
+    std::vector< gum::LabelizedVariable* > vars(10);
+
+    for (unsigned int i = 0; i < 10; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      const std::string& s = str.str();
+      vars[i]              = new gum::LabelizedVariable(s, s, 2);
+    }
+
+    gum::Tensor< double > pot1;
+    pot1 << *(vars[0]) << *(vars[2]) << *(vars[3]) << *(vars[4]);
+    pot1.random();
+    gum::ScheduleMultiDim< gum::Tensor< double > > f1(pot1, true);
+    gum::VariableSet                               del_vars;
+    del_vars << vars[0] << vars[3];
+
+    gum::ScheduleProjection< gum::Tensor< double > >      real_myproj(f1, del_vars, myProjectMax);
+    const gum::ScheduleMultiDim< gum::Tensor< double > >& res    = real_myproj.result();
+    gum::ScheduleOperator&                                myproj = real_myproj;
+
+    const gum::Sequence< const gum::IScheduleMultiDim* >& multidims = myproj.args();
+    CHECK(multidims.size() == 1);
+    CHECK(*(multidims.atPos(0)) == f1);
+
+    std::stringstream s1;
+    s1 << res.toString() << " = project ( " << f1.toString() << " , " << del_vars.toString()
+       << " )";
+    CHECK(s1.str() == myproj.toString());
+
+    gum::ScheduleProjection< gum::Tensor< double > > real_myproj2 = real_myproj;
+    gum::ScheduleOperator&                           myproj2      = real_myproj2;
+    CHECK(real_myproj2.result().isAbstract());
+    CHECK(myproj2 == myproj);
+    CHECK(!(myproj2 != myproj));
+
+    myproj.execute();
+    CHECK(!res.isAbstract());
+    CHECK(real_myproj2.result().isAbstract());
+    gum::Tensor< double >* res2 = proj(pot1, del_vars, 0);
+    CHECK(*(res2->content()) == res.multiDim());
+
+    delete res2;
+
+    for (unsigned int i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
 
 } /* namespace gum_tests */

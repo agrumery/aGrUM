@@ -54,101 +54,95 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DecisionTensor
-#define GUM_CURRENT_MODULE ID
-
 namespace gum_tests {
 
   struct DecisionTensorTestSuite {
     public:
-    static void testConstruction() {
-      gum::DecisionTensor< double > d1, d2;
-      CHECK_EQ(d1, d2);
-      CHECK_EQ(d1, d1 * d2);
-
-      gum::DecisionTensor< double > d3(std::move(d2));
-
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4);
-      gum::LabelizedVariable c("c", "first var", 2), d("d", "second var", 4);
-      gum::Tensor< double >  P1, U1;
-      P1 << a << b;
-      U1 << c << d;
-
-      gum::DecisionTensor< double > d4(P1, U1);
-      gum::DecisionTensor< double > d5(d4);
-      CHECK_EQ(d4, d5);
-
-      gum::DecisionTensor< double > d6 = d5;
-      CHECK_EQ(d6, d4);
-
-      gum::DecisionTensor< double > d7(std::move(d4));
-      CHECK_EQ(d7, d6);
-
-      d1 = std::move(d7);
-      CHECK_EQ(d1, d6);
-
-      d5 = d1;
-      CHECK_EQ(d1, d5);
-
-      d4 = d1;
-      CHECK_EQ(d1, d4);
-    }   // namespace gum_tests
-
-    static void testConstruction2() {
-      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
-      infdiag.cpt("A").fillWith({0.3, 0.7});
-      infdiag.utility("B").fillWith({100, 10, 30, 70});
-      gum::DecisionTensor< double > d1;
-      d1.insertProba(infdiag.cpt("A"));
-      d1.insertUtility(infdiag.utility("B"));
-
-      auto res = d1 ^ std::vector< std::string >({"C"});
-      CHECK_EQ(res.probPot, gum::Tensor< double >().fillWith(1));
-      CHECK((res.utilPot)
-            == ((gum::Tensor< double >() << infdiag.variableFromName("C")).fillWith({37, 58})));
-    }
-
-    static void testEqualities() {
-      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
-      infdiag.cpt("A").fillWith({1.0, 0.0});
-      infdiag.utility("B").fillWith({100, 10, 30, 70});
-      gum::DecisionTensor< double > d1;
-      d1.insertProba(infdiag.cpt("A"));
-      d1.insertUtility(infdiag.utility("B"));
-
-      infdiag.utility("B").fillWith({100, 70, 30, 10});
-      gum::DecisionTensor< double > d2;
-      d2.insertProba(infdiag.cpt("A"));
-      d2.insertUtility(infdiag.utility("B"));
-
-      CHECK_EQ(d1.probPot, d2.probPot);
-      CHECK_NE(d1.utilPot, d2.utilPot);
-      CHECK_EQ(d1, d2);   // d1 and d2 differ for utility with proba is 0
-    }
-
-    static void testSuperSetForMarginalization() {
-      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
-      infdiag.cpt("A").fillWith({0.3, 0.7});
-      infdiag.cpt("D").fillWith({0.1, 0.9, 0.9, 0.1});
-      infdiag.utility("B").fillWith({100, 10, 30, 70});
-      gum::DecisionTensor< double > d1;
-      d1.insertProba(infdiag.cpt("A"));
-      d1.insertUtility(infdiag.utility("B"));
-
-      gum::VariableSet vars;
-      vars.insert(&infdiag.variableFromName("C"));
-      auto res1 = d1 ^ vars;
-
-      // we add a variable not belonging tod1
-      vars.insert(&infdiag.variableFromName("D"));
-      auto res2 = d1 ^ vars;
-
-      CHECK_EQ(res1, res2);
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Construction)
-  GUM_TEST_ACTIF(Construction2)
-  GUM_TEST_ACTIF(Equalities)
-  GUM_TEST_ACTIF(SuperSetForMarginalization)
+  GUM_TEST(Construction) {
+    gum::DecisionTensor< double > d1, d2;
+    CHECK_EQ(d1, d2);
+    CHECK_EQ(d1, d1 * d2);
+
+    gum::DecisionTensor< double > d3(std::move(d2));
+
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4);
+    gum::LabelizedVariable c("c", "first var", 2), d("d", "second var", 4);
+    gum::Tensor< double >  P1, U1;
+    P1 << a << b;
+    U1 << c << d;
+
+    gum::DecisionTensor< double > d4(P1, U1);
+    gum::DecisionTensor< double > d5(d4);
+    CHECK_EQ(d4, d5);
+
+    gum::DecisionTensor< double > d6 = d5;
+    CHECK_EQ(d6, d4);
+
+    gum::DecisionTensor< double > d7(std::move(d4));
+    CHECK_EQ(d7, d6);
+
+    d1 = std::move(d7);
+    CHECK_EQ(d1, d6);
+
+    d5 = d1;
+    CHECK_EQ(d1, d5);
+
+    d4 = d1;
+    CHECK_EQ(d1, d4);
+  }
+
+  GUM_TEST(Construction2) {
+    auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
+    infdiag.cpt("A").fillWith({0.3, 0.7});
+    infdiag.utility("B").fillWith({100, 10, 30, 70});
+    gum::DecisionTensor< double > d1;
+    d1.insertProba(infdiag.cpt("A"));
+    d1.insertUtility(infdiag.utility("B"));
+
+    auto res = d1 ^ std::vector< std::string >({"C"});
+    CHECK_EQ(res.probPot, gum::Tensor< double >().fillWith(1));
+    CHECK((res.utilPot)
+          == ((gum::Tensor< double >() << infdiag.variableFromName("C")).fillWith({37, 58})));
+  }
+
+  GUM_TEST(Equalities) {
+    auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->$B<-*C");
+    infdiag.cpt("A").fillWith({1.0, 0.0});
+    infdiag.utility("B").fillWith({100, 10, 30, 70});
+    gum::DecisionTensor< double > d1;
+    d1.insertProba(infdiag.cpt("A"));
+    d1.insertUtility(infdiag.utility("B"));
+
+    infdiag.utility("B").fillWith({100, 70, 30, 10});
+    gum::DecisionTensor< double > d2;
+    d2.insertProba(infdiag.cpt("A"));
+    d2.insertUtility(infdiag.utility("B"));
+
+    CHECK_EQ(d1.probPot, d2.probPot);
+    CHECK_NE(d1.utilPot, d2.utilPot);
+    CHECK_EQ(d1, d2);   // d1 and d2 differ for utility with proba is 0
+  }
+
+  GUM_TEST(SuperSetForMarginalization) {
+    auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("D<-A->$B<-*C");
+    infdiag.cpt("A").fillWith({0.3, 0.7});
+    infdiag.cpt("D").fillWith({0.1, 0.9, 0.9, 0.1});
+    infdiag.utility("B").fillWith({100, 10, 30, 70});
+    gum::DecisionTensor< double > d1;
+    d1.insertProba(infdiag.cpt("A"));
+    d1.insertUtility(infdiag.utility("B"));
+
+    gum::VariableSet vars;
+    vars.insert(&infdiag.variableFromName("C"));
+    auto res1 = d1 ^ vars;
+
+    // we add a variable not belonging tod1
+    vars.insert(&infdiag.variableFromName("D"));
+    auto res2 = d1 ^ vars;
+
+    CHECK_EQ(res1, res2);
+  }
 }   // namespace gum_tests

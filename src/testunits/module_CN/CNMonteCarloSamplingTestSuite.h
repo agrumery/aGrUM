@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  CNMonteCarloSamplingInference
-#define GUM_CURRENT_MODULE CN
-
 
 #define GET_CN_PATH_STR(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/cn/" #x
 
@@ -71,7 +68,7 @@
 namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class CNMonteCarloSamplingListener: public gum::ApproximationSchemeListener {
-    private:
+    protected:
     int         nbr_;
     std::string msg_;
 
@@ -91,8 +88,8 @@ namespace gum_tests {
   };   // end of : class mcSamplingListener
 
   ////////////////////////////////////////////////////////////////
-  struct CNMonteCarloSamplingInferenceTestSuite {
-    private:
+  struct CNMonteCarloSamplingTestSuite {
+    protected:
 
     protected:
 
@@ -141,226 +138,226 @@ namespace gum_tests {
     void clearCNet() { delete cn; }
 
     // not dynamic (2U network) - with evidence
-    void testCNMonteCarloSamplingInference() {
-      initCNet();
-
-      // using gum::LazyPropagation<double> by default
-      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
-
-      // evidence from file
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi)););
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
-
-
-      // evidence from map
-      std::map< std::string, std::vector< double > > eviMap;
-      std::vector< double >                          evi0(2, 0);
-      evi0[0] = 1;
-      std::vector< double > evi1(2, 0);
-      evi1[1]     = 1;
-      eviMap["L"] = evi1;
-      eviMap["G"] = evi0;
-
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidence(eviMap););
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
-
-
-      mcs.setRepetitiveInd(false);
-      mcs.setMaxTime(1);
-
-      // mcs.storeBNOpt ( true );
-
-      std::map< std::string, std::vector< double > > modals;
-      std::vector< double >                          binaryModal(2, 0);
-      binaryModal[1] = 1;
-
-
-      // modalities from map
-      // from file with dynamic network, not 2U
-      try {
-        for (const auto node: cn->current_bn().nodes())
-          modals[cn->current_bn().variable(node).name()] = binaryModal;
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModals(modals););
-      try {
-        mcs.makeInference();
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto   pmin  = mcs.marginalMin(node);
-          auto   pmax  = mcs.marginalMax(node);
-          double e_inf = mcs.expectationMin(node);
-          double e_sup = mcs.expectationMax(node);
-        }
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
-
-      clearCNet();
-
-
-    }   // end of : testCNMonteCarloSamplingInference (2U network)
+    // end of : testCNMonteCarloSamplingInference (2U network)
 
     // dynamic (dynaCheese) - strong indep
-    void testCNMonteCarloSamplingInferenceDStrong() {
-      initDCNet();
-
-      using exp = std::vector< double >;
-
-      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
-
-      //////////////////////////////////////////////////////
-      // strong independence
-      //////////////////////////////////////////////////////
-
-      // evidence from file
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
-
-      mcs.setRepetitiveInd(false);
-      mcs.setMaxTime(1);
-
-      // modalities from file
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto   inf(mcs.marginalMin(node));
-          auto   sup(mcs.marginalMax(node));
-          double e_inf = mcs.expectationMin(node);
-          double e_sup = mcs.expectationMax(node);
-        }
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
-
-      try {
-        // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-        // exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-        // exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-        // exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-        exp etemp_inf(mcs.dynamicExpMin("temp"));
-        exp etemp_sup(mcs.dynamicExpMax("temp"));
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
-
-      clearCNet();
-
-    }   // end of : testCNMonteCarloSamplingInferenceDStrong
+    // end of : testCNMonteCarloSamplingInferenceDStrong
 
     // dynamic (dynaCheese) - repetitive indep
-    void testCNMonteCarloSamplingInferenceDRep() {
-      initDCNet();
-      using exp = std::vector< double >;
-
-      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
-
-      //////////////////////////////////////////////////////
-      // repetitive independence
-      //////////////////////////////////////////////////////
-
-      // evidence from file
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
-
-      mcs.setRepetitiveInd(true);
-      mcs.setMaxTime(1);
-
-      // modalities from file
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
-
-      try {
-        for (const auto node: cn->current_bn().nodes()) {
-          auto   inf(mcs.marginalMin(node));
-          auto   sup(mcs.marginalMax(node));
-          double e_inf = mcs.expectationMin(node);
-          double e_sup = mcs.expectationMax(node);
-        }
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
-
-      try {
-        // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
-        // exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
-        // exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
-        // exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
-        exp etemp_inf(mcs.dynamicExpMin("temp"));
-        exp etemp_sup(mcs.dynamicExpMax("temp"));
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        CHECK(false);
-      }
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
-
-      clearCNet();
-    }   // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
+    // end of : testCNMonteCarloSamplingInferenceDRep (dynamic - dynacheese)
 
     // with dynamic network
-    void testCNMonteCarloSamplingListener() {
-      initDCNet();
-      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+    // end of : testCNMonteCarloSamplingListener
 
-      // evidence from file
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+  };   // end of : class CNMonteCarloSamplingTestSuite
 
-      mcs.setRepetitiveInd(false);
-      mcs.setMaxTime(1);
+  GUM_TEST(CNMonteCarloSamplingInference) {
+    initCNet();
 
-      /// mcs.setBurnIn( 100000 ); // so we can test time out criterion during
-      /// burn
-      /// in
-      mcs.setPeriodSize(10);
+    // using gum::LazyPropagation<double> by default
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
 
-      CNMonteCarloSamplingListener mcl(mcs);
+    // evidence from file
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(L2U.evi)););
 
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
-      /// time out criterion during burn in test
-      CHECK_EQ(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations());
-      CHECK_NE(mcl.msg(), std::string(""));
 
-      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+    // evidence from map
+    std::map< std::string, std::vector< double > > eviMap;
+    std::vector< double >                          evi0(2, 0);
+    evi0[0] = 1;
+    std::vector< double > evi1(2, 0);
+    evi1[1]     = 1;
+    eviMap["L"] = evi1;
+    eviMap["G"] = evi0;
 
-      clearCNet();
-    }   // end of : testCNMonteCarloSamplingListener
 
-  };   // end of : class CNMonteCarloSamplingInferenceTestSuite
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidence(eviMap););
 
-  GUM_TEST_ACTIF(CNMonteCarloSamplingInference)
-  GUM_TEST_ACTIF(CNMonteCarloSamplingInferenceDStrong)
-  GUM_TEST_ACTIF(CNMonteCarloSamplingInferenceDRep)
-  GUM_TEST_ACTIF(CNMonteCarloSamplingListener)
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+
+
+    mcs.setRepetitiveInd(false);
+    mcs.setMaxTime(1);
+
+    // mcs.storeBNOpt ( true );
+
+    std::map< std::string, std::vector< double > > modals;
+    std::vector< double >                          binaryModal(2, 0);
+    binaryModal[1] = 1;
+
+
+    // modalities from map
+    // from file with dynamic network, not 2U
+    try {
+      for (const auto node: cn->current_bn().nodes())
+        modals[cn->current_bn().variable(node).name()] = binaryModal;
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModals(modals););
+    try {
+      mcs.makeInference();
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto   pmin  = mcs.marginalMin(node);
+        auto   pmax  = mcs.marginalMax(node);
+        double e_inf = mcs.expectationMin(node);
+        double e_sup = mcs.expectationMax(node);
+      }
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+
+    clearCNet();
+  }
+
+  GUM_TEST(CNMonteCarloSamplingInferenceDStrong) {
+    initDCNet();
+
+    using exp = std::vector< double >;
+
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+
+    //////////////////////////////////////////////////////
+    // strong independence
+    //////////////////////////////////////////////////////
+
+    // evidence from file
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+
+    mcs.setRepetitiveInd(false);
+    mcs.setMaxTime(1);
+
+    // modalities from file
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto   inf(mcs.marginalMin(node));
+        auto   sup(mcs.marginalMax(node));
+        double e_inf = mcs.expectationMin(node);
+        double e_sup = mcs.expectationMax(node);
+      }
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
+
+    try {
+      // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+      // exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+      // exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+      // exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+      exp etemp_inf(mcs.dynamicExpMin("temp"));
+      exp etemp_sup(mcs.dynamicExpMax("temp"));
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+
+    clearCNet();
+  }
+
+  GUM_TEST(CNMonteCarloSamplingInferenceDRep) {
+    initDCNet();
+    using exp = std::vector< double >;
+
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+
+    //////////////////////////////////////////////////////
+    // repetitive independence
+    //////////////////////////////////////////////////////
+
+    // evidence from file
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+
+    mcs.setRepetitiveInd(true);
+    mcs.setMaxTime(1);
+
+    // modalities from file
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)););
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+
+    try {
+      for (const auto node: cn->current_bn().nodes()) {
+        auto   inf(mcs.marginalMin(node));
+        auto   sup(mcs.marginalMax(node));
+        double e_inf = mcs.expectationMin(node);
+        double e_sup = mcs.expectationMax(node);
+      }
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.dynamicExpectations(););
+
+    try {
+      // exp ekm_inf ( mcs.dynamicExpMin ( "km" ) );
+      // exp ekm_sup ( mcs.dynamicExpMax ( "km" ) );
+      // exp elo_inf ( mcs.dynamicExpMin ( "lo" ) );
+      // exp elo_sup ( mcs.dynamicExpMax ( "lo" ) );
+      exp etemp_inf(mcs.dynamicExpMin("temp"));
+      exp etemp_sup(mcs.dynamicExpMax("temp"));
+    } catch (gum::Exception& e) {
+      GUM_SHOWERROR(e);
+      CHECK(false);
+    }
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+
+    clearCNet();
+  }
+
+  GUM_TEST(CNMonteCarloSamplingListener) {
+    initDCNet();
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+
+    // evidence from file
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertEvidenceFile(GET_CN_PATH_STR(f_3.evi)););
+
+    mcs.setRepetitiveInd(false);
+    mcs.setMaxTime(1);
+
+    /// mcs.setBurnIn( 100000 ); // so we can test time out criterion during
+    /// burn
+    /// in
+    mcs.setPeriodSize(10);
+
+    CNMonteCarloSamplingListener mcl(mcs);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
+
+    /// time out criterion during burn in test
+    CHECK_EQ(mcl.nbr() * mcs.periodSize(), mcs.nbrIterations());
+    CHECK_NE(mcl.msg(), std::string(""));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
+
+    clearCNet();
+  }
 
 }   // namespace gum_tests

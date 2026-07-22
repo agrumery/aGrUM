@@ -63,63 +63,60 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  AggregatorDecomposition
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct AggregatorDecompositionTestSuite {
     public:
-    static void testDecomposition() {
-      gum::prm::PRM< double > prm;
-
-      gum::prm::o3prm::O3prmReader< double > reader(prm);
-      reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
-
-      if (reader.errors() > 0) { GUM_ERROR(gum::FatalError, "could not load ressource file"); }
-
-      reader.showElegantErrorsAndWarnings();
-
-      gum::BayesNet< double > bn;
-      gum::BayesNet< double > bn2;
-      gum::NodeId             node = 0;
-
-      auto factory  = gum::BayesNetFactory< double >(&bn);
-      auto factory2 = gum::BayesNetFactory< double >(&bn2);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2));
-
-      gum::AggregatorDecomposition< double > aggregatorDecomposition;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn));
-
-      try {
-        auto inf = gum::LazyPropagation< double >(&bn);
-        inf.makeInference();
-
-        auto inf2 = gum::LazyPropagation< double >(&bn2);
-        inf2.makeInference();
-
-        node = bn.idFromName("city.(total_quantity)waterlevel");
-
-        gum::Instantiation inst(inf.posterior(node));
-        gum::Instantiation inst2(inf2.posterior(node));
-
-        inst.setFirst();
-        inst2.setFirst();
-
-        while (!inst.end()) {
-          CHECK((abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)))
-                == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
-          inst.inc();
-          inst2.inc();
-        }
-      } catch (gum::Exception const& e) {
-        GUM_SHOWERROR(e);
-        FAIL("An aGrUM's exception was thrown");
-      }
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Decomposition)
+  GUM_TEST(Decomposition) {
+    gum::prm::PRM< double > prm;
+
+    gum::prm::o3prm::O3prmReader< double > reader(prm);
+    reader.readFile(GET_RESSOURCES_PATH("o3prm/watertanks.o3prm"));
+
+    if (reader.errors() > 0) { GUM_ERROR(gum::FatalError, "could not load ressource file"); }
+
+    reader.showElegantErrorsAndWarnings();
+
+    gum::BayesNet< double > bn;
+    gum::BayesNet< double > bn2;
+    gum::NodeId             node = 0;
+
+    auto factory  = gum::BayesNetFactory< double >(&bn);
+    auto factory2 = gum::BayesNetFactory< double >(&bn2);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(prm.getSystem("aSys").groundedBN(factory2));
+
+    gum::AggregatorDecomposition< double > aggregatorDecomposition;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(aggregatorDecomposition.setMaximumArity(2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn = aggregatorDecomposition.getDecomposedAggregator(bn));
+
+    try {
+      auto inf = gum::LazyPropagation< double >(&bn);
+      inf.makeInference();
+
+      auto inf2 = gum::LazyPropagation< double >(&bn2);
+      inf2.makeInference();
+
+      node = bn.idFromName("city.(total_quantity)waterlevel");
+
+      gum::Instantiation inst(inf.posterior(node));
+      gum::Instantiation inst2(inf2.posterior(node));
+
+      inst.setFirst();
+      inst2.setFirst();
+
+      while (!inst.end()) {
+        CHECK((abs(inf.posterior(node).get(inst) - inf2.posterior(node).get(inst2)))
+              == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));
+        inst.inc();
+        inst2.inc();
+      }
+    } catch (gum::Exception const& e) {
+      GUM_SHOWERROR(e);
+      FAIL("An aGrUM's exception was thrown");
+    }
+  }
 }   // namespace gum_tests

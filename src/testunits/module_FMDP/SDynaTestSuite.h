@@ -56,15 +56,12 @@
 #include <agrum/FMDP/simulation/fmdpSimulator.h>
 #include <agrum/FMDP/simulation/taxiSimulator.h>
 
-#define GUM_CURRENT_SUITE  SDyna
-#define GUM_CURRENT_MODULE FMDP
-
 // ==============================================================================
 
 namespace gum_tests {
 
   struct SDynaTestSuite {
-    private:
+    protected:
     static void run(gum::AbstractSimulator& sim) {
       // *********************************************************************************************
       // Initialisation de l'instance de SDyna
@@ -105,45 +102,45 @@ namespace gum_tests {
     // *******************************************************************************
     // Run the tests on a Coffee FMDP
     // *******************************************************************************
-    static void test_Coffee() {
-      // **************************************************************
-      // Chargement du fmdp servant de base
-      gum::FMDPSimulator sim(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
 
-      // **************************************************************
-      // Définition of final states
-      gum::Instantiation theEnd;
-      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter = sim.beginVariables();
-           varIter != sim.endVariables();
-           ++varIter) {
-        if ((*varIter)->name().compare("huc")) {
-          theEnd.add(**varIter);
-          theEnd.chgVal(**varIter, (*varIter)->index("yes"));
-          break;
-        }
-      }
-      GUM_CHECK_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd));
-
-      // **************************************************************
-      // Lancement
-      run(sim);
-    }
 
     // *******************************************************************************
     // Run the tests on a Taxi instance
     // *******************************************************************************
-    static void test_Taxi() {
-      // **************************************************************
-      // Chargement du simulateur
-      gum::TaxiSimulator sim;
-
-
-      // **************************************************************
-      // Lancement
-      run(sim);
-    }
   };
 
-  GUM_TEST_ACTIF(_Coffee)
-  GUM_TEST_ACTIF(_Taxi)
+  GUM_TEST(_Coffee) {
+    // **************************************************************
+    // Chargement du fmdp servant de base
+    gum::FMDPSimulator sim(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat"));
+
+    // **************************************************************
+    // Définition of final states
+    gum::Instantiation theEnd;
+    for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter = sim.beginVariables();
+         varIter != sim.endVariables();
+         ++varIter) {
+      if ((*varIter)->name().compare("huc")) {
+        theEnd.add(**varIter);
+        theEnd.chgVal(**varIter, (*varIter)->index("yes"));
+        break;
+      }
+    }
+    GUM_CHECK_ASSERT_THROWS_NOTHING(sim.setEndState(theEnd));
+
+    // **************************************************************
+    // Lancement
+    run(sim);
+  }
+
+  GUM_TEST(_Taxi) {
+    // **************************************************************
+    // Chargement du simulateur
+    gum::TaxiSimulator sim;
+
+
+    // **************************************************************
+    // Lancement
+    run(sim);
+  }
 }   // namespace gum_tests

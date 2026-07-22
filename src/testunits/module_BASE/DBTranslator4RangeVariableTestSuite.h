@@ -48,439 +48,12 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DBTranslator4RangeVariable
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct DBTranslator4RangeVariableTestSuite {
     public:
-    static void test_trans1() {
-      gum::learning::DBTranslator4RangeVariable translator;
-      CHECK(translator.isLossless());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));
-      CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    // namespace gum_tests
 
-      CHECK_EQ(translator.missingValue().discr_val, std::numeric_limits< std::size_t >::max());
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("5"));
-      CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("1"));
-      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
-      CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("-1"));
-      CHECK_EQ(translator.translate("-1").discr_val, (std::size_t)5);
-      CHECK_EQ(translator.translate("0").discr_val, (std::size_t)6);
-      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
-      CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
-      CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "-1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{6}}), "0");
-
-      std::vector< std::string > missing{"2", "N/A", "20", "4", "xxx"};
-
-      gum::learning::DBTranslator4RangeVariable translator2(missing);
-      CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator2.translate("2").discr_val, std::numeric_limits< std::size_t >::max());
-      CHECK(translator2.translate("N/A").discr_val == std::numeric_limits< std::size_t >::max());
-      CHECK(translator2.translate("xxx").discr_val == std::numeric_limits< std::size_t >::max());
-      CHECK_THROWS_AS(translator2.translate("yyy"), const gum::TypeError&);
-      CHECK_THROWS_AS(translator2.translate("1"), const gum::OperationNotAllowed&);
-      CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-
-      gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
-      CHECK(possible_translated_miss.exists(translator2.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
-      CHECK_EQ(translator2.needsReordering(), false);
-      const auto new_order = translator2.reorder();
-      CHECK_EQ(new_order.size(), static_cast< gum::Size >(0));
-
-      gum::RangeVariable                        var("X2", "", 2, 3);
-      gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
-      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)0);
-      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)3);
-      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)2);
-      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)4);
-      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)5);
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "0");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "1");
-      CHECK(translator3.needsReordering());
-      const auto new_order3 = translator3.reorder();
-      CHECK_EQ(new_order3[0], (std::size_t)2);
-      CHECK_EQ(new_order3[1], (std::size_t)3);
-      CHECK_EQ(new_order3[2], (std::size_t)4);
-      CHECK_EQ(new_order3[3], (std::size_t)5);
-      CHECK_EQ(new_order3[4], (std::size_t)0);
-      CHECK_EQ(new_order3[5], (std::size_t)1);
-
-      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
-      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
-      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
-      CHECK_EQ(translator3.translate("3").discr_val, (std::size_t)3);
-      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
-      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
-
-
-      std::vector< std::string >                missing2;
-      gum::learning::DBTranslator4RangeVariable translator4(var, missing2, true, 3);
-      CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)0);
-      CHECK_THROWS_AS(translator4.translate("5"), const gum::SizeError&);
-      CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)2);
-      CHECK_THROWS_AS(translator4.translate("0"), const gum::SizeError&);
-      CHECK_THROWS_AS(translator4.translate("1"), const gum::SizeError&);
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
-      CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-                      const gum::UnknownLabelInDatabase&);
-    }   // namespace gum_tests
-
-    static void test_trans2() {
-      gum::learning::DBTranslator4RangeVariable translator;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));
-      CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("5"));
-      CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("1"));
-      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
-      CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("-1"));
-      CHECK_EQ(translator.translate("-1").discr_val, (std::size_t)5);
-      CHECK_EQ(translator.translate("0").discr_val, (std::size_t)6);
-      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
-      CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
-      CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "-1");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{6}}), "0");
-
-      std::vector< std::string > missing{"2", "N/A", "20", "4", "xxx"};
-
-      gum::learning::DBTranslator4RangeVariable translator2(missing);
-      CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)0);
-      CHECK_EQ(translator2.translate("2").discr_val, std::numeric_limits< std::size_t >::max());
-      CHECK(translator2.translate("N/A").discr_val == std::numeric_limits< std::size_t >::max());
-      CHECK(translator2.translate("xxx").discr_val == std::numeric_limits< std::size_t >::max());
-      CHECK_THROWS_AS(translator2.translate("yyy"), const gum::TypeError&);
-      CHECK_THROWS_AS(translator2.translate("1"), const gum::OperationNotAllowed&);
-      CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)2);
-      CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)1);
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
-      CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
-
-      gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
-      CHECK(possible_translated_miss.exists(translator2.translateBack(
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
-      CHECK_EQ(translator2.needsReordering(), false);
-      const auto new_order = translator2.reorder();
-      CHECK_EQ(new_order.size(), static_cast< gum::Size >(0));
-
-      gum::RangeVariable                        var("X2", "", 2, 3);
-      gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
-      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)0);
-      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)3);
-      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)2);
-      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)4);
-      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)5);
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "0");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "1");
-      CHECK(translator3.needsReordering());
-      const auto new_order3 = translator3.reorder();
-      CHECK_EQ(new_order3[0], (std::size_t)2);
-      CHECK_EQ(new_order3[1], (std::size_t)3);
-      CHECK_EQ(new_order3[2], (std::size_t)4);
-      CHECK_EQ(new_order3[3], (std::size_t)5);
-      CHECK_EQ(new_order3[4], (std::size_t)0);
-      CHECK_EQ(new_order3[5], (std::size_t)1);
-
-      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
-      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
-      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
-      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
-      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "0");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "1");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "2");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "3");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "4");
-      CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "5");
-
-
-      std::vector< std::string >                missing2;
-      gum::learning::DBTranslator4RangeVariable translator4(var, missing2, true, 3);
-      CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)0);
-      CHECK_THROWS_AS(translator4.translate("5"), const gum::SizeError&);
-      CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)2);
-      CHECK_THROWS_AS(translator4.translate("0"), const gum::SizeError&);
-      CHECK_THROWS_AS(translator4.translate("1"), const gum::SizeError&);
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
-      CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
-      CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
-                      const gum::UnknownLabelInDatabase&);
-    }
-
-    static void test_trans4() {
-      {
-        gum::RangeVariable var("X1", "", 2, 3);
-
-        std::vector< std::string >                missing;
-        gum::learning::DBTranslator4RangeVariable translator(var, missing, true);
-        CHECK_EQ(translator.translate("2").discr_val, (std::size_t)0);
-        CHECK_EQ(translator.translate("5").discr_val, (std::size_t)3);
-        CHECK_EQ(translator.translate("4").discr_val, (std::size_t)2);
-        CHECK_EQ(translator.translate("0").discr_val, (std::size_t)4);
-        CHECK_EQ(translator.translate("1").discr_val, (std::size_t)5);
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("2"));
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("3"));
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("4"));
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("5"));
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("0"));
-        CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("1"));
-        CHECK(translator.needsReordering());
-        const auto new_order = translator.reorder();
-        CHECK_EQ(new_order[0], (std::size_t)2);
-        CHECK_EQ(new_order[1], (std::size_t)3);
-        CHECK_EQ(new_order[2], (std::size_t)4);
-        CHECK_EQ(new_order[3], (std::size_t)5);
-        CHECK_EQ(new_order[4], (std::size_t)0);
-        CHECK_EQ(new_order[5], (std::size_t)1);
-        CHECK_EQ(translator.variable()->toString(), "X1:Range([0,5])");
-
-        gum::learning::DBTranslator4RangeVariable translator2(var, missing, true);
-        CHECK_EQ(translator2.translate("2").discr_val, (std::size_t)0);
-        CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)3);
-        CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)2);
-        CHECK_EQ(translator2.translate("0").discr_val, (std::size_t)4);
-        CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)5);
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("2"));
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("3"));
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("4"));
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("5"));
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("0"));
-        CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("1"));
-        CHECK(translator2.needsReordering());
-        const auto new_order2 = translator2.reorder();
-        CHECK_EQ(new_order2[0], (std::size_t)2);
-        CHECK_EQ(new_order2[1], (std::size_t)3);
-        CHECK_EQ(new_order2[2], (std::size_t)4);
-        CHECK_EQ(new_order2[3], (std::size_t)5);
-        CHECK_EQ(new_order2[4], (std::size_t)0);
-        CHECK_EQ(new_order2[5], (std::size_t)1);
-        CHECK_EQ(translator2.variable()->toString(), "X1:Range([0,5])");
-
-        gum::learning::DBTranslator4RangeVariable translator3(translator);
-        CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        gum::learning::DBTranslator4RangeVariable translator4(translator2);
-        CHECK_EQ(translator4.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator4.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        gum::learning::DBTranslator4RangeVariable translator5(std::move(translator3));
-        CHECK_EQ(translator5.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator5.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator5.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator5.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        gum::learning::DBTranslator4RangeVariable translator6(std::move(translator4));
-        CHECK_EQ(translator6.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator6.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator6.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator6.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator6.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        gum::learning::DBTranslator4RangeVariable* translator7 = translator6.clone();
-        CHECK_EQ(translator7->translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator7->translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator7->translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator7->translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator7->translate("5").discr_val, (std::size_t)5);
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        delete translator7;
-
-        translator4 = translator6;
-        CHECK_EQ(translator4.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator4.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        translator3 = translator5;
-        CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-
-        translator5 = std::move(translator3);
-        CHECK_EQ(translator5.translate("0").discr_val, (std::size_t)0);
-        CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)1);
-        CHECK_EQ(translator5.translate("2").discr_val, (std::size_t)2);
-        CHECK_EQ(translator5.translate("4").discr_val, (std::size_t)4);
-        CHECK_EQ(translator5.translate("5").discr_val, (std::size_t)5);
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
-              == ("0"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
-              == ("1"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
-              == ("2"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
-              == ("3"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
-              == ("4"));
-        CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
-              == ("5"));
-      }
-    }
 
     void xtest_trans5() {
       gum::learning::DBTranslator4RangeVariable translator(1000);
@@ -646,38 +219,406 @@ namespace gum_tests {
       CHECK_EQ(translator5.translate("4").discr_val, (std::size_t)1);
       CHECK_EQ(translator5.translate("5").discr_val, (std::size_t)2);
     }
-
-    static void test_trans6() {
-      gum::RangeVariable         var("X1", "", 2, 4);
-      std::vector< std::string > missing{"N/A", "3", "toto"};
-
-      gum::learning::DBTranslator4RangeVariable translator(var, missing, true);
-      CHECK_EQ(translator.needsReordering(), false);
-      CHECK_EQ(translator.domainSize(), static_cast< gum::Size >(3));
-
-      CHECK_EQ((translator << "7").discr_val, (std::size_t)5);
-      CHECK_EQ((translator >> gum::learning::DBTranslatedValue{std::size_t{5}}), "7");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "6");
-      CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "7");
-      CHECK(((translator.translateBack(
-                  gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
-              == "N/A")
-             || (translator.translateBack(
-                     gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
-                 == "toto")));
-
-      gum::Set< std::string > missing_kept{"N/A", "toto"};
-      CHECK_EQ(translator.missingSymbols(), missing_kept);
-    }
   };
 
-  GUM_TEST_ACTIF(_trans1)
-  GUM_TEST_ACTIF(_trans2)
-  GUM_TEST_ACTIF(_trans4)
-  GUM_TEST_ACTIF(_trans6)
+  GUM_TEST(_trans1) {
+    gum::learning::DBTranslator4RangeVariable translator;
+    CHECK(translator.isLossless());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));
+    CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+
+    CHECK_EQ(translator.missingValue().discr_val, std::numeric_limits< std::size_t >::max());
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("5"));
+    CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("1"));
+    CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
+    CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("-1"));
+    CHECK_EQ(translator.translate("-1").discr_val, (std::size_t)5);
+    CHECK_EQ(translator.translate("0").discr_val, (std::size_t)6);
+    CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
+    CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
+    CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "-1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{6}}), "0");
+
+    std::vector< std::string > missing{"2", "N/A", "20", "4", "xxx"};
+
+    gum::learning::DBTranslator4RangeVariable translator2(missing);
+    CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator2.translate("2").discr_val, std::numeric_limits< std::size_t >::max());
+    CHECK(translator2.translate("N/A").discr_val == std::numeric_limits< std::size_t >::max());
+    CHECK(translator2.translate("xxx").discr_val == std::numeric_limits< std::size_t >::max());
+    CHECK_THROWS_AS(translator2.translate("yyy"), const gum::TypeError&);
+    CHECK_THROWS_AS(translator2.translate("1"), const gum::OperationNotAllowed&);
+    CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+
+    gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
+    CHECK(possible_translated_miss.exists(translator2.translateBack(
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
+    CHECK_EQ(translator2.needsReordering(), false);
+    const auto new_order = translator2.reorder();
+    CHECK_EQ(new_order.size(), static_cast< gum::Size >(0));
+
+    gum::RangeVariable                        var("X2", "", 2, 3);
+    gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
+    CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)0);
+    CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)3);
+    CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)2);
+    CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)4);
+    CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)5);
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "0");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "1");
+    CHECK(translator3.needsReordering());
+    const auto new_order3 = translator3.reorder();
+    CHECK_EQ(new_order3[0], (std::size_t)2);
+    CHECK_EQ(new_order3[1], (std::size_t)3);
+    CHECK_EQ(new_order3[2], (std::size_t)4);
+    CHECK_EQ(new_order3[3], (std::size_t)5);
+    CHECK_EQ(new_order3[4], (std::size_t)0);
+    CHECK_EQ(new_order3[5], (std::size_t)1);
+
+    CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
+    CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
+    CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
+    CHECK_EQ(translator3.translate("3").discr_val, (std::size_t)3);
+    CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
+    CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
+
+
+    std::vector< std::string >                missing2;
+    gum::learning::DBTranslator4RangeVariable translator4(var, missing2, true, 3);
+    CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)0);
+    CHECK_THROWS_AS(translator4.translate("5"), const gum::SizeError&);
+    CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)2);
+    CHECK_THROWS_AS(translator4.translate("0"), const gum::SizeError&);
+    CHECK_THROWS_AS(translator4.translate("1"), const gum::SizeError&);
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
+    CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+                    const gum::UnknownLabelInDatabase&);
+  }
+
+  GUM_TEST(_trans2) {
+    gum::learning::DBTranslator4RangeVariable translator;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));
+    CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("5"));
+    CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("1"));
+    CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
+    CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("-1"));
+    CHECK_EQ(translator.translate("-1").discr_val, (std::size_t)5);
+    CHECK_EQ(translator.translate("0").discr_val, (std::size_t)6);
+    CHECK_EQ(translator.translate("1").discr_val, (std::size_t)3);
+    CHECK_EQ(translator.translate("2").discr_val, (std::size_t)4);
+    CHECK_EQ(translator.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "2");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "-1");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{6}}), "0");
+
+    std::vector< std::string > missing{"2", "N/A", "20", "4", "xxx"};
+
+    gum::learning::DBTranslator4RangeVariable translator2(missing);
+    CHECK_EQ(translator2.translate("3").discr_val, (std::size_t)0);
+    CHECK_EQ(translator2.translate("2").discr_val, std::numeric_limits< std::size_t >::max());
+    CHECK(translator2.translate("N/A").discr_val == std::numeric_limits< std::size_t >::max());
+    CHECK(translator2.translate("xxx").discr_val == std::numeric_limits< std::size_t >::max());
+    CHECK_THROWS_AS(translator2.translate("yyy"), const gum::TypeError&);
+    CHECK_THROWS_AS(translator2.translate("1"), const gum::OperationNotAllowed&);
+    CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)2);
+    CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)1);
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "3");
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "4");
+    CHECK_EQ(translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "5");
+
+    gum::Set< std::string > possible_translated_miss{"N/A", "xxx"};
+    CHECK(possible_translated_miss.exists(translator2.translateBack(
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})));
+    CHECK_EQ(translator2.needsReordering(), false);
+    const auto new_order = translator2.reorder();
+    CHECK_EQ(new_order.size(), static_cast< gum::Size >(0));
+
+    gum::RangeVariable                        var("X2", "", 2, 3);
+    gum::learning::DBTranslator4RangeVariable translator3(var, missing, true);
+    CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)0);
+    CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)3);
+    CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)2);
+    CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)4);
+    CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)5);
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "0");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "1");
+    CHECK(translator3.needsReordering());
+    const auto new_order3 = translator3.reorder();
+    CHECK_EQ(new_order3[0], (std::size_t)2);
+    CHECK_EQ(new_order3[1], (std::size_t)3);
+    CHECK_EQ(new_order3[2], (std::size_t)4);
+    CHECK_EQ(new_order3[3], (std::size_t)5);
+    CHECK_EQ(new_order3[4], (std::size_t)0);
+    CHECK_EQ(new_order3[5], (std::size_t)1);
+
+    CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
+    CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
+    CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
+    CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
+    CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "0");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "1");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "2");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "3");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "4");
+    CHECK_EQ(translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "5");
+
+
+    std::vector< std::string >                missing2;
+    gum::learning::DBTranslator4RangeVariable translator4(var, missing2, true, 3);
+    CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)0);
+    CHECK_THROWS_AS(translator4.translate("5"), const gum::SizeError&);
+    CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)2);
+    CHECK_THROWS_AS(translator4.translate("0"), const gum::SizeError&);
+    CHECK_THROWS_AS(translator4.translate("1"), const gum::SizeError&);
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
+    CHECK_EQ(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
+    CHECK_THROWS_AS(translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}),
+                    const gum::UnknownLabelInDatabase&);
+  }
+
+  GUM_TEST(_trans4) {
+    {
+      gum::RangeVariable var("X1", "", 2, 3);
+
+      std::vector< std::string >                missing;
+      gum::learning::DBTranslator4RangeVariable translator(var, missing, true);
+      CHECK_EQ(translator.translate("2").discr_val, (std::size_t)0);
+      CHECK_EQ(translator.translate("5").discr_val, (std::size_t)3);
+      CHECK_EQ(translator.translate("4").discr_val, (std::size_t)2);
+      CHECK_EQ(translator.translate("0").discr_val, (std::size_t)4);
+      CHECK_EQ(translator.translate("1").discr_val, (std::size_t)5);
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("2"));
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("3"));
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("4"));
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("5"));
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("0"));
+      CHECK((translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("1"));
+      CHECK(translator.needsReordering());
+      const auto new_order = translator.reorder();
+      CHECK_EQ(new_order[0], (std::size_t)2);
+      CHECK_EQ(new_order[1], (std::size_t)3);
+      CHECK_EQ(new_order[2], (std::size_t)4);
+      CHECK_EQ(new_order[3], (std::size_t)5);
+      CHECK_EQ(new_order[4], (std::size_t)0);
+      CHECK_EQ(new_order[5], (std::size_t)1);
+      CHECK_EQ(translator.variable()->toString(), "X1:Range([0,5])");
+
+      gum::learning::DBTranslator4RangeVariable translator2(var, missing, true);
+      CHECK_EQ(translator2.translate("2").discr_val, (std::size_t)0);
+      CHECK_EQ(translator2.translate("5").discr_val, (std::size_t)3);
+      CHECK_EQ(translator2.translate("4").discr_val, (std::size_t)2);
+      CHECK_EQ(translator2.translate("0").discr_val, (std::size_t)4);
+      CHECK_EQ(translator2.translate("1").discr_val, (std::size_t)5);
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("2"));
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("3"));
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("4"));
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("5"));
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("0"));
+      CHECK((translator2.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("1"));
+      CHECK(translator2.needsReordering());
+      const auto new_order2 = translator2.reorder();
+      CHECK_EQ(new_order2[0], (std::size_t)2);
+      CHECK_EQ(new_order2[1], (std::size_t)3);
+      CHECK_EQ(new_order2[2], (std::size_t)4);
+      CHECK_EQ(new_order2[3], (std::size_t)5);
+      CHECK_EQ(new_order2[4], (std::size_t)0);
+      CHECK_EQ(new_order2[5], (std::size_t)1);
+      CHECK_EQ(translator2.variable()->toString(), "X1:Range([0,5])");
+
+      gum::learning::DBTranslator4RangeVariable translator3(translator);
+      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      gum::learning::DBTranslator4RangeVariable translator4(translator2);
+      CHECK_EQ(translator4.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator4.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      gum::learning::DBTranslator4RangeVariable translator5(std::move(translator3));
+      CHECK_EQ(translator5.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator5.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator5.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator5.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      gum::learning::DBTranslator4RangeVariable translator6(std::move(translator4));
+      CHECK_EQ(translator6.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator6.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator6.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator6.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator6.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator6.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      gum::learning::DBTranslator4RangeVariable* translator7 = translator6.clone();
+      CHECK_EQ(translator7->translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator7->translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator7->translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator7->translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator7->translate("5").discr_val, (std::size_t)5);
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}))
+            == ("0"));
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}))
+            == ("1"));
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}))
+            == ("2"));
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}))
+            == ("3"));
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}))
+            == ("4"));
+      CHECK((translator7->translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}))
+            == ("5"));
+
+      delete translator7;
+
+      translator4 = translator6;
+      CHECK_EQ(translator4.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator4.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator4.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator4.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator4.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator4.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      translator3 = translator5;
+      CHECK_EQ(translator3.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator3.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator3.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator3.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator3.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator3.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+
+      translator5 = std::move(translator3);
+      CHECK_EQ(translator5.translate("0").discr_val, (std::size_t)0);
+      CHECK_EQ(translator5.translate("1").discr_val, (std::size_t)1);
+      CHECK_EQ(translator5.translate("2").discr_val, (std::size_t)2);
+      CHECK_EQ(translator5.translate("4").discr_val, (std::size_t)4);
+      CHECK_EQ(translator5.translate("5").discr_val, (std::size_t)5);
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}})) == ("0"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}})) == ("1"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}})) == ("2"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}})) == ("3"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}})) == ("4"));
+      CHECK((translator5.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}})) == ("5"));
+    }
+  }
+
+  GUM_TEST(_trans6) {
+    gum::RangeVariable         var("X1", "", 2, 4);
+    std::vector< std::string > missing{"N/A", "3", "toto"};
+
+    gum::learning::DBTranslator4RangeVariable translator(var, missing, true);
+    CHECK_EQ(translator.needsReordering(), false);
+    CHECK_EQ(translator.domainSize(), static_cast< gum::Size >(3));
+
+    CHECK_EQ((translator << "7").discr_val, (std::size_t)5);
+    CHECK_EQ((translator >> gum::learning::DBTranslatedValue{std::size_t{5}}), "7");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{0}}), "2");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{1}}), "3");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{2}}), "4");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{3}}), "5");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{4}}), "6");
+    CHECK_EQ(translator.translateBack(gum::learning::DBTranslatedValue{std::size_t{5}}), "7");
+    CHECK(((translator.translateBack(
+                gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+            == "N/A")
+           || (translator.translateBack(
+                   gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()})
+               == "toto")));
+
+    gum::Set< std::string > missing_kept{"N/A", "toto"};
+    CHECK_EQ(translator.missingSymbols(), missing_kept);
+  }
 
 } /* namespace gum_tests */

@@ -59,15 +59,12 @@
 // =============================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
-#define GUM_CURRENT_SUITE  Operators4MultiDimFunctionGraph
-#define GUM_CURRENT_MODULE GUMBASE
-
 // =============================================================================
 
 namespace gum_tests {
 
   struct Operators4MultiDimFunctionGraphTestSuite {
-    private:
+    protected:
     /// Defines the maximal number of modalities for a var (which is choose
     /// randomly).
     /// The domain size will be of 2 + rand()%maxVarDomainSize.
@@ -361,60 +358,7 @@ namespace gum_tests {
     // *****************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // *****************************************************************************************************
-    static void test_Operators_Functions_on_MultiDimFunctionGraphs() {
-      gum::Timer time;
-      double     tempsGene   = 0;
-      double     tempsCalcul = 0;
-      double     tempsEval   = 0;
 
-
-      // First we try with a predefine structure
-      {
-        time.reset();
-
-        gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
-
-        gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
-
-        gum::MultiDimFunctionGraph< double >* a2 = nullptr;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList));
-
-        //          std::cout << a1->toDot() << std::endl;
-
-        //          std::cout << a2->toDot() << std::endl;
-
-        tempsGene += time.step();
-
-        bool evalRes = true;
-
-        for (gum::Idx opId = 1; opId < nbOperation && evalRes; opId++)
-          evalRes = _evalOperation_(opId, a1, a2, tempsCalcul, tempsEval);
-
-        delete a1;
-        delete a2;
-
-        for (gum::SequenceIterator< const gum::DiscreteVariable* > ite = varList->begin();
-             ite != varList->end();
-             ++ite)
-          delete *ite;
-        delete varList;
-
-        if (!evalRes) {
-          //          std::cout << "An error has occured! Aborting test." <<
-          //          std::endl;
-          return;
-        }
-
-        std::fflush(stdout);
-      }
-
-      CHECK(tempsGene > 0.0);
-
-
-      // Then we try with random structure
-      //        gum::Idx i = 5;
-    }
 
     // *****************************************************************************************************
     /// The aim of these function is to reproduce
@@ -604,7 +548,60 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(_Operators_Functions_on_MultiDimFunctionGraphs)
+  GUM_TEST(_Operators_Functions_on_MultiDimFunctionGraphs) {
+    gum::Timer time;
+    double     tempsGene   = 0;
+    double     tempsCalcul = 0;
+    double     tempsEval   = 0;
+
+
+    // First we try with a predefine structure
+    {
+      time.reset();
+
+      gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
+
+      gum::MultiDimFunctionGraph< double >* a1 = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
+
+      gum::MultiDimFunctionGraph< double >* a2 = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(a2 = _generateFunctionGraph2_(varList));
+
+      //          std::cout << a1->toDot() << std::endl;
+
+      //          std::cout << a2->toDot() << std::endl;
+
+      tempsGene += time.step();
+
+      bool evalRes = true;
+
+      for (gum::Idx opId = 1; opId < nbOperation && evalRes; opId++)
+        evalRes = _evalOperation_(opId, a1, a2, tempsCalcul, tempsEval);
+
+      delete a1;
+      delete a2;
+
+      for (gum::SequenceIterator< const gum::DiscreteVariable* > ite = varList->begin();
+           ite != varList->end();
+           ++ite)
+        delete *ite;
+      delete varList;
+
+      if (!evalRes) {
+        //          std::cout << "An error has occured! Aborting test." <<
+        //          std::endl;
+        return;
+      }
+
+      std::fflush(stdout);
+    }
+
+    CHECK(tempsGene > 0.0);
+
+
+    // Then we try with random structure
+    //        gum::Idx i = 5;
+  }
 }   // namespace gum_tests
 
 // =================================================================================

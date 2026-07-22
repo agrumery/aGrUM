@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BIFXMLBNWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -67,40 +64,38 @@
 namespace gum_tests {
   struct BIFXMLBNWriterTestSuite {
     public:
-    static void testConstuctor() {
-      gum::BIFXMLBNWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >());
-      delete writer;
-    }   // namespace gum_tests
-
-    static void testWriter_ostream() {
-      gum::BIFXMLBNWriter< double > writer;
-      const auto                    bn = gum::BayesNet< double >::fastPrototype(
-          "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr,bn));
-    }
-
-    static void testWriter_file() {
-      auto bn = gum::BayesNet< double >::fastPrototype(
-          "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
-      const std::string file = GET_RESSOURCES_PATH("outputs/BNBIFXMLWriter_file1.bifxml");
-      gum::BIFXMLBNWriter< double > writer;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
-
-
-      gum::BayesNet< double >       reload;
-      gum::BIFXMLBNReader< double > reader(&reload, file);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      for (auto v: reload.nodes()) {
-        CHECK_EQ(reload.variable(v).toFast(), bn.variable(reload.variable(v).name()).toFast());
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()));
-      }
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Writer_file)
+  GUM_TEST(Constuctor) {
+    gum::BIFXMLBNWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::BIFXMLBNWriter< double > writer;
+    const auto                    bn = gum::BayesNet< double >::fastPrototype(
+        "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr,bn));
+  }
+
+  GUM_TEST(Writer_file) {
+    auto bn = gum::BayesNet< double >::fastPrototype(
+        "A[1,5]->B{a|b|c}->C{1|2|30|400}->D{1.|2|2.5|3|13.5}->E[1:5:10]");
+    const std::string             file = GET_RESSOURCES_PATH("outputs/BNBIFXMLWriter_file1.bifxml");
+    gum::BIFXMLBNWriter< double > writer;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
+
+
+    gum::BayesNet< double >       reload;
+    gum::BIFXMLBNReader< double > reader(&reload, file);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    for (auto v: reload.nodes()) {
+      CHECK_EQ(reload.variable(v).toFast(), bn.variable(reload.variable(v).name()).toFast());
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(reload.cpt(v), bn.cpt(reload.variable(v).name()));
+    }
+  }
 }   // namespace gum_tests

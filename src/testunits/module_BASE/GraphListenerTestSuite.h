@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GraphListener
-#define GUM_CURRENT_MODULE GUMBASE
-
 // The graph used for the tests:
 //          0   1_          0 -> 2
 //         / \ / /          0 -> 3
@@ -69,7 +66,7 @@ namespace gum_tests {
 
   struct GraphListenerTestSuite {
     class CountListener: public gum::Listener {
-      private:
+      protected:
       int  _nbrNode_, _nbrArcs_, _nbrEdges_;
       bool _isOn_;
 
@@ -111,7 +108,7 @@ namespace gum_tests {
     };
 
     class DiGraphCounter: public gum::DiGraphListener {
-      private:
+      protected:
       int _nbrNode_, _nbrArcs_;
 
       public:
@@ -131,7 +128,7 @@ namespace gum_tests {
     };
 
     class UndiGraphCounter: public gum::UndiGraphListener {
-      private:
+      protected:
       int _nbrNode_, _nbrEdges_;
 
       public:
@@ -153,7 +150,7 @@ namespace gum_tests {
     };
 
     class MixedGraphCounter: public gum::MixedGraphListener {
-      private:
+      protected:
       int _nbrNode_, _nbrArcs_, _nbrEdges_;
 
       public:
@@ -180,7 +177,7 @@ namespace gum_tests {
       int edges() const { return _nbrEdges_; }
     };
 
-    private:
+    protected:
     gum::NodeId id1 = 0u;
     gum::NodeId id2 = 0u;
     gum::NodeId id3 = 0u;
@@ -233,361 +230,354 @@ namespace gum_tests {
     }
 
     public:
-    void testDAG() {
-      gum::DAG g1;
-      gum::DAG g2;
-
-      CountListener c1;
-      CountListener c2;
-
-      // g1 has 2 listeners
-      // g2 has 1 listener
-      // c1 listens to 1 graph
-      // c2 listens to 2 graphs
-      GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
-      GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g1, onArcAdded, c1, CountListener::whenArcAdded);
-      GUM_CONNECT(g1, onArcDeleted, c1, CountListener::whenArcDeleted);
-
-      GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g1, onArcAdded, c2, CountListener::whenArcAdded);
-      GUM_CONNECT(g1, onArcDeleted, c2, CountListener::whenArcDeleted);
-
-      GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g2, onArcAdded, c2, CountListener::whenArcAdded);
-      GUM_CONNECT(g2, onArcDeleted, c2, CountListener::whenArcDeleted);
-
-      buildDAG(g2);   // 5 nodes/6 arcs for g2
-
-      g1.addArc(g1.addNode(), g1.addNode());
-      buildDAG(g1);   // 7 nodes/7 arcs for g1
-
-      CHECK_EQ(c1.nodes(), 7);
-      CHECK_EQ(c1.arcs(), 7);
-      CHECK_EQ(c2.nodes(), 7 + 5);
-      CHECK_EQ(c2.arcs(), 7 + 6);
-
-      g1.eraseNode(id5);   // -1 nodes/-3 arcs for g1
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.arcs(), 4);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.arcs(), 4 + 6);
-
-      g1.eraseArc(gum::Arc(id1, id3));   // 6 nodes, 3 arcs
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.arcs(), 3);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.arcs(), 3 + 6);
-
-      g1.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.arcs(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.arcs(), 0 + 6);
-
-      g2.clearArcs();   // 5 nodes, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.arcs(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.arcs(), 0 + 0);
-    }
-
-    void testUndiGraph() {
-      gum::UndiGraph g1;
-      gum::UndiGraph g2;
-
-      CountListener c1;
-      CountListener c2;
-
-      // g1 has 2 listeners
-      // g2 has 1 listener
-      // c1 listens to 1 graph
-      // c2 listens to 2 graphs
-      GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
-      GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g1, onEdgeAdded, c1, CountListener::whenEdgeAdded);
-      GUM_CONNECT(g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted);
-
-      GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g1, onEdgeAdded, c2, CountListener::whenEdgeAdded);
-      GUM_CONNECT(g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
-
-      GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g2, onEdgeAdded, c2, CountListener::whenEdgeAdded);
-      GUM_CONNECT(g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
-
-      buildUndiGraph(g2);   // 5 nodes/6 edges for g2
-
-      g1.addEdge(g1.addNode(), g1.addNode());
-      buildUndiGraph(g1);   // 7 nodes/7 edges for g1
-
-      CHECK_EQ(c1.nodes(), 7);
-      CHECK_EQ(c1.edges(), 7);
-      CHECK_EQ(c2.nodes(), 7 + 5);
-      CHECK_EQ(c2.edges(), 7 + 6);
-
-      g1.eraseNode(id5);   // -1 nodes/-3 edges for g1
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.edges(), 4);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.edges(), 4 + 6);
-
-      g1.eraseEdge(gum::Edge(id1, id3));   // 6 nodes, 3 edges
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.edges(), 3);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.edges(), 3 + 6);
-
-      g1.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.edges(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.edges(), 0 + 6);
-
-      g2.clearEdges();   // 5 nodes, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.edges(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.edges(), 0 + 0);
-    }
-
-    void testMixedGraph() {
-      gum::MixedGraph g1;
-      gum::MixedGraph g2;
-
-      CountListener c1;
-      CountListener c2;
-
-      // g1 has 2 listeners
-      // g2 has 1 listener
-      // c1 listens to 1 graph
-      // c2 listens to 2 graphs
-
-      CHECK(!g1.onNodeAdded.hasListener());
-      GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
-      CHECK(g1.onNodeAdded.hasListener());
-
-      GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
-      CHECK(g1.onNodeDeleted.hasListener());
-
-      CHECK(!g1.onEdgeAdded.hasListener());
-      GUM_CONNECT(g1, onEdgeAdded, c1, CountListener::whenEdgeAdded);
-      CHECK(g1.onEdgeAdded.hasListener());
-
-      CHECK(!g1.onEdgeDeleted.hasListener());
-      GUM_CONNECT(g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted);
-      CHECK(g1.onEdgeDeleted.hasListener());
-
-      CHECK(!g1.onArcAdded.hasListener());
-      GUM_CONNECT(g1, onArcAdded, c1, CountListener::whenArcAdded);
-      CHECK(g1.onArcAdded.hasListener());
-
-      CHECK(!g1.onArcDeleted.hasListener());
-      GUM_CONNECT(g1, onArcDeleted, c1, CountListener::whenArcDeleted);
-      CHECK(g1.onArcDeleted.hasListener());
-
-      GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g1, onEdgeAdded, c2, CountListener::whenEdgeAdded);
-      GUM_CONNECT(g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
-      GUM_CONNECT(g1, onArcAdded, c2, CountListener::whenArcAdded);
-      GUM_CONNECT(g1, onArcDeleted, c2, CountListener::whenArcDeleted);
-
-      GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
-      GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
-      GUM_CONNECT(g2, onEdgeAdded, c2, CountListener::whenEdgeAdded);
-      GUM_CONNECT(g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
-      GUM_CONNECT(g2, onArcAdded, c2, CountListener::whenArcAdded);
-      GUM_CONNECT(g2, onArcDeleted, c2, CountListener::whenArcDeleted);
-
-      buildMixedGraph(g2);   // 5 nodes/3 edges /3 arcs for g2
-
-      g1.addEdge(g1.addNode(), g1.addNode());
-      buildMixedGraph(g1);   // 7 nodes/4 edges / 3 arcs for g1
-
-      CHECK_EQ(c1.nodes(), 7);
-      CHECK_EQ(c1.edges(), 4);
-      CHECK_EQ(c1.arcs(), 3);
-      CHECK_EQ(c2.nodes(), 7 + 5);
-      CHECK_EQ(c2.edges(), 4 + 3);
-      CHECK_EQ(c2.arcs(), 3 + 3);
-
-      g1.eraseNode(id5);   // -1 nodes/-2 edges / -1 arcs for g1
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.edges(), 2);
-      CHECK_EQ(c1.arcs(), 2);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.edges(), 2 + 3);
-      CHECK_EQ(c2.arcs(), 2 + 3);
-
-      g1.eraseEdge(gum::Edge(id1,
-                             id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
-
-      CHECK_EQ(c1.nodes(), 6);
-      CHECK_EQ(c1.edges(), 2);
-      CHECK_EQ(c2.nodes(), 6 + 5);
-      CHECK_EQ(c2.edges(), 2 + 3);
-
-      g1.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.edges(), 0);
-      CHECK_EQ(c1.arcs(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.edges(), 0 + 3);
-      CHECK_EQ(c2.arcs(), 0 + 3);
-
-      g2.clearEdges();   // 5 nodes, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.edges(), 0);
-      CHECK_EQ(c1.arcs(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.edges(), 0 + 0);
-      CHECK_EQ(c2.arcs(), 0 + 3);
-
-      g2.clearArcs();   // 5 nodes, 0 arc
-
-      CHECK_EQ(c1.nodes(), 0);
-      CHECK_EQ(c1.edges(), 0);
-      CHECK_EQ(c1.arcs(), 0);
-      CHECK_EQ(c2.nodes(), 0 + 5);
-      CHECK_EQ(c2.edges(), 0 + 0);
-      CHECK_EQ(c2.arcs(), 0 + 0);
-    }
-
-    void testUndiGraphWithGraphListener() {
-      gum::UndiGraph g;
-
-      UndiGraphCounter c(&g);
-
-      buildUndiGraph(g);   // 5 nodes/6 edges for g
-
-      CHECK_EQ(c.nodes(), 5);
-      CHECK_EQ(c.edges(), 6);
-
-      g.eraseNode(id5);   // -1 nodes/-3 edges for g
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.edges(), 3);
-
-      g.eraseEdge(gum::Edge(id1, id3));   // -1 edges
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.edges(), 2);
-
-      g.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c.nodes(), 0);
-      CHECK_EQ(c.edges(), 0);
-    }
-
-    void testDiGraphWithGraphListener() {
-      gum::DiGraph g;
-
-      DiGraphCounter c(&g);
-
-      buildDAG(g);   // 5 nodes/6 arcs for g
-
-      CHECK_EQ(c.nodes(), 5);
-      CHECK_EQ(c.arcs(), 6);
-
-      g.eraseNode(id5);   // -1 nodes/-3 arcs for g
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.arcs(), 3);
-
-      g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.arcs(), 2);
-
-      g.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c.nodes(), 0);
-      CHECK_EQ(c.arcs(), 0);
-    }
-
-    void testDAGWithGraphListener() {
-      gum::DAG g;
-
-      DiGraphCounter c(&g);
-
-      buildDAG(g);                                         // 5 nodes/6 arcs for g
-
-      CHECK_THROWS_AS(g.addArc(id5, id2),
-                      const gum::InvalidDirectedCycle&);   // should throw
-      // InvalidDirectedCycle and should
-      // not call the listeners
-
-      CHECK_EQ(c.nodes(), 5);
-      CHECK_EQ(c.arcs(), 6);
-
-      g.eraseNode(id5);   // -1 nodes/-3 arcs for g
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.arcs(), 3);
-
-      g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.arcs(), 2);
-
-      g.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c.nodes(), 0);
-      CHECK_EQ(c.arcs(), 0);
-    }
-
-    void testMixedGraphWithGraphListener() {
-      gum::MixedGraph g;
-
-      MixedGraphCounter c(&g);
-
-      buildMixedGraph(g);   // 5 nodes/3 arcs/3 edges for g
-
-      CHECK_EQ(c.nodes(), 5);
-      CHECK_EQ(c.edges(), 3);
-      CHECK_EQ(c.arcs(), 3);
-
-      g.eraseNode(id5);   // -1 nodes/-2 edge / -1 arcs for g
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.edges(), 1);
-      CHECK_EQ(c.arcs(), 2);
-
-      g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
-
-      CHECK_EQ(c.nodes(), 4);
-      CHECK_EQ(c.edges(), 1);
-      CHECK_EQ(c.arcs(), 1);
-
-      g.clear();   // 0 node, 0 arc
-
-      CHECK_EQ(c.nodes(), 0);
-      CHECK_EQ(c.edges(), 0);
-      CHECK_EQ(c.arcs(), 0);
-    }
   };
 
-  GUM_TEST_ACTIF(DAG)
-  GUM_TEST_ACTIF(UndiGraph)
-  GUM_TEST_ACTIF(MixedGraph)
-  GUM_TEST_ACTIF(UndiGraphWithGraphListener)
-  GUM_TEST_ACTIF(DiGraphWithGraphListener)
-  GUM_TEST_ACTIF(DAGWithGraphListener)
-  GUM_TEST_ACTIF(MixedGraphWithGraphListener)
+  GUM_TEST(DAG) {
+    gum::DAG g1;
+    gum::DAG g2;
+
+    CountListener c1;
+    CountListener c2;
+
+    // g1 has 2 listeners
+    // g2 has 1 listener
+    // c1 listens to 1 graph
+    // c2 listens to 2 graphs
+    GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
+    GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g1, onArcAdded, c1, CountListener::whenArcAdded);
+    GUM_CONNECT(g1, onArcDeleted, c1, CountListener::whenArcDeleted);
+
+    GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g1, onArcAdded, c2, CountListener::whenArcAdded);
+    GUM_CONNECT(g1, onArcDeleted, c2, CountListener::whenArcDeleted);
+
+    GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g2, onArcAdded, c2, CountListener::whenArcAdded);
+    GUM_CONNECT(g2, onArcDeleted, c2, CountListener::whenArcDeleted);
+
+    buildDAG(g2);   // 5 nodes/6 arcs for g2
+
+    g1.addArc(g1.addNode(), g1.addNode());
+    buildDAG(g1);   // 7 nodes/7 arcs for g1
+
+    CHECK_EQ(c1.nodes(), 7);
+    CHECK_EQ(c1.arcs(), 7);
+    CHECK_EQ(c2.nodes(), 7 + 5);
+    CHECK_EQ(c2.arcs(), 7 + 6);
+
+    g1.eraseNode(id5);   // -1 nodes/-3 arcs for g1
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.arcs(), 4);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.arcs(), 4 + 6);
+
+    g1.eraseArc(gum::Arc(id1, id3));   // 6 nodes, 3 arcs
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.arcs(), 3);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.arcs(), 3 + 6);
+
+    g1.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.arcs(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.arcs(), 0 + 6);
+
+    g2.clearArcs();   // 5 nodes, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.arcs(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.arcs(), 0 + 0);
+  }
+
+  GUM_TEST(UndiGraph) {
+    gum::UndiGraph g1;
+    gum::UndiGraph g2;
+
+    CountListener c1;
+    CountListener c2;
+
+    // g1 has 2 listeners
+    // g2 has 1 listener
+    // c1 listens to 1 graph
+    // c2 listens to 2 graphs
+    GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
+    GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g1, onEdgeAdded, c1, CountListener::whenEdgeAdded);
+    GUM_CONNECT(g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted);
+
+    GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g1, onEdgeAdded, c2, CountListener::whenEdgeAdded);
+    GUM_CONNECT(g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
+
+    GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g2, onEdgeAdded, c2, CountListener::whenEdgeAdded);
+    GUM_CONNECT(g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
+
+    buildUndiGraph(g2);   // 5 nodes/6 edges for g2
+
+    g1.addEdge(g1.addNode(), g1.addNode());
+    buildUndiGraph(g1);   // 7 nodes/7 edges for g1
+
+    CHECK_EQ(c1.nodes(), 7);
+    CHECK_EQ(c1.edges(), 7);
+    CHECK_EQ(c2.nodes(), 7 + 5);
+    CHECK_EQ(c2.edges(), 7 + 6);
+
+    g1.eraseNode(id5);   // -1 nodes/-3 edges for g1
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.edges(), 4);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.edges(), 4 + 6);
+
+    g1.eraseEdge(gum::Edge(id1, id3));   // 6 nodes, 3 edges
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.edges(), 3);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.edges(), 3 + 6);
+
+    g1.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.edges(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.edges(), 0 + 6);
+
+    g2.clearEdges();   // 5 nodes, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.edges(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.edges(), 0 + 0);
+  }
+
+  GUM_TEST(MixedGraph) {
+    gum::MixedGraph g1;
+    gum::MixedGraph g2;
+
+    CountListener c1;
+    CountListener c2;
+
+    // g1 has 2 listeners
+    // g2 has 1 listener
+    // c1 listens to 1 graph
+    // c2 listens to 2 graphs
+
+    CHECK(!g1.onNodeAdded.hasListener());
+    GUM_CONNECT(g1, onNodeAdded, c1, CountListener::whenNodeAdded);
+    CHECK(g1.onNodeAdded.hasListener());
+
+    GUM_CONNECT(g1, onNodeDeleted, c1, CountListener::whenNodeDeleted);
+    CHECK(g1.onNodeDeleted.hasListener());
+
+    CHECK(!g1.onEdgeAdded.hasListener());
+    GUM_CONNECT(g1, onEdgeAdded, c1, CountListener::whenEdgeAdded);
+    CHECK(g1.onEdgeAdded.hasListener());
+
+    CHECK(!g1.onEdgeDeleted.hasListener());
+    GUM_CONNECT(g1, onEdgeDeleted, c1, CountListener::whenEdgeDeleted);
+    CHECK(g1.onEdgeDeleted.hasListener());
+
+    CHECK(!g1.onArcAdded.hasListener());
+    GUM_CONNECT(g1, onArcAdded, c1, CountListener::whenArcAdded);
+    CHECK(g1.onArcAdded.hasListener());
+
+    CHECK(!g1.onArcDeleted.hasListener());
+    GUM_CONNECT(g1, onArcDeleted, c1, CountListener::whenArcDeleted);
+    CHECK(g1.onArcDeleted.hasListener());
+
+    GUM_CONNECT(g1, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g1, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g1, onEdgeAdded, c2, CountListener::whenEdgeAdded);
+    GUM_CONNECT(g1, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
+    GUM_CONNECT(g1, onArcAdded, c2, CountListener::whenArcAdded);
+    GUM_CONNECT(g1, onArcDeleted, c2, CountListener::whenArcDeleted);
+
+    GUM_CONNECT(g2, onNodeAdded, c2, CountListener::whenNodeAdded);
+    GUM_CONNECT(g2, onNodeDeleted, c2, CountListener::whenNodeDeleted);
+    GUM_CONNECT(g2, onEdgeAdded, c2, CountListener::whenEdgeAdded);
+    GUM_CONNECT(g2, onEdgeDeleted, c2, CountListener::whenEdgeDeleted);
+    GUM_CONNECT(g2, onArcAdded, c2, CountListener::whenArcAdded);
+    GUM_CONNECT(g2, onArcDeleted, c2, CountListener::whenArcDeleted);
+
+    buildMixedGraph(g2);   // 5 nodes/3 edges /3 arcs for g2
+
+    g1.addEdge(g1.addNode(), g1.addNode());
+    buildMixedGraph(g1);   // 7 nodes/4 edges / 3 arcs for g1
+
+    CHECK_EQ(c1.nodes(), 7);
+    CHECK_EQ(c1.edges(), 4);
+    CHECK_EQ(c1.arcs(), 3);
+    CHECK_EQ(c2.nodes(), 7 + 5);
+    CHECK_EQ(c2.edges(), 4 + 3);
+    CHECK_EQ(c2.arcs(), 3 + 3);
+
+    g1.eraseNode(id5);   // -1 nodes/-2 edges / -1 arcs for g1
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.edges(), 2);
+    CHECK_EQ(c1.arcs(), 2);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.edges(), 2 + 3);
+    CHECK_EQ(c2.arcs(), 2 + 3);
+
+    g1.eraseEdge(gum::Edge(id1,
+                           id3));   // THIS EDGE DOES NOT EXISTS !!!! => 6 nodes, 2 edges
+
+    CHECK_EQ(c1.nodes(), 6);
+    CHECK_EQ(c1.edges(), 2);
+    CHECK_EQ(c2.nodes(), 6 + 5);
+    CHECK_EQ(c2.edges(), 2 + 3);
+
+    g1.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.edges(), 0);
+    CHECK_EQ(c1.arcs(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.edges(), 0 + 3);
+    CHECK_EQ(c2.arcs(), 0 + 3);
+
+    g2.clearEdges();   // 5 nodes, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.edges(), 0);
+    CHECK_EQ(c1.arcs(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.edges(), 0 + 0);
+    CHECK_EQ(c2.arcs(), 0 + 3);
+
+    g2.clearArcs();   // 5 nodes, 0 arc
+
+    CHECK_EQ(c1.nodes(), 0);
+    CHECK_EQ(c1.edges(), 0);
+    CHECK_EQ(c1.arcs(), 0);
+    CHECK_EQ(c2.nodes(), 0 + 5);
+    CHECK_EQ(c2.edges(), 0 + 0);
+    CHECK_EQ(c2.arcs(), 0 + 0);
+  }
+
+  GUM_TEST(UndiGraphWithGraphListener) {
+    gum::UndiGraph g;
+
+    UndiGraphCounter c(&g);
+
+    buildUndiGraph(g);   // 5 nodes/6 edges for g
+
+    CHECK_EQ(c.nodes(), 5);
+    CHECK_EQ(c.edges(), 6);
+
+    g.eraseNode(id5);   // -1 nodes/-3 edges for g
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.edges(), 3);
+
+    g.eraseEdge(gum::Edge(id1, id3));   // -1 edges
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.edges(), 2);
+
+    g.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c.nodes(), 0);
+    CHECK_EQ(c.edges(), 0);
+  }
+
+  GUM_TEST(DiGraphWithGraphListener) {
+    gum::DiGraph g;
+
+    DiGraphCounter c(&g);
+
+    buildDAG(g);   // 5 nodes/6 arcs for g
+
+    CHECK_EQ(c.nodes(), 5);
+    CHECK_EQ(c.arcs(), 6);
+
+    g.eraseNode(id5);   // -1 nodes/-3 arcs for g
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.arcs(), 3);
+
+    g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.arcs(), 2);
+
+    g.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c.nodes(), 0);
+    CHECK_EQ(c.arcs(), 0);
+  }
+
+  GUM_TEST(DAGWithGraphListener) {
+    gum::DAG g;
+
+    DiGraphCounter c(&g);
+
+    buildDAG(g);                                         // 5 nodes/6 arcs for g
+
+    CHECK_THROWS_AS(g.addArc(id5, id2),
+                    const gum::InvalidDirectedCycle&);   // should throw
+    // InvalidDirectedCycle and should
+    // not call the listeners
+
+    CHECK_EQ(c.nodes(), 5);
+    CHECK_EQ(c.arcs(), 6);
+
+    g.eraseNode(id5);   // -1 nodes/-3 arcs for g
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.arcs(), 3);
+
+    g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.arcs(), 2);
+
+    g.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c.nodes(), 0);
+    CHECK_EQ(c.arcs(), 0);
+  }
+
+  GUM_TEST(MixedGraphWithGraphListener) {
+    gum::MixedGraph g;
+
+    MixedGraphCounter c(&g);
+
+    buildMixedGraph(g);   // 5 nodes/3 arcs/3 edges for g
+
+    CHECK_EQ(c.nodes(), 5);
+    CHECK_EQ(c.edges(), 3);
+    CHECK_EQ(c.arcs(), 3);
+
+    g.eraseNode(id5);   // -1 nodes/-2 edge / -1 arcs for g
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.edges(), 1);
+    CHECK_EQ(c.arcs(), 2);
+
+    g.eraseArc(gum::Arc(id1, id3));   // -1 arcs
+
+    CHECK_EQ(c.nodes(), 4);
+    CHECK_EQ(c.edges(), 1);
+    CHECK_EQ(c.arcs(), 1);
+
+    g.clear();   // 0 node, 0 arc
+
+    CHECK_EQ(c.nodes(), 0);
+    CHECK_EQ(c.edges(), 0);
+    CHECK_EQ(c.arcs(), 0);
+  }
 }   // namespace gum_tests

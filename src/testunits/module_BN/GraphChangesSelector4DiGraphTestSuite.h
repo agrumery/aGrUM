@@ -58,13 +58,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GraphChangesSelector4DiGraph
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct GraphChangesSelector4DiGraphTestSuite {
-    private:
+    protected:
     static void _order_nodes_(const std::vector< std::vector< double > >&      all_scores,
                               const std::vector< gum::NodeId >&                best_nodes,
                               std::vector< std::pair< gum::NodeId, double > >& sorted_nodes) {
@@ -135,182 +132,180 @@ namespace gum_tests {
     }
 
     public:
-    static void test_K2() {
-      // create the translator set
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the database
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
-        database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
-        database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
-        database.insertRow(row4);
-
-      // create the parser
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-
-      gum::learning::SmoothingPrior prior(database);
-      gum::learning::ScoreK2        score(parser, prior);
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
-          variable_constraints;
-      gum::learning::StructuralConstraintSetStatic<
-          gum::learning::StructuralConstraintForbiddenArcs >
-          invariable_constraints;
-
-      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-                                                   decltype(variable_constraints) >
-          selector(score, invariable_constraints, variable_constraints);
-
-      gum::DAG graph;
-      selector.setGraph(graph);
-      CHECK_NOTHROW(selector.bestChange());
-
-      selector.setGraph(graph);
-      CHECK_NOTHROW(selector.bestChange());
-
-      {
-        gum::learning::ArcDeletion change1(gum::NodeId(0), gum::NodeId(1));
-        CHECK(!selector.isChangeValid(change1));
-        gum::learning::ArcReversal change2(gum::NodeId(0), gum::NodeId(1));
-        CHECK(!selector.isChangeValid(change2));
-        gum::learning::ArcAddition change3(gum::NodeId(0), gum::NodeId(1));
-        CHECK(selector.isChangeValid(change3));
-      }
-
-      {
-        const auto& change = selector.bestChange();
-        CHECK_EQ(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
-        const auto score = selector.deltaScore(change, true);
-        CHECK(score > 0);
-
-        double delta_score = selector.score(change.node2());
-        selector.applyChange(change);
-        delta_score = selector.score(change.node2()) - delta_score;
-        CHECK_EQ(score, delta_score);
-      }
-      CHECK_EQ(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION);
-
-      std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
-      std::vector< gum::NodeId >           best_nodes(6);
-      gum::NodeId                          best_node;
-      _compute_scores_(score, graph, all_scores, best_nodes, best_node);
-
-      /*
-      for (const auto node: graph) {
-        const auto& change = selector.bestChange(node);
-        CHECK_EQ(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
-        if (change.node1() == node) {
-          CHECK_EQ(change.node2(), best_nodes[node]);
-        } else {
-          CHECK_EQ(change.node1(), best_nodes[node]);
-        }
-      }
-
-      const double                best_score = selector.bestDeltaScore();
-      gum::NodeProperty< double > scores;
-      for (const auto node: graph) {
-        const double sc = selector.bestDeltaScore();
-        scores.insert(node, sc);
-        CHECK(sc <= best_score);
-        CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
-      }
-      CHECK_EQ(best_score, all_scores[best_node][best_nodes[best_node]]);
-
-      gum::learning::ArcAddition change2(3, 1);
-      graph.addArc(change2.node1(), change2.node2());
-      selector.applyChangeWithoutScoreUpdate(change2);
-      selector.updateScoresAfterAppliedChanges();
-
-      _compute_scores_(score, graph, all_scores, best_nodes, best_node);
-
-      for (const auto node: graph) {
-        const double sc = selector.bestDeltaScore(node);
-        CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
-        if (node != 1) {
-          CHECK_EQ(sc, scores[node]);
-        } else {
-          CHECK_NE(sc, scores[node]);
-        }
-      }
-
-      scores[1] = selector.bestDeltaScore(1);
-      scores[3] = selector.bestDeltaScore(3);
-      gum::learning::ArcAddition change3(3, 2);
-      graph.addArc(change3.node1(), change3.node2());
-      selector.applyChange(change3);
-
-      _compute_scores_(score, graph, all_scores, best_nodes, best_node);
-
-      for (const auto node: graph) {
-        const double sc = selector.score(node);
-        CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
-        if ((node != 2)) {
-          CHECK_EQ(selector.bestScore(node), scores[node]);
-        } else {
-          CHECK_NE(selector.bestScore(node), scores[node]);
-        }
-      }
-
-      scores[2] = selector.bestScore(2);
-      scores[3] = selector.bestScore(3);
-      gum::learning::ArcDeletion change4(3, 1);
-      graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
-      selector.applyChange(change4);
-
-      _compute_scores_(score, graph, all_scores, best_nodes, best_node);
-
-      for (const auto node: graph) {
-        const double sc = selector.bestScore(node);
-        CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
-        if ((node != 1)) {
-          CHECK_EQ(selector.bestScore(node), scores[node]);
-        } else {
-          CHECK_NE(selector.bestScore(node), scores[node]);
-        }
-      }
-
-
-      const auto xnodes = selector.nodesSortedByBestScore();
-      CHECK_EQ(xnodes.size(), std::size_t(6));
-
-      std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
-      _order_nodes_(all_scores, best_nodes, sorted_nodes);
-      for (std::size_t i = 0; i < 6; ++i) {
-        CHECK_EQ(xnodes[i], sorted_nodes[i]);
-      }
-       */
-    }
   };
 
-  GUM_TEST_ACTIF(_K2)
+  GUM_TEST(_K2) {
+    // create the translator set
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the database
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+    std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+    std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+    std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+    std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+    for (int i = 0; i < 1000; ++i)
+      database.insertRow(row0);
+    for (int i = 0; i < 50; ++i)
+      database.insertRow(row1);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row2);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row3);
+    for (int i = 0; i < 200; ++i)
+      database.insertRow(row4);
+
+    // create the parser
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+    gum::learning::SmoothingPrior prior(database);
+    gum::learning::ScoreK2        score(parser, prior);
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDiGraph >
+        variable_constraints;
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintForbiddenArcs >
+        invariable_constraints;
+
+    gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+                                                 decltype(variable_constraints) >
+        selector(score, invariable_constraints, variable_constraints);
+
+    gum::DAG graph;
+    selector.setGraph(graph);
+    CHECK_NOTHROW(selector.bestChange());
+
+    selector.setGraph(graph);
+    CHECK_NOTHROW(selector.bestChange());
+
+    {
+      gum::learning::ArcDeletion change1(gum::NodeId(0), gum::NodeId(1));
+      CHECK(!selector.isChangeValid(change1));
+      gum::learning::ArcReversal change2(gum::NodeId(0), gum::NodeId(1));
+      CHECK(!selector.isChangeValid(change2));
+      gum::learning::ArcAddition change3(gum::NodeId(0), gum::NodeId(1));
+      CHECK(selector.isChangeValid(change3));
+    }
+
+    {
+      const auto& change = selector.bestChange();
+      CHECK_EQ(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
+      const auto score = selector.deltaScore(change, true);
+      CHECK(score > 0);
+
+      double delta_score = selector.score(change.node2());
+      selector.applyChange(change);
+      delta_score = selector.score(change.node2()) - delta_score;
+      CHECK_EQ(score, delta_score);
+    }
+    CHECK_EQ(selector.bestChange().type(), gum::learning::GraphChangeType::ARC_ADDITION);
+
+    std::vector< std::vector< double > > all_scores(6, std::vector< double >(6));
+    std::vector< gum::NodeId >           best_nodes(6);
+    gum::NodeId                          best_node;
+    _compute_scores_(score, graph, all_scores, best_nodes, best_node);
+
+    /*
+    for (const auto node: graph) {
+      const auto& change = selector.bestChange(node);
+      CHECK_EQ(change.type(), gum::learning::GraphChangeType::ARC_ADDITION);
+      if (change.node1() == node) {
+        CHECK_EQ(change.node2(), best_nodes[node]);
+      } else {
+        CHECK_EQ(change.node1(), best_nodes[node]);
+      }
+    }
+
+    const double                best_score = selector.bestDeltaScore();
+    gum::NodeProperty< double > scores;
+    for (const auto node: graph) {
+      const double sc = selector.bestDeltaScore();
+      scores.insert(node, sc);
+      CHECK(sc <= best_score);
+      CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
+    }
+    CHECK_EQ(best_score, all_scores[best_node][best_nodes[best_node]]);
+
+    gum::learning::ArcAddition change2(3, 1);
+    graph.addArc(change2.node1(), change2.node2());
+    selector.applyChangeWithoutScoreUpdate(change2);
+    selector.updateScoresAfterAppliedChanges();
+
+    _compute_scores_(score, graph, all_scores, best_nodes, best_node);
+
+    for (const auto node: graph) {
+      const double sc = selector.bestDeltaScore(node);
+      CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
+      if (node != 1) {
+        CHECK_EQ(sc, scores[node]);
+      } else {
+        CHECK_NE(sc, scores[node]);
+      }
+    }
+
+    scores[1] = selector.bestDeltaScore(1);
+    scores[3] = selector.bestDeltaScore(3);
+    gum::learning::ArcAddition change3(3, 2);
+    graph.addArc(change3.node1(), change3.node2());
+    selector.applyChange(change3);
+
+    _compute_scores_(score, graph, all_scores, best_nodes, best_node);
+
+    for (const auto node: graph) {
+      const double sc = selector.score(node);
+      CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
+      if ((node != 2)) {
+        CHECK_EQ(selector.bestScore(node), scores[node]);
+      } else {
+        CHECK_NE(selector.bestScore(node), scores[node]);
+      }
+    }
+
+    scores[2] = selector.bestScore(2);
+    scores[3] = selector.bestScore(3);
+    gum::learning::ArcDeletion change4(3, 1);
+    graph.eraseArc(gum::Arc(change4.node1(), change4.node2()));
+    selector.applyChange(change4);
+
+    _compute_scores_(score, graph, all_scores, best_nodes, best_node);
+
+    for (const auto node: graph) {
+      const double sc = selector.bestScore(node);
+      CHECK_EQ(sc, all_scores[node][best_nodes[node]]);
+      if ((node != 1)) {
+        CHECK_EQ(selector.bestScore(node), scores[node]);
+      } else {
+        CHECK_NE(selector.bestScore(node), scores[node]);
+      }
+    }
+
+
+    const auto xnodes = selector.nodesSortedByBestScore();
+    CHECK_EQ(xnodes.size(), std::size_t(6));
+
+    std::vector< std::pair< gum::NodeId, double > > sorted_nodes(6);
+    _order_nodes_(all_scores, best_nodes, sorted_nodes);
+    for (std::size_t i = 0; i < 6; ++i) {
+      CHECK_EQ(xnodes[i], sorted_nodes[i]);
+    }
+     */
+  }
 
 
 } /* namespace gum_tests */

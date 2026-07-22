@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  UAIMRFWriter
-#define GUM_CURRENT_MODULE MRF
-
 // The graph used for the tests:
 //          0   1_
 //         / \ / /
@@ -101,27 +98,8 @@ namespace gum_tests {
 
     ~UAIMRFWriterTestSuite() { delete mn; }
 
-    static void testConstructor() {
-      gum::UAIMRFWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::UAIMRFWriter< double >());
-      delete writer;
-    }
 
-    void testWriter_ostream() const {
-      gum::UAIMRFWriter< double > writer;
-      std::string                 file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
-      writer.write(file, *mn);
-
-      gum::MarkovRandomField< double > net;
-      gum::UAIMRFReader< double >      reader(&net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-      CHECK_EQ(*mn, net);
-    }
-
-    private:
+    protected:
     // Builds a MRF to test the inference
     static void _fill_(gum::MarkovRandomField< double >& mn) {
       try {
@@ -133,6 +111,23 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constructor)
-  GUM_TEST_ACTIF(Writer_ostream)
+  GUM_TEST(Constructor) {
+    gum::UAIMRFWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::UAIMRFWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::UAIMRFWriter< double > writer;
+    std::string                 file = GET_RESSOURCES_PATH("outputs/uaimn_generated.uai");
+    writer.write(file, *mn);
+
+    gum::MarkovRandomField< double > net;
+    gum::UAIMRFReader< double >      reader(&net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+    CHECK_EQ(*mn, net);
+  }
 }   // namespace gum_tests

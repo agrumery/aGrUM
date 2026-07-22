@@ -47,9 +47,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GSpan
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct GSpanTestSuite {
@@ -78,44 +75,40 @@ namespace gum_tests {
     }
 
     public:
-    static void testInit() {
-      gum::prm::o3prm::O3prmReader< double > driver;
-      driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
-      CHECK_NE(driver.prm(), nullptr);
-
-      if (driver.prm() != nullptr) delete driver.prm();
-    }
-
-    static void testInterfaceGraph() {
-      try {
-        _local_setUp();
-        CHECK((_ig_->graph().size())
-              == (static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4));
-        CHECK((_ig_->graph().sizeEdges())
-              == ((gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2));
-        _local_tearDown();
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
-    static void testTree() {
-      _local_setUp();
-      gum::prm::GSpan< double >* gspan = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          gspan
-          = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
-      CHECK_NE(gspan, nullptr);
-
-      if (gspan != nullptr) {
-        GUM_CHECK_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
-        GUM_CHECK_ASSERT_THROWS_NOTHING(delete gspan);
-      }
-
-      _local_tearDown();
-    }
   };
 
-  GUM_TEST_ACTIF(Init)
-  GUM_TEST_ACTIF(InterfaceGraph)
-  GUM_TEST_ACTIF(Tree)
+  GUM_TEST(Init) {
+    gum::prm::o3prm::O3prmReader< double > driver;
+    driver.readFile(GET_RESSOURCES_PATH("o3prm/specialprinters.o3prm"));
+    CHECK_NE(driver.prm(), nullptr);
+
+    if (driver.prm() != nullptr) delete driver.prm();
+  }
+
+  GUM_TEST(InterfaceGraph) {
+    try {
+      _local_setUp();
+      CHECK((_ig_->graph().size())
+            == (static_cast< gum::Size >(1) + 5 * 2 + 4 * 3 + 4 * 3 + 5 + 3 + 4));
+      CHECK((_ig_->graph().sizeEdges())
+            == ((gum::Size)(5 * 2 + 3 * 4 + 4 * 3) + 5 + 3 * 3 + 4 * 2));
+      _local_tearDown();
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
+
+  GUM_TEST(Tree) {
+    _local_setUp();
+    gum::prm::GSpan< double >* gspan = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        gspan = new gum::prm::GSpan< double >(*(_driver_->prm()), _driver_->prm()->getSystem("m")));
+    CHECK_NE(gspan, nullptr);
+
+    if (gspan != nullptr) {
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gspan->discoverPatterns());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gspan);
+    }
+
+    _local_tearDown();
+  }
 
 }   // namespace gum_tests

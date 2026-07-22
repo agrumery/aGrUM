@@ -52,9 +52,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GeneralizedCNFWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -94,55 +91,8 @@ namespace gum_tests {
 
     ~GeneralizedCNFWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
-      gum::GeneralizedCNFWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >());
-      delete writer;
-    }
 
-    static void testConstuctor_With_Aproximation() {
-      using typCNF   = gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >;
-      typCNF* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new typCNF());
-      writer->setEpsilon(0.2);
-      writer->setLowLimit(0);
-      writer->setHighLimit(0.5);
-
-      delete writer;
-    }
-
-    static void testWriter_ostream() {
-      gum::GeneralizedCNFWriter< double > writer;
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    static void testWriter_ostream_With_Approximation() {
-      gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    void testWriter_string() {
-      gum::GeneralizedCNFWriter< double > writer;
-      std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile.cnf");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-    }
-
-    void testWriter_string_With_Approximation() {
-      gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
-      writer.setEpsilon(0.2);
-      writer.setLowLimit(0);
-      writer.setHighLimit(1);
-      std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
       bn.cpt(i1).fillWith({0.2, 0.8});
@@ -165,10 +115,51 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Constuctor_With_Aproximation)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Writer_ostream_With_Approximation)
-  GUM_TEST_ACTIF(Writer_string)
-  GUM_TEST_ACTIF(Writer_string_With_Approximation)
+  GUM_TEST(Constuctor) {
+    gum::GeneralizedCNFWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::GeneralizedCNFWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Constuctor_With_Aproximation) {
+    using typCNF   = gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy >;
+    typCNF* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new typCNF());
+    writer->setEpsilon(0.2);
+    writer->setLowLimit(0);
+    writer->setHighLimit(0.5);
+
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::GeneralizedCNFWriter< double > writer;
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+  }
+
+  GUM_TEST(Writer_ostream_With_Approximation) {
+    gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
+    writer.setEpsilon(0.2);
+    writer.setLowLimit(0);
+    writer.setHighLimit(1);
+
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+  }
+
+  GUM_TEST(Writer_string) {
+    gum::GeneralizedCNFWriter< double > writer;
+    std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile.cnf");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+  }
+
+  GUM_TEST(Writer_string_With_Approximation) {
+    gum::GeneralizedCNFWriter< double, gum::LinearApproximationPolicy > writer;
+    writer.setEpsilon(0.2);
+    writer.setLowLimit(0);
+    writer.setHighLimit(1);
+    std::string file = GET_RESSOURCES_PATH("outputs/O2CNFWriter_TestFile_Approximation.cnf");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+  }
 }   // namespace gum_tests

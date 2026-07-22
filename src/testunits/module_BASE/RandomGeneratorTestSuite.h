@@ -52,130 +52,124 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  RandomGenerator
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
   // a test to see if GUM_RANDOMSEED is working
   struct RandomGeneratorTestSuite {
     public:
-    static void testRandomSeed() {
-      CHECK(((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10)));
+    // namespace gum_tests
 
-      CHECK_EQ(GUM_RANDOMSEED, 0);
-
-      gum::initRandom(20);
-      const auto x1 = gum::randomProba();
-      const auto x2 = gum::randomProba();
-      const auto x3 = gum::randomProba();
-
-      gum::initRandom(0);
-      // can falsely fail in rare occasion
-      if (fabs((gum::randomProba()) - (x1)) < GUM_SMALL_ERROR)
-        if (fabs((gum::randomProba()) - (x2)) < GUM_SMALL_ERROR)
-          if (fabs((gum::randomProba()) - (x3)) < GUM_SMALL_ERROR) CHECK(false);
-      gum::initRandom(20);
-      CHECK(fabs((gum::randomProba()) - (x1)) < 1e-5);
-      CHECK(fabs((gum::randomProba()) - (x2)) < 1e-5);
-      CHECK(fabs((gum::randomProba()) - (x3)) < 1e-5);
-
-      gum::initRandom(GUM_RANDOMSEED);
-    }   // namespace gum_tests
-
-    static void testRandomSeeForStructure() {
-      try {
-        const auto n_nodes  = 100;
-        const auto n_arcs   = 150;
-        const auto n_modmax = 3;
-
-        gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
-        gum::BayesNet< double >            bn;
-
-        gum::initRandom(20);
-        gen.generateBN(bn);
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-    }
-
-    static void testBugSeed() {
-      gum::initRandom(0);
-      const auto x0 = gum::randomProba();
-      gum::initRandom(10);
-      const auto x10 = gum::randomProba();
-      gum::initRandom(42);
-      const auto x42 = gum::randomProba();
-
-      gum::initRandom(0);
-      CHECK_NE(x0, gum::randomProba());   // may fail but highly improbable
-      gum::initRandom(10);
-      CHECK_EQ(x10, gum::randomProba());
-      gum::initRandom(42);
-      CHECK_EQ(x42, gum::randomProba());
-      gum::initRandom(GUM_RANDOMSEED);
-    }
-
-    static void testBugSeed2() {
-      gum::initRandom(0);
-      const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      gum::initRandom(10);
-      const auto bn10 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      gum::initRandom(42);
-      const auto bn42 = gum::BayesNet< double >::fastPrototype("A->B<-C");
-
-      gum::Timer t;
-      t.reset();
-      double second = 0.5;
-      while (t.step() <= second)
-        ;
-
-      gum::initRandom(0);
-      const auto bn0b = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      gum::initRandom(10);
-      const auto bn10b = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      gum::initRandom(42);
-      const auto bn42b = gum::BayesNet< double >::fastPrototype("A->B<-C");
-      const auto q42b  = bn42b.cpt("B") + bn42b.cpt("C") + bn42b.cpt("A");
-
-      for (const auto i: bn0.nodes())
-        // may fail but highly improbable
-        GUM_CHECK_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()));
-
-      for (const auto i: bn10.nodes())
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(bn10.cpt(i), bn10b.cpt(bn10.variable(i).name()));
-
-      for (const auto i: bn42.nodes())
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()));
-
-      gum::initRandom(GUM_RANDOMSEED);
-    }
 
     // MED-6: randomValue(0) must throw (uniform_int_distribution(0,-1) is UB)
-    static void testRandomValueZeroThrows() {
-      CHECK_THROWS_AS(gum::randomValue(0), const gum::OutOfBounds&);
-    }
+
 
     // MED-6: randomValue with valid max stays in range
-    static void testRandomValueRange() {
-      gum::initRandom(42);
-      for (int i = 0; i < 1000; ++i) {
-        const auto v = gum::randomValue(5);
-        CHECK(v < gum::Idx(5));
-      }
-    }
+
 
     // MED-5: int2Pow with exponent >= 64 must throw (1UL << 64 is UB)
-    static void testInt2PowBounds() {
-      CHECK_EQ(gum::int2Pow(0), static_cast< uint64_t >(1));
-      CHECK_EQ(gum::int2Pow(63), static_cast< uint64_t >(1) << 63);
-      CHECK_THROWS_AS(gum::int2Pow(64), const gum::OutOfBounds&);
-      CHECK_THROWS_AS(gum::int2Pow(100), const gum::OutOfBounds&);
-    }
   };
 
-  GUM_TEST_ACTIF(RandomSeed)
-  GUM_TEST_ACTIF(RandomSeeForStructure)
-  GUM_TEST_ACTIF(BugSeed)
-  GUM_TEST_ACTIF(BugSeed2)
-  GUM_TEST_ACTIF(RandomValueZeroThrows)
-  GUM_TEST_ACTIF(RandomValueRange)
-  GUM_TEST_ACTIF(Int2PowBounds)
+  GUM_TEST(RandomSeed) {
+    CHECK(((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10)));
+
+    CHECK_EQ(GUM_RANDOMSEED, 0);
+
+    gum::initRandom(20);
+    const auto x1 = gum::randomProba();
+    const auto x2 = gum::randomProba();
+    const auto x3 = gum::randomProba();
+
+    gum::initRandom(0);
+    // can falsely fail in rare occasion
+    if (fabs((gum::randomProba()) - (x1)) < GUM_SMALL_ERROR)
+      if (fabs((gum::randomProba()) - (x2)) < GUM_SMALL_ERROR)
+        if (fabs((gum::randomProba()) - (x3)) < GUM_SMALL_ERROR) CHECK(false);
+    gum::initRandom(20);
+    CHECK(fabs((gum::randomProba()) - (x1)) < 1e-5);
+    CHECK(fabs((gum::randomProba()) - (x2)) < 1e-5);
+    CHECK(fabs((gum::randomProba()) - (x3)) < 1e-5);
+
+    gum::initRandom(GUM_RANDOMSEED);
+  }
+
+  GUM_TEST(RandomSeeForStructure) {
+    try {
+      const auto n_nodes  = 100;
+      const auto n_arcs   = 150;
+      const auto n_modmax = 3;
+
+      gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
+      gum::BayesNet< double >            bn;
+
+      gum::initRandom(20);
+      gen.generateBN(bn);
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+  }
+
+  GUM_TEST(BugSeed) {
+    gum::initRandom(0);
+    const auto x0 = gum::randomProba();
+    gum::initRandom(10);
+    const auto x10 = gum::randomProba();
+    gum::initRandom(42);
+    const auto x42 = gum::randomProba();
+
+    gum::initRandom(0);
+    CHECK_NE(x0, gum::randomProba());   // may fail but highly improbable
+    gum::initRandom(10);
+    CHECK_EQ(x10, gum::randomProba());
+    gum::initRandom(42);
+    CHECK_EQ(x42, gum::randomProba());
+    gum::initRandom(GUM_RANDOMSEED);
+  }
+
+  GUM_TEST(BugSeed2) {
+    gum::initRandom(0);
+    const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+    gum::initRandom(10);
+    const auto bn10 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+    gum::initRandom(42);
+    const auto bn42 = gum::BayesNet< double >::fastPrototype("A->B<-C");
+
+    gum::Timer t;
+    t.reset();
+    double second = 0.5;
+    while (t.step() <= second)
+
+      gum::initRandom(0);
+    const auto bn0b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+    gum::initRandom(10);
+    const auto bn10b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+    gum::initRandom(42);
+    const auto bn42b = gum::BayesNet< double >::fastPrototype("A->B<-C");
+    const auto q42b  = bn42b.cpt("B") + bn42b.cpt("C") + bn42b.cpt("A");
+
+    for (const auto i: bn0.nodes())
+      // may fail but highly improbable
+      GUM_CHECK_TENSOR_DIFFERS(bn0.cpt(i), bn0b.cpt(bn0.variable(i).name()));
+
+    for (const auto i: bn10.nodes())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(bn10.cpt(i), bn10b.cpt(bn10.variable(i).name()));
+
+    for (const auto i: bn42.nodes())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()));
+
+    gum::initRandom(GUM_RANDOMSEED);
+  }
+
+  GUM_TEST(RandomValueZeroThrows) { CHECK_THROWS_AS(gum::randomValue(0), const gum::OutOfBounds&); }
+
+  GUM_TEST(RandomValueRange) {
+    gum::initRandom(42);
+    for (int i = 0; i < 1000; ++i) {
+      const auto v = gum::randomValue(5);
+      CHECK(v < gum::Idx(5));
+    }
+  }
+
+  GUM_TEST(Int2PowBounds) {
+    CHECK_EQ(gum::int2Pow(0), static_cast< uint64_t >(1));
+    CHECK_EQ(gum::int2Pow(63), static_cast< uint64_t >(1) << 63);
+    CHECK_THROWS_AS(gum::int2Pow(64), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::int2Pow(100), const gum::OutOfBounds&);
+  }
 }   // namespace gum_tests

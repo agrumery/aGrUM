@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BIFXMLIDWriter
-#define GUM_CURRENT_MODULE ID
-
 // The graph used for the tests:
 //           D1
 //           |   D1 -> C1
@@ -73,7 +70,7 @@
 
 namespace gum_tests {
   struct BIFXMLIDWriterTestSuite {
-    private:
+    protected:
     void fillTopo(gum::InfluenceDiagram< double >& infDiag, gum::List< gum::NodeId >& idList) {
       try {
         idList.insert(infDiag.addDecisionNode(*decisionVar1));   // 0
@@ -180,98 +177,92 @@ namespace gum_tests {
 
       delete utilityVar2;
     }
+  };
 
-    static void testConstuctor() {
-      gum::BIFXMLIDWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >());
-      delete writer;
-    }
+  GUM_TEST(Constuctor) {
+    gum::BIFXMLIDWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLIDWriter< double >());
+    delete writer;
+  }
 
-    void testWriter_ostream() const {
-      gum::BIFXMLIDWriter< double > writer;
-      std::stringstream             s;
+  GUM_TEST(Writer_ostream) {
+    gum::BIFXMLIDWriter< double > writer;
+    std::stringstream             s;
 
-      // Uncomment this to check the ouput
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id));
-    }
+    // Uncomment this to check the ouput
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(s /*cerr*/, *id));
+  }
 
-    void testWriter_file() const {
-      gum::BIFXMLIDWriter< double > writer;
-      std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *id));
+  GUM_TEST(Writer_file) {
+    gum::BIFXMLIDWriter< double > writer;
+    std::string                   file = GET_RESSOURCES_PATH("outputs/IDBIFXMLIO_file.xml");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *id));
 
-      // For comparison with what readers will return
-      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
-      std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
+    // For comparison with what readers will return
+    std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
+    std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
 
-      if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
+    if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
 
-      output << id->toDot();
-      output.flush();
-      output.close();
+    output << id->toDot();
+    output.flush();
+    output.close();
 
-      if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
-    }
+    if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+  }
 
-    static void testGenerationReadWrite() {
-      gum::InfluenceDiagramGenerator< double > gen;
+  GUM_TEST(GenerationReadWrite) {
+    gum::InfluenceDiagramGenerator< double > gen;
 
-      for (int i = 0; i < 5; i++) {
-        gum::InfluenceDiagram< double >* net = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
-
-        gum::BIFXMLIDWriter< double > writer;
-        std::string                   file = GET_RESSOURCES_PATH("outputs/random.xml");
-        writer.write(file, *net);
-
-        gum::InfluenceDiagram< double > net2;
-        gum::BIFXMLIDReader< double >   reader(&net2, file);
-        reader.proceed();
-
-        for (const auto n: net->nodes()) {
-          if (net->isChanceNode(n)) {
-            const std::string&    name = net->variable(n).name();
-            gum::Tensor< double > p(net->cpt(name));
-            p.fillWith(net2.cpt(name));
-            if (net->cpt(name) != p) { CHECK(false); }
-          }
-          if (net->isUtilityNode(n)) {
-            const std::string&    name = net->variable(n).name();
-            gum::Tensor< double > p(net->utility(name));
-            p.fillWith(net2.utility(name));
-            if (net->utility(name) != p) { CHECK(false); }
-          }
-        }
-
-        delete net;
-      }
-    }
-
-    static void testGenerationReadWrite2() {
-      auto net = gum::InfluenceDiagram< double >::fastPrototype(
-          "A[5]->B+[0,10,5]->C{0|1|20|300}->D{0.5|1.99|2|3.14}");
+    for (int i = 0; i < 5; i++) {
+      gum::InfluenceDiagram< double >* net = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
 
       gum::BIFXMLIDWriter< double > writer;
       std::string                   file = GET_RESSOURCES_PATH("outputs/random.xml");
-      writer.write(file, net);
+      writer.write(file, *net);
 
       gum::InfluenceDiagram< double > net2;
       gum::BIFXMLIDReader< double >   reader(&net2, file);
       reader.proceed();
 
-      for (const auto n: net.nodes()) {
-        const std::string& name = net.variable(n).name();
-        CHECK_EQ(net.variable(name).toFast(), net2.variable(name).toFast());
-        if (net.isChanceNode(n)) { GUM_CHECK_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)); }
-        if (net.isUtilityNode(n)) {
-          GUM_CHECK_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name));
+      for (const auto n: net->nodes()) {
+        if (net->isChanceNode(n)) {
+          const std::string&    name = net->variable(n).name();
+          gum::Tensor< double > p(net->cpt(name));
+          p.fillWith(net2.cpt(name));
+          if (net->cpt(name) != p) { CHECK(false); }
+        }
+        if (net->isUtilityNode(n)) {
+          const std::string&    name = net->variable(n).name();
+          gum::Tensor< double > p(net->utility(name));
+          p.fillWith(net2.utility(name));
+          if (net->utility(name) != p) { CHECK(false); }
         }
       }
-    }
-  };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Writer_file)
-  GUM_TEST_ACTIF(GenerationReadWrite)
-  GUM_TEST_ACTIF(GenerationReadWrite2)
+      delete net;
+    }
+  }
+
+  GUM_TEST(GenerationReadWrite2) {
+    auto net = gum::InfluenceDiagram< double >::fastPrototype(
+        "A[5]->B+[0,10,5]->C{0|1|20|300}->D{0.5|1.99|2|3.14}");
+
+    gum::BIFXMLIDWriter< double > writer;
+    std::string                   file = GET_RESSOURCES_PATH("outputs/random.xml");
+    writer.write(file, net);
+
+    gum::InfluenceDiagram< double > net2;
+    gum::BIFXMLIDReader< double >   reader(&net2, file);
+    reader.proceed();
+
+    for (const auto n: net.nodes()) {
+      const std::string& name = net.variable(n).name();
+      CHECK_EQ(net.variable(name).toFast(), net2.variable(name).toFast());
+      if (net.isChanceNode(n)) { GUM_CHECK_TENSOR_ALMOST_EQUALS(net.cpt(name), net2.cpt(name)); }
+      if (net.isUtilityNode(n)) {
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(net.utility(name), net2.utility(name));
+      }
+    }
+  }
 }   // namespace gum_tests

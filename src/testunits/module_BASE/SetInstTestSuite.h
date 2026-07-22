@@ -50,169 +50,155 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  SetInst
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct SetInstTestSuite {
     public:
-    static void testCreation() {
-      gum::Instantiation in;
-      gum::SetInst       i;
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(0));
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      in << a << c << b;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::SetInst i2(in));
-    }   // namespace gum_tests
-
-    static void testInsertSupprVariables() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::SetInst i;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
-      CHECK_THROWS_AS(i << a, const gum::DuplicateElement&);
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(3));
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
-
-      CHECK(i.contains(a));
-
-      CHECK_EQ(i.pos(b), static_cast< gum::Size >(1));
-      CHECK_EQ(&(i.variable(1)), &b);
-
-      i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
-      CHECK_EQ(i.toString(), "<a:10|b:0100|c:10000>");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(i >> b);
-      CHECK_THROWS_AS(i >> b, const gum::NotFound&);
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(2));
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 5));
-
-      CHECK_EQ(i.toString(), "<a:10|c:10000>");
-
-      CHECK(!i.contains(b));
-    }
-
-    static void testRemValues() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::SetInst i;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
-
-      i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
-      i.addVal(a, 0).addVal(b, 1).addVal(c, 2);
-      CHECK_EQ(i.toString(), "<a:11|b:0110|c:10100>");
-      i.remVal(a, 1).remVal(b, 2).remVal(c, 4);
-      CHECK_EQ(i.toString(), "<a:01|b:0010|c:00100>");
-    }
-
-    static void test_ou_et_Values() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::SetInst i, j;
-
-      i << a << b << c;
-      j << a << b << c;
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
-
-      i.chgVals(a, 2).chgVals(b, 14).chgVals(c, 28);
-      i.interVals(a, 1);
-      i.interVals(b, 7);
-      i.interVals(c, 7);
-      CHECK_EQ(i.toString(), "<a:00|b:0110|c:00100>");
-
-      i.addVal(a, 0).addVal(b, 3).addVal(c, 1);
-
-      CHECK_EQ(i.toString(), "<a:01|b:1110|c:00110>");
-      i.remVal(a, 1).remVal(b, 2).remVal(c, 2);
-      CHECK_EQ(i.toString(), "<a:01|b:1010|c:00010>");
-
-      j.chgVals(a, 2).chgVals(b, 14).chgVals(c, 28);
-      CHECK_EQ(j.toString(), "<a:10|b:1110|c:11100>");
-      j.remVals(a, 1).remVals(b, 8).remVals(c, 14);
-      CHECK_EQ(j.toString(), "<a:10|b:0110|c:10000>");
-    }
-
-    static void testReordering() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::SetInst i;
-      i << a << b << c;
-      gum::SetInst j;
-      j << c << a;
-
-      // reordering in {in|de}crementation
-      CHECK_EQ(i.toString(), "<a:01|b:0001|c:00001>");
-      // reordering
-      i.reorder(j);
-      CHECK_EQ(i.toString(), "<c:00001|a:01|b:0001>");
-    }
-
-    static void testChgValIn() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-
-      gum::SetInst i;
-      i << b << c << d;
-      gum::SetInst j;
-      j << b << a << c;
-
-      i.chgVal(b, 2).chgVal(c, 3).chgVal(d, 1);
-      j.chgVal(b, 1).chgVal(a, 0).chgVal(c, 1);
-      CHECK_EQ(i.toString(), "<b:0100|c:01000|d:10>");
-      CHECK_EQ(j.toString(), "<b:0010|a:01|c:00010>");
-
-      j.chgValIn(i);
-      CHECK_EQ(j.toString(), "<b:0100|a:01|c:01000>");
-    }
-
-    static void testOperatorEgal() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-      gum::MultiDimArray< char > p, q;
-      p << a << b << c;
-      q << c << d;
-
-      gum::SetInst ip(p), ip2(p), iq(q), j, k;
-
-      //   ++( ++ip );
-
-      // free = slave
-      GUM_CHECK_ASSERT_THROWS_NOTHING(j = ip);
-      // CHECK_EQ(p.toOffset( j ), p.toOffset( ip ));
-      CHECK_EQ(j.toString(), ip.toString());
-
-      // slave_same_master=slave_same_master
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = ip);
-      // CHECK_EQ(p.toOffset( ip2 ), p.toOffset( ip ));
-      CHECK_EQ(ip2.toString(), ip.toString());
-
-      // slave = free - same variables set
-      k << b << a << c;
-      // ++k;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = k);
-      // CHECK_EQ(p.toOffset( k ), p.toOffset( ip2 ));
-      CHECK_EQ(k.val(a), ip2.val(a));
-      CHECK_EQ(k.val(b), ip2.val(b));
-      CHECK_EQ(k.val(c), ip2.val(c));
-
-      // slave = free- not same variables set
-      // CHECK_THROWS_AS( iq = k, gum::OperationNotAllowed );
-
-      // slave = slave - not same master
-      // CHECK_THROWS_AS( iq = ip, gum::OperationNotAllowed );
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Creation)
-  GUM_TEST_ACTIF(InsertSupprVariables)
-  GUM_TEST_ACTIF(RemValues)
-  GUM_TEST_ACTIF(_ou_et_Values)
-  GUM_TEST_ACTIF(Reordering)
-  GUM_TEST_ACTIF(ChgValIn)
-  GUM_TEST_ACTIF(OperatorEgal)
+  GUM_TEST(Creation) {
+    gum::Instantiation in;
+    gum::SetInst       i;
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(0));
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    in << a << c << b;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::SetInst i2(in));
+  }
+
+  GUM_TEST(InsertSupprVariables) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::SetInst           i;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
+    CHECK_THROWS_AS(i << a, const gum::DuplicateElement&);
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(3));
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
+
+    CHECK(i.contains(a));
+
+    CHECK_EQ(i.pos(b), static_cast< gum::Size >(1));
+    CHECK_EQ(&(i.variable(1)), &b);
+
+    i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
+    CHECK_EQ(i.toString(), "<a:10|b:0100|c:10000>");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(i >> b);
+    CHECK_THROWS_AS(i >> b, const gum::NotFound&);
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(2));
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 5));
+
+    CHECK_EQ(i.toString(), "<a:10|c:10000>");
+
+    CHECK(!i.contains(b));
+  }
+
+  GUM_TEST(RemValues) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::SetInst           i;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
+
+    i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
+    i.addVal(a, 0).addVal(b, 1).addVal(c, 2);
+    CHECK_EQ(i.toString(), "<a:11|b:0110|c:10100>");
+    i.remVal(a, 1).remVal(b, 2).remVal(c, 4);
+    CHECK_EQ(i.toString(), "<a:01|b:0010|c:00100>");
+  }
+
+  GUM_TEST(_ou_et_Values) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::SetInst           i, j;
+
+    i << a << b << c;
+    j << a << b << c;
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
+
+    i.chgVals(a, 2).chgVals(b, 14).chgVals(c, 28);
+    i.interVals(a, 1);
+    i.interVals(b, 7);
+    i.interVals(c, 7);
+    CHECK_EQ(i.toString(), "<a:00|b:0110|c:00100>");
+
+    i.addVal(a, 0).addVal(b, 3).addVal(c, 1);
+
+    CHECK_EQ(i.toString(), "<a:01|b:1110|c:00110>");
+    i.remVal(a, 1).remVal(b, 2).remVal(c, 2);
+    CHECK_EQ(i.toString(), "<a:01|b:1010|c:00010>");
+
+    j.chgVals(a, 2).chgVals(b, 14).chgVals(c, 28);
+    CHECK_EQ(j.toString(), "<a:10|b:1110|c:11100>");
+    j.remVals(a, 1).remVals(b, 8).remVals(c, 14);
+    CHECK_EQ(j.toString(), "<a:10|b:0110|c:10000>");
+  }
+
+  GUM_TEST(Reordering) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::SetInst           i;
+    i << a << b << c;
+    gum::SetInst j;
+    j << c << a;
+
+    // reordering in {in|de}crementation
+    CHECK_EQ(i.toString(), "<a:01|b:0001|c:00001>");
+    // reordering
+    i.reorder(j);
+    CHECK_EQ(i.toString(), "<c:00001|a:01|b:0001>");
+  }
+
+  GUM_TEST(ChgValIn) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+
+    gum::SetInst i;
+    i << b << c << d;
+    gum::SetInst j;
+    j << b << a << c;
+
+    i.chgVal(b, 2).chgVal(c, 3).chgVal(d, 1);
+    j.chgVal(b, 1).chgVal(a, 0).chgVal(c, 1);
+    CHECK_EQ(i.toString(), "<b:0100|c:01000|d:10>");
+    CHECK_EQ(j.toString(), "<b:0010|a:01|c:00010>");
+
+    j.chgValIn(i);
+    CHECK_EQ(j.toString(), "<b:0100|a:01|c:01000>");
+  }
+
+  GUM_TEST(OperatorEgal) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+    gum::MultiDimArray< char > p, q;
+    p << a << b << c;
+    q << c << d;
+
+    gum::SetInst ip(p), ip2(p), iq(q), j, k;
+
+    //   ++( ++ip );
+
+    // free = slave
+    GUM_CHECK_ASSERT_THROWS_NOTHING(j = ip);
+    // CHECK_EQ(p.toOffset( j ), p.toOffset( ip ));
+    CHECK_EQ(j.toString(), ip.toString());
+
+    // slave_same_master=slave_same_master
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = ip);
+    // CHECK_EQ(p.toOffset( ip2 ), p.toOffset( ip ));
+    CHECK_EQ(ip2.toString(), ip.toString());
+
+    // slave = free - same variables set
+    k << b << a << c;
+    // ++k;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = k);
+    // CHECK_EQ(p.toOffset( k ), p.toOffset( ip2 ));
+    CHECK_EQ(k.val(a), ip2.val(a));
+    CHECK_EQ(k.val(b), ip2.val(b));
+    CHECK_EQ(k.val(c), ip2.val(c));
+
+    // slave = free- not same variables set
+    // CHECK_THROWS_AS( iq = k, gum::OperationNotAllowed );
+
+    // slave = slave - not same master
+    // CHECK_THROWS_AS( iq = ip, gum::OperationNotAllowed );
+  }
 }   // namespace gum_tests

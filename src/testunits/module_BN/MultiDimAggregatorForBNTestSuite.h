@@ -68,395 +68,388 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  MultiDimAggregratorsForBN
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
-  struct MultiDimAggregratorsForBNTestSuite {
+  struct MultiDimAggregatorForBNTestSuite {
     public:
-    static void testBNwithMin() {
-      gum::List< gum::NodeId > idList;
-      gum::BayesNet< double >  bn;
-
-      int nbr = 6;   // nbr=nbr of parents
-
-      std::string                 str;
-      const double                t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
-      int                         n    = 4;
-      const std::vector< double > v(t, t + n);
-
-      for (int i = 0; i <= nbr; i++) {
-        str = "";
-        std::stringstream ss;
-        ss << "var" << (i + 1);
-        ss >> str;
-
-        gum::LabelizedVariable var(str, str, 4);
-
-        if (i == 0) {
-          idList.insert(bn.add(var, new gum::aggregator::Min< double >()));
-        } else {
-          idList.insert(bn.add(var));
-          bn.addArc(idList[i], idList[0]);
-          bn.cpt(idList[i]).fillWith(v);
-
-          gum::Instantiation i(bn.cpt(idList[0]));
-
-          gum::Idx res;
-
-          for (i.setFirst(); !i.end(); ++i) {
-            res = static_cast< gum::Idx >(10000);   // clearly arbitraty choosen
-
-            for (gum::Idx j = 1; j < i.nbrDim(); j++) {
-              if (res > i.val(j)) res = i.val(j);
-            }
-
-            CHECK((bn.cpt(idList[0])[i])
-                  == ((res == i.val(static_cast< gum::Idx >(0))) ? 1.0f : 0.0f));
-          }
-        }
-      }
-
-      {
-        gum::ShaferShenoyInference< double > inf(&bn);
-        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference(););
-
-        try {
-          CHECK((inf.posterior(idList[0]))
-                == ((gum::Tensor< double >() << bn.variable(idList[0]))
-                        .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
-          CHECK((inf.posterior(idList[1]))
-                == ((gum::Tensor< double >() << bn.variable(idList[1]))
-                        .fillWith({0.1, 0.1, 0.1, 0.7})));
-        } catch (const gum::Exception& e) {
-          GUM_UNUSED(e);
-          CHECK(false);
-        }
-      }
-
-      {
-        gum::LazyPropagation< double > inf(&bn);
-        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
-
-        try {
-          CHECK((inf.posterior(idList[0]))
-                == ((gum::Tensor< double >() << bn.variable(idList[0]))
-                        .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
-          CHECK((inf.posterior(idList[1]))
-                == ((gum::Tensor< double >() << bn.variable(idList[1]))
-                        .fillWith({0.1, 0.1, 0.1, 0.7})));
-        } catch (const gum::Exception& e) {
-          GUM_UNUSED(e);
-          CHECK(false);
-        }
-      }
-    }   // namespace gum_tests
-
-    static void testNoisyORNetInBN() {
-      gum::BayesNet< double > bn;
-
-      gum::LabelizedVariable cold("Cold", "", 2);
-      gum::LabelizedVariable flu("Flu", "", 2);
-      gum::LabelizedVariable malaria("Malaria", "", 2);
-      gum::LabelizedVariable fever("Fever", "", 2);
-      gum::LabelizedVariable oneMore("OneMore", "", 2);
-      gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
-      gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
-
-      gum::NodeId idCold           = bn.add(cold);
-      gum::NodeId idFlu            = bn.add(flu);
-      gum::NodeId idMalaria        = bn.add(malaria);
-      gum::NodeId idFever          = bn.addNoisyORNet(fever, 0.0f);
-      gum::NodeId idOneMore        = bn.add(oneMore);
-      gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
-      gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
-
-      bn.addWeightedArc(idMalaria, idFever, 0.9f);
-      bn.addWeightedArc(idFlu, idFever, 0.8f);
-      bn.addWeightedArc(idCold, idFever, 0.4f);
-
-      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
-
-      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
-      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
-
-      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
-      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
-
-      bn.addArc(idOneMoreParent1, idOneMore);
-      bn.addArc(idFever, idOneMore);
-      bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
-      pOneMore.fillWith(std::vector< double >{0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f});
-
-      const gum::Tensor< double >& p = bn.cpt(idFever);
-
-      gum::Instantiation i(p);
-      float              witness[] = {1.0f,
-                                      0.0f,
-                                      0.1f,
-                                      0.9f,
-                                      0.2f,
-                                      0.8f,
-                                      0.02f,
-                                      0.98f,
-                                      0.6f,
-                                      0.4f,
-                                      0.06f,
-                                      0.94f,
-                                      0.12f,
-                                      0.88f,
-                                      0.012f,
-                                      0.988f};
-
-      int j = 0;
-
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
-      }
-
-      gum::LazyPropagation< double > inf_LazyProp(&bn);
-
-      inf_LazyProp.makeInference();
-    }
-
-    static void testNoisyORCompoundInBN() {
-      gum::BayesNet< double > bn;
-
-      gum::LabelizedVariable cold("Cold", "", 2);
-      gum::LabelizedVariable flu("Flu", "", 2);
-      gum::LabelizedVariable malaria("Malaria", "", 2);
-      gum::LabelizedVariable fever("Fever", "", 2);
-      gum::LabelizedVariable oneMore("OneMore", "", 2);
-      gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
-      gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
-
-      gum::NodeId idCold           = bn.add(cold);
-      gum::NodeId idFlu            = bn.add(flu);
-      gum::NodeId idMalaria        = bn.add(malaria);
-      gum::NodeId idFever          = bn.addNoisyOR(fever, 0.0f);
-      gum::NodeId idOneMore        = bn.add(oneMore);
-      gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
-      gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
-
-      bn.addWeightedArc(idMalaria, idFever, 0.9f);
-      bn.addWeightedArc(idFlu, idFever, 0.8f);
-      bn.addWeightedArc(idCold, idFever, 0.4f);
-
-      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
-
-      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
-      // FILLING PARAMS
-      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
-
-      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
-      // FILLING PARAMS
-      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
-
-      bn.addArc(idOneMoreParent1, idOneMore);
-      bn.addArc(idFever, idOneMore);
-      bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
-      // FILLING PARAMS
-      pOneMore.fillWith(std::vector< double >{0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f});
-
-      const gum::Tensor< double >& p = bn.cpt(idFever);
-
-      gum::Instantiation i(p);
-      float              witness[] = {1.0f,
-                                      0.0f,
-                                      0.1f,
-                                      0.9f,
-                                      0.2f,
-                                      0.8f,
-                                      0.02f,
-                                      0.98f,
-                                      0.6f,
-                                      0.4f,
-                                      0.06f,
-                                      0.94f,
-                                      0.12f,
-                                      0.88f,
-                                      0.012f,
-                                      0.988f};
-
-      int j = 0;
-
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
-      }
-
-      gum::LazyPropagation< double > inf_LazyProp(&bn);
-
-      inf_LazyProp.makeInference();
-    }
-
-    static void testNoisyANDInBN() {
-      gum::BayesNet< double > bn;
-
-      gum::LabelizedVariable cold("Cold", "", 2);
-      gum::LabelizedVariable flu("Flu", "", 2);
-      gum::LabelizedVariable malaria("Malaria", "", 2);
-      gum::LabelizedVariable fever("Fever", "", 2);
-      gum::LabelizedVariable oneMore("OneMore", "", 2);
-      gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
-      gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
-
-      gum::NodeId idCold    = bn.add(cold);
-      gum::NodeId idFlu     = bn.add(flu);
-      gum::NodeId idMalaria = bn.add(malaria);
-      gum::NodeId idFever   = 0;
-      CHECK_THROWS_AS(idFever = bn.addNoisyAND(fever, 0.0f), const gum::InvalidArgument&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
-      gum::NodeId idOneMore        = bn.add(oneMore);
-      gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
-      gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
-
-      bn.addWeightedArc(idMalaria, idFever, 0.9f);
-      bn.addWeightedArc(idFlu, idFever, 0.8f);
-      bn.addWeightedArc(idCold, idFever, 0.4f);
-
-      CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
-
-      const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
-      // FILLING PARAMS
-      pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
-
-      const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
-      // FILLING PARAMS
-      pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
-
-      bn.addArc(idOneMoreParent1, idOneMore);
-      bn.addArc(idFever, idOneMore);
-      bn.addArc(idOneMoreParent2, idOneMore);
-      const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
-      // FILLING PARAMS
-      pOneMore.fillWith(std::vector< double >{0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f,
-                                              0.1f,
-                                              0.9f,
-                                              0.8f,
-                                              0.2f});
-
-      const gum::Tensor< double >& p = bn.cpt(idFever);
-
-      gum::Instantiation i(p);
-      float              witness[] = {0.988012f,
-                                      0.011988f,
-                                      0.892108f,
-                                      0.107892f,
-                                      0.952048f,
-                                      0.047952f,
-                                      0.568432f,
-                                      0.431568f,
-                                      0.992008f,
-                                      0.007992f,
-                                      0.928072f,
-                                      0.071928f,
-                                      0.968032f,
-                                      0.031968f,
-                                      0.712288f,
-                                      0.287712f};
-
-      int j = 0;
-
-      for (i.setFirst(); !i.end(); ++i, j++) {
-        CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
-      }
-
-      gum::LazyPropagation< double > inf_LazyProp(&bn);
-
-      inf_LazyProp.makeInference();
-    }
-
-    static void testBNwithMinNoParents() {
-      auto                   bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-      gum::LabelizedVariable var("min", "min", 4);
-      bn.add(var, new gum::aggregator::Min< double >());
-      {
-        gum::LazyPropagation< double > ie(&bn);
-        ie.makeInference();
-        gum::Tensor< double > p;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
-        gum::Instantiation I(p);
-        for (I.setFirst(); !I.end(); I.inc())
-          CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
-      }
-      {
-        gum::ShaferShenoyInference< double > ie(&bn);
-        ie.makeInference();
-        gum::Tensor< double > p;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
-        gum::Instantiation I(p);
-        for (I.setFirst(); !I.end(); I.inc())
-          CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
-      }
-      {
-        gum::VariableElimination< double > ie(&bn);
-        ie.makeInference();
-        gum::Tensor< double > p;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
-        gum::Instantiation I(p);
-        for (I.setFirst(); !I.end(); I.inc())
-          CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
-      }
-      {
-        gum::LoopyBeliefPropagation< double > ie(&bn);
-        ie.makeInference();
-        gum::Tensor< double > p;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
-        gum::Instantiation I(p);
-        for (I.setFirst(); !I.end(); I.inc())
-          CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
-      }
-      // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(BNwithMin)
-  GUM_TEST_ACTIF(NoisyORNetInBN)
-  GUM_TEST_ACTIF(NoisyORCompoundInBN)
-  GUM_TEST_ACTIF(NoisyANDInBN)
-  GUM_TEST_ACTIF(BNwithMinNoParents)
+  GUM_TEST(BNwithMin) {
+    gum::List< gum::NodeId > idList;
+    gum::BayesNet< double >  bn;
+
+    int nbr = 6;   // nbr=nbr of parents
+
+    std::string                 str;
+    const double                t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
+    int                         n    = 4;
+    const std::vector< double > v(t, t + n);
+
+    for (int i = 0; i <= nbr; i++) {
+      str = "";
+      std::stringstream ss;
+      ss << "var" << (i + 1);
+      ss >> str;
+
+      gum::LabelizedVariable var(str, str, 4);
+
+      if (i == 0) {
+        idList.insert(bn.add(var, new gum::aggregator::Min< double >()));
+      } else {
+        idList.insert(bn.add(var));
+        bn.addArc(idList[i], idList[0]);
+        bn.cpt(idList[i]).fillWith(v);
+
+        gum::Instantiation i(bn.cpt(idList[0]));
+
+        gum::Idx res;
+
+        for (i.setFirst(); !i.end(); ++i) {
+          res = static_cast< gum::Idx >(10000);   // clearly arbitraty choosen
+
+          for (gum::Idx j = 1; j < i.nbrDim(); j++) {
+            if (res > i.val(j)) res = i.val(j);
+          }
+
+          CHECK((bn.cpt(idList[0])[i])
+                == ((res == i.val(static_cast< gum::Idx >(0))) ? 1.0f : 0.0f));
+        }
+      }
+    }
+
+    {
+      gum::ShaferShenoyInference< double > inf(&bn);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference(););
+
+      try {
+        CHECK((inf.posterior(idList[0]))
+              == ((gum::Tensor< double >() << bn.variable(idList[0]))
+                      .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
+        CHECK((inf.posterior(idList[1]))
+              == ((gum::Tensor< double >() << bn.variable(idList[1]))
+                      .fillWith({0.1, 0.1, 0.1, 0.7})));
+      } catch (const gum::Exception& e) {
+        GUM_UNUSED(e);
+        CHECK(false);
+      }
+    }
+
+    {
+      gum::LazyPropagation< double > inf(&bn);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+
+      try {
+        CHECK((inf.posterior(idList[0]))
+              == ((gum::Tensor< double >() << bn.variable(idList[0]))
+                      .fillWith({0.468559, 0.269297, 0.144495, 0.117649})));
+        CHECK((inf.posterior(idList[1]))
+              == ((gum::Tensor< double >() << bn.variable(idList[1]))
+                      .fillWith({0.1, 0.1, 0.1, 0.7})));
+      } catch (const gum::Exception& e) {
+        GUM_UNUSED(e);
+        CHECK(false);
+      }
+    }
+  }
+
+  GUM_TEST(NoisyORNetInBN) {
+    gum::BayesNet< double > bn;
+
+    gum::LabelizedVariable cold("Cold", "", 2);
+    gum::LabelizedVariable flu("Flu", "", 2);
+    gum::LabelizedVariable malaria("Malaria", "", 2);
+    gum::LabelizedVariable fever("Fever", "", 2);
+    gum::LabelizedVariable oneMore("OneMore", "", 2);
+    gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
+    gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
+
+    gum::NodeId idCold           = bn.add(cold);
+    gum::NodeId idFlu            = bn.add(flu);
+    gum::NodeId idMalaria        = bn.add(malaria);
+    gum::NodeId idFever          = bn.addNoisyORNet(fever, 0.0f);
+    gum::NodeId idOneMore        = bn.add(oneMore);
+    gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
+    gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
+
+    bn.addWeightedArc(idMalaria, idFever, 0.9f);
+    bn.addWeightedArc(idFlu, idFever, 0.8f);
+    bn.addWeightedArc(idCold, idFever, 0.4f);
+
+    CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
+
+    const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+    pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
+
+    const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+    pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
+
+    bn.addArc(idOneMoreParent1, idOneMore);
+    bn.addArc(idFever, idOneMore);
+    bn.addArc(idOneMoreParent2, idOneMore);
+    const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
+    pOneMore.fillWith(std::vector< double >{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f});
+
+    const gum::Tensor< double >& p = bn.cpt(idFever);
+
+    gum::Instantiation i(p);
+    float              witness[] = {1.0f,
+                                    0.0f,
+                                    0.1f,
+                                    0.9f,
+                                    0.2f,
+                                    0.8f,
+                                    0.02f,
+                                    0.98f,
+                                    0.6f,
+                                    0.4f,
+                                    0.06f,
+                                    0.94f,
+                                    0.12f,
+                                    0.88f,
+                                    0.012f,
+                                    0.988f};
+
+    int j = 0;
+
+    for (i.setFirst(); !i.end(); ++i, j++) {
+      CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+    }
+
+    gum::LazyPropagation< double > inf_LazyProp(&bn);
+
+    inf_LazyProp.makeInference();
+  }
+
+  GUM_TEST(NoisyORCompoundInBN) {
+    gum::BayesNet< double > bn;
+
+    gum::LabelizedVariable cold("Cold", "", 2);
+    gum::LabelizedVariable flu("Flu", "", 2);
+    gum::LabelizedVariable malaria("Malaria", "", 2);
+    gum::LabelizedVariable fever("Fever", "", 2);
+    gum::LabelizedVariable oneMore("OneMore", "", 2);
+    gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
+    gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
+
+    gum::NodeId idCold           = bn.add(cold);
+    gum::NodeId idFlu            = bn.add(flu);
+    gum::NodeId idMalaria        = bn.add(malaria);
+    gum::NodeId idFever          = bn.addNoisyOR(fever, 0.0f);
+    gum::NodeId idOneMore        = bn.add(oneMore);
+    gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
+    gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
+
+    bn.addWeightedArc(idMalaria, idFever, 0.9f);
+    bn.addWeightedArc(idFlu, idFever, 0.8f);
+    bn.addWeightedArc(idCold, idFever, 0.4f);
+
+    CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
+
+    const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+    // FILLING PARAMS
+    pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
+
+    const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+    // FILLING PARAMS
+    pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
+
+    bn.addArc(idOneMoreParent1, idOneMore);
+    bn.addArc(idFever, idOneMore);
+    bn.addArc(idOneMoreParent2, idOneMore);
+    const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
+    // FILLING PARAMS
+    pOneMore.fillWith(std::vector< double >{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f});
+
+    const gum::Tensor< double >& p = bn.cpt(idFever);
+
+    gum::Instantiation i(p);
+    float              witness[] = {1.0f,
+                                    0.0f,
+                                    0.1f,
+                                    0.9f,
+                                    0.2f,
+                                    0.8f,
+                                    0.02f,
+                                    0.98f,
+                                    0.6f,
+                                    0.4f,
+                                    0.06f,
+                                    0.94f,
+                                    0.12f,
+                                    0.88f,
+                                    0.012f,
+                                    0.988f};
+
+    int j = 0;
+
+    for (i.setFirst(); !i.end(); ++i, j++) {
+      CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+    }
+
+    gum::LazyPropagation< double > inf_LazyProp(&bn);
+
+    inf_LazyProp.makeInference();
+  }
+
+  GUM_TEST(NoisyANDInBN) {
+    gum::BayesNet< double > bn;
+
+    gum::LabelizedVariable cold("Cold", "", 2);
+    gum::LabelizedVariable flu("Flu", "", 2);
+    gum::LabelizedVariable malaria("Malaria", "", 2);
+    gum::LabelizedVariable fever("Fever", "", 2);
+    gum::LabelizedVariable oneMore("OneMore", "", 2);
+    gum::LabelizedVariable oneMoreParent1("OneMoreParent1", "", 2);
+    gum::LabelizedVariable oneMoreParent2("OneMoreParent2", "", 2);
+
+    gum::NodeId idCold    = bn.add(cold);
+    gum::NodeId idFlu     = bn.add(flu);
+    gum::NodeId idMalaria = bn.add(malaria);
+    gum::NodeId idFever   = 0;
+    CHECK_THROWS_AS(idFever = bn.addNoisyAND(fever, 0.0f), const gum::InvalidArgument&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idFever = bn.addNoisyAND(fever, 0.999f));
+    gum::NodeId idOneMore        = bn.add(oneMore);
+    gum::NodeId idOneMoreParent1 = bn.add(oneMoreParent1);
+    gum::NodeId idOneMoreParent2 = bn.add(oneMoreParent2);
+
+    bn.addWeightedArc(idMalaria, idFever, 0.9f);
+    bn.addWeightedArc(idFlu, idFever, 0.8f);
+    bn.addWeightedArc(idCold, idFever, 0.4f);
+
+    CHECK_THROWS_AS(bn.addWeightedArc(idMalaria, idCold, 0.8f), const gum::InvalidArc&);
+
+    const gum::Tensor< double >& pOneMoreParent1 = bn.cpt(idOneMoreParent1);
+    // FILLING PARAMS
+    pOneMoreParent1.fillWith(std::vector< double >{0.2f, 0.8f});
+
+    const gum::Tensor< double >& pOneMoreParent2 = bn.cpt(idOneMoreParent2);
+    // FILLING PARAMS
+    pOneMoreParent2.fillWith(std::vector< double >{0.3f, 0.7f});
+
+    bn.addArc(idOneMoreParent1, idOneMore);
+    bn.addArc(idFever, idOneMore);
+    bn.addArc(idOneMoreParent2, idOneMore);
+    const gum::Tensor< double >& pOneMore = bn.cpt(idOneMore);
+    // FILLING PARAMS
+    pOneMore.fillWith(std::vector< double >{0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f,
+                                            0.1f,
+                                            0.9f,
+                                            0.8f,
+                                            0.2f});
+
+    const gum::Tensor< double >& p = bn.cpt(idFever);
+
+    gum::Instantiation i(p);
+    float              witness[] = {0.988012f,
+                                    0.011988f,
+                                    0.892108f,
+                                    0.107892f,
+                                    0.952048f,
+                                    0.047952f,
+                                    0.568432f,
+                                    0.431568f,
+                                    0.992008f,
+                                    0.007992f,
+                                    0.928072f,
+                                    0.071928f,
+                                    0.968032f,
+                                    0.031968f,
+                                    0.712288f,
+                                    0.287712f};
+
+    int j = 0;
+
+    for (i.setFirst(); !i.end(); ++i, j++) {
+      CHECK((p[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+    }
+
+    gum::LazyPropagation< double > inf_LazyProp(&bn);
+
+    inf_LazyProp.makeInference();
+  }
+
+  GUM_TEST(BNwithMinNoParents) {
+    auto                   bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    gum::LabelizedVariable var("min", "min", 4);
+    bn.add(var, new gum::aggregator::Min< double >());
+    {
+      gum::LazyPropagation< double > ie(&bn);
+      ie.makeInference();
+      gum::Tensor< double > p;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+      gum::Instantiation I(p);
+      for (I.setFirst(); !I.end(); I.inc())
+        CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
+    }
+    {
+      gum::ShaferShenoyInference< double > ie(&bn);
+      ie.makeInference();
+      gum::Tensor< double > p;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+      gum::Instantiation I(p);
+      for (I.setFirst(); !I.end(); I.inc())
+        CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
+    }
+    {
+      gum::VariableElimination< double > ie(&bn);
+      ie.makeInference();
+      gum::Tensor< double > p;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+      gum::Instantiation I(p);
+      for (I.setFirst(); !I.end(); I.inc())
+        CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
+    }
+    {
+      gum::LoopyBeliefPropagation< double > ie(&bn);
+      ie.makeInference();
+      gum::Tensor< double > p;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p = ie.posterior("min"));
+      gum::Instantiation I(p);
+      for (I.setFirst(); !I.end(); I.inc())
+        CHECK_EQ(p.get(I), I.val(0) == 3 ? 1 : 0);
+    }
+    // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
+  }
 }   // namespace gum_tests

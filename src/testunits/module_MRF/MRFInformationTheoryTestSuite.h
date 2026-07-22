@@ -53,32 +53,12 @@
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
-#define GUM_CURRENT_SUITE  MRFInformationTheory
-#define GUM_CURRENT_MODULE MRF
-
 namespace gum_tests {
   struct MRFInformationTheoryTestSuite {
     public:
-    static void testMRFCheckConsistency() {
-      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--B");
 
-      gum::ShaferShenoyMRFInference ie(&mrf);
 
-      auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theoryXY(it);
-    }
-
-    static void testMRFCheckConsistency3points() {
-      const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D--E--B");
-
-      gum::ShaferShenoyMRFInference ie(&mrf);
-
-      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
-      check_this_information_theoryXY(it);
-      check_this_information_theoryXYZ(it);
-    }
-
-    private:
+    protected:
     template < class IT >
     static void check_this_information_theoryXY(IT& it) {
       // H(X|Y)=H(X,Y)-H(Y)
@@ -123,6 +103,22 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(MRFCheckConsistency)
-  GUM_TEST_ACTIF(MRFCheckConsistency3points)
+  GUM_TEST(MRFCheckConsistency) {
+    const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--B");
+
+    gum::ShaferShenoyMRFInference ie(&mrf);
+
+    auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
+    check_this_information_theoryXY(it);
+  }
+
+  GUM_TEST(MRFCheckConsistency3points) {
+    const auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D--E--B");
+
+    gum::ShaferShenoyMRFInference ie(&mrf);
+
+    auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+    check_this_information_theoryXY(it);
+    check_this_information_theoryXYZ(it);
+  }
 }   // namespace gum_tests

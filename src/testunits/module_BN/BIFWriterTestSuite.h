@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BIFWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -67,7 +64,7 @@
 namespace gum_tests {
 
   struct BIFWriterTestSuite {
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
       bn.cpt(i1).fillWith({0.2, 0.8});
@@ -195,66 +192,61 @@ namespace gum_tests {
     }
 
     void tearDown() { delete bn; }
-
-    void testConstuctor() {
-      gum::BIFWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >());
-      delete writer;
-    }
-
-    void testWriter_ostream() {
-      gum::BIFWriter< double > writer;
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    void testWriter_string() {
-      gum::BIFWriter< double > writer;
-      std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
-      CHECK(_compareFile_(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")));
-    }
-
-    void testSyntaxicError() {
-      gum::BIFWriter< double > writer;
-      {
-        CHECK(!writer.isModificationAllowed());
-        std::string file = GET_RESSOURCES_PATH("outputs/shouldNotBeWrittenBIF.txt");
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
-          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
-        }
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
-          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
-        }
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
-          CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
-        }
-      }
-      {
-        writer.setAllowModification(true);
-        CHECK(writer.isModificationAllowed());
-        std::string file = GET_RESSOURCES_PATH("outputs/shouldBeWrittenBIF.txt");
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
-          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
-        }
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
-          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
-        }
-        {
-          auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
-          GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
-        }
-      }
-    }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Writer_string)
-  GUM_TEST_ACTIF(SyntaxicError)
+  GUM_TEST(Constuctor) {
+    gum::BIFWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::BIFWriter< double > writer;
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+  }
+
+  GUM_TEST(Writer_string) {
+    gum::BIFWriter< double > writer;
+    std::string              file = GET_RESSOURCES_PATH("outputs/BIFWriter_TestFile.txt");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
+    CHECK(_compareFile_(file, GET_RESSOURCES_PATH("txt/BIFWriter_Model.txt")));
+  }
+
+  GUM_TEST(SyntaxicError) {
+    gum::BIFWriter< double > writer;
+    {
+      CHECK(!writer.isModificationAllowed());
+      std::string file = GET_RESSOURCES_PATH("outputs/shouldNotBeWrittenBIF.txt");
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+        CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
+      }
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+        CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
+      }
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+        CHECK_THROWS_AS(writer.write(file, bn), gum::FatalError&);
+      }
+    }
+    {
+      writer.setAllowModification(true);
+      CHECK(writer.isModificationAllowed());
+      std::string file = GET_RESSOURCES_PATH("outputs/shouldBeWrittenBIF.txt");
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World !->c");
+        GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
+      }
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->Hello World->c");
+        GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
+      }
+      {
+        auto bn = gum::BayesNet< double >::fastPrototype("A->HelloWorld!->c");
+        GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, bn));
+      }
+    }
+  }
 }   // namespace gum_tests

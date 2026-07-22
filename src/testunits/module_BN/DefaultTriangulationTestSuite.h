@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DefaultTriangulation
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -93,61 +90,6 @@ namespace gum_tests {
       delete var4;
 
       delete var5;
-    }
-
-    void testtriangulatedGraph() {
-      gum::BayesNet< double >  topo;
-      gum::List< gum::NodeId > idList;
-
-      fill(topo, idList);
-      const gum::UndiGraph&          undiGraph = topo.moralGraph();
-      gum::NodeProperty< gum::Size > modalities;
-
-      // Builds a hashTable where the keys are the id of the variable,
-      // and the values the variable's domain size.
-
-      for (const auto node: topo.nodes())
-        modalities.insert(node, topo.variable(node).domainSize());
-
-      gum::DefaultTriangulation* triangle = nullptr;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
-                                      = new gum::DefaultTriangulation(&undiGraph, &modalities));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
-
-      CHECK((triangle->maxLog10CliqueDomainSize())
-            == (log10(16)));   // clique of 4 binary variables
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
-    }
-
-    void testjunctionTree() {
-      gum::BayesNet< double >  topo;
-      gum::List< gum::NodeId > idList;
-
-      fill(topo, idList);
-
-      gum::UndiGraph                 undiGraph;
-      gum::NodeProperty< gum::Size > modalities;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph());
-
-      // Builds a hashTable where the keys are the id of the variable,
-      // and the values the variable's domain size.
-      for (const auto node: topo.nodes())
-        modalities.insert(node, topo.variable(node).domainSize());
-
-      gum::DefaultTriangulation* triangle = nullptr;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
-                                      = new gum::DefaultTriangulation(&undiGraph, &modalities));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->junctionTree());
-
-      // TODO : problem here !!
-      CHECK(triangle->junctionTree().hasRunningIntersection());
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     }
 
     void xxtestBIFtriangulation1() {
@@ -194,107 +136,8 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(_triangulate_bif_(GET_RESSOURCES_PATH("bif/insurance.bif")));
     }
 
-    void testTriangulatedGraph1() {
-      gum::NodeSet c1, c2, c3, c4, c5;
-      c1 << 1 << 2 << 3 << 4;
-      c2 << 2 << 4 << 5;
-      c3 << 4 << 5 << 6;
-      c4 << 2 << 5 << 7;
-      c5 << 1 << 3 << 8;
 
-      gum::UndiGraph graph;
-
-      for (unsigned int i = 1; i <= 8; ++i)
-        graph.addNodeWithId(i);
-
-      _createClique_(graph, c1);
-      _createClique_(graph, c2);
-      _createClique_(graph, c3);
-      _createClique_(graph, c4);
-      _createClique_(graph, c5);
-
-      gum::NodeProperty< gum::Size > dom;
-
-      for (unsigned int i = 1; i <= 8; ++i)
-        dom.insert(i, static_cast< gum::Size >(10));
-
-      gum::DefaultTriangulation triang;
-
-      triang.setGraph(&graph, &dom);
-
-      const gum::UndiGraph& gr2 = triang.triangulatedGraph();
-
-      CHECK_EQ(gr2.sizeNodes(), 8U);
-
-      CHECK_EQ(gr2.sizeEdges(), 14U);
-
-      triang.clear();
-
-      triang.setGraph(&graph, &dom);
-
-      const gum::UndiGraph& gr3 = triang.triangulatedGraph();
-
-      CHECK_EQ(gr3.sizeNodes(), 8U);
-
-      CHECK_EQ(gr3.sizeEdges(), 14U);
-
-      graph.eraseEdge(gum::Edge(2, 5));
-
-      triang.setGraph(&graph, &dom);
-
-      const gum::UndiGraph& gr4 = triang.triangulatedGraph();
-
-      CHECK_EQ(gr4.sizeNodes(), 8U);
-
-      CHECK_EQ(gr4.sizeEdges(), 14U);
-
-      const gum::EdgeSet& edges = triang.fillIns();
-
-      CHECK_EQ(edges.size(), 1U);
-
-      CHECK_EQ(*(edges.begin()), gum::Edge(2, 5));
-    }
-
-    void testTriangulatedGraph2() {
-      gum::UndiGraph graph;
-
-      for (unsigned int i = 1; i <= 8; ++i)
-        graph.addNodeWithId(i);
-
-      for (unsigned int i = 1; i <= 7; ++i)
-        graph.addEdge(i, i + 1);
-
-      graph.addEdge(8, 1);
-
-      gum::NodeProperty< gum::Size > dom;
-
-      for (unsigned int i = 1; i <= 8; ++i)
-        dom.insert(i, 10);
-
-      gum::DefaultTriangulation triang;
-
-      triang.setGraph(&graph, &dom);
-
-      const gum::CliqueGraph& elim = triang.eliminationTree();
-
-      CHECK_EQ(elim.sizeNodes(), 8U);
-
-      CHECK_EQ(elim.sizeEdges(), 7U);
-
-      const gum::CliqueGraph& JT = triang.junctionTree();
-
-      CHECK_EQ(JT.sizeNodes(), 6U);
-
-      CHECK_EQ(JT.sizeEdges(), 5U);
-
-      const gum::UndiGraph& gr = triang.triangulatedGraph();
-
-      CHECK_EQ(gr.sizeNodes(), 8U);
-
-      CHECK_EQ(gr.sizeEdges(), 13U);
-    }
-
-    private:
+    protected:
     static void _createClique_(gum::UndiGraph& graph, const gum::NodeSet& clique) {
       for (auto iter = clique.begin(); iter != clique.end(); ++iter) {
         auto iter2 = iter;
@@ -334,8 +177,157 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(triangulatedGraph)
-  GUM_TEST_ACTIF(junctionTree)
-  GUM_TEST_ACTIF(TriangulatedGraph1)
-  GUM_TEST_ACTIF(TriangulatedGraph2)
+  GUM_TEST(triangulatedGraph) {
+    gum::BayesNet< double >  topo;
+    gum::List< gum::NodeId > idList;
+
+    fill(topo, idList);
+    const gum::UndiGraph&          undiGraph = topo.moralGraph();
+    gum::NodeProperty< gum::Size > modalities;
+
+    // Builds a hashTable where the keys are the id of the variable,
+    // and the values the variable's domain size.
+
+    for (const auto node: topo.nodes())
+      modalities.insert(node, topo.variable(node).domainSize());
+
+    gum::DefaultTriangulation* triangle = nullptr;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
+                                    = new gum::DefaultTriangulation(&undiGraph, &modalities));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->triangulatedGraph());
+
+    CHECK((triangle->maxLog10CliqueDomainSize()) == (log10(16)));   // clique of 4 binary variables
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
+  }
+
+  GUM_TEST(junctionTree) {
+    gum::BayesNet< double >  topo;
+    gum::List< gum::NodeId > idList;
+
+    fill(topo, idList);
+
+    gum::UndiGraph                 undiGraph;
+    gum::NodeProperty< gum::Size > modalities;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(undiGraph = topo.moralGraph());
+
+    // Builds a hashTable where the keys are the id of the variable,
+    // and the values the variable's domain size.
+    for (const auto node: topo.nodes())
+      modalities.insert(node, topo.variable(node).domainSize());
+
+    gum::DefaultTriangulation* triangle = nullptr;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(triangle
+                                    = new gum::DefaultTriangulation(&undiGraph, &modalities));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(triangle->junctionTree());
+
+    // TODO : problem here !!
+    CHECK(triangle->junctionTree().hasRunningIntersection());
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
+  }
+
+  GUM_TEST(TriangulatedGraph1) {
+    gum::NodeSet c1, c2, c3, c4, c5;
+    c1 << 1 << 2 << 3 << 4;
+    c2 << 2 << 4 << 5;
+    c3 << 4 << 5 << 6;
+    c4 << 2 << 5 << 7;
+    c5 << 1 << 3 << 8;
+
+    gum::UndiGraph graph;
+
+    for (unsigned int i = 1; i <= 8; ++i)
+      graph.addNodeWithId(i);
+
+    _createClique_(graph, c1);
+    _createClique_(graph, c2);
+    _createClique_(graph, c3);
+    _createClique_(graph, c4);
+    _createClique_(graph, c5);
+
+    gum::NodeProperty< gum::Size > dom;
+
+    for (unsigned int i = 1; i <= 8; ++i)
+      dom.insert(i, static_cast< gum::Size >(10));
+
+    gum::DefaultTriangulation triang;
+
+    triang.setGraph(&graph, &dom);
+
+    const gum::UndiGraph& gr2 = triang.triangulatedGraph();
+
+    CHECK_EQ(gr2.sizeNodes(), 8U);
+
+    CHECK_EQ(gr2.sizeEdges(), 14U);
+
+    triang.clear();
+
+    triang.setGraph(&graph, &dom);
+
+    const gum::UndiGraph& gr3 = triang.triangulatedGraph();
+
+    CHECK_EQ(gr3.sizeNodes(), 8U);
+
+    CHECK_EQ(gr3.sizeEdges(), 14U);
+
+    graph.eraseEdge(gum::Edge(2, 5));
+
+    triang.setGraph(&graph, &dom);
+
+    const gum::UndiGraph& gr4 = triang.triangulatedGraph();
+
+    CHECK_EQ(gr4.sizeNodes(), 8U);
+
+    CHECK_EQ(gr4.sizeEdges(), 14U);
+
+    const gum::EdgeSet& edges = triang.fillIns();
+
+    CHECK_EQ(edges.size(), 1U);
+
+    CHECK_EQ(*(edges.begin()), gum::Edge(2, 5));
+  }
+
+  GUM_TEST(TriangulatedGraph2) {
+    gum::UndiGraph graph;
+
+    for (unsigned int i = 1; i <= 8; ++i)
+      graph.addNodeWithId(i);
+
+    for (unsigned int i = 1; i <= 7; ++i)
+      graph.addEdge(i, i + 1);
+
+    graph.addEdge(8, 1);
+
+    gum::NodeProperty< gum::Size > dom;
+
+    for (unsigned int i = 1; i <= 8; ++i)
+      dom.insert(i, 10);
+
+    gum::DefaultTriangulation triang;
+
+    triang.setGraph(&graph, &dom);
+
+    const gum::CliqueGraph& elim = triang.eliminationTree();
+
+    CHECK_EQ(elim.sizeNodes(), 8U);
+
+    CHECK_EQ(elim.sizeEdges(), 7U);
+
+    const gum::CliqueGraph& JT = triang.junctionTree();
+
+    CHECK_EQ(JT.sizeNodes(), 6U);
+
+    CHECK_EQ(JT.sizeEdges(), 5U);
+
+    const gum::UndiGraph& gr = triang.triangulatedGraph();
+
+    CHECK_EQ(gr.sizeNodes(), 8U);
+
+    CHECK_EQ(gr.sizeEdges(), 13U);
+  }
 }   // namespace gum_tests

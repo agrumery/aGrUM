@@ -53,9 +53,6 @@
 #include <agrum/FMDP/io/dat/fmdpDatReader.h>
 #include <agrum/FMDP/planning/structuredPlaner.h>
 
-#define GUM_CURRENT_SUITE  StructuredPlaner
-#define GUM_CURRENT_MODULE FMDP
-
 // ==============================================================================
 
 namespace gum_tests {
@@ -89,16 +86,11 @@ namespace gum_tests {
     }
 
     public:
-    static void testPlanningCoffee() { run(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat")); }
-
-    static void testPlanningTinyFactory() {
-      run(GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat"));
-    }
-
-    static void testPlanningTaxi() { run(GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat")); }
   };
 
-  GUM_TEST_ACTIF(PlanningCoffee)
-  GUM_TEST_ACTIF(PlanningTinyFactory)
-  GUM_TEST_ACTIF(PlanningTaxi)
+  GUM_TEST(PlanningCoffee) { run(GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat")); }
+
+  GUM_TEST(PlanningTinyFactory) { run(GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat")); }
+
+  GUM_TEST(PlanningTaxi) { run(GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat")); }
 }   // namespace gum_tests

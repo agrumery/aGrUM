@@ -51,149 +51,136 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  EssentialGraph
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct EssentialGraphTestSuite {
     public:
-    static void testChain() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
-      auto eg = gum::EssentialGraph(bn);
+    // namespace gum_tests
+  };
 
-      CHECK_EQ(eg.size(), 3u);
-      CHECK_EQ(eg.sizeArcs(), 0u);
-      CHECK_EQ(eg.sizeEdges(), 2u);
-    }   // namespace gum_tests
+  GUM_TEST(Chain) {
+    auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
+    auto eg = gum::EssentialGraph(bn);
 
-    static void testVstructure() {
+    CHECK_EQ(eg.size(), 3u);
+    CHECK_EQ(eg.sizeArcs(), 0u);
+    CHECK_EQ(eg.sizeEdges(), 2u);
+  }
+
+  GUM_TEST(Vstructure) {
+    auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
+    auto eg = gum::EssentialGraph(bn);
+
+    CHECK_EQ(eg.size(), 3u);
+    CHECK_EQ(eg.sizeArcs(), 2u);
+    CHECK_EQ(eg.sizeEdges(), 0u);
+  }
+
+  GUM_TEST(CaseD) {
+    auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+    auto eg = gum::EssentialGraph(bn);
+
+    CHECK_EQ(eg.size(), 4u);
+    CHECK_EQ(eg.sizeArcs(), 3u);
+    CHECK_EQ(eg.sizeEdges(), 2u);
+  }
+
+  GUM_TEST(Notebook1) {
+    auto bn = gum::BayesNet< float >::fastPrototype(
+        "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
+    auto eg = gum::EssentialGraph(bn);
+
+    CHECK_EQ(eg.size(), 13u);
+    CHECK_EQ(eg.sizeArcs(), 8u);
+    CHECK_EQ(eg.sizeEdges(), 5u);
+  }
+
+  GUM_TEST(Notebook2) {
+    auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
+    auto eg = gum::EssentialGraph(bn);
+
+    CHECK_EQ(eg.size(), 4u);
+    CHECK_EQ(eg.sizeArcs(), 0u);
+    CHECK_EQ(eg.sizeEdges(), 5u);
+  }
+
+  GUM_TEST(Notebook3) {
+    auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
+    auto eg = gum::EssentialGraph(bn);
+
+    CHECK_EQ(eg.size(), 5u);
+    CHECK_EQ(eg.sizeArcs(), 3u);
+    CHECK_EQ(eg.sizeEdges(), 1u);
+  }
+
+  GUM_TEST(Skeleton) {
+    auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
+    auto eg   = gum::EssentialGraph(bn);
+    auto skel = eg.skeleton();
+
+    CHECK_EQ(skel.size(), 5u);
+    CHECK_EQ(eg.sizeEdges(), 1u);
+    CHECK_EQ(eg.sizeArcs(), 3u);
+
+    CHECK_EQ(eg.idFromName("Z"), 0u);
+    CHECK_EQ(eg.idFromName("X"), 1u);
+    CHECK_EQ(eg.idFromName("U"), 2u);
+    CHECK_EQ(eg.idFromName("Y"), 3u);
+    CHECK_EQ(eg.idFromName("W"), 4u);
+
+    CHECK_EQ(eg.nameFromId(0u), "Z");
+    CHECK_EQ(eg.nameFromId(1u), "X");
+    CHECK_EQ(eg.nameFromId(2u), "U");
+    CHECK_EQ(eg.nameFromId(3u), "Y");
+    CHECK_EQ(eg.nameFromId(4u), "W");
+  }
+
+  GUM_TEST(NonRegression1) {
+    auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
+    auto eg   = gum::EssentialGraph(bn);
+    auto skel = eg.skeleton();
+
+    CHECK_EQ(skel.size(), 3u);
+    CHECK_EQ(eg.sizeEdges(), 3u);
+    CHECK_EQ(eg.sizeArcs(), 0u);
+  }
+
+  GUM_TEST(NonRegression2) {
+    auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
+    auto eg   = gum::EssentialGraph(bn);
+    auto skel = eg.skeleton();
+
+    CHECK_EQ(skel.size(), 4u);
+    CHECK_EQ(eg.sizeEdges(), 0u);
+    CHECK_EQ(eg.sizeArcs(), 4u);
+  }
+
+  GUM_TEST(NonRegression3) {
+    auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
+    auto eg   = gum::EssentialGraph(bn);
+    auto skel = eg.skeleton();
+    CHECK_EQ(skel.size(), 6u);
+    CHECK_EQ(eg.sizeEdges(), 2u);
+    CHECK_EQ(eg.sizeArcs(), 4u);
+  }
+
+  GUM_TEST(AncestorsDescendants) {
+    // v-structure a(0)->b(1)<-c(2): arcs are kept directed in essential graph
+    {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
       auto eg = gum::EssentialGraph(bn);
 
-      CHECK_EQ(eg.size(), 3u);
-      CHECK_EQ(eg.sizeArcs(), 2u);
-      CHECK_EQ(eg.sizeEdges(), 0u);
+      CHECK_EQ(eg.ancestors(1), gum::NodeSet({0, 2}));
+      CHECK_EQ(eg.descendants(0), gum::NodeSet({1}));
+      CHECK_EQ(eg.descendants(1), gum::NodeSet());
     }
-
-    static void testCaseD() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a->b;c1->b;c2->b;a->c1;a->c2");
+    // chain a(0)->b(1)->c(2): all edges become undirected, no directed paths
+    {
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
       auto eg = gum::EssentialGraph(bn);
 
-      CHECK_EQ(eg.size(), 4u);
-      CHECK_EQ(eg.sizeArcs(), 3u);
-      CHECK_EQ(eg.sizeEdges(), 2u);
+      CHECK_EQ(eg.descendants(0), gum::NodeSet());
+      CHECK_EQ(eg.ancestors(2), gum::NodeSet());
     }
-
-    static void testNotebook1() {
-      auto bn = gum::BayesNet< float >::fastPrototype(
-          "A->B->C->D;E->B;F->G->D;F->H->I;E->J->K->I->M;K->L");
-      auto eg = gum::EssentialGraph(bn);
-
-      CHECK_EQ(eg.size(), 13u);
-      CHECK_EQ(eg.sizeArcs(), 8u);
-      CHECK_EQ(eg.sizeEdges(), 5u);
-    }
-
-    static void testNotebook2() {
-      auto bn = gum::BayesNet< float >::fastPrototype("A->B;C->B;C->D;B->D;A->C");
-      auto eg = gum::EssentialGraph(bn);
-
-      CHECK_EQ(eg.size(), 4u);
-      CHECK_EQ(eg.sizeArcs(), 0u);
-      CHECK_EQ(eg.sizeEdges(), 5u);
-    }
-
-    static void testNotebook3() {
-      auto bn = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
-      auto eg = gum::EssentialGraph(bn);
-
-      CHECK_EQ(eg.size(), 5u);
-      CHECK_EQ(eg.sizeArcs(), 3u);
-      CHECK_EQ(eg.sizeEdges(), 1u);
-    }
-
-    static void testSkeleton() {
-      auto bn   = gum::BayesNet< float >::fastPrototype("Z->X->U;Y->X;Y->W");
-      auto eg   = gum::EssentialGraph(bn);
-      auto skel = eg.skeleton();
-
-      CHECK_EQ(skel.size(), 5u);
-      CHECK_EQ(eg.sizeEdges(), 1u);
-      CHECK_EQ(eg.sizeArcs(), 3u);
-
-      CHECK_EQ(eg.idFromName("Z"), 0u);
-      CHECK_EQ(eg.idFromName("X"), 1u);
-      CHECK_EQ(eg.idFromName("U"), 2u);
-      CHECK_EQ(eg.idFromName("Y"), 3u);
-      CHECK_EQ(eg.idFromName("W"), 4u);
-
-      CHECK_EQ(eg.nameFromId(0u), "Z");
-      CHECK_EQ(eg.nameFromId(1u), "X");
-      CHECK_EQ(eg.nameFromId(2u), "U");
-      CHECK_EQ(eg.nameFromId(3u), "Y");
-      CHECK_EQ(eg.nameFromId(4u), "W");
-    }
-
-    static void testNonRegression1() {
-      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0");
-      auto eg   = gum::EssentialGraph(bn);
-      auto skel = eg.skeleton();
-
-      CHECK_EQ(skel.size(), 3u);
-      CHECK_EQ(eg.sizeEdges(), 3u);
-      CHECK_EQ(eg.sizeArcs(), 0u);
-    }
-
-    static void testNonRegression2() {
-      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2<-0;3->1");
-      auto eg   = gum::EssentialGraph(bn);
-      auto skel = eg.skeleton();
-
-      CHECK_EQ(skel.size(), 4u);
-      CHECK_EQ(eg.sizeEdges(), 0u);
-      CHECK_EQ(eg.sizeArcs(), 4u);
-    }
-
-    static void testNonRegression3() {
-      auto bn   = gum::BayesNet< float >::fastPrototype("0->1->2->3<-4<-2<-5");
-      auto eg   = gum::EssentialGraph(bn);
-      auto skel = eg.skeleton();
-      CHECK_EQ(skel.size(), 6u);
-      CHECK_EQ(eg.sizeEdges(), 2u);
-      CHECK_EQ(eg.sizeArcs(), 4u);
-    }
-
-    static void testAncestorsDescendants() {
-      // v-structure a(0)->b(1)<-c(2): arcs are kept directed in essential graph
-      {
-        auto bn = gum::BayesNet< float >::fastPrototype("a->b;c->b");
-        auto eg = gum::EssentialGraph(bn);
-
-        CHECK_EQ(eg.ancestors(1), gum::NodeSet({0, 2}));
-        CHECK_EQ(eg.descendants(0), gum::NodeSet({1}));
-        CHECK_EQ(eg.descendants(1), gum::NodeSet());
-      }
-      // chain a(0)->b(1)->c(2): all edges become undirected, no directed paths
-      {
-        auto bn = gum::BayesNet< float >::fastPrototype("a->b->c");
-        auto eg = gum::EssentialGraph(bn);
-
-        CHECK_EQ(eg.descendants(0), gum::NodeSet());
-        CHECK_EQ(eg.ancestors(2), gum::NodeSet());
-      }
-    }
-  };
-
-  GUM_TEST_ACTIF(Chain)
-  GUM_TEST_ACTIF(Vstructure)
-  GUM_TEST_ACTIF(CaseD)
-  GUM_TEST_ACTIF(Notebook1)
-  GUM_TEST_ACTIF(Notebook2)
-  GUM_TEST_ACTIF(Notebook3)
-  GUM_TEST_ACTIF(Skeleton)
-  GUM_TEST_ACTIF(NonRegression1)
-  GUM_TEST_ACTIF(NonRegression2)
-  GUM_TEST_ACTIF(NonRegression3)
-  GUM_TEST_ACTIF(AncestorsDescendants)
+  }
 
 }   // namespace gum_tests

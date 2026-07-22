@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  O3prmBNWriter
-#define GUM_CURRENT_MODULE PRM
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -112,87 +109,8 @@ namespace gum_tests {
 
     ~O3prmBNWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
-      gum::O3prmBNWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >());
-      delete writer;
-    }
 
-    static void testWriter_ostream() {
-      gum::O3prmBNWriter< double > writer;
-      // Uncomment this to check the ouput
-      // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
-    }
-
-    static void testReadAfterWrite() {
-      std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
-      gum::BayesNet< double >      bn;
-      gum::O3prmBNReader< double > reader(&bn, rfile);
-      gum::Size                    res = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
-      CHECK_EQ(res, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(7));   // no system
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(37));
-      CHECK_EQ(bn.property("name"), "alarm");
-
-
-      gum::O3prmBNWriter< double > writer;
-      std::string                  wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
-
-
-      gum::BayesNet< double >      bn2;
-      gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
-      gum::Size                    res2 = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK_EQ(res2, static_cast< gum::Size >(0));
-      CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(7));   // no system
-      CHECK_EQ(bn2.size(), static_cast< gum::Size >(37));
-
-      std::string nam;
-      for (const auto& nod: bn.nodes()) {
-        nam = bn.variable(nod).name();
-        CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
-        const gum::Tensor< double > p(bn.cpt(nam));
-        std::vector< std::string >  varmap;
-        for (gum::Idx i = 0; i < p.nbrDim(); i++)
-          varmap.push_back(p.variable(i).name());
-        p.fillWith(bn2.cpt(nam), varmap);
-        CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
-      }
-    }
-
-    static void testReadAfterWriteRandom() {
-      gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
-          "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
-      bn.setProperty("name", "random_written");
-
-      gum::O3prmBNWriter< double > writer;
-      std::string                  wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
-
-
-      gum::BayesNet< double >      bn2;
-      gum::O3prmBNReader< double > reader2(&bn2, wfile);
-      gum::Size                    res2 = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
-      CHECK_EQ(res2, static_cast< gum::Size >(0));
-      CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
-
-      std::string nam;
-      for (const auto& nod: bn.nodes()) {
-        nam = bn.variable(nod).name();
-        CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
-        const gum::Tensor< double > p(bn.cpt(nam));
-        std::vector< std::string >  varmap;
-        for (gum::Idx i = 0; i < p.nbrDim(); i++)
-          varmap.push_back(p.variable(i).name());
-        p.fillWith(bn2.cpt(nam), varmap);
-        CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
-      }
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
       bn.cpt(i1).fillWith({0.2, 0.8});
@@ -204,8 +122,83 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(ReadAfterWrite)
-  GUM_TEST_ACTIF(ReadAfterWriteRandom)
+  GUM_TEST(Constuctor) {
+    gum::O3prmBNWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::O3prmBNWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::O3prmBNWriter< double > writer;
+    // Uncomment this to check the ouput
+    // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
+  }
+
+  GUM_TEST(ReadAfterWrite) {
+    std::string                  rfile = GET_RESSOURCES_PATH("o3prm/alarm.o3prm");
+    gum::BayesNet< double >      bn;
+    gum::O3prmBNReader< double > reader(&bn, rfile);
+    gum::Size                    res = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res = reader.proceed());
+    CHECK_EQ(res, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(7));   // no system
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(37));
+    CHECK_EQ(bn.property("name"), "alarm");
+
+
+    gum::O3prmBNWriter< double > writer;
+    std::string                  wfile = GET_RESSOURCES_PATH("outputs/alarm_written.o3prm");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+
+
+    gum::BayesNet< double >      bn2;
+    gum::O3prmBNReader< double > reader2(&bn2, wfile, "alarm");
+    gum::Size                    res2 = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+    CHECK_EQ(res2, static_cast< gum::Size >(0));
+    CHECK_EQ(reader2.warnings(), static_cast< gum::Size >(7));   // no system
+    CHECK_EQ(bn2.size(), static_cast< gum::Size >(37));
+
+    std::string nam;
+    for (const auto& nod: bn.nodes()) {
+      nam = bn.variable(nod).name();
+      CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
+      const gum::Tensor< double > p(bn.cpt(nam));
+      std::vector< std::string >  varmap;
+      for (gum::Idx i = 0; i < p.nbrDim(); i++)
+        varmap.push_back(p.variable(i).name());
+      p.fillWith(bn2.cpt(nam), varmap);
+      CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(ReadAfterWriteRandom) {
+    gum::BayesNet< double > bn = gum::BayesNet< double >::fastPrototype(
+        "A[5]->B{yes|maybe|no}<-C[4];D[3,6]->E[1,2,3,4,5,6,7]->F<-G;F<-H");
+    bn.setProperty("name", "random_written");
+
+    gum::O3prmBNWriter< double > writer;
+    std::string                  wfile = GET_RESSOURCES_PATH("outputs/random_written.o3prm");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(wfile, bn));
+
+
+    gum::BayesNet< double >      bn2;
+    gum::O3prmBNReader< double > reader2(&bn2, wfile);
+    gum::Size                    res2 = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(res2 = reader2.proceed());
+    CHECK_EQ(res2, static_cast< gum::Size >(0));
+    CHECK_EQ(bn2.size(), static_cast< gum::Size >(8));
+
+    std::string nam;
+    for (const auto& nod: bn.nodes()) {
+      nam = bn.variable(nod).name();
+      CHECK_EQ(bn.variable(nam).toString(), bn2.variable(nam).toString());
+      const gum::Tensor< double > p(bn.cpt(nam));
+      std::vector< std::string >  varmap;
+      for (gum::Idx i = 0; i < p.nbrDim(); i++)
+        varmap.push_back(p.variable(i).name());
+      p.fillWith(bn2.cpt(nam), varmap);
+      CHECK_LT((p - bn.cpt(nam)).abs().max(), GUM_SMALL_ERROR);
+    }
+  }
 }   // namespace gum_tests

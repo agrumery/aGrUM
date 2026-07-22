@@ -47,81 +47,71 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 
-#define GUM_CURRENT_SUITE  CPlusPlus
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
-  struct CPlusPlusTestSuite {
+  struct CplusplusTestSuite {
     public:
-    static void test_CPP17_binding_array() {
-      int arry[3]    = {3, 4, 5};
-      auto [a, b, c] = arry;
-      CHECK_EQ(a, 3);
-      CHECK_EQ(b, 4);
-      CHECK_EQ(c, 5);
-    }   // namespace gum_tests
-
-    static void test_CPP17_autobinding() {
-      std::tuple tplex(1, 'a', 3.14);
-      auto [a, b, c] = tplex;
-      CHECK_EQ(a, 1);
-      CHECK_EQ(b, 'a');
-      CHECK_EQ(c, 3.14);
-    }
-
-    static void test_CPP17_enumInit() {
-      enum byte : unsigned char {};
-
-      byte b0 [[maybe_unused]]{0};
-      byte b1 [[maybe_unused]] = byte{255};
-    }
-
-    static void test_CPP17_ifWithInit() {
-      if (int i = 3; i % 2 == 0) { FAIL("should not reach here"); }
-    }
-
-    static void test_CPP20_likelyAttributes() {
-      bool b = false;
-      if (b) [[likely]] {
-        FAIL("should not reach here");
-      } else {
-        CHECK(!b);
-      }
-    }
-
-    static void test_CPP20_array_size_deduction() {
-      int* p2 = new int[]{1, 2, 3};
-      delete[] (p2);
-    }
-
-    static void test_CPP20_int_two_cplt() {
-      int i1 = -1;
-      CHECK((i1 <<= 1)
-            == (-2));   // left-shift for signed negative integers(previously undefined behavior)
-
-      int i2 = std::numeric_limits< int >::max();
-      CHECK_EQ(i2 <<= 1, -2);   // "unrepresentable" left-shift for signed integers(previously
-                                // undefined behavior)
-    }
-
-    static void test_CPP20_lambda_implicit_this_capture() {
-      struct S {
-        int x{1};
-        int y{[&] { return x + 1; }()};   // OK, captures 'this'
-      };
-
-      S s;
-      CHECK_EQ(s.y, 2);
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(_CPP17_binding_array)
-  GUM_TEST_ACTIF(_CPP17_autobinding)
-  GUM_TEST_ACTIF(_CPP17_enumInit)
-  GUM_TEST_ACTIF(_CPP17_ifWithInit)
-  GUM_TEST_ACTIF(_CPP20_likelyAttributes)
-  GUM_TEST_ACTIF(_CPP20_array_size_deduction)
-  GUM_TEST_ACTIF(_CPP20_int_two_cplt)
-  GUM_TEST_ACTIF(_CPP20_lambda_implicit_this_capture)
+  GUM_TEST(_CPP17_binding_array) {
+    int arry[3]    = {3, 4, 5};
+    auto [a, b, c] = arry;
+    CHECK_EQ(a, 3);
+    CHECK_EQ(b, 4);
+    CHECK_EQ(c, 5);
+  }
+
+  GUM_TEST(_CPP17_autobinding) {
+    std::tuple tplex(1, 'a', 3.14);
+    auto [a, b, c] = tplex;
+    CHECK_EQ(a, 1);
+    CHECK_EQ(b, 'a');
+    CHECK_EQ(c, 3.14);
+  }
+
+  GUM_TEST(_CPP17_enumInit) {
+    enum byte : unsigned char {};
+
+    byte b0 [[maybe_unused]]{0};
+    byte b1 [[maybe_unused]] = byte{255};
+  }
+
+  GUM_TEST(_CPP17_ifWithInit) {
+    if (int i = 3; i % 2 == 0) { FAIL("should not reach here"); }
+  }
+
+  GUM_TEST(_CPP20_likelyAttributes) {
+    bool b = false;
+    if (b) [[likely]] {
+      FAIL("should not reach here");
+    } else {
+      CHECK(!b);
+    }
+  }
+
+  GUM_TEST(_CPP20_array_size_deduction) {
+    int* p2 = new int[]{1, 2, 3};
+    delete[] (p2);
+  }
+
+  GUM_TEST(_CPP20_int_two_cplt) {
+    int i1 = -1;
+    CHECK((i1 <<= 1)
+          == (-2));   // left-shift for signed negative integers(previously undefined behavior)
+
+    int i2 = std::numeric_limits< int >::max();
+    CHECK_EQ(i2 <<= 1, -2);   // "unrepresentable" left-shift for signed integers(previously
+                              // undefined behavior)
+  }
+
+  GUM_TEST(_CPP20_lambda_implicit_this_capture) {
+    struct S {
+      int x{1};
+      int y{[&] { return x + 1; }()};   // OK, captures 'this'
+    };
+
+    S s;
+    CHECK_EQ(s.y, 2);
+  }
 }   // namespace gum_tests

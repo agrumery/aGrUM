@@ -49,60 +49,57 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BinaryJoinTreeConverter
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct BinaryJoinTreeConverterTestSuite {
     public:
-    static void test1() {
-      gum::CliqueGraph            graph;
-      std::vector< gum::NodeSet > cliques(11);
-
-      cliques[0] << 1 << 2;
-      cliques[1] << 3 << 4 << 5;
-      cliques[2] << 6 << 7 << 8;
-      cliques[3] << 9 << 10;
-      cliques[4] << 8 << 11 << 12 << 3;
-      cliques[5] << 2 << 3 << 7 << 8 << 10 << 11 << 12;
-      cliques[6] << 10 << 15;
-      cliques[7] << 13 << 17;
-      cliques[8] << 2 << 7 << 10 << 11 << 13;
-      cliques[9] << 7 << 14;
-      cliques[10] << 14 << 16;
-
-      for (unsigned int i = 0; i <= 10; ++i) {
-        graph.addNodeWithId(i, cliques[i]);
-      }
-
-      graph.addEdge(0, 5);
-      graph.addEdge(1, 5);
-      graph.addEdge(2, 5);
-      graph.addEdge(3, 5);
-      graph.addEdge(4, 5);
-      graph.addEdge(5, 8);
-      graph.addEdge(6, 8);
-      graph.addEdge(7, 8);
-      graph.addEdge(8, 9);
-      graph.addEdge(9, 10);
-
-      gum::NodeProperty< gum::Size > domain_sizes;
-
-      for (gum::Idx i = 1; i <= 17; ++i) {
-        domain_sizes.insert(i, static_cast< gum::Size >(3));
-      }
-
-      gum::BinaryJoinTreeConverterDefault converter;
-      gum::NodeSet                        roots;
-      roots << 9;
-
-      try {
-        gum::CliqueGraph binTree = converter.convert(graph, domain_sizes, roots);
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(1)
+  GUM_TEST(1) {
+    gum::CliqueGraph            graph;
+    std::vector< gum::NodeSet > cliques(11);
+
+    cliques[0] << 1 << 2;
+    cliques[1] << 3 << 4 << 5;
+    cliques[2] << 6 << 7 << 8;
+    cliques[3] << 9 << 10;
+    cliques[4] << 8 << 11 << 12 << 3;
+    cliques[5] << 2 << 3 << 7 << 8 << 10 << 11 << 12;
+    cliques[6] << 10 << 15;
+    cliques[7] << 13 << 17;
+    cliques[8] << 2 << 7 << 10 << 11 << 13;
+    cliques[9] << 7 << 14;
+    cliques[10] << 14 << 16;
+
+    for (unsigned int i = 0; i <= 10; ++i) {
+      graph.addNodeWithId(i, cliques[i]);
+    }
+
+    graph.addEdge(0, 5);
+    graph.addEdge(1, 5);
+    graph.addEdge(2, 5);
+    graph.addEdge(3, 5);
+    graph.addEdge(4, 5);
+    graph.addEdge(5, 8);
+    graph.addEdge(6, 8);
+    graph.addEdge(7, 8);
+    graph.addEdge(8, 9);
+    graph.addEdge(9, 10);
+
+    gum::NodeProperty< gum::Size > domain_sizes;
+
+    for (gum::Idx i = 1; i <= 17; ++i) {
+      domain_sizes.insert(i, static_cast< gum::Size >(3));
+    }
+
+    gum::BinaryJoinTreeConverterDefault converter;
+    gum::NodeSet                        roots;
+    roots << 9;
+
+    try {
+      gum::CliqueGraph binTree = converter.convert(graph, domain_sizes, roots);
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
 
 } /* namespace gum_tests */

@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BIFXMLIDReader
-#define GUM_CURRENT_MODULE ID
-
 // The graph used for the tests:
 //           D1
 //           |          D1 -> C1
@@ -74,7 +71,7 @@
 namespace gum_tests {
 
   class aSimpleListener: public gum::Listener {
-    private:
+    protected:
     int _nbr_;
 
     public:
@@ -92,308 +89,305 @@ namespace gum_tests {
 
   struct BIFXMLIDReaderTestSuite {
     public:
-    static void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
-
-      gum::InfluenceDiagram< double > net;
-
-      gum::BIFXMLIDReader< double >* reader = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-
-      // delete reader;
-    }   // namespace gum_tests
-
-    static void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
-
-      gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
-
-      gum::BIFXMLIDReader< double > reader(net, file);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      CHECK_NE(net, nullptr);
-
-      // For comparison with what have wrote Writer
-      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
-      std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
-
-      if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
-
-      output << net->toDot();
-      output.flush();
-      output.close();
-
-      if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
-
-      if (net != nullptr) { CHECK(!net->empty()); }
-
-      delete net;
-    }
-
-    static void testRead_file2_float() {
-      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
-
-      gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
-
-      gum::BIFXMLIDReader< double > reader(net, file);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        gum::HashTable< std::string, gum::NodeId > idMap;
-
-        for (const auto node: net->nodes())
-          idMap.insert(net->variable(node).name(), node);
-
-        gum::NodeId decisionVar1Id = idMap["decisionVar1"];
-        CHECK(net->isDecisionNode(decisionVar1Id));
-        CHECK(!net->isUtilityNode(decisionVar1Id));
-        CHECK(!net->isChanceNode(decisionVar1Id));
-        const gum::DiscreteVariable& decisionVar1 = net->variable(decisionVar1Id);
-        CHECK_EQ(decisionVar1.name(), "decisionVar1");
-        CHECK_EQ(decisionVar1.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(decisionVar1.label(0), "0");
-        CHECK_EQ(decisionVar1.label(1), "1");
-
-        gum::NodeId decisionVar2Id = idMap["decisionVar2"];
-        CHECK(net->isDecisionNode(decisionVar2Id));
-        CHECK(!net->isUtilityNode(decisionVar2Id));
-        CHECK(!net->isChanceNode(decisionVar2Id));
-        const gum::DiscreteVariable& decisionVar2 = net->variable(decisionVar2Id);
-        CHECK_EQ(decisionVar2.name(), "decisionVar2");
-        CHECK_EQ(decisionVar2.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(decisionVar2.label(0), "0");
-        CHECK_EQ(decisionVar2.label(1), "1");
-
-        gum::NodeId decisionVar3Id = idMap["decisionVar3"];
-        CHECK(net->isDecisionNode(decisionVar3Id));
-        CHECK(!net->isUtilityNode(decisionVar3Id));
-        CHECK(!net->isChanceNode(decisionVar3Id));
-        const gum::DiscreteVariable& decisionVar3 = net->variable(decisionVar3Id);
-        CHECK_EQ(decisionVar3.name(), "decisionVar3");
-        CHECK_EQ(decisionVar3.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(decisionVar3.label(0), "0");
-        CHECK_EQ(decisionVar3.label(1), "1");
-
-        gum::NodeId decisionVar4Id = idMap["decisionVar4"];
-        CHECK(net->isDecisionNode(decisionVar4Id));
-        CHECK(!net->isUtilityNode(decisionVar4Id));
-        CHECK(!net->isChanceNode(decisionVar4Id));
-        const gum::DiscreteVariable& decisionVar4 = net->variable(decisionVar4Id);
-        CHECK_EQ(decisionVar4.name(), "decisionVar4");
-        CHECK_EQ(decisionVar4.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(decisionVar4.label(0), "0");
-        CHECK_EQ(decisionVar4.label(1), "1");
-
-        gum::NodeId chanceVar1Id = idMap["chanceVar1"];
-        CHECK(!net->isDecisionNode(chanceVar1Id));
-        CHECK(!net->isUtilityNode(chanceVar1Id));
-        CHECK(net->isChanceNode(chanceVar1Id));
-        const gum::DiscreteVariable& chanceVar1 = net->variable(chanceVar1Id);
-        CHECK_EQ(chanceVar1.name(), "chanceVar1");
-        CHECK_EQ(chanceVar1.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(chanceVar1.label(0), "0");
-        CHECK_EQ(chanceVar1.label(1), "1");
-
-        gum::NodeId chanceVar2Id = idMap["chanceVar2"];
-        CHECK(!net->isDecisionNode(chanceVar2Id));
-        CHECK(!net->isUtilityNode(chanceVar2Id));
-        CHECK(net->isChanceNode(chanceVar2Id));
-        const gum::DiscreteVariable& chanceVar2 = net->variable(chanceVar2Id);
-        CHECK_EQ(chanceVar2.name(), "chanceVar2");
-        CHECK_EQ(chanceVar2.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(chanceVar2.label(0), "0");
-        CHECK_EQ(chanceVar2.label(1), "1");
-
-        gum::NodeId chanceVar3Id = idMap["chanceVar3"];
-        CHECK(!net->isDecisionNode(chanceVar3Id));
-        CHECK(!net->isUtilityNode(chanceVar3Id));
-        CHECK(net->isChanceNode(chanceVar3Id));
-        const gum::DiscreteVariable& chanceVar3 = net->variable(chanceVar3Id);
-        CHECK_EQ(chanceVar3.name(), "chanceVar3");
-        CHECK_EQ(chanceVar3.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(chanceVar3.label(0), "0");
-        CHECK_EQ(chanceVar3.label(1), "1");
-
-        gum::NodeId chanceVar4Id = idMap["chanceVar4"];
-        CHECK(!net->isDecisionNode(chanceVar4Id));
-        CHECK(!net->isUtilityNode(chanceVar4Id));
-        CHECK(net->isChanceNode(chanceVar4Id));
-        const gum::DiscreteVariable& chanceVar4 = net->variable(chanceVar4Id);
-        CHECK_EQ(chanceVar4.name(), "chanceVar4");
-        CHECK_EQ(chanceVar4.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(chanceVar4.label(0), "0");
-        CHECK_EQ(chanceVar4.label(1), "1");
-
-        gum::NodeId chanceVar5Id = idMap["chanceVar5"];
-        CHECK(!net->isDecisionNode(chanceVar5Id));
-        CHECK(!net->isUtilityNode(chanceVar5Id));
-        CHECK(net->isChanceNode(chanceVar5Id));
-        const gum::DiscreteVariable& chanceVar5 = net->variable(chanceVar5Id);
-        CHECK_EQ(chanceVar5.name(), "chanceVar5");
-        CHECK_EQ(chanceVar5.domainSize(), static_cast< gum::Size >(2));
-        CHECK_EQ(chanceVar5.label(0), "0");
-        CHECK_EQ(chanceVar5.label(1), "1");
-
-        gum::NodeId utilityVar1Id = idMap["utilityVar1"];
-        CHECK(!net->isDecisionNode(utilityVar1Id));
-        CHECK(net->isUtilityNode(utilityVar1Id));
-        CHECK(!net->isChanceNode(utilityVar1Id));
-        const gum::DiscreteVariable& utilityVar1 = net->variable(utilityVar1Id);
-        CHECK_EQ(utilityVar1.name(), "utilityVar1");
-        CHECK_EQ(utilityVar1.domainSize(), static_cast< gum::Size >(1));
-        CHECK_EQ(utilityVar1.label(0), "0");
-
-        gum::NodeId utilityVar2Id = idMap["utilityVar2"];
-        CHECK(!net->isDecisionNode(utilityVar2Id));
-        CHECK(net->isUtilityNode(utilityVar2Id));
-        CHECK(!net->isChanceNode(utilityVar2Id));
-        const gum::DiscreteVariable& utilityVar2 = net->variable(utilityVar2Id);
-        CHECK_EQ(utilityVar2.name(), "utilityVar2");
-        CHECK_EQ(utilityVar2.domainSize(), static_cast< gum::Size >(1));
-        CHECK_EQ(utilityVar2.label(0), "0");
-
-        const gum::Tensor< double >& cptChanceVar1 = net->cpt(idMap["chanceVar1"]);
-        CHECK_EQ(cptChanceVar1.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instChanceVar1(cptChanceVar1);
-        instChanceVar1.chgVal(decisionVar1, 0);
-        instChanceVar1.chgVal(chanceVar1, 0);
-        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.2).epsilon(0.001));
-        instChanceVar1.chgVal(chanceVar1, 1);
-        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.8).epsilon(0.001));
-        instChanceVar1.chgVal(decisionVar1, 1);
-        instChanceVar1.chgVal(chanceVar1, 0);
-        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
-        instChanceVar1.chgVal(chanceVar1, 1);
-        CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
-
-        const gum::Tensor< double >& cptChanceVar2 = net->cpt(idMap["chanceVar2"]);
-        CHECK_EQ(cptChanceVar2.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instChanceVar2(cptChanceVar2);
-        instChanceVar2.chgVal(chanceVar1, 0);
-        instChanceVar2.chgVal(chanceVar2, 0);
-        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
-        instChanceVar2.chgVal(chanceVar2, 1);
-        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
-        instChanceVar2.chgVal(chanceVar1, 1);
-        instChanceVar2.chgVal(chanceVar2, 0);
-        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
-        instChanceVar2.chgVal(chanceVar2, 1);
-        CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
-
-        const gum::Tensor< double >& cptChanceVar3 = net->cpt(idMap["chanceVar3"]);
-        CHECK_EQ(cptChanceVar3.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instChanceVar3(cptChanceVar3);
-        instChanceVar3.chgVal(decisionVar3, 0);
-        instChanceVar3.chgVal(chanceVar3, 0);
-        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.35).epsilon(0.001));
-        instChanceVar3.chgVal(chanceVar3, 1);
-        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.65).epsilon(0.001));
-        instChanceVar3.chgVal(decisionVar3, 1);
-        instChanceVar3.chgVal(chanceVar3, 0);
-        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.19).epsilon(0.001));
-        instChanceVar3.chgVal(chanceVar3, 1);
-        CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.81).epsilon(0.001));
-
-        const gum::Tensor< double >& cptChanceVar4 = net->cpt(idMap["chanceVar4"]);
-        CHECK_EQ(cptChanceVar4.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instChanceVar4(cptChanceVar4);
-        instChanceVar4.chgVal(decisionVar2, 0);
-        instChanceVar4.chgVal(chanceVar4, 0);
-        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.4).epsilon(0.001));
-        instChanceVar4.chgVal(chanceVar4, 1);
-        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.6).epsilon(0.001));
-        instChanceVar4.chgVal(decisionVar2, 1);
-        instChanceVar4.chgVal(chanceVar4, 0);
-        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
-        instChanceVar4.chgVal(chanceVar4, 1);
-        CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
-
-        const gum::Tensor< double >& cptChanceVar5 = net->cpt(idMap["chanceVar5"]);
-        CHECK_EQ(cptChanceVar5.domainSize(), static_cast< gum::Size >(8));
-        gum::Instantiation instChanceVar5(cptChanceVar5);
-        instChanceVar5.chgVal(chanceVar4, 0);
-        instChanceVar5.chgVal(chanceVar3, 0);
-        instChanceVar5.chgVal(chanceVar5, 0);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar5, 1);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar3, 1);
-        instChanceVar5.chgVal(chanceVar5, 0);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.8).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar5, 1);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.2).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar4, 1);
-        instChanceVar5.chgVal(chanceVar3, 0);
-        instChanceVar5.chgVal(chanceVar5, 0);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar5, 1);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar3, 1);
-        instChanceVar5.chgVal(chanceVar5, 0);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.3).epsilon(0.001));
-        instChanceVar5.chgVal(chanceVar5, 1);
-        CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.7).epsilon(0.001));
-
-        const gum::Tensor< double >& utUtilityVar1 = net->utility(idMap["utilityVar1"]);
-        CHECK_EQ(utUtilityVar1.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instUtilityVar1(utUtilityVar1);
-        instUtilityVar1.chgVal(utilityVar1, 0);
-        instUtilityVar1.chgVal(decisionVar2, 0);
-        instUtilityVar1.chgVal(chanceVar1, 0);
-        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(42).epsilon(0.001));
-        instUtilityVar1.chgVal(chanceVar1, 1);
-        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(666).epsilon(0.001));
-        instUtilityVar1.chgVal(decisionVar2, 1);
-        instUtilityVar1.chgVal(chanceVar1, 0);
-        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(69).epsilon(0.001));
-        instUtilityVar1.chgVal(chanceVar1, 1);
-        CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(84).epsilon(0.001));
-
-        const gum::Tensor< double >& utUtilityVar2 = net->utility(idMap["utilityVar2"]);
-        CHECK_EQ(utUtilityVar2.domainSize(), static_cast< gum::Size >(4));
-        gum::Instantiation instUtilityVar2(utUtilityVar2);
-        instUtilityVar2.chgVal(utilityVar2, 0);
-        instUtilityVar2.chgVal(decisionVar4, 0);
-        instUtilityVar2.chgVal(chanceVar5, 0);
-        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(42).epsilon(0.001));
-        instUtilityVar2.chgVal(chanceVar5, 1);
-        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(-69).epsilon(0.001));
-        instUtilityVar2.chgVal(decisionVar4, 1);
-        instUtilityVar2.chgVal(chanceVar5, 0);
-        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(666).epsilon(0.001));
-        instUtilityVar2.chgVal(chanceVar5, 1);
-        CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(84).epsilon(0.001));
-      }
-
-      delete net;
-    }
-
-    static void testRead_file3_float() {
-      std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
-
-      gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
-
-      gum::BIFXMLIDReader< double > reader(net, file);
-
-      aSimpleListener asl;
-      GUM_CONNECT(reader, onProceed, asl, aSimpleListener::whenProceeding);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      CHECK_EQ(asl.getNbr(), 100);
-      delete net;
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Read_file1)
-  GUM_TEST_ACTIF(Read_file2_float)
-  GUM_TEST_ACTIF(Read_file3_float)
+  GUM_TEST(Constuctor) {
+    std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
+
+    gum::InfluenceDiagram< double > net;
+
+    gum::BIFXMLIDReader< double >* reader = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::BIFXMLIDReader< double >(&net, file));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
+
+    // delete reader;
+  }
+
+  GUM_TEST(Read_file1) {
+    std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
+
+    gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
+
+    gum::BIFXMLIDReader< double > reader(net, file);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    CHECK_NE(net, nullptr);
+
+    // For comparison with what have wrote Writer
+    std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotReader.dot");
+    std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
+
+    if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
+
+    output << net->toDot();
+    output.flush();
+    output.close();
+
+    if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+
+    if (net != nullptr) { CHECK(!net->empty()); }
+
+    delete net;
+  }
+
+  GUM_TEST(Read_file2_float) {
+    std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
+
+    gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
+
+    gum::BIFXMLIDReader< double > reader(net, file);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      gum::HashTable< std::string, gum::NodeId > idMap;
+
+      for (const auto node: net->nodes())
+        idMap.insert(net->variable(node).name(), node);
+
+      gum::NodeId decisionVar1Id = idMap["decisionVar1"];
+      CHECK(net->isDecisionNode(decisionVar1Id));
+      CHECK(!net->isUtilityNode(decisionVar1Id));
+      CHECK(!net->isChanceNode(decisionVar1Id));
+      const gum::DiscreteVariable& decisionVar1 = net->variable(decisionVar1Id);
+      CHECK_EQ(decisionVar1.name(), "decisionVar1");
+      CHECK_EQ(decisionVar1.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(decisionVar1.label(0), "0");
+      CHECK_EQ(decisionVar1.label(1), "1");
+
+      gum::NodeId decisionVar2Id = idMap["decisionVar2"];
+      CHECK(net->isDecisionNode(decisionVar2Id));
+      CHECK(!net->isUtilityNode(decisionVar2Id));
+      CHECK(!net->isChanceNode(decisionVar2Id));
+      const gum::DiscreteVariable& decisionVar2 = net->variable(decisionVar2Id);
+      CHECK_EQ(decisionVar2.name(), "decisionVar2");
+      CHECK_EQ(decisionVar2.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(decisionVar2.label(0), "0");
+      CHECK_EQ(decisionVar2.label(1), "1");
+
+      gum::NodeId decisionVar3Id = idMap["decisionVar3"];
+      CHECK(net->isDecisionNode(decisionVar3Id));
+      CHECK(!net->isUtilityNode(decisionVar3Id));
+      CHECK(!net->isChanceNode(decisionVar3Id));
+      const gum::DiscreteVariable& decisionVar3 = net->variable(decisionVar3Id);
+      CHECK_EQ(decisionVar3.name(), "decisionVar3");
+      CHECK_EQ(decisionVar3.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(decisionVar3.label(0), "0");
+      CHECK_EQ(decisionVar3.label(1), "1");
+
+      gum::NodeId decisionVar4Id = idMap["decisionVar4"];
+      CHECK(net->isDecisionNode(decisionVar4Id));
+      CHECK(!net->isUtilityNode(decisionVar4Id));
+      CHECK(!net->isChanceNode(decisionVar4Id));
+      const gum::DiscreteVariable& decisionVar4 = net->variable(decisionVar4Id);
+      CHECK_EQ(decisionVar4.name(), "decisionVar4");
+      CHECK_EQ(decisionVar4.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(decisionVar4.label(0), "0");
+      CHECK_EQ(decisionVar4.label(1), "1");
+
+      gum::NodeId chanceVar1Id = idMap["chanceVar1"];
+      CHECK(!net->isDecisionNode(chanceVar1Id));
+      CHECK(!net->isUtilityNode(chanceVar1Id));
+      CHECK(net->isChanceNode(chanceVar1Id));
+      const gum::DiscreteVariable& chanceVar1 = net->variable(chanceVar1Id);
+      CHECK_EQ(chanceVar1.name(), "chanceVar1");
+      CHECK_EQ(chanceVar1.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(chanceVar1.label(0), "0");
+      CHECK_EQ(chanceVar1.label(1), "1");
+
+      gum::NodeId chanceVar2Id = idMap["chanceVar2"];
+      CHECK(!net->isDecisionNode(chanceVar2Id));
+      CHECK(!net->isUtilityNode(chanceVar2Id));
+      CHECK(net->isChanceNode(chanceVar2Id));
+      const gum::DiscreteVariable& chanceVar2 = net->variable(chanceVar2Id);
+      CHECK_EQ(chanceVar2.name(), "chanceVar2");
+      CHECK_EQ(chanceVar2.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(chanceVar2.label(0), "0");
+      CHECK_EQ(chanceVar2.label(1), "1");
+
+      gum::NodeId chanceVar3Id = idMap["chanceVar3"];
+      CHECK(!net->isDecisionNode(chanceVar3Id));
+      CHECK(!net->isUtilityNode(chanceVar3Id));
+      CHECK(net->isChanceNode(chanceVar3Id));
+      const gum::DiscreteVariable& chanceVar3 = net->variable(chanceVar3Id);
+      CHECK_EQ(chanceVar3.name(), "chanceVar3");
+      CHECK_EQ(chanceVar3.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(chanceVar3.label(0), "0");
+      CHECK_EQ(chanceVar3.label(1), "1");
+
+      gum::NodeId chanceVar4Id = idMap["chanceVar4"];
+      CHECK(!net->isDecisionNode(chanceVar4Id));
+      CHECK(!net->isUtilityNode(chanceVar4Id));
+      CHECK(net->isChanceNode(chanceVar4Id));
+      const gum::DiscreteVariable& chanceVar4 = net->variable(chanceVar4Id);
+      CHECK_EQ(chanceVar4.name(), "chanceVar4");
+      CHECK_EQ(chanceVar4.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(chanceVar4.label(0), "0");
+      CHECK_EQ(chanceVar4.label(1), "1");
+
+      gum::NodeId chanceVar5Id = idMap["chanceVar5"];
+      CHECK(!net->isDecisionNode(chanceVar5Id));
+      CHECK(!net->isUtilityNode(chanceVar5Id));
+      CHECK(net->isChanceNode(chanceVar5Id));
+      const gum::DiscreteVariable& chanceVar5 = net->variable(chanceVar5Id);
+      CHECK_EQ(chanceVar5.name(), "chanceVar5");
+      CHECK_EQ(chanceVar5.domainSize(), static_cast< gum::Size >(2));
+      CHECK_EQ(chanceVar5.label(0), "0");
+      CHECK_EQ(chanceVar5.label(1), "1");
+
+      gum::NodeId utilityVar1Id = idMap["utilityVar1"];
+      CHECK(!net->isDecisionNode(utilityVar1Id));
+      CHECK(net->isUtilityNode(utilityVar1Id));
+      CHECK(!net->isChanceNode(utilityVar1Id));
+      const gum::DiscreteVariable& utilityVar1 = net->variable(utilityVar1Id);
+      CHECK_EQ(utilityVar1.name(), "utilityVar1");
+      CHECK_EQ(utilityVar1.domainSize(), static_cast< gum::Size >(1));
+      CHECK_EQ(utilityVar1.label(0), "0");
+
+      gum::NodeId utilityVar2Id = idMap["utilityVar2"];
+      CHECK(!net->isDecisionNode(utilityVar2Id));
+      CHECK(net->isUtilityNode(utilityVar2Id));
+      CHECK(!net->isChanceNode(utilityVar2Id));
+      const gum::DiscreteVariable& utilityVar2 = net->variable(utilityVar2Id);
+      CHECK_EQ(utilityVar2.name(), "utilityVar2");
+      CHECK_EQ(utilityVar2.domainSize(), static_cast< gum::Size >(1));
+      CHECK_EQ(utilityVar2.label(0), "0");
+
+      const gum::Tensor< double >& cptChanceVar1 = net->cpt(idMap["chanceVar1"]);
+      CHECK_EQ(cptChanceVar1.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instChanceVar1(cptChanceVar1);
+      instChanceVar1.chgVal(decisionVar1, 0);
+      instChanceVar1.chgVal(chanceVar1, 0);
+      CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.2).epsilon(0.001));
+      instChanceVar1.chgVal(chanceVar1, 1);
+      CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.8).epsilon(0.001));
+      instChanceVar1.chgVal(decisionVar1, 1);
+      instChanceVar1.chgVal(chanceVar1, 0);
+      CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
+      instChanceVar1.chgVal(chanceVar1, 1);
+      CHECK((cptChanceVar1[instChanceVar1]) == doctest::Approx(0.5).epsilon(0.001));
+
+      const gum::Tensor< double >& cptChanceVar2 = net->cpt(idMap["chanceVar2"]);
+      CHECK_EQ(cptChanceVar2.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instChanceVar2(cptChanceVar2);
+      instChanceVar2.chgVal(chanceVar1, 0);
+      instChanceVar2.chgVal(chanceVar2, 0);
+      CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
+      instChanceVar2.chgVal(chanceVar2, 1);
+      CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
+      instChanceVar2.chgVal(chanceVar1, 1);
+      instChanceVar2.chgVal(chanceVar2, 0);
+      CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.9).epsilon(0.001));
+      instChanceVar2.chgVal(chanceVar2, 1);
+      CHECK((cptChanceVar2[instChanceVar2]) == doctest::Approx(0.1).epsilon(0.001));
+
+      const gum::Tensor< double >& cptChanceVar3 = net->cpt(idMap["chanceVar3"]);
+      CHECK_EQ(cptChanceVar3.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instChanceVar3(cptChanceVar3);
+      instChanceVar3.chgVal(decisionVar3, 0);
+      instChanceVar3.chgVal(chanceVar3, 0);
+      CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.35).epsilon(0.001));
+      instChanceVar3.chgVal(chanceVar3, 1);
+      CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.65).epsilon(0.001));
+      instChanceVar3.chgVal(decisionVar3, 1);
+      instChanceVar3.chgVal(chanceVar3, 0);
+      CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.19).epsilon(0.001));
+      instChanceVar3.chgVal(chanceVar3, 1);
+      CHECK((cptChanceVar3[instChanceVar3]) == doctest::Approx(0.81).epsilon(0.001));
+
+      const gum::Tensor< double >& cptChanceVar4 = net->cpt(idMap["chanceVar4"]);
+      CHECK_EQ(cptChanceVar4.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instChanceVar4(cptChanceVar4);
+      instChanceVar4.chgVal(decisionVar2, 0);
+      instChanceVar4.chgVal(chanceVar4, 0);
+      CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.4).epsilon(0.001));
+      instChanceVar4.chgVal(chanceVar4, 1);
+      CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.6).epsilon(0.001));
+      instChanceVar4.chgVal(decisionVar2, 1);
+      instChanceVar4.chgVal(chanceVar4, 0);
+      CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
+      instChanceVar4.chgVal(chanceVar4, 1);
+      CHECK((cptChanceVar4[instChanceVar4]) == doctest::Approx(0.5).epsilon(0.001));
+
+      const gum::Tensor< double >& cptChanceVar5 = net->cpt(idMap["chanceVar5"]);
+      CHECK_EQ(cptChanceVar5.domainSize(), static_cast< gum::Size >(8));
+      gum::Instantiation instChanceVar5(cptChanceVar5);
+      instChanceVar5.chgVal(chanceVar4, 0);
+      instChanceVar5.chgVal(chanceVar3, 0);
+      instChanceVar5.chgVal(chanceVar5, 0);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar5, 1);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar3, 1);
+      instChanceVar5.chgVal(chanceVar5, 0);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.8).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar5, 1);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.2).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar4, 1);
+      instChanceVar5.chgVal(chanceVar3, 0);
+      instChanceVar5.chgVal(chanceVar5, 0);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.4).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar5, 1);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.6).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar3, 1);
+      instChanceVar5.chgVal(chanceVar5, 0);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.3).epsilon(0.001));
+      instChanceVar5.chgVal(chanceVar5, 1);
+      CHECK((cptChanceVar5[instChanceVar5]) == doctest::Approx(0.7).epsilon(0.001));
+
+      const gum::Tensor< double >& utUtilityVar1 = net->utility(idMap["utilityVar1"]);
+      CHECK_EQ(utUtilityVar1.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instUtilityVar1(utUtilityVar1);
+      instUtilityVar1.chgVal(utilityVar1, 0);
+      instUtilityVar1.chgVal(decisionVar2, 0);
+      instUtilityVar1.chgVal(chanceVar1, 0);
+      CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(42).epsilon(0.001));
+      instUtilityVar1.chgVal(chanceVar1, 1);
+      CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(666).epsilon(0.001));
+      instUtilityVar1.chgVal(decisionVar2, 1);
+      instUtilityVar1.chgVal(chanceVar1, 0);
+      CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(69).epsilon(0.001));
+      instUtilityVar1.chgVal(chanceVar1, 1);
+      CHECK((utUtilityVar1[instUtilityVar1]) == doctest::Approx(84).epsilon(0.001));
+
+      const gum::Tensor< double >& utUtilityVar2 = net->utility(idMap["utilityVar2"]);
+      CHECK_EQ(utUtilityVar2.domainSize(), static_cast< gum::Size >(4));
+      gum::Instantiation instUtilityVar2(utUtilityVar2);
+      instUtilityVar2.chgVal(utilityVar2, 0);
+      instUtilityVar2.chgVal(decisionVar4, 0);
+      instUtilityVar2.chgVal(chanceVar5, 0);
+      CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(42).epsilon(0.001));
+      instUtilityVar2.chgVal(chanceVar5, 1);
+      CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(-69).epsilon(0.001));
+      instUtilityVar2.chgVal(decisionVar4, 1);
+      instUtilityVar2.chgVal(chanceVar5, 0);
+      CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(666).epsilon(0.001));
+      instUtilityVar2.chgVal(chanceVar5, 1);
+      CHECK((utUtilityVar2[instUtilityVar2]) == doctest::Approx(84).epsilon(0.001));
+    }
+
+    delete net;
+  }
+
+  GUM_TEST(Read_file3_float) {
+    std::string file = GET_RESSOURCES_PATH("ID/IDBIFXMLIO_file.xml");
+
+    gum::InfluenceDiagram< double >* net = new gum::InfluenceDiagram< double >();
+
+    gum::BIFXMLIDReader< double > reader(net, file);
+
+    aSimpleListener asl;
+    GUM_CONNECT(reader, onProceed, asl, aSimpleListener::whenProceeding);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    CHECK_EQ(asl.getNbr(), 100);
+    delete net;
+  }
 }   // namespace gum_tests

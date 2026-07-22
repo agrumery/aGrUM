@@ -46,105 +46,100 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  binTreeNode
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
-  struct binTreeNodeTestSuite {
+  struct BinTreeNodeTestSuite {
     public:
-    static void testConstructors() {
-      gum::BinTreeNode< int >* node = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33));
-      CHECK_EQ(node->value(), 33);
-      CHECK_EQ(**node, 33);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete node);
-
-      gum::BinTreeNode< int > node2(33);
-      gum::BinTreeNode< int > node3 = node2;
-      CHECK_EQ(*node2, *node3);
-
-      gum::BinTreeNode< int > node4(1);
-      node4 = node2;
-      CHECK_EQ(*node2, *node4);
-    }   // namespace gum_tests
-
-    static void testInsertChildren() {
-      gum::BinTreeNode< int > node(0);
-
-      CHECK_EQ(node.parent(), nullptr);
-      CHECK_EQ(node.leftChild(), nullptr);
-      CHECK_EQ(node.rightChild(), nullptr);
-      CHECK_EQ(node.child(gum::BinTreeDir::LEFT_CHILD), nullptr);
-      CHECK_EQ(node.child(gum::BinTreeDir::RIGHT_CHILD), nullptr);
-
-      gum::BinTreeNode< int > node2(1);
-      gum::BinTreeNode< int > node3(2);
-
-      node.insertLeftChild(node2);
-      CHECK_THROWS(node.insertLeftChild(node3));
-      node.insertRightChild(node3);
-      CHECK_EQ(node.leftChild(), &node2);
-      CHECK_EQ(node.rightChild(), &node3);
-      CHECK_EQ(node2.parent(), &node);
-      CHECK_EQ(node3.parent(), &node);
-      CHECK_EQ(node3.parentDir(), gum::BinTreeDir::RIGHT_CHILD);
-
-      node2.insertLeftChild(4);
-      node2.insertRightChild(6);
-      CHECK_EQ(node.leftChild()->leftChild()->value(), 4);
-      CHECK_EQ(node.leftChild()->rightChild()->value(), 6);
-
-      delete node2.leftChild();
-      delete node2.rightChild();
-
-      CHECK_EQ(node.leftChild()->leftChild(), nullptr);
-      CHECK_EQ(node.leftChild()->rightChild(), nullptr);
-
-      gum::BinTreeNode< int >* node4 = node2.insertLeftChild(3);
-      gum::BinTreeNode< int >* node5 = node2.insertRightChild(5);
-      CHECK_EQ(node2.leftChild(), node4);
-      CHECK_EQ(node2.rightChild(), node5);
-      CHECK_EQ(node4->parent(), &node2);
-      CHECK_EQ(node5->parent(), &node2);
-
-      gum::BinTreeNode< int >* node6 = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
-      gum::BinTreeNode< int >* node7 = new gum::BinTreeNode< int >(8);
-      node4->insertChild(*node7, gum::BinTreeDir::RIGHT_CHILD);
-
-      delete (node4);
-      delete (node5);
-      delete (node6);
-      delete (node7);
-    }
-
-    static void testEraseLink() {
-      gum::BinTreeNode< int > node1(0);
-      gum::BinTreeNode< int > node2(1);
-      gum::BinTreeNode< int > node3(2);
-      node1.insertLeftChild(node2);
-      node1.insertRightChild(node3);
-
-      CHECK_EQ(node1.leftChild(), &node2);
-      CHECK_EQ(node1.rightChild(), &node3);
-
-      node1.eraseLeftLink();
-      node1.eraseRightLink();
-
-      CHECK_EQ(node1.leftChild(), nullptr);
-      CHECK_EQ(node1.rightChild(), nullptr);
-      CHECK_EQ(node2.parent(), nullptr);
-      CHECK_EQ(node3.parent(), nullptr);
-
-      node1.insertLeftChild(node2);
-      node1.insertRightChild(node3);
-      node1.eraseLink(gum::BinTreeDir::LEFT_CHILD);
-      node1.eraseLink(gum::BinTreeDir::RIGHT_CHILD);
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constructors)
-  GUM_TEST_ACTIF(InsertChildren)
-  GUM_TEST_ACTIF(EraseLink)
+  GUM_TEST(Constructors) {
+    gum::BinTreeNode< int >* node = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(node = new gum::BinTreeNode< int >(33));
+    CHECK_EQ(node->value(), 33);
+    CHECK_EQ(**node, 33);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete node);
+
+    gum::BinTreeNode< int > node2(33);
+    gum::BinTreeNode< int > node3 = node2;
+    CHECK_EQ(*node2, *node3);
+
+    gum::BinTreeNode< int > node4(1);
+    node4 = node2;
+    CHECK_EQ(*node2, *node4);
+  }
+
+  GUM_TEST(InsertChildren) {
+    gum::BinTreeNode< int > node(0);
+
+    CHECK_EQ(node.parent(), nullptr);
+    CHECK_EQ(node.leftChild(), nullptr);
+    CHECK_EQ(node.rightChild(), nullptr);
+    CHECK_EQ(node.child(gum::BinTreeDir::LEFT_CHILD), nullptr);
+    CHECK_EQ(node.child(gum::BinTreeDir::RIGHT_CHILD), nullptr);
+
+    gum::BinTreeNode< int > node2(1);
+    gum::BinTreeNode< int > node3(2);
+
+    node.insertLeftChild(node2);
+    CHECK_THROWS(node.insertLeftChild(node3));
+    node.insertRightChild(node3);
+    CHECK_EQ(node.leftChild(), &node2);
+    CHECK_EQ(node.rightChild(), &node3);
+    CHECK_EQ(node2.parent(), &node);
+    CHECK_EQ(node3.parent(), &node);
+    CHECK_EQ(node3.parentDir(), gum::BinTreeDir::RIGHT_CHILD);
+
+    node2.insertLeftChild(4);
+    node2.insertRightChild(6);
+    CHECK_EQ(node.leftChild()->leftChild()->value(), 4);
+    CHECK_EQ(node.leftChild()->rightChild()->value(), 6);
+
+    delete node2.leftChild();
+    delete node2.rightChild();
+
+    CHECK_EQ(node.leftChild()->leftChild(), nullptr);
+    CHECK_EQ(node.leftChild()->rightChild(), nullptr);
+
+    gum::BinTreeNode< int >* node4 = node2.insertLeftChild(3);
+    gum::BinTreeNode< int >* node5 = node2.insertRightChild(5);
+    CHECK_EQ(node2.leftChild(), node4);
+    CHECK_EQ(node2.rightChild(), node5);
+    CHECK_EQ(node4->parent(), &node2);
+    CHECK_EQ(node5->parent(), &node2);
+
+    gum::BinTreeNode< int >* node6 = node4->insertChild(6, gum::BinTreeDir::LEFT_CHILD);
+    gum::BinTreeNode< int >* node7 = new gum::BinTreeNode< int >(8);
+    node4->insertChild(*node7, gum::BinTreeDir::RIGHT_CHILD);
+
+    delete (node4);
+    delete (node5);
+    delete (node6);
+    delete (node7);
+  }
+
+  GUM_TEST(EraseLink) {
+    gum::BinTreeNode< int > node1(0);
+    gum::BinTreeNode< int > node2(1);
+    gum::BinTreeNode< int > node3(2);
+    node1.insertLeftChild(node2);
+    node1.insertRightChild(node3);
+
+    CHECK_EQ(node1.leftChild(), &node2);
+    CHECK_EQ(node1.rightChild(), &node3);
+
+    node1.eraseLeftLink();
+    node1.eraseRightLink();
+
+    CHECK_EQ(node1.leftChild(), nullptr);
+    CHECK_EQ(node1.rightChild(), nullptr);
+    CHECK_EQ(node2.parent(), nullptr);
+    CHECK_EQ(node3.parent(), nullptr);
+
+    node1.insertLeftChild(node2);
+    node1.insertRightChild(node3);
+    node1.eraseLink(gum::BinTreeDir::LEFT_CHILD);
+    node1.eraseLink(gum::BinTreeDir::RIGHT_CHILD);
+  }
 }   // namespace gum_tests

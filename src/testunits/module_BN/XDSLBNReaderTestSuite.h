@@ -51,9 +51,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  XDSLBNReader
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -66,33 +63,32 @@ namespace gum_tests {
 
   struct XDSLBNReaderTestSuite {
     public:
-    static void testConstuctor() {
-      std::string             file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
-      gum::BayesNet< double > net;
-
-      gum::XDSLBNReader< double >* reader = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::XDSLBNReader< double >(&net, file));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-    }   // namespace gum_tests
-
-    static void testRead_file1() {
-      std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
-      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
-
-      CHECK_NE(net, nullptr);
-
-      gum::XDSLBNReader< double > reader(net, file);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      CHECK_EQ(net->propertyWithDefault("name", ""), "Network3");
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-        delete net;
-      }
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Read_file1)
+  GUM_TEST(Constuctor) {
+    std::string             file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
+    gum::BayesNet< double > net;
+
+    gum::XDSLBNReader< double >* reader = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::XDSLBNReader< double >(&net, file));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
+  }
+
+  GUM_TEST(Read_file1) {
+    std::string              file = GET_RESSOURCES_PATH("xdsl/benefits.xdsl");
+    gum::BayesNet< double >* net  = new gum::BayesNet< double >();
+
+    CHECK_NE(net, nullptr);
+
+    gum::XDSLBNReader< double > reader(net, file);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    CHECK_EQ(net->propertyWithDefault("name", ""), "Network3");
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+      delete net;
+    }
+  }
 }   // namespace gum_tests

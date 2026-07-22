@@ -56,32 +56,17 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  PRM
-#define GUM_CURRENT_MODULE PRM
-
 
 #define GET_RESSOURCES_PATH_O3PRM(x) xstrfy(GUM_SRC_PATH) "/testunits/ressources/o3prm/" #x
 
 namespace gum_tests {
 
   struct PRMTestSuite {
-    private:
+    protected:
     gum::prm::PRM< double >* prm;
     gum::prm::PRM< double >* small;
 
     public:
-    static void testCreation() {
-      gum::prm::ClassBayesNet< double >* c = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("SafeComputer"));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          c = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete c);
-      gum::prm::InstanceBayesNet< double >* inst = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          inst = new gum::prm::InstanceBayesNet< double >(prm->getSystem("aSys").get("c1")));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete inst);
-    }
-
     PRMTestSuite() {
       {
         gum::prm::o3prm::O3prmReader< double > reader;
@@ -105,138 +90,143 @@ namespace gum_tests {
 
       delete small;
     }
+  };
 
-    static void testClassAccess() {
-      gum::prm::PRMClass< double >&      c  = prm->getClass("SafeComputer");
-      gum::prm::ClassBayesNet< double >* bn = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
-      gum::Size elts = c.attributes().size() + c.aggregates().size();
-      CHECK_EQ(bn->size(), elts);
+  GUM_TEST(Creation) {
+    gum::prm::ClassBayesNet< double >* c = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(prm->getClass("SafeComputer"));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        c = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete c);
+    gum::prm::InstanceBayesNet< double >* inst = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        inst = new gum::prm::InstanceBayesNet< double >(prm->getSystem("aSys").get("c1")));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete inst);
+  }
 
-      for (const auto attr: c.attributes()) {
-        gum::NodeId id = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(attr->cpf());
-        GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName(attr->safeName()));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        CHECK_EQ(attr->cpf().nbrDim(), bn->cpt(id).nbrDim());
-        CHECK_EQ(attr->cpf().domainSize(), bn->cpt(id).domainSize());
-      }
+  GUM_TEST(ClassAccess) {
+    gum::prm::PRMClass< double >&      c  = prm->getClass("SafeComputer");
+    gum::prm::ClassBayesNet< double >* bn = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        bn = new gum::prm::ClassBayesNet< double >(prm->getClass("SafeComputer")));
+    gum::Size elts = c.attributes().size() + c.aggregates().size();
+    CHECK_EQ(bn->size(), elts);
 
-      CHECK(bn->modalities().size() > 0);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bn);
+    for (const auto attr: c.attributes()) {
+      gum::NodeId id = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(attr->cpf());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName(attr->safeName()));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
+      CHECK_EQ(attr->cpf().nbrDim(), bn->cpt(id).nbrDim());
+      CHECK_EQ(attr->cpf().domainSize(), bn->cpt(id).domainSize());
     }
 
-    static void testInstanceAccess() {
-      gum::prm::InstanceBayesNet< double >* bn = 0;
-      gum::prm::PRMInstance< double >&      i  = prm->getSystem("aSys").get("c1");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn = new gum::prm::InstanceBayesNet< double >(i));
-      CHECK_EQ(bn->size(), i.size());
+    CHECK(bn->modalities().size() > 0);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete bn);
+  }
 
-      for (auto attr = i.begin(); attr != i.end(); ++attr) {
-        gum::NodeId id = 0;
-        GUM_CHECK_ASSERT_THROWS_NOTHING((*(attr.val())).cpf());
-        GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName((*(attr.val())).safeName()));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
-        CHECK_EQ((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
-        CHECK_EQ((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
-      }
+  GUM_TEST(InstanceAccess) {
+    gum::prm::InstanceBayesNet< double >* bn = 0;
+    gum::prm::PRMInstance< double >&      i  = prm->getSystem("aSys").get("c1");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn = new gum::prm::InstanceBayesNet< double >(i));
+    CHECK_EQ(bn->size(), i.size());
 
-      CHECK(bn->modalities().size() > 0);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete bn);
+    for (auto attr = i.begin(); attr != i.end(); ++attr) {
+      gum::NodeId id = 0;
+      GUM_CHECK_ASSERT_THROWS_NOTHING((*(attr.val())).cpf());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(id = bn->idFromName((*(attr.val())).safeName()));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(bn->cpt(id));
+      CHECK_EQ((*(attr.val())).cpf().nbrDim(), bn->cpt(id).nbrDim());
+      CHECK_EQ((*(attr.val())).cpf().domainSize(), bn->cpt(id).domainSize());
     }
 
-    static void testGroundedBN() {
-      gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
-      gum::BayesNet< double >        bn;
-      gum::BayesNetFactory< double > bn_factory(&bn);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
-      int count = 0;
+    CHECK(bn->modalities().size() > 0);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete bn);
+  }
 
-      for (auto iter = sys.begin(); iter != sys.end(); ++iter) {
-        for (auto jter = (*(iter.val())).begin(); jter != (*(iter.val())).end(); ++jter) {
-          ++count;
-        }
-      }
+  GUM_TEST(GroundedBN) {
+    gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
+    gum::BayesNet< double >        bn;
+    gum::BayesNetFactory< double > bn_factory(&bn);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
+    int count = 0;
 
-      int wount = 0;
-
-      for (const auto node: bn.nodes()) {
-        wount++;
-        std::string                       var      = bn.variable(node).name();
-        size_t                            pos      = var.find_first_of('.');
-        gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
-        gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
-        CHECK_NE(bn.cpt(node).nbrDim(), static_cast< gum::Size >(0));
-
-        if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
-          CHECK_NE(attr.cpf().nbrDim(), static_cast< gum::Size >(1));
-        }
-      }
-
-      CHECK_EQ(count, wount);
-
-      for (const auto node: bn.nodes()) {
-        const gum::DiscreteVariable* var = &(bn.variable(node));
-
-        for (const auto node2: bn.nodes())
-          if (node != node2) { CHECK_NE(var, &(bn.variable(node2))); }
+    for (auto iter = sys.begin(); iter != sys.end(); ++iter) {
+      for (auto jter = (*(iter.val())).begin(); jter != (*(iter.val())).end(); ++jter) {
+        ++count;
       }
     }
 
-    static void testCPF() {
-      gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
+    int wount = 0;
 
-      for (gum::prm::PRMSystem< double >::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
-        for (gum::prm::PRMInstance< double >::iterator jter = (*(iter.val())).begin();
-             jter != (*(iter.val())).end();
-             ++jter) {
-          gum::Instantiation i((*(jter.val())).cpf()), var;
-          var.add((*(jter.val())).type().variable());
+    for (const auto node: bn.nodes()) {
+      wount++;
+      std::string                       var      = bn.variable(node).name();
+      size_t                            pos      = var.find_first_of('.');
+      gum::prm::PRMInstance< double >&  instance = sys.get(var.substr(0, pos));
+      gum::prm::PRMAttribute< double >& attr     = instance.get(var.substr(pos + 1));
+      CHECK_NE(bn.cpt(node).nbrDim(), static_cast< gum::Size >(0));
 
-          for (i.setFirstOut(var); !i.end(); i.incOut(var)) {
-            double f = 0.0;
+      if (gum::prm::PRMClassElement< double >::isAggregate(instance.type().get(attr.id()))) {
+        CHECK_NE(attr.cpf().nbrDim(), static_cast< gum::Size >(1));
+      }
+    }
 
-            for (i.setFirstIn(var); !i.end(); i.incIn(var)) {
-              f += (*(jter.val())).cpf().get(i);
-            }
+    CHECK_EQ(count, wount);
 
-            CHECK((f) == doctest::Approx(1.0).epsilon(1e-7));
-            i.unsetOverflow();
+    for (const auto node: bn.nodes()) {
+      const gum::DiscreteVariable* var = &(bn.variable(node));
+
+      for (const auto node2: bn.nodes())
+        if (node != node2) { CHECK_NE(var, &(bn.variable(node2))); }
+    }
+  }
+
+  GUM_TEST(CPF) {
+    gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
+
+    for (gum::prm::PRMSystem< double >::iterator iter = sys.begin(); iter != sys.end(); ++iter) {
+      for (gum::prm::PRMInstance< double >::iterator jter = (*(iter.val())).begin();
+           jter != (*(iter.val())).end();
+           ++jter) {
+        gum::Instantiation i((*(jter.val())).cpf()), var;
+        var.add((*(jter.val())).type().variable());
+
+        for (i.setFirstOut(var); !i.end(); i.incOut(var)) {
+          double f = 0.0;
+
+          for (i.setFirstIn(var); !i.end(); i.incIn(var)) {
+            f += (*(jter.val())).cpf().get(i);
           }
-        }
-      }
-    }
 
-    static void testNormalisedCPT() {
-      gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
-      gum::BayesNet< double >        bn;
-      gum::BayesNetFactory< double > bn_factory(&bn);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
-
-      for (const auto node: bn.nodes()) {
-        const gum::Tensor< double >& cpt = bn.cpt(node);
-        gum::Instantiation           i(cpt), j;
-        j.add(bn.variable(node));
-
-        for (i.setFirstOut(j); !i.end(); i.incOut(j)) {
-          double sum = 0.0;
-
-          for (i.setFirstIn(j); !i.end(); i.incIn(j))
-            sum += cpt.get(i);
-
-          CHECK((sum) == doctest::Approx(1.0).epsilon(1e-7));
+          CHECK((f) == doctest::Approx(1.0).epsilon(1e-7));
           i.unsetOverflow();
         }
       }
     }
-  };
+  }
 
-  GUM_TEST_ACTIF(Creation)
-  GUM_TEST_ACTIF(ClassAccess)
-  GUM_TEST_ACTIF(InstanceAccess)
-  GUM_TEST_ACTIF(GroundedBN)
-  GUM_TEST_ACTIF(CPF)
-  GUM_TEST_ACTIF(NormalisedCPT)
+  GUM_TEST(NormalisedCPT) {
+    gum::prm::PRMSystem< double >& sys = prm->getSystem("aSys");
+    gum::BayesNet< double >        bn;
+    gum::BayesNetFactory< double > bn_factory(&bn);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(sys.groundedBN(bn_factory));
+
+    for (const auto node: bn.nodes()) {
+      const gum::Tensor< double >& cpt = bn.cpt(node);
+      gum::Instantiation           i(cpt), j;
+      j.add(bn.variable(node));
+
+      for (i.setFirstOut(j); !i.end(); i.incOut(j)) {
+        double sum = 0.0;
+
+        for (i.setFirstIn(j); !i.end(); i.incIn(j))
+          sum += cpt.get(i);
+
+        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-7));
+        i.unsetOverflow();
+      }
+    }
+  }
 
 }   // namespace gum_tests

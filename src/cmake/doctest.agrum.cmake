@@ -28,6 +28,22 @@ foreach (test_file ${AGRUM_TESTS})
     set(test_stub_file "${TEST_INCLUDES_DIR}/${test_stub_name}.cpp")
     file(WRITE ${test_stub_file} "// Auto-generated file - do not edit manually\n#include <${test_file}>\n")
     list(APPEND TEST_INCLUDES_FILES ${test_stub_file})
+
+    # Derive the doctest [Module][Suite] tags from the test file's own path
+    # instead of requiring a #define GUM_CURRENT_SUITE/GUM_CURRENT_MODULE pair
+    # in every test file: module = directory name, suite = filename stem.
+    string(REGEX MATCH "^module_([A-Za-z0-9]+)/" _unused "${test_file}")
+    set(module_tag "${CMAKE_MATCH_1}")
+    if (module_tag STREQUAL "BASE")
+        # GUMBASE: "BASE" is already #define'd by lrslib (src/agrum/base/external/lrslib/)
+        set(module_tag "GUMBASE")
+    endif ()
+
+    get_filename_component(suite_name "${test_file}" NAME_WE)
+    string(REGEX REPLACE "TestSuite$" "" suite_name "${suite_name}")
+
+    set_source_files_properties(${test_stub_file} PROPERTIES
+        COMPILE_DEFINITIONS "GUM_CURRENT_MODULE=${module_tag};GUM_CURRENT_SUITE=${suite_name}")
 endforeach ()
 
 # Add the main.cpp and the generated per-test translation units

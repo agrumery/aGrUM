@@ -52,12 +52,9 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GumBNWriter
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct GumBNWriterTestSuite {
-    private:
+    protected:
     static void _simpleTextForWriter_(bool isbinary) {
       auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
       const auto path = isbinary ? GET_RESSOURCES_PATH("outputs/test.bgum")
@@ -142,91 +139,84 @@ namespace gum_tests {
     }
 
     public:
-    static void testSimpleTestForWriter() {
-      _simpleTextForWriter_(false);
-      _simpleTextForWriter_(true);
-    }
-
-    static void testCheckMetaData() {
-      _checkMetaData_(false);
-      _checkMetaData_(true);
-    }
-
-    static void testWithBigFiles() {
-      _withBigFiles_(false, -1);
-      _withBigFiles_(false, 2);
-      _withBigFiles_(true);
-    }
-
-    static void testBinaryFileIntegrity() {
-      // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
-      // If the file is opened in text mode on Windows, the CRLF translation corrupts
-      // the binary payload and the size prefix no longer matches the actual data.
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bgum");
-
-      gum::GumBNWriter< double > writer(true);
-      writer.write(path, bn);
-
-      std::ifstream file(path, std::ios::binary | std::ios::ate);
-      CHECK(file.is_open());
-      const auto fileSize = static_cast< uint64_t >(file.tellg());
-      file.seekg(0);
-      uint64_t payloadSize = 0;
-      file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
-      file.close();
-
-      // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
-      CHECK_EQ(fileSize, payloadSize + 8u);
-    }
-
-    static void testSingleVariable() {
-      // BN with a single node and no arcs — "parents" section must still exist in JSON
-      auto                       bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
-      gum::GumBNWriter< double > writer(false, 2);
-      const std::string          str = writer.toString(bn);
-
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2);
-      CHECK_EQ(reader.proceedFromString(str), 0u);
-      CHECK_EQ(bn2, bn);
-      CHECK_EQ(bn2.size(), 1u);
-    }
-
-    static void testEmptyBN() {
-      // BN with no nodes — "nodes", "parents", "cpt" sections must still exist in JSON
-      gum::BayesNet< double >    bn;
-      gum::GumBNWriter< double > writer(false, 2);
-      const std::string          str = writer.toString(bn);
-
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2);
-      CHECK_EQ(reader.proceedFromString(str), 0u);
-      CHECK_EQ(bn2.size(), 0u);
-    }
-
-    static void testToString() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
-      gum::GumBNWriter< double > writer(false, 2);
-      std::string                str = writer.toString(bn);
-
-      std::string   tempFileName = gum_tests::getTempFilePath();
-      std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
-      tempFile << str;
-      tempFile.close();
-
-      gum::BayesNet< double > bn2;
-      auto                    reader = gum::GumBNReader< double >(&bn2, tempFileName, false);
-      CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(bn2, bn);
-    }
   };
 
-  GUM_TEST_ACTIF(SimpleTestForWriter)
-  GUM_TEST_ACTIF(CheckMetaData)
-  GUM_TEST_ACTIF(WithBigFiles)
-  GUM_TEST_ACTIF(BinaryFileIntegrity)
-  GUM_TEST_ACTIF(SingleVariable)
-  GUM_TEST_ACTIF(EmptyBN)
-  GUM_TEST_ACTIF(ToString)
+  GUM_TEST(SimpleTestForWriter) {
+    _simpleTextForWriter_(false);
+    _simpleTextForWriter_(true);
+  }
+
+  GUM_TEST(CheckMetaData) {
+    _checkMetaData_(false);
+    _checkMetaData_(true);
+  }
+
+  GUM_TEST(WithBigFiles) {
+    _withBigFiles_(false, -1);
+    _withBigFiles_(false, 2);
+    _withBigFiles_(true);
+  }
+
+  GUM_TEST(BinaryFileIntegrity) {
+    // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
+    // If the file is opened in text mode on Windows, the CRLF translation corrupts
+    // the binary payload and the size prefix no longer matches the actual data.
+    auto       bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+    const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bgum");
+
+    gum::GumBNWriter< double > writer(true);
+    writer.write(path, bn);
+
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    CHECK(file.is_open());
+    const auto fileSize = static_cast< uint64_t >(file.tellg());
+    file.seekg(0);
+    uint64_t payloadSize = 0;
+    file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
+    file.close();
+
+    // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
+    CHECK_EQ(fileSize, payloadSize + 8u);
+  }
+
+  GUM_TEST(SingleVariable) {
+    // BN with a single node and no arcs — "parents" section must still exist in JSON
+    auto                       bn = gum::BayesNet< double >::fastPrototype("A{Yes|No}");
+    gum::GumBNWriter< double > writer(false, 2);
+    const std::string          str = writer.toString(bn);
+
+    gum::BayesNet< double > bn2;
+    auto                    reader = gum::GumBNReader< double >(&bn2);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(bn2, bn);
+    CHECK_EQ(bn2.size(), 1u);
+  }
+
+  GUM_TEST(EmptyBN) {
+    // BN with no nodes — "nodes", "parents", "cpt" sections must still exist in JSON
+    gum::BayesNet< double >    bn;
+    gum::GumBNWriter< double > writer(false, 2);
+    const std::string          str = writer.toString(bn);
+
+    gum::BayesNet< double > bn2;
+    auto                    reader = gum::GumBNReader< double >(&bn2);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(bn2.size(), 0u);
+  }
+
+  GUM_TEST(ToString) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A{Yes|Maybe|No}->B[1,5,10,100]->C<-A");
+    gum::GumBNWriter< double > writer(false, 2);
+    std::string                str = writer.toString(bn);
+
+    std::string   tempFileName = gum_tests::getTempFilePath();
+    std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
+    tempFile << str;
+    tempFile.close();
+
+    gum::BayesNet< double > bn2;
+    auto                    reader = gum::GumBNReader< double >(&bn2, tempFileName, false);
+    CHECK_EQ(reader.proceed(), 0u);
+    CHECK_EQ(bn2, bn);
+  }
 }   // namespace gum_tests

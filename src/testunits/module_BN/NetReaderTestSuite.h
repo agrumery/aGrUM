@@ -52,9 +52,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  NetReader
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -67,175 +64,169 @@ namespace gum_tests {
 
   struct NetReaderTestSuite {
     public:
-    static void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH("net/test1.net");
-
-      gum::BayesNet< double > net;
-
-      gum::NetReader< double >* reader = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-    }   // namespace gum_tests
-
-    static void testRead_not_existing_file() {
-      std::string file = GET_RESSOURCES_PATH("net/test.net");
-
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
-
-      gum::NetReader< double > reader(net, file);
-
-      CHECK_THROWS_AS(reader.trace(false), const gum::IOError&);
-
-      gum::Size nbrErr = 0;
-
-      CHECK_THROWS_AS(nbrErr = reader.proceed(), const gum::IOError&);
-
-      CHECK(!nbrErr);
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      // 0 warnings : no properties
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(net->empty());
-
-        delete net;
-      }
-    }
-
-    static void testRead_file1() {
-      std::string file = GET_RESSOURCES_PATH("net/test1.net");
-
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
-
-      gum::NetReader< double > reader(net, file);
-
-      reader.trace(false);
-
-      gum::Size nbrErr = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      // 0 warnings : no properties
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-
-        delete net;
-      }
-    }
-
-    static void testRead_file2() {
-      std::string file = GET_RESSOURCES_PATH("net/test2.net");
-
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
-
-      gum::NetReader< double > reader(net, file);
-
-      reader.trace(false);
-
-      gum::Size nbrErr = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      // 0 warnings : no properties
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-
-        delete net;
-      }
-    }
-
-    static void testRead_file3() {
-      std::string file = GET_RESSOURCES_PATH("net/test3.net");
-
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
-
-      gum::NetReader< double > reader(net, file);
-
-      reader.trace(false);
-
-      gum::Size nbrErr = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      // 0 warnings : no properties
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-
-        delete net;
-      }
-    }
-
-    static void testRead_file_with_xp() {
-      std::string file = GET_RESSOURCES_PATH("net/bn_with_xp.net");
-
-      gum::BayesNet< double >* net = new gum::BayesNet< double >();
-
-      gum::NetReader< double > reader(net, file);
-
-      reader.trace(false);
-
-      gum::Size nbrErr = 0;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-
-      CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
-      CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
-      // 0 warnings : no properties
-      CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
-      reader.showElegantErrors();
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-
-        delete net;
-      }
-    }
-
-    static void testNetNameRoundtrip() {
-      // Regression: NetReader STRING rule must strip surrounding quotes from
-      // property values — a net file with 'name = "SavedBN";' was producing
-      // '"SavedBN"' instead of 'SavedBN'.
-      std::string file = GET_RESSOURCES_PATH("outputs/NetReader_name_roundtrip.net");
-      {
-        std::ofstream out(file);
-        out << "net {\n  name = \"SavedBN\";\n}\n";
-      }
-      gum::BayesNet< double >  loadedBN;
-      gum::NetReader< double > reader(&loadedBN, file);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-      CHECK_EQ(loadedBN.property("name"), "SavedBN");
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Read_not_existing_file)
-  GUM_TEST_ACTIF(Read_file1)
-  GUM_TEST_ACTIF(Read_file2)
-  GUM_TEST_ACTIF(Read_file3)
-  GUM_TEST_ACTIF(Read_file_with_xp)
-  GUM_TEST_ACTIF(NetNameRoundtrip)
+  GUM_TEST(Constuctor) {
+    std::string file = GET_RESSOURCES_PATH("net/test1.net");
+
+    gum::BayesNet< double > net;
+
+    gum::NetReader< double >* reader = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::NetReader< double >(&net, file));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
+  }
+
+  GUM_TEST(Read_not_existing_file) {
+    std::string file = GET_RESSOURCES_PATH("net/test.net");
+
+    gum::BayesNet< double >* net = new gum::BayesNet< double >();
+
+    gum::NetReader< double > reader(net, file);
+
+    CHECK_THROWS_AS(reader.trace(false), const gum::IOError&);
+
+    gum::Size nbrErr = 0;
+
+    CHECK_THROWS_AS(nbrErr = reader.proceed(), const gum::IOError&);
+
+    CHECK(!nbrErr);
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+    // 0 warnings : no properties
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(net->empty());
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file1) {
+    std::string file = GET_RESSOURCES_PATH("net/test1.net");
+
+    gum::BayesNet< double >* net = new gum::BayesNet< double >();
+
+    gum::NetReader< double > reader(net, file);
+
+    reader.trace(false);
+
+    gum::Size nbrErr = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+    // 0 warnings : no properties
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file2) {
+    std::string file = GET_RESSOURCES_PATH("net/test2.net");
+
+    gum::BayesNet< double >* net = new gum::BayesNet< double >();
+
+    gum::NetReader< double > reader(net, file);
+
+    reader.trace(false);
+
+    gum::Size nbrErr = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+    // 0 warnings : no properties
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file3) {
+    std::string file = GET_RESSOURCES_PATH("net/test3.net");
+
+    gum::BayesNet< double >* net = new gum::BayesNet< double >();
+
+    gum::NetReader< double > reader(net, file);
+
+    reader.trace(false);
+
+    gum::Size nbrErr = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+    // 0 warnings : no properties
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file_with_xp) {
+    std::string file = GET_RESSOURCES_PATH("net/bn_with_xp.net");
+
+    gum::BayesNet< double >* net = new gum::BayesNet< double >();
+
+    gum::NetReader< double > reader(net, file);
+
+    reader.trace(false);
+
+    gum::Size nbrErr = 0;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+    CHECK_EQ(reader.warnings(), static_cast< gum::Size >(0));
+    // 0 warnings : no properties
+    CHECK_EQ(reader.errors(), static_cast< gum::Size >(0));
+    reader.showElegantErrors();
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(NetNameRoundtrip) {
+    // Regression: NetReader STRING rule must strip surrounding quotes from
+    // property values — a net file with 'name = "SavedBN";' was producing
+    // '"SavedBN"' instead of 'SavedBN'.
+    std::string file = GET_RESSOURCES_PATH("outputs/NetReader_name_roundtrip.net");
+    {
+      std::ofstream out(file);
+      out << "net {\n  name = \"SavedBN\";\n}\n";
+    }
+    gum::BayesNet< double >  loadedBN;
+    gum::NetReader< double > reader(&loadedBN, file);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+    CHECK_EQ(loadedBN.property("name"), "SavedBN");
+  }
 }   // namespace gum_tests

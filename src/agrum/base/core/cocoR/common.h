@@ -243,8 +243,6 @@ namespace gum {
     int GetFileLen() const { return fileLen_; }
   };
 
-
-
   // ==========================================================================
   // UTF8Buffer - Wrapper for UTF-8 decoding (works with any buffer type)
   // ==========================================================================

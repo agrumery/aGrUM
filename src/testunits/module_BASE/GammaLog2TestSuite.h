@@ -49,31 +49,28 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GammaLog2
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct GammaLog2TestSuite {
     public:
-    static void test1() {
-      gum::GammaLog2 f;
-      gum::GammaLog2 g(true);
-
-      for (auto i = 0; i < 60; ++i) {
-        for (auto j = 0; j < 100; ++j) {
-          if (i + j > 0) {
-            double index = i + j / 100.0;
-            CHECK((f(index)) == doctest::Approx(g(index)).epsilon(0.1));
-
-            double findex = i + j / 100.0;
-            CHECK((f(findex)) == doctest::Approx(g(findex)).epsilon(0.1));
-          }
-        }
-      }
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(1)
+  GUM_TEST(1) {
+    gum::GammaLog2 f;
+    gum::GammaLog2 g(true);
+
+    for (auto i = 0; i < 60; ++i) {
+      for (auto j = 0; j < 100; ++j) {
+        if (i + j > 0) {
+          double index = i + j / 100.0;
+          CHECK((f(index)) == doctest::Approx(g(index)).epsilon(0.1));
+
+          double findex = i + j / 100.0;
+          CHECK((f(findex)) == doctest::Approx(g(findex)).epsilon(0.1));
+        }
+      }
+    }
+  }
 
 }   // namespace gum_tests

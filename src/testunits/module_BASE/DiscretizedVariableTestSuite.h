@@ -51,384 +51,367 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DiscretizedVariable
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct DiscretizedVariableTestSuite {
     public:
-    static void testCreation() {
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"));
-    }
+    // namespace gum_tests
 
-    static void testDiscreteVariableProperties() {
-      gum::DiscretizedVariable< int > v("var", "a var");
-      CHECK_EQ(v.name(), "var");
-      v.setName("toto");
-      CHECK_EQ(v.name(), "toto");
-
-      CHECK_EQ(v.description(), "a var");
-      v.setDescription("toto");
-      CHECK_EQ(v.description(), "toto");
-
-      CHECK_EQ(v.varType(), gum::VarType::DISCRETIZED);
-
-      const gum::DiscretizedVariable< int >& w = v;
-      w.setDescription("Lol");   // change description does not change a variable
-    }   // namespace gum_tests
-
-    static void testConstructorWithTicks() {
-      gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
-      CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
-      CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
-
-      CHECK_EQ(d.numerical(0), (2.0 + 3.1) / 2);
-      CHECK_EQ(d.numerical(1), (4.0 + 3.1) / 2);
-
-      CHECK_THROWS_AS(d.addTick(-std::numeric_limits< double >::infinity()),
-                      const gum::DefaultInLabel&);
-      CHECK_THROWS_AS(d.addTick(std::numeric_limits< double >::infinity()),
-                      const gum::DefaultInLabel&);
-
-      CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
-      CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
-
-      d.setEmpirical(true);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
-    }
-
-    static void testAccessorWithIntervallsForGaspard() {
-      gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0, 10.0});
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0,10]"]);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0;3.1]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1;4.0]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0;10]"]);
-
-      CHECK_THROWS_AS(d["x10y20.0z"], const gum::NotFound&);
-      CHECK_THROWS_AS(d["[10,20]"], const gum::NotFound&);
-
-      CHECK_EQ(d["[2.0,3.1]"], d["2.5"]);
-      CHECK_EQ(d["[3.1,4.0]"], d["3.5"]);
-      CHECK_EQ(d["[4.0,10]"], d["6.5"]);
-
-      d.setEmpirical(true);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0,10]"]);
-
-      CHECK_EQ(d["[2.0,3.1]"], d["2.5"]);
-      CHECK_EQ(d["[3.1,4.0]"], d["3.5"]);
-      CHECK_EQ(d["[4.0,10]"], d["6.5"]);
-    }
-
-    static void testAddTicks() {
-      gum::DiscretizedVariable< int > v("var", "a var");
-
-      CHECK_THROWS_AS(v.tick(static_cast< gum::Idx >(1)), const gum::OutOfBounds&);
-
-      CHECK(v.empty());
-      CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(0));
-      v.addTick(1);
-      CHECK(v.empty());
-      CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(0));
-      v.addTick(3);
-      CHECK(v.empty());
-      CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(1));
-      v.addTick(2);
-      CHECK(!v.empty());
-      CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(2));
-
-      CHECK_THROWS_AS(v.addTick(2), const gum::DefaultInLabel&);
-
-      std::stringstream s;
-      s << v;
-      CHECK_EQ(s.str(), "var:Discretized(<[1;2[,[2;3]>)");
-      CHECK_EQ(v.toString(), "var:Discretized(<[1;2[,[2;3]>)");
-
-      CHECK_EQ(v.tick(static_cast< gum::Idx >(0)), 1);
-      CHECK_EQ(v.tick(static_cast< gum::Idx >(1)), 2);
-      CHECK_EQ(v.tick(static_cast< gum::Idx >(2)), 3);
-
-      CHECK_THROWS_AS(v.tick(static_cast< gum::Idx >(3)), const gum::OutOfBounds&);
-    }
-
-    static void testNormalLimits() {
-      gum::DiscretizedVariable< unsigned int > v("var", "a var");
-      v.addTick(1).addTick(5).addTick(3).addTick(7);
-
-      CHECK_EQ(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)");
-
-      gum::Size vv = static_cast< gum::Size >(0);
-
-      CHECK_THROWS_AS(v["0"], const gum::OutOfBounds&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      CHECK_THROWS_AS(v["8"], const gum::OutOfBounds&);
-    }
-
-    static void testNormalLimitsWithEmpirical() {
-      gum::DiscretizedVariable< unsigned int > v("var", "a var");
-      v.addTick(1).addTick(5).addTick(3).addTick(7);
-
-      v.setEmpirical(true);
-
-      CHECK_EQ(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)");
-
-      gum::Size vv = static_cast< gum::Size >(0);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["0"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["8"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-    }
-
-    static void testNormalLimitsWithEmpiricalInConstructor() {
-      gum::DiscretizedVariable< unsigned int > v("var",
-                                                 "a var",
-                                                 {1, 3, 5, 7},
-                                                 true);   // empirical is true
-
-      CHECK_EQ(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)");
-
-      gum::Size vv = static_cast< gum::Size >(0);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["0"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["8"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-    }
-
-    static void testNormalLimitsWithNoEmpiricalInConstructor() {
-      gum::DiscretizedVariable< unsigned int > v("var",
-                                                 "a var",
-                                                 {1, 3, 5, 7});   // empirical is false
-
-      CHECK_EQ(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)");
-
-      auto vv = static_cast< gum::Size >(0);
-
-      CHECK_THROWS_AS(vv = v["0"], gum::OutOfBounds&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(0));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
-      CHECK_EQ(vv, static_cast< gum::Size >(2));
-
-      CHECK_THROWS_AS(vv = v["8"], gum::OutOfBounds&);
-    }
-
-    static void testOrderTicks() {
-      for (int i = 1; i < 7; i++)
-        for (int j = 1; j < 7; j++)
-          for (int k = 1; k < 7; k++)
-            for (int l = 1; l < 7; l++)
-              for (int m = 1; m < 7; m++)
-                for (int n = 1; n < 7; n++) {
-                  if ((i + j + k + l + m + n == 21) && (i * j * k * l * m * n == 720)) {
-                    gum::DiscretizedVariable< int > d("d", "Discretized variable");
-                    d.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n);
-                    CHECK_EQ(d.domainSize(), static_cast< gum::Size >(5));
-                    CHECK_EQ(d.toString(), "d:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
-                    int s = 1;
-                    for (auto tick: d.ticks()) {
-                      CHECK_EQ(tick, s++);
-                    }
-                  }
-                }
-    }
-
-    static void testFloatLimits() {
-      gum::DiscretizedVariable< double > d("d", "Discretized variable");
-      d.addTick(3.1).addTick(2.0).addTick(4.0);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
-      CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
-      CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
-
-      d.setEmpirical(true);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
-    }
-
-    static void testFloatLimitsEmpirical() {
-      gum::DiscretizedVariable< double > d("d", "Discretized variable");
-      d.addTick(3.1).addTick(2.0).addTick(4.0);
-
-      d.setEmpirical(true);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
-    }
-
-    static void testNumerical() {
-      gum::DiscretizedVariable< double > d("d", "Discretized variable");
-      d.addTick(3.1).addTick(2.0).addTick(4.0);
-
-      CHECK_EQ(d.numerical(0), (2.0 + 3.1) / 2);
-      CHECK_EQ(d.numerical(1), (4.0 + 3.1) / 2);
-    }
-
-    static void testCopyEmptyVariableWithZeros() {
-      gum::DiscretizedVariable< double > source("angle", "");
-
-      auto copy = source;
-
-      CHECK_NOTHROW(copy.addTick(0));
-      CHECK_NOTHROW(copy.addTick(90));
-      CHECK_NOTHROW(copy.addTick(180));
-
-      CHECK_EQ(copy.domainSize(), 2u);
-      CHECK_EQ(copy.toString(), "angle:Discretized(<[0;90[,[90;180]>)");
-      CHECK(!copy.empty());
-      CHECK_EQ(copy["[0,90["], static_cast< gum::Size >(0));
-      CHECK_EQ(copy.index("[0,90["), static_cast< gum::Size >(0));
-    }
-
-    static void testCopyEmptyVariableWithoutZeros() {
-      gum::DiscretizedVariable< double > source("angle", "");
-      auto                               copy = source;
-
-      CHECK_NOTHROW(copy.addTick(1));
-      CHECK_NOTHROW(copy.addTick(90));
-      CHECK_NOTHROW(copy.addTick(180));
-
-      CHECK_EQ(copy.domainSize(), 2u);
-      CHECK_EQ(copy.toString(), "angle:Discretized(<[1;90[,[90;180]>)");
-      CHECK(!copy.empty());
-    }
-
-    static void testIsNumerical() {
-      gum::DiscretizedVariable< double > var("var", "var");
-      var.addTick(0.0).addTick(1.0).addTick(2.0);
-      CHECK(var.isNumerical());
-    }
 
     // regression test for HIGH-14: copy ctor/assign did not copy _is_empirical
-    static void testCopyPreservesEmpirical() {
-      gum::DiscretizedVariable< double > src("x", "");
-      src.addTick(0.0).addTick(1.0).addTick(2.0);
-      src.setEmpirical(true);
-
-      gum::DiscretizedVariable< double > byCopy(src);
-      CHECK(byCopy.isEmpirical());
-
-      gum::DiscretizedVariable< double > byAssign("y", "");
-      byAssign.addTick(0.0).addTick(1.0);
-      byAssign = src;
-      CHECK(byAssign.isEmpirical());
-
-      src.setEmpirical(false);
-      gum::DiscretizedVariable< double > byCopyFalse(src);
-      CHECK_FALSE(byCopyFalse.isEmpirical());
-    }
   };
 
-  GUM_TEST_ACTIF(Creation)
-  GUM_TEST_ACTIF(DiscreteVariableProperties)
-  GUM_TEST_ACTIF(ConstructorWithTicks)
-  GUM_TEST_ACTIF(AccessorWithIntervallsForGaspard)
-  GUM_TEST_ACTIF(AddTicks)
-  GUM_TEST_ACTIF(NormalLimits)
-  GUM_TEST_ACTIF(NormalLimitsWithEmpirical)
-  GUM_TEST_ACTIF(NormalLimitsWithEmpiricalInConstructor)
-  GUM_TEST_ACTIF(NormalLimitsWithNoEmpiricalInConstructor)
-  GUM_TEST_ACTIF(OrderTicks)
-  GUM_TEST_ACTIF(FloatLimits)
-  GUM_TEST_ACTIF(FloatLimitsEmpirical)
-  GUM_TEST_ACTIF(Numerical)
-  GUM_TEST_ACTIF(CopyEmptyVariableWithZeros)
-  GUM_TEST_ACTIF(CopyEmptyVariableWithoutZeros)
-  GUM_TEST_ACTIF(IsNumerical)
-  GUM_TEST_ACTIF(CopyPreservesEmpirical)
+  GUM_TEST(Creation) {
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::DiscretizedVariable< int > v("var", "a var"));
+  }
+
+  GUM_TEST(DiscreteVariableProperties) {
+    gum::DiscretizedVariable< int > v("var", "a var");
+    CHECK_EQ(v.name(), "var");
+    v.setName("toto");
+    CHECK_EQ(v.name(), "toto");
+
+    CHECK_EQ(v.description(), "a var");
+    v.setDescription("toto");
+    CHECK_EQ(v.description(), "toto");
+
+    CHECK_EQ(v.varType(), gum::VarType::DISCRETIZED);
+
+    const gum::DiscretizedVariable< int >& w = v;
+    w.setDescription("Lol");   // change description does not change a variable
+  }
+
+  GUM_TEST(ConstructorWithTicks) {
+    gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0});
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
+    CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
+    CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
+
+    CHECK_EQ(d.numerical(0), (2.0 + 3.1) / 2);
+    CHECK_EQ(d.numerical(1), (4.0 + 3.1) / 2);
+
+    CHECK_THROWS_AS(d.addTick(-std::numeric_limits< double >::infinity()),
+                    const gum::DefaultInLabel&);
+    CHECK_THROWS_AS(d.addTick(std::numeric_limits< double >::infinity()),
+                    const gum::DefaultInLabel&);
+
+    CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
+    CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
+
+    d.setEmpirical(true);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
+  }
+
+  GUM_TEST(AccessorWithIntervallsForGaspard) {
+    gum::DiscretizedVariable< double > d("d", "Discretized variable", {3.1, 2.0, 4.0, 10.0});
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0,10]"]);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0;3.1]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1;4.0]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0;10]"]);
+
+    CHECK_THROWS_AS(d["x10y20.0z"], const gum::NotFound&);
+    CHECK_THROWS_AS(d["[10,20]"], const gum::NotFound&);
+
+    CHECK_EQ(d["[2.0,3.1]"], d["2.5"]);
+    CHECK_EQ(d["[3.1,4.0]"], d["3.5"]);
+    CHECK_EQ(d["[4.0,10]"], d["6.5"]);
+
+    d.setEmpirical(true);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[2.0,3.1]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[3.1,4.0]"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["[4.0,10]"]);
+
+    CHECK_EQ(d["[2.0,3.1]"], d["2.5"]);
+    CHECK_EQ(d["[3.1,4.0]"], d["3.5"]);
+    CHECK_EQ(d["[4.0,10]"], d["6.5"]);
+  }
+
+  GUM_TEST(AddTicks) {
+    gum::DiscretizedVariable< int > v("var", "a var");
+
+    CHECK_THROWS_AS(v.tick(static_cast< gum::Idx >(1)), const gum::OutOfBounds&);
+
+    CHECK(v.empty());
+    CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(0));
+    v.addTick(1);
+    CHECK(v.empty());
+    CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(0));
+    v.addTick(3);
+    CHECK(v.empty());
+    CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(1));
+    v.addTick(2);
+    CHECK(!v.empty());
+    CHECK_EQ(v.domainSize(), static_cast< gum::Idx >(2));
+
+    CHECK_THROWS_AS(v.addTick(2), const gum::DefaultInLabel&);
+
+    std::stringstream s;
+    s << v;
+    CHECK_EQ(s.str(), "var:Discretized(<[1;2[,[2;3]>)");
+    CHECK_EQ(v.toString(), "var:Discretized(<[1;2[,[2;3]>)");
+
+    CHECK_EQ(v.tick(static_cast< gum::Idx >(0)), 1);
+    CHECK_EQ(v.tick(static_cast< gum::Idx >(1)), 2);
+    CHECK_EQ(v.tick(static_cast< gum::Idx >(2)), 3);
+
+    CHECK_THROWS_AS(v.tick(static_cast< gum::Idx >(3)), const gum::OutOfBounds&);
+  }
+
+  GUM_TEST(NormalLimits) {
+    gum::DiscretizedVariable< unsigned int > v("var", "a var");
+    v.addTick(1).addTick(5).addTick(3).addTick(7);
+
+    CHECK_EQ(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)");
+
+    gum::Size vv = static_cast< gum::Size >(0);
+
+    CHECK_THROWS_AS(v["0"], const gum::OutOfBounds&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    CHECK_THROWS_AS(v["8"], const gum::OutOfBounds&);
+  }
+
+  GUM_TEST(NormalLimitsWithEmpirical) {
+    gum::DiscretizedVariable< unsigned int > v("var", "a var");
+    v.addTick(1).addTick(5).addTick(3).addTick(7);
+
+    v.setEmpirical(true);
+
+    CHECK_EQ(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)");
+
+    gum::Size vv = static_cast< gum::Size >(0);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["0"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["8"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(NormalLimitsWithEmpiricalInConstructor) {
+    gum::DiscretizedVariable< unsigned int > v("var",
+                                               "a var",
+                                               {1, 3, 5, 7},
+                                               true);   // empirical is true
+
+    CHECK_EQ(v.toString(), "var:Discretized(<(1;3[,[3;5[,[5;7)>)");
+
+    gum::Size vv = static_cast< gum::Size >(0);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["0"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["8"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(NormalLimitsWithNoEmpiricalInConstructor) {
+    gum::DiscretizedVariable< unsigned int > v("var",
+                                               "a var",
+                                               {1, 3, 5, 7});   // empirical is false
+
+    CHECK_EQ(v.toString(), "var:Discretized(<[1;3[,[3;5[,[5;7]>)");
+
+    auto vv = static_cast< gum::Size >(0);
+
+    CHECK_THROWS_AS(vv = v["0"], gum::OutOfBounds&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["1"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["2"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(0));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["3"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["4"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["5"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["6"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(vv = v["7"]);
+    CHECK_EQ(vv, static_cast< gum::Size >(2));
+
+    CHECK_THROWS_AS(vv = v["8"], gum::OutOfBounds&);
+  }
+
+  GUM_TEST(OrderTicks) {
+    for (int i = 1; i < 7; i++)
+      for (int j = 1; j < 7; j++)
+        for (int k = 1; k < 7; k++)
+          for (int l = 1; l < 7; l++)
+            for (int m = 1; m < 7; m++)
+              for (int n = 1; n < 7; n++) {
+                if ((i + j + k + l + m + n == 21) && (i * j * k * l * m * n == 720)) {
+                  gum::DiscretizedVariable< int > d("d", "Discretized variable");
+                  d.addTick(i).addTick(j).addTick(k).addTick(l).addTick(m).addTick(n);
+                  CHECK_EQ(d.domainSize(), static_cast< gum::Size >(5));
+                  CHECK_EQ(d.toString(), "d:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)");
+                  int s = 1;
+                  for (auto tick: d.ticks()) {
+                    CHECK_EQ(tick, s++);
+                  }
+                }
+              }
+  }
+
+  GUM_TEST(FloatLimits) {
+    gum::DiscretizedVariable< double > d("d", "Discretized variable");
+    d.addTick(3.1).addTick(2.0).addTick(4.0);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
+    CHECK_THROWS_AS(d["0.5"], const gum::OutOfBounds&);
+    CHECK_THROWS_AS(d["4.5"], const gum::OutOfBounds&);
+
+    d.setEmpirical(true);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
+  }
+
+  GUM_TEST(FloatLimitsEmpirical) {
+    gum::DiscretizedVariable< double > d("d", "Discretized variable");
+    d.addTick(3.1).addTick(2.0).addTick(4.0);
+
+    d.setEmpirical(true);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["2.5"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["0.5"]);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d["4.5"]);
+  }
+
+  GUM_TEST(Numerical) {
+    gum::DiscretizedVariable< double > d("d", "Discretized variable");
+    d.addTick(3.1).addTick(2.0).addTick(4.0);
+
+    CHECK_EQ(d.numerical(0), (2.0 + 3.1) / 2);
+    CHECK_EQ(d.numerical(1), (4.0 + 3.1) / 2);
+  }
+
+  GUM_TEST(CopyEmptyVariableWithZeros) {
+    gum::DiscretizedVariable< double > source("angle", "");
+
+    auto copy = source;
+
+    CHECK_NOTHROW(copy.addTick(0));
+    CHECK_NOTHROW(copy.addTick(90));
+    CHECK_NOTHROW(copy.addTick(180));
+
+    CHECK_EQ(copy.domainSize(), 2u);
+    CHECK_EQ(copy.toString(), "angle:Discretized(<[0;90[,[90;180]>)");
+    CHECK(!copy.empty());
+    CHECK_EQ(copy["[0,90["], static_cast< gum::Size >(0));
+    CHECK_EQ(copy.index("[0,90["), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(CopyEmptyVariableWithoutZeros) {
+    gum::DiscretizedVariable< double > source("angle", "");
+    auto                               copy = source;
+
+    CHECK_NOTHROW(copy.addTick(1));
+    CHECK_NOTHROW(copy.addTick(90));
+    CHECK_NOTHROW(copy.addTick(180));
+
+    CHECK_EQ(copy.domainSize(), 2u);
+    CHECK_EQ(copy.toString(), "angle:Discretized(<[1;90[,[90;180]>)");
+    CHECK(!copy.empty());
+  }
+
+  GUM_TEST(IsNumerical) {
+    gum::DiscretizedVariable< double > var("var", "var");
+    var.addTick(0.0).addTick(1.0).addTick(2.0);
+    CHECK(var.isNumerical());
+  }
+
+  GUM_TEST(CopyPreservesEmpirical) {
+    gum::DiscretizedVariable< double > src("x", "");
+    src.addTick(0.0).addTick(1.0).addTick(2.0);
+    src.setEmpirical(true);
+
+    gum::DiscretizedVariable< double > byCopy(src);
+    CHECK(byCopy.isEmpirical());
+
+    gum::DiscretizedVariable< double > byAssign("y", "");
+    byAssign.addTick(0.0).addTick(1.0);
+    byAssign = src;
+    CHECK(byAssign.isEmpirical());
+
+    src.setEmpirical(false);
+    gum::DiscretizedVariable< double > byCopyFalse(src);
+    CHECK_FALSE(byCopyFalse.isEmpirical());
+  }
 }   // namespace gum_tests

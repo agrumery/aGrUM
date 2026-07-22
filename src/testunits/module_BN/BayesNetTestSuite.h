@@ -58,9 +58,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BayesNet
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -71,7 +68,7 @@
 
 namespace gum_tests {
   struct BayesNetTestSuite {
-    private:
+    protected:
     void fillTopo(gum::BayesNet< double >& bn, gum::List< gum::NodeId >& idList) const {
       try {
         idList.insert(bn.add(*var1));
@@ -163,1077 +160,1035 @@ namespace gum_tests {
       delete var4;
       delete var5;
     }
-
-    void testConstructor() {
-      gum::BayesNet< double >* topology = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >());
-      CHECK_EQ(topology->size(), static_cast< gum::Idx >(0));
-      CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(0));
-      CHECK_EQ(topology->dim(), static_cast< gum::Idx >(0));
-
-      CHECK_THROWS_AS(topology->addArc(1, 2), const gum::InvalidNode&);
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(*topology, idList));
-
-      CHECK_THROWS_AS(topology->add(*var1), const gum::DuplicateLabel&);
-
-      CHECK((topology->toString())
-            == ("BN{nodes: 5, arcs: 6, domainSize: 48, "
-                "dim: 24, mem: 320o}"));
-      CHECK_EQ(topology->size(), static_cast< gum::Idx >(5));
-      CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(6));
-      CHECK_EQ(topology->dim(), static_cast< gum::Idx >(24));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete topology);
-    }
-
-    void testCopyConstructor() {
-      gum::BayesNet< double >  source;
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
-
-      gum::BayesNet< double >* copy = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::BayesNet< double >(source));
-
-      CHECK_EQ(source.internalDag().size(), copy->dag().size());
-      CHECK_EQ(source.internalDag().sizeArcs(), copy->dag().sizeArcs());
-
-      for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
-        CHECK(copy->dag().exists(node));
-
-        const gum::DiscreteVariable& srcVar = source.variable(node);
-        const gum::DiscreteVariable& cpVar  = copy->variable(node);
-        CHECK_EQ(srcVar.name(), cpVar.name());
-
-        if (srcVar.domainSize() == cpVar.domainSize()) {
-          for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
-            CHECK_EQ(srcVar.label(i), cpVar.label(i));
-          }
-        } else {
-          CHECK(false);
-        }
-
-        for (const auto parent: source.internalDag().parents(node)) {
-          CHECK(copy->dag().existsArc(gum::Arc(parent, node)));
-        }
-
-        const gum::Tensor< double >& srcCPT = source.cpt(node);
-        const gum::Tensor< double >& cpCPT  = copy->cpt(node);
-
-        gum::Instantiation srcInst(srcCPT);
-        gum::Instantiation cpInst(cpCPT);
-
-        for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
-          for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
-            gum::NodeId id = copy->nodeId(cpInst.variable(i));
-            srcInst.chgVal(source.variable(id), cpInst.val(i));
-          }
-
-          CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
-        }
-      }
-
-      if (copy) { delete copy; }
-    }
-
-    void testCopyOperator() {
-      gum::BayesNet< double >  source;
-      gum::BayesNet< double >  copy;
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(copy = source);
-
-      CHECK_EQ(source.internalDag().size(), copy.internalDag().size());
-      CHECK_EQ(source.internalDag().sizeArcs(), copy.internalDag().sizeArcs());
-
-      for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
-        CHECK(copy.internalDag().exists(node));
-
-        const gum::DiscreteVariable& srcVar = source.variable(node);
-        const gum::DiscreteVariable& cpVar  = copy.variable(node);
-        CHECK_EQ(srcVar.name(), cpVar.name());
-
-        if (srcVar.domainSize() == cpVar.domainSize()) {
-          for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
-            CHECK_EQ(srcVar.label(i), cpVar.label(i));
-          }
-        } else {
-          CHECK(false);
-        }
-
-        for (const auto parent: source.internalDag().parents(node)) {
-          CHECK(copy.internalDag().existsArc(gum::Arc(parent, node)));
-        }
-
-        const gum::Tensor< double >& srcCPT = source.cpt(node);
-        const gum::Tensor< double >& cpCPT  = copy.cpt(node);
-        gum::Instantiation           srcInst(srcCPT);
-        gum::Instantiation           cpInst(cpCPT);
-
-        for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
-          for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
-            gum::NodeId id = copy.nodeId(cpInst.variable(i));
-            srcInst.chgVal(source.variable(id), cpInst.val(i));
-          }
-
-          CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
-        }
-      }
-
-      for (const auto node: copy.nodes()) {
-        std::stringstream c_str;
-        std::stringstream s_str;
-
-        for (const auto var: source.cpt(node).variablesSequence()) {
-          s_str << *var << ",";
-        }
-
-        for (const auto var: copy.cpt(node).variablesSequence()) {
-          c_str << *var << ",";
-        }
-
-        CHECK_EQ(c_str.str(), s_str.str());
-      }
-    }
-
-    void testInsertion_1() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var1)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var2)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var3)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
-
-      // Test for uniqueness of the ids
-
-      for (gum::Idx i = 0; i < idList.size() - 1; i++) {
-        for (gum::Idx j = i + 1; j < idList.size(); j++) {
-          if (idList[i] != idList[j]) {
-            CHECK(true);
-          } else {
-            CHECK(false);
-          }
-        }
-      }
-
-      gum::LabelizedVariable const* varPtr = nullptr;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
-      CHECK_EQ(*varPtr, *var1);
-
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
-    }
-
-    void testInsertion_2() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var1)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var2)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var3)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
-
-      gum::LabelizedVariable const* varPtr = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
-      CHECK_EQ(*varPtr, *var1);
-
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
-      CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
-    }
-
-    void testIterations() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
-
-      auto cpt = static_cast< gum::Size >(0);
-
-      for (const auto node: bn.nodes()) {
-        GUM_UNUSED(node);
-        cpt++;
-      }
-
-      CHECK_EQ(cpt, bn.size());
-
-      cpt = static_cast< gum::Size >(0);
-      for (const auto& arc: bn.arcs()) {
-        GUM_UNUSED(arc);
-        cpt++;
-      }
-
-      CHECK_EQ(cpt, bn.sizeArcs());
-    }
-
-    void testArcInsertion() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      idList.insert(bn.add(*var1));
-      idList.insert(bn.add(*var2));
-      idList.insert(bn.add(*var3));
-      idList.insert(bn.add(*var4));
-      idList.insert(bn.add(*var5));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[0], idList[2]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[2], idList[4]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[3]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[0], idList[3]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[3], idList[4]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[4]));
-
-      CHECK_THROWS_AS(bn.addArc(idList[3], idList[4]), const gum::DuplicateElement&);
-
-      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
-    }
-
-    void testEraseVar() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      CHECK(bn.empty());
-      CHECK(bn.internalDag().emptyArcs());
-
-      fill(bn, idList);
-
-      CHECK(!bn.empty());
-      CHECK(!bn.internalDag().emptyArcs());
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
-
-      bn.erase(idList[0]);
-
-      for (const auto i: idList) {
-        bn.erase(i);
-      }
-
-      CHECK(bn.empty());
-
-      CHECK(bn.internalDag().emptyArcs());
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(0));
-      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(0));
-
-      idList.clear();
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
-
-      CHECK(!bn.empty());
-      CHECK(!bn.internalDag().emptyArcs());
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
-    }
-
-    void testEraseArc() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      CHECK(bn.empty());
-      CHECK(bn.internalDag().emptyArcs());
-
-      fill(bn, idList);
-
-      CHECK(!bn.empty());
-      CHECK(!bn.internalDag().emptyArcs());
-
-      CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
-      CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[2])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[2], idList[4])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[3])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[3], idList[4])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[4])));
-
-      CHECK(!bn.empty());
-      CHECK(bn.internalDag().emptyArcs());
-    }
-
-    void testStringAccessors() {
-      try {
-        gum::BayesNet< double > bn;
-        for (const auto& x: {"A", "B", "C"}) {
-          bn.add(gum::LabelizedVariable(x, x, 2));
-        }
-        for (const auto& [first, second]: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
-          bn.addArc(first, second);
-        }
-        CHECK_THROWS_AS(bn.addArc("A", "C"), const gum::DuplicateElement&);
-
-        CHECK((bn.toString())
-              == ("BN{nodes: 3, arcs: 2, domainSize: 8, "
-                  "dim: 6, mem: 96o}"));
-
-        bn.cpt("A").fillWith(1.0f).normalize();
-        bn.generateCPT("B");
-        bn.generateCPT("C");
-        CHECK_THROWS_AS(bn.cpt("XXX"), const gum::NotFound&);
-
-        bn.reverseArc("A", "C");
-        CHECK((bn.toString())
-              == ("BN{nodes: 3, arcs: 3, domainSize: 8, "
-                  "dim: 7, mem: 112o}"));
-
-        CHECK_THROWS_AS(bn.reverseArc("A", "C"), const gum::InvalidArc&);
-        CHECK_THROWS_AS(bn.reverseArc("A", "C"), const gum::GraphError&);
-        CHECK_THROWS_AS(bn.reverseArc("A", "X"), const gum::NotFound&);
-
-        bn.erase("A");
-        CHECK((bn.toString())
-              == ("BN{nodes: 2, arcs: 1, domainSize: 4, "
-                  "dim: 3, mem: 48o}"));
-
-        CHECK_THROWS_AS(bn.erase("A"), const gum::NotFound&);
-
-        bn.eraseArc("B", "C");
-        CHECK((bn.toString())
-              == ("BN{nodes: 2, arcs: 0, domainSize: 4, "
-                  "dim: 2, mem: 32o}"));
-
-        CHECK_THROWS_AS(bn.eraseArc("B", "C"), const gum::NotFound&);
-      } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
-    }
-
-    void testIterator() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      for (const auto node: bn.nodes()) {
-        CHECK(idList.exists(node));
-      }
-    }
-
-    void testRandomlyFilled() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      for (const auto node: bn.nodes()) {
-        std::stringstream s1;
-        std::stringstream s2;
-        s1 << bn.cpt(node);
-
-        bn.generateCPTs();
-        s2 << bn.cpt(node);
-        CHECK_NE(s1.str(), s2.str());
-      }
-    }
-
-    void testMoralGraph() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      gum::UndiGraph graph;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph = bn.moralGraph());
-      CHECK_EQ(graph, getRealMoralGraph(bn, idList));
-    }
-
-    void testTopologicalOrder() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      gum::Sequence< gum::NodeId > topoOrder;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(topoOrder = bn.topologicalOrder());
-
-      CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(5));
-    }
-
-    void testcpt() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-      CHECK_EQ(bn.cpt(idList[0]).domainSize(), static_cast< gum::Size >(2));
-      CHECK_EQ(bn.cpt(idList[1]).domainSize(), static_cast< gum::Size >(2));
-      CHECK_EQ(bn.cpt(idList[2]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(bn.cpt(idList[3]).domainSize(), static_cast< gum::Size >(8));
-      CHECK_EQ(bn.cpt(idList[4]).domainSize(), static_cast< gum::Size >(24));
-    }
-
-    void testCPTCoherencyVarRemoval() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
-      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
-      CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
-
-      gum::Size dmnSize_1
-          = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
-      dmnSize_1 *= bn.variable(idList[3]).domainSize();
-      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
-
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.erase(idList[1]));
-
-      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
-      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
-      CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
-
-      gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
-      dmnSize_2 *= bn.variable(idList[3]).domainSize();
-      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
-
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
-      CHECK_THROWS(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
-    }
-
-    void testCPTCoherencyArcRemoval() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
-      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
-      CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
-
-      gum::Size dmnSize_1
-          = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
-      dmnSize_1 *= bn.variable(idList[3]).domainSize();
-      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
-
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
-
-      CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
-      CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
-      CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
-
-      gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
-      dmnSize_2 *= bn.variable(idList[3]).domainSize();
-      CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
-
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
-      CHECK(!bn.cpt(idList[3]).contains(bn.variable(idList[1])));
-      CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
-    }
-
-    void testStreamOperator() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-      std::stringstream sBuff;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(sBuff << bn);
-    }
-
-    void testAccessorByName() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      for (const auto node: bn.nodes()) {
-        CHECK_EQ(bn.idFromName(bn.variable(node).name()), node);
-        CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
-        CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
-      }
-
-      CHECK_THROWS_AS(bn.idFromName("choucroute"), const gum::NotFound&);
-
-      CHECK_THROWS_AS(bn.variableFromName("choucroute"), const gum::NotFound&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(bn.idFromName("var1"));
-      bn.erase(bn.idFromName("var1"));
-      CHECK_THROWS_AS(bn.idFromName("var1"), const gum::NotFound&);
-    }
-
-    void testCopyAndEqualityOperators() {
-      auto                                   bn_1 = new gum::BayesNet< double >();
-      gum::SimpleBayesNetGenerator< double > generator(20, 30, 4);
-      generator.generateBN(*bn_1);
-
-      auto bn_2 = new gum::BayesNet< double >();
-
-      generator.generateBN(*bn_2);
-
-      gum::BayesNet< double > bn_cpy_1 = *bn_1;
-      gum::BayesNet< double > bn_cpy_2 = *bn_2;
-
-      CHECK_EQ(bn_cpy_1, bn_cpy_1);
-      CHECK_EQ(bn_cpy_1, (*bn_1));
-      CHECK_EQ(bn_cpy_2, bn_cpy_2);
-      CHECK_EQ(bn_cpy_2, (*bn_2));
-      CHECK_NE((*bn_1), (*bn_2));
-      CHECK_NE(bn_cpy_1, bn_cpy_2);
-
-      CHECK_EQ(bn_cpy_1, bn_cpy_1);
-      CHECK_EQ(bn_cpy_1, (*bn_1));
-      CHECK_EQ(bn_cpy_2, bn_cpy_2);
-      CHECK_EQ(bn_cpy_2, (*bn_2));
-      CHECK_NE((*bn_1), (*bn_2));
-      CHECK_NE(bn_cpy_1, bn_cpy_2);
-
-      gum::BayesNet< double > cpy = *bn_1;
-      CHECK_EQ(cpy, (*bn_1));
-      CHECK_NE(cpy, (*bn_2));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(cpy = *bn_2);
-
-      CHECK_EQ(cpy, (*bn_2));
-
-      CHECK_EQ(cpy, (*bn_2));
-      CHECK_NE(cpy, (*bn_1));
-      CHECK_NE(cpy, (*bn_1));
-
-      CHECK_NOTHROW(cpy = cpy);
-
-      CHECK_EQ(cpy, (*bn_2));
-
-      CHECK_EQ(cpy, (*bn_2));
-      CHECK_NE(cpy, (*bn_1));
-      CHECK_NE(cpy, (*bn_1));
-
-      std::string s1 = cpy.toString();
-      delete bn_2;
-      delete bn_1;
-      std::string s2 = cpy.toString();
-      CHECK_EQ(s1, s2);
-    }
-
-    void testAggregatorNodes() {
-      {
-        gum::BayesNet< double > bn;
-        gum::Idx                i1 = 0;
-
-        GUM_CHECK_ASSERT_THROWS_NOTHING(i1 = bn.addOR(*var1));
-        CHECK_THROWS_AS(bn.addOR(*var5), const gum::SizeError&);
-
-        bn.addArc(bn.add(*var3), i1);
-        bn.addArc(bn.add(*var4), i1);
-        bn.addArc(bn.add(*var5), i1);
-      }
-      {
-        gum::BayesNet< double > bn;
-        gum::Idx                i2 = 0;
-
-        GUM_CHECK_ASSERT_THROWS_NOTHING(i2 = bn.addAND(*var2));
-        CHECK_THROWS_AS(bn.addAND(*var5), const gum::SizeError&);
-
-        bn.addArc(bn.add(*var3), i2);
-        bn.addArc(bn.add(*var4), i2);
-        bn.addArc(bn.add(*var5), i2);
-      }
-    }
-
-    void testJointProbability() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-
-      fill(bn, idList);
-
-      auto i = bn.completeInstantiation();
-      CHECK_EQ(i.nbrDim(), bn.size());
-
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 2 * 2 * 2 * 3));
-
-      double a = 0.0;
-      CHECK_NOTHROW(a = bn.jointProbability(i));
-
-      CHECK((a) == doctest::Approx(0.00072).epsilon(1e-4));
-
-      gum::Instantiation j;
-      for (auto n: bn.nodes()) {
-        CHECK_THROWS_AS(bn.jointProbability(j), const gum::InvalidArgument&);
-        j.add(bn.variable(n));
-      }
-      double b = 0.0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
-
-      CHECK_EQ(a, b);
-    }
-
-    void testArcReversal() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-      fill(bn, idList);
-
-      std::vector< double > joint;
-      joint.reserve(2 * bn.dim());
-      auto i = bn.completeInstantiation();
-
-      for (i.setFirst(); !i.end(); i.inc()) {
-        joint.push_back(bn.jointProbability(i));
-      }
-
-      bn.reverseArc(0, 2);
-      bn.reverseArc(gum::Arc(3, 4));
-      CHECK_THROWS_AS(bn.reverseArc(gum::Arc(3, 4)), const gum::InvalidArc&);
-      CHECK_THROWS_AS(bn.reverseArc(gum::Arc(3, 5)), const gum::InvalidArc&);
-      CHECK_THROWS_AS(bn.reverseArc(gum::Arc(2, 4)), const gum::InvalidArc&);
-
-      unsigned int j;
-      for (j = 0, i.setFirst(); !i.end(); i.inc(), ++j) {
-        CHECK((bn.jointProbability(i)) == doctest::Approx(joint[j]).epsilon(GUM_SMALL_ERROR));
-      }
-    }
-
-    void testChangeLabelOfVariable() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-      fill(bn, idList);
-
-      CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({0|1})");
-      CHECK_NOTHROW(
-          dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
-      CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({x|1})");
-    }
-
-    void testShortCutAddFastVar() {
-      gum::BayesNet< double > bn;
-
-      gum::NodeId i1 = 0;
-      gum::NodeId i2 = 0;
-      gum::NodeId i3 = 0;
-
-      CHECK_NOTHROW(i1 = bn.add("A", 2));
-      CHECK_NOTHROW(i2 = bn.add("B", 3));
-      CHECK_EQ(i1, gum::NodeId(0));
-      CHECK_EQ(i2, gum::NodeId(1));
-
-      CHECK_THROWS_AS(i3 = bn.add("A", 5), const gum::DuplicateLabel&);
-      // the variable "C",1 can be created but the BN does not allow to add such a variable
-      CHECK_THROWS_AS(i3 = bn.add("C", 1), const gum::OperationNotAllowed&);
-      GUM_UNUSED(i3);
-
-      CHECK_NOTHROW(bn.addArc(i1, i2));
-      CHECK_EQ(bn.log10DomainSize(), std::log10(2.0 * 3.0));
-
-      CHECK_NOTHROW(bn.add("X{top|middle|bottom}"));
-      CHECK_EQ(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})");
-
-      // a mono-label with default 4 is impossible
-      CHECK_THROWS_AS(bn.add("Y[1,1]", 4), const gum::ArgumentError&);
-
-      // a mono-label with default 1 is possible but can not be integrated in the model
-      CHECK_THROWS_AS(bn.add("Y[1,1]", 1), const gum::OperationNotAllowed&);
-    }
-
-    void testSomeFunctions() {
-      gum::BayesNet< double >  bn;
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
-
-      CHECK_EQ(bn.maxVarDomainSize(), static_cast< gum::Size >(3));
-      CHECK_EQ(bn.minParam(), 0.0f);
-      CHECK_EQ(bn.maxParam(), 1.0f);
-      CHECK_EQ(bn.minNonZeroParam(), 0.1f);
-      CHECK_EQ(bn.maxNonOneParam(), 0.9f);
-    }
-
-    void testMinimalCondSet() {
-      /*
-       A   B        0   1
-        \ / \        \ / \
-      H  C   D     7  2   3
-       \ |   |      \ |   |
-         E   |        4   |
-          \ /          \ /
-           F            5
-           |            |
-           G            6
-       */
-      gum::BayesNet< int > bn;
-
-      auto a = bn.add("A", 2);
-      auto b = bn.add("B", 2);
-      auto c = bn.add("C", 2);
-      auto d = bn.add("D", 2);
-      auto e = bn.add("E", 2);
-      auto f = bn.add("F", 2);
-      auto g = bn.add("G", 2);
-      auto h = bn.add("H", 2);
-
-      bn.addArc(a, c);
-      bn.addArc(b, c);
-      bn.addArc(b, d);
-      bn.addArc(c, e);
-      bn.addArc(d, f);
-      bn.addArc(e, f);
-      bn.addArc(f, g);
-      bn.addArc(h, e);
-
-      CHECK_EQ(bn.minimalCondSet(c, {a, b, c, d, e, f, g, h}), gum::NodeSet({c}));
-      CHECK_EQ(bn.minimalCondSet(c, {a, b, d, e, f, g, h}), gum::NodeSet({a, b, e, h}));
-      CHECK_EQ(bn.minimalCondSet(c, {e, f, g}), gum::NodeSet({e, f}));
-      CHECK_EQ(bn.minimalCondSet(c, {b, e, f, g}), gum::NodeSet({e, b}));
-      CHECK_EQ(bn.minimalCondSet(c, {a, e, f, g}), gum::NodeSet({a, e, f}));
-
-      // for set of targets
-      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, e, f, g, h}), gum::NodeSet({d, e}));
-      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}), gum::NodeSet({c, d, h, f}));
-      CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}));
-    }
-
-    void testMinimalCondSet2() {
-      /*
-      F  A
-      \ / \
-       B   |
-       |   E
-       C   |
-      / \ /
-      H  D
-      */
-      gum::BayesNet< int > bn;
-      //                         0    1    2    3    4    5    6
-      for (const auto& item: {"A", "B", "C", "D", "E", "F", "H"})
-        bn.add(item, 2);
-      bn.addArc("A", "B");
-      bn.addArc("A", "E");
-      bn.addArc("B", "C");
-      bn.addArc("C", "D");
-      bn.addArc("C", "H");
-      bn.addArc("E", "D");
-      bn.addArc("F", "B");
-
-      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 2, 3, 5, 6})), gum::NodeSet({0, 2, 3}));
-
-      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 5})), gum::NodeSet({0}));
-
-      CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 3, 5})), gum::NodeSet({0, 1, 3}));
-    }
-
-    void testFastPrototype() {
-      try {
-        auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c", 3);
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b[5]->c;a->c");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b->c;a[1000]->c");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
-
-        CHECK_THROWS_AS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
-                        const gum::InvalidDirectedCycle&);
-
-        bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
-        CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
-
-        CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
-                        const gum::InvalidArgument&);
-        CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a{yes|no|yes}->b->c;a->c"),
-                        const gum::InvalidArgument&);
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
-
-        bn = gum::BayesNet< float >::fastPrototype("a<-b<-c<-d<-e<-f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
-
-        bn = gum::BayesNet< float >::fastPrototype("a<-b->c<-d->e<-f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d<-e->f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b<-c;c->d<-e->f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d;d<-e->f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
-
-        bn = gum::BayesNet< float >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
-        CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
-        CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
-        CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
-      } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
-    }
-
-    void testFastPrototypeVarType() {
-      auto bn = gum::BayesNet< float >::fastPrototype("a");
-      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
-
-      bn = gum::BayesNet< float >::fastPrototype("a[0,1]");
-      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
-
-      CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[0,0]"), const gum::InvalidArgument&);
-      CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,0]"), const gum::InvalidArgument&);
-      CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,1]"), const gum::InvalidArgument&);
-
-      bn = gum::BayesNet< float >::fastPrototype("a[5]");
-      CHECK_EQ(bn.variable("a").toString(), "a:Range([0,4])");
-
-      bn = gum::BayesNet< float >::fastPrototype("a[2,5]");
-      CHECK_EQ(bn.variable("a").toString(), "a:Range([2,5])");
-
-      bn = gum::BayesNet< float >::fastPrototype("a[-2,2]");
-      CHECK_EQ(bn.variable("a").toString(), "a:Range([-2,2])");
-
-      bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
-      CHECK((bn.variable("a").toString())
-            == ("a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)"));
-
-      bn = gum::BayesNet< float >::fastPrototype(
-          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
-      CHECK_EQ(bn.variable("a").varType(), gum::VarType::INTEGER);
-      CHECK_EQ(bn.variable("b").varType(), gum::VarType::INTEGER);
-      CHECK_EQ(bn.variable("c").varType(), gum::VarType::LABELIZED);
-      CHECK_EQ(bn.variable("d").varType(), gum::VarType::NUMERICAL);
-      CHECK_EQ(bn.variable("e").varType(), gum::VarType::NUMERICAL);
-      CHECK_EQ(bn.variable("f").varType(), gum::VarType::NUMERICAL);
-    }
-
-    void testNonRegressionCPTinReverseArc() {
-      const auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto       bn2 = gum::BayesNet< double >(bn1);
-      bn2.reverseArc("A", "B");
-      CHECK_EQ(bn1.cpt("A").variable(0).name(), "A");
-      CHECK_EQ(bn2.cpt("A").variable(0).name(), "A");
-      CHECK_EQ(bn1.cpt("B").variable(0).name(), "B");
-      CHECK_EQ(bn2.cpt("B").variable(0).name(), "B");
-    }
-
-    void testClearBN() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-      {
-        // by hand
-        auto bn_instance = gum::BayesNet< double >(bn);
-        if (!bn_instance.empty()) {
-          auto l = bn_instance.nodes();
-          for (const auto no: l) {
-            bn_instance.erase(no);
-          }
-        }
-        CHECK(bn_instance.empty());
-      }
-      {
-        // with clear method
-        auto bn_instance = gum::BayesNet< double >(bn);
-        bn_instance.clear();
-        CHECK(bn_instance.empty());
-      }
-    }
-
-    void testExistsArc() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-
-      CHECK(bn.existsArc(0, 1));
-      CHECK(bn.existsArc("A", "B"));
-      CHECK(!bn.existsArc(1, 0));
-      CHECK(!bn.existsArc("B", "A"));
-      CHECK(!bn.existsArc(0, 2));
-      CHECK(!bn.existsArc("A", "C"));
-    }
-
-    void testCheck() {
-      {
-        const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-        CHECK_EQ(bn.check().size(), gum::Size(0));
-
-        bn.cpt("B").fillWith(-1);
-        CHECK_EQ(bn.check().size(), gum::Size(2));
-      }
-      {
-        const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
-        CHECK_EQ(bn.check().size(), gum::Size(0));
-
-        bn.cpt("B").fillWith(0);
-        CHECK_EQ(bn.check().size(), gum::Size(1));
-
-        bn.cpt("C").fillWith(2);
-        CHECK_EQ(bn.check().size(), gum::Size(3));
-      }
-      {
-        const auto bn
-            = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
-        CHECK_EQ(bn.check().size(), gum::Size(0));
-
-        bn.cpt("X").scale(12);
-        CHECK_EQ(bn.check().size(), gum::Size(2));
-
-        bn.cpt("Z1").scale(12);
-        CHECK_EQ(bn.check().size(), gum::Size(4));
-      }
-    }
-
-    void testThreads() {
-      const std::string bn_model_path = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
-      const std::string bn_name       = "myBN";
-
-      try {
-        gum::BayesNet< double > bn(bn_name);
-        auto                    reader = gum::BIFXMLBNReader(&bn, bn_model_path);
-        reader.proceed();
-
-        std::atomic< gum::Size > nbth{0};
-        auto opExecute = [&bn, &nbth](const std::size_t this_thread, const std::size_t nb_threads) {
-          nbth += bn.maxVarDomainSize();
-        };
-        gum::ThreadExecutor::execute(20, opExecute);
-
-        CHECK_EQ(gum::Size(nbth), 20 * bn.maxVarDomainSize());
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-    }
-
-    void testoperatorEqual() {
-      auto bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto bn2 = gum::BayesNet< double >::fastPrototype("A{yes|no}->B{yes|no}->C{yes|no}");
-      auto bn3 = gum::BayesNet< double >::fastPrototype("A->B->C");
-      for (const auto i: bn.nodes()) {
-        bn.cpt(i).fillWith(1);
-        bn2.cpt(i).fillWith(1);
-        bn3.cpt(i).fillWith(1);
-      }
-      CHECK_EQ(bn, bn);
-      CHECK_NE(bn, bn2);
-      CHECK_EQ(bn, bn3);
-    }
-
-    void testcontextulizedBN() {
-      auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
-      gum::Instantiation Iobs;
-      Iobs.add(bn.variable("A"));
-      Iobs.chgVal("A", "froid");
-      gum::Instantiation Iint;
-      Iint.add(bn.variable("C"));
-      Iint.chgVal("C", 1);
-
-      auto bn2 = bn.contextualize(Iobs, Iint);
-
-      CHECK_EQ(bn2.size(), gum::Size(6));
-      CHECK_EQ(bn2.sizeArcs(), gum::Size(4));
-    }
-
-    void testConnectedComponents() {
-      // A isolated, B->C connected: 2 components
-      auto bn = gum::BayesNet< double >::fastPrototype("A;B->C");
-      auto cc = bn.connectedComponents();
-      CHECK_EQ(cc.size(), gum::Size(3));
-      CHECK_EQ(cc[bn.idFromName("B")], cc[bn.idFromName("C")]);
-      CHECK_NE(cc[bn.idFromName("A")], cc[bn.idFromName("B")]);
-      gum::NodeSet roots;
-      for (const auto& [node, root]: cc)
-        roots.insert(root);
-      CHECK_EQ(roots.size(), gum::Size(2));
-
-      // Fully connected: 1 component
-      auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C");
-      auto cc2 = bn2.connectedComponents();
-      CHECK_EQ(cc2[bn2.idFromName("A")], cc2[bn2.idFromName("B")]);
-      CHECK_EQ(cc2[bn2.idFromName("B")], cc2[bn2.idFromName("C")]);
-      gum::NodeSet roots2;
-      for (const auto& [node, root]: cc2)
-        roots2.insert(root);
-      CHECK_EQ(roots2.size(), gum::Size(1));
-    }
-
-    void testcontextulizedBN2() {
-      auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
-      gum::Instantiation Iobs;
-      Iobs.add(bn.variable("D"));
-      Iobs.chgVal("D", 0);
-      gum::Instantiation Iint;
-      Iint.add(bn.variable("A"));
-      Iint.chgVal("A", 1);
-
-      auto bn2 = bn.contextualize(Iobs, Iint);
-
-      CHECK_EQ(bn2.size(), gum::Size(6));
-      CHECK_EQ(bn2.sizeArcs(), gum::Size(1));
-    }
   };
 
-  GUM_TEST_ACTIF(Constructor)
-  GUM_TEST_ACTIF(CopyConstructor)
-  GUM_TEST_ACTIF(CopyOperator)
-  GUM_TEST_ACTIF(Insertion_1)
-  GUM_TEST_ACTIF(Insertion_2)
-  GUM_TEST_ACTIF(Iterations)
-  GUM_TEST_ACTIF(ArcInsertion)
-  GUM_TEST_ACTIF(EraseVar)
-  GUM_TEST_ACTIF(EraseArc)
-  GUM_TEST_ACTIF(StringAccessors)
-  GUM_TEST_ACTIF(Iterator)
-  GUM_TEST_ACTIF(RandomlyFilled)
-  GUM_TEST_ACTIF(MoralGraph)
-  GUM_TEST_ACTIF(TopologicalOrder)
-  GUM_TEST_ACTIF(cpt)
-  GUM_TEST_ACTIF(CPTCoherencyVarRemoval)
-  GUM_TEST_ACTIF(CPTCoherencyArcRemoval)
-  GUM_TEST_ACTIF(StreamOperator)
-  GUM_TEST_ACTIF(AccessorByName)
-  GUM_TEST_ACTIF(CopyAndEqualityOperators)
-  GUM_TEST_ACTIF(AggregatorNodes)
-  GUM_TEST_ACTIF(JointProbability)
-  GUM_TEST_ACTIF(ArcReversal)
-  GUM_TEST_ACTIF(ChangeLabelOfVariable)
-  GUM_TEST_ACTIF(ShortCutAddFastVar)
-  GUM_TEST_ACTIF(SomeFunctions)
-  GUM_TEST_ACTIF(MinimalCondSet)
-  GUM_TEST_ACTIF(MinimalCondSet2)
-  GUM_TEST_ACTIF(FastPrototype)
-  GUM_TEST_ACTIF(FastPrototypeVarType)
-  GUM_TEST_ACTIF(NonRegressionCPTinReverseArc)
-  GUM_TEST_ACTIF(ClearBN)
-  GUM_TEST_ACTIF(ExistsArc)
-  GUM_TEST_ACTIF(Check)
-  GUM_TEST_ACTIF(Threads)
-  GUM_TEST_ACTIF(operatorEqual)
-  GUM_TEST_ACTIF(contextulizedBN)
-  GUM_TEST_ACTIF(contextulizedBN2)
-  GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST(Constructor) {
+    gum::BayesNet< double >* topology = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< double >());
+    CHECK_EQ(topology->size(), static_cast< gum::Idx >(0));
+    CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(0));
+    CHECK_EQ(topology->dim(), static_cast< gum::Idx >(0));
+
+    CHECK_THROWS_AS(topology->addArc(1, 2), const gum::InvalidNode&);
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(*topology, idList));
+
+    CHECK_THROWS_AS(topology->add(*var1), const gum::DuplicateLabel&);
+
+    CHECK((topology->toString())
+          == ("BN{nodes: 5, arcs: 6, domainSize: 48, "
+              "dim: 24, mem: 320o}"));
+    CHECK_EQ(topology->size(), static_cast< gum::Idx >(5));
+    CHECK_EQ(topology->sizeArcs(), static_cast< gum::Idx >(6));
+    CHECK_EQ(topology->dim(), static_cast< gum::Idx >(24));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete topology);
+  }
+
+  GUM_TEST(CopyConstructor) {
+    gum::BayesNet< double >  source;
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
+
+    gum::BayesNet< double >* copy = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::BayesNet< double >(source));
+
+    CHECK_EQ(source.internalDag().size(), copy->dag().size());
+    CHECK_EQ(source.internalDag().sizeArcs(), copy->dag().sizeArcs());
+
+    for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
+      CHECK(copy->dag().exists(node));
+
+      const gum::DiscreteVariable& srcVar = source.variable(node);
+      const gum::DiscreteVariable& cpVar  = copy->variable(node);
+      CHECK_EQ(srcVar.name(), cpVar.name());
+
+      if (srcVar.domainSize() == cpVar.domainSize()) {
+        for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
+          CHECK_EQ(srcVar.label(i), cpVar.label(i));
+        }
+      } else {
+        CHECK(false);
+      }
+
+      for (const auto parent: source.internalDag().parents(node)) {
+        CHECK(copy->dag().existsArc(gum::Arc(parent, node)));
+      }
+
+      const gum::Tensor< double >& srcCPT = source.cpt(node);
+      const gum::Tensor< double >& cpCPT  = copy->cpt(node);
+
+      gum::Instantiation srcInst(srcCPT);
+      gum::Instantiation cpInst(cpCPT);
+
+      for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
+        for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
+          gum::NodeId id = copy->nodeId(cpInst.variable(i));
+          srcInst.chgVal(source.variable(id), cpInst.val(i));
+        }
+
+        CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
+      }
+    }
+
+    if (copy) { delete copy; }
+  }
+
+  GUM_TEST(CopyOperator) {
+    gum::BayesNet< double >  source;
+    gum::BayesNet< double >  copy;
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(copy = source);
+
+    CHECK_EQ(source.internalDag().size(), copy.internalDag().size());
+    CHECK_EQ(source.internalDag().sizeArcs(), copy.internalDag().sizeArcs());
+
+    for (const gum::DAG dag = source.internalDag(); const auto node: dag.nodes()) {
+      CHECK(copy.internalDag().exists(node));
+
+      const gum::DiscreteVariable& srcVar = source.variable(node);
+      const gum::DiscreteVariable& cpVar  = copy.variable(node);
+      CHECK_EQ(srcVar.name(), cpVar.name());
+
+      if (srcVar.domainSize() == cpVar.domainSize()) {
+        for (gum::Idx i = 0; i < srcVar.domainSize(); i++) {
+          CHECK_EQ(srcVar.label(i), cpVar.label(i));
+        }
+      } else {
+        CHECK(false);
+      }
+
+      for (const auto parent: source.internalDag().parents(node)) {
+        CHECK(copy.internalDag().existsArc(gum::Arc(parent, node)));
+      }
+
+      const gum::Tensor< double >& srcCPT = source.cpt(node);
+      const gum::Tensor< double >& cpCPT  = copy.cpt(node);
+      gum::Instantiation           srcInst(srcCPT);
+      gum::Instantiation           cpInst(cpCPT);
+
+      for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
+        for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
+          gum::NodeId id = copy.nodeId(cpInst.variable(i));
+          srcInst.chgVal(source.variable(id), cpInst.val(i));
+        }
+
+        CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
+      }
+    }
+
+    for (const auto node: copy.nodes()) {
+      std::stringstream c_str;
+      std::stringstream s_str;
+
+      for (const auto var: source.cpt(node).variablesSequence()) {
+        s_str << *var << ",";
+      }
+
+      for (const auto var: copy.cpt(node).variablesSequence()) {
+        c_str << *var << ",";
+      }
+
+      CHECK_EQ(c_str.str(), s_str.str());
+    }
+  }
+
+  GUM_TEST(Insertion_1) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var1)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var2)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var3)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+
+    // Test for uniqueness of the ids
+
+    for (gum::Idx i = 0; i < idList.size() - 1; i++) {
+      for (gum::Idx j = i + 1; j < idList.size(); j++) {
+        if (idList[i] != idList[j]) {
+          CHECK(true);
+        } else {
+          CHECK(false);
+        }
+      }
+    }
+
+    gum::LabelizedVariable const* varPtr = nullptr;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
+    CHECK_EQ(*varPtr, *var1);
+
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
+  }
+
+  GUM_TEST(Insertion_2) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var1)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var2)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var3)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(bn.add(*var5)));
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+
+    gum::LabelizedVariable const* varPtr = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&bn.variable(idList[0]));
+    CHECK_EQ(*varPtr, *var1);
+
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[0])), *var1);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[1])), *var2);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[2])), *var3);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[3])), *var4);
+    CHECK_EQ(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
+  }
+
+  GUM_TEST(Iterations) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
+
+    auto cpt = static_cast< gum::Size >(0);
+
+    for (const auto node: bn.nodes()) {
+      GUM_UNUSED(node);
+      cpt++;
+    }
+
+    CHECK_EQ(cpt, bn.size());
+
+    cpt = static_cast< gum::Size >(0);
+    for (const auto& arc: bn.arcs()) {
+      GUM_UNUSED(arc);
+      cpt++;
+    }
+
+    CHECK_EQ(cpt, bn.sizeArcs());
+  }
+
+  GUM_TEST(ArcInsertion) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    idList.insert(bn.add(*var1));
+    idList.insert(bn.add(*var2));
+    idList.insert(bn.add(*var3));
+    idList.insert(bn.add(*var4));
+    idList.insert(bn.add(*var5));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[0], idList[2]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[2], idList[4]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[3]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[0], idList[3]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[3], idList[4]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.addArc(idList[1], idList[4]));
+
+    CHECK_THROWS_AS(bn.addArc(idList[3], idList[4]), const gum::DuplicateElement&);
+
+    CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
+  }
+
+  GUM_TEST(EraseVar) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    CHECK(bn.empty());
+    CHECK(bn.internalDag().emptyArcs());
+
+    fill(bn, idList);
+
+    CHECK(!bn.empty());
+    CHECK(!bn.internalDag().emptyArcs());
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
+
+    bn.erase(idList[0]);
+
+    for (const auto i: idList) {
+      bn.erase(i);
+    }
+
+    CHECK(bn.empty());
+
+    CHECK(bn.internalDag().emptyArcs());
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(0));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(0));
+    CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(0));
+
+    idList.clear();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
+
+    CHECK(!bn.empty());
+    CHECK(!bn.internalDag().emptyArcs());
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
+  }
+
+  GUM_TEST(EraseArc) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    CHECK(bn.empty());
+    CHECK(bn.internalDag().emptyArcs());
+
+    fill(bn, idList);
+
+    CHECK(!bn.empty());
+    CHECK(!bn.internalDag().emptyArcs());
+
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().size(), static_cast< gum::Size >(5));
+    CHECK_EQ(bn.internalDag().sizeArcs(), static_cast< gum::Size >(6));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[2])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[2], idList[4])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[0], idList[3])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[3], idList[4])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[4])));
+
+    CHECK(!bn.empty());
+    CHECK(bn.internalDag().emptyArcs());
+  }
+
+  GUM_TEST(StringAccessors) {
+    try {
+      gum::BayesNet< double > bn;
+      for (const auto& x: {"A", "B", "C"}) {
+        bn.add(gum::LabelizedVariable(x, x, 2));
+      }
+      for (const auto& [first, second]: {std::make_pair("A", "C"), std::make_pair("B", "C")}) {
+        bn.addArc(first, second);
+      }
+      CHECK_THROWS_AS(bn.addArc("A", "C"), const gum::DuplicateElement&);
+
+      CHECK((bn.toString())
+            == ("BN{nodes: 3, arcs: 2, domainSize: 8, "
+                "dim: 6, mem: 96o}"));
+
+      bn.cpt("A").fillWith(1.0f).normalize();
+      bn.generateCPT("B");
+      bn.generateCPT("C");
+      CHECK_THROWS_AS(bn.cpt("XXX"), const gum::NotFound&);
+
+      bn.reverseArc("A", "C");
+      CHECK((bn.toString())
+            == ("BN{nodes: 3, arcs: 3, domainSize: 8, "
+                "dim: 7, mem: 112o}"));
+
+      CHECK_THROWS_AS(bn.reverseArc("A", "C"), const gum::InvalidArc&);
+      CHECK_THROWS_AS(bn.reverseArc("A", "C"), const gum::GraphError&);
+      CHECK_THROWS_AS(bn.reverseArc("A", "X"), const gum::NotFound&);
+
+      bn.erase("A");
+      CHECK((bn.toString())
+            == ("BN{nodes: 2, arcs: 1, domainSize: 4, "
+                "dim: 3, mem: 48o}"));
+
+      CHECK_THROWS_AS(bn.erase("A"), const gum::NotFound&);
+
+      bn.eraseArc("B", "C");
+      CHECK((bn.toString())
+            == ("BN{nodes: 2, arcs: 0, domainSize: 4, "
+                "dim: 2, mem: 32o}"));
+
+      CHECK_THROWS_AS(bn.eraseArc("B", "C"), const gum::NotFound&);
+    } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
+  }
+
+  GUM_TEST(Iterator) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    for (const auto node: bn.nodes()) {
+      CHECK(idList.exists(node));
+    }
+  }
+
+  GUM_TEST(RandomlyFilled) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    for (const auto node: bn.nodes()) {
+      std::stringstream s1;
+      std::stringstream s2;
+      s1 << bn.cpt(node);
+
+      bn.generateCPTs();
+      s2 << bn.cpt(node);
+      CHECK_NE(s1.str(), s2.str());
+    }
+  }
+
+  GUM_TEST(MoralGraph) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    gum::UndiGraph graph;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph = bn.moralGraph());
+    CHECK_EQ(graph, getRealMoralGraph(bn, idList));
+  }
+
+  GUM_TEST(TopologicalOrder) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    gum::Sequence< gum::NodeId > topoOrder;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(topoOrder = bn.topologicalOrder());
+
+    CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(5));
+  }
+
+  GUM_TEST(cpt) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+    CHECK_EQ(bn.cpt(idList[0]).domainSize(), static_cast< gum::Size >(2));
+    CHECK_EQ(bn.cpt(idList[1]).domainSize(), static_cast< gum::Size >(2));
+    CHECK_EQ(bn.cpt(idList[2]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(bn.cpt(idList[3]).domainSize(), static_cast< gum::Size >(8));
+    CHECK_EQ(bn.cpt(idList[4]).domainSize(), static_cast< gum::Size >(24));
+  }
+
+  GUM_TEST(CPTCoherencyVarRemoval) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+    CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+    CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
+
+    gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+    dmnSize_1 *= bn.variable(idList[3]).domainSize();
+    CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
+
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.erase(idList[1]));
+
+    CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+    CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+    CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
+
+    gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
+    dmnSize_2 *= bn.variable(idList[3]).domainSize();
+    CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
+
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
+    CHECK_THROWS(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
+  }
+
+  GUM_TEST(CPTCoherencyArcRemoval) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(2));
+    CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+    CHECK(bn.internalDag().existsArc(idList[1], idList[3]));
+
+    gum::Size dmnSize_1 = bn.variable(idList[0]).domainSize() * bn.variable(idList[1]).domainSize();
+    dmnSize_1 *= bn.variable(idList[3]).domainSize();
+    CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_1);
+
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[1])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.eraseArc(gum::Arc(idList[1], idList[3])));
+
+    CHECK_EQ(bn.internalDag().parents(idList[3]).size(), static_cast< gum::Size >(1));
+    CHECK(bn.internalDag().existsArc(idList[0], idList[3]));
+    CHECK(!bn.internalDag().existsArc(idList[1], idList[3]));
+
+    gum::Size dmnSize_2 = bn.variable(idList[0]).domainSize();
+    dmnSize_2 *= bn.variable(idList[3]).domainSize();
+    CHECK_EQ(bn.cpt(idList[3]).domainSize(), dmnSize_2);
+
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[0])));
+    CHECK(!bn.cpt(idList[3]).contains(bn.variable(idList[1])));
+    CHECK(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
+  }
+
+  GUM_TEST(StreamOperator) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+    std::stringstream sBuff;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(sBuff << bn);
+  }
+
+  GUM_TEST(AccessorByName) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    for (const auto node: bn.nodes()) {
+      CHECK_EQ(bn.idFromName(bn.variable(node).name()), node);
+      CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
+      CHECK_EQ(&bn.variableFromName(bn.variable(node).name()), &bn.variable(node));
+    }
+
+    CHECK_THROWS_AS(bn.idFromName("choucroute"), const gum::NotFound&);
+
+    CHECK_THROWS_AS(bn.variableFromName("choucroute"), const gum::NotFound&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(bn.idFromName("var1"));
+    bn.erase(bn.idFromName("var1"));
+    CHECK_THROWS_AS(bn.idFromName("var1"), const gum::NotFound&);
+  }
+
+  GUM_TEST(CopyAndEqualityOperators) {
+    auto                                   bn_1 = new gum::BayesNet< double >();
+    gum::SimpleBayesNetGenerator< double > generator(20, 30, 4);
+    generator.generateBN(*bn_1);
+
+    auto bn_2 = new gum::BayesNet< double >();
+
+    generator.generateBN(*bn_2);
+
+    gum::BayesNet< double > bn_cpy_1 = *bn_1;
+    gum::BayesNet< double > bn_cpy_2 = *bn_2;
+
+    CHECK_EQ(bn_cpy_1, bn_cpy_1);
+    CHECK_EQ(bn_cpy_1, (*bn_1));
+    CHECK_EQ(bn_cpy_2, bn_cpy_2);
+    CHECK_EQ(bn_cpy_2, (*bn_2));
+    CHECK_NE((*bn_1), (*bn_2));
+    CHECK_NE(bn_cpy_1, bn_cpy_2);
+
+    CHECK_EQ(bn_cpy_1, bn_cpy_1);
+    CHECK_EQ(bn_cpy_1, (*bn_1));
+    CHECK_EQ(bn_cpy_2, bn_cpy_2);
+    CHECK_EQ(bn_cpy_2, (*bn_2));
+    CHECK_NE((*bn_1), (*bn_2));
+    CHECK_NE(bn_cpy_1, bn_cpy_2);
+
+    gum::BayesNet< double > cpy = *bn_1;
+    CHECK_EQ(cpy, (*bn_1));
+    CHECK_NE(cpy, (*bn_2));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(cpy = *bn_2);
+
+    CHECK_EQ(cpy, (*bn_2));
+
+    CHECK_EQ(cpy, (*bn_2));
+    CHECK_NE(cpy, (*bn_1));
+    CHECK_NE(cpy, (*bn_1));
+
+    CHECK_NOTHROW(cpy = cpy);
+
+    CHECK_EQ(cpy, (*bn_2));
+
+    CHECK_EQ(cpy, (*bn_2));
+    CHECK_NE(cpy, (*bn_1));
+    CHECK_NE(cpy, (*bn_1));
+
+    std::string s1 = cpy.toString();
+    delete bn_2;
+    delete bn_1;
+    std::string s2 = cpy.toString();
+    CHECK_EQ(s1, s2);
+  }
+
+  GUM_TEST(AggregatorNodes) {
+    {
+      gum::BayesNet< double > bn;
+      gum::Idx                i1 = 0;
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(i1 = bn.addOR(*var1));
+      CHECK_THROWS_AS(bn.addOR(*var5), const gum::SizeError&);
+
+      bn.addArc(bn.add(*var3), i1);
+      bn.addArc(bn.add(*var4), i1);
+      bn.addArc(bn.add(*var5), i1);
+    }
+    {
+      gum::BayesNet< double > bn;
+      gum::Idx                i2 = 0;
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(i2 = bn.addAND(*var2));
+      CHECK_THROWS_AS(bn.addAND(*var5), const gum::SizeError&);
+
+      bn.addArc(bn.add(*var3), i2);
+      bn.addArc(bn.add(*var4), i2);
+      bn.addArc(bn.add(*var5), i2);
+    }
+  }
+
+  GUM_TEST(JointProbability) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+
+    fill(bn, idList);
+
+    auto i = bn.completeInstantiation();
+    CHECK_EQ(i.nbrDim(), bn.size());
+
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 2 * 2 * 2 * 3));
+
+    double a = 0.0;
+    CHECK_NOTHROW(a = bn.jointProbability(i));
+
+    CHECK((a) == doctest::Approx(0.00072).epsilon(1e-4));
+
+    gum::Instantiation j;
+    for (auto n: bn.nodes()) {
+      CHECK_THROWS_AS(bn.jointProbability(j), const gum::InvalidArgument&);
+      j.add(bn.variable(n));
+    }
+    double b = 0.0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
+
+    CHECK_EQ(a, b);
+  }
+
+  GUM_TEST(ArcReversal) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+    fill(bn, idList);
+
+    std::vector< double > joint;
+    joint.reserve(2 * bn.dim());
+    auto i = bn.completeInstantiation();
+
+    for (i.setFirst(); !i.end(); i.inc()) {
+      joint.push_back(bn.jointProbability(i));
+    }
+
+    bn.reverseArc(0, 2);
+    bn.reverseArc(gum::Arc(3, 4));
+    CHECK_THROWS_AS(bn.reverseArc(gum::Arc(3, 4)), const gum::InvalidArc&);
+    CHECK_THROWS_AS(bn.reverseArc(gum::Arc(3, 5)), const gum::InvalidArc&);
+    CHECK_THROWS_AS(bn.reverseArc(gum::Arc(2, 4)), const gum::InvalidArc&);
+
+    unsigned int j;
+    for (j = 0, i.setFirst(); !i.end(); i.inc(), ++j) {
+      CHECK((bn.jointProbability(i)) == doctest::Approx(joint[j]).epsilon(GUM_SMALL_ERROR));
+    }
+  }
+
+  GUM_TEST(ChangeLabelOfVariable) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+    fill(bn, idList);
+
+    CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({0|1})");
+    CHECK_NOTHROW(
+        dynamic_cast< const gum::LabelizedVariable& >(bn.variable(0)).changeLabel(0, "x"));
+    CHECK_EQ(bn.variable(0).toString(), "var1:Labelized({x|1})");
+  }
+
+  GUM_TEST(ShortCutAddFastVar) {
+    gum::BayesNet< double > bn;
+
+    gum::NodeId i1 = 0;
+    gum::NodeId i2 = 0;
+    gum::NodeId i3 = 0;
+
+    CHECK_NOTHROW(i1 = bn.add("A", 2));
+    CHECK_NOTHROW(i2 = bn.add("B", 3));
+    CHECK_EQ(i1, gum::NodeId(0));
+    CHECK_EQ(i2, gum::NodeId(1));
+
+    CHECK_THROWS_AS(i3 = bn.add("A", 5), const gum::DuplicateLabel&);
+    // the variable "C",1 can be created but the BN does not allow to add such a variable
+    CHECK_THROWS_AS(i3 = bn.add("C", 1), const gum::OperationNotAllowed&);
+    GUM_UNUSED(i3);
+
+    CHECK_NOTHROW(bn.addArc(i1, i2));
+    CHECK_EQ(bn.log10DomainSize(), std::log10(2.0 * 3.0));
+
+    CHECK_NOTHROW(bn.add("X{top|middle|bottom}"));
+    CHECK_EQ(bn.variable("X").toString(), "X:Labelized({top|middle|bottom})");
+
+    // a mono-label with default 4 is impossible
+    CHECK_THROWS_AS(bn.add("Y[1,1]", 4), const gum::ArgumentError&);
+
+    // a mono-label with default 1 is possible but can not be integrated in the model
+    CHECK_THROWS_AS(bn.add("Y[1,1]", 1), const gum::OperationNotAllowed&);
+  }
+
+  GUM_TEST(SomeFunctions) {
+    gum::BayesNet< double >  bn;
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(bn, idList));
+
+    CHECK_EQ(bn.maxVarDomainSize(), static_cast< gum::Size >(3));
+    CHECK_EQ(bn.minParam(), 0.0f);
+    CHECK_EQ(bn.maxParam(), 1.0f);
+    CHECK_EQ(bn.minNonZeroParam(), 0.1f);
+    CHECK_EQ(bn.maxNonOneParam(), 0.9f);
+  }
+
+  GUM_TEST(MinimalCondSet) {
+    /*
+     A   B        0   1
+      \ / \        \ / \
+    H  C   D     7  2   3
+     \ |   |      \ |   |
+       E   |        4   |
+        \ /          \ /
+         F            5
+         |            |
+         G            6
+     */
+    gum::BayesNet< int > bn;
+
+    auto a = bn.add("A", 2);
+    auto b = bn.add("B", 2);
+    auto c = bn.add("C", 2);
+    auto d = bn.add("D", 2);
+    auto e = bn.add("E", 2);
+    auto f = bn.add("F", 2);
+    auto g = bn.add("G", 2);
+    auto h = bn.add("H", 2);
+
+    bn.addArc(a, c);
+    bn.addArc(b, c);
+    bn.addArc(b, d);
+    bn.addArc(c, e);
+    bn.addArc(d, f);
+    bn.addArc(e, f);
+    bn.addArc(f, g);
+    bn.addArc(h, e);
+
+    CHECK_EQ(bn.minimalCondSet(c, {a, b, c, d, e, f, g, h}), gum::NodeSet({c}));
+    CHECK_EQ(bn.minimalCondSet(c, {a, b, d, e, f, g, h}), gum::NodeSet({a, b, e, h}));
+    CHECK_EQ(bn.minimalCondSet(c, {e, f, g}), gum::NodeSet({e, f}));
+    CHECK_EQ(bn.minimalCondSet(c, {b, e, f, g}), gum::NodeSet({e, b}));
+    CHECK_EQ(bn.minimalCondSet(c, {a, e, f, g}), gum::NodeSet({a, e, f}));
+
+    // for set of targets
+    CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, e, f, g, h}), gum::NodeSet({d, e}));
+    CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, d, f, g, h}), gum::NodeSet({c, d, h, f}));
+    CHECK_EQ(bn.minimalCondSet({e, d}, {a, b, c, f, g, h}), gum::NodeSet({b, c, f, h}));
+  }
+
+  GUM_TEST(MinimalCondSet2) {
+    /*
+    F  A
+    \ / \
+     B   |
+     |   E
+     C   |
+    / \ /
+    H  D
+    */
+    gum::BayesNet< int > bn;
+    //                         0    1    2    3    4    5    6
+    for (const auto& item: {"A", "B", "C", "D", "E", "F", "H"})
+      bn.add(item, 2);
+    bn.addArc("A", "B");
+    bn.addArc("A", "E");
+    bn.addArc("B", "C");
+    bn.addArc("C", "D");
+    bn.addArc("C", "H");
+    bn.addArc("E", "D");
+    bn.addArc("F", "B");
+
+    CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 2, 3, 5, 6})), gum::NodeSet({0, 2, 3}));
+
+    CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 5})), gum::NodeSet({0}));
+
+    CHECK_EQ(bn.minimalCondSet(4, gum::NodeSet({0, 1, 3, 5})), gum::NodeSet({0, 1, 3}));
+  }
+
+  GUM_TEST(FastPrototype) {
+    try {
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c", 3);
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (3 - 1)) + (3 * 3 * (3 - 1))));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b[5]->c;a->c");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (5 - 1)) + (5 * 2 * (2 - 1))));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b->c;a[1000]->c");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.dim(), gum::Size((2 - 1) + (2 * (2 - 1)) + (2 * 2 * (2 - 1))));
+
+      CHECK_THROWS_AS(bn = gum::BayesNet< float >::fastPrototype("a->b->c->a"),
+                      const gum::InvalidDirectedCycle&);
+
+      bn = gum::BayesNet< float >::fastPrototype("a{yes|maybe|no}->b->c;a->c");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(3));
+      CHECK_EQ(bn.dim(), gum::Size((3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1))));
+
+      CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a{yes}->b->c;a->c"),
+                      const gum::InvalidArgument&);
+      CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a{yes|no|yes}->b->c;a->c"),
+                      const gum::InvalidArgument&);
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b->c->d->e->f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
+
+      bn = gum::BayesNet< float >::fastPrototype("a<-b<-c<-d<-e<-f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(1 + 5 * 2));
+
+      bn = gum::BayesNet< float >::fastPrototype("a<-b->c<-d->e<-f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d<-e->f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b<-c;c->d<-e->f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b<-c->d;d<-e->f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< float >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(6));
+      CHECK_EQ(bn.sizeArcs(), static_cast< gum::Size >(5));
+      CHECK_EQ(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+    } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
+  }
+
+  GUM_TEST(FastPrototypeVarType) {
+    auto bn = gum::BayesNet< float >::fastPrototype("a");
+    CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
+
+    bn = gum::BayesNet< float >::fastPrototype("a[0,1]");
+    CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");
+
+    CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[0,0]"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,0]"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::BayesNet< float >::fastPrototype("a[1,1]"), const gum::InvalidArgument&);
+
+    bn = gum::BayesNet< float >::fastPrototype("a[5]");
+    CHECK_EQ(bn.variable("a").toString(), "a:Range([0,4])");
+
+    bn = gum::BayesNet< float >::fastPrototype("a[2,5]");
+    CHECK_EQ(bn.variable("a").toString(), "a:Range([2,5])");
+
+    bn = gum::BayesNet< float >::fastPrototype("a[-2,2]");
+    CHECK_EQ(bn.variable("a").toString(), "a:Range([-2,2])");
+
+    bn = gum::BayesNet< float >::fastPrototype("a[-0.4,0.1,0.5,3.14,10]");
+    CHECK((bn.variable("a").toString())
+          == ("a:Discretized(<[-0.4;0.1[,[0.1;0.5[,[0.5;3.14[,[3.14;10]>)"));
+
+    bn = gum::BayesNet< float >::fastPrototype(
+        "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
+    CHECK_EQ(bn.variable("a").varType(), gum::VarType::INTEGER);
+    CHECK_EQ(bn.variable("b").varType(), gum::VarType::INTEGER);
+    CHECK_EQ(bn.variable("c").varType(), gum::VarType::LABELIZED);
+    CHECK_EQ(bn.variable("d").varType(), gum::VarType::NUMERICAL);
+    CHECK_EQ(bn.variable("e").varType(), gum::VarType::NUMERICAL);
+    CHECK_EQ(bn.variable("f").varType(), gum::VarType::NUMERICAL);
+  }
+
+  GUM_TEST(NonRegressionCPTinReverseArc) {
+    const auto bn1 = gum::BayesNet< double >::fastPrototype("A->B->C");
+    auto       bn2 = gum::BayesNet< double >(bn1);
+    bn2.reverseArc("A", "B");
+    CHECK_EQ(bn1.cpt("A").variable(0).name(), "A");
+    CHECK_EQ(bn2.cpt("A").variable(0).name(), "A");
+    CHECK_EQ(bn1.cpt("B").variable(0).name(), "B");
+    CHECK_EQ(bn2.cpt("B").variable(0).name(), "B");
+  }
+
+  GUM_TEST(ClearBN) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+    {
+      // by hand
+      auto bn_instance = gum::BayesNet< double >(bn);
+      if (!bn_instance.empty()) {
+        auto l = bn_instance.nodes();
+        for (const auto no: l) {
+          bn_instance.erase(no);
+        }
+      }
+      CHECK(bn_instance.empty());
+    }
+    {
+      // with clear method
+      auto bn_instance = gum::BayesNet< double >(bn);
+      bn_instance.clear();
+      CHECK(bn_instance.empty());
+    }
+  }
+
+  GUM_TEST(ExistsArc) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+
+    CHECK(bn.existsArc(0, 1));
+    CHECK(bn.existsArc("A", "B"));
+    CHECK(!bn.existsArc(1, 0));
+    CHECK(!bn.existsArc("B", "A"));
+    CHECK(!bn.existsArc(0, 2));
+    CHECK(!bn.existsArc("A", "C"));
+  }
+
+  GUM_TEST(Check) {
+    {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+      CHECK_EQ(bn.check().size(), gum::Size(0));
+
+      bn.cpt("B").fillWith(-1);
+      CHECK_EQ(bn.check().size(), gum::Size(2));
+    }
+    {
+      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E<-A<-G->F");
+      CHECK_EQ(bn.check().size(), gum::Size(0));
+
+      bn.cpt("B").fillWith(0);
+      CHECK_EQ(bn.check().size(), gum::Size(1));
+
+      bn.cpt("C").fillWith(2);
+      CHECK_EQ(bn.check().size(), gum::Size(3));
+    }
+    {
+      const auto bn
+          = gum::BayesNet< double >::fastPrototype("Y->X->T1;Z2->X;Z1->X;Z1->T1;Z1->Z3->T2");
+      CHECK_EQ(bn.check().size(), gum::Size(0));
+
+      bn.cpt("X").scale(12);
+      CHECK_EQ(bn.check().size(), gum::Size(2));
+
+      bn.cpt("Z1").scale(12);
+      CHECK_EQ(bn.check().size(), gum::Size(4));
+    }
+  }
+
+  GUM_TEST(Threads) {
+    const std::string bn_model_path = GET_RESSOURCES_PATH("bifxml/hailfinder.bifxml");
+    const std::string bn_name       = "myBN";
+
+    try {
+      gum::BayesNet< double > bn(bn_name);
+      auto                    reader = gum::BIFXMLBNReader(&bn, bn_model_path);
+      reader.proceed();
+
+      std::atomic< gum::Size > nbth{0};
+      auto opExecute = [&bn, &nbth](const std::size_t this_thread, const std::size_t nb_threads) {
+        nbth += bn.maxVarDomainSize();
+      };
+      gum::ThreadExecutor::execute(20, opExecute);
+
+      CHECK_EQ(gum::Size(nbth), 20 * bn.maxVarDomainSize());
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+  }
+
+  GUM_TEST(operatorEqual) {
+    auto bn  = gum::BayesNet< double >::fastPrototype("A->B->C");
+    auto bn2 = gum::BayesNet< double >::fastPrototype("A{yes|no}->B{yes|no}->C{yes|no}");
+    auto bn3 = gum::BayesNet< double >::fastPrototype("A->B->C");
+    for (const auto i: bn.nodes()) {
+      bn.cpt(i).fillWith(1);
+      bn2.cpt(i).fillWith(1);
+      bn3.cpt(i).fillWith(1);
+    }
+    CHECK_EQ(bn, bn);
+    CHECK_NE(bn, bn2);
+    CHECK_EQ(bn, bn3);
+  }
+
+  GUM_TEST(contextulizedBN) {
+    auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
+    gum::Instantiation Iobs;
+    Iobs.add(bn.variable("A"));
+    Iobs.chgVal("A", "froid");
+    gum::Instantiation Iint;
+    Iint.add(bn.variable("C"));
+    Iint.chgVal("C", 1);
+
+    auto bn2 = bn.contextualize(Iobs, Iint);
+
+    CHECK_EQ(bn2.size(), gum::Size(6));
+    CHECK_EQ(bn2.sizeArcs(), gum::Size(4));
+  }
+
+  GUM_TEST(contextulizedBN2) {
+    auto bn = gum::BayesNet< double >::fastPrototype("E<-A{chaud|froid}->B<-C<-D->A<-F;E<-D->B");
+    gum::Instantiation Iobs;
+    Iobs.add(bn.variable("D"));
+    Iobs.chgVal("D", 0);
+    gum::Instantiation Iint;
+    Iint.add(bn.variable("A"));
+    Iint.chgVal("A", 1);
+
+    auto bn2 = bn.contextualize(Iobs, Iint);
+
+    CHECK_EQ(bn2.size(), gum::Size(6));
+    CHECK_EQ(bn2.sizeArcs(), gum::Size(1));
+  }
+
+  GUM_TEST(ConnectedComponents) {
+    // A isolated, B->C connected: 2 components
+    auto bn = gum::BayesNet< double >::fastPrototype("A;B->C");
+    auto cc = bn.connectedComponents();
+    CHECK_EQ(cc.size(), gum::Size(3));
+    CHECK_EQ(cc[bn.idFromName("B")], cc[bn.idFromName("C")]);
+    CHECK_NE(cc[bn.idFromName("A")], cc[bn.idFromName("B")]);
+    gum::NodeSet roots;
+    for (const auto& [node, root]: cc)
+      roots.insert(root);
+    CHECK_EQ(roots.size(), gum::Size(2));
+
+    // Fully connected: 1 component
+    auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C");
+    auto cc2 = bn2.connectedComponents();
+    CHECK_EQ(cc2[bn2.idFromName("A")], cc2[bn2.idFromName("B")]);
+    CHECK_EQ(cc2[bn2.idFromName("B")], cc2[bn2.idFromName("C")]);
+    gum::NodeSet roots2;
+    for (const auto& [node, root]: cc2)
+      roots2.insert(root);
+    CHECK_EQ(roots2.size(), gum::Size(1));
+  }
 }   // namespace gum_tests

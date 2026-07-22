@@ -51,12 +51,9 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  GumMRFWriter
-#define GUM_CURRENT_MODULE MRF
-
 namespace gum_tests {
   struct GumMRFWriterTestSuite {
-    private:
+    protected:
     static gum::MarkovRandomField< double > _buildSimpleMRF_() {
       gum::MarkovRandomField< double > mrf;
       mrf.add("A[2]");
@@ -130,92 +127,86 @@ namespace gum_tests {
     }
 
     public:
-    static void testSimpleTestForWriter() {
-      _simpleTestForWriter_(false);
-      _simpleTestForWriter_(true);
-    }
-
-    static void testCheckMetaData() {
-      _checkMetaData_(false);
-      _checkMetaData_(true);
-    }
-
-    static void testBinaryFileIntegrity() {
-      // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
-      // If the file is opened in text mode on Windows, the CRLF translation corrupts
-      // the binary payload and the size prefix no longer matches the actual data.
-      auto       mrf  = _buildSimpleMRF_();
-      const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bmrf");
-
-      gum::GumMRFWriter< double > writer(true);
-      writer.write(path, mrf);
-
-      std::ifstream file(path, std::ios::binary | std::ios::ate);
-      CHECK(file.is_open());
-      const auto fileSize = static_cast< uint64_t >(file.tellg());
-      file.seekg(0);
-      uint64_t payloadSize = 0;
-      file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
-      file.close();
-
-      // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
-      CHECK_EQ(fileSize, payloadSize + 8u);
-    }
-
-    static void testNoFactors() {
-      // MRF with nodes but zero factors — "factors" section must still exist in JSON
-      gum::MarkovRandomField< double > mrf;
-      mrf.add("A[2]");
-      mrf.add("B[2]");
-
-      gum::GumMRFWriter< double > writer(false, 2);
-      const std::string           str = writer.toString(mrf);
-
-      gum::MarkovRandomField< double > mrf2;
-      auto                             reader = gum::GumMRFReader< double >(&mrf2);
-      CHECK_EQ(reader.proceedFromString(str), 0u);
-      CHECK_EQ(mrf2.size(), 2u);
-      CHECK_EQ(mrf2.factors().size(), 0u);
-    }
-
-    static void testSingleVariable() {
-      // MRF with a single node and a unary factor — no edges
-      gum::MarkovRandomField< double > mrf;
-      mrf.add("A[2]");
-      mrf.addFactor({"A"});
-      mrf.factor({"A"}).fillWith({0.3, 0.7});
-
-      gum::GumMRFWriter< double > writer(false, 2);
-      const std::string           str = writer.toString(mrf);
-
-      gum::MarkovRandomField< double > mrf2;
-      auto                             reader = gum::GumMRFReader< double >(&mrf2);
-      CHECK_EQ(reader.proceedFromString(str), 0u);
-      CHECK_EQ(mrf2, mrf);
-      CHECK_EQ(mrf2.size(), 1u);
-    }
-
-    static void testToString() {
-      auto                        mrf = _buildSimpleMRF_();
-      gum::GumMRFWriter< double > writer(false, 2);
-      std::string                 str = writer.toString(mrf);
-
-      std::string   tempFileName = gum_tests::getTempFilePath();
-      std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
-      tempFile << str;
-      tempFile.close();
-
-      gum::MarkovRandomField< double > mrf2;
-      auto reader = gum::GumMRFReader< double >(&mrf2, tempFileName, false);
-      CHECK_EQ(reader.proceed(), 0u);
-      CHECK_EQ(mrf2, mrf);
-    }
   };
 
-  GUM_TEST_ACTIF(SimpleTestForWriter)
-  GUM_TEST_ACTIF(CheckMetaData)
-  GUM_TEST_ACTIF(BinaryFileIntegrity)
-  GUM_TEST_ACTIF(NoFactors)
-  GUM_TEST_ACTIF(SingleVariable)
-  GUM_TEST_ACTIF(ToString)
+  GUM_TEST(SimpleTestForWriter) {
+    _simpleTestForWriter_(false);
+    _simpleTestForWriter_(true);
+  }
+
+  GUM_TEST(CheckMetaData) {
+    _checkMetaData_(false);
+    _checkMetaData_(true);
+  }
+
+  GUM_TEST(BinaryFileIntegrity) {
+    // Verify the binary file layout: [8-byte LE uint64 payload size][payload].
+    // If the file is opened in text mode on Windows, the CRLF translation corrupts
+    // the binary payload and the size prefix no longer matches the actual data.
+    auto       mrf  = _buildSimpleMRF_();
+    const auto path = GET_RESSOURCES_PATH("outputs/test_integrity.bmrf");
+
+    gum::GumMRFWriter< double > writer(true);
+    writer.write(path, mrf);
+
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    CHECK(file.is_open());
+    const auto fileSize = static_cast< uint64_t >(file.tellg());
+    file.seekg(0);
+    uint64_t payloadSize = 0;
+    file.read(reinterpret_cast< char* >(&payloadSize), sizeof(payloadSize));
+    file.close();
+
+    // Exactly 8 bytes of prefix + payloadSize bytes of msgpack data
+    CHECK_EQ(fileSize, payloadSize + 8u);
+  }
+
+  GUM_TEST(NoFactors) {
+    // MRF with nodes but zero factors — "factors" section must still exist in JSON
+    gum::MarkovRandomField< double > mrf;
+    mrf.add("A[2]");
+    mrf.add("B[2]");
+
+    gum::GumMRFWriter< double > writer(false, 2);
+    const std::string           str = writer.toString(mrf);
+
+    gum::MarkovRandomField< double > mrf2;
+    auto                             reader = gum::GumMRFReader< double >(&mrf2);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(mrf2.size(), 2u);
+    CHECK_EQ(mrf2.factors().size(), 0u);
+  }
+
+  GUM_TEST(SingleVariable) {
+    // MRF with a single node and a unary factor — no edges
+    gum::MarkovRandomField< double > mrf;
+    mrf.add("A[2]");
+    mrf.addFactor({"A"});
+    mrf.factor({"A"}).fillWith({0.3, 0.7});
+
+    gum::GumMRFWriter< double > writer(false, 2);
+    const std::string           str = writer.toString(mrf);
+
+    gum::MarkovRandomField< double > mrf2;
+    auto                             reader = gum::GumMRFReader< double >(&mrf2);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(mrf2, mrf);
+    CHECK_EQ(mrf2.size(), 1u);
+  }
+
+  GUM_TEST(ToString) {
+    auto                        mrf = _buildSimpleMRF_();
+    gum::GumMRFWriter< double > writer(false, 2);
+    std::string                 str = writer.toString(mrf);
+
+    std::string   tempFileName = gum_tests::getTempFilePath();
+    std::ofstream tempFile(tempFileName.c_str(), std::ios_base::trunc);
+    tempFile << str;
+    tempFile.close();
+
+    gum::MarkovRandomField< double > mrf2;
+    auto reader = gum::GumMRFReader< double >(&mrf2, tempFileName, false);
+    CHECK_EQ(reader.proceed(), 0u);
+    CHECK_EQ(mrf2, mrf);
+  }
 }   // namespace gum_tests

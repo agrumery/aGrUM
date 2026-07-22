@@ -49,20 +49,13 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  PRMGenerator
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct PRMGeneratorTestSuite {
-    private:
+    protected:
 
     public:
-    static void testConstructors() {
-      gum::prm::LayerGenerator< double >* gen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
-    }   // namespace gum_tests
+    // namespace gum_tests
 
     void generateLayerLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
                             size_t layer_count) {
@@ -80,155 +73,157 @@ namespace gum_tests {
     PRMGeneratorTestSuite() {
       // std::cerr << std::endl;
     }
-
-    static void testLayerGenerator() {
-      gum::prm::LayerGenerator< double >* gen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
-      gen->setDomainSize(6);
-      gen->setMaxParents(5);
-      std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
-      generateLayerLayer(v, 10);
-      gen->setLayers(v);
-      gum::prm::PRM< double >* prm = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
-      // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
-
-      for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
-        const gum::prm::PRMInterface< double >& i = **iter;
-
-        if (i.referenceSlots().size()) {
-          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
-          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
-        } else {
-          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
-          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
-        }
-
-        gum::Size                                            six  = 0;
-        gum::Size                                            two  = 0;
-        const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
-
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
-             a != attr.end();
-             ++a) {
-          if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
-            ++six;
-          } else if ((**a).type()->domainSize() == 2) {
-            ++two;
-          } else {
-            CHECK(false);
-          }
-        }
-
-        CHECK_EQ(six, static_cast< gum::Size >(30));
-
-        if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
-      }
-
-      // testing classes
-      const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
-
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
-           c != c_set.end();
-           ++c) {
-        CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
-
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
-             = (**c).attributes().begin();
-             a != (**c).attributes().end();
-             ++a) {
-          CHECK((**c).containerDag().parents((**a).id()).size() < 6);
-        }
-      }
-
-      // testing instances
-      const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      CHECK_EQ(sys.size(), static_cast< gum::Size >(100));
-
-      if (prm) delete prm;
-
-      if (gen) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen); }
-    }
-
-    static void testClusterGenerator() {
-      gum::prm::ClusteredLayerGenerator< double >* gen = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >());
-      gen->setDomainSize(6);
-      gen->setMaxParents(5);
-      gen->setClusterRatio(1.0);
-      std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
-      generateLayerLayer(v, 10);
-      gen->setLayers(v);
-      gum::prm::PRM< double >* prm = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
-      // testing interfaces
-      const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
-      CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
-
-      for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
-           iter != i_set.end();
-           ++iter) {
-        const gum::prm::PRMInterface< double >& i = **iter;
-
-        if (i.referenceSlots().size()) {
-          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
-          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
-        } else {
-          CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
-          CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
-        }
-
-        gum::Size                                            six  = 0;
-        gum::Size                                            two  = 0;
-        const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
-
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
-             a != attr.end();
-             ++a) {
-          if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
-            ++six;
-          } else if ((**a).type()->domainSize() == 2) {
-            ++two;
-          } else {
-            CHECK(false);
-          }
-        }
-
-        CHECK_EQ(six, static_cast< gum::Size >(30));
-
-        if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
-      }
-
-      // testing classes
-      const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
-
-      for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
-           c != c_set.end();
-           ++c) {
-        CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
-
-        for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
-             = (**c).attributes().begin();
-             a != (**c).attributes().end();
-             ++a) {
-          CHECK((**c).containerDag().parents((**a).id()).size() < 6);
-        }
-      }
-
-      // testing instances
-      const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
-      CHECK(sys.size() > static_cast< gum::Size >(100));
-
-      if (prm) delete prm;
-
-      if (gen) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen); }
-    }
   };
 
-  GUM_TEST_ACTIF(Constructors)
-  GUM_TEST_ACTIF(LayerGenerator)
-  GUM_TEST_ACTIF(ClusterGenerator)
+  GUM_TEST(Constructors) {
+    gum::prm::LayerGenerator< double >* gen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen);
+  }
+
+  GUM_TEST(LayerGenerator) {
+    gum::prm::LayerGenerator< double >* gen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::LayerGenerator< double >());
+    gen->setDomainSize(6);
+    gen->setMaxParents(5);
+    std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
+    generateLayerLayer(v, 10);
+    gen->setLayers(v);
+    gum::prm::PRM< double >* prm = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
+    // testing interfaces
+    const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
+    CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
+
+    for (auto iter = i_set.begin(); iter != i_set.end(); ++iter) {
+      const gum::prm::PRMInterface< double >& i = **iter;
+
+      if (i.referenceSlots().size()) {
+        CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
+      } else {
+        CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
+      }
+
+      gum::Size                                            six  = 0;
+      gum::Size                                            two  = 0;
+      const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
+
+      for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
+           a != attr.end();
+           ++a) {
+        if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
+          ++six;
+        } else if ((**a).type()->domainSize() == 2) {
+          ++two;
+        } else {
+          CHECK(false);
+        }
+      }
+
+      CHECK_EQ(six, static_cast< gum::Size >(30));
+
+      if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
+    }
+
+    // testing classes
+    const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
+
+    for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
+         c != c_set.end();
+         ++c) {
+      CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
+
+      for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+           = (**c).attributes().begin();
+           a != (**c).attributes().end();
+           ++a) {
+        CHECK((**c).containerDag().parents((**a).id()).size() < 6);
+      }
+    }
+
+    // testing instances
+    const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
+    CHECK_EQ(sys.size(), static_cast< gum::Size >(100));
+
+    if (prm) delete prm;
+
+    if (gen) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen); }
+  }
+
+  GUM_TEST(ClusterGenerator) {
+    gum::prm::ClusteredLayerGenerator< double >* gen = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gen = new gum::prm::ClusteredLayerGenerator< double >());
+    gen->setDomainSize(6);
+    gen->setMaxParents(5);
+    gen->setClusterRatio(1.0);
+    std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
+    generateLayerLayer(v, 10);
+    gen->setLayers(v);
+    gum::prm::PRM< double >* prm = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(prm = gen->generate());
+    // testing interfaces
+    const gum::Set< gum::prm::PRMInterface< double >* >& i_set = prm->interfaces();
+    CHECK_EQ(i_set.size(), static_cast< gum::Size >(10));
+
+    for (gum::Set< gum::prm::PRMInterface< double >* >::const_iterator iter = i_set.begin();
+         iter != i_set.end();
+         ++iter) {
+      const gum::prm::PRMInterface< double >& i = **iter;
+
+      if (i.referenceSlots().size()) {
+        CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(1));
+        CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(32));
+      } else {
+        CHECK_EQ(i.referenceSlots().size(), static_cast< gum::Size >(0));
+        CHECK_EQ(i.attributes().size(), static_cast< gum::Size >(30));
+      }
+
+      gum::Size                                            six  = 0;
+      gum::Size                                            two  = 0;
+      const gum::Set< gum::prm::PRMAttribute< double >* >& attr = i.attributes();
+
+      for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a = attr.begin();
+           a != attr.end();
+           ++a) {
+        if ((**a).type()->domainSize() == static_cast< gum::Size >(6)) {
+          ++six;
+        } else if ((**a).type()->domainSize() == 2) {
+          ++two;
+        } else {
+          CHECK(false);
+        }
+      }
+
+      CHECK_EQ(six, static_cast< gum::Size >(30));
+
+      if (i.referenceSlots().size()) { CHECK_EQ(two, static_cast< gum::Size >(2)); }
+    }
+
+    // testing classes
+    const gum::Set< gum::prm::PRMClass< double >* >& c_set = prm->classes();
+
+    for (gum::Set< gum::prm::PRMClass< double >* >::const_iterator c = c_set.begin();
+         c != c_set.end();
+         ++c) {
+      CHECK_EQ((**c).attributes().size(), static_cast< gum::Size >(30));
+
+      for (gum::Set< gum::prm::PRMAttribute< double >* >::const_iterator a
+           = (**c).attributes().begin();
+           a != (**c).attributes().end();
+           ++a) {
+        CHECK((**c).containerDag().parents((**a).id()).size() < 6);
+      }
+    }
+
+    // testing instances
+    const gum::prm::PRMSystem< double >& sys = **(prm->systems().begin());
+    CHECK(sys.size() > static_cast< gum::Size >(100));
+
+    if (prm) delete prm;
+
+    if (gen) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen); }
+  }
 
 }   // namespace gum_tests

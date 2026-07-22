@@ -50,75 +50,69 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  RangeVariable
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct RangeVariableTestSuite {
     public:
-    static void testCopy() {
-      gum::RangeVariable var1("var1", "this is var1");
-      gum::RangeVariable var2("var2", "this is var2", 1, 4);
-
-      gum::RangeVariable var3(var1);
-      gum::RangeVariable var4("var4", "this is var4");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
-
-      CHECK_EQ(var4.minVal(), var2.minVal());
-      CHECK_EQ(var1.maxVal(), var3.maxVal());
-      CHECK_NE(var4.minVal(), var1.minVal());
-    }   // namespace gum_tests
-
-    static void testLabels() {
-      gum::RangeVariable var1("var1", "this is var1");
-      CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(2));
-      CHECK(!var1.empty());
-
-      var1.setMinVal(1);
-      var1.setMaxVal(0);
-      CHECK(var1.empty());
-
-      var1.setMaxVal(9);
-      CHECK(!var1.empty());
-      CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(9));
-      CHECK(var1.belongs(3L));
-      CHECK(!var1.belongs(0L));
-      CHECK(!var1.belongs(10L));
-
-      var1.setMinVal(3);
-
-      CHECK_EQ(var1.label(1), "4");
-      CHECK_EQ(var1["4"], static_cast< gum::Idx >(1));
-
-      gum::DiscreteVariable& v = var1;
-
-      CHECK_EQ(v.label(1), "4");
-      CHECK_EQ(v["4"], static_cast< gum::Idx >(1));
-
-      std::stringstream s;
-      s << v;
-      CHECK_EQ(s.str(), "var1:Range([3,9])");
-      CHECK_EQ(v.toString(), "var1:Range([3,9])");
-    }
-
-    static void testNumerical() {
-      gum::RangeVariable var1("var1", "this is var1", 10, 20);
-      CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(11));
-
-      for (gum::Idx i = 0; i < var1.domainSize(); i++) {
-        CHECK_EQ(var1.numerical(i), var1.minVal() + i);
-      }
-    }
-
-    static void testIsNumerical() {
-      gum::RangeVariable var("var", "var", 0, 5);
-      CHECK(var.isNumerical());
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Copy)
-  GUM_TEST_ACTIF(Labels)
-  GUM_TEST_ACTIF(Numerical)
-  GUM_TEST_ACTIF(IsNumerical)
+  GUM_TEST(Copy) {
+    gum::RangeVariable var1("var1", "this is var1");
+    gum::RangeVariable var2("var2", "this is var2", 1, 4);
+
+    gum::RangeVariable var3(var1);
+    gum::RangeVariable var4("var4", "this is var4");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
+
+    CHECK_EQ(var4.minVal(), var2.minVal());
+    CHECK_EQ(var1.maxVal(), var3.maxVal());
+    CHECK_NE(var4.minVal(), var1.minVal());
+  }
+
+  GUM_TEST(Labels) {
+    gum::RangeVariable var1("var1", "this is var1");
+    CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(2));
+    CHECK(!var1.empty());
+
+    var1.setMinVal(1);
+    var1.setMaxVal(0);
+    CHECK(var1.empty());
+
+    var1.setMaxVal(9);
+    CHECK(!var1.empty());
+    CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(9));
+    CHECK(var1.belongs(3L));
+    CHECK(!var1.belongs(0L));
+    CHECK(!var1.belongs(10L));
+
+    var1.setMinVal(3);
+
+    CHECK_EQ(var1.label(1), "4");
+    CHECK_EQ(var1["4"], static_cast< gum::Idx >(1));
+
+    gum::DiscreteVariable& v = var1;
+
+    CHECK_EQ(v.label(1), "4");
+    CHECK_EQ(v["4"], static_cast< gum::Idx >(1));
+
+    std::stringstream s;
+    s << v;
+    CHECK_EQ(s.str(), "var1:Range([3,9])");
+    CHECK_EQ(v.toString(), "var1:Range([3,9])");
+  }
+
+  GUM_TEST(Numerical) {
+    gum::RangeVariable var1("var1", "this is var1", 10, 20);
+    CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(11));
+
+    for (gum::Idx i = 0; i < var1.domainSize(); i++) {
+      CHECK_EQ(var1.numerical(i), var1.minVal() + i);
+    }
+  }
+
+  GUM_TEST(IsNumerical) {
+    gum::RangeVariable var("var", "var", 0, 5);
+    CHECK(var.isNumerical());
+  }
 }   // namespace gum_tests

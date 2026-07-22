@@ -57,262 +57,11 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  ShaferShenoyMRF
-#define GUM_CURRENT_MODULE MRF
-
 namespace gum_tests {
-  struct ShaferShenoyMRFTestSuite {
+  struct ShaferShenoyMRFInferenceTestSuite {
     public:
-    static void testConstructor() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
-      gum::ShaferShenoyMRFInference< double > ie(&mn);
-    }   // namespace gum_tests
+    // namespace gum_tests
 
-    static void testSimpleInference() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
-      gum::ShaferShenoyMRFInference< double > ie(&mn);
-      ie.makeInference();
-    }
-
-    static void testCompareInferenceTree() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
-      gum::LazyPropagation< double > iebn(&bn);
-      iebn.makeInference();
-
-      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.makeInference();
-
-      for (const auto n: bn.nodes()) {
-        const std::string&           name   = bn.variable(n).name();
-        const gum::Tensor< double >& postbn = iebn.posterior(name);
-
-        gum::Tensor< double > postmn;
-        postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
-
-        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
-      }
-    }
-
-    static void testCompareInferenceDAG() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
-      gum::LazyPropagation< double > iebn(&bn);
-      iebn.makeInference();
-
-      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.makeInference();
-
-      for (const auto n: bn.nodes()) {
-        const std::string&           name   = bn.variable(n).name();
-        const gum::Tensor< double >& postbn = iebn.posterior(name);
-
-        gum::Tensor< double > postmn;
-        postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
-
-        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
-      }
-    }
-
-    static void testCompareInferenceTreeWithEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
-      gum::LazyPropagation< double > iebn(&bn);
-      iebn.addEvidence("B", 1);
-      iebn.makeInference();
-
-      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("B", 1);
-      iemn.makeInference();
-
-      for (const auto n: bn.nodes()) {
-        const std::string&           name   = bn.variable(n).name();
-        const gum::Tensor< double >& postbn = iebn.posterior(name);
-
-        gum::Tensor< double > postmn;
-        postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
-
-        CHECK_LT((postbn - postmn).abs().max(), 1e-7);
-      }
-    }
-
-    static void testCompareInferenceDAGWithEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
-      gum::LazyPropagation< double > iebn(&bn);
-      iebn.addEvidence("B", 1);
-      iebn.makeInference();
-
-      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("B", 1);
-      iemn.makeInference();
-
-      for (const auto n: bn.nodes()) {
-        const std::string&           name   = bn.variable(n).name();
-        const gum::Tensor< double >& postbn = iebn.posterior(name);
-
-        gum::Tensor< double > postmn;
-        postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
-
-        CHECK_LT((postbn - postmn).abs().max(), 1e-8);
-      }
-    }
-
-    static void testCompareInferenceDAGWithSoftEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
-      gum::LazyPropagation< double > iebn(&bn);
-      iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
-      iebn.makeInference();
-
-      auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("B", std::vector< double >{0.8, 0.5});
-      iemn.makeInference();
-
-      for (const auto n: bn.nodes()) {
-        const std::string&           name   = bn.variable(n).name();
-        const gum::Tensor< double >& postbn = iebn.posterior(name);
-
-        gum::Tensor< double > postmn;
-        postmn.add(bn.variable(n));
-        postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
-
-        CHECK_LT((postbn - postmn).abs().max(), 1e-8);
-      }
-    }
-
-    static void testClassicalInference() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("B", 1);
-      iemn.makeInference();
-
-      for (const auto n: mn.nodes()) {
-        CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
-      }
-    }
-
-    static void testSeparationInInference() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("A", 0);
-      iemn.addEvidence("D", 1);
-      iemn.makeInference();
-      gum::Tensor< double > Cwithout_evB(iemn.posterior("C"));
-      gum::Tensor< double > Ewithout_evB(iemn.posterior("E"));
-
-      iemn.eraseAllEvidence();
-      iemn.addEvidence("A", 0);
-      iemn.addEvidence("D", 1);
-      iemn.addEvidence("B", 0);
-      iemn.makeInference();
-      gum::Tensor< double > Cwith_evB0(iemn.posterior("C"));
-      gum::Tensor< double > Ewith_evB0(iemn.posterior("E"));
-
-      iemn.eraseAllEvidence();
-      iemn.addEvidence("A", 0);
-      iemn.addEvidence("D", 1);
-      iemn.addEvidence("B", 1);
-      iemn.makeInference();
-      gum::Tensor< double > Cwith_evB1(iemn.posterior("C"));
-      gum::Tensor< double > Ewith_evB1(iemn.posterior("E"));
-
-      CHECK_LT(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8);
-      CHECK_LT(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8);
-      CHECK_LT(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8);
-
-      CHECK_LT((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8);
-      CHECK_LT((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
-      CHECK_LT((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
-    }
-
-    static void testIndependencyInference() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A;B;C;D;E;F");
-      gum::ShaferShenoyMRFInference< double > iemn(&mn);
-      iemn.addEvidence("B", 1);
-      iemn.makeInference();
-
-      for (const auto n: mn.nodes()) {
-        CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
-      }
-    }
-
-    static void testIncrementalInference() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
-
-      {
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addEvidence("A", 0);
-        ie.addEvidence("D", 1);
-        ie.addEvidence("B", 0);
-        ie.makeInference();
-
-        gum::ShaferShenoyMRFInference< double > ie2(&mn);
-        ie2.addEvidence("A", 1);
-        ie2.addEvidence("D", 1);
-        ie2.addEvidence("B", 1);
-        ie2.makeInference();
-
-        ie2.chgEvidence("A", 0);
-        ie2.chgEvidence("B", 0);
-        ie2.makeInference();
-
-        for (const auto n: mn.nodes()) {
-          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
-        }
-      }
-
-      {
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addEvidence("A", 0);
-        ie.addEvidence("D", 1);
-        ie.addEvidence("B", 0);
-        ie.makeInference();
-
-        gum::ShaferShenoyMRFInference< double > ie2(&mn);
-        ie2.addEvidence("A", 0);
-        ie2.addEvidence("D", 0);
-        ie2.addEvidence("B", 0);
-        ie2.makeInference();
-
-        ie2.chgEvidence("D", 1);
-        ie2.makeInference();
-
-        for (const auto n: mn.nodes()) {
-          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
-        }
-      }
-    }
-
-    static void testIncrementalInferenceWithSoftEvidence() {
-      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
-
-      {
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addEvidence("A", std::vector< double >{0.3, 0.9});
-        ie.addEvidence("D", std::vector< double >{0.5, 0.2});
-        ie.addEvidence("B", 0);
-        ie.makeInference();
-
-        gum::ShaferShenoyMRFInference< double > ie2(&mn);
-        ie2.addEvidence("A", std::vector< double >{0.5, 0.2});
-        ie2.addEvidence("D", std::vector< double >{0.5, 0.2});
-        ie2.addEvidence("B", std::vector< double >{0.5, 0.2});
-        ie2.makeInference();
-
-        ie2.chgEvidence("A", std::vector< double >{0.3, 0.9});
-        ie2.chgEvidence("B", 0);
-        ie2.makeInference();
-
-        for (const auto n: mn.nodes()) {
-          CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
-        }
-      }
-    }
 
     static gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
@@ -331,118 +80,354 @@ namespace gum_tests {
       joint.normalize();
       return joint.sumOut({&mn.variable("C")});
     }
-
-    static void testJointTargetFromExistingJoint() {
-      // explicit jointtarget
-      // gum::Tensor< double > p;
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
-
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.makeInference();
-        CHECK_THROWS_AS(auto p = ie.jointPosterior({0, 2}), const gum::UndefinedElement&);
-      }
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addJointTarget({0, 2});
-        ie.makeInference();
-        auto p = ie.jointPosterior({0, 2});
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
-      }
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addJointTarget({0, 2});
-
-        try {
-          auto p = ie.jointPosterior({0, 2});
-          GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
-        } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
-      }
-      // implicit jointtarget as factor
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.makeInference();
-        auto p = ie.jointPosterior({0, 1});
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
-      }
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addJointTarget({0, 1});
-        ie.makeInference();
-        auto p = ie.jointPosterior({0, 1});
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
-      }
-      // implicit jointtarget as subset of clique in junction tree
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.makeInference();
-        auto p = ie.jointPosterior({0, 2});
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
-      }
-      {
-        auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
-        gum::ShaferShenoyMRFInference< double > ie(&mn);
-        ie.addJointTarget({0, 2});
-        ie.makeInference();
-        auto p = ie.jointPosterior({0, 2});
-        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
-      }
-    }
-
-    static void testIrrelevantSoftEvidence() {
-      auto                  mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
-      gum::Tensor< double > psoft;
-      gum::Tensor< double > phard;
-
-      auto hardevC = gum::Tensor< double >();
-      hardevC.add(mn.variable("C"));
-      hardevC.fillWith({0, 1});
-
-      {
-        auto hardev = gum::Tensor< double >();
-        hardev.add(mn.variable("A"));
-        hardev.fillWith({0, 1});
-
-        gum::ShaferShenoyMRFInference ie(&mn);
-        ie.addEvidence(hardevC);
-        ie.addEvidence(hardev);
-        ie.addTarget("E");
-        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
-        phard = gum::Tensor(ie.posterior("E"));
-      }
-      {
-        auto softev = gum::Tensor< double >();
-        softev.add(mn.variable("A"));
-        softev.fillWith({0.5, 1});
-
-        gum::ShaferShenoyMRFInference ie(&mn);
-        ie.addEvidence(hardevC);
-        ie.addEvidence(softev);
-        ie.addTarget("E");
-        GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
-        psoft = gum::Tensor(ie.posterior("E"));
-      }
-      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft);
-    }
   };
 
-  GUM_TEST_ACTIF(Constructor)
-  GUM_TEST_ACTIF(SimpleInference)
-  GUM_TEST_ACTIF(CompareInferenceTree)
-  GUM_TEST_ACTIF(CompareInferenceDAG)
-  GUM_TEST_ACTIF(CompareInferenceTreeWithEvidence)
-  GUM_TEST_ACTIF(CompareInferenceDAGWithEvidence)
-  GUM_TEST_ACTIF(CompareInferenceDAGWithSoftEvidence)
-  GUM_TEST_ACTIF(ClassicalInference)
-  GUM_TEST_ACTIF(SeparationInInference)
-  GUM_TEST_ACTIF(IndependencyInference)
-  GUM_TEST_ACTIF(IncrementalInference)
-  GUM_TEST_ACTIF(IncrementalInferenceWithSoftEvidence)
-  GUM_TEST_ACTIF(JointTargetFromExistingJoint)
-  GUM_TEST_ACTIF(IrrelevantSoftEvidence)
+  GUM_TEST(Constructor) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
+    gum::ShaferShenoyMRFInference< double > ie(&mn);
+  }
+
+  GUM_TEST(SimpleInference) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;C--E--F");
+    gum::ShaferShenoyMRFInference< double > ie(&mn);
+    ie.makeInference();
+  }
+
+  GUM_TEST(CompareInferenceTree) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
+    gum::LazyPropagation< double > iebn(&bn);
+    iebn.makeInference();
+
+    auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.makeInference();
+
+    for (const auto n: bn.nodes()) {
+      const std::string&           name   = bn.variable(n).name();
+      const gum::Tensor< double >& postbn = iebn.posterior(name);
+
+      gum::Tensor< double > postmn;
+      postmn.add(bn.variable(n));
+      postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+      CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+    }
+  }
+
+  GUM_TEST(CompareInferenceDAG) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
+    gum::LazyPropagation< double > iebn(&bn);
+    iebn.makeInference();
+
+    auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.makeInference();
+
+    for (const auto n: bn.nodes()) {
+      const std::string&           name   = bn.variable(n).name();
+      const gum::Tensor< double >& postbn = iebn.posterior(name);
+
+      gum::Tensor< double > postmn;
+      postmn.add(bn.variable(n));
+      postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+      CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+    }
+  }
+
+  GUM_TEST(CompareInferenceTreeWithEvidence) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->G;");
+    gum::LazyPropagation< double > iebn(&bn);
+    iebn.addEvidence("B", 1);
+    iebn.makeInference();
+
+    auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("B", 1);
+    iemn.makeInference();
+
+    for (const auto n: bn.nodes()) {
+      const std::string&           name   = bn.variable(n).name();
+      const gum::Tensor< double >& postbn = iebn.posterior(name);
+
+      gum::Tensor< double > postmn;
+      postmn.add(bn.variable(n));
+      postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+      CHECK_LT((postbn - postmn).abs().max(), 1e-7);
+    }
+  }
+
+  GUM_TEST(CompareInferenceDAGWithEvidence) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
+    gum::LazyPropagation< double > iebn(&bn);
+    iebn.addEvidence("B", 1);
+    iebn.makeInference();
+
+    auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("B", 1);
+    iemn.makeInference();
+
+    for (const auto n: bn.nodes()) {
+      const std::string&           name   = bn.variable(n).name();
+      const gum::Tensor< double >& postbn = iebn.posterior(name);
+
+      gum::Tensor< double > postmn;
+      postmn.add(bn.variable(n));
+      postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+      CHECK_LT((postbn - postmn).abs().max(), 1e-8);
+    }
+  }
+
+  GUM_TEST(CompareInferenceDAGWithSoftEvidence) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D<-E;B->F;D->F;");
+    gum::LazyPropagation< double > iebn(&bn);
+    iebn.addEvidence("B", std::vector< double >{0.8, 0.5});
+    iebn.makeInference();
+
+    auto                                    mn = gum::MarkovRandomField< double >::fromBN(bn);
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("B", std::vector< double >{0.8, 0.5});
+    iemn.makeInference();
+
+    for (const auto n: bn.nodes()) {
+      const std::string&           name   = bn.variable(n).name();
+      const gum::Tensor< double >& postbn = iebn.posterior(name);
+
+      gum::Tensor< double > postmn;
+      postmn.add(bn.variable(n));
+      postmn.fillWith(iemn.posterior(name));   // postmn using bn variable
+
+      CHECK_LT((postbn - postmn).abs().max(), 1e-8);
+    }
+  }
+
+  GUM_TEST(ClassicalInference) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("B", 1);
+    iemn.makeInference();
+
+    for (const auto n: mn.nodes()) {
+      CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
+    }
+  }
+
+  GUM_TEST(SeparationInInference) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("A", 0);
+    iemn.addEvidence("D", 1);
+    iemn.makeInference();
+    gum::Tensor< double > Cwithout_evB(iemn.posterior("C"));
+    gum::Tensor< double > Ewithout_evB(iemn.posterior("E"));
+
+    iemn.eraseAllEvidence();
+    iemn.addEvidence("A", 0);
+    iemn.addEvidence("D", 1);
+    iemn.addEvidence("B", 0);
+    iemn.makeInference();
+    gum::Tensor< double > Cwith_evB0(iemn.posterior("C"));
+    gum::Tensor< double > Ewith_evB0(iemn.posterior("E"));
+
+    iemn.eraseAllEvidence();
+    iemn.addEvidence("A", 0);
+    iemn.addEvidence("D", 1);
+    iemn.addEvidence("B", 1);
+    iemn.makeInference();
+    gum::Tensor< double > Cwith_evB1(iemn.posterior("C"));
+    gum::Tensor< double > Ewith_evB1(iemn.posterior("E"));
+
+    CHECK_LT(-(Cwithout_evB - Cwith_evB0).abs().max(), -1e-8);
+    CHECK_LT(-(Cwithout_evB - Cwith_evB1).abs().max(), -1e-8);
+    CHECK_LT(-(Cwith_evB1 - Cwith_evB0).abs().max(), -1e-8);
+
+    CHECK_LT((Ewithout_evB - Ewith_evB0).abs().max(), 1e-8);
+    CHECK_LT((Ewithout_evB - Ewith_evB1).abs().max(), 1e-8);
+    CHECK_LT((Ewith_evB1 - Ewith_evB0).abs().max(), 1e-8);
+  }
+
+  GUM_TEST(IndependencyInference) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A;B;C;D;E;F");
+    gum::ShaferShenoyMRFInference< double > iemn(&mn);
+    iemn.addEvidence("B", 1);
+    iemn.makeInference();
+
+    for (const auto n: mn.nodes()) {
+      CHECK((iemn.posterior(n).sum()) == doctest::Approx(1.0).epsilon(1e-8));
+    }
+  }
+
+  GUM_TEST(IncrementalInference) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
+
+    {
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addEvidence("A", 0);
+      ie.addEvidence("D", 1);
+      ie.addEvidence("B", 0);
+      ie.makeInference();
+
+      gum::ShaferShenoyMRFInference< double > ie2(&mn);
+      ie2.addEvidence("A", 1);
+      ie2.addEvidence("D", 1);
+      ie2.addEvidence("B", 1);
+      ie2.makeInference();
+
+      ie2.chgEvidence("A", 0);
+      ie2.chgEvidence("B", 0);
+      ie2.makeInference();
+
+      for (const auto n: mn.nodes()) {
+        CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+      }
+    }
+
+    {
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addEvidence("A", 0);
+      ie.addEvidence("D", 1);
+      ie.addEvidence("B", 0);
+      ie.makeInference();
+
+      gum::ShaferShenoyMRFInference< double > ie2(&mn);
+      ie2.addEvidence("A", 0);
+      ie2.addEvidence("D", 0);
+      ie2.addEvidence("B", 0);
+      ie2.makeInference();
+
+      ie2.chgEvidence("D", 1);
+      ie2.makeInference();
+
+      for (const auto n: mn.nodes()) {
+        CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+      }
+    }
+  }
+
+  GUM_TEST(IncrementalInferenceWithSoftEvidence) {
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;C--D;D--E--F;F--A");
+
+    {
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addEvidence("A", std::vector< double >{0.3, 0.9});
+      ie.addEvidence("D", std::vector< double >{0.5, 0.2});
+      ie.addEvidence("B", 0);
+      ie.makeInference();
+
+      gum::ShaferShenoyMRFInference< double > ie2(&mn);
+      ie2.addEvidence("A", std::vector< double >{0.5, 0.2});
+      ie2.addEvidence("D", std::vector< double >{0.5, 0.2});
+      ie2.addEvidence("B", std::vector< double >{0.5, 0.2});
+      ie2.makeInference();
+
+      ie2.chgEvidence("A", std::vector< double >{0.3, 0.9});
+      ie2.chgEvidence("B", 0);
+      ie2.makeInference();
+
+      for (const auto n: mn.nodes()) {
+        CHECK_LT((ie2.posterior(n) - ie.posterior(n)).abs().max(), 1e-8);
+      }
+    }
+  }
+
+  GUM_TEST(JointTargetFromExistingJoint) {
+    // explicit jointtarget
+    // gum::Tensor< double > p;
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.makeInference();
+      CHECK_THROWS_AS(auto p = ie.jointPosterior({0, 2}), const gum::UndefinedElement&);
+    }
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addJointTarget({0, 2});
+      ie.makeInference();
+      auto p = ie.jointPosterior({0, 2});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
+    }
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addJointTarget({0, 2});
+
+      try {
+        auto p = ie.jointPosterior({0, 2});
+        GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
+      } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+    }
+    // implicit jointtarget as factor
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.makeInference();
+      auto p = ie.jointPosterior({0, 1});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
+    }
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addJointTarget({0, 1});
+      ie.makeInference();
+      auto p = ie.jointPosterior({0, 1});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAB(mn));
+    }
+    // implicit jointtarget as subset of clique in junction tree
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.makeInference();
+      auto p = ie.jointPosterior({0, 2});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
+    }
+    {
+      auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C;A--C");
+      gum::ShaferShenoyMRFInference< double > ie(&mn);
+      ie.addJointTarget({0, 2});
+      ie.makeInference();
+      auto p = ie.jointPosterior({0, 2});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(p, pAC(mn));
+    }
+  }
+
+  GUM_TEST(IrrelevantSoftEvidence) {
+    auto                  mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;D--C--E");
+    gum::Tensor< double > psoft;
+    gum::Tensor< double > phard;
+
+    auto hardevC = gum::Tensor< double >();
+    hardevC.add(mn.variable("C"));
+    hardevC.fillWith({0, 1});
+
+    {
+      auto hardev = gum::Tensor< double >();
+      hardev.add(mn.variable("A"));
+      hardev.fillWith({0, 1});
+
+      gum::ShaferShenoyMRFInference ie(&mn);
+      ie.addEvidence(hardevC);
+      ie.addEvidence(hardev);
+      ie.addTarget("E");
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
+      phard = gum::Tensor(ie.posterior("E"));
+    }
+    {
+      auto softev = gum::Tensor< double >();
+      softev.add(mn.variable("A"));
+      softev.fillWith({0.5, 1});
+
+      gum::ShaferShenoyMRFInference ie(&mn);
+      ie.addEvidence(hardevC);
+      ie.addEvidence(softev);
+      ie.addTarget("E");
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
+      psoft = gum::Tensor(ie.posterior("E"));
+    }
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft);
+  }
 }   // namespace gum_tests

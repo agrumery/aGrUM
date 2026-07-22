@@ -46,77 +46,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Timer
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct TimerTestSuite {
     public:
-    static void testConstructors() {
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t1);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2););
-      {
-        gum::Timer t1;
-        t1.reset();
-
-        gum::Timer* t2 = new gum::Timer();
-        t2->reset();
-
-        GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2));
-
-        gum::Timer* t4 = nullptr;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1));
-        CHECK((t4->step()) == doctest::Approx(t1.step()).epsilon(1e-3));
-
-        gum::Timer t3(*t2);
-        CHECK((t2->step()) == doctest::Approx(t3.step()).epsilon(1e-3));
-
-        gum::Timer t5 = t3;
-        CHECK((t5.step()) == doctest::Approx(t3.step()).epsilon(1e-3));
-
-        delete t2;
-        delete t4;
-      }   // namespace gum_tests
-    }
-
-    static void testTrivial() {
-      bool test_pass = false;
-      // The test randomly fails for reasons, it have to fails three times in
-      // a row to be considered trully as failed
-      for (int i = 0; (i < 3) && !test_pass; ++i) {
-        gum::Timer t;
-        gum::Timer tt;
-        int        w = 0;
-
-        begin_test_waiting();
-        t.reset();
-        double t1 = t.step();
-        test_waiting(++w);
-        tt.reset();
-        double t5 = t.step();
-        simpleSleep(1);
-        test_waiting(++w);
-        double t2 = t.pause();
-        simpleSleep(1);
-        test_waiting(++w);
-        double t3 = t.resume();
-        simpleSleep(1);
-        test_waiting(++w);
-        double t4 = t.step();
-        double t6 = tt.step();
-        end_test_waiting();
-
-        // CHECK((t6 - t5) == doctest::Approx(3.0).epsilon(1e-3));
-        test_pass = std::abs(std::abs(t6 - t5) - 3.0) <= 1e-3;
-        // CHECK((t4 - t1) == doctest::Approx(2.0).epsilon(1e-3));
-        test_pass = test_pass && std::abs(std::abs(t4 - t1) - 2.0) <= 1e-3;
-        // CHECK((t3 - t2) == doctest::Approx(0.0).epsilon(1e-3));
-        test_pass = test_pass && std::abs(std::abs(t3 - t2) - 0.0) <= 1e-3;
-      }
-      GUM_ASSERT(test_pass);
-    }
-
     static inline void simpleSleep(double second) {
       gum::Timer t;
       t.reset();
@@ -126,6 +59,67 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constructors)
-  GUM_TEST_ACTIF(Trivial)
+  GUM_TEST(Constructors) {
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t1);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer* t2 = new gum::Timer(); delete (t2););
+    {
+      gum::Timer t1;
+      t1.reset();
+
+      gum::Timer* t2 = new gum::Timer();
+      t2->reset();
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Timer t3(*t2));
+
+      gum::Timer* t4 = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(t4 = new gum::Timer(t1));
+      CHECK((t4->step()) == doctest::Approx(t1.step()).epsilon(1e-3));
+
+      gum::Timer t3(*t2);
+      CHECK((t2->step()) == doctest::Approx(t3.step()).epsilon(1e-3));
+
+      gum::Timer t5 = t3;
+      CHECK((t5.step()) == doctest::Approx(t3.step()).epsilon(1e-3));
+
+      delete t2;
+      delete t4;
+    }   // namespace gum_tests
+  }
+
+  GUM_TEST(Trivial) {
+    bool test_pass = false;
+    // The test randomly fails for reasons, it have to fails three times in
+    // a row to be considered trully as failed
+    for (int i = 0; (i < 3) && !test_pass; ++i) {
+      gum::Timer t;
+      gum::Timer tt;
+      int        w = 0;
+
+      begin_test_waiting();
+      t.reset();
+      double t1 = t.step();
+      test_waiting(++w);
+      tt.reset();
+      double t5 = t.step();
+      simpleSleep(1);
+      test_waiting(++w);
+      double t2 = t.pause();
+      simpleSleep(1);
+      test_waiting(++w);
+      double t3 = t.resume();
+      simpleSleep(1);
+      test_waiting(++w);
+      double t4 = t.step();
+      double t6 = tt.step();
+      end_test_waiting();
+
+      // CHECK((t6 - t5) == doctest::Approx(3.0).epsilon(1e-3));
+      test_pass = std::abs(std::abs(t6 - t5) - 3.0) <= 1e-3;
+      // CHECK((t4 - t1) == doctest::Approx(2.0).epsilon(1e-3));
+      test_pass = test_pass && std::abs(std::abs(t4 - t1) - 2.0) <= 1e-3;
+      // CHECK((t3 - t2) == doctest::Approx(0.0).epsilon(1e-3));
+      test_pass = test_pass && std::abs(std::abs(t3 - t2) - 0.0) <= 1e-3;
+    }
+    GUM_ASSERT(test_pass);
+  }
 }   // namespace gum_tests

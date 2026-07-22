@@ -49,9 +49,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 
-#define GUM_CURRENT_SUITE  DFSCode
-#define GUM_CURRENT_MODULE PRM
-
 /*
  * Test of gum::prm::gspan::DFSCode and gum::prm::gspan::EdgeCode.
  *
@@ -61,7 +58,7 @@
 namespace gum_tests {
 
   struct DFSCodeTestSuite {
-    private:
+    protected:
     gum::prm::gspan::DFSCode* alpha;
     gum::prm::gspan::DFSCode* beta;
     gum::prm::gspan::DFSCode* gamma;
@@ -106,18 +103,6 @@ namespace gum_tests {
     }
 
     public:
-    static void testLesserThan() {
-      CHECK_LT(*gamma, *alpha);
-      CHECK_LT(*gamma, *beta);
-      CHECK_LT(*alpha, *beta);
-      CHECK(!((*alpha) < (*alpha)));
-      CHECK(!((*beta) < (*beta)));
-      CHECK(!((*gamma) < (*gamma)));
-      CHECK(!((*alpha) < (*gamma)));
-      CHECK(!((*beta) < (*gamma)));
-      CHECK(!((*beta) < (*alpha)));
-    }
-
     DFSCodeTestSuite() {
       X = 0;
 
@@ -147,71 +132,74 @@ namespace gum_tests {
 
       delete gamma;
     }
-
-    static void testLesserOrEqualThan() {
-      CHECK_LE(*gamma, *alpha);
-      CHECK_LE(*gamma, *beta);
-      CHECK_LE(*alpha, *beta);
-      CHECK_LE(*alpha, *alpha);
-      CHECK_LE(*beta, *beta);
-      CHECK_LE(*gamma, *gamma);
-      CHECK(!((*alpha) <= (*gamma)));
-      CHECK(!((*beta) <= (*gamma)));
-      CHECK(!((*beta) <= (*alpha)));
-    }
-
-    static void testAlphaNeighbors() {
-      for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
-           iter != alpha->codes.end();
-           ++iter) {
-        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
-      }
-    }
-
-    static void testBetaNeighbors() {
-      for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
-           iter != beta->codes.end();
-           ++iter) {
-        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
-      }
-    }
-
-    static void testGammaNeighbors() {
-      for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
-           iter != gamma->codes.end();
-           ++iter) {
-        CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
-      }
-    }
-
-    static void testAlphaPrint() {
-      CHECK_NOTHROW({
-        std::stringstream ss;
-        ss << std::endl << (*alpha) << std::endl;
-      });
-    }
-
-    static void testBetaPrint() {
-      CHECK_NOTHROW({
-        std::stringstream ss;
-        ss << std::endl << (*beta) << std::endl;
-      });
-    }
-
-    static void testGammaPrint() {
-      CHECK_NOTHROW({
-        std::stringstream ss;
-        ss << std::endl << (*gamma) << std::endl;
-      });
-    }
   };
 
-  GUM_TEST_ACTIF(LesserThan)
-  GUM_TEST_ACTIF(LesserOrEqualThan)
-  GUM_TEST_ACTIF(AlphaNeighbors)
-  GUM_TEST_ACTIF(BetaNeighbors)
-  GUM_TEST_ACTIF(GammaNeighbors)
-  GUM_TEST_ACTIF(AlphaPrint)
-  GUM_TEST_ACTIF(BetaPrint)
-  GUM_TEST_ACTIF(GammaPrint)
+  GUM_TEST(LesserThan) {
+    CHECK_LT(*gamma, *alpha);
+    CHECK_LT(*gamma, *beta);
+    CHECK_LT(*alpha, *beta);
+    CHECK(!((*alpha) < (*alpha)));
+    CHECK(!((*beta) < (*beta)));
+    CHECK(!((*gamma) < (*gamma)));
+    CHECK(!((*alpha) < (*gamma)));
+    CHECK(!((*beta) < (*gamma)));
+    CHECK(!((*beta) < (*alpha)));
+  }
+
+  GUM_TEST(LesserOrEqualThan) {
+    CHECK_LE(*gamma, *alpha);
+    CHECK_LE(*gamma, *beta);
+    CHECK_LE(*alpha, *beta);
+    CHECK_LE(*alpha, *alpha);
+    CHECK_LE(*beta, *beta);
+    CHECK_LE(*gamma, *gamma);
+    CHECK(!((*alpha) <= (*gamma)));
+    CHECK(!((*beta) <= (*gamma)));
+    CHECK(!((*beta) <= (*alpha)));
+  }
+
+  GUM_TEST(AlphaNeighbors) {
+    for (gum::prm::gspan::DFSCode::iterator iter = alpha->codes.begin() + 1;
+         iter != alpha->codes.end();
+         ++iter) {
+      CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+    }
+  }
+
+  GUM_TEST(BetaNeighbors) {
+    for (gum::prm::gspan::DFSCode::iterator iter = beta->codes.begin() + 1;
+         iter != beta->codes.end();
+         ++iter) {
+      CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+    }
+  }
+
+  GUM_TEST(GammaNeighbors) {
+    for (gum::prm::gspan::DFSCode::iterator iter = gamma->codes.begin() + 1;
+         iter != gamma->codes.end();
+         ++iter) {
+      CHECK(gum::prm::gspan::DFSCode::validNeighbors(*(iter - 1), *iter));
+    }
+  }
+
+  GUM_TEST(AlphaPrint) {
+    CHECK_NOTHROW({
+      std::stringstream ss;
+      ss << std::endl << (*alpha) << std::endl;
+    });
+  }
+
+  GUM_TEST(BetaPrint) {
+    CHECK_NOTHROW({
+      std::stringstream ss;
+      ss << std::endl << (*beta) << std::endl;
+    });
+  }
+
+  GUM_TEST(GammaPrint) {
+    CHECK_NOTHROW({
+      std::stringstream ss;
+      ss << std::endl << (*gamma) << std::endl;
+    });
+  }
 }   // namespace gum_tests

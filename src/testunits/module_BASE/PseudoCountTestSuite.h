@@ -55,57 +55,54 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  PseudoCount
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct PseudoCountTestSuite {
     public:
-    static void test_simple_counts() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      {
-        gum::learning::NoPrior     prior(database);
-        gum::learning::PseudoCount counts(parser, prior);
-
-        CHECK_EQ(counts.get({1}), std::vector< double >({4, 3}));
-        CHECK_EQ(counts.get({2}), std::vector< double >({3, 2, 2}));
-        CHECK_EQ(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}));
-      }
-      {
-        gum::learning::SmoothingPrior prior(database);
-        gum::learning::PseudoCount    counts(parser, prior);
-
-        CHECK_EQ(counts.get({1}), std::vector< double >({5, 4}));
-        CHECK_EQ(counts.get({2}), std::vector< double >({4, 3, 3}));
-        CHECK_EQ(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}));
-      }
-      {
-        gum::learning::SmoothingPrior prior(database);
-        prior.setWeight(0.1);
-        gum::learning::PseudoCount counts(parser, prior);
-
-        CHECK_EQ(counts.get({1}), std::vector< double >({4.1, 3.1}));
-        CHECK_EQ(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}));
-        CHECK_EQ(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
-      }
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(_simple_counts)
+  GUM_TEST(_simple_counts) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/minimal.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    {
+      gum::learning::NoPrior     prior(database);
+      gum::learning::PseudoCount counts(parser, prior);
+
+      CHECK_EQ(counts.get({1}), std::vector< double >({4, 3}));
+      CHECK_EQ(counts.get({2}), std::vector< double >({3, 2, 2}));
+      CHECK_EQ(counts.get({0, 2}), std::vector< double >({2, 1, 1, 1, 0, 2}));
+    }
+    {
+      gum::learning::SmoothingPrior prior(database);
+      gum::learning::PseudoCount    counts(parser, prior);
+
+      CHECK_EQ(counts.get({1}), std::vector< double >({5, 4}));
+      CHECK_EQ(counts.get({2}), std::vector< double >({4, 3, 3}));
+      CHECK_EQ(counts.get({0, 2}), std::vector< double >({3, 2, 2, 2, 1, 3}));
+    }
+    {
+      gum::learning::SmoothingPrior prior(database);
+      prior.setWeight(0.1);
+      gum::learning::PseudoCount counts(parser, prior);
+
+      CHECK_EQ(counts.get({1}), std::vector< double >({4.1, 3.1}));
+      CHECK_EQ(counts.get({2}), std::vector< double >({3.1, 2.1, 2.1}));
+      CHECK_EQ(counts.get({0, 2}), std::vector< double >({2.1, 1.1, 1.1, 1.1, 0.1, 2.1}));
+    }
+  }
 } /* namespace gum_tests */

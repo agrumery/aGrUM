@@ -54,13 +54,10 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/CM/tools/separation.h>
 
-#define GUM_CURRENT_SUITE  DSeparation
-#define GUM_CURRENT_MODULE CM
-
 namespace gum_tests {
 
   struct DSeparationTestSuite {
-    private:
+    protected:
     // Helper to make a gum::NodeSet from names
     static gum::NodeSet ns(const gum::BayesNet< double >&       bn,
                            std::initializer_list< const char* > names) {
@@ -91,202 +88,201 @@ namespace gum_tests {
     // -------------------------------------------------------------------
     // General d-separation checks
     // -------------------------------------------------------------------
-    static void testgeneral_dsep_basic_paths() {
-      auto        bn = makeRefBN();
-      const auto& dg = bn.internalDag();
 
-      auto A = ns(bn, {"A"});
-      auto B = ns(bn, {"B"});
-      auto C = ns(bn, {"C"});
-      auto E = ns(bn, {"E"});
-      auto F = ns(bn, {"F"});
-      auto G = ns(bn, {"G"});
-
-      // A -> C -> E -> F -> G  (unblocked)
-      CHECK(!gum::Separation::isDSeparated(dg, A, G, gum::NodeSet{}));
-
-      // Conditioning on F blocks all paths A->...->G
-      CHECK(gum::Separation::isDSeparated(dg, A, G, F));
-
-      // A ⟂ B (collider at C) without conditioning
-      CHECK(gum::Separation::isDSeparated(dg, A, B, gum::NodeSet{}));
-
-      // Conditioning on the collider C opens A—C—B
-      CHECK(!gum::Separation::isDSeparated(dg, A, B, C));
-
-      // Conditioning downstream of collider (E) also opens via descendant
-      CHECK(!gum::Separation::isDSeparated(dg, A, B, E));
-
-      // Conditioning on F breaks path to G again (C is already in Z)
-      CHECK(gum::Separation::isDSeparated(dg, A, G, ns(bn, {"C", "F"})));
-    }
 
     // -------------------------------------------------------------------
     // Restricted variants: backdoor / forward
     // -------------------------------------------------------------------
-    static void testbackdoor_forward_simple_chain() {
-      // A -> B -> C
-      auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-      const auto& dg = bn.internalDag();
 
-      auto A = ns(bn, {"A"});
-      auto C = ns(bn, {"C"});
-
-      // From A (cause) to C (effect): there are NO backdoor paths into A
-      CHECK(gum::Separation::isBackdoorSeparated(dg, A, C, gum::NodeSet{}));
-
-      // From C (cause) to A (effect): backdoor path C<-B<-A exists (unblocked)
-      CHECK(!gum::Separation::isBackdoorSeparated(dg, C, A, gum::NodeSet{}));
-
-      // Forward restriction: from A to C, forward paths exist unless we condition on B
-      CHECK(!gum::Separation::isForwardSeparated(dg, A, C, gum::NodeSet{}));
-      CHECK(gum::Separation::isForwardSeparated(dg, A, C, ns(bn, {"B"})));
-    }
-
-    static void testbackdoor_examples_from_pyagrum_suite() {
-      auto mkNS
-          = [](const gum::BayesNet< double >& bn, std::initializer_list< const char* > names) {
-              gum::NodeSet s;
-              for (auto n: names)
-                s.insert(bn.idFromName(n));
-              return s;
-            };
-
-      auto hasBackDoors = [&](std::initializer_list< std::initializer_list< const char* > > sets,
-                              const std::string&                                            spec,
-                              const char*                                                   X,
-                              const char* Y) -> bool {
-        const auto  bn  = gum::BayesNet< double >::fastPrototype(spec);
-        const auto& dag = bn.internalDag();
-        const auto  Xs  = mkNS(bn, {X});
-        const auto  Ys  = mkNS(bn, {Y});
-
-        for (const auto& znames: sets) {
-          gum::NodeSet Z;
-          for (auto n: znames)
-            Z.insert(bn.idFromName(n));
-          if (!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z)) { return false; }
-        }
-        return true;
-      };
-
-      // ---- Tests copied from the Python suite ----
-      CHECK(hasBackDoors({{}}, "A->B->C", "A", "C"));
-      CHECK(!hasBackDoors({{}}, "A->B->C", "C", "A"));
-
-      CHECK(hasBackDoors({{}}, "N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0"));
-
-      CHECK(hasBackDoors(
-          {{"N5"}, {"N6"}},
-          "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6->N0",
-          "N1",
-          "N0"));
-
-      CHECK(hasBackDoors(
-          {{}},
-          "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0",
-          "N1",
-          "N0"));
-
-      CHECK(hasBackDoors({}, "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj"));
-
-      CHECK(hasBackDoors({{"X3", "X4"}, {"X1", "X4"}, {"X4", "X2"}, {"X4", "X5"}},
-                         "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj",
-                         "Xi",
-                         "Xj"));
-    }
 
     // -------------------------------------------------------------------
     // Reduction & barren nodes
     // -------------------------------------------------------------------
-    static void testbarren_nodes_and_reduction() {
-      auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
-      const auto& dg = bn.internalDag();
 
-      const auto idA = bn.idFromName("A");
-      const auto idB = bn.idFromName("B");
-      const auto idC = bn.idFromName("C");
-      const auto idX = bn.idFromName("X");
-      const auto idY = bn.idFromName("Y");
-      const auto idU = bn.idFromName("U");
-      const auto idV = bn.idFromName("V");
-      const auto idW = bn.idFromName("W");
-      const auto idT = bn.idFromName("T");
-
-      // Interest (targets) = {A, C}, Evidence = ∅
-      gum::NodeSet targets;
-      targets.insert(idA);
-      targets.insert(idC);
-      gum::NodeSet evidence;   // empty
-
-      // X->Y, U->V, T, and W (descendant of C) are barren w.r.t. {A,C}
-      auto barren = gum::Separation::findBarrenNodes(dg, evidence, targets);
-      CHECK(barren.exists(idX));
-      CHECK(barren.exists(idY));
-      CHECK(barren.exists(idU));
-      CHECK(barren.exists(idV));
-      CHECK(barren.exists(idT));
-      CHECK(barren.exists(idW));   // descendant of C ⇒ cannot influence {A,C}
-
-      // Reduction should keep {A,B,C} and remove {X,Y,U,V,W,T}
-      gum::NodeSet Xset;
-      Xset.insert(idA);
-      gum::NodeSet Yset;
-      Yset.insert(idC);
-      auto reduced = gum::Separation::reduceForDSeparation(dg, Xset, Yset, evidence);
-
-      CHECK(reduced.existsNode(idA));
-      CHECK(reduced.existsNode(idB));
-      CHECK(reduced.existsNode(idC));
-
-      CHECK(!reduced.existsNode(idX));
-      CHECK(!reduced.existsNode(idY));
-      CHECK(!reduced.existsNode(idU));
-      CHECK(!reduced.existsNode(idV));
-      CHECK(!reduced.existsNode(idW));
-      CHECK(!reduced.existsNode(idT));
-    }
 
     // -------------------------------------------------------------------
     // Cross-check: general d-sep agrees with DAG::dSeparation
     // -------------------------------------------------------------------
-    static void testagreement_with_DAG_API() {
-      auto        bn  = makeRefBN();
-      const auto& dag = bn.internalDag();
-
-      auto A = ns(bn, {"A"});
-      auto B = ns(bn, {"B"});
-      auto C = ns(bn, {"C"});
-
-      CHECK_EQ((gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{})),
-               (dag.dSeparation(A, B, gum::NodeSet{})));
-
-      CHECK_EQ(gum::Separation::isDSeparated(dag, A, B, C), dag.dSeparation(A, B, C));
-    }
-
-    static void testdsep_confounder_conditioning_blocks() {
-      // Confounding only (no direct X->Y path): U->X, U->Y
-      auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
-      const auto& dag = bn.internalDag();
-
-      auto X = ns(bn, {"X"});
-      auto Y = ns(bn, {"Y"});
-      auto U = ns(bn, {"U"});
-
-      // Without conditioning: NOT d-separated (path X <- U -> Y is open)
-      CHECK(!gum::Separation::isDSeparated(dag, X, Y, gum::NodeSet{}));
-
-      // Conditioning on the confounder blocks that backdoor path
-      CHECK(gum::Separation::isDSeparated(dag, X, Y, U));
-    }
   };
 
-  GUM_TEST_ACTIF(general_dsep_basic_paths)
-  GUM_TEST_ACTIF(backdoor_forward_simple_chain)
-  GUM_TEST_ACTIF(backdoor_examples_from_pyagrum_suite)
-  GUM_TEST_ACTIF(barren_nodes_and_reduction)
-  GUM_TEST_ACTIF(agreement_with_DAG_API)
-  GUM_TEST_ACTIF(dsep_confounder_conditioning_blocks)
+  GUM_TEST(general_dsep_basic_paths) {
+    auto        bn = makeRefBN();
+    const auto& dg = bn.internalDag();
+
+    auto A = ns(bn, {"A"});
+    auto B = ns(bn, {"B"});
+    auto C = ns(bn, {"C"});
+    auto E = ns(bn, {"E"});
+    auto F = ns(bn, {"F"});
+    auto G = ns(bn, {"G"});
+
+    // A -> C -> E -> F -> G  (unblocked)
+    CHECK(!gum::Separation::isDSeparated(dg, A, G, gum::NodeSet{}));
+
+    // Conditioning on F blocks all paths A->...->G
+    CHECK(gum::Separation::isDSeparated(dg, A, G, F));
+
+    // A ⟂ B (collider at C) without conditioning
+    CHECK(gum::Separation::isDSeparated(dg, A, B, gum::NodeSet{}));
+
+    // Conditioning on the collider C opens A—C—B
+    CHECK(!gum::Separation::isDSeparated(dg, A, B, C));
+
+    // Conditioning downstream of collider (E) also opens via descendant
+    CHECK(!gum::Separation::isDSeparated(dg, A, B, E));
+
+    // Conditioning on F breaks path to G again (C is already in Z)
+    CHECK(gum::Separation::isDSeparated(dg, A, G, ns(bn, {"C", "F"})));
+  }
+
+  GUM_TEST(backdoor_forward_simple_chain) {
+    // A -> B -> C
+    auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    const auto& dg = bn.internalDag();
+
+    auto A = ns(bn, {"A"});
+    auto C = ns(bn, {"C"});
+
+    // From A (cause) to C (effect): there are NO backdoor paths into A
+    CHECK(gum::Separation::isBackdoorSeparated(dg, A, C, gum::NodeSet{}));
+
+    // From C (cause) to A (effect): backdoor path C<-B<-A exists (unblocked)
+    CHECK(!gum::Separation::isBackdoorSeparated(dg, C, A, gum::NodeSet{}));
+
+    // Forward restriction: from A to C, forward paths exist unless we condition on B
+    CHECK(!gum::Separation::isForwardSeparated(dg, A, C, gum::NodeSet{}));
+    CHECK(gum::Separation::isForwardSeparated(dg, A, C, ns(bn, {"B"})));
+  }
+
+  GUM_TEST(backdoor_examples_from_pyagrum_suite) {
+    auto mkNS = [](const gum::BayesNet< double >& bn, std::initializer_list< const char* > names) {
+      gum::NodeSet s;
+      for (auto n: names)
+        s.insert(bn.idFromName(n));
+      return s;
+    };
+
+    auto hasBackDoors = [&](std::initializer_list< std::initializer_list< const char* > > sets,
+                            const std::string&                                            spec,
+                            const char*                                                   X,
+                            const char* Y) -> bool {
+      const auto  bn  = gum::BayesNet< double >::fastPrototype(spec);
+      const auto& dag = bn.internalDag();
+      const auto  Xs  = mkNS(bn, {X});
+      const auto  Ys  = mkNS(bn, {Y});
+
+      for (const auto& znames: sets) {
+        gum::NodeSet Z;
+        for (auto n: znames)
+          Z.insert(bn.idFromName(n));
+        if (!gum::Separation::isBackdoorSeparated(dag, Xs, Ys, Z)) { return false; }
+      }
+      return true;
+    };
+
+    // ---- Tests copied from the Python suite ----
+    CHECK(hasBackDoors({{}}, "A->B->C", "A", "C"));
+    CHECK(!hasBackDoors({{}}, "A->B->C", "C", "A"));
+
+    CHECK(hasBackDoors({{}}, "N0<-N1->N2;N0<-N3->N2;N0<-N4->N2;N2->N0;N1->N4", "N1", "N0"));
+
+    CHECK(hasBackDoors(
+        {{"N5"}, {"N6"}},
+        "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6->N0",
+        "N1",
+        "N0"));
+
+    CHECK(hasBackDoors(
+        {{}},
+        "N0[1,3]<-N1->N2[1,4];N0<-N3[0,3]->N2;N0<-N4[1,4]->N2;N2->N0;N1->N4;N1<-N5->N6<-N0",
+        "N1",
+        "N0"));
+
+    CHECK(hasBackDoors({}, "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj", "Xi", "Xj"));
+
+    CHECK(hasBackDoors({{"X3", "X4"}, {"X1", "X4"}, {"X4", "X2"}, {"X4", "X5"}},
+                       "Xi<-X3<-X1->X4<-X2->X5->Xj<-X6<-Xi<-X4->Xj",
+                       "Xi",
+                       "Xj"));
+  }
+
+  GUM_TEST(barren_nodes_and_reduction) {
+    auto        bn = gum::BayesNet< double >::fastPrototype("A->B->C; X->Y; U->V; C->W; T");
+    const auto& dg = bn.internalDag();
+
+    const auto idA = bn.idFromName("A");
+    const auto idB = bn.idFromName("B");
+    const auto idC = bn.idFromName("C");
+    const auto idX = bn.idFromName("X");
+    const auto idY = bn.idFromName("Y");
+    const auto idU = bn.idFromName("U");
+    const auto idV = bn.idFromName("V");
+    const auto idW = bn.idFromName("W");
+    const auto idT = bn.idFromName("T");
+
+    // Interest (targets) = {A, C}, Evidence = ∅
+    gum::NodeSet targets;
+    targets.insert(idA);
+    targets.insert(idC);
+    gum::NodeSet evidence;   // empty
+
+    // X->Y, U->V, T, and W (descendant of C) are barren w.r.t. {A,C}
+    auto barren = gum::Separation::findBarrenNodes(dg, evidence, targets);
+    CHECK(barren.exists(idX));
+    CHECK(barren.exists(idY));
+    CHECK(barren.exists(idU));
+    CHECK(barren.exists(idV));
+    CHECK(barren.exists(idT));
+    CHECK(barren.exists(idW));   // descendant of C ⇒ cannot influence {A,C}
+
+    // Reduction should keep {A,B,C} and remove {X,Y,U,V,W,T}
+    gum::NodeSet Xset;
+    Xset.insert(idA);
+    gum::NodeSet Yset;
+    Yset.insert(idC);
+    auto reduced = gum::Separation::reduceForDSeparation(dg, Xset, Yset, evidence);
+
+    CHECK(reduced.existsNode(idA));
+    CHECK(reduced.existsNode(idB));
+    CHECK(reduced.existsNode(idC));
+
+    CHECK(!reduced.existsNode(idX));
+    CHECK(!reduced.existsNode(idY));
+    CHECK(!reduced.existsNode(idU));
+    CHECK(!reduced.existsNode(idV));
+    CHECK(!reduced.existsNode(idW));
+    CHECK(!reduced.existsNode(idT));
+  }
+
+  GUM_TEST(agreement_with_DAG_API) {
+    auto        bn  = makeRefBN();
+    const auto& dag = bn.internalDag();
+
+    auto A = ns(bn, {"A"});
+    auto B = ns(bn, {"B"});
+    auto C = ns(bn, {"C"});
+
+    CHECK_EQ((gum::Separation::isDSeparated(dag, A, B, gum::NodeSet{})),
+             (dag.dSeparation(A, B, gum::NodeSet{})));
+
+    CHECK_EQ(gum::Separation::isDSeparated(dag, A, B, C), dag.dSeparation(A, B, C));
+  }
+
+  GUM_TEST(dsep_confounder_conditioning_blocks) {
+    // Confounding only (no direct X->Y path): U->X, U->Y
+    auto        bn  = gum::BayesNet< double >::fastPrototype("U->X;U->Y");
+    const auto& dag = bn.internalDag();
+
+    auto X = ns(bn, {"X"});
+    auto Y = ns(bn, {"Y"});
+    auto U = ns(bn, {"U"});
+
+    // Without conditioning: NOT d-separated (path X <- U -> Y is open)
+    CHECK(!gum::Separation::isDSeparated(dag, X, Y, gum::NodeSet{}));
+
+    // Conditioning on the confounder blocks that backdoor path
+    CHECK(gum::Separation::isDSeparated(dag, X, Y, U));
+  }
 
 
 }   // namespace gum_tests

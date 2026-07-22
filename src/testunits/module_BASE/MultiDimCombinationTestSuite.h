@@ -53,13 +53,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  MultiDimCombination
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct MultiDimCombinationTestSuite {
-    private:
+    protected:
     // ==========================================================================
     /// initialize randomly a table
     // ==========================================================================
@@ -83,364 +80,361 @@ namespace gum_tests {
     }
 
     public:
-    static void test_op_multidimArray() {
-      try {
-        std::vector< gum::LabelizedVariable* > vars(10);
+  };
 
-        for (gum::Idx i = 0; i < 10; ++i) {
-          std::stringstream str;
-          str << "x" << i;
-          std::string s = str.str();
-          vars[i]       = new gum::LabelizedVariable(s, s, 4);
-        }
+  GUM_TEST(_op_multidimArray) {
+    try {
+      std::vector< gum::LabelizedVariable* > vars(10);
 
-        gum::Tensor< double > t1, t2, t3;
-
-        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-
-        randomInitP(t1);
-        randomInitP(t2);
-        randomInitP(t3);
-
-        gum::Tensor< double >*t4, *t5, *t6;
-        t4 = new gum::Tensor< double >(t1 + t2);
-        t5 = new gum::Tensor< double >(t3 + *t4);
-
-        gum::Set< const gum::Tensor< double >* > set;
-        set << &t1 << &t2 << &t3;
-
-        gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
-        t6 = xxx.execute(set);
-        CHECK(t6);
-        CHECK_EQ(*t6, *t5);
-
-        delete t4;
-        delete t5;
-        delete t6;
-
-        CHECK_EQ(xxx.nbOperations(set), 16641);
-        auto yyy = xxx.memoryUsage(set);
-        CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
-        CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
-
-        t4 = new gum::Tensor< double >(t1 * t2);
-        t5 = new gum::Tensor< double >(t3 * (*t4));
-        xxx.setCombinationFunction(multTensor);
-        t6 = xxx.execute(set);
-        CHECK(t6);
-        CHECK_EQ(*t6, *t5);
-
-        gum::Set< const gum::IScheduleMultiDim* >    sched_set;
-        std::vector< const gum::IScheduleMultiDim* > sched_vect;
-        for (const auto pot: set) {
-          auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
-          sched_set.insert(new_sched);
-          sched_vect.push_back(new_sched);
-        }
-
-        const auto ops_plus_resS = xxx.operations(sched_set);
-        CHECK(ops_plus_resS.first.size() == 3);
-        CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
-        const auto ops_plus_resV = xxx.operations(sched_vect);
-        CHECK(ops_plus_resV.first.size() == 3);
-        CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
-
-        for (auto op: ops_plus_resS.first)
-          delete op;
-        for (auto op: ops_plus_resV.first)
-          delete op;
-
-        gum::Schedule scheduleS;
-        for (const auto pot: sched_set)
-          scheduleS.insertScheduleMultiDim(*pot);
-        const auto ptrResS       = xxx.schedule(scheduleS, sched_set);
-        bool       not_completed = true;
-        do {
-          auto avail_nodes = scheduleS.availableOperations();
-          if (avail_nodes.empty()) not_completed = false;
-          else {
-            for (const auto node: avail_nodes) {
-              auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperator& >(op).execute();
-              std::vector< gum::NodeId > new_avail;
-              scheduleS.updateAfterExecution(node, new_avail);
-              break;
-            }
-          }
-        } while (not_completed);
-        CHECK(ptrResS->variablesSequence().size() == 7);
-
-        gum::Schedule scheduleV;
-        for (const auto pot: sched_set)
-          scheduleV.insertScheduleMultiDim(*pot);
-        const auto ptrResV = xxx.schedule(scheduleV, sched_vect);
-        not_completed      = true;
-        do {
-          auto avail_nodes = scheduleV.availableOperations();
-          if (avail_nodes.empty()) not_completed = false;
-          else {
-            for (const auto node: avail_nodes) {
-              auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperator& >(op).execute();
-              std::vector< gum::NodeId > new_avail;
-              scheduleV.updateAfterExecution(node, new_avail);
-              break;
-            }
-          }
-        } while (not_completed);
-        CHECK(ptrResV->variablesSequence().size() == 7);
-
-        for (const auto pot: sched_set)
-          delete pot;
-
-        delete t4;
-        delete t5;
-        delete t6;
-
-        for (gum::Idx i = 0; i < vars.size(); ++i)
-          delete vars[i];
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
-    static void testConstants() {
-      gum::Tensor< double > t1, t2;
-      gum::Instantiation    inst1(t1), inst2(t2);
-      t1.set(inst1, 3.0);
-      t2.set(inst2, 4.0);
-
-      gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(multTensor);
-      gum::Set< const gum::Tensor< double >* >                 set;
-      set << &t1 << &t2;
-
-      gum::Tensor< double >* t3 = xxx.execute(set);
-      {
-        gum::Instantiation inst3(t3);
-        CHECK_EQ((*t3)[inst3], 12.0);
-      }
-      delete t3;
-      t3 = nullptr;
-
-
-      std::vector< gum::LabelizedVariable* > vars(2);
-
-      for (gum::Idx i = 0; i < 2; ++i) {
+      for (gum::Idx i = 0; i < 10; ++i) {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable(s, s, 2);
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
       }
 
-      gum::Tensor< double > t4;
-      t4 << *(vars[0]) << *(vars[1]);
-      randomInitP(t4);
-      t4.normalize();
-      for (gum::Instantiation inst4(t4); !inst4.end(); ++inst4)
-        t4.set(inst4, t4[inst4] * 2);
+      gum::Tensor< double > t1, t2, t3;
 
-      set.clear();
-      set << &t1 << &t4;
-      t3 = xxx.execute(set);
-      {
-        gum::Instantiation inst3(t3), inst4(t4);
-        double             x = 0;
-        for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
-          x += (*t3)[inst3];
-          CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+      randomInitP(t1);
+      randomInitP(t2);
+      randomInitP(t3);
+
+      gum::Tensor< double >*t4, *t5, *t6;
+      t4 = new gum::Tensor< double >(t1 + t2);
+      t5 = new gum::Tensor< double >(t3 + *t4);
+
+      gum::Set< const gum::Tensor< double >* > set;
+      set << &t1 << &t2 << &t3;
+
+      gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
+      t6 = xxx.execute(set);
+      CHECK(t6);
+      CHECK_EQ(*t6, *t5);
+
+      delete t4;
+      delete t5;
+      delete t6;
+
+      CHECK_EQ(xxx.nbOperations(set), 16641);
+      auto yyy = xxx.memoryUsage(set);
+      CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
+
+      t4 = new gum::Tensor< double >(t1 * t2);
+      t5 = new gum::Tensor< double >(t3 * (*t4));
+      xxx.setCombinationFunction(multTensor);
+      t6 = xxx.execute(set);
+      CHECK(t6);
+      CHECK_EQ(*t6, *t5);
+
+      gum::Set< const gum::IScheduleMultiDim* >    sched_set;
+      std::vector< const gum::IScheduleMultiDim* > sched_vect;
+      for (const auto pot: set) {
+        auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
+        sched_set.insert(new_sched);
+        sched_vect.push_back(new_sched);
+      }
+
+      const auto ops_plus_resS = xxx.operations(sched_set);
+      CHECK(ops_plus_resS.first.size() == 3);
+      CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
+      const auto ops_plus_resV = xxx.operations(sched_vect);
+      CHECK(ops_plus_resV.first.size() == 3);
+      CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
+
+      for (auto op: ops_plus_resS.first)
+        delete op;
+      for (auto op: ops_plus_resV.first)
+        delete op;
+
+      gum::Schedule scheduleS;
+      for (const auto pot: sched_set)
+        scheduleS.insertScheduleMultiDim(*pot);
+      const auto ptrResS       = xxx.schedule(scheduleS, sched_set);
+      bool       not_completed = true;
+      do {
+        auto avail_nodes = scheduleS.availableOperations();
+        if (avail_nodes.empty()) not_completed = false;
+        else {
+          for (const auto node: avail_nodes) {
+            auto& op = scheduleS.operation(node);
+            const_cast< gum::ScheduleOperator& >(op).execute();
+            std::vector< gum::NodeId > new_avail;
+            scheduleS.updateAfterExecution(node, new_avail);
+            break;
+          }
         }
-        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
-      }
-      delete t3;
-      t3 = nullptr;
+      } while (not_completed);
+      CHECK(ptrResS->variablesSequence().size() == 7);
 
-      set.clear();
-      set << &t4 << &t1;
-      t3 = xxx.execute(set);
-      {
-        gum::Instantiation inst3(t3), inst4(t4);
-        double             x = 0;
-        for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
-          x += (*t3)[inst3];
-          CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
+      gum::Schedule scheduleV;
+      for (const auto pot: sched_set)
+        scheduleV.insertScheduleMultiDim(*pot);
+      const auto ptrResV = xxx.schedule(scheduleV, sched_vect);
+      not_completed      = true;
+      do {
+        auto avail_nodes = scheduleV.availableOperations();
+        if (avail_nodes.empty()) not_completed = false;
+        else {
+          for (const auto node: avail_nodes) {
+            auto& op = scheduleV.operation(node);
+            const_cast< gum::ScheduleOperator& >(op).execute();
+            std::vector< gum::NodeId > new_avail;
+            scheduleV.updateAfterExecution(node, new_avail);
+            break;
+          }
         }
-        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
-      }
-      delete t3;
-      t3 = nullptr;
+      } while (not_completed);
+      CHECK(ptrResV->variablesSequence().size() == 7);
 
+      for (const auto pot: sched_set)
+        delete pot;
 
-      gum::Tensor< double > t5;
-      t5 << *(vars[0]);
-      randomInitP(t5);
-      t5.normalize();
-      for (gum::Instantiation inst5(t5); !inst5.end(); ++inst5)
-        t5.set(inst5, t5[inst5] * 2);
-
-      set.clear();
-      set << &t1 << &t5;
-      t3 = xxx.execute(set);
-      {
-        gum::Instantiation inst3(t3), inst5(t5);
-        double             x = 0;
-        for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
-          x += (*t3)[inst3];
-          CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
-        }
-        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
-      }
-      delete t3;
-      t3 = nullptr;
-
-      set.clear();
-      set << &t5 << &t1;
-      t3 = xxx.execute(set);
-      {
-        gum::Instantiation inst3(t3), inst5(t5);
-        double             x = 0;
-        for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
-          x += (*t3)[inst3];
-          CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
-        }
-        CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
-      }
-      delete t3;
-      t3 = nullptr;
-
+      delete t4;
+      delete t5;
+      delete t6;
 
       for (gum::Idx i = 0; i < vars.size(); ++i)
         delete vars[i];
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
+
+  GUM_TEST(Constants) {
+    gum::Tensor< double > t1, t2;
+    gum::Instantiation    inst1(t1), inst2(t2);
+    t1.set(inst1, 3.0);
+    t2.set(inst2, 4.0);
+
+    gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(multTensor);
+    gum::Set< const gum::Tensor< double >* >                 set;
+    set << &t1 << &t2;
+
+    gum::Tensor< double >* t3 = xxx.execute(set);
+    {
+      gum::Instantiation inst3(t3);
+      CHECK_EQ((*t3)[inst3], 12.0);
+    }
+    delete t3;
+    t3 = nullptr;
+
+
+    std::vector< gum::LabelizedVariable* > vars(2);
+
+    for (gum::Idx i = 0; i < 2; ++i) {
+      std::stringstream str;
+      str << "x" << i;
+      std::string s = str.str();
+      vars[i]       = new gum::LabelizedVariable(s, s, 2);
     }
 
-    static void test_op_persitence() {
-      try {
-        std::vector< gum::LabelizedVariable* > vars(10);
+    gum::Tensor< double > t4;
+    t4 << *(vars[0]) << *(vars[1]);
+    randomInitP(t4);
+    t4.normalize();
+    for (gum::Instantiation inst4(t4); !inst4.end(); ++inst4)
+      t4.set(inst4, t4[inst4] * 2);
 
-        for (gum::Idx i = 0; i < 10; ++i) {
-          std::stringstream str;
-          str << "x" << i;
-          std::string s = str.str();
-          vars[i]       = new gum::LabelizedVariable(s, s, 4);
-        }
-
-        gum::Tensor< double > t1, t2, t3;
-
-        t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
-        t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
-        t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
-
-        randomInitP(t1);
-        randomInitP(t2);
-        randomInitP(t3);
-
-        gum::Tensor< double >*t4, *t5, *t6;
-        t4 = new gum::Tensor< double >(t1 + t2);
-        t5 = new gum::Tensor< double >(t3 + *t4);
-
-        gum::Set< const gum::Tensor< double >* > set;
-        set << &t1 << &t2 << &t3;
-
-        gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
-        t6 = xxx.execute(set);
-        CHECK(t6);
-        CHECK_EQ(*t6, *t5);
-
-        delete t4;
-        delete t5;
-        delete t6;
-
-        CHECK_EQ(xxx.nbOperations(set), 16641);
-        auto yyy = xxx.memoryUsage(set);
-        CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
-        CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
-
-        t4 = new gum::Tensor< double >(t1 * t2);
-        t5 = new gum::Tensor< double >(t3 * (*t4));
-        xxx.setCombinationFunction(multTensor);
-        t6 = xxx.execute(set);
-        CHECK(t6);
-        CHECK_EQ(*t6, *t5);
-
-        gum::Set< const gum::IScheduleMultiDim* >    sched_set;
-        std::vector< const gum::IScheduleMultiDim* > sched_vect;
-        for (const auto pot: set) {
-          auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
-          sched_set.insert(new_sched);
-          sched_vect.push_back(new_sched);
-        }
-
-        const auto ops_plus_resS = xxx.operations(sched_set, true);
-        CHECK(ops_plus_resS.first.size() == 3);
-        CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
-        const auto ops_plus_resV = xxx.operations(sched_vect, true);
-        CHECK(ops_plus_resV.first.size() == 3);
-        CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
-
-        for (auto op: ops_plus_resS.first)
-          delete op;
-        for (auto op: ops_plus_resV.first)
-          delete op;
-        delete ops_plus_resS.second;
-        delete ops_plus_resV.second;
-
-        gum::Schedule scheduleS;
-        for (const auto pot: sched_set)
-          scheduleS.insertScheduleMultiDim(*pot);
-        const auto ptrResS       = xxx.schedule(scheduleS, sched_set, true);
-        bool       not_completed = true;
-        do {
-          auto avail_nodes = scheduleS.availableOperations();
-          if (avail_nodes.empty()) not_completed = false;
-          else {
-            for (const auto node: avail_nodes) {
-              auto& op = scheduleS.operation(node);
-              const_cast< gum::ScheduleOperator& >(op).execute();
-              std::vector< gum::NodeId > new_avail;
-              scheduleS.updateAfterExecution(node, new_avail);
-              break;
-            }
-          }
-        } while (not_completed);
-        CHECK(ptrResS->variablesSequence().size() == 7);
-
-        gum::Schedule scheduleV;
-        for (const auto pot: sched_set)
-          scheduleV.insertScheduleMultiDim(*pot);
-        const auto ptrResV = xxx.schedule(scheduleV, sched_vect, true);
-        not_completed      = true;
-        do {
-          auto avail_nodes = scheduleV.availableOperations();
-          if (avail_nodes.empty()) not_completed = false;
-          else {
-            for (const auto node: avail_nodes) {
-              auto& op = scheduleV.operation(node);
-              const_cast< gum::ScheduleOperator& >(op).execute();
-              std::vector< gum::NodeId > new_avail;
-              scheduleV.updateAfterExecution(node, new_avail);
-              break;
-            }
-          }
-        } while (not_completed);
-        CHECK(ptrResV->variablesSequence().size() == 7);
-
-        for (const auto pot: sched_set)
-          delete pot;
-
-        delete ptrResS;
-        delete ptrResV;
-
-        delete t4;
-        delete t5;
-        delete t6;
-
-        for (gum::Idx i = 0; i < vars.size(); ++i)
-          delete vars[i];
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+    set.clear();
+    set << &t1 << &t4;
+    t3 = xxx.execute(set);
+    {
+      gum::Instantiation inst3(t3), inst4(t4);
+      double             x = 0;
+      for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
+        x += (*t3)[inst3];
+        CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
+      }
+      CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
     }
-  };
+    delete t3;
+    t3 = nullptr;
 
-  GUM_TEST_ACTIF(_op_multidimArray)
-  GUM_TEST_ACTIF(Constants)
-  GUM_TEST_ACTIF(_op_persitence)
+    set.clear();
+    set << &t4 << &t1;
+    t3 = xxx.execute(set);
+    {
+      gum::Instantiation inst3(t3), inst4(t4);
+      double             x = 0;
+      for (inst3.setFirst(), inst4.setFirst(); !inst3.end(); ++inst3, ++inst4) {
+        x += (*t3)[inst3];
+        CHECK(((*t3)[inst3]) == doctest::Approx(t4[inst4] * 3.0).epsilon(0.001));
+      }
+      CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
+    }
+    delete t3;
+    t3 = nullptr;
+
+
+    gum::Tensor< double > t5;
+    t5 << *(vars[0]);
+    randomInitP(t5);
+    t5.normalize();
+    for (gum::Instantiation inst5(t5); !inst5.end(); ++inst5)
+      t5.set(inst5, t5[inst5] * 2);
+
+    set.clear();
+    set << &t1 << &t5;
+    t3 = xxx.execute(set);
+    {
+      gum::Instantiation inst3(t3), inst5(t5);
+      double             x = 0;
+      for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
+        x += (*t3)[inst3];
+        CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
+      }
+      CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
+    }
+    delete t3;
+    t3 = nullptr;
+
+    set.clear();
+    set << &t5 << &t1;
+    t3 = xxx.execute(set);
+    {
+      gum::Instantiation inst3(t3), inst5(t5);
+      double             x = 0;
+      for (inst3.setFirst(), inst5.setFirst(); !inst3.end(); ++inst3, ++inst5) {
+        x += (*t3)[inst3];
+        CHECK(((*t3)[inst3]) == doctest::Approx(t5[inst5] * 3.0).epsilon(0.001));
+      }
+      CHECK((x) == doctest::Approx(6.0).epsilon(0.001));
+    }
+    delete t3;
+    t3 = nullptr;
+
+
+    for (gum::Idx i = 0; i < vars.size(); ++i)
+      delete vars[i];
+  }
+
+  GUM_TEST(_op_persitence) {
+    try {
+      std::vector< gum::LabelizedVariable* > vars(10);
+
+      for (gum::Idx i = 0; i < 10; ++i) {
+        std::stringstream str;
+        str << "x" << i;
+        std::string s = str.str();
+        vars[i]       = new gum::LabelizedVariable(s, s, 4);
+      }
+
+      gum::Tensor< double > t1, t2, t3;
+
+      t1 << *(vars[0]) << *(vars[1]) << *(vars[2]);
+      t2 << *(vars[0]) << *(vars[1]) << *(vars[5]);
+      t3 << *(vars[6]) << *(vars[4]) << *(vars[3]);
+
+      randomInitP(t1);
+      randomInitP(t2);
+      randomInitP(t3);
+
+      gum::Tensor< double >*t4, *t5, *t6;
+      t4 = new gum::Tensor< double >(t1 + t2);
+      t5 = new gum::Tensor< double >(t3 + *t4);
+
+      gum::Set< const gum::Tensor< double >* > set;
+      set << &t1 << &t2 << &t3;
+
+      gum::MultiDimCombinationDefault< gum::Tensor< double > > xxx(addTensor);
+      t6 = xxx.execute(set);
+      CHECK(t6);
+      CHECK_EQ(*t6, *t5);
+
+      delete t4;
+      delete t5;
+      delete t6;
+
+      CHECK_EQ(xxx.nbOperations(set), 16641);
+      auto yyy = xxx.memoryUsage(set);
+      CHECK_EQ(yyy.first, 16640 * sizeof(double) + 2 * sizeof(gum::Tensor< double >));
+      CHECK_EQ(yyy.second, 16384 * sizeof(double) + sizeof(gum::Tensor< double >));
+
+      t4 = new gum::Tensor< double >(t1 * t2);
+      t5 = new gum::Tensor< double >(t3 * (*t4));
+      xxx.setCombinationFunction(multTensor);
+      t6 = xxx.execute(set);
+      CHECK(t6);
+      CHECK_EQ(*t6, *t5);
+
+      gum::Set< const gum::IScheduleMultiDim* >    sched_set;
+      std::vector< const gum::IScheduleMultiDim* > sched_vect;
+      for (const auto pot: set) {
+        auto new_sched = new gum::ScheduleMultiDim< gum::Tensor< double > >(*pot, false);
+        sched_set.insert(new_sched);
+        sched_vect.push_back(new_sched);
+      }
+
+      const auto ops_plus_resS = xxx.operations(sched_set, true);
+      CHECK(ops_plus_resS.first.size() == 3);
+      CHECK(ops_plus_resS.second->variablesSequence().size() == 7);
+      const auto ops_plus_resV = xxx.operations(sched_vect, true);
+      CHECK(ops_plus_resV.first.size() == 3);
+      CHECK(ops_plus_resV.second->variablesSequence().size() == 7);
+
+      for (auto op: ops_plus_resS.first)
+        delete op;
+      for (auto op: ops_plus_resV.first)
+        delete op;
+      delete ops_plus_resS.second;
+      delete ops_plus_resV.second;
+
+      gum::Schedule scheduleS;
+      for (const auto pot: sched_set)
+        scheduleS.insertScheduleMultiDim(*pot);
+      const auto ptrResS       = xxx.schedule(scheduleS, sched_set, true);
+      bool       not_completed = true;
+      do {
+        auto avail_nodes = scheduleS.availableOperations();
+        if (avail_nodes.empty()) not_completed = false;
+        else {
+          for (const auto node: avail_nodes) {
+            auto& op = scheduleS.operation(node);
+            const_cast< gum::ScheduleOperator& >(op).execute();
+            std::vector< gum::NodeId > new_avail;
+            scheduleS.updateAfterExecution(node, new_avail);
+            break;
+          }
+        }
+      } while (not_completed);
+      CHECK(ptrResS->variablesSequence().size() == 7);
+
+      gum::Schedule scheduleV;
+      for (const auto pot: sched_set)
+        scheduleV.insertScheduleMultiDim(*pot);
+      const auto ptrResV = xxx.schedule(scheduleV, sched_vect, true);
+      not_completed      = true;
+      do {
+        auto avail_nodes = scheduleV.availableOperations();
+        if (avail_nodes.empty()) not_completed = false;
+        else {
+          for (const auto node: avail_nodes) {
+            auto& op = scheduleV.operation(node);
+            const_cast< gum::ScheduleOperator& >(op).execute();
+            std::vector< gum::NodeId > new_avail;
+            scheduleV.updateAfterExecution(node, new_avail);
+            break;
+          }
+        }
+      } while (not_completed);
+      CHECK(ptrResV->variablesSequence().size() == 7);
+
+      for (const auto pot: sched_set)
+        delete pot;
+
+      delete ptrResS;
+      delete ptrResV;
+
+      delete t4;
+      delete t5;
+      delete t6;
+
+      for (gum::Idx i = 0; i < vars.size(); ++i)
+        delete vars[i];
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
 
 } /* namespace gum_tests */

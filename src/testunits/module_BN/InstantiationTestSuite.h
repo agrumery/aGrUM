@@ -50,9 +50,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Instantiation
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct InstantiationTestSuite {
@@ -60,11 +57,6 @@ namespace gum_tests {
     gum::NodeId              i1, i2, i3, i4, i5;
 
     public:
-    static void testCreation() {
-      gum::Instantiation i;
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(0));
-    }
-
     InstantiationTestSuite() {
       bn = new gum::BayesNet< double >();
 
@@ -89,347 +81,10 @@ namespace gum_tests {
 
     ~InstantiationTestSuite() { delete bn; }
 
-    static void testInsertSupprVariables() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::Instantiation i;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
-      CHECK_THROWS_AS(i << a, const gum::DuplicateElement&);
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(3));
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
-
-      CHECK(i.contains(a));
-
-      CHECK_EQ(i.pos(b), static_cast< gum::Size >(1));
-      CHECK_EQ(&(i.variable(1)), &b);
-
-      i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
-      CHECK_EQ(i.toString(), "<a:1|b:2|c:4>");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(i >> b);
-      CHECK_THROWS_AS(i >> b, const gum::NotFound&);
-      CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(2));
-      CHECK_EQ(i.domainSize(), (gum::Size)(2 * 5));
-
-      CHECK_EQ(i.toString(), "<a:1|c:4>");
-
-      CHECK(!i.contains(b));
-    }
-
-    static void testIncrementations() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::Instantiation i;
-      i << a << b << c;
-      gum::Instantiation j;
-      j << c << b;
-      ;
-      gum::Size nb;
-
-      for (nb = 0, i.setFirst(); !i.end(); ++i)
-        nb++;
-
-      CHECK_EQ(nb, i.domainSize());
-
-      for (nb = 0, i.setFirstNotVar(b); !i.end(); i.incNotVar(b))
-        nb++;
-
-      CHECK_EQ(nb, (gum::Size)(2 * 5));
-
-      for (nb = 0, i.setFirstVar(b); !i.end(); i.incVar(b))
-        nb++;
-
-      CHECK_EQ(nb, static_cast< gum::Size >(4));
-
-      for (nb = 0, i.setFirstIn(j); !i.end(); i.incIn(j))
-        nb++;
-
-      CHECK_EQ(nb, (gum::Size)(4 * 5));
-
-      for (nb = 0, i.setFirstOut(j); !i.end(); i.incOut(j))
-        nb++;
-
-      CHECK_EQ(nb, static_cast< gum::Size >(2));
-    }
-
-    static void testDecrementations() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::Instantiation i;
-      i << a << b << c;
-      gum::Instantiation j;
-      j << c << b;
-      gum::Size nb;
-
-      for (nb = 0, i.setLast(); !i.rend(); --i)
-        nb++;
-
-      CHECK_EQ(nb, i.domainSize());
-
-      for (nb = 0, i.setLastNotVar(b); !i.rend(); i.decNotVar(b))
-        nb++;
-
-      CHECK_EQ(nb, (gum::Size)(2 * 5));
-
-      for (nb = 0, i.setLastVar(b); !i.rend(); i.decVar(b))
-        nb++;
-
-      CHECK_EQ(nb, static_cast< gum::Size >(4));
-
-      for (nb = 0, i.setLastIn(j); !i.rend(); i.decIn(j))
-        nb++;
-
-      CHECK_EQ(nb, (gum::Size)(4 * 5));
-
-      for (nb = 0, i.setLastOut(j); !i.rend(); i.decOut(j))
-        nb++;
-
-      CHECK_EQ(nb, static_cast< gum::Size >(2));
-    }
-
-    static void testReordering() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::Instantiation i;
-      i << a << b << c;
-      gum::Instantiation j;
-      j << c << a;
-
-      // reordering in {in|de}crementation
-      i.setFirst();
-      CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
-      i.inc();
-      CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
-      i.incIn(j);
-      CHECK_EQ(i.toString(), "<a:1|b:0|c:1>");
-      i.decIn(j);
-      CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
-
-      // reordering
-      i.reorder(j);
-      CHECK_EQ(i.toString(), "<c:0|a:1|b:0>");
-    }
-
-    void testReordering_cpt() const {
-      gum::Instantiation Order;
-
-      for (const auto node: bn->topologicalOrder())
-        Order.add(bn->variable(node));
-
-      const gum::Tensor< double >& pot = bn->cpt(i5);
-
-      gum::Instantiation inst(pot);
-      gum::Instantiation instcomp(inst);
-      CHECK_THROWS_AS(instcomp.reorder(Order), const gum::OperationNotAllowed&);
-
-      inst.forgetMaster();
-
-      for (inst.setFirst(); !inst.end(); ++inst) {
-        gum::Instantiation instcomp(inst);
-
-        instcomp.reorder(Order);
-        CHECK_EQ(pot[inst], pot[instcomp]);
-      }
-
-      gum::Instantiation inst2(pot);
-      inst2.forgetMaster();
-      inst2.reorder(Order);
-
-      for (inst2.setFirst(); !inst2.end(); ++inst2) {
-        inst.setVals(inst2);
-        CHECK_EQ(pot[inst2], pot[inst]);
-      }
-    }
-
-    static void testSlavery() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5);
-      gum::MultiDimArray< double > t;
-      t << a << b << c;
-      gum::MultiDimArray< double > t2;
-      t2 << b << a << c;
-
-      gum::Instantiation i(t);
-      i.setFirst();
-      CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
-      CHECK_THROWS_AS(i.actAsSlave(t2), const gum::OperationNotAllowed&);
-
-      gum::Instantiation j;
-      j << b << c;
-      CHECK(!j.actAsSlave(t));
-      j << a;
-      j.chgVal(a, 1);
-      CHECK(j.actAsSlave(t));
-      CHECK_EQ(j.toString(), "<a:1|b:0|c:0>");
-      j.forgetMaster();
-      CHECK(j.actAsSlave(t2));
-      CHECK_EQ(j.toString(), "<b:0|a:1|c:0>");
-
-      gum::DiscretizedVariable< double > d("d", "Discretized variable");
-      ;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(d.addTick(3.1).addTick(2.0).addTick(4.0));
-      CHECK_THROWS_AS(j << d, const gum::OperationNotAllowed&);
-      j.forgetMaster();
-      GUM_CHECK_ASSERT_THROWS_NOTHING(j << d);
-      j.chgVal(d, d["2.5"]);
-      CHECK(!j.actAsSlave(t));
-    }
-
-    static void testChgValIn() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-
-      gum::Instantiation i;
-      i << b << c << d;
-      gum::Instantiation j;
-      j << b << a << c;
-
-      i.chgVal(b, 2).chgVal(c, 3).chgVal(d, 1);
-      j.chgVal(b, 1).chgVal(a, 0).chgVal(c, 1);
-      CHECK_EQ(i.toString(), "<b:2|c:3|d:1>");
-      CHECK_EQ(j.toString(), "<b:1|a:0|c:1>");
-
-      j.setVals(i);
-      CHECK_EQ(j.toString(), "<b:2|a:0|c:3>");
-
-      j.chgVal("a", "1");
-      j.chgVal("b", 0);
-      j.chgVal("c", "2");
-      CHECK_EQ(j.toString(), "<b:0|a:1|c:2>");
-    }
-
-    static void testOperatorEgal() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-      gum::MultiDimArray< char > p, q;
-      p << a << b << c;
-      q << c << d;
-
-      gum::Instantiation ip(p), ip2(p), iq(q), j, k;
-
-      ++(++ip);
-
-      // free = slave
-      GUM_CHECK_ASSERT_THROWS_NOTHING(j = ip);
-      CHECK_EQ(p.toOffset(j), p.toOffset(ip));
-      CHECK_EQ(j.toString(), ip.toString());
-
-      // slave_same_master=slave_same_master
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = ip);
-      CHECK_EQ(p.toOffset(ip2), p.toOffset(ip));
-      CHECK_EQ(ip2.toString(), ip.toString());
-
-      // slave = free - same variables set
-      k << b << a << c;
-      ++k;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = k);
-      CHECK_EQ(p.toOffset(k), p.toOffset(ip2));
-      CHECK_EQ(k.val(a), ip2.val(a));
-      CHECK_EQ(k.val(b), ip2.val(b));
-      CHECK_EQ(k.val(c), ip2.val(c));
-
-      // slave = free- not same variables set
-      CHECK_THROWS_AS(iq = k, const gum::OperationNotAllowed&);
-
-      // slave = slave - not same master
-      CHECK_THROWS_AS(iq = ip, const gum::OperationNotAllowed&);
-    }
-
-    static void testOffsetOperation() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-      gum::MultiDimArray< char > p;
-      p << a << b << c;
-
-      gum::Instantiation i1(p), i2(p);
-
-      for (i1.setFirst(); !i1.end(); ++i1) {
-        gum::Size l = p.toOffset(i1);
-        p.fromOffset(i2, l);
-        CHECK_EQ(p.toOffset(i1), p.toOffset(i2));
-      }
-    }
-
-    static void testOperatorEqual() {
-      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-          c("c", "third var", 5), d("d", "fourth var", 2);
-      gum::MultiDimArray< char > p;
-      p << a << b << c;
-
-      gum::Instantiation i1(p), i2(p);
-      i2.setFirst();
-      ++i2;   // for i2 to be !=i1 in the first iteration
-      for (i1.setFirst(); !i1.end(); ++i1) {
-        CHECK_NE(i1, i2);
-        p.fromOffset(i2, p.toOffset(i1));
-        CHECK_EQ(i1, i2);
-      }
-
-      gum::Instantiation j;
-      CHECK_NE(i1, j);
-      j.inc();           // j is in overflow
-      CHECK_EQ(i1, j);   // both are in overflow => equals
-    }
-
     // regression test for CRIT-17: operator== with exactly one side in overflow
-    static void testOperatorEqualAsymmetricOverflow() {
-      gum::LabelizedVariable a("a", "first var", 2);
-      gum::Instantiation     i, j;
-      j << a;
-      j.setFirst();
 
-      i.inc();          // empty i → overflow
-      CHECK(i.inOverflow());
-      CHECK_FALSE(j.inOverflow());
-      CHECK_NE(i, j);   // one in overflow, one not → must be unequal
 
-      j.setLast();
-      ++j;              // j now in overflow
-      CHECK(j.inOverflow());
-      CHECK_EQ(i, j);   // both in overflow → equal
-    }
-
-    static void testEmptyInstantiationOverflows() {
-      // HIGH-23: inc/dec methods on empty Instantiation must set overflow, not crash
-      gum::LabelizedVariable a("a", "var a", 3);
-
-      gum::Instantiation ref;
-      ref << a;
-      ref.setFirst();
-
-      gum::Instantiation empty_ref;   // stays empty
-
-      {
-        gum::Instantiation i;         // empty *this
-        i.incOut(ref);
-        CHECK(i.inOverflow());
-      }
-      {
-        gum::Instantiation i;
-        i.decOut(ref);
-        CHECK(i.inOverflow());
-      }
-      {
-        gum::Instantiation i;
-        i.incNotVar(a);
-        CHECK(i.inOverflow());
-      }
-      {
-        gum::Instantiation i;
-        i.decNotVar(a);
-        CHECK(i.inOverflow());
-      }
-      {
-        gum::Instantiation i;
-        i << a;
-        i.setLast();
-        i.decIn(empty_ref);   // empty argument → overflow
-        CHECK(i.inOverflow());
-      }
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.5, 0.5});
@@ -452,17 +107,340 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Creation)
-  GUM_TEST_ACTIF(InsertSupprVariables)
-  GUM_TEST_ACTIF(Incrementations)
-  GUM_TEST_ACTIF(Decrementations)
-  GUM_TEST_ACTIF(Reordering)
-  GUM_TEST_ACTIF(Reordering_cpt)
-  GUM_TEST_ACTIF(Slavery)
-  GUM_TEST_ACTIF(ChgValIn)
-  GUM_TEST_ACTIF(OperatorEgal)
-  GUM_TEST_ACTIF(OffsetOperation)
-  GUM_TEST_ACTIF(OperatorEqual)
-  GUM_TEST_ACTIF(OperatorEqualAsymmetricOverflow)
-  GUM_TEST_ACTIF(EmptyInstantiationOverflows)
+  GUM_TEST(Creation) {
+    gum::Instantiation i;
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(InsertSupprVariables) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::Instantiation     i;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(i << a << b << c);
+    CHECK_THROWS_AS(i << a, const gum::DuplicateElement&);
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(3));
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 4 * 5));
+
+    CHECK(i.contains(a));
+
+    CHECK_EQ(i.pos(b), static_cast< gum::Size >(1));
+    CHECK_EQ(&(i.variable(1)), &b);
+
+    i.chgVal(a, 1).chgVal(b, 2).chgVal(c, 4);
+    CHECK_EQ(i.toString(), "<a:1|b:2|c:4>");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(i >> b);
+    CHECK_THROWS_AS(i >> b, const gum::NotFound&);
+    CHECK_EQ(i.nbrDim(), static_cast< gum::Size >(2));
+    CHECK_EQ(i.domainSize(), (gum::Size)(2 * 5));
+
+    CHECK_EQ(i.toString(), "<a:1|c:4>");
+
+    CHECK(!i.contains(b));
+  }
+
+  GUM_TEST(Incrementations) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::Instantiation     i;
+    i << a << b << c;
+    gum::Instantiation j;
+    j << c << b;
+    gum::Size nb;
+
+    for (nb = 0, i.setFirst(); !i.end(); ++i)
+      nb++;
+
+    CHECK_EQ(nb, i.domainSize());
+
+    for (nb = 0, i.setFirstNotVar(b); !i.end(); i.incNotVar(b))
+      nb++;
+
+    CHECK_EQ(nb, (gum::Size)(2 * 5));
+
+    for (nb = 0, i.setFirstVar(b); !i.end(); i.incVar(b))
+      nb++;
+
+    CHECK_EQ(nb, static_cast< gum::Size >(4));
+
+    for (nb = 0, i.setFirstIn(j); !i.end(); i.incIn(j))
+      nb++;
+
+    CHECK_EQ(nb, (gum::Size)(4 * 5));
+
+    for (nb = 0, i.setFirstOut(j); !i.end(); i.incOut(j))
+      nb++;
+
+    CHECK_EQ(nb, static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(Decrementations) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::Instantiation     i;
+    i << a << b << c;
+    gum::Instantiation j;
+    j << c << b;
+    gum::Size nb;
+
+    for (nb = 0, i.setLast(); !i.rend(); --i)
+      nb++;
+
+    CHECK_EQ(nb, i.domainSize());
+
+    for (nb = 0, i.setLastNotVar(b); !i.rend(); i.decNotVar(b))
+      nb++;
+
+    CHECK_EQ(nb, (gum::Size)(2 * 5));
+
+    for (nb = 0, i.setLastVar(b); !i.rend(); i.decVar(b))
+      nb++;
+
+    CHECK_EQ(nb, static_cast< gum::Size >(4));
+
+    for (nb = 0, i.setLastIn(j); !i.rend(); i.decIn(j))
+      nb++;
+
+    CHECK_EQ(nb, (gum::Size)(4 * 5));
+
+    for (nb = 0, i.setLastOut(j); !i.rend(); i.decOut(j))
+      nb++;
+
+    CHECK_EQ(nb, static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(Reordering) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::Instantiation     i;
+    i << a << b << c;
+    gum::Instantiation j;
+    j << c << a;
+
+    // reordering in {in|de}crementation
+    i.setFirst();
+    CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
+    i.inc();
+    CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
+    i.incIn(j);
+    CHECK_EQ(i.toString(), "<a:1|b:0|c:1>");
+    i.decIn(j);
+    CHECK_EQ(i.toString(), "<a:1|b:0|c:0>");
+
+    // reordering
+    i.reorder(j);
+    CHECK_EQ(i.toString(), "<c:0|a:1|b:0>");
+  }
+
+  GUM_TEST(Reordering_cpt) {
+    gum::Instantiation Order;
+
+    for (const auto node: bn->topologicalOrder())
+      Order.add(bn->variable(node));
+
+    const gum::Tensor< double >& pot = bn->cpt(i5);
+
+    gum::Instantiation inst(pot);
+    gum::Instantiation instcomp(inst);
+    CHECK_THROWS_AS(instcomp.reorder(Order), const gum::OperationNotAllowed&);
+
+    inst.forgetMaster();
+
+    for (inst.setFirst(); !inst.end(); ++inst) {
+      gum::Instantiation instcomp(inst);
+
+      instcomp.reorder(Order);
+      CHECK_EQ(pot[inst], pot[instcomp]);
+    }
+
+    gum::Instantiation inst2(pot);
+    inst2.forgetMaster();
+    inst2.reorder(Order);
+
+    for (inst2.setFirst(); !inst2.end(); ++inst2) {
+      inst.setVals(inst2);
+      CHECK_EQ(pot[inst2], pot[inst]);
+    }
+  }
+
+  GUM_TEST(Slavery) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5);
+    gum::MultiDimArray< double > t;
+    t << a << b << c;
+    gum::MultiDimArray< double > t2;
+    t2 << b << a << c;
+
+    gum::Instantiation i(t);
+    i.setFirst();
+    CHECK_EQ(i.toString(), "<a:0|b:0|c:0>");
+    CHECK_THROWS_AS(i.actAsSlave(t2), const gum::OperationNotAllowed&);
+
+    gum::Instantiation j;
+    j << b << c;
+    CHECK(!j.actAsSlave(t));
+    j << a;
+    j.chgVal(a, 1);
+    CHECK(j.actAsSlave(t));
+    CHECK_EQ(j.toString(), "<a:1|b:0|c:0>");
+    j.forgetMaster();
+    CHECK(j.actAsSlave(t2));
+    CHECK_EQ(j.toString(), "<b:0|a:1|c:0>");
+
+    gum::DiscretizedVariable< double > d("d", "Discretized variable");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(d.addTick(3.1).addTick(2.0).addTick(4.0));
+    CHECK_THROWS_AS(j << d, const gum::OperationNotAllowed&);
+    j.forgetMaster();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(j << d);
+    j.chgVal(d, d["2.5"]);
+    CHECK(!j.actAsSlave(t));
+  }
+
+  GUM_TEST(ChgValIn) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+
+    gum::Instantiation i;
+    i << b << c << d;
+    gum::Instantiation j;
+    j << b << a << c;
+
+    i.chgVal(b, 2).chgVal(c, 3).chgVal(d, 1);
+    j.chgVal(b, 1).chgVal(a, 0).chgVal(c, 1);
+    CHECK_EQ(i.toString(), "<b:2|c:3|d:1>");
+    CHECK_EQ(j.toString(), "<b:1|a:0|c:1>");
+
+    j.setVals(i);
+    CHECK_EQ(j.toString(), "<b:2|a:0|c:3>");
+
+    j.chgVal("a", "1");
+    j.chgVal("b", 0);
+    j.chgVal("c", "2");
+    CHECK_EQ(j.toString(), "<b:0|a:1|c:2>");
+  }
+
+  GUM_TEST(OperatorEgal) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+    gum::MultiDimArray< char > p, q;
+    p << a << b << c;
+    q << c << d;
+
+    gum::Instantiation ip(p), ip2(p), iq(q), j, k;
+
+    ++(++ip);
+
+    // free = slave
+    GUM_CHECK_ASSERT_THROWS_NOTHING(j = ip);
+    CHECK_EQ(p.toOffset(j), p.toOffset(ip));
+    CHECK_EQ(j.toString(), ip.toString());
+
+    // slave_same_master=slave_same_master
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = ip);
+    CHECK_EQ(p.toOffset(ip2), p.toOffset(ip));
+    CHECK_EQ(ip2.toString(), ip.toString());
+
+    // slave = free - same variables set
+    k << b << a << c;
+    ++k;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ip2 = k);
+    CHECK_EQ(p.toOffset(k), p.toOffset(ip2));
+    CHECK_EQ(k.val(a), ip2.val(a));
+    CHECK_EQ(k.val(b), ip2.val(b));
+    CHECK_EQ(k.val(c), ip2.val(c));
+
+    // slave = free- not same variables set
+    CHECK_THROWS_AS(iq = k, const gum::OperationNotAllowed&);
+
+    // slave = slave - not same master
+    CHECK_THROWS_AS(iq = ip, const gum::OperationNotAllowed&);
+  }
+
+  GUM_TEST(OffsetOperation) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+    gum::MultiDimArray< char > p;
+    p << a << b << c;
+
+    gum::Instantiation i1(p), i2(p);
+
+    for (i1.setFirst(); !i1.end(); ++i1) {
+      gum::Size l = p.toOffset(i1);
+      p.fromOffset(i2, l);
+      CHECK_EQ(p.toOffset(i1), p.toOffset(i2));
+    }
+  }
+
+  GUM_TEST(OperatorEqual) {
+    gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4), c("c", "third var", 5),
+        d("d", "fourth var", 2);
+    gum::MultiDimArray< char > p;
+    p << a << b << c;
+
+    gum::Instantiation i1(p), i2(p);
+    i2.setFirst();
+    ++i2;   // for i2 to be !=i1 in the first iteration
+    for (i1.setFirst(); !i1.end(); ++i1) {
+      CHECK_NE(i1, i2);
+      p.fromOffset(i2, p.toOffset(i1));
+      CHECK_EQ(i1, i2);
+    }
+
+    gum::Instantiation j;
+    CHECK_NE(i1, j);
+    j.inc();           // j is in overflow
+    CHECK_EQ(i1, j);   // both are in overflow => equals
+  }
+
+  GUM_TEST(OperatorEqualAsymmetricOverflow) {
+    gum::LabelizedVariable a("a", "first var", 2);
+    gum::Instantiation     i, j;
+    j << a;
+    j.setFirst();
+
+    i.inc();          // empty i → overflow
+    CHECK(i.inOverflow());
+    CHECK_FALSE(j.inOverflow());
+    CHECK_NE(i, j);   // one in overflow, one not → must be unequal
+
+    j.setLast();
+    ++j;              // j now in overflow
+    CHECK(j.inOverflow());
+    CHECK_EQ(i, j);   // both in overflow → equal
+  }
+
+  GUM_TEST(EmptyInstantiationOverflows) {
+    // HIGH-23: inc/dec methods on empty Instantiation must set overflow, not crash
+    gum::LabelizedVariable a("a", "var a", 3);
+
+    gum::Instantiation ref;
+    ref << a;
+    ref.setFirst();
+
+    gum::Instantiation empty_ref;   // stays empty
+
+    {
+      gum::Instantiation i;         // empty *this
+      i.incOut(ref);
+      CHECK(i.inOverflow());
+    }
+    {
+      gum::Instantiation i;
+      i.decOut(ref);
+      CHECK(i.inOverflow());
+    }
+    {
+      gum::Instantiation i;
+      i.incNotVar(a);
+      CHECK(i.inOverflow());
+    }
+    {
+      gum::Instantiation i;
+      i.decNotVar(a);
+      CHECK(i.inOverflow());
+    }
+    {
+      gum::Instantiation i;
+      i << a;
+      i.setLast();
+      i.decIn(empty_ref);   // empty argument → overflow
+      CHECK(i.inOverflow());
+    }
+  }
 }   // namespace gum_tests

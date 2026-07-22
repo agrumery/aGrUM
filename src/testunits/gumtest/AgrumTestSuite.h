@@ -108,34 +108,33 @@
 // Test registration macros to reduce boilerplate
 // ============================================================================
 //
-// Usage: Define GUM_CURRENT_SUITE and GUM_CURRENT_MODULE at the top of your test file,
-// then use GUM_TEST_ACTIF(TestName) for each test.
+// GUM_CURRENT_SUITE and GUM_CURRENT_MODULE are injected per-file by CMake
+// (see src/cmake/doctest.agrum.cmake), derived from the test file's directory
+// (module) and filename (suite) -- no #define needed in the test file itself.
 //
-// Example (in BayesNetTestSuite.h):
-//   #define GUM_CURRENT_SUITE BayesNet
-//   #define GUM_CURRENT_MODULE BN
-//   ...
-//   GUM_TEST_ACTIF(Constructor)
-//   GUM_TEST_ACTIF(CopyConstructor)
+// Usage: write the test body directly after GUM_TEST(TestName), exactly like
+// a plain TEST_CASE_FIXTURE. The fixture struct only needs to hold shared
+// state/helpers (constructor/destructor act as setUp/tearDown); it does not
+// need one method per test.
 //
-// GUM_TEST_ACTIF(Constructor) expands to:
-//   TEST_CASE_FIXTURE(BayesNetTestSuite, "[BN][BayesNet] Constructor") { testConstructor(); }
+// Example (in BayesNetTestSuite.h, module_BN/):
+//   struct BayesNetTestSuite { ... shared helpers, if any ... };
 //
-// Use GUM_TEST_INACTIF(TestName) to temporarily disable a test (generates a compilation warning)
+//   GUM_TEST(Constructor) {
+//     ...
+//   }
 //
-#  define GUM_TEST_IMPL_(Suite, Module, TestName)                                 \
-    TEST_CASE_FIXTURE(Suite##TestSuite, "[" #Module "][" #Suite "] " #TestName) { \
-      test##TestName();                                                           \
-    }
+// GUM_TEST(Constructor) expands to:
+//   TEST_CASE_FIXTURE(BayesNetTestSuite, "[BN][BayesNet] Constructor")
+//
+// To temporarily disable a test, use doctest's native skip decorator:
+//   GUM_TEST(Constructor) * doctest::skip() {
+//     ...
+//   }
+//
+#  define GUM_TEST_IMPL_(Suite, Module, TestName) \
+    TEST_CASE_FIXTURE(Suite##TestSuite, "[" #Module "][" #Suite "] " #TestName)
 #  define GUM_TEST_IMPL(Suite, Module, TestName) GUM_TEST_IMPL_(Suite, Module, TestName)
-#  define GUM_TEST_ACTIF(TestName) GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
-// Helper macros for generating warnings with file and line information
-#  define GUM_STRINGIFY_(x) #x
-#  define GUM_STRINGIFY(x)  GUM_STRINGIFY_(x)
-#  define GUM_WARNING_AT(msg)                                                           \
-    _Pragma(GUM_STRINGIFY(message(__FILE__ ":" GUM_STRINGIFY(__LINE__) ": INACTIVATED " \
-                                                                       "TEST: " msg)))
-
-#  define GUM_TEST_INACTIF(TestName) GUM_WARNING_AT(#TestName)
+#  define GUM_TEST(TestName) GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
 
 #endif   // AGRUM_TEST_SUITE_H

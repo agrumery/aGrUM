@@ -51,13 +51,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  ScoreMDL
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct ScoreMDLTestSuite {
-    private:
+    protected:
     static double _score_(const std::vector< double >& N_ijk,
                           const std::vector< double >& N_ij,
                           const double                 penalty) {
@@ -644,148 +641,146 @@ namespace gum_tests {
 
       delete score4;
     }
-
-    static void test_multicore() {
-      // create the translator set
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
-
-        for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the database
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
-        database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
-        database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
-        database.insertRow(row4);
-
-      // create the parser
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-
-      std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
-
-      gum::learning::SmoothingPrior prior(database);
-
-      for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
-        gum::learning::ScoreMDL score(parser, prior, ranges);
-        score.setNumberOfThreads(i);
-
-        GUM_CHECK_ASSERT_THROWS_NOTHING(gum::learning::ScoreMDL::isPriorCompatible(
-            gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(gum::learning::ScoreMDL::isPriorCompatible(prior));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior));
-
-        gum::NodeId                node0 = 0;
-        gum::NodeId                node1 = 1;
-        gum::NodeId                node3 = 3;
-        std::vector< gum::NodeId > cond_empty;
-        std::vector< gum::NodeId > cond2{node1};
-        std::vector< gum::NodeId > cond3{node3};
-
-        gum::learning::IdCondSet idset1(node0, cond_empty);    // #3,#0
-        gum::learning::IdCondSet idset2(node0, cond2, true);   // #9,#3
-        gum::learning::IdCondSet idset3(node0, cond3, true);   // #9,#3
-
-        // idset1: node0 | emptyset
-        double                penalty_1 = 2;
-        std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
-        std::vector< double > N_ij_1;
-        double                xscore_1 = _score_(N_ijk_1, N_ij_1, penalty_1);
-        CHECK(_equal_(xscore_1, score.score(node0)));
-
-        // idset2: node0 | node1
-        double                penalty_2 = 6;
-        std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
-        std::vector< double > N_ij_2{278, 278, 3};
-        double                xscore_2 = _score_(N_ijk_2, N_ij_2, penalty_2);
-        CHECK(_equal_(xscore_2, score.score(node0, cond2)));
-
-        // idset3: node0 | node3
-        double                penalty_3 = 6;
-        std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
-        std::vector< double > N_ij_3{78, 278, 203};
-        double                xscore_3 = _score_(N_ijk_3, N_ij_3, penalty_3);
-        CHECK(_equal_(xscore_3, score.score(node0, cond3)));
-
-
-        gum::learning::ScoreMDL score2(score);
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
-
-        CHECK(_equal_(xscore_1, score2.score(node0)));
-        CHECK(_equal_(xscore_2, score2.score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score2.score(node0, cond3)));
-
-        gum::learning::ScoreMDL score3(std::move(score2));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
-
-        CHECK(_equal_(xscore_1, score3.score(node0)));
-        CHECK(_equal_(xscore_2, score3.score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score3.score(node0, cond3)));
-
-        gum::learning::ScoreMDL* score4 = score3.clone();
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
-
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
-
-        score4->operator=(score);
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
-
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
-
-        // delete score4;
-
-        score4->operator=(std::move(score));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(
-            score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
-        GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
-
-        CHECK(_equal_(xscore_1, score4->score(node0)));
-        CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
-        CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
-
-        delete score4;
-      }
-    }
   };
 
-  GUM_TEST_ACTIF(_multicore)
+  GUM_TEST(_multicore) {
+    // create the translator set
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+      for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the database
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+    std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+    std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+    std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+    std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+    for (int i = 0; i < 1000; ++i)
+      database.insertRow(row0);
+    for (int i = 0; i < 50; ++i)
+      database.insertRow(row1);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row2);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row3);
+    for (int i = 0; i < 200; ++i)
+      database.insertRow(row4);
+
+    // create the parser
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+    std::vector< std::pair< std::size_t, std::size_t > > ranges{{800, 1000}, {1050, 1400}};
+
+    gum::learning::SmoothingPrior prior(database);
+
+    for (std::size_t i = std::size_t(1); i < std::size_t(24); ++i) {
+      gum::learning::ScoreMDL score(parser, prior, ranges);
+      score.setNumberOfThreads(i);
+
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          gum::learning::ScoreMDL::isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::learning::ScoreMDL::isPriorCompatible(prior));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score.isPriorCompatible(prior));
+
+      gum::NodeId                node0 = 0;
+      gum::NodeId                node1 = 1;
+      gum::NodeId                node3 = 3;
+      std::vector< gum::NodeId > cond_empty;
+      std::vector< gum::NodeId > cond2{node1};
+      std::vector< gum::NodeId > cond3{node3};
+
+      gum::learning::IdCondSet idset1(node0, cond_empty);    // #3,#0
+      gum::learning::IdCondSet idset2(node0, cond2, true);   // #9,#3
+      gum::learning::IdCondSet idset3(node0, cond3, true);   // #9,#3
+
+      // idset1: node0 | emptyset
+      double                penalty_1 = 2;
+      std::vector< double > N_ijk_1{401.0, 76.0, 76.0};
+      std::vector< double > N_ij_1;
+      double                xscore_1 = _score_(N_ijk_1, N_ij_1, penalty_1);
+      CHECK(_equal_(xscore_1, score.score(node0)));
+
+      // idset2: node0 | node1
+      double                penalty_2 = 6;
+      std::vector< double > N_ijk_2{201, 76, 1, 201, 1, 76, 1, 1, 1};
+      std::vector< double > N_ij_2{278, 278, 3};
+      double                xscore_2 = _score_(N_ijk_2, N_ij_2, penalty_2);
+      CHECK(_equal_(xscore_2, score.score(node0, cond2)));
+
+      // idset3: node0 | node3
+      double                penalty_3 = 6;
+      std::vector< double > N_ijk_3{1, 76, 1, 201, 1, 76, 201, 1, 1};
+      std::vector< double > N_ij_3{78, 278, 203};
+      double                xscore_3 = _score_(N_ijk_3, N_ij_3, penalty_3);
+      CHECK(_equal_(xscore_3, score.score(node0, cond3)));
+
+
+      gum::learning::ScoreMDL score2(score);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score2.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score2.isPriorCompatible(prior));
+
+      CHECK(_equal_(xscore_1, score2.score(node0)));
+      CHECK(_equal_(xscore_2, score2.score(node0, cond2)));
+      CHECK(_equal_(xscore_3, score2.score(node0, cond3)));
+
+      gum::learning::ScoreMDL score3(std::move(score2));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score3.isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score3.isPriorCompatible(prior));
+
+      CHECK(_equal_(xscore_1, score3.score(node0)));
+      CHECK(_equal_(xscore_2, score3.score(node0, cond2)));
+      CHECK(_equal_(xscore_3, score3.score(node0, cond3)));
+
+      gum::learning::ScoreMDL* score4 = score3.clone();
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
+
+      CHECK(_equal_(xscore_1, score4->score(node0)));
+      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
+      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+
+      score4->operator=(score);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
+
+      CHECK(_equal_(xscore_1, score4->score(node0)));
+      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
+      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+
+      // delete score4;
+
+      score4->operator=(std::move(score));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(
+          score4->isPriorCompatible(gum::learning::PriorType::SmoothingPriorType));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(score4->isPriorCompatible(prior));
+
+      CHECK(_equal_(xscore_1, score4->score(node0)));
+      CHECK(_equal_(xscore_2, score4->score(node0, cond2)));
+      CHECK(_equal_(xscore_3, score4->score(node0, cond3)));
+
+      delete score4;
+    }
+  }
 
 } /* namespace gum_tests */

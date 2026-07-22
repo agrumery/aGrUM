@@ -50,65 +50,17 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Multidim
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
-  struct MultidimTestSuite {
+  struct MultiDimTestSuite {
     public:
-    static void testCreation() {
-      gum::MultiDimArray< double > m;
-      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(0));
-      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(1));
+    // namespace gum_tests
 
-      gum::LabelizedVariable a("a", "", 4), b("b", "", 5);
-      m << a;
-      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
-      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(4));
-      m << b;
-      CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(2));
-      CHECK_EQ(m.domainSize(), static_cast< gum::Size >(20));
-
-      gum::MultiDimArray< double > mm = m;
-      CHECK_EQ(mm.nbrDim(), static_cast< gum::Size >(2));
-      CHECK_EQ(mm.domainSize(), static_cast< gum::Size >(20));
-    }   // namespace gum_tests
-
-    static void testMemoryCrash() {
-      gum::MultiDimArray< double > m;
-      gum::LabelizedVariable*      v[100];
-
-      for (int i = 0; i < 100; i++) {
-        std::string name = "x";
-        name.append(std::to_string(i));
-        v[i] = new gum::LabelizedVariable(name, "x");
-      }
-
-      // GCC 16 false positive: inlined feedMultiDimUntilOverflow triggers -Warray-bounds
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-      CHECK_THROWS_AS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&);
-#pragma GCC diagnostic pop
-
-      for (int i = 0; i < 100; i++)
-        delete (v[i]);
-    }
 
     // MED-2: domainSize multiplication guard in MultiDimImplementation::add()
-    static void testDomainSizeOverflow() {
-      gum::LabelizedVariable v1("v1", "v1", 3);
-      gum::LabelizedVariable v2("v2", "v2", 5);
-      gum::LabelizedVariable v3("v3", "v3", 7);
 
-      gum::MultiDimArray< double > m;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v1));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v3));
-      CHECK_EQ(m.domainSize(), gum::Size(3 * 5 * 7));
-    }
 
-    private:
+    protected:
     static void feedMultiDimUntilOverflow(gum::LabelizedVariable*       v[],
                                           gum::MultiDimArray< double >& t) {
       t.beginMultipleChanges();
@@ -120,7 +72,53 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Creation)
-  GUM_TEST_ACTIF(MemoryCrash)
-  GUM_TEST_ACTIF(DomainSizeOverflow)
+  GUM_TEST(Creation) {
+    gum::MultiDimArray< double > m;
+    CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(0));
+    CHECK_EQ(m.domainSize(), static_cast< gum::Size >(1));
+
+    gum::LabelizedVariable a("a", "", 4), b("b", "", 5);
+    m << a;
+    CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(1));
+    CHECK_EQ(m.domainSize(), static_cast< gum::Size >(4));
+    m << b;
+    CHECK_EQ(m.nbrDim(), static_cast< gum::Size >(2));
+    CHECK_EQ(m.domainSize(), static_cast< gum::Size >(20));
+
+    gum::MultiDimArray< double > mm = m;
+    CHECK_EQ(mm.nbrDim(), static_cast< gum::Size >(2));
+    CHECK_EQ(mm.domainSize(), static_cast< gum::Size >(20));
+  }
+
+  GUM_TEST(MemoryCrash) {
+    gum::MultiDimArray< double > m;
+    gum::LabelizedVariable*      v[100];
+
+    for (int i = 0; i < 100; i++) {
+      std::string name = "x";
+      name.append(std::to_string(i));
+      v[i] = new gum::LabelizedVariable(name, "x");
+    }
+
+    // GCC 16 false positive: inlined feedMultiDimUntilOverflow triggers -Warray-bounds
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+    CHECK_THROWS_AS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&);
+#pragma GCC diagnostic pop
+
+    for (int i = 0; i < 100; i++)
+      delete (v[i]);
+  }
+
+  GUM_TEST(DomainSizeOverflow) {
+    gum::LabelizedVariable v1("v1", "v1", 3);
+    gum::LabelizedVariable v2("v2", "v2", 5);
+    gum::LabelizedVariable v3("v3", "v3", 7);
+
+    gum::MultiDimArray< double > m;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v1));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(v3));
+    CHECK_EQ(m.domainSize(), gum::Size(3 * 5 * 7));
+  }
 }   // namespace gum_tests

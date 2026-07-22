@@ -58,14 +58,11 @@
 // ==========================================================================
 #include <agrum/base/variables/labelizedVariable.h>
 
-#define GUM_CURRENT_SUITE  MultiDimProjectors4FunctionGraph
-#define GUM_CURRENT_MODULE GUMBASE
-
 // ==========================================================================
 
 namespace gum_tests {
 
-  struct MultiDimProjectors4FunctionGraphTestSuite {
+  struct Projectors4MultiDimFunctionGraphTestSuite {
     // ************************************************************************************************
     /// Génération fixe d'une liste de variable
     // ************************************************************************************************
@@ -380,49 +377,7 @@ namespace gum_tests {
     // ************************************************************************************************
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
-    static void test_Projections_Functions_on_MultiDimFunctionGraphs() {
-      gum::Timer time;
-      double     tempsGene   = 0;
-      double     tempsCalcul = 0;
-      double     tempsEval   = 0;
 
-      // *************************************************************************************
-      // First we try with a predefine structure
-      {
-        time.reset();
-
-        gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
-
-        gum::MultiDimFunctionGraph< double >* a1 = nullptr;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
-
-        gum::VariableSet del_vars;
-        del_vars << varList->atPos(0);
-        //        del_vars << varList->atPos( 1 );
-
-        tempsGene += time.step();
-
-        bool evalRes = true;
-
-        for (int operationId = 1; operationId < 5 && evalRes; operationId++)
-          evalRes = _evalOperation_(operationId, a1, del_vars, tempsCalcul, tempsEval);
-
-        delete a1;
-
-        del_vars.clear();
-
-        for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > ite = varList->beginSafe();
-             ite != varList->endSafe();
-             ++ite)
-          delete *ite;
-
-        delete varList;
-
-        if (!evalRes) return;
-      }
-
-      CHECK(tempsGene > 0);
-    }
 
     //  ************************************************************************************************
     ///  Fonction de reproduction des tests amenant à des bugs/erreurs (rayer
@@ -901,7 +856,49 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(_Projections_Functions_on_MultiDimFunctionGraphs)
+  GUM_TEST(_Projections_Functions_on_MultiDimFunctionGraphs) {
+    gum::Timer time;
+    double     tempsGene   = 0;
+    double     tempsCalcul = 0;
+    double     tempsEval   = 0;
+
+    // *************************************************************************************
+    // First we try with a predefine structure
+    {
+      time.reset();
+
+      gum::Sequence< const gum::DiscreteVariable* >* varList = _generateFixVarList_();
+
+      gum::MultiDimFunctionGraph< double >* a1 = nullptr;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(a1 = _generateFunctionGraph1_(varList));
+
+      gum::VariableSet del_vars;
+      del_vars << varList->atPos(0);
+      //        del_vars << varList->atPos( 1 );
+
+      tempsGene += time.step();
+
+      bool evalRes = true;
+
+      for (int operationId = 1; operationId < 5 && evalRes; operationId++)
+        evalRes = _evalOperation_(operationId, a1, del_vars, tempsCalcul, tempsEval);
+
+      delete a1;
+
+      del_vars.clear();
+
+      for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > ite = varList->beginSafe();
+           ite != varList->endSafe();
+           ++ite)
+        delete *ite;
+
+      delete varList;
+
+      if (!evalRes) return;
+    }
+
+    CHECK(tempsGene > 0);
+  }
 }   // namespace gum_tests
 
 // ===================================================================================

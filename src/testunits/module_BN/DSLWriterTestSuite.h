@@ -51,9 +51,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DSLWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -103,25 +100,47 @@ namespace gum_tests {
 
     ~DSLWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
+
+    protected:
+    // Builds a BN to test the inference
+    void fill(gum::BayesNet< double >& bn) const {
+      bn.cpt(i1).fillWith({0.2, 0.8});
+      bn.cpt(i2).fillWith({0.3, 0.7});
+      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
+      bn.cpt(i4).fillWith(   // clang-format off
+              {0.4, 0.6,
+               0.5, 0.5,
+               0.5, 0.5,
+               1.0, 0.0} );   // clang-format on
+      bn.cpt(i5).fillWith(                      // clang-format off
+              {0.3, 0.6, 0.1,
+               0.5, 0.5, 0.0,
+               0.5, 0.5, 0.0,
+               1.0, 0.0, 0.0,
+               0.4, 0.6, 0.0,
+               0.5, 0.5, 0.0,
+               0.5, 0.5, 0.0,
+               0.0, 0.0, 1.0} );  // clang-format
+                                                                      // on
+    }
+  };
+
+GUM_TEST(Constuctor) {
       gum::DSLWriter< double >* writer = nullptr;
       GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::DSLWriter< double >());
       delete writer;
     }
-
-    static void testWriter_ostream() {
+GUM_TEST(Writer_ostream) {
       gum::DSLWriter< double > writer;
       // Uncomment this to check the output
       // GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
-
-    void testWriter_string() const {
+GUM_TEST(Writer_string) {
       gum::DSLWriter< double > writer;
       std::string              file = GET_RESSOURCES_PATH("outputs/DSLWriter_TestFile.txt");
       GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
     }
-
-    void testSyntaxicError() {
+GUM_TEST(SyntaxicError) {
       gum::DSLWriter< double > writer;
       {
         CHECK(!writer.isModificationAllowed());
@@ -157,33 +176,4 @@ namespace gum_tests {
         }
       }
     }
-
-    private:
-    // Builds a BN to test the inference
-    void fill(gum::BayesNet< double >& bn) const {
-      bn.cpt(i1).fillWith({0.2, 0.8});
-      bn.cpt(i2).fillWith({0.3, 0.7});
-      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
-      bn.cpt(i4).fillWith(   // clang-format off
-              {0.4, 0.6,
-               0.5, 0.5,
-               0.5, 0.5,
-               1.0, 0.0} );   // clang-format on
-      bn.cpt(i5).fillWith(                      // clang-format off
-              {0.3, 0.6, 0.1,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               1.0, 0.0, 0.0,
-               0.4, 0.6, 0.0,
-               0.5, 0.5, 0.0,
-               0.5, 0.5, 0.0,
-               0.0, 0.0, 1.0} );  // clang-format
-                                                                      // on
-    }
-  };
-
-GUM_TEST_ACTIF(Constuctor)
-GUM_TEST_ACTIF(Writer_ostream)
-GUM_TEST_ACTIF(Writer_string)
-GUM_TEST_ACTIF(SyntaxicError)
 }

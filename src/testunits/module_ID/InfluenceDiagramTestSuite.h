@@ -56,9 +56,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  InfluenceDiagram
-#define GUM_CURRENT_MODULE ID
-
 // The graph used for the tests:
 //           D1
 //           |   D1 -> C1
@@ -77,7 +74,7 @@
 namespace gum_tests {
 
   struct InfluenceDiagramTestSuite {
-    private:
+    protected:
     void fillTopo(gum::InfluenceDiagram< double >& id, gum::List< gum::NodeId >& idList) const {
       try {
         idList.insert(id.addDecisionNode(*decisionVar1));   // 0
@@ -189,844 +186,814 @@ namespace gum_tests {
 
       delete utilityVar2;
     }
-
-    void testConstructor() {
-      gum::InfluenceDiagram< double >* topology = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >());
-
-      CHECK_THROWS_AS(topology->addArc(1, 2), const gum::InvalidNode&);
-      gum::List< gum::NodeId > idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(*topology, idList));
-
-      CHECK_THROWS_AS(topology->add(*decisionVar1), const gum::DuplicateLabel&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete topology);
-    }
-
-    void testNodeType() {
-      gum::InfluenceDiagram< double > topology;
-      gum::List< gum::NodeId >        idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(topology, idList));
-
-      CHECK(topology.isDecisionNode(idList[0]));
-      CHECK(topology.isDecisionNode(idList[1]));
-      CHECK(topology.isDecisionNode(idList[2]));
-      CHECK(topology.isDecisionNode(idList[3]));
-      CHECK(!topology.isDecisionNode(idList[4]));
-      CHECK(!topology.isDecisionNode(idList[5]));
-      CHECK(!topology.isDecisionNode(idList[6]));
-      CHECK(!topology.isDecisionNode(idList[7]));
-      CHECK(!topology.isDecisionNode(idList[8]));
-      CHECK(!topology.isDecisionNode(idList[9]));
-      CHECK(!topology.isDecisionNode(idList[10]));
-
-      CHECK(!topology.isChanceNode(idList[0]));
-      CHECK(!topology.isChanceNode(idList[1]));
-      CHECK(!topology.isChanceNode(idList[2]));
-      CHECK(!topology.isChanceNode(idList[3]));
-      CHECK(topology.isChanceNode(idList[4]));
-      CHECK(topology.isChanceNode(idList[5]));
-      CHECK(topology.isChanceNode(idList[6]));
-      CHECK(topology.isChanceNode(idList[7]));
-      CHECK(topology.isChanceNode(idList[8]));
-      CHECK(!topology.isChanceNode(idList[9]));
-      CHECK(!topology.isChanceNode(idList[10]));
-
-      CHECK(!topology.isUtilityNode(idList[0]));
-      CHECK(!topology.isUtilityNode(idList[1]));
-      CHECK(!topology.isUtilityNode(idList[2]));
-      CHECK(!topology.isUtilityNode(idList[3]));
-      CHECK(!topology.isUtilityNode(idList[4]));
-      CHECK(!topology.isUtilityNode(idList[5]));
-      CHECK(!topology.isUtilityNode(idList[6]));
-      CHECK(!topology.isUtilityNode(idList[7]));
-      CHECK(!topology.isUtilityNode(idList[8]));
-      CHECK(topology.isUtilityNode(idList[9]));
-      CHECK(topology.isUtilityNode(idList[10]));
-
-      CHECK_EQ(topology.chanceNodeSize(), static_cast< gum::Size >(5));
-      CHECK_EQ(topology.decisionNodeSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(topology.utilityNodeSize(), static_cast< gum::Size >(2));
-    }
-
-    void testToDot() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-      fill(id, idList);
-
-      // For comparison with what readers will return
-      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
-      std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
-
-      if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
-
-      output << id.toDot();
-
-      output.flush();
-
-      output.close();
-
-      if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
-    }
-
-    void testCopyConstructor() {
-      gum::InfluenceDiagram< double > source;
-      gum::List< gum::NodeId >        idList;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
-
-      gum::InfluenceDiagram< double >* copy = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram< double >(source));
-
-      CHECK_EQ(source.internalDag().size(), copy->internalDag().size());
-      CHECK_EQ(source.internalDag().sizeArcs(), copy->internalDag().sizeArcs());
-
-      for (const auto node: source.internalDag().nodes()) {
-        CHECK(copy->internalDag().exists(node));
-
-        const gum::DiscreteVariable& srcVar = source.variable(node);
-        const gum::DiscreteVariable& cpVar  = copy->variable(node);
-        CHECK_EQ(srcVar.name(), cpVar.name());
-
-        if (srcVar.domainSize() == cpVar.domainSize()) {
-          for (gum::Idx i = 0; i < srcVar.domainSize(); i++)
-            CHECK_EQ(srcVar.label(i), cpVar.label(i));
-        } else CHECK(false);
-
-        for (const auto parent: source.internalDag().parents(node)) {
-          CHECK(copy->internalDag().existsArc(parent, node));
-        }
-
-        if (source.isChanceNode(node)) {
-          const gum::Tensor< double >& srcCPT = source.cpt(node);
-
-          const gum::Tensor< double >& cpCPT = copy->cpt(node);
-
-          gum::Instantiation srcInst(srcCPT);
-
-          gum::Instantiation cpInst(cpCPT);
-
-          for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
-            for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
-              gum::NodeId id = copy->nodeId(cpInst.variable(i));
-              srcInst.chgVal(source.variable(id), cpInst.val(i));
-            }
-
-            CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
-          }
-
-        } else if (source.isUtilityNode(node)) {
-          const gum::Tensor< double >& srcUT = source.utility(node);
-          const gum::Tensor< double >& cpUT  = copy->utility(node);
-
-          gum::Instantiation srcInst(srcUT);
-          gum::Instantiation cpInst(cpUT);
-
-          for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
-            for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
-              gum::NodeId id = copy->nodeId(cpInst.variable(i));
-              srcInst.chgVal(source.variable(id), cpInst.val(i));
-            }
-
-            CHECK_EQ(cpUT[cpInst], srcUT[srcInst]);
-          }
-        }
-      }
-
-      if (copy != nullptr) delete copy;
-    }
-
-    void testInsertion_1() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar1)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar3)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar3)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)));
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(5));
-
-      // Test for uniqueness of the ids
-
-      for (gum::Idx i = 0; i < idList.size() - 1; i++) {
-        for (gum::Idx j = i + 1; j < idList.size(); j++) {
-          if (idList[i] != idList[j]) {
-            CHECK(true);
-          } else {
-            CHECK(false);
-          }
-        }
-      }
-
-      gum::LabelizedVariable const* varPtr = nullptr;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
-      CHECK_EQ(*varPtr, *decisionVar1);
-
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar1);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar3);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar3);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar5);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar1);
-    }
-
-    void testInsertion_2() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(5));
-
-      gum::LabelizedVariable const* varPtr = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
-      CHECK_EQ(*varPtr, *decisionVar2);
-
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar2);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar4);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar1);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar4);
-      CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2);
-
-      auto utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
-      CHECK_THROWS_AS(id.addUtilityNode(*utilityVar3), const gum::InvalidArgument&);
-      delete utilityVar3;
-    }
-
-    void testArcInsertion() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[2]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[2], idList[4]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[3]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[3]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]));
-
-      CHECK_THROWS_AS(id.addArc(idList[4], idList[0]), const gum::InvalidArc&);
-      CHECK_THROWS_AS(id.addArc(idList[4], idList[3]), const gum::InvalidArc&);
-
-      CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(6));
-    }
-
-    void testEraseVar() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      CHECK(id.empty());
-      CHECK(id.internalDag().emptyArcs());
-
-      fill(id, idList);
-
-      CHECK(!id.empty());
-      CHECK(!id.internalDag().emptyArcs());
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
-
-      id.erase(idList[0]);
-
-      for (const auto node: idList)
-        id.erase(node);
-
-      CHECK(id.empty());
-
-      CHECK(id.internalDag().emptyArcs());
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(0));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(0));
-      CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(0));
-
-      CHECK_EQ(id.decisionNodeSize(), static_cast< gum::Size >(0));
-      CHECK_EQ(id.utilityNodeSize(), static_cast< gum::Size >(0));
-      CHECK_EQ(id.chanceNodeSize(), static_cast< gum::Size >(0));
-
-      idList.clear();
-      GUM_CHECK_ASSERT_THROWS_NOTHING(fill(id, idList));
-
-      CHECK(!id.empty());
-      CHECK(!id.internalDag().emptyArcs());
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
-
-      CHECK_EQ(id.decisionNodeSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.utilityNodeSize(), static_cast< gum::Size >(2));
-      CHECK_EQ(id.chanceNodeSize(), static_cast< gum::Size >(5));
-    }
-
-    void testEraseArc() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      CHECK(id.empty());
-      CHECK(id.internalDag().emptyArcs());
-
-      fill(id, idList);
-
-      CHECK(!id.empty());
-      CHECK(!id.internalDag().emptyArcs());
-
-      CHECK_EQ(id.size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
-      CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[9])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[5])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[1])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[7])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[2])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[9])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[2], idList[6])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[6], idList[8])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])));
-
-      CHECK(!id.empty());
-      CHECK(id.internalDag().emptyArcs());
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
-    }
-
-    void testIterator() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      for (const auto node: id.nodes()) {
-        CHECK(idList.exists(node));
-      }
-    }
-
-    void testTopologicalOrder() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-
-      gum::Sequence< gum::NodeId > topoOrder;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(topoOrder = id.topologicalOrder());
-
-      CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(11));
-    }
-
-    void testTable() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-      CHECK_EQ(id.cpt(idList[4]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.cpt(idList[5]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.cpt(idList[6]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.cpt(idList[7]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.cpt(idList[8]).domainSize(), static_cast< gum::Size >(8));
-      CHECK_EQ(id.utility(idList[9]).domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(id.utility(idList[10]).domainSize(), static_cast< gum::Size >(4));
-    }
-
-    void testTableCoherencyVarRemoval() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-
-      CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(2));
-      CHECK(id.internalDag().existsArc(idList[6], idList[8]));
-      CHECK(id.internalDag().existsArc(idList[7], idList[8]));
-
-      gum::Size dmnSize_1
-          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
-      dmnSize_1 *= id.variable(idList[8]).domainSize();
-      CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_1);
-
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.erase(idList[7]));
-
-      CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(1));
-      CHECK(id.internalDag().existsArc(idList[6], idList[8]));
-      CHECK(!id.internalDag().existsArc(idList[7], idList[8]));
-
-      gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
-      dmnSize_2 *= id.variable(idList[8]).domainSize();
-      CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_2);
-
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      CHECK_THROWS(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
-
-      // Testing coherence on utility table
-      CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(2));
-      CHECK(id.internalDag().existsArc(idList[3], idList[10]));
-      CHECK(id.internalDag().existsArc(idList[8], idList[10]));
-
-      gum::Size dmnSize_3
-          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
-      dmnSize_3 *= id.variable(idList[10]).domainSize();
-      CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_3);
-
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[3])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.erase(idList[3]));
-
-      CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(1));
-      CHECK(id.internalDag().existsArc(idList[8], idList[10]));
-      CHECK(!id.internalDag().existsArc(idList[3], idList[10]));
-
-      gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
-      dmnSize_4 *= id.variable(idList[10]).domainSize();
-      CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_4);
-
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
-      CHECK_THROWS(id.utility(idList[10]).contains(id.variable(idList[3])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
-    }
-
-    void testTableCoherencyArcRemoval() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-
-      // Testing Coherence on cpt
-      CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(2));
-      CHECK(id.internalDag().existsArc(idList[6], idList[8]));
-      CHECK(id.internalDag().existsArc(idList[7], idList[8]));
-
-      gum::Size dmnSize_1
-          = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
-      dmnSize_1 *= id.variable(idList[8]).domainSize();
-      CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_1);
-
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[7])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
-
-      CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(1));
-      CHECK(id.internalDag().existsArc(idList[6], idList[8]));
-      CHECK(!id.internalDag().existsArc(idList[7], idList[8]));
-
-      gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
-      dmnSize_2 *= id.variable(idList[8]).domainSize();
-      CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_2);
-
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
-      CHECK(!id.cpt(idList[8]).contains(id.variable(idList[7])));
-      CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
-
-      // Testing coherence on utility table
-      CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(2));
-      CHECK(id.internalDag().existsArc(idList[3], idList[10]));
-      CHECK(id.internalDag().existsArc(idList[8], idList[10]));
-
-      gum::Size dmnSize_3
-          = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
-      dmnSize_3 *= id.variable(idList[10]).domainSize();
-      CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_3);
-
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[3])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
-
-      CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(1));
-      CHECK(id.internalDag().existsArc(idList[8], idList[10]));
-      CHECK(!id.internalDag().existsArc(idList[3], idList[10]));
-
-      gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
-      dmnSize_4 *= id.variable(idList[10]).domainSize();
-      CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_4);
-
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
-      CHECK(!id.utility(idList[10]).contains(id.variable(idList[3])));
-      CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
-    }
-
-    void testAccessorByName() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-
-      for (const auto node: id.nodes()) {
-        CHECK_EQ(id.idFromName(id.variable(node).name()), node);
-        CHECK_EQ(&id.variableFromName(id.variable(node).name()), &id.variable(node));
-      }
-
-      CHECK_THROWS_AS(id.idFromName("chorizo"), const gum::NotFound&);
-
-      CHECK_THROWS_AS(id.variableFromName("chorizo"), const gum::NotFound&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"));
-      id.erase(id.idFromName("decisionVar1"));
-      CHECK_THROWS_AS(id.idFromName("decisionVar1"), const gum::NotFound&);
-    }
-
-    void testDecisionPath() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      fill(id, idList);
-
-      CHECK(!id.decisionOrderExists());
-      CHECK_THROWS_AS(id.decisionOrder(), const gum::NotFound&);
-      id.addArc(idList[2], idList[1]);
-      id.addArc(idList[7], idList[3]);
-      CHECK(id.decisionOrderExists());
-      CHECK_NOTHROW(id.decisionOrder());
-      CHECK_NOTHROW(id.getPartialTemporalOrder());
-      gum::List< gum::NodeSet > partialTemporalOrder = id.getPartialTemporalOrder();
-
-      gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
-      int       i              = 0;
-
-      for (const auto& nodeset: partialTemporalOrder) {
-        int j = 0;
-
-        for (const auto node: nodeset) {
-          CHECK_EQ(node, resultat[i][j]);
-          j += 1;
-        }
-
-        i += 1;
-      }
-    }
-
-    void testMoralisation() {
-      gum::InfluenceDiagram< double > id;
-      gum::List< gum::NodeId >        idList;
-
-      gum::LabelizedVariable dVar1("decisionVar1", "D1", 2);
-      gum::LabelizedVariable dVar2("decisionVar2", "D2", 2);
-      gum::LabelizedVariable dVar3("decisionVar3", "D3", 2);
-      gum::LabelizedVariable dVar4("decisionVar4", "D4", 2);
-      gum::LabelizedVariable cVar1("A", "a", 2);
-      gum::LabelizedVariable cVar2("B", "b", 2);
-      gum::LabelizedVariable cVar3("C", "c", 2);
-      gum::LabelizedVariable cVar4("D", "d", 2);
-      gum::LabelizedVariable cVar5("E", "e", 2);
-      gum::LabelizedVariable cVar6("F", "f", 2);
-      gum::LabelizedVariable cVar7("G", "g", 2);
-      gum::LabelizedVariable cVar8("H", "h", 2);
-      gum::LabelizedVariable cVar9("I", "i", 2);
-      gum::LabelizedVariable cVar10("J", "j", 2);
-      gum::LabelizedVariable cVar11("K", "k", 2);
-      gum::LabelizedVariable cVar12("L", "l", 2);
-      gum::LabelizedVariable uVar1("utilityVar1", "U1", 1);
-      gum::LabelizedVariable uVar2("utilityVar2", "U2", 1);
-      gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
-      gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
-
-      idList.insert(id.addDecisionNode(dVar1));   // 0
-      idList.insert(id.addDecisionNode(dVar2));   // 1
-      idList.insert(id.addDecisionNode(dVar3));   // 2
-      idList.insert(id.addDecisionNode(dVar4));   // 3
-      idList.insert(id.addChanceNode(cVar1));     // 4
-      idList.insert(id.addChanceNode(cVar2));     // 5
-      idList.insert(id.addChanceNode(cVar3));     // 6
-      idList.insert(id.addChanceNode(cVar4));     // 7
-      idList.insert(id.addChanceNode(cVar5));     // 8
-      idList.insert(id.addChanceNode(cVar6));     // 9
-      idList.insert(id.addChanceNode(cVar7));     // 10
-      idList.insert(id.addChanceNode(cVar8));     // 11
-      idList.insert(id.addChanceNode(cVar9));     // 12
-      idList.insert(id.addChanceNode(cVar10));    // 13
-      idList.insert(id.addChanceNode(cVar11));    // 14
-      idList.insert(id.addChanceNode(cVar12));    // 15
-      idList.insert(id.addUtilityNode(uVar1));    // 16
-      idList.insert(id.addUtilityNode(uVar2));    // 17
-      idList.insert(id.addUtilityNode(uVar3));    // 18
-      idList.insert(id.addUtilityNode(uVar4));    // 19
-
-      id.addArc(idList[4], idList[6]);
-      id.addArc(idList[5], idList[6]);
-      id.addArc(idList[5], idList[7]);
-      id.addArc(idList[5], idList[0]);
-      id.addArc(idList[0], idList[7]);
-      id.addArc(idList[0], idList[16]);
-      id.addArc(idList[6], idList[8]);
-      id.addArc(idList[7], idList[8]);
-      id.addArc(idList[7], idList[9]);
-      id.addArc(idList[8], idList[10]);
-      id.addArc(idList[8], idList[1]);
-      id.addArc(idList[9], idList[1]);
-      id.addArc(idList[9], idList[11]);
-      id.addArc(idList[10], idList[3]);
-      id.addArc(idList[10], idList[12]);
-      id.addArc(idList[1], idList[12]);
-      id.addArc(idList[1], idList[2]);
-      id.addArc(idList[3], idList[15]);
-      id.addArc(idList[12], idList[15]);
-      id.addArc(idList[11], idList[13]);
-      id.addArc(idList[11], idList[14]);
-      id.addArc(idList[2], idList[14]);
-      id.addArc(idList[2], idList[17]);
-      id.addArc(idList[2], idList[3]);
-      id.addArc(idList[13], idList[18]);
-      id.addArc(idList[14], idList[18]);
-      id.addArc(idList[15], idList[19]);
-
-      gum::UndiGraph moralGraph;
-      CHECK_NOTHROW(moralGraph = id.moralGraph());
-
-      // For comparison with what readers will return
-      std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");
-      std::ofstream idOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
-
-      if (!idOutput.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
-
-      idOutput << id.toDot();
-
-      idOutput.flush();
-
-      idOutput.close();
-
-      if (idOutput.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
-
-      // For comparison with what readers will return
-      dotfile = GET_RESSOURCES_PATH("outputs/IDAfterMoralisation.dot");
-
-      std::ofstream moralOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
-
-      if (!moralOutput.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
-
-      moralOutput << moralGraph.toDot();
-
-      moralOutput.flush();
-
-      moralOutput.close();
-
-      if (moralOutput.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
-    }
-
-    void testWithNames() {
-      gum::InfluenceDiagram< double > diag;
-      diag.add(gum::LabelizedVariable("A", "A", 2));
-      diag.addDecisionNode(gum::LabelizedVariable("D", "D", 2));
-      diag.addUtilityNode(gum::LabelizedVariable("U", "U", 1));
-
-      diag.changeVariableName(0, "O");
-      CHECK_EQ(diag.variable(0).name(), "O");
-      diag.changeVariableName("O", "I");
-      CHECK_EQ(diag.variable(0).name(), "I");
-
-      diag.addArc(0, 1);
-      CHECK(diag.existsPathBetween(0, 1));
-      CHECK(diag.existsPathBetween("I", "D"));
-      diag.eraseArc(0, 1);
-      CHECK(!diag.existsPathBetween(0, 1));
-      CHECK(!diag.existsPathBetween("I", "D"));
-
-      diag.addArc("I", "D");
-      CHECK(diag.existsPathBetween(0, 1));
-      CHECK(diag.existsPathBetween("I", "D"));
-      diag.eraseArc("I", "D");
-      CHECK(!diag.existsPathBetween(0, 1));
-      CHECK(!diag.existsPathBetween("I", "D"));
-
-      CHECK_THROWS_AS(diag.addArc("foo", "bar"), const gum::NotFound&);
-    }
-
-    void testFastPrototype() {
-      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->*B<-C;E<-B->$D");
-      CHECK_EQ(infdiag.size(), static_cast< gum::Size >(5));
-      CHECK_EQ(infdiag.chanceNodeSize(), static_cast< gum::Size >(3));
-      CHECK_EQ(infdiag.utilityNodeSize(), static_cast< gum::Size >(1));
-      CHECK_EQ(infdiag.decisionNodeSize(), static_cast< gum::Size >(1));
-      CHECK_EQ(infdiag.sizeArcs(), static_cast< gum::Size >(4));
-    }
-
-    void testFastPrototypeVarType() {
-      auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
-          "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
-      CHECK_EQ(infdiag.variable("a").varType(), gum::VarType::INTEGER);
-      CHECK_EQ(infdiag.variable("b").varType(), gum::VarType::INTEGER);
-      CHECK_EQ(infdiag.variable("c").varType(), gum::VarType::LABELIZED);
-      CHECK_EQ(infdiag.variable("d").varType(), gum::VarType::NUMERICAL);
-      CHECK_EQ(infdiag.variable("e").varType(), gum::VarType::NUMERICAL);
-      CHECK_EQ(infdiag.variable("f").varType(), gum::VarType::NUMERICAL);
-    }
-
-    void testFastVariable() {
-      {
-        gum::InfluenceDiagram< float > infdiag;
-        infdiag.addChanceNode("a{1|4|6}");
-        infdiag.addChanceNode("b", 4);
-        infdiag.addDecisionNode("c[1,2,3,4,5.5]");
-        infdiag.addUtilityNode("d");
-        infdiag.addUtilityNode("e{degre}");
-
-        CHECK_EQ(infdiag.variable("a").toString(), "a:Integer({1|4|6})");
-        CHECK_EQ(infdiag.variable("b").toString(), "b:Range([0,3])");
-        CHECK_EQ(infdiag.variable("c").toString(), "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)");
-        CHECK_EQ(infdiag.variable("d").toString(), "d:Range([0,0])");
-        CHECK_EQ(infdiag.variable("e").toString(), "e:Labelized({degre})");
-
-        CHECK(infdiag.isChanceNode("a"));
-        CHECK(infdiag.isChanceNode("b"));
-        CHECK(infdiag.isDecisionNode("c"));
-        CHECK(infdiag.isUtilityNode("d"));
-        CHECK(infdiag.isUtilityNode("e"));
-      }
-
-      {
-        gum::InfluenceDiagram< float > infdiag;
-        infdiag.add("a{1|4|6}");
-        infdiag.add("b", 4);
-        infdiag.add("*c[1,2,3,4,5.5]");
-        infdiag.add("$d");
-        infdiag.add("$e{degre}");
-
-        CHECK_EQ(infdiag.variable("a").toString(), "a:Integer({1|4|6})");
-        CHECK_EQ(infdiag.variable("b").toString(), "b:Range([0,3])");
-        CHECK_EQ(infdiag.variable("c").toString(), "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)");
-        CHECK_EQ(infdiag.variable("d").toString(), "d:Range([0,0])");
-        CHECK_EQ(infdiag.variable("e").toString(), "e:Labelized({degre})");
-
-        CHECK(infdiag.isChanceNode("a"));
-        CHECK(infdiag.isChanceNode("b"));
-        CHECK(infdiag.isDecisionNode("c"));
-        CHECK(infdiag.isUtilityNode("d"));
-        CHECK(infdiag.isUtilityNode("e"));
-      }
-    }
-
-    void testoperatorEqual() {
-      auto model  = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
-      auto model2 = gum::InfluenceDiagram< double >::fastPrototype(
-          "C{yes|no}<-A{yes|no}->*B{yes|no}<-C->D{yes|no}->$U<-B;*E{yes|no}->B");
-      auto model3 = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
-
-      for (const auto i: model.nodes()) {
-        if (model.isChanceNode(i)) {
-          model.cpt(i).fillWith(1);
-          model2.cpt(i).fillWith(1);
-          model3.cpt(i).fillWith(1);
-        } else if (model.isUtilityNode(i)) {
-          model.utility(i).fillWith(1);
-          model2.utility(i).fillWith(1);
-          model3.utility(i).fillWith(1);
-        }
-      }
-
-      CHECK_EQ(model, model);
-      CHECK_NE(model, model2);
-      CHECK_EQ(model, model3);
-    }
-
-    void testGetDecisionGraph() {
-      // *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1
-      // *D3 isolated decision node
-      auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;*D3->$U2");
-
-      gum::DAG dg = id.getDecisionGraph();
-
-      gum::NodeId d1 = id.idFromName("D1");
-      gum::NodeId d2 = id.idFromName("D2");
-      gum::NodeId d3 = id.idFromName("D3");
-
-      CHECK_EQ(dg.size(), gum::Size(3));
-      CHECK_EQ(dg.sizeArcs(), gum::Size(1));
-      CHECK(dg.existsNode(d1));
-      CHECK(dg.existsNode(d2));
-      CHECK(dg.existsNode(d3));
-      CHECK(dg.existsArc(d1, d2));
-    }
-
-    void testMoveConstructor() {
-      auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;C2->$U");
-
-      const gum::Size nNodes = id.size();
-      const gum::Size nArcs  = id.dag().sizeArcs();
-
-      gum::InfluenceDiagram< double > moved(std::move(id));
-      CHECK_EQ(moved.size(), nNodes);
-      CHECK_EQ(moved.dag().sizeArcs(), nArcs);
-      CHECK(moved.isDecisionNode("D1"));
-      CHECK(moved.isDecisionNode("D2"));
-      CHECK(moved.isChanceNode("C1"));
-      CHECK(moved.isChanceNode("C2"));
-      CHECK(moved.isUtilityNode("U"));
-
-      auto src2 = gum::InfluenceDiagram< double >::fastPrototype("*A->B->$C");
-      gum::InfluenceDiagram< double > dst2;
-      dst2 = std::move(src2);
-      CHECK_EQ(dst2.size(), gum::Size(3));
-      CHECK(dst2.isDecisionNode("A"));
-      CHECK(dst2.isChanceNode("B"));
-      CHECK(dst2.isUtilityNode("C"));
-    }
-
-    void testConnectedComponents() {
-      // A->B connected, *C isolated decision, $D isolated utility: 3 components
-      auto id = gum::InfluenceDiagram< double >::fastPrototype("A->B;*C;$D");
-      auto cc = id.connectedComponents();
-      CHECK_EQ(cc.size(), gum::Size(4));
-      CHECK_EQ(cc[id.idFromName("A")], cc[id.idFromName("B")]);
-      CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("C")]);
-      CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("D")]);
-      gum::NodeSet roots;
-      for (const auto& [node, root]: cc)
-        roots.insert(root);
-      CHECK_EQ(roots.size(), gum::Size(3));
-
-      // Fully connected: 1 component
-      auto         id2 = gum::InfluenceDiagram< double >::fastPrototype("A->B->$C<-*D");
-      auto         cc2 = id2.connectedComponents();
-      gum::NodeSet roots2;
-      for (const auto& [node, root]: cc2)
-        roots2.insert(root);
-      CHECK_EQ(roots2.size(), gum::Size(1));
-    }
   };
 
-  GUM_TEST_ACTIF(Constructor)
-  GUM_TEST_ACTIF(NodeType)
-  GUM_TEST_ACTIF(ToDot)
-  GUM_TEST_ACTIF(CopyConstructor)
-  GUM_TEST_ACTIF(Insertion_1)
-  GUM_TEST_ACTIF(Insertion_2)
-  GUM_TEST_ACTIF(ArcInsertion)
-  GUM_TEST_ACTIF(EraseVar)
-  GUM_TEST_ACTIF(EraseArc)
-  GUM_TEST_ACTIF(Iterator)
-  GUM_TEST_ACTIF(TopologicalOrder)
-  GUM_TEST_ACTIF(Table)
-  GUM_TEST_ACTIF(TableCoherencyVarRemoval)
-  GUM_TEST_ACTIF(TableCoherencyArcRemoval)
-  GUM_TEST_ACTIF(AccessorByName)
-  GUM_TEST_ACTIF(DecisionPath)
-  GUM_TEST_ACTIF(Moralisation)
-  GUM_TEST_ACTIF(WithNames)
-  GUM_TEST_ACTIF(FastPrototype)
-  GUM_TEST_ACTIF(FastPrototypeVarType)
-  GUM_TEST_ACTIF(FastVariable)
-  GUM_TEST_ACTIF(operatorEqual)
-  GUM_TEST_ACTIF(GetDecisionGraph)
-  GUM_TEST_ACTIF(MoveConstructor)
-  GUM_TEST_ACTIF(ConnectedComponents)
+  GUM_TEST(Constructor) {
+    gum::InfluenceDiagram< double >* topology = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(topology = new gum::InfluenceDiagram< double >());
+
+    CHECK_THROWS_AS(topology->addArc(1, 2), const gum::InvalidNode&);
+    gum::List< gum::NodeId > idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(*topology, idList));
+
+    CHECK_THROWS_AS(topology->add(*decisionVar1), const gum::DuplicateLabel&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete topology);
+  }
+
+  GUM_TEST(NodeType) {
+    gum::InfluenceDiagram< double > topology;
+    gum::List< gum::NodeId >        idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(topology, idList));
+
+    CHECK(topology.isDecisionNode(idList[0]));
+    CHECK(topology.isDecisionNode(idList[1]));
+    CHECK(topology.isDecisionNode(idList[2]));
+    CHECK(topology.isDecisionNode(idList[3]));
+    CHECK(!topology.isDecisionNode(idList[4]));
+    CHECK(!topology.isDecisionNode(idList[5]));
+    CHECK(!topology.isDecisionNode(idList[6]));
+    CHECK(!topology.isDecisionNode(idList[7]));
+    CHECK(!topology.isDecisionNode(idList[8]));
+    CHECK(!topology.isDecisionNode(idList[9]));
+    CHECK(!topology.isDecisionNode(idList[10]));
+
+    CHECK(!topology.isChanceNode(idList[0]));
+    CHECK(!topology.isChanceNode(idList[1]));
+    CHECK(!topology.isChanceNode(idList[2]));
+    CHECK(!topology.isChanceNode(idList[3]));
+    CHECK(topology.isChanceNode(idList[4]));
+    CHECK(topology.isChanceNode(idList[5]));
+    CHECK(topology.isChanceNode(idList[6]));
+    CHECK(topology.isChanceNode(idList[7]));
+    CHECK(topology.isChanceNode(idList[8]));
+    CHECK(!topology.isChanceNode(idList[9]));
+    CHECK(!topology.isChanceNode(idList[10]));
+
+    CHECK(!topology.isUtilityNode(idList[0]));
+    CHECK(!topology.isUtilityNode(idList[1]));
+    CHECK(!topology.isUtilityNode(idList[2]));
+    CHECK(!topology.isUtilityNode(idList[3]));
+    CHECK(!topology.isUtilityNode(idList[4]));
+    CHECK(!topology.isUtilityNode(idList[5]));
+    CHECK(!topology.isUtilityNode(idList[6]));
+    CHECK(!topology.isUtilityNode(idList[7]));
+    CHECK(!topology.isUtilityNode(idList[8]));
+    CHECK(topology.isUtilityNode(idList[9]));
+    CHECK(topology.isUtilityNode(idList[10]));
+
+    CHECK_EQ(topology.chanceNodeSize(), static_cast< gum::Size >(5));
+    CHECK_EQ(topology.decisionNodeSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(topology.utilityNodeSize(), static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(ToDot) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+    fill(id, idList);
+
+    // For comparison with what readers will return
+    std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDToDotWriter.dot");
+    std::ofstream output(dotfile.c_str(), std::ios::out | std::ios::trunc);
+
+    if (!output.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
+
+    output << id.toDot();
+
+    output.flush();
+
+    output.close();
+
+    if (output.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+  }
+
+  GUM_TEST(CopyConstructor) {
+    gum::InfluenceDiagram< double > source;
+    gum::List< gum::NodeId >        idList;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(source, idList));
+
+    gum::InfluenceDiagram< double >* copy = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(copy = new gum::InfluenceDiagram< double >(source));
+
+    CHECK_EQ(source.internalDag().size(), copy->internalDag().size());
+    CHECK_EQ(source.internalDag().sizeArcs(), copy->internalDag().sizeArcs());
+
+    for (const auto node: source.internalDag().nodes()) {
+      CHECK(copy->internalDag().exists(node));
+
+      const gum::DiscreteVariable& srcVar = source.variable(node);
+      const gum::DiscreteVariable& cpVar  = copy->variable(node);
+      CHECK_EQ(srcVar.name(), cpVar.name());
+
+      if (srcVar.domainSize() == cpVar.domainSize()) {
+        for (gum::Idx i = 0; i < srcVar.domainSize(); i++)
+          CHECK_EQ(srcVar.label(i), cpVar.label(i));
+      } else CHECK(false);
+
+      for (const auto parent: source.internalDag().parents(node)) {
+        CHECK(copy->internalDag().existsArc(parent, node));
+      }
+
+      if (source.isChanceNode(node)) {
+        const gum::Tensor< double >& srcCPT = source.cpt(node);
+
+        const gum::Tensor< double >& cpCPT = copy->cpt(node);
+
+        gum::Instantiation srcInst(srcCPT);
+
+        gum::Instantiation cpInst(cpCPT);
+
+        for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
+          for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
+            gum::NodeId id = copy->nodeId(cpInst.variable(i));
+            srcInst.chgVal(source.variable(id), cpInst.val(i));
+          }
+
+          CHECK_EQ(cpCPT[cpInst], srcCPT[srcInst]);
+        }
+
+      } else if (source.isUtilityNode(node)) {
+        const gum::Tensor< double >& srcUT = source.utility(node);
+        const gum::Tensor< double >& cpUT  = copy->utility(node);
+
+        gum::Instantiation srcInst(srcUT);
+        gum::Instantiation cpInst(cpUT);
+
+        for (cpInst.setFirst(); !cpInst.end(); cpInst.inc()) {
+          for (gum::Idx i = 0; i < cpInst.nbrDim(); i++) {
+            gum::NodeId id = copy->nodeId(cpInst.variable(i));
+            srcInst.chgVal(source.variable(id), cpInst.val(i));
+          }
+
+          CHECK_EQ(cpUT[cpInst], srcUT[srcInst]);
+        }
+      }
+    }
+
+    if (copy != nullptr) delete copy;
+  }
+
+  GUM_TEST(Insertion_1) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar1)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar3)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar3)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar5)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar1)));
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(5));
+
+    // Test for uniqueness of the ids
+
+    for (gum::Idx i = 0; i < idList.size() - 1; i++) {
+      for (gum::Idx j = i + 1; j < idList.size(); j++) {
+        if (idList[i] != idList[j]) {
+          CHECK(true);
+        } else {
+          CHECK(false);
+        }
+      }
+    }
+
+    gum::LabelizedVariable const* varPtr = nullptr;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
+    CHECK_EQ(*varPtr, *decisionVar1);
+
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar1);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar3);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar3);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar5);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar1);
+  }
+
+  GUM_TEST(Insertion_2) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(5));
+
+    gum::LabelizedVariable const* varPtr = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(varPtr = (gum::LabelizedVariable*)&id.variable(idList[0]));
+    CHECK_EQ(*varPtr, *decisionVar2);
+
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[0])), *decisionVar2);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[1])), *decisionVar4);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[2])), *chanceVar1);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[3])), *chanceVar4);
+    CHECK_EQ(*((gum::LabelizedVariable*)&id.variable(idList[4])), *utilityVar2);
+
+    auto utilityVar3 = new gum::LabelizedVariable("utilityVar3", "U3", 2);
+    CHECK_THROWS_AS(id.addUtilityNode(*utilityVar3), const gum::InvalidArgument&);
+    delete utilityVar3;
+  }
+
+  GUM_TEST(ArcInsertion) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar2)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addDecisionNode(*decisionVar4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar1)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addChanceNode(*chanceVar4)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(idList.insert(id.addUtilityNode(*utilityVar2)));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[2]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[2], idList[4]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[3]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[0], idList[3]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[3], idList[4]));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.addArc(idList[1], idList[4]));
+
+    CHECK_THROWS_AS(id.addArc(idList[4], idList[0]), const gum::InvalidArc&);
+    CHECK_THROWS_AS(id.addArc(idList[4], idList[3]), const gum::InvalidArc&);
+
+    CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(6));
+  }
+
+  GUM_TEST(EraseVar) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    CHECK(id.empty());
+    CHECK(id.internalDag().emptyArcs());
+
+    fill(id, idList);
+
+    CHECK(!id.empty());
+    CHECK(!id.internalDag().emptyArcs());
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
+
+    id.erase(idList[0]);
+
+    for (const auto node: idList)
+      id.erase(node);
+
+    CHECK(id.empty());
+
+    CHECK(id.internalDag().emptyArcs());
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(0));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(0));
+    CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(0));
+
+    CHECK_EQ(id.decisionNodeSize(), static_cast< gum::Size >(0));
+    CHECK_EQ(id.utilityNodeSize(), static_cast< gum::Size >(0));
+    CHECK_EQ(id.chanceNodeSize(), static_cast< gum::Size >(0));
+
+    idList.clear();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fill(id, idList));
+
+    CHECK(!id.empty());
+    CHECK(!id.internalDag().emptyArcs());
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
+
+    CHECK_EQ(id.decisionNodeSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.utilityNodeSize(), static_cast< gum::Size >(2));
+    CHECK_EQ(id.chanceNodeSize(), static_cast< gum::Size >(5));
+  }
+
+  GUM_TEST(EraseArc) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    CHECK(id.empty());
+    CHECK(id.internalDag().emptyArcs());
+
+    fill(id, idList);
+
+    CHECK(!id.empty());
+    CHECK(!id.internalDag().emptyArcs());
+
+    CHECK_EQ(id.size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().size(), static_cast< gum::Size >(11));
+    CHECK_EQ(id.internalDag().sizeArcs(), static_cast< gum::Size >(12));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[9])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[4], idList[5])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[1])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[7])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[5], idList[2])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[1], idList[9])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[2], idList[6])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[6], idList[8])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[8], idList[10])));
+
+    CHECK(!id.empty());
+    CHECK(id.internalDag().emptyArcs());
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[0], idList[4])));
+  }
+
+  GUM_TEST(Iterator) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    for (const auto node: id.nodes()) {
+      CHECK(idList.exists(node));
+    }
+  }
+
+  GUM_TEST(TopologicalOrder) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+
+    gum::Sequence< gum::NodeId > topoOrder;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(topoOrder = id.topologicalOrder());
+
+    CHECK_EQ(topoOrder.size(), static_cast< gum::Size >(11));
+  }
+
+  GUM_TEST(Table) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+    CHECK_EQ(id.cpt(idList[4]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.cpt(idList[5]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.cpt(idList[6]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.cpt(idList[7]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.cpt(idList[8]).domainSize(), static_cast< gum::Size >(8));
+    CHECK_EQ(id.utility(idList[9]).domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(id.utility(idList[10]).domainSize(), static_cast< gum::Size >(4));
+  }
+
+  GUM_TEST(TableCoherencyVarRemoval) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+
+    CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(2));
+    CHECK(id.internalDag().existsArc(idList[6], idList[8]));
+    CHECK(id.internalDag().existsArc(idList[7], idList[8]));
+
+    gum::Size dmnSize_1 = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+    dmnSize_1 *= id.variable(idList[8]).domainSize();
+    CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_1);
+
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[7])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.erase(idList[7]));
+
+    CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(1));
+    CHECK(id.internalDag().existsArc(idList[6], idList[8]));
+    CHECK(!id.internalDag().existsArc(idList[7], idList[8]));
+
+    gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
+    dmnSize_2 *= id.variable(idList[8]).domainSize();
+    CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_2);
+
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
+    CHECK_THROWS(id.cpt(idList[8]).contains(id.variable(idList[7])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
+
+    // Testing coherence on utility table
+    CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(2));
+    CHECK(id.internalDag().existsArc(idList[3], idList[10]));
+    CHECK(id.internalDag().existsArc(idList[8], idList[10]));
+
+    gum::Size dmnSize_3 = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+    dmnSize_3 *= id.variable(idList[10]).domainSize();
+    CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_3);
+
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[3])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.erase(idList[3]));
+
+    CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(1));
+    CHECK(id.internalDag().existsArc(idList[8], idList[10]));
+    CHECK(!id.internalDag().existsArc(idList[3], idList[10]));
+
+    gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
+    dmnSize_4 *= id.variable(idList[10]).domainSize();
+    CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_4);
+
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
+    CHECK_THROWS(id.utility(idList[10]).contains(id.variable(idList[3])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
+  }
+
+  GUM_TEST(TableCoherencyArcRemoval) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+
+    // Testing Coherence on cpt
+    CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(2));
+    CHECK(id.internalDag().existsArc(idList[6], idList[8]));
+    CHECK(id.internalDag().existsArc(idList[7], idList[8]));
+
+    gum::Size dmnSize_1 = id.variable(idList[7]).domainSize() * id.variable(idList[6]).domainSize();
+    dmnSize_1 *= id.variable(idList[8]).domainSize();
+    CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_1);
+
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[7])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[7], idList[8])));
+
+    CHECK_EQ(id.internalDag().parents(idList[8]).size(), static_cast< gum::Size >(1));
+    CHECK(id.internalDag().existsArc(idList[6], idList[8]));
+    CHECK(!id.internalDag().existsArc(idList[7], idList[8]));
+
+    gum::Size dmnSize_2 = id.variable(idList[6]).domainSize();
+    dmnSize_2 *= id.variable(idList[8]).domainSize();
+    CHECK_EQ(id.cpt(idList[8]).domainSize(), dmnSize_2);
+
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[6])));
+    CHECK(!id.cpt(idList[8]).contains(id.variable(idList[7])));
+    CHECK(id.cpt(idList[8]).contains(id.variable(idList[8])));
+
+    // Testing coherence on utility table
+    CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(2));
+    CHECK(id.internalDag().existsArc(idList[3], idList[10]));
+    CHECK(id.internalDag().existsArc(idList[8], idList[10]));
+
+    gum::Size dmnSize_3 = id.variable(idList[3]).domainSize() * id.variable(idList[8]).domainSize();
+    dmnSize_3 *= id.variable(idList[10]).domainSize();
+    CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_3);
+
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[3])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.eraseArc(gum::Arc(idList[3], idList[10])));
+
+    CHECK_EQ(id.internalDag().parents(idList[10]).size(), static_cast< gum::Size >(1));
+    CHECK(id.internalDag().existsArc(idList[8], idList[10]));
+    CHECK(!id.internalDag().existsArc(idList[3], idList[10]));
+
+    gum::Size dmnSize_4 = id.variable(idList[8]).domainSize();
+    dmnSize_4 *= id.variable(idList[10]).domainSize();
+    CHECK_EQ(id.utility(idList[10]).domainSize(), dmnSize_4);
+
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[8])));
+    CHECK(!id.utility(idList[10]).contains(id.variable(idList[3])));
+    CHECK(id.utility(idList[10]).contains(id.variable(idList[10])));
+  }
+
+  GUM_TEST(AccessorByName) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+
+    for (const auto node: id.nodes()) {
+      CHECK_EQ(id.idFromName(id.variable(node).name()), node);
+      CHECK_EQ(&id.variableFromName(id.variable(node).name()), &id.variable(node));
+    }
+
+    CHECK_THROWS_AS(id.idFromName("chorizo"), const gum::NotFound&);
+
+    CHECK_THROWS_AS(id.variableFromName("chorizo"), const gum::NotFound&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(id.idFromName("decisionVar1"));
+    id.erase(id.idFromName("decisionVar1"));
+    CHECK_THROWS_AS(id.idFromName("decisionVar1"), const gum::NotFound&);
+  }
+
+  GUM_TEST(DecisionPath) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    fill(id, idList);
+
+    CHECK(!id.decisionOrderExists());
+    CHECK_THROWS_AS(id.decisionOrder(), const gum::NotFound&);
+    id.addArc(idList[2], idList[1]);
+    id.addArc(idList[7], idList[3]);
+    CHECK(id.decisionOrderExists());
+    CHECK_NOTHROW(id.decisionOrder());
+    CHECK_NOTHROW(id.getPartialTemporalOrder());
+    gum::List< gum::NodeSet > partialTemporalOrder = id.getPartialTemporalOrder();
+
+    gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
+    int       i              = 0;
+
+    for (const auto& nodeset: partialTemporalOrder) {
+      int j = 0;
+
+      for (const auto node: nodeset) {
+        CHECK_EQ(node, resultat[i][j]);
+        j += 1;
+      }
+
+      i += 1;
+    }
+  }
+
+  GUM_TEST(Moralisation) {
+    gum::InfluenceDiagram< double > id;
+    gum::List< gum::NodeId >        idList;
+
+    gum::LabelizedVariable dVar1("decisionVar1", "D1", 2);
+    gum::LabelizedVariable dVar2("decisionVar2", "D2", 2);
+    gum::LabelizedVariable dVar3("decisionVar3", "D3", 2);
+    gum::LabelizedVariable dVar4("decisionVar4", "D4", 2);
+    gum::LabelizedVariable cVar1("A", "a", 2);
+    gum::LabelizedVariable cVar2("B", "b", 2);
+    gum::LabelizedVariable cVar3("C", "c", 2);
+    gum::LabelizedVariable cVar4("D", "d", 2);
+    gum::LabelizedVariable cVar5("E", "e", 2);
+    gum::LabelizedVariable cVar6("F", "f", 2);
+    gum::LabelizedVariable cVar7("G", "g", 2);
+    gum::LabelizedVariable cVar8("H", "h", 2);
+    gum::LabelizedVariable cVar9("I", "i", 2);
+    gum::LabelizedVariable cVar10("J", "j", 2);
+    gum::LabelizedVariable cVar11("K", "k", 2);
+    gum::LabelizedVariable cVar12("L", "l", 2);
+    gum::LabelizedVariable uVar1("utilityVar1", "U1", 1);
+    gum::LabelizedVariable uVar2("utilityVar2", "U2", 1);
+    gum::LabelizedVariable uVar3("utilityVar3", "U3", 1);
+    gum::LabelizedVariable uVar4("utilityVar4", "U4", 1);
+
+    idList.insert(id.addDecisionNode(dVar1));   // 0
+    idList.insert(id.addDecisionNode(dVar2));   // 1
+    idList.insert(id.addDecisionNode(dVar3));   // 2
+    idList.insert(id.addDecisionNode(dVar4));   // 3
+    idList.insert(id.addChanceNode(cVar1));     // 4
+    idList.insert(id.addChanceNode(cVar2));     // 5
+    idList.insert(id.addChanceNode(cVar3));     // 6
+    idList.insert(id.addChanceNode(cVar4));     // 7
+    idList.insert(id.addChanceNode(cVar5));     // 8
+    idList.insert(id.addChanceNode(cVar6));     // 9
+    idList.insert(id.addChanceNode(cVar7));     // 10
+    idList.insert(id.addChanceNode(cVar8));     // 11
+    idList.insert(id.addChanceNode(cVar9));     // 12
+    idList.insert(id.addChanceNode(cVar10));    // 13
+    idList.insert(id.addChanceNode(cVar11));    // 14
+    idList.insert(id.addChanceNode(cVar12));    // 15
+    idList.insert(id.addUtilityNode(uVar1));    // 16
+    idList.insert(id.addUtilityNode(uVar2));    // 17
+    idList.insert(id.addUtilityNode(uVar3));    // 18
+    idList.insert(id.addUtilityNode(uVar4));    // 19
+
+    id.addArc(idList[4], idList[6]);
+    id.addArc(idList[5], idList[6]);
+    id.addArc(idList[5], idList[7]);
+    id.addArc(idList[5], idList[0]);
+    id.addArc(idList[0], idList[7]);
+    id.addArc(idList[0], idList[16]);
+    id.addArc(idList[6], idList[8]);
+    id.addArc(idList[7], idList[8]);
+    id.addArc(idList[7], idList[9]);
+    id.addArc(idList[8], idList[10]);
+    id.addArc(idList[8], idList[1]);
+    id.addArc(idList[9], idList[1]);
+    id.addArc(idList[9], idList[11]);
+    id.addArc(idList[10], idList[3]);
+    id.addArc(idList[10], idList[12]);
+    id.addArc(idList[1], idList[12]);
+    id.addArc(idList[1], idList[2]);
+    id.addArc(idList[3], idList[15]);
+    id.addArc(idList[12], idList[15]);
+    id.addArc(idList[11], idList[13]);
+    id.addArc(idList[11], idList[14]);
+    id.addArc(idList[2], idList[14]);
+    id.addArc(idList[2], idList[17]);
+    id.addArc(idList[2], idList[3]);
+    id.addArc(idList[13], idList[18]);
+    id.addArc(idList[14], idList[18]);
+    id.addArc(idList[15], idList[19]);
+
+    gum::UndiGraph moralGraph;
+    CHECK_NOTHROW(moralGraph = id.moralGraph());
+
+    // For comparison with what readers will return
+    std::string   dotfile = GET_RESSOURCES_PATH("outputs/IDBeforeMoralisation.dot");
+    std::ofstream idOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
+
+    if (!idOutput.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
+
+    idOutput << id.toDot();
+
+    idOutput.flush();
+
+    idOutput.close();
+
+    if (idOutput.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+
+    // For comparison with what readers will return
+    dotfile = GET_RESSOURCES_PATH("outputs/IDAfterMoralisation.dot");
+
+    std::ofstream moralOutput(dotfile.c_str(), std::ios::out | std::ios::trunc);
+
+    if (!moralOutput.good()) { GUM_ERROR(gum::IOError, "Stream states flags are not all unset.") }
+
+    moralOutput << moralGraph.toDot();
+
+    moralOutput.flush();
+
+    moralOutput.close();
+
+    if (moralOutput.fail()) { GUM_ERROR(gum::IOError, "Writing in the ostream failed.") }
+  }
+
+  GUM_TEST(WithNames) {
+    gum::InfluenceDiagram< double > diag;
+    diag.add(gum::LabelizedVariable("A", "A", 2));
+    diag.addDecisionNode(gum::LabelizedVariable("D", "D", 2));
+    diag.addUtilityNode(gum::LabelizedVariable("U", "U", 1));
+
+    diag.changeVariableName(0, "O");
+    CHECK_EQ(diag.variable(0).name(), "O");
+    diag.changeVariableName("O", "I");
+    CHECK_EQ(diag.variable(0).name(), "I");
+
+    diag.addArc(0, 1);
+    CHECK(diag.existsPathBetween(0, 1));
+    CHECK(diag.existsPathBetween("I", "D"));
+    diag.eraseArc(0, 1);
+    CHECK(!diag.existsPathBetween(0, 1));
+    CHECK(!diag.existsPathBetween("I", "D"));
+
+    diag.addArc("I", "D");
+    CHECK(diag.existsPathBetween(0, 1));
+    CHECK(diag.existsPathBetween("I", "D"));
+    diag.eraseArc("I", "D");
+    CHECK(!diag.existsPathBetween(0, 1));
+    CHECK(!diag.existsPathBetween("I", "D"));
+
+    CHECK_THROWS_AS(diag.addArc("foo", "bar"), const gum::NotFound&);
+  }
+
+  GUM_TEST(FastPrototype) {
+    auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("A->*B<-C;E<-B->$D");
+    CHECK_EQ(infdiag.size(), static_cast< gum::Size >(5));
+    CHECK_EQ(infdiag.chanceNodeSize(), static_cast< gum::Size >(3));
+    CHECK_EQ(infdiag.utilityNodeSize(), static_cast< gum::Size >(1));
+    CHECK_EQ(infdiag.decisionNodeSize(), static_cast< gum::Size >(1));
+    CHECK_EQ(infdiag.sizeArcs(), static_cast< gum::Size >(4));
+  }
+
+  GUM_TEST(FastPrototypeVarType) {
+    auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
+        "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");
+    CHECK_EQ(infdiag.variable("a").varType(), gum::VarType::INTEGER);
+    CHECK_EQ(infdiag.variable("b").varType(), gum::VarType::INTEGER);
+    CHECK_EQ(infdiag.variable("c").varType(), gum::VarType::LABELIZED);
+    CHECK_EQ(infdiag.variable("d").varType(), gum::VarType::NUMERICAL);
+    CHECK_EQ(infdiag.variable("e").varType(), gum::VarType::NUMERICAL);
+    CHECK_EQ(infdiag.variable("f").varType(), gum::VarType::NUMERICAL);
+  }
+
+  GUM_TEST(FastVariable) {
+    {
+      gum::InfluenceDiagram< float > infdiag;
+      infdiag.addChanceNode("a{1|4|6}");
+      infdiag.addChanceNode("b", 4);
+      infdiag.addDecisionNode("c[1,2,3,4,5.5]");
+      infdiag.addUtilityNode("d");
+      infdiag.addUtilityNode("e{degre}");
+
+      CHECK_EQ(infdiag.variable("a").toString(), "a:Integer({1|4|6})");
+      CHECK_EQ(infdiag.variable("b").toString(), "b:Range([0,3])");
+      CHECK_EQ(infdiag.variable("c").toString(), "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)");
+      CHECK_EQ(infdiag.variable("d").toString(), "d:Range([0,0])");
+      CHECK_EQ(infdiag.variable("e").toString(), "e:Labelized({degre})");
+
+      CHECK(infdiag.isChanceNode("a"));
+      CHECK(infdiag.isChanceNode("b"));
+      CHECK(infdiag.isDecisionNode("c"));
+      CHECK(infdiag.isUtilityNode("d"));
+      CHECK(infdiag.isUtilityNode("e"));
+    }
+
+    {
+      gum::InfluenceDiagram< float > infdiag;
+      infdiag.add("a{1|4|6}");
+      infdiag.add("b", 4);
+      infdiag.add("*c[1,2,3,4,5.5]");
+      infdiag.add("$d");
+      infdiag.add("$e{degre}");
+
+      CHECK_EQ(infdiag.variable("a").toString(), "a:Integer({1|4|6})");
+      CHECK_EQ(infdiag.variable("b").toString(), "b:Range([0,3])");
+      CHECK_EQ(infdiag.variable("c").toString(), "c:Discretized(<[1;2[,[2;3[,[3;4[,[4;5.5]>)");
+      CHECK_EQ(infdiag.variable("d").toString(), "d:Range([0,0])");
+      CHECK_EQ(infdiag.variable("e").toString(), "e:Labelized({degre})");
+
+      CHECK(infdiag.isChanceNode("a"));
+      CHECK(infdiag.isChanceNode("b"));
+      CHECK(infdiag.isDecisionNode("c"));
+      CHECK(infdiag.isUtilityNode("d"));
+      CHECK(infdiag.isUtilityNode("e"));
+    }
+  }
+
+  GUM_TEST(operatorEqual) {
+    auto model  = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
+    auto model2 = gum::InfluenceDiagram< double >::fastPrototype(
+        "C{yes|no}<-A{yes|no}->*B{yes|no}<-C->D{yes|no}->$U<-B;*E{yes|no}->B");
+    auto model3 = gum::InfluenceDiagram< double >::fastPrototype("C<-A->*B<-C->D->$U<-B;*E->B");
+
+    for (const auto i: model.nodes()) {
+      if (model.isChanceNode(i)) {
+        model.cpt(i).fillWith(1);
+        model2.cpt(i).fillWith(1);
+        model3.cpt(i).fillWith(1);
+      } else if (model.isUtilityNode(i)) {
+        model.utility(i).fillWith(1);
+        model2.utility(i).fillWith(1);
+        model3.utility(i).fillWith(1);
+      }
+    }
+
+    CHECK_EQ(model, model);
+    CHECK_NE(model, model2);
+    CHECK_EQ(model, model3);
+  }
+
+  GUM_TEST(GetDecisionGraph) {
+    // *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1
+    // *D3 isolated decision node
+    auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;*D3->$U2");
+
+    gum::DAG dg = id.getDecisionGraph();
+
+    gum::NodeId d1 = id.idFromName("D1");
+    gum::NodeId d2 = id.idFromName("D2");
+    gum::NodeId d3 = id.idFromName("D3");
+
+    CHECK_EQ(dg.size(), gum::Size(3));
+    CHECK_EQ(dg.sizeArcs(), gum::Size(1));
+    CHECK(dg.existsNode(d1));
+    CHECK(dg.existsNode(d2));
+    CHECK(dg.existsNode(d3));
+    CHECK(dg.existsArc(d1, d2));
+  }
+
+  GUM_TEST(MoveConstructor) {
+    auto id = gum::InfluenceDiagram< double >::fastPrototype("*D1->C1->*D2->$U;C2->$U");
+
+    const gum::Size nNodes = id.size();
+    const gum::Size nArcs  = id.dag().sizeArcs();
+
+    gum::InfluenceDiagram< double > moved(std::move(id));
+    CHECK_EQ(moved.size(), nNodes);
+    CHECK_EQ(moved.dag().sizeArcs(), nArcs);
+    CHECK(moved.isDecisionNode("D1"));
+    CHECK(moved.isDecisionNode("D2"));
+    CHECK(moved.isChanceNode("C1"));
+    CHECK(moved.isChanceNode("C2"));
+    CHECK(moved.isUtilityNode("U"));
+
+    auto src2 = gum::InfluenceDiagram< double >::fastPrototype("*A->B->$C");
+    gum::InfluenceDiagram< double > dst2;
+    dst2 = std::move(src2);
+    CHECK_EQ(dst2.size(), gum::Size(3));
+    CHECK(dst2.isDecisionNode("A"));
+    CHECK(dst2.isChanceNode("B"));
+    CHECK(dst2.isUtilityNode("C"));
+  }
+
+  GUM_TEST(ConnectedComponents) {
+    // A->B connected, *C isolated decision, $D isolated utility: 3 components
+    auto id = gum::InfluenceDiagram< double >::fastPrototype("A->B;*C;$D");
+    auto cc = id.connectedComponents();
+    CHECK_EQ(cc.size(), gum::Size(4));
+    CHECK_EQ(cc[id.idFromName("A")], cc[id.idFromName("B")]);
+    CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("C")]);
+    CHECK_NE(cc[id.idFromName("A")], cc[id.idFromName("D")]);
+    gum::NodeSet roots;
+    for (const auto& [node, root]: cc)
+      roots.insert(root);
+    CHECK_EQ(roots.size(), gum::Size(3));
+
+    // Fully connected: 1 component
+    auto         id2 = gum::InfluenceDiagram< double >::fastPrototype("A->B->$C<-*D");
+    auto         cc2 = id2.connectedComponents();
+    gum::NodeSet roots2;
+    for (const auto& [node, root]: cc2)
+      roots2.insert(root);
+    CHECK_EQ(roots2.size(), gum::Size(1));
+  }
 }   // namespace gum_tests

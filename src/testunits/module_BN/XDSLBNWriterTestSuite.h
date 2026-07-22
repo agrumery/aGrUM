@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  XDSLBNWriter
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -98,34 +95,8 @@ namespace gum_tests {
 
     ~XDSLBNWriterTestSuite() { delete bn; }
 
-    static void testConstuctor() {
-      gum::XDSLBNWriter< double >* writer = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::XDSLBNWriter< double >());
-      delete writer;
-    }
 
-    void testWriter_ostream() const {
-      gum::XDSLBNWriter< double > writer;
-      // Uncomment this to check the output
-      std::string outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(outfile, *bn));
-    }
-
-    void testRead_file2() const {
-      std::string                 outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");
-      gum::XDSLBNWriter< double > writer;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(outfile, *bn));
-
-      gum::BayesNet< double >     net;
-      gum::XDSLBNReader< double > reader(&net, outfile);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-
-      for (auto i: bn->nodes()) {
-        CHECK_EQ(bn->cpt(i).toString(), net.cpt(bn->variable(i).name()).toString());
-      }
-    }
-
-    private:
+    protected:
     // Builds a BN to test the inference
     void _fill_(gum::BayesNet< double >& bn) const {
       bn.cpt(i1).fillWith({0.2, 0.8});
@@ -149,7 +120,30 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Writer_ostream)
-  GUM_TEST_ACTIF(Read_file2)
+  GUM_TEST(Constuctor) {
+    gum::XDSLBNWriter< double >* writer = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer = new gum::XDSLBNWriter< double >());
+    delete writer;
+  }
+
+  GUM_TEST(Writer_ostream) {
+    gum::XDSLBNWriter< double > writer;
+    // Uncomment this to check the output
+    std::string outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(outfile, *bn));
+  }
+
+  GUM_TEST(Read_file2) {
+    std::string                 outfile = GET_RESSOURCES_PATH("outputs/benefits_out.xdsl");
+    gum::XDSLBNWriter< double > writer;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(writer.write(outfile, *bn));
+
+    gum::BayesNet< double >     net;
+    gum::XDSLBNReader< double > reader(&net, outfile);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+
+    for (auto i: bn->nodes()) {
+      CHECK_EQ(bn->cpt(i).toString(), net.cpt(bn->variable(i).name()).toString());
+    }
+  }
 }   // namespace gum_tests

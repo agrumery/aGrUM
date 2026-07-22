@@ -51,9 +51,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  StructuredInference
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct StructuredInferenceTestSuite {
@@ -131,93 +128,6 @@ namespace gum_tests {
       return *(seq.atPos(std::rand() % seq.size()));
     }
 
-    static void testStructuredInference_gen1() {
-      try {
-        std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
-        generateLayer1(5, 2, layers);
-        gum::prm::ClusteredLayerGenerator< double > generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
-        gum::prm::PRM< double >*       prm = generator.generate();
-        gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference< double > inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
-        const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
-        gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Tensor< double >                   m;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
-        double             sum = 0.0;
-        gum::Instantiation inst(m);
-
-        for (inst.setFirst(); !inst.end(); inst.inc())
-          sum += m.get(inst);
-
-        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
-        delete prm;
-      } catch (gum::Exception&) { CHECK(false); }
-    }
-
-    static void testStructuredInference_gen2() {
-      try {
-        std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
-        generateLayer2(5, 2, layers);
-        gum::prm::ClusteredLayerGenerator< double > generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
-        gum::prm::PRM< double >*       prm = generator.generate();
-        gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference< double > inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
-        const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
-        gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Tensor< double >                   m;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
-        double             sum = 0.0;
-        gum::Instantiation inst(m);
-
-        for (inst.setFirst(); !inst.end(); inst.inc())
-          sum += m.get(inst);
-
-        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
-        delete prm;
-      } catch (gum::Exception&) { CHECK(false); }
-    }
-
-    static void testStructuredInference_gen3() {
-      try {
-        std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
-        generateLayer3(5, 2, layers);
-        gum::prm::ClusteredLayerGenerator< double > generator;
-        generator.setClusterRatio(1.0);
-        generator.setLayers(layers);
-        generator.setDomainSize(2);
-        generator.setMaxParents(5);
-        gum::prm::PRM< double >*       prm = generator.generate();
-        gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
-        gum::prm::StructuredInference< double > inf(*prm, sys);
-        inf.setPatternMining(false);
-        const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
-        const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
-        gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
-        gum::Tensor< double >                   m;
-        GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
-        double             sum = 0.0;
-        gum::Instantiation inst(m);
-
-        for (inst.setFirst(); !inst.end(); inst.inc())
-          sum += m.get(inst);
-
-        CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
-        delete prm;
-      } catch (gum::Exception&) { CHECK(false); }
-    }
-
     // static void testFrequenceSearch_gen1() {
     //  try {
     //    std::vector<gum::prm::LayerGenerator<double>::LayerData> layers;
@@ -257,9 +167,94 @@ namespace gum_tests {
     //}
   };
 
-  GUM_TEST_ACTIF(StructuredInference_gen1)
-  GUM_TEST_ACTIF(StructuredInference_gen2)
-  GUM_TEST_ACTIF(StructuredInference_gen3)
-  GUM_TEST_ACTIF(FrequenceSearch_gen1)
+  GUM_TEST(StructuredInference_gen1) {
+    try {
+      std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
+      generateLayer1(5, 2, layers);
+      gum::prm::ClusteredLayerGenerator< double > generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      gum::prm::PRM< double >*       prm = generator.generate();
+      gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
+      gum::prm::StructuredInference< double > inf(*prm, sys);
+      inf.setPatternMining(false);
+      const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
+      const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
+      gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
+      gum::Tensor< double >                   m;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
+      double             sum = 0.0;
+      gum::Instantiation inst(m);
+
+      for (inst.setFirst(); !inst.end(); inst.inc())
+        sum += m.get(inst);
+
+      CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
+      delete prm;
+    } catch (gum::Exception&) { CHECK(false); }
+  }
+
+  GUM_TEST(StructuredInference_gen2) {
+    try {
+      std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
+      generateLayer2(5, 2, layers);
+      gum::prm::ClusteredLayerGenerator< double > generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      gum::prm::PRM< double >*       prm = generator.generate();
+      gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
+      gum::prm::StructuredInference< double > inf(*prm, sys);
+      inf.setPatternMining(false);
+      const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
+      const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
+      gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
+      gum::Tensor< double >                   m;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
+      double             sum = 0.0;
+      gum::Instantiation inst(m);
+
+      for (inst.setFirst(); !inst.end(); inst.inc())
+        sum += m.get(inst);
+
+      CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
+      delete prm;
+    } catch (gum::Exception&) { CHECK(false); }
+  }
+
+  GUM_TEST(StructuredInference_gen3) {
+    try {
+      std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
+      generateLayer3(5, 2, layers);
+      gum::prm::ClusteredLayerGenerator< double > generator;
+      generator.setClusterRatio(1.0);
+      generator.setLayers(layers);
+      generator.setDomainSize(2);
+      generator.setMaxParents(5);
+      gum::prm::PRM< double >*       prm = generator.generate();
+      gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
+      gum::prm::StructuredInference< double > inf(*prm, sys);
+      inf.setPatternMining(false);
+      const gum::prm::PRMInstance< double >&  i     = pickInstance(sys);
+      const gum::prm::PRMAttribute< double >& a     = pickAttribute(i);
+      gum::prm::PRMInference< double >::Chain chain = std::make_pair(&i, &a);
+      gum::Tensor< double >                   m;
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(chain, m));
+      double             sum = 0.0;
+      gum::Instantiation inst(m);
+
+      for (inst.setFirst(); !inst.end(); inst.inc())
+        sum += m.get(inst);
+
+      CHECK((sum) == doctest::Approx(1.0).epsilon(1e-6));
+      delete prm;
+    } catch (gum::Exception&) { CHECK(false); }
+  }
+
+  // GUM_TEST(FrequenceSearch_gen1) -- disabled: test body was already commented out before this
+  // migration
 
 }   // namespace gum_tests

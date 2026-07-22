@@ -50,783 +50,779 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DirichletPriorFromDatabase
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct DirichletPriorFromDatabaseTestSuite {
     public:
-    static void test1() {   // create the translator set
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the database
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
-        database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
-        database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
-        database.insertRow(row4);
-      const auto db_size = (double)database.nbRows();
-
-      // create the parser
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-
-
-      gum::learning::DirichletPriorFromDatabase prior(database, parser);
-
-      CHECK_EQ(prior.weight(), 1.0);
-      prior.setWeight(2.0 * db_size);
-      CHECK_EQ(prior.weight(), 2.0 * db_size);
-
-      CHECK_EQ(prior.getType(), gum::learning::PriorType::DirichletPriorType);
-
-      gum::NodeId                node0 = 0;
-      gum::NodeId                node1 = 1;
-      gum::NodeId                node3 = 3;
-      std::vector< gum::NodeId > cond_empty;
-      std::vector< gum::NodeId > cond1{node3};
-
-      gum::learning::IdCondSet idset1(node0, cond_empty);                // #3,#0
-      gum::learning::IdCondSet idset2(node0, node1, cond_empty, true);   // #9,#0
-      gum::learning::IdCondSet idset3(node0, cond1, true);               // #9,#0
-
-
-      std::vector< double > vect(3, 1.0);
-      prior.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 2401.0);
-      CHECK_EQ(vect[1], 251.0);
-      CHECK_EQ(vect[2], 151.0);
-
-      vect.clear();
-      prior.addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 401.0);    // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 2001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 101.0);    // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 401.0);    // 0,1
-      CHECK_EQ(vect[4], 101.0);    // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 2001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 151.0);
-      CHECK_EQ(vect[1], 651.0);
-      CHECK_EQ(vect[2], 2001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase prior2(prior);
-      CHECK_EQ(prior2.weight(), 2.0 * db_size);
-      prior2.setWeight(1.0 * db_size);
-      CHECK_EQ(prior2.weight(), db_size);
-
-      CHECK_EQ(prior2.getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior2.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior2.addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior2.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior2.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior2.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior2.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
-      CHECK_EQ(prior3.weight(), db_size);
-      prior3.setWeight(2.0 * db_size);
-      CHECK_EQ(prior3.weight(), 2.0 * db_size);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior3.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 2401.0);
-      CHECK_EQ(vect[1], 251.0);
-      CHECK_EQ(vect[2], 151.0);
-
-      vect.clear();
-      prior3.addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior3.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 401.0);    // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 2001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 101.0);    // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior3.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior3.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 401.0);    // 0,1
-      CHECK_EQ(vect[4], 101.0);    // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 2001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior3.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 151.0);
-      CHECK_EQ(vect[1], 651.0);
-      CHECK_EQ(vect[2], 2001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      prior4->operator=(prior);
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      prior4->operator=(std::move(prior));
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-      delete prior4;
-    }   // namespace gum_tests
-
-    static void test2() {
-      // create the translator set
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the database
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
-        database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
-        database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
-        database.insertRow(row4);
-
-      const std::size_t db_size = database.nbRows();
-
-      // create the parser
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-
-      gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
-      gum::NodeId                                node0 = 0;
-      gum::NodeId                                node1 = 1;
-      gum::NodeId                                node2 = 2;
-      gum::NodeId                                node3 = 3;
-      gum::NodeId                                node4 = 4;
-      gum::NodeId                                node5 = 5;
-      nodeId2columns.insert(node0, std::size_t(4));
-      nodeId2columns.insert(node1, std::size_t(3));
-      nodeId2columns.insert(node2, std::size_t(0));
-      nodeId2columns.insert(node3, std::size_t(2));
-      nodeId2columns.insert(node4, std::size_t(5));
-      nodeId2columns.insert(node5, std::size_t(1));
-
-      gum::learning::DirichletPriorFromDatabase prior(database, parser, nodeId2columns);
-
-      CHECK_EQ(prior.weight(), 1.0);
-      prior.setWeight(2.0 * db_size);
-      CHECK_EQ(prior.weight(), 2.0 * db_size);
-
-      CHECK_EQ(prior.getType(), gum::learning::PriorType::DirichletPriorType);
-
-      std::vector< gum::NodeId > cond_empty;
-      std::vector< gum::NodeId > cond1{node1};
-
-      gum::learning::IdCondSet idset1(node2, cond_empty);                // #3,#0
-      gum::learning::IdCondSet idset2(node2, node5, cond_empty, true);   // #9,#0
-      gum::learning::IdCondSet idset3(node2, cond1, true);               // #9,#0
-
-
-      std::vector< double > vect(3, 1.0);
-      prior.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 2401.0);
-      CHECK_EQ(vect[1], 251.0);
-      CHECK_EQ(vect[2], 151.0);
-
-      vect.clear();
-      prior.addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 401.0);    // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 2001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 101.0);    // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 401.0);    // 0,1
-      CHECK_EQ(vect[4], 101.0);    // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 2001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 151.0);
-      CHECK_EQ(vect[1], 651.0);
-      CHECK_EQ(vect[2], 2001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase prior2(prior);
-      CHECK_EQ(prior2.weight(), 2.0 * db_size);
-      prior2.setWeight(1.0 * db_size);
-      CHECK_EQ(prior2.weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior2.getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior2.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior2.addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior2.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior2.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior2.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior2.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
-      CHECK_EQ(prior3.weight(), 1.0 * db_size);
-      prior3.setWeight(2.0 * db_size);
-      CHECK_EQ(prior3.weight(), 2.0 * db_size);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior3.addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 2401.0);
-      CHECK_EQ(vect[1], 251.0);
-      CHECK_EQ(vect[2], 151.0);
-
-      vect.clear();
-      prior3.addConditioningPseudoCount(idset1, vect);
-      CHECK_EQ(vect.size(), std::size_t(0));
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior3.addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 401.0);    // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 2001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 101.0);    // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior3.addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior3.addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 151.0);    // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 401.0);    // 0,1
-      CHECK_EQ(vect[4], 101.0);    // 1,1
-      CHECK_EQ(vect[5], 151.0);    // 2,1
-      CHECK_EQ(vect[6], 2001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior3.addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 151.0);
-      CHECK_EQ(vect[1], 651.0);
-      CHECK_EQ(vect[2], 2001.0);
-
-
-      gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      prior4->operator=(prior);
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-
-      prior4->operator=(std::move(prior));
-      CHECK_EQ(prior4->weight(), 2.0 * db_size);
-      prior4->setWeight(1.0 * db_size);
-      CHECK_EQ(prior4->weight(), 1.0 * db_size);
-
-      CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addJointPseudoCount(idset1, vect);
-      CHECK_EQ(vect[0], 1201.0);
-      CHECK_EQ(vect[1], 126.0);
-      CHECK_EQ(vect[2], 76.0);
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset1, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset2, vect);
-      CHECK_EQ(vect[0], 201.0);    // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 1001.0);   // 0,1
-      CHECK_EQ(vect[4], 1.0);      // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1.0);      // 0,2
-      CHECK_EQ(vect[7], 51.0);     // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      prior4->addConditioningPseudoCount(idset2, vect);
-
-      vect.clear();
-      vect.resize(9, 1.0);
-      prior4->addJointPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 1.0);      // 0,0
-      CHECK_EQ(vect[1], 76.0);     // 1,0
-      CHECK_EQ(vect[2], 1.0);      // 2,0
-      CHECK_EQ(vect[3], 201.0);    // 0,1
-      CHECK_EQ(vect[4], 51.0);     // 1,1
-      CHECK_EQ(vect[5], 76.0);     // 2,1
-      CHECK_EQ(vect[6], 1001.0);   // 0,2
-      CHECK_EQ(vect[7], 1.0);      // 1,2
-      CHECK_EQ(vect[8], 1.0);      // 2,2
-
-      vect.clear();
-      vect.resize(3, 1.0);
-      prior4->addConditioningPseudoCount(idset3, vect);
-      CHECK_EQ(vect[0], 76.0);
-      CHECK_EQ(vect[1], 326.0);
-      CHECK_EQ(vect[2], 1001.0);
-
-      delete prior4;
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(1)
-  GUM_TEST_ACTIF(2)
+  GUM_TEST(1) {   // create the translator set
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the database
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+    std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+    std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+    std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+    std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+    for (int i = 0; i < 1000; ++i)
+      database.insertRow(row0);
+    for (int i = 0; i < 50; ++i)
+      database.insertRow(row1);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row2);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row3);
+    for (int i = 0; i < 200; ++i)
+      database.insertRow(row4);
+    const auto db_size = (double)database.nbRows();
+
+    // create the parser
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+
+    gum::learning::DirichletPriorFromDatabase prior(database, parser);
+
+    CHECK_EQ(prior.weight(), 1.0);
+    prior.setWeight(2.0 * db_size);
+    CHECK_EQ(prior.weight(), 2.0 * db_size);
+
+    CHECK_EQ(prior.getType(), gum::learning::PriorType::DirichletPriorType);
+
+    gum::NodeId                node0 = 0;
+    gum::NodeId                node1 = 1;
+    gum::NodeId                node3 = 3;
+    std::vector< gum::NodeId > cond_empty;
+    std::vector< gum::NodeId > cond1{node3};
+
+    gum::learning::IdCondSet idset1(node0, cond_empty);                // #3,#0
+    gum::learning::IdCondSet idset2(node0, node1, cond_empty, true);   // #9,#0
+    gum::learning::IdCondSet idset3(node0, cond1, true);               // #9,#0
+
+
+    std::vector< double > vect(3, 1.0);
+    prior.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 2401.0);
+    CHECK_EQ(vect[1], 251.0);
+    CHECK_EQ(vect[2], 151.0);
+
+    vect.clear();
+    prior.addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 401.0);    // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 2001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 101.0);    // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 401.0);    // 0,1
+    CHECK_EQ(vect[4], 101.0);    // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 2001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 151.0);
+    CHECK_EQ(vect[1], 651.0);
+    CHECK_EQ(vect[2], 2001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase prior2(prior);
+    CHECK_EQ(prior2.weight(), 2.0 * db_size);
+    prior2.setWeight(1.0 * db_size);
+    CHECK_EQ(prior2.weight(), db_size);
+
+    CHECK_EQ(prior2.getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior2.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior2.addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior2.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior2.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior2.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior2.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
+    CHECK_EQ(prior3.weight(), db_size);
+    prior3.setWeight(2.0 * db_size);
+    CHECK_EQ(prior3.weight(), 2.0 * db_size);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior3.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 2401.0);
+    CHECK_EQ(vect[1], 251.0);
+    CHECK_EQ(vect[2], 151.0);
+
+    vect.clear();
+    prior3.addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior3.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 401.0);    // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 2001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 101.0);    // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior3.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior3.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 401.0);    // 0,1
+    CHECK_EQ(vect[4], 101.0);    // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 2001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior3.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 151.0);
+    CHECK_EQ(vect[1], 651.0);
+    CHECK_EQ(vect[2], 2001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    prior4->operator=(prior);
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    prior4->operator=(std::move(prior));
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+    delete prior4;
+  }
+
+  GUM_TEST(2) {
+    // create the translator set
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the database
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+    std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+    std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+    std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+    std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+    for (int i = 0; i < 1000; ++i)
+      database.insertRow(row0);
+    for (int i = 0; i < 50; ++i)
+      database.insertRow(row1);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row2);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row3);
+    for (int i = 0; i < 200; ++i)
+      database.insertRow(row4);
+
+    const std::size_t db_size = database.nbRows();
+
+    // create the parser
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+
+    gum::Bijection< gum::NodeId, std::size_t > nodeId2columns;
+    gum::NodeId                                node0 = 0;
+    gum::NodeId                                node1 = 1;
+    gum::NodeId                                node2 = 2;
+    gum::NodeId                                node3 = 3;
+    gum::NodeId                                node4 = 4;
+    gum::NodeId                                node5 = 5;
+    nodeId2columns.insert(node0, std::size_t(4));
+    nodeId2columns.insert(node1, std::size_t(3));
+    nodeId2columns.insert(node2, std::size_t(0));
+    nodeId2columns.insert(node3, std::size_t(2));
+    nodeId2columns.insert(node4, std::size_t(5));
+    nodeId2columns.insert(node5, std::size_t(1));
+
+    gum::learning::DirichletPriorFromDatabase prior(database, parser, nodeId2columns);
+
+    CHECK_EQ(prior.weight(), 1.0);
+    prior.setWeight(2.0 * db_size);
+    CHECK_EQ(prior.weight(), 2.0 * db_size);
+
+    CHECK_EQ(prior.getType(), gum::learning::PriorType::DirichletPriorType);
+
+    std::vector< gum::NodeId > cond_empty;
+    std::vector< gum::NodeId > cond1{node1};
+
+    gum::learning::IdCondSet idset1(node2, cond_empty);                // #3,#0
+    gum::learning::IdCondSet idset2(node2, node5, cond_empty, true);   // #9,#0
+    gum::learning::IdCondSet idset3(node2, cond1, true);               // #9,#0
+
+
+    std::vector< double > vect(3, 1.0);
+    prior.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 2401.0);
+    CHECK_EQ(vect[1], 251.0);
+    CHECK_EQ(vect[2], 151.0);
+
+    vect.clear();
+    prior.addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 401.0);    // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 2001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 101.0);    // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 401.0);    // 0,1
+    CHECK_EQ(vect[4], 101.0);    // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 2001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 151.0);
+    CHECK_EQ(vect[1], 651.0);
+    CHECK_EQ(vect[2], 2001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase prior2(prior);
+    CHECK_EQ(prior2.weight(), 2.0 * db_size);
+    prior2.setWeight(1.0 * db_size);
+    CHECK_EQ(prior2.weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior2.getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior2.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior2.addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior2.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior2.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior2.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior2.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase prior3(std::move(prior2));
+    CHECK_EQ(prior3.weight(), 1.0 * db_size);
+    prior3.setWeight(2.0 * db_size);
+    CHECK_EQ(prior3.weight(), 2.0 * db_size);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior3.addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 2401.0);
+    CHECK_EQ(vect[1], 251.0);
+    CHECK_EQ(vect[2], 151.0);
+
+    vect.clear();
+    prior3.addConditioningPseudoCount(idset1, vect);
+    CHECK_EQ(vect.size(), std::size_t(0));
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior3.addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 401.0);    // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 2001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 101.0);    // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior3.addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior3.addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 151.0);    // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 401.0);    // 0,1
+    CHECK_EQ(vect[4], 101.0);    // 1,1
+    CHECK_EQ(vect[5], 151.0);    // 2,1
+    CHECK_EQ(vect[6], 2001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior3.addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 151.0);
+    CHECK_EQ(vect[1], 651.0);
+    CHECK_EQ(vect[2], 2001.0);
+
+
+    gum::learning::DirichletPriorFromDatabase* prior4 = prior3.clone();
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    prior4->operator=(prior);
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+
+    prior4->operator=(std::move(prior));
+    CHECK_EQ(prior4->weight(), 2.0 * db_size);
+    prior4->setWeight(1.0 * db_size);
+    CHECK_EQ(prior4->weight(), 1.0 * db_size);
+
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::DirichletPriorType);
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addJointPseudoCount(idset1, vect);
+    CHECK_EQ(vect[0], 1201.0);
+    CHECK_EQ(vect[1], 126.0);
+    CHECK_EQ(vect[2], 76.0);
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset1, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset2, vect);
+    CHECK_EQ(vect[0], 201.0);    // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 1001.0);   // 0,1
+    CHECK_EQ(vect[4], 1.0);      // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1.0);      // 0,2
+    CHECK_EQ(vect[7], 51.0);     // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    prior4->addConditioningPseudoCount(idset2, vect);
+
+    vect.clear();
+    vect.resize(9, 1.0);
+    prior4->addJointPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 1.0);      // 0,0
+    CHECK_EQ(vect[1], 76.0);     // 1,0
+    CHECK_EQ(vect[2], 1.0);      // 2,0
+    CHECK_EQ(vect[3], 201.0);    // 0,1
+    CHECK_EQ(vect[4], 51.0);     // 1,1
+    CHECK_EQ(vect[5], 76.0);     // 2,1
+    CHECK_EQ(vect[6], 1001.0);   // 0,2
+    CHECK_EQ(vect[7], 1.0);      // 1,2
+    CHECK_EQ(vect[8], 1.0);      // 2,2
+
+    vect.clear();
+    vect.resize(3, 1.0);
+    prior4->addConditioningPseudoCount(idset3, vect);
+    CHECK_EQ(vect[0], 76.0);
+    CHECK_EQ(vect[1], 326.0);
+    CHECK_EQ(vect[2], 1001.0);
+
+    delete prior4;
+  }
 
 } /* namespace gum_tests */

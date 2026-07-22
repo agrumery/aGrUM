@@ -54,9 +54,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Incremental
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests, the ids and the domain sizes:
 /*
    A             0             2
@@ -71,7 +68,7 @@
 */
 
 namespace gum_tests {
-  struct IncrementalTestSuite {
+  struct LazyPropagationIncrementalTestSuite {
     using TestTensorSet = gum::Set< const gum::Tensor< double >* >;
 
     static void defineVariables(gum::BayesNet< double >& bn, gum::Tensor< double >& joint) {
@@ -144,102 +141,154 @@ namespace gum_tests {
 
     // ============================================================================
     // ============================================================================
-    static void test_prior() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      CHECK_NOTHROW(inf.makeInference());
-
-      // get the marginals of A, C, D, H
-      auto pa = get_marginal(joint, bn.idFromName("A"), bn);
-      auto pc = get_marginal(joint, bn.idFromName("C"), bn);
-      auto pd = get_marginal(joint, bn.idFromName("D"), bn);
-      auto ph = get_marginal(joint, bn.idFromName("H"), bn);
-
-      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("C")), pc));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("H")), ph));
-    }
 
     // ============================================================================
     // ============================================================================
-    static void test_prior_with_targets() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));
-      inf.addTarget(bn.idFromName("C"));
-
-      CHECK_NOTHROW(inf.makeInference());
-
-      // get the marginals of A, C, D
-      auto pa = get_marginal(joint, bn.idFromName("A"), bn);
-      auto pc = get_marginal(joint, bn.idFromName("C"), bn);
-      auto pb = get_marginal(joint, bn.idFromName("B"), bn);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("B")));
-      CHECK_THROWS_AS(inf.posterior(bn.idFromName("D")), const gum::UndefinedElement&);
-
-      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("C")), pc));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("B")), pb));
-    }
 
     // ============================================================================
     // ============================================================================
-    static void test_prior_with_targets_evidence() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("F"));   // F
-
-      auto ev1 = create_evidence(bn.idFromName("B"), {0, 0, 1}, bn);
-      inf.addEvidence(bn.idFromName("B"), 2);
-      auto ev3 = create_evidence(bn.idFromName("D"), {0.2, 0.6, 0.6}, bn);
-      inf.addEvidence(ev3);
-
-      const TestTensorSet evset{&ev1, &ev3};
-      auto                posterior = posterior_joint(joint, evset);
-
-      CHECK_NOTHROW(inf.makeInference());
-
-      // get the marginals of A, F
-      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-      auto pf = get_marginal(posterior, bn.idFromName("F"), bn);
-
-      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-      CHECK(equalTensors(inf.posterior(bn.idFromName("F")), pf));
-    }
 
     // ============================================================================
     // ============================================================================
-    static void test_prior_with_targets_outside_evidence() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("D"));   // D
 
-      auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
-      inf.addEvidence(ev0);
-      auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
-      inf.addEvidence(ev1);
-      auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
-      inf.addEvidence(ev7);
+    // ============================================================================
+    // ============================================================================
 
+
+    // ============================================================================
+    // ============================================================================
+
+
+    // ============================================================================
+    // ============================================================================
+  };
+
+  GUM_TEST(_prior) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    CHECK_NOTHROW(inf.makeInference());
+
+    // get the marginals of A, C, D, H
+    auto pa = get_marginal(joint, bn.idFromName("A"), bn);
+    auto pc = get_marginal(joint, bn.idFromName("C"), bn);
+    auto pd = get_marginal(joint, bn.idFromName("D"), bn);
+    auto ph = get_marginal(joint, bn.idFromName("H"), bn);
+
+    CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("C")), pc));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("H")), ph));
+  }
+
+  GUM_TEST(_prior_with_targets) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));
+    inf.addTarget(bn.idFromName("C"));
+
+    CHECK_NOTHROW(inf.makeInference());
+
+    // get the marginals of A, C, D
+    auto pa = get_marginal(joint, bn.idFromName("A"), bn);
+    auto pc = get_marginal(joint, bn.idFromName("C"), bn);
+    auto pb = get_marginal(joint, bn.idFromName("B"), bn);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("B")));
+    CHECK_THROWS_AS(inf.posterior(bn.idFromName("D")), const gum::UndefinedElement&);
+
+    CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("C")), pc));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("B")), pb));
+  }
+
+  GUM_TEST(_prior_with_targets_evidence) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("F"));   // F
+
+    auto ev1 = create_evidence(bn.idFromName("B"), {0, 0, 1}, bn);
+    inf.addEvidence(bn.idFromName("B"), 2);
+    auto ev3 = create_evidence(bn.idFromName("D"), {0.2, 0.6, 0.6}, bn);
+    inf.addEvidence(ev3);
+
+    const TestTensorSet evset{&ev1, &ev3};
+    auto                posterior = posterior_joint(joint, evset);
+
+    CHECK_NOTHROW(inf.makeInference());
+
+    // get the marginals of A, F
+    auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+    auto pf = get_marginal(posterior, bn.idFromName("F"), bn);
+
+    CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("F")), pf));
+  }
+
+  GUM_TEST(_prior_with_targets_outside_evidence) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("D"));   // D
+
+    auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
+    inf.addEvidence(ev0);
+    auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
+    inf.addEvidence(ev1);
+    auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
+    inf.addEvidence(ev7);
+
+    const TestTensorSet evset{&ev0, &ev1, &ev7};
+    auto                posterior = posterior_joint(joint, evset);
+
+    CHECK_NOTHROW(inf.makeInference());
+
+    // get the marginals of A, D
+    auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+    auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+    CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+    CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+  }
+
+  GUM_TEST(_prior_with_targets_evidence_values_changed) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("D"));   // D
+
+    auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
+    inf.addEvidence(ev0);
+    auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
+    inf.addEvidence(ev1);
+    auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
+    inf.addEvidence(ev7);
+
+
+    {
       const TestTensorSet evset{&ev0, &ev1, &ev7};
       auto                posterior = posterior_joint(joint, evset);
 
@@ -253,358 +302,310 @@ namespace gum_tests {
       CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
     }
 
-    // ============================================================================
-    // ============================================================================
-    static void test_prior_with_targets_evidence_values_changed() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("D"));   // D
+    auto evp0 = create_evidence(0, {1, 0}, bn);
+    inf.chgEvidence(0, 0);
+    auto evp1 = create_evidence(1, {0.8, 0.4, 0.1}, bn);
+    inf.chgEvidence(1, std::vector< double >{0.8, 0.4, 0.1});
+    auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
+    inf.chgEvidence(evp7);
 
-      auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
-      inf.addEvidence(ev0);
-      auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
-      inf.addEvidence(ev1);
-      auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
-      inf.addEvidence(ev7);
+    {
+      const TestTensorSet evset{&evp0, &evp1, &evp7};
+      auto                posterior = posterior_joint(joint, evset);
 
-
-      {
-        const TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto                posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      auto evp0 = create_evidence(0, {1, 0}, bn);
-      inf.chgEvidence(0, 0);
-      auto evp1 = create_evidence(1, {0.8, 0.4, 0.1}, bn);
-      inf.chgEvidence(1, std::vector< double >{0.8, 0.4, 0.1});
-      auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
-      inf.chgEvidence(evp7);
-
-      {
-        const TestTensorSet evset{&evp0, &evp1, &evp7};
-        auto                posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      auto evpp7 = create_evidence(7, {0.9, 0.1, 0.3}, bn);
-      inf.chgEvidence(evpp7);
-
-      {
-        const TestTensorSet evset{&evp0, &evp1, &evpp7};
-        auto                posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      inf.chgEvidence(ev0);
-      inf.chgEvidence(evp7);
-      {
-        const TestTensorSet evset{&ev0, &evp1, &evp7};
-        auto                posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-      inf.eraseEvidence(0);
-      {
-        const TestTensorSet evset{&evp1, &evp7};
-        auto                posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      inf.addEvidence(evp0);
       CHECK_NOTHROW(inf.makeInference());
-      inf.eraseEvidence(0);
 
-      {
-        const TestTensorSet evset{&evp1, &evp7};
-        auto                posterior = posterior_joint(joint, evset);
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
     }
 
-    // ============================================================================
-    // ============================================================================
-    static void test_prior_with_targets_hard_evidence_values_changed() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("D"));   // D
+    auto evpp7 = create_evidence(7, {0.9, 0.1, 0.3}, bn);
+    inf.chgEvidence(evpp7);
 
-      auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
-      inf.addEvidence(ev0);
-      auto ev1 = create_evidence(1, {0, 1, 0}, bn);
-      inf.addEvidence(ev1);
-      auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
-      inf.addEvidence(ev7);
+    {
+      const TestTensorSet evset{&evp0, &evp1, &evpp7};
+      auto                posterior = posterior_joint(joint, evset);
 
-
-      {
-        TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      auto evp0 = create_evidence(0, {1, 0}, bn);
-      inf.chgEvidence(0, 0);
-      auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
-      inf.chgEvidence(evp7);
-
-      {
-        TestTensorSet evset{&evp0, &ev1, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      auto evpp0 = create_evidence(0, {0, 1}, bn);
-      inf.chgEvidence(evpp0);
-      {
-        TestTensorSet evset{&evpp0, &ev1, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      inf.chgEvidence(ev0);
-      inf.chgEvidence(evp7);
-      {
-        TestTensorSet evset{&ev0, &ev1, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-      inf.eraseEvidence(0);
-      {
-        TestTensorSet evset{&ev1, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      inf.addEvidence(evp0);
       CHECK_NOTHROW(inf.makeInference());
-      inf.eraseEvidence(0);
 
-      {
-        TestTensorSet evset{&ev1, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
     }
 
-    // ============================================================================
-    // ============================================================================
-    static void test_prior_with_targets_evidence_changed() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("D"));   // D
+    inf.chgEvidence(ev0);
+    inf.chgEvidence(evp7);
+    {
+      const TestTensorSet evset{&ev0, &evp1, &evp7};
+      auto                posterior = posterior_joint(joint, evset);
 
-      auto ev0 = create_evidence(0, {0.3, 1.7}, bn);
-      inf.addEvidence(ev0);
-      auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
-      inf.addEvidence(ev1);
-      auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
-      inf.addEvidence(ev7);
+      CHECK_NOTHROW(inf.makeInference());
 
-      {
-        TestTensorSet evset{&ev0, &ev1, &ev7};
-        auto          posterior = posterior_joint(joint, evset);
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-
-      auto ev4  = create_evidence(4, {1, 0}, bn);
-      auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
-      inf.eraseEvidence(0);
-      inf.addEvidence(ev4);
-      inf.chgEvidence(evp7);
-      {
-        TestTensorSet evset{&ev1, &ev4, &evp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
-
-      auto evp0  = create_evidence(0, {1, 0}, bn);
-      auto evpp4 = create_evidence(4, {0.7, 0.7}, bn);
-      auto evpp7 = create_evidence(7, {0, 1, 0}, bn);
-      inf.addEvidence(0, 0);
-      inf.chgEvidence(evpp4);
-      inf.chgEvidence(evpp7);
-
-      {
-        TestTensorSet evset{&evp0, &ev1, &evpp4, &evpp7};
-        auto          posterior = posterior_joint(joint, evset);
-
-        CHECK_NOTHROW(inf.makeInference());
-        // get the marginals of A, D
-        auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
-        auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
-
-        CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
-        CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
-      }
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
     }
 
-    static void test_implicit_joint_target() {
-      gum::BayesNet< double > bn;
-      gum::Tensor< double >   joint;
-      defineVariables(bn, joint);
+    inf.eraseEvidence(0);
+    {
+      const TestTensorSet evset{&evp1, &evp7};
+      auto                posterior = posterior_joint(joint, evset);
 
-      gum::LazyPropagation< double > inf(&bn);
-      inf.eraseAllTargets();
-      inf.addTarget(bn.idFromName("A"));   // A
-      inf.addTarget(bn.idFromName("D"));   // D
-      inf.makeInference();
+      CHECK_NOTHROW(inf.makeInference());
 
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}));
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
 
-      CHECK_THROWS_AS(inf.jointPosterior(gum::NodeSet{bn.idFromName("F"), bn.idFromName("H")}),
-                      gum::UndefinedElement&);
-
-      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
-          inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
-          joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize());
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
     }
-  };
 
-  GUM_TEST_ACTIF(_prior)
-  GUM_TEST_ACTIF(_prior_with_targets)
-  GUM_TEST_ACTIF(_prior_with_targets_evidence)
-  GUM_TEST_ACTIF(_prior_with_targets_outside_evidence)
-  GUM_TEST_ACTIF(_prior_with_targets_evidence_values_changed)
-  GUM_TEST_ACTIF(_prior_with_targets_hard_evidence_values_changed)
-  GUM_TEST_ACTIF(_prior_with_targets_evidence_changed)
-  GUM_TEST_ACTIF(_implicit_joint_target)
+
+    inf.addEvidence(evp0);
+    CHECK_NOTHROW(inf.makeInference());
+    inf.eraseEvidence(0);
+
+    {
+      const TestTensorSet evset{&evp1, &evp7};
+      auto                posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+  }
+
+  GUM_TEST(_prior_with_targets_hard_evidence_values_changed) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("D"));   // D
+
+    auto ev0 = create_evidence(0, {0.3, 0.7}, bn);
+    inf.addEvidence(ev0);
+    auto ev1 = create_evidence(1, {0, 1, 0}, bn);
+    inf.addEvidence(ev1);
+    auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
+    inf.addEvidence(ev7);
+
+
+    {
+      TestTensorSet evset{&ev0, &ev1, &ev7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+
+    auto evp0 = create_evidence(0, {1, 0}, bn);
+    inf.chgEvidence(0, 0);
+    auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
+    inf.chgEvidence(evp7);
+
+    {
+      TestTensorSet evset{&evp0, &ev1, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+
+    auto evpp0 = create_evidence(0, {0, 1}, bn);
+    inf.chgEvidence(evpp0);
+    {
+      TestTensorSet evset{&evpp0, &ev1, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+
+    inf.chgEvidence(ev0);
+    inf.chgEvidence(evp7);
+    {
+      TestTensorSet evset{&ev0, &ev1, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+    inf.eraseEvidence(0);
+    {
+      TestTensorSet evset{&ev1, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+
+    inf.addEvidence(evp0);
+    CHECK_NOTHROW(inf.makeInference());
+    inf.eraseEvidence(0);
+
+    {
+      TestTensorSet evset{&ev1, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+  }
+
+  GUM_TEST(_prior_with_targets_evidence_changed) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("D"));   // D
+
+    auto ev0 = create_evidence(0, {0.3, 1.7}, bn);
+    inf.addEvidence(ev0);
+    auto ev1 = create_evidence(1, {0.3, 0.1, 0.8}, bn);
+    inf.addEvidence(ev1);
+    auto ev7 = create_evidence(7, {0.4, 0.2, 0.3}, bn);
+    inf.addEvidence(ev7);
+
+    {
+      TestTensorSet evset{&ev0, &ev1, &ev7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+
+    auto ev4  = create_evidence(4, {1, 0}, bn);
+    auto evp7 = create_evidence(7, {0.2, 0.3, 0.6}, bn);
+    inf.eraseEvidence(0);
+    inf.addEvidence(ev4);
+    inf.chgEvidence(evp7);
+    {
+      TestTensorSet evset{&ev1, &ev4, &evp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+
+    auto evp0  = create_evidence(0, {1, 0}, bn);
+    auto evpp4 = create_evidence(4, {0.7, 0.7}, bn);
+    auto evpp7 = create_evidence(7, {0, 1, 0}, bn);
+    inf.addEvidence(0, 0);
+    inf.chgEvidence(evpp4);
+    inf.chgEvidence(evpp7);
+
+    {
+      TestTensorSet evset{&evp0, &ev1, &evpp4, &evpp7};
+      auto          posterior = posterior_joint(joint, evset);
+
+      CHECK_NOTHROW(inf.makeInference());
+      // get the marginals of A, D
+      auto pa = get_marginal(posterior, bn.idFromName("A"), bn);
+      auto pd = get_marginal(posterior, bn.idFromName("D"), bn);
+
+      CHECK(equalTensors(inf.posterior(bn.idFromName("A")), pa));
+      CHECK(equalTensors(inf.posterior(bn.idFromName("D")), pd));
+    }
+  }
+
+  GUM_TEST(_implicit_joint_target) {
+    gum::BayesNet< double > bn;
+    gum::Tensor< double >   joint;
+    defineVariables(bn, joint);
+
+    gum::LazyPropagation< double > inf(&bn);
+    inf.eraseAllTargets();
+    inf.addTarget(bn.idFromName("A"));   // A
+    inf.addTarget(bn.idFromName("D"));   // D
+    inf.makeInference();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}));
+
+    CHECK_THROWS_AS(inf.jointPosterior(gum::NodeSet{bn.idFromName("F"), bn.idFromName("H")}),
+                    gum::UndefinedElement&);
+
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(
+        inf.jointPosterior(gum::NodeSet{bn.idFromName("D"), bn.idFromName("C")}),
+        joint.sumIn({&bn.variable("D"), &bn.variable("C")}).normalize());
+  }
 }   // namespace gum_tests

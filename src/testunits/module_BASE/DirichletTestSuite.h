@@ -48,105 +48,102 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Dirichlet
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct DirichletTestSuite {
     public:
-    static void testXX() {
-      std::vector< float > param{1.0f, 1.0f};
-      gum::Dirichlet       dir(param);
+    // namespace gum_tests
 
-      std::vector< float > res(2, 0);
-      float                sum = 0;
-      for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir();
-        for (gum::Idx j = 0; j < sample.size(); ++j) {
-          res[j] += sample[j];
-          sum += sample[j];
-        }
-      }
-      for (gum::Idx j = 0; j < res.size(); ++j) {
-        res[j] /= sum;
-      }
-
-      CHECK(fabs(res[0] - res[1]) < 0.03);
-
-
-      param[0] = 10000;
-      param[1] = 1;
-      sum      = 0;
-      res[0] = res[1] = 0;
-      for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir(param);
-        for (gum::Idx j = 0; j < sample.size(); ++j) {
-          res[j] += sample[j];
-          sum += sample[j];
-        }
-      }
-      for (gum::Idx j = 0; j < res.size(); ++j) {
-        res[j] /= sum;
-      }
-      CHECK(1 - res[0] < 0.01);
-
-      sum    = 0;
-      res[0] = res[1] = 0;
-      for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir(param);
-        for (gum::Idx j = 0; j < sample.size(); ++j) {
-          res[j] += sample[j];
-          sum += sample[j];
-        }
-      }
-      for (gum::Idx j = 0; j < res.size(); ++j) {
-        res[j] /= sum;
-      }
-      CHECK(1 - res[0] < 0.01);
-
-      sum    = 0;
-      res[0] = res[1] = 0;
-      for (gum::Idx i = 0; i < 10000; ++i) {
-        std::vector< float > sample = dir(dir.param());
-        for (gum::Idx j = 0; j < sample.size(); ++j) {
-          res[j] += sample[j];
-          sum += sample[j];
-        }
-      }
-      for (gum::Idx j = 0; j < res.size(); ++j) {
-        res[j] /= sum;
-      }
-      CHECK(fabs(res[0] - res[1]) < 0.03);
-    }   // namespace gum_tests
-
-    static void testEmptyParams() {
-      gum::Dirichlet::param_type empty;
-      gum::Dirichlet             dir(empty);
-
-      auto res = dir();
-      CHECK_EQ(res.size(), static_cast< gum::Size >(0));
-
-      auto res2 = dir(empty);
-      CHECK_EQ(res2.size(), static_cast< gum::Size >(0));
-    }
 
     // MED-25: Dirichlet must reject alpha <= 0 (gamma_distribution requires alpha > 0)
-    static void testInvalidAlphaThrows() {
-      CHECK_THROWS_AS(gum::Dirichlet({0.0f, 1.0f}), const gum::OutOfBounds&);
-      CHECK_THROWS_AS(gum::Dirichlet({-1.0f, 1.0f}), const gum::OutOfBounds&);
-      CHECK_THROWS_AS(gum::Dirichlet({1.0f, 0.0f}), const gum::OutOfBounds&);
-
-      gum::Dirichlet dir({1.0f, 2.0f});
-      CHECK_THROWS_AS(dir.param({0.5f, 0.0f}), const gum::OutOfBounds&);
-      CHECK_THROWS_AS(dir.param({-0.1f, 1.0f}), const gum::OutOfBounds&);
-      // valid update does not throw
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dir.param({0.5f, 2.0f}));
-    }
   };
 
-  GUM_TEST_ACTIF(XX)
-  GUM_TEST_ACTIF(EmptyParams)
-  GUM_TEST_ACTIF(InvalidAlphaThrows)
+  GUM_TEST(XX) {
+    std::vector< float > param{1.0f, 1.0f};
+    gum::Dirichlet       dir(param);
+
+    std::vector< float > res(2, 0);
+    float                sum = 0;
+    for (gum::Idx i = 0; i < 10000; ++i) {
+      std::vector< float > sample = dir();
+      for (gum::Idx j = 0; j < sample.size(); ++j) {
+        res[j] += sample[j];
+        sum += sample[j];
+      }
+    }
+    for (gum::Idx j = 0; j < res.size(); ++j) {
+      res[j] /= sum;
+    }
+
+    CHECK(fabs(res[0] - res[1]) < 0.03);
+
+
+    param[0] = 10000;
+    param[1] = 1;
+    sum      = 0;
+    res[0] = res[1] = 0;
+    for (gum::Idx i = 0; i < 10000; ++i) {
+      std::vector< float > sample = dir(param);
+      for (gum::Idx j = 0; j < sample.size(); ++j) {
+        res[j] += sample[j];
+        sum += sample[j];
+      }
+    }
+    for (gum::Idx j = 0; j < res.size(); ++j) {
+      res[j] /= sum;
+    }
+    CHECK(1 - res[0] < 0.01);
+
+    sum    = 0;
+    res[0] = res[1] = 0;
+    for (gum::Idx i = 0; i < 10000; ++i) {
+      std::vector< float > sample = dir(param);
+      for (gum::Idx j = 0; j < sample.size(); ++j) {
+        res[j] += sample[j];
+        sum += sample[j];
+      }
+    }
+    for (gum::Idx j = 0; j < res.size(); ++j) {
+      res[j] /= sum;
+    }
+    CHECK(1 - res[0] < 0.01);
+
+    sum    = 0;
+    res[0] = res[1] = 0;
+    for (gum::Idx i = 0; i < 10000; ++i) {
+      std::vector< float > sample = dir(dir.param());
+      for (gum::Idx j = 0; j < sample.size(); ++j) {
+        res[j] += sample[j];
+        sum += sample[j];
+      }
+    }
+    for (gum::Idx j = 0; j < res.size(); ++j) {
+      res[j] /= sum;
+    }
+    CHECK(fabs(res[0] - res[1]) < 0.03);
+  }
+
+  GUM_TEST(EmptyParams) {
+    gum::Dirichlet::param_type empty;
+    gum::Dirichlet             dir(empty);
+
+    auto res = dir();
+    CHECK_EQ(res.size(), static_cast< gum::Size >(0));
+
+    auto res2 = dir(empty);
+    CHECK_EQ(res2.size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(InvalidAlphaThrows) {
+    CHECK_THROWS_AS(gum::Dirichlet({0.0f, 1.0f}), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::Dirichlet({-1.0f, 1.0f}), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::Dirichlet({1.0f, 0.0f}), const gum::OutOfBounds&);
+
+    gum::Dirichlet dir({1.0f, 2.0f});
+    CHECK_THROWS_AS(dir.param({0.5f, 0.0f}), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(dir.param({-0.1f, 1.0f}), const gum::OutOfBounds&);
+    // valid update does not throw
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dir.param({0.5f, 2.0f}));
+  }
 
 } /* namespace gum_tests */

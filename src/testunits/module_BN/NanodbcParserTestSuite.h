@@ -25,14 +25,19 @@
 
 #include <agrum/base/database/nanodbcParser.h>
 
-#define GUM_CURRENT_SUITE  NanodbcParser
-#define GUM_CURRENT_MODULE BN
 
 namespace gum_tests {
 
   struct NanodbcParserTestSuite {
     public:
-    static void testSimpleSQL() {
+    
+
+    
+
+    
+  };
+
+  GUM_TEST(SimpleSQL) {
 #ifdef ODBC_
 
       try {
@@ -162,8 +167,7 @@ namespace gum_tests {
       }
 #endif   // ODBC_
     }
-
-    static void testAlarmSQL() {
+  GUM_TEST(AlarmSQL) {
 #ifdef ODBC_
       const std::string driver_name = "SQLite3";
 #  ifdef _WIN32
@@ -185,8 +189,7 @@ namespace gum_tests {
 
 #endif   // ODBC_
     }
-
-    static void testAsiaSQL() {
+  GUM_TEST(AsiaSQL) {
 #ifdef _ODBC
       const std::string driver_name = "SQLite3";
 #  ifdef _WIN32
@@ -336,10 +339,5 @@ namespace gum_tests {
       }
 #endif   // _ODBC
     }
-  };
-
-  GUM_TEST_ACTIF(SimpleSQL)
-  GUM_TEST_ACTIF(AlarmSQL)
-  GUM_TEST_ACTIF(AsiaSQL)
 
 } /* namespace gum_tests */

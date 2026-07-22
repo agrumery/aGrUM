@@ -51,9 +51,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  UAIBNReader
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -66,468 +63,462 @@ namespace gum_tests {
 
   struct UAIBNReaderTestSuite {
     public:
-    static void testConstuctor() {
-      std::string             file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
-      gum::BayesNet< double > net;
-
-      gum::UAIBNReader< double >* reader = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::UAIBNReader< double >(&net, file));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-    }   // namespace gum_tests
-
-    static void testRead_file1() {
-      std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
-      gum::BayesNet< double >* net  = new gum::BayesNet< double >();
-
-      CHECK_NE(net, nullptr);
-
-      gum::UAIBNReader< double > reader(net, file);
-      reader.proceed();
-
-      if (net != nullptr) {
-        CHECK(net->empty());
-        delete net;
-      }
-    }
-
-    static void testRead_file2_float() {
-      std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file2.uai");
-      gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
-      gum::UAIBNReader< double > reader(net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-        CHECK_EQ(net->size(), static_cast< gum::Size >(5));
-
-        gum::NodeId node_1 = 0, node_2 = 0;
-        node_1 = net->idFromName("0");
-        node_2 = net->idFromName("1");
-
-        const gum::DiscreteVariable& var_1 = net->variable(node_1);
-
-        CHECK_EQ(var_1.name(), "0");
-        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
-
-        const gum::Tensor< double >& proba_1 = net->cpt(node_1);
-        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_1(proba_1);
-        inst_1.setFirst();
-        CHECK((proba_1[inst_1]) == doctest::Approx(0.2).epsilon(0.001));
-        inst_1.setLast();
-        CHECK((proba_1[inst_1]) == doctest::Approx(0.8).epsilon(0.001));
-
-        const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        CHECK_EQ(var_2.name(), "1");
-        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
-
-        const gum::Tensor< double >& proba_2 = net->cpt(node_2);
-        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_2(proba_2);
-        inst_2.setFirst();
-        CHECK((proba_2[inst_2]) == doctest::Approx(0.3).epsilon(0.001));
-        inst_2.setLast();
-        CHECK((proba_2[inst_2]) == doctest::Approx(0.7).epsilon(0.001));
-        delete net;
-      }
-    }
-
-    static void testRead_dog_double() {
-      // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
-      std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
-      gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
-      gum::UAIBNReader< double > reader(net, file);
-
-      gum::Size nbErr = false;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK_EQ(net->size(), static_cast< gum::Size >(5));
-
-        const gum::Tensor< double >& proba = net->cpt(net->idFromName("2"));
-
-        CHECK_EQ(proba.domainSize(), static_cast< gum::Size >(8));
-
-        delete (net);
-      }
-    }
-
-    static void testRead_file3() {
-      std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file3.uai");
-      gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
-      gum::UAIBNReader< double > reader(net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        gum::HashTable< std::string, gum::NodeId > idMap;
-
-        for (const auto node: net->nodes())
-          idMap.insert(net->variable(node).name(), node);
-
-        const gum::DiscreteVariable& var_1 = net->variable(idMap["4"]);
-
-        CHECK_EQ(var_1.name(), "4");
-
-        CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
-
-        CHECK_EQ(var_1.label(0), "0");
-
-        CHECK_EQ(var_1.label(1), "1");
-
-        const gum::Tensor< double >& proba_1 = net->cpt(idMap["4"]);
-
-        CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_1(proba_1);
-
-        inst_1.setFirst();
-
-        CHECK((proba_1[inst_1]) == doctest::Approx(0.2).epsilon(0.001));
-
-        inst_1.setLast();
-
-        CHECK((proba_1[inst_1]) == doctest::Approx(0.8).epsilon(0.001));
-
-        const gum::DiscreteVariable& var_2 = net->variable(idMap["2"]);
-
-        CHECK_EQ(var_2.name(), "2");
-
-        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
-
-        CHECK_EQ(var_2.label(0), "0");
-
-        CHECK_EQ(var_2.label(1), "1");
-
-        const gum::Tensor< double >& proba_2 = net->cpt(idMap["2"]);
-
-        CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_2(proba_2);
-
-        inst_2.setFirst();
-
-        CHECK((proba_2[inst_2]) == doctest::Approx(0.3).epsilon(0.001));
-
-        inst_2.setLast();
-
-        CHECK((proba_2[inst_2]) == doctest::Approx(0.7).epsilon(0.001));
-
-        const gum::DiscreteVariable& var_3 = net->variable(idMap["0"]);
-
-        CHECK_EQ(var_3.name(), "0");
-
-        CHECK_EQ(var_3.domainSize(), static_cast< gum::Size >(2));
-
-        CHECK_EQ(var_3.label(0), "0");
-
-        CHECK_EQ(var_3.label(1), "1");
-
-        CHECK(net->dag().existsArc(idMap["4"], idMap["0"]));
-
-        const gum::Tensor< double >& proba_3 = net->cpt(idMap["0"]);
-
-        CHECK_EQ(proba_3.domainSize(), static_cast< gum::Size >(4));
-
-        gum::Instantiation inst_3(proba_3);
-
-        inst_3.chgVal(var_1, 0);
-
-        inst_3.chgVal(var_3, 0);
-
-        CHECK((proba_3[inst_3]) == doctest::Approx(0.1).epsilon(0.001));
-
-        inst_3.chgVal(var_3, 1);
-
-        CHECK((proba_3[inst_3]) == doctest::Approx(0.9).epsilon(0.001));
-
-        inst_3.chgVal(var_1, 1);
-
-        inst_3.chgVal(var_3, 0);
-
-        CHECK((proba_3[inst_3]) == doctest::Approx(0.9).epsilon(0.001));
-
-        inst_3.chgVal(var_3, 1);
-
-        CHECK((proba_3[inst_3]) == doctest::Approx(0.1).epsilon(0.001));
-
-        const gum::DiscreteVariable& var_4 = net->variable(idMap["3"]);
-
-        CHECK_EQ(var_4.name(), "3");
-
-        CHECK_EQ(var_4.domainSize(), static_cast< gum::Size >(2));
-
-        CHECK_EQ(var_4.label(0), "0");
-
-        CHECK_EQ(var_4.label(1), "1");
-
-        CHECK(net->dag().existsArc(idMap["4"], idMap["3"]));
-
-        CHECK(net->dag().existsArc(idMap["2"], idMap["3"]));
-
-        const gum::Tensor< double >& proba_4 = net->cpt(idMap["3"]);
-
-        CHECK_EQ(proba_4.domainSize(), static_cast< gum::Size >(8));
-
-        gum::Instantiation inst_4(proba_4);
-
-        inst_4.chgVal(var_1, 0);
-
-        inst_4.chgVal(var_2, 0);
-
-        inst_4.chgVal(var_4, 0);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.4).epsilon(0.001));
-
-        inst_4.chgVal(var_4, 1);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.6).epsilon(0.001));
-
-        inst_4.chgVal(var_1, 1);
-
-        inst_4.chgVal(var_2, 0);
-
-        inst_4.chgVal(var_4, 0);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_4.chgVal(var_4, 1);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_4.chgVal(var_1, 0);
-
-        inst_4.chgVal(var_2, 1);
-
-        inst_4.chgVal(var_4, 0);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_4.chgVal(var_4, 1);
-
-        CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_4.chgVal(var_1, 1);
-
-        inst_4.chgVal(var_2, 1);
-
-        inst_4.chgVal(var_4, 0);
-
-        CHECK_EQ(proba_4[inst_4], 1);
-
-        inst_4.chgVal(var_4, 1);
-
-        CHECK_EQ(proba_4[inst_4], 0);
-
-        const gum::DiscreteVariable& var_5 = net->variable(idMap["1"]);
-
-        CHECK_EQ(var_5.name(), "1");
-
-        CHECK_EQ(var_5.domainSize(), static_cast< gum::Size >(3));
-
-        CHECK_EQ(var_5.label(0), "0");
-
-        CHECK_EQ(var_5.label(1), "1");
-
-        CHECK_EQ(var_5.label(2), "2");
-
-        CHECK(net->dag().existsArc(idMap["2"], idMap["1"]));
-
-        CHECK(net->dag().existsArc(idMap["0"], idMap["1"]));
-
-        const gum::Tensor< double >& proba_5 = net->cpt(idMap["1"]);
-
-        CHECK_EQ(proba_5.domainSize(), static_cast< gum::Size >(12));
-
-        gum::Instantiation inst_5(proba_5);
-
-        inst_5.chgVal(var_3, 0);
-
-        inst_5.chgVal(var_2, 0);
-
-        inst_5.chgVal(var_5, 0);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.3).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 1);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.6).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 2);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.1).epsilon(0.001));
-
-        inst_5.chgVal(var_2, 0);
-
-        inst_5.chgVal(var_3, 1);
-
-        inst_5.chgVal(var_5, 0);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 1);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 2);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.0).epsilon(0.001));
-
-        inst_5.chgVal(var_2, 1);
-
-        inst_5.chgVal(var_3, 0);
-
-        inst_5.chgVal(var_5, 0);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.4).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 1);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.6).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 2);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.0).epsilon(0.001));
-
-        inst_5.chgVal(var_2, 1);
-
-        inst_5.chgVal(var_3, 1);
-
-        inst_5.chgVal(var_5, 0);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 1);
-
-        CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_5.chgVal(var_5, 2);
-
-        CHECK_EQ(proba_5[inst_5], 0);
-
-        const gum::DiscreteVariable& var_6 = net->variable(idMap["5"]);
-
-        CHECK_EQ(var_6.name(), "5");
-
-        CHECK_EQ(var_6.domainSize(), static_cast< gum::Size >(2));
-
-        CHECK_EQ(var_6.label(0), "0");
-
-        CHECK_EQ(var_6.label(1), "1");
-
-        CHECK(net->dag().existsArc(idMap["4"], idMap["5"]));
-
-        CHECK(net->dag().existsArc(idMap["1"], idMap["5"]));
-
-        const gum::Tensor< double >& proba_6 = net->cpt(idMap["5"]);
-
-        CHECK_EQ(proba_6.domainSize(), static_cast< gum::Size >(12));
-
-        gum::Instantiation inst_6(proba_6);
-
-        inst_6.chgVal(var_6, 0);
-
-        inst_6.chgVal(var_1, 0);
-
-        inst_6.chgVal(var_5, 0);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.1).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 1);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.2).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 2);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.3).epsilon(0.001));
-
-        inst_6.chgVal(var_1, 1);
-
-        inst_6.chgVal(var_5, 0);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.4).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 1);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.5).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 2);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.6).epsilon(0.001));
-
-        inst_6.chgVal(var_6, 1);
-
-        inst_6.chgVal(var_1, 0);
-
-        inst_6.chgVal(var_5, 0);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.7).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 1);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.8).epsilon(0.001));
-
-        inst_6.chgVal(var_5, 2);
-
-        CHECK((proba_6[inst_6]) == doctest::Approx(0.9).epsilon(0.001));
-
-        inst_6.chgVal(var_1, 1);
-
-        inst_6.chgVal(var_5, 0);
-
-        CHECK_EQ(proba_6[inst_6], 1);
-
-        inst_6.chgVal(var_5, 1);
-
-        CHECK_EQ(proba_6[inst_6], 0);
-
-        inst_6.chgVal(var_5, 2);
-
-        CHECK_EQ(proba_6[inst_6], 0);
-
-        delete net;
-      }
-    }
-
-    static void testDogRead() {
-      std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
-      gum::BayesNet< double >    net;
-      gum::UAIBNReader< double > reader(&net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-    }
-
-    static void testAsiaRead() {
-      std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
-      gum::BayesNet< double >    net;
-      gum::UAIBNReader< double > reader(&net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(Read_file1)
-  GUM_TEST_ACTIF(Read_file2_float)
-  GUM_TEST_ACTIF(Read_dog_double)
-  GUM_TEST_ACTIF(Read_file3)
-  GUM_TEST_ACTIF(DogRead)
-  GUM_TEST_ACTIF(AsiaRead)
+  GUM_TEST(Constuctor) {
+    std::string             file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
+    gum::BayesNet< double > net;
+
+    gum::UAIBNReader< double >* reader = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::UAIBNReader< double >(&net, file));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
+  }
+
+  GUM_TEST(Read_file1) {
+    std::string              file = GET_RESSOURCES_PATH("uai/BNUAIReader_file1.uai");
+    gum::BayesNet< double >* net  = new gum::BayesNet< double >();
+
+    CHECK_NE(net, nullptr);
+
+    gum::UAIBNReader< double > reader(net, file);
+    reader.proceed();
+
+    if (net != nullptr) {
+      CHECK(net->empty());
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file2_float) {
+    std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file2.uai");
+    gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
+    gum::UAIBNReader< double > reader(net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+      CHECK_EQ(net->size(), static_cast< gum::Size >(5));
+
+      gum::NodeId node_1 = 0, node_2 = 0;
+      node_1 = net->idFromName("0");
+      node_2 = net->idFromName("1");
+
+      const gum::DiscreteVariable& var_1 = net->variable(node_1);
+
+      CHECK_EQ(var_1.name(), "0");
+      CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+
+      const gum::Tensor< double >& proba_1 = net->cpt(node_1);
+      CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_1(proba_1);
+      inst_1.setFirst();
+      CHECK((proba_1[inst_1]) == doctest::Approx(0.2).epsilon(0.001));
+      inst_1.setLast();
+      CHECK((proba_1[inst_1]) == doctest::Approx(0.8).epsilon(0.001));
+
+      const gum::DiscreteVariable& var_2 = net->variable(node_2);
+      CHECK_EQ(var_2.name(), "1");
+      CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+
+      const gum::Tensor< double >& proba_2 = net->cpt(node_2);
+      CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_2(proba_2);
+      inst_2.setFirst();
+      CHECK((proba_2[inst_2]) == doctest::Approx(0.3).epsilon(0.001));
+      inst_2.setLast();
+      CHECK((proba_2[inst_2]) == doctest::Approx(0.7).epsilon(0.001));
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_dog_double) {
+    // from Charniak, Bayesian networks Without Tears, AI Magazine, 1991
+    std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
+    gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
+    gum::UAIBNReader< double > reader(net, file);
+
+    gum::Size nbErr = false;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK_EQ(net->size(), static_cast< gum::Size >(5));
+
+      const gum::Tensor< double >& proba = net->cpt(net->idFromName("2"));
+
+      CHECK_EQ(proba.domainSize(), static_cast< gum::Size >(8));
+
+      delete (net);
+    }
+  }
+
+  GUM_TEST(Read_file3) {
+    std::string                file = GET_RESSOURCES_PATH("uai/BNUAIReader_file3.uai");
+    gum::BayesNet< double >*   net  = new gum::BayesNet< double >();
+    gum::UAIBNReader< double > reader(net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      gum::HashTable< std::string, gum::NodeId > idMap;
+
+      for (const auto node: net->nodes())
+        idMap.insert(net->variable(node).name(), node);
+
+      const gum::DiscreteVariable& var_1 = net->variable(idMap["4"]);
+
+      CHECK_EQ(var_1.name(), "4");
+
+      CHECK_EQ(var_1.domainSize(), static_cast< gum::Size >(2));
+
+      CHECK_EQ(var_1.label(0), "0");
+
+      CHECK_EQ(var_1.label(1), "1");
+
+      const gum::Tensor< double >& proba_1 = net->cpt(idMap["4"]);
+
+      CHECK_EQ(proba_1.domainSize(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_1(proba_1);
+
+      inst_1.setFirst();
+
+      CHECK((proba_1[inst_1]) == doctest::Approx(0.2).epsilon(0.001));
+
+      inst_1.setLast();
+
+      CHECK((proba_1[inst_1]) == doctest::Approx(0.8).epsilon(0.001));
+
+      const gum::DiscreteVariable& var_2 = net->variable(idMap["2"]);
+
+      CHECK_EQ(var_2.name(), "2");
+
+      CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(2));
+
+      CHECK_EQ(var_2.label(0), "0");
+
+      CHECK_EQ(var_2.label(1), "1");
+
+      const gum::Tensor< double >& proba_2 = net->cpt(idMap["2"]);
+
+      CHECK_EQ(proba_2.domainSize(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_2(proba_2);
+
+      inst_2.setFirst();
+
+      CHECK((proba_2[inst_2]) == doctest::Approx(0.3).epsilon(0.001));
+
+      inst_2.setLast();
+
+      CHECK((proba_2[inst_2]) == doctest::Approx(0.7).epsilon(0.001));
+
+      const gum::DiscreteVariable& var_3 = net->variable(idMap["0"]);
+
+      CHECK_EQ(var_3.name(), "0");
+
+      CHECK_EQ(var_3.domainSize(), static_cast< gum::Size >(2));
+
+      CHECK_EQ(var_3.label(0), "0");
+
+      CHECK_EQ(var_3.label(1), "1");
+
+      CHECK(net->dag().existsArc(idMap["4"], idMap["0"]));
+
+      const gum::Tensor< double >& proba_3 = net->cpt(idMap["0"]);
+
+      CHECK_EQ(proba_3.domainSize(), static_cast< gum::Size >(4));
+
+      gum::Instantiation inst_3(proba_3);
+
+      inst_3.chgVal(var_1, 0);
+
+      inst_3.chgVal(var_3, 0);
+
+      CHECK((proba_3[inst_3]) == doctest::Approx(0.1).epsilon(0.001));
+
+      inst_3.chgVal(var_3, 1);
+
+      CHECK((proba_3[inst_3]) == doctest::Approx(0.9).epsilon(0.001));
+
+      inst_3.chgVal(var_1, 1);
+
+      inst_3.chgVal(var_3, 0);
+
+      CHECK((proba_3[inst_3]) == doctest::Approx(0.9).epsilon(0.001));
+
+      inst_3.chgVal(var_3, 1);
+
+      CHECK((proba_3[inst_3]) == doctest::Approx(0.1).epsilon(0.001));
+
+      const gum::DiscreteVariable& var_4 = net->variable(idMap["3"]);
+
+      CHECK_EQ(var_4.name(), "3");
+
+      CHECK_EQ(var_4.domainSize(), static_cast< gum::Size >(2));
+
+      CHECK_EQ(var_4.label(0), "0");
+
+      CHECK_EQ(var_4.label(1), "1");
+
+      CHECK(net->dag().existsArc(idMap["4"], idMap["3"]));
+
+      CHECK(net->dag().existsArc(idMap["2"], idMap["3"]));
+
+      const gum::Tensor< double >& proba_4 = net->cpt(idMap["3"]);
+
+      CHECK_EQ(proba_4.domainSize(), static_cast< gum::Size >(8));
+
+      gum::Instantiation inst_4(proba_4);
+
+      inst_4.chgVal(var_1, 0);
+
+      inst_4.chgVal(var_2, 0);
+
+      inst_4.chgVal(var_4, 0);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.4).epsilon(0.001));
+
+      inst_4.chgVal(var_4, 1);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.6).epsilon(0.001));
+
+      inst_4.chgVal(var_1, 1);
+
+      inst_4.chgVal(var_2, 0);
+
+      inst_4.chgVal(var_4, 0);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_4.chgVal(var_4, 1);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_4.chgVal(var_1, 0);
+
+      inst_4.chgVal(var_2, 1);
+
+      inst_4.chgVal(var_4, 0);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_4.chgVal(var_4, 1);
+
+      CHECK((proba_4[inst_4]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_4.chgVal(var_1, 1);
+
+      inst_4.chgVal(var_2, 1);
+
+      inst_4.chgVal(var_4, 0);
+
+      CHECK_EQ(proba_4[inst_4], 1);
+
+      inst_4.chgVal(var_4, 1);
+
+      CHECK_EQ(proba_4[inst_4], 0);
+
+      const gum::DiscreteVariable& var_5 = net->variable(idMap["1"]);
+
+      CHECK_EQ(var_5.name(), "1");
+
+      CHECK_EQ(var_5.domainSize(), static_cast< gum::Size >(3));
+
+      CHECK_EQ(var_5.label(0), "0");
+
+      CHECK_EQ(var_5.label(1), "1");
+
+      CHECK_EQ(var_5.label(2), "2");
+
+      CHECK(net->dag().existsArc(idMap["2"], idMap["1"]));
+
+      CHECK(net->dag().existsArc(idMap["0"], idMap["1"]));
+
+      const gum::Tensor< double >& proba_5 = net->cpt(idMap["1"]);
+
+      CHECK_EQ(proba_5.domainSize(), static_cast< gum::Size >(12));
+
+      gum::Instantiation inst_5(proba_5);
+
+      inst_5.chgVal(var_3, 0);
+
+      inst_5.chgVal(var_2, 0);
+
+      inst_5.chgVal(var_5, 0);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.3).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 1);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.6).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 2);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.1).epsilon(0.001));
+
+      inst_5.chgVal(var_2, 0);
+
+      inst_5.chgVal(var_3, 1);
+
+      inst_5.chgVal(var_5, 0);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 1);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 2);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.0).epsilon(0.001));
+
+      inst_5.chgVal(var_2, 1);
+
+      inst_5.chgVal(var_3, 0);
+
+      inst_5.chgVal(var_5, 0);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.4).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 1);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.6).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 2);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.0).epsilon(0.001));
+
+      inst_5.chgVal(var_2, 1);
+
+      inst_5.chgVal(var_3, 1);
+
+      inst_5.chgVal(var_5, 0);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 1);
+
+      CHECK((proba_5[inst_5]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_5.chgVal(var_5, 2);
+
+      CHECK_EQ(proba_5[inst_5], 0);
+
+      const gum::DiscreteVariable& var_6 = net->variable(idMap["5"]);
+
+      CHECK_EQ(var_6.name(), "5");
+
+      CHECK_EQ(var_6.domainSize(), static_cast< gum::Size >(2));
+
+      CHECK_EQ(var_6.label(0), "0");
+
+      CHECK_EQ(var_6.label(1), "1");
+
+      CHECK(net->dag().existsArc(idMap["4"], idMap["5"]));
+
+      CHECK(net->dag().existsArc(idMap["1"], idMap["5"]));
+
+      const gum::Tensor< double >& proba_6 = net->cpt(idMap["5"]);
+
+      CHECK_EQ(proba_6.domainSize(), static_cast< gum::Size >(12));
+
+      gum::Instantiation inst_6(proba_6);
+
+      inst_6.chgVal(var_6, 0);
+
+      inst_6.chgVal(var_1, 0);
+
+      inst_6.chgVal(var_5, 0);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.1).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 1);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.2).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 2);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.3).epsilon(0.001));
+
+      inst_6.chgVal(var_1, 1);
+
+      inst_6.chgVal(var_5, 0);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.4).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 1);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.5).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 2);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.6).epsilon(0.001));
+
+      inst_6.chgVal(var_6, 1);
+
+      inst_6.chgVal(var_1, 0);
+
+      inst_6.chgVal(var_5, 0);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.7).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 1);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.8).epsilon(0.001));
+
+      inst_6.chgVal(var_5, 2);
+
+      CHECK((proba_6[inst_6]) == doctest::Approx(0.9).epsilon(0.001));
+
+      inst_6.chgVal(var_1, 1);
+
+      inst_6.chgVal(var_5, 0);
+
+      CHECK_EQ(proba_6[inst_6], 1);
+
+      inst_6.chgVal(var_5, 1);
+
+      CHECK_EQ(proba_6[inst_6], 0);
+
+      inst_6.chgVal(var_5, 2);
+
+      CHECK_EQ(proba_6[inst_6], 0);
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(DogRead) {
+    std::string                file = GET_RESSOURCES_PATH("uai/dog.uai");
+    gum::BayesNet< double >    net;
+    gum::UAIBNReader< double > reader(&net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(AsiaRead) {
+    std::string                file = GET_RESSOURCES_PATH("uai/asia.uai");
+    gum::BayesNet< double >    net;
+    gum::UAIBNReader< double > reader(&net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+  }
 }   // namespace gum_tests

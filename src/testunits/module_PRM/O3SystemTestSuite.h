@@ -53,9 +53,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  O3System
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct O3SystemTestSuite {
@@ -109,287 +106,275 @@ namespace gum_tests {
 
       delete complex_printers;
     }
-
-    static void testSimpleSystem() {
-      // Arrange
-      std::stringstream input;
-      input << "system Foo { }";
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      CHECK_EQ(output.str(), "");
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
-      CHECK(simple_printers->isSystem("Foo"));
-      const auto& foo = simple_printers->getSystem("Foo");
-      CHECK_EQ(foo.size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystem() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl
-            << "PowerSupply pow;" << std::endl
-            << "Room r;" << std::endl
-            << "Printer p;" << std::endl
-            << "Computer c;" << std::endl
-            << "r.power = pow;" << std::endl
-            << "p.room = r;" << std::endl
-            << "c.room = r;" << std::endl
-            << "c.printers += p;" << std::endl
-            << "Equipment e;" << std::endl
-            << "e.room = r;" << std::endl
-            << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      CHECK_EQ(output.str(), "");
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
-      CHECK(simple_printers->isSystem("microSys"));
-      const auto& foo = simple_printers->getSystem("microSys");
-      CHECK_EQ(foo.size(), static_cast< gum::Size >(5));
-    }
-
-    static void testMicroSystemWithError1() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl << "PowerSupply;" << std::endl << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|2 col 12| Error : invalid declaration";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystemWithError2() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl << "FOO bar;" << std::endl << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|2 col 1| Error : Unknown class FOO";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystemWithError3() {
-      // Arrange
-      std::stringstream input;
-      input << "system {" << std::endl << "PowerSupply pow;" << std::endl << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|1 col 8| Error : label expected";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystemWithError4() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl
-            << "PowerSupply pow" << std::endl
-            << "Room r;" << std::endl
-            << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|3 col 1| Error : semicolon expected";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystemWithError5() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl
-            << "PowerSupply pow;" << std::endl
-            << "Room r;" << std::endl
-            << "Printer p;" << std::endl
-            << "Computer c;" << std::endl
-            << "r.power   pow;" << std::endl
-            << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|6 col 1| Error : Unknown class r.power";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testMicroSystemWithError6() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl
-            << "PowerSupply pow;" << std::endl
-            << "Room r;" << std::endl
-            << "Printer p;" << std::endl
-            << "Computer c;" << std::endl
-            << "r.power = pow;" << std::endl
-            << "p.room = r;" << std::endl
-            << "//c.room = r;" << std::endl
-            << "c.printers += p;" << std::endl
-            << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|1 col 8| Error : Could not instantiate the system, some "
-             "reference slots must be unassigned";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
-    }
-
-    static void testMicroSystemWithError7() {
-      // Arrange
-      std::stringstream input;
-      input << "system microSys {" << std::endl
-            << "PowerSupply pow;" << std::endl
-            << "Room r;" << std::endl
-            << "Printer p;" << std::endl
-            << "Printer p;" << std::endl
-            << "Computer c;" << std::endl
-            << "r.power = pow;" << std::endl
-            << "p.room = r;" << std::endl
-            << "//c.room = r;" << std::endl
-            << "c.printers = p;" << std::endl
-            << "}" << std::endl;
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      std::string line;
-      std::getline(output, line);
-      std::stringstream msg;
-      msg << "|5 col 1| Error : Instance p already exists";
-      CHECK_EQ(line, msg.str());
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
-    }
-
-    static void testSmallSystem() {
-      // Arrange
-      std::stringstream input;
-      input << "system smallSys {" << std::endl
-            << "  PowerSupply pow;" << std::endl
-            << "  Room r;" << std::endl
-            << "  Printer[2] printers;" << std::endl
-            << "  Printer another_printer;" << std::endl
-            << "  Computer[4] computers;" << std::endl
-            << "  Computer another_computer;" << std::endl
-            << "  r.power = pow;" << std::endl
-            << "  printers[0].room = r;" << std::endl
-            << "  printers[1].room = r;" << std::endl
-            << "  another_printer.room = r;" << std::endl
-            << "  computers[0].room = r;" << std::endl
-            << "  computers[1].room = r;" << std::endl
-            << "  computers[2].room = r;" << std::endl
-            << "  computers[3].room = r;" << std::endl
-            << "  another_computer.room = r;" << std::endl
-            << "  computers[0].printers = printers;" << std::endl
-            << "  computers[0].printers += another_printer;" << std::endl
-            << "  computers[1].printers = printers;" << std::endl
-            << "  computers[1].printers += another_printer;" << std::endl
-            << "  computers[2].printers = printers;" << std::endl
-            << "  computers[2].printers += another_printer;" << std::endl
-            << "  computers[3].printers = printers;" << std::endl
-            << "  computers[3].printers += another_printer;" << std::endl
-            << "  another_computer.printers = printers;" << std::endl
-            << "  another_computer.printers += another_printer;" << std::endl
-            << "}";
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      CHECK_EQ(output.str(), "");
-      CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
-      CHECK(simple_printers->isSystem("smallSys"));
-      const auto& foo = simple_printers->getSystem("smallSys");
-      CHECK_EQ(foo.size(), static_cast< gum::Size >(10));
-    }
-
-    static void testComplexSystem() {
-      // Arrange
-      std::stringstream input;
-      input << "system aSys {" << std::endl
-            << "  PowerSupply pow;" << std::endl
-            << "  Room r;" << std::endl
-            << "  BWPrinter[10] bw_printers;" << std::endl
-            << "  ColorPrinter[2] color_printers;" << std::endl
-            << "  bw_printers.room = r;" << std::endl
-            << "  color_printers.room = r;" << std::endl
-            << "  r.power = pow;" << std::endl
-            << "  Computer c1;" << std::endl
-            << "  Computer c2;" << std::endl
-            << "  c1.room = r;" << std::endl
-            << "  c2.room = r;" << std::endl
-            << "  c1.printers = bw_printers;" << std::endl
-            << "  c2.printers = bw_printers;" << std::endl
-            << "  c1.printers += color_printers;" << std::endl
-            << "  c2.printers += color_printers;" << std::endl
-            << "  ParamClass params;" << std::endl
-            << "  params.room = r;" << std::endl
-            << "  ParamClass paramBis(lambda=0.001);" << std::endl
-            << "  paramBis.room = r;" << std::endl
-            << "}";
-      std::stringstream output;
-      auto              factory = gum::prm::o3prm::O3prmReader< double >(*complex_printers);
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
-      // Assert
-      CHECK_EQ(output.str(), "");
-      CHECK_EQ(complex_printers->systems().size(), static_cast< gum::Size >(1));
-      CHECK(complex_printers->isSystem("aSys"));
-      const auto& foo = complex_printers->getSystem("aSys");
-      CHECK_EQ(foo.size(), static_cast< gum::Size >(18));
-    }
   };
 
-  GUM_TEST_ACTIF(SimpleSystem)
-  GUM_TEST_ACTIF(MicroSystem)
-  GUM_TEST_ACTIF(MicroSystemWithError1)
-  GUM_TEST_ACTIF(MicroSystemWithError2)
-  GUM_TEST_ACTIF(MicroSystemWithError3)
-  GUM_TEST_ACTIF(MicroSystemWithError4)
-  GUM_TEST_ACTIF(MicroSystemWithError5)
-  GUM_TEST_ACTIF(MicroSystemWithError6)
-  GUM_TEST_ACTIF(MicroSystemWithError7)
-  GUM_TEST_ACTIF(SmallSystem)
-  GUM_TEST_ACTIF(ComplexSystem)
+  GUM_TEST(SimpleSystem) {
+    // Arrange
+    std::stringstream input;
+    input << "system Foo { }";
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    CHECK_EQ(output.str(), "");
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
+    CHECK(simple_printers->isSystem("Foo"));
+    const auto& foo = simple_printers->getSystem("Foo");
+    CHECK_EQ(foo.size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystem) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl
+          << "PowerSupply pow;" << std::endl
+          << "Room r;" << std::endl
+          << "Printer p;" << std::endl
+          << "Computer c;" << std::endl
+          << "r.power = pow;" << std::endl
+          << "p.room = r;" << std::endl
+          << "c.room = r;" << std::endl
+          << "c.printers += p;" << std::endl
+          << "Equipment e;" << std::endl
+          << "e.room = r;" << std::endl
+          << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    CHECK_EQ(output.str(), "");
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
+    CHECK(simple_printers->isSystem("microSys"));
+    const auto& foo = simple_printers->getSystem("microSys");
+    CHECK_EQ(foo.size(), static_cast< gum::Size >(5));
+  }
+
+  GUM_TEST(MicroSystemWithError1) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl << "PowerSupply;" << std::endl << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|2 col 12| Error : invalid declaration";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystemWithError2) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl << "FOO bar;" << std::endl << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|2 col 1| Error : Unknown class FOO";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystemWithError3) {
+    // Arrange
+    std::stringstream input;
+    input << "system {" << std::endl << "PowerSupply pow;" << std::endl << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|1 col 8| Error : label expected";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystemWithError4) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl
+          << "PowerSupply pow" << std::endl
+          << "Room r;" << std::endl
+          << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|3 col 1| Error : semicolon expected";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystemWithError5) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl
+          << "PowerSupply pow;" << std::endl
+          << "Room r;" << std::endl
+          << "Printer p;" << std::endl
+          << "Computer c;" << std::endl
+          << "r.power   pow;" << std::endl
+          << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|6 col 1| Error : Unknown class r.power";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(MicroSystemWithError6) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl
+          << "PowerSupply pow;" << std::endl
+          << "Room r;" << std::endl
+          << "Printer p;" << std::endl
+          << "Computer c;" << std::endl
+          << "r.power = pow;" << std::endl
+          << "p.room = r;" << std::endl
+          << "//c.room = r;" << std::endl
+          << "c.printers += p;" << std::endl
+          << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|1 col 8| Error : Could not instantiate the system, some "
+           "reference slots must be unassigned";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
+  }
+
+  GUM_TEST(MicroSystemWithError7) {
+    // Arrange
+    std::stringstream input;
+    input << "system microSys {" << std::endl
+          << "PowerSupply pow;" << std::endl
+          << "Room r;" << std::endl
+          << "Printer p;" << std::endl
+          << "Printer p;" << std::endl
+          << "Computer c;" << std::endl
+          << "r.power = pow;" << std::endl
+          << "p.room = r;" << std::endl
+          << "//c.room = r;" << std::endl
+          << "c.printers = p;" << std::endl
+          << "}" << std::endl;
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    std::string line;
+    std::getline(output, line);
+    std::stringstream msg;
+    msg << "|5 col 1| Error : Instance p already exists";
+    CHECK_EQ(line, msg.str());
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(SmallSystem) {
+    // Arrange
+    std::stringstream input;
+    input << "system smallSys {" << std::endl
+          << "  PowerSupply pow;" << std::endl
+          << "  Room r;" << std::endl
+          << "  Printer[2] printers;" << std::endl
+          << "  Printer another_printer;" << std::endl
+          << "  Computer[4] computers;" << std::endl
+          << "  Computer another_computer;" << std::endl
+          << "  r.power = pow;" << std::endl
+          << "  printers[0].room = r;" << std::endl
+          << "  printers[1].room = r;" << std::endl
+          << "  another_printer.room = r;" << std::endl
+          << "  computers[0].room = r;" << std::endl
+          << "  computers[1].room = r;" << std::endl
+          << "  computers[2].room = r;" << std::endl
+          << "  computers[3].room = r;" << std::endl
+          << "  another_computer.room = r;" << std::endl
+          << "  computers[0].printers = printers;" << std::endl
+          << "  computers[0].printers += another_printer;" << std::endl
+          << "  computers[1].printers = printers;" << std::endl
+          << "  computers[1].printers += another_printer;" << std::endl
+          << "  computers[2].printers = printers;" << std::endl
+          << "  computers[2].printers += another_printer;" << std::endl
+          << "  computers[3].printers = printers;" << std::endl
+          << "  computers[3].printers += another_printer;" << std::endl
+          << "  another_computer.printers = printers;" << std::endl
+          << "  another_computer.printers += another_printer;" << std::endl
+          << "}";
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*simple_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    CHECK_EQ(output.str(), "");
+    CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
+    CHECK(simple_printers->isSystem("smallSys"));
+    const auto& foo = simple_printers->getSystem("smallSys");
+    CHECK_EQ(foo.size(), static_cast< gum::Size >(10));
+  }
+
+  GUM_TEST(ComplexSystem) {
+    // Arrange
+    std::stringstream input;
+    input << "system aSys {" << std::endl
+          << "  PowerSupply pow;" << std::endl
+          << "  Room r;" << std::endl
+          << "  BWPrinter[10] bw_printers;" << std::endl
+          << "  ColorPrinter[2] color_printers;" << std::endl
+          << "  bw_printers.room = r;" << std::endl
+          << "  color_printers.room = r;" << std::endl
+          << "  r.power = pow;" << std::endl
+          << "  Computer c1;" << std::endl
+          << "  Computer c2;" << std::endl
+          << "  c1.room = r;" << std::endl
+          << "  c2.room = r;" << std::endl
+          << "  c1.printers = bw_printers;" << std::endl
+          << "  c2.printers = bw_printers;" << std::endl
+          << "  c1.printers += color_printers;" << std::endl
+          << "  c2.printers += color_printers;" << std::endl
+          << "  ParamClass params;" << std::endl
+          << "  params.room = r;" << std::endl
+          << "  ParamClass paramBis(lambda=0.001);" << std::endl
+          << "  paramBis.room = r;" << std::endl
+          << "}";
+    std::stringstream output;
+    auto              factory = gum::prm::o3prm::O3prmReader< double >(*complex_printers);
+    // Act
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    // Assert
+    CHECK_EQ(output.str(), "");
+    CHECK_EQ(complex_printers->systems().size(), static_cast< gum::Size >(1));
+    CHECK(complex_printers->isSystem("aSys"));
+    const auto& foo = complex_printers->getSystem("aSys");
+    CHECK_EQ(foo.size(), static_cast< gum::Size >(18));
+  }
 
 }   // namespace gum_tests

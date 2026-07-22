@@ -46,15 +46,11 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Empty
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct EmptyTestSuite {
     public:
-    static void test1() { CHECK(true); }
   };
 
-  GUM_TEST_ACTIF(1)
+  GUM_TEST(1) { CHECK(true); }
 }   // namespace gum_tests

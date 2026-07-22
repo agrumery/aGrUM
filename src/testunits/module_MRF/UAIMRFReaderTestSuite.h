@@ -51,9 +51,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  UAIMRFReader
-#define GUM_CURRENT_MODULE MRF
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -66,109 +63,106 @@ namespace gum_tests {
 
   struct UAIMRFReaderTestSuite {
     public:
-    static void testConstructor() {
-      std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double > net;
-
-      gum::UAIMRFReader< double >* reader = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::UAIMRFReader< double >(&net, file));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
-    }   // namespace gum_tests
-
-    static void testRead_file1() {
-      std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
-
-      CHECK_NE(net, nullptr);
-
-      gum::UAIMRFReader< double > reader(net, file);
-      reader.proceed();
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-        delete net;
-      }
-    }
-
-    static void testRead_file2() {
-      std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
-      gum::UAIMRFReader< double >       reader(net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-
-      CHECK_NE(net, nullptr);
-
-      if (net != nullptr) {
-        CHECK(!net->empty());
-        CHECK_EQ(net->size(), static_cast< gum::Size >(3));
-
-        gum::NodeId node_0 = 0, node_1 = 0, node_2 = 0;
-        node_0 = net->idFromName("0");
-        node_1 = net->idFromName("1");
-        node_2 = net->idFromName("2");
-
-        const gum::DiscreteVariable& var_0 = net->variable(node_0);
-        CHECK_EQ(var_0.name(), "0");
-        CHECK_EQ(var_0.domainSize(), static_cast< gum::Size >(2));
-
-        const gum::DiscreteVariable& var_2 = net->variable(node_2);
-        CHECK_EQ(var_2.name(), "2");
-        CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(3));
-
-        CHECK_EQ(net->factors().size(), static_cast< gum::Size >(2));
-
-        const auto& factor_01 = net->factor({node_0, node_1});
-        CHECK_EQ(factor_01.domainSize(), static_cast< gum::Size >(4));
-        CHECK_EQ(factor_01.nbrDim(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_01(factor_01);
-        inst_01.setFirst();
-        CHECK((factor_01[inst_01]) == doctest::Approx(0.128).epsilon(0.001));
-        inst_01.setLast();
-        CHECK((factor_01[inst_01]) == doctest::Approx(0.08).epsilon(0.001));
-
-        const auto& factor_12 = net->factor({node_2, node_1});
-        CHECK_EQ(factor_12.domainSize(), static_cast< gum::Size >(6));
-        CHECK_EQ(factor_12.nbrDim(), static_cast< gum::Size >(2));
-
-        gum::Instantiation inst_12(factor_12);
-        inst_12.setFirst();
-        CHECK((factor_12[inst_12]) == doctest::Approx(0.21).epsilon(0.001));
-        inst_12.setLast();
-        CHECK((factor_12[inst_12]) == doctest::Approx(0.189).epsilon(0.001));
-
-        delete net;
-      }
-    }
-
-    static void testReadInFilledMN() {
-      std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
-      gum::MarkovRandomField< double > net;
-      gum::UAIMRFReader< double >      reader(&net, file);
-
-      gum::Size nbErr = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-
-      CHECK(!net.empty());
-      CHECK_EQ(net.size(), static_cast< gum::Size >(3));
-
-      net = gum::MarkovRandomField< double >::fastPrototype("A--B");
-      gum::UAIMRFReader< double > reader2(&net, file);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
-      CHECK_EQ(nbErr, static_cast< gum::Size >(0));
-
-      CHECK(!net.empty());
-      CHECK_EQ(net.size(), static_cast< gum::Size >(3));
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constructor)
-  GUM_TEST_ACTIF(Read_file1)
-  GUM_TEST_ACTIF(Read_file2)
-  GUM_TEST_ACTIF(ReadInFilledMN)
+  GUM_TEST(Constructor) {
+    std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+    gum::MarkovRandomField< double > net;
+
+    gum::UAIMRFReader< double >* reader = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader = new gum::UAIMRFReader< double >(&net, file));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete reader);
+  }
+
+  GUM_TEST(Read_file1) {
+    std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+    gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
+
+    CHECK_NE(net, nullptr);
+
+    gum::UAIMRFReader< double > reader(net, file);
+    reader.proceed();
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+      delete net;
+    }
+  }
+
+  GUM_TEST(Read_file2) {
+    std::string                       file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+    gum::MarkovRandomField< double >* net  = new gum::MarkovRandomField< double >();
+    gum::UAIMRFReader< double >       reader(net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+
+    CHECK_NE(net, nullptr);
+
+    if (net != nullptr) {
+      CHECK(!net->empty());
+      CHECK_EQ(net->size(), static_cast< gum::Size >(3));
+
+      gum::NodeId node_0 = 0, node_1 = 0, node_2 = 0;
+      node_0 = net->idFromName("0");
+      node_1 = net->idFromName("1");
+      node_2 = net->idFromName("2");
+
+      const gum::DiscreteVariable& var_0 = net->variable(node_0);
+      CHECK_EQ(var_0.name(), "0");
+      CHECK_EQ(var_0.domainSize(), static_cast< gum::Size >(2));
+
+      const gum::DiscreteVariable& var_2 = net->variable(node_2);
+      CHECK_EQ(var_2.name(), "2");
+      CHECK_EQ(var_2.domainSize(), static_cast< gum::Size >(3));
+
+      CHECK_EQ(net->factors().size(), static_cast< gum::Size >(2));
+
+      const auto& factor_01 = net->factor({node_0, node_1});
+      CHECK_EQ(factor_01.domainSize(), static_cast< gum::Size >(4));
+      CHECK_EQ(factor_01.nbrDim(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_01(factor_01);
+      inst_01.setFirst();
+      CHECK((factor_01[inst_01]) == doctest::Approx(0.128).epsilon(0.001));
+      inst_01.setLast();
+      CHECK((factor_01[inst_01]) == doctest::Approx(0.08).epsilon(0.001));
+
+      const auto& factor_12 = net->factor({node_2, node_1});
+      CHECK_EQ(factor_12.domainSize(), static_cast< gum::Size >(6));
+      CHECK_EQ(factor_12.nbrDim(), static_cast< gum::Size >(2));
+
+      gum::Instantiation inst_12(factor_12);
+      inst_12.setFirst();
+      CHECK((factor_12[inst_12]) == doctest::Approx(0.21).epsilon(0.001));
+      inst_12.setLast();
+      CHECK((factor_12[inst_12]) == doctest::Approx(0.189).epsilon(0.001));
+
+      delete net;
+    }
+  }
+
+  GUM_TEST(ReadInFilledMN) {
+    std::string                      file = GET_RESSOURCES_PATH("uai/markov_example.uai");
+    gum::MarkovRandomField< double > net;
+    gum::UAIMRFReader< double >      reader(&net, file);
+
+    gum::Size nbErr = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+
+    CHECK(!net.empty());
+    CHECK_EQ(net.size(), static_cast< gum::Size >(3));
+
+    net = gum::MarkovRandomField< double >::fastPrototype("A--B");
+    gum::UAIMRFReader< double > reader2(&net, file);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbErr = reader2.proceed());
+    CHECK_EQ(nbErr, static_cast< gum::Size >(0));
+
+    CHECK(!net.empty());
+    CHECK_EQ(net.size(), static_cast< gum::Size >(3));
+  }
 }   // namespace gum_tests

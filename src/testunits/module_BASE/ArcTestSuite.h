@@ -46,102 +46,94 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Arc
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct ArcTestSuite {
     public:
-    static void testConstructor1() {
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1));
-    }
-
-    static void testConstructor2() {
-      gum::Arc arc1(1, 2);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1));
-    }   // namespace gum_tests
-
-    static void testEquality() {
-      gum::Arc arc1(1, 2);
-      gum::Arc arc2(2, 1);
-
-      CHECK_EQ(arc1, arc1);
-      CHECK_NE(arc1, arc2);
-      CHECK_NE(arc2, arc1);
-
-      gum::Arc copy(arc1);
-      gum::Arc arc3(6, 7);
-
-      CHECK_EQ(arc1, arc1);
-      CHECK_EQ(copy, arc1);
-      CHECK_EQ(arc1, copy);
-
-      CHECK_NE(arc1, arc3);
-      CHECK_NE(arc3, arc1);
-      CHECK_NE(copy, arc3);
-      CHECK_NE(arc2, arc3);
-      CHECK_NE(arc1, arc2);
-    }
-
-    static void testGetters1() {
-      gum::Arc arc1((gum::NodeId)1, (gum::NodeId)2);
-      gum::Arc arc2((gum::NodeId)2, (gum::NodeId)1);
-      gum::Arc arc3((gum::NodeId)3, (gum::NodeId)4);
-
-      gum::Arc copy(arc1);
-
-      gum::NodeId n;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.first());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.second());
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.first());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.second());
-
-      CHECK_EQ(n = arc2.first(), static_cast< gum::NodeId >(2));
-      CHECK_EQ(n = arc2.second(), static_cast< gum::NodeId >(1));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(3));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(4));
-
-      CHECK_EQ(n = arc3.other((gum::NodeId)3), static_cast< gum::NodeId >(4));
-      CHECK_EQ(n = arc3.other((gum::NodeId)4), static_cast< gum::NodeId >(3));
-
-      CHECK_THROWS(n = copy.other((gum::NodeId)42));
-    }
-
-    static void testGetters2() {
-      gum::Arc arc1(1, 2);
-
-      CHECK_EQ(arc1.tail(), static_cast< gum::NodeId >(1));
-      CHECK_EQ(arc1.head(), static_cast< gum::NodeId >(2));
-    }
-
-    static void testHash() {
-      gum::HashTable< gum::Arc, gum::NodeId > hash;
-
-      for (gum::NodeId x = 0; x < 1000; ++x) {
-        for (gum::NodeId y = x; y < 1000; ++y) {
-          gum::Arc arc(x, y);
-          hash.insert(arc, x + y);
-        }
-      }
-
-      for (gum::NodeId x = 0; x < 1000; ++x) {
-        for (gum::NodeId y = x; y < 1000; ++y) {
-          gum::Arc arc(x, y);
-          CHECK_EQ(hash[arc], (x + y));
-        }
-      }
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Constructor1)
-  GUM_TEST_ACTIF(Constructor2)
-  GUM_TEST_ACTIF(Equality)
-  GUM_TEST_ACTIF(Getters1)
-  GUM_TEST_ACTIF(Getters2)
-  GUM_TEST_ACTIF(Hash)
+  GUM_TEST(Constructor1) {
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc arc1(1, 1));
+  }
+
+  GUM_TEST(Constructor2) {
+    gum::Arc arc1(1, 2);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::Arc copy(arc1));
+  }
+
+  GUM_TEST(Equality) {
+    gum::Arc arc1(1, 2);
+    gum::Arc arc2(2, 1);
+
+    CHECK_EQ(arc1, arc1);
+    CHECK_NE(arc1, arc2);
+    CHECK_NE(arc2, arc1);
+
+    gum::Arc copy(arc1);
+    gum::Arc arc3(6, 7);
+
+    CHECK_EQ(arc1, arc1);
+    CHECK_EQ(copy, arc1);
+    CHECK_EQ(arc1, copy);
+
+    CHECK_NE(arc1, arc3);
+    CHECK_NE(arc3, arc1);
+    CHECK_NE(copy, arc3);
+    CHECK_NE(arc2, arc3);
+    CHECK_NE(arc1, arc2);
+  }
+
+  GUM_TEST(Getters1) {
+    gum::Arc arc1((gum::NodeId)1, (gum::NodeId)2);
+    gum::Arc arc2((gum::NodeId)2, (gum::NodeId)1);
+    gum::Arc arc3((gum::NodeId)3, (gum::NodeId)4);
+
+    gum::Arc copy(arc1);
+
+    gum::NodeId n;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.first());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc1.second());
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.first());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = copy.second());
+
+    CHECK_EQ(n = arc2.first(), static_cast< gum::NodeId >(2));
+    CHECK_EQ(n = arc2.second(), static_cast< gum::NodeId >(1));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(3));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(n = arc3.other(4));
+
+    CHECK_EQ(n = arc3.other((gum::NodeId)3), static_cast< gum::NodeId >(4));
+    CHECK_EQ(n = arc3.other((gum::NodeId)4), static_cast< gum::NodeId >(3));
+
+    CHECK_THROWS(n = copy.other((gum::NodeId)42));
+  }
+
+  GUM_TEST(Getters2) {
+    gum::Arc arc1(1, 2);
+
+    CHECK_EQ(arc1.tail(), static_cast< gum::NodeId >(1));
+    CHECK_EQ(arc1.head(), static_cast< gum::NodeId >(2));
+  }
+
+  GUM_TEST(Hash) {
+    gum::HashTable< gum::Arc, gum::NodeId > hash;
+
+    for (gum::NodeId x = 0; x < 1000; ++x) {
+      for (gum::NodeId y = x; y < 1000; ++y) {
+        gum::Arc arc(x, y);
+        hash.insert(arc, x + y);
+      }
+    }
+
+    for (gum::NodeId x = 0; x < 1000; ++x) {
+      for (gum::NodeId y = x; y < 1000; ++y) {
+        gum::Arc arc(x, y);
+        CHECK_EQ(hash[arc], (x + y));
+      }
+    }
+  }
 }   // namespace gum_tests

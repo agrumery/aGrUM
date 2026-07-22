@@ -306,98 +306,98 @@ namespace gum {
   Token::~Token() { coco_string_delete(val); }
 
   namespace {
-  // ==========================================================================
-  // MappedBuffer - For large files (>= COCO_MMAP_FILE_THRESHOLD)
-  // ==========================================================================
-  // Uses memory-mapped I/O for efficient access to very large files.
+    // ==========================================================================
+    // MappedBuffer - For large files (>= COCO_MMAP_FILE_THRESHOLD)
+    // ==========================================================================
+    // Uses memory-mapped I/O for efficient access to very large files.
 
-  class MappedBuffer: public Buffer {
-    private:
-    unsigned char* mappedData_;
+    class MappedBuffer: public Buffer {
+      private:
+      unsigned char* mappedData_;
 #  if defined(_WIN32)
-    HANDLE fileHandle_;
-    HANDLE mappingHandle_;
+      HANDLE fileHandle_;
+      HANDLE mappingHandle_;
 #  else
-    int fd_;
+      int fd_;
 #  endif
 
-    public:
-    explicit MappedBuffer(const char* fileName);
-    ~MappedBuffer() override;
+      public:
+      explicit MappedBuffer(const char* fileName);
+      ~MappedBuffer() override;
 
-    void Close() override;
+      void Close() override;
 
-    int Read() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_++] : EoF; }
+      int Read() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_++] : EoF; }
 
-    int Peek() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_] : EoF; }
+      int Peek() override { return (bufPos_ < fileLen_) ? mappedData_[bufPos_] : EoF; }
 
-    wchar_t* GetString(int beg, int end) override;
+      wchar_t* GetString(int beg, int end) override;
 
-    int GetPos() override { return bufPos_; }
+      int GetPos() override { return bufPos_; }
 
-    void SetPos(int value) override {
-      bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
-    }
-  };
+      void SetPos(int value) override {
+        bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
+      }
+    };
 
-  // ==========================================================================
-  // InMemoryBuffer - For small files (< COCO_SMALL_FILE_THRESHOLD)
-  // ==========================================================================
-  // Loads entire file into memory at once. Fastest for small files.
-  class InMemoryBuffer: public Buffer {
-    private:
-    unsigned char* buf_;
-    bool           ownsData_;
+    // ==========================================================================
+    // InMemoryBuffer - For small files (< COCO_SMALL_FILE_THRESHOLD)
+    // ==========================================================================
+    // Loads entire file into memory at once. Fastest for small files.
+    class InMemoryBuffer: public Buffer {
+      private:
+      unsigned char* buf_;
+      bool           ownsData_;
 
-    public:
-    InMemoryBuffer(const unsigned char* data, int len, bool copy = true);
-    InMemoryBuffer(FILE* s);
-    ~InMemoryBuffer() override;
+      public:
+      InMemoryBuffer(const unsigned char* data, int len, bool copy = true);
+      InMemoryBuffer(FILE* s);
+      ~InMemoryBuffer() override;
 
-    void Close() override {}
+      void Close() override {}
 
-    int Read() override { return (bufPos_ < fileLen_) ? buf_[bufPos_++] : EoF; }
+      int Read() override { return (bufPos_ < fileLen_) ? buf_[bufPos_++] : EoF; }
 
-    int Peek() override { return (bufPos_ < fileLen_) ? buf_[bufPos_] : EoF; }
+      int Peek() override { return (bufPos_ < fileLen_) ? buf_[bufPos_] : EoF; }
 
-    wchar_t* GetString(int beg, int end) override;
+      wchar_t* GetString(int beg, int end) override;
 
-    int GetPos() override { return bufPos_; }
+      int GetPos() override { return bufPos_; }
 
-    void SetPos(int value) override {
-      bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
-    }
-  };
+      void SetPos(int value) override {
+        bufPos_ = (value >= 0 && value <= fileLen_) ? value : bufPos_;
+      }
+    };
 
-  // ==========================================================================
-  // StreamBuffer - For medium files (COCO_SMALL_FILE_THRESHOLD to COCO_MMAP_FILE_THRESHOLD)
-  // ==========================================================================
-  // Uses a large buffer with chunked reading from file stream.
-  class StreamBuffer: public Buffer {
-    private:
-    unsigned char* buf_;
-    int            bufCapacity_;
-    int            bufStart_;   // position of first byte in buffer relative to input stream
-    int            bufLen_;     // length of valid data in buffer
-    FILE*          stream_;
-    bool           isUserStream_;
+    // ==========================================================================
+    // StreamBuffer - For medium files (COCO_SMALL_FILE_THRESHOLD to COCO_MMAP_FILE_THRESHOLD)
+    // ==========================================================================
+    // Uses a large buffer with chunked reading from file stream.
+    class StreamBuffer: public Buffer {
+      private:
+      unsigned char* buf_;
+      int            bufCapacity_;
+      int            bufStart_;   // position of first byte in buffer relative to input stream
+      int            bufLen_;     // length of valid data in buffer
+      FILE*          stream_;
+      bool           isUserStream_;
 
-    int  ReadNextStreamChunk();
-    bool CanSeek();
+      int  ReadNextStreamChunk();
+      bool CanSeek();
 
-    public:
-    explicit StreamBuffer(FILE* s, bool isUserStream);
-    ~StreamBuffer() override;
+      public:
+      explicit StreamBuffer(FILE* s, bool isUserStream);
+      ~StreamBuffer() override;
 
-    void     Close() override;
-    int      Read() override;
-    int      Peek() override;
-    wchar_t* GetString(int beg, int end) override;
+      void     Close() override;
+      int      Read() override;
+      int      Peek() override;
+      wchar_t* GetString(int beg, int end) override;
 
-    int GetPos() override { return bufPos_ + bufStart_; }
+      int GetPos() override { return bufPos_ + bufStart_; }
 
-    void SetPos(int value) override;
-  };
+      void SetPos(int value) override;
+    };
 
   }   // anonymous namespace
 
@@ -448,305 +448,305 @@ namespace gum {
 
   namespace {
 
-  InMemoryBuffer::InMemoryBuffer(const unsigned char* data, int len, bool copy) {
-    fileLen_  = len;
-    bufPos_   = 0;
-    ownsData_ = copy;
-    if (copy) {
-      buf_ = new unsigned char[len];
-      memcpy(buf_, data, len * sizeof(unsigned char));
-    } else {
-      buf_ = const_cast< unsigned char* >(data);
+    InMemoryBuffer::InMemoryBuffer(const unsigned char* data, int len, bool copy) {
+      fileLen_  = len;
+      bufPos_   = 0;
+      ownsData_ = copy;
+      if (copy) {
+        buf_ = new unsigned char[len];
+        memcpy(buf_, data, len * sizeof(unsigned char));
+      } else {
+        buf_ = const_cast< unsigned char* >(data);
+      }
     }
-  }
 
-  InMemoryBuffer::InMemoryBuffer(FILE* s) {
-    // ensure binary read on windows
+    InMemoryBuffer::InMemoryBuffer(FILE* s) {
+      // ensure binary read on windows
 #  if _MSC_VER >= 1300
-    _setmode(_fileno(s), _O_BINARY);
+      _setmode(_fileno(s), _O_BINARY);
 #  endif
 
-    fseek(s, 0, SEEK_END);
-    fileLen_ = (int)ftell(s);
-    fseek(s, 0, SEEK_SET);
-
-    buf_        = new unsigned char[fileLen_];
-    size_t read = fread(buf_, 1, fileLen_, s);
-    if ((int)read != fileLen_) {
-      fileLen_ = (int)read;   // Adjust if read less than expected
-    }
-    bufPos_   = 0;
-    ownsData_ = true;
-  }
-
-  InMemoryBuffer::~InMemoryBuffer() {
-    if (ownsData_ && buf_ != nullptr) {
-      delete[] buf_;
-      buf_ = nullptr;
-    }
-  }
-
-  wchar_t* InMemoryBuffer::GetString(int beg, int end) {
-    int      len    = end - beg;
-    wchar_t* result = new wchar_t[len + 1];
-    for (int i = 0; i < len && (beg + i) < fileLen_; ++i) {
-      result[i] = (wchar_t)buf_[beg + i];
-    }
-    wchar_t* res = coco_string_create(result, 0, len);
-    delete[] result;
-    return res;
-  }
-
-  // ==========================================================================
-  // StreamBuffer - Implementation (for medium files and non-seekable streams)
-  // ==========================================================================
-
-  StreamBuffer::StreamBuffer(FILE* s, bool isUserStream) {
-    stream_       = s;
-    isUserStream_ = isUserStream;
-
-    // ensure binary read on windows
-#  if _MSC_VER >= 1300
-    _setmode(_fileno(s), _O_BINARY);
-#  endif
-
-    if (CanSeek()) {
       fseek(s, 0, SEEK_END);
       fileLen_ = (int)ftell(s);
       fseek(s, 0, SEEK_SET);
-      if (fileLen_ < 0) {
-        // ftell failed despite CanSeek (e.g. directory fd on Linux): treat as non-seekable
-        fileLen_ = bufLen_ = bufStart_ = 0;
-      } else {
-        bufLen_   = (fileLen_ < COCO_LARGE_BUFFER_SIZE) ? fileLen_ : COCO_LARGE_BUFFER_SIZE;
-        bufStart_ = INT_MAX;   // nothing in the buffer so far
+
+      buf_        = new unsigned char[fileLen_];
+      size_t read = fread(buf_, 1, fileLen_, s);
+      if ((int)read != fileLen_) {
+        fileLen_ = (int)read;   // Adjust if read less than expected
       }
-    } else {
-      fileLen_ = bufLen_ = bufStart_ = 0;
-    }
-
-    bufCapacity_ = (bufLen_ > 0) ? bufLen_ : MIN_BUFFER_LENGTH;
-    buf_         = new unsigned char[bufCapacity_];
-
-    if (fileLen_ > 0) SetPos(0);
-    else bufPos_ = 0;
-
-    // If entire file fits in buffer, close the file handle
-    if (bufLen_ == fileLen_ && CanSeek()) Close();
-  }
-
-  StreamBuffer::~StreamBuffer() {
-    Close();
-    if (buf_ != nullptr) {
-      delete[] buf_;
-      buf_ = nullptr;
-    }
-  }
-
-  void StreamBuffer::Close() {
-    if (!isUserStream_ && stream_ != nullptr) {
-      fclose(stream_);
-      stream_ = nullptr;
-    }
-  }
-
-  int StreamBuffer::Read() {
-    if (bufPos_ < bufLen_) {
-      return buf_[bufPos_++];
-    } else if (GetPos() < fileLen_) {
-      SetPos(GetPos());   // shift buffer start to Pos
-      return buf_[bufPos_++];
-    } else if ((stream_ != nullptr) && !CanSeek() && (ReadNextStreamChunk() > 0)) {
-      return buf_[bufPos_++];
-    } else {
-      return EoF;
-    }
-  }
-
-  int StreamBuffer::Peek() {
-    int curPos = GetPos();
-    int ch     = Read();
-    SetPos(curPos);
-    return ch;
-  }
-
-  wchar_t* StreamBuffer::GetString(int beg, int end) {
-    int      len    = 0;
-    wchar_t* wbuf   = new wchar_t[end - beg];
-    int      oldPos = GetPos();
-    SetPos(beg);
-
-    while (GetPos() < end)
-      wbuf[len++] = (wchar_t)Read();
-
-    SetPos(oldPos);
-    wchar_t* res = coco_string_create(wbuf, 0, len);
-    delete[] wbuf;
-    return res;
-  }
-
-  void StreamBuffer::SetPos(int value) {
-    if ((value >= fileLen_) && (stream_ != nullptr) && !CanSeek()) {
-      while ((value >= fileLen_) && (ReadNextStreamChunk() > 0))
-        ;
-    }
-
-    if ((value < 0) || (value > fileLen_)) {
-      wprintf(L"--- buffer out of bounds access, position: %d\n", value);
-      exit(1);
-    }
-
-    if ((value >= bufStart_) && (value < (bufStart_ + bufLen_))) {
-      bufPos_ = value - bufStart_;
-    } else if (stream_ != nullptr) {
-      fseek(stream_, value, SEEK_SET);
-      bufLen_   = (int)fread(buf_, sizeof(unsigned char), bufCapacity_, stream_);
-      bufStart_ = value;
       bufPos_   = 0;
-    } else {
-      bufPos_ = fileLen_ - bufStart_;
-    }
-  }
-
-  int StreamBuffer::ReadNextStreamChunk() {
-    int free = bufCapacity_ - bufLen_;
-
-    if (free == 0) {
-      bufCapacity_          = bufLen_ * 2;
-      unsigned char* newBuf = new unsigned char[bufCapacity_];
-      memcpy(newBuf, buf_, bufLen_ * sizeof(unsigned char));
-      delete[] buf_;
-      buf_ = newBuf;
-      free = bufLen_;
+      ownsData_ = true;
     }
 
-    int bytesRead = (int)fread(buf_ + bufLen_, sizeof(unsigned char), free, stream_);
-
-    if (bytesRead > 0) {
-      fileLen_ = bufLen_ = (bufLen_ + bytesRead);
-      return bytesRead;
+    InMemoryBuffer::~InMemoryBuffer() {
+      if (ownsData_ && buf_ != nullptr) {
+        delete[] buf_;
+        buf_ = nullptr;
+      }
     }
 
-    return 0;
-  }
+    wchar_t* InMemoryBuffer::GetString(int beg, int end) {
+      int      len    = end - beg;
+      wchar_t* result = new wchar_t[len + 1];
+      for (int i = 0; i < len && (beg + i) < fileLen_; ++i) {
+        result[i] = (wchar_t)buf_[beg + i];
+      }
+      wchar_t* res = coco_string_create(result, 0, len);
+      delete[] result;
+      return res;
+    }
 
-  bool StreamBuffer::CanSeek() { return (stream_ != nullptr) && (ftell(stream_) != -1); }
+    // ==========================================================================
+    // StreamBuffer - Implementation (for medium files and non-seekable streams)
+    // ==========================================================================
 
-  // ==========================================================================
-  // MappedBuffer - Implementation (for large files using memory-mapped I/O)
-  // ==========================================================================
+    StreamBuffer::StreamBuffer(FILE* s, bool isUserStream) {
+      stream_       = s;
+      isUserStream_ = isUserStream;
+
+      // ensure binary read on windows
+#  if _MSC_VER >= 1300
+      _setmode(_fileno(s), _O_BINARY);
+#  endif
+
+      if (CanSeek()) {
+        fseek(s, 0, SEEK_END);
+        fileLen_ = (int)ftell(s);
+        fseek(s, 0, SEEK_SET);
+        if (fileLen_ < 0) {
+          // ftell failed despite CanSeek (e.g. directory fd on Linux): treat as non-seekable
+          fileLen_ = bufLen_ = bufStart_ = 0;
+        } else {
+          bufLen_   = (fileLen_ < COCO_LARGE_BUFFER_SIZE) ? fileLen_ : COCO_LARGE_BUFFER_SIZE;
+          bufStart_ = INT_MAX;   // nothing in the buffer so far
+        }
+      } else {
+        fileLen_ = bufLen_ = bufStart_ = 0;
+      }
+
+      bufCapacity_ = (bufLen_ > 0) ? bufLen_ : MIN_BUFFER_LENGTH;
+      buf_         = new unsigned char[bufCapacity_];
+
+      if (fileLen_ > 0) SetPos(0);
+      else bufPos_ = 0;
+
+      // If entire file fits in buffer, close the file handle
+      if (bufLen_ == fileLen_ && CanSeek()) Close();
+    }
+
+    StreamBuffer::~StreamBuffer() {
+      Close();
+      if (buf_ != nullptr) {
+        delete[] buf_;
+        buf_ = nullptr;
+      }
+    }
+
+    void StreamBuffer::Close() {
+      if (!isUserStream_ && stream_ != nullptr) {
+        fclose(stream_);
+        stream_ = nullptr;
+      }
+    }
+
+    int StreamBuffer::Read() {
+      if (bufPos_ < bufLen_) {
+        return buf_[bufPos_++];
+      } else if (GetPos() < fileLen_) {
+        SetPos(GetPos());   // shift buffer start to Pos
+        return buf_[bufPos_++];
+      } else if ((stream_ != nullptr) && !CanSeek() && (ReadNextStreamChunk() > 0)) {
+        return buf_[bufPos_++];
+      } else {
+        return EoF;
+      }
+    }
+
+    int StreamBuffer::Peek() {
+      int curPos = GetPos();
+      int ch     = Read();
+      SetPos(curPos);
+      return ch;
+    }
+
+    wchar_t* StreamBuffer::GetString(int beg, int end) {
+      int      len    = 0;
+      wchar_t* wbuf   = new wchar_t[end - beg];
+      int      oldPos = GetPos();
+      SetPos(beg);
+
+      while (GetPos() < end)
+        wbuf[len++] = (wchar_t)Read();
+
+      SetPos(oldPos);
+      wchar_t* res = coco_string_create(wbuf, 0, len);
+      delete[] wbuf;
+      return res;
+    }
+
+    void StreamBuffer::SetPos(int value) {
+      if ((value >= fileLen_) && (stream_ != nullptr) && !CanSeek()) {
+        while ((value >= fileLen_) && (ReadNextStreamChunk() > 0))
+          ;
+      }
+
+      if ((value < 0) || (value > fileLen_)) {
+        wprintf(L"--- buffer out of bounds access, position: %d\n", value);
+        exit(1);
+      }
+
+      if ((value >= bufStart_) && (value < (bufStart_ + bufLen_))) {
+        bufPos_ = value - bufStart_;
+      } else if (stream_ != nullptr) {
+        fseek(stream_, value, SEEK_SET);
+        bufLen_   = (int)fread(buf_, sizeof(unsigned char), bufCapacity_, stream_);
+        bufStart_ = value;
+        bufPos_   = 0;
+      } else {
+        bufPos_ = fileLen_ - bufStart_;
+      }
+    }
+
+    int StreamBuffer::ReadNextStreamChunk() {
+      int free = bufCapacity_ - bufLen_;
+
+      if (free == 0) {
+        bufCapacity_          = bufLen_ * 2;
+        unsigned char* newBuf = new unsigned char[bufCapacity_];
+        memcpy(newBuf, buf_, bufLen_ * sizeof(unsigned char));
+        delete[] buf_;
+        buf_ = newBuf;
+        free = bufLen_;
+      }
+
+      int bytesRead = (int)fread(buf_ + bufLen_, sizeof(unsigned char), free, stream_);
+
+      if (bytesRead > 0) {
+        fileLen_ = bufLen_ = (bufLen_ + bytesRead);
+        return bytesRead;
+      }
+
+      return 0;
+    }
+
+    bool StreamBuffer::CanSeek() { return (stream_ != nullptr) && (ftell(stream_) != -1); }
+
+    // ==========================================================================
+    // MappedBuffer - Implementation (for large files using memory-mapped I/O)
+    // ==========================================================================
 
 #  if defined(_WIN32)
 
-  MappedBuffer::MappedBuffer(const char* fileName) {
-    mappedData_    = nullptr;
-    fileHandle_    = INVALID_HANDLE_VALUE;
-    mappingHandle_ = nullptr;
-    fileLen_       = 0;
-    bufPos_        = 0;
-
-    fileHandle_ = CreateFileA(fileName,
-                              GENERIC_READ,
-                              FILE_SHARE_READ,
-                              nullptr,
-                              OPEN_EXISTING,
-                              FILE_ATTRIBUTE_NORMAL,
-                              nullptr);
-    if (fileHandle_ == INVALID_HANDLE_VALUE) return;
-
-    LARGE_INTEGER size;
-    if (!GetFileSizeEx(fileHandle_, &size)) {
-      CloseHandle(fileHandle_);
-      fileHandle_ = INVALID_HANDLE_VALUE;
-      return;
-    }
-    fileLen_ = (int)size.QuadPart;
-
-    mappingHandle_ = CreateFileMappingA(fileHandle_, nullptr, PAGE_READONLY, 0, 0, nullptr);
-    if (mappingHandle_ == nullptr) {
-      CloseHandle(fileHandle_);
-      fileHandle_ = INVALID_HANDLE_VALUE;
-      return;
-    }
-
-    mappedData_ = (unsigned char*)MapViewOfFile(mappingHandle_, FILE_MAP_READ, 0, 0, 0);
-    if (mappedData_ == nullptr) {
-      CloseHandle(mappingHandle_);
-      CloseHandle(fileHandle_);
-      mappingHandle_ = nullptr;
+    MappedBuffer::MappedBuffer(const char* fileName) {
+      mappedData_    = nullptr;
       fileHandle_    = INVALID_HANDLE_VALUE;
-    }
-  }
-
-  MappedBuffer::~MappedBuffer() { Close(); }
-
-  void MappedBuffer::Close() {
-    if (mappedData_ != nullptr) {
-      UnmapViewOfFile(mappedData_);
-      mappedData_ = nullptr;
-    }
-    if (mappingHandle_ != nullptr) {
-      CloseHandle(mappingHandle_);
       mappingHandle_ = nullptr;
+      fileLen_       = 0;
+      bufPos_        = 0;
+
+      fileHandle_ = CreateFileA(fileName,
+                                GENERIC_READ,
+                                FILE_SHARE_READ,
+                                nullptr,
+                                OPEN_EXISTING,
+                                FILE_ATTRIBUTE_NORMAL,
+                                nullptr);
+      if (fileHandle_ == INVALID_HANDLE_VALUE) return;
+
+      LARGE_INTEGER size;
+      if (!GetFileSizeEx(fileHandle_, &size)) {
+        CloseHandle(fileHandle_);
+        fileHandle_ = INVALID_HANDLE_VALUE;
+        return;
+      }
+      fileLen_ = (int)size.QuadPart;
+
+      mappingHandle_ = CreateFileMappingA(fileHandle_, nullptr, PAGE_READONLY, 0, 0, nullptr);
+      if (mappingHandle_ == nullptr) {
+        CloseHandle(fileHandle_);
+        fileHandle_ = INVALID_HANDLE_VALUE;
+        return;
+      }
+
+      mappedData_ = (unsigned char*)MapViewOfFile(mappingHandle_, FILE_MAP_READ, 0, 0, 0);
+      if (mappedData_ == nullptr) {
+        CloseHandle(mappingHandle_);
+        CloseHandle(fileHandle_);
+        mappingHandle_ = nullptr;
+        fileHandle_    = INVALID_HANDLE_VALUE;
+      }
     }
-    if (fileHandle_ != INVALID_HANDLE_VALUE) {
-      CloseHandle(fileHandle_);
-      fileHandle_ = INVALID_HANDLE_VALUE;
+
+    MappedBuffer::~MappedBuffer() { Close(); }
+
+    void MappedBuffer::Close() {
+      if (mappedData_ != nullptr) {
+        UnmapViewOfFile(mappedData_);
+        mappedData_ = nullptr;
+      }
+      if (mappingHandle_ != nullptr) {
+        CloseHandle(mappingHandle_);
+        mappingHandle_ = nullptr;
+      }
+      if (fileHandle_ != INVALID_HANDLE_VALUE) {
+        CloseHandle(fileHandle_);
+        fileHandle_ = INVALID_HANDLE_VALUE;
+      }
     }
-  }
 
 #  else    // POSIX (Linux, macOS, etc.)
 
-  MappedBuffer::MappedBuffer(const char* fileName) {
-    mappedData_ = nullptr;
-    fd_         = -1;
-    fileLen_    = 0;
-    bufPos_     = 0;
-
-    fd_ = open(fileName, O_RDONLY);
-    if (fd_ < 0) return;
-
-    struct stat sb;
-    if (fstat(fd_, &sb) < 0) {
-      close(fd_);
-      fd_ = -1;
-      return;
-    }
-    fileLen_ = (int)sb.st_size;
-
-    mappedData_ = (unsigned char*)mmap(nullptr, fileLen_, PROT_READ, MAP_PRIVATE, fd_, 0);
-    if (mappedData_ == MAP_FAILED) {
+    MappedBuffer::MappedBuffer(const char* fileName) {
       mappedData_ = nullptr;
-      close(fd_);
-      fd_ = -1;
-    }
-  }
+      fd_         = -1;
+      fileLen_    = 0;
+      bufPos_     = 0;
 
-  MappedBuffer::~MappedBuffer() { Close(); }
+      fd_ = open(fileName, O_RDONLY);
+      if (fd_ < 0) return;
 
-  void MappedBuffer::Close() {
-    if (mappedData_ != nullptr) {
-      munmap(mappedData_, fileLen_);
-      mappedData_ = nullptr;
+      struct stat sb;
+      if (fstat(fd_, &sb) < 0) {
+        close(fd_);
+        fd_ = -1;
+        return;
+      }
+      fileLen_ = (int)sb.st_size;
+
+      mappedData_ = (unsigned char*)mmap(nullptr, fileLen_, PROT_READ, MAP_PRIVATE, fd_, 0);
+      if (mappedData_ == MAP_FAILED) {
+        mappedData_ = nullptr;
+        close(fd_);
+        fd_ = -1;
+      }
     }
-    if (fd_ >= 0) {
-      close(fd_);
-      fd_ = -1;
+
+    MappedBuffer::~MappedBuffer() { Close(); }
+
+    void MappedBuffer::Close() {
+      if (mappedData_ != nullptr) {
+        munmap(mappedData_, fileLen_);
+        mappedData_ = nullptr;
+      }
+      if (fd_ >= 0) {
+        close(fd_);
+        fd_ = -1;
+      }
     }
-  }
 
 #  endif   // _WIN32
 
-  wchar_t* MappedBuffer::GetString(int beg, int end) {
-    int      len    = end - beg;
-    wchar_t* result = new wchar_t[len + 1];
-    for (int i = 0; i < len && (beg + i) < fileLen_; ++i) {
-      result[i] = (wchar_t)mappedData_[beg + i];
+    wchar_t* MappedBuffer::GetString(int beg, int end) {
+      int      len    = end - beg;
+      wchar_t* result = new wchar_t[len + 1];
+      for (int i = 0; i < len && (beg + i) < fileLen_; ++i) {
+        result[i] = (wchar_t)mappedData_[beg + i];
+      }
+      wchar_t* res = coco_string_create(result, 0, len);
+      delete[] result;
+      return res;
     }
-    wchar_t* res = coco_string_create(result, 0, len);
-    delete[] result;
-    return res;
-  }
 
   }   // anonymous namespace
 

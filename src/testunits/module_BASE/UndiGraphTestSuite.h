@@ -50,9 +50,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  UndiGraph
-#define GUM_CURRENT_MODULE GUMBASE
-
 // The graph used for the tests:
 //          0   1_          0 -- 2
 //         / \ / /          0 -- 3
@@ -64,7 +61,7 @@
 namespace gum_tests {
 
   struct UndiGraphTestSuite {
-    private:
+    protected:
     static gum::Size simpleDoubleFunction(const gum::NodeId& aNodeId) { return aNodeId * 2; }
 
     static gum::Size simpleEdgeMapFunction(const gum::Edge& anEdge) {
@@ -93,535 +90,505 @@ namespace gum_tests {
 
     public:
     gum::NodeId id1, id2, id3, id4, id5;
-
-    static void testConstructor1() {
-      gum::UndiGraph* graph = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING((graph = new gum::UndiGraph()));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete (graph));
-    }
-
-    static void testInsert1() {
-      gum::UndiGraph graph;
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3));
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(0, 3));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(3, 4));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(4, 1));
-    }
-
-    void testCopyConstructor() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::UndiGraph* copy = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)));
-      CHECK_EQ(graph, *copy);
-      delete (copy);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::UndiGraph copy2 = graph);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::UndiGraph copy3(graph));
-    }
-
-    void testCopyOperator() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::UndiGraph g2 = buildGraph();
-      g2.addNode();
-
-      gum::UndiGraph g3;
-
-      g2 = g3 = graph;
-
-      CHECK_EQ(g2, graph);
-      CHECK_EQ(g3, graph);
-
-      g2.clear();
-      g3.clearEdges();
-
-      CHECK_NE(g2, graph);
-      CHECK_NE(g3, graph);
-    }
-
-    void testEmptyNodes() {
-      gum::UndiGraph graph;
-      CHECK(graph.empty());
-      graph = buildGraph();
-      CHECK(!graph.empty());
-    }
-
-    void testEmptyEdges() {
-      gum::UndiGraph graph;
-      CHECK(graph.emptyEdges());
-      graph = buildGraph();
-      CHECK(!graph.emptyEdges());
-    }
-
-    void testClearNodes() {
-      gum::UndiGraph graph = buildGraph();
-      CHECK(!graph.empty());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clear());
-      CHECK(graph.empty());
-    }
-
-    void testClearEdges() {
-      gum::UndiGraph graph = buildGraph();
-      CHECK(!graph.emptyEdges());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clearEdges());
-      CHECK(graph.emptyEdges());
-      CHECK(!graph.empty());
-    }
-
-    void testAddDelNodes_2() {
-      gum::UndiGraph graph = buildGraph();
-
-      CHECK(graph.exists(id1));
-      CHECK(graph.exists(id2));
-      CHECK(graph.exists(id3));
-      CHECK(graph.exists(id4));
-      CHECK(graph.exists(id5));
-      CHECK(!graph.exists(id5 + id4 + id3 + id2 + id1));
-
-      CHECK(graph.existsEdge(id3, id5));
-      CHECK(graph.existsEdge(id5, id3));
-      CHECK(!graph.existsEdge(id1, id1));
-
-      gum::Size nodeCount = graph.size();
-      gum::Size edgeCount = graph.sizeEdges();
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
-
-      CHECK_EQ(nodeCount, graph.size() + 1);
-      CHECK_EQ(edgeCount, graph.sizeEdges() + 2);
-
-      CHECK(!graph.exists(id2));
-      CHECK(!graph.existsEdge(id2, id4));
-      CHECK(!graph.existsEdge(id5, id2));
-      CHECK(!graph.existsEdge(id2, id5));
-    }
-
-    void testRemoveNodesFunky_1() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::Size nodeCount = graph.size();
-      gum::Size edgeCount = graph.sizeEdges();
-
-      CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
-      CHECK_EQ(edgeCount, static_cast< gum::Size >(6));
-
-      for (int i = 0; i < 10; i++) {
-        GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
-      }
-
-      CHECK_EQ(nodeCount, graph.size() + 1);
-
-      CHECK_EQ(edgeCount, graph.sizeEdges() + 3);
-
-      CHECK(!graph.existsEdge(2, 4));
-      CHECK(!graph.existsEdge(3, 4));
-      CHECK(!graph.existsEdge(4, 1));
-    }
-
-    void testAddDelEdges_1() {
-      gum::UndiGraph graph = buildGraph();
-
-      CHECK(graph.existsEdge(0, 2));
-      CHECK(graph.existsEdge(2, 4));
-      CHECK(graph.existsEdge(1, 3));
-
-      gum::Size nodeCount = graph.size();
-      gum::Size edgeCount = graph.sizeEdges();
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
-
-      CHECK_EQ(nodeCount, graph.size());
-      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
-
-      CHECK(!graph.existsEdge(2, 4));
-    }
-
-    void testAddDelEdges_2() {
-      gum::UndiGraph graph = buildGraph();
-
-      CHECK(graph.existsEdge(id1, id3));
-      CHECK(graph.existsEdge(id3, id5));
-      CHECK(graph.existsEdge(id2, id4));
-
-      gum::Size nodeCount = graph.size();
-      gum::Size edgeCount = graph.sizeEdges();
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
-
-      CHECK_EQ(nodeCount, graph.size());
-      CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
-
-      CHECK(!graph.existsEdge(id3, id5));
-    }
-
-    void testGetNodes() {
-      gum::UndiGraph graph = buildGraph();
-
-      const gum::NodeSet nodeset = graph.asNodeSet();
-      CHECK_EQ(nodeset.size(), graph.size());
-      gum::Size nodeCount = graph.size();
-
-      for (const auto node: nodeset)
-        graph.eraseNode(node);
-
-      CHECK(graph.empty());
-
-      CHECK_EQ(nodeCount, nodeset.size());
-    }
-
-    void testGetEdges() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::EdgeSet edgeset = graph.edges();
-      CHECK_EQ(edgeset.size(), graph.sizeEdges());
-      gum::Size edgeCount = graph.sizeEdges();
-
-      for (const auto& edge: edgeset)
-        graph.eraseEdge(edge);
-
-      CHECK(graph.emptyEdges());
-
-      CHECK_EQ(edgeCount, edgeset.size());
-    }
-
-    void testNodeListMapNodes() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
-      CHECK_EQ(list.size(), graph.size());
-
-      gum::Size s = 0;
-
-      for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
-        s += *iter;
-      }
-
-      CHECK_EQ(s, 2 * (id1 + id2 + id3 + id4 + id5));
-    }
-
-    void testTwistedNodeListMapNodes() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::List< gum::Size > list;
-      CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
-
-      CHECK_EQ(list.size(), static_cast< gum::Size >(0));
-    }
-
-    void testHashMapNodes() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::NodeProperty< gum::Size > hashmap
-          = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
-      CHECK_EQ(hashmap.size(), graph.size());
-
-      gum::Size sk = 0;
-      gum::Size sv = 0;
-
-      for (const auto& elt: hashmap) {
-        sk += elt.first;
-        sv += elt.second;
-      }
-
-      CHECK_EQ(sk * 2, sv);
-    }
-
-    void testTwistedHashMapNodes() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::NodeProperty< gum::Size > hashmap;
-      CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
-
-      CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
-    }
-
-    void testListMapEdges() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
-      CHECK_EQ(list.size(), graph.sizeEdges());
-
-      gum::Size s = 0;
-
-      for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
-        s += *iter;
-      }
-
-      CHECK_EQ(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
-    }
-
-    void testHashMapEdges() {
-      gum::UndiGraph graph = buildGraph();
-
-      gum::EdgeProperty< gum::Size > hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
-      CHECK_EQ(hashmap.size(), graph.sizeEdges());
-
-      gum::Size sk = 0;
-      gum::Size sv = 0;
-
-      for (const auto& elt: hashmap) {
-        sv += elt.second;
-        sk += elt.first.first() + elt.first.second();
-      }
-
-      CHECK_EQ(sk, sv);
-    }
-
-    void testUndirectedPaths() {
-      gum::UndiGraph graph = buildGraph();
-      gum::NodeId    id6   = graph.addNode();
-      gum::NodeId    id7   = graph.addNode();
-      graph.addEdge(id6, id7);
-
-      auto path_opt = graph.undirectedPath(0, 1);
-      CHECK(path_opt.has_value());
-      const auto& path = *path_opt;
-      CHECK_EQ(path.size(), 3U);
-      CHECK_EQ(path[0], 0U);
-      CHECK_EQ(path[1], 3U);
-      CHECK_EQ(path[2], 1U);
-
-      auto path2_opt = graph.undirectedPath(1, 2);
-      CHECK(path2_opt.has_value());
-      const auto& path2 = *path2_opt;
-      CHECK_EQ(path2.size(), 3U);
-      CHECK_EQ(path2[0], 1U);
-      CHECK_EQ(path2[1], 4U);
-      CHECK_EQ(path2[2], 2U);
-
-      auto path3_opt = graph.undirectedPath(5, 6);
-      CHECK(path3_opt.has_value());
-      CHECK_EQ(path3_opt->size(), 2U);
-
-      CHECK_FALSE(graph.undirectedPath(1, 5).has_value());
-    }
-
-    static void testConnexComponents() {
-      gum::UndiGraph g;
-      g.addNodes(6);
-
-      g.addEdge(0, 1);
-      g.addEdge(2, 1);
-      g.addEdge(3, 4);
-
-      auto cc = g.chainComponents();
-
-      CHECK_EQ(cc.size(), 6U);
-      CHECK_NE(cc[0], cc[3]);
-      CHECK_NE(cc[0], cc[5]);
-      CHECK_NE(cc[5], cc[3]);
-      CHECK_EQ(cc[0], cc[1]);
-      CHECK_EQ(cc[0], cc[2]);
-      CHECK_EQ(cc[3], cc[4]);
-    }
-
-    static void testConnexComponents2() {
-      gum::UndiGraph g;
-      g.addNodes(6);
-
-      g.addEdge(0, 1);
-      g.addEdge(1, 2);
-      g.addEdge(2, 3);
-      g.addEdge(1, 4);
-      g.addEdge(2, 5);
-
-      auto cc = g.chainComponents();
-
-      CHECK_EQ(cc.size(), 6U);
-      CHECK_EQ(cc[0], cc[1]);
-      CHECK_EQ(cc[0], cc[2]);
-      CHECK_EQ(cc[0], cc[3]);
-      CHECK_EQ(cc[0], cc[4]);
-      CHECK_EQ(cc[0], cc[5]);
-    }
-
-    static void testHasUndirectedPath() {
-      // 0--1--2, 1--3; node 4 isolated
-      gum::UndiGraph g;
-      g.addNodes(5);
-      g.addEdge(0, 1);
-      g.addEdge(1, 2);
-      g.addEdge(1, 3);
-
-      CHECK(g.hasUndirectedPath(0, 3));
-      CHECK(g.hasUndirectedPath(3, 0));
-      CHECK(g.hasUndirectedPath(0, 2));
-      CHECK(!g.hasUndirectedPath(0, 4));
-      CHECK(!g.hasUndirectedPath(4, 0));
-
-      // hasUndirectedPath(n1, n2, except) — single path 0--1--2--3
-      gum::UndiGraph chain;
-      chain.addNodes(4);
-      chain.addEdge(0, 1);
-      chain.addEdge(1, 2);
-      chain.addEdge(2, 3);
-
-      CHECK(chain.hasUndirectedPath(0, 3, gum::NodeSet{}));
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // blocked at 2
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{1}));   // blocked at 1
-      CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{3}));   // n2 in except
-
-      // bypass: 0 connected to both 1 and 2; except={1} → still reachable via 0--2--3
-      gum::UndiGraph bypass;
-      bypass.addNodes(4);
-      bypass.addEdge(0, 1);
-      bypass.addEdge(0, 2);
-      bypass.addEdge(1, 2);
-      bypass.addEdge(2, 3);
-
-      CHECK(bypass.hasUndirectedPath(0, 3, gum::NodeSet{1}));    // 0--2--3
-      CHECK(!bypass.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // no bypass past 2
-
-      // hasUndirectedPath(NodeSet, NodeSet, except)
-      // g: 0--1--2--3; 4 isolated
-      gum::NodeSet src{0}, dst{3};
-      CHECK(chain.hasUndirectedPath(src, dst, gum::NodeSet{}));
-      CHECK(!chain.hasUndirectedPath(src, dst, gum::NodeSet{1}));
-
-      // multiple sources: even though {4} is isolated, {0,4} can reach {3}
-      CHECK(chain.hasUndirectedPath(gum::NodeSet{0, 4}, dst, gum::NodeSet{}));
-    }
-
-    static void testConnectedComponents() {
-      // 0--1--2 and 3--4: two weakly connected components; 5: isolated
-      gum::UndiGraph g;
-      g.addNodes(6);
-      g.addEdge(0, 1);
-      g.addEdge(1, 2);
-      g.addEdge(3, 4);
-
-      auto cc = g.connectedComponents();
-      CHECK_EQ(cc.size(), 6U);
-      CHECK_EQ(cc[0], cc[1]);
-      CHECK_EQ(cc[1], cc[2]);
-      CHECK_NE(cc[0], cc[3]);
-      CHECK_EQ(cc[3], cc[4]);
-      CHECK_NE(cc[5], cc[0]);
-      CHECK_NE(cc[5], cc[3]);
-
-      // for UndiGraph, connectedComponents and chainComponents are equivalent
-      auto chain = g.chainComponents();
-      for (gum::NodeId n = 0; n < 6; ++n)
-        CHECK_EQ(cc[n], chain[n]);
-    }
-
-    static void testHasUndirectedCycle() {
-      // tree (path): no cycle
-      gum::UndiGraph tree;
-      tree.addNodes(4);
-      tree.addEdge(0, 1);
-      tree.addEdge(1, 2);
-      tree.addEdge(2, 3);
-      CHECK_FALSE(tree.hasUndirectedCycle());
-
-      // add back-edge to close the cycle
-      tree.addEdge(0, 3);
-      CHECK(tree.hasUndirectedCycle());
-
-      // disconnected: two separate paths, no cycle
-      gum::UndiGraph dis;
-      dis.addNodes(6);
-      dis.addEdge(0, 1);
-      dis.addEdge(1, 2);
-      dis.addEdge(3, 4);
-      dis.addEdge(4, 5);
-      CHECK_FALSE(dis.hasUndirectedCycle());
-
-      // cycle in one component only
-      dis.addEdge(3, 5);
-      CHECK(dis.hasUndirectedCycle());
-
-      // empty and single-node graphs have no cycle
-      gum::UndiGraph empty;
-      CHECK_FALSE(empty.hasUndirectedCycle());
-      gum::UndiGraph single;
-      single.addNode();
-      CHECK_FALSE(single.hasUndirectedCycle());
-    }
-
-    static void testAreConnected() {
-      // graph: 0--1--2   3--4   5 (isolated)
-      gum::UndiGraph g;
-      g.addNodes(6);
-      g.addEdge(0, 1);
-      g.addEdge(1, 2);
-      g.addEdge(3, 4);
-
-      // empty set → false
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{}, gum::NodeSet{0}));
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{}));
-
-      // shared node → true (trivial)
-      CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 1}, gum::NodeSet{1, 2}));
-
-      // connected via path
-      CHECK(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{2}));
-      CHECK(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{4}));
-
-      // different components → false
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{3}));
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{5}));
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{5}));
-
-      // multi-source: {0,3} vs {2} — 0 can reach 2
-      CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 3}, gum::NodeSet{2}));
-      // multi-source: {3,5} vs {2} — neither can reach 2
-      CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3, 5}, gum::NodeSet{2}));
-    }
-
-    static void testToDotWithNames() {
-      gum::UndiGraph g;
-      g.addNodes(3);
-      g.setName(0, "alpha");
-      g.setName(2, "ga\"mm\\a");
-      g.addEdge(0, 1);
-      g.addEdge(1, 2);
-
-      std::string dot = g.toDot();
-
-      CHECK(dot.find("0 [label=\"(0) alpha\"]") != std::string::npos);
-      CHECK(dot.find("2 [label=\"(2) ga\\\"mm\\\\a\"]") != std::string::npos);
-      CHECK(dot.find("1 [label=") == std::string::npos);
-    }
   };
 
-  GUM_TEST_ACTIF(Constructor1)
-  GUM_TEST_ACTIF(Insert1)
-  GUM_TEST_ACTIF(CopyConstructor)
-  GUM_TEST_ACTIF(CopyOperator)
-  GUM_TEST_ACTIF(EmptyNodes)
-  GUM_TEST_ACTIF(EmptyEdges)
-  GUM_TEST_ACTIF(ClearNodes)
-  GUM_TEST_ACTIF(ClearEdges)
-  GUM_TEST_ACTIF(AddDelNodes_2)
-  GUM_TEST_ACTIF(RemoveNodesFunky_1)
-  GUM_TEST_ACTIF(AddDelEdges_1)
-  GUM_TEST_ACTIF(AddDelEdges_2)
-  GUM_TEST_ACTIF(GetNodes)
-  GUM_TEST_ACTIF(GetEdges)
-  GUM_TEST_ACTIF(NodeListMapNodes)
-  GUM_TEST_ACTIF(TwistedNodeListMapNodes)
-  GUM_TEST_ACTIF(HashMapNodes)
-  GUM_TEST_ACTIF(TwistedHashMapNodes)
-  GUM_TEST_ACTIF(ListMapEdges)
-  GUM_TEST_ACTIF(HashMapEdges)
-  GUM_TEST_ACTIF(UndirectedPaths)
-  GUM_TEST_ACTIF(ConnexComponents)
-  GUM_TEST_ACTIF(ConnexComponents2)
-  GUM_TEST_ACTIF(HasUndirectedPath)
-  GUM_TEST_ACTIF(ConnectedComponents)
-  GUM_TEST_ACTIF(HasUndirectedCycle)
-  GUM_TEST_ACTIF(AreConnected)
-  GUM_TEST_ACTIF(ToDotWithNames)
+  GUM_TEST(Constructor1) {
+    gum::UndiGraph* graph = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING((graph = new gum::UndiGraph()));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete (graph));
+  }
+
+  GUM_TEST(Insert1) {
+    gum::UndiGraph graph;
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addNode());
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(0, 2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(2, 4));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(1, 3));
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(0, 3));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(3, 4));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(4, 1));
+  }
+
+  GUM_TEST(CopyConstructor) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::UndiGraph* copy = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING((copy = new gum::UndiGraph(graph)));
+    CHECK_EQ(graph, *copy);
+    delete (copy);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::UndiGraph copy2 = graph);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::UndiGraph copy3(graph));
+  }
+
+  GUM_TEST(CopyOperator) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::UndiGraph g2 = buildGraph();
+    g2.addNode();
+
+    gum::UndiGraph g3;
+
+    g2 = g3 = graph;
+
+    CHECK_EQ(g2, graph);
+    CHECK_EQ(g3, graph);
+
+    g2.clear();
+    g3.clearEdges();
+
+    CHECK_NE(g2, graph);
+    CHECK_NE(g3, graph);
+  }
+
+  GUM_TEST(EmptyNodes) {
+    gum::UndiGraph graph;
+    CHECK(graph.empty());
+    graph = buildGraph();
+    CHECK(!graph.empty());
+  }
+
+  GUM_TEST(EmptyEdges) {
+    gum::UndiGraph graph;
+    CHECK(graph.emptyEdges());
+    graph = buildGraph();
+    CHECK(!graph.emptyEdges());
+  }
+
+  GUM_TEST(ClearNodes) {
+    gum::UndiGraph graph = buildGraph();
+    CHECK(!graph.empty());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clear());
+    CHECK(graph.empty());
+  }
+
+  GUM_TEST(ClearEdges) {
+    gum::UndiGraph graph = buildGraph();
+    CHECK(!graph.emptyEdges());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.clearEdges());
+    CHECK(graph.emptyEdges());
+    CHECK(!graph.empty());
+  }
+
+  GUM_TEST(AddDelNodes_2) {
+    gum::UndiGraph graph = buildGraph();
+
+    CHECK(graph.exists(id1));
+    CHECK(graph.exists(id2));
+    CHECK(graph.exists(id3));
+    CHECK(graph.exists(id4));
+    CHECK(graph.exists(id5));
+    CHECK(!graph.exists(id5 + id4 + id3 + id2 + id1));
+
+    CHECK(graph.existsEdge(id3, id5));
+    CHECK(graph.existsEdge(id5, id3));
+    CHECK(!graph.existsEdge(id1, id1));
+
+    gum::Size nodeCount = graph.size();
+    gum::Size edgeCount = graph.sizeEdges();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id2));
+
+    CHECK_EQ(nodeCount, graph.size() + 1);
+    CHECK_EQ(edgeCount, graph.sizeEdges() + 2);
+
+    CHECK(!graph.exists(id2));
+    CHECK(!graph.existsEdge(id2, id4));
+    CHECK(!graph.existsEdge(id5, id2));
+    CHECK(!graph.existsEdge(id2, id5));
+  }
+
+  GUM_TEST(RemoveNodesFunky_1) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::Size nodeCount = graph.size();
+    gum::Size edgeCount = graph.sizeEdges();
+
+    CHECK_EQ(nodeCount, static_cast< gum::Size >(5));
+    CHECK_EQ(edgeCount, static_cast< gum::Size >(6));
+
+    for (int i = 0; i < 10; i++) {
+      GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseNode(id5));
+    }
+
+    CHECK_EQ(nodeCount, graph.size() + 1);
+
+    CHECK_EQ(edgeCount, graph.sizeEdges() + 3);
+
+    CHECK(!graph.existsEdge(2, 4));
+    CHECK(!graph.existsEdge(3, 4));
+    CHECK(!graph.existsEdge(4, 1));
+  }
+
+  GUM_TEST(AddDelEdges_1) {
+    gum::UndiGraph graph = buildGraph();
+
+    CHECK(graph.existsEdge(0, 2));
+    CHECK(graph.existsEdge(2, 4));
+    CHECK(graph.existsEdge(1, 3));
+
+    gum::Size nodeCount = graph.size();
+    gum::Size edgeCount = graph.sizeEdges();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(4, 2)));
+
+    CHECK_EQ(nodeCount, graph.size());
+    CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+
+    CHECK(!graph.existsEdge(2, 4));
+  }
+
+  GUM_TEST(AddDelEdges_2) {
+    gum::UndiGraph graph = buildGraph();
+
+    CHECK(graph.existsEdge(id1, id3));
+    CHECK(graph.existsEdge(id3, id5));
+    CHECK(graph.existsEdge(id2, id4));
+
+    gum::Size nodeCount = graph.size();
+    gum::Size edgeCount = graph.sizeEdges();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(graph.eraseEdge(gum::Edge(id3, id5)));
+
+    CHECK_EQ(nodeCount, graph.size());
+    CHECK_EQ(edgeCount, graph.sizeEdges() + 1);
+
+    CHECK(!graph.existsEdge(id3, id5));
+  }
+
+  GUM_TEST(GetNodes) {
+    gum::UndiGraph graph = buildGraph();
+
+    const gum::NodeSet nodeset = graph.asNodeSet();
+    CHECK_EQ(nodeset.size(), graph.size());
+    gum::Size nodeCount = graph.size();
+
+    for (const auto node: nodeset)
+      graph.eraseNode(node);
+
+    CHECK(graph.empty());
+
+    CHECK_EQ(nodeCount, nodeset.size());
+  }
+
+  GUM_TEST(GetEdges) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::EdgeSet edgeset = graph.edges();
+    CHECK_EQ(edgeset.size(), graph.sizeEdges());
+    gum::Size edgeCount = graph.sizeEdges();
+
+    for (const auto& edge: edgeset)
+      graph.eraseEdge(edge);
+
+    CHECK(graph.emptyEdges());
+
+    CHECK_EQ(edgeCount, edgeset.size());
+  }
+
+  GUM_TEST(NodeListMapNodes) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::List< gum::Size > list = graph.listMapNodes(&simpleDoubleFunction);
+    CHECK_EQ(list.size(), graph.size());
+
+    gum::Size s = 0;
+
+    for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
+      s += *iter;
+    }
+
+    CHECK_EQ(s, 2 * (id1 + id2 + id3 + id4 + id5));
+  }
+
+  GUM_TEST(TwistedNodeListMapNodes) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::List< gum::Size > list;
+    CHECK_THROWS(list = graph.listMapNodes(&twistedMapFunction));
+
+    CHECK_EQ(list.size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(HashMapNodes) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::NodeProperty< gum::Size > hashmap = graph.nodesPropertyFromFunction(&simpleDoubleFunction);
+    CHECK_EQ(hashmap.size(), graph.size());
+
+    gum::Size sk = 0;
+    gum::Size sv = 0;
+
+    for (const auto& elt: hashmap) {
+      sk += elt.first;
+      sv += elt.second;
+    }
+
+    CHECK_EQ(sk * 2, sv);
+  }
+
+  GUM_TEST(TwistedHashMapNodes) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::NodeProperty< gum::Size > hashmap;
+    CHECK_THROWS(hashmap = graph.nodesPropertyFromFunction(&twistedMapFunction));
+
+    CHECK_EQ(hashmap.size(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(ListMapEdges) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::List< gum::Size > list = graph.listMapEdges(&simpleEdgeMapFunction);
+    CHECK_EQ(list.size(), graph.sizeEdges());
+
+    gum::Size s = 0;
+
+    for (gum::List< gum::Size >::iterator iter = list.begin(); iter != list.end(); ++iter) {
+      s += *iter;
+    }
+
+    CHECK_EQ(s, (gum::Size)(0 + 0 + 2 + 3 + 1 + 4 + 2 + 3 + 4 + 4 + 3 + 1));
+  }
+
+  GUM_TEST(HashMapEdges) {
+    gum::UndiGraph graph = buildGraph();
+
+    gum::EdgeProperty< gum::Size > hashmap = graph.edgesProperty(&simpleEdgeMapFunction);
+    CHECK_EQ(hashmap.size(), graph.sizeEdges());
+
+    gum::Size sk = 0;
+    gum::Size sv = 0;
+
+    for (const auto& elt: hashmap) {
+      sv += elt.second;
+      sk += elt.first.first() + elt.first.second();
+    }
+
+    CHECK_EQ(sk, sv);
+  }
+
+  GUM_TEST(UndirectedPaths) {
+    gum::UndiGraph graph = buildGraph();
+    gum::NodeId    id6   = graph.addNode();
+    gum::NodeId    id7   = graph.addNode();
+    graph.addEdge(id6, id7);
+
+    auto path_opt = graph.undirectedPath(0, 1);
+    CHECK(path_opt.has_value());
+    const auto& path = *path_opt;
+    CHECK_EQ(path.size(), 3U);
+    CHECK_EQ(path[0], 0U);
+    CHECK_EQ(path[1], 3U);
+    CHECK_EQ(path[2], 1U);
+
+    auto path2_opt = graph.undirectedPath(1, 2);
+    CHECK(path2_opt.has_value());
+    const auto& path2 = *path2_opt;
+    CHECK_EQ(path2.size(), 3U);
+    CHECK_EQ(path2[0], 1U);
+    CHECK_EQ(path2[1], 4U);
+    CHECK_EQ(path2[2], 2U);
+
+    auto path3_opt = graph.undirectedPath(5, 6);
+    CHECK(path3_opt.has_value());
+    CHECK_EQ(path3_opt->size(), 2U);
+
+    CHECK_FALSE(graph.undirectedPath(1, 5).has_value());
+  }
+
+  GUM_TEST(ConnexComponents) {
+    gum::UndiGraph g;
+    g.addNodes(6);
+
+    g.addEdge(0, 1);
+    g.addEdge(2, 1);
+    g.addEdge(3, 4);
+
+    auto cc = g.chainComponents();
+
+    CHECK_EQ(cc.size(), 6U);
+    CHECK_NE(cc[0], cc[3]);
+    CHECK_NE(cc[0], cc[5]);
+    CHECK_NE(cc[5], cc[3]);
+    CHECK_EQ(cc[0], cc[1]);
+    CHECK_EQ(cc[0], cc[2]);
+    CHECK_EQ(cc[3], cc[4]);
+  }
+
+  GUM_TEST(ConnexComponents2) {
+    gum::UndiGraph g;
+    g.addNodes(6);
+
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(2, 3);
+    g.addEdge(1, 4);
+    g.addEdge(2, 5);
+
+    auto cc = g.chainComponents();
+
+    CHECK_EQ(cc.size(), 6U);
+    CHECK_EQ(cc[0], cc[1]);
+    CHECK_EQ(cc[0], cc[2]);
+    CHECK_EQ(cc[0], cc[3]);
+    CHECK_EQ(cc[0], cc[4]);
+    CHECK_EQ(cc[0], cc[5]);
+  }
+
+  GUM_TEST(HasUndirectedPath) {
+    // 0--1--2, 1--3; node 4 isolated
+    gum::UndiGraph g;
+    g.addNodes(5);
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(1, 3);
+
+    CHECK(g.hasUndirectedPath(0, 3));
+    CHECK(g.hasUndirectedPath(3, 0));
+    CHECK(g.hasUndirectedPath(0, 2));
+    CHECK(!g.hasUndirectedPath(0, 4));
+    CHECK(!g.hasUndirectedPath(4, 0));
+
+    // hasUndirectedPath(n1, n2, except) — single path 0--1--2--3
+    gum::UndiGraph chain;
+    chain.addNodes(4);
+    chain.addEdge(0, 1);
+    chain.addEdge(1, 2);
+    chain.addEdge(2, 3);
+
+    CHECK(chain.hasUndirectedPath(0, 3, gum::NodeSet{}));
+    CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // blocked at 2
+    CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{1}));   // blocked at 1
+    CHECK(!chain.hasUndirectedPath(0, 3, gum::NodeSet{3}));   // n2 in except
+
+    // bypass: 0 connected to both 1 and 2; except={1} → still reachable via 0--2--3
+    gum::UndiGraph bypass;
+    bypass.addNodes(4);
+    bypass.addEdge(0, 1);
+    bypass.addEdge(0, 2);
+    bypass.addEdge(1, 2);
+    bypass.addEdge(2, 3);
+
+    CHECK(bypass.hasUndirectedPath(0, 3, gum::NodeSet{1}));    // 0--2--3
+    CHECK(!bypass.hasUndirectedPath(0, 3, gum::NodeSet{2}));   // no bypass past 2
+
+    // hasUndirectedPath(NodeSet, NodeSet, except)
+    // g: 0--1--2--3; 4 isolated
+    gum::NodeSet src{0}, dst{3};
+    CHECK(chain.hasUndirectedPath(src, dst, gum::NodeSet{}));
+    CHECK(!chain.hasUndirectedPath(src, dst, gum::NodeSet{1}));
+
+    // multiple sources: even though {4} is isolated, {0,4} can reach {3}
+    CHECK(chain.hasUndirectedPath(gum::NodeSet{0, 4}, dst, gum::NodeSet{}));
+  }
+
+  GUM_TEST(ConnectedComponents) {
+    // 0--1--2 and 3--4: two weakly connected components; 5: isolated
+    gum::UndiGraph g;
+    g.addNodes(6);
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(3, 4);
+
+    auto cc = g.connectedComponents();
+    CHECK_EQ(cc.size(), 6U);
+    CHECK_EQ(cc[0], cc[1]);
+    CHECK_EQ(cc[1], cc[2]);
+    CHECK_NE(cc[0], cc[3]);
+    CHECK_EQ(cc[3], cc[4]);
+    CHECK_NE(cc[5], cc[0]);
+    CHECK_NE(cc[5], cc[3]);
+
+    // for UndiGraph, connectedComponents and chainComponents are equivalent
+    auto chain = g.chainComponents();
+    for (gum::NodeId n = 0; n < 6; ++n)
+      CHECK_EQ(cc[n], chain[n]);
+  }
+
+  GUM_TEST(HasUndirectedCycle) {
+    // tree (path): no cycle
+    gum::UndiGraph tree;
+    tree.addNodes(4);
+    tree.addEdge(0, 1);
+    tree.addEdge(1, 2);
+    tree.addEdge(2, 3);
+    CHECK_FALSE(tree.hasUndirectedCycle());
+
+    // add back-edge to close the cycle
+    tree.addEdge(0, 3);
+    CHECK(tree.hasUndirectedCycle());
+
+    // disconnected: two separate paths, no cycle
+    gum::UndiGraph dis;
+    dis.addNodes(6);
+    dis.addEdge(0, 1);
+    dis.addEdge(1, 2);
+    dis.addEdge(3, 4);
+    dis.addEdge(4, 5);
+    CHECK_FALSE(dis.hasUndirectedCycle());
+
+    // cycle in one component only
+    dis.addEdge(3, 5);
+    CHECK(dis.hasUndirectedCycle());
+
+    // empty and single-node graphs have no cycle
+    gum::UndiGraph empty;
+    CHECK_FALSE(empty.hasUndirectedCycle());
+    gum::UndiGraph single;
+    single.addNode();
+    CHECK_FALSE(single.hasUndirectedCycle());
+  }
+
+  GUM_TEST(AreConnected) {
+    // graph: 0--1--2   3--4   5 (isolated)
+    gum::UndiGraph g;
+    g.addNodes(6);
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(3, 4);
+
+    // empty set → false
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{}, gum::NodeSet{0}));
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{}));
+
+    // shared node → true (trivial)
+    CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 1}, gum::NodeSet{1, 2}));
+
+    // connected via path
+    CHECK(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{2}));
+    CHECK(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{4}));
+
+    // different components → false
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{3}));
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{0}, gum::NodeSet{5}));
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3}, gum::NodeSet{5}));
+
+    // multi-source: {0,3} vs {2} — 0 can reach 2
+    CHECK(gum::graph::areConnected(g, gum::NodeSet{0, 3}, gum::NodeSet{2}));
+    // multi-source: {3,5} vs {2} — neither can reach 2
+    CHECK_FALSE(gum::graph::areConnected(g, gum::NodeSet{3, 5}, gum::NodeSet{2}));
+  }
+
+  GUM_TEST(ToDotWithNames) {
+    gum::UndiGraph g;
+    g.addNodes(3);
+    g.setName(0, "alpha");
+    g.setName(2, "ga\"mm\\a");
+    g.addEdge(0, 1);
+    g.addEdge(1, 2);
+
+    std::string dot = g.toDot();
+
+    CHECK(dot.find("0 [label=\"(0) alpha\"]") != std::string::npos);
+    CHECK(dot.find("2 [label=\"(2) ga\\\"mm\\\\a\"]") != std::string::npos);
+    CHECK(dot.find("1 [label=") == std::string::npos);
+  }
 }   // namespace gum_tests

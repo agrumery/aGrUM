@@ -55,13 +55,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DAG2BNLearner
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct DAG2BNLearnerTestSuite {
-    private:
+    protected:
     static std::vector< double > _normalize_(const std::vector< double >& vin) {
       double sum = 0;
       for (const auto& val: vin)
@@ -95,184 +92,182 @@ namespace gum_tests {
     }
 
     public:
-    static void test1() {
-      // create the translator set
-      gum::LabelizedVariable var("X1", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      var.addLabel("2");
-
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss;
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      // create the database
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
-      std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
-      std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
-      std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
-      std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
-      for (int i = 0; i < 1000; ++i)
-        database.insertRow(row0);
-      for (int i = 0; i < 50; ++i)
-        database.insertRow(row1);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row2);
-      for (int i = 0; i < 75; ++i)
-        database.insertRow(row3);
-      for (int i = 0; i < 200; ++i)
-        database.insertRow(row4);
-
-      // create the parser
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       extern_prior(database);
-      gum::learning::NoPrior              intern_prior(database);
-
-      gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
-
-      gum::learning::DAG2BNLearner learner;
-
-      gum::DAG dag;
-      for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
-        dag.addNodeWithId(gum::NodeId(i));
-      }
-      dag.addArc(0, 1);
-      dag.addArc(2, 0);
-
-      auto bn1 = learner.createBN(param_estimator, dag);
-
-      auto                  v2  = _getProba_(bn1, 2);
-      std::vector< double > xv2 = _normalize_({1401, 1, 1});
-      CHECK_EQ(v2, xv2);
-
-      auto                  v02  = _getProba_(bn1, 0);
-      std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
-      CHECK_EQ(v02, xv02);
-    }
-
-    static void testEM() {
-      gum::LabelizedVariable var("x", "", 0);
-      var.addLabel("0");
-      var.addLabel("1");
-      gum::learning::DBTranslatorSet trans_set;
-      {
-        const std::vector< std::string >              miss{"N/A", "?"};
-        gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
-        std::vector< std::string >                    names{"A", "B", "C", "D"};
-
-        for (auto i = std::size_t(0); i < names.size(); ++i) {
-          translator.setVariableName(names[i]);
-          trans_set.insertTranslator(translator, i);
-        }
-      }
-
-      gum::learning::DatabaseTable database(trans_set);
-      std::vector< std::string >   row1{"0", "1", "1", "0"};
-      std::vector< std::string >   row2{"0", "?", "0", "1"};
-      std::vector< std::string >   row3{"1", "?", "?", "0"};
-      std::vector< std::string >   row4{"?", "?", "1", "0"};
-      std::vector< std::string >   row5{"?", "0", "?", "?"};
-      for (int i = 0; i < 100; ++i) {
-        database.insertRow(row1);
-        database.insertRow(row2);
-        database.insertRow(row3);
-        database.insertRow(row4);
-        database.insertRow(row5);
-      }
-
-      const std::vector< gum::learning::DBTranslatedValueType > col_types{
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE};
-
-      auto bn = gum::BayesNet< double >::fastPrototype("A;B;C;D");
-      bn.cpt("A").fillWith({0.3, 0.7});
-      bn.cpt("B").fillWith({0.3, 0.7});
-      bn.cpt("C").fillWith({0.3, 0.7});
-      bn.cpt("D").fillWith({0.3, 0.7});
-
-      // bugfix for parallel execution of VariableElimination
-      {
-        const gum::DAG& dag = bn.internalDag();
-        for (const auto node: dag) {
-          dag.parents(node);
-          dag.children(node);
-        }
-      }
-
-      // create the parser
-      gum::learning::DBRowGenerator4CompleteRows generator_id(col_types);
-      gum::learning::DBRowGeneratorSet           genset_id;
-      genset_id.insertGenerator(generator_id);
-      gum::learning::DBRowGeneratorParser parser_id(database.handler(), genset_id);
-
-      gum::learning::SmoothingPrior   extern_prior(database);
-      gum::learning::NoPrior          intern_prior(database);
-      gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_prior, intern_prior);
-
-      gum::learning::DBRowGeneratorEM  generator_EM(col_types, bn);
-      gum::learning::DBRowGenerator&   gen_EM = generator_EM;   // fix for g++-4.8
-      gum::learning::DBRowGeneratorSet genset_EM;
-      genset_EM.insertGenerator(gen_EM);
-      gum::learning::DBRowGeneratorParser parser_EM(database.handler(), genset_EM);
-      gum::learning::ParamEstimatorML     param_estimator_EM(parser_EM, extern_prior, intern_prior);
-
-      gum::learning::DAG2BNLearner learner;
-
-      gum::DAG dag;
-      for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
-        dag.addNodeWithId(gum::NodeId(i));
-      }
-      dag.addArc(gum::NodeId(1), gum::NodeId(0));
-      dag.addArc(gum::NodeId(2), gum::NodeId(1));
-      dag.addArc(gum::NodeId(3), gum::NodeId(2));
-
-      learner.setMinEpsilonRate(1e-3);
-      learner.setNoise(0.15);
-      bool ok;
-      for (int i = 0; i < 10; i++) {
-        ok         = true;
-        auto bn1   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, dag);
-        auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
-                         .sumIn(gum::VariableSet({&bn1.variableFromName("B")}));
-        if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6) && (margB.max() > 0.5)
-            && (margB.max() < 0.6))
-          break;
-        ok = false;
-      }
-      CHECK(ok);
-
-      gum::BayesNet< double > xbn  = bn;
-      auto&                   cpt0 = xbn.cpt(0);
-      cpt0.fillWith(std::vector(cpt0.domainSize(), 0.0));
-      auto& cpt2 = xbn.cpt(2);
-      cpt2.fillWith(std::vector(cpt2.domainSize(), 0.0));
-      for (int i = 0; i < 5; i++) {
-        ok         = true;
-        auto bn2   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, xbn);
-        auto margB = (bn2.cpt("D") * bn2.cpt("C") * bn2.cpt("B"))
-                         .sumIn(gum::VariableSet({&bn2.variableFromName("B")}));
-        if ((bn2.cpt("D").max() < 0.8) && (bn2.cpt("D").max() > 0.6) && (margB.max() > 0.5)
-            && (margB.max() < 0.6))
-          break;
-        ok = false;
-      }
-      CHECK(ok);
-    }
   };
 
-  GUM_TEST_ACTIF(1)
-  GUM_TEST_ACTIF(EM)
+  GUM_TEST(1) {
+    // create the translator set
+    gum::LabelizedVariable var("X1", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    var.addLabel("2");
+
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss;
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    // create the database
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row0{"0", "1", "0", "2", "1", "1"};
+    std::vector< std::string >   row1{"1", "2", "0", "1", "2", "2"};
+    std::vector< std::string >   row2{"2", "1", "0", "1", "1", "0"};
+    std::vector< std::string >   row3{"1", "0", "0", "0", "0", "0"};
+    std::vector< std::string >   row4{"0", "0", "0", "1", "1", "1"};
+    for (int i = 0; i < 1000; ++i)
+      database.insertRow(row0);
+    for (int i = 0; i < 50; ++i)
+      database.insertRow(row1);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row2);
+    for (int i = 0; i < 75; ++i)
+      database.insertRow(row3);
+    for (int i = 0; i < 200; ++i)
+      database.insertRow(row4);
+
+    // create the parser
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::SmoothingPrior       extern_prior(database);
+    gum::learning::NoPrior              intern_prior(database);
+
+    gum::learning::ParamEstimatorML param_estimator(parser, extern_prior, intern_prior);
+
+    gum::learning::DAG2BNLearner learner;
+
+    gum::DAG dag;
+    for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
+      dag.addNodeWithId(gum::NodeId(i));
+    }
+    dag.addArc(0, 1);
+    dag.addArc(2, 0);
+
+    auto bn1 = learner.createBN(param_estimator, dag);
+
+    auto                  v2  = _getProba_(bn1, 2);
+    std::vector< double > xv2 = _normalize_({1401, 1, 1});
+    CHECK_EQ(v2, xv2);
+
+    auto                  v02  = _getProba_(bn1, 0);
+    std::vector< double > xv02 = _xnormalize_({1201, 126, 76, 1, 1, 1, 1, 1, 1});
+    CHECK_EQ(v02, xv02);
+  }
+
+  GUM_TEST(EM) {
+    gum::LabelizedVariable var("x", "", 0);
+    var.addLabel("0");
+    var.addLabel("1");
+    gum::learning::DBTranslatorSet trans_set;
+    {
+      const std::vector< std::string >              miss{"N/A", "?"};
+      gum::learning::DBTranslator4LabelizedVariable translator(var, miss);
+      std::vector< std::string >                    names{"A", "B", "C", "D"};
+
+      for (auto i = std::size_t(0); i < names.size(); ++i) {
+        translator.setVariableName(names[i]);
+        trans_set.insertTranslator(translator, i);
+      }
+    }
+
+    gum::learning::DatabaseTable database(trans_set);
+    std::vector< std::string >   row1{"0", "1", "1", "0"};
+    std::vector< std::string >   row2{"0", "?", "0", "1"};
+    std::vector< std::string >   row3{"1", "?", "?", "0"};
+    std::vector< std::string >   row4{"?", "?", "1", "0"};
+    std::vector< std::string >   row5{"?", "0", "?", "?"};
+    for (int i = 0; i < 100; ++i) {
+      database.insertRow(row1);
+      database.insertRow(row2);
+      database.insertRow(row3);
+      database.insertRow(row4);
+      database.insertRow(row5);
+    }
+
+    const std::vector< gum::learning::DBTranslatedValueType > col_types{
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE};
+
+    auto bn = gum::BayesNet< double >::fastPrototype("A;B;C;D");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.3, 0.7});
+    bn.cpt("C").fillWith({0.3, 0.7});
+    bn.cpt("D").fillWith({0.3, 0.7});
+
+    // bugfix for parallel execution of VariableElimination
+    {
+      const gum::DAG& dag = bn.internalDag();
+      for (const auto node: dag) {
+        dag.parents(node);
+        dag.children(node);
+      }
+    }
+
+    // create the parser
+    gum::learning::DBRowGenerator4CompleteRows generator_id(col_types);
+    gum::learning::DBRowGeneratorSet           genset_id;
+    genset_id.insertGenerator(generator_id);
+    gum::learning::DBRowGeneratorParser parser_id(database.handler(), genset_id);
+
+    gum::learning::SmoothingPrior   extern_prior(database);
+    gum::learning::NoPrior          intern_prior(database);
+    gum::learning::ParamEstimatorML param_estimator_id(parser_id, extern_prior, intern_prior);
+
+    gum::learning::DBRowGeneratorEM  generator_EM(col_types, bn);
+    gum::learning::DBRowGenerator&   gen_EM = generator_EM;   // fix for g++-4.8
+    gum::learning::DBRowGeneratorSet genset_EM;
+    genset_EM.insertGenerator(gen_EM);
+    gum::learning::DBRowGeneratorParser parser_EM(database.handler(), genset_EM);
+    gum::learning::ParamEstimatorML     param_estimator_EM(parser_EM, extern_prior, intern_prior);
+
+    gum::learning::DAG2BNLearner learner;
+
+    gum::DAG dag;
+    for (auto i = std::size_t(0); i < database.nbVariables(); ++i) {
+      dag.addNodeWithId(gum::NodeId(i));
+    }
+    dag.addArc(gum::NodeId(1), gum::NodeId(0));
+    dag.addArc(gum::NodeId(2), gum::NodeId(1));
+    dag.addArc(gum::NodeId(3), gum::NodeId(2));
+
+    learner.setMinEpsilonRate(1e-3);
+    learner.setNoise(0.15);
+    bool ok;
+    for (int i = 0; i < 10; i++) {
+      ok         = true;
+      auto bn1   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, dag);
+      auto margB = (bn1.cpt("D") * bn1.cpt("C") * bn1.cpt("B"))
+                       .sumIn(gum::VariableSet({&bn1.variableFromName("B")}));
+      if ((bn1.cpt("D").max() < 0.8) && (bn1.cpt("D").max() > 0.6) && (margB.max() > 0.5)
+          && (margB.max() < 0.6))
+        break;
+      ok = false;
+    }
+    CHECK(ok);
+
+    gum::BayesNet< double > xbn  = bn;
+    auto&                   cpt0 = xbn.cpt(0);
+    cpt0.fillWith(std::vector(cpt0.domainSize(), 0.0));
+    auto& cpt2 = xbn.cpt(2);
+    cpt2.fillWith(std::vector(cpt2.domainSize(), 0.0));
+    for (int i = 0; i < 5; i++) {
+      ok         = true;
+      auto bn2   = learner.createBNwithEM(param_estimator_id, param_estimator_EM, xbn);
+      auto margB = (bn2.cpt("D") * bn2.cpt("C") * bn2.cpt("B"))
+                       .sumIn(gum::VariableSet({&bn2.variableFromName("B")}));
+      if ((bn2.cpt("D").max() < 0.8) && (bn2.cpt("D").max() > 0.6) && (margB.max() > 0.5)
+          && (margB.max() < 0.6))
+        break;
+      ok = false;
+    }
+    CHECK(ok);
+  }
 
 }   // namespace gum_tests

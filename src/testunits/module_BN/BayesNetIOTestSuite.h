@@ -53,64 +53,61 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BayesNetIO
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct BayesNetIOTestSuite {
     public:
-    static void testNetImportExport() {
-      std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");
-      std::string filenet = GET_RESSOURCES_PATH("net/alarm.net");
-
-      gum::BayesNet< double >  bifbn;
-      gum::BIFReader< double > bifreader(&bifbn, filebif);
-      bifreader.proceed();
-
-      gum::BayesNet< double >  netbn;
-      gum::NetReader< double > netreader(&netbn, filenet);
-      netreader.proceed();
-
-      CHECK_EQ(netbn.size(), bifbn.size());
-      CHECK_EQ(netbn.sizeArcs(), bifbn.sizeArcs());
-      CHECK_EQ(netbn.toString(), bifbn.toString());
-      for (const auto n: bifbn.nodes()) {
-        const gum::Tensor< double > p(bifbn.cpt(n));
-        p.fillWith(netbn.cpt(bifbn.variable(n).name()));
-        double err = (bifbn.cpt(n) - p).abs().max();
-        CHECK_LE(err, 1e-6);
-      }
-
-      gum::NetWriter< double > netwriter;
-      std::string              netwritefile = GET_RESSOURCES_PATH("outputs/alarm_writer.net");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(netwriter.write(netwritefile, netbn));
-
-      gum::BayesNet< double >  netbn2;
-      gum::NetReader< double > netreader2(&netbn2, netwritefile);
-      netreader2.proceed();
-
-      CHECK_EQ(netbn.size(), netbn2.size());
-      CHECK_EQ(netbn.sizeArcs(), netbn2.sizeArcs());
-      CHECK_EQ(netbn.toString(), netbn2.toString());
-      for (const auto n: netbn2.nodes()) {
-        const gum::Tensor< double > p(netbn2.cpt(n));
-        p.fillWith(netbn.cpt(netbn2.variable(n).name()));
-        double err = (netbn2.cpt(n) - p).abs().max();
-        CHECK_LT(err, 1e-6);
-      }
-
-      CHECK_EQ(bifbn.size(), netbn2.size());
-      CHECK_EQ(bifbn.sizeArcs(), netbn2.sizeArcs());
-      CHECK_EQ(bifbn.toString(), netbn2.toString());
-      for (const auto n: netbn2.nodes()) {
-        const gum::Tensor< double > p(netbn2.cpt(n));
-        p.fillWith(bifbn.cpt(netbn2.variable(n).name()));
-        double err = (netbn2.cpt(n) - p).abs().max();
-        CHECK_LT(err, 1e-6);
-      }
-    }   // namespace gum_tests
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(NetImportExport)
+  GUM_TEST(NetImportExport) {
+    std::string filebif = GET_RESSOURCES_PATH("bif/alarm.bif");
+    std::string filenet = GET_RESSOURCES_PATH("net/alarm.net");
+
+    gum::BayesNet< double >  bifbn;
+    gum::BIFReader< double > bifreader(&bifbn, filebif);
+    bifreader.proceed();
+
+    gum::BayesNet< double >  netbn;
+    gum::NetReader< double > netreader(&netbn, filenet);
+    netreader.proceed();
+
+    CHECK_EQ(netbn.size(), bifbn.size());
+    CHECK_EQ(netbn.sizeArcs(), bifbn.sizeArcs());
+    CHECK_EQ(netbn.toString(), bifbn.toString());
+    for (const auto n: bifbn.nodes()) {
+      const gum::Tensor< double > p(bifbn.cpt(n));
+      p.fillWith(netbn.cpt(bifbn.variable(n).name()));
+      double err = (bifbn.cpt(n) - p).abs().max();
+      CHECK_LE(err, 1e-6);
+    }
+
+    gum::NetWriter< double > netwriter;
+    std::string              netwritefile = GET_RESSOURCES_PATH("outputs/alarm_writer.net");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(netwriter.write(netwritefile, netbn));
+
+    gum::BayesNet< double >  netbn2;
+    gum::NetReader< double > netreader2(&netbn2, netwritefile);
+    netreader2.proceed();
+
+    CHECK_EQ(netbn.size(), netbn2.size());
+    CHECK_EQ(netbn.sizeArcs(), netbn2.sizeArcs());
+    CHECK_EQ(netbn.toString(), netbn2.toString());
+    for (const auto n: netbn2.nodes()) {
+      const gum::Tensor< double > p(netbn2.cpt(n));
+      p.fillWith(netbn.cpt(netbn2.variable(n).name()));
+      double err = (netbn2.cpt(n) - p).abs().max();
+      CHECK_LT(err, 1e-6);
+    }
+
+    CHECK_EQ(bifbn.size(), netbn2.size());
+    CHECK_EQ(bifbn.sizeArcs(), netbn2.sizeArcs());
+    CHECK_EQ(bifbn.toString(), netbn2.toString());
+    for (const auto n: netbn2.nodes()) {
+      const gum::Tensor< double > p(netbn2.cpt(n));
+      p.fillWith(bifbn.cpt(netbn2.variable(n).name()));
+      double err = (netbn2.cpt(n) - p).abs().max();
+      CHECK_LT(err, 1e-6);
+    }
+  }
 }   // namespace gum_tests

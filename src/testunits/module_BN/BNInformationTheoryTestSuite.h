@@ -55,297 +55,12 @@
 #include "testunits/gumtest/AgrumTestSuite.h"
 #include "testunits/gumtest/utils.h"
 
-#define GUM_CURRENT_SUITE  BNInformationTheory
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
   struct BNInformationTheoryTestSuite {
     public:
-    static void testConstructor1() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
 
-      gum::LazyPropagation ie(&bn);
 
-      gum::NodeSet X   = bn.nodeset({"A", "C"});
-      gum::NodeSet Y   = bn.nodeset({"B"});
-      auto         it  = gum::InformationTheory(ie, X, Y);
-      auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      CHECK_EQ(it.entropyX(), it2.entropyX());
-      CHECK_EQ(it.entropyY(), it2.entropyY());
-    }
-
-    static void testCheckSimpleBN() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
-      bn.cpt("A").fillWith({0.8, 0.2});
-      bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
-
-      gum::LazyPropagation ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A"}, {"B"});
-
-      CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
-      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
-      CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
-      CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
-      CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
-    }
-
-    static void testCheckSimpleBNwithEvidence() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
-      bn.cpt("C").fillWith({0.5, 0.5});
-      bn.cpt("A").fillWith(
-          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
-      bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
-
-      gum::LazyPropagation ie(&bn);
-      ie.addEvidence("C", 0);
-      {
-        auto it = gum::InformationTheory(ie, {"A"}, {"B"});
-
-        CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
-      }
-      ie.chgEvidence("C", 1);
-      {
-        auto it = gum::InformationTheory(ie, {"A"}, {"B"});
-
-        CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
-      }
-    }
-
-    static void testShafShenCheckSimpleBNwithEvidence() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
-      bn.cpt("C").fillWith({0.5, 0.5});
-      bn.cpt("A").fillWith(
-          {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
-      bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
-
-      gum::ShaferShenoyInference ie(&bn);
-      ie.addEvidence("C", 0);
-      {
-        auto it = gum::InformationTheory(ie, {"A"}, {"B"});
-
-        CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
-      }
-      ie.chgEvidence("C", 1);
-      {
-        auto it = gum::InformationTheory(ie, {"A"}, {"B"});
-
-        CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
-        CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
-      }
-    }
-
-    static void testCheckConsistency() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-
-      gum::LazyPropagation ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theoryXY(it);
-    }
-
-    static void testShafShenCheckConsistency() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
-
-      gum::ShaferShenoyInference ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
-      check_this_information_theoryXY(it);
-    }
-
-    static void testCheckConsistency3points() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
-
-      gum::LazyPropagation ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
-      check_this_information_theoryXY(it);
-      check_this_information_theoryXYZ(it);
-    }
-
-    static void testShafShenCheckConsistency3points() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
-
-      gum::ShaferShenoyInference ie(&bn);
-
-      auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
-      check_this_information_theoryXY(it);
-      check_this_information_theoryXYZ(it);
-    }
-
-    static void testCheckCrossInferenceConsistency() {
-      std::string             file = GET_RESSOURCES_PATH("bif/alarm.bif");
-      gum::BayesNet< double > bn;
-      gum::BIFReader          reader(&bn, file);
-
-      auto lazy = gum::LazyPropagation(&bn);
-      auto shaf = gum::ShaferShenoyInference(&bn);
-      for (const auto& arc: bn.arcs()) {
-        gum::InformationTheory itlazy(lazy, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
-        gum::InformationTheory itshaf(shaf, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
-        CHECK_LT(fabs((itlazy.mutualInformationXY()) - (itshaf.mutualInformationXY())),
-                 GUM_VERY_SMALL_ERROR);
-      }
-    }
-
-    static void testcheckMutalInformationOnArc() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Tensor< double > joint;
-      for (auto n: bn.nodes())
-        joint *= bn.cpt(n);
-
-      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::VariableSet;
-        const auto vx  = &bn.variable(x);
-        const auto vy  = &bn.variable(y);
-        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
-        return hx + hy - hxy;
-      };
-      auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::VariableSet;
-        const auto vx = &bn.variable(x);
-        return joint.sumIn(VarSet{vx}).entropy();
-      };
-
-      gum::LazyPropagation lazy(&bn);
-
-      for (const auto& node: bn.nodes()) {
-        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
-                                                joint.sumIn({&bn.variable(node)}));
-      }
-      for (const auto& arc: bn.arcs()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
-        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
-                 GUM_VERY_SMALL_ERROR);
-      }
-      for (const auto& node: bn.nodes()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
-        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
-      }
-    }
-
-    static void testcheckMutalInformationOnArcWithEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Tensor< double > joint;
-      for (auto n: bn.nodes())
-        joint *= bn.cpt(n);
-      gum::Tensor< double > evc;
-      evc.add(bn.variable("C"));
-      evc.fillWith({0, 1, 0, 0});
-      joint *= evc;
-      joint.normalize();
-
-      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::VariableSet;
-        const auto vx  = &bn.variable(x);
-        const auto vy  = &bn.variable(y);
-        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
-        return hx + hy - hxy;
-      };
-      auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::VariableSet;
-        const auto vx = &bn.variable(x);
-        return joint.sumIn(VarSet{vx}).entropy();
-      };
-
-      gum::LazyPropagation lazy(&bn);
-      lazy.addEvidence(evc);
-
-      for (const auto& node: bn.nodes()) {
-        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
-                                                joint.sumIn({&bn.variable(node)}));
-      }
-      for (const auto& node: bn.nodes()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
-        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
-      }
-      for (const auto& arc: bn.arcs()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
-        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
-                 GUM_VERY_SMALL_ERROR);
-      }
-    }
-
-    static void testcheckMutalInformationOnArcWithSoftEvidence() {
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
-      gum::Tensor< double > joint;
-      for (auto n: bn.nodes())
-        joint *= bn.cpt(n);
-      gum::Tensor< double > evc;
-      evc.add(bn.variable("D"));
-      evc.fillWith({0, 1, 1, 0});
-      joint *= evc;
-      joint.normalize();
-
-      auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
-        using VarSet   = gum::VariableSet;
-        const auto vx  = &bn.variable(x);
-        const auto vy  = &bn.variable(y);
-        const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
-        const auto hx  = joint.sumIn(VarSet{vx}).entropy();
-        const auto hy  = joint.sumIn(VarSet{vy}).entropy();
-        return hx + hy - hxy;
-      };
-      auto h = [&](gum::NodeId x) -> double {
-        using VarSet  = gum::VariableSet;
-        const auto vx = &bn.variable(x);
-        return joint.sumIn(VarSet{vx}).entropy();
-      };
-
-      gum::LazyPropagation lazy(&bn);
-      lazy.addEvidence(evc);
-
-      for (const auto& node: bn.nodes()) {
-        GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
-                                                joint.sumIn({&bn.variable(node)}));
-      }
-      for (const auto& node: bn.nodes()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{node},
-                                                                  gum::NodeSet{});
-        CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
-      }
-      for (const auto& arc: bn.arcs()) {
-        gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
-                                                                  gum::NodeSet{arc.first()},
-                                                                  gum::NodeSet{arc.second()});
-        CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
-                 GUM_VERY_SMALL_ERROR);
-      }
-    }
-
-    private:
+    protected:
     template < class IT >
     static void check_this_information_theoryXY(IT& it) {
       // H(X|Y)=H(X,Y)-H(Y)
@@ -390,16 +105,287 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(Constructor1)
-  GUM_TEST_ACTIF(CheckSimpleBN)
-  GUM_TEST_ACTIF(CheckSimpleBNwithEvidence)
-  GUM_TEST_ACTIF(ShafShenCheckSimpleBNwithEvidence)
-  GUM_TEST_ACTIF(CheckConsistency)
-  GUM_TEST_ACTIF(ShafShenCheckConsistency)
-  GUM_TEST_ACTIF(CheckConsistency3points)
-  GUM_TEST_ACTIF(ShafShenCheckConsistency3points)
-  GUM_TEST_ACTIF(CheckCrossInferenceConsistency)
-  GUM_TEST_ACTIF(checkMutalInformationOnArc)
-  GUM_TEST_ACTIF(checkMutalInformationOnArcWithEvidence)
-  GUM_TEST_ACTIF(checkMutalInformationOnArcWithSoftEvidence)
+  GUM_TEST(Constructor1) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+
+    gum::LazyPropagation ie(&bn);
+
+    gum::NodeSet X   = bn.nodeset({"A", "C"});
+    gum::NodeSet Y   = bn.nodeset({"B"});
+    auto         it  = gum::InformationTheory(ie, X, Y);
+    auto         it2 = gum::InformationTheory(ie, {"A", "C"}, {"B"});
+    CHECK_EQ(it.entropyX(), it2.entropyX());
+    CHECK_EQ(it.entropyY(), it2.entropyY());
+  }
+
+  GUM_TEST(CheckSimpleBN) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    bn.cpt("A").fillWith({0.8, 0.2});
+    bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
+
+    gum::LazyPropagation ie(&bn);
+
+    auto it = gum::InformationTheory(ie, {"A"}, {"B"});
+
+    CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+    CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+    CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+    CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+    CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
+  }
+
+  GUM_TEST(CheckSimpleBNwithEvidence) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
+    bn.cpt("C").fillWith({0.5, 0.5});
+    bn.cpt("A").fillWith(
+        {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+    bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
+
+    gum::LazyPropagation ie(&bn);
+    ie.addEvidence("C", 0);
+    {
+      auto it = gum::InformationTheory(ie, {"A"}, {"B"});
+
+      CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
+    }
+    ie.chgEvidence("C", 1);
+    {
+      auto it = gum::InformationTheory(ie, {"A"}, {"B"});
+
+      CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(ShafShenCheckSimpleBNwithEvidence) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("C->A->B");
+    bn.cpt("C").fillWith({0.5, 0.5});
+    bn.cpt("A").fillWith(
+        {0.8, 0.2, 0.2, 0.8});   // so that bn|ev={"C"=0} is the same as the last test
+    bn.cpt("B").fillWith({0.1, 0.9, 0.3, 0.7});
+
+    gum::ShaferShenoyInference ie(&bn);
+    ie.addEvidence("C", 0);
+    {
+      auto it = gum::InformationTheory(ie, {"A"}, {"B"});
+
+      CHECK_LT(fabs((it.entropyXY()) - (1.27338275)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyY()) - (0.58423881)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (0.68914394)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyYgivenX()) - (0.551455)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (0.03278416)), GUM_SMALL_ERROR);
+    }
+    ie.chgEvidence("C", 1);
+    {
+      auto it = gum::InformationTheory(ie, {"A"}, {"B"});
+
+      CHECK_LT(fabs((it.entropyXY()) - (1.52075993298977)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyX()) - (0.72192809)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyY()) - (0.826746372492618)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyXgivenY()) - (0.694013560497155)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.entropyYgivenX()) - (0.798832)), GUM_SMALL_ERROR);
+      CHECK_LT(fabs((it.mutualInformationXY()) - (0.0279145343902076)), GUM_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(CheckConsistency) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+
+    gum::LazyPropagation ie(&bn);
+
+    auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
+    check_this_information_theoryXY(it);
+  }
+
+  GUM_TEST(ShafShenCheckConsistency) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+
+    gum::ShaferShenoyInference ie(&bn);
+
+    auto it = gum::InformationTheory(ie, {"A", "C"}, {"B"});
+    check_this_information_theoryXY(it);
+  }
+
+  GUM_TEST(CheckConsistency3points) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
+
+    gum::LazyPropagation ie(&bn);
+
+    auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+    check_this_information_theoryXY(it);
+    check_this_information_theoryXYZ(it);
+  }
+
+  GUM_TEST(ShafShenCheckConsistency3points) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D->E");
+
+    gum::ShaferShenoyInference ie(&bn);
+
+    auto it = gum::InformationTheory(ie, {"A", "E"}, {"B"}, {"C", "D"});
+    check_this_information_theoryXY(it);
+    check_this_information_theoryXYZ(it);
+  }
+
+  GUM_TEST(CheckCrossInferenceConsistency) {
+    std::string             file = GET_RESSOURCES_PATH("bif/alarm.bif");
+    gum::BayesNet< double > bn;
+    gum::BIFReader          reader(&bn, file);
+
+    auto lazy = gum::LazyPropagation(&bn);
+    auto shaf = gum::ShaferShenoyInference(&bn);
+    for (const auto& arc: bn.arcs()) {
+      gum::InformationTheory itlazy(lazy, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
+      gum::InformationTheory itshaf(shaf, gum::NodeSet{arc.first()}, gum::NodeSet{arc.second()});
+      CHECK_LT(fabs((itlazy.mutualInformationXY()) - (itshaf.mutualInformationXY())),
+               GUM_VERY_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(checkMutalInformationOnArc) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+    gum::Tensor< double > joint;
+    for (auto n: bn.nodes())
+      joint *= bn.cpt(n);
+
+    auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+      using VarSet   = gum::VariableSet;
+      const auto vx  = &bn.variable(x);
+      const auto vy  = &bn.variable(y);
+      const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+      const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+      const auto hy  = joint.sumIn(VarSet{vy}).entropy();
+      return hx + hy - hxy;
+    };
+    auto h = [&](gum::NodeId x) -> double {
+      using VarSet  = gum::VariableSet;
+      const auto vx = &bn.variable(x);
+      return joint.sumIn(VarSet{vx}).entropy();
+    };
+
+    gum::LazyPropagation lazy(&bn);
+
+    for (const auto& node: bn.nodes()) {
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                              joint.sumIn({&bn.variable(node)}));
+    }
+    for (const auto& arc: bn.arcs()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{arc.first()},
+                                                                gum::NodeSet{arc.second()});
+      CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+               GUM_VERY_SMALL_ERROR);
+    }
+    for (const auto& node: bn.nodes()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{node},
+                                                                gum::NodeSet{});
+      CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(checkMutalInformationOnArcWithEvidence) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+    gum::Tensor< double > joint;
+    for (auto n: bn.nodes())
+      joint *= bn.cpt(n);
+    gum::Tensor< double > evc;
+    evc.add(bn.variable("C"));
+    evc.fillWith({0, 1, 0, 0});
+    joint *= evc;
+    joint.normalize();
+
+    auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+      using VarSet   = gum::VariableSet;
+      const auto vx  = &bn.variable(x);
+      const auto vy  = &bn.variable(y);
+      const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+      const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+      const auto hy  = joint.sumIn(VarSet{vy}).entropy();
+      return hx + hy - hxy;
+    };
+    auto h = [&](gum::NodeId x) -> double {
+      using VarSet  = gum::VariableSet;
+      const auto vx = &bn.variable(x);
+      return joint.sumIn(VarSet{vx}).entropy();
+    };
+
+    gum::LazyPropagation lazy(&bn);
+    lazy.addEvidence(evc);
+
+    for (const auto& node: bn.nodes()) {
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                              joint.sumIn({&bn.variable(node)}));
+    }
+    for (const auto& node: bn.nodes()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{node},
+                                                                gum::NodeSet{});
+      CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
+    }
+    for (const auto& arc: bn.arcs()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{arc.first()},
+                                                                gum::NodeSet{arc.second()});
+      CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+               GUM_VERY_SMALL_ERROR);
+    }
+  }
+
+  GUM_TEST(checkMutalInformationOnArcWithSoftEvidence) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C->D;C->E;D->F;C<-G->H->E", 4);
+    gum::Tensor< double > joint;
+    for (auto n: bn.nodes())
+      joint *= bn.cpt(n);
+    gum::Tensor< double > evc;
+    evc.add(bn.variable("D"));
+    evc.fillWith({0, 1, 1, 0});
+    joint *= evc;
+    joint.normalize();
+
+    auto mi = [&](gum::NodeId x, gum::NodeId y) -> double {
+      using VarSet   = gum::VariableSet;
+      const auto vx  = &bn.variable(x);
+      const auto vy  = &bn.variable(y);
+      const auto hxy = joint.sumIn(VarSet{vx, vy}).entropy();
+      const auto hx  = joint.sumIn(VarSet{vx}).entropy();
+      const auto hy  = joint.sumIn(VarSet{vy}).entropy();
+      return hx + hy - hxy;
+    };
+    auto h = [&](gum::NodeId x) -> double {
+      using VarSet  = gum::VariableSet;
+      const auto vx = &bn.variable(x);
+      return joint.sumIn(VarSet{vx}).entropy();
+    };
+
+    gum::LazyPropagation lazy(&bn);
+    lazy.addEvidence(evc);
+
+    for (const auto& node: bn.nodes()) {
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(lazy.posterior(node),
+                                              joint.sumIn({&bn.variable(node)}));
+    }
+    for (const auto& node: bn.nodes()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{node},
+                                                                gum::NodeSet{});
+      CHECK_LT(fabs((h(node)) - (it.entropyX())), GUM_VERY_SMALL_ERROR);
+    }
+    for (const auto& arc: bn.arcs()) {
+      gum::InformationTheory< gum::LazyPropagation, double > it(lazy,
+                                                                gum::NodeSet{arc.first()},
+                                                                gum::NodeSet{arc.second()});
+      CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
+               GUM_VERY_SMALL_ERROR);
+    }
+  }
 }   // namespace gum_tests

@@ -50,26 +50,16 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  InterfaceGraph
-#define GUM_CURRENT_MODULE PRM
-
 namespace gum_tests {
 
   struct InterfaceGraphTestSuite {
-    private:
+    protected:
     gum::prm::PRM< double >* _prm_;
     std::string              source_dir;
     std::string              ressource_dir;
     std::string              printers;
 
     public:
-    static void testConstructorDestructor() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
     InterfaceGraphTestSuite() {
       gum::prm::o3prm::O3prmReader< double > reader;
 
@@ -80,178 +70,22 @@ namespace gum_tests {
 
     ~InterfaceGraphTestSuite() { delete _prm_; }
 
-    static void testMicroTopologie() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Checking existing nodes
-      CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
-      CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
-      CHECK(ig->graph().existsNode(ig->id(m.get("p"))));
-      CHECK(ig->graph().existsNode(ig->id(m.get("c"))));
-      CHECK(ig->graph().existsNode(ig->id(m.get("e"))));
-      CHECK_EQ(ig->graph().size(), static_cast< gum::Size >(5));
-      // Checking existing edges
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("p"))));
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("c"))));
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))));
-      CHECK(ig->graph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))));
-      CHECK_EQ(ig->graph().sizeEdges(), static_cast< gum::Size >(4));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    static void testMicroLabelsOnNodes() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Testing power supply
-      CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
-      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("r"))).l->l);
-      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
-      CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
-      // Testing rooms
-      CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
-      CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
-      CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
-      // Testing printers
-      CHECK_EQ(ig->size(ig->node(ig->id(m.get("p"))).l), static_cast< gum::Size >(1));
-      CHECK_NE(ig->node(ig->id(m.get("p"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    static void testMicroLabelsOnEdges() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Test difference
-      CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l)
-            != (ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l));
-      CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l)
-            != (ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l));
-      CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l)
-            != (ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    std::string getPrinter(int i) const {
+    [[nodiscard]] static std::string getPrinter(int i) {
       std::stringstream sBuff;
       sBuff << "printers[" << i << "]";
       return sBuff.str();
     }
 
-    std::string getComputer(int i) const {
+    [[nodiscard]] static std::string getComputer(int i) {
       std::stringstream sBuff;
       sBuff << "computers[" << i << "]";
       return sBuff.str();
     }
 
-    static void testSmallTopologie() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Checking existing nodes
-      int node_count = 0;
-      CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
-      CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
-      node_count += 2;
-
-      for (int i = 0; i < 2; ++i, ++node_count) {
-        CHECK(ig->graph().existsNode(ig->id(m.get(getPrinter(i)))));
-      }
-
-      CHECK(ig->graph().existsNode(ig->id(m.get("another_printer"))));
-
-      ++node_count;
-
-      for (int i = 0; i < 4; ++i, ++node_count) {
-        CHECK(ig->graph().existsNode(ig->id(m.get(getComputer(i)))));
-      }
-
-      CHECK(ig->graph().existsNode(ig->id(m.get("another_computer"))));
-
-      ++node_count;
-      CHECK_EQ(ig->graph().size(), (gum::Size)node_count);
-      // Checking existing edges from pow
-      int edge_count = 0;
-
-      for (int i = 0; i < 2; ++i, ++edge_count) {
-        CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getPrinter(i)))));
-      }
-
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))));
-
-      ++edge_count;
-
-      for (int i = 0; i < 4; ++i, ++edge_count) {
-        CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getComputer(i)))));
-      }
-
-      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))));
-
-      ++edge_count;
-      // Checking existing edges from printers
-
-      for (int i = 0; i < 2; ++i, ++edge_count) {
-        for (int j = 0; j < 4; ++j, ++edge_count) {
-          CHECK(
-              ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
-        }
-
-        CHECK(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))),
-                                     ig->id(m.get("another_computer"))));
-      }
-
-      for (int i = 0; i < 4; ++i, ++edge_count) {
-        CHECK(ig->graph().existsEdge(ig->id(m.get("another_printer")),
-                                     ig->id(m.get(getComputer(i)))));
-      }
-
-      CHECK(ig->graph().existsEdge(ig->id(m.get("another_printer")),
-                                   ig->id(m.get("another_computer"))));
-
-      ++edge_count;
-      CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    static void testSmallLabelsOnNodes() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Testing each labels size (the number of nodes with the given label)
-      CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
-      CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
-      CHECK((ig->size(ig->node(ig->id(m.get("another_printer"))).l))
-            == (static_cast< gum::Size >(3)));
-      CHECK((ig->size(ig->node(ig->id(m.get("another_computer"))).l))
-            == (static_cast< gum::Size >(5)));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    static void testSmallLabelsOnEdges() {
-      gum::prm::gspan::InterfaceGraph< double >* ig = 0;
-      gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
-      // Test difference
-      int edge_count = 0;
-      CHECK((ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))).l))
-            == (static_cast< gum::Size >(3)));
-      edge_count += 3;
-      CHECK((ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))).l))
-            == (static_cast< gum::Size >(5)));
-      edge_count += 5;
-      CHECK((ig->size(
-                ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l))
-            == (static_cast< gum::Size >(15)));
-      edge_count += 15;
-      CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
-    }
-
-    void generateLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
-                       size_t                                                        layer_count) {
+    static void generateLayer(std::vector< gum::prm::LayerGenerator< double >::LayerData >& v,
+                              const size_t layer_count) {
       for (size_t lvl = 0; lvl < layer_count; ++lvl) {
-        v.push_back(gum::prm::LayerGenerator< double >::LayerData());
+        v.emplace_back();
         v[lvl].a              = 30;
         v[lvl].g              = 2;
         v[lvl].c              = 1;
@@ -260,32 +94,185 @@ namespace gum_tests {
         v[lvl].outter_density = 0.05f;
       }
     }
-
-    static void testWithLayerGeneration() {
-      std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
-      generateLayer(layers, 10);
-      gum::prm::LayerGenerator< double > generator;
-      generator.setLayers(layers);
-      generator.setDomainSize(2);
-      generator.setMaxParents(5);
-      gum::prm::PRM< double >*       prm = generator.generate();
-      gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
-      gum::prm::gspan::InterfaceGraph< double >* g = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(g = new gum::prm::gspan::InterfaceGraph< double >(sys));
-
-      if (g != nullptr) delete g;
-
-      delete prm;
-    }
   };
 
-  GUM_TEST_ACTIF(ConstructorDestructor)
-  GUM_TEST_ACTIF(MicroTopologie)
-  GUM_TEST_ACTIF(MicroLabelsOnNodes)
-  GUM_TEST_ACTIF(MicroLabelsOnEdges)
-  GUM_TEST_ACTIF(SmallTopologie)
-  GUM_TEST_ACTIF(SmallLabelsOnNodes)
-  GUM_TEST_ACTIF(SmallLabelsOnEdges)
-  GUM_TEST_ACTIF(WithLayerGeneration)
+  GUM_TEST(ConstructorDestructor) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        ig = new gum::prm::gspan::InterfaceGraph< double >(_prm_->getSystem("microSys")));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(MicroTopologie) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Checking existing nodes
+    CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
+    CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
+    CHECK(ig->graph().existsNode(ig->id(m.get("p"))));
+    CHECK(ig->graph().existsNode(ig->id(m.get("c"))));
+    CHECK(ig->graph().existsNode(ig->id(m.get("e"))));
+    CHECK_EQ(ig->graph().size(), static_cast< gum::Size >(5));
+    // Checking existing edges
+    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("p"))));
+    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("c"))));
+    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("e"))));
+    CHECK(ig->graph().existsEdge(ig->id(m.get("p")), ig->id(m.get("c"))));
+    CHECK_EQ(ig->graph().sizeEdges(), static_cast< gum::Size >(4));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(MicroLabelsOnNodes) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Testing power supply
+    CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
+    CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("r"))).l->l);
+    CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
+    CHECK_NE(ig->node(ig->id(m.get("pow"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+    // Testing rooms
+    CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
+    CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("p"))).l->l);
+    CHECK_NE(ig->node(ig->id(m.get("r"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+    // Testing printers
+    CHECK_EQ(ig->size(ig->node(ig->id(m.get("p"))).l), static_cast< gum::Size >(1));
+    CHECK_NE(ig->node(ig->id(m.get("p"))).l->l, ig->node(ig->id(m.get("c"))).l->l);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(MicroLabelsOnEdges) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("microSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Test difference
+    CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l)
+          != (ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l));
+    CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("p"))).l)
+          != (ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l));
+    CHECK((ig->edge(ig->id(m.get("pow")), ig->id(m.get("c"))).l)
+          != (ig->edge(ig->id(m.get("p")), ig->id(m.get("c"))).l));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(SmallTopologie) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Checking existing nodes
+    int node_count = 0;
+    CHECK(ig->graph().existsNode(ig->id(m.get("pow"))));
+    CHECK(ig->graph().existsNode(ig->id(m.get("r"))));
+    node_count += 2;
+
+    for (int i = 0; i < 2; ++i, ++node_count) {
+      CHECK(ig->graph().existsNode(ig->id(m.get(getPrinter(i)))));
+    }
+
+    CHECK(ig->graph().existsNode(ig->id(m.get("another_printer"))));
+
+    ++node_count;
+
+    for (int i = 0; i < 4; ++i, ++node_count) {
+      CHECK(ig->graph().existsNode(ig->id(m.get(getComputer(i)))));
+    }
+
+    CHECK(ig->graph().existsNode(ig->id(m.get("another_computer"))));
+
+    ++node_count;
+    CHECK_EQ(ig->graph().size(), (gum::Size)node_count);
+    // Checking existing edges from pow
+    int edge_count = 0;
+
+    for (int i = 0; i < 2; ++i, ++edge_count) {
+      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getPrinter(i)))));
+    }
+
+    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))));
+
+    ++edge_count;
+
+    for (int i = 0; i < 4; ++i, ++edge_count) {
+      CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get(getComputer(i)))));
+    }
+
+    CHECK(ig->graph().existsEdge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))));
+
+    ++edge_count;
+    // Checking existing edges from printers
+
+    for (int i = 0; i < 2; ++i, ++edge_count) {
+      for (int j = 0; j < 4; ++j, ++edge_count) {
+        CHECK(ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get(getComputer(j)))));
+      }
+
+      CHECK(
+          ig->graph().existsEdge(ig->id(m.get(getPrinter(i))), ig->id(m.get("another_computer"))));
+    }
+
+    for (int i = 0; i < 4; ++i, ++edge_count) {
+      CHECK(
+          ig->graph().existsEdge(ig->id(m.get("another_printer")), ig->id(m.get(getComputer(i)))));
+    }
+
+    CHECK(ig->graph().existsEdge(ig->id(m.get("another_printer")),
+                                 ig->id(m.get("another_computer"))));
+
+    ++edge_count;
+    CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(SmallLabelsOnNodes) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Testing each labels size (the number of nodes with the given label)
+    CHECK_EQ(ig->size(ig->node(ig->id(m.get("pow"))).l), static_cast< gum::Size >(1));
+    CHECK_EQ(ig->size(ig->node(ig->id(m.get("r"))).l), static_cast< gum::Size >(1));
+    CHECK((ig->size(ig->node(ig->id(m.get("another_printer"))).l))
+          == (static_cast< gum::Size >(3)));
+    CHECK((ig->size(ig->node(ig->id(m.get("another_computer"))).l))
+          == (static_cast< gum::Size >(5)));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(SmallLabelsOnEdges) {
+    gum::prm::gspan::InterfaceGraph< double >* ig = 0;
+    gum::prm::PRMSystem< double >&             m  = _prm_->getSystem("smallSys");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ig = new gum::prm::gspan::InterfaceGraph< double >(m));
+    // Test difference
+    int edge_count = 0;
+    CHECK((ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_printer"))).l))
+          == (static_cast< gum::Size >(3)));
+    edge_count += 3;
+    CHECK((ig->size(ig->edge(ig->id(m.get("pow")), ig->id(m.get("another_computer"))).l))
+          == (static_cast< gum::Size >(5)));
+    edge_count += 5;
+    CHECK(
+        (ig->size(ig->edge(ig->id(m.get("another_printer")), ig->id(m.get("another_computer"))).l))
+        == (static_cast< gum::Size >(15)));
+    edge_count += 15;
+    CHECK_EQ(ig->graph().sizeEdges(), (gum::Size)edge_count);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(delete ig);
+  }
+
+  GUM_TEST(WithLayerGeneration) {
+    std::vector< gum::prm::LayerGenerator< double >::LayerData > layers;
+    generateLayer(layers, 10);
+    gum::prm::LayerGenerator< double > generator;
+    generator.setLayers(layers);
+    generator.setDomainSize(2);
+    generator.setMaxParents(5);
+    gum::prm::PRM< double >*       prm = generator.generate();
+    gum::prm::PRMSystem< double >& sys = prm->getSystem((**(prm->systems().begin())).name());
+    gum::prm::gspan::InterfaceGraph< double >* g = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(g = new gum::prm::gspan::InterfaceGraph< double >(sys));
+
+    if (g != nullptr) delete g;
+
+    delete prm;
+  }
 
 } /* namespace gum_tests */

@@ -66,108 +66,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  LocalSearchWithTabuList
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct LocalSearchWithTabuListTestSuite {
     public:
-    static void test_asia() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       prior(database);
-      gum::learning::ScoreK2              score(parser, prior);
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
-                                                    gum::learning::StructuralConstraintIndegree,
-                                                    gum::learning::StructuralConstraintTabuList >
-          struct_constraint;
-
-      struct_constraint.setMaxIndegree(2);
-      struct_constraint.setTabuListSize(100);
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
-          invariable_constraints;
-
-      gum::NodeProperty< gum::NodeId > slices{std::make_pair(gum::NodeId(0), 0),
-                                              std::make_pair(gum::NodeId(1), 0)};
-      invariable_constraints.setSliceOrder(slices);
-      invariable_constraints.setDefaultSlice(1);
-
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
-
-      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-                                                   decltype(struct_constraint) >
-          selector(score, invariable_constraints, struct_constraint);
-
-      gum::learning::LocalSearchWithTabuList search;
-      search.setMaxNbDecreasingChanges(2);
-
-      try {
-        gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
-        gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(10));
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
-    static void test_asia_unconstrained() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       prior(database);
-      gum::learning::ScoreK2              score(parser, prior);
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
-                                                    gum::learning::StructuralConstraintTabuList >
-          struct_constraint;
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
-          invariable_constraints;
-
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
-
-      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-                                                   decltype(struct_constraint) >
-          selector(score, invariable_constraints, struct_constraint);
-
-      gum::learning::LocalSearchWithTabuList search;
-      search.setMaxNbDecreasingChanges(2);
-
-      // try {
-      gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
-      gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
-      CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
-      //} catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
     /*
     void xtest_alarm1() {
       gum::learning::DatabaseFromCSV
@@ -349,7 +251,99 @@ namespace gum_tests {
     */
   };
 
-  GUM_TEST_ACTIF(_asia)
-  GUM_TEST_ACTIF(_asia_unconstrained)
+  GUM_TEST(_asia) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::SmoothingPrior       prior(database);
+    gum::learning::ScoreK2              score(parser, prior);
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                  gum::learning::StructuralConstraintIndegree,
+                                                  gum::learning::StructuralConstraintTabuList >
+        struct_constraint;
+
+    struct_constraint.setMaxIndegree(2);
+    struct_constraint.setTabuListSize(100);
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
+        invariable_constraints;
+
+    gum::NodeProperty< gum::NodeId > slices{std::make_pair(gum::NodeId(0), 0),
+                                            std::make_pair(gum::NodeId(1), 0)};
+    invariable_constraints.setSliceOrder(slices);
+    invariable_constraints.setDefaultSlice(1);
+
+    gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
+
+    gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+                                                 decltype(struct_constraint) >
+        selector(score, invariable_constraints, struct_constraint);
+
+    gum::learning::LocalSearchWithTabuList search;
+    search.setMaxNbDecreasingChanges(2);
+
+    try {
+      gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
+      gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
+      CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(10));
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
+
+  GUM_TEST(_asia_unconstrained) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::SmoothingPrior       prior(database);
+    gum::learning::ScoreK2              score(parser, prior);
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintDAG,
+                                                  gum::learning::StructuralConstraintTabuList >
+        struct_constraint;
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintSliceOrder >
+        invariable_constraints;
+
+    gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
+
+    gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+                                                 decltype(struct_constraint) >
+        selector(score, invariable_constraints, struct_constraint);
+
+    gum::learning::LocalSearchWithTabuList search;
+    search.setMaxNbDecreasingChanges(2);
+
+    // try {
+    gum::BayesNet< double > bn  = search.learnBN< double >(selector, estimator);
+    gum::BayesNet< double > bn2 = search.learnBN< double >(selector, estimator);
+    CHECK_EQ(bn.dag().arcs().size(), static_cast< gum::Size >(9));
+    //} catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
 
 } /* namespace gum_tests */

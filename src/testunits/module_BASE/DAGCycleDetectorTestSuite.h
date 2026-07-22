@@ -50,9 +50,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DAGCycleDetector
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct DAGCycleDetectorTestSuite {
@@ -203,249 +200,243 @@ namespace gum_tests {
     }
 
     public:
-    static void testSmallGraph() {
-      gum::DAG    g;
-      gum::NodeId id1, id2, id3, id4, id5;
-      id1 = g.addNode();
-      id2 = g.addNode();
-      id3 = g.addNode();
-      id4 = g.addNode();
-      id5 = g.addNode();
-
-      g.addArc(id1, id3);
-      g.addArc(id3, id5);
-      g.addArc(id2, id4);
-      g.addArc(id1, id4);
-      g.addArc(id4, id5);
-      g.addArc(id2, id5);
-
-      gum::DAGCycleDetector detector;
-      detector.setDAG(g);
-
-      std::vector< gum::DAGCycleDetector::Change > changes;
-      CHECK_EQ(detector.hasCycleFromModifications(changes), false);
-
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      CHECK_EQ(detector.hasCycleFromModifications(changes), true);
-
-      changes.clear();
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
-      changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
-      CHECK_EQ(detector.hasCycleFromModifications(changes), false);
-
-      changes.clear();
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
-      changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
-      changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
-      CHECK_EQ(detector.hasCycleFromModifications(changes), false);
-    }
-
-    static void testG1() {
-      gum::DAG g;
-      for (gum::Idx i = 0; i < 10; ++i) {
-        g.addNodeWithId(i);
-      }
-      g.addArc(3, 9);
-      g.addArc(3, 5);
-      g.addArc(3, 0);
-      g.addArc(6, 9);
-      g.addArc(8, 1);
-      g.addArc(0, 6);
-      g.addArc(5, 7);
-      g.addArc(2, 4);
-      g.addArc(4, 0);
-      g.addArc(2, 9);
-      g.addArc(2, 5);
-      g.addArc(7, 6);
-      g.addArc(1, 7);
-
-      gum::DAGCycleDetector detector;
-      detector.setDAG(g);
-
-      std::vector< gum::DAGCycleDetector::Change > changes;
-      changes.push_back(gum::DAGCycleDetector::ArcReverse(2, 9));
-      changes.push_back(gum::DAGCycleDetector::ArcReverse(6, 9));
-      changes.push_back(gum::DAGCycleDetector::ArcReverse(3, 0));
-      changes.push_back(gum::DAGCycleDetector::ArcAdd(4, 3));
-
-      CHECK_EQ(detector.hasCycleFromModifications(changes), true);
-    }
-
-    static void testRandom() {
-      gum::DAGCycleDetector                        detector;
-      std::vector< gum::DAGCycleDetector::Change > changes;
-      std::vector< gum::DAGCycleDetector::Change > del_add_changes;
-
-      for (gum::Idx i = 15; i < 25; ++i) {
-        gum::DAG g = _createDAG_(20, i);
-        detector.setDAG(g);
-
-        changes.clear();
-        CHECK_EQ(detector.hasCycleFromModifications(changes), false);
-
-        for (gum::Idx j = 0; j < 20; ++j) {
-          gum::Size length = gum::randomValue(11);
-          _createChanges_(g, changes, del_add_changes, length);
-
-          bool hasCycle = false;
-          {
-            gum::DiGraph gg = g;
-            for (auto& chgt: del_add_changes) {
-              switch (chgt.type()) {
-                case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
-                  gg.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
-                  break;
-
-                case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
-                  gg.addArc(chgt.tail(), chgt.head());
-                  break;
-
-                default : GUM_ERROR(gum::NotFound, "del_add_changes")
-              }
-            }
-
-            try {
-              gum::DAG dag = g;
-              for (auto iter = g.arcs().begin(); iter != g.arcs().end(); ++iter) {
-                dag.eraseArc(*iter);
-              }
-              for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter) {
-                dag.addArc(iter->tail(), iter->head());
-              }
-            } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
-          }
-
-          CHECK_EQ(detector.hasCycleFromModifications(changes), hasCycle);
-        }
-      }
-    }
-
-    static void testModifications() {
-      gum::DAGCycleDetector                        detector1, detector2;
-      std::vector< gum::DAGCycleDetector::Change > changes;
-      std::vector< gum::DAGCycleDetector::Change > del_add_changes;
-
-      for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g = _createDAG_(10, i);
-        detector1.setDAG(g);
-        detector2.setDAG(g);
-
-        CHECK_EQ(detector1, detector2);
-
-        for (gum::Idx j = 0; j < 30; ++j) {
-          _createChanges_(g, changes, del_add_changes, 1);
-          CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
-          if (detector1.hasCycleFromModifications(changes)) {
-            --j;
-            continue;
-          }
-
-          for (auto& chgt: changes) {
-            switch (chgt.type()) {
-              case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
-                g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
-                detector1.eraseArc(chgt.tail(), chgt.head());
-                break;
-
-              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
-                g.addArc(chgt.tail(), chgt.head());
-                detector1.addArc(chgt.tail(), chgt.head());
-                break;
-
-              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
-                g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
-                g.addArc(chgt.head(), chgt.tail());
-                detector1.reverseArc(chgt.tail(), chgt.head());
-                break;
-
-              default : GUM_ERROR(gum::NotFound, "del_add_changes")
-            }
-            detector2.setDAG(g);
-          }
-
-          CHECK_EQ(detector1, detector2);
-        }
-      }
-    }
-
-    static void testModifications2() {
-      gum::DAGCycleDetector                        detector1, detector2;
-      std::vector< gum::DAGCycleDetector::Change > changes;
-      std::vector< gum::DAGCycleDetector::Change > del_add_changes;
-
-      for (gum::Idx i = 7; i < 15; ++i) {
-        gum::DAG g = _createDAG_(10, i);
-        detector1.setDAG(g);
-        detector2.setDAG(g);
-
-        CHECK_EQ(detector1, detector2);
-
-        for (gum::Idx j = 0; j < 30; ++j) {
-          _createChanges_(g, changes, del_add_changes, 1);
-          CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
-
-          for (auto& chgt: changes) {
-            switch (chgt.type()) {
-              case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
-                CHECK((detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()))
-                      == (detector2.hasCycleFromModifications(changes)));
-                break;
-
-              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
-                CHECK((detector1.hasCycleFromAddition(chgt.tail(), chgt.head()))
-                      == (detector2.hasCycleFromModifications(changes)));
-                break;
-
-              case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
-                CHECK((detector1.hasCycleFromReversal(chgt.tail(), chgt.head()))
-                      == (detector2.hasCycleFromModifications(changes)));
-                break;
-
-              default : GUM_ERROR(gum::NotFound, "del_add_changes")
-            }
-          }
-        }
-      }
-    }
-
-    static void testDiamondGraph() {
-      // Diamond: 0->1, 0->2, 1->3, 2->3 — two paths from 0 to 3.
-      // Exercises multi-path ancestor counts in _delWeightedSet_ (unsigned underflow guard).
-      gum::DAG g;
-      for (gum::Idx i = 0; i < 4; ++i)
-        g.addNodeWithId(i);
-      g.addArc(0, 1);
-      g.addArc(0, 2);
-      g.addArc(1, 3);
-      g.addArc(2, 3);
-
-      gum::DAGCycleDetector detector;
-      detector.setDAG(g);
-
-      CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
-      CHECK_EQ(detector.hasCycleFromAddition(3, 1), true);
-      CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
-      CHECK_EQ(detector.hasCycleFromAddition(0, 3), false);
-
-      // after removing one arm of the diamond, 3->0 still creates a cycle via the other arm
-      detector.eraseArc(1, 3);
-      CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
-      CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
-
-      // after removing both arms, 3->0 no longer creates a cycle
-      detector.eraseArc(2, 3);
-      CHECK_EQ(detector.hasCycleFromAddition(3, 0), false);
-    }
   };
 
-  GUM_TEST_ACTIF(SmallGraph)
-  GUM_TEST_ACTIF(G1)
-  GUM_TEST_ACTIF(Random)
-  GUM_TEST_ACTIF(Modifications)
-  GUM_TEST_ACTIF(Modifications2)
-  GUM_TEST_ACTIF(DiamondGraph)
+  GUM_TEST(SmallGraph) {
+    gum::DAG    g;
+    gum::NodeId id1, id2, id3, id4, id5;
+    id1 = g.addNode();
+    id2 = g.addNode();
+    id3 = g.addNode();
+    id4 = g.addNode();
+    id5 = g.addNode();
+
+    g.addArc(id1, id3);
+    g.addArc(id3, id5);
+    g.addArc(id2, id4);
+    g.addArc(id1, id4);
+    g.addArc(id4, id5);
+    g.addArc(id2, id5);
+
+    gum::DAGCycleDetector detector;
+    detector.setDAG(g);
+
+    std::vector< gum::DAGCycleDetector::Change > changes;
+    CHECK_EQ(detector.hasCycleFromModifications(changes), false);
+
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
+    CHECK_EQ(detector.hasCycleFromModifications(changes), true);
+
+    changes.clear();
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
+    changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
+    changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
+    CHECK_EQ(detector.hasCycleFromModifications(changes), false);
+
+    changes.clear();
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(id2, id1));
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(id5, id1));
+    changes.push_back(gum::DAGCycleDetector::ArcDel(id1, id3));
+    changes.push_back(gum::DAGCycleDetector::ArcReverse(id4, id5));
+    CHECK_EQ(detector.hasCycleFromModifications(changes), false);
+  }
+
+  GUM_TEST(G1) {
+    gum::DAG g;
+    for (gum::Idx i = 0; i < 10; ++i) {
+      g.addNodeWithId(i);
+    }
+    g.addArc(3, 9);
+    g.addArc(3, 5);
+    g.addArc(3, 0);
+    g.addArc(6, 9);
+    g.addArc(8, 1);
+    g.addArc(0, 6);
+    g.addArc(5, 7);
+    g.addArc(2, 4);
+    g.addArc(4, 0);
+    g.addArc(2, 9);
+    g.addArc(2, 5);
+    g.addArc(7, 6);
+    g.addArc(1, 7);
+
+    gum::DAGCycleDetector detector;
+    detector.setDAG(g);
+
+    std::vector< gum::DAGCycleDetector::Change > changes;
+    changes.push_back(gum::DAGCycleDetector::ArcReverse(2, 9));
+    changes.push_back(gum::DAGCycleDetector::ArcReverse(6, 9));
+    changes.push_back(gum::DAGCycleDetector::ArcReverse(3, 0));
+    changes.push_back(gum::DAGCycleDetector::ArcAdd(4, 3));
+
+    CHECK_EQ(detector.hasCycleFromModifications(changes), true);
+  }
+
+  GUM_TEST(Random) {
+    gum::DAGCycleDetector                        detector;
+    std::vector< gum::DAGCycleDetector::Change > changes;
+    std::vector< gum::DAGCycleDetector::Change > del_add_changes;
+
+    for (gum::Idx i = 15; i < 25; ++i) {
+      gum::DAG g = _createDAG_(20, i);
+      detector.setDAG(g);
+
+      changes.clear();
+      CHECK_EQ(detector.hasCycleFromModifications(changes), false);
+
+      for (gum::Idx j = 0; j < 20; ++j) {
+        gum::Size length = gum::randomValue(11);
+        _createChanges_(g, changes, del_add_changes, length);
+
+        bool hasCycle = false;
+        {
+          gum::DiGraph gg = g;
+          for (auto& chgt: del_add_changes) {
+            switch (chgt.type()) {
+              case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
+                gg.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
+                break;
+
+              case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
+                gg.addArc(chgt.tail(), chgt.head());
+                break;
+
+              default : GUM_ERROR(gum::NotFound, "del_add_changes")
+            }
+          }
+
+          try {
+            gum::DAG dag = g;
+            for (auto iter = g.arcs().begin(); iter != g.arcs().end(); ++iter) {
+              dag.eraseArc(*iter);
+            }
+            for (auto iter = gg.arcs().begin(); iter != gg.arcs().end(); ++iter) {
+              dag.addArc(iter->tail(), iter->head());
+            }
+          } catch (gum::InvalidDirectedCycle&) { hasCycle = true; }
+        }
+
+        CHECK_EQ(detector.hasCycleFromModifications(changes), hasCycle);
+      }
+    }
+  }
+
+  GUM_TEST(Modifications) {
+    gum::DAGCycleDetector                        detector1, detector2;
+    std::vector< gum::DAGCycleDetector::Change > changes;
+    std::vector< gum::DAGCycleDetector::Change > del_add_changes;
+
+    for (gum::Idx i = 7; i < 15; ++i) {
+      gum::DAG g = _createDAG_(10, i);
+      detector1.setDAG(g);
+      detector2.setDAG(g);
+
+      CHECK_EQ(detector1, detector2);
+
+      for (gum::Idx j = 0; j < 30; ++j) {
+        _createChanges_(g, changes, del_add_changes, 1);
+        CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
+        if (detector1.hasCycleFromModifications(changes)) {
+          --j;
+          continue;
+        }
+
+        for (auto& chgt: changes) {
+          switch (chgt.type()) {
+            case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
+              g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
+              detector1.eraseArc(chgt.tail(), chgt.head());
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
+              g.addArc(chgt.tail(), chgt.head());
+              detector1.addArc(chgt.tail(), chgt.head());
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
+              g.eraseArc(gum::Arc(chgt.tail(), chgt.head()));
+              g.addArc(chgt.head(), chgt.tail());
+              detector1.reverseArc(chgt.tail(), chgt.head());
+              break;
+
+            default : GUM_ERROR(gum::NotFound, "del_add_changes")
+          }
+          detector2.setDAG(g);
+        }
+
+        CHECK_EQ(detector1, detector2);
+      }
+    }
+  }
+
+  GUM_TEST(Modifications2) {
+    gum::DAGCycleDetector                        detector1, detector2;
+    std::vector< gum::DAGCycleDetector::Change > changes;
+    std::vector< gum::DAGCycleDetector::Change > del_add_changes;
+
+    for (gum::Idx i = 7; i < 15; ++i) {
+      gum::DAG g = _createDAG_(10, i);
+      detector1.setDAG(g);
+      detector2.setDAG(g);
+
+      CHECK_EQ(detector1, detector2);
+
+      for (gum::Idx j = 0; j < 30; ++j) {
+        _createChanges_(g, changes, del_add_changes, 1);
+        CHECK_EQ(changes.size(), static_cast< gum::Size >(1));
+
+        for (auto& chgt: changes) {
+          switch (chgt.type()) {
+            case gum::DAGCycleDetector::ChangeType::ARC_DELETION :
+              CHECK((detector1.hasCycleFromDeletion(chgt.tail(), chgt.head()))
+                    == (detector2.hasCycleFromModifications(changes)));
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_ADDITION :
+              CHECK((detector1.hasCycleFromAddition(chgt.tail(), chgt.head()))
+                    == (detector2.hasCycleFromModifications(changes)));
+              break;
+
+            case gum::DAGCycleDetector::ChangeType::ARC_REVERSAL :
+              CHECK((detector1.hasCycleFromReversal(chgt.tail(), chgt.head()))
+                    == (detector2.hasCycleFromModifications(changes)));
+              break;
+
+            default : GUM_ERROR(gum::NotFound, "del_add_changes")
+          }
+        }
+      }
+    }
+  }
+
+  GUM_TEST(DiamondGraph) {
+    // Diamond: 0->1, 0->2, 1->3, 2->3 — two paths from 0 to 3.
+    // Exercises multi-path ancestor counts in _delWeightedSet_ (unsigned underflow guard).
+    gum::DAG g;
+    for (gum::Idx i = 0; i < 4; ++i)
+      g.addNodeWithId(i);
+    g.addArc(0, 1);
+    g.addArc(0, 2);
+    g.addArc(1, 3);
+    g.addArc(2, 3);
+
+    gum::DAGCycleDetector detector;
+    detector.setDAG(g);
+
+    CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
+    CHECK_EQ(detector.hasCycleFromAddition(3, 1), true);
+    CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
+    CHECK_EQ(detector.hasCycleFromAddition(0, 3), false);
+
+    // after removing one arm of the diamond, 3->0 still creates a cycle via the other arm
+    detector.eraseArc(1, 3);
+    CHECK_EQ(detector.hasCycleFromAddition(3, 0), true);
+    CHECK_EQ(detector.hasCycleFromAddition(3, 2), true);
+
+    // after removing both arms, 3->0 no longer creates a cycle
+    detector.eraseArc(2, 3);
+    CHECK_EQ(detector.hasCycleFromAddition(3, 0), false);
+  }
 
 }   // namespace gum_tests

@@ -50,13 +50,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  DBRowGeneratorEM
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct DBRowGeneratorEMTestSuite {
-    private:
+    protected:
     static gum::Tensor< double >
         _infer_(const gum::BayesNet< double >&                                  bn,
                 const std::vector< std::size_t >&                               targets,
@@ -82,1650 +79,1649 @@ namespace gum_tests {
 
 
     public:
-    static void test_basic() {
-      const std::vector< gum::learning::DBTranslatedValueType > col_types{
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE,
-          gum::learning::DBTranslatedValueType::DISCRETE};
-
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
-      bn.cpt("A").fillWith({0.3, 0.7});
-      bn.cpt("B").fillWith({0.4, 0.6, 0.7, 0.3});
-      bn.cpt("C").fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
-      bn.cpt("D").fillWith({0.8, 0.2});
-
-      gum::learning::DBRowGeneratorEM<> generator(col_types, bn);
-      CHECK(!generator.hasRows());
-
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
-          gum::learning::DBTranslatedValue{std::size_t(0)},
-          gum::learning::DBTranslatedValue{std::size_t(1)},
-          gum::learning::DBTranslatedValue{std::size_t(1)},
-          gum::learning::DBTranslatedValue{std::size_t(0)}};
-
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
-          gum::learning::DBTranslatedValue{std::size_t(0)},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::size_t(1)},
-          gum::learning::DBTranslatedValue{std::size_t(0)}};
-
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
-          gum::learning::DBTranslatedValue{std::size_t(0)},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::size_t(0)}};
-
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::size_t(1)},
-          gum::learning::DBTranslatedValue{std::size_t(0)}};
-
-      const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row5{
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
-          gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()}};
-
-
-      {
-        generator.setInputRow(input_row1);
-        CHECK(generator.hasRows());
-        CHECK(generator.hasRows());
-
-        const auto& output_row1  = generator.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator.hasRows());
-      }
-
-      {
-        generator.setInputRow(input_row1);
-        CHECK(generator.hasRows());
-        CHECK(generator.hasRows());
-
-        const auto& output_row2  = generator.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator.hasRows());
-      }
-
-      const std::vector< std::size_t > cols_of_interest1{std::size_t(0), std::size_t(3)};
-      const std::vector< std::size_t > cols_of_interest2{std::size_t(0), std::size_t(1)};
-
-      generator.setColumnsOfInterest(cols_of_interest1);
-      {
-        const auto& xcols = generator.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator.setInputRow(input_row1);
-        CHECK(generator.hasRows());
-
-        const auto& output_row3  = generator.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator.setInputRow(input_row1);
-        CHECK(generator.hasRows());
-
-        generator.setInputRow(input_row2);
-        CHECK(generator.hasRows());
-        const auto& output_row3b  = generator.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator.setColumnsOfInterest(cols_of_interest2);
-
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator.setInputRow(input_row2);
-        CHECK(generator.hasRows());
-
-        const auto& fill_row1  = generator.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator.setInputRow(input_row3);
-        CHECK(generator.hasRows());
-
-        const auto& fill_row1  = generator.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator.setInputRow(input_row4);
-        CHECK(generator.hasRows());
-
-        int nb = 0;
-        while (generator.hasRows()) {
-          const auto& fill_row1  = generator.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator.setInputRow(input_row5);
-        CHECK(generator.hasRows());
-
-        int nb = 0;
-        while (generator.hasRows()) {
-          const auto& fill_row1  = generator.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator.setInputRow(input_row2);
-        CHECK(generator.hasRows());
-
-        const auto& fill_row1  = generator.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      generator.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<> generator2(generator);
-      CHECK(!generator2.hasRows());
-      CHECK_EQ(generator2.columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator2.columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator2.columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator2.setInputRow(input_row1);
-        CHECK(generator2.hasRows());
-        CHECK(generator2.hasRows());
-
-        const auto& output_row1  = generator2.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator2.hasRows());
-      }
-
-      {
-        generator2.setInputRow(input_row1);
-        CHECK(generator2.hasRows());
-        CHECK(generator2.hasRows());
-
-        const auto& output_row2  = generator2.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator2.hasRows());
-      }
-
-      generator2.setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator2.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator2.setInputRow(input_row1);
-        CHECK(generator2.hasRows());
-
-        const auto& output_row3  = generator2.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator2.setInputRow(input_row1);
-        CHECK(generator2.hasRows());
-
-        generator2.setInputRow(input_row2);
-        CHECK(generator2.hasRows());
-        const auto& output_row3b  = generator2.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator2.setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator2.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator2.setInputRow(input_row2);
-        CHECK(generator2.hasRows());
-
-        const auto& fill_row1  = generator2.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator2.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator2.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator2.setInputRow(input_row3);
-        CHECK(generator2.hasRows());
-
-        const auto& fill_row1  = generator2.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator2.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator2.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator2.setInputRow(input_row4);
-        CHECK(generator2.hasRows());
-
-        int nb = 0;
-        while (generator2.hasRows()) {
-          const auto& fill_row1  = generator2.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator2.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator2.setInputRow(input_row5);
-        CHECK(generator2.hasRows());
-
-        int nb = 0;
-        while (generator2.hasRows()) {
-          const auto& fill_row1  = generator2.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator2.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<> generator3(generator);
-      CHECK(!generator3.hasRows());
-      CHECK_EQ(generator3.columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator3.columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator3.columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator3.setInputRow(input_row1);
-        CHECK(generator3.hasRows());
-        CHECK(generator3.hasRows());
-
-        const auto& output_row1  = generator3.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator3.hasRows());
-      }
-
-      {
-        generator3.setInputRow(input_row1);
-        CHECK(generator3.hasRows());
-        CHECK(generator3.hasRows());
-
-        const auto& output_row2  = generator3.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator3.hasRows());
-      }
-
-      generator3.setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator3.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator3.setInputRow(input_row1);
-        CHECK(generator3.hasRows());
-
-        const auto& output_row3  = generator3.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator3.setInputRow(input_row1);
-        CHECK(generator3.hasRows());
-
-        generator3.setInputRow(input_row2);
-        CHECK(generator3.hasRows());
-        const auto& output_row3b  = generator3.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator3.setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator3.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator3.setInputRow(input_row2);
-        CHECK(generator3.hasRows());
-
-        const auto& fill_row1  = generator3.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator3.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator3.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator3.setInputRow(input_row3);
-        CHECK(generator3.hasRows());
-
-        const auto& fill_row1  = generator3.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator3.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator3.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator3.setInputRow(input_row4);
-        CHECK(generator3.hasRows());
-
-        int nb = 0;
-        while (generator3.hasRows()) {
-          const auto& fill_row1  = generator3.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator3.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator3.setInputRow(input_row5);
-        CHECK(generator3.hasRows());
-
-        int nb = 0;
-        while (generator3.hasRows()) {
-          const auto& fill_row1  = generator3.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator3.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<> generator4(std::move(generator2));
-      CHECK(!generator4.hasRows());
-      CHECK_EQ(generator4.columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator4.columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator4.columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator4.setInputRow(input_row1);
-        CHECK(generator4.hasRows());
-        CHECK(generator4.hasRows());
-
-        const auto& output_row1  = generator4.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator4.hasRows());
-      }
-
-      {
-        generator4.setInputRow(input_row1);
-        CHECK(generator4.hasRows());
-        CHECK(generator4.hasRows());
-
-        const auto& output_row2  = generator4.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator4.hasRows());
-      }
-
-      generator4.setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator4.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator4.setInputRow(input_row1);
-        CHECK(generator4.hasRows());
-
-        const auto& output_row3  = generator4.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator4.setInputRow(input_row1);
-        CHECK(generator4.hasRows());
-
-        generator4.setInputRow(input_row2);
-        CHECK(generator4.hasRows());
-        const auto& output_row3b  = generator4.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator4.setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator4.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator4.setInputRow(input_row2);
-        CHECK(generator4.hasRows());
-
-        const auto& fill_row1  = generator4.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator4.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator4.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator4.setInputRow(input_row3);
-        CHECK(generator4.hasRows());
-
-        const auto& fill_row1  = generator4.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator4.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator4.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator4.setInputRow(input_row4);
-        CHECK(generator4.hasRows());
-
-        int nb = 0;
-        while (generator4.hasRows()) {
-          const auto& fill_row1  = generator4.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator4.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator4.setInputRow(input_row5);
-        CHECK(generator4.hasRows());
-
-        int nb = 0;
-        while (generator4.hasRows()) {
-          const auto& fill_row1  = generator4.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator4.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<> generator5(std::move(generator3));
-      CHECK(!generator5.hasRows());
-      CHECK_EQ(generator5.columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator5.columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator5.columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator5.setInputRow(input_row1);
-        CHECK(generator5.hasRows());
-        CHECK(generator5.hasRows());
-
-        const auto& output_row1  = generator5.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator5.hasRows());
-      }
-
-      {
-        generator5.setInputRow(input_row1);
-        CHECK(generator5.hasRows());
-        CHECK(generator5.hasRows());
-
-        const auto& output_row2  = generator5.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator5.hasRows());
-      }
-
-      generator5.setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator5.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator5.setInputRow(input_row1);
-        CHECK(generator5.hasRows());
-
-        const auto& output_row3  = generator5.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator5.setInputRow(input_row1);
-        CHECK(generator5.hasRows());
-
-        generator5.setInputRow(input_row2);
-        CHECK(generator5.hasRows());
-        const auto& output_row3b  = generator5.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator5.setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator5.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator5.setInputRow(input_row2);
-        CHECK(generator5.hasRows());
-
-        const auto& fill_row1  = generator5.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator5.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator5.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator5.setInputRow(input_row3);
-        CHECK(generator5.hasRows());
-
-        const auto& fill_row1  = generator5.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator5.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator5.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator5.setInputRow(input_row4);
-        CHECK(generator5.hasRows());
-
-        int nb = 0;
-        while (generator5.hasRows()) {
-          const auto& fill_row1  = generator5.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator5.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator5.setInputRow(input_row5);
-        CHECK(generator5.hasRows());
-
-        int nb = 0;
-        while (generator5.hasRows()) {
-          const auto& fill_row1  = generator5.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator5.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<>* generator6 = generator4.clone();
-      CHECK(!generator6->hasRows());
-      CHECK_EQ(generator6->columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator6->columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator6->columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator6->setInputRow(input_row1);
-        CHECK(generator6->hasRows());
-        CHECK(generator6->hasRows());
-
-        const auto& output_row1  = generator6->generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator6->hasRows());
-      }
-
-      {
-        generator6->setInputRow(input_row1);
-        CHECK(generator6->hasRows());
-        CHECK(generator6->hasRows());
-
-        const auto& output_row2  = generator6->generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator6->hasRows());
-      }
-
-      generator6->setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator6->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator6->setInputRow(input_row1);
-        CHECK(generator6->hasRows());
-
-        const auto& output_row3  = generator6->generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator6->setInputRow(input_row1);
-        CHECK(generator6->hasRows());
-
-        generator6->setInputRow(input_row2);
-        CHECK(generator6->hasRows());
-        const auto& output_row3b  = generator6->generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator6->setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator6->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator6->setInputRow(input_row2);
-        CHECK(generator6->hasRows());
-
-        const auto& fill_row1  = generator6->generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator6->generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator6->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator6->setInputRow(input_row3);
-        CHECK(generator6->hasRows());
-
-        const auto& fill_row1  = generator6->generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator6->generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator6->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator6->setInputRow(input_row4);
-        CHECK(generator6->hasRows());
-
-        int nb = 0;
-        while (generator6->hasRows()) {
-          const auto& fill_row1  = generator6->generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator6->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator6->setInputRow(input_row5);
-        CHECK(generator6->hasRows());
-
-        int nb = 0;
-        while (generator6->hasRows()) {
-          const auto& fill_row1  = generator6->generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator6->setColumnsOfInterest(cols_of_interest1);
-      delete generator6;
-
-
-      gum::learning::DBRowGeneratorEM<>* generator7 = generator5.clone();
-      CHECK(!generator7->hasRows());
-      CHECK_EQ(generator7->columnsOfInterest().size(), std::size_t(2));
-      CHECK_EQ(generator7->columnsOfInterest()[0], std::size_t(0));
-      CHECK_EQ(generator7->columnsOfInterest()[1], std::size_t(3));
-
-      {
-        generator7->setInputRow(input_row1);
-        CHECK(generator7->hasRows());
-        CHECK(generator7->hasRows());
-
-        const auto& output_row1  = generator7->generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator7->hasRows());
-      }
-
-      {
-        generator7->setInputRow(input_row1);
-        CHECK(generator7->hasRows());
-        CHECK(generator7->hasRows());
-
-        const auto& output_row2  = generator7->generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator7->hasRows());
-      }
-
-      generator7->setColumnsOfInterest(cols_of_interest1);
-
-      {
-        const auto& xcols = generator7->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator7->setInputRow(input_row1);
-        CHECK(generator7->hasRows());
-
-        const auto& output_row3  = generator7->generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator7->setInputRow(input_row1);
-        CHECK(generator7->hasRows());
-
-        generator7->setInputRow(input_row2);
-        CHECK(generator7->hasRows());
-        const auto& output_row3b  = generator7->generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator7->setColumnsOfInterest(cols_of_interest2);
-
-      {
-        const auto& xcols = generator7->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator7->setInputRow(input_row2);
-        CHECK(generator7->hasRows());
-
-        const auto& fill_row1  = generator7->generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator7->generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator7->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator7->setInputRow(input_row3);
-        CHECK(generator7->hasRows());
-
-        const auto& fill_row1  = generator7->generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator7->generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator7->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator7->setInputRow(input_row4);
-        CHECK(generator7->hasRows());
-
-        int nb = 0;
-        while (generator7->hasRows()) {
-          const auto& fill_row1  = generator7->generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator7->columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator7->setInputRow(input_row5);
-        CHECK(generator7->hasRows());
-
-        int nb = 0;
-        while (generator7->hasRows()) {
-          const auto& fill_row1  = generator7->generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      generator7->setColumnsOfInterest(cols_of_interest1);
-      delete generator7;
-
-
-      auto bn2 = gum::BayesNet< double >::fastPrototype("B;A");
-
-
-      gum::learning::DBRowGeneratorEM<> generator8(col_types, bn2);
-      CHECK(!generator8.hasRows());
-      CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
-
-      generator.setInputRow(input_row1);
-      CHECK(!generator8.hasRows());
-      CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
-      generator8 = generator;
-
-      {
-        generator8.setInputRow(input_row1);
-        CHECK(generator8.hasRows());
-        CHECK(generator8.hasRows());
-
-        const auto& output_row1  = generator8.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator8.hasRows());
-      }
-
-      {
-        generator8.setInputRow(input_row1);
-        CHECK(generator8.hasRows());
-        CHECK(generator8.hasRows());
-
-        const auto& output_row2  = generator8.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator8.hasRows());
-      }
-
-      generator8.setColumnsOfInterest(cols_of_interest1);
-      {
-        const auto& xcols = generator8.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator8.setInputRow(input_row1);
-        CHECK(generator8.hasRows());
-
-        const auto& output_row3  = generator8.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator8.setInputRow(input_row1);
-        CHECK(generator8.hasRows());
-
-        generator8.setInputRow(input_row2);
-        CHECK(generator8.hasRows());
-        const auto& output_row3b  = generator8.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator8.setColumnsOfInterest(cols_of_interest2);
-
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator8.setInputRow(input_row2);
-        CHECK(generator8.hasRows());
-
-        const auto& fill_row1  = generator8.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator8.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator8.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator8.setInputRow(input_row3);
-        CHECK(generator8.hasRows());
-
-        const auto& fill_row1  = generator8.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator8.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator8.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator8.setInputRow(input_row4);
-        CHECK(generator8.hasRows());
-
-        int nb = 0;
-        while (generator8.hasRows()) {
-          const auto& fill_row1  = generator8.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator8.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator8.setInputRow(input_row5);
-        CHECK(generator8.hasRows());
-
-        int nb = 0;
-        while (generator8.hasRows()) {
-          const auto& fill_row1  = generator8.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator8.setInputRow(input_row2);
-        CHECK(generator8.hasRows());
-
-        const auto& fill_row1  = generator8.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator8.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      generator8.setColumnsOfInterest(cols_of_interest1);
-
-
-      gum::learning::DBRowGeneratorEM<> generator9(col_types, bn2);
-      CHECK(!generator9.hasRows());
-      CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
-
-      generator.setInputRow(input_row1);
-      CHECK(!generator9.hasRows());
-      CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
-      generator9 = std::move(generator);
-
-      {
-        generator9.setInputRow(input_row1);
-        CHECK(generator9.hasRows());
-        CHECK(generator9.hasRows());
-
-        const auto& output_row1  = generator9.generate();
-        const auto& xoutput_row1 = output_row1.row();
-        CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
-        CHECK(!generator9.hasRows());
-      }
-
-      {
-        generator9.setInputRow(input_row1);
-        CHECK(generator9.hasRows());
-        CHECK(generator9.hasRows());
-
-        const auto& output_row2  = generator9.generate();
-        const auto& xoutput_row2 = output_row2.row();
-        CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
-        CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
-        CHECK(!generator9.hasRows());
-      }
-
-      generator9.setColumnsOfInterest(cols_of_interest1);
-      {
-        const auto& xcols = generator9.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(3));
-        generator9.setInputRow(input_row1);
-        CHECK(generator9.hasRows());
-
-        const auto& output_row3  = generator9.generate();
-        const auto& xoutput_row3 = output_row3.row();
-        CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
-
-        generator9.setInputRow(input_row1);
-        CHECK(generator9.hasRows());
-
-        generator9.setInputRow(input_row2);
-        CHECK(generator9.hasRows());
-        const auto& output_row3b  = generator9.generate();
-        const auto& xoutput_row3b = output_row3b.row();
-        CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
-        CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
-      }
-
-      generator9.setColumnsOfInterest(cols_of_interest2);
-
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator9.setInputRow(input_row2);
-        CHECK(generator9.hasRows());
-
-        const auto& fill_row1  = generator9.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator9.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator9.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
-        gum::Instantiation    inst(proba);
-
-        generator9.setInputRow(input_row3);
-        CHECK(generator9.hasRows());
-
-        const auto& fill_row1  = generator9.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator9.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      {
-        const auto& xcols = generator9.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
-        gum::Instantiation    inst(proba);
-
-        generator9.setInputRow(input_row4);
-        CHECK(generator9.hasRows());
-
-        int nb = 0;
-        while (generator9.hasRows()) {
-          const auto& fill_row1  = generator9.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        const auto& xcols = generator9.columnsOfInterest();
-        CHECK_EQ(xcols.size(), std::size_t(2));
-        CHECK_EQ(xcols[0], std::size_t(0));
-        CHECK_EQ(xcols[1], std::size_t(1));
-
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
-        gum::Instantiation    inst(proba);
-
-        generator9.setInputRow(input_row5);
-        CHECK(generator9.hasRows());
-
-        int nb = 0;
-        while (generator9.hasRows()) {
-          const auto& fill_row1  = generator9.generate();
-          const auto& xfill_row1 = fill_row1.row();
-
-          ++nb;
-          inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
-          inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
-
-          CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
-        }
-
-        CHECK_EQ(nb, 4);
-      }
-
-      {
-        gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
-        gum::Instantiation    inst(proba);
-
-        generator9.setInputRow(input_row2);
-        CHECK(generator9.hasRows());
-
-        const auto& fill_row1  = generator9.generate();
-        const auto& xfill_row1 = fill_row1.row();
-        CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
-        CHECK_EQ(fill_row1.weight(), proba.get(inst));
-
-        ++inst;
-        const auto& fill_row2  = generator9.generate();
-        const auto& xfill_row2 = fill_row2.row();
-        CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
-        CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
-        CHECK_EQ(fill_row2.weight(), proba.get(inst));
-      }
-
-      generator9.setColumnsOfInterest(cols_of_interest1);
-    }
   };
 
-  GUM_TEST_ACTIF(_basic)
+  GUM_TEST(_basic) {
+    const std::vector< gum::learning::DBTranslatedValueType > col_types{
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE,
+        gum::learning::DBTranslatedValueType::DISCRETE};
+
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C<-D");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.4, 0.6, 0.7, 0.3});
+    bn.cpt("C").fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
+    bn.cpt("D").fillWith({0.8, 0.2});
+
+    gum::learning::DBRowGeneratorEM<> generator(col_types, bn);
+    CHECK(!generator.hasRows());
+
+    const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row1{
+        gum::learning::DBTranslatedValue{std::size_t(0)},
+        gum::learning::DBTranslatedValue{std::size_t(1)},
+        gum::learning::DBTranslatedValue{std::size_t(1)},
+        gum::learning::DBTranslatedValue{std::size_t(0)}};
+
+    const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row2{
+        gum::learning::DBTranslatedValue{std::size_t(0)},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::size_t(1)},
+        gum::learning::DBTranslatedValue{std::size_t(0)}};
+
+    const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row3{
+        gum::learning::DBTranslatedValue{std::size_t(0)},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::size_t(0)}};
+
+    const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row4{
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::size_t(1)},
+        gum::learning::DBTranslatedValue{std::size_t(0)}};
+
+    const gum::learning::DBRow< gum::learning::DBTranslatedValue > input_row5{
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()},
+        gum::learning::DBTranslatedValue{std::numeric_limits< std::size_t >::max()}};
+
+
+    {
+      generator.setInputRow(input_row1);
+      CHECK(generator.hasRows());
+      CHECK(generator.hasRows());
+
+      const auto& output_row1  = generator.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator.hasRows());
+    }
+
+    {
+      generator.setInputRow(input_row1);
+      CHECK(generator.hasRows());
+      CHECK(generator.hasRows());
+
+      const auto& output_row2  = generator.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator.hasRows());
+    }
+
+    const std::vector< std::size_t > cols_of_interest1{std::size_t(0), std::size_t(3)};
+    const std::vector< std::size_t > cols_of_interest2{std::size_t(0), std::size_t(1)};
+
+    generator.setColumnsOfInterest(cols_of_interest1);
+    {
+      const auto& xcols = generator.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator.setInputRow(input_row1);
+      CHECK(generator.hasRows());
+
+      const auto& output_row3  = generator.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator.setInputRow(input_row1);
+      CHECK(generator.hasRows());
+
+      generator.setInputRow(input_row2);
+      CHECK(generator.hasRows());
+      const auto& output_row3b  = generator.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator.setColumnsOfInterest(cols_of_interest2);
+
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator.setInputRow(input_row2);
+      CHECK(generator.hasRows());
+
+      const auto& fill_row1  = generator.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator.setInputRow(input_row3);
+      CHECK(generator.hasRows());
+
+      const auto& fill_row1  = generator.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator.setInputRow(input_row4);
+      CHECK(generator.hasRows());
+
+      int nb = 0;
+      while (generator.hasRows()) {
+        const auto& fill_row1  = generator.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator.setInputRow(input_row5);
+      CHECK(generator.hasRows());
+
+      int nb = 0;
+      while (generator.hasRows()) {
+        const auto& fill_row1  = generator.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator.setInputRow(input_row2);
+      CHECK(generator.hasRows());
+
+      const auto& fill_row1  = generator.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    generator.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<> generator2(generator);
+    CHECK(!generator2.hasRows());
+    CHECK_EQ(generator2.columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator2.columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator2.columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator2.setInputRow(input_row1);
+      CHECK(generator2.hasRows());
+      CHECK(generator2.hasRows());
+
+      const auto& output_row1  = generator2.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator2.hasRows());
+    }
+
+    {
+      generator2.setInputRow(input_row1);
+      CHECK(generator2.hasRows());
+      CHECK(generator2.hasRows());
+
+      const auto& output_row2  = generator2.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator2.hasRows());
+    }
+
+    generator2.setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator2.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator2.setInputRow(input_row1);
+      CHECK(generator2.hasRows());
+
+      const auto& output_row3  = generator2.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator2.setInputRow(input_row1);
+      CHECK(generator2.hasRows());
+
+      generator2.setInputRow(input_row2);
+      CHECK(generator2.hasRows());
+      const auto& output_row3b  = generator2.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator2.setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator2.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator2.setInputRow(input_row2);
+      CHECK(generator2.hasRows());
+
+      const auto& fill_row1  = generator2.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator2.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator2.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator2.setInputRow(input_row3);
+      CHECK(generator2.hasRows());
+
+      const auto& fill_row1  = generator2.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator2.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator2.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator2.setInputRow(input_row4);
+      CHECK(generator2.hasRows());
+
+      int nb = 0;
+      while (generator2.hasRows()) {
+        const auto& fill_row1  = generator2.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator2.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator2.setInputRow(input_row5);
+      CHECK(generator2.hasRows());
+
+      int nb = 0;
+      while (generator2.hasRows()) {
+        const auto& fill_row1  = generator2.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator2.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<> generator3(generator);
+    CHECK(!generator3.hasRows());
+    CHECK_EQ(generator3.columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator3.columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator3.columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator3.setInputRow(input_row1);
+      CHECK(generator3.hasRows());
+      CHECK(generator3.hasRows());
+
+      const auto& output_row1  = generator3.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator3.hasRows());
+    }
+
+    {
+      generator3.setInputRow(input_row1);
+      CHECK(generator3.hasRows());
+      CHECK(generator3.hasRows());
+
+      const auto& output_row2  = generator3.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator3.hasRows());
+    }
+
+    generator3.setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator3.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator3.setInputRow(input_row1);
+      CHECK(generator3.hasRows());
+
+      const auto& output_row3  = generator3.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator3.setInputRow(input_row1);
+      CHECK(generator3.hasRows());
+
+      generator3.setInputRow(input_row2);
+      CHECK(generator3.hasRows());
+      const auto& output_row3b  = generator3.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator3.setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator3.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator3.setInputRow(input_row2);
+      CHECK(generator3.hasRows());
+
+      const auto& fill_row1  = generator3.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator3.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator3.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator3.setInputRow(input_row3);
+      CHECK(generator3.hasRows());
+
+      const auto& fill_row1  = generator3.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator3.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator3.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator3.setInputRow(input_row4);
+      CHECK(generator3.hasRows());
+
+      int nb = 0;
+      while (generator3.hasRows()) {
+        const auto& fill_row1  = generator3.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator3.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator3.setInputRow(input_row5);
+      CHECK(generator3.hasRows());
+
+      int nb = 0;
+      while (generator3.hasRows()) {
+        const auto& fill_row1  = generator3.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator3.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<> generator4(std::move(generator2));
+    CHECK(!generator4.hasRows());
+    CHECK_EQ(generator4.columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator4.columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator4.columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator4.setInputRow(input_row1);
+      CHECK(generator4.hasRows());
+      CHECK(generator4.hasRows());
+
+      const auto& output_row1  = generator4.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator4.hasRows());
+    }
+
+    {
+      generator4.setInputRow(input_row1);
+      CHECK(generator4.hasRows());
+      CHECK(generator4.hasRows());
+
+      const auto& output_row2  = generator4.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator4.hasRows());
+    }
+
+    generator4.setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator4.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator4.setInputRow(input_row1);
+      CHECK(generator4.hasRows());
+
+      const auto& output_row3  = generator4.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator4.setInputRow(input_row1);
+      CHECK(generator4.hasRows());
+
+      generator4.setInputRow(input_row2);
+      CHECK(generator4.hasRows());
+      const auto& output_row3b  = generator4.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator4.setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator4.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator4.setInputRow(input_row2);
+      CHECK(generator4.hasRows());
+
+      const auto& fill_row1  = generator4.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator4.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator4.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator4.setInputRow(input_row3);
+      CHECK(generator4.hasRows());
+
+      const auto& fill_row1  = generator4.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator4.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator4.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator4.setInputRow(input_row4);
+      CHECK(generator4.hasRows());
+
+      int nb = 0;
+      while (generator4.hasRows()) {
+        const auto& fill_row1  = generator4.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator4.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator4.setInputRow(input_row5);
+      CHECK(generator4.hasRows());
+
+      int nb = 0;
+      while (generator4.hasRows()) {
+        const auto& fill_row1  = generator4.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator4.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<> generator5(std::move(generator3));
+    CHECK(!generator5.hasRows());
+    CHECK_EQ(generator5.columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator5.columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator5.columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator5.setInputRow(input_row1);
+      CHECK(generator5.hasRows());
+      CHECK(generator5.hasRows());
+
+      const auto& output_row1  = generator5.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator5.hasRows());
+    }
+
+    {
+      generator5.setInputRow(input_row1);
+      CHECK(generator5.hasRows());
+      CHECK(generator5.hasRows());
+
+      const auto& output_row2  = generator5.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator5.hasRows());
+    }
+
+    generator5.setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator5.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator5.setInputRow(input_row1);
+      CHECK(generator5.hasRows());
+
+      const auto& output_row3  = generator5.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator5.setInputRow(input_row1);
+      CHECK(generator5.hasRows());
+
+      generator5.setInputRow(input_row2);
+      CHECK(generator5.hasRows());
+      const auto& output_row3b  = generator5.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator5.setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator5.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator5.setInputRow(input_row2);
+      CHECK(generator5.hasRows());
+
+      const auto& fill_row1  = generator5.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator5.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator5.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator5.setInputRow(input_row3);
+      CHECK(generator5.hasRows());
+
+      const auto& fill_row1  = generator5.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator5.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator5.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator5.setInputRow(input_row4);
+      CHECK(generator5.hasRows());
+
+      int nb = 0;
+      while (generator5.hasRows()) {
+        const auto& fill_row1  = generator5.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator5.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator5.setInputRow(input_row5);
+      CHECK(generator5.hasRows());
+
+      int nb = 0;
+      while (generator5.hasRows()) {
+        const auto& fill_row1  = generator5.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator5.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<>* generator6 = generator4.clone();
+    CHECK(!generator6->hasRows());
+    CHECK_EQ(generator6->columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator6->columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator6->columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator6->setInputRow(input_row1);
+      CHECK(generator6->hasRows());
+      CHECK(generator6->hasRows());
+
+      const auto& output_row1  = generator6->generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator6->hasRows());
+    }
+
+    {
+      generator6->setInputRow(input_row1);
+      CHECK(generator6->hasRows());
+      CHECK(generator6->hasRows());
+
+      const auto& output_row2  = generator6->generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator6->hasRows());
+    }
+
+    generator6->setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator6->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator6->setInputRow(input_row1);
+      CHECK(generator6->hasRows());
+
+      const auto& output_row3  = generator6->generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator6->setInputRow(input_row1);
+      CHECK(generator6->hasRows());
+
+      generator6->setInputRow(input_row2);
+      CHECK(generator6->hasRows());
+      const auto& output_row3b  = generator6->generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator6->setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator6->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator6->setInputRow(input_row2);
+      CHECK(generator6->hasRows());
+
+      const auto& fill_row1  = generator6->generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator6->generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator6->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator6->setInputRow(input_row3);
+      CHECK(generator6->hasRows());
+
+      const auto& fill_row1  = generator6->generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator6->generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator6->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator6->setInputRow(input_row4);
+      CHECK(generator6->hasRows());
+
+      int nb = 0;
+      while (generator6->hasRows()) {
+        const auto& fill_row1  = generator6->generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator6->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator6->setInputRow(input_row5);
+      CHECK(generator6->hasRows());
+
+      int nb = 0;
+      while (generator6->hasRows()) {
+        const auto& fill_row1  = generator6->generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator6->setColumnsOfInterest(cols_of_interest1);
+    delete generator6;
+
+
+    gum::learning::DBRowGeneratorEM<>* generator7 = generator5.clone();
+    CHECK(!generator7->hasRows());
+    CHECK_EQ(generator7->columnsOfInterest().size(), std::size_t(2));
+    CHECK_EQ(generator7->columnsOfInterest()[0], std::size_t(0));
+    CHECK_EQ(generator7->columnsOfInterest()[1], std::size_t(3));
+
+    {
+      generator7->setInputRow(input_row1);
+      CHECK(generator7->hasRows());
+      CHECK(generator7->hasRows());
+
+      const auto& output_row1  = generator7->generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator7->hasRows());
+    }
+
+    {
+      generator7->setInputRow(input_row1);
+      CHECK(generator7->hasRows());
+      CHECK(generator7->hasRows());
+
+      const auto& output_row2  = generator7->generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator7->hasRows());
+    }
+
+    generator7->setColumnsOfInterest(cols_of_interest1);
+
+    {
+      const auto& xcols = generator7->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator7->setInputRow(input_row1);
+      CHECK(generator7->hasRows());
+
+      const auto& output_row3  = generator7->generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator7->setInputRow(input_row1);
+      CHECK(generator7->hasRows());
+
+      generator7->setInputRow(input_row2);
+      CHECK(generator7->hasRows());
+      const auto& output_row3b  = generator7->generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator7->setColumnsOfInterest(cols_of_interest2);
+
+    {
+      const auto& xcols = generator7->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator7->setInputRow(input_row2);
+      CHECK(generator7->hasRows());
+
+      const auto& fill_row1  = generator7->generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator7->generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator7->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator7->setInputRow(input_row3);
+      CHECK(generator7->hasRows());
+
+      const auto& fill_row1  = generator7->generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator7->generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator7->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator7->setInputRow(input_row4);
+      CHECK(generator7->hasRows());
+
+      int nb = 0;
+      while (generator7->hasRows()) {
+        const auto& fill_row1  = generator7->generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator7->columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator7->setInputRow(input_row5);
+      CHECK(generator7->hasRows());
+
+      int nb = 0;
+      while (generator7->hasRows()) {
+        const auto& fill_row1  = generator7->generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    generator7->setColumnsOfInterest(cols_of_interest1);
+    delete generator7;
+
+
+    auto bn2 = gum::BayesNet< double >::fastPrototype("B;A");
+
+
+    gum::learning::DBRowGeneratorEM<> generator8(col_types, bn2);
+    CHECK(!generator8.hasRows());
+    CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
+
+    generator.setInputRow(input_row1);
+    CHECK(!generator8.hasRows());
+    CHECK_EQ(generator8.columnsOfInterest().size(), std::size_t(0));
+    generator8 = generator;
+
+    {
+      generator8.setInputRow(input_row1);
+      CHECK(generator8.hasRows());
+      CHECK(generator8.hasRows());
+
+      const auto& output_row1  = generator8.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator8.hasRows());
+    }
+
+    {
+      generator8.setInputRow(input_row1);
+      CHECK(generator8.hasRows());
+      CHECK(generator8.hasRows());
+
+      const auto& output_row2  = generator8.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator8.hasRows());
+    }
+
+    generator8.setColumnsOfInterest(cols_of_interest1);
+    {
+      const auto& xcols = generator8.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator8.setInputRow(input_row1);
+      CHECK(generator8.hasRows());
+
+      const auto& output_row3  = generator8.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator8.setInputRow(input_row1);
+      CHECK(generator8.hasRows());
+
+      generator8.setInputRow(input_row2);
+      CHECK(generator8.hasRows());
+      const auto& output_row3b  = generator8.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator8.setColumnsOfInterest(cols_of_interest2);
+
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator8.setInputRow(input_row2);
+      CHECK(generator8.hasRows());
+
+      const auto& fill_row1  = generator8.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator8.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator8.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator8.setInputRow(input_row3);
+      CHECK(generator8.hasRows());
+
+      const auto& fill_row1  = generator8.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator8.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator8.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator8.setInputRow(input_row4);
+      CHECK(generator8.hasRows());
+
+      int nb = 0;
+      while (generator8.hasRows()) {
+        const auto& fill_row1  = generator8.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator8.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator8.setInputRow(input_row5);
+      CHECK(generator8.hasRows());
+
+      int nb = 0;
+      while (generator8.hasRows()) {
+        const auto& fill_row1  = generator8.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator8.setInputRow(input_row2);
+      CHECK(generator8.hasRows());
+
+      const auto& fill_row1  = generator8.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator8.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    generator8.setColumnsOfInterest(cols_of_interest1);
+
+
+    gum::learning::DBRowGeneratorEM<> generator9(col_types, bn2);
+    CHECK(!generator9.hasRows());
+    CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
+
+    generator.setInputRow(input_row1);
+    CHECK(!generator9.hasRows());
+    CHECK_EQ(generator9.columnsOfInterest().size(), std::size_t(0));
+    generator9 = std::move(generator);
+
+    {
+      generator9.setInputRow(input_row1);
+      CHECK(generator9.hasRows());
+      CHECK(generator9.hasRows());
+
+      const auto& output_row1  = generator9.generate();
+      const auto& xoutput_row1 = output_row1.row();
+      CHECK_EQ(xoutput_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row1[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row1[3].discr_val, std::size_t(0));
+      CHECK(!generator9.hasRows());
+    }
+
+    {
+      generator9.setInputRow(input_row1);
+      CHECK(generator9.hasRows());
+      CHECK(generator9.hasRows());
+
+      const auto& output_row2  = generator9.generate();
+      const auto& xoutput_row2 = output_row2.row();
+      CHECK_EQ(xoutput_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[2].discr_val, std::size_t(1));
+      CHECK_EQ(xoutput_row2[3].discr_val, std::size_t(0));
+      CHECK(!generator9.hasRows());
+    }
+
+    generator9.setColumnsOfInterest(cols_of_interest1);
+    {
+      const auto& xcols = generator9.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(3));
+      generator9.setInputRow(input_row1);
+      CHECK(generator9.hasRows());
+
+      const auto& output_row3  = generator9.generate();
+      const auto& xoutput_row3 = output_row3.row();
+      CHECK_EQ(xoutput_row3[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3[3].discr_val, std::size_t(0));
+
+      generator9.setInputRow(input_row1);
+      CHECK(generator9.hasRows());
+
+      generator9.setInputRow(input_row2);
+      CHECK(generator9.hasRows());
+      const auto& output_row3b  = generator9.generate();
+      const auto& xoutput_row3b = output_row3b.row();
+      CHECK_EQ(xoutput_row3b[0].discr_val, std::size_t(0));
+      CHECK_EQ(xoutput_row3b[3].discr_val, std::size_t(0));
+    }
+
+    generator9.setColumnsOfInterest(cols_of_interest2);
+
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator9.setInputRow(input_row2);
+      CHECK(generator9.hasRows());
+
+      const auto& fill_row1  = generator9.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator9.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator9.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row3);
+      gum::Instantiation    inst(proba);
+
+      generator9.setInputRow(input_row3);
+      CHECK(generator9.hasRows());
+
+      const auto& fill_row1  = generator9.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator9.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    {
+      const auto& xcols = generator9.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row4);
+      gum::Instantiation    inst(proba);
+
+      generator9.setInputRow(input_row4);
+      CHECK(generator9.hasRows());
+
+      int nb = 0;
+      while (generator9.hasRows()) {
+        const auto& fill_row1  = generator9.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      const auto& xcols = generator9.columnsOfInterest();
+      CHECK_EQ(xcols.size(), std::size_t(2));
+      CHECK_EQ(xcols[0], std::size_t(0));
+      CHECK_EQ(xcols[1], std::size_t(1));
+
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1), std::size_t(0)}, input_row5);
+      gum::Instantiation    inst(proba);
+
+      generator9.setInputRow(input_row5);
+      CHECK(generator9.hasRows());
+
+      int nb = 0;
+      while (generator9.hasRows()) {
+        const auto& fill_row1  = generator9.generate();
+        const auto& xfill_row1 = fill_row1.row();
+
+        ++nb;
+        inst.chgVal(inst.variable("A"), xfill_row1[0].discr_val);
+        inst.chgVal(inst.variable("B"), xfill_row1[1].discr_val);
+
+        CHECK((fill_row1.weight()) == doctest::Approx(proba.get(inst)).epsilon(0.001));
+      }
+
+      CHECK_EQ(nb, 4);
+    }
+
+    {
+      gum::Tensor< double > proba = _infer_(bn, {std::size_t(1)}, input_row2);
+      gum::Instantiation    inst(proba);
+
+      generator9.setInputRow(input_row2);
+      CHECK(generator9.hasRows());
+
+      const auto& fill_row1  = generator9.generate();
+      const auto& xfill_row1 = fill_row1.row();
+      CHECK_EQ(xfill_row1[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row1[1].discr_val, std::size_t(0));
+      CHECK_EQ(fill_row1.weight(), proba.get(inst));
+
+      ++inst;
+      const auto& fill_row2  = generator9.generate();
+      const auto& xfill_row2 = fill_row2.row();
+      CHECK_EQ(xfill_row2[0].discr_val, std::size_t(0));
+      CHECK_EQ(xfill_row2[1].discr_val, std::size_t(1));
+      CHECK_EQ(fill_row2.weight(), proba.get(inst));
+    }
+
+    generator9.setColumnsOfInterest(cols_of_interest1);
+  }
 
 
 } /* namespace gum_tests */

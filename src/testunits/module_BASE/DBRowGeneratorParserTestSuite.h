@@ -33,8 +33,6 @@
 #include <ressources/include/evenDebugGenerator.h>
 #include <ressources/include/simpleDebugGenerator.h>
 
-#define GUM_CURRENT_SUITE  DBRowGeneratorParser
-#define GUM_CURRENT_MODULE GUMBASE
 
 namespace gum_tests {
 
@@ -64,7 +62,12 @@ namespace gum_tests {
 
 
     public:
-    static void test_simple() {
+    
+
+    
+  };
+
+  GUM_TEST(_simple) {
       gum::learning::DBTranslator4LabelizedVariable  translator_lab;
       gum::learning::DBTranslator4ContinuousVariable translator_cont;
       gum::learning::DBTranslatorSet                 set;
@@ -329,8 +332,7 @@ namespace gum_tests {
       CHECK(nb_rows == std::size_t(4));
       CHECK_EQ(parser2.generatorSet().size(), std::size_t(0));
     }
-
-    static void testEM() {
+  GUM_TEST(EM) {
       const std::vector< gum::learning::DBTranslatedValueType > col_types{
           gum::learning::DBTranslatedValueType::DISCRETE,
           gum::learning::DBTranslatedValueType::DISCRETE,
@@ -474,9 +476,5 @@ namespace gum_tests {
         CHECK_EQ(nb_observed, 4);
       }
     }
-  };
-
-  GUM_TEST_ACTIF(_simple)
-  GUM_TEST_ACTIF(EM)
 
 } /* namespace gum_tests */

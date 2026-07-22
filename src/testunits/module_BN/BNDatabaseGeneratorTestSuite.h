@@ -57,13 +57,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  BNDatabaseGenerator
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   class ASimpleDBGeneratorListener: public gum::ProgressListener {
-    private:
+    protected:
     gum::Size   _nbr_  = 0;
     std::string _mess_ = "";
 
@@ -96,596 +93,582 @@ namespace gum_tests {
 
       return bn;
     }   // namespace gum_tests
-
-    static void testConstuctor() {
-      gum::BayesNet< double >                       bn    = initAsia();
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-
-      auto varOrder = dbgen->varOrder();
-      CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
-      CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
-      CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(1));
-      CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(2));
-      CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(3));
-      CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(4));
-
-      auto varOrderNames = dbgen->varOrderNames();
-      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      CHECK_EQ(varOrderNames.at(0), "A");
-      CHECK_EQ(varOrderNames.at(1), "S");
-      CHECK_EQ(varOrderNames.at(2), "E");
-      CHECK_EQ(varOrderNames.at(3), "O");
-      CHECK_EQ(varOrderNames.at(4), "R");
-      CHECK_EQ(varOrderNames.at(5), "T");
-
-      delete dbgen;
-    }
-
-    static void testSetVarOrder() {
-      gum::BayesNet< double >                       bn    = initAsia();
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-
-      std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
-      std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
-      std::vector< gum::Idx >    badOrder1  = {5, 1, 0, 3, 2, 5, 4};
-      std::vector< std::string > badOrder2  = {"A", "E", "O", "R", "A", "S", "T"};
-      std::vector< gum::Idx >    badOrder3  = {1, 0, 3, 5, 4};
-      std::vector< std::string > badOrder4  = {"A", "O", "R", "S", "T"};
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
-      auto varOrderNames = dbgen->varOrderNames();
-      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      CHECK_EQ(varOrderNames.at(1), "A");
-      CHECK_EQ(varOrderNames.at(0), "S");
-      CHECK_EQ(varOrderNames.at(3), "E");
-      CHECK_EQ(varOrderNames.at(2), "O");
-      CHECK_EQ(varOrderNames.at(5), "R");
-      CHECK_EQ(varOrderNames.at(4), "T");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder2));
-      auto varOrder = dbgen->varOrder();
-      CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
-      CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
-      CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(2));
-      CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(3));
-      CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(4));
-      CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(1));
-      CHECK_EQ(varOrder.at(5), static_cast< gum::Idx >(5));
-
-      std::string csvFile = GET_RESSOURCES_PATH("csv/survey1.csv");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile));
-      varOrderNames = dbgen->varOrderNames();
-      CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
-      CHECK_EQ(varOrderNames.at(0), "E");
-      CHECK_EQ(varOrderNames.at(1), "A");
-      CHECK_EQ(varOrderNames.at(2), "O");
-      CHECK_EQ(varOrderNames.at(3), "T");
-      CHECK_EQ(varOrderNames.at(4), "R");
-      CHECK_EQ(varOrderNames.at(5), "S");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder());
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setRandomVarOrder());
-      CHECK_THROWS_AS(dbgen->setVarOrder(badOrder1), const gum::FatalError&);
-      CHECK_THROWS_AS(dbgen->setVarOrder(badOrder2), const gum::FatalError&);
-      CHECK_THROWS_AS(dbgen->setVarOrder(badOrder3), const gum::FatalError&);
-      CHECK_THROWS_AS(dbgen->setVarOrder(badOrder4), const gum::FatalError&);
-
-      delete dbgen;
-    }
-
-    static void testDrawSamples() {
-      gum::BayesNet< double > bn = initAsia();
-
-      gum::Size domSizeA  = 3;
-      gum::Size domSizeS  = 2;
-      gum::Size domSizeE  = 2;
-      gum::Size domSizeO  = 2;
-      gum::Size domSizeR  = 2;
-      gum::Size domSizeT  = 3;
-      gum::Size nbSamples = 100;
-
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-
-      CHECK_THROWS_AS(dbgen->database(), const gum::OperationNotAllowed&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-
-      std::vector< std::vector< gum::Idx > > database;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
-
-      for (const auto& row: database) {
-        CHECK_LT(row.at(0), domSizeA);
-        CHECK_LT(row.at(1), domSizeS);
-        CHECK_LT(row.at(2), domSizeE);
-        CHECK_LT(row.at(3), domSizeO);
-        CHECK_LT(row.at(4), domSizeR);
-        CHECK_LT(row.at(5), domSizeT);
-      }
-
-      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
-      for (const auto& row: database) {
-        CHECK_LT(row.at(0), domSizeS);
-        CHECK_LT(row.at(1), domSizeE);
-        CHECK_LT(row.at(2), domSizeT);
-        CHECK_LT(row.at(3), domSizeR);
-        CHECK_LT(row.at(4), domSizeA);
-        CHECK_LT(row.at(5), domSizeO);
-      }
-
-      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
-      for (const auto& row: database) {
-        CHECK_LT(row.at(0), domSizeS);
-        CHECK_LT(row.at(1), domSizeT);
-        CHECK_LT(row.at(2), domSizeE);
-        CHECK_LT(row.at(3), domSizeR);
-        CHECK_LT(row.at(4), domSizeO);
-        CHECK_LT(row.at(5), domSizeA);
-      }
-      delete dbgen;
-    }
-
-    static void testDrawSamplesLog2likelihood() {
-      gum::BayesNet< double > bn         = initAsia();
-      gum::Size               nbSamples1 = 100;
-      gum::Size               nbSamples2 = nbSamples1 * 100;
-      gum::Size               nbSamples3 = nbSamples1 * 1000;
-
-      double ll_1      = 0;
-      double ll_2      = 0;
-      double ll_3      = 0;
-      double tolerance = 0.1;
-
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-      CHECK_THROWS_AS(dbgen->database(), const gum::OperationNotAllowed&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
-
-      // log2likehood must proportional to number of samples
-      CHECK_LT(std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2), tolerance);
-      CHECK_LT(std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3), tolerance);
-
-      // log2likelihood must be aprox nbSamples * entropy (theorical result)
-      double entropy
-          = (bn.cpt(0) * bn.cpt(1) * bn.cpt(2) * bn.cpt(3) * bn.cpt(4) * bn.cpt(5)).entropy();
-      CHECK_LT(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
-      CHECK_LT(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
-      CHECK_LT(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
-
-      delete dbgen;
-    }
-
-    static void testToCSV_1() {
-      gum::BayesNet< double > bn        = initAsia();
-      gum::Size               nbSamples = 5;
-
-      std::vector< std::string > domA = {"young", "adult", "old"};
-      std::vector< std::string > domS = {"M", "F"};
-      std::vector< std::string > domE = {"high", "uni"};
-      std::vector< std::string > domO = {"emp", "self"};
-      std::vector< std::string > domR = {"small", "big"};
-      std::vector< std::string > domT = {"car", "train", "other"};
-
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-
-      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp1.csv");
-      bool        useLabels     = true;
-      bool        append        = false;
-      std::string csvSeparator  = " ";
-      bool        checkOnAppend = true;
-
-      CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                      const gum::OperationNotAllowed&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
-
-      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      append = true;
-      CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                      const gum::OperationNotAllowed&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
-
-      std::ifstream              csvFile(csvFileURL);
-      std::string                line;
-      std::vector< std::string > header;
-      std::getline(csvFile, line);
-      CHECK_EQ(line, "S E T R A O");
-
-      while (std::getline(csvFile, line)) {
-        std::istringstream iss(line);
-        std::string        valS;
-        std::string        valE;
-        std::string        valT;
-        std::string        valR;
-        std::string        valA;
-        std::string        valO;
-        iss >> valS;
-        iss >> valE;
-        iss >> valT;
-        iss >> valR;
-        iss >> valA;
-        iss >> valO;
-
-        CHECK_NE(std::find(domA.begin(), domA.end(), valA), domA.end());
-        CHECK_NE(std::find(domS.begin(), domS.end(), valS), domS.end());
-        CHECK_NE(std::find(domE.begin(), domE.end(), valE), domE.end());
-        CHECK_NE(std::find(domO.begin(), domO.end(), valO), domO.end());
-        CHECK_NE(std::find(domR.begin(), domR.end(), valR), domR.end());
-        CHECK_NE(std::find(domT.begin(), domT.end(), valT), domT.end());
-      }
-      csvFile.close();
-
-      delete dbgen;
-    }
-
-    static void testToCSV_2() {
-      gum::BayesNet< double > bn        = initAsia();
-      gum::Size               nbSamples = 5;
-
-      gum::Size domSizeA = 3;
-      gum::Size domSizeS = 2;
-      gum::Size domSizeE = 2;
-      gum::Size domSizeO = 2;
-      gum::Size domSizeR = 2;
-      gum::Size domSizeT = 3;
-
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-
-      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
-      std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp2.csv");
-      bool        useLabels     = false;
-      bool        append        = false;
-      std::string csvSeparator  = " ";
-      bool        checkOnAppend = true;
-
-      CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                      const gum::OperationNotAllowed&);
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
-
-      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      append = true;
-      CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
-                      const gum::OperationNotAllowed&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
-
-      std::ifstream              csvFile(csvFileURL);
-      std::string                line;
-      std::vector< std::string > header;
-      std::getline(csvFile, line);
-      CHECK_EQ(line, "S E T R A O");
-
-      while (std::getline(csvFile, line)) {
-        std::istringstream iss(line);
-        gum::Idx           valS;
-        gum::Idx           valE;
-        gum::Idx           valT;
-        gum::Idx           valR;
-        gum::Idx           valA;
-        gum::Idx           valO;
-        iss >> valS;
-        iss >> valE;
-        iss >> valT;
-        iss >> valR;
-        iss >> valA;
-        iss >> valO;
-
-        CHECK_LT(valS, domSizeS);
-        CHECK_LT(valE, domSizeE);
-        CHECK_LT(valT, domSizeT);
-        CHECK_LT(valR, domSizeR);
-        CHECK_LT(valA, domSizeA);
-        CHECK_LT(valO, domSizeO);
-      }
-      csvFile.close();
-
-      delete dbgen;
-    }
-
-    static void testToDatabaseTable() {
-      gum::BayesNet< double > bn        = initAsia();
-      gum::Size               domSizeA  = 3;
-      gum::Size               domSizeS  = 2;
-      gum::Size               domSizeE  = 2;
-      gum::Size               domSizeO  = 2;
-      gum::Size               domSizeR  = 2;
-      gum::Size               domSizeT  = 3;
-      gum::Size               nbSamples = 100;
-
-      std::vector< std::string > domA = {"young", "adult", "old"};
-      std::vector< std::string > domS = {"M", "F"};
-      std::vector< std::string > domE = {"high", "uni"};
-      std::vector< std::string > domO = {"emp", "self"};
-      std::vector< std::string > domR = {"small", "big"};
-      std::vector< std::string > domT = {"car", "train", "other"};
-
-      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
-      CHECK_THROWS_AS(dbgen->toDatabaseTable(), const gum::OperationNotAllowed&);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      gum::learning::DatabaseTable db;
-      bool                         useLabels = true;
-      CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
-
-      auto handler = db.handler();
-      while (handler.hasRows()) {
-        auto row = handler.row();
-        CHECK((std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])))
-              != (domA.end()));
-        CHECK((std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])))
-              != (domS.end()));
-        CHECK((std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])))
-              != (domE.end()));
-        CHECK((std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])))
-              != (domO.end()));
-        CHECK((std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])))
-              != (domR.end()));
-        CHECK((std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])))
-              != (domT.end()));
-        handler.nextRow();
-      }
-
-      useLabels = false;
-      CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
-      handler = db.handler();
-      while (handler.hasRows()) {
-        auto row = handler.row();
-        CHECK_LT(row[0].discr_val, domSizeA);
-        CHECK_LT(row[1].discr_val, domSizeS);
-        CHECK_LT(row[2].discr_val, domSizeE);
-        CHECK_LT(row[3].discr_val, domSizeO);
-        CHECK_LT(row[4].discr_val, domSizeR);
-        CHECK_LT(row[5].discr_val, domSizeT);
-        handler.nextRow();
-      }
-
-      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
-      CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
-
-      useLabels = true;
-      CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
-      handler = db.handler();
-      while (handler.hasRows()) {
-        auto row = handler.row();
-
-
-        CHECK((std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])))
-              != (domS.end()));
-        CHECK((std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])))
-              != (domE.end()));
-        CHECK((std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])))
-              != (domT.end()));
-        CHECK((std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])))
-              != (domR.end()));
-        CHECK((std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])))
-              != (domA.end()));
-        CHECK((std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])))
-              != (domO.end()));
-
-        handler.nextRow();
-      }
-
-      useLabels = false;
-      CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
-      handler = db.handler();
-      while (handler.hasRows()) {
-        auto row = handler.row();
-        CHECK_LT(row[0].discr_val, domSizeS);
-        CHECK_LT(row[1].discr_val, domSizeE);
-        CHECK_LT(row[2].discr_val, domSizeT);
-        CHECK_LT(row[3].discr_val, domSizeR);
-        CHECK_LT(row[4].discr_val, domSizeA);
-        CHECK_LT(row[5].discr_val, domSizeO);
-        handler.nextRow();
-      }
-
-      delete dbgen;
-    }
-
-    static void testListenToDrawSamples() {
-      gum::BayesNet< double >                      bn = initAsia();
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-
-      ASimpleDBGeneratorListener gener(dbgen);
-      CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(0));
-      CHECK_EQ(gener.getMess(), "");
-      dbgen.drawSamples(100);
-      CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(4950));
-      CHECK_NE(gener.getMess(), "");
-
-      ASimpleDBGeneratorListener gener2(dbgen);
-      CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(0));
-      CHECK_EQ(gener2.getMess(), "");
-      dbgen.drawSamples(1000);
-      CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(4950));
-      CHECK_NE(gener2.getMess(), "");
-    }
-
-    static void testDrawingWithEvidence() {
-      gum::BayesNet< double >                      bn = initAsia();
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-      ASimpleDBGeneratorListener                   gener(dbgen);
-
-      gum::Instantiation filter;
-      filter.add(bn.variable(0));
-      filter.setFirst();
-      dbgen.drawSamples(100, filter);
-      CHECK_LT(dbgen.samplesNbRows(), 101u);   // some samples have been rejected
-    }
-
-    static void testAccuracy() {
-      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
-      auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-      dbgen.drawSamples(100000);
-      dbgen.toCSV(csvFileURL);
-
-      auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
-      gum::learning::BNLearner learn(csvFileURL, marginals);
-      auto                     bn2 = learn.learnParameters(marginals.internalDag());
-
-      gum::LazyPropagation ie(&bn);
-      ie.makeInference();
-
-      CHECK(((bn2.cpt("A")
-              - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
-                 .abs()
-                 .max())
-            < (1e-2));
-      CHECK(((bn2.cpt("B")
-              - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
-                 .abs()
-                 .max())
-            < (1e-2));
-    }
-
-    static void testAccuracyWithEvidence() {
-      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
-      auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-      gum::Instantiation                           filter;
-      filter.add(bn.variable("B"));
-      filter.setFirst();   // evidence B:0
-      dbgen.drawSamples(100000, filter);
-      dbgen.toCSV(csvFileURL);
-
-      auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
-      gum::learning::BNLearner learn(csvFileURL, marginals);
-      auto                     bn2 = learn.learnParameters(marginals.internalDag());
-
-      gum::LazyPropagation ie(&bn);
-      ie.addEvidence("B", 0);
-      ie.makeInference();
-
-      CHECK(((bn2.cpt("A")
-              - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
-                 .abs()
-                 .max())
-            < (1e-2));
-      CHECK(((bn2.cpt("B")
-              - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
-                 .abs()
-                 .max())
-            < (1e-2));
-    }
-
-    static void testDiscretizedVariableTranslation() {
-      std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen_discretized.csv");
-      auto        bn         = gum::BayesNet< double >::fastPrototype("A[1.5,2,2.5,10,14]");
-
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-
-      const auto  nbLines = 100;
-      std::string dummyLine;
-      double      d;
-      auto        pos = 0;
-
-      dbgen.drawSamples(nbLines);
-      // RANDOM VALUES (default)
-      dbgen.toCSV(csvFileURL);
-
-      {
-        std::ifstream stream(csvFileURL);
-        getline(stream, dummyLine);   // skip header
-        pos = 0;
-        while (getline(stream, dummyLine)) {
-          pos++;
-          CHECK(gum::isNumericalWithResult(dummyLine, &d));
-          CHECK(d >= 1.5);
-          CHECK(d <= 14);
-        }
-        CHECK_EQ(pos++, nbLines);
-      }
-
-      // MEDIAN
-      dbgen.setDiscretizedLabelModeMedian();
-      dbgen.toCSV(csvFileURL);
-      {
-        std::ifstream stream(csvFileURL);
-        getline(stream, dummyLine);   // skip header
-        pos = 0;
-        while (getline(stream, dummyLine)) {
-          pos++;
-          CHECK(gum::isNumericalWithResult(dummyLine, &d));
-          CHECK(((d == 1.75) || (d == 2.25) || (d == 6.25) || (d == 12)));
-        }
-        CHECK_EQ(pos, nbLines);
-      }
-
-      // INTERVALLS
-      dbgen.setDiscretizedLabelModeInterval();
-      dbgen.toCSV(csvFileURL);
-      {
-        std::ifstream stream(csvFileURL);
-        getline(stream, dummyLine);   // skip header
-        pos = 0;
-        while (getline(stream, dummyLine)) {
-          pos++;
-          CHECK_EQ(dummyLine.front(), '[');
-        }
-        CHECK_EQ(pos, nbLines);
-      }
-    }
-
-    static void testInfiniteRejectionSampling() {
-      gum::Timer timer;
-
-      auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D");
-      bn.cpt("B").fillWith({0, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5});   // {B=0|A=0,C=0} impossible
-      gum::learning::BNDatabaseGenerator< double > dbgen(bn);
-
-      gum::Instantiation filter;
-
-      filter.add(bn.variable("A"));
-      filter.add(bn.variable("B"));
-      filter.add(bn.variable("C"));
-      filter.setFirst();   // evs={A:0,B=0,C:0} imposible
-
-      const auto nbLines = 10;
-      timer.reset();
-      dbgen.drawSamples(nbLines, filter, 5);
-      CHECK_LT(timer.step(), 5.5);
-      CHECK_EQ(dbgen.samplesNbRows(), 0u);
-    }
   };
 
-  GUM_TEST_ACTIF(Constuctor)
-  GUM_TEST_ACTIF(SetVarOrder)
-  GUM_TEST_ACTIF(DrawSamples)
-  GUM_TEST_ACTIF(DrawSamplesLog2likelihood)
-  GUM_TEST_ACTIF(ToCSV_1)
-  GUM_TEST_ACTIF(ToCSV_2)
-  GUM_TEST_ACTIF(ToDatabaseTable)
-  GUM_TEST_ACTIF(ListenToDrawSamples)
-  GUM_TEST_ACTIF(DrawingWithEvidence)
-  GUM_TEST_ACTIF(Accuracy)
-  GUM_TEST_ACTIF(AccuracyWithEvidence)
-  GUM_TEST_ACTIF(DiscretizedVariableTranslation)
-  GUM_TEST_ACTIF(InfiniteRejectionSampling)
+  GUM_TEST(Constuctor) {
+    gum::BayesNet< double >                       bn    = initAsia();
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+
+    auto varOrder = dbgen->varOrder();
+    CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
+    CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
+    CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(1));
+    CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(2));
+    CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(3));
+    CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(4));
+
+    auto varOrderNames = dbgen->varOrderNames();
+    CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+    CHECK_EQ(varOrderNames.at(0), "A");
+    CHECK_EQ(varOrderNames.at(1), "S");
+    CHECK_EQ(varOrderNames.at(2), "E");
+    CHECK_EQ(varOrderNames.at(3), "O");
+    CHECK_EQ(varOrderNames.at(4), "R");
+    CHECK_EQ(varOrderNames.at(5), "T");
+
+    delete dbgen;
+  }
+
+  GUM_TEST(SetVarOrder) {
+    gum::BayesNet< double >                       bn    = initAsia();
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+
+    std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
+    std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
+    std::vector< gum::Idx >    badOrder1  = {5, 1, 0, 3, 2, 5, 4};
+    std::vector< std::string > badOrder2  = {"A", "E", "O", "R", "A", "S", "T"};
+    std::vector< gum::Idx >    badOrder3  = {1, 0, 3, 5, 4};
+    std::vector< std::string > badOrder4  = {"A", "O", "R", "S", "T"};
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
+    auto varOrderNames = dbgen->varOrderNames();
+    CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+    CHECK_EQ(varOrderNames.at(1), "A");
+    CHECK_EQ(varOrderNames.at(0), "S");
+    CHECK_EQ(varOrderNames.at(3), "E");
+    CHECK_EQ(varOrderNames.at(2), "O");
+    CHECK_EQ(varOrderNames.at(5), "R");
+    CHECK_EQ(varOrderNames.at(4), "T");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder2));
+    auto varOrder = dbgen->varOrder();
+    CHECK_EQ(varOrder.size(), static_cast< gum::Size >(6));
+    CHECK_EQ(varOrder.at(0), static_cast< gum::Idx >(0));
+    CHECK_EQ(varOrder.at(1), static_cast< gum::Idx >(2));
+    CHECK_EQ(varOrder.at(2), static_cast< gum::Idx >(3));
+    CHECK_EQ(varOrder.at(3), static_cast< gum::Idx >(4));
+    CHECK_EQ(varOrder.at(4), static_cast< gum::Idx >(1));
+    CHECK_EQ(varOrder.at(5), static_cast< gum::Idx >(5));
+
+    std::string csvFile = GET_RESSOURCES_PATH("csv/survey1.csv");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile));
+    varOrderNames = dbgen->varOrderNames();
+    CHECK_EQ(varOrderNames.size(), static_cast< gum::Size >(6));
+    CHECK_EQ(varOrderNames.at(0), "E");
+    CHECK_EQ(varOrderNames.at(1), "A");
+    CHECK_EQ(varOrderNames.at(2), "O");
+    CHECK_EQ(varOrderNames.at(3), "T");
+    CHECK_EQ(varOrderNames.at(4), "R");
+    CHECK_EQ(varOrderNames.at(5), "S");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder());
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setRandomVarOrder());
+    CHECK_THROWS_AS(dbgen->setVarOrder(badOrder1), const gum::FatalError&);
+    CHECK_THROWS_AS(dbgen->setVarOrder(badOrder2), const gum::FatalError&);
+    CHECK_THROWS_AS(dbgen->setVarOrder(badOrder3), const gum::FatalError&);
+    CHECK_THROWS_AS(dbgen->setVarOrder(badOrder4), const gum::FatalError&);
+
+    delete dbgen;
+  }
+
+  GUM_TEST(DrawSamples) {
+    gum::BayesNet< double > bn = initAsia();
+
+    gum::Size domSizeA  = 3;
+    gum::Size domSizeS  = 2;
+    gum::Size domSizeE  = 2;
+    gum::Size domSizeO  = 2;
+    gum::Size domSizeR  = 2;
+    gum::Size domSizeT  = 3;
+    gum::Size nbSamples = 100;
+
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+
+    CHECK_THROWS_AS(dbgen->database(), const gum::OperationNotAllowed&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+
+    std::vector< std::vector< gum::Idx > > database;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
+
+    for (const auto& row: database) {
+      CHECK_LT(row.at(0), domSizeA);
+      CHECK_LT(row.at(1), domSizeS);
+      CHECK_LT(row.at(2), domSizeE);
+      CHECK_LT(row.at(3), domSizeO);
+      CHECK_LT(row.at(4), domSizeR);
+      CHECK_LT(row.at(5), domSizeT);
+    }
+
+    std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
+    for (const auto& row: database) {
+      CHECK_LT(row.at(0), domSizeS);
+      CHECK_LT(row.at(1), domSizeE);
+      CHECK_LT(row.at(2), domSizeT);
+      CHECK_LT(row.at(3), domSizeR);
+      CHECK_LT(row.at(4), domSizeA);
+      CHECK_LT(row.at(5), domSizeO);
+    }
+
+    std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(database = dbgen->database());
+    for (const auto& row: database) {
+      CHECK_LT(row.at(0), domSizeS);
+      CHECK_LT(row.at(1), domSizeT);
+      CHECK_LT(row.at(2), domSizeE);
+      CHECK_LT(row.at(3), domSizeR);
+      CHECK_LT(row.at(4), domSizeO);
+      CHECK_LT(row.at(5), domSizeA);
+    }
+    delete dbgen;
+  }
+
+  GUM_TEST(DrawSamplesLog2likelihood) {
+    gum::BayesNet< double > bn         = initAsia();
+    gum::Size               nbSamples1 = 100;
+    gum::Size               nbSamples2 = nbSamples1 * 100;
+    gum::Size               nbSamples3 = nbSamples1 * 1000;
+
+    double ll_1      = 0;
+    double ll_2      = 0;
+    double ll_3      = 0;
+    double tolerance = 0.1;
+
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+    CHECK_THROWS_AS(dbgen->database(), const gum::OperationNotAllowed&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
+
+    // log2likehood must proportional to number of samples
+    CHECK_LT(std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2), tolerance);
+    CHECK_LT(std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3), tolerance);
+
+    // log2likelihood must be aprox nbSamples * entropy (theorical result)
+    double entropy
+        = (bn.cpt(0) * bn.cpt(1) * bn.cpt(2) * bn.cpt(3) * bn.cpt(4) * bn.cpt(5)).entropy();
+    CHECK_LT(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
+    CHECK_LT(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
+    CHECK_LT(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
+
+    delete dbgen;
+  }
+
+  GUM_TEST(ToCSV_1) {
+    gum::BayesNet< double > bn        = initAsia();
+    gum::Size               nbSamples = 5;
+
+    std::vector< std::string > domA = {"young", "adult", "old"};
+    std::vector< std::string > domS = {"M", "F"};
+    std::vector< std::string > domE = {"high", "uni"};
+    std::vector< std::string > domO = {"emp", "self"};
+    std::vector< std::string > domR = {"small", "big"};
+    std::vector< std::string > domT = {"car", "train", "other"};
+
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+
+    std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
+    std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp1.csv");
+    bool        useLabels     = true;
+    bool        append        = false;
+    std::string csvSeparator  = " ";
+    bool        checkOnAppend = true;
+
+    CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                    const gum::OperationNotAllowed&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+    std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    append = true;
+    CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                    const gum::OperationNotAllowed&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+    std::ifstream              csvFile(csvFileURL);
+    std::string                line;
+    std::vector< std::string > header;
+    std::getline(csvFile, line);
+    CHECK_EQ(line, "S E T R A O");
+
+    while (std::getline(csvFile, line)) {
+      std::istringstream iss(line);
+      std::string        valS;
+      std::string        valE;
+      std::string        valT;
+      std::string        valR;
+      std::string        valA;
+      std::string        valO;
+      iss >> valS;
+      iss >> valE;
+      iss >> valT;
+      iss >> valR;
+      iss >> valA;
+      iss >> valO;
+
+      CHECK_NE(std::find(domA.begin(), domA.end(), valA), domA.end());
+      CHECK_NE(std::find(domS.begin(), domS.end(), valS), domS.end());
+      CHECK_NE(std::find(domE.begin(), domE.end(), valE), domE.end());
+      CHECK_NE(std::find(domO.begin(), domO.end(), valO), domO.end());
+      CHECK_NE(std::find(domR.begin(), domR.end(), valR), domR.end());
+      CHECK_NE(std::find(domT.begin(), domT.end(), valT), domT.end());
+    }
+    csvFile.close();
+
+    delete dbgen;
+  }
+
+  GUM_TEST(ToCSV_2) {
+    gum::BayesNet< double > bn        = initAsia();
+    gum::Size               nbSamples = 5;
+
+    gum::Size domSizeA = 3;
+    gum::Size domSizeS = 2;
+    gum::Size domSizeE = 2;
+    gum::Size domSizeO = 2;
+    gum::Size domSizeR = 2;
+    gum::Size domSizeT = 3;
+
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+
+    std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
+    std::string csvFileURL    = GET_RESSOURCES_PATH("outputs/survey_tmp2.csv");
+    bool        useLabels     = false;
+    bool        append        = false;
+    std::string csvSeparator  = " ";
+    bool        checkOnAppend = true;
+
+    CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                    const gum::OperationNotAllowed&);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+    std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder2));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    append = true;
+    CHECK_THROWS_AS(dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+                    const gum::OperationNotAllowed&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+    std::ifstream              csvFile(csvFileURL);
+    std::string                line;
+    std::vector< std::string > header;
+    std::getline(csvFile, line);
+    CHECK_EQ(line, "S E T R A O");
+
+    while (std::getline(csvFile, line)) {
+      std::istringstream iss(line);
+      gum::Idx           valS;
+      gum::Idx           valE;
+      gum::Idx           valT;
+      gum::Idx           valR;
+      gum::Idx           valA;
+      gum::Idx           valO;
+      iss >> valS;
+      iss >> valE;
+      iss >> valT;
+      iss >> valR;
+      iss >> valA;
+      iss >> valO;
+
+      CHECK_LT(valS, domSizeS);
+      CHECK_LT(valE, domSizeE);
+      CHECK_LT(valT, domSizeT);
+      CHECK_LT(valR, domSizeR);
+      CHECK_LT(valA, domSizeA);
+      CHECK_LT(valO, domSizeO);
+    }
+    csvFile.close();
+
+    delete dbgen;
+  }
+
+  GUM_TEST(ToDatabaseTable) {
+    gum::BayesNet< double > bn        = initAsia();
+    gum::Size               domSizeA  = 3;
+    gum::Size               domSizeS  = 2;
+    gum::Size               domSizeE  = 2;
+    gum::Size               domSizeO  = 2;
+    gum::Size               domSizeR  = 2;
+    gum::Size               domSizeT  = 3;
+    gum::Size               nbSamples = 100;
+
+    std::vector< std::string > domA = {"young", "adult", "old"};
+    std::vector< std::string > domS = {"M", "F"};
+    std::vector< std::string > domE = {"high", "uni"};
+    std::vector< std::string > domO = {"emp", "self"};
+    std::vector< std::string > domR = {"small", "big"};
+    std::vector< std::string > domT = {"car", "train", "other"};
+
+    gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen = new gum::learning::BNDatabaseGenerator< double >(bn));
+    CHECK_THROWS_AS(dbgen->toDatabaseTable(), const gum::OperationNotAllowed&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+    gum::learning::DatabaseTable db;
+    bool                         useLabels = true;
+    CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
+
+    auto handler = db.handler();
+    while (handler.hasRows()) {
+      auto row = handler.row();
+      CHECK((std::find(domA.begin(), domA.end(), db.translator(0).translateBack(row[0])))
+            != (domA.end()));
+      CHECK((std::find(domS.begin(), domS.end(), db.translator(1).translateBack(row[1])))
+            != (domS.end()));
+      CHECK((std::find(domE.begin(), domE.end(), db.translator(2).translateBack(row[2])))
+            != (domE.end()));
+      CHECK((std::find(domO.begin(), domO.end(), db.translator(3).translateBack(row[3])))
+            != (domO.end()));
+      CHECK((std::find(domR.begin(), domR.end(), db.translator(4).translateBack(row[4])))
+            != (domR.end()));
+      CHECK((std::find(domT.begin(), domT.end(), db.translator(5).translateBack(row[5])))
+            != (domT.end()));
+      handler.nextRow();
+    }
+
+    useLabels = false;
+    CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
+    handler = db.handler();
+    while (handler.hasRows()) {
+      auto row = handler.row();
+      CHECK_LT(row[0].discr_val, domSizeA);
+      CHECK_LT(row[1].discr_val, domSizeS);
+      CHECK_LT(row[2].discr_val, domSizeE);
+      CHECK_LT(row[3].discr_val, domSizeO);
+      CHECK_LT(row[4].discr_val, domSizeR);
+      CHECK_LT(row[5].discr_val, domSizeT);
+      handler.nextRow();
+    }
+
+    std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+    CHECK_NOTHROW(dbgen->setVarOrder(vOrder1));
+
+    useLabels = true;
+    CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
+    handler = db.handler();
+    while (handler.hasRows()) {
+      auto row = handler.row();
+
+
+      CHECK((std::find(domS.begin(), domS.end(), db.translator(0).translateBack(row[0])))
+            != (domS.end()));
+      CHECK((std::find(domE.begin(), domE.end(), db.translator(1).translateBack(row[1])))
+            != (domE.end()));
+      CHECK((std::find(domT.begin(), domT.end(), db.translator(2).translateBack(row[2])))
+            != (domT.end()));
+      CHECK((std::find(domR.begin(), domR.end(), db.translator(3).translateBack(row[3])))
+            != (domR.end()));
+      CHECK((std::find(domA.begin(), domA.end(), db.translator(4).translateBack(row[4])))
+            != (domA.end()));
+      CHECK((std::find(domO.begin(), domO.end(), db.translator(5).translateBack(row[5])))
+            != (domO.end()));
+
+      handler.nextRow();
+    }
+
+    useLabels = false;
+    CHECK_NOTHROW(db = dbgen->toDatabaseTable(useLabels));
+    handler = db.handler();
+    while (handler.hasRows()) {
+      auto row = handler.row();
+      CHECK_LT(row[0].discr_val, domSizeS);
+      CHECK_LT(row[1].discr_val, domSizeE);
+      CHECK_LT(row[2].discr_val, domSizeT);
+      CHECK_LT(row[3].discr_val, domSizeR);
+      CHECK_LT(row[4].discr_val, domSizeA);
+      CHECK_LT(row[5].discr_val, domSizeO);
+      handler.nextRow();
+    }
+
+    delete dbgen;
+  }
+
+  GUM_TEST(ListenToDrawSamples) {
+    gum::BayesNet< double >                      bn = initAsia();
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+    ASimpleDBGeneratorListener gener(dbgen);
+    CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(0));
+    CHECK_EQ(gener.getMess(), "");
+    dbgen.drawSamples(100);
+    CHECK_EQ(gener.getNbr(), static_cast< gum::Size >(4950));
+    CHECK_NE(gener.getMess(), "");
+
+    ASimpleDBGeneratorListener gener2(dbgen);
+    CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(0));
+    CHECK_EQ(gener2.getMess(), "");
+    dbgen.drawSamples(1000);
+    CHECK_EQ(gener2.getNbr(), static_cast< gum::Size >(4950));
+    CHECK_NE(gener2.getMess(), "");
+  }
+
+  GUM_TEST(DrawingWithEvidence) {
+    gum::BayesNet< double >                      bn = initAsia();
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+    ASimpleDBGeneratorListener                   gener(dbgen);
+
+    gum::Instantiation filter;
+    filter.add(bn.variable(0));
+    filter.setFirst();
+    dbgen.drawSamples(100, filter);
+    CHECK_LT(dbgen.samplesNbRows(), 101u);   // some samples have been rejected
+  }
+
+  GUM_TEST(Accuracy) {
+    std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
+    auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+    dbgen.drawSamples(100000);
+    dbgen.toCSV(csvFileURL);
+
+    auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
+    gum::learning::BNLearner learn(csvFileURL, marginals);
+    auto                     bn2 = learn.learnParameters(marginals.internalDag());
+
+    gum::LazyPropagation ie(&bn);
+    ie.makeInference();
+
+    CHECK(
+        ((bn2.cpt("A") - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+             .abs()
+             .max())
+        < (1e-2));
+    CHECK(
+        ((bn2.cpt("B") - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+             .abs()
+             .max())
+        < (1e-2));
+  }
+
+  GUM_TEST(AccuracyWithEvidence) {
+    std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen2.csv");
+    auto        bn         = gum::BayesNet< double >::fastPrototype("A->B");
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+    gum::Instantiation                           filter;
+    filter.add(bn.variable("B"));
+    filter.setFirst();   // evidence B:0
+    dbgen.drawSamples(100000, filter);
+    dbgen.toCSV(csvFileURL);
+
+    auto                     marginals = gum::BayesNet< double >::fastPrototype("A;B");
+    gum::learning::BNLearner learn(csvFileURL, marginals);
+    auto                     bn2 = learn.learnParameters(marginals.internalDag());
+
+    gum::LazyPropagation ie(&bn);
+    ie.addEvidence("B", 0);
+    ie.makeInference();
+
+    CHECK(
+        ((bn2.cpt("A") - (gum::Tensor< double >() << bn2.variable("A")).fillWith(ie.posterior("A")))
+             .abs()
+             .max())
+        < (1e-2));
+    CHECK(
+        ((bn2.cpt("B") - (gum::Tensor< double >() << bn2.variable("B")).fillWith(ie.posterior("B")))
+             .abs()
+             .max())
+        < (1e-2));
+  }
+
+  GUM_TEST(DiscretizedVariableTranslation) {
+    std::string csvFileURL = GET_RESSOURCES_PATH("outputs/dbgen_discretized.csv");
+    auto        bn         = gum::BayesNet< double >::fastPrototype("A[1.5,2,2.5,10,14]");
+
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+    const auto  nbLines = 100;
+    std::string dummyLine;
+    double      d;
+    auto        pos = 0;
+
+    dbgen.drawSamples(nbLines);
+    // RANDOM VALUES (default)
+    dbgen.toCSV(csvFileURL);
+
+    {
+      std::ifstream stream(csvFileURL);
+      getline(stream, dummyLine);   // skip header
+      pos = 0;
+      while (getline(stream, dummyLine)) {
+        pos++;
+        CHECK(gum::isNumericalWithResult(dummyLine, &d));
+        CHECK(d >= 1.5);
+        CHECK(d <= 14);
+      }
+      CHECK_EQ(pos++, nbLines);
+    }
+
+    // MEDIAN
+    dbgen.setDiscretizedLabelModeMedian();
+    dbgen.toCSV(csvFileURL);
+    {
+      std::ifstream stream(csvFileURL);
+      getline(stream, dummyLine);   // skip header
+      pos = 0;
+      while (getline(stream, dummyLine)) {
+        pos++;
+        CHECK(gum::isNumericalWithResult(dummyLine, &d));
+        CHECK(((d == 1.75) || (d == 2.25) || (d == 6.25) || (d == 12)));
+      }
+      CHECK_EQ(pos, nbLines);
+    }
+
+    // INTERVALLS
+    dbgen.setDiscretizedLabelModeInterval();
+    dbgen.toCSV(csvFileURL);
+    {
+      std::ifstream stream(csvFileURL);
+      getline(stream, dummyLine);   // skip header
+      pos = 0;
+      while (getline(stream, dummyLine)) {
+        pos++;
+        CHECK_EQ(dummyLine.front(), '[');
+      }
+      CHECK_EQ(pos, nbLines);
+    }
+  }
+
+  GUM_TEST(InfiniteRejectionSampling) {
+    gum::Timer timer;
+
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C->D");
+    bn.cpt("B").fillWith({0, 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5});   // {B=0|A=0,C=0} impossible
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+    gum::Instantiation filter;
+
+    filter.add(bn.variable("A"));
+    filter.add(bn.variable("B"));
+    filter.add(bn.variable("C"));
+    filter.setFirst();   // evs={A:0,B=0,C:0} imposible
+
+    const auto nbLines = 10;
+    timer.reset();
+    dbgen.drawSamples(nbLines, filter, 5);
+    CHECK_LT(timer.step(), 5.5);
+    CHECK_EQ(dbgen.samplesNbRows(), 0u);
+  }
 }   // namespace gum_tests

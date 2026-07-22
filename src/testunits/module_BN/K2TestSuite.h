@@ -67,63 +67,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  K2
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct K2TestSuite {
     public:
-    static void test_k2_asia() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::SmoothingPrior       prior(database);
-      gum::learning::ScoreK2              score(parser, prior);
-
-      gum::learning::StructuralConstraintDAG struct_constraint;
-
-      gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
-
-      gum::Sequence< gum::NodeId > order{4, 6, 2, 1, 5, 7, 0};
-
-      gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
-          invariable_constraints;
-
-      gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
-                                                   decltype(struct_constraint) >
-          selector(score, invariable_constraints, struct_constraint);
-
-      gum::learning::K2 k2;
-      k2.setOrder(order);
-      k2.approximationScheme().setEpsilon(0);
-
-      try {
-        gum::DAG dag = k2.learnStructure(selector);
-        CHECK_EQ(dag.arcs().size(), (gum::Size)11);
-
-        gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
-
-        gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
-
-        CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(11));
-        CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(11));
-      } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
-    }
-
     //@beforeMerging why is this code commented ?
     /*
     void xtest_k2_asia_bis () {
@@ -326,6 +273,54 @@ namespace gum_tests {
     */
   };
 
-  GUM_TEST_ACTIF(_k2_asia)
+  GUM_TEST(_k2_asia) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::SmoothingPrior       prior(database);
+    gum::learning::ScoreK2              score(parser, prior);
+
+    gum::learning::StructuralConstraintDAG struct_constraint;
+
+    gum::learning::ParamEstimatorML estimator(parser, prior, score.internalPrior());
+
+    gum::Sequence< gum::NodeId > order{4, 6, 2, 1, 5, 7, 0};
+
+    gum::learning::StructuralConstraintSetStatic< gum::learning::StructuralConstraintTotalOrder >
+        invariable_constraints;
+
+    gum::learning::GraphChangesSelector4DiGraph< decltype(invariable_constraints),
+                                                 decltype(struct_constraint) >
+        selector(score, invariable_constraints, struct_constraint);
+
+    gum::learning::K2 k2;
+    k2.setOrder(order);
+    k2.approximationScheme().setEpsilon(0);
+
+    try {
+      gum::DAG dag = k2.learnStructure(selector);
+      CHECK_EQ(dag.arcs().size(), (gum::Size)11);
+
+      gum::BayesNet< double > bn = k2.learnBN< double >(selector, estimator);
+
+      gum::BayesNet< double > bn2 = k2.learnBN< double >(selector, estimator);
+
+      CHECK_EQ(bn.internalDag().arcs().size(), static_cast< gum::Size >(11));
+      CHECK_EQ(bn2.internalDag().arcs().size(), static_cast< gum::Size >(11));
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
 
 } /* namespace gum_tests */

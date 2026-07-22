@@ -50,99 +50,90 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  LabelizedVariable
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct LabelizedVariableTestSuite {
     public:
-    static void testCopy() {
-      gum::LabelizedVariable var1("var1", "this is var1", 2);
-      gum::LabelizedVariable var2("var2", "this is var2", 2);
-
-      gum::LabelizedVariable var3(var1);
-      gum::LabelizedVariable var4("var4", "this is var4");
-      GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
-
-      CHECK_EQ(var4, var2);
-      CHECK_EQ(var1, var3);
-      CHECK_NE(var4, var1);
-    }   // namespace gum_tests
-
-    static void testLabels() {
-      gum::LabelizedVariable var1("var1", "this is var1", 0);
-      CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(0));
-      CHECK(var1.empty());
-      var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
-
-      CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(4));
-      CHECK_EQ(var1.label(1), "3");
-      CHECK_EQ(var1["3"], static_cast< gum::Idx >(1));
-
-      CHECK_THROWS_AS(var1.addLabel("3"), const gum::DuplicateElement&);
-
-      std::stringstream s;
-      s << var1;
-      CHECK_EQ(s.str(), "var1:Labelized({4|3|2|1})");
-
-      CHECK_EQ(var1.toString(), "var1:Labelized({4|3|2|1})");
-    }
-
-    static void testChangeLabel() {
-      gum::LabelizedVariable var1("var1", "this is var1", 0);
-      var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
-
-      CHECK_EQ(var1.toString(), "var1:Labelized({4|3|2|1})");
-
-      var1.changeLabel(1, "x");
-      CHECK_EQ(var1.toString(), "var1:Labelized({4|x|2|1})");
-
-      const gum::LabelizedVariable& var2 = var1;
-      CHECK_EQ(var2.toString(), "var1:Labelized({4|x|2|1})");
-      var2.changeLabel(1, "y");
-      CHECK_EQ(var2.toString(), "var1:Labelized({4|y|2|1})");
-
-      GUM_CHECK_ASSERT_THROWS_NOTHING(
-          var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
-      CHECK_THROWS_AS(var1.changeLabel(0, "x"), const gum::DuplicateElement&);
-      CHECK_THROWS_AS(var1.changeLabel(1000, "x"), const gum::OutOfBounds&);
-    }
-
-    static void testNumerical() {
-      gum::LabelizedVariable var1("var1", "this is var1", 0);
-      var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
-
-      CHECK_EQ(var1.numerical(0), 0);
-      CHECK_EQ(var1.numerical(1), 1);
-      CHECK_EQ(var1.numerical(2), 2);
-      CHECK_EQ(var1.numerical(3), 3);
-    }
-
-    static void testAndConstructorWithLabels() {
-      gum::LabelizedVariable var1("var1", "this is var1", {"rouge", "vert", "bleu"});
-      CHECK_EQ(var1.toString(), "var1:Labelized({rouge|vert|bleu})");
-      CHECK_EQ(var1.posLabel("vert"), gum::Idx(1));
-    }
-
-    static void testIndexUnknownLabelThrows() {
-      gum::LabelizedVariable var("v", "", {"a", "b", "c"});
-      CHECK_THROWS_AS(var.index("z"), const gum::OutOfBounds&);
-      CHECK_THROWS_AS(var.index(""), const gum::OutOfBounds&);
-      CHECK_EQ(var.index("b"), gum::Idx(1));
-    }
-
-    static void testIsNumerical() {
-      gum::LabelizedVariable var("var", "var", 3);
-      CHECK_FALSE(var.isNumerical());
-    }
+    // namespace gum_tests
   };
 
-  GUM_TEST_ACTIF(Copy)
-  GUM_TEST_ACTIF(Labels)
-  GUM_TEST_ACTIF(ChangeLabel)
-  GUM_TEST_ACTIF(Numerical)
-  GUM_TEST_ACTIF(AndConstructorWithLabels)
-  GUM_TEST_ACTIF(IndexUnknownLabelThrows)
-  GUM_TEST_ACTIF(IsNumerical)
+  GUM_TEST(Copy) {
+    gum::LabelizedVariable var1("var1", "this is var1", 2);
+    gum::LabelizedVariable var2("var2", "this is var2", 2);
+
+    gum::LabelizedVariable var3(var1);
+    gum::LabelizedVariable var4("var4", "this is var4");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(var4 = var2);
+
+    CHECK_EQ(var4, var2);
+    CHECK_EQ(var1, var3);
+    CHECK_NE(var4, var1);
+  }
+
+  GUM_TEST(Labels) {
+    gum::LabelizedVariable var1("var1", "this is var1", 0);
+    CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(0));
+    CHECK(var1.empty());
+    var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
+
+    CHECK_EQ(var1.domainSize(), static_cast< gum::Size >(4));
+    CHECK_EQ(var1.label(1), "3");
+    CHECK_EQ(var1["3"], static_cast< gum::Idx >(1));
+
+    CHECK_THROWS_AS(var1.addLabel("3"), const gum::DuplicateElement&);
+
+    std::stringstream s;
+    s << var1;
+    CHECK_EQ(s.str(), "var1:Labelized({4|3|2|1})");
+
+    CHECK_EQ(var1.toString(), "var1:Labelized({4|3|2|1})");
+  }
+
+  GUM_TEST(ChangeLabel) {
+    gum::LabelizedVariable var1("var1", "this is var1", 0);
+    var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
+
+    CHECK_EQ(var1.toString(), "var1:Labelized({4|3|2|1})");
+
+    var1.changeLabel(1, "x");
+    CHECK_EQ(var1.toString(), "var1:Labelized({4|x|2|1})");
+
+    const gum::LabelizedVariable& var2 = var1;
+    CHECK_EQ(var2.toString(), "var1:Labelized({4|x|2|1})");
+    var2.changeLabel(1, "y");
+    CHECK_EQ(var2.toString(), "var1:Labelized({4|y|2|1})");
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(
+        var1.changeLabel(1, "x"));   // should be OK since label 1 is already "x"
+    CHECK_THROWS_AS(var1.changeLabel(0, "x"), const gum::DuplicateElement&);
+    CHECK_THROWS_AS(var1.changeLabel(1000, "x"), const gum::OutOfBounds&);
+  }
+
+  GUM_TEST(Numerical) {
+    gum::LabelizedVariable var1("var1", "this is var1", 0);
+    var1.addLabel("4").addLabel("3").addLabel("2").addLabel("1");
+
+    CHECK_EQ(var1.numerical(0), 0);
+    CHECK_EQ(var1.numerical(1), 1);
+    CHECK_EQ(var1.numerical(2), 2);
+    CHECK_EQ(var1.numerical(3), 3);
+  }
+
+  GUM_TEST(AndConstructorWithLabels) {
+    gum::LabelizedVariable var1("var1", "this is var1", {"rouge", "vert", "bleu"});
+    CHECK_EQ(var1.toString(), "var1:Labelized({rouge|vert|bleu})");
+    CHECK_EQ(var1.posLabel("vert"), gum::Idx(1));
+  }
+
+  GUM_TEST(IndexUnknownLabelThrows) {
+    gum::LabelizedVariable var("v", "", {"a", "b", "c"});
+    CHECK_THROWS_AS(var.index("z"), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(var.index(""), const gum::OutOfBounds&);
+    CHECK_EQ(var.index("b"), gum::Idx(1));
+  }
+
+  GUM_TEST(IsNumerical) {
+    gum::LabelizedVariable var("var", "var", 3);
+    CHECK_FALSE(var.isNumerical());
+  }
 }   // namespace gum_tests

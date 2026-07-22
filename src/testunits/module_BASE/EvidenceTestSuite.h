@@ -47,97 +47,14 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  Evidence
-#define GUM_CURRENT_MODULE GUMBASE
-
 namespace gum_tests {
 
   struct EvidenceTestSuite {
     public:
-    static void testIsEvidence() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->B[3]");
-      CHECK(bn.cpt("A").isEvidence());
-      CHECK(!((bn.cpt("B").isEvidence())));
-      CHECK(!((bn.cpt("A").scale(100)).isEvidence()));
-      CHECK(!((bn.cpt("A").translate(1)).isEvidence()));
-
-      auto p = gum::Tensor(bn.cpt("A"));
-      p.fillWith(0);
-      CHECK(!(p.isEvidence()));
-      p.fillWith(1);
-      CHECK((p.isEvidence()));
-      p.random();
-      CHECK((p.isEvidence()));
-    }   // namespace gum_tests
-
-    static void testCombineEvidence() {
-      const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->C;B[10]");
-      auto       p1 = gum::Tensor(bn.cpt("A"));
-      auto       p2 = gum::Tensor(bn.cpt("A"));
-      p2.randomCPT();
-      auto q = gum::Tensor(bn.cpt("B"));
-
-      CHECK_THROWS_AS(p1 | q, const gum::InvalidArgument&);
-      CHECK_THROWS_AS(p1 & q, const gum::InvalidArgument&);
-      CHECK_THROWS_AS(p1 & bn.cpt("C"), const gum::InvalidArgument&);
-
-      auto Mp1 = p1.max();
-      auto Mp2 = p2.max();
-      auto mp1 = p1.min();
-      auto mp2 = p2.min();
-
-      CHECK_LE(Mp1, (p1 | p2).max());
-      CHECK_LE(Mp2, (p1 | p2).max());
-      CHECK_EQ(std::max(Mp1, Mp2), (p1 | p2).max());
-      CHECK_LE((p1 & p2).min(), mp1);
-      CHECK_LE((p1 & p2).min(), mp2);
-      CHECK_EQ(std::min(mp1, mp2), (p1 & p2).min());
-
-      CHECK_LE(1, (p1 | p2).sum());
-      CHECK_LE((p1 & p2).sum(), 1);
-
-      CHECK_EQ(1 - p1.max(), (~p1).min());
-      CHECK_EQ(1 - p1.min(), (~p1).max());
-      CHECK((10 - 1) == doctest::Approx((~p1).sum()).epsilon(GUM_SMALL_ERROR));
-    }
-
-    static void testLikelihood() {
-      const auto bn
-          = gum::BayesNet< double >::fastPrototype("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:"
-                                                   "20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
-      for (auto i: bn.nodes()) {
-        CHECK_EQ(bn.variable(i).domainSize(), 10u);
-      }
+    // namespace gum_tests
 
 
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)), "....1.....");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("B"), 4.0)), "...1......");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("C"), 4.0)), ".1........");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("D"), 4.0)), "1.........");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("E"), 4.0)), ".1........");
-
-      CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)
-                          | gum::Tensor< double >::evEq(bn.variable("A"), 8.0)))
-            == ("....1...1."));
-      CHECK((toBoolString(gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)))
-            == ("....11111."));
-      CHECK((toBoolString(~gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)))
-            == ("1111.....1"));
-
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 4.0)), "1111......");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 0.0)), "1.........");
-
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 4.0)), ".....11111");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 8.0)), ".........1");
-
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 7.0)), "111.......");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 1.0)), "1.........");
-
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 7.0)), "....111111");
-      CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 20.0)), ".........1");
-    }
-
-    private:
+    protected:
     static std::string toBoolString(const gum::Tensor< double >& p) {
       std::string        s = "";
       gum::Instantiation I(p);
@@ -147,7 +64,86 @@ namespace gum_tests {
     }
   };
 
-  GUM_TEST_ACTIF(IsEvidence)
-  GUM_TEST_ACTIF(CombineEvidence)
-  GUM_TEST_ACTIF(Likelihood)
+  GUM_TEST(IsEvidence) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->B[3]");
+    CHECK(bn.cpt("A").isEvidence());
+    CHECK(!((bn.cpt("B").isEvidence())));
+    CHECK(!((bn.cpt("A").scale(100)).isEvidence()));
+    CHECK(!((bn.cpt("A").translate(1)).isEvidence()));
+
+    auto p = gum::Tensor(bn.cpt("A"));
+    p.fillWith(0);
+    CHECK(!(p.isEvidence()));
+    p.fillWith(1);
+    CHECK((p.isEvidence()));
+    p.random();
+    CHECK((p.isEvidence()));
+  }
+
+  GUM_TEST(CombineEvidence) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A[10]->C;B[10]");
+    auto       p1 = gum::Tensor(bn.cpt("A"));
+    auto       p2 = gum::Tensor(bn.cpt("A"));
+    p2.randomCPT();
+    auto q = gum::Tensor(bn.cpt("B"));
+
+    CHECK_THROWS_AS(p1 | q, const gum::InvalidArgument&);
+    CHECK_THROWS_AS(p1 & q, const gum::InvalidArgument&);
+    CHECK_THROWS_AS(p1 & bn.cpt("C"), const gum::InvalidArgument&);
+
+    auto Mp1 = p1.max();
+    auto Mp2 = p2.max();
+    auto mp1 = p1.min();
+    auto mp2 = p2.min();
+
+    CHECK_LE(Mp1, (p1 | p2).max());
+    CHECK_LE(Mp2, (p1 | p2).max());
+    CHECK_EQ(std::max(Mp1, Mp2), (p1 | p2).max());
+    CHECK_LE((p1 & p2).min(), mp1);
+    CHECK_LE((p1 & p2).min(), mp2);
+    CHECK_EQ(std::min(mp1, mp2), (p1 & p2).min());
+
+    CHECK_LE(1, (p1 | p2).sum());
+    CHECK_LE((p1 & p2).sum(), 1);
+
+    CHECK_EQ(1 - p1.max(), (~p1).min());
+    CHECK_EQ(1 - p1.min(), (~p1).max());
+    CHECK((10 - 1) == doctest::Approx((~p1).sum()).epsilon(GUM_SMALL_ERROR));
+  }
+
+  GUM_TEST(Likelihood) {
+    const auto bn
+        = gum::BayesNet< double >::fastPrototype("A[10];B[1,10];C{1.0:20.0:10};D{1:100:10};E[1.0:"
+                                                 "20.0:10];X{A1|A2|A3|A4|A5|A6|A7|A8|A9|A10}");
+    for (auto i: bn.nodes()) {
+      CHECK_EQ(bn.variable(i).domainSize(), 10u);
+    }
+
+
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)), "....1.....");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("B"), 4.0)), "...1......");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("C"), 4.0)), ".1........");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("D"), 4.0)), "1.........");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evEq(bn.variable("E"), 4.0)), ".1........");
+
+    CHECK((toBoolString(gum::Tensor< double >::evEq(bn.variable("A"), 4.0)
+                        | gum::Tensor< double >::evEq(bn.variable("A"), 8.0)))
+          == ("....1...1."));
+    CHECK((toBoolString(gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)))
+          == ("....11111."));
+    CHECK((toBoolString(~gum::Tensor< double >::evIn(bn.variable("A"), 4.0, 8.0)))
+          == ("1111.....1"));
+
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 4.0)), "1111......");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("A"), 0.0)), "1.........");
+
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 4.0)), ".....11111");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("A"), 8.0)), ".........1");
+
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 7.0)), "111.......");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evLt(bn.variable("C"), 1.0)), "1.........");
+
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 7.0)), "....111111");
+    CHECK_EQ(toBoolString(gum::Tensor< double >::evGt(bn.variable("C"), 20.0)), ".........1");
+  }
 }   // namespace gum_tests

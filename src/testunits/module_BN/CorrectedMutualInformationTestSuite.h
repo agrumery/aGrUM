@@ -54,13 +54,10 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  CorrectedMutualInformation
-#define GUM_CURRENT_MODULE BN
-
 namespace gum_tests {
 
   struct CorrectedMutualInformationTestSuite {
-    private:
+    protected:
     static double _entropy_(const std::vector< double >& vect) {
       double res = 0.0;
       double sum = 0.0;
@@ -146,121 +143,9 @@ namespace gum_tests {
 
 
     public:
-    static void test_Ixy_NoCorr() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              prior(database);
-
-      gum::learning::CorrectedMutualInformation score(parser, prior);
-      score.useNoCorr();
-
-      CHECK_EQ((score.score(1, 6, std::vector< gum::NodeId >{0})),
-               doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0})).epsilon(0.001));
-
-      CHECK((score.score(2, 6, std::vector< gum::NodeId >{}))
-            == doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
-      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
-      CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7)).epsilon(0.001));
-
-      score.clear();
-      CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2)).epsilon(0.001));
-      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
-
-      score.clear();
-      CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5)).epsilon(0.01));
-      CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
-            == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1})).epsilon(0.001));
-
-      score.clear();
-      CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7)).epsilon(0.001));
-      CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5)).epsilon(0.001));
-      CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7)).epsilon(0.001));
-      CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4)).epsilon(0.001));
-      CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4)).epsilon(0.001));
-      CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5)).epsilon(0.001));
-
-      score.clear();
-      CHECK(
-          (score.score(0, 6, 5, std::vector< gum::NodeId >{1, 4}))
-          == doctest::Approx(_I_(parser, 0, 6, 5, std::vector< gum::NodeId >{1, 4})).epsilon(1e-4));
-      CHECK(
-          (score.score(6, 0, 5, std::vector< gum::NodeId >{1, 4}))
-          == doctest::Approx(_I_(parser, 6, 0, 5, std::vector< gum::NodeId >{1, 4})).epsilon(1e-4));
-    }
-
-    static void test_Ixy_Kmdl() {
-      gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-      const auto&                         var_names = initializer.variableNames();
-      const std::size_t                   nb_vars   = var_names.size();
-
-      gum::learning::DBTranslatorSet                translator_set;
-      gum::learning::DBTranslator4LabelizedVariable translator;
-      for (std::size_t i = 0; i < nb_vars; ++i) {
-        translator_set.insertTranslator(translator, i);
-      }
-
-      gum::learning::DatabaseTable database(translator_set);
-      database.setVariableNames(initializer.variableNames());
-      initializer.fillDatabase(database);
-
-      gum::learning::DBRowGeneratorSet    genset;
-      gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
-      gum::learning::NoPrior              prior(database);
-
-      std::vector< gum::Size > modalities(nb_vars, 2);
-
-      gum::learning::CorrectedMutualInformation score(parser, prior);
-      score.useMDL();
-
-      const double cst = 0.5 * std::log2(10000);
-
-      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
-      CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7) - cst).epsilon(1e-4));
-      CHECK((score.score(4, 7, std::vector< gum::NodeId >{5}))
-            == doctest::Approx(_I_(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst)
-                   .epsilon(GUM_SMALL_ERROR));
-      CHECK((score.score(1, 6, std::vector< gum::NodeId >{0}))
-            == doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst)
-                   .epsilon(1e-4));
-      CHECK((score.score(2, 6, std::vector< gum::NodeId >{}))
-            == doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
-
-      score.clear();
-      CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
-      CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
-
-      score.clear();
-      CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5) + cst).epsilon(1e-4));
-      CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
-            == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}) + 2 * cst)
-                   .epsilon(1e-4));
 
 
-      score.clear();
-      CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7) + cst).epsilon(1e-4));
-      CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5) + cst).epsilon(1e-4));
-      CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7) + cst).epsilon(1e-4));
-      CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4) + cst).epsilon(1e-4));
-      CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4) + cst).epsilon(1e-4));
-      CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5) + cst).epsilon(1e-4));
-    }
-
-
-    private:
+    protected:
     static gum::learning::DatabaseTable _getDatabase() {
       gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/weightedTest.csv"));
       const auto&                         var_names = initializer.variableNames();
@@ -306,74 +191,182 @@ namespace gum_tests {
     }
 
     public:
-    static void test_weighted() {
-      {
-        auto                                      database1 = _getDatabase();
-        gum::learning::DBRowGeneratorSet          genset1;
-        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
-        gum::learning::NoPrior                    prior1(database1);
-        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
-        score1.useNoCorr();
-
-        auto                                      database2 = _getCompactedDatabase();
-        gum::learning::DBRowGeneratorSet          genset2;
-        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
-        gum::learning::NoPrior                    prior2(database2);
-        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
-        score2.useNoCorr();
-
-        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
-        score2.clear();
-        database2.setAllRowsWeight(1);
-        score2.useNoCorr();
-        CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
-      }
-      {
-        auto                                      database1 = _getDatabase();
-        gum::learning::DBRowGeneratorSet          genset1;
-        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
-        gum::learning::NoPrior                    prior1(database1);
-        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
-        score1.useMDL();
-
-        auto                                      database2 = _getCompactedDatabase();
-        gum::learning::DBRowGeneratorSet          genset2;
-        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
-        gum::learning::NoPrior                    prior2(database2);
-        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
-        score2.useMDL();
-
-        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
-        score2.clear();
-        database2.setAllRowsWeight(1);
-        score2.useMDL();
-        CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
-      }
-      {
-        auto                                      database1 = _getDatabase();
-        gum::learning::DBRowGeneratorSet          genset1;
-        gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
-        gum::learning::NoPrior                    prior1(database1);
-        gum::learning::CorrectedMutualInformation score1(parser1, prior1);
-        score1.useNML();
-
-        auto                                      database2 = _getCompactedDatabase();
-        gum::learning::DBRowGeneratorSet          genset2;
-        gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
-        gum::learning::NoPrior                    prior2(database2);
-        gum::learning::CorrectedMutualInformation score2(parser2, prior2);
-        score2.useNML();
-
-        CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
-        score2.clear();
-        database2.setAllRowsWeight(1);
-        score2.useNML();
-        CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
-      }
-    }
   };
 
-  GUM_TEST_ACTIF(_Ixy_NoCorr)
-  GUM_TEST_ACTIF(_Ixy_Kmdl)
-  GUM_TEST_ACTIF(_weighted)
+  GUM_TEST(_Ixy_NoCorr) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::NoPrior              prior(database);
+
+    gum::learning::CorrectedMutualInformation score(parser, prior);
+    score.useNoCorr();
+
+    CHECK_EQ((score.score(1, 6, std::vector< gum::NodeId >{0})),
+             doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0})).epsilon(0.001));
+
+    CHECK((score.score(2, 6, std::vector< gum::NodeId >{}))
+          == doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
+    CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
+    CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7)).epsilon(0.001));
+
+    score.clear();
+    CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2)).epsilon(0.001));
+    CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6)).epsilon(0.001));
+
+    score.clear();
+    CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5)).epsilon(0.01));
+    CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
+          == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1})).epsilon(0.001));
+
+    score.clear();
+    CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7)).epsilon(0.001));
+    CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5)).epsilon(0.001));
+    CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7)).epsilon(0.001));
+    CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4)).epsilon(0.001));
+    CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4)).epsilon(0.001));
+    CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5)).epsilon(0.001));
+
+    score.clear();
+    CHECK((score.score(0, 6, 5, std::vector< gum::NodeId >{1, 4}))
+          == doctest::Approx(_I_(parser, 0, 6, 5, std::vector< gum::NodeId >{1, 4})).epsilon(1e-4));
+    CHECK((score.score(6, 0, 5, std::vector< gum::NodeId >{1, 4}))
+          == doctest::Approx(_I_(parser, 6, 0, 5, std::vector< gum::NodeId >{1, 4})).epsilon(1e-4));
+  }
+
+  GUM_TEST(_Ixy_Kmdl) {
+    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+    const auto&                         var_names = initializer.variableNames();
+    const std::size_t                   nb_vars   = var_names.size();
+
+    gum::learning::DBTranslatorSet                translator_set;
+    gum::learning::DBTranslator4LabelizedVariable translator;
+    for (std::size_t i = 0; i < nb_vars; ++i) {
+      translator_set.insertTranslator(translator, i);
+    }
+
+    gum::learning::DatabaseTable database(translator_set);
+    database.setVariableNames(initializer.variableNames());
+    initializer.fillDatabase(database);
+
+    gum::learning::DBRowGeneratorSet    genset;
+    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+    gum::learning::NoPrior              prior(database);
+
+    std::vector< gum::Size > modalities(nb_vars, 2);
+
+    gum::learning::CorrectedMutualInformation score(parser, prior);
+    score.useMDL();
+
+    const double cst = 0.5 * std::log2(10000);
+
+    CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
+    CHECK_EQ((score.score(4, 7)), doctest::Approx(_I_(parser, 4, 7) - cst).epsilon(1e-4));
+    CHECK((score.score(4, 7, std::vector< gum::NodeId >{5}))
+          == doctest::Approx(_I_(parser, 4, 7, std::vector< gum::NodeId >{5}) - 2 * cst)
+                 .epsilon(GUM_SMALL_ERROR));
+    CHECK((score.score(1, 6, std::vector< gum::NodeId >{0}))
+          == doctest::Approx(_I_(parser, 1, 6, std::vector< gum::NodeId >{0}) - 2 * cst)
+                 .epsilon(1e-4));
+    CHECK((score.score(2, 6, std::vector< gum::NodeId >{}))
+          == doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
+
+    score.clear();
+    CHECK_EQ((score.score(6, 2)), doctest::Approx(_I_(parser, 6, 2) - cst).epsilon(1e-4));
+    CHECK_EQ((score.score(2, 6)), doctest::Approx(_I_(parser, 2, 6) - cst).epsilon(1e-4));
+
+    score.clear();
+    CHECK_EQ((score.score(0, 1, 5)), doctest::Approx(_I_(parser, 0, 1, 5) + cst).epsilon(1e-4));
+    CHECK((score.score(2, 6, 5, std::vector< gum::NodeId >{1}))
+          == doctest::Approx(_I_(parser, 2, 6, 5, std::vector< gum::NodeId >{1}) + 2 * cst)
+                 .epsilon(1e-4));
+
+
+    score.clear();
+    CHECK_EQ((score.score(4, 5, 7)), doctest::Approx(_I_(parser, 4, 5, 7) + cst).epsilon(1e-4));
+    CHECK_EQ((score.score(4, 7, 5)), doctest::Approx(_I_(parser, 4, 7, 5) + cst).epsilon(1e-4));
+    CHECK_EQ((score.score(5, 4, 7)), doctest::Approx(_I_(parser, 5, 4, 7) + cst).epsilon(1e-4));
+    CHECK_EQ((score.score(5, 7, 4)), doctest::Approx(_I_(parser, 5, 7, 4) + cst).epsilon(1e-4));
+    CHECK_EQ((score.score(7, 5, 4)), doctest::Approx(_I_(parser, 7, 5, 4) + cst).epsilon(1e-4));
+    CHECK_EQ((score.score(7, 4, 5)), doctest::Approx(_I_(parser, 7, 4, 5) + cst).epsilon(1e-4));
+  }
+
+  GUM_TEST(_weighted) {
+    {
+      auto                                      database1 = _getDatabase();
+      gum::learning::DBRowGeneratorSet          genset1;
+      gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+      gum::learning::NoPrior                    prior1(database1);
+      gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+      score1.useNoCorr();
+
+      auto                                      database2 = _getCompactedDatabase();
+      gum::learning::DBRowGeneratorSet          genset2;
+      gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+      gum::learning::NoPrior                    prior2(database2);
+      gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+      score2.useNoCorr();
+
+      CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+      score2.clear();
+      database2.setAllRowsWeight(1);
+      score2.useNoCorr();
+      CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
+    }
+    {
+      auto                                      database1 = _getDatabase();
+      gum::learning::DBRowGeneratorSet          genset1;
+      gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+      gum::learning::NoPrior                    prior1(database1);
+      gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+      score1.useMDL();
+
+      auto                                      database2 = _getCompactedDatabase();
+      gum::learning::DBRowGeneratorSet          genset2;
+      gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+      gum::learning::NoPrior                    prior2(database2);
+      gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+      score2.useMDL();
+
+      CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+      score2.clear();
+      database2.setAllRowsWeight(1);
+      score2.useMDL();
+      CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
+    }
+    {
+      auto                                      database1 = _getDatabase();
+      gum::learning::DBRowGeneratorSet          genset1;
+      gum::learning::DBRowGeneratorParser       parser1(database1.handler(), genset1);
+      gum::learning::NoPrior                    prior1(database1);
+      gum::learning::CorrectedMutualInformation score1(parser1, prior1);
+      score1.useNML();
+
+      auto                                      database2 = _getCompactedDatabase();
+      gum::learning::DBRowGeneratorSet          genset2;
+      gum::learning::DBRowGeneratorParser       parser2(database2.handler(), genset2);
+      gum::learning::NoPrior                    prior2(database2);
+      gum::learning::CorrectedMutualInformation score2(parser2, prior2);
+      score2.useNML();
+
+      CHECK_EQ((score1.score(0, 1, 2)), doctest::Approx(score2.score(0, 1, 2)).epsilon(1e-5));
+      score2.clear();
+      database2.setAllRowsWeight(1);
+      score2.useNML();
+      CHECK(std::fabs(score1.score(0, 1, 2) - score2.score(0, 1, 2)) > 1e-5);
+    }
+  }
 } /* namespace gum_tests */

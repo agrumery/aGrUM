@@ -56,9 +56,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-#define GUM_CURRENT_SUITE  CompareInferences
-#define GUM_CURRENT_MODULE BN
-
 // The graph used for the tests:
 //          1   2_          1 -> 3
 //         / \ / /          1 -> 4
@@ -70,7 +67,7 @@
 namespace gum_tests {
 
   struct CompareInferencesTestSuite {
-    private:
+    protected:
     // Builds a BN to test the inference
     void fill_bn1(gum::BayesNet< double >& bn) {
       gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
@@ -129,7 +126,53 @@ namespace gum_tests {
     }
 
 
-    void testInferencesWithNoEvidence()const {
+    
+
+    
+
+    
+
+  
+
+
+  // compare only Lazy and ShaferShenoy on alarm BN
+  static void testAlarm() {
+    // Arrange
+    std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
+    gum::BayesNet< double >  bn;
+    gum::BIFReader< double > reader(&bn, file);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
+    gum::VariableElimination< double >   ve(&bn);
+    gum::ShaferShenoyInference< double > ss(&bn);
+    gum::LazyPropagation< double >       lazy(&bn);
+    gum::Tensor< double >             p_ve, p_ss, p_lazy;
+    for (auto var_id : bn.nodes()) {
+      // Act
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
+      // Assert
+      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
+      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
+      for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
+        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
+        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
+      }
+    }
+  }
+
+  
+
+  
+
+  
+
+  
+
+  
+};
+
+GUM_TEST(InferencesWithNoEvidence) {
       try {
         begin_test_waiting();
 
@@ -176,8 +219,7 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
       }
     }
-
-    void testInferencesWithHardEvidence()const {
+GUM_TEST(InferencesWithHardEvidence) {
       begin_test_waiting();
       gum::Tensor< double > e_i1;
       e_i1 << bn->variable(i1);
@@ -238,8 +280,7 @@ namespace gum_tests {
       }
       end_test_waiting();
     }
-
-    void testInferencesWithSoftEvidence() const {
+GUM_TEST(InferencesWithSoftEvidence) {
       begin_test_waiting();
 
       gum::Tensor< double > e_i1;
@@ -290,8 +331,7 @@ namespace gum_tests {
       }
       end_test_waiting();
     }
-
-  static void testMultipleInference() {
+GUM_TEST(MultipleInference) {
       try {
         gum::BayesNet< double > bn;
         gum::NodeId            c, s, r, w;
@@ -401,35 +441,7 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
       }
     }
-
-
-  // compare only Lazy and ShaferShenoy on alarm BN
-  static void testAlarm() {
-    // Arrange
-    std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
-    gum::BayesNet< double >  bn;
-    gum::BIFReader< double > reader(&bn, file);
-    GUM_CHECK_ASSERT_THROWS_NOTHING(reader.proceed());
-    gum::VariableElimination< double >   ve(&bn);
-    gum::ShaferShenoyInference< double > ss(&bn);
-    gum::LazyPropagation< double >       lazy(&bn);
-    gum::Tensor< double >             p_ve, p_ss, p_lazy;
-    for (auto var_id : bn.nodes()) {
-      // Act
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ve = ve.posterior(var_id));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p_ss = ss.posterior(var_id));
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p_lazy = lazy.posterior(var_id));
-      // Assert
-      CHECK_EQ(p_ve.domainSize(), p_ss.domainSize());
-      CHECK_EQ(p_ve.domainSize(), p_lazy.domainSize());
-      for (gum::Instantiation i(p_ve); !i.end(); i.inc()) {
-        CHECK((p_ve[i]) == doctest::Approx(p_ss[i]).epsilon(1e-6));
-        CHECK((p_ve[i]) == doctest::Approx(p_lazy[i]).epsilon(1e-6));
-      }
-    }
-  }
-
-  static void testAlarmWithHardEvidence() {
+GUM_TEST(AlarmWithHardEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
@@ -458,8 +470,7 @@ namespace gum_tests {
       }
     }
   }
-
-  static void testAlarmWithSoftEvidence() {
+GUM_TEST(AlarmWithSoftEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/alarm.bif");
     gum::BayesNet< double >  bn;
@@ -499,8 +510,7 @@ namespace gum_tests {
       }
     }
   }
-
-  static void testAsia() {
+GUM_TEST(Asia) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
@@ -526,8 +536,7 @@ namespace gum_tests {
       }
     }
   }
-
-  static void testAsiaWithHardEvidence() {
+GUM_TEST(AsiaWithHardEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
@@ -559,8 +568,7 @@ namespace gum_tests {
       }
     }
   }
-
-  static void testAsiaWithSoftEvidence() {
+GUM_TEST(AsiaWithSoftEvidence) {
     // Arrange
     std::string              file = GET_RESSOURCES_PATH("bif/asia.bif");
     gum::BayesNet< double >  bn;
@@ -600,15 +608,4 @@ namespace gum_tests {
       }
     }
   }
-};
-
-GUM_TEST_ACTIF(InferencesWithNoEvidence)
-GUM_TEST_ACTIF(InferencesWithHardEvidence)
-GUM_TEST_ACTIF(InferencesWithSoftEvidence)
-GUM_TEST_ACTIF(MultipleInference)
-GUM_TEST_ACTIF(AlarmWithHardEvidence)
-GUM_TEST_ACTIF(AlarmWithSoftEvidence)
-GUM_TEST_ACTIF(Asia)
-GUM_TEST_ACTIF(AsiaWithHardEvidence)
-GUM_TEST_ACTIF(AsiaWithSoftEvidence)
 }
