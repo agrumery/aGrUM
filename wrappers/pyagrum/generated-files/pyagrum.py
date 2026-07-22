@@ -36690,9 +36690,8 @@ class Counterfactual(object):
         """
         return _pyagrum.Counterfactual_twinModel(self)
 
-    def impact(self) -> "pyagrum.CausalImpact< float > const &":
+    def impact(self) -> "pyagrum.CausalImpact":
         r"""
-
         Return the CausalImpact used to compute the counterfactual distribution.
 
         The formula is evaluated on the twin model.
@@ -36701,9 +36700,10 @@ class Counterfactual(object):
         -------
         pyagrum.CausalImpact
             The identified causal impact on the twin model.
-
         """
         return _pyagrum.Counterfactual_impact(self)
+
+
 
     def value(self) -> "pyagrum.Tensor":
         r"""

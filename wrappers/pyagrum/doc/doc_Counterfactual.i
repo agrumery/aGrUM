@@ -145,17 +145,10 @@ pyagrum.CausalModel
     The twin model.
 "
 
-%feature("docstring") gum::Counterfactual::impact
-"
-Return the CausalImpact used to compute the counterfactual distribution.
-
-The formula is evaluated on the twin model.
-
-Returns
--------
-pyagrum.CausalImpact
-    The identified causal impact on the twin model.
-"
+// gum::Counterfactual::impact is documented in causal.i alongside its
+// %feature("shadow") wrapper (needed to fix a mis-rendered nested-template
+// return type annotation). %feature("docstring") here would be dead code:
+// shadow fully replaces the generated function, including its docstring.
 
 %feature("docstring") gum::Counterfactual::value
 "

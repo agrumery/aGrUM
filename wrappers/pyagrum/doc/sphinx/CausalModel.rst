@@ -27,3 +27,8 @@ identification.
       Functions for computing causal impacts and applying do-calculus.
 
 .. autoclass:: pyagrum.CausalModel
+
+Backdoor and frontdoor criteria
+--------------------------------
+
+.. autoclass:: pyagrum.DoorCriteria

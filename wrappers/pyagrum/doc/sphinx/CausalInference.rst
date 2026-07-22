@@ -18,3 +18,5 @@ Counterfactual reasoning
 .. autofunction:: pyagrum.counterfactual
 
 .. autofunction:: pyagrum.counterfactualModel
+
+.. autoclass:: pyagrum.Counterfactual

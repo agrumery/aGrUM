@@ -52,6 +52,27 @@
 %ignore *::root;
 %ignore gum::CausalImpact<double>::getResult;
 
+// gum::Counterfactual::impact returns const CausalImpact<GUM_ELEMENT>&: SWIG's automatic
+// python:annotations ("c" mode, see pyagrum.i) mis-renders this nested-template return type
+// as the raw C++ signature ("pyagrum.CausalImpact< float > const &"), which is not a valid
+// Python forward reference and breaks sphinx-autodoc-typehints. %feature("shadow") replaces
+// the generated wrapper with a hand-written one carrying a correct annotation; its docstring
+// is defined here (not in doc_Counterfactual.i) since it fully replaces the SWIG-generated one.
+%feature("shadow") gum::Counterfactual::impact %{
+    def impact(self) -> "pyagrum.CausalImpact":
+        r"""
+        Return the CausalImpact used to compute the counterfactual distribution.
+
+        The formula is evaluated on the twin model.
+
+        Returns
+        -------
+        pyagrum.CausalImpact
+            The identified causal impact on the twin model.
+        """
+        return $action(self)
+%}
+
 
 // CausalImpact::toLatex: %feature("shadow") exposes doOperatorPrefix and
 // doOperatorSuffix as keyword-only arguments, with defaults read from the
