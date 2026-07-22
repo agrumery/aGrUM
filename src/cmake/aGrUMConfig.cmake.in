@@ -30,6 +30,8 @@ set (AGRUM_VERSION_MAJOR "@AGRUM_VERSION_MAJOR@")
 set (AGRUM_VERSION_MINOR "@AGRUM_VERSION_MINOR@")
 set (AGRUM_VERSION_PATCH "@AGRUM_VERSION_PATCH@")
 
+include (CMakeFindDependencyMacro)
+
 if ("@GUM_THREADS@" MATCHES "stl")
   find_dependency(Threads QUIET)
 elseif ("@GUM_THREADS@" MATCHES "omp")
