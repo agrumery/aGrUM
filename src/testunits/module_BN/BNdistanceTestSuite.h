@@ -42,12 +42,14 @@
 
 
 #define TESTKL_MAX_ITER_GIBBS_KL 15
+#define TESTKL_MAX_ITER_MC_KL    15
 #include <iostream>
 #include <string>
 #include <vector>
 
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 #include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
+#include <agrum/BN/algorithms/divergence/MCBNDistance.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
@@ -218,6 +220,14 @@ namespace gum_tests {
       CHECK_NE(vkl, static_cast< float >(0.0));
       CHECK_THROWS_AS(gkl.history(), const gum::OperationNotAllowed&);
     }
+
+    {
+      gum::MCBNDistance< double > mckl(kl);
+      mckl.setMaxIter(40);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(vkl = mckl.klPQ());
+      CHECK_NE(vkl, static_cast< float >(0.0));
+      CHECK_THROWS_AS(mckl.history(), const gum::OperationNotAllowed&);
+    }
   }
 
   GUM_TEST(ExactValues) {
@@ -281,6 +291,45 @@ namespace gum_tests {
       if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try
       if (kl.history().size() - (kl.nbrIterations() - kl.burnIn()) / kl.periodSize() >= 2)
         continue;                                                  // next try
+
+      break;   // everything is ok : can stop the loop
+    }
+  }
+
+  GUM_TEST(MCValues) {
+    gum::BayesNet< double > netP;
+    {
+      gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::BayesNet< double > netQ;
+    {
+      gum::BIFReader< double > reader(&netQ, GET_RESSOURCES_PATH("bif/bnQ.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    // iterations for better robustness : BNdistance may fail from time to time
+    for (int ii = 0; ii < TESTKL_MAX_ITER_MC_KL; ii++) {
+      if (ii == TESTKL_MAX_ITER_MC_KL - 1) {
+        FAIL(" (MCBNDistance failed even with several tries.)");
+        break;
+      }
+      gum::MCBNDistance< double > kl(netP, netQ);
+      kl.setVerbosity(true);
+      // very rough approximation in order to not penalize TestSuite
+      kl.setEpsilon(GUM_SMALL_ERROR);
+      kl.setMinEpsilonRate(GUM_SMALL_ERROR);
+      if (fabs(kl.klPQ() - 0.241864114) >= 1e-1) continue;         // next try
+      if (fabs(kl.klQP() - 0.399826689) >= 1e-1) continue;         // next try
+      if (kl.errorPQ() != static_cast< gum::Size >(0)) continue;   // next try
+      if (kl.errorQP() != static_cast< gum::Size >(0)) continue;   // next try
+      if (fabs(kl.hellinger() - 0.321089688) >= 1e-1) continue;    // next try
+      if (fabs(kl.jsd() - 0.0696153) >= 1e-1) continue;            // next try
+      if (fabs(kl.bhattacharya() - 0.0529255) >= 1e-1) continue;   // next try
+      if (kl.history().size() - kl.nbrIterations() / kl.periodSize() >= 2) continue;   // next try
 
       break;   // everything is ok : can stop the loop
     }

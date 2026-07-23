@@ -39,47 +39,11 @@
  ****************************************************************************/
 
 
-#ifndef GUM_BN_H
-#define GUM_BN_H
-
-#include <agrum/base.h>
-#include <agrum/BN/algorithms/divergence/BNdistance.h>
-#include <agrum/BN/algorithms/divergence/exactBNdistance.h>
-#include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
 #include <agrum/BN/algorithms/divergence/MCBNDistance.h>
-#include <agrum/BN/algorithms/essentialGraph.h>
-#include <agrum/BN/algorithms/MarkovBlanket.h>
-#include <agrum/BN/algorithms/structuralMetrics.h>
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/BayesNetFragment.h>
-#include <agrum/BN/database/BNDatabaseGenerator.h>
-#include <agrum/BN/IBayesNet.h>
-#include <agrum/BN/inference/GibbsSampling.h>
-#include <agrum/BN/inference/importanceSampling.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
-#include <agrum/BN/inference/loopySamplingInference.h>
-#include <agrum/BN/inference/MonteCarloSampling.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/tools/BayesNetInference.h>
-#include <agrum/BN/inference/variableElimination.h>
-#include <agrum/BN/inference/weightedSampling.h>
-#include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/BN/io/BIF/BIFWriter.h>
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
-#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
-#include <agrum/BN/io/DSL/DSLReader.h>
-#include <agrum/BN/io/DSL/DSLWriter.h>
-#include <agrum/BN/io/GUM/GumBNReader.h>
-#include <agrum/BN/io/GUM/GumBNWriter.h>
-#include <agrum/BN/io/net/netReader.h>
-#include <agrum/BN/io/net/netWriter.h>
-#include <agrum/BN/io/UAI/UAIBNReader.h>
-#include <agrum/BN/io/UAI/UAIBNWriter.h>
-#include <agrum/BN/io/XDSL/XDSLBNReader.h>
-#include <agrum/BN/io/XDSL/XDSLBNWriter.h>
-#include <agrum/BN/learning/BNLearner.h>
-#include <agrum/PRM/o3prm/O3prmBNReader.h>
-#include <agrum/PRM/o3prm/O3prmBNWriter.h>
 
-#endif   // GUM_BN_H
+#include <agrum/base/core/math/math_utils.h>
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class gum::MCBNDistance< double >;
+#endif
