@@ -78,6 +78,7 @@ from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
+from pyagrum.lib.utils import showApproximationScheme, animApproximationScheme
 
 import pyagrum.lib._colors as gumcols
 
@@ -672,60 +673,6 @@ def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
     name of target variable
   """
   showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
-
-
-def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
-  """
-  show an animated version of an approximation algorithm
-
-  Parameters
-  ----------
-  apsc
-    the approximation algorithm
-  scale
-    a function to apply to the figure
-  """
-  f = plt.gcf()
-
-  h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
-  apsc.setVerbosity(True)
-  apsc.listener = h
-
-  def stopper(x):
-    IPython.display.clear_output(True)
-    plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
-
-  def progresser(x, y, z):
-    if len(apsc.history()) < 10:
-      plt.xlim(1, 10)
-    else:
-      plt.xlim(1, len(apsc.history()))
-    plt.plot(scale(apsc.history()), "g")
-    IPython.display.clear_output(True)
-    IPython.display.display(f)
-
-  h.setWhenStop(stopper)
-  h.setWhenProgress(progresser)
-
-
-def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
-  """
-  show the state of an approximation algorithm
-
-  Parameters
-  ----------
-  apsc
-    the approximation algorithm
-  scale
-    a function to apply to the figure
-  """
-  if apsc.verbosity():
-    if len(apsc.history()) < 10:
-      plt.xlim(1, 10)
-    else:
-      plt.xlim(1, len(apsc.history()))
-    plt.title(f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
-    plt.plot(scale(apsc.history()), "g")
 
 
 def showMRF(

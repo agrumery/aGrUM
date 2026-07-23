@@ -14,6 +14,16 @@ However BNs can also be compared as probability distributions.
 
 .. autoclass:: pyagrum.GibbsBNdistance
 
+
+.. autoclass:: pyagrum.MCBNDistance
+
+In general, :class:`pyagrum.MCBNDistance` converges better (faster, with a smaller variance)
+than :class:`pyagrum.GibbsBNdistance` for a given number of iterations. This is expected:
+computing a distance between two BNs does not involve any observation (hard evidence) to
+account for during sampling, so there is no need for the Markov chain machinery (mixing,
+burn-in) that Gibbs sampling relies on to handle evidence. Drawing independent samples
+directly from P is both simpler and, here, more efficient.
+
 .. seealso::
 
    :doc:`pyAgrum.lib`

@@ -88,6 +88,7 @@
 %import <agrum/BN/algorithms/divergence/BNdistance.h>
 %include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 %include <agrum/BN/algorithms/divergence/GibbsBNdistance.h>
+%include <agrum/BN/algorithms/divergence/MCBNDistance.h>
 
 %import <agrum/base/core/signal/listener.h>
 %import <agrum/base/graphs/parts/listeners/diGraphListener.h>
@@ -118,6 +119,7 @@
 
 %template ( ExactBNdistance ) gum::ExactBNdistance<double>;
 %template ( GibbsBNdistance ) gum::GibbsBNdistance<double>;
+%template ( MCBNDistance ) gum::MCBNDistance<double>;
 
 %template ( BNDatabaseGenerator) gum::learning::BNDatabaseGenerator<double>;
 

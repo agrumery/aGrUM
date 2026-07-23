@@ -45,6 +45,11 @@ collection of utilities for pyagrum.lib
 import csv
 import pydot as dot
 
+import IPython.display
+import matplotlib.pyplot as plt
+from matplotlib_inline.backend_inline import set_matplotlib_formats
+import numpy as np
+
 import pyagrum
 from collections import namedtuple
 
@@ -62,6 +67,63 @@ def setLightTheme() -> None:
 def getBlackInTheme() -> str:
   """return the color used for arc and text in graphs"""
   return pyagrum.config["notebook", "default_arc_color"]
+
+
+def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
+  """
+  Show the state of an approximation algorithm.
+
+  Parameters
+  ----------
+  apsc: pyagrum.ApproximationScheme
+    the approximation algorithm
+  scale: callable
+    a function to apply to the history values
+  """
+  if apsc.verbosity():
+    set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+    if len(apsc.history()) < 10:
+      plt.xlim(1, 10)
+    else:
+      plt.xlim(1, len(apsc.history()))
+    plt.title(f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
+    plt.plot(scale(apsc.history()), "g")
+
+
+def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
+  """
+  Show an animated version of an approximation algorithm.
+
+  Parameters
+  ----------
+  apsc: pyagrum.ApproximationScheme
+    the approximation algorithm
+  scale: callable
+    a function to apply to the history values
+  """
+  f = plt.gcf()
+  # a display_id lets us update the figure in place instead of clearing and
+  # redisplaying it on every progress step, which avoids a flickering effect
+  display_handle = IPython.display.display(f, display_id=True)
+
+  h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
+  apsc.setVerbosity(True)
+  apsc.listener = h
+
+  def stopper(x):
+    plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
+    display_handle.update(f)
+
+  def progresser(x, y, z):
+    if len(apsc.history()) < 10:
+      plt.xlim(1, 10)
+    else:
+      plt.xlim(1, len(apsc.history()))
+    plt.plot(scale(apsc.history()), "g")
+    display_handle.update(f)
+
+  h.setWhenStop(stopper)
+  h.setWhenProgress(progresser)
 
 
 DotPoint = namedtuple("DotPoint", ["x", "y"])

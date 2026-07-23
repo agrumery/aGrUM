@@ -26693,6 +26693,258 @@ class GibbsBNdistance(ApproximationScheme):
 
 # Register GibbsBNdistance in _pyagrum:
 _pyagrum.GibbsBNdistance_swigregister(GibbsBNdistance)
+class MCBNDistance(ApproximationScheme):
+    r"""
+
+    Class representing a Monte-Carlo-approximated computation of divergence and distance between BNs
+
+    Unlike GibbsBNdistance, each sample is drawn independently (forward sampling in topological order), so there is no Markov chain and no burn-in to configure.
+
+    MCBNDistance(P,Q) -> MCBNDistance
+        Parameters:
+            - **P** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **Q** (*pyagrum.BayesNet*) -- another Bayesian network to compare with the first one
+
+    MCBNDistance(mcbnd) -> MCBNDistance
+        Parameters:
+            - **mcbnd** (*pyagrum.MCBNDistance*) -- the Monte Carlo BNdistance to copy
+
+    Raises
+    ------
+      pyagrum.OperationNotAllowed
+        If the 2BNs have not the same domain size of compatible node sets
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyagrum.MCBNDistance_swiginit(self, _pyagrum.new_MCBNDistance(*args))
+    __swig_destroy__ = _pyagrum.delete_MCBNDistance
+
+    def compute(self) -> dict[str, object]:
+        r"""
+
+        Returns
+        -------
+        dict
+            a dictionnary containing the different values after the computation.
+
+        """
+        return _pyagrum.MCBNDistance_compute(self)
+
+    def setVerbosity(self, v: bool) -> None:
+        r"""
+
+        Parameters
+        ----------
+        v : bool
+                verbosity
+
+        """
+        return _pyagrum.MCBNDistance_setVerbosity(self, v)
+
+    def setEpsilon(self, eps: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        eps : float
+            the epsilon we want to use
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If eps<0
+
+        """
+        return _pyagrum.MCBNDistance_setEpsilon(self, eps)
+
+    def setMinEpsilonRate(self, rate: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        rate : float
+            the minimal epsilon rate
+
+        """
+        return _pyagrum.MCBNDistance_setMinEpsilonRate(self, rate)
+
+    def setMaxIter(self, max: int) -> None:
+        r"""
+
+        Parameters
+        ----------
+        max : int
+            the maximum number of iteration
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If max <= 1
+
+        """
+        return _pyagrum.MCBNDistance_setMaxIter(self, max)
+
+    def setMaxTime(self, timeout: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tiemout : float
+            stopping criterion on timeout (in seconds)
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If timeout<=0.0
+
+        """
+        return _pyagrum.MCBNDistance_setMaxTime(self, timeout)
+
+    def setPeriodSize(self, p: int) -> None:
+        r"""
+
+        Parameters
+        ----------
+        p : int
+            number of samples between 2 stopping
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If p<1
+
+        """
+        return _pyagrum.MCBNDistance_setPeriodSize(self, p)
+
+    def verbosity(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+            True if the verbosity is enabled
+
+        """
+        return _pyagrum.MCBNDistance_verbosity(self)
+
+    def epsilon(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+            the value of epsilon
+
+        """
+        return _pyagrum.MCBNDistance_epsilon(self)
+
+    def minEpsilonRate(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+            the value of the minimal epsilon rate
+
+        """
+        return _pyagrum.MCBNDistance_minEpsilonRate(self)
+
+    def maxIter(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the criterion on number of iterations
+
+        """
+        return _pyagrum.MCBNDistance_maxIter(self)
+
+    def maxTime(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+            the timeout(in seconds)
+
+        """
+        return _pyagrum.MCBNDistance_maxTime(self)
+
+    def periodSize(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of samples between 2 stopping
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If p<1
+
+        """
+        return _pyagrum.MCBNDistance_periodSize(self)
+
+    def nbrIterations(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+            the number of iterations
+
+        """
+        return _pyagrum.MCBNDistance_nbrIterations(self)
+
+    def currentTime(self) -> float:
+        r"""
+
+        Returns
+        -------
+        float
+            get the current running time in second (float)
+
+        """
+        return _pyagrum.MCBNDistance_currentTime(self)
+
+    def messageApproximationScheme(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+            the approximation scheme message
+
+        """
+        return _pyagrum.MCBNDistance_messageApproximationScheme(self)
+
+    def history(self) -> tuple[float, ...]:
+        r"""
+
+        Returns
+        -------
+        tuple
+            the scheme history
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the scheme did not performed or if verbosity is set to false
+
+        """
+        return _pyagrum.MCBNDistance_history(self)
+
+    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+        return _pyagrum.MCBNDistance__asIApproximationSchemeConfiguration(self)
+
+# Register MCBNDistance in _pyagrum:
+_pyagrum.MCBNDistance_swigregister(MCBNDistance)
 class BNDatabaseGenerator(object):
     r"""
 

@@ -31,6 +31,7 @@
 %include "doc_BNdistance.i"
 %include "doc_GibbsBNdistance.i"
 %include "doc_ExactBNdistance.i"
+%include "doc_MCBNDistance.i"
 
 %include "doc_GenericInference.i"
 

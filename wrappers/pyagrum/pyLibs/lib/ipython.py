@@ -47,7 +47,6 @@ import os
 import sys
 
 import IPython
-import IPython.display
 import matplotlib as mpl
 import matplotlib.colors
 import matplotlib.pyplot as plt
@@ -63,7 +62,7 @@ from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
 from pyagrum.lib.bn_vs_bn import GraphicalBNComparator
-from pyagrum.lib.utils import setDarkTheme
+from pyagrum.lib.utils import setDarkTheme, showApproximationScheme, animApproximationScheme
 import pyagrum.lib._colors as gumcols
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference
@@ -283,61 +282,6 @@ def showPosterior(bn: pyagrum.BayesNet, evs: dict, target: str | int) -> None:
       Name or id of target variable.
   """
   showProba(pyagrum.getPosterior(bn, evs=evs, target=target))
-
-
-def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
-  """
-  Show an animated version of an approximation algorithm.
-
-  Parameters
-  ----------
-  apsc: pyagrum.ApproximationScheme
-    the approximation algorithm
-  scale: callable
-    a function to apply to the history values
-  """
-  f = plt.gcf()
-
-  h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
-  apsc.setVerbosity(True)
-  apsc.listener = h
-
-  def stopper(x):
-    IPython.display.clear_output(True)
-    plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
-
-  def progresser(x, y, z):
-    if len(apsc.history()) < 10:
-      plt.xlim(1, 10)
-    else:
-      plt.xlim(1, len(apsc.history()))
-    plt.plot(scale(apsc.history()), "g")
-    IPython.display.clear_output(True)
-    IPython.display.display(f)
-
-  h.setWhenStop(stopper)
-  h.setWhenProgress(progresser)
-
-
-def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
-  """
-  Show the state of an approximation algorithm.
-
-  Parameters
-  ----------
-  apsc: pyagrum.ApproximationScheme
-    the approximation algorithm
-  scale: callable
-    a function to apply to the history values
-  """
-  if apsc.verbosity():
-    set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
-    if len(apsc.history()) < 10:
-      plt.xlim(1, 10)
-    else:
-      plt.xlim(1, len(apsc.history()))
-    plt.title(f"Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
-    plt.plot(scale(apsc.history()), "g")
 
 
 def showBN(
