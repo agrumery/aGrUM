@@ -202,16 +202,21 @@ namespace gum {
   }
 
   double StructuralMetrics::precision_skeleton() const {
-    return tp_skeleton() / (tp_skeleton() + fp_skeleton());
+    const double denom = tp_skeleton() + fp_skeleton();
+    if (denom == 0.0) return 0.0;
+    return tp_skeleton() / denom;
   }
 
   double StructuralMetrics::recall_skeleton() const {
-    return tp_skeleton() / (tp_skeleton() + fn_skeleton());
+    const double denom = tp_skeleton() + fn_skeleton();
+    if (denom == 0.0) return 0.0;
+    return tp_skeleton() / denom;
   }
 
   double StructuralMetrics::f_score_skeleton() const {
     const double p = precision_skeleton();
     const double r = recall_skeleton();
+    if (p + r == 0.0) return 0.0;
     return 2 * p * r / (p + r);
   }
 
@@ -228,13 +233,22 @@ namespace gum {
 
   double StructuralMetrics::tn() const { return _true_none_; }
 
-  double StructuralMetrics::precision() const { return tp() / (tp() + fp()); }
+  double StructuralMetrics::precision() const {
+    const double denom = tp() + fp();
+    if (denom == 0.0) return 0.0;
+    return tp() / denom;
+  }
 
-  double StructuralMetrics::recall() const { return tp() / (tp() + fn()); }
+  double StructuralMetrics::recall() const {
+    const double denom = tp() + fn();
+    if (denom == 0.0) return 0.0;
+    return tp() / denom;
+  }
 
   double StructuralMetrics::f_score() const {
     const double p = precision();
     const double r = recall();
+    if (p + r == 0.0) return 0.0;
     return 2 * p * r / (p + r);
   }
 

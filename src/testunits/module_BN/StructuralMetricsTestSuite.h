@@ -434,6 +434,43 @@ namespace gum_tests {
           == total);
   }
 
+  GUM_TEST(_zero_denominator) {
+    // P=R=0 admitted (0/0 -> 0), not NaN: both ref and test totally empty
+    // (no arcs/edges at all) => tp=fp=fn=0 for both directed and skeleton
+    // variants.
+    gum::DiGraph ref, test;
+    for (gum::NodeId i = 0; i < 4; ++i) {
+      ref.addNodeWithId(i);
+      test.addNodeWithId(i);
+    }
+
+    gum::StructuralMetrics comp;
+    comp.compare(ref, test);
+
+    CHECK(comp.precision() == 0);
+    CHECK(comp.recall() == 0);
+    CHECK(comp.f_score() == 0);
+    CHECK(comp.precision_skeleton() == 0);
+    CHECK(comp.recall_skeleton() == 0);
+    CHECK(comp.f_score_skeleton() == 0);
+
+    // Asymmetric case: ref has arcs, test is empty => tp+fp==0 (precision's
+    // own guard fires) while tp+fn != 0 (recall's denominator is fine, its
+    // value of 0 comes from tp==0, not from the guard).
+    gum::DiGraph ref2, test2;
+    for (gum::NodeId i = 0; i < 3; ++i) {
+      ref2.addNodeWithId(i);
+      test2.addNodeWithId(i);
+    }
+    ref2.addArc(0, 1);
+    ref2.addArc(1, 2);
+
+    comp.compare(ref2, test2);
+    CHECK(comp.precision() == 0);
+    CHECK(comp.recall() == 0);
+    CHECK(comp.f_score() == 0);
+  }
+
   GUM_TEST(_accessors_before_compare) {
     // Calling accessors before compare() reads uninitialized members:
     // the values returned are undefined. We only check that nothing throws.

@@ -87,6 +87,23 @@ class StructuralMetricsCompareBNTestCase(pyAgrumTestCase):
     comp.compare(g1, g2)
     self._assertPerfectMetrics(comp)
 
+  def testCompareBNZeroDenominator(self):
+    # P=R=0 admitted (0/0 -> 0), not NaN: both BNs have no arcs at all,
+    # so the essential-graph comparison has tp=fp=fn=0.
+    bn1 = gum.fastBN("A;B;C")
+    bn2 = gum.fastBN("A;B;C")
+    comp = gum.StructuralMetrics()
+    comp.compare(bn1, bn2)
+    for fn in [
+      comp.precision_skeleton,
+      comp.recall_skeleton,
+      comp.f_score_skeleton,
+      comp.precision,
+      comp.recall,
+      comp.f_score,
+    ]:
+      self.assertAlmostEqual(fn(), 0.0)
+
 
 class StructuralMetricsSIDTestCase(pyAgrumTestCase):
   def testSidBNSelfIsZero(self):
