@@ -59,8 +59,10 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   UndiGraph moralGraph(const G& g) {
     UndiGraph moral;
-    for (const auto node: g.nodes())
+    for (const auto node: g.nodes()) {
       moral.addNodeWithId(node);
+      if (g.hasName(node)) moral.setName(node, g.nameFromId(node));
+    }
 
     if constexpr (GUM_MixedGraphable< G >) {
       for (const auto node: g.nodes()) {
@@ -103,8 +105,10 @@ namespace gum::graph {
     if constexpr (GUM_MixedGraphable< G >) {
       MixedGraph ancestral;
       NodeSet    frontier{query};
-      for (const auto n: query)
+      for (const auto n: query) {
         ancestral.addNodeWithId(n);
+        if (g.hasName(n)) ancestral.setName(n, g.nameFromId(n));
+      }
 
       while (!frontier.empty()) {
         const NodeId current = *frontier.begin();
@@ -113,6 +117,7 @@ namespace gum::graph {
         for (const auto p: g.parents(current)) {
           if (!ancestral.existsNode(p)) {
             ancestral.addNodeWithId(p);
+            if (g.hasName(p)) ancestral.setName(p, g.nameFromId(p));
             frontier.insert(p);
           }
           ancestral.addArc(p, current);
@@ -120,6 +125,7 @@ namespace gum::graph {
         for (const auto n: g.neighbours(current)) {
           if (!ancestral.existsNode(n)) {
             ancestral.addNodeWithId(n);
+            if (g.hasName(n)) ancestral.setName(n, g.nameFromId(n));
             frontier.insert(n);
           }
           ancestral.addEdge(n, current);
@@ -135,6 +141,7 @@ namespace gum::graph {
         const NodeId current = *frontier.begin();
         frontier.erase(current);
         res.addNodeWithId(current);
+        if (g.hasName(current)) res.setName(current, g.nameFromId(current));
         for (const auto p: g.parents(current))
           if (!res.existsNode(p) && !frontier.contains(p)) frontier.insert(p);
       }

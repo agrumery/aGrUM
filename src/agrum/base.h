@@ -70,6 +70,7 @@
 #include <agrum/base/graphs/cliqueGraph.h>
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/diGraph.h>
+#include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
 #include <agrum/base/graphs/parts/arcGraphPart.h>

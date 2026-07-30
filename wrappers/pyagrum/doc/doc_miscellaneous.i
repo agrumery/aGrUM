@@ -146,3 +146,48 @@ Returns
 int
   a value randomly drawn (0 or 1)
 "
+
+%feature("docstring") gum::fastGraph
+"
+Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+(e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+``';'`` separates independent chains. If every node token in the description is
+a non-negative integer, those integers are used directly as node ids ;
+otherwise every token -- including numeric-looking ones -- is used as a node
+name.
+
+Note
+----
+A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+already uses ``'--'`` to list the variables of a single factor (a clique), a
+different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+rejected here rather than silently misread.
+
+Raises
+------
+gum.InvalidArc
+  If the description requires a directed arc but the target graph type does
+  not support arcs, or if the description is malformed.
+gum.InvalidEdge
+  If the description requires an undirected edge but the target graph type
+  does not support edges.
+
+Parameters
+----------
+desc : str
+  the string containing the dot-like specification
+
+Returns
+-------
+pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+Examples
+--------
+>>> gum.fastDiGraph('A->B->C;B->E')
+>>> gum.fastUndiGraph('A-B-C')
+>>> gum.fastMixedGraph('A->B-C')
+>>> gum.fastDAG('A->B->C')
+>>> gum.fastPDAG('A->B-C')
+"

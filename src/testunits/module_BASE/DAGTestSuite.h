@@ -427,6 +427,32 @@ namespace gum_tests {
     CHECK_EQ(m.sizeEdges(), 4U);
   }
 
+  GUM_TEST(MoralGraphKeepsNames) {
+    gum::DAG g = makeDiamond();
+    g.setName(0, "A");
+    g.setName(1, "B");
+    g.setName(2, "C");
+    // node 3 is left unnamed on purpose
+
+    gum::UndiGraph m = g.moralGraph();
+
+    CHECK(m.hasName(0));
+    CHECK_EQ(m.nameFromId(0), "A");
+    CHECK(m.hasName(1));
+    CHECK_EQ(m.nameFromId(1), "B");
+    CHECK(m.hasName(2));
+    CHECK_EQ(m.nameFromId(2), "C");
+    CHECK_FALSE(m.hasName(3));
+
+    gum::UndiGraph ag = g.moralizedAncestralGraph(gum::NodeSet{3});
+    CHECK(ag.hasName(0));
+    CHECK_EQ(ag.nameFromId(0), "A");
+    CHECK(ag.hasName(1));
+    CHECK_EQ(ag.nameFromId(1), "B");
+    CHECK(ag.hasName(2));
+    CHECK_EQ(ag.nameFromId(2), "C");
+  }
+
   GUM_TEST(MoralizedAncestralGraph) {
     gum::DAG g = makeDiamond();
     // 0→2←1, 2→3

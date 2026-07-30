@@ -50,7 +50,7 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
     >>> I["B"]="2";print(f"{I} -> {p.get(I)}")
     <A:1|B:2> -> 0.26666666666666666
 
-* :py:class:`pyagrum.Tensor` include tensor operators (see for instance this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_tensors.html>`_).
+* :py:class:`pyagrum.Tensor` include tensor operators (see for instance this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_tensorsAndGraphs.html>`_).
 
 .. code-block:: python
 

@@ -8916,6 +8916,246 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
     """
     return _pyagrum.fastVariable(*args)
 
+def fastDiGraph(desc: str) -> "pyagrum.DiGraph":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+    Examples
+    --------
+    >>> pyagrum.fastDiGraph('A->B->C;B->E')
+    >>> pyagrum.fastUndiGraph('A-B-C')
+    >>> pyagrum.fastMixedGraph('A->B-C')
+    >>> pyagrum.fastDAG('A->B->C')
+    >>> pyagrum.fastPDAG('A->B-C')
+
+    """
+    return _pyagrum.fastDiGraph(desc)
+
+def fastUndiGraph(desc: str) -> "pyagrum.UndiGraph":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+    Examples
+    --------
+    >>> pyagrum.fastDiGraph('A->B->C;B->E')
+    >>> pyagrum.fastUndiGraph('A-B-C')
+    >>> pyagrum.fastMixedGraph('A->B-C')
+    >>> pyagrum.fastDAG('A->B->C')
+    >>> pyagrum.fastPDAG('A->B-C')
+
+    """
+    return _pyagrum.fastUndiGraph(desc)
+
+def fastMixedGraph(desc: str) -> "pyagrum.MixedGraph":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+    Examples
+    --------
+    >>> pyagrum.fastDiGraph('A->B->C;B->E')
+    >>> pyagrum.fastUndiGraph('A-B-C')
+    >>> pyagrum.fastMixedGraph('A->B-C')
+    >>> pyagrum.fastDAG('A->B->C')
+    >>> pyagrum.fastPDAG('A->B-C')
+
+    """
+    return _pyagrum.fastMixedGraph(desc)
+
+def fastDAG(desc: str) -> "pyagrum.DAG":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+    Examples
+    --------
+    >>> pyagrum.fastDiGraph('A->B->C;B->E')
+    >>> pyagrum.fastUndiGraph('A-B-C')
+    >>> pyagrum.fastMixedGraph('A->B-C')
+    >>> pyagrum.fastDAG('A->B->C')
+    >>> pyagrum.fastPDAG('A->B-C')
+
+    """
+    return _pyagrum.fastDAG(desc)
+
+def fastPDAG(desc: str) -> "pyagrum.PDAG":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+
+    Examples
+    --------
+    >>> pyagrum.fastDiGraph('A->B->C;B->E')
+    >>> pyagrum.fastUndiGraph('A-B-C')
+    >>> pyagrum.fastMixedGraph('A->B-C')
+    >>> pyagrum.fastDAG('A->B->C')
+    >>> pyagrum.fastPDAG('A->B-C')
+
+    """
+    return _pyagrum.fastPDAG(desc)
+
 def randomDistribution(n: int) -> tuple[float, ...]:
     r"""
 
@@ -11256,87 +11496,6 @@ def log2(p):
     a pyagrum.Tensor
   """
   return Tensor(p).log2()
-
-
-def fastGraph(msg:str):
-  """
-  Create a graph with a dot-like syntax which specifies the structure 'a->b->c;b-d<-e;' where a,b,c,d,e,.. are int
-
-  Warnings
-  --------
-    The choice of "-" for edges is unambiguous because "-" is not a valid character for a node id (unsigned int).
-    Moreover, "--" is already used by `pyagrum.fastMRF` to specify factors.
-
-  Parameters
-  ----------
-    msg : str
-      the string containing the specification
-
-  Returns
-  -------
-    pyagrum.DiGraph ou pyagrum.UndiGraph ou pyagrum.MixedGraph
-  """
-# regexp to recognize strings with only unsigned int, ";", "-" followed by ">" or ">"
-
-
-  import re
-  if not re.match(r"^[\d;\-><]+$", msg):
-    raise InvalidArgument("fastGraph only accepts strings with only int, ';', '->' and '<-'")
-
-  is_arc="->" in msg or "<-" in msg
-  is_edge="-" in msg
-  if is_arc:
-    if is_edge:
-      m=pyagrum.MixedGraph()
-    else:
-      m=pyagrum.DiGraph()
-  else:
-    m=pyagrum.UndiGraph()
-
-  def addEdgeIn(m,msg):
-    t=msg.split("-")
-    if len(t)==1:
-      n1=int(msg)
-      deb=n1
-      if not m.existsNode(n1):
-        m.addNodeWithId(n1)
-    else:
-      deb,n1=addEdgeIn(m,t[0])
-      for i in range(1,len(t)):
-        d,f=addEdgeIn(m,t[i])
-        m.addEdge(n1,d)
-        n1=f
-    return deb,n1
-  def addRevArcsIn(m,msg):
-    t=msg.split("<-")
-    if len(t)==1:
-      deb,n1=addEdgeIn(m,msg)
-    else:
-      deb,fin=addEdgeIn(m,t[0])
-      n1=fin
-      for i in range(1,len(t)):
-        d,f=addEdgeIn(m,t[i])
-        m.addArc(d,n1)
-        n1=f
-    return deb,n1
-  def addArcsIn(m,msg):
-    t=msg.split("->")
-    if len(t)==1:
-      deb,n1=addRevArcsIn(m,msg)
-    else:
-      deb,fin=addRevArcsIn(m,t[0])
-      n1=fin
-      for i in range(1,len(t)):
-        d,f=addRevArcsIn(m,t[i])
-        m.addArc(n1,d)
-        n1=f
-    return deb,n1
-
-  for l in msg.split(";"):
-    if len(l)>0:
-      t=addArcsIn(m,l)
-
-  return m
 
 
 import os.path as ospath

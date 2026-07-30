@@ -191,6 +191,7 @@
 %include <agrum/base/graphs/DAG.h>
 %include <agrum/base/graphs/mixedGraph.h>
 %include <agrum/base/graphs/PDAG.h>
+%include <agrum/base/graphs/fastGraph.h>
 
 %include <agrum/base/graphs/PAG.h>
 
@@ -238,6 +239,11 @@
 
 /* TEMPLATES FOR FUNCTIONS */
 %template ( fastVariable) gum::fastVariable<double>;
+%template ( fastDiGraph) gum::fastGraph<gum::DiGraph>;
+%template ( fastUndiGraph) gum::fastGraph<gum::UndiGraph>;
+%template ( fastMixedGraph) gum::fastGraph<gum::MixedGraph>;
+%template ( fastDAG) gum::fastGraph<gum::DAG>;
+%template ( fastPDAG) gum::fastGraph<gum::PDAG>;
 
 /* TEMPLATES FOR CLASSES */
 %template ( randomDistribution ) gum::randomDistribution<double>;
