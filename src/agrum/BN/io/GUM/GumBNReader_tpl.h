@@ -46,6 +46,8 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
+#  include <agrum/base/variables/allDiscreteVariables.h>
 #  include <agrum/BN/io/GUM/GumBNReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
@@ -104,7 +106,27 @@ namespace gum {
       BayesNet< GUM_SCALAR > tmp;
       // iterate on nodes in json
       for (const auto& node: content["nodes"]) {
-        tmp.add(node.template get< std::string >());
+        auto        var      = fastVariable< GUM_SCALAR >(node.template get< std::string >());
+        const auto& nodeName = var->name();
+        const auto& cptEntry = content["cpt"].at(nodeName);
+
+        if (cptEntry.is_object()) {
+          const auto kind = cptEntry.at("kind").template get< std::string >();
+          if (kind == "aggregator") {
+            const auto name = cptEntry.at("name").template get< std::string >();
+            const Idx  value
+                = cptEntry.contains("value") ? cptEntry.at("value").template get< Idx >() : 1;
+            tmp.addAggregator(name, *var, value);
+          } else if (kind == "ici") {
+            const auto name           = cptEntry.at("name").template get< std::string >();
+            const auto externalWeight = cptEntry.at("externalWeight").template get< GUM_SCALAR >();
+            tmp.addICIModel(name, *var, externalWeight);
+          } else {
+            GUM_ERROR(NotFound, "Unknown cpt kind '" << kind << "' for node " << nodeName)
+          }
+        } else {
+          tmp.add(*var);
+        }
       }
       // iterate on parents in json
       for (const auto& parent: content["parents"].items()) {
@@ -117,7 +139,19 @@ namespace gum {
       for (const auto& cpt: content["cpt"].items()) {
         const auto& nodeName = cpt.key();
         const auto& values   = cpt.value();
-        tmp.cpt(nodeName).fillWith(values.template get< std::vector< double > >());
+        if (values.is_object()) {
+          const auto kind = values.at("kind").template get< std::string >();
+          if (kind == "ici") {
+            const auto* ici = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(
+                tmp.cpt(nodeName).content());
+            for (const auto& w: values.at("causalWeights").items()) {
+              ici->causalWeight(tmp.variable(w.key()), w.value().template get< GUM_SCALAR >());
+            }
+          }
+          // aggregator nodes are already fully configured, nothing to fill
+        } else {
+          tmp.cpt(nodeName).fillWith(values.template get< std::vector< double > >());
+        }
       }
       // iterate on properties in json (optional section)
       if (content.contains("properties")) {

@@ -46,6 +46,8 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#  include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
 #  include <agrum/BN/io/GUM/GumBNWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
@@ -99,8 +101,41 @@ namespace gum {
     // add cpts (always written, even empty, so the section always exists)
     content["cpt"] = ordered_json::object();
     for (const auto& node: bn.nodes()) {
+      const auto& cpt = bn.cpt(node);
+
+      if (const auto* agg
+          = dynamic_cast< const gum::aggregator::MultiDimAggregator< GUM_SCALAR >* >(
+              cpt.content())) {
+        std::string name    = agg->aggregatorName();
+        const auto  bracket = name.find('[');
+        if (bracket != std::string::npos) name.erase(bracket);
+
+        ordered_json aggJson;
+        aggJson["kind"] = "aggregator";
+        aggJson["name"] = name;
+        if (name == "count" || name == "exists" || name == "forall")
+          aggJson["value"] = agg->value();
+
+        content["cpt"][bn.variable(node).name()] = aggJson;
+        continue;
+      }
+
+      if (const auto* ici = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt.content())) {
+        ordered_json weights = ordered_json::object();
+        for (Idx i = 1; i < cpt.nbrDim(); i++)
+          weights[cpt.variable(i).name()] = ici->causalWeight(cpt.variable(i));
+
+        ordered_json iciJson;
+        iciJson["kind"]           = "ici";
+        iciJson["name"]           = ici->name();
+        iciJson["externalWeight"] = ici->externalWeight();
+        iciJson["causalWeights"]  = weights;
+
+        content["cpt"][bn.variable(node).name()] = iciJson;
+        continue;
+      }
+
       json          cptValues;
-      const auto&   cpt = bn.cpt(node);
       Instantiation I(cpt);
       for (I.setFirst(); !I.end(); ++I) {
         cptValues.push_back(cpt[I]);

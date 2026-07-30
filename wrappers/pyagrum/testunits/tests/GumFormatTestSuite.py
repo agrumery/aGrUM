@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import os
 import pickle
 import unittest
 
@@ -94,6 +95,72 @@ class TestGumFormat(pyAgrumTestCase):
     bn2 = pickle.loads(data)
     self.assertEqual(bn, bn2)
     self.assertEqual(bn2.property("tag"), "pickle_test")
+
+  def _labelizedVar(self, name, labels):
+    v = gum.LabelizedVariable(name, "", 0)
+    for label in labels:
+      v.addLabel(label)
+    return v
+
+  def testBN_aggregatorsAndICI_jgum_roundtrip(self):
+    labels = ["no", "yes"]
+    bn = gum.BayesNet()
+    idP1 = bn.add(self._labelizedVar("P1", labels))
+    idP2 = bn.add(self._labelizedVar("P2", labels))
+
+    idAnd = bn.addAND(self._labelizedVar("And", labels))
+    idOr = bn.addOR(self._labelizedVar("Or", labels))
+    idForall = bn.addFORALL(self._labelizedVar("Forall", labels), 1)
+    idSum = bn.addSUM(self._labelizedVar("Sum", labels))
+    idNoisyOR = bn.addNoisyOR(self._labelizedVar("NoisyOR", labels), 0.1)
+    idLogit = bn.addLogit(self._labelizedVar("Logit", labels), 0.1)
+
+    for nid in (idAnd, idOr, idForall, idSum):
+      bn.addArc(idP1, nid)
+      bn.addArc(idP2, nid)
+    for nid in (idNoisyOR, idLogit):
+      bn.addWeightedArc(idP1, nid, 0.3)
+      bn.addWeightedArc(idP2, nid, 0.6)
+
+    filename = self.agrumSrcDir("test_bn_aggregators.jgum")
+    gum.saveBN(bn, filename)
+    bn2 = gum.loadBN(filename)
+    self.assertEqual(bn, bn2)
+
+  def testBN_aggregatorsAndICI_bgum_roundtrip(self):
+    labels = ["no", "yes"]
+    bn = gum.BayesNet()
+    idP1 = bn.add(self._labelizedVar("P1", labels))
+    idP2 = bn.add(self._labelizedVar("P2", labels))
+    idForall = bn.addFORALL(self._labelizedVar("Forall", labels), 1)
+    idNoisyOR = bn.addNoisyOR(self._labelizedVar("NoisyOR", labels), 0.1)
+    bn.addArc(idP1, idForall)
+    bn.addArc(idP2, idForall)
+    bn.addWeightedArc(idP1, idNoisyOR, 0.3)
+    bn.addWeightedArc(idP2, idNoisyOR, 0.6)
+
+    filename = self.agrumSrcDir("test_bn_aggregators.bgum")
+    gum.saveBN(bn, filename)
+    bn2 = gum.loadBN(filename)
+    self.assertEqual(bn, bn2)
+
+  def testBN_aggregator_compactEncoding(self):
+    # a dense encoding of a 4-parent, 10-modality aggregator CPT would need 10^4
+    # doubles (~80KB in JSON); the compact "kind":"aggregator" encoding keeps the
+    # whole file well under 1KB.
+    labels = [str(i) for i in range(10)]
+    bn = gum.BayesNet()
+    idP1 = bn.add(self._labelizedVar("P1", labels))
+    idP2 = bn.add(self._labelizedVar("P2", labels))
+    idP3 = bn.add(self._labelizedVar("P3", labels))
+    idP4 = bn.add(self._labelizedVar("P4", labels))
+    idSum = bn.addSUM(self._labelizedVar("Sum", labels))
+    for pid in (idP1, idP2, idP3, idP4):
+      bn.addArc(pid, idSum)
+
+    filename = self.agrumSrcDir("test_bn_aggregator_compact.jgum")
+    gum.saveBN(bn, filename)
+    self.assertLess(os.path.getsize(filename), 1000)
 
   # ── InfluenceDiagram ──────────────────────────────────────────────────────
 

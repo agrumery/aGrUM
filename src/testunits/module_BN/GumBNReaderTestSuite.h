@@ -44,6 +44,8 @@
 #include <string>
 
 #include <agrum/base/io/GumBinaryIO.h>
+#include <agrum/base/multidim/aggregators/or.h>
+#include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
 #include <agrum/BN/io/GUM/GumBNWriter.h>
@@ -301,6 +303,58 @@ namespace gum_tests {
     auto                    reader = gum::GumBNReader< double >(&bn2);
     CHECK_EQ(reader.proceedFromString(str), 0u);
     CHECK_EQ(bn2, bn);
+  }
+
+  GUM_TEST(BuildingBayesNetFromJsonWithAggregatorAndICI) {
+    // hand-written fixture, decoupled from GumBNWriter, to test the reader's
+    // "kind":"aggregator"/"kind":"ici" dispatch in isolation.
+    const std::string str = R"(
+{
+  "type": "BN",
+  "nodes": ["P1{a|b}", "P2{a|b}", "Agg{a|b}", "Ici{a|b}"],
+  "parents": {"P1": [], "P2": [], "Agg": ["P1", "P2"], "Ici": ["P1", "P2"]},
+  "cpt": {
+    "P1": [0.5, 0.5],
+    "P2": [0.5, 0.5],
+    "Agg": {"kind": "aggregator", "name": "or"},
+    "Ici": {
+      "kind": "ici",
+      "name": "MultiDimNoisyORCompound",
+      "externalWeight": 0.1,
+      "causalWeights": {"P1": 0.3, "P2": 0.6}
+    }
+  }
+})";
+
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn);
+    CHECK_EQ(reader.proceedFromString(str), 0u);
+    CHECK_EQ(bn.size(), 4u);
+
+    CHECK(dynamic_cast< const gum::aggregator::Or< double >* >(bn.cpt("Agg").content()) != nullptr);
+
+    const auto* ici
+        = dynamic_cast< const gum::MultiDimICIModel< double >* >(bn.cpt("Ici").content());
+    CHECK(ici != nullptr);
+    CHECK_EQ(ici->externalWeight(), 0.1);
+    CHECK_EQ(ici->causalWeight(bn.variable("P1")), 0.3);
+    CHECK_EQ(ici->causalWeight(bn.variable("P2")), 0.6);
+  }
+
+  GUM_TEST(UnknownCptKindRaisesError) {
+    const std::string str = R"(
+{
+  "type": "BN",
+  "nodes": ["A{a|b}"],
+  "parents": {"A": []},
+  "cpt": {"A": {"kind": "unknown_kind"}}
+})";
+
+    gum::BayesNet< double > bn;
+    auto                    reader = gum::GumBNReader< double >(&bn);
+    CHECK_NE(reader.proceedFromString(str), 0u);
+    CHECK_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("Unknown cpt kind"), std::string::npos);
   }
 
   GUM_TEST(JgumPreservesStateOnMidParseError) {

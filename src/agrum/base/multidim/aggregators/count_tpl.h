@@ -89,6 +89,11 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    Idx Count< GUM_SCALAR >::value() const {
+      return _value_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     MultiDimContainer< GUM_SCALAR >* Count< GUM_SCALAR >::newFactory() const {
       return new Count< GUM_SCALAR >(_value_);
     }

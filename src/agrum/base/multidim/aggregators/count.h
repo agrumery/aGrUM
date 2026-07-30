@@ -80,6 +80,7 @@ namespace gum {
       ~Count() override;
 
       std::string aggregatorName() const override;
+      Idx         value() const override;
 
       /**
        * This method creates a clone of this object, withouth its content

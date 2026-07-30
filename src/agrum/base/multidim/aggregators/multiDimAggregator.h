@@ -132,7 +132,17 @@ namespace gum {
       GUM_ELEMENT get(const Instantiation& i) const override;
 
       virtual std::string aggregatorName() const = 0;
-      std::string         toString() const override;
+
+      /**
+       * @brief Returns the scalar parameter of this aggregator, if it has one.
+       *
+       * Only Count, Exists and Forall have such a parameter; other aggregators
+       * keep the default implementation.
+       *
+       * @throw OperationNotAllowed Raised if this aggregator has no such parameter.
+       */
+      virtual Idx value() const;
+      std::string toString() const override;
 
       void changeNotification(const gum::Instantiation&,
                               const gum::DiscreteVariable* const,

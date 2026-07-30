@@ -95,6 +95,11 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    Idx Exists< GUM_SCALAR >::value() const {
+      return _value_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     MultiDimContainer< GUM_SCALAR >* Exists< GUM_SCALAR >::newFactory() const {
       return new Exists< GUM_SCALAR >(_value_);
     }

@@ -70,6 +70,11 @@ Fields
   Values are listed in the order produced by iterating over the joint instantiation
   of the variable and its parents (same order as :meth:`~pyagrum.Tensor.fillWith`).
   Always present, even for an empty network (empty object).
+  For aggregators (forall, exists, count, min, max, sum, median, and, or,
+  amplitude) and ICI models (Noisy-Or, Noisy-And, Logit), the entry is a
+  compact **object** instead of a flat array — see `Aggregators and ICI
+  models`_ below.
+
 
 ``properties`` *(optional)*
   Key/value pairs of string metadata. Absent if no properties have been set.
@@ -97,6 +102,67 @@ Python usage
    import pickle
    data = pickle.dumps(bn)
    bn4 = pickle.loads(data)
+
+
+Aggregators and ICI models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Nodes built with :meth:`~pyagrum.BayesNet.addAND`, :meth:`~pyagrum.BayesNet.addOR`,
+:meth:`~pyagrum.BayesNet.addAMPLITUDE`, :meth:`~pyagrum.BayesNet.addCOUNT`,
+:meth:`~pyagrum.BayesNet.addEXISTS`, :meth:`~pyagrum.BayesNet.addFORALL`,
+:meth:`~pyagrum.BayesNet.addMAX`, :meth:`~pyagrum.BayesNet.addMEDIAN`,
+:meth:`~pyagrum.BayesNet.addMIN`, :meth:`~pyagrum.BayesNet.addSUM`,
+:meth:`~pyagrum.BayesNet.addNoisyOR`, :meth:`~pyagrum.BayesNet.addNoisyAND`, or
+:meth:`~pyagrum.BayesNet.addLogit` have no stored probability table — their CPT is
+entirely determined by a type and a few parameters. Serializing them as a dense
+array would be wasteful (and lose the symbolic type on reload), so their ``cpt``
+entry is a small JSON object instead:
+
+.. code-block:: json
+
+   {
+     "cpt": {
+       "D": {"kind": "aggregator", "name": "forall", "value": 1},
+       "S": {"kind": "aggregator", "name": "sum"},
+       "E": {
+         "kind": "ici",
+         "name": "MultiDimNoisyORCompound",
+         "externalWeight": 0.1,
+         "causalWeights": {"B": 0.3, "C": 0.7}
+       }
+     }
+   }
+
+``kind: "aggregator"``
+  ``name`` is one of ``and``, ``or``, ``amplitude``, ``count``, ``exists``, ``forall``,
+  ``max``, ``median``, ``min``, ``sum``. ``value`` is present only for ``count``,
+  ``exists`` and ``forall`` (the parent value being tested/counted).
+
+``kind: "ici"``
+  ``name`` is the ICI implementation name — ``MultiDimNoisyORCompound``,
+  ``MultiDimNoisyORNet``, ``MultiDimNoisyAND``, or ``MultiDimLogit``.
+  ``externalWeight`` is the leak probability. ``causalWeights`` maps each parent's
+  name to its causal weight (set via :meth:`~pyagrum.BayesNet.addWeightedArc`);
+  it is independent of parent order.
+
+Loading a file predating this feature — where every ``cpt`` entry is a flat
+array — still works unchanged: the array/object distinction is enough to tell
+the two encodings apart, with no version negotiation required.
+
+.. code-block:: python
+
+   import pyagrum as gum
+
+   bn = gum.BayesNet()
+   b1 = bn.add(gum.LabelizedVariable("B1", "", 2))
+   b2 = bn.add(gum.LabelizedVariable("B2", "", 2))
+   e = bn.addNoisyOR(gum.LabelizedVariable("E", "", 2), 0.1)
+   bn.addWeightedArc(b1, e, 0.3)
+   bn.addWeightedArc(b2, e, 0.7)
+
+   gum.saveBN(bn, "model.jgum")
+   bn2 = gum.loadBN("model.jgum")
+   assert bn == bn2
 
 
 Influence Diagram (``"ID"``)

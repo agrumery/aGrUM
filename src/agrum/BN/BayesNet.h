@@ -534,6 +534,21 @@ namespace gum {
     NodeId addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight);
 
     /**
+     * Generic factory for ICI model nodes, dispatching on the implementation's name.
+     *
+     * @param iciType one of "MultiDimNoisyORCompound", "MultiDimNoisyORNet",
+     *        "MultiDimNoisyAND", "MultiDimLogit" — i.e. the value returned by
+     *        gum::MultiDimICIModel::name() of the concrete subtype.
+     * @param var The variable added by copy.
+     * @param externalWeight see gum::MultiDimICIModel.
+     * @return the id of the added variable.
+     * @throw NotFound if iciType is unknown.
+     */
+    NodeId addICIModel(std::string_view        iciType,
+                       const DiscreteVariable& var,
+                       GUM_SCALAR              externalWeight);
+
+    /**
      * Add a variable, it's associate node and an OR implementation. The id of
      *the new variable is automatically generated.
      *
@@ -571,6 +586,19 @@ namespace gum {
     NodeId addMEDIAN(const DiscreteVariable& var);
     NodeId addMIN(const DiscreteVariable& var);
     NodeId addSUM(const DiscreteVariable& var);
+
+    /**
+     * Generic factory for aggregator nodes, dispatching on the aggregator's name.
+     *
+     * @param aggregatorType one of "and", "or", "amplitude", "count", "exists",
+     *        "forall", "max", "median", "min", "sum" (case-insensitive).
+     * @param var The variable added by copy.
+     * @param value used only by "count", "exists" and "forall" (ignored otherwise).
+     * @return the id of the added variable.
+     * @throw NotFound if aggregatorType is unknown.
+     */
+    NodeId
+        addAggregator(std::string_view aggregatorType, const DiscreteVariable& var, Idx value = 1);
     /**
      * @}
      */

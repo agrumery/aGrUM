@@ -95,6 +95,11 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    Idx Forall< GUM_SCALAR >::value() const {
+      return _value_;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     MultiDimContainer< GUM_SCALAR >* Forall< GUM_SCALAR >::newFactory() const {
       return new Forall< GUM_SCALAR >(_value_);
     }

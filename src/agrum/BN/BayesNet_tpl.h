@@ -451,6 +451,24 @@ namespace gum {
     return add(var, new aggregator::Sum< GUM_SCALAR >());
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  NodeId BayesNet< GUM_SCALAR >::addAggregator(std::string_view        aggregatorType,
+                                               const DiscreteVariable& var,
+                                               Idx                     value) {
+    const std::string type = toLower(aggregatorType);
+    if (type == "and") return addAND(var);
+    if (type == "or") return addOR(var);
+    if (type == "amplitude") return addAMPLITUDE(var);
+    if (type == "count") return addCOUNT(var, value);
+    if (type == "exists") return addEXISTS(var, value);
+    if (type == "forall") return addFORALL(var, value);
+    if (type == "max") return addMAX(var);
+    if (type == "median") return addMEDIAN(var);
+    if (type == "min") return addMIN(var);
+    if (type == "sum") return addSUM(var);
+    GUM_ERROR(NotFound, "Unknown aggregator type: " << aggregatorType)
+  }
+
   //================================
   // ICIModels
   //================================
@@ -481,6 +499,17 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight) {
     return add(var, new MultiDimLogit< GUM_SCALAR >(external_weight));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  NodeId BayesNet< GUM_SCALAR >::addICIModel(std::string_view        iciType,
+                                             const DiscreteVariable& var,
+                                             GUM_SCALAR              externalWeight) {
+    if (iciType == "MultiDimNoisyORCompound") return addNoisyORCompound(var, externalWeight);
+    if (iciType == "MultiDimNoisyORNet") return addNoisyORNet(var, externalWeight);
+    if (iciType == "MultiDimNoisyAND") return addNoisyAND(var, externalWeight);
+    if (iciType == "MultiDimLogit") return addLogit(var, externalWeight);
+    GUM_ERROR(NotFound, "Unknown ICI model type: " << iciType)
   }
 
   template < GUM_Numeric GUM_SCALAR >
