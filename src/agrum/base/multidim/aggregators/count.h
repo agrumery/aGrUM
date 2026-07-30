@@ -79,8 +79,8 @@ namespace gum {
       Count(const Count< GUM_SCALAR >& from);
       ~Count() override;
 
-      std::string aggregatorName() const override;
-      Idx         value() const override;
+      std::string           aggregatorName() const override;
+      std::optional< Idx >  value() const override;
 
       /**
        * This method creates a clone of this object, withouth its content

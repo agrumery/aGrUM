@@ -95,7 +95,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Forall< GUM_SCALAR >::value() const {
+    std::optional< Idx > Forall< GUM_SCALAR >::value() const {
       return _value_;
     }
 

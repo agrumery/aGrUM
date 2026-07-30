@@ -59,6 +59,12 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class BayesNetFactory;
 
+  template < GUM_Numeric GUM_SCALAR >
+  class AggregatorDecomposition;
+
+  template < GUM_Numeric GUM_SCALAR >
+  class GumBNReader;
+
   /**
    * @class BayesNet
    * @headerfile BayesNet.h <agrum/BN/BayesNet.h>
@@ -92,6 +98,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class BayesNet: public IBayesNet< GUM_SCALAR > {
     friend class BayesNetFactory< GUM_SCALAR >;
+    friend class GumBNReader< GUM_SCALAR >;
+    friend class AggregatorDecomposition< GUM_SCALAR >;
 
     public:
     /**
@@ -534,21 +542,6 @@ namespace gum {
     NodeId addLogit(const DiscreteVariable& var, GUM_SCALAR external_weight);
 
     /**
-     * Generic factory for ICI model nodes, dispatching on the implementation's name.
-     *
-     * @param iciType one of "MultiDimNoisyORCompound", "MultiDimNoisyORNet",
-     *        "MultiDimNoisyAND", "MultiDimLogit" — i.e. the value returned by
-     *        gum::MultiDimICIModel::name() of the concrete subtype.
-     * @param var The variable added by copy.
-     * @param externalWeight see gum::MultiDimICIModel.
-     * @return the id of the added variable.
-     * @throw NotFound if iciType is unknown.
-     */
-    NodeId addICIModel(std::string_view        iciType,
-                       const DiscreteVariable& var,
-                       GUM_SCALAR              externalWeight);
-
-    /**
      * Add a variable, it's associate node and an OR implementation. The id of
      *the new variable is automatically generated.
      *
@@ -587,18 +580,6 @@ namespace gum {
     NodeId addMIN(const DiscreteVariable& var);
     NodeId addSUM(const DiscreteVariable& var);
 
-    /**
-     * Generic factory for aggregator nodes, dispatching on the aggregator's name.
-     *
-     * @param aggregatorType one of "and", "or", "amplitude", "count", "exists",
-     *        "forall", "max", "median", "min", "sum" (case-insensitive).
-     * @param var The variable added by copy.
-     * @param value used only by "count", "exists" and "forall" (ignored otherwise).
-     * @return the id of the added variable.
-     * @throw NotFound if aggregatorType is unknown.
-     */
-    NodeId
-        addAggregator(std::string_view aggregatorType, const DiscreteVariable& var, Idx value = 1);
     /**
      * @}
      */
@@ -671,6 +652,18 @@ namespace gum {
     /// @warning no verification of dimensions are performer
     /// @see changeTensor
     void _unsafeChangeTensor_(NodeId id, Tensor< GUM_SCALAR >* newPot);
+
+    /// Generic factory for aggregator nodes, dispatching on the aggregator's name.
+    /// @note Not part of the public API: used by GumBNReader to reconstruct aggregator
+    /// nodes serialized in the compact jgum/bgum format.
+    NodeId
+        _addAggregator_(std::string_view aggregatorType, const DiscreteVariable& var, Idx value = 1);
+
+    /// Generic factory for ICI model nodes, dispatching on the implementation's name.
+    /// @note Not part of the public API: used by GumBNReader to reconstruct ICI model
+    /// nodes serialized in the compact jgum/bgum format.
+    NodeId
+        _addICIModel_(std::string_view iciType, const DiscreteVariable& var, GUM_SCALAR externalWeight);
 
     public:
     using IBayesNet< GUM_SCALAR >::dag;

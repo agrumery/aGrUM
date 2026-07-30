@@ -143,16 +143,16 @@ namespace gum {
       return decomposable_;
     }
 
-    template < typename GUM_SCALAR >
-    Idx MultiDimAggregator< GUM_SCALAR >::value() const {
-      GUM_ERROR(OperationNotAllowed, this->aggregatorName() << " has no scalar parameter")
-    }
-
     // returns the name of the implementation
     template < typename GUM_SCALAR >
     const std::string& MultiDimAggregator< GUM_SCALAR >::name() const {
       static const std::string str = "MultiDimAggregator";
       return str;
+    }
+
+    template < typename GUM_SCALAR >
+    std::optional< Idx > MultiDimAggregator< GUM_SCALAR >::value() const {
+      return std::nullopt;
     }
 
     // For friendly displaying the content of the variable.

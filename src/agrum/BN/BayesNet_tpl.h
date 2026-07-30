@@ -452,7 +452,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId BayesNet< GUM_SCALAR >::addAggregator(std::string_view        aggregatorType,
+  NodeId BayesNet< GUM_SCALAR >::_addAggregator_(std::string_view        aggregatorType,
                                                const DiscreteVariable& var,
                                                Idx                     value) {
     const std::string type = toLower(aggregatorType);
@@ -502,7 +502,7 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  NodeId BayesNet< GUM_SCALAR >::addICIModel(std::string_view        iciType,
+  NodeId BayesNet< GUM_SCALAR >::_addICIModel_(std::string_view        iciType,
                                              const DiscreteVariable& var,
                                              GUM_SCALAR              externalWeight) {
     if (iciType == "MultiDimNoisyORCompound") return addNoisyORCompound(var, externalWeight);

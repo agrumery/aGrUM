@@ -107,20 +107,29 @@ namespace gum {
       // iterate on nodes in json
       for (const auto& node: content["nodes"]) {
         auto        var      = fastVariable< GUM_SCALAR >(node.template get< std::string >());
+        if (var->domainSize() < 2) GUM_ERROR(OperationNotAllowed, var->name() << " has a domain size <2")
         const auto& nodeName = var->name();
+        if (!content["cpt"].contains(nodeName))
+          GUM_ERROR(NotFound, "Node '" << nodeName << "' has no entry in the 'cpt' section")
         const auto& cptEntry = content["cpt"].at(nodeName);
 
         if (cptEntry.is_object()) {
+          if (!cptEntry.contains("kind"))
+            GUM_ERROR(NotFound, "Missing 'kind' for node '" << nodeName << "'")
           const auto kind = cptEntry.at("kind").template get< std::string >();
           if (kind == "aggregator") {
+            if (!cptEntry.contains("name"))
+              GUM_ERROR(NotFound, "Missing 'name' for aggregator node '" << nodeName << "'")
             const auto name = cptEntry.at("name").template get< std::string >();
-            const Idx  value
-                = cptEntry.contains("value") ? cptEntry.at("value").template get< Idx >() : 1;
-            tmp.addAggregator(name, *var, value);
+            const Idx value = cptEntry.value("value", Idx(1));
+            tmp._addAggregator_(name, *var, value);
           } else if (kind == "ici") {
+            if (!cptEntry.contains("name") || !cptEntry.contains("externalWeight"))
+              GUM_ERROR(NotFound,
+                       "Missing 'name' or 'externalWeight' for ici node '" << nodeName << "'")
             const auto name           = cptEntry.at("name").template get< std::string >();
             const auto externalWeight = cptEntry.at("externalWeight").template get< GUM_SCALAR >();
-            tmp.addICIModel(name, *var, externalWeight);
+            tmp._addICIModel_(name, *var, externalWeight);
           } else {
             GUM_ERROR(NotFound, "Unknown cpt kind '" << kind << "' for node " << nodeName)
           }
@@ -140,10 +149,16 @@ namespace gum {
         const auto& nodeName = cpt.key();
         const auto& values   = cpt.value();
         if (values.is_object()) {
+          if (!values.contains("kind")) GUM_ERROR(NotFound, "Missing 'kind' for node '" << nodeName << "'")
           const auto kind = values.at("kind").template get< std::string >();
           if (kind == "ici") {
             const auto* ici = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(
                 tmp.cpt(nodeName).content());
+            if (ici == nullptr)
+              GUM_ERROR(NotFound,
+                       "Node " << nodeName << " is tagged as an ICI model but does not hold one")
+            if (!values.contains("causalWeights"))
+              GUM_ERROR(NotFound, "Missing 'causalWeights' for ici node '" << nodeName << "'")
             for (const auto& w: values.at("causalWeights").items()) {
               ici->causalWeight(tmp.variable(w.key()), w.value().template get< GUM_SCALAR >());
             }
@@ -206,7 +221,12 @@ namespace gum {
       addException("Invalid JSON string", _streamName_);
       return 1;
     }
-    return _proceedFromJson_(j);
+    try {
+      return _proceedFromJson_(j);
+    } catch (const std::exception& e) {
+      addException(std::string("Error reading string: ") + e.what(), _streamName_);
+      return 1;
+    }
   }
 
   template < GUM_Numeric GUM_SCALAR >

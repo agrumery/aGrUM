@@ -89,7 +89,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Count< GUM_SCALAR >::value() const {
+    std::optional< Idx > Count< GUM_SCALAR >::value() const {
       return _value_;
     }
 

@@ -50,6 +50,7 @@
 #define GUM_MULTI_DIM_AGGREGATOR_H
 
 #include <agrum/base/multidim/implementations/multiDimReadOnly.h>
+#include <optional>
 
 namespace gum {
   namespace aggregator {
@@ -139,9 +140,9 @@ namespace gum {
        * Only Count, Exists and Forall have such a parameter; other aggregators
        * keep the default implementation.
        *
-       * @throw OperationNotAllowed Raised if this aggregator has no such parameter.
+       * @return the parameter, or std::nullopt if this aggregator has none.
        */
-      virtual Idx value() const;
+      virtual std::optional< Idx > value() const;
       std::string toString() const override;
 
       void changeNotification(const gum::Instantiation&,

@@ -91,15 +91,19 @@ namespace gum {
     }
     // add parents (always written, even empty, so the section always exists)
     content["parents"] = ordered_json::object();
+    auto& parentsObj = content["parents"].template get_ref< ordered_json::object_t& >();
+    parentsObj.reserve(bn.size());
     for (const auto& node: bn.nodes()) {
       ordered_json parentList = ordered_json::array();
       const auto&  cpt        = bn.cpt(node);
       for (Idx i = 1; i < cpt.nbrDim(); i++)
         parentList.push_back(cpt.variable(i).name());
-      content["parents"][bn.variable(node).name()] = parentList;
+      parentsObj.emplace_back(bn.variable(node).name(), std::move(parentList));
     }
     // add cpts (always written, even empty, so the section always exists)
     content["cpt"] = ordered_json::object();
+    auto& cptObj = content["cpt"].template get_ref< ordered_json::object_t& >();
+    cptObj.reserve(bn.size());
     for (const auto& node: bn.nodes()) {
       const auto& cpt = bn.cpt(node);
 
@@ -113,10 +117,9 @@ namespace gum {
         ordered_json aggJson;
         aggJson["kind"] = "aggregator";
         aggJson["name"] = name;
-        if (name == "count" || name == "exists" || name == "forall")
-          aggJson["value"] = agg->value();
+        if (const auto value = agg->value()) aggJson["value"] = *value;
 
-        content["cpt"][bn.variable(node).name()] = aggJson;
+        cptObj.emplace_back(bn.variable(node).name(), std::move(aggJson));
         continue;
       }
 
@@ -131,7 +134,7 @@ namespace gum {
         iciJson["externalWeight"] = ici->externalWeight();
         iciJson["causalWeights"]  = weights;
 
-        content["cpt"][bn.variable(node).name()] = iciJson;
+        cptObj.emplace_back(bn.variable(node).name(), std::move(iciJson));
         continue;
       }
 
@@ -140,7 +143,7 @@ namespace gum {
       for (I.setFirst(); !I.end(); ++I) {
         cptValues.push_back(cpt[I]);
       }
-      content["cpt"][bn.variable(node).name()] = cptValues;
+      cptObj.emplace_back(bn.variable(node).name(), std::move(cptValues));
     }
     // add properties
     for (const auto& prop: bn.properties()) {

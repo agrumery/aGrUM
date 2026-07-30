@@ -84,32 +84,7 @@ namespace gum {
                                                                std::string_view        aggType,
                                                                const DiscreteVariable& var,
                                                                Idx                     value) {
-    const auto aggLower = toLower(aggType);
-    if (aggLower == "min") {
-      return bn.addMIN(var);
-    } else if (aggLower == "max") {
-      return bn.addMAX(var);
-    } else if (aggLower == "count") {
-      return bn.addCOUNT(var, value);
-    } else if (aggLower == "exists") {
-      return bn.addEXISTS(var, value);
-    } else if (aggLower == "or") {
-      return bn.addOR(var);
-    } else if (aggLower == "and") {
-      return bn.addAND(var);
-    } else if (aggLower == "forall") {
-      return bn.addFORALL(var);
-    } else if (aggLower == "amplitude") {
-      return bn.addAMPLITUDE(var);
-    } else if (aggLower == "median") {
-      return bn.addMEDIAN(var);
-    } else if (aggLower == "sum") {
-      return bn.addSUM(var);
-    } else {
-      std::string msg = "Unknown aggregate: ";
-      msg.append(aggType);
-      GUM_ERROR(NotFound, msg)
-    }
+    return bn._addAggregator_(aggType, var, value);
   }
 
   template < GUM_Numeric GUM_SCALAR >

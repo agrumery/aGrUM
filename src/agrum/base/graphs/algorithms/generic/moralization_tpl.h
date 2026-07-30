@@ -54,14 +54,19 @@ namespace gum::graph {
     }
   }
 
+  template < typename DEST_GRAPH, typename SRC_GRAPH >
+  inline void _copyNodeWithName_(DEST_GRAPH& dest, const SRC_GRAPH& src, NodeId id) {
+    dest.addNodeWithId(id);
+    if (src.hasName(id)) dest.setName(id, src.nameFromId(id));
+  }
+
   /// @endcond
 
   template < GUM_DiGraphable G >
   UndiGraph moralGraph(const G& g) {
     UndiGraph moral;
     for (const auto node: g.nodes()) {
-      moral.addNodeWithId(node);
-      if (g.hasName(node)) moral.setName(node, g.nameFromId(node));
+      _copyNodeWithName_(moral, g, node);
     }
 
     if constexpr (GUM_MixedGraphable< G >) {
@@ -106,8 +111,7 @@ namespace gum::graph {
       MixedGraph ancestral;
       NodeSet    frontier{query};
       for (const auto n: query) {
-        ancestral.addNodeWithId(n);
-        if (g.hasName(n)) ancestral.setName(n, g.nameFromId(n));
+        _copyNodeWithName_(ancestral, g, n);
       }
 
       while (!frontier.empty()) {
@@ -116,16 +120,14 @@ namespace gum::graph {
 
         for (const auto p: g.parents(current)) {
           if (!ancestral.existsNode(p)) {
-            ancestral.addNodeWithId(p);
-            if (g.hasName(p)) ancestral.setName(p, g.nameFromId(p));
+            _copyNodeWithName_(ancestral, g, p);
             frontier.insert(p);
           }
           ancestral.addArc(p, current);
         }
         for (const auto n: g.neighbours(current)) {
           if (!ancestral.existsNode(n)) {
-            ancestral.addNodeWithId(n);
-            if (g.hasName(n)) ancestral.setName(n, g.nameFromId(n));
+            _copyNodeWithName_(ancestral, g, n);
             frontier.insert(n);
           }
           ancestral.addEdge(n, current);
@@ -140,8 +142,7 @@ namespace gum::graph {
       while (!frontier.empty()) {
         const NodeId current = *frontier.begin();
         frontier.erase(current);
-        res.addNodeWithId(current);
-        if (g.hasName(current)) res.setName(current, g.nameFromId(current));
+        _copyNodeWithName_(res, g, current);
         for (const auto p: g.parents(current))
           if (!res.existsNode(p) && !frontier.contains(p)) frontier.insert(p);
       }

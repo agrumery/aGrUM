@@ -95,8 +95,8 @@ namespace gum {
        */
       [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
-      std::string aggregatorName() const override;
-      Idx         value() const override;
+      std::string           aggregatorName() const override;
+      std::optional< Idx >  value() const override;
 
       protected:
       Idx neutralElt_() const override;
