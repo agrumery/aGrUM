@@ -237,6 +237,7 @@ def init_params() -> None:
     "noSaveParams": False,
     "correction": False,
     "guideline_check": None,
+    "source": None,
     "build_graph": False,
     "profiling": False,
     "stable_abi_off": False,
@@ -268,6 +269,7 @@ def init_params() -> None:
     "noSaveParams",
     "correction",
     "guideline_check",
+    "source",
     "build_graph",
     "force_swig",
     "only",
@@ -508,6 +510,17 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     dest="guideline_check",
     default=None,
     metavar="CHECKS",
+  )
+  cfg.parser.add_argument(
+    "--source",
+    help=(
+      "act guideline: restrict inspected/modified files to those matching this "
+      "glob pattern (e.g. --source '*graph*.h'). Applies only to file-list-based "
+      "checks (cpp/header/format/pureheader)."
+    ),
+    dest="source",
+    default=None,
+    metavar="PATTERN",
   )
   cfg.parser.add_argument(
     "--build_graph",

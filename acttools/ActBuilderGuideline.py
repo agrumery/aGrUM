@@ -369,6 +369,7 @@ class ActBuilderGuideline(ActBuilder):
         self.current["correction"],
         self.current["dry_run"],
         self.current["guideline_check"],
+        self.current["source"],
       )
 
     self.run_done()
@@ -409,6 +410,7 @@ def guideline(
   correction: bool,
   dry_run: bool = False,
   checks: str | None = None,
+  source: str | None = None,
 ) -> int:
   def _aff_errors(nb: int, typ: str) -> int:
     if nb > 0:
@@ -435,23 +437,25 @@ def guideline(
     f"{' (with correction)' if effective_correction else ''}"
     f"{' (dry-run)' if dry_run else ''}]]"
   )
+  if source:
+    notif(f"  [[--source]] filter: '{source}'")
 
   nbrError = 0
 
   if run_cpp:
     notif("  [[(1-cpp) ]]*.cpp[[ file for every ]]*.h[[ file]]")
-    nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction), "missing cpp file")
+    nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction, source), "missing cpp file")
   else:
     notif("  (1-cpp) pass")
 
   if run_header:
     notif("  [[(2-header) check for ]]LGPL+MIT[[ license]]")
     nbrError += _aff_errors(
-      _check_LGPL_MIT_license_CPP(details, effective_correction),
+      _check_LGPL_MIT_license_CPP(details, effective_correction, source),
       "missing LGPL+MIT cpp licence",
     )
     nbrError += _aff_errors(
-      _check_LGPL_MIT_license_py(details, effective_correction),
+      _check_LGPL_MIT_license_py(details, effective_correction, source),
       "missing LGPL+MIT python licence",
     )
   else:
@@ -484,13 +488,13 @@ def guideline(
 
   if run_cpp:
     notif("  [[(6-cpp) check for cpp format]]")
-    nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run), "format")
+    nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run, source), "format")
   else:
     notif("  (6-cpp) pass")
 
   if run_python:
     notif("  [[(7-python) check for py format]]")
-    nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run), "format")
+    nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run, source), "format")
   else:
     notif("  (7-python) pass")
 
@@ -505,7 +509,7 @@ def guideline(
 
   if run_pureheader:
     notif("  [[(9-pureheader) check for function bodies in ]]*.h[[ declaration headers]]")
-    nbrError += _aff_errors(_check_pure_headers(details), "body in declaration header")
+    nbrError += _aff_errors(_check_pure_headers(details, source), "body in declaration header")
   else:
     notif("  (9-pureheader) pass")
 
@@ -527,9 +531,11 @@ def _check_code_format(
   exceptions,
   details,
   correction,
+  source=None,
   dry_run=False,
   fix_stderr_visible=False,
 ) -> int:
+  sources = filterSources(sources, source)
   nbrError = 0
   if tool_path is None:
     warn(f"No correct [[{tool_name}]] tool has been found.")
@@ -572,7 +578,7 @@ def _check_code_format(
   return nbrError
 
 
-def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -> int:
+def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False, source: str | None = None) -> int:
   return _check_code_format(
     sources=srcPyIpynbAgrum(),
     tool_path=cfg.ruff,
@@ -589,6 +595,7 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False) -
     details=details,
     correction=correction,
     dry_run=dry_run,
+    source=source,
   )
 
 
@@ -681,7 +688,7 @@ def _check_inline_size(details: bool, dry_run: bool = False) -> int:
   return nbrError
 
 
-def _check_clang_format(details: bool, correction: bool, dry_run: bool = False) -> int:
+def _check_clang_format(details: bool, correction: bool, dry_run: bool = False, source: str | None = None) -> int:
   return _check_code_format(
     sources=srcAgrum(),
     tool_path=cfg.clangformat,
@@ -692,6 +699,7 @@ def _check_clang_format(details: bool, correction: bool, dry_run: bool = False) 
     details=details,
     correction=correction,
     dry_run=dry_run,
+    source=source,
     fix_stderr_visible=True,
   )
 
@@ -845,7 +853,7 @@ def _LGPL_MIT_atTop_cmake(filename: str, details: bool, correction: bool) -> int
   return err
 
 
-def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
+def _check_LGPL_MIT_license_CPP(details: bool, correction: bool, source: str | None = None) -> int:
   nbrError = 0
 
   exceptions = [
@@ -855,13 +863,13 @@ def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
     "Scanner",
     "doctest",
   ]
-  for gum_file in srcAgrum():
+  for gum_file in filterSources(srcAgrum(), source):
     if any(subs in gum_file for subs in exceptions):
       if details:
         notif(f"skip header test for [[{gum_file}]]")
       continue
     nbrError += _LGPL_MIT_atTop_CPP(gum_file, details, correction)
-  for gum_file in srcGeneratorAgrum():
+  for gum_file in filterSources(srcGeneratorAgrum(), source):
     if any(subs in gum_file for subs in exceptions):
       if details:
         notif(f"skip header test for [[{gum_file}]]")
@@ -871,18 +879,18 @@ def _check_LGPL_MIT_license_CPP(details: bool, correction: bool) -> int:
   return nbrError
 
 
-def _check_LGPL_MIT_license_py(details: bool, correction: bool) -> int:
+def _check_LGPL_MIT_license_py(details: bool, correction: bool, source: str | None = None) -> int:
   nbrError = 0
 
   exceptions = []
-  for pygum_file in srcPyAgrum():
+  for pygum_file in filterSources(srcPyAgrum(), source):
     if details:
       notif_oneline(f"[[{pygum_file.split('/')[-1]}]]")
     if any(subs in pygum_file for subs in exceptions):
       continue
     nbrError += _LGPL_MIT_atTop_py(pygum_file, details, correction)
 
-  for cmake_file in srcCmakeAgrum():
+  for cmake_file in filterSources(srcCmakeAgrum(), source):
     if details:
       notif_oneline(f"[[{cmake_file.split('/')[-1]}]]")
     nbrError += _LGPL_MIT_atTop_cmake(cmake_file, details, correction)
@@ -890,7 +898,7 @@ def _check_LGPL_MIT_license_py(details: bool, correction: bool) -> int:
   return nbrError
 
 
-def _check_cpp_file_exists(details: bool, correction: bool) -> int:
+def _check_cpp_file_exists(details: bool, correction: bool, source: str | None = None) -> int:
   nbrError = 0
 
   exceptions = [
@@ -909,7 +917,7 @@ def _check_cpp_file_exists(details: bool, correction: bool) -> int:
     f"MN{os.sep}inference{os.sep}ShaferShenoyMNInference.h",
   ]
 
-  for header in recglob(f"src{os.sep}agrum", "*.h"):
+  for header in filterSources(recglob(f"src{os.sep}agrum", "*.h"), source):
     if any(subs in header for subs in exceptions):
       if details:
         notif(f"skip {header}")
@@ -1036,7 +1044,7 @@ _PH_SKIP_DIRS = frozenset(
 )
 
 
-def _check_pure_headers(details: bool) -> int:
+def _check_pure_headers(details: bool, source: str | None = None) -> int:
   """Check that *.h declaration headers contain no function/method bodies.
 
   Skips *_tpl.h, *_inl.h, *TestSuite.h, *Inline.h, and directories
@@ -1056,7 +1064,7 @@ def _check_pure_headers(details: bool) -> int:
     - lambdas ([captures](...) {)
   """
   nbrError = 0
-  for header in recglob(f"src{os.sep}agrum", "*.h"):
+  for header in filterSources(recglob(f"src{os.sep}agrum", "*.h"), source):
     basename = header.split(os.sep)[-1]
     if basename.endswith(("_tpl.h", "_inl.h", "Inline.h")):
       continue

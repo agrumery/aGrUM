@@ -40,6 +40,7 @@
 
 import os
 import re
+import fnmatch
 import sys
 from pathlib import Path
 from collections.abc import Iterator
@@ -167,6 +168,13 @@ def cross_platform_rel_path(x: str, y: str) -> str:
 
 def recglob(path: str, mask: str) -> Iterator[str]:
   yield from (str(p) for p in Path(path).glob(f"**/{mask}") if p.is_file())
+
+
+def filterSources(paths: Iterator[str], pattern: str | None) -> Iterator[str]:
+  if not pattern:
+    yield from paths
+    return
+  yield from (p for p in paths if fnmatch.fnmatch(p.replace(os.sep, "/"), pattern))
 
 
 def srcPyNotebooks() -> Iterator[str]:
