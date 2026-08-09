@@ -84,7 +84,7 @@ apps/pyagrum/doc/sphinx/notebooks/*.csv
 apps/pyagrum/doc/sphinx/notebooks/*.html
 .ipynb_checkpoints
 wrappers/pyagrum/doc/sphinx/sphinx_warnings.txt
-wrappers/pyagrum/doc/sphinx/notebooks/.virtual_documents
+**/.virtual_documents
 
 apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv
@@ -106,6 +106,7 @@ wrappers/pyagrum/generated-files/pyagrumPYTHON_wrap.backup.cxx
 *-old.png
 **/Untitled*.ipynb
 wrappers/pyagrum/doc/sphinx/notebooks/out/*
+apps/cppnotebooks/out/*
 
 # VS Code working folder
 .vscode/

@@ -41,6 +41,9 @@
 import glob
 import os
 import platform
+import shutil
+import subprocess
+import sys
 import time
 
 from .utils import *
@@ -269,6 +272,45 @@ class ActBuilderAgrum(ActBuilder):
 
     return line
 
+  def _detect_site_packages(self, python: str) -> str | None:
+    """Returns a writable site-packages directory for `python`: its purelib if
+    that already exists (covers an active venv/conda env), else its user site,
+    created if needed. None if no usable Python environment is found."""
+    probe = (
+      "import sysconfig,os;"
+      "d=sysconfig.get_path('purelib');"
+      "print(d if os.path.isdir(d) else '')"
+    )
+    r = subprocess.run([python, "-c", probe], capture_output=True, text=True)
+    candidate = r.stdout.strip() if r.returncode == 0 else ""
+    if candidate and os.access(candidate, os.W_OK):
+      return candidate
+
+    r = subprocess.run([python, "-c", "import site;print(site.getusersitepackages())"],
+                        capture_output=True, text=True)
+    user_site = r.stdout.strip() if r.returncode == 0 else ""
+    if user_site:
+      try:
+        os.makedirs(user_site, exist_ok=True)
+        return user_site
+      except OSError:
+        return None
+    return None
+
+  def install_gum_cppnb_package(self) -> None:
+    """Copies the standalone src/gum_cppnb/ package into the target Python's
+    site-packages, when a Python environment is detected. aGrUM's C++ install
+    must not fail just because no Python is around, so this is always
+    non-fatal."""
+    python = self.current.get("python3target") or sys.executable
+    site_dir = self._detect_site_packages(python)
+    if site_dir is None:
+      notif("No writable Python site-packages detected -- skipping gum_cppnb install.")
+      return
+    shutil.copytree(os.path.join("src", "gum_cppnb"), os.path.join(site_dir, "gum_cppnb"),
+                     ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
+    notif(f"gum_cppnb installed in {site_dir}")
+
   def build(self):
     prefix = "build ⮕ " + self.current["mode"] + " ⮕️ "
     self.run_start(prefix)
@@ -304,6 +346,9 @@ class ActBuilderAgrum(ActBuilder):
     safe_cd(self.current, "..")
     safe_cd(self.current, "..")
     safe_cd(self.current, "..")
+
+    if not err and self.current["action"] == "install":
+      self.install_gum_cppnb_package()
 
     self.conclude(gc, gm, gb)
     if not err:

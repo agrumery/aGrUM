@@ -12,10 +12,27 @@ install(FILES
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
         )
 
-set(CXX_FLAGS "${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE}}")
+# Libs: one -lagrum<MODULE> per module actually built (mirrors the install loop below)
+set(AGRUM_PC_LIBS "")
+foreach (OPTION ${LIST_OF_MODULES})
+    if (BUILD_${OPTION} OR BUILD_ALL)
+        set(AGRUM_PC_LIBS "${AGRUM_PC_LIBS} -lagrum${OPTION}")
+    endif ()
+endforeach ()
+
+# Threading flavor propagated to pkg-config consumers
+if (GUM_THREADS MATCHES "stl")
+    set(AGRUM_PC_THREAD_CFLAGS "")
+    set(AGRUM_PC_THREAD_LIBS "${CMAKE_THREAD_LIBS_INIT}")
+elseif (GUM_THREADS MATCHES "omp")
+    set(AGRUM_PC_THREAD_CFLAGS "${OpenMP_CXX_FLAGS}")
+    set(AGRUM_PC_THREAD_LIBS "${OpenMP_CXX_FLAGS}")
+endif ()
+
 configure_file(
         "${CMAKE_CURRENT_CMAKE_DIR}/agrum.pc.cmake.in"
         "${CMAKE_CURRENT_BINARY_DIR}/agrum.pc"
+        @ONLY
 )
 
 install(CODE "MESSAGE(\"\n\n************************\")")
