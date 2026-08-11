@@ -11498,6 +11498,51 @@ def log2(p):
   return Tensor(p).log2()
 
 
+def fastGraph(desc: str):
+  """
+  Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
+  graph type from a quick read of `desc`.
+
+  If `desc` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
+  attempted first, falling back to a :class:`pyagrum.DiGraph` if that would create a
+  directed cycle. If `desc` mixes arcs and undirected edges (``'-'``), a
+  :class:`pyagrum.PDAG` is attempted first, falling back to a :class:`pyagrum.MixedGraph`
+  on the same condition. If `desc` only contains undirected edges, a
+  :class:`pyagrum.UndiGraph` is returned.
+
+  For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
+  :func:`pyagrum.fastUndiGraph`, :func:`pyagrum.fastMixedGraph`, :func:`pyagrum.fastDAG`,
+  or :func:`pyagrum.fastPDAG` directly.
+
+  Parameters
+  ----------
+  desc : str
+    the string containing the dot-like specification
+
+  Returns
+  -------
+  pyagrum.DAG or pyagrum.DiGraph or pyagrum.PDAG or pyagrum.MixedGraph or pyagrum.UndiGraph
+  """
+  import re
+
+  is_arc = ("->" in desc) or ("<-" in desc)
+  is_edge = re.search(r"(?<!<)-(?!>)", desc) is not None
+
+  if not is_arc:
+    return fastUndiGraph(desc)
+
+  if is_edge:
+    try:
+      return fastPDAG(desc)
+    except InvalidDirectedCycle:
+      return fastMixedGraph(desc)
+
+  try:
+    return fastDAG(desc)
+  except InvalidDirectedCycle:
+    return fastDiGraph(desc)
+
+
 import os.path as ospath
 
 def _gum_pickle_load(filename):

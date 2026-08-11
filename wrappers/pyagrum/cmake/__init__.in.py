@@ -54,7 +54,7 @@ pyAgrum includes :
 # submodule BASE
 from .pyagrum import log2
 from .pyagrum import statsObj
-from .pyagrum import fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG
+from .pyagrum import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG
 from .pyagrum import config
 from .pyagrum import (
   DiscretizedVariable,
