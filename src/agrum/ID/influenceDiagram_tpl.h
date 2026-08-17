@@ -53,6 +53,7 @@
 #include <cstdio>
 #include <iostream>
 
+#include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/ID/influenceDiagram.h>
 
@@ -106,27 +107,18 @@ namespace gum {
                                                     std::string_view domain) {
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
 
+    auto resolve
+        = [&](const std::string& node) { return build_node_for_ID(infdiag, node, domain); };
+    auto addArc = [&](NodeId tail, NodeId head, const std::string&) { infdiag.addArc(tail, head); };
+    auto addEdge = [&](NodeId, NodeId, const std::string& token) {
+      GUM_ERROR(InvalidEdge,
+                "fastPrototype: '" << token << "' is preceded by '-' but an InfluenceDiagram "
+                                   << "does not support edges")
+    };
+
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
-      NodeId lastId   = 0;
-      bool   notfirst = false;
-      for (const auto& souschaine: split(chaine, "->")) {
-        bool forward = true;
-        for (auto& node: split(souschaine, "<-")) {
-          auto idVar = build_node_for_ID(infdiag, node, domain);
-          if (notfirst) {
-            if (forward) {
-              infdiag.addArc(lastId, idVar);
-              forward = false;
-            } else {
-              infdiag.addArc(idVar, lastId);
-            }
-          } else {
-            notfirst = true;
-            forward  = false;
-          }
-          lastId = idVar;
-        }
-      }
+      using namespace detail;
+      fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
     }
 
     for (const auto n: infdiag.nodes()) {

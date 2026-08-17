@@ -53,6 +53,7 @@
 #include <set>
 
 #include <agrum/base/core/debug.h>
+#include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/count.h>
@@ -97,27 +98,17 @@ namespace gum {
                                                                std::string_view domain) {
     gum::BayesNet< GUM_SCALAR > bn;
 
+    auto resolve = [&](const std::string& node) { return build_node(bn, node, domain); };
+    auto addArc  = [&](NodeId tail, NodeId head, const std::string&) { bn.addArc(tail, head); };
+    auto addEdge = [&](NodeId, NodeId, const std::string& token) {
+      GUM_ERROR(InvalidEdge,
+                "fastPrototype: '" << token << "' is preceded by '-' but a BayesNet "
+                                   << "does not support edges")
+    };
+
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
-      NodeId lastId   = 0;
-      bool   notfirst = false;
-      for (const auto& souschaine: split(chaine, "->")) {
-        bool forward = true;
-        for (auto& node: split(souschaine, "<-")) {
-          auto idVar = build_node(bn, node, domain);
-          if (notfirst) {
-            if (forward) {
-              bn.addArc(lastId, idVar);
-              forward = false;
-            } else {
-              bn.addArc(idVar, lastId);
-            }
-          } else {
-            notfirst = true;
-            forward  = false;
-          }
-          lastId = idVar;
-        }
-      }
+      using namespace detail;
+      fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
     }
     bn.generateCPTs();
     bn.setProperty("name", "anonymousBN");
@@ -453,8 +444,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::_addAggregator_(std::string_view        aggregatorType,
-                                               const DiscreteVariable& var,
-                                               Idx                     value) {
+                                                 const DiscreteVariable& var,
+                                                 Idx                     value) {
     const std::string type = toLower(aggregatorType);
     if (type == "and") return addAND(var);
     if (type == "or") return addOR(var);
@@ -503,8 +494,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   NodeId BayesNet< GUM_SCALAR >::_addICIModel_(std::string_view        iciType,
-                                             const DiscreteVariable& var,
-                                             GUM_SCALAR              externalWeight) {
+                                               const DiscreteVariable& var,
+                                               GUM_SCALAR              externalWeight) {
     if (iciType == "MultiDimNoisyORCompound") return addNoisyORCompound(var, externalWeight);
     if (iciType == "MultiDimNoisyORNet") return addNoisyORNet(var, externalWeight);
     if (iciType == "MultiDimNoisyAND") return addNoisyAND(var, externalWeight);
