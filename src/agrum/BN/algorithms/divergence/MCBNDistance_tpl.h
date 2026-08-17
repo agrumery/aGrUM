@@ -98,10 +98,10 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Instantiation MCBNDistance< GUM_SCALAR >::drawSample_() const {
+  Instantiation MCBNDistance< GUM_SCALAR >::drawSample_(const Sequence< NodeId >& topoOrder) const {
     gum::Instantiation I;
 
-    for (const auto nod: p_.topologicalOrder()) {
+    for (const auto nod: topoOrder) {
       I.add(p_.variable(nod));
       gum::Instantiation Itop(I);
       Itop.erase(p_.variable(nod));
@@ -112,7 +112,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void MCBNDistance< GUM_SCALAR >::computeKL_() {
-    auto Iq = q_.completeInstantiation();
+    auto Iq              = q_.completeInstantiation();
+    const auto topoOrder = p_.topologicalOrder();
     initApproximationScheme();
 
     // map between drawSample_() variables and q_ variables (using name of vars)
@@ -133,7 +134,7 @@ namespace gum {
 
     do {
       this->disableMinEpsilonRate();
-      gum::Instantiation I = drawSample_();
+      gum::Instantiation I = drawSample_(topoOrder);
       updateApproximationScheme();
 
       Iq.setValsFrom(map, I);

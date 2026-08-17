@@ -115,9 +115,9 @@ namespace gum {
     protected:
     void computeKL_() final;
 
-    /// draws an instantiation of p_'s variables, independently, in topological
-    /// order (no evidence to handle in this hierarchy)
-    Instantiation drawSample_() const;
+    /// draws an instantiation of p_'s variables, independently, following
+    /// topoOrder (no evidence to handle in this hierarchy)
+    Instantiation drawSample_(const Sequence< NodeId >& topoOrder) const;
 
     using BNdistance< GUM_SCALAR >::p_;
     using BNdistance< GUM_SCALAR >::q_;
