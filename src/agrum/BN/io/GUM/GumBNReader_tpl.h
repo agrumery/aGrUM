@@ -53,6 +53,8 @@
 #  include <agrum/base/external/json/json.hpp>
 using json = nlohmann::json;
 
+#  include <unordered_map>
+
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GumBNReader< GUM_SCALAR >::GumBNReader(BayesNet< GUM_SCALAR >* bn,
@@ -104,14 +106,27 @@ namespace gum {
 
     try {
       BayesNet< GUM_SCALAR > tmp;
+
+      // index cpt entries by node name once: content["cpt"].contains()/.at() are each an O(N)
+      // linear scan on nlohmann::ordered_json, so calling them per node (below) would make
+      // node reading O(N^2) on the number of nodes.
+      const auto&                                        cptSection = content["cpt"];
+      std::unordered_map< std::string, const JsonType* > cptByName;
+      cptByName.reserve(cptSection.size());
+      for (const auto& entry: cptSection.items()) {
+        cptByName.emplace(entry.key(), &entry.value());
+      }
+
       // iterate on nodes in json
       for (const auto& node: content["nodes"]) {
-        auto        var      = fastVariable< GUM_SCALAR >(node.template get< std::string >());
-        if (var->domainSize() < 2) GUM_ERROR(OperationNotAllowed, var->name() << " has a domain size <2")
+        auto var = fastVariable< GUM_SCALAR >(node.template get< std::string >());
+        if (var->domainSize() < 2)
+          GUM_ERROR(OperationNotAllowed, var->name() << " has a domain size <2")
         const auto& nodeName = var->name();
-        if (!content["cpt"].contains(nodeName))
+        const auto  cptIt    = cptByName.find(nodeName);
+        if (cptIt == cptByName.end())
           GUM_ERROR(NotFound, "Node '" << nodeName << "' has no entry in the 'cpt' section")
-        const auto& cptEntry = content["cpt"].at(nodeName);
+        const auto& cptEntry = *(cptIt->second);
 
         if (cptEntry.is_object()) {
           if (!cptEntry.contains("kind"))
@@ -120,13 +135,13 @@ namespace gum {
           if (kind == "aggregator") {
             if (!cptEntry.contains("name"))
               GUM_ERROR(NotFound, "Missing 'name' for aggregator node '" << nodeName << "'")
-            const auto name = cptEntry.at("name").template get< std::string >();
-            const Idx value = cptEntry.value("value", Idx(1));
+            const auto name  = cptEntry.at("name").template get< std::string >();
+            const Idx  value = cptEntry.value("value", Idx(1));
             tmp._addAggregator_(name, *var, value);
           } else if (kind == "ici") {
             if (!cptEntry.contains("name") || !cptEntry.contains("externalWeight"))
               GUM_ERROR(NotFound,
-                       "Missing 'name' or 'externalWeight' for ici node '" << nodeName << "'")
+                        "Missing 'name' or 'externalWeight' for ici node '" << nodeName << "'")
             const auto name           = cptEntry.at("name").template get< std::string >();
             const auto externalWeight = cptEntry.at("externalWeight").template get< GUM_SCALAR >();
             tmp._addICIModel_(name, *var, externalWeight);
@@ -149,14 +164,15 @@ namespace gum {
         const auto& nodeName = cpt.key();
         const auto& values   = cpt.value();
         if (values.is_object()) {
-          if (!values.contains("kind")) GUM_ERROR(NotFound, "Missing 'kind' for node '" << nodeName << "'")
+          if (!values.contains("kind"))
+            GUM_ERROR(NotFound, "Missing 'kind' for node '" << nodeName << "'")
           const auto kind = values.at("kind").template get< std::string >();
           if (kind == "ici") {
             const auto* ici = dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(
                 tmp.cpt(nodeName).content());
             if (ici == nullptr)
               GUM_ERROR(NotFound,
-                       "Node " << nodeName << " is tagged as an ICI model but does not hold one")
+                        "Node " << nodeName << " is tagged as an ICI model but does not hold one")
             if (!values.contains("causalWeights"))
               GUM_ERROR(NotFound, "Missing 'causalWeights' for ici node '" << nodeName << "'")
             for (const auto& w: values.at("causalWeights").items()) {
