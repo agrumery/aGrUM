@@ -439,6 +439,7 @@ def guideline(
   )
   if source:
     notif(f"  [[--source]] filter: '{source}'")
+    reset_source_filter_match_count()
 
   nbrError = 0
 
@@ -518,6 +519,9 @@ def guideline(
     nbrError += _aff_errors(_check_inline_size(details, dry_run), "oversized inline function")
   else:
     notif("  (10-inline) pass")
+
+  if source and source_filter_match_count() == 0:
+    warn(f"--source pattern '{source}' matched no file: no check actually inspected anything.")
 
   return nbrError
 

@@ -170,11 +170,27 @@ def recglob(path: str, mask: str) -> Iterator[str]:
   yield from (str(p) for p in Path(path).glob(f"**/{mask}") if p.is_file())
 
 
+_source_filter_match_count = 0
+
+
+def reset_source_filter_match_count() -> None:
+  global _source_filter_match_count
+  _source_filter_match_count = 0
+
+
+def source_filter_match_count() -> int:
+  return _source_filter_match_count
+
+
 def filterSources(paths: Iterator[str], pattern: str | None) -> Iterator[str]:
+  global _source_filter_match_count
   if not pattern:
     yield from paths
     return
-  yield from (p for p in paths if fnmatch.fnmatch(p.replace(os.sep, "/"), pattern))
+  for p in paths:
+    if fnmatch.fnmatch(p.replace(os.sep, "/"), pattern):
+      _source_filter_match_count += 1
+      yield p
 
 
 def srcPyNotebooks() -> Iterator[str]:
