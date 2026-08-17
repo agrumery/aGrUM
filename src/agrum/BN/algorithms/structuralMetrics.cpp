@@ -44,6 +44,17 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+namespace {
+  // 0/0 is conventionally reported as 0 (rather than NaN) for precision/recall/f_score.
+  double _safeRatio_(double numerator, double denom) {
+    return (denom == 0.0) ? 0.0 : numerator / denom;
+  }
+
+  double _safeFScore_(double precision, double recall) {
+    return _safeRatio_(2 * precision * recall, precision + recall);
+  }
+}   // namespace
+
 namespace gum {
   StructuralMetrics::StructuralMetrics() { GUM_CONSTRUCTOR(StructuralMetrics); }
 
@@ -202,22 +213,15 @@ namespace gum {
   }
 
   double StructuralMetrics::precision_skeleton() const {
-    const double denom = tp_skeleton() + fp_skeleton();
-    if (denom == 0.0) return 0.0;
-    return tp_skeleton() / denom;
+    return _safeRatio_(tp_skeleton(), tp_skeleton() + fp_skeleton());
   }
 
   double StructuralMetrics::recall_skeleton() const {
-    const double denom = tp_skeleton() + fn_skeleton();
-    if (denom == 0.0) return 0.0;
-    return tp_skeleton() / denom;
+    return _safeRatio_(tp_skeleton(), tp_skeleton() + fn_skeleton());
   }
 
   double StructuralMetrics::f_score_skeleton() const {
-    const double p = precision_skeleton();
-    const double r = recall_skeleton();
-    if (p + r == 0.0) return 0.0;
-    return 2 * p * r / (p + r);
+    return _safeFScore_(precision_skeleton(), recall_skeleton());
   }
 
   double StructuralMetrics::shd_skeleton() const { return fp_skeleton() + fn_skeleton(); }
@@ -233,24 +237,11 @@ namespace gum {
 
   double StructuralMetrics::tn() const { return _true_none_; }
 
-  double StructuralMetrics::precision() const {
-    const double denom = tp() + fp();
-    if (denom == 0.0) return 0.0;
-    return tp() / denom;
-  }
+  double StructuralMetrics::precision() const { return _safeRatio_(tp(), tp() + fp()); }
 
-  double StructuralMetrics::recall() const {
-    const double denom = tp() + fn();
-    if (denom == 0.0) return 0.0;
-    return tp() / denom;
-  }
+  double StructuralMetrics::recall() const { return _safeRatio_(tp(), tp() + fn()); }
 
-  double StructuralMetrics::f_score() const {
-    const double p = precision();
-    const double r = recall();
-    if (p + r == 0.0) return 0.0;
-    return 2 * p * r / (p + r);
-  }
+  double StructuralMetrics::f_score() const { return _safeFScore_(precision(), recall()); }
 
   double StructuralMetrics::shd() const { return fp() + fn(); }
 
