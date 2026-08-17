@@ -15591,7 +15591,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet__saveGUM(self, name, binary, indent)
 
-    def saveGUMstring(self, indent: int=2) -> str:
+    def _saveGUMstring(self, indent: int=2) -> str:
         r"""
 
         Serialize the BayesNet to a jgum JSON string.
@@ -15613,7 +15613,7 @@ class BayesNet(IBayesNet):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.BayesNet_saveGUMstring(self, indent)
+        return _pyagrum.BayesNet__saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -15966,6 +15966,25 @@ class BayesNet(IBayesNet):
       if indent is None:
         indent = pyagrum.config.typed["core", "default_jgumIndent"]
       self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int = None) -> str:
+      """
+      Save the Bayesian network as a jgum string.
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      return self._saveGUMstring(indent)
 
     def toFast(self, filename: str = None) -> str:
       """
@@ -32684,7 +32703,7 @@ class InfluenceDiagram(DAGmodel):
         """
         return _pyagrum.InfluenceDiagram__saveGUM(self, name, binary, indent)
 
-    def saveGUMstring(self, indent: int=2) -> str:
+    def _saveGUMstring(self, indent: int=2) -> str:
         r"""
 
         Serialize the InfluenceDiagram to a jgum JSON string.
@@ -32706,7 +32725,7 @@ class InfluenceDiagram(DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.InfluenceDiagram_saveGUMstring(self, indent)
+        return _pyagrum.InfluenceDiagram__saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -32856,6 +32875,26 @@ class InfluenceDiagram(DAGmodel):
       if indent is None:
         indent = pyagrum.config.typed["core", "default_jgumIndent"]
       self._saveGUM(name, binary, indent)
+
+
+    def saveGUMstring(self, indent: int = None) -> str:
+      """
+      Save the influence diagram as a jgum string.
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      return self._saveGUMstring(indent)
 
 
     def toFast(self, filename: str = None) -> str:
@@ -34524,7 +34563,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _pyagrum.MarkovRandomField__saveGUM(self, name, binary, indent)
 
-    def saveGUMstring(self, indent: int=2) -> str:
+    def _saveGUMstring(self, indent: int=2) -> str:
         r"""
 
         Serialize the MarkovRandomField to a jgum JSON string.
@@ -34546,7 +34585,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrum.MarkovRandomField_saveGUMstring(self, indent)
+        return _pyagrum.MarkovRandomField__saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -34631,6 +34670,25 @@ class MarkovRandomField(IMarkovRandomField):
       if indent is None:
         indent = pyagrum.config.typed["core", "default_jgumIndent"]
       self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int = None) -> str:
+      """
+      Save the Markov random field as a jgum string.
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      if indent is None:
+        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+      return self._saveGUMstring(indent)
 
     def toFast(self, filename: str = None) -> str:
       """

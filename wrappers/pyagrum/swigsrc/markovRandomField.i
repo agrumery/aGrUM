@@ -91,10 +91,11 @@ IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
 IMPROVE_MARKOVNET_API(gum::IMarkovRandomField);
 IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
 
-// Renamed so the public saveGUM (added below in %pythoncode) can default indent to None and
-// fall back to pyagrum.config["core","default_jgumIndent"] -- a plain C++ int argument can't
-// have a None default, so the config lookup has to happen on the Python side.
+// Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can default indent to
+// None and fall back to pyagrum.config["core","default_jgumIndent"] -- a plain C++ int argument
+// can't have a None default, so the config lookup has to happen on the Python side.
 %rename(_saveGUM) gum::MarkovRandomField::saveGUM;
+%rename(_saveGUMstring) gum::MarkovRandomField::saveGUMstring;
 
 %extend gum::MarkovRandomField {
   void loadGUM(std::string name, bool binary=false) {
@@ -192,6 +193,25 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
   if indent is None:
     indent = pyagrum.config.typed["core", "default_jgumIndent"]
   self._saveGUM(name, binary, indent)
+
+def saveGUMstring(self, indent: int = None) -> str:
+  """
+  Save the Markov random field as a jgum string.
+
+  Parameters
+  ----------
+  indent : int, optional
+    JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+    Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+
+  Returns
+  -------
+  str
+    the jgum string
+  """
+  if indent is None:
+    indent = pyagrum.config.typed["core", "default_jgumIndent"]
+  return self._saveGUMstring(indent)
 
 def toFast(self, filename: str = None) -> str:
   """
