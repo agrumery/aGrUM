@@ -1,8 +1,8 @@
 ###
 # the infrastructure for parallelizing algorithms
 set (GUM_THREADS "stl" CACHE STRING "threads flavor std/omp")
+find_package(Threads REQUIRED)
 if (GUM_THREADS MATCHES "stl")
-  find_package(Threads)
 elseif (GUM_THREADS MATCHES "omp")
   find_package(OpenMP)
 else ()

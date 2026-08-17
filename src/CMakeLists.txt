@@ -84,11 +84,9 @@ endif ()
 target_link_libraries(agrumBASE PRIVATE ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
 
 # threading flavor
+target_link_libraries(agrumBASE PUBLIC Threads::Threads)
 if (GUM_THREADS MATCHES "stl")
-  if (Threads_FOUND)
-    target_link_libraries(agrumBASE PUBLIC Threads::Threads)
-    target_compile_definitions(agrumBASE PUBLIC GUM_THREADS_USE_STL)
-  endif ()
+  target_compile_definitions(agrumBASE PUBLIC GUM_THREADS_USE_STL)
 elseif (GUM_THREADS MATCHES "omp")
   if (OpenMP_FOUND)
     target_link_libraries(agrumBASE PUBLIC OpenMP::OpenMP_CXX)
