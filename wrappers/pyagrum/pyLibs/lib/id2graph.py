@@ -181,7 +181,7 @@ def LIMIDinference2dot(
   fontname, fontsize = gumcols.fontFromMatplotlib()
   dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
-  fmt = "." + pyagrum.config["influenceDiagram", "utility_visible_digits"] + "f"
+  fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
   if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
     titut = f"mEL {-meu['mean']:{fmt}}"
   else:
