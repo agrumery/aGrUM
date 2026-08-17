@@ -109,10 +109,10 @@ def learnerFromString(learner_string: str) -> Any:
     case "XGBRegressor":
       import xgboost
 
-      return xgboost.XGBRegressor()
+      return xgboost.XGBRegressor(n_jobs=1)
     case "XGBClassifier":
       import xgboost
 
-      return xgboost.XGBClassifier()
+      return xgboost.XGBClassifier(n_jobs=1)
     case _:
       raise MisspecifiedLearnerError(learner_string)

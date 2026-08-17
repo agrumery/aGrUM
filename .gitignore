@@ -44,6 +44,7 @@ wrappers/pyagrum/doc/sphinx/notebooks/data.csv
 wrappers/pyagrum/doc/sphinx/notebooks/data2.csv
 wrappers/pyagrum/doc/sphinx/notebooks/database.csv
 wrappers/pyagrum/doc/sphinx/notebooks/dirichlet.csv
+wrappers/pyagrum/doc/sphinx/notebooks/pyagrum.ini
 wrappers/pyagrum/doc/sphinx/notebooks/res/EM.csv
 wrappers/pyagrum/testunits/tests/resources/dataW.csv
 wrappers/pyagrum/testunits/tests/resources/database.csv
