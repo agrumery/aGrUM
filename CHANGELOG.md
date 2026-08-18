@@ -5,14 +5,10 @@
 - pyAgrum
 
     - **fastGraph**:
-        - Added `fastDiGraph()`, `fastUndiGraph()`, `fastMixedGraph()`, `fastDAG()` (with acyclicity check), and
-          `fastPDAG()` for callers who want explicit control over the returned type.
+        - Added `fastDiGraph()`, `fastUndiGraph()`, `fastMixedGraph()`, `fastDAG()`, and `fastPDAG()`. `fastGraph(desc)` is preserved as a single entry point that guesses the returned graph type from `desc`.
         - The dot-like syntax now accepts non-numeric tokens as node names (not only unsigned ints); malformed or
           type-incompatible descriptions raise `pyagrum.InvalidArc` / `pyagrum.InvalidEdge`
           instead of a generic error.
-        - `pyagrum.fastGraph(desc)` is preserved as a single entry point that guesses the returned graph type from
-          `desc`, now reimplemented as a thin dispatcher on top of the new C++-backed
-          `fastDiGraph()`/`fastUndiGraph()`/`fastMixedGraph()`/`fastDAG()`/`fastPDAG()` (see aGrUM below).
     - **Configuration**:
         - `defaults.ini` now carries typed metadata (`### type :: doc` comments) with validation; added `config.typed`
           accessor and key-deprecation support.
@@ -24,7 +20,7 @@
           defaulting to `core.default_jgumIndent`.
         - Aggregator and ICI model nodes are now serialized compactly instead of as dense CPTs.
     - **MCBNDistance**:
-        - Wired the new `MCBNDistance` C++ class into SWIG, documentation, and notebooks.
+        - Wrapped the new `MCBNDistance` C++ class.
         - Fixed `animApproximationScheme` flicker by consolidating it into `utils.py`.
     - **Documentation**: several improvements.
     - **Misc**:
@@ -33,19 +29,17 @@
 - aGrUM
 
     - **MCBNDistance**:
-        - Added `MCBNDistance`, an independent Monte Carlo estimator of the KL divergence between two Bayesian networks.
+        - Added `MCBNDistance`, an independent Monte Carlo estimator of the KL divergence between two Bayesian networks. For a large BN, MCBNDistance is often faster and more accurate than the `GibbsBNDistance` estimator.
     - **Native GUM Format (jgum / bgum)**:
         - Aggregator and ICI model nodes are now serialized compactly instead of as dense CPTs.
-        - Hardened aggregator/ICI serialization: `gum::Exception` on malformed input, O (N) writer,
-          `std::optional` aggregator `value()`, private `addAggregator`/`addICIModel`, deduplicated aggregator dispatch,
-          and a `moralGraph` node-copy fix.
+        - Hardened aggregator/ICI serialization: `gum::Exception` on malformed input, O(N) writer,
+          `std::optional` aggregator `value()`, private `addAggregator`/`addICIModel`, deduplicated aggregator dispatch.
     - **fastGraph**:
         - Replaced the ad hoc Python `fastGraph` parser with a generic C++ template,
           `gum::fastGraph<GRAPH_TYPE>(std::string_view)`, building a `DiGraph`, `UndiGraph`,
           `MixedGraph`, `DAG`, or `PDAG` from a dot-like textual description; node tokens can now be names (not only
           unsigned-int ids) and are preserved when the built graph feeds `moralGraph()`. Malformed or type-incompatible
-          descriptions throw `InvalidArc`/`InvalidEdge` instead of being silently misread. The pyAgrum `fastGraph()`
-          entry point is preserved on top of this template (see pyAgrum above).
+          descriptions throw `InvalidArc`/`InvalidEdge` instead of being silently misread.
     - **StructuralMetrics**:
         - Guarded `precision`/`recall`/`f_score` against 0/0 division.
     - **PRM fixes**:
@@ -55,26 +49,15 @@
         - Promoted PRM to an independent CMake module (`PRM_DEPS=BN`) instead of folding it into
           `BN_DIRS`.
     - **Testing infrastructure**:
-        - Doctest suites are now compiled as their own translation unit, fixing cross-file symbol collisions; the
-          now-redundant `GUM_CURRENT_SUITE`/`MODULE` `#undef` guards were dropped.
-        - Migrated all doctest suites from `GUM_TEST_ACTIF` + static test methods to inline `GUM_TEST`
-          blocks; dropped `GUM_TEST_INACTIF`; added `GUM_TEST_INACTIVE` macro.
-        - Fixed `act` `colFormat` mis-coloring stray brackets adjacent to `[[ ]]` markers; doctest stub generation now
-          skips unchanged files to avoid needless test rebuilds.
+        - optimization, bug fixes to the new doctest infrastructure.
     - **Build & Tooling**:
         - `act guideline` gains a `--source` glob filter to restrict checks to matching files.
         - Added `gum_cppnb`, a standalone C++ notebook tool auto-installed by `act install aGrUM`, with BN/MRF/ID/CM
           tutorials.
-        - Finalized the BN+BNLEARNING merge: dropped the redundant BN/learning glob entry (already covered by
-          `GLOB_RECURSE` on BN) and its dependency-graph special-casing.
-        - Included `CMakeFindDependencyMacro` in `aGrUMConfig.cmake.in` for `find_dependency`.
+        - Finalized the BN+BNLEARNING merge: dropped the redundant BN/learning glob entry
         - Required `swig>=4.3` (thanks to Julien Schueller).
         - Simplified CMake threading logic: `GUM_THREADS` cache variable (`stl`/`omp`) replaces the previous
           flag-assembly logic (thanks to Julien Schueller).
-    - **Code quality**:
-        - Hid `consteval` `SetIterator`/`SetIteratorSafe` static-init constructors from SWIG.
-        - Marked `Prior` move constructor/assignment `noexcept`; collapsed `gum::learning` into nested-namespace syntax.
-        - Moved the `Buffer` declaration out of public headers (`cocoR/common.h`/`.cpp`) (thanks to Julien Schueller).
 
 ## Changelog for 3.0.0
 
