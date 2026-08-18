@@ -110,7 +110,7 @@ class PRMexplorer {
     PyObject* q = PyList_New(0);
 
     for (auto c: _prm_->classes()) {
-      PyList_Append(q, PyString_FromString(c->name().c_str()));
+      PyList_Append(q, PyUnicode_FromString(c->name().c_str()));
     }
 
     return q;
@@ -132,19 +132,19 @@ class PRMexplorer {
     for (auto a: c.attributes()) {
       /*if ( allAttributes ) {
       PyObject* uplet = PyTuple_New(2);
-      PyTuple_SetItem(uplet, 0, PyString_FromString( c->type().name().c_str()) );
-      PyTuple_SetItem(uplet, 1, PyString_FromString( c->name().c_str() ));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString( c->type().name().c_str()) );
+      PyTuple_SetItem(uplet, 1, PyUnicode_FromString( c->name().c_str() ));
       PyList_Append( q, uplet);
     } else*/
       if (&(c.get(a->name())) == a) {
         // remove automatically created attributes (cast-descendant)
         PyObject* uplet = PyTuple_New(3);
-        PyTuple_SetItem(uplet, 0, PyString_FromString(a->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyString_FromString(a->name().c_str()));
+        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a->type().name().c_str()));
+        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(a->name().c_str()));
 
         PyObject* depenson = PyList_New(0);
         for (auto parentId: gra.parents(a->id())) {
-          PyList_Append(depenson, PyString_FromString(c.get(parentId).name().c_str()));
+          PyList_Append(depenson, PyUnicode_FromString(c.get(parentId).name().c_str()));
         }
 
         PyTuple_SetItem(uplet, 2, depenson);
@@ -178,8 +178,8 @@ class PRMexplorer {
 
     for (auto r: _prm_->getClass(class_name).referenceSlots()) {
       PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyString_FromString(r->slotType().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyString_FromString(r->name().c_str()));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(r->slotType().name().c_str()));
+      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(r->name().c_str()));
       if (r->isArray()) {
         PyTuple_SetItem(uplet, 2, Py_True);
       } else {
@@ -201,7 +201,7 @@ class PRMexplorer {
     PyObject* q = PyList_New(0);
 
     for (auto c: _prm_->getClass(class_name).parameters()) {
-      PyList_Append(q, PyString_FromString(c->safeName().c_str()));
+      PyList_Append(q, PyUnicode_FromString(c->safeName().c_str()));
     }
     return q;
   }
@@ -218,7 +218,7 @@ class PRMexplorer {
     try {
       // raise NotFound if this class doesn't implement any interface
       for (auto c: _prm_->getClass(class_name).implements()) {
-        PyList_Append(l, PyString_FromString(c->name().c_str()));
+        PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
       }
     } catch (gum::NotFound&) { /*do nothing and return empty list*/
     }
@@ -245,18 +245,18 @@ class PRMexplorer {
 
     for (auto a: c.aggregates()) {
       PyObject* uplet = PyTuple_New(5);
-      PyTuple_SetItem(uplet, 0, PyString_FromString(a->type().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyString_FromString(a->name().c_str()));
-      PyTuple_SetItem(uplet, 2, PyString_FromString(aggType[(int)a->agg_type()].c_str()));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a->type().name().c_str()));
+      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(a->name().c_str()));
+      PyTuple_SetItem(uplet, 2, PyUnicode_FromString(aggType[(int)a->agg_type()].c_str()));
       if (a->hasLabel()) {
-        PyTuple_SetItem(uplet, 3, PyString_FromString(a->labelValue().c_str()));
+        PyTuple_SetItem(uplet, 3, PyUnicode_FromString(a->labelValue().c_str()));
       } else {
         PyTuple_SetItem(uplet, 3, Py_None);
       }
       PyObject* param = PyList_New(0);
 
       for (auto parentId: gra.parents(a->id())) {
-        PyList_Append(param, PyString_FromString(c.get(parentId).name().c_str()));
+        PyList_Append(param, PyUnicode_FromString(c.get(parentId).name().c_str()));
       }
 
       PyTuple_SetItem(uplet, 4, param);
@@ -277,8 +277,8 @@ class PRMexplorer {
 
     for (auto c: _prm_->getClass(class_name).slotChains()) {
       PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyString_FromString(c->type().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyString_FromString(c->name().c_str()));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
+      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
       if (c->isMultiple()) {
         PyTuple_SetItem(uplet, 2, Py_True);
       } else {
@@ -290,7 +290,7 @@ class PRMexplorer {
       auto chains = c->chain();
       PyObject* uplets = PyTuple_New(chains.size()-1);
       for(unsigned int i =0; i != chains.size(); i++){
-        PyTuple_SetItem(uplets, i, PyString_FromString( chains[i]->name().c_str())
+        PyTuple_SetItem(uplets, i, PyUnicode_FromString( chains[i]->name().c_str())
       );
       }
       PyTuple_SetItem(uplet, 3, uplets);
@@ -313,10 +313,10 @@ class PRMexplorer {
     for (auto id: gra.nodes()) {
       PyDict_SetItem(d,
                      PyLong_FromUnsignedLong((unsigned long)id),
-                     PyString_FromString(c.get(id).name().c_str()));
+                     PyUnicode_FromString(c.get(id).name().c_str()));
     }
     PyTuple_SetItem(uplet, 0, d);
-    PyTuple_SetItem(uplet, 1, PyString_FromString(gra.toDot().c_str()));
+    PyTuple_SetItem(uplet, 1, PyUnicode_FromString(gra.toDot().c_str()));
     return uplet;
   }
 
@@ -339,12 +339,12 @@ class PRMexplorer {
 
       auto graph = a_system->skeleton();
 
-      PyTuple_SetItem(uplet, 0, PyString_FromString(a_system->name().c_str()));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a_system->name().c_str()));
 
       for (auto node: graph.nodes()) {
         PyObject* tnode = PyTuple_New(2);
-        PyTuple_SetItem(tnode, 0, PyString_FromString(a_system->get(node).name().c_str()));
-        PyTuple_SetItem(tnode, 1, PyString_FromString(a_system->get(node).type().name().c_str()));
+        PyTuple_SetItem(tnode, 0, PyUnicode_FromString(a_system->get(node).name().c_str()));
+        PyTuple_SetItem(tnode, 1, PyUnicode_FromString(a_system->get(node).type().name().c_str()));
         PyDict_SetItem(n, PyLong_FromUnsignedLong((unsigned long)node), tnode);
       }
 
@@ -376,7 +376,7 @@ class PRMexplorer {
     auto& c = _prm_->getClass(class_name);
     try {
       // raise NotFound if this class haven't super
-      return PyString_FromString(c.super().name().c_str());
+      return PyUnicode_FromString(c.super().name().c_str());
     } catch (gum::NotFound&) { return Py_None; }
   }
 
@@ -390,7 +390,7 @@ class PRMexplorer {
     PyObject* l     = PyList_New(0);
     auto&     exten = _prm_->getClass(class_name).extensions();
     for (auto c: exten) {
-      PyList_Append(l, PyString_FromString(c->name().c_str()));
+      PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
     }
     return l;
   }
@@ -417,7 +417,7 @@ class PRMexplorer {
     PyObject* l = PyList_New(0);
 
     for (auto c: _prm_->types())
-      PyList_Append(l, PyString_FromString(c->name().c_str()));
+      PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
     return l;
   }
 
@@ -430,7 +430,7 @@ class PRMexplorer {
 
     auto& c = _prm_->type(type_name);
     if (c.isSubType()) {
-      return PyString_FromString(c.superType()->name().c_str());
+      return PyUnicode_FromString(c.superType()->name().c_str());
     } else {
       return Py_None;
     }
@@ -448,7 +448,7 @@ class PRMexplorer {
     for (auto c: _prm_->types()) {
       if (c->isSubType()) {
         if (c->superType().name() == selected.name()) {
-          PyList_Append(l, PyString_FromString(c->name().c_str()));
+          PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
         }
       }
     }
@@ -465,7 +465,7 @@ class PRMexplorer {
     PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->type(type_name);
     for (auto lab: selected->labels()) {
-      PyList_Append(l, PyString_FromString(lab.c_str()));
+      PyList_Append(l, PyUnicode_FromString(lab.c_str()));
     }
     return l;
   }
@@ -485,8 +485,8 @@ class PRMexplorer {
     auto& labelMapTypeToSuperType = selected.label_map();
     for (unsigned i = 0; i != labelMapTypeToSuperType.size(); i++) {
       PyDict_SetItem(d,
-                     PyString_FromString(typeLabelVector[i].c_str()),
-                     PyString_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
+                     PyUnicode_FromString(typeLabelVector[i].c_str()),
+                     PyUnicode_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
     }
     return d;
   }
@@ -502,7 +502,7 @@ class PRMexplorer {
     PyObject* l = PyList_New(0);
 
     for (auto c: _prm_->interfaces())
-      PyList_Append(l, PyString_FromString(c->name().c_str()));
+      PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
     return l;
   }
 
@@ -519,15 +519,15 @@ class PRMexplorer {
     for (auto c: _prm_->getInterface(interface_name).attributes())
       if (allAttributes) {
         PyObject* uplet = PyTuple_New(2);
-        PyTuple_SetItem(uplet, 0, PyString_FromString(c->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyString_FromString(c->name().c_str()));
+        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
+        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
         PyList_Append(q, uplet);
       } else if (&(_prm_->getInterface(interface_name).get(c->name())) == c) {
         // remove automatically created attributes
         // (cast-descendant)
         PyObject* uplet = PyTuple_New(2);
-        PyTuple_SetItem(uplet, 0, PyString_FromString(c->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyString_FromString(c->name().c_str()));
+        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
+        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
         PyList_Append(q, uplet);
       }
 
@@ -546,8 +546,8 @@ class PRMexplorer {
 
     for (auto r: _prm_->getInterface(interface_name).referenceSlots()) {
       PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyString_FromString(r->slotType().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyString_FromString(r->name().c_str()));
+      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(r->slotType().name().c_str()));
+      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(r->name().c_str()));
       if (r->isArray()) {
         PyTuple_SetItem(uplet, 2, Py_True);
       } else {
@@ -568,7 +568,7 @@ class PRMexplorer {
     auto& c = _prm_->getInterface(interface_name);
     try {
       // raise NotFound if this interface haven't super
-      return PyString_FromString(c.super().name().c_str());
+      return PyUnicode_FromString(c.super().name().c_str());
     } catch (gum::NotFound&) { return Py_None; }
   }
 
@@ -585,7 +585,7 @@ class PRMexplorer {
       try {
         // raise NotFound if this interface haven't super
         if (c->super().name() == selected.name()) {
-          PyList_Append(l, PyString_FromString(c->name().c_str()));
+          PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
         }
       } catch (gum::NotFound&) { /*do nothing, skip this iteration*/
       }
@@ -603,7 +603,7 @@ class PRMexplorer {
     PyObject* l        = PyList_New(0);
     auto&     selected = _prm_->getInterface(interface_name);
     for (auto c: selected.implementations()) {
-      PyList_Append(l, PyString_FromString(c->name().c_str()));
+      PyList_Append(l, PyUnicode_FromString(c->name().c_str()));
     }
     return l;
   }

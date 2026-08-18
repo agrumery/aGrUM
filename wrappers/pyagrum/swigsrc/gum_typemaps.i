@@ -130,7 +130,7 @@ typedef PyObject PyAgrumDict;
 
   PyObject* pyval;
   for(auto i : *$1) {
-    pyval=PyInt_FromLong(i);
+    pyval=PyLong_FromLong(i);
     PyList_Append(q,pyval);
     Py_DecRef(pyval);
   }
@@ -142,7 +142,7 @@ typedef PyObject PyAgrumDict;
 
   PyObject *pyval;
   for(auto i : static_cast<gum::Sequence<gum::NodeId>>($1)) {
-    pyval=PyInt_FromLong(i);
+    pyval=PyLong_FromLong(i);
     PyList_Append(q,pyval);
     Py_DecRef(pyval);
   }

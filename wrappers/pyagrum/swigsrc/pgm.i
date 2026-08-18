@@ -59,7 +59,7 @@
 
      PyObject* pyval;
      for ( auto node : self->nodes()) {
-       pyval=PyString_FromString(self->variable(node).name().c_str());
+       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
        PySet_Add(q,pyval);
        Py_DecRef(pyval);
      }

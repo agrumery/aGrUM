@@ -156,8 +156,8 @@ class JunctionTreeGenerator {
         if (iter2 != NULL) {
           gum::NodeSet se;
           while ((item2 = PyIter_Next(iter2))) {
-            if (PyInt_Check(item2)) {
-              se.insert(PyInt_AsLong(item2));
+            if (PyLong_Check(item2)) {
+              se.insert(PyLong_AsLong(item2));
             } else {
               GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
             }

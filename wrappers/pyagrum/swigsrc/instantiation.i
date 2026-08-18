@@ -85,7 +85,7 @@
         GUM_ERROR(gum::InvalidArgument, "A key is not a string")
       }
       if (namesToVars.exists(name)) {
-        if (!PyInt_Check(value)) {
+        if (!PyLong_Check(value)) {
           std::string label = PyAgrumHelper::stringFromPyObject(value);
           if (label == "") {
             GUM_ERROR(gum::InvalidArgument,
@@ -93,7 +93,7 @@
           }
           v = namesToVars[name]->index(label);  // may throw gum::OutOfBounds
         } else {
-          v = gum::Idx(PyInt_AsLong(value));
+          v = gum::Idx(PyLong_AsLong(value));
         }
         if (v >= namesToVars[name]->domainSize()) {
           GUM_ERROR(gum::InvalidArgument,

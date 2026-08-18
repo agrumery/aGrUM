@@ -130,8 +130,8 @@ SETPROP_THEN_RETURN_SELF(setFCIExhaustiveSepSet);
 
       for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
         PyObject* row = PyList_GetItem(rows, j);
-        if (PyInt_Check(row) != 0) {
-          ranks.insert(PyInt_AsLong(row), i);
+        if (PyLong_Check(row) != 0) {
+          ranks.insert(PyLong_AsLong(row), i);
           continue;
         }
         std::string n=PyAgrumHelper::stringFromPyObject(row);
@@ -159,11 +159,11 @@ SETPROP_THEN_RETURN_SELF(setFCIExhaustiveSepSet);
 
     for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
       PyObject* row = PyList_GetItem(l, i);
-      if (PyInt_Check(row) == 0) {
+      if (PyLong_Check(row) == 0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a sequence of int");
         return  *$self;
       }
-      v.push_back((gum::NodeId)PyInt_AsLong(row));
+      v.push_back((gum::NodeId)PyLong_AsLong(row));
     }
 
     $self->useK2(v);

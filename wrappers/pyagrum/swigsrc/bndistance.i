@@ -54,7 +54,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klPQ",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorPQ());
+  pyval=PyLong_FromLong(self->errorPQ());
   PyDict_SetItemString(q,"errorPQ",pyval);
   Py_DecRef(pyval);
 
@@ -62,7 +62,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klQP",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorQP());
+  pyval=PyLong_FromLong(self->errorQP());
   PyDict_SetItemString(q,"errorQP",pyval);
   Py_DecRef(pyval);
 
@@ -93,7 +93,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klPQ",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorPQ());
+  pyval=PyLong_FromLong(self->errorPQ());
   PyDict_SetItemString(q,"errorPQ",pyval);
   Py_DecRef(pyval);
 
@@ -101,7 +101,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klQP",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorQP());
+  pyval=PyLong_FromLong(self->errorQP());
   PyDict_SetItemString(q,"errorQP",pyval);
   Py_DecRef(pyval);
 
@@ -132,7 +132,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klPQ",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorPQ());
+  pyval=PyLong_FromLong(self->errorPQ());
   PyDict_SetItemString(q,"errorPQ",pyval);
   Py_DecRef(pyval);
 
@@ -140,7 +140,7 @@ PyAgrumDict* compute(void) {
   PyDict_SetItemString(q,"klQP",pyval);
   Py_DecRef(pyval);
 
-  pyval=PyInt_FromLong(self->errorQP());
+  pyval=PyLong_FromLong(self->errorQP());
   PyDict_SetItemString(q,"errorQP",pyval);
   Py_DecRef(pyval);
 

@@ -51,8 +51,6 @@ namespace PyAgrumHelper {
       PyObject* asbytes = PyUnicode_AsUTF8String(o);
       name              = PyBytes_AsString(asbytes);
       Py_DECREF(asbytes);
-    } else if (PyString_Check(o)) {   // python2 string
-      name = PyString_AsString(o);
     } else if (PyBytes_Check(o)) {    // other python3 string
       name = PyBytes_AsString(o);
     }
@@ -162,10 +160,10 @@ namespace PyAgrumHelper {
   PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
     auto res = PyDict_New();
     for (gum::Idx i = 0; i < inst.nbrDim(); i++) {
-      PyObject* key = PyString_FromString(inst.variable(i).name().c_str());
+      PyObject* key = PyUnicode_FromString(inst.variable(i).name().c_str());
       PyObject* val;
       if (withLabels) {
-        val = PyString_FromString(inst.variable(i).label(inst.val(i)).c_str());
+        val = PyUnicode_FromString(inst.variable(i).label(inst.val(i)).c_str());
       } else {
         val = PyLong_FromUnsignedLong(inst.val(i));
       }
@@ -200,10 +198,10 @@ namespace PyAgrumHelper {
       std::string label = stringFromPyObject(value);
       gum::Idx    v;
       if (label == "") {
-        if (!(PyInt_Check(value))) {
+        if (!(PyLong_Check(value))) {
           GUM_ERROR(gum::InvalidArgument, "A value is neither an int nor a string")
         }
-        v = gum::Idx(PyInt_AsLong(value));
+        v = gum::Idx(PyLong_AsLong(value));
       } else {
         v = namesToVars[name]->index(label);
       }
@@ -237,10 +235,10 @@ namespace PyAgrumHelper {
       std::string label = stringFromPyObject(value);
       gum::Idx    v;
       if (label == "") {
-        if (!(PyInt_Check(value))) {
+        if (!(PyLong_Check(value))) {
           GUM_ERROR(gum::InvalidArgument, "A value is neither an int nor a string")
         }
-        v = gum::Idx(PyInt_AsLong(value));
+        v = gum::Idx(PyLong_AsLong(value));
       } else {
         v = variable.index(label);
       }
@@ -258,8 +256,6 @@ namespace PyAgrumHelper {
     const std::string name = PyAgrumHelper::stringFromPyObject(n);
     if (name != "") {
       return map.idFromName(name);
-    } else if (PyInt_Check(n)) {
-      return gum::NodeId(PyInt_AsLong(n));
     } else if (PyLong_Check(n)) {
       return gum::NodeId(PyLong_AsLong(n));
     } else {
@@ -271,8 +267,6 @@ namespace PyAgrumHelper {
     const std::string name = PyAgrumHelper::stringFromPyObject(n);
     if (name != "") {
       return name;
-    } else if (PyInt_Check(n)) {
-      return map.name(gum::NodeId(PyInt_AsLong(n)));
     } else if (PyLong_Check(n)) {
       return map.name(gum::NodeId(PyLong_AsLong(n)));
     } else {
@@ -291,7 +285,7 @@ namespace PyAgrumHelper {
     }
 
     // if seq is just a nodeId
-    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+    if (PyLong_Check(seq)) {
       names.push_back(map.name(gum::NodeId(PyLong_AsLong(seq))));
       return;
     }
@@ -367,7 +361,7 @@ namespace PyAgrumHelper {
 
   void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet& nodeset, PyObject* seq) {
     // if seq is just a nodeId
-    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+    if (PyLong_Check(seq)) {
       nodeset.insert(gum::NodeId(PyLong_AsLong(seq)));
       return;
     }
@@ -377,9 +371,7 @@ namespace PyAgrumHelper {
     if (iter != NULL) {
       PyObject* item;
       while ((item = PyIter_Next(iter))) {
-        if (PyInt_Check(item)) {
-          nodeset.insert(gum::NodeId(PyInt_AsLong(item)));
-        } else if (PyLong_Check(item)) {
+        if (PyLong_Check(item)) {
           nodeset.insert(gum::NodeId(PyLong_AsLong(item)));
         } else {
           GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
@@ -401,7 +393,7 @@ namespace PyAgrumHelper {
     }
 
     // if seq is just a nodeId
-    if (PyInt_Check(seq) || PyLong_Check(seq)) {
+    if (PyLong_Check(seq)) {
       nodeset.insert(gum::NodeId(PyLong_AsLong(seq)));
       return;
     }
