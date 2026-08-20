@@ -50,7 +50,6 @@
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/graphicalModels/algorithms/informationTheory.h>
-#include <agrum/BN/inference/lazyPropagation.h>
 
 #include <agrum/base/core/math/math_utils.h>
 
