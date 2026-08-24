@@ -11,6 +11,7 @@ list(APPEND MODULES "CN") # Credal Networks
 list(APPEND MODULES "FMDP") # Factored Markov Decision Process
 list(APPEND MODULES "ID") # Influence Diagram
 list(APPEND MODULES "CM") # Causal Model
+list(APPEND MODULES "KTBN") # k-order Dynamic Bayesian Networks
 
 # list of required modules
 set(BASE_DEPS)
@@ -21,11 +22,13 @@ set(CN_DEPS "BN")
 set(FMDP_DEPS "BASE")
 set(ID_DEPS "BN")
 set(CM_DEPS "BN")
+set(KTBN_DEPS "BN")
 
 # list of all folders by module
 set(BASE_DIRS "base")
 set(BN_DIRS "BN")
 set(PRM_DIRS "PRM")
+set(KTBN_DIRS "KTBN")
 set(MRF_DIRS "MRF")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")
