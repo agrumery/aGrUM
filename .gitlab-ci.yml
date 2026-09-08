@@ -14,6 +14,7 @@ variables:
   WINDOWS_BUILD: "wrappers/pyagrum/wheelhouse/build_windows.ps1"
   WINDOWS_WHEELHOUSE: "wrappers/pyagrum/wheelhouse/build_wheels_windows.ps1"
   WINDOWS_TEST: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_windows.ps1"
+  WINDOWS_CONDA_FORGE_TEST: "wrappers/pyagrum/wheelhouse/test_conda_forge_windows.ps1"
   BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
 
 stages:
@@ -280,6 +281,22 @@ windows_pyagrum_mingw_py314:
   variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
   script:
     - *windows_build_script
+
+windows_conda_forge:
+  stage: pyAgrum
+  needs: []
+  tags: ["gumwin", "conda"]
+  retry: 1
+  variables:
+    PATH: $PATH_MVSC22_GUMWIN
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR
 
 ################################################################################
 #                            BUILD WHEELS                                      #
