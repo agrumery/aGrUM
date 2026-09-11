@@ -26,6 +26,16 @@ elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
     /opt/python/${PYDIR}/bin/pip install -r wrappers/pyagrum/testunits/requirements.txt
     /opt/python/${PYDIR}/bin/python act install release pyAgrum -j halfexcept1 -m all -t all -d build
+
+    # TEMPORARY DIAGNOSTIC (2026-09-07): audits every leaf module import
+    # independently instead of relying on the test harness, which aborts
+    # entirely on the first ImportError and so only ever reveals one broken
+    # GUM_PUBLIC/PYGUM_SHARED_PUBLIC export per CI run (see
+    # wheelhouse/scripts/diagnose_leaf_imports.py). `|| true` so a failure
+    # here does not mask act test's own pass/fail signal below. Remove this
+    # call (and the script) once the audit is complete.
+    /opt/python/${PYDIR}/bin/python wrappers/pyagrum/wheelhouse/scripts/diagnose_leaf_imports.py || true
+
     /opt/python/${PYDIR}/bin/python act test 
 else
     echo "Invalid target type: ${TARGET}. Expected 'aGrUM' or 'pyAgrum'"
