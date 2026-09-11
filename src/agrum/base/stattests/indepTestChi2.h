@@ -60,7 +60,7 @@ namespace gum {
      * @headerfile indepTestChi2.h <agrum/BN/learning/scores/indepTestChi2.h>
      * @ingroup learning_scores
      */
-    class IndepTestChi2: public IndependenceTest {
+    class GUM_SHARED_PUBLIC IndepTestChi2: public IndependenceTest {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

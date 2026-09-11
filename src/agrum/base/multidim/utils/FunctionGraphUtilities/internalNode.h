@@ -68,7 +68,7 @@ namespace gum {
    */
   // clang-format on
 
-  struct Parent {
+  struct GUM_SHARED_PUBLIC Parent {
     NodeId parentId;
     Idx    modality;
 
@@ -120,7 +120,7 @@ namespace gum {
    */
   // clang-format on
 
-  class InternalNode {
+  class PYGUM_SHARED_PUBLIC InternalNode {
     private:
     /// Variable associated to such node
     const DiscreteVariable* _nodeVar_;

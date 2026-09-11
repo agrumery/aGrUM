@@ -63,7 +63,7 @@ namespace gum {
      */
     // clang-format on
 
-    class IndepTestG2: public IndependenceTest {
+    class GUM_SHARED_PUBLIC IndepTestG2: public IndependenceTest {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

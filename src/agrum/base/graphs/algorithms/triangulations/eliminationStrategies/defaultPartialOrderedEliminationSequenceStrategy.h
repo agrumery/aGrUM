@@ -96,7 +96,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class DefaultPartialOrderedEliminationSequenceStrategy:
+  class GUM_SHARED_PUBLIC DefaultPartialOrderedEliminationSequenceStrategy:
       public PartialOrderedEliminationSequenceStrategy {
     public:
     // ############################################################################

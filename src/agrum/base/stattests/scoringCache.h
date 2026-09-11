@@ -76,7 +76,7 @@ namespace gum {
      * provides an efficient cache that can significantly alleviate the
      * learning computational burden.
      */
-    class ScoringCache {
+    class GUM_SHARED_PUBLIC ScoringCache {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

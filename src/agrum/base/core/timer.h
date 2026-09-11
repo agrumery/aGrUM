@@ -66,7 +66,7 @@ namespace gum {
    * This class uses double for representing time data, all the values are in
    * seconds, and the precision is about 0.001 s
    */
-  class Timer {
+  class GUM_SHARED_PUBLIC Timer {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

@@ -96,7 +96,7 @@ namespace gum {
      * }
      * @endcode
      */
-    class DBRowGenerator4CompleteRows: public DBRowGenerator {
+    class GUM_SHARED_PUBLIC DBRowGenerator4CompleteRows: public DBRowGenerator {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -124,7 +124,7 @@ namespace gum {
      * const std::vector< double >& counts2 = counter.counts ( ids );
      * @endcode
      */
-    class RecordCounter: public ThreadNumberManager {
+    class GUM_SHARED_PUBLIC RecordCounter: public ThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

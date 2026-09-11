@@ -76,7 +76,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class UnconstrainedEliminationSequenceStrategy: public EliminationSequenceStrategy {
+  class GUM_SHARED_PUBLIC UnconstrainedEliminationSequenceStrategy: public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

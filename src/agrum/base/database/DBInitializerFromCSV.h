@@ -148,7 +148,7 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    class DBInitializerFromCSV: public IDBInitializer {
+    class GUM_SHARED_PUBLIC DBInitializerFromCSV: public IDBInitializer {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

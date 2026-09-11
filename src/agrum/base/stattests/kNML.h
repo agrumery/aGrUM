@@ -64,7 +64,7 @@ namespace gum {
      * @ingroup learning_scores
      *
      */
-    class KNML: public CachedContingencyCounter {
+    class GUM_SHARED_PUBLIC KNML: public CachedContingencyCounter {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

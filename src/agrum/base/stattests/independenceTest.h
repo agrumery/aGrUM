@@ -58,7 +58,7 @@ namespace gum {
      * @headerfile independenceTest.h <agrum/BN/learning/scores/independenceTest.h>
      * @ingroup learning_scores
      */
-    class IndependenceTest: public CachedContingencyCounter {
+    class GUM_SHARED_PUBLIC IndependenceTest: public CachedContingencyCounter {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

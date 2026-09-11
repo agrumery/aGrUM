@@ -85,7 +85,7 @@ namespace gum {
    * Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
    * Likelihood Criterion for Learning Bayesian network Structures)"
    */
-  class VariableLog2ParamComplexity {
+  class GUM_SHARED_PUBLIC VariableLog2ParamComplexity {
     public:
     // ########################################################################
     /// @name Constructors / Destructors

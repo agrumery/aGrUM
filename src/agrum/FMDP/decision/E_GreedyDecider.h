@@ -70,7 +70,7 @@ namespace gum {
    *
    *
    */
-  class E_GreedyDecider: public IDecisionStrategy {
+  class GUM_PUBLIC E_GreedyDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

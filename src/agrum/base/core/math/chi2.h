@@ -70,7 +70,7 @@ namespace gum {
    * @brief Static math utilities for the chi2 distribution.
    * @ingroup math_group
    */
-  class Chi2 {
+  class GUM_SHARED_PUBLIC Chi2 {
     public:
     // ==========================================================================
     /// @name Static math utilities

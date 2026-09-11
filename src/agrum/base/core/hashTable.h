@@ -92,7 +92,7 @@ namespace gum {
    * @brief Parameters specifying the default behavior of the hashtables.
    * @ingroup hashtable_group
    */
-  struct HashTableConst {
+  struct GUM_SHARED_PUBLIC HashTableConst {
     /**
      * The default number of slots in hashtables. By default, hashtables can
      * store up to thrice the number of slots elements before their size is
@@ -2651,24 +2651,31 @@ namespace gum {
   // The type of _HashTable_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const HashTableIterator< int, int >          _static_HashTable_end_;
-  extern const HashTableConstIterator< int, int >     _static_HashTable_cend_;
-  extern const HashTableIteratorSafe< int, int >      _static_HashTable_end_safe_;
-  extern const HashTableConstIteratorSafe< int, int > _static_HashTable_cend_safe_;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC HashTableIterator< int, int >;
+  extern template class PYGUM_SHARED_PUBLIC HashTableConstIterator< int, int >;
+  extern template class PYGUM_SHARED_PUBLIC HashTableIteratorSafe< int, int >;
+  extern template class PYGUM_SHARED_PUBLIC HashTableConstIteratorSafe< int, int >;
+#  endif
+  extern PYGUM_SHARED_PUBLIC const HashTableIterator< int, int > _static_HashTable_end_;
+  extern PYGUM_SHARED_PUBLIC const HashTableConstIterator< int, int > _static_HashTable_cend_;
+  extern PYGUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
+  extern PYGUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >
+                                   _static_HashTable_cend_safe_;
 
-  inline constexpr void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
-  inline constexpr void* const _HashTable_cend_      = (void* const)&_static_HashTable_cend_;
-  inline constexpr void* const _HashTable_end_safe_  = (void* const)&_static_HashTable_end_safe_;
-  inline constexpr void* const _HashTable_cend_safe_ = (void* const)&_static_HashTable_cend_safe_;
+  inline const void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
+  inline const void* const _HashTable_cend_      = (void* const)&_static_HashTable_cend_;
+  inline const void* const _HashTable_end_safe_  = (void* const)&_static_HashTable_end_safe_;
+  inline const void* const _HashTable_cend_safe_ = (void* const)&_static_HashTable_cend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 }   // namespace gum
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::HashTable< int, int >;
-extern template class gum::HashTable< int, std::string >;
-extern template class gum::HashTable< std::string, std::string >;
-extern template class gum::HashTable< std::string, int >;
+extern template class PYGUM_SHARED_PUBLIC gum::HashTable< int, int >;
+extern template class PYGUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
+extern template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
+extern template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
 #endif
 
 

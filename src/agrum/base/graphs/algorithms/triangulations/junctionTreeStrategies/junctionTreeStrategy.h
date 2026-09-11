@@ -63,7 +63,7 @@ namespace gum {
    *
    * \ingroup graph_group
    */
-  class JunctionTreeStrategy {
+  class GUM_SHARED_PUBLIC JunctionTreeStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

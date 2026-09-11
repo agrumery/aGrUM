@@ -128,13 +128,49 @@ macro(buildFileListsWithModules)
             # builds (CompilOptions.agrum.cmake), so a class tagged GUM_PUBLIC only
             # (public C++ API, not needed by pyAgrum -- as opposed to PYGUM_PUBLIC/
             # PYGUM_SHARED_PUBLIC) would otherwise still get re-exposed by that macro
-            # in *any* module's .so/.pyd, not just the core's. Currently a no-op (0
-            # standalone GUM_PUBLIC tag anywhere in src/agrum/ -- see GUM_PUBLIC.md,
-            # Phase 6 not started), but scoping it to _IS_BASE_OR_BN only would silently
-            # leave a future leaf module's GUM_PUBLIC-only symbols exported under
-            # pyAgrum, contrary to the documented GUM_PUBLIC.md §3.1 semantics.
+            # in *any* module's .so/.pyd, not just the core's. Still needed for any
+            # GUM_PUBLIC tag not yet migrated to a module-specific name (see below --
+            # migration is per-module, in progress, GUM_PUBLIC.md Phase 6), but
+            # scoping it to _IS_BASE_OR_BN only would silently leave a future leaf
+            # module's GUM_PUBLIC-only symbols exported under pyAgrum, contrary to the
+            # documented GUM_PUBLIC.md §3.1 semantics.
             if (BUILD_PYTHON)
                 target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC=)
+
+                # GUM_SHARED_PUBLIC (BASE's macro, config.h.in) blanked unconditionally,
+                # same reasoning as GUM_PUBLIC above -- every module includes BASE headers.
+                target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_PUBLIC=)
+
+                # Same blanking for the remaining 7 modules' still-placeholder
+                # GUM_PUBLIC_<MODULE> names (config.h.in) -- BASE excluded, it no longer
+                # uses that family (renamed to GUM_SHARED_PUBLIC above: BASE is the one
+                # module with no dependencies of its own, so unlike BN/PRM/..., a single
+                # unqualified name is safe for it -- see config.h.in's comment on
+                # GUM_SHARED_PUBLIC for why this doesn't generalize to the other 7).
+                # LIST_OF_MODULES (computed above, exported to parent scope) lists all 8.
+                foreach (BLANK_MODULE ${LIST_OF_MODULES})
+                    if (NOT BLANK_MODULE STREQUAL "BASE")
+                        target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC_${BLANK_MODULE}=)
+                    endif ()
+                endforeach ()
+            endif ()
+
+            # GUM_SHARED_EXPORTING marks agrumBASE as the sole producer of
+            # GUM_SHARED_PUBLIC-tagged symbols (config.h.in) for the Windows
+            # dllexport/dllimport split. Unconditional (not gated on BUILD_PYTHON),
+            # precisely to avoid the C4273 gap PYGUM_SHARED_EXPORTING hit when it was
+            # gated that way (GUM_PUBLIC.md §13): BASE must see its own exporting flag
+            # even in the TU that defines it, regardless of build flavor. BASE-only,
+            # not AGRUM_${OPTION}_EXPORTING for every module, because only BASE
+            # currently has a module-specific macro retagged and rolled out -- see
+            # config.h.in's GUM_SHARED_PUBLIC comment for why the other 7 modules need
+            # their own distinct name (not this one) once their turn comes.
+            if (OPTION STREQUAL "BASE")
+                target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_EXPORTING)
+            else ()
+                # Placeholder producer flag for the not-yet-rolled-out GUM_PUBLIC_<MODULE>
+                # scaffolding (config.h.in) -- unused until that module's tags are migrated.
+                target_compile_definitions (agrum${OPTION} PRIVATE AGRUM_${OPTION}_EXPORTING)
             endif ()
 
             # PYGUM_SHARED_EXPORTING marks agrumBASE/agrumBN as the true owner of every

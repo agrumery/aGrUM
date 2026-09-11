@@ -64,7 +64,7 @@ namespace gum {
      * @headerfile PseudoCount.h <agrum/BN/learning/pseudo-counts_and_tests/PseudoCount.h>
      * @ingroup learning_pseudo-counts
      */
-    class PseudoCount: public IThreadNumberManager {
+    class GUM_SHARED_PUBLIC PseudoCount: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

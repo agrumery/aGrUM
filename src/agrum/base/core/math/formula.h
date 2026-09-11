@@ -76,7 +76,7 @@ namespace gum {
    * This class is used by the gum::Formula class to store intermediate results
    * when solving the formula using the Shuntin-yard algorithm.
    */
-  class FormulaPart {
+  class GUM_SHARED_PUBLIC FormulaPart {
     public:
     /// The tokens constituting a formula.
     enum token_type { NUMBER, OPERATOR, PARENTHESIS, NIL, FUNCTION, ARG_SEP };
@@ -290,7 +290,7 @@ namespace gum {
    *
    * @warning Checking is only done when evaluating the formula !
    */
-  class Formula {
+  class PYGUM_SHARED_PUBLIC Formula {
     friend class gum::formula::Parser;
 
     public:

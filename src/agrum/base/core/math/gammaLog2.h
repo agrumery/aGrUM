@@ -65,7 +65,7 @@ namespace gum {
    * @brief The class for computing Log2 (Gamma(x))
    * @ingroup math_group
    */
-  class GammaLog2 {
+  class GUM_SHARED_PUBLIC GammaLog2 {
     public:
     // ============================================================================
     /// @name Constructors / Destructors

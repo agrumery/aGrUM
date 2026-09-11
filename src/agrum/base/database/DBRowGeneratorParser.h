@@ -81,7 +81,7 @@ namespace gum {
      * }
      * @endcode
      */
-    class DBRowGeneratorParser {
+    class GUM_SHARED_PUBLIC DBRowGeneratorParser {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

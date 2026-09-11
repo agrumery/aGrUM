@@ -72,7 +72,7 @@ namespace gum {
    *  - `anyUndirectedConnection`   ⇨ `_is_path_x_y` (internal helper)
    *
    */
-  class Separation {
+  class GUM_PUBLIC Separation {
     public:
     // =======================================================================
     // Core public API

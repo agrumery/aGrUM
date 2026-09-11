@@ -70,7 +70,7 @@ namespace gum {
    *
    */
 
-  class Observation {
+  class GUM_PUBLIC Observation {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

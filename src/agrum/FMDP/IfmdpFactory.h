@@ -101,7 +101,7 @@ namespace gum {
    *
    */
 
-  class AbstractFMDPFactory {
+  class GUM_PUBLIC AbstractFMDPFactory {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

@@ -76,7 +76,7 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  class SimplicialSet {
+  class GUM_SHARED_PUBLIC SimplicialSet {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

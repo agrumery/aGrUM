@@ -150,6 +150,151 @@
 #  endif
 #endif
 
+// GUM_PUBLIC_<MODULE> is the producer/consumer split for GUM_PUBLIC (pure aGrUM's
+// full public C++ API, Phase 6 of GUM_PUBLIC.md), one macro per module rather than
+// a single shared name. Unlike PYGUM_SHARED_PUBLIC/PYGUM_SHARED_EXPORTING (which
+// only ever needed to distinguish BASE/BN as sole owner from every other consumer,
+// because pyAgrum whole-archives BASE/BN into one core binary), aGrUM's own pure
+// build links its 8 modules as genuinely separate shared libraries by default
+// (BUILD_SHARED_LIBS=ON, CMakeLists.txt) -- each module is simultaneously a
+// producer of its own symbols and a consumer of its dependencies' symbols. A single
+// macro name can't express that: its expansion is fixed by what's #define'd in the
+// compiling TU, not by which module's header declared the symbol, so one name would
+// have no way to tell "I own this" from "I merely include the header that declares
+// it" when both happen in the same TU. Each AGRUM_<MODULE>_EXPORTING flag is set
+// unconditionally on its own module's CMake target (Modules.agrum.cmake), so unlike
+// PYGUM_SHARED_EXPORTING (gated on BUILD_PYTHON, see GUM_PUBLIC.md §13's C4273),
+// there is no context where a module fails to see its own exporting flag -- no
+// GUM_FOR_SWIG guard is needed here.
+//
+// Scope: non-template classes/functions only. On MSVC/MinGW, GUM_NO_EXTERN_TEMPLATE_CLASS
+// (CMakeLists.txt) already disables the extern-template-pair mechanism entirely
+// (C4910: dllexport + extern template are incompatible), so these macros must never
+// be applied to a template still generic in its declaration -- see GUM_PUBLIC.md
+// §11-12 for the C2491 failure mode this would otherwise reproduce.
+// GUM_SHARED_PUBLIC (not GUM_PUBLIC_BASE): BASE is the root of the module
+// dependency graph (BASE_DEPS is empty, src/modules.txt) -- it never consumes
+// another module's GUM_PUBLIC_<MODULE>-tagged symbols, only produces its own, so
+// it plays exactly the role BASE/BN played for PYGUM_SHARED_PUBLIC (a pure
+// producer, uniformly consumed elsewhere): a single unqualified name is safe here.
+// This does NOT generalize to the other 7 modules -- BN, for instance, both
+// produces its own symbols and consumes BASE's GUM_SHARED_PUBLIC ones in the same
+// .cpp files, so it cannot reuse this bare name without recreating the exact
+// single-token asymmetry bug the per-module split (GUM_PUBLIC_<MODULE> family,
+// below) exists to avoid. Each non-BASE module gets its own name when its turn
+// in the rollout comes.
+#ifndef GUM_SHARED_PUBLIC
+#  if defined(_WIN32)
+#    if defined(GUM_SHARED_EXPORTING)
+#      define GUM_SHARED_PUBLIC __declspec(dllexport)
+#    else
+#      define GUM_SHARED_PUBLIC __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_SHARED_PUBLIC __attribute__((visibility("default")))
+#  else
+#    define GUM_SHARED_PUBLIC
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_BN
+#  if defined(_WIN32)
+#    if defined(AGRUM_BN_EXPORTING)
+#      define GUM_PUBLIC_BN __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_BN __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_BN __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_BN
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_PRM
+#  if defined(_WIN32)
+#    if defined(AGRUM_PRM_EXPORTING)
+#      define GUM_PUBLIC_PRM __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_PRM __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_PRM __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_PRM
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_MRF
+#  if defined(_WIN32)
+#    if defined(AGRUM_MRF_EXPORTING)
+#      define GUM_PUBLIC_MRF __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_MRF __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_MRF __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_MRF
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_CN
+#  if defined(_WIN32)
+#    if defined(AGRUM_CN_EXPORTING)
+#      define GUM_PUBLIC_CN __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_CN __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_CN __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_CN
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_FMDP
+#  if defined(_WIN32)
+#    if defined(AGRUM_FMDP_EXPORTING)
+#      define GUM_PUBLIC_FMDP __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_FMDP __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_FMDP __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_FMDP
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_ID
+#  if defined(_WIN32)
+#    if defined(AGRUM_ID_EXPORTING)
+#      define GUM_PUBLIC_ID __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_ID __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_ID __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_ID
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_CM
+#  if defined(_WIN32)
+#    if defined(AGRUM_CM_EXPORTING)
+#      define GUM_PUBLIC_CM __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_CM __declspec(dllimport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_CM __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_CM
+#  endif
+#endif
+
 #ifdef _MSC_VER
 
 #pragma warning(disable : 4503) // removing warning about the truncated names of type (>4096)... stupid compiler

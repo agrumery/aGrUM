@@ -377,9 +377,13 @@ class ActBuilderGuideline(ActBuilder):
 
 
 _GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
-  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline"}
+  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline", "pygum"}
 )
-_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy", "inline"}
+# tidy/inline need build/aGrUM/<mode>/compile_commands.json (act lib release aGrUM first);
+# pygum needs wrappers/pyagrum/generated-files/*.cxx (act install pyAgrum first) -- all three
+# skip themselves with a warning if their prerequisite build artifact is missing, but are left
+# out of the default set since a plain `act guideline` shouldn't silently require a prior build.
+_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy", "inline", "pygum"}
 
 
 def _parse_checks(spec: str) -> frozenset[str]:
@@ -428,6 +432,7 @@ def guideline(
   run_pyrefly = "pyrefly" in active
   run_pureheader = "pureheader" in active
   run_inline = "inline" in active
+  run_pygum = "pygum" in active
 
   effective_correction = correction and not dry_run
   active_checks_label = checks if checks is not None else "default"
@@ -522,6 +527,12 @@ def guideline(
 
   if source and source_filter_match_count() == 0:
     warn(f"--source pattern '{source}' matched no file: no check actually inspected anything.")
+
+  if run_pygum:
+    notif("  [[(11-pygum) check PYGUM_SHARED_PUBLIC tagging for BASE/BN symbols used by leaf pyAgrum modules]]")
+    nbrError += _aff_errors(_check_pygum_export(details, effective_correction), "missing PYGUM_SHARED_PUBLIC")
+  else:
+    notif("  (11-pygum) pass")
 
   return nbrError
 
@@ -1166,6 +1177,199 @@ def _check_pure_headers(details: bool, source: str | None = None) -> int:
   if nbrError == 0:
     notif("    pureheader: [[(✓)]]")
   return nbrError
+
+
+# --- pygum check: PYGUM_SHARED_PUBLIC completeness for BASE/BN symbols crossing
+# the core <-> leaf-module DLL boundary (see src/cmake/config.h.in and
+# wrappers/pyagrum/CMakeLists.txt for the whole-archive/dllexport design).
+
+_PYGUM_SKIP_DIRS = _PH_SKIP_DIRS  # external/, mvsc/, cocoR/, patterns/: vendored or
+# generated code, not meant to be auto-tagged by this check.
+
+_PYGUM_LEAF_MODULES = ("mrf", "id", "cn", "cm", "prm")
+
+# Class/struct definition opening its body on the same line, with an optional
+# PYGUM_SHARED_PUBLIC tag right after the keyword -- e.g. "class Foo {" or
+# "struct PYGUM_SHARED_PUBLIC Foo : public Bar {". Forward declarations
+# ("class Foo;", no "{" on the line) never match, which is intentional: only
+# the real definition is a tagging candidate.
+_PYGUM_CLASS_DECL_RE = re.compile(
+  r"^\s*(?:class|struct)\s+(?:(PYGUM_SHARED_PUBLIC)\s+)?([A-Za-z_]\w*)\b[^;{]*\{"
+)
+
+# GUM_MAKE_ERROR(TYPE, ...) invocation sites: the macro (exceptions.h) always
+# expands to "class PYGUM_SHARED_PUBLIC TYPE : public SUPERCLASS { ... }", so every
+# exception class it generates is always tagged -- no need to inspect the expansion.
+_PYGUM_MAKE_ERROR_RE = re.compile(r"\bGUM_MAKE_ERROR\(\s*([A-Za-z_]\w*)")
+
+# Bounded explicit instantiation, either the "extern template class ... <T>;" forward
+# declaration (header) or the "template class ... <T>;" definition (cpp) -- e.g.
+# "extern template class PYGUM_SHARED_PUBLIC BayesNet< double >;" or
+# "template class PYGUM_SHARED_PUBLIC gum::Set< int >;". This is the ONLY tagging a
+# class template ever gets: its generic "template <...> class Foo {" declaration is
+# deliberately left untagged (MSVC C4910: dllexport/PYGUM_SHARED_PUBLIC is incompatible
+# with "extern template class" on a still-generic declaration, see
+# GUM_NO_EXTERN_TEMPLATE_CLASS in CMakeLists.txt) -- so this pattern must count as
+# tagging evidence on its own, independently of (and overriding) the plain class
+# declaration scan below.
+_PYGUM_EXPLICIT_INST_RE = re.compile(
+  r"^\s*(?:extern\s+)?template\s+class\s+PYGUM_SHARED_PUBLIC\s+(?:gum::)?([A-Za-z_]\w*)\s*<"
+)
+
+# A gum::Name reference in generated SWIG C++ code. Only the first identifier
+# after "gum::" is captured -- good enough to check class-level tagging, but
+# nested namespaces (gum::learning::Foo captures "learning") are not resolved:
+# a documented false-negative, not a false-positive risk.
+_PYGUM_REF_RE = re.compile(r"\bgum::([A-Za-z_]\w*)")
+
+
+def _pygum_declared_symbols() -> dict[str, tuple[bool, str, int]]:
+  """Maps class/struct name -> (is PYGUM_SHARED_PUBLIC tagged, file, line) for every
+  class declared directly in src/agrum/base/ or src/agrum/BN/ (BASE/BN are the only
+  modules embedded into core _pyagrum -- see Modules.agrum.cmake -- so they're the
+  only ones whose symbols need the producer/consumer split at all; CM/CN/ID/MRF/PRM's
+  own classes are self-contained PYGUM_PUBLIC, never checked here). Free functions are
+  not tracked: historically resolved by hand (a handful of cases), not worth a
+  fragile declaration parser.
+
+  Scans both *.h (generic declarations, GUM_MAKE_ERROR sites, extern template class
+  instantiations) and *.cpp (the "template class PYGUM_SHARED_PUBLIC ..." explicit
+  instantiation definitions, which live in the .cpp, not the header) -- a name is
+  recorded as tagged the moment ANY sighting says so, regardless of scan order, so a
+  class template's untagged generic declaration never overrides a tagged explicit
+  instantiation found in a different file.
+  """
+  declared: dict[str, tuple[bool, str, int]] = {}
+
+  def register(name: str, tagged: bool, path: str, lineno: int) -> None:
+    if name in declared and declared[name][0]:
+      return  # already known tagged elsewhere -- an untagged sighting can't downgrade it
+    if tagged or name not in declared:
+      declared[name] = (tagged, path, lineno)
+
+  for base_dir in (f"src{os.sep}agrum{os.sep}base", f"src{os.sep}agrum{os.sep}BN"):
+    for mask in ("*.h", "*.cpp"):
+      for path in recglob(base_dir, mask):
+        if any(exc in path for exc in _PYGUM_SKIP_DIRS):
+          continue
+        with open(path, encoding="utf-8", errors="replace") as f:
+          for lineno, line in enumerate(f, start=1):
+            m = _PYGUM_CLASS_DECL_RE.match(line)
+            if m:
+              register(m.group(2), m.group(1) is not None, path, lineno)
+              continue
+            m = _PYGUM_MAKE_ERROR_RE.search(line)
+            if m:
+              register(m.group(1), True, path, lineno)
+              continue
+            m = _PYGUM_EXPLICIT_INST_RE.match(line)
+            if m:
+              register(m.group(1), True, path, lineno)
+  return declared
+
+
+def _pygum_leaf_references() -> dict[str, set[str]] | None:
+  """Maps a referenced gum::Name -> set of leaf modules (mrf/id/cn/cm/prm) whose
+  generated SWIG wrap .cxx references it. Returns None if none of the generated
+  wrap files exist yet (no prior pyAgrum build/SWIG generation to inspect).
+  """
+  gen_dir = os.path.join("wrappers", "pyagrum", "generated-files")
+  refs: dict[str, set[str]] = {}
+  found_any = False
+  for mod in _PYGUM_LEAF_MODULES:
+    wrap_file = os.path.join(gen_dir, f"{mod}PYTHON_wrap.cxx")
+    if not os.path.isfile(wrap_file):
+      continue
+    found_any = True
+    with open(wrap_file, encoding="utf-8", errors="replace") as f:
+      content = f.read()
+    for m in _PYGUM_REF_RE.finditer(content):
+      refs.setdefault(m.group(1), set()).add(mod)
+  return refs if found_any else None
+
+
+def _pygum_is_template_decl(lines: list[str], lineno: int) -> bool:
+  """True if the declaration at 1-based `lineno` is preceded (skipping blank/comment
+  lines) by a `template <...>` line. Such a class must never be tagged at its generic
+  declaration -- see _PYGUM_EXPLICIT_INST_RE -- only a bounded explicit instantiation
+  can carry PYGUM_SHARED_PUBLIC for it.
+  """
+  i = lineno - 2  # 0-based index of the line just above the declaration
+  while i >= 0:
+    stripped = lines[i].strip()
+    if stripped == "" or stripped.startswith(("//", "/*", "*")):
+      i -= 1
+      continue
+    return stripped.startswith("template") and "<" in stripped
+  return False
+
+
+def _check_pygum_export(details: bool, correction: bool) -> int:
+  """Check that every BASE/BN class referenced (via gum::Name) from a leaf pyAgrum
+  module's generated SWIG wrap file is tagged PYGUM_SHARED_PUBLIC. An untagged
+  symbol still resolves to dllimport for that leaf module on Windows
+  (config.h.in: GUM_FOR_SWIG defined, PYGUM_SHARED_EXPORTING not) for a symbol
+  that core's binary never actually exports -- MinGW's --export-all-symbols
+  (wrappers/pyagrum/CMakeLists.txt) papers over the gap by exporting everything
+  regardless of tags, but MSVC (no such fallback: CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS
+  is off) and -fvisibility=hidden macOS/Linux builds (no fallback either) do not
+  -- so a gap here is a latent MSVC/macOS/Linux regression that only MinGW CI
+  would stay silent about.
+
+  Heuristic, not a full C++ parser (see _pygum_declared_symbols/_PYGUM_REF_RE):
+  only class/struct names are checked, single-line declarations only, nested
+  namespaces are not resolved. Requires a prior 'act install pyAgrum' (or at
+  least SWIG generation) so the generated wrap .cxx files exist -- skipped with
+  a warning otherwise, same as the tidy/inline checks skip without
+  compile_commands.json.
+
+  --correction only ever edits a NON-template class's own declaration line. A
+  class template's generic declaration is never auto-tagged -- see
+  _pygum_is_template_decl -- doing so would reintroduce the exact MSVC C4910
+  (dllexport/extern template class conflict) this codebase already hit once;
+  those are reported with a distinct message asking for a bounded explicit
+  instantiation to be added by hand instead.
+  """
+  leaf_refs = _pygum_leaf_references()
+  if leaf_refs is None:
+    warn("No generated SWIG wrap files in wrappers/pyagrum/generated-files/. Run 'act install pyAgrum' first.")
+    return 0
+
+  declared = _pygum_declared_symbols()
+
+  violations: list[tuple[str, str, int, list[str]]] = []
+  for name, modules in leaf_refs.items():
+    if name not in declared:
+      continue
+    tagged, header, lineno = declared[name]
+    if not tagged:
+      violations.append((name, header, lineno, sorted(modules)))
+  violations.sort(key=lambda v: (v[1], v[2]))
+
+  for name, header, lineno, modules in violations:
+    with open(header, encoding="utf-8") as f:
+      lines = f.readlines()
+    is_template = _pygum_is_template_decl(lines, lineno)
+
+    res = f"  err [[{header}:{lineno}]] gum::{name} used by {'+'.join(modules)} but not PYGUM_SHARED_PUBLIC"
+    if is_template:
+      res = (
+        f"{res} [[(template -- add a bounded 'extern template class "
+        f"PYGUM_SHARED_PUBLIC {name}<T>;' instead, not auto-fixed)]]"
+      )
+    elif correction:
+      lines[lineno - 1] = re.sub(
+        r"^(\s*)(class|struct)\s+", r"\1\2 PYGUM_SHARED_PUBLIC ", lines[lineno - 1], count=1
+      )
+      with open(header, "w", encoding="utf-8") as f:
+        f.writelines(lines)
+      res = f"{res} [[(✓)]]"
+    if details or correction or is_template:
+      notif(res)
+
+  if not violations:
+    notif("    pygum: [[(✓)]]")
+  return len(violations)
 
 
 def _check_missing_docs(details: bool) -> int:

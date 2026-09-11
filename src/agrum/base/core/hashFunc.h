@@ -96,7 +96,7 @@ namespace gum {
    * Size. Consequently, we should adapt X's definition to 32 and 64 bits
    * architectures.
    */
-  struct HashFuncConst {
+  struct GUM_SHARED_PUBLIC HashFuncConst {
     static constexpr Size gold
         = sizeof(Size) == 4 ? Size(2654435769UL) : Size(11400714819323198486UL);
     static constexpr Size pi      // pi / 4
