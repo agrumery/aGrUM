@@ -38,34 +38,20 @@
  *                                                                          *
  ****************************************************************************/
 
+// ID-owned %extend block, split out of forUsing.i -- see forUsingBN.i for why:
+// forUsing.i's blanket inclusion by every module caused each module to redundantly
+// reinstantiate every other module's %extend blocks. Only aGrUM_wrap_ID.i
+// %include's this file. ADD_INFERENCE_API itself stays %define-d in forUsing.i
+// since BN's own chain depends on it too.
 
+%define ADD_ID_INFERENCE_API(classname...)
+ADD_INFERENCE_API(classname,classname)
+%extend classname {
+   void makeInference(void) {
+     self->gum::InfluenceDiagramInference<double>::makeInference();
+   }
 
-
-
-
-
-
-/* INCLUDES */
-%{
-#include <agrum/cn.h>
-%}
-
-
-%include "typemaps.i"
-%include "std_vector.i"
-%include "std_string.i"
-
-%include "forUsing.i"
-%include "forUsingCN.i"
-
-
-%include <agrum/CN/credalNet.h>
-%include <agrum/CN/tools/varMod2BNsMap.h>
-%include <agrum/CN/inference/inferenceEngine.h>
-%include <agrum/CN/inference/multipleInferenceEngine.h>
-%include <agrum/CN/inference/CNMonteCarloSampling.h>
-%include <agrum/CN/inference/CNLoopyPropagation.h>
-
-%template ( CredalNet ) gum::credal::CredalNet<double>;
-%template ( CNMonteCarloSampling ) gum::credal::CNMonteCarloSampling<double>;
-%template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
+   const InfluenceDiagram<double>& influenceDiagram() const { return self->gum::InfluenceDiagramInference<double>::influenceDiagram(); }
+}
+%enddef
+ADD_ID_INFERENCE_API(gum::ShaferShenoyLIMIDInference<double >)

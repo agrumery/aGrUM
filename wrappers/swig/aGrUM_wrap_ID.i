@@ -56,6 +56,7 @@
 %include "std_string.i"
 
 %include "forUsing.i"
+%include "forUsingID.i"
 
 
 %include <agrum/ID/influenceDiagram.h>

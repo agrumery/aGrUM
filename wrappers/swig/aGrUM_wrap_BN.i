@@ -56,6 +56,7 @@
 %include "std_string.i"
 
 %include "forUsing.i"
+%include "forUsingBN.i"
 
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>

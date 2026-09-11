@@ -56,6 +56,7 @@
 %include "std_string.i"
 
 %include "forUsing.i"
+%include "forUsingMRF.i"
 
 
 %include <agrum/MRF/IMarkovRandomField.h>

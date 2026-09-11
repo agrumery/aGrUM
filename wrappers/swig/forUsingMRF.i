@@ -38,34 +38,50 @@
  *                                                                          *
  ****************************************************************************/
 
+// MRF-owned %extend blocks, split out of forUsing.i -- see forUsingBN.i for why:
+// forUsing.i's blanket inclusion by every module caused each module to redundantly
+// reinstantiate every other module's %extend blocks. Only aGrUM_wrap_MRF.i
+// %include's this file. ADD_PARALLELIZED_INFERENCE_API/ADD_MONOTARGET_INFERENCE_API
+// themselves stay %define-d in forUsing.i since ID's own chain depends on them too.
 
+ADD_PARALLELIZED_INFERENCE_API(gum::ShaferShenoyMRFInference<double>)
 
+%define ADD_MRF_INFERENCE_API(classname...)
+ADD_MONOTARGET_INFERENCE_API (gum::MarginalTargetedMRFInference<double>,classname)
+%extend classname {
+   const IMarkovRandomField<double>& MRF() const { return self->gum::MarginalTargetedMRFInference<double>::MRF(); }
+}
+%enddef
 
+%define ADD_JOINT_MRF_INFERENCE_API(classname)
+ADD_MRF_INFERENCE_API(classname)
+%extend classname {
+  const Tensor<double> posterior( const NodeId var ) {
+    return self->JointTargetedMRFInference<double>::posterior(var);
+  }
+  const Tensor<double> posterior( const std::string nodeName ) {
+    return self->JointTargetedMRFInference<double>::posterior(nodeName);
+  }
+  void eraseAllTargets() {
+    self->gum::JointTargetedMRFInference<double>::eraseAllTargets();
+  }
+  void eraseAllJointTargets() {
+    self->gum::JointTargetedMRFInference<double>::eraseAllJointTargets();
+  }
+  void eraseAllMarginalTargets() {
+    self->gum::JointTargetedMRFInference<double>::eraseAllMarginalTargets();
+  }
 
+  gum::Size nbrJointTargets() {
+    return self->gum::JointTargetedMRFInference<double>::nbrJointTargets();
+  }
 
-
-
-/* INCLUDES */
-%{
-#include <agrum/cn.h>
-%}
-
-
-%include "typemaps.i"
-%include "std_vector.i"
-%include "std_string.i"
-
-%include "forUsing.i"
-%include "forUsingCN.i"
-
-
-%include <agrum/CN/credalNet.h>
-%include <agrum/CN/tools/varMod2BNsMap.h>
-%include <agrum/CN/inference/inferenceEngine.h>
-%include <agrum/CN/inference/multipleInferenceEngine.h>
-%include <agrum/CN/inference/CNMonteCarloSampling.h>
-%include <agrum/CN/inference/CNLoopyPropagation.h>
-
-%template ( CredalNet ) gum::credal::CredalNet<double>;
-%template ( CNMonteCarloSampling ) gum::credal::CNMonteCarloSampling<double>;
-%template ( CNLoopyPropagation ) gum::credal::CNLoopyPropagation<double>;
+  Tensor<double> evidenceJointImpact(const NodeSet& targets,const NodeSet& evs){
+    return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
+  }
+  Tensor<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
+   return self->gum::JointTargetedMRFInference<double>::evidenceJointImpact(targets,evs);
+  }
+}
+%enddef
+ADD_JOINT_MRF_INFERENCE_API(gum::ShaferShenoyMRFInference<double>)

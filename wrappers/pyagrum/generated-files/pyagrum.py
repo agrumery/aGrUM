@@ -12140,579 +12140,6 @@ class InformationTheory(object):
 
 # Register InformationTheory in _pyagrum:
 _pyagrum.InformationTheory_swigregister(InformationTheory)
-class PRMexplorer(object):
-    r"""
-
-    PRMexplorer helps navigate through probabilistic relational models.
-
-    PRMexplorer() -> PRMexplorer
-        default constructor
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self):
-        r"""
-
-        PRMexplorer helps navigate through probabilistic relational models.
-
-        PRMexplorer() -> PRMexplorer
-            default constructor
-
-        """
-        _pyagrum.PRMexplorer_swiginit(self, _pyagrum.new_PRMexplorer())
-    __swig_destroy__ = _pyagrum.delete_PRMexplorer
-
-    def load(self, *args) -> None:
-        r"""
-
-        Load a PRM into the explorer.
-
-        Parameters
-        ----------
-        filename : str
-            the name of the o3prm file
-        classpath : str
-            the classpath of the PRM
-
-        Raises
-        ------
-        pyagrum.FatalError
-            If file not found
-
-        """
-        return _pyagrum.PRMexplorer_load(self, *args)
-
-    def isType(self, name: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            an element name
-
-        Returns
-        -------
-        bool
-            True if the parameter correspond to a type in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_isType(self, name)
-
-    def isClass(self, name: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            an element name
-
-        Returns
-        -------
-        bool
-            True if the parameter correspond to a class in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_isClass(self, name)
-
-    def isInterface(self, name: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            an element name
-
-        Returns
-        -------
-        bool
-            True if the parameter correspond to an interface in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_isInterface(self, name)
-
-    def classes(self) -> list[str]:
-        r"""
-
-        Returns
-        -------
-        list
-            the list of classes
-
-        """
-        return _pyagrum.PRMexplorer_classes(self)
-
-    def classAttributes(self, class_name: str) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of attributes
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classAttributes(self, class_name)
-
-    def isAttribute(self, class_name: str, att_name: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-        att_name : str
-            the name of the attribute to be tested
-
-        Returns
-        -------
-        bool
-            True if att_name is an attribute of class_name
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the class is not in the PRM
-        pyagrum.IndexError
-            If att_name is not an element of class_name
-
-        """
-        return _pyagrum.PRMexplorer_isAttribute(self, class_name, att_name)
-
-    def classReferences(self, class_name: str) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of references
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classReferences(self, class_name)
-
-    def classParameters(self, class_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of parameters
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classParameters(self, class_name)
-
-    def classImplements(self, class_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of interfaces implemented by the class
-
-        """
-        return _pyagrum.PRMexplorer_classImplements(self, class_name)
-    aggType = property(_pyagrum.PRMexplorer_aggType_get, _pyagrum.PRMexplorer_aggType_set, doc=r"""
-
-    min/max/count/exists/forall/or/and/amplitude/median
-
-    """)
-
-    def classAggregates(self, class_name: str) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of aggregates in the class
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classAggregates(self, class_name)
-
-    def classSlotChains(self, class_name: str) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of class slot chains
-
-        Raises
-        ------
-        pyagrum.IndexError
-            if the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classSlotChains(self, class_name)
-
-    def classDag(self, class_name: str) -> object:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        tuple
-            a description of the DAG
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_classDag(self, class_name)
-
-    def getalltheSystems(self) -> list[object]:
-        r"""
-
-        Returns
-        -------
-        list
-            the list of all the systems and their components
-
-        """
-        return _pyagrum.PRMexplorer_getalltheSystems(self)
-
-    def getSuperClass(self, class_name: str) -> str | None:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        str
-            the class extended by class_name
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getSuperClass(self, class_name)
-
-    def getDirectSubClass(self, class_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        Returns
-        -------
-        list
-            the list of direct subclasses
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the class is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getDirectSubClass(self, class_name)
-
-    def cpf(self, class_name: str, attribute: str) -> "pyagrum.Tensor":
-        r"""
-
-        Parameters
-        ----------
-        class_name : str
-            a class name
-
-        attribute : str
-            an attribute
-
-        Returns
-        -------
-        pyagrum.Tensor
-            the tensor of the attribute
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).
-        pyagrum.IndexError
-            If the class is not in the PRM
-        pyagrum.IndexError
-            If the attribute in parameters does not exist
-
-        """
-        return _pyagrum.PRMexplorer_cpf(self, class_name, attribute)
-
-    def types(self) -> list[str]:
-        r"""
-
-        Returns
-        -------
-        list
-            the list of the custom types in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_types(self)
-
-    def getSuperType(self, type_name: str) -> str | None:
-        r"""
-
-        Parameters
-        ----------
-        type_name : str
-            a type name
-
-        Returns
-        -------
-        str
-            the type extended by type_name
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getSuperType(self, type_name)
-
-    def getDirectSubTypes(self, type_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        type_name : str
-            a type name
-
-        Returns
-        -------
-        list
-            the list of direct subtypes
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getDirectSubTypes(self, type_name)
-
-    def getLabels(self, type_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        type_name : str
-            a type name
-
-        Returns
-        -------
-        list
-            the list of type labels
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getLabels(self, type_name)
-
-    def getLabelMap(self, type_name: str) -> object:
-        r"""
-
-        Parameters
-        ----------
-        type_name : str
-            a type name
-
-        Returns
-        -------
-        dict
-            a dict containing pairs of label and their values
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getLabelMap(self, type_name)
-
-    def interfaces(self) -> list[str]:
-        r"""
-
-        Returns
-        -------
-        list
-            the list of interfaces in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_interfaces(self)
-
-    def interAttributes(self, interface_name: str, allAttributes: bool=False) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        interface_name : str
-            an interface
-
-        allAttributes : bool
-            True if supertypes of a custom type should be indicated
-
-        Returns
-        -------
-        list
-            the list of (<type>,<attribute_name>) for the given interface
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
-
-    def interReferences(self, interface_name: str) -> list[object]:
-        r"""
-
-        Parameters
-        ----------
-        interface_name : str
-            an interface
-
-        Returns
-        -------
-        list
-            the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the type is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_interReferences(self, interface_name)
-
-    def getSuperInterface(self, interface_name: str) -> str | None:
-        r"""
-
-        Parameters
-        ----------
-        interface_name : str
-            an interface name
-
-        Returns
-        -------
-        str
-            the interace extended by interface_name
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the interface is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getSuperInterface(self, interface_name)
-
-    def getDirectSubInterfaces(self, interface_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        interface_name : str
-            an interface name
-
-        Returns
-        -------
-        list
-            the list of direct subinterfaces
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the interface is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
-
-    def getImplementations(self, interface_name: str) -> list[str]:
-        r"""
-
-        Parameters
-        ----------
-        interface_name : str
-            an interface name
-
-        Returns
-        -------
-        str
-            the list of classes implementing the interface
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the interface is not in the PRM
-
-        """
-        return _pyagrum.PRMexplorer_getImplementations(self, interface_name)
-
-# Register PRMexplorer in _pyagrum:
-_pyagrum.PRMexplorer_swigregister(PRMexplorer)
 class EssentialGraph(object):
     r"""
 
@@ -15789,56 +15216,6 @@ class BayesNet(IBayesNet):
         """
         return _pyagrum.BayesNet_saveNET(self, name, allowModificationWhenSaving)
 
-    def loadO3PRM(self, *args) -> str:
-        r"""
-
-        Load an O3PRM file.
-
-        Warnings
-        --------
-        The O3PRM language is the only language allowing to manipulate not only DiscretizedVariable but also RangeVariable and LabelizedVariable.
-
-        Parameters
-        ----------
-        name : str
-            the file's name
-        system : str
-            the system's name
-        classpath : str
-            the classpath
-        l : list
-            list of functions to execute
-
-        Raises
-        ------
-        pyagrum.IOError
-            If file not found
-        pyagrum.FatalError
-            If file is not valid
-
-        """
-        return _pyagrum.BayesNet_loadO3PRM(self, *args)
-
-    def saveO3PRM(self, name: str, allowModificationWhenSaving: bool=False) -> None:
-        r"""
-
-        Save the BayesNet in an O3PRM file.
-
-        Warnings
-        --------
-        The O3PRM language is the only language allowing to manipulate not only DiscretizedVariable but also RangeVariable and LabelizedVariable.
-
-        Parameters
-        ----------
-        name : str
-            the file's name
-        allowModificationWhenSaving: bool
-                False by default.
-                if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
-
-        """
-        return _pyagrum.BayesNet_saveO3PRM(self, name, allowModificationWhenSaving)
-
     def loadBIFXML(self, name: str, l: object=None) -> str:
         r"""
 
@@ -16959,6 +16336,280 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_mpeLog2Posterior(self)
 
+    def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
+            self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+          pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
+
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Raises
+        ------
+          pyagrum.UndefinedElement
+            If one target is not in the Bayes net
+        """
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence
+
+        """
+        return _pyagrum.LazyPropagation_hardEvidenceNodes(self)
+
+    def softEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence
+
+        """
+        return _pyagrum.LazyPropagation_softEvidenceNodes(self)
+
+    def targets(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
+        return _pyagrum.LazyPropagation_targets(self)
+
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(targets|evs)
+
+        """
+        return _pyagrum.LazyPropagation_evidenceImpact(self, target, evs)
+
+    def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
+        return _pyagrum.LazyPropagation_jointMutualInformation(self, targets)
+
+    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
+        r"""
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list :
+          the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a const ref to the posterior joint probability of the set of nodes.
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyagrum.LazyPropagation_jointPosterior(self, targets)
+
+    def addJointTarget(self, targets: object) -> None:
+        r"""
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If some node(s) do not belong to the Bayesian network
+
+        """
+        return _pyagrum.LazyPropagation_addJointTarget(self, targets)
+
+    def eraseJointTarget(self, targets: object) -> None:
+        r"""
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If one of the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.LazyPropagation_eraseJointTarget(self, targets)
+
+    def isJointTarget(self, targets: object) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target.
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.LazyPropagation_isJointTarget(self, targets)
+
+    def jointTargets(self) -> list[set[int]]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of target sets
+
+        """
+        return _pyagrum.LazyPropagation_jointTargets(self)
+
     def makeInference(self) -> None:
         r"""
 
@@ -17348,6 +16999,31 @@ class LazyPropagation(object):
         """
         return _pyagrum.LazyPropagation_nbrJointTargets(self)
 
+    def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+
+        Parameters
+        ----------
+        targets : list of int|str
+          a list of node Ids or node names
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(target|evs)
+
+        Raises
+        ------
+        pyagrum.Exception
+          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
+        """
+        return _pyagrum.LazyPropagation_evidenceJointImpact(self, *args)
+
     def setNumberOfThreads(self, nb: int) -> None:
         r"""
 
@@ -17400,305 +17076,6 @@ class LazyPropagation(object):
 
         """
         return _pyagrum.LazyPropagation_setMaxMemory(self, gigabytes)
-
-    def setEvidence(self, evidces):
-        """
-        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          self.eraseAllEvidence()
-          for k,v in evidces.items():
-            self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          self.eraseAllEvidence()
-          for p in evidces:
-            self.addEvidence(p)
-          return
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def updateEvidence(self, evidces):
-        """
-        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          for k,v in evidces.items():
-              if self.hasEvidence(k):
-                  self.chgEvidence(k,v)
-              else:
-                  self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          for p in evidces:
-              k=p.variable(0)
-              if self.hasEvidence(k):
-                  self.chgEvidence(p)
-              else:
-                  self.addEvidence(p)
-          return
-
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def setTargets(self, targets):
-        """
-        Remove all the targets and add the ones in parameter.
-
-        Parameters
-        ----------
-        targets : set
-          a set of targets
-
-        Raises
-        ------
-          pyagrum.UndefinedElement
-            If one target is not in the Bayes net
-        """
-        if not isinstance(targets, set):
-            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
-
-        self.eraseAllTargets()
-        for k in targets:
-            self.addTarget(k)
-
-
-
-    def hardEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
-        return _pyagrum.LazyPropagation_hardEvidenceNodes(self)
-
-    def softEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
-        return _pyagrum.LazyPropagation_softEvidenceNodes(self)
-
-    def targets(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
-        return _pyagrum.LazyPropagation_targets(self)
-
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(targets|evs)
-
-        """
-        return _pyagrum.LazyPropagation_evidenceImpact(self, *args)
-
-    def jointMutualInformation(self, targets: object) -> float:
-        r"""
-
-        Compute the joint mutual information (interaction information) among a set of target variables.
-
-        See https://en.wikipedia.org/wiki/Interaction_information
-
-        Parameters
-        ----------
-        targets : list[str] or set[int]
-            the target variables (names or node ids)
-
-        Returns
-        -------
-        float
-            the joint mutual information
-
-        """
-        return _pyagrum.LazyPropagation_jointMutualInformation(self, targets)
-
-    def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets : list of int|str
-          a list of node Ids or node names
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(target|evs)
-
-        Raises
-        ------
-        pyagrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
-        return _pyagrum.LazyPropagation_evidenceJointImpact(self, *args)
-
-    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyagrum.LazyPropagation_jointPosterior(self, targets)
-
-    def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
-        return _pyagrum.LazyPropagation_addJointTarget(self, targets)
-
-    def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.LazyPropagation_eraseJointTarget(self, targets)
-
-    def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.LazyPropagation_isJointTarget(self, targets)
-
-    def jointTargets(self) -> list[set[int]]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
-        return _pyagrum.LazyPropagation_jointTargets(self)
 
 # Register LazyPropagation in _pyagrum:
 _pyagrum.LazyPropagation_swigregister(LazyPropagation)
@@ -17824,6 +17201,280 @@ class ShaferShenoyInference(object):
 
         """
         return _pyagrum.ShaferShenoyInference_evidenceProbability(self)
+
+    def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
+            self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+          pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
+
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Raises
+        ------
+          pyagrum.UndefinedElement
+            If one target is not in the Bayes net
+        """
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence
+
+        """
+        return _pyagrum.ShaferShenoyInference_hardEvidenceNodes(self)
+
+    def softEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence
+
+        """
+        return _pyagrum.ShaferShenoyInference_softEvidenceNodes(self)
+
+    def targets(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
+        return _pyagrum.ShaferShenoyInference_targets(self)
+
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(targets|evs)
+
+        """
+        return _pyagrum.ShaferShenoyInference_evidenceImpact(self, target, evs)
+
+    def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
+        return _pyagrum.ShaferShenoyInference_jointMutualInformation(self, targets)
+
+    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
+        r"""
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list :
+          the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a const ref to the posterior joint probability of the set of nodes.
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyagrum.ShaferShenoyInference_jointPosterior(self, targets)
+
+    def addJointTarget(self, targets: object) -> None:
+        r"""
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If some node(s) do not belong to the Bayesian network
+
+        """
+        return _pyagrum.ShaferShenoyInference_addJointTarget(self, targets)
+
+    def eraseJointTarget(self, targets: object) -> None:
+        r"""
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If one of the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.ShaferShenoyInference_eraseJointTarget(self, targets)
+
+    def isJointTarget(self, targets: object) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target.
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.ShaferShenoyInference_isJointTarget(self, targets)
+
+    def jointTargets(self) -> list[set[int]]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of target sets
+
+        """
+        return _pyagrum.ShaferShenoyInference_jointTargets(self)
 
     def makeInference(self) -> None:
         r"""
@@ -18214,6 +17865,31 @@ class ShaferShenoyInference(object):
         """
         return _pyagrum.ShaferShenoyInference_nbrJointTargets(self)
 
+    def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+
+        Parameters
+        ----------
+        targets : list of int|str
+          a list of node Ids or node names
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(target|evs)
+
+        Raises
+        ------
+        pyagrum.Exception
+          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
+        """
+        return _pyagrum.ShaferShenoyInference_evidenceJointImpact(self, *args)
+
     def setNumberOfThreads(self, nb: int) -> None:
         r"""
 
@@ -18266,305 +17942,6 @@ class ShaferShenoyInference(object):
 
         """
         return _pyagrum.ShaferShenoyInference_setMaxMemory(self, gigabytes)
-
-    def setEvidence(self, evidces):
-        """
-        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          self.eraseAllEvidence()
-          for k,v in evidces.items():
-            self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          self.eraseAllEvidence()
-          for p in evidces:
-            self.addEvidence(p)
-          return
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def updateEvidence(self, evidces):
-        """
-        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          for k,v in evidces.items():
-              if self.hasEvidence(k):
-                  self.chgEvidence(k,v)
-              else:
-                  self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          for p in evidces:
-              k=p.variable(0)
-              if self.hasEvidence(k):
-                  self.chgEvidence(p)
-              else:
-                  self.addEvidence(p)
-          return
-
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def setTargets(self, targets):
-        """
-        Remove all the targets and add the ones in parameter.
-
-        Parameters
-        ----------
-        targets : set
-          a set of targets
-
-        Raises
-        ------
-          pyagrum.UndefinedElement
-            If one target is not in the Bayes net
-        """
-        if not isinstance(targets, set):
-            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
-
-        self.eraseAllTargets()
-        for k in targets:
-            self.addTarget(k)
-
-
-
-    def hardEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
-        return _pyagrum.ShaferShenoyInference_hardEvidenceNodes(self)
-
-    def softEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
-        return _pyagrum.ShaferShenoyInference_softEvidenceNodes(self)
-
-    def targets(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
-        return _pyagrum.ShaferShenoyInference_targets(self)
-
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(targets|evs)
-
-        """
-        return _pyagrum.ShaferShenoyInference_evidenceImpact(self, *args)
-
-    def jointMutualInformation(self, targets: object) -> float:
-        r"""
-
-        Compute the joint mutual information (interaction information) among a set of target variables.
-
-        See https://en.wikipedia.org/wiki/Interaction_information
-
-        Parameters
-        ----------
-        targets : list[str] or set[int]
-            the target variables (names or node ids)
-
-        Returns
-        -------
-        float
-            the joint mutual information
-
-        """
-        return _pyagrum.ShaferShenoyInference_jointMutualInformation(self, targets)
-
-    def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets : list of int|str
-          a list of node Ids or node names
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(target|evs)
-
-        Raises
-        ------
-        pyagrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
-        return _pyagrum.ShaferShenoyInference_evidenceJointImpact(self, *args)
-
-    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyagrum.ShaferShenoyInference_jointPosterior(self, targets)
-
-    def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyInference_addJointTarget(self, targets)
-
-    def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyInference_eraseJointTarget(self, targets)
-
-    def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyInference_isJointTarget(self, targets)
-
-    def jointTargets(self) -> list[set[int]]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
-        return _pyagrum.ShaferShenoyInference_jointTargets(self)
 
 # Register ShaferShenoyInference in _pyagrum:
 _pyagrum.ShaferShenoyInference_swigregister(ShaferShenoyInference)
@@ -18672,6 +18049,305 @@ class VariableElimination(object):
 
         return val
 
+
+    def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          self.eraseAllEvidence()
+          for k,v in evidces.items():
+            self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          self.eraseAllEvidence()
+          for p in evidces:
+            self.addEvidence(p)
+          return
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
+          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
+
+        Raises
+        ------
+          pyagrum.InvalidArgument
+            If one value is not a value for the node
+          pyagrum.InvalidArgument
+            If the size of a value is different from the domain side of the node
+          pyagrum.FatalError
+            If one value is a vector of 0s
+          pyagrum.UndefinedElement
+            If one node does not belong to the Bayesian network
+        """
+        if isinstance(evidces, dict):
+          for k,v in evidces.items():
+              if self.hasEvidence(k):
+                  self.chgEvidence(k,v)
+              else:
+                  self.addEvidence(k,v)
+          return
+        elif isinstance(evidces, list):#should be a list of Tensor
+          for p in evidces:
+              k=p.variable(0)
+              if self.hasEvidence(k):
+                  self.chgEvidence(p)
+              else:
+                  self.addEvidence(p)
+          return
+
+        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
+
+
+
+    def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Raises
+        ------
+          pyagrum.UndefinedElement
+            If one target is not in the Bayes net
+        """
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence
+
+        """
+        return _pyagrum.VariableElimination_hardEvidenceNodes(self)
+
+    def softEvidenceNodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence
+
+        """
+        return _pyagrum.VariableElimination_softEvidenceNodes(self)
+
+    def targets(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
+        return _pyagrum.VariableElimination_targets(self)
+
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(targets|evs)
+
+        """
+        return _pyagrum.VariableElimination_evidenceImpact(self, target, evs)
+
+    def jointMutualInformation(self, targets: object) -> float:
+        r"""
+
+        Compute the joint mutual information (interaction information) among a set of target variables.
+
+        See https://en.wikipedia.org/wiki/Interaction_information
+
+        Parameters
+        ----------
+        targets : list[str] or set[int]
+            the target variables (names or node ids)
+
+        Returns
+        -------
+        float
+            the joint mutual information
+
+        """
+        return _pyagrum.VariableElimination_jointMutualInformation(self, targets)
+
+    def evidenceJointImpact(self, targets: object, evs: object) -> "pyagrum.Tensor":
+        r"""
+
+        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+
+        Parameters
+        ----------
+        targets : list of int|str
+          a list of node Ids or node names
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a Tensor for P(target|evs)
+
+        Raises
+        ------
+        pyagrum.Exception
+          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
+        """
+        return _pyagrum.VariableElimination_evidenceJointImpact(self, targets, evs)
+
+    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
+        r"""
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list :
+          the list of nodes whose posterior joint probability is wanted
+
+
+        Warnings
+        --------
+        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
+
+        Returns
+        -------
+        pyagrum.Tensor
+          a const ref to the posterior joint probability of the set of nodes.
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If an element of nodes is not in targets
+
+        """
+        return _pyagrum.VariableElimination_jointPosterior(self, targets)
+
+    def addJointTarget(self, targets: object) -> None:
+        r"""
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Raises
+        ------
+        pyagrum.UndefinedElement
+          If some node(s) do not belong to the Bayesian network
+
+        """
+        return _pyagrum.VariableElimination_addJointTarget(self, targets)
+
+    def eraseJointTarget(self, targets: object) -> None:
+        r"""
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If one of the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.VariableElimination_eraseJointTarget(self, targets)
+
+    def isJointTarget(self, targets: object) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target.
+
+        Raises
+        ------
+        pyagrum.IndexError
+          If the node does not belong to the Bayesian network
+        pyagrum.UndefinedElement
+          If node Id is not in the Bayesian network
+
+        """
+        return _pyagrum.VariableElimination_isJointTarget(self, targets)
+
+    def jointTargets(self) -> list[set[int]]:
+        r"""
+
+        Returns
+        -------
+        list
+          the list of target sets
+
+        """
+        return _pyagrum.VariableElimination_jointTargets(self)
 
     def makeInference(self) -> None:
         r"""
@@ -19088,6 +18764,53 @@ class VariableElimination(object):
         """
         return _pyagrum.VariableElimination_setMaxMemory(self, gigabytes)
 
+# Register VariableElimination in _pyagrum:
+_pyagrum.VariableElimination_swigregister(VariableElimination)
+class GibbsSampling(object):
+    r"""
+
+    Class for making Gibbs sampling inference in Bayesian networks.
+
+    GibbsSampling(bn) -> GibbsSampling
+        Parameters:
+          - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.GibbsSampling_swiginit(self, _pyagrum.new_GibbsSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_GibbsSampling
+
+    def setBurnIn(self, b: int) -> None:
+        r"""
+
+        Parameters
+        ----------
+        b : int
+          size of burn in on number of iteration
+
+        """
+        return _pyagrum.GibbsSampling_setBurnIn(self, b)
+
+    def burnIn(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          size of burn in on number of iteration
+
+        """
+        return _pyagrum.GibbsSampling_burnIn(self)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -19194,7 +18917,7 @@ class VariableElimination(object):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.VariableElimination_hardEvidenceNodes(self)
+        return _pyagrum.GibbsSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -19205,7 +18928,7 @@ class VariableElimination(object):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.VariableElimination_softEvidenceNodes(self)
+        return _pyagrum.GibbsSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -19216,9 +18939,9 @@ class VariableElimination(object):
           the list of marginal targets
 
         """
-        return _pyagrum.VariableElimination_targets(self)
+        return _pyagrum.GibbsSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -19240,199 +18963,7 @@ class VariableElimination(object):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.VariableElimination_evidenceImpact(self, *args)
-
-    def jointMutualInformation(self, targets: object) -> float:
-        r"""
-
-        Compute the joint mutual information (interaction information) among a set of target variables.
-
-        See https://en.wikipedia.org/wiki/Interaction_information
-
-        Parameters
-        ----------
-        targets : list[str] or set[int]
-            the target variables (names or node ids)
-
-        Returns
-        -------
-        float
-            the joint mutual information
-
-        """
-        return _pyagrum.VariableElimination_jointMutualInformation(self, targets)
-
-    def evidenceJointImpact(self, targets: object, evs: object) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets : list of int|str
-          a list of node Ids or node names
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(target|evs)
-
-        Raises
-        ------
-        pyagrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
-        return _pyagrum.VariableElimination_evidenceJointImpact(self, targets, evs)
-
-    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyagrum.VariableElimination_jointPosterior(self, targets)
-
-    def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
-        return _pyagrum.VariableElimination_addJointTarget(self, targets)
-
-    def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.VariableElimination_eraseJointTarget(self, targets)
-
-    def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.VariableElimination_isJointTarget(self, targets)
-
-    def jointTargets(self) -> list[set[int]]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
-        return _pyagrum.VariableElimination_jointTargets(self)
-
-# Register VariableElimination in _pyagrum:
-_pyagrum.VariableElimination_swigregister(VariableElimination)
-class GibbsSampling(object):
-    r"""
-
-    Class for making Gibbs sampling inference in Bayesian networks.
-
-    GibbsSampling(bn) -> GibbsSampling
-        Parameters:
-          - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.GibbsSampling_swiginit(self, _pyagrum.new_GibbsSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_GibbsSampling
-
-    def setBurnIn(self, b: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        b : int
-          size of burn in on number of iteration
-
-        """
-        return _pyagrum.GibbsSampling_setBurnIn(self, b)
-
-    def burnIn(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          size of burn in on number of iteration
-
-        """
-        return _pyagrum.GibbsSampling_burnIn(self)
+        return _pyagrum.GibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -20074,6 +19605,31 @@ class GibbsSampling(object):
         """
         return _pyagrum.GibbsSampling_setDrawnAtRandom(self, _atRandom)
 
+# Register GibbsSampling in _pyagrum:
+_pyagrum.GibbsSampling_swigregister(GibbsSampling)
+class ImportanceSampling(object):
+    r"""
+
+    Class used for inferences using the Importance Sampling algorithm.
+
+    ImportanceSampling(bn) -> ImportanceSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.ImportanceSampling_swiginit(self, _pyagrum.new_ImportanceSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_ImportanceSampling
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -20180,7 +19736,7 @@ class GibbsSampling(object):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.GibbsSampling_hardEvidenceNodes(self)
+        return _pyagrum.ImportanceSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -20191,7 +19747,7 @@ class GibbsSampling(object):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.GibbsSampling_softEvidenceNodes(self)
+        return _pyagrum.ImportanceSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -20202,9 +19758,9 @@ class GibbsSampling(object):
           the list of marginal targets
 
         """
-        return _pyagrum.GibbsSampling_targets(self)
+        return _pyagrum.ImportanceSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -20226,32 +19782,7 @@ class GibbsSampling(object):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.GibbsSampling_evidenceImpact(self, *args)
-
-# Register GibbsSampling in _pyagrum:
-_pyagrum.GibbsSampling_swigregister(GibbsSampling)
-class ImportanceSampling(object):
-    r"""
-
-    Class used for inferences using the Importance Sampling algorithm.
-
-    ImportanceSampling(bn) -> ImportanceSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.ImportanceSampling_swiginit(self, _pyagrum.new_ImportanceSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_ImportanceSampling
+        return _pyagrum.ImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -20849,6 +20380,31 @@ class ImportanceSampling(object):
         """
         return _pyagrum.ImportanceSampling_currentPosterior(self, *args)
 
+# Register ImportanceSampling in _pyagrum:
+_pyagrum.ImportanceSampling_swigregister(ImportanceSampling)
+class WeightedSampling(object):
+    r"""
+
+    Class used for Weighted sampling inference algorithm.
+
+    WeightedSampling(bn) -> WeightedSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.WeightedSampling_swiginit(self, _pyagrum.new_WeightedSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_WeightedSampling
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -20955,7 +20511,7 @@ class ImportanceSampling(object):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.ImportanceSampling_hardEvidenceNodes(self)
+        return _pyagrum.WeightedSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -20966,7 +20522,7 @@ class ImportanceSampling(object):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.ImportanceSampling_softEvidenceNodes(self)
+        return _pyagrum.WeightedSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -20977,9 +20533,9 @@ class ImportanceSampling(object):
           the list of marginal targets
 
         """
-        return _pyagrum.ImportanceSampling_targets(self)
+        return _pyagrum.WeightedSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -21001,32 +20557,7 @@ class ImportanceSampling(object):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.ImportanceSampling_evidenceImpact(self, *args)
-
-# Register ImportanceSampling in _pyagrum:
-_pyagrum.ImportanceSampling_swigregister(ImportanceSampling)
-class WeightedSampling(object):
-    r"""
-
-    Class used for Weighted sampling inference algorithm.
-
-    WeightedSampling(bn) -> WeightedSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.WeightedSampling_swiginit(self, _pyagrum.new_WeightedSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_WeightedSampling
+        return _pyagrum.WeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -21624,6 +21155,31 @@ class WeightedSampling(object):
         """
         return _pyagrum.WeightedSampling_currentPosterior(self, *args)
 
+# Register WeightedSampling in _pyagrum:
+_pyagrum.WeightedSampling_swigregister(WeightedSampling)
+class MonteCarloSampling(object):
+    r"""
+
+    Class used for Monte Carlo sampling inference algorithm.
+
+    MonteCarloSampling(bn) -> MonteCarloSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.MonteCarloSampling_swiginit(self, _pyagrum.new_MonteCarloSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_MonteCarloSampling
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -21730,7 +21286,7 @@ class WeightedSampling(object):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.WeightedSampling_hardEvidenceNodes(self)
+        return _pyagrum.MonteCarloSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -21741,7 +21297,7 @@ class WeightedSampling(object):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.WeightedSampling_softEvidenceNodes(self)
+        return _pyagrum.MonteCarloSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -21752,9 +21308,9 @@ class WeightedSampling(object):
           the list of marginal targets
 
         """
-        return _pyagrum.WeightedSampling_targets(self)
+        return _pyagrum.MonteCarloSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -21776,32 +21332,7 @@ class WeightedSampling(object):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.WeightedSampling_evidenceImpact(self, *args)
-
-# Register WeightedSampling in _pyagrum:
-_pyagrum.WeightedSampling_swigregister(WeightedSampling)
-class MonteCarloSampling(object):
-    r"""
-
-    Class used for Monte Carlo sampling inference algorithm.
-
-    MonteCarloSampling(bn) -> MonteCarloSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.MonteCarloSampling_swiginit(self, _pyagrum.new_MonteCarloSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_MonteCarloSampling
+        return _pyagrum.MonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -22399,6 +21930,52 @@ class MonteCarloSampling(object):
         """
         return _pyagrum.MonteCarloSampling_currentPosterior(self, *args)
 
+# Register MonteCarloSampling in _pyagrum:
+_pyagrum.MonteCarloSampling_swigregister(MonteCarloSampling)
+class LoopyImportanceSampling(ImportanceSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.LoopyImportanceSampling_swiginit(self, _pyagrum.new_LoopyImportanceSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_LoopyImportanceSampling
+
+    def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
+        return _pyagrum.LoopyImportanceSampling_makeInference_(self)
+
+    def setVirtualLBPSize(self, vlbpsize: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        vlbpsize : float
+          the size of the virtual LBP
+
+        """
+        return _pyagrum.LoopyImportanceSampling_setVirtualLBPSize(self, vlbpsize)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -22505,7 +22082,7 @@ class MonteCarloSampling(object):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.MonteCarloSampling_hardEvidenceNodes(self)
+        return _pyagrum.LoopyImportanceSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -22516,7 +22093,7 @@ class MonteCarloSampling(object):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.MonteCarloSampling_softEvidenceNodes(self)
+        return _pyagrum.LoopyImportanceSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -22527,9 +22104,9 @@ class MonteCarloSampling(object):
           the list of marginal targets
 
         """
-        return _pyagrum.MonteCarloSampling_targets(self)
+        return _pyagrum.LoopyImportanceSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -22551,53 +22128,7 @@ class MonteCarloSampling(object):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.MonteCarloSampling_evidenceImpact(self, *args)
-
-# Register MonteCarloSampling in _pyagrum:
-_pyagrum.MonteCarloSampling_swigregister(MonteCarloSampling)
-class LoopyImportanceSampling(ImportanceSampling):
-    r"""
-
-    Class used for inferences using a loopy version of importance sampling.
-
-    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.LoopyImportanceSampling_swiginit(self, _pyagrum.new_LoopyImportanceSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_LoopyImportanceSampling
-
-    def makeInference_(self) -> None:
-        r"""
-
-        Internal implementation of the loopy sampling inference.
-
-        This protected virtual method performs the actual sampling-based inference loop.
-
-        """
-        return _pyagrum.LoopyImportanceSampling_makeInference_(self)
-
-    def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
-        return _pyagrum.LoopyImportanceSampling_setVirtualLBPSize(self, vlbpsize)
+        return _pyagrum.LoopyImportanceSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -23195,6 +22726,52 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrum.LoopyImportanceSampling_currentPosterior(self, *args)
 
+# Register LoopyImportanceSampling in _pyagrum:
+_pyagrum.LoopyImportanceSampling_swigregister(LoopyImportanceSampling)
+class LoopyWeightedSampling(WeightedSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.LoopyWeightedSampling_swiginit(self, _pyagrum.new_LoopyWeightedSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_LoopyWeightedSampling
+
+    def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
+        return _pyagrum.LoopyWeightedSampling_makeInference_(self)
+
+    def setVirtualLBPSize(self, vlbpsize: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        vlbpsize : float
+          the size of the virtual LBP
+
+        """
+        return _pyagrum.LoopyWeightedSampling_setVirtualLBPSize(self, vlbpsize)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -23301,7 +22878,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.LoopyImportanceSampling_hardEvidenceNodes(self)
+        return _pyagrum.LoopyWeightedSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -23312,7 +22889,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.LoopyImportanceSampling_softEvidenceNodes(self)
+        return _pyagrum.LoopyWeightedSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -23323,9 +22900,9 @@ class LoopyImportanceSampling(ImportanceSampling):
           the list of marginal targets
 
         """
-        return _pyagrum.LoopyImportanceSampling_targets(self)
+        return _pyagrum.LoopyWeightedSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -23347,53 +22924,7 @@ class LoopyImportanceSampling(ImportanceSampling):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.LoopyImportanceSampling_evidenceImpact(self, *args)
-
-# Register LoopyImportanceSampling in _pyagrum:
-_pyagrum.LoopyImportanceSampling_swigregister(LoopyImportanceSampling)
-class LoopyWeightedSampling(WeightedSampling):
-    r"""
-
-    Class used for inferences using a loopy version of importance sampling.
-
-    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.LoopyWeightedSampling_swiginit(self, _pyagrum.new_LoopyWeightedSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_LoopyWeightedSampling
-
-    def makeInference_(self) -> None:
-        r"""
-
-        Internal implementation of the loopy sampling inference.
-
-        This protected virtual method performs the actual sampling-based inference loop.
-
-        """
-        return _pyagrum.LoopyWeightedSampling_makeInference_(self)
-
-    def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
-        return _pyagrum.LoopyWeightedSampling_setVirtualLBPSize(self, vlbpsize)
+        return _pyagrum.LoopyWeightedSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -23991,6 +23522,52 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrum.LoopyWeightedSampling_currentPosterior(self, *args)
 
+# Register LoopyWeightedSampling in _pyagrum:
+_pyagrum.LoopyWeightedSampling_swigregister(LoopyWeightedSampling)
+class LoopyGibbsSampling(GibbsSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.LoopyGibbsSampling_swiginit(self, _pyagrum.new_LoopyGibbsSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_LoopyGibbsSampling
+
+    def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
+        return _pyagrum.LoopyGibbsSampling_makeInference_(self)
+
+    def setVirtualLBPSize(self, vlbpsize: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        vlbpsize : float
+          the size of the virtual LBP
+
+        """
+        return _pyagrum.LoopyGibbsSampling_setVirtualLBPSize(self, vlbpsize)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -24097,7 +23674,7 @@ class LoopyWeightedSampling(WeightedSampling):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.LoopyWeightedSampling_hardEvidenceNodes(self)
+        return _pyagrum.LoopyGibbsSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -24108,7 +23685,7 @@ class LoopyWeightedSampling(WeightedSampling):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.LoopyWeightedSampling_softEvidenceNodes(self)
+        return _pyagrum.LoopyGibbsSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -24119,9 +23696,9 @@ class LoopyWeightedSampling(WeightedSampling):
           the list of marginal targets
 
         """
-        return _pyagrum.LoopyWeightedSampling_targets(self)
+        return _pyagrum.LoopyGibbsSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -24143,53 +23720,7 @@ class LoopyWeightedSampling(WeightedSampling):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.LoopyWeightedSampling_evidenceImpact(self, *args)
-
-# Register LoopyWeightedSampling in _pyagrum:
-_pyagrum.LoopyWeightedSampling_swigregister(LoopyWeightedSampling)
-class LoopyGibbsSampling(GibbsSampling):
-    r"""
-
-    Class used for inferences using a loopy version of importance sampling.
-
-    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.LoopyGibbsSampling_swiginit(self, _pyagrum.new_LoopyGibbsSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_LoopyGibbsSampling
-
-    def makeInference_(self) -> None:
-        r"""
-
-        Internal implementation of the loopy sampling inference.
-
-        This protected virtual method performs the actual sampling-based inference loop.
-
-        """
-        return _pyagrum.LoopyGibbsSampling_makeInference_(self)
-
-    def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
-        return _pyagrum.LoopyGibbsSampling_setVirtualLBPSize(self, vlbpsize)
+        return _pyagrum.LoopyGibbsSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -24853,6 +24384,52 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrum.LoopyGibbsSampling_setBurnIn(self, b)
 
+# Register LoopyGibbsSampling in _pyagrum:
+_pyagrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
+class LoopyMonteCarloSampling(MonteCarloSampling):
+    r"""
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.LoopyMonteCarloSampling_swiginit(self, _pyagrum.new_LoopyMonteCarloSampling(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_LoopyMonteCarloSampling
+
+    def makeInference_(self) -> None:
+        r"""
+
+        Internal implementation of the loopy sampling inference.
+
+        This protected virtual method performs the actual sampling-based inference loop.
+
+        """
+        return _pyagrum.LoopyMonteCarloSampling_makeInference_(self)
+
+    def setVirtualLBPSize(self, vlbpsize: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        vlbpsize : float
+          the size of the virtual LBP
+
+        """
+        return _pyagrum.LoopyMonteCarloSampling_setVirtualLBPSize(self, vlbpsize)
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -24959,7 +24536,7 @@ class LoopyGibbsSampling(GibbsSampling):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.LoopyGibbsSampling_hardEvidenceNodes(self)
+        return _pyagrum.LoopyMonteCarloSampling_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -24970,7 +24547,7 @@ class LoopyGibbsSampling(GibbsSampling):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.LoopyGibbsSampling_softEvidenceNodes(self)
+        return _pyagrum.LoopyMonteCarloSampling_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -24981,9 +24558,9 @@ class LoopyGibbsSampling(GibbsSampling):
           the list of marginal targets
 
         """
-        return _pyagrum.LoopyGibbsSampling_targets(self)
+        return _pyagrum.LoopyMonteCarloSampling_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -25005,53 +24582,7 @@ class LoopyGibbsSampling(GibbsSampling):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.LoopyGibbsSampling_evidenceImpact(self, *args)
-
-# Register LoopyGibbsSampling in _pyagrum:
-_pyagrum.LoopyGibbsSampling_swigregister(LoopyGibbsSampling)
-class LoopyMonteCarloSampling(MonteCarloSampling):
-    r"""
-
-    Class used for inferences using a loopy version of importance sampling.
-
-    LoopyImportanceSampling(bn) -> LoopyImportanceSampling
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.LoopyMonteCarloSampling_swiginit(self, _pyagrum.new_LoopyMonteCarloSampling(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_LoopyMonteCarloSampling
-
-    def makeInference_(self) -> None:
-        r"""
-
-        Internal implementation of the loopy sampling inference.
-
-        This protected virtual method performs the actual sampling-based inference loop.
-
-        """
-        return _pyagrum.LoopyMonteCarloSampling_makeInference_(self)
-
-    def setVirtualLBPSize(self, vlbpsize: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        vlbpsize : float
-          the size of the virtual LBP
-
-        """
-        return _pyagrum.LoopyMonteCarloSampling_setVirtualLBPSize(self, vlbpsize)
+        return _pyagrum.LoopyMonteCarloSampling_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -25649,6 +25180,31 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrum.LoopyMonteCarloSampling_currentPosterior(self, *args)
 
+# Register LoopyMonteCarloSampling in _pyagrum:
+_pyagrum.LoopyMonteCarloSampling_swigregister(LoopyMonteCarloSampling)
+class LoopyBeliefPropagation(object):
+    r"""
+
+    Class used for inferences using loopy belief propagation algorithm.
+
+    LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
+        Parameters:
+            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: "IBayesNet"):
+        _pyagrum.LoopyBeliefPropagation_swiginit(self, _pyagrum.new_LoopyBeliefPropagation(bn))
+
+        self._model=bn#BN
+
+
+
+    __swig_destroy__ = _pyagrum.delete_LoopyBeliefPropagation
+
     def setEvidence(self, evidces):
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -25755,7 +25311,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           the set of nodes with hard evidence
 
         """
-        return _pyagrum.LoopyMonteCarloSampling_hardEvidenceNodes(self)
+        return _pyagrum.LoopyBeliefPropagation_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -25766,7 +25322,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           the set of nodes with soft evidence
 
         """
-        return _pyagrum.LoopyMonteCarloSampling_softEvidenceNodes(self)
+        return _pyagrum.LoopyBeliefPropagation_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -25777,9 +25333,9 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           the list of marginal targets
 
         """
-        return _pyagrum.LoopyMonteCarloSampling_targets(self)
+        return _pyagrum.LoopyBeliefPropagation_targets(self)
 
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
+    def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
         Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
@@ -25801,32 +25357,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
           a Tensor for P(targets|evs)
 
         """
-        return _pyagrum.LoopyMonteCarloSampling_evidenceImpact(self, *args)
-
-# Register LoopyMonteCarloSampling in _pyagrum:
-_pyagrum.LoopyMonteCarloSampling_swigregister(LoopyMonteCarloSampling)
-class LoopyBeliefPropagation(object):
-    r"""
-
-    Class used for inferences using loopy belief propagation algorithm.
-
-    LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, bn: "IBayesNet"):
-        _pyagrum.LoopyBeliefPropagation_swiginit(self, _pyagrum.new_LoopyBeliefPropagation(bn))
-
-        self._model=bn#BN
-
-
-
-    __swig_destroy__ = _pyagrum.delete_LoopyBeliefPropagation
+        return _pyagrum.LoopyBeliefPropagation_evidenceImpact(self, target, evs)
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -26398,160 +25929,6 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyagrum.LoopyBeliefPropagation_BN(self)
-
-    def setEvidence(self, evidces):
-        """
-        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          self.eraseAllEvidence()
-          for k,v in evidces.items():
-            self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          self.eraseAllEvidence()
-          for p in evidces:
-            self.addEvidence(p)
-          return
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def updateEvidence(self, evidces):
-        """
-        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
-
-        Parameters
-        ----------
-        evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-          a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if isinstance(evidces, dict):
-          for k,v in evidces.items():
-              if self.hasEvidence(k):
-                  self.chgEvidence(k,v)
-              else:
-                  self.addEvidence(k,v)
-          return
-        elif isinstance(evidces, list):#should be a list of Tensor
-          for p in evidces:
-              k=p.variable(0)
-              if self.hasEvidence(k):
-                  self.chgEvidence(p)
-              else:
-                  self.addEvidence(p)
-          return
-
-        raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-
-    def setTargets(self, targets):
-        """
-        Remove all the targets and add the ones in parameter.
-
-        Parameters
-        ----------
-        targets : set
-          a set of targets
-
-        Raises
-        ------
-          pyagrum.UndefinedElement
-            If one target is not in the Bayes net
-        """
-        if not isinstance(targets, set):
-            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
-
-        self.eraseAllTargets()
-        for k in targets:
-            self.addTarget(k)
-
-
-
-    def hardEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
-        return _pyagrum.LoopyBeliefPropagation_hardEvidenceNodes(self)
-
-    def softEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
-        return _pyagrum.LoopyBeliefPropagation_softEvidenceNodes(self)
-
-    def targets(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
-        return _pyagrum.LoopyBeliefPropagation_targets(self)
-
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(targets|evs)
-
-        """
-        return _pyagrum.LoopyBeliefPropagation_evidenceImpact(self, *args)
 
 # Register LoopyBeliefPropagation in _pyagrum:
 _pyagrum.LoopyBeliefPropagation_swigregister(LoopyBeliefPropagation)
@@ -29012,6 +28389,213 @@ class BNLearner(object):
     def __str__(self) -> str:
         return _pyagrum.BNLearner___str__(self)
 
+    def chi2(self, *args) -> tuple[float, float]:
+        r"""
+
+        chi2 computes the chi2 statistic and p-value of two variables conditionally to a
+        list of other variables.
+
+        The variables correspond to columns in the database and are specified as the
+        names of these columns in the database. The list of variables in the conditioning
+        set can be empty. In this case, no need to specify it.
+
+        Usage:
+          * `chi2(name1, name2, knowing=[])`
+
+        Parameters
+        ----------
+        name1: str
+                the name of a variable/column in the database
+
+        name2 : str
+                the name/column of another variable
+
+        knowing : list of str
+                the list of the column names of the conditioning variables
+
+        Returns
+        -------
+        tuple
+                the chi2 statistics and the associated p-value as a Tuple
+
+        """
+        return _pyagrum.BNLearner_chi2(self, *args)
+
+    def G2(self, *args) -> tuple[float, float]:
+        r"""
+
+        G2 computes the G2 statistic and p-value of two variables conditionally to a
+        list of other variables.
+
+        The variables correspond to columns in the database and are specified as the
+        names of these columns in the database. The list of variables in the conditioning
+        set can be empty. In this case, no need to specify it.
+
+        Usage:
+          * `G2(name1, name2, knowing=[])`
+
+        Parameters
+        ----------
+        name1: str
+                the name of a variable/column in the database
+
+        name2 : str
+                the name/column of another variable
+
+        knowing : list of str
+                the list of the column names of the conditioning variables
+
+        Returns
+        -------
+        tuple
+                the G2 statistics and the corresponding p-value as a Tuple
+
+        """
+        return _pyagrum.BNLearner_G2(self, *args)
+
+    def _EM_warning(self) -> bool:
+        return _pyagrum.BNLearner__EM_warning(self)
+
+    def setSliceOrder(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Set a partial order on the nodes.
+
+        Parameters
+        ----------
+        l : list
+                a list of sequences (composed of ids of rows or string)
+
+        """
+        return _pyagrum.BNLearner_setSliceOrder(self, *args)
+
+    def useK2(self, *args) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate to use the K2 algorithm (which needs a total ordering of the variables).
+
+        Parameters
+        ----------
+        order : list[int or str]
+              sequences of (ids or name)
+
+        """
+        return _pyagrum.BNLearner_useK2(self, *args)
+
+    def latentVariables(self) -> list[tuple[int,int]]:
+        r"""
+
+        Returns the list of latent variables discovered by MIIC.
+
+        Warnings
+        --------
+        learner must be using MIIC algorithm
+
+        Returns
+        -------
+        list
+            the list of latent variables
+
+        """
+        return _pyagrum.BNLearner_latentVariables(self)
+
+    def state(self) -> dict[str, tuple[str, str]]:
+        r"""
+
+        Returns a dictionary containing the current state of the BNLearner.
+
+        Returns
+        -------
+        dict
+            a dictionary containing the current state of the BNLearner.
+
+        """
+        return _pyagrum.BNLearner_state(self)
+
+    def setPossibleEdges(self, *args) -> None:
+        r"""
+
+        Adds a constraint to the structure learning algorithm by fixing the set of possible edges.
+
+        Parameters
+        ----------
+        edges : set
+            a set of edges as couples of nodeIds.
+
+        """
+        return _pyagrum.BNLearner_setPossibleEdges(self, *args)
+
+    def pseudoCount(self,vars):
+        """ access to pseudo-count (priors taken into account)
+
+        Parameters
+        ----------
+        vars : list[str]
+          a list of name of vars to add in the pseudo_count
+
+        Returns
+        -------
+        a Tensor containing this pseudo-counts
+        """
+        p=pyagrum.Tensor()
+        lv=list()
+        for i in vars:
+            if type(i) is str:
+                name=i
+            else:
+                name=self.nameFromId(i)
+            p.add(pyagrum.RangeVariable(name,name,0,self.domainSize(i)-1))
+            lv.append(name)
+        p.fillWith(self.rawPseudoCount(lv))
+        return p
+
+    def fitParameters(self, bn, take_into_account_score=True):
+      """
+      Fit the parameters of a BayesNet in place using this learner's database.
+
+      Parameters
+      ----------
+      bn : pyagrum.BayesNet
+          the network whose CPTs will be filled (structure must match the database variables)
+      take_into_account_score : bool
+          if True, include the implicit prior of the structure-learning score (e.g. K2) in parameter learning
+
+      Returns
+      -------
+      pyagrum.BNLearner
+          self
+      """
+      if not set(self.names()).issuperset(bn.names()):
+        raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
+
+      tmp=self.learnParameters(bn,take_into_account_score)
+      for n in tmp.names():
+        bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
+      return self
+
+    def learnEssentialGraph(self):
+      """
+      learn an essential graph from a file
+
+      Returns
+      -------
+      pyagrum.EssentialGraph
+        the learned essential graph
+      """
+      bn = BayesNet()
+      for i in range(len(self.names())):
+        bn.add(self.nameFromId(i),2)
+      try:
+        ge = EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
+      except:
+        bn = self.learnBN()
+        ge = EssentialGraph(bn)  # for score-based methods
+
+      ge._bn=bn
+
+      return ge
+
+
     def setVerbosity(self, v: bool) -> None:
         r"""
 
@@ -29786,213 +29370,6 @@ class BNLearner(object):
         """
         return _pyagrum.BNLearner_isGumNumberOfThreadsOverriden(self)
 
-    def chi2(self, *args) -> tuple[float, float]:
-        r"""
-
-        chi2 computes the chi2 statistic and p-value of two variables conditionally to a
-        list of other variables.
-
-        The variables correspond to columns in the database and are specified as the
-        names of these columns in the database. The list of variables in the conditioning
-        set can be empty. In this case, no need to specify it.
-
-        Usage:
-          * `chi2(name1, name2, knowing=[])`
-
-        Parameters
-        ----------
-        name1: str
-                the name of a variable/column in the database
-
-        name2 : str
-                the name/column of another variable
-
-        knowing : list of str
-                the list of the column names of the conditioning variables
-
-        Returns
-        -------
-        tuple
-                the chi2 statistics and the associated p-value as a Tuple
-
-        """
-        return _pyagrum.BNLearner_chi2(self, *args)
-
-    def G2(self, *args) -> tuple[float, float]:
-        r"""
-
-        G2 computes the G2 statistic and p-value of two variables conditionally to a
-        list of other variables.
-
-        The variables correspond to columns in the database and are specified as the
-        names of these columns in the database. The list of variables in the conditioning
-        set can be empty. In this case, no need to specify it.
-
-        Usage:
-          * `G2(name1, name2, knowing=[])`
-
-        Parameters
-        ----------
-        name1: str
-                the name of a variable/column in the database
-
-        name2 : str
-                the name/column of another variable
-
-        knowing : list of str
-                the list of the column names of the conditioning variables
-
-        Returns
-        -------
-        tuple
-                the G2 statistics and the corresponding p-value as a Tuple
-
-        """
-        return _pyagrum.BNLearner_G2(self, *args)
-
-    def _EM_warning(self) -> bool:
-        return _pyagrum.BNLearner__EM_warning(self)
-
-    def setSliceOrder(self, *args) -> "pyagrum.BNLearner":
-        r"""
-
-        Set a partial order on the nodes.
-
-        Parameters
-        ----------
-        l : list
-                a list of sequences (composed of ids of rows or string)
-
-        """
-        return _pyagrum.BNLearner_setSliceOrder(self, *args)
-
-    def useK2(self, *args) -> "pyagrum.BNLearner":
-        r"""
-
-        Indicate to use the K2 algorithm (which needs a total ordering of the variables).
-
-        Parameters
-        ----------
-        order : list[int or str]
-              sequences of (ids or name)
-
-        """
-        return _pyagrum.BNLearner_useK2(self, *args)
-
-    def latentVariables(self) -> list[tuple[int,int]]:
-        r"""
-
-        Returns the list of latent variables discovered by MIIC.
-
-        Warnings
-        --------
-        learner must be using MIIC algorithm
-
-        Returns
-        -------
-        list
-            the list of latent variables
-
-        """
-        return _pyagrum.BNLearner_latentVariables(self)
-
-    def state(self) -> dict[str, tuple[str, str]]:
-        r"""
-
-        Returns a dictionary containing the current state of the BNLearner.
-
-        Returns
-        -------
-        dict
-            a dictionary containing the current state of the BNLearner.
-
-        """
-        return _pyagrum.BNLearner_state(self)
-
-    def setPossibleEdges(self, *args) -> None:
-        r"""
-
-        Adds a constraint to the structure learning algorithm by fixing the set of possible edges.
-
-        Parameters
-        ----------
-        edges : set
-            a set of edges as couples of nodeIds.
-
-        """
-        return _pyagrum.BNLearner_setPossibleEdges(self, *args)
-
-    def pseudoCount(self,vars):
-        """ access to pseudo-count (priors taken into account)
-
-        Parameters
-        ----------
-        vars : list[str]
-          a list of name of vars to add in the pseudo_count
-
-        Returns
-        -------
-        a Tensor containing this pseudo-counts
-        """
-        p=pyagrum.Tensor()
-        lv=list()
-        for i in vars:
-            if type(i) is str:
-                name=i
-            else:
-                name=self.nameFromId(i)
-            p.add(pyagrum.RangeVariable(name,name,0,self.domainSize(i)-1))
-            lv.append(name)
-        p.fillWith(self.rawPseudoCount(lv))
-        return p
-
-    def fitParameters(self, bn, take_into_account_score=True):
-      """
-      Fit the parameters of a BayesNet in place using this learner's database.
-
-      Parameters
-      ----------
-      bn : pyagrum.BayesNet
-          the network whose CPTs will be filled (structure must match the database variables)
-      take_into_account_score : bool
-          if True, include the implicit prior of the structure-learning score (e.g. K2) in parameter learning
-
-      Returns
-      -------
-      pyagrum.BNLearner
-          self
-      """
-      if not set(self.names()).issuperset(bn.names()):
-        raise Exception(f"Some variables are in the BN but not in the data : {bn.names()-set(self.names())}")
-
-      tmp=self.learnParameters(bn,take_into_account_score)
-      for n in tmp.names():
-        bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
-      return self
-
-    def learnEssentialGraph(self):
-      """
-      learn an essential graph from a file
-
-      Returns
-      -------
-      pyagrum.EssentialGraph
-        the learned essential graph
-      """
-      bn = BayesNet()
-      for i in range(len(self.names())):
-        bn.add(self.nameFromId(i),2)
-      try:
-        ge = EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
-      except:
-        bn = self.learnBN()
-        ge = EssentialGraph(bn)  # for score-based methods
-
-      ge._bn=bn
-
-      return ge
-
-
 # Register BNLearner in _pyagrum:
 _pyagrum.BNLearner_swigregister(BNLearner)
 
@@ -30076,6 +29453,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   elif extension == "NET":
     warns = bn.loadNET(filename, listeners)
   elif extension == "O3PRM":
+    if not hasattr(bn, "loadO3PRM"):
+      raise InvalidArgument("loading a .o3prm file requires 'import pyagrum.prm' first")
     warns = bn.loadO3PRM(filename, opts.get('system', ''),
                          opts.get('classpath', ''), listeners)
   elif extension == "UAI":
@@ -30136,6 +29515,8 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   elif extension == "UAI":
     bn.saveUAI(filename, allowModificationWhenSaving)
   elif extension == "O3PRM":
+    if not hasattr(bn, "saveO3PRM"):
+      raise InvalidArgument("saving a .o3prm file requires 'import pyagrum.prm' first")
     bn.saveO3PRM(filename, allowModificationWhenSaving)
   elif extension == "JGUM":
     bn.saveGUM(filename)
@@ -30401,5361 +29782,6 @@ def mutilateBN(bn, intervention=None, observation=None):
   return (inter_bn, evidence)
 
 
-
-class CredalNet(object):
-    r"""
-
-    Constructor used to create a CredalNet (step by step or with two BayesNet)
-
-    CredalNet() -> CredalNet
-        default constructor
-
-    CredalNet(src_min_num,src_max_den) -> CredalNet
-
-    Parameters
-    ----------
-    src_min_num : str or pyagrum.BayesNet
-                The path to a BayesNet or the BN itself which contains lower probabilities.
-    src_max_den : str or pyagrum.BayesNet
-                The (optional) path to a BayesNet or the BN itself which contains upper probabilities.
-
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    NodeType_Precise = _pyagrum.CredalNet_NodeType_Precise
-    NodeType_Credal = _pyagrum.CredalNet_NodeType_Credal
-    NodeType_Vacuous = _pyagrum.CredalNet_NodeType_Vacuous
-    NodeType_Indic = _pyagrum.CredalNet_NodeType_Indic
-
-    def __init__(self, *args):
-        _pyagrum.CredalNet_swiginit(self, _pyagrum.new_CredalNet(*args))
-    __swig_destroy__ = _pyagrum.delete_CredalNet
-
-    def addVariable(self, name: str, card: int) -> int:
-        r"""
-
-        Parameters
-        ----------
-        name : str
-            the name of the new variable
-        card: int
-            the domainSize of the new variable
-
-        Returns
-        -------
-        int
-            the id of the new node
-
-        """
-        return _pyagrum.CredalNet_addVariable(self, name, card)
-
-    def addArc(self, tail: int, head: int) -> None:
-        r"""
-
-        Adds an arc between two nodes
-
-        Parameters
-        ----------
-        tail :
-            the id of the tail node
-        head : int
-            the id of the head node
-
-        Raises
-        ------
-        pyagrum.InvalidDirectedCircle
-            If any (directed) cycle is created by this arc
-        pyagrum.InvalidNode
-            If head or tail does not belong to the graph nodes
-        pyagrum.DuplicateElement
-            If one of the arc already exists
-
-        """
-        return _pyagrum.CredalNet_addArc(self, tail, head)
-
-    def setCPTs(self, id: int, cpt: "pyagrum.YetUnWrapped") -> None:
-        r"""
-
-        Warnings
-        --------
-        (experimental function) - Parameters to be wrapped
-
-
-        Set the vertices of the credal sets (all of the conditionals) of a given node
-
-        Parameters
-        ----------
-        id : int
-            the NodeId of the node
-        cpt    : tbw
-            the vertices of every credal set (for each instantiation of the parents)
-
-        Warnings
-        --------
-        DOES not change the BayesNet (s) associated to this credal net !
-
-        """
-        return _pyagrum.CredalNet_setCPTs(self, id, cpt)
-
-    def setCPT(self, *args) -> None:
-        r"""
-
-        Warnings
-        --------
-        (experimental function) - Parameters to be wrapped
-
-
-        Set the vertices of one credal set of a given node (any instantiation index)
-
-        Parameters
-        ----------
-        id : int
-            the Id of the node
-        entry : int
-            the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
-        ins : pyagrum.Instantiation
-            the Instantiation (only the parents matter to find the credal set index)
-        cpt    : tbw
-            the vertices of every credal set (for each instantiation of the parents)
-
-        Warnings
-        --------
-        DOES not change the BayesNet(s) associated to this credal net !
-
-        """
-        return _pyagrum.CredalNet_setCPT(self, *args)
-
-    def fillConstraints(self, id: int, lower: tuple[float, ...], upper: tuple[float, ...]) -> None:
-        r"""
-
-        Set the interval constraints of the credal sets of a given node (all instantiations)
-
-        Parameters
-        ----------
-        id : int
-            The id of the node
-        lower : list
-            The lower value for each probability in correct order
-        upper : list
-            The upper value for each probability in correct order
-
-        Warnings
-        --------
-        You need to call intervalToCredal when done filling all constraints.
-
-        Warnings
-        --------
-        DOES change the BayesNet (s) associated to this credal net !
-
-        """
-        return _pyagrum.CredalNet_fillConstraints(self, id, lower, upper)
-
-    def fillConstraint(self, *args) -> None:
-        r"""
-
-        Set the interval constraints of a credal set of a given node (from an instantiation index)
-
-        Parameters
-        ----------
-        id : int
-            The id of the node
-        entry : int
-            The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
-        ins : pyagrum.Instantiation
-            The Instantiation
-        lower : list
-            The lower value for each probability in correct order
-        upper : list
-            The upper value for each probability in correct order
-
-        Warnings
-        --------
-        You need to call intervalToCredal when done filling all constraints.
-
-        Warnings
-        --------
-        DOES change the BayesNet (s) associated to this credal net !
-
-        """
-        return _pyagrum.CredalNet_fillConstraint(self, *args)
-
-    def instantiation(self, id: int) -> "pyagrum.Instantiation":
-        r"""
-
-        Get an Instantiation from a node id, usefull to fill the constraints of the network.
-
-        bnet accessors / shortcuts.
-
-        Parameters
-        ----------
-        id : int
-            the id of the node we want an instantiation from
-
-        Returns
-        -------
-        pyagrum.Instantiation
-            the instantiation
-
-        """
-        return _pyagrum.CredalNet_instantiation(self, id)
-
-    def domainSize(self, id: int) -> int:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-            The id of the node
-
-        Returns
-        -------
-        int
-            The cardinality of the node
-
-        """
-        return _pyagrum.CredalNet_domainSize(self, id)
-
-    def bnToCredal(self, *args) -> None:
-        r"""
-
-        Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
-
-        Parameters
-        ----------
-        beta : float
-            The beta used to perturbate the network
-        oneNet : bool
-            used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
-        keepZeroes : bool
-            used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
-
-        """
-        return _pyagrum.CredalNet_bnToCredal(self, *args)
-
-    def intervalToCredalWithFiles(self) -> None:
-        r"""
-
-        Warnings
-        --------
-        Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).
-
-
-        Computes the vertices of each credal set according to their interval definition (uses lrs).
-
-        Use this method when using a single BayesNet storing counts of events.
-
-        """
-        return _pyagrum.CredalNet_intervalToCredalWithFiles(self)
-
-    def intervalToCredal(self) -> None:
-        r"""
-
-        Computes the vertices of each credal set according to their interval definition (uses lrs).
-
-        Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
-
-        """
-        return _pyagrum.CredalNet_intervalToCredal(self)
-
-    def lagrangeNormalization(self) -> None:
-        r"""
-
-        Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
-
-        Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
-
-        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
-
-        """
-        return _pyagrum.CredalNet_lagrangeNormalization(self)
-
-    def idmLearning(self, s: int=0, keepZeroes: bool=False) -> None:
-        r"""
-
-        Learns parameters from a BayesNet storing counts of events.
-
-        Use this method when using a single BayesNet storing counts of events. IDM model if s > 0, standard point probability if s = 0 (default value if none precised).
-
-        Parameters
-        ----------
-        s : int
-            the IDM parameter.
-        keepZeroes : bool
-            used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
-
-        """
-        return _pyagrum.CredalNet_idmLearning(self, s, keepZeroes)
-
-    def approximatedBinarization(self) -> None:
-        r"""
-
-        Approximate binarization.
-
-        Each bit has a lower and upper probability which is the lowest - resp. highest - over all vertices of the credal set. Enlarge the orignal credal sets and may induce huge imprecision.
-
-        Warnings
-        --------
-        Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead
-
-        """
-        return _pyagrum.CredalNet_approximatedBinarization(self)
-
-    def saveBNsMinMax(self, min_path: str, max_path: str) -> None:
-        r"""
-
-        If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
-
-        to call after bnToCredal(GUM_SCALAR beta) save a BN with lower probabilities and a BN with upper ones
-
-        Parameters
-        ----------
-        min_path : str
-            the path to save the BayesNet which contains the lower probabilities of each node X.
-        max_path : str
-            the path to save the BayesNet which contains the upper probabilities of each node X.
-
-        """
-        return _pyagrum.CredalNet_saveBNsMinMax(self, min_path, max_path)
-
-    def computeBinaryCPTMinMax(self) -> None:
-        r"""
-
-        Used with binary networks to speed-up L2U inference.
-
-        Store the lower and upper probabilities of each node X over the 'True' modality.
-
-        """
-        return _pyagrum.CredalNet_computeBinaryCPTMinMax(self)
-
-    def src_bn(self) -> "pyagrum.BayesNet":
-        r"""
-
-        Returns
-        -------
-        pyagrum.BayesNet
-            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
-
-        """
-        return _pyagrum.CredalNet_src_bn(self)
-
-    def current_bn(self) -> "pyagrum.BayesNet":
-        r"""
-
-        Returns
-        -------
-        pyagrum.BayesNet
-            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
-
-        """
-        return _pyagrum.CredalNet_current_bn(self)
-
-    def credalNet_currentCpt(self) -> "pyagrum.YetUnWrapped":
-        r"""
-
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
-
-        Returns
-        -------
-        tbw
-            a constant reference to the (up-to-date) CredalNet CPTs.
-
-        """
-        return _pyagrum.CredalNet_credalNet_currentCpt(self)
-
-    def credalNet_srcCpt(self) -> "pyagrum.YetUnWrapped":
-        r"""
-
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
-
-        Returns
-        -------
-        tbw
-            a constant reference to the (up-to-date) CredalNet CPTs.
-
-        """
-        return _pyagrum.CredalNet_credalNet_srcCpt(self)
-
-    def currentNodeType(self, id: int) -> int:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-            The constant reference to the choosen NodeId
-
-        Returns
-        -------
-        pyagrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
-
-        """
-        return _pyagrum.CredalNet_currentNodeType(self, id)
-
-    def nodeType(self, id: int) -> int:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-            the constant reference to the choosen NodeId
-
-        Returns
-        -------
-        pyagrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
-
-        """
-        return _pyagrum.CredalNet_nodeType(self, id)
-
-    def epsilonMin(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
-
-        """
-        return _pyagrum.CredalNet_epsilonMin(self)
-
-    def epsilonMax(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
-
-        """
-        return _pyagrum.CredalNet_epsilonMax(self)
-
-    def epsilonMean(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
-
-        """
-        return _pyagrum.CredalNet_epsilonMean(self)
-
-    def isSeparatelySpecified(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-            True if this CredalNet is separately and interval specified, False otherwise.
-
-        """
-        return _pyagrum.CredalNet_isSeparatelySpecified(self)
-
-    def hasComputedBinaryCPTMinMax(self) -> bool:
-        r"""
-
-        Check whether the binary CPT min/max values have been computed.
-
-        Returns
-        -------
-        bool
-            True if binary CPT min/max have been computed (via the dedicated computation method)
-
-        """
-        return _pyagrum.CredalNet_hasComputedBinaryCPTMinMax(self)
-
-    def get_binaryCPT_min(self) -> "pyagrum.YetUnWrapped":
-        r"""
-
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
-
-        Returns
-        -------
-        tbw
-            a constant reference to the lower probabilities of each node X over the 'True' modality
-
-        """
-        return _pyagrum.CredalNet_get_binaryCPT_min(self)
-
-    def get_binaryCPT_max(self) -> "pyagrum.YetUnWrapped":
-        r"""
-
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
-
-        Returns
-        -------
-        tbw
-            a constant reference to the upper probabilities of each node X over the 'True' modality
-
-        """
-        return _pyagrum.CredalNet_get_binaryCPT_max(self)
-
-    def __repr__(self) -> str:
-        return _pyagrum.CredalNet___repr__(self)
-
-    def __str__(self) -> str:
-        return _pyagrum.CredalNet___str__(self)
-
-# Register CredalNet in _pyagrum:
-_pyagrum.CredalNet_swigregister(CredalNet)
-class CNMonteCarloSampling(object):
-    r"""
-
-    Class used for inferences in credal networks with Monte Carlo sampling algorithm.
-
-    CNMonteCarloSampling(cn) -> CNMonteCarloSampling
-        Parameters:
-            - **cn** (*pyagrum.CredalNet*) -- a credal network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, credalNet: "CredalNet"):
-        _pyagrum.CNMonteCarloSampling_swiginit(self, _pyagrum.new_CNMonteCarloSampling(credalNet))
-
-        self._model=credalNet
-
-
-
-    __swig_destroy__ = _pyagrum.delete_CNMonteCarloSampling
-
-    def makeInference(self) -> None:
-        r"""
-
-        Starts the inference.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_makeInference(self)
-
-    def insertEvidenceFile(self, path: str) -> None:
-        r"""
-
-        Insert evidence from file.
-
-        Parameters
-        ----------
-        path : str
-            the path to the evidence file.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_insertEvidenceFile(self, path)
-
-    def setVerbosity(self, v: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        v : bool
-                verbosity
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setVerbosity(self, v)
-
-    def setEpsilon(self, eps: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        eps : float
-            the epsilon we want to use
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If eps<0
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setEpsilon(self, eps)
-
-    def setMinEpsilonRate(self, rate: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        rate : float
-            the minimal epsilon rate
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setMinEpsilonRate(self, rate)
-
-    def setMaxIter(self, max: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        max : int
-            the maximum number of iteration
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If max <= 1
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setMaxIter(self, max)
-
-    def setMaxTime(self, timeout: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        tiemout : float
-            stopping criterion on timeout (in seconds)
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If timeout<=0.0
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setMaxTime(self, timeout)
-
-    def setPeriodSize(self, p: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        p : int
-            number of samples between 2 stopping
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If p<1
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setPeriodSize(self, p)
-
-    def verbosity(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-            True if the verbosity is enabled
-
-        """
-        return _pyagrum.CNMonteCarloSampling_verbosity(self)
-
-    def epsilon(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the value of epsilon
-
-        """
-        return _pyagrum.CNMonteCarloSampling_epsilon(self)
-
-    def minEpsilonRate(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the value of the minimal epsilon rate
-
-        """
-        return _pyagrum.CNMonteCarloSampling_minEpsilonRate(self)
-
-    def maxIter(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the criterion on number of iterations
-
-        """
-        return _pyagrum.CNMonteCarloSampling_maxIter(self)
-
-    def maxTime(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the timeout(in seconds)
-
-        """
-        return _pyagrum.CNMonteCarloSampling_maxTime(self)
-
-    def periodSize(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of samples between 2 stopping
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If p<1
-
-        """
-        return _pyagrum.CNMonteCarloSampling_periodSize(self)
-
-    def nbrIterations(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of iterations
-
-        """
-        return _pyagrum.CNMonteCarloSampling_nbrIterations(self)
-
-    def currentTime(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            get the current running time in second (float)
-
-        """
-        return _pyagrum.CNMonteCarloSampling_currentTime(self)
-
-    def messageApproximationScheme(self) -> str:
-        r"""
-
-        Returns
-        -------
-        str
-            the approximation scheme message
-
-        """
-        return _pyagrum.CNMonteCarloSampling_messageApproximationScheme(self)
-
-    def history(self) -> tuple[float, ...]:
-        r"""
-
-        Returns
-        -------
-        tuple
-            the scheme history
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If the scheme did not performed or if verbosity is set to false
-
-        """
-        return _pyagrum.CNMonteCarloSampling_history(self)
-
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
-        return _pyagrum.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
-
-    def setRepetitiveInd(self, flag: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        flag : bool
-            True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_setRepetitiveInd(self, flag)
-
-    def marginalMax(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Get the upper marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-            the node id which upper marginals we want.
-        varName : str
-            the variable name which upper marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node upper marginals.
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the node does not belong to the Credal network
-
-        """
-        return _pyagrum.CNMonteCarloSampling_marginalMax(self, *args)
-
-    def marginalMin(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Get the lower marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-            the node id which lower marginals we want.
-        varName : str
-            the variable name which lower marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node lower marginals.
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the node does not belong to the Credal network
-
-        """
-        return _pyagrum.CNMonteCarloSampling_marginalMin(self, *args)
-
-    def insertModalsFile(self, path: str) -> None:
-        r"""
-
-        Insert variables modalities from file to compute expectations.
-
-        Parameters
-        ----------
-        path : str
-            The path to the modalities file.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_insertModalsFile(self, path)
-
-    def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
-        r"""
-
-        Get the upper dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-            the variable name prefix which upper expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable upper expectation over all time steps.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_dynamicExpMax(self, varName)
-
-    def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
-        r"""
-
-        Get the lower dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-            the variable name prefix which lower expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable lower expectation over all time steps.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_dynamicExpMin(self, varName)
-
-    def eraseAllEvidence(self) -> None:
-        r"""
-
-        Erase all inference related data to perform another one.
-
-        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
-
-        """
-        return _pyagrum.CNMonteCarloSampling_eraseAllEvidence(self)
-
-    def addEvidence(self, *args) -> None:
-        r"""
-
-        Add evidence for a variable in the credal network.
-
-        Parameters
-        ----------
-        id_or_name : int | str
-            the node id or name
-        val_or_label : int | str
-            the value index or label for the evidence
-
-        """
-        return _pyagrum.CNMonteCarloSampling_addEvidence(self, *args)
-
-    def CN(self) -> "pyagrum.CredalNet":
-        r"""
-
-        Return the credal network used by this inference engine.
-
-        Returns
-        -------
-        pyagrum.CredalNet
-            the credal network
-
-        """
-        return _pyagrum.CNMonteCarloSampling_CN(self)
-
-    def setEvidence(self, evidces):
-      """
-      Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-      Parameters
-      ----------
-      evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-      Raises
-      ------
-      pyagrum.InvalidArgument
-         If one value is not a value for the node
-       pyagrum.InvalidArgument
-         If the size of a value is different from the domain side of the node
-       pyagrum.FatalError
-         If one value is a vector of 0s
-       pyagrum.UndefinedElement
-         If one node does not belong to the Bayesian network
-      """
-      if isinstance(evidces, dict):
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
-          self.addEvidence(k,v)
-        return
-      elif isinstance(evidces, list):#should be a list of Tensor
-        self.eraseAllEvidence()
-        for p in evidces:
-          self.addEvidence(p)
-        return
-      raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-# Register CNMonteCarloSampling in _pyagrum:
-_pyagrum.CNMonteCarloSampling_swigregister(CNMonteCarloSampling)
-class CNLoopyPropagation(object):
-    r"""
-
-    Class used for inferences in credal networks with Loopy Propagation algorithm.
-
-    CNLoopyPropagation(cn) -> CNLoopyPropagation
-        Parameters:
-          - **cn** (*pyagrum.CredalNet*) -- a Credal network
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    InferenceType_nodeToNeighbours = _pyagrum.CNLoopyPropagation_InferenceType_nodeToNeighbours
-    InferenceType_ordered = _pyagrum.CNLoopyPropagation_InferenceType_ordered
-    InferenceType_randomOrder = _pyagrum.CNLoopyPropagation_InferenceType_randomOrder
-
-    def makeInference(self) -> None:
-        r"""
-
-        Starts the inference.
-
-        """
-        return _pyagrum.CNLoopyPropagation_makeInference(self)
-
-    def insertEvidenceFile(self, path: str) -> None:
-        r"""
-
-        Insert evidence from file.
-
-        Parameters
-        ----------
-        path : str
-            the path to the evidence file.
-
-        """
-        return _pyagrum.CNLoopyPropagation_insertEvidenceFile(self, path)
-
-    def inferenceType(self, *args) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the inference type
-
-        """
-        return _pyagrum.CNLoopyPropagation_inferenceType(self, *args)
-
-    def saveInference(self, path: str) -> None:
-        r"""
-
-        Saves marginals.
-
-        Parameters
-        ----------
-        path : str
-            The path to the file to save marginals.
-
-        """
-        return _pyagrum.CNLoopyPropagation_saveInference(self, path)
-
-    def __init__(self, credalNet: "CredalNet"):
-        _pyagrum.CNLoopyPropagation_swiginit(self, _pyagrum.new_CNLoopyPropagation(credalNet))
-
-        self._model=credalNet
-
-
-
-    __swig_destroy__ = _pyagrum.delete_CNLoopyPropagation
-
-    def setVerbosity(self, v: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        v : bool
-                verbosity
-
-        """
-        return _pyagrum.CNLoopyPropagation_setVerbosity(self, v)
-
-    def setEpsilon(self, eps: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        eps : float
-            the epsilon we want to use
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If eps<0
-
-        """
-        return _pyagrum.CNLoopyPropagation_setEpsilon(self, eps)
-
-    def setMinEpsilonRate(self, rate: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        rate : float
-            the minimal epsilon rate
-
-        """
-        return _pyagrum.CNLoopyPropagation_setMinEpsilonRate(self, rate)
-
-    def setMaxIter(self, max: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        max : int
-            the maximum number of iteration
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If max <= 1
-
-        """
-        return _pyagrum.CNLoopyPropagation_setMaxIter(self, max)
-
-    def setMaxTime(self, timeout: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        tiemout : float
-            stopping criterion on timeout (in seconds)
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If timeout<=0.0
-
-        """
-        return _pyagrum.CNLoopyPropagation_setMaxTime(self, timeout)
-
-    def setPeriodSize(self, p: int) -> None:
-        r"""
-
-        Parameters
-        ----------
-        p : int
-            number of samples between 2 stopping
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If p<1
-
-        """
-        return _pyagrum.CNLoopyPropagation_setPeriodSize(self, p)
-
-    def verbosity(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-            True if the verbosity is enabled
-
-        """
-        return _pyagrum.CNLoopyPropagation_verbosity(self)
-
-    def epsilon(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the value of epsilon
-
-        """
-        return _pyagrum.CNLoopyPropagation_epsilon(self)
-
-    def minEpsilonRate(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the value of the minimal epsilon rate
-
-        """
-        return _pyagrum.CNLoopyPropagation_minEpsilonRate(self)
-
-    def maxIter(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the criterion on number of iterations
-
-        """
-        return _pyagrum.CNLoopyPropagation_maxIter(self)
-
-    def maxTime(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            the timeout(in seconds)
-
-        """
-        return _pyagrum.CNLoopyPropagation_maxTime(self)
-
-    def periodSize(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of samples between 2 stopping
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If p<1
-
-        """
-        return _pyagrum.CNLoopyPropagation_periodSize(self)
-
-    def nbrIterations(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of iterations
-
-        """
-        return _pyagrum.CNLoopyPropagation_nbrIterations(self)
-
-    def currentTime(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-            get the current running time in second (float)
-
-        """
-        return _pyagrum.CNLoopyPropagation_currentTime(self)
-
-    def messageApproximationScheme(self) -> str:
-        r"""
-
-        Returns
-        -------
-        str
-            the approximation scheme message
-
-        """
-        return _pyagrum.CNLoopyPropagation_messageApproximationScheme(self)
-
-    def history(self) -> tuple[float, ...]:
-        r"""
-
-        Returns
-        -------
-        tuple
-            the scheme history
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If the scheme did not performed or if verbosity is set to false
-
-        """
-        return _pyagrum.CNLoopyPropagation_history(self)
-
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
-        return _pyagrum.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
-
-    def setRepetitiveInd(self, flag: bool) -> None:
-        r"""
-
-        Parameters
-        ----------
-        flag : bool
-            True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
-
-        """
-        return _pyagrum.CNLoopyPropagation_setRepetitiveInd(self, flag)
-
-    def marginalMax(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Get the upper marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-            the node id which upper marginals we want.
-        varName : str
-            the variable name which upper marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node upper marginals.
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the node does not belong to the Credal network
-
-        """
-        return _pyagrum.CNLoopyPropagation_marginalMax(self, *args)
-
-    def marginalMin(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Get the lower marginals of a given node id.
-
-        Parameters
-        ----------
-        id : int
-            the node id which lower marginals we want.
-        varName : str
-            the variable name which lower marginals we want.
-
-        Returns
-        -------
-        list
-            a constant reference to this node lower marginals.
-
-        Raises
-        ------
-          pyagrum.IndexError
-            If the node does not belong to the Credal network
-
-        """
-        return _pyagrum.CNLoopyPropagation_marginalMin(self, *args)
-
-    def insertModalsFile(self, path: str) -> None:
-        r"""
-
-        Insert variables modalities from file to compute expectations.
-
-        Parameters
-        ----------
-        path : str
-            The path to the modalities file.
-
-        """
-        return _pyagrum.CNLoopyPropagation_insertModalsFile(self, path)
-
-    def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
-        r"""
-
-        Get the upper dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-            the variable name prefix which upper expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable upper expectation over all time steps.
-
-        """
-        return _pyagrum.CNLoopyPropagation_dynamicExpMax(self, varName)
-
-    def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
-        r"""
-
-        Get the lower dynamic expectation of a given variable prefix.
-
-        Parameters
-        ----------
-        varName : str
-            the variable name prefix which lower expectation we want.
-
-        Returns
-        -------
-        float
-            a constant reference to the variable lower expectation over all time steps.
-
-        """
-        return _pyagrum.CNLoopyPropagation_dynamicExpMin(self, varName)
-
-    def eraseAllEvidence(self) -> None:
-        r"""
-
-        Erase all inference related data to perform another one.
-
-        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
-
-        """
-        return _pyagrum.CNLoopyPropagation_eraseAllEvidence(self)
-
-    def addEvidence(self, *args) -> None:
-        r"""
-
-        Add evidence for a variable in the credal network.
-
-        Parameters
-        ----------
-        id_or_name : int | str
-            the node id or name
-        val_or_label : int | str
-            the value index or label for the evidence
-
-        """
-        return _pyagrum.CNLoopyPropagation_addEvidence(self, *args)
-
-    def CN(self) -> "pyagrum.CredalNet":
-        r"""
-
-        Return the credal network used by this inference engine.
-
-        Returns
-        -------
-        pyagrum.CredalNet
-            the credal network
-
-        """
-        return _pyagrum.CNLoopyPropagation_CN(self)
-
-    def setEvidence(self, evidces):
-      """
-      Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-      Parameters
-      ----------
-      evidces : dict[str,Union[int,str,list[float]]] or list[pyagrum.Tensor]
-       a dict of "name:evidence" where name is a string (the name of the variable) and evidence is an integer (an index) or a string (a label) or a list of float (a likelihood).
-
-      Raises
-      ------
-      pyagrum.InvalidArgument
-         If one value is not a value for the node
-       pyagrum.InvalidArgument
-         If the size of a value is different from the domain side of the node
-       pyagrum.FatalError
-         If one value is a vector of 0s
-       pyagrum.UndefinedElement
-         If one node does not belong to the Bayesian network
-      """
-      if isinstance(evidces, dict):
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
-          self.addEvidence(k,v)
-        return
-      elif isinstance(evidces, list):#should be a list of Tensor
-        self.eraseAllEvidence()
-        for p in evidces:
-          self.addEvidence(p)
-        return
-      raise TypeError("Parameter must be a dict or a list, not %s"%(type(evidces)))
-
-
-# Register CNLoopyPropagation in _pyagrum:
-_pyagrum.CNLoopyPropagation_swigregister(CNLoopyPropagation)
-class IDGenerator(object):
-    r"""
-
-    IDGenerator is used to easily generate influence diagrams.
-
-    IDGenerator() -> IDGenerator
-        default constructor
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def generate(self, nbrNodes: int=10, arcDensity: float=0.2, chanceNodeDensity: float=0.8, utilityNodeDensity: float=0.1, max_modality: int=2) -> "pyagrum.InfluenceDiagram":
-        r"""
-
-        Generate a new influence diagram given the parameters.
-
-        Parameters
-        ----------
-        nbrNodes : int
-            the number of node
-        arcDensity : float
-            the density of arc (1 for a complete graph)
-        chanceNodeDensity : float
-            the density of chance node
-        utilityNodeDensity : float
-            the density of utility node
-        max_modality : int
-            the maximum value for modalities
-
-        Returns
-        -------
-        pyagrum.InfluenceDiagram
-            the generated influence diagram
-
-        """
-        return _pyagrum.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
-
-    def __init__(self):
-        r"""
-
-        IDGenerator is used to easily generate influence diagrams.
-
-        IDGenerator() -> IDGenerator
-            default constructor
-
-        """
-        _pyagrum.IDGenerator_swiginit(self, _pyagrum.new_IDGenerator())
-    __swig_destroy__ = _pyagrum.delete_IDGenerator
-
-# Register IDGenerator in _pyagrum:
-_pyagrum.IDGenerator_swigregister(IDGenerator)
-class InfluenceDiagram(DAGmodel):
-    r"""
-
-    InfluenceDiagram represents an Influence Diagram.
-
-    InfluenceDiagram() -> InfluenceDiagram
-        default constructor
-
-    InfluenceDiagram(source) -> InfluenceDiagram
-        Parameters:
-            - **source** (*pyagrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    @staticmethod
-    def fastPrototype(*args) -> "pyagrum.InfluenceDiagram":
-        r"""
-
-        Create an Influence Diagram with a dot-like syntax which specifies:
-            - the structure 'a->b<-c;b->d;c<-e;'.
-            - a prefix for the type of node (chance/decision/utiliy nodes):
-
-              - `a` : a chance node named 'a' (by default)
-              - `$a` : a utility node named 'a'
-              - `*a` : a decision node named 'a'
-
-            - the type of the variables with different syntax as postfix:
-
-              - by default, a variable is a pyagrum.RangeVariable using the default domain size (second argument)
-              - with `'a[10]'`, the variable is a pyagrum.RangeVariable using 10 as domain size (from 0 to 9)
-              - with `'a[3,7]'`, the variable is a pyagrum.RangeVariable using a domainSize from 3 to 7
-              - with `'a[1,3.14,5,6.2]'`, the variable is a pyagrum.DiscretizedVariable using the given ticks (at least 3 values)
-              - with `'a{top|middle|bottom}'`, the variable is a pyagrum.LabelizedVariable using the given labels.
-              - with 'a{-1|5|0|3}', the variable is a pyagrum.IntegerVariable using the sorted given values.
-              - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyagrum.NumericalDiscreteVariable using the sorted given values.
-
-        Notes
-        -----
-          - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
-          - the tensors (probabilities, utilities) are randomly generated.
-          - see also pyagrum.fastID.
-
-        Examples
-        --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
-
-        Parameters
-        ----------
-        dotlike : str
-                the string containing the specification
-        domainSize :int or str
-                the default domain size or the default domain for variables
-
-        Returns
-        -------
-        pyagrum.InfluenceDiagram
-                the resulting Influence Diagram
-
-        """
-        return _pyagrum.InfluenceDiagram_fastPrototype(*args)
-    __swig_destroy__ = _pyagrum.delete_InfluenceDiagram
-
-    def __init__(self, *args):
-        _pyagrum.InfluenceDiagram_swiginit(self, _pyagrum.new_InfluenceDiagram(*args))
-
-    def __eq__(self, other: "InfluenceDiagram") -> bool:
-        return _pyagrum.InfluenceDiagram___eq__(self, other)
-
-    def toDot(self) -> str:
-        r"""
-
-        Returns
-        -------
-        str
-            a friendly display of the graph in DOT format
-
-        """
-        return _pyagrum.InfluenceDiagram_toDot(self)
-
-    def clear(self) -> None:
-        r"""
-
-        Clear the influence diagram, removing all nodes and arcs.
-
-        """
-        return _pyagrum.InfluenceDiagram_clear(self)
-
-    def cpt(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Returns the CPT of a variable.
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        pyagrum.Tensor
-            The variable's CPT.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable's id matches varId.
-
-        """
-        return _pyagrum.InfluenceDiagram_cpt(self, *args)
-
-    def utility(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        pyagrum.Tensor
-            the utility table of the node
-
-        Raises
-        ------
-        pyagrum.IndexError
-            If the InfluenceDiagram does not contain the variable
-
-        """
-        return _pyagrum.InfluenceDiagram_utility(self, *args)
-
-    def isUtilityNode(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        varId : int
-            the tested node id.
-
-        Returns
-        -------
-        bool
-            true if node is an utility node
-
-        """
-        return _pyagrum.InfluenceDiagram_isUtilityNode(self, *args)
-
-    def isDecisionNode(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        varId : int
-            the tested node id.
-
-        Returns
-        -------
-        bool
-            true if node is a decision node
-
-        """
-        return _pyagrum.InfluenceDiagram_isDecisionNode(self, *args)
-
-    def isChanceNode(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        varId : int
-            the tested node id.
-
-        Returns
-        -------
-        bool
-            true if node is a chance node
-
-        """
-        return _pyagrum.InfluenceDiagram_isChanceNode(self, *args)
-
-    def utilityNodeSize(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of utility nodes
-
-        """
-        return _pyagrum.InfluenceDiagram_utilityNodeSize(self)
-
-    def chanceNodeSize(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of chance nodes.
-
-        """
-        return _pyagrum.InfluenceDiagram_chanceNodeSize(self)
-
-    def decisionNodeSize(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of decision nodes
-
-        """
-        return _pyagrum.InfluenceDiagram_decisionNodeSize(self)
-
-    def add(self, *args) -> int:
-        r"""
-
-        Add a variable, it's associate node and it's CPT.
-
-        The id of the new variable is automatically generated.
-
-        Parameters
-        ----------
-        variable : pyagrum.DiscreteVariable
-            The variable added by copy that will be a chance node.
-        descr: str
-          the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
-        nbr_mod_or_id : int
-            if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
-            for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
-
-        Returns
-        -------
-        int
-            the id of the added variable.
-
-        Raises
-        ------
-          pyagrum.DuplicateElement
-              If already used id or name.
-
-        """
-        return _pyagrum.InfluenceDiagram_add(self, *args)
-
-    def addChanceNode(self, *args) -> int:
-        r"""
-
-        Add a chance variable, it's associate node and it's CPT.
-
-        The id of the new variable is automatically generated.
-
-        Parameters
-        ----------
-        variable : pyagrum.DiscreteVariable
-            the variable added by copy.
-        id : int
-            the chosen id. If 0, the NodeGraphPart will choose.
-
-        Warnings
-        --------
-        give an id (not 0) should be reserved for rare and specific situations !!!
-
-        Returns
-        -------
-        int
-            the id of the added variable.
-
-        Raises
-        ------
-        pyagrum.DuplicateElement
-            If id(<>0) is already used
-
-        """
-        return _pyagrum.InfluenceDiagram_addChanceNode(self, *args)
-
-    def addUtilityNode(self, *args) -> int:
-        r"""
-
-        Add a utility variable, it's associate node and it's UT.
-
-        The id of the new variable is automatically generated.
-
-        Parameters
-        ----------
-        variable : pyagrum.DiscreteVariable
-            the variable added by copy
-        id : int
-            the chosen id. If 0, the NodeGraphPart will choose
-
-        Warnings
-        --------
-        give an id (not 0) should be reserved for rare and specific situations !!!
-
-        Returns
-        -------
-        int
-            the id of the added variable.
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If variable has more than one label
-        pyagrum.DuplicateElement
-            If id(<>0) is already used
-
-        """
-        return _pyagrum.InfluenceDiagram_addUtilityNode(self, *args)
-
-    def addDecisionNode(self, *args) -> int:
-        r"""
-
-        Add a decision variable.
-
-        The id of the new variable is automatically generated.
-
-        Parameters
-        ----------
-        variable : pyagrum.DiscreteVariable
-            the variable added by copy.
-        id : int
-            the chosen id. If 0, the NodeGraphPart will choose.
-
-        Warnings
-        --------
-        give an id (not 0) should be reserved for rare and specific situations !!!
-
-        Returns
-        -------
-        int
-            the id of the added variable.
-
-        Raises
-        ------
-        pyagrum.DuplicateElement
-            If id(<>0) is already used
-
-        """
-        return _pyagrum.InfluenceDiagram_addDecisionNode(self, *args)
-
-    def erase(self, *args) -> None:
-        r"""
-
-        Erase a Variable from the network and remove the variable from all his childs.
-
-        If no variable matches the id, then nothing is done.
-
-        Parameters
-        ----------
-        id : int
-            The id of the variable to erase.
-        var :  int | str | pyagrum.DiscreteVariable
-            a variable's id (int) or name or th reference on the variable to remove.
-
-        """
-        return _pyagrum.InfluenceDiagram_erase(self, *args)
-
-    def changeVariableName(self, *args) -> None:
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-        new_name : str
-            the name of the variable
-
-        Raises
-        ------
-        pyagrum.DuplicateLabel
-            If this name already exists
-        pyagrum.NotFound
-            If no nodes matches id.
-
-        """
-        return _pyagrum.InfluenceDiagram_changeVariableName(self, *args)
-
-    def addArc(self, *args) -> None:
-        r"""
-
-        Add an arc in the ID, and update diagram's tensor nodes cpt if necessary.
-
-        Parameters
-        ----------
-        tail : int | str
-            a variable's id (int) or name
-        head : int | str
-            a variable's id (int) or name
-
-        Raises
-        ------
-          pyagrum.InvalidEdge
-            If arc.tail and/or arc.head are not in the ID.
-          pyagrum.InvalidEdge
-            If tail is a utility node
-
-        """
-        return _pyagrum.InfluenceDiagram_addArc(self, *args)
-
-    def eraseArc(self, *args) -> None:
-        r"""
-
-        Removes an arc in the ID, and update diagram's tensor nodes cpt if necessary.
-
-        If (tail, head) doesn't exist, the nothing happens.
-
-        Parameters
-        ----------
-        arc : pyagrum.Arc
-            The arc to be removed whn calling eraseArc(arc)
-        tail : int | str
-            a variable's id (int) or name when calling eraseArc(tail,head)
-        head : int | str
-            a variable's id (int) or name when calling eraseArc(tail,head)
-
-        """
-        return _pyagrum.InfluenceDiagram_eraseArc(self, *args)
-
-    def decisionOrderExists(self) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-            True if a directed path exist with all decision node
-
-        """
-        return _pyagrum.InfluenceDiagram_decisionOrderExists(self)
-
-    def getDecisionGraph(self) -> "pyagrum.DAG":
-        r"""
-
-        Returns
-        -------
-        pyagrum.DAG
-            the temporal Graph.
-
-        """
-        return _pyagrum.InfluenceDiagram_getDecisionGraph(self)
-
-    def decisionOrder(self) -> list[int]:
-        r"""
-
-        Return the sequence of decision nodes in a valid decision order.
-
-        Returns
-        -------
-        list[int]
-            the ordered list of decision node ids
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no valid decision order exists
-
-        """
-        return _pyagrum.InfluenceDiagram_decisionOrder(self)
-
-    def existsPathBetween(self, *args) -> bool:
-        r"""
-
-        Returns
-        -------
-        bool
-            true if a path exists between two nodes.
-
-        """
-        return _pyagrum.InfluenceDiagram_existsPathBetween(self, *args)
-
-    def beginTopologyTransformation(self) -> None:
-        r"""
-
-        Begin a sequence of structural modifications to the influence diagram.
-
-        Structural changes are batched until endTopologyTransformation is called.
-
-        """
-        return _pyagrum.InfluenceDiagram_beginTopologyTransformation(self)
-
-    def endTopologyTransformation(self) -> None:
-        r"""
-
-        End a sequence of structural modifications and recompute internal structures.
-
-        Should be called after beginTopologyTransformation when all modifications are done.
-
-        """
-        return _pyagrum.InfluenceDiagram_endTopologyTransformation(self)
-
-    def idFromName(self, name: str) -> int:
-        r"""
-
-        Return the node id of a variable given its name.
-
-        Parameters
-        ----------
-        name : str
-            the name of the variable
-
-        Returns
-        -------
-        int
-            the node id of the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no variable with this name exists in the model
-
-        """
-        return _pyagrum.InfluenceDiagram_idFromName(self, name)
-
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Parameters
-        ----------
-        id : int
-             the node id
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            a constant reference over a variabe given it's node id
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable's id matches the parameter
-
-        """
-        return _pyagrum.InfluenceDiagram_variable(self, *args)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        r"""
-
-        Return the node id of a variable.
-
-        Parameters
-        ----------
-        var : pyagrum.DiscreteVariable
-            the variable
-
-        Returns
-        -------
-        int
-            the node id of the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if the variable does not exist in the model
-
-        """
-        return _pyagrum.InfluenceDiagram_nodeId(self, var)
-
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Return the variable with the given name.
-
-        Parameters
-        ----------
-        name : str
-            the name of the variable
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no variable with this name exists in the model
-
-        """
-        return _pyagrum.InfluenceDiagram_variableFromName(self, name)
-
-    def names(self) -> set[str]:
-        r"""
-
-        Returns
-        -------
-        list of str
-            The names of the InfluenceDiagram variables
-
-        """
-        return _pyagrum.InfluenceDiagram_names(self)
-
-    def __iter__(self):
-      """
-      Iterate over the variables of the model
-
-      Yield
-      -----
-      tuple[int,str]
-        The index of the variable and its name
-      """
-      for i in self.nodes():
-        yield i,self.variable(i).name()
-
-    def __getitem__(self, key):
-      if isinstance(key, int):
-        return self.variable(key)
-      elif isinstance(key, str):
-        return self.variableFromName(key)
-      else:
-        raise TypeError("key must be an int or a string")
-
-
-    def nodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-            the set of ids
-
-        """
-        return _pyagrum.InfluenceDiagram_nodes(self)
-
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
-
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list:
-            the list of all the arcs in the Influence Diagram.
-
-        """
-        return _pyagrum.InfluenceDiagram_arcs(self)
-
-    def parents(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        set
-            the set of the parents ids.
-
-        """
-        return _pyagrum.InfluenceDiagram_parents(self, norid)
-
-    def children(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        Set
-            the set of all the children
-
-        """
-        return _pyagrum.InfluenceDiagram_children(self, norid)
-
-    def family(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of parents of a node and the node
-
-        Parameters
-        ----------
-        norid : str|int
-          the node
-
-        Returns
-        -------
-        set
-          the set of nodeId of the family of the node `norid`
-
-        """
-        return _pyagrum.InfluenceDiagram_family(self, norid)
-
-    def descendants(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of descendants of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the descendants of node `norid`.
-
-        """
-        return _pyagrum.InfluenceDiagram_descendants(self, norid)
-
-    def ancestors(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of ancestors of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the ancestors of node `norid`.
-
-        """
-        return _pyagrum.InfluenceDiagram_ancestors(self, norid)
-
-    def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
-        r"""
-
-        build a UndiGraph by moralizing the Ancestral Graph of a list of nodes
-
-        Parameters
-        ----------
-        nodes : str|int|list of str|int
-          the list of of nodeIds or names
-
-        Warnings
-        --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
-
-        Returns
-        -------
-        pyagrum.UndiGraph
-          the moralized ancestral graph of the nodes
-
-        """
-        return _pyagrum.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
-
-    def loadGUM(self, name: str, binary: bool=False) -> None:
-        r"""
-
-        Load a jgum (JSON) or bgum (binary/msgpack) file.
-
-        Parameters
-        ----------
-        name : str
-            the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-        binary : bool
-            if True, read as bgum (msgpack) regardless of extension (default: False)
-
-        Raises
-        ------
-        pyagrum.IOError
-            If file not found
-        pyagrum.FatalError
-            If file content is not valid
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.InfluenceDiagram_loadGUM(self, name, binary)
-
-    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
-        r"""
-
-        Save the InfluenceDiagram in a jgum (JSON) or bgum (binary/msgpack) file.
-
-        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
-
-        Parameters
-        ----------
-        name : str
-            the file's path
-        binary : bool
-            if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
-        indent : int
-            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.InfluenceDiagram__saveGUM(self, name, binary, indent)
-
-    def _saveGUMstring(self, indent: int=2) -> str:
-        r"""
-
-        Serialize the InfluenceDiagram to a jgum JSON string.
-
-        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
-
-        Parameters
-        ----------
-        indent : int
-            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
-
-        Returns
-        -------
-        str
-            a JSON string representing the InfluenceDiagram in jgum format
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.InfluenceDiagram__saveGUMstring(self, indent)
-
-    def loadGUMstring(self, content: str) -> None:
-        r"""
-
-        Deserialize an InfluenceDiagram from a jgum JSON string.
-
-        Parameters
-        ----------
-        content : str
-            a JSON string in jgum format
-
-        Raises
-        ------
-        pyagrum.FatalError
-            If the string is not valid jgum JSON or the type field does not match ``"ID"``
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.InfluenceDiagram_loadGUMstring(self, content)
-
-    def loadBIFXML(self, *args) -> bool:
-        r"""
-
-        Load a BIFXML file.
-
-        Parameters
-        ----------
-        name : str
-            the name's file
-
-        Raises
-        ------
-        pyagrum.IOError
-            If file not found
-        pyagrum.FatalError
-            If file is not valid
-
-        """
-        return _pyagrum.InfluenceDiagram_loadBIFXML(self, *args)
-
-    def saveBIFXML(self, name: str) -> None:
-        r"""
-
-        Save the BayesNet in a BIFXML file.
-
-        Parameters
-        ----------
-        name : str
-            the file's name
-
-        """
-        return _pyagrum.InfluenceDiagram_saveBIFXML(self, name)
-
-    def addVariables(self,listFastVariables,default_nbr_mod=2):
-       """
-       Add a list of variable in the form of 'fast' syntax.
-
-       Parameters
-       ----------
-       listFastVariables: list[str]
-         the list of variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
-       default_nbr_mod: int
-         the number of modalities for the variable if not specified in the fast description. Note that default_nbr_mod=1 is
-         mandatory to create variables with only one modality (for utility for instance).
-
-       Returns
-       -------
-       list[int]
-         the list of created ids.
-       """
-       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
-
-    def addArcs(self,listArcs):
-      """
-      add a list of arcs in te model.
-
-      Parameters
-      ----------
-      listArcs : list[tuple[int,int]]
-        the list of arcs
-      """
-      for arc in listArcs:
-        self.addArc(*arc)
-
-
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
-      """
-      Add the listeners in parameters to the list of existing ones.
-
-      Parameters
-      ----------
-      whenNodeAdded : lambda expression
-        a function for when a node is added
-      whenNodeDeleted : lambda expression
-        a function for when a node is removed
-      whenArcAdded : lambda expression
-        a function for when an arc is added
-      whenArcDeleted : lambda expression
-        a function for when an arc is removed
-      """
-      if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-        return
-
-      if not hasattr(self,"_listeners"):
-        self._listeners=[]
-
-      nl = PythonBNListener(self, self.variableNodeMap())
-      if whenNodeAdded is not None:
-        nl.setWhenNodeAdded(whenNodeAdded)
-      if whenNodeDeleted is not None:
-        nl.setWhenNodeDeleted(whenNodeDeleted)
-      if whenArcAdded is not None:
-        nl.setWhenArcAdded(whenArcAdded)
-      if whenArcDeleted is not None:
-        nl.setWhenArcDeleted(whenArcDeleted)
-
-      self._listeners.append(nl)
-
-
-    def __getstate__(self):
-        return self.saveGUMstring()
-
-    def __setstate__(self,state):
-        self.__init__()
-        self.loadGUMstring(state)
-        return self
-
-
-    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
-      """
-      Save the influence diagram as a .jgum (text) or .bgum (binary) file.
-
-      Parameters
-      ----------
-      name : str
-        the name of the file
-      binary : bool
-        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
-      indent : int, optional
-        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
-        compact output, N>=0 to pretty-print with N spaces. Defaults to
-        ``pyagrum.config["core","default_jgumIndent"]``.
-      """
-      if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      self._saveGUM(name, binary, indent)
-
-
-    def saveGUMstring(self, indent: int = None) -> str:
-      """
-      Save the influence diagram as a jgum string.
-
-      Parameters
-      ----------
-      indent : int, optional
-        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
-        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
-
-      Returns
-      -------
-      str
-        the jgum string
-      """
-      if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      return self._saveGUMstring(indent)
-
-
-    def toFast(self, filename: str = None) -> str:
-      """
-      Export the influence Diagram as *fast* syntax (in a string or in a python file)
-
-      Parameters
-      ----------
-      filename : Optional[str]
-        the name of the file (including the prefix), if None , use sys.stdout
-      """
-      def _toFastVar(model,i):
-        res=""
-        if model.isUtilityNode(i):
-          res="$"
-        elif model.isDecisionNode(i):
-          res="*"
-        return res+model.variable(i).toFast()
-
-      def _toFastBN(model,pythoncode=False):
-        res = []
-        sovars = set()
-        for x, y in model.arcs():
-          if x in sovars:
-            src = model.variable(x).name()
-          else:
-            src = _toFastVar(model,x)
-            sovars.add(x)
-          if y in sovars:
-            dst = model.variable(y).name()
-          else:
-             dst = _toFastVar(model,y)
-             sovars.add(y)
-          res.append(f"{src}->{dst}")
-
-        for x in model.nodes():
-          if x not in sovars:
-             res .append(_toFastVar(model,x))
-
-        if pythoncode:
-          return 'model=pyagrum.fastID("""'+';\n     '.join(res)+'""")'
-        else:
-          return ';'.join(res)
-
-      if filename is None:
-        return _toFastBN(self)
-      else:
-        with open(filename, "w") as pyfile:
-          print(_toFastBN(self,pythoncode=True), file=pyfile)
-
-
-    def __repr__(self) -> str:
-        return _pyagrum.InfluenceDiagram___repr__(self)
-
-    def __str__(self) -> str:
-        return _pyagrum.InfluenceDiagram___str__(self)
-
-# Register InfluenceDiagram in _pyagrum:
-_pyagrum.InfluenceDiagram_swigregister(InfluenceDiagram)
-class ShaferShenoyLIMIDInference(object):
-    r"""
-
-    This inference considers the provided model as a LIMID rather than an influence diagram. It is an optimized
-    implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
-    by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
-    decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
-    cf. pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption).
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, infDiag: "InfluenceDiagram"):
-        _pyagrum.ShaferShenoyLIMIDInference_swiginit(self, _pyagrum.new_ShaferShenoyLIMIDInference(infDiag))
-
-        self._model=infDiag
-
-
-
-    __swig_destroy__ = _pyagrum.delete_ShaferShenoyLIMIDInference
-
-    def junctionTree(self) -> "pyagrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyagrum.CliqueGraph
-          the current junction tree
-
-        """
-        val = _pyagrum.ShaferShenoyLIMIDInference_junctionTree(self)
-
-        val._engine=self
-
-
-        return val
-
-
-    def clear(self) -> None:
-        r"""
-
-        Clear all evidence and reset the inference engine to its initial state.
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_clear(self)
-
-    def addNoForgettingAssumption(self, *args) -> None:
-        r"""
-
-        Add a no-forgetting assumption for a list of decision variables.
-
-        The no-forgetting assumption means that each decision node has access to all variables observed before it in the decision order.
-
-        Parameters
-        ----------
-        ids : list[int]
-            the list of decision node ids
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            if a given id is not a decision node
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_addNoForgettingAssumption(self, *args)
-
-    def hasNoForgettingAssumption(self) -> bool:
-        r"""
-
-        Check whether the no-forgetting assumption has been added.
-
-        Returns
-        -------
-        bool
-            True if the no-forgetting assumption is currently active
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
-
-    def reducedGraph(self) -> "pyagrum.DAG":
-        r"""
-
-        Returns the DAG build to solve the influence diagram.
-
-        Returns
-        -------
-        pyagrum.DAG
-          a copy of the reduced graph
-
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_reducedGraph(self)
-
-    def reversePartialOrder(self) -> "pyagrum.YetUnWrapped":
-        r"""
-
-        Return the reversed partial order of decision nodes used internally.
-
-        Returns
-        -------
-        list[set[int]]
-            the reversed partial order as a list of node id sets
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_reversePartialOrder(self)
-
-    def reducedLIMID(self) -> "pyagrum.InfluenceDiagram":
-        r"""
-
-        Returns the (reduced) LIMID build to solve the influence diagram.
-
-        Returns
-        -------
-        pyagrum.InfluenceDiagram
-          a copy of the reduced influence Diagram (LIMID)
-
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_reducedLIMID(self)
-
-    def isSolvable(self) -> bool:
-        r"""
-
-        check wether the influence diagram is solvable or not
-
-        Returns
-        -------
-        bool
-          True if the influence diagram is solvable
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_isSolvable(self)
-
-    def optimalDecision(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Returns best choice for decision variable given in parameter ( based upon MEU criteria )
-
-        Parameters
-        ----------
-        decisionId : int,str
-            the id or name of the decision variable
-
-        Raises
-        ------
-          pyagrum.OperationNotAllowed
-            If no inference have yet been made
-        pyagrum.InvalidNode
-            If node given in parmaeter is not a decision node
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
-
-    def posteriorUtility(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Returns the posterior utiliyt of a utility node (after optimisation) depending on decision nodes, if any.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior utility of the utility node
-
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
-
-    def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the optimal decisions.
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_makeInference(self)
-
-    def posterior(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Returns the posterior of a chance or a decision node (after optimisation).
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior probability of the node
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_posterior(self, *args)
-
-    def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If the node already has an evidence
-          pyagrum.InvalidArgument
-            If val is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyagrum.FatalError
-            If vals is a vector of 0s
-          pyagrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_addEvidence(self, *args)
-
-    def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val : int|str
-          a node value or the label of the node value
-        vals : list of float
-          a list of values
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-          If the node does not already have an evidence
-        pyagrum.InvalidArgument
-          If val is not a value for the node
-        pyagrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyagrum.FatalError
-          If vals is a vector of 0s
-        pyagrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_chgEvidence(self, *args)
-
-    def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_hasEvidence(self, *args)
-
-    def eraseAllEvidence(self) -> None:
-        r"""
-
-        Remove all evidence.
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_eraseAllEvidence(self)
-
-    def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
-
-    def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
-
-    def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_hasSoftEvidence(self, *args)
-
-    def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_nbrEvidence(self)
-
-    def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_nbrHardEvidence(self)
-
-    def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_nbrSoftEvidence(self)
-
-    def influenceDiagram(self) -> "pyagrum.InfluenceDiagram":
-        r"""
-
-        Returns a constant reference over the InfluenceDiagram on which this class work.
-
-        Returns
-        -------
-        pyagrum.InfluenceDiagram
-            the InfluenceDiagram on which this class work
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_influenceDiagram(self)
-
-    def setEvidence(self, evidces):
-        """
-        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-        Parameters
-        ----------
-        evidces : dict
-          a dict of evidences
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the influence diagram
-        """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
-            self.addEvidence(k,v)
-
-
-
-    def updateEvidence(self, evidces):
-        """
-        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
-
-        Parameters
-        ----------
-        evidces : dict
-          a dict of evidences
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If one value is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
-            If one value is a vector of 0s
-          pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
-
-
-
-    def hardEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
-
-    def softEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Return the set of nodes with soft (likelihood) evidence.
-
-        Returns
-        -------
-        set[int]
-            the set of node ids with soft evidence
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
-
-    def MEU(self, *args) -> dict[str, float]:
-        r"""
-
-        Returns maximum expected utility obtained from inference.
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If no inference have yet been made
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_MEU(self, *args)
-
-    def meanVar(self, *args) -> dict[str, float]:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        dict[str, float]
-          a dictionary with the mean and variance of the node (after the inference)
-
-        """
-        return _pyagrum.ShaferShenoyLIMIDInference_meanVar(self, *args)
-
-# Register ShaferShenoyLIMIDInference in _pyagrum:
-_pyagrum.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
-############################################################################
-#   This file is part of the aGrUM/pyAgrum library.                        #
-#                                                                          #
-#   Copyright (c) 2005-2026 by                                             #
-#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
-#       - Christophe GONZALES(_at_AMU)                                     #
-#                                                                          #
-#   The aGrUM/pyAgrum library is free software; you can redistribute it    #
-#   and/or modify it under the terms of either :                           #
-#                                                                          #
-#    - the GNU Lesser General Public License as published by               #
-#      the Free Software Foundation, either version 3 of the License,      #
-#      or (at your option) any later version,                              #
-#    - the MIT license (MIT),                                              #
-#    - or both in dual license, as here.                                   #
-#                                                                          #
-#   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
-#                                                                          #
-#   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
-#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
-#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
-#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
-#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
-#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
-#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
-#   OTHER DEALINGS IN THE SOFTWARE.                                        #
-#                                                                          #
-#   See LICENCES for more details.                                         #
-#                                                                          #
-#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
-#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
-#       - Christophe GONZALES(_at_AMU)                                     #
-#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
-#                                                                          #
-#   Contact  : info_at_agrum_dot_org                                       #
-#   homepage : http://agrum.gitlab.io                                      #
-#   gitlab   : https://gitlab.com/agrumery/agrum                           #
-#                                                                          #
-############################################################################
-
-__version__ = '3.1.1.9'
-__license__ = __doc__
-__project_url__ = 'https://agrum.org'
-__project_name__ = 'pyAgrum'
-__project_description__ = __doc__
-__project__ = __doc__
-
-
-def about():
-  """
-  about() for pyAgrum
-
-  """
-  print(f"pyAgrum {__version__}")
-  print("(c) 2015-2025 Pierre-Henri Wuillemin, Christophe Gonzales")
-  print("""
-    This is free software; see the source code for copying conditions.
-    There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.
-    """)
-
-
-def availableIDExts():
-  """ Give the list of all formats known by pyAgrum to save a influence diagram.
-
-  Returns
-  ------
-  str
-    a string which lists all suffixes for supported ID file formats.
-  """
-  return "xmlbif|bifxml|xml|jgum|bgum|pkl"
-
-
-def loadID(filename):
-  """
-  read a pyagrum.InfluenceDiagram from a ID file
-
-  Parameters
-  ----------
-  filename: str
-    the name of the input file
-
-  Returns
-  -------
-  pyagrum.InfluenceDiagram
-    the InfluenceDiagram
-
-  Notes
-  -----
-  pkl suffix is used to load a pickled InfluenceDiagram. In this case, options are ignored.
-
-  jgum/bgum suffixes use the native aGrUM JSON/binary format.
-  """
-  extension = filename.split('.')[-1].upper()
-
-  if extension in {"BIFXML", "XMLBIF", "XML"}:
-    diag = pyagrum.InfluenceDiagram()
-# for now, just one format
-    res = diag.loadBIFXML(filename)
-
-    if not res:
-      raise IOError(f"Error(s) in {filename}")
-  elif extension == "JGUM":
-    diag = pyagrum.InfluenceDiagram()
-    diag.loadGUM(filename)
-  elif extension == "BGUM":
-    diag = pyagrum.InfluenceDiagram()
-    diag.loadGUM(filename, binary=True)
-  elif extension == "PKL":
-    diag = _gum_pickle_load(filename)
-  else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
-
-  _gum_set_name_property(diag, filename)
-  return diag
-
-
-def saveID(infdiag, filename):
-  """
-  save an ID into a file using the format corresponding to one of the availableWriteIDExts() suffixes.
-
-  Parameters
-  ----------
-  infdiag : pyagrum.InfluenceDiagram
-    the Influence Diagram to save
-  filename : str
-    the name of the output file
-
-  Notes
-  -----
-  pkl suffix is used to save an InfluenceDiagram using pickle.
-
-  jgum/bgum suffixes use the native aGrUM JSON/binary format.
-  """
-  extension = filename.split('.')[-1].upper()
-
-  if extension in {"BIFXML", "XMLBIF", "XML"}:
-    infdiag.saveBIFXML(filename)
-  elif extension == "JGUM":
-    infdiag.saveGUM(filename)
-  elif extension == "BGUM":
-    infdiag.saveGUM(filename, binary=True)
-  elif extension == "PKL":
-    _gum_pickle_save(infdiag, filename)
-  else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
-
-
-def fastID(structure, domain="[2]"):
-  """
-  Create an Influence Diagram with a modified dot-like syntax which specifies:
-      - the structure and the type of the variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`,
-      - a prefix for the type of node (chance/decision/utiliy nodes):
-
-        - ``a`` : a chance node named 'a' (by default)
-        - ``$a`` : a utility node named 'a'
-        - ``*a`` : a decision node named 'a'
-
-  Examples
-  --------
-  >>> import pyagrum as gum
-  >>> bn=pyagrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
-
-  Parameters
-  ----------
-  structure : str
-          the string containing the specification
-  domain: int or str
-          the default domain size (int) or domain specification (str) for variables (default is "[2]"
-
-  Returns
-  -------
-  pyagrum.InfluenceDiagram
-          the resulting Influence Diagram
-  """
-  return InfluenceDiagram.fastPrototype(structure, domain)
-
-class IMarkovRandomField(UGmodel):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    def __init__(self, *args, **kwargs):
-        raise AttributeError("No constructor defined - class is abstract")
-    __swig_destroy__ = _pyagrum.delete_IMarkovRandomField
-
-    def smallestFactorFromNode(self, *args) -> list[int]:
-        return _pyagrum.IMarkovRandomField_smallestFactorFromNode(self, *args)
-
-    def factors(self) -> list[set[int]]:
-        return _pyagrum.IMarkovRandomField_factors(self)
-
-    def __eq__(self, _from: "IMarkovRandomField") -> bool:
-        return _pyagrum.IMarkovRandomField___eq__(self, _from)
-
-    def dim(self) -> int:
-        r"""
-
-        Return the dimension (total number of free parameters) of the Markov random field.
-
-        Returns
-        -------
-        int
-            the number of free parameters
-
-        """
-        return _pyagrum.IMarkovRandomField_dim(self)
-
-    def maxVarDomainSize(self) -> int:
-        r"""
-
-        Return the maximum domain size among all variables in the model.
-
-        Returns
-        -------
-        int
-            the maximum domain size
-
-        """
-        return _pyagrum.IMarkovRandomField_maxVarDomainSize(self)
-
-    def minParam(self) -> float:
-        r"""
-
-        Return the minimum parameter value across all factors.
-
-        Returns
-        -------
-        float
-            the minimum factor parameter
-
-        """
-        return _pyagrum.IMarkovRandomField_minParam(self)
-
-    def maxParam(self) -> float:
-        r"""
-
-        Return the maximum parameter value across all factors.
-
-        Returns
-        -------
-        float
-            the maximum factor parameter
-
-        """
-        return _pyagrum.IMarkovRandomField_maxParam(self)
-
-    def minNonZeroParam(self) -> float:
-        r"""
-
-        Return the minimum non-zero parameter value across all factors.
-
-        Returns
-        -------
-        float
-            the minimum non-zero factor parameter
-
-        """
-        return _pyagrum.IMarkovRandomField_minNonZeroParam(self)
-
-    def maxNonOneParam(self) -> float:
-        r"""
-
-        Return the maximum parameter value strictly less than 1 across all factors.
-
-        Returns
-        -------
-        float
-            the maximum non-one factor parameter
-
-        """
-        return _pyagrum.IMarkovRandomField_maxNonOneParam(self)
-
-    def toDot(self) -> str:
-        r"""
-
-        Return a Graphviz dot representation of the Markov random field.
-
-        Returns
-        -------
-        str
-            a dot-format string
-
-        """
-        return _pyagrum.IMarkovRandomField_toDot(self)
-
-    def toDotAsFactorGraph(self) -> str:
-        r"""
-
-        Return a Graphviz dot representation of the Markov random field as a factor graph.
-
-        Returns
-        -------
-        str
-            a dot-format string with variable nodes and factor nodes
-
-        """
-        return _pyagrum.IMarkovRandomField_toDotAsFactorGraph(self)
-
-    def names(self) -> set[str]:
-        r"""
-
-        Set of names of variables in the model
-
-        Returns
-        -------
-        set
-            The names of the graph variables
-
-        """
-        return _pyagrum.IMarkovRandomField_names(self)
-
-    def __iter__(self):
-      """
-      Iterate over the variables of the model
-
-      Yield
-      -----
-      tuple[int,str]
-        The index of the variable and its name
-      """
-      for i in self.nodes():
-        yield i,self.variable(i).name()
-
-    def __getitem__(self, key):
-      if isinstance(key, int):
-        return self.variable(key)
-      elif isinstance(key, str):
-        return self.variableFromName(key)
-      else:
-        raise TypeError("key must be an int or a string")
-
-
-    def nodes(self) -> set[int]:
-        return _pyagrum.IMarkovRandomField_nodes(self)
-
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
-
-    def neighbours(self, norid: object) -> set[int]:
-        return _pyagrum.IMarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> set[tuple[int,int]]:
-        return _pyagrum.IMarkovRandomField_edges(self)
-
-    def minimalCondSet(self, *args) -> set[int]:
-        return _pyagrum.IMarkovRandomField_minimalCondSet(self, *args)
-
-    def factor(self, *args) -> "pyagrum.Tensor":
-        return _pyagrum.IMarkovRandomField_factor(self, *args)
-
-    def isIndependent(self, *args) -> bool:
-        r"""
-
-        check if nodes X and nodes Y are independent given nodes Z
-
-        Parameters
-        ----------
-        X : str|int|list of str|int
-              a list of of nodeIds or names
-        Y : str|int|list of str|int
-              a list of of nodeIds or names
-        Z : str|int|list of str|int
-              a list of of nodeIds or names
-
-        Raises
-        ------
-        InvalidArgument
-          if X and Y share variables
-
-        Returns
-        -------
-        bool
-          True if X and Y are independent given Z in the model
-
-        """
-        return _pyagrum.IMarkovRandomField_isIndependent(self, *args)
-
-    def __repr__(self) -> str:
-        return _pyagrum.IMarkovRandomField___repr__(self)
-
-    def __str__(self) -> str:
-        return _pyagrum.IMarkovRandomField___str__(self)
-
-# Register IMarkovRandomField in _pyagrum:
-_pyagrum.IMarkovRandomField_swigregister(IMarkovRandomField)
-class MarkovRandomField(IMarkovRandomField):
-    r"""
-
-    MarkovRandomField represents a Markov random field.
-
-    MarkovRandomField(name='') -> MarkovRandomField
-        Parameters:
-          - **name** (*str*) -- the name of the Bayes Net
-
-    MarkovRandomField(source) -> MarkovRandomField
-        Parameters:
-          - **source** (*pyagrum.MarkovRandomField*) -- the Markov random field to copy
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-
-    @staticmethod
-    def fastPrototype(*args) -> "pyagrum.MarkovRandomField":
-        r"""
-
-        Create a Markov random field with a modified dot-like syntax which specifies:
-            - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
-            - the type of the variables with different syntax (cf documentation).
-
-        Examples
-        --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
-
-        Parameters
-        ----------
-        dotlike : str
-                the string containing the specification
-        domainSize : int or str
-                the default domain size or the default domain for variables
-
-        Returns
-        -------
-        pyagrum.MarkovRandomField
-                the resulting Markov random field
-
-        """
-        return _pyagrum.MarkovRandomField_fastPrototype(*args)
-
-    @staticmethod
-    def fromBN(bn: "pyagrum.BayesNet") -> "pyagrum.MarkovRandomField":
-        r"""
-
-        Create a Markov random field from a Bayesian network.
-
-        Parameters
-        ----------
-        bn : pyagrum.BayesNet
-            the Bayesian network to convert
-
-        Returns
-        -------
-        pyagrum.MarkovRandomField
-            a new MRF with the same variables and moralised structure
-
-        """
-        return _pyagrum.MarkovRandomField_fromBN(bn)
-    __swig_destroy__ = _pyagrum.delete_MarkovRandomField
-
-    def __init__(self, *args):
-        _pyagrum.MarkovRandomField_swiginit(self, _pyagrum.new_MarkovRandomField(*args))
-
-    def smallestFactorFromNode(self, node: int) -> list[int]:
-        r"""
-
-        Return the id set of the smallest factor that contains the given node.
-
-        Parameters
-        ----------
-        node : int
-            the node id
-
-        Returns
-        -------
-        set[int]
-            the id set of the smallest factor containing this node
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no factor contains this node
-
-        """
-        return _pyagrum.MarkovRandomField_smallestFactorFromNode(self, node)
-
-    def factors(self) -> list[set[int]]:
-        r"""
-
-        Return the table of all factors in the Markov random field.
-
-        Returns
-        -------
-        dict
-            a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
-
-        """
-        return _pyagrum.MarkovRandomField_factors(self)
-
-    def add(self, *args) -> int:
-        r"""
-
-        Add a variable to the pyagrum.MarkovRandomField.
-
-        Parameters
-        ----------
-        variable : pyagrum.DiscreteVariable
-            the variable added
-        name : str
-            the variable name
-        nbrmod : int
-            the number of modalities for the new variable
-        id : int
-            the variable forced id in the pyagrum.MarkovRandomField
-
-        Returns
-        -------
-        int
-            the id of the new node
-
-        Raises
-        ------
-        pyagrum.DuplicateLabel
-            If variable.name() is already used in this pyagrum.MarkovRandomField.
-        pyagrum.OperationNotAllowed
-            If nbrmod is less than 2
-        pyagrum.DuplicateElement
-            If id is already used.
-
-        """
-        return _pyagrum.MarkovRandomField_add(self, *args)
-
-    def clear(self) -> None:
-        r"""
-
-        Clear the whole MarkovRandomField
-
-        """
-        return _pyagrum.MarkovRandomField_clear(self)
-
-    def erase(self, *args) -> None:
-        r"""
-
-        Remove a variable from the pyagrum.MarkovRandomField.
-
-        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
-
-        If no variable matches the given id, then nothing is done.
-
-        Parameters
-        ----------
-        var :int | str | pyagrum.DiscreteVariable
-            a variable's id (int) or name of variable or a reference of this variable to remove.
-
-        """
-        return _pyagrum.MarkovRandomField_erase(self, *args)
-
-    def changeVariableName(self, *args) -> None:
-        r"""
-
-        Changes a variable's name in the pyagrum.MarkovRandomField.
-
-        This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.
-
-        Parameters
-        ----------
-        car :int | str
-            a variable's id (int) or name
-        new_name : str
-            the new name of the variable
-
-        Raises
-        ------
-        pyagrum.DuplicateLabel
-            If new_name is already used in this MarkovRandomField.
-        pyagrum.NotFound
-            If no variable matches id.
-
-        """
-        return _pyagrum.MarkovRandomField_changeVariableName(self, *args)
-
-    def changeVariableLabel(self, *args) -> None:
-        r"""
-
-        change the label of the variable associated to nodeId to the new value.
-
-        Parameters
-        ----------
-        var :int | str
-            a variable's id (int) or name
-        old_label : str
-            the old label
-        new_label : str
-            the new label
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if id/name is not a variable or if old_label does not exist.
-
-        """
-        return _pyagrum.MarkovRandomField_changeVariableLabel(self, *args)
-
-    def generateFactors(self) -> None:
-        r"""
-
-        Randomly generates factors parameters for a given structure.
-
-        """
-        return _pyagrum.MarkovRandomField_generateFactors(self)
-
-    def generateFactor(self, vars: list[int]) -> None:
-        r"""
-
-        Randomly generate factor parameters for a given factor in a given structure.
-
-        Parameters
-        ----------
-        node : int | str
-            a variable's id (int) or name
-
-        """
-        return _pyagrum.MarkovRandomField_generateFactor(self, vars)
-
-    def beginTopologyTransformation(self) -> None:
-        r"""
-
-        Begin a sequence of structural modifications (factor additions/deletions).
-
-        Structural changes are batched until endTopologyTransformation is called, which then adjusts all factor dimensions.
-
-        """
-        return _pyagrum.MarkovRandomField_beginTopologyTransformation(self)
-
-    def endTopologyTransformation(self) -> None:
-        r"""
-
-        Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
-        End Multiple Change for all CPTs.
-
-        Returns
-        -------
-        pyagrum.MarkovRandomField
-
-        """
-        return _pyagrum.MarkovRandomField_endTopologyTransformation(self)
-
-    def graph(self) -> "pyagrum.UndiGraph":
-        r"""
-
-        Return the underlying undirected graph.
-
-        Returns
-        -------
-        pyagrum.UndiGraph
-            the underlying graph
-
-        """
-        return _pyagrum.MarkovRandomField_graph(self)
-
-    def size(self) -> int:
-        r"""
-
-        Return the number of nodes (variables) in the graphical model.
-
-        Returns
-        -------
-        int
-            the number of nodes
-
-        """
-        return _pyagrum.MarkovRandomField_size(self)
-
-    def log10DomainSize(self) -> float:
-        r"""
-
-        returns the log10 of the domain size of the model defined as the product of the domain sizes of the variables in the model.
-
-        Returns
-        -------
-        float
-            the log10 domain size.
-
-        """
-        return _pyagrum.MarkovRandomField_log10DomainSize(self)
-
-    def idFromName(self, name: str) -> int:
-        r"""
-
-        Return the node id of a variable given its name.
-
-        Parameters
-        ----------
-        name : str
-            the name of the variable
-
-        Returns
-        -------
-        int
-            the node id of the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no variable with this name exists in the model
-
-        """
-        return _pyagrum.MarkovRandomField_idFromName(self, name)
-
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Return the variable-to-node mapping of the model.
-
-        Returns
-        -------
-        pyagrum.VariableNodeMap
-            the internal variable-to-node bijection
-
-        """
-        return _pyagrum.MarkovRandomField_variableNodeMap(self)
-
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Return the variable associated with a given node id.
-
-        Parameters
-        ----------
-        id : int
-            the node id
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if the node id does not exist
-
-        """
-        return _pyagrum.MarkovRandomField_variable(self, *args)
-
-    def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
-        r"""
-
-        Return the node id of a variable.
-
-        Parameters
-        ----------
-        var : pyagrum.DiscreteVariable
-            the variable
-
-        Returns
-        -------
-        int
-            the node id of the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if the variable does not exist in the model
-
-        """
-        return _pyagrum.MarkovRandomField_nodeId(self, var)
-
-    def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Return the variable with the given name.
-
-        Parameters
-        ----------
-        name : str
-            the name of the variable
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if no variable with this name exists in the model
-
-        """
-        return _pyagrum.MarkovRandomField_variableFromName(self, name)
-
-    def names(self) -> set[str]:
-        r"""
-
-        Set of names of variables in the model
-
-        Returns
-        -------
-        set
-            The names of the graph variables
-
-        """
-        return _pyagrum.MarkovRandomField_names(self)
-
-    def __iter__(self):
-      """
-      Iterate over the variables of the model
-
-      Yield
-      -----
-      tuple[int,str]
-        The index of the variable and its name
-      """
-      for i in self.nodes():
-        yield i,self.variable(i).name()
-
-    def __getitem__(self, key):
-      if isinstance(key, int):
-        return self.variable(key)
-      elif isinstance(key, str):
-        return self.variableFromName(key)
-      else:
-        raise TypeError("key must be an int or a string")
-
-
-    def nodes(self) -> set[int]:
-        r"""
-
-        Return the set of node ids in the model.
-
-        Returns
-        -------
-        set[int]
-            the set of node ids
-
-        """
-        return _pyagrum.MarkovRandomField_nodes(self)
-
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
-
-    def neighbours(self, norid: object) -> set[int]:
-        r"""
-
-        Return the set of neighbours of a node.
-
-        Parameters
-        ----------
-        id : int
-            the node id
-
-        Returns
-        -------
-        set[int]
-            the set of neighbour node ids
-
-        """
-        return _pyagrum.MarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        set
-            the set of edges in the Markov random field
-
-        """
-        return _pyagrum.MarkovRandomField_edges(self)
-
-    def minimalCondSet(self, *args) -> set[int]:
-        r"""
-
-        Return a minimal conditioning set of a target given source nodes in the MRF.
-
-        Parameters
-        ----------
-        target : int | str | list[int|str]
-            the target node id(s) or name(s)
-        soids : list[int|str]
-            the list of source node ids or names
-
-        Returns
-        -------
-        set[int]
-            the minimal conditioning set (as node ids)
-
-        """
-        return _pyagrum.MarkovRandomField_minimalCondSet(self, *args)
-
-    def factor(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Returns the factor of a set of variables (if existing).
-
-        Parameters
-        ----------
-        vars : set
-            A set of ids or names of variable the pyagrum.MarkovRandomField.
-
-        Returns
-        -------
-        pyagrum.Tensor
-            The factor of the set of nodes.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable's id matches varId.
-
-        """
-        return _pyagrum.MarkovRandomField_factor(self, *args)
-
-    def isIndependent(self, *args) -> bool:
-        r"""
-
-        check if nodes X and nodes Y are independent given nodes Z
-
-        Parameters
-        ----------
-        X : str|int|list of str|int
-              a list of of nodeIds or names
-        Y : str|int|list of str|int
-              a list of of nodeIds or names
-        Z : str|int|list of str|int
-              a list of of nodeIds or names
-
-        Raises
-        ------
-        InvalidArgument
-          if X and Y share variables
-
-        Returns
-        -------
-        bool
-          True if X and Y are independent given Z in the model
-
-        """
-        return _pyagrum.MarkovRandomField_isIndependent(self, *args)
-
-    def loadGUM(self, name: str, binary: bool=False) -> None:
-        r"""
-
-        Load a jgum (JSON) or bgum (binary/msgpack) file.
-
-        Parameters
-        ----------
-        name : str
-            the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-        binary : bool
-            if True, read as bgum (msgpack) regardless of extension (default: False)
-
-        Raises
-        ------
-        pyagrum.IOError
-            If file not found
-        pyagrum.FatalError
-            If file content is not valid
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.MarkovRandomField_loadGUM(self, name, binary)
-
-    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
-        r"""
-
-        Save the MarkovRandomField in a jgum (JSON) or bgum (binary/msgpack) file.
-
-        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
-
-        Parameters
-        ----------
-        name : str
-            the file's path
-        binary : bool
-            if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
-        indent : int
-            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.MarkovRandomField__saveGUM(self, name, binary, indent)
-
-    def _saveGUMstring(self, indent: int=2) -> str:
-        r"""
-
-        Serialize the MarkovRandomField to a jgum JSON string.
-
-        Metadata properties (``software``, ``creation``, ``lastModification``) are updated automatically.
-
-        Parameters
-        ----------
-        indent : int
-            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
-
-        Returns
-        -------
-        str
-            a JSON string representing the MarkovRandomField in jgum format
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.MarkovRandomField__saveGUMstring(self, indent)
-
-    def loadGUMstring(self, content: str) -> None:
-        r"""
-
-        Deserialize a MarkovRandomField from a jgum JSON string.
-
-        Parameters
-        ----------
-        content : str
-            a JSON string in jgum format
-
-        Raises
-        ------
-        pyagrum.FatalError
-            If the string is not valid jgum JSON or the type field does not match ``"MRF"``
-
-        See Also
-        --------
-        :ref:`jgum-bgum-format` : complete format reference
-
-        """
-        return _pyagrum.MarkovRandomField_loadGUMstring(self, content)
-
-    def loadUAI(self, *args) -> str:
-        r"""
-
-        Load an UAI file.
-
-        Parameters
-        ----------
-        name : str
-            the name's file
-        l : list
-            list of functions to execute
-
-        Raises
-        ------
-        pyagrum.IOError
-            If file not found
-        pyagrum.FatalError
-            If file is not valid
-
-        """
-        return _pyagrum.MarkovRandomField_loadUAI(self, *args)
-
-    def saveUAI(self, name: str) -> None:
-        r"""
-
-        Save the MarkovRandomField in an UAI file.
-
-        Parameters
-        ----------
-        name : str
-            the file's name
-
-        """
-        return _pyagrum.MarkovRandomField_saveUAI(self, name)
-
-    def __getstate__(self):
-        return self.saveGUMstring()
-
-    def __setstate__(self,state):
-        self.__init__()
-        self.loadGUMstring(state)
-        return self
-
-    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
-      """
-      Save the Markov random field as a .jgum (text) or .bgum (binary) file.
-
-      Parameters
-      ----------
-      name : str
-        the name of the file
-      binary : bool
-        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
-      indent : int, optional
-        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
-        compact output, N>=0 to pretty-print with N spaces. Defaults to
-        ``pyagrum.config["core","default_jgumIndent"]``.
-      """
-      if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      self._saveGUM(name, binary, indent)
-
-    def saveGUMstring(self, indent: int = None) -> str:
-      """
-      Save the Markov random field as a jgum string.
-
-      Parameters
-      ----------
-      indent : int, optional
-        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
-        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
-
-      Returns
-      -------
-      str
-        the jgum string
-      """
-      if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      return self._saveGUMstring(indent)
-
-    def toFast(self, filename: str = None) -> str:
-      """
-      Export the MRF as *fast* syntax (in a string or in a python file)
-
-      Parameters
-      ----------
-      filename : Optional[str]
-        the name of the file (including the prefix), if None , use sys.stdout
-      """
-
-      def _toFastMRF(model,pythoncode=False):
-        res = []
-        sovars = set()
-        first = True
-        for f in model.factors():
-          l = []
-          for x in f:
-              if x in sovars:
-                src = model.variable(x).name()
-              else:
-                src = model.variable(x).toFast()
-                sovars.add(x)
-              l.append(src)
-          res.append("--".join(l))
-
-        for x in model.nodes():
-          if x not in sovars:
-            res.append(model.variable(x).toFast())
-
-        if pythoncode:
-          return 'model=pyagrum.fastMRF("""'+';\n     '.join(res)+'""")'
-        else:
-          return ';'.join(res)
-
-      if filename is None:
-        return _toFastMRF(self)
-      else:
-        with open(filename, "w") as pyfile:
-          print(_toFastBN(self,pythoncode=True), file=pyfile)
-
-
-    def __repr__(self) -> str:
-        return _pyagrum.MarkovRandomField___repr__(self)
-
-    def __str__(self) -> str:
-        return _pyagrum.MarkovRandomField___str__(self)
-
-    def addFactor(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Add a factor from a list or a set of id or str. If the argument is a set, the order is the order of the IDs of the variables
-
-        Parameters
-        ----------
-        seq : sequence (list or set) of int or string
-            The sequence (ordered or not) of node id or names
-
-        """
-        return _pyagrum.MarkovRandomField_addFactor(self, *args)
-
-    def eraseFactor(self, *args) -> None:
-        r"""
-
-        Remove the factor that covers a given set of variables.
-
-        Parameters
-        ----------
-        vars : set[int] | list[str]
-            the set of variable ids or names whose factor should be removed
-
-        """
-        return _pyagrum.MarkovRandomField_eraseFactor(self, *args)
-
-    def addVariables(self,listFastVariables,default_nbr_mod=2):
-       """
-       Add a list of variable in the form of 'fast' syntax.
-
-       Parameters
-       ----------
-       listFastVariables: list[str]
-         the list of variables in 'fast' syntax.
-       default_nbr_mod: int
-         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
-         mandatory to create variables with only one modality (for utility for instance).
-
-       Returns
-       -------
-       list[int]
-         the list of created ids.
-       """
-       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
-
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
-        """
-        Add the listeners in parameters to the list of existing ones.
-
-        Parameters
-        ----------
-        whenNodeAdded : lambda expression
-          a function for when a node is added
-        whenNodeDeleted : lambda expression
-          a function for when a node is removed
-        whenEdgeAdded : lambda expression
-          a function for when an edge is added
-        whenEdgeDeleted : lambda expression
-          a function for when an edge is removed
-        """
-        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenedgeDeleted]==[None,None,None,None]:
-          return
-
-        if not hasattr(self,"_listeners"):
-          self._listeners=[]
-
-        nl = PythonBNListener(self, self.variableNodeMap())
-        if whenNodeAdded is not None:
-          nl.setWhenNodeAdded(whenNodeAdded)
-        if whenNodeDeleted is not None:
-          nl.setWhenNodeDeleted(whenNodeDeleted)
-        if whenEdgeAdded is not None:
-          nl.setWhenEdgeAdded(whenEdgeAdded)
-        if whenedgeDeleted is not None:
-          nl.setWhenArcDeleted(whenedgeDeleted)
-
-        self._listeners.append(nl)
-
-
-# Register MarkovRandomField in _pyagrum:
-_pyagrum.MarkovRandomField_swigregister(MarkovRandomField)
-class ShaferShenoyMRFInference(object):
-    r"""
-
-    Class used for Shafer-Shenoy inferences for Markov random field.
-
-    ShaferShenoyMRFInference(bn) -> ShaferShenoyMRFInference
-        Parameters:
-            - **mrf** (*pyagrum.MarkovRandomField*) -- a Markov random field
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, MN: "IMarkovRandomField", use_binary_join_tree: bool=True):
-        _pyagrum.ShaferShenoyMRFInference_swiginit(self, _pyagrum.new_ShaferShenoyMRFInference(MN, use_binary_join_tree))
-
-        self._model=MN#first arg of the constructor
-
-
-
-    __swig_destroy__ = _pyagrum.delete_ShaferShenoyMRFInference
-
-    def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
-        r"""
-
-        Replace the triangulation algorithm used to build the junction tree.
-
-        Parameters
-        ----------
-        new_triangulation : pyagrum.Triangulation
-            the new triangulation algorithm
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_setTriangulation(self, new_triangulation)
-
-    def joinTree(self) -> "pyagrum.CliqueGraph":
-        r"""
-
-        Returns
-        -------
-        pyagrum.CliqueGraph
-          the current join tree used
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_joinTree(self)
-
-    def junctionTree(self) -> "pyagrum.JunctionTree":
-        r"""
-
-        Returns
-        -------
-        pyagrum.CliqueGraph
-          the current junction tree
-
-        """
-        val = _pyagrum.ShaferShenoyMRFInference_junctionTree(self)
-
-        val._engine=self
-
-
-        return val
-
-
-    def evidenceProbability(self) -> float:
-        r"""
-
-        Returns
-        -------
-        float
-          the probability of evidence
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_evidenceProbability(self)
-
-    def setNumberOfThreads(self, nb: int) -> None:
-        r"""
-
-        If the argument nb is different from 0, this number of threads will be used during inferences, hence overriding aGrUM's default number of threads.
-        If, on the contrary, nb is equal to 0, the parallelized inference engine will comply with aGrUM's default number of threads.
-
-        Parameters
-        ----------
-        nb : int
-            the number of threads to be used by ShaferShenoyMRFInference
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_setNumberOfThreads(self, nb)
-
-    def getNumberOfThreads(self) -> int:
-        r"""
-
-        returns the number of threads used by LazyPropagation during inferences.
-
-        Returns
-        -------
-        int
-            the number of threads used by LazyPropagation during inferences
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_getNumberOfThreads(self)
-
-    def isGumNumberOfThreadsOverriden(self) -> bool:
-        r"""
-
-        Indicates whether LazyPropagation currently overrides aGrUM's default number of threads (see method setNumberOfThreads).
-
-        Returns
-        -------
-        bool
-            A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_isGumNumberOfThreadsOverriden(self)
-
-    def setMaxMemory(self, gigabytes: int) -> None:
-        r"""
-
-        sets an upper bound on the memory consumption admissible
-
-        Parameters
-        ----------
-        gigabytes: float
-          this upper bound in gigabytes.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_setMaxMemory(self, gigabytes)
-
-    def makeInference(self) -> None:
-        r"""
-
-        Perform the heavy computations needed to compute the targets' posteriors
-
-        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
-        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_makeInference(self)
-
-    def addEvidence(self, *args) -> None:
-        r"""
-
-        Adds a new evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val :
-          (int) a node value
-        val :
-          (str) the label of the node value
-        vals : list
-          a list of values
-
-        Raises
-        ------
-          pyagrum.InvalidArgument
-            If the node already has an evidence
-          pyagrum.InvalidArgument
-            If val is not a value for the node
-          pyagrum.InvalidArgument
-            If the size of vals is different from the domain side of the node
-          pyagrum.FatalError
-            If vals is a vector of 0s
-          pyagrum.UndefinedElement
-            If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_addEvidence(self, *args)
-
-    def chgEvidence(self, *args) -> None:
-        r"""
-
-        Change the value of an already existing evidence on a node (might be soft or hard).
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-        val : int|str
-          a node value or the label of the node value
-        vals : list of float
-          a list of values
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-          If the node does not already have an evidence
-        pyagrum.InvalidArgument
-          If val is not a value for the node
-        pyagrum.InvalidArgument
-          If the size of vals is different from the domain side of the node
-        pyagrum.FatalError
-          If vals is a vector of 0s
-        pyagrum.UndefinedElement
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_chgEvidence(self, *args)
-
-    def hasEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if some node(s) (or the one in parameters) have received evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_hasEvidence(self, *args)
-
-    def eraseAllEvidence(self) -> None:
-        r"""
-
-        Removes all the evidence entered into the network.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseAllEvidence(self)
-
-    def eraseEvidence(self, *args) -> None:
-        r"""
-
-        Remove the evidence, if any, corresponding to the node Id or name.
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseEvidence(self, *args)
-
-    def hasHardEvidence(self, nodeName: str) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a hard evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_hasHardEvidence(self, nodeName)
-
-    def hasSoftEvidence(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if node has received a soft evidence
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_hasSoftEvidence(self, *args)
-
-    def nbrEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_nbrEvidence(self)
-
-    def nbrHardEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of hard evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_nbrHardEvidence(self)
-
-    def nbrSoftEvidence(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of soft evidence entered into the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_nbrSoftEvidence(self)
-
-    def eraseAllTargets(self) -> None:
-        r"""
-
-        Clear all previously defined targets (marginal and joint targets).
-
-        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseAllTargets(self)
-
-    def addAllTargets(self) -> None:
-        r"""
-
-        Add all the nodes as targets.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_addAllTargets(self)
-
-    def addTarget(self, *args) -> None:
-        r"""
-
-        Add a marginal target to the list of targets.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If target is not a NodeId in the Bayes net
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_addTarget(self, *args)
-
-    def eraseTarget(self, *args) -> None:
-        r"""
-
-        Remove, if existing, the marginal target.
-
-        Parameters
-        ----------
-        target : int
-          a node Id
-        nodeName : int
-          a node name
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseTarget(self, *args)
-
-    def isTarget(self, *args) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        variable : int
-         a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        bool
-          True if variable is a (marginal) target
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_isTarget(self, *args)
-
-    def nbrTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of marginal targets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_nbrTargets(self)
-
-    def H(self, *args) -> float:
-        r"""
-
-        Parameters
-        ----------
-        X : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        float
-          the computed Shanon's entropy of a node given the observation
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_H(self, *args)
-
-    def MRF(self) -> "pyagrum.IMarkovRandomField":
-        r"""
-
-        Return the Markov random field associated with this inference engine.
-
-        Returns
-        -------
-        pyagrum.IMarkovRandomField
-            the Markov random field
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_MRF(self)
-
-    def posterior(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Computes and returns the posterior of a node.
-
-        Parameters
-        ----------
-        var : int
-          the node Id of the node for which we need a posterior probability
-        nodeName : str
-          the node name of the node for which we need a posterior probability
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior probability of the node
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_posterior(self, *args)
-
-    def eraseAllJointTargets(self) -> None:
-        r"""
-
-        Clear all previously defined joint targets.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseAllJointTargets(self)
-
-    def eraseAllMarginalTargets(self) -> None:
-        r"""
-
-        Clear all the previously defined marginal targets.
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseAllMarginalTargets(self)
-
-    def nbrJointTargets(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-          the number of joint targets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_nbrJointTargets(self)
-
-    def setEvidence(self, evidces):
-        """
-        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
-
-        Parameters
-        ----------
-        evidces : dict
-          a dict of evidences
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If one value is not a value for the node
-        pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-        pyagrum.FatalError
-            If one value is a vector of 0s
-        pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-        self.eraseAllEvidence()
-        for k,v in evidces.items():
-            self.addEvidence(k,v)
-
-
-
-    def updateEvidence(self, evidces):
-        """
-        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
-
-        Parameters
-        ----------
-        evidces : dict
-          a dict of evidences
-
-        Raises
-        ------
-        pyagrum.InvalidArgument
-            If one value is not a value for the node
-        pyagrum.InvalidArgument
-            If the size of a value is different from the domain side of the node
-        pyagrum.FatalError
-            If one value is a vector of 0s
-        pyagrum.UndefinedElement
-            If one node does not belong to the Bayesian network
-        """
-        if not isinstance(evidces, dict):
-            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
-
-        for k,v in evidces.items():
-            if self.hasEvidence(k):
-                self.chgEvidence(k,v)
-            else:
-                self.addEvidence(k,v)
-
-
-
-    def setTargets(self, targets):
-        """
-        Remove all the targets and add the ones in parameter.
-
-        Parameters
-        ----------
-        targets : set
-          a set of targets
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-            If one target is not in the Bayes net
-        """
-        if not isinstance(targets, set):
-            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
-
-        self.eraseAllTargets()
-        for k in targets:
-            self.addTarget(k)
-
-
-
-    def hardEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with hard evidence
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_hardEvidenceNodes(self)
-
-    def softEvidenceNodes(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        set
-          the set of nodes with soft evidence
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_softEvidenceNodes(self)
-
-    def targets(self) -> set[int]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of marginal targets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_targets(self)
-
-    def evidenceImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
-
-        Parameters
-        ----------
-        target : set
-          a set of targets ids or names.
-        evs : set
-          a set of nodes ids or names.
-
-        Warnings
-        --------
-        if some evs are d-separated, they are not included in the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(targets|evs)
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_evidenceImpact(self, *args)
-
-    def jointMutualInformation(self, targets: object) -> float:
-        r"""
-
-        Compute the joint mutual information (interaction information) among a set of target variables.
-
-        Parameters
-        ----------
-        targets : list[str] or set[int]
-            the target variables (names or node ids)
-
-        Returns
-        -------
-        float
-            the joint mutual information
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_jointMutualInformation(self, targets)
-
-    def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
-        r"""
-
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
-
-        Parameters
-        ----------
-        targets : list of int|str
-          a list of node Ids or node names
-        evs : set
-          a set of nodes ids or names.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a Tensor for P(target|evs)
-
-        Raises
-        ------
-        pyagrum.Exception
-          If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_evidenceJointImpact(self, *args)
-
-    def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
-        r"""
-
-        Compute the joint posterior of a set of nodes.
-
-        Parameters
-        ----------
-        list :
-          the list of nodes whose posterior joint probability is wanted
-
-
-        Warnings
-        --------
-        The order of the variables given by the list here or when the jointTarget is declared can not be assumed to be used by the Tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-          a const ref to the posterior joint probability of the set of nodes.
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If an element of nodes is not in targets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_jointPosterior(self, targets)
-
-    def addJointTarget(self, targets: object) -> None:
-        r"""
-
-        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
-
-        Parameters
-        ----------
-        list
-          a list of names of nodes
-
-        Raises
-        ------
-        pyagrum.UndefinedElement
-          If some node(s) do not belong to the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_addJointTarget(self, targets)
-
-    def eraseJointTarget(self, targets: object) -> None:
-        r"""
-
-        Remove, if existing, the joint target.
-
-        Parameters
-        ----------
-        list
-          a list of names or Ids of nodes
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If one of the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_eraseJointTarget(self, targets)
-
-    def isJointTarget(self, targets: object) -> bool:
-        r"""
-
-        Parameters
-        ----------
-        list
-          a list of nodes ids or names.
-
-        Returns
-        -------
-        bool
-          True if target is a joint target.
-
-        Raises
-        ------
-        pyagrum.IndexError
-          If the node does not belong to the Bayesian network
-        pyagrum.UndefinedElement
-          If node Id is not in the Bayesian network
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_isJointTarget(self, targets)
-
-    def jointTargets(self) -> list[set[int]]:
-        r"""
-
-        Returns
-        -------
-        list
-          the list of target sets
-
-        """
-        return _pyagrum.ShaferShenoyMRFInference_jointTargets(self)
-
-# Register ShaferShenoyMRFInference in _pyagrum:
-_pyagrum.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
-
-def availableMRFExts():
-  """ Give the list of all formats known by pyAgrum to save a Markov random field.
-
-  Returns
-  ------
-  str
-    a string which lists all suffixes for supported MRF file formats.
-  """
-  return "uai|jgum|bgum|pkl"
-
-
-def loadMRF(filename, listeners=None, verbose=False):
-  """load a MRF from a file with optional listeners and arguments
-
-  Parameters
-  ----------
-  filename: str
-    the name of the input file
-  listeners: list[Object]
-    list of functions to execute
-  verbose: bool
-    whether to print or not warning messages
-
-  Returns
-  -------
-  pyagrum.MarkovRandomField
-    a MRF from a file using one of the availableMNExts() suffixes.
-
-  Listeners could be added in order to monitor its loading.
-
-  pkl suffix is used to load a pickled MRF. In this case, options are ignored.
-
-  jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
-
-  Examples
-  --------
-  >>> import pyagrum as gum
-  >>>
-  >>> # creating listeners
-  >>> def foo_listener(progress):
-  >>>    if progress==200:
-  >>>        print(' BN loaded ')
-  >>>        return
-  >>>    elif progress==100:
-  >>>        car='%'
-  >>>    elif progress%10==0:
-  >>>        car='#'
-  >>>    else:
-  >>>        car='.'
-  >>>    print(car,end='',flush=True)
-  >>>
-  >>> def bar_listener(progress):
-  >>>    if progress==50:
-  >>>        print('50%')
-  >>>
-  >>> # loadBN with list of listeners
-  >>> pyagrum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
-  >>> # .........#.........#.........#.........#..50%
-  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
-  """
-  mn = MarkovRandomField()
-
-  warns = ""
-  extension = filename.split('.')[-1].upper()
-  if extension == "UAI":
-    warns = mn.loadUAI(filename, listeners)
-  elif extension == "JGUM":
-    mn.loadGUM(filename)
-  elif extension == "BGUM":
-    mn.loadGUM(filename, binary=True)
-  elif extension == "PKL":
-    mn = _gum_pickle_load(filename)
-  else:
-    raise InvalidArgument("extension " + filename.split('.')
-    [-1] + " unknown. Please use among " + availableMRFExts())
-
-  if verbose:
-    warnings.warn(warns)
-
-  _gum_set_name_property(mn, filename)
-  return mn
-
-
-def saveMRF(mn, filename):
-  """
-  save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
-
-  Parameters
-  ----------
-  mn : pyagrum.MarkovRandomField
-    the MRF to save
-  filename : str
-    the name of the output file
-
-  Notes
-  -----
-  pkl suffix is used to save a MRF using pickle.
-
-  jgum/bgum suffixes use the native aGrUM JSON/binary format.
-  """
-  extension = filename.split('.')[-1].upper()
-
-  if extension == "UAI":
-    mn.saveUAI(filename)
-  elif extension == "JGUM":
-    mn.saveGUM(filename)
-  elif extension == "BGUM":
-    mn.saveGUM(filename, binary=True)
-  elif extension == "PKL":
-    _gum_pickle_save(mn, filename)
-  else:
-    raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
-
-def fastMRF(structure, domain="[2]"):
-  """
-  Create a Markov random field with a modified dot-like syntax which specifies:
-      - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
-      - the type of the variables with different syntax (cf documentation).
-
-  Examples
-  --------
-  >>> import pyagrum as gum
-  >>> bn=pyagrum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
-
-  Parameters
-  ----------
-  structure : str
-          the string containing the specification
-  domain: int or str
-          the default domain size (int) or domain specification (str) for variables (default is "[2]"
-
-  Returns
-  -------
-  pyagrum.MarkovRandomField
-          the resulting Markov random field
-  """
-  return MarkovRandomField.fastPrototype(structure, domain)
-
-
 def getPosterior(model, *, target, evs=None):
   """
   Compute the posterior of a single target (variable) in a BN given evidence
@@ -35781,10 +29807,14 @@ def getPosterior(model, *, target, evs=None):
   """
   if isinstance(model, pyagrum.BayesNet):
     inf = pyagrum.VariableElimination(model)
-  elif isinstance(model, MarkovRandomField):
-    inf = ShaferShenoyMRFInference(model)
   else:
-    raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
+# lazy import: MarkovRandomField only lives in the pyagrum.mrf extension,
+# keep the common BayesNet-only case free of it
+    import pyagrum.mrf as _mrf
+    if isinstance(model, _mrf.MarkovRandomField):
+      inf = _mrf.ShaferShenoyMRFInference(model)
+    else:
+      raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
 
   if evs is not None:
     inf.setEvidence(evs)
@@ -35794,1518 +29824,4 @@ def getPosterior(model, *, target, evs=None):
   return pyagrum.Tensor(inf.posterior(target))
 
 
-def causalImpact(cm, *, on, doing, knowing=None, values=None):
-    """
-    Identify and evaluate the causal effect of do(doing) on on, optionally
-    conditioning on knowing.
-
-    The identification procedure tries in order: d-separation (no effect),
-    backdoor adjustment, frontdoor adjustment, and general do-calculus
-    (ID algorithm).
-
-    Parameters
-    ----------
-    cm : pyagrum.CausalModel
-        The causal model.
-    on : str or set of str
-        Target variable(s) of the causal query. A single string is
-        automatically converted to a one-element set.
-    doing : str or set of str
-        Intervened variable(s) (the do-operator applies to these). A single
-        string is automatically converted to a one-element set.
-    knowing : str or set of str, optional
-        Observed variable(s) to condition on. Default is empty.
-    values : dict of str → str, optional
-        Specific values for the on/knowing variables as
-        ``{variable_name: value_name}``. When provided, the returned tensor
-        is sliced to those values. Default is no slicing.
-
-    Returns
-    -------
-    tuple (pyagrum.CausalImpact, pyagrum.Tensor or None, str)
-        - The CausalImpact object encoding the identified formula.
-        - The evaluated tensor P(on | do(doing), knowing), or None if the
-          effect is not identifiable.
-        - A string explaining the identification method used or why
-          identification failed.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
-    >>> print(expl)
-    """
-    if isinstance(on, str):
-        on = {on}
-    if isinstance(doing, str):
-        doing = {doing}
-    if isinstance(knowing, str):
-        knowing = {knowing}
-    lat, pot, expl = _causalImpact(cm, on, doing,
-                                   knowing if knowing is not None else set(),
-                                   values  if values  is not None else {})
-    pot._model = cm
-    return lat, (pot if lat.isIdentified() else None), expl
-
-def counterfactual(cm, *, on, whatif, profile=None, values=None):
-    """
-    Compute a counterfactual distribution using Pearl's twin network method.
-
-    Answers the question: 'Given that we observed *profile*, what would
-    *on* have been if *whatif* had been set as specified in *values*?'
-
-    The computation follows the three-step algorithm from Pearl (2018),
-    *The Book of Why*, chapter 8: abduction (update parentless node priors
-    from the profile), action (apply do(whatif) on the twin model), and
-    prediction (evaluate the causal effect on the twin).
-
-    Parameters
-    ----------
-    cm : pyagrum.CausalModel
-        The causal model.
-    on : str or set of str
-        Target variable(s) of the counterfactual query. A single string is
-        automatically converted to a one-element set.
-    whatif : str or set of str
-        Variable(s) whose values are changed in the counterfactual scenario.
-        A single string is automatically converted to a one-element set.
-    profile : dict of str → str, optional
-        The factual observation as ``{variable_name: value_name}``. This
-        grounds the counterfactual (step 1: abduction). Default is empty
-        (no factual observation).
-    values : dict of str → str, optional
-        Counterfactual values for the *whatif* variables as
-        ``{variable_name: value_name}``. If omitted, the full distribution
-        over all *whatif* values is returned.
-
-    Returns
-    -------
-    pyagrum.Tensor
-        The counterfactual distribution P(on | do(whatif)) evaluated on the
-        twin model, optionally sliced by *values*.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
-    ...                        profile={'Y': 'True'}, values={'X': 'False'})
-    """
-    p=_counterfactual(cm, on, whatif,
-                           profile if profile is not None else {},
-                           values  if values  is not None else {})
-    p._model=cm
-    return p
-
-def counterfactualModel(cm, profile=None, whatif=None):
-    """
-    Build the twin causal model for a counterfactual query.
-
-    Implements steps 1-2 of Pearl's three-step counterfactual algorithm:
-    compute the posterior of parentless (idiosyncratic) nodes in the
-    observational BN given *profile* as evidence, then replace their priors
-    in a copy of the model with those posteriors.
-
-    Parameters
-    ----------
-    cm : pyagrum.CausalModel
-        The original causal model.
-    profile : dict of str → str, optional
-        The factual observation as ``{variable_name: value_name}``.
-        Default is empty (no observation; the twin model equals the original).
-    whatif : str or set of str, optional
-        Intervened variable(s) in the counterfactual scenario. These are
-        excluded from the set of idiosyncratic nodes that get updated.
-        A single string is automatically converted to a one-element set.
-        Default is empty.
-
-    Returns
-    -------
-    pyagrum.CausalModel
-        The twin causal model ready for the prediction step.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> twin = pyagrum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
-    """
-    p=_counterfactualModel(cm,
-                           profile if profile is not None else {},
-                           whatif  if whatif  is not None else set())
-    p._model=cm
-    return p
-
-
-class DoorCriteria(object):
-    r"""
-
-    Utility class implementing the backdoor and frontdoor criteria on a causal DAG.
-
-    All methods are static and take the DAG as their first argument. This class is
-    stateless: it does not store any model.
-
-    A **backdoor adjustment set** Z between X and Y blocks all spurious (non-causal)
-    paths from X to Y while leaving all directed causal paths open.
-
-    A **frontdoor adjustment set** Z between X and Y intercepts every directed path
-    from X to Y, has no open backdoor path from X to Z, and all backdoor paths from
-    Z to Y are blocked by X.
-
-    Notes
-    -----
-    High-level search for a single valid set is available via
-    :meth:`pyagrum.CausalModel.backDoor` and
-    :meth:`pyagrum.CausalModel.frontDoor`.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Z->Y')
-    >>> dag = bn.dag()
-    >>> x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
-    >>> pyagrum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
-    True
-    >>> pyagrum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
-    [{z}]
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    @staticmethod
-    def satisfiesBackdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
-        r"""
-
-        Test whether Z satisfies the backdoor criterion for the effect of X on Y.
-
-        A set Z satisfies the backdoor criterion with respect to (X, Y) if:
-
-          1. No node in Z is a descendant of X in the causal DAG.
-          2. Z blocks every backdoor path between X and Y (paths that begin with an
-             arc pointing into X).
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        Z : set of int
-            Candidate adjustment set (NodeIds).
-
-        Returns
-        -------
-        bool
-            True if Z satisfies the backdoor criterion for (X, Y).
-
-        """
-        return _pyagrum.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
-
-    @staticmethod
-    def enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _pyagrum.DoorCriteria_enumerateBackdoorSets(*args)
-
-    @staticmethod
-    def firstBackdoor(*args) -> list[int] | None:
-        r"""
-
-        Return the first valid backdoor adjustment set for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of the adjustment set. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only a minimal adjustment set. Default is True.
-
-        Returns
-        -------
-        list of int or None
-            The first valid backdoor adjustment set as a list of NodeIds, or None if none exists.
-
-        """
-        return _pyagrum.DoorCriteria_firstBackdoor(*args)
-
-    @staticmethod
-    def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
-        r"""
-
-        Test whether Z satisfies the frontdoor criterion for the effect of X on Y.
-
-        A set Z satisfies the frontdoor criterion with respect to (X, Y) if:
-
-          1. Z intercepts all directed paths from X to Y.
-          2. There are no unblocked backdoor paths from X to Z.
-          3. All backdoor paths from Z to Y are blocked by X.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        Z : set of int
-            Candidate mediator set (NodeIds).
-
-        Returns
-        -------
-        bool
-            True if Z satisfies the frontdoor criterion for (X, Y).
-
-        """
-        return _pyagrum.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
-
-    @staticmethod
-    def enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(*args)
-
-    @staticmethod
-    def firstFrontdoor(*args) -> list[int] | None:
-        r"""
-
-        Return the first valid frontdoor adjustment set for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of the adjustment set. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only a minimal adjustment set. Default is True.
-
-        Returns
-        -------
-        list of int or None
-            The first valid frontdoor adjustment set as a list of NodeIds, or None if none exists.
-
-        """
-        return _pyagrum.DoorCriteria_firstFrontdoor(*args)
-
-    @staticmethod
-    def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
-        r"""
-
-        Test whether a directed path from X to Y exists that is not blocked by Z.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the source variable.
-        Y : int
-            NodeId of the target variable.
-        Z : set of int
-            Blocking set (NodeIds). A directed path is blocked if it passes through
-            a node in Z.
-
-        Returns
-        -------
-        bool
-            True if at least one unblocked directed path from X to Y exists.
-
-        """
-        return _pyagrum.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
-
-    @staticmethod
-    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int] | None:
-        r"""
-
-        Return the set of nodes lying on any directed path from X to Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the source variable.
-        Y : int
-            NodeId of the target variable.
-
-        Returns
-        -------
-        set of int
-            NodeIds of all nodes (including X and Y) that lie on at least one
-            directed path from X to Y. Empty if no directed path exists.
-
-        """
-        return _pyagrum.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
-
-    @staticmethod
-    def backdoorReach(dag: "pyagrum.DAG", X: int) -> list[int]:
-        r"""
-
-        Return all nodes reachable from X via a backdoor path.
-
-        A backdoor path starts with an arc pointing *into* X (i.e. it begins by
-        going to a parent of X) and then follows any sequence of edges.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the source variable.
-
-        Returns
-        -------
-        set of int
-            NodeIds of all nodes reachable from X via a backdoor path.
-
-        """
-        return _pyagrum.DoorCriteria_backdoorReach(dag, X)
-
-    @staticmethod
-    def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
-        r"""
-
-        Test whether an open backdoor path from X to Y exists given evidence on Z.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        Z : set of int
-            Conditioning set (NodeIds).
-
-        Returns
-        -------
-        bool
-            True if an open backdoor path from X to Y exists after conditioning on Z.
-
-        """
-        return _pyagrum.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
-
-    @staticmethod
-    def enumerateBackdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                            only_minimal=True, stopAtFirst=False):
-        """
-        Enumerate valid backdoor adjustment sets for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of returned sets. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only minimal adjustment sets (no redundant variables).
-            Default is True.
-        stopAtFirst : bool, optional
-            If True, stop after finding the first valid set. Default is False.
-
-        Returns
-        -------
-        list of set of int
-            All valid backdoor adjustment sets (as NodeId sets).
-        """
-        return _pyagrum.DoorCriteria_enumerateBackdoorSets(
-            dag, X, Y,
-            excluded_nodes if excluded_nodes is not None else set(),
-            max_cardinality, only_minimal, stopAtFirst)
-
-    @staticmethod
-    def enumerateFrontdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
-                                             only_minimal=True, stopAtFirst=False):
-        """
-        Enumerate valid frontdoor adjustment sets for the causal effect of X on Y.
-
-        Parameters
-        ----------
-        dag : pyagrum.DAG
-            The causal DAG.
-        X : int
-            NodeId of the treatment variable.
-        Y : int
-            NodeId of the outcome variable.
-        excluded_nodes : set of int, optional
-            Nodes that cannot appear in any adjustment set. Default is empty.
-        max_cardinality : int, optional
-            Maximum size of returned sets. 0 means no limit. Default is 0.
-        only_minimal : bool, optional
-            If True, return only minimal adjustment sets. Default is True.
-        stopAtFirst : bool, optional
-            If True, stop after finding the first valid set. Default is False.
-
-        Returns
-        -------
-        list of set of int
-            All valid frontdoor adjustment sets (as NodeId sets).
-        """
-        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(
-            dag, X, Y,
-            excluded_nodes if excluded_nodes is not None else set(),
-            max_cardinality, only_minimal, stopAtFirst)
-
-
-    def __init__(self):
-        _pyagrum.DoorCriteria_swiginit(self, _pyagrum.new_DoorCriteria())
-    __swig_destroy__ = _pyagrum.delete_DoorCriteria
-
-# Register DoorCriteria in _pyagrum:
-_pyagrum.DoorCriteria_swigregister(DoorCriteria)
-
-def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
-    return _pyagrum._causalImpact(*args)
-class CausalModel(object):
-    r"""
-
-    A causal model pairing an observational Bayesian network with a causal DAG.
-
-    A CausalModel extends an observational BayesNet by adding latent (hidden)
-    variables that represent unobserved common causes between observed variables.
-    The causal DAG includes both observed and latent nodes, while the observational
-    BN contains only the observed ones.
-
-    CausalModel(bn) -> CausalModel
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
-
-    CausalModel(bn, latents, assumeNonSpurious=False) -> CausalModel
-        Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
-            - **latents** (*list of (str, list of str)*) -- description of latent
-              variables. Each entry is a pair ``(name, children)`` where ``name``
-              is the latent variable name and ``children`` is the list of observed
-              variable names it affects.
-            - **assumeNonSpurious** (*bool*) -- if True, existing arcs between the children
-              of each latent variable are preserved. Default is False (arcs between
-              affected children are removed as they are assumed to be explained by
-              the latent confounder).
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-
-    Create a model with a latent confounder U between X and Y:
-
-    >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    __swig_destroy__ = _pyagrum.delete_CausalModel
-
-    def addLatentVariable(self, *args) -> None:
-        r"""
-
-        Add a latent (hidden) variable to the causal model.
-
-        The latent variable is added as a common cause of the specified children.
-        By default, any existing arc between two affected children is removed, as
-        it is assumed to be explained by the new latent confounder.
-
-        Parameters
-        ----------
-        name : str
-            Name of the new latent variable.
-        children : list of str
-            Names of the observed variables that are children of this latent variable.
-        assumeNonSpurious : bool, optional
-            If True, preserve existing arcs between the specified children.
-            Default is False.
-
-        """
-        return _pyagrum.CausalModel_addLatentVariable(self, *args)
-
-    def existsArc(self, *args) -> bool:
-        r"""
-
-        Check whether an arc exists in the causal DAG.
-
-        Parameters
-        ----------
-        x : int or str
-            Tail of the arc (NodeId or variable name).
-        y : int or str
-            Head of the arc (NodeId or variable name).
-
-        Returns
-        -------
-        bool
-            True if the arc x→y exists in the causal DAG.
-
-        """
-        return _pyagrum.CausalModel_existsArc(self, *args)
-
-    def assumeSpurious(self, *args) -> None:
-        r"""
-
-        Mark an arc in the causal DAG as spurious.
-
-        A spurious arc x→y means the observed correlation between x and y is believed
-        to be explained by a latent common cause rather than a direct causal effect.
-        This changes the structural interpretation but does not remove the arc.
-
-        Parameters
-        ----------
-        x : int or str
-            Tail of the arc (NodeId or variable name).
-        y : int or str
-            Head of the arc (NodeId or variable name).
-
-        """
-        return _pyagrum.CausalModel_assumeSpurious(self, *args)
-
-    def assumeNonSpurious(self, *args) -> None:
-        r"""
-
-        Mark an arc in the causal DAG as non-spurious (a genuine causal effect).
-
-        Parameters
-        ----------
-        x : int or str
-            Tail of the arc (NodeId or variable name).
-        y : int or str
-            Head of the arc (NodeId or variable name).
-
-        """
-        return _pyagrum.CausalModel_assumeNonSpurious(self, *args)
-
-    def isAssumedSpurious(self, *args) -> bool:
-        r"""
-
-        Check whether the arc x→y is assumed spurious.
-
-        Parameters
-        ----------
-        x : int or str
-            Tail of the arc (NodeId or variable name).
-        y : int or str
-            Head of the arc (NodeId or variable name).
-
-        Returns
-        -------
-        bool
-            True if the arc x→y is marked as spurious.
-
-        """
-        return _pyagrum.CausalModel_isAssumedSpurious(self, *args)
-
-    def backDoor(self, *args) -> list[int] | None:
-        r"""
-
-        Find a backdoor adjustment set between cause and effect.
-
-        Returns the first valid backdoor adjustment set found. A backdoor set Z
-        blocks all spurious (non-causal) paths between cause and effect while
-        leaving all directed causal paths open, enabling estimation of the causal
-        effect P(effect | do(cause)) via standard conditioning on Z.
-
-        Parameters
-        ----------
-        cause : int or str
-            The treatment variable (NodeId or variable name).
-        effect : int or str
-            The outcome variable (NodeId or variable name).
-
-        Returns
-        -------
-        set of int or None
-            A valid backdoor adjustment set as NodeIds, or ``None`` if no backdoor set
-            exists. Note: an empty set is a *valid* backdoor (returned when X has no
-            back-door paths); ``None`` means the causal effect cannot be identified via
-            the backdoor criterion.
-
-        See Also
-        --------
-        pyagrum.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
-
-        """
-        return _pyagrum.CausalModel_backDoor(self, *args)
-
-    def frontDoor(self, *args) -> list[int] | None:
-        r"""
-
-        Find a frontdoor adjustment set between cause and effect.
-
-        Returns the first valid frontdoor adjustment set found. A frontdoor set Z
-        intercepts all directed paths from cause to effect and enables estimation of
-        P(effect | do(cause)) even in the presence of unobserved confounders.
-
-        Parameters
-        ----------
-        cause : int or str
-            The treatment variable (NodeId or variable name).
-        effect : int or str
-            The outcome variable (NodeId or variable name).
-
-        Returns
-        -------
-        set of int or None
-            A valid frontdoor adjustment set as NodeIds, or ``None`` if no frontdoor
-            set exists. Note: an empty set is a *valid* frontdoor in degenerate cases;
-            ``None`` means the causal effect cannot be identified via the frontdoor
-            criterion.
-
-        See Also
-        --------
-        pyagrum.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
-
-        """
-        return _pyagrum.CausalModel_frontDoor(self, *args)
-
-    def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel":
-        r"""
-
-        Return the causal sub-model induced by a subset of observed nodes.
-
-        The sub-model is restricted to the specified nodes, preserving the relevant
-        portion of the causal DAG and latent structure.
-
-        Parameters
-        ----------
-        cm : pyagrum.CausalModel
-            The original causal model.
-        subset : set of int
-            NodeIds of the observed variables to keep.
-
-        Returns
-        -------
-        pyagrum.CausalModel
-            The induced causal sub-model.
-
-        """
-        return _pyagrum.CausalModel_inducedCausalSubModel(self, cm, subset)
-
-    def toDot(self, *args) -> str:
-        r"""
-
-        Return a Graphviz dot string representing the causal model.
-
-        Observed nodes are shown with default styling. Latent nodes are displayed
-        with a distinct background colour. Their names are hidden by default.
-
-        Parameters
-        ----------
-        SHOW_LATENT_NAMES : bool, optional
-            If True, display the names of latent nodes in the graph. Default is False.
-        NODE_BG : str, optional
-            Background colour for latent nodes (hex or CSS colour name).
-            Default is '#404040'.
-        NODE_FG : str, optional
-            Text colour for latent nodes. Default is 'white'.
-        EDGE_COL : str, optional
-            Edge colour. Default is '#4A4A4A'.
-
-        Returns
-        -------
-        str
-            A dot-format string representation of the causal model.
-
-        Examples
-        --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-        >>> cm = pyagrum.CausalModel(bn)
-        >>> print(cm.toDot())
-
-        """
-        return _pyagrum.CausalModel_toDot(self, *args)
-
-    def observationalBN(self) -> "pyagrum.BayesNet":
-        r"""
-
-        Return the observational Bayesian network underlying the causal model.
-
-        Warnings
-        --------
-        Do not use this BN for causal inference. It represents the observational
-        distribution only. Use :func:`pyagrum.causalImpact` for
-        interventional queries.
-
-        Returns
-        -------
-        pyagrum.BayesNet
-            The observational BN (observed variables only).
-
-        """
-        return _pyagrum.CausalModel_observationalBN(self)
-
-    def causalDAG(self) -> "pyagrum.DAG":
-        r"""
-
-        Return the full causal DAG, including latent variables.
-
-        Returns
-        -------
-        pyagrum.DAG
-            The causal DAG (observed + latent nodes).
-
-        """
-        return _pyagrum.CausalModel_causalDAG(self)
-
-    def names(self) -> set[str]:
-        r"""
-
-        Return the names of all variables in the causal model (observed and latent).
-
-        Returns
-        -------
-        set of str
-            The set of all variable names.
-
-        """
-        return _pyagrum.CausalModel_names(self)
-
-    def idFromName(self, name: str) -> int:
-        r"""
-
-        Return the NodeId of a variable by name.
-
-        Parameters
-        ----------
-        name : str
-            The variable name.
-
-        Returns
-        -------
-        int
-            The NodeId of the variable.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable with that name exists in the causal model.
-
-        """
-        return _pyagrum.CausalModel_idFromName(self, name)
-
-    def nameFromId(self, id: int) -> str:
-        r"""
-
-        Return the name of a variable by NodeId.
-
-        Parameters
-        ----------
-        id : int
-            The NodeId of the variable.
-
-        Returns
-        -------
-        str
-            The variable name.
-
-        Raises
-        ------
-        pyagrum.NotFound
-            If no variable with that NodeId exists in the causal model.
-
-        """
-        return _pyagrum.CausalModel_nameFromId(self, id)
-
-    def latentVariablesIds(self) -> list[int]:
-        r"""
-
-        Return the NodeIds of all latent (hidden) variables in the causal model.
-
-        Returns
-        -------
-        set of int
-            NodeIds of latent variables.
-
-        """
-        return _pyagrum.CausalModel_latentVariablesIds(self)
-
-    def latentVariablesNames(self) -> set[str]:
-        r"""
-
-        Return the names of all latent (hidden) variables in the causal model.
-
-        Returns
-        -------
-        set of str
-            Names of latent variables.
-
-        """
-        return _pyagrum.CausalModel_latentVariablesNames(self)
-
-    def parents(self, *args) -> list[int]:
-        r"""
-
-        Return the parents of a variable in the causal DAG.
-
-        Parameters
-        ----------
-        x : int or str
-            The variable (NodeId or name).
-
-        Returns
-        -------
-        set of int
-            NodeIds of the variable's parents in the causal DAG.
-
-        """
-        return _pyagrum.CausalModel_parents(self, *args)
-
-    def children(self, *args) -> list[int]:
-        r"""
-
-        Return the children of a variable in the causal DAG.
-
-        Parameters
-        ----------
-        x : int or str
-            The variable (NodeId or name).
-
-        Returns
-        -------
-        set of int
-            NodeIds of the variable's children in the causal DAG.
-
-        """
-        return _pyagrum.CausalModel_children(self, *args)
-
-    def connectedComponents(self) -> dict[int, list[int]]:
-        r"""
-
-        Return the connected components of the causal DAG (treating arcs as undirected).
-
-        Returns
-        -------
-        dict of int → set of int
-            A mapping from component index to the set of NodeIds in that component.
-
-        """
-        return _pyagrum.CausalModel_connectedComponents(self)
-
-    def variable(self, *args) -> "pyagrum.DiscreteVariable":
-        r"""
-
-        Return the variable with the given id or name (observed variables only).
-
-        Parameters
-        ----------
-        id_or_name : int | str
-            the node id or name of the variable
-
-        Returns
-        -------
-        pyagrum.DiscreteVariable
-            the discrete variable
-
-        Raises
-        ------
-        pyagrum.NotFound
-            if the id or name does not correspond to an observed variable in the model
-
-        """
-        return _pyagrum.CausalModel_variable(self, *args)
-
-    def __init__(self, *args):
-        _pyagrum.CausalModel_swiginit(self, _pyagrum.new_CausalModel(*args))
-
-# Register CausalModel in _pyagrum:
-_pyagrum.CausalModel_swigregister(CausalModel)
-class CausalImpact(object):
-    r"""
-
-    Represents the result of a causal identification query P(on | do(doing), knowing).
-
-    CausalImpact encodes the identified causal formula (when the effect is
-    identifiable) as an expression tree that can be evaluated numerically.
-    It also records the identification method used and an explanation string.
-
-    The identification procedure tries the following strategies in order:
-    d-separation (no effect), backdoor adjustment, frontdoor adjustment, and
-    general do-calculus (ID algorithm).
-
-    Notes
-    -----
-    You may prefer to use the high-level function :func:`pyagrum.causalImpact`
-    instead of constructing a CausalImpact object directly.
-
-    CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
-        Parameters:
-            - **cm** (*pyagrum.CausalModel*) -- the causal model.
-            - **on** (*str or set of str*) -- target variable(s) of the query.
-              A single string is automatically converted to a one-element set.
-              Keyword-only.
-            - **doing** (*str or set of str*) -- intervened variable(s)
-              (the do-operator applies to these). A single string is automatically
-              converted to a one-element set. Keyword-only.
-            - **knowing** (*str or set of str, optional*) -- observed variable(s)
-              to condition on. A single string is automatically converted to a
-              one-element set. Default is empty. Keyword-only.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
-    >>> print(expl)
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def eval(self) -> "pyagrum.Tensor":
-        r"""
-
-        Evaluate the identified causal formula and return the result as a tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-            The distribution P(on | do(doing), knowing).
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If the causal effect is not identified (:meth:`isIdentified` is False).
-
-        """
-        return _pyagrum.CausalImpact_eval(self)
-
-    def toString(self) -> str:
-        r"""
-
-        Return a string representation of the identified causal formula.
-
-        Returns
-        -------
-        str
-            Human-readable form of the formula (e.g. a sum-product expression over
-            conditional probabilities).
-
-        """
-        return _pyagrum.CausalImpact_toString(self)
-
-    def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
-        """
-        Return a LaTeX string representation of the causal impact formula.
-
-        Parameters
-        ----------
-        doOperatorPrefix : str, optional
-            LaTeX prefix for the do-operator. Defaults to the value in pyAgrum config.
-        doOperatorSuffix : str, optional
-            LaTeX suffix for the do-operator. Defaults to the value in pyAgrum config.
-
-        Returns
-        -------
-        str
-            LaTeX representation of the causal impact expression.
-        """
-        if doOperatorPrefix is None:
-            doOperatorPrefix = config["causal", "latex_do_prefix"]
-        if doOperatorSuffix is None:
-            doOperatorSuffix = config["causal", "latex_do_suffix"]
-        return _pyagrum.CausalImpact_toLatex(self, doOperatorPrefix, doOperatorSuffix)
-
-
-
-    def latexQuery(self, *args) -> str:
-        r"""
-
-        Return a LaTeX string for the original causal query before identification.
-
-        The query has the form P(on | do(doing), knowing).
-
-        Parameters
-        ----------
-        doOperatorPrefix : str, optional
-            Prefix for the do-operator notation. Default is 'do('.
-        doOperatorSuffix : str, optional
-            Suffix for the do-operator notation. Default is ')'.
-
-        Returns
-        -------
-        str
-            LaTeX string of the causal query.
-
-        """
-        return _pyagrum.CausalImpact_latexQuery(self, *args)
-
-    def isIdentified(self) -> bool:
-        r"""
-
-        Return True if the causal effect was successfully identified.
-
-        If False, the effect cannot be computed from the available data given
-        the causal structure, and :meth:`eval` will raise an exception.
-
-        Returns
-        -------
-        bool
-            True if the query is identifiable.
-
-        """
-        return _pyagrum.CausalImpact_isIdentified(self)
-
-    def cm(self) -> "pyagrum.CausalModel":
-        r"""
-
-        Return the causal model associated with this query.
-
-        Returns
-        -------
-        pyagrum.CausalModel
-            The causal model.
-
-        """
-        return _pyagrum.CausalImpact_cm(self)
-
-    def on(self) -> list[int]:
-        r"""
-
-        Return the NodeIds of the target variables.
-
-        Returns
-        -------
-        set of int
-            NodeIds of the variables in the on-set.
-
-        """
-        return _pyagrum.CausalImpact_on(self)
-
-    def doing(self) -> list[int]:
-        r"""
-
-        Return the NodeIds of the intervened variables.
-
-        Returns
-        -------
-        set of int
-            NodeIds of the variables in the doing-set (do-operator).
-
-        """
-        return _pyagrum.CausalImpact_doing(self)
-
-    def knowing(self) -> list[int]:
-        r"""
-
-        Return the NodeIds of the observed variables.
-
-        Returns
-        -------
-        set of int
-            NodeIds of the variables in the knowing-set.
-
-        """
-        return _pyagrum.CausalImpact_knowing(self)
-
-    def explanation(self) -> str:
-        r"""
-
-        Return a human-readable explanation of the identification result.
-
-        Describes the method used (e.g. 'd-separation', 'backdoor adjustment',
-        'frontdoor adjustment', 'do-calculus (ID)') or explains why identification
-        failed.
-
-        Returns
-        -------
-        str
-            Explanation of the identification outcome.
-
-        """
-        return _pyagrum.CausalImpact_explanation(self)
-
-    def onNames(self) -> tuple[str, ...]:
-        r"""
-
-        Return the names of the target variables.
-
-        Returns
-        -------
-        tuple of str
-            Variable names in the on-set.
-
-        """
-        return _pyagrum.CausalImpact_onNames(self)
-
-    def doingNames(self) -> tuple[str, ...]:
-        r"""
-
-        Return the names of the intervened variables.
-
-        Returns
-        -------
-        tuple of str
-            Variable names in the doing-set.
-
-        """
-        return _pyagrum.CausalImpact_doingNames(self)
-
-    def knowingNames(self) -> tuple[str, ...]:
-        r"""
-
-        Return the names of the observed variables.
-
-        Returns
-        -------
-        tuple of str
-            Variable names in the knowing-set.
-
-        """
-        return _pyagrum.CausalImpact_knowingNames(self)
-
-    def __init__(self, cm, *, on, doing, knowing=None):
-        if isinstance(on, str):
-            on = {on}
-        if isinstance(doing, str):
-            doing = {doing}
-        if isinstance(knowing, str):
-            knowing = {knowing}
-        _pyagrum.CausalImpact_swiginit(self, _pyagrum.new_CausalImpact(cm, on, doing,
-                                       knowing if knowing is not None else set(),
-                                       False))
-
-
-
-    def print_ast(self):
-      """
-      Print the AST of a CausalImpact function in a human readable way.
-
-      Parameters
-      ----------
-        impact : pyagrum.CausalImpact
-          the function whose AST we want to print
-      """
-      def print_ast_rec(node, name="", indent="  ", last=True):
-        marker = "└─ " if last else "├─ "
-
-        if isinstance(node, dict):
-            label = node.get("op", name)
-            print(f"{indent}{marker}{label}")
-
-            indent += "   " if last else "│  "
-
-            children = [(k, v) for k, v in node.items() if k != "op"]
-
-            for i, (key, value) in enumerate(children):
-                is_last = i == len(children) - 1
-                print_ast_rec(value, name=key, indent=indent, last=is_last)
-        else:
-            print(f"{indent}{marker}{name}: {node}")
-
-      def print_title(label:"AST"):
-        width = len(label) + 2
-        print(f"┌{'─' * width}┐")
-        print(f"│ {label} │")
-        print(f"└{'─' * width}┘")
-        return int(width/2)
-
-      def get_title(f:pyagrum.CausalImpact):
-        label=f"P({','.join(f.onNames())}|do({','.join(f.doingNames())})"
-        if len(f.knowingNames())>0:
-              label+=f",{','.join(f.knowingNames())}"
-        label+=")"
-        return label
-
-      print_ast_rec(self.toDict(),indent=" "*print_title(get_title(self)))
-
-
-    def toDict(self) -> dict[str, object]:
-        r"""
-
-        Return the identified causal formula as a JSON-serialisable dictionary.
-
-        The dictionary mirrors the AST node hierarchy. Each node is a dict with
-        an ``"op"`` key identifying its type, plus type-specific keys:
-
-        - Binary operators (``+``, ``-``, ``*``, ``/``):
-          ``{"op": "+", "op1": {...}, "op2": {...}}``
-        - Conditional probability ``P(vars | knowing)``:
-          ``{"op": "P", "vars": [...], "knowing": [...]}``
-        - Joint probability ``P(vars)``:
-          ``{"op": "P", "vars": [...]}``
-        - Summation / marginalisation :math:`\sum_{\text{var}}`:
-          ``{"op": "sum", "var": "...", "term": {...}}``
-
-        Returns ``None`` if the effect is not identified
-        (i.e. :meth:`isIdentified` is False).
-
-        Returns
-        -------
-        dict or None
-            The AST as a nested dict, or None if not identifiable.
-
-        Examples
-        --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-        >>> cm = pyagrum.CausalModel(bn)
-        >>> ci = pyagrum.CausalImpact(cm, on='Z', doing='X')
-        >>> import json
-        >>> print(json.dumps(ci.toDict(), indent=2))
-
-        """
-        return _pyagrum.CausalImpact_toDict(self)
-    __swig_destroy__ = _pyagrum.delete_CausalImpact
-
-# Register CausalImpact in _pyagrum:
-_pyagrum.CausalImpact_swigregister(CausalImpact)
-class Counterfactual(object):
-    r"""
-
-    Computes a counterfactual distribution using Pearl's twin network method.
-
-    A counterfactual query asks: 'Given that we observed *profile*, what would
-    *on* have been if *whatif* had been set to the values in *values*?'
-
-    The computation follows the three-step algorithm from Pearl (2018),
-    *The Book of Why*, chapter 8:
-
-      1. **Abduction** -- compute the posterior distribution of parentless
-         (idiosyncratic) nodes in the original BN given the observed *profile*.
-      2. **Action** -- build a *twin* causal model in which the priors of those
-         nodes are replaced by their posteriors from step 1, then apply
-         ``do(whatif)`` on the twin.
-      3. **Prediction** -- evaluate the causal impact of the intervention on
-         the twin model to obtain the counterfactual distribution of *on*.
-
-    Notes
-    -----
-    Prefer using the high-level function :func:`pyagrum.counterfactual`
-    instead of constructing a Counterfactual object directly.
-
-    Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
-        Parameters:
-            - **cm** (*pyagrum.CausalModel*) -- the causal model.
-            - **on** (*set of str or set of int*) -- target variables of the
-              counterfactual query.
-            - **whatif** (*set of str or set of int*) -- variables whose values
-              are changed in the counterfactual scenario.
-            - **profile** (*dict of str → str*) -- the factual observation,
-              given as ``{variable_name: value_name}``. Default is empty.
-            - **values** (*dict of str → str*) -- counterfactual values for the
-              *whatif* variables, given as ``{variable_name: value_name}``.
-              If omitted, the full joint distribution over all *whatif* values
-              is returned.
-
-    Examples
-    --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
-    ...                        profile={'Y': 'True'}, values={'X': 'False'})
-
-    """
-
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, *args):
-        _pyagrum.Counterfactual_swiginit(self, _pyagrum.new_Counterfactual(*args))
-
-    @staticmethod
-    def counterFactualModel(*args) -> "pyagrum.CausalModel":
-        r"""
-
-        Build the twin causal model from the original model and a factual profile.
-
-        This static method implements steps 1-2 of the three-step counterfactual
-        algorithm: it computes the posterior of parentless (idiosyncratic) nodes
-        in the observational BN given the profile evidence, then replaces their
-        prior distributions in a copy of the model with those posteriors.
-
-        Parameters
-        ----------
-        cm : pyagrum.CausalModel
-            The original causal model.
-        profile : dict of str → str
-            The factual observation as ``{variable_name: value_name}``.
-        whatif : set of str
-            Intervened variables in the counterfactual scenario. These are excluded
-            from the set of idiosyncratic nodes that get updated.
-
-        Returns
-        -------
-        pyagrum.CausalModel
-            The twin causal model ready for the prediction step.
-
-        See Also
-        --------
-        pyagrum.counterfactualModel : high-level function wrapper.
-
-        """
-        return _pyagrum.Counterfactual_counterFactualModel(*args)
-
-    def run(self) -> None:
-        r"""
-
-        Execute the counterfactual computation (steps 2 and 3).
-
-        This method is called automatically by the constructor. Call it explicitly
-        only if you need to re-run after modifying the object's state.
-
-        """
-        return _pyagrum.Counterfactual_run(self)
-
-    def originalModel(self) -> "pyagrum.CausalModel":
-        r"""
-
-        Return the original causal model.
-
-        Returns
-        -------
-        pyagrum.CausalModel
-            The original causal model passed to the constructor.
-
-        """
-        return _pyagrum.Counterfactual_originalModel(self)
-
-    def twinModel(self) -> "pyagrum.CausalModel":
-        r"""
-
-        Return the twin causal model built during the abduction step.
-
-        The twin model has the same structure as the original but with updated
-        priors for parentless nodes (based on the observed profile).
-
-        Returns
-        -------
-        pyagrum.CausalModel
-            The twin model.
-
-        """
-        return _pyagrum.Counterfactual_twinModel(self)
-
-    def impact(self) -> "pyagrum.CausalImpact":
-        r"""
-        Return the CausalImpact used to compute the counterfactual distribution.
-
-        The formula is evaluated on the twin model.
-
-        Returns
-        -------
-        pyagrum.CausalImpact
-            The identified causal impact on the twin model.
-        """
-        return _pyagrum.Counterfactual_impact(self)
-
-
-
-    def value(self) -> "pyagrum.Tensor":
-        r"""
-
-        Return the counterfactual distribution as a tensor.
-
-        Returns
-        -------
-        pyagrum.Tensor
-            The distribution P(on | do(whatif)) evaluated on the twin model,
-            optionally sliced by *values* if provided at construction.
-
-        """
-        return _pyagrum.Counterfactual_value(self)
-
-    def on(self) -> set[str]:
-        r"""
-
-        Return the names of the target variables.
-
-        Returns
-        -------
-        set of str
-            Variable names in the on-set.
-
-        """
-        return _pyagrum.Counterfactual_on(self)
-
-    def whatif(self) -> set[str]:
-        r"""
-
-        Return the names of the intervened variables.
-
-        Returns
-        -------
-        set of str
-            Variable names in the whatif-set.
-
-        """
-        return _pyagrum.Counterfactual_whatif(self)
-
-    def profile(self) -> dict[str,str]:
-        r"""
-
-        Return the factual evidence used for abduction.
-
-        Returns
-        -------
-        dict of str → str
-            The observed profile as ``{variable_name: value_name}``.
-
-        """
-        return _pyagrum.Counterfactual_profile(self)
-
-    def values(self) -> dict[str,str]:
-        r"""
-
-        Return the counterfactual assignments for the whatif variables.
-
-        Returns
-        -------
-        dict of str → str
-            The counterfactual values as ``{variable_name: value_name}``.
-            Empty dict if no specific values were requested.
-
-        """
-        return _pyagrum.Counterfactual_values(self)
-
-    def toString(self) -> str:
-        r"""
-
-        Return a string description of the counterfactual query and its result.
-
-        Returns
-        -------
-        str
-            Human-readable summary of the counterfactual computation.
-
-        """
-        return _pyagrum.Counterfactual_toString(self)
-    __swig_destroy__ = _pyagrum.delete_Counterfactual
-
-# Register Counterfactual in _pyagrum:
-_pyagrum.Counterfactual_swigregister(Counterfactual)
-
-def _counterfactual(*args) -> "pyagrum.Tensor":
-    return _pyagrum._counterfactual(*args)
-
-def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
-    return _pyagrum._counterfactualModel(cm, profile, whatif)
 
