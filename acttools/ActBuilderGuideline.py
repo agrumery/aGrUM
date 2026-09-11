@@ -1193,9 +1193,7 @@ _PYGUM_LEAF_MODULES = ("mrf", "id", "cn", "cm", "prm")
 # "struct PYGUM_SHARED_PUBLIC Foo : public Bar {". Forward declarations
 # ("class Foo;", no "{" on the line) never match, which is intentional: only
 # the real definition is a tagging candidate.
-_PYGUM_CLASS_DECL_RE = re.compile(
-  r"^\s*(?:class|struct)\s+(?:(PYGUM_SHARED_PUBLIC)\s+)?([A-Za-z_]\w*)\b[^;{]*\{"
-)
+_PYGUM_CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+(?:(PYGUM_SHARED_PUBLIC)\s+)?([A-Za-z_]\w*)\b[^;{]*\{")
 
 # GUM_MAKE_ERROR(TYPE, ...) invocation sites: the macro (exceptions.h) always
 # expands to "class PYGUM_SHARED_PUBLIC TYPE : public SUPERCLASS { ... }", so every
@@ -1358,9 +1356,7 @@ def _check_pygum_export(details: bool, correction: bool) -> int:
         f"PYGUM_SHARED_PUBLIC {name}<T>;' instead, not auto-fixed)]]"
       )
     elif correction:
-      lines[lineno - 1] = re.sub(
-        r"^(\s*)(class|struct)\s+", r"\1\2 PYGUM_SHARED_PUBLIC ", lines[lineno - 1], count=1
-      )
+      lines[lineno - 1] = re.sub(r"^(\s*)(class|struct)\s+", r"\1\2 PYGUM_SHARED_PUBLIC ", lines[lineno - 1], count=1)
       with open(header, "w", encoding="utf-8") as f:
         f.writelines(lines)
       res = f"{res} [[(✓)]]"

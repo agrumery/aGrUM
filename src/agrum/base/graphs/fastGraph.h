@@ -47,11 +47,11 @@
 #ifndef GUM_FAST_GRAPH_H
 #define GUM_FAST_GRAPH_H
 
-#include <string_view>
-
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphs/mixedGraph.h>
+
+#include <string_view>
 
 namespace gum {
 

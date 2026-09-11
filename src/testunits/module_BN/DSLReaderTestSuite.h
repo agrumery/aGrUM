@@ -66,7 +66,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     // Mildew is not readable (because of the VERY LARGE FLOAT_LIST in foto_4
     // (at
     // least))...

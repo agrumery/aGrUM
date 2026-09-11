@@ -359,7 +359,6 @@ namespace gum_tests {
     /// Test sur les fonctions avec valeurs exactes
     // *****************************************************************************************************
 
-
     // *****************************************************************************************************
     /// The aim of these function is to reproduce
     /// specific diagrams which generated bug previously

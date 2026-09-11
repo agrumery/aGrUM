@@ -80,7 +80,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     static gum::InfluenceDiagram< double > buildNeapolitanModel_() {
       gum::InfluenceDiagram< double > model;
 

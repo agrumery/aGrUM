@@ -54,7 +54,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     void xtest_trans5() {
       {
         gum::DiscretizedVariable< double > var("X1", "");

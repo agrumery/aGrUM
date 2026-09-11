@@ -41,8 +41,8 @@
 #pragma once
 
 #include <agrum/base/graphs/DAG.h>
-#include <agrum/base/graphs/PDAG.h>
 #include <agrum/base/graphs/fastGraph.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="636" viewBox="0 0 760 636">
+
+<defs>
+  <marker id="arrow-eager" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3D9BE9"/>
+  </marker>
+  <marker id="arrow-lazy" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#9AA5B1"/>
+  </marker>
+</defs>
+
+<g transform="translate(50,20)"><rect x="20.0" y="10.0" width="260.0" height="60.0" rx="9" ry="9" fill="#2B2F36" stroke="#5A6270" stroke-width="1.4"/>
+<rect x="20.0" y="10.0" width="260.0" height="18.0" rx="9" ry="9" fill="#3A3D41"/>
+<circle cx="34.0" cy="19.0" r="4" fill="#FF5F56"/>
+<circle cx="47.0" cy="19.0" r="4" fill="#FFBD2E"/>
+<circle cx="60.0" cy="19.0" r="4" fill="#27C93F"/>
+<text font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="15" xml:space="preserve"><tspan x="36.0" y="54.0" font-weight="400" fill="#7F8A9B">&gt;&gt;&gt; </tspan><tspan x="72.0" y="54.0" font-weight="700" fill="#C586C0">import</tspan><tspan x="126.0" y="54.0" font-weight="600" fill="#4FC1FF"> pyagrum</tspan></text>
+<line x1="150.0" y1="70.0" x2="150.0" y2="114.0" stroke="#3D9BE9" stroke-width="2.6" marker-end="url(#arrow-eager)"/>
+<text x="164.0" y="97.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#3D9BE9" text-anchor="start">eager</text>
+<text x="63.0" y="97.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#9AA5B1" text-anchor="start">lazy</text>
+<rect x="85.0" y="116.0" width="130.0" height="60.0" rx="10" ry="10" fill="#123C69"/>
+<text x="150.0" y="135.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">core</text>
+<text x="150.0" y="150.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" fill="#CBD9E8" text-anchor="middle">BASE + BN</text>
+<text x="150.0" y="163.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#D7E9F2" text-anchor="middle">loaded</text>
+<path d="M 144.0 70.0 L 144.0 80.0 L 55.0 80.0 L 55.0 556.0" fill="none" stroke="#9AA5B1" stroke-width="1.8"/>
+<rect x="85.0" y="198.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="225.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">mrf</text>
+<text x="150.0" y="241.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="228.0" x2="83.0" y2="228.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="280.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="307.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">id</text>
+<text x="150.0" y="323.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="310.0" x2="83.0" y2="310.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="362.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="389.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">cn</text>
+<text x="150.0" y="405.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="392.0" x2="83.0" y2="392.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="444.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="471.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">cm</text>
+<text x="150.0" y="487.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="474.0" x2="83.0" y2="474.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="526.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="553.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">prm</text>
+<text x="150.0" y="569.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="556.0" x2="83.0" y2="556.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/></g><g transform="translate(410,20)"><rect x="20.0" y="10.0" width="260.0" height="60.0" rx="9" ry="9" fill="#2B2F36" stroke="#5A6270" stroke-width="1.4"/>
+<rect x="20.0" y="10.0" width="260.0" height="18.0" rx="9" ry="9" fill="#3A3D41"/>
+<circle cx="34.0" cy="19.0" r="4" fill="#FF5F56"/>
+<circle cx="47.0" cy="19.0" r="4" fill="#FFBD2E"/>
+<circle cx="60.0" cy="19.0" r="4" fill="#27C93F"/>
+<text font-family="SFMono-Regular, Menlo, Consolas, monospace" font-size="15" xml:space="preserve"><tspan x="36.0" y="54.0" font-weight="400" fill="#7F8A9B">&gt;&gt;&gt; </tspan><tspan x="72.0" y="54.0" font-weight="700" fill="#C586C0">import</tspan><tspan x="126.0" y="54.0" font-weight="600" fill="#4FC1FF"> pyagrum.mrf</tspan></text>
+<line x1="150.0" y1="70.0" x2="150.0" y2="114.0" stroke="#3D9BE9" stroke-width="2.6" marker-end="url(#arrow-eager)"/>
+<text x="164.0" y="97.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#3D9BE9" text-anchor="start">eager</text>
+<text x="63.0" y="97.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#9AA5B1" text-anchor="start">lazy</text>
+<rect x="85.0" y="116.0" width="130.0" height="60.0" rx="10" ry="10" fill="#123C69"/>
+<text x="150.0" y="142.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">core</text>
+<text x="150.0" y="158.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="normal" fill="#CBD9E8" text-anchor="middle">BASE + BN</text>
+<rect x="85.0" y="164.0" width="130.0" height="60.0" rx="10" ry="10" fill="#1E6091"/>
+<text x="150.0" y="191.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">mrf</text>
+<text x="150.0" y="207.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#D7E9F2" text-anchor="middle">loaded</text>
+<path d="M 144.0 70.0 L 144.0 80.0 L 55.0 80.0 L 55.0 522.0" fill="none" stroke="#9AA5B1" stroke-width="1.8"/>
+<rect x="85.0" y="246.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="273.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">id</text>
+<text x="150.0" y="289.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="276.0" x2="83.0" y2="276.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="328.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="355.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">cn</text>
+<text x="150.0" y="371.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="358.0" x2="83.0" y2="358.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="410.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="437.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">cm</text>
+<text x="150.0" y="453.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="440.0" x2="83.0" y2="440.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/>
+<rect x="85.0" y="492.0" width="130.0" height="60.0" rx="9" ry="9" fill="#DCEAF6" stroke="#8FB4D9" stroke-width="1.6"/>
+<text x="150.0" y="519.0" font-family="Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#3E6489" text-anchor="middle">prm</text>
+<text x="150.0" y="535.0" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#8FB4D9" text-anchor="middle" font-style="italic">lazy</text>
+<line x1="55.0" y1="522.0" x2="83.0" y2="522.0" stroke="#9AA5B1" stroke-width="1.8" marker-end="url(#arrow-lazy)"/></g>
+</svg>

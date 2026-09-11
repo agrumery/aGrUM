@@ -112,7 +112,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void MCBNDistance< GUM_SCALAR >::computeKL_() {
-    auto Iq              = q_.completeInstantiation();
+    auto       Iq        = q_.completeInstantiation();
     const auto topoOrder = p_.topologicalOrder();
     initApproximationScheme();
 

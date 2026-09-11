@@ -38,11 +38,10 @@ gen_config_reference.generate(os.path.join(_confdir, "generated"))
 master_doc = "index"
 # General information about the project.
 project = "pyagrum "
-copyright = (
-    "2018-2024, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re"
-    + pyagrum.__version__
-    + ")"
-)
+# get current year
+import datetime
+year = datetime.datetime.now().year
+copyright = f"2018-{year}, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re{pyagrum.__version__})"
 author = "Pierre-henri Wuillemin"
 
 import matplotlib

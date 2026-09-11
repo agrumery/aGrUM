@@ -425,7 +425,8 @@ namespace gum {
 
   /// the hash function for idSets
   template <>
-  class GUM_SHARED_PUBLIC HashFunc< learning::IdCondSet >: public HashFuncBase< learning::IdCondSet > {
+  class GUM_SHARED_PUBLIC HashFunc< learning::IdCondSet >:
+      public HashFuncBase< learning::IdCondSet > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

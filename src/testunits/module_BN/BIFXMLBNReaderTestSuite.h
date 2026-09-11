@@ -68,7 +68,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     static void testRead_file2() {
       std::string              file = GET_RESSOURCES_PATH("bifxml/BNBIFXMLReader_file2.bifxml");
       gum::BayesNet< double >* net  = new gum::BayesNet< double >();

@@ -137,7 +137,7 @@
 #  define GUM_TEST_IMPL_(Suite, Module, TestName) \
     TEST_CASE_FIXTURE(Suite##TestSuite, "[" #Module "][" #Suite "] " #TestName)
 #  define GUM_TEST_IMPL(Suite, Module, TestName) GUM_TEST_IMPL_(Suite, Module, TestName)
-#  define GUM_TEST(TestName)                     GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
-#  define GUM_TEST_INACTIVE(TestName)            GUM_TEST(TestName) * doctest::skip()
+#  define GUM_TEST(TestName)          GUM_TEST_IMPL(GUM_CURRENT_SUITE, GUM_CURRENT_MODULE, TestName)
+#  define GUM_TEST_INACTIVE(TestName) GUM_TEST(TestName) * doctest::skip()
 
 #endif   // AGRUM_TEST_SUITE_H

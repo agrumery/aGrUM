@@ -276,18 +276,13 @@ class ActBuilderAgrum(ActBuilder):
     """Returns a writable site-packages directory for `python`: its purelib if
     that already exists (covers an active venv/conda env), else its user site,
     created if needed. None if no usable Python environment is found."""
-    probe = (
-      "import sysconfig,os;"
-      "d=sysconfig.get_path('purelib');"
-      "print(d if os.path.isdir(d) else '')"
-    )
+    probe = "import sysconfig,os;d=sysconfig.get_path('purelib');print(d if os.path.isdir(d) else '')"
     r = subprocess.run([python, "-c", probe], capture_output=True, text=True)
     candidate = r.stdout.strip() if r.returncode == 0 else ""
     if candidate and os.access(candidate, os.W_OK):
       return candidate
 
-    r = subprocess.run([python, "-c", "import site;print(site.getusersitepackages())"],
-                        capture_output=True, text=True)
+    r = subprocess.run([python, "-c", "import site;print(site.getusersitepackages())"], capture_output=True, text=True)
     user_site = r.stdout.strip() if r.returncode == 0 else ""
     if user_site:
       try:
@@ -307,8 +302,12 @@ class ActBuilderAgrum(ActBuilder):
     if site_dir is None:
       notif("No writable Python site-packages detected -- skipping gum_cppnb install.")
       return
-    shutil.copytree(os.path.join("src", "gum_cppnb"), os.path.join(site_dir, "gum_cppnb"),
-                     ignore=shutil.ignore_patterns("__pycache__"), dirs_exist_ok=True)
+    shutil.copytree(
+      os.path.join("src", "gum_cppnb"),
+      os.path.join(site_dir, "gum_cppnb"),
+      ignore=shutil.ignore_patterns("__pycache__"),
+      dirs_exist_ok=True,
+    )
     notif(f"gum_cppnb installed in {site_dir}")
 
   def build(self):

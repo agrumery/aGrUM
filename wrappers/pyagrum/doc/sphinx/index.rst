@@ -90,8 +90,16 @@ Reference manual
   bnmixture
   qBNSampling
 
+
 .. toctree::
-  :caption: 6- pyagrum's modules
+  :caption: 6- pyAgrum's package structure
+  :maxdepth: 2
+
+  PyAgrumModules
+
+
+.. toctree::
+  :caption: 7- pyagrum's modules
   :maxdepth: 2
   :titlesonly:
 
@@ -103,7 +111,7 @@ Reference manual
   pyAgrum.lib
 
 .. toctree::
-  :caption: 7- pyAgrum's tools
+  :caption: 8- pyAgrum's tools
   :maxdepth: 2
   :titlesonly:
 
@@ -115,7 +123,7 @@ Reference manual
   exceptions
 
 .. toctree::
-  :caption: 8- Customizing pyAgrum
+  :caption: 9- Customizing pyAgrum
   :maxdepth: 1
   :titlesonly:
 
@@ -123,7 +131,7 @@ Reference manual
 
 
 .. toctree::
-  :caption: 9- Appendices
+  :caption: 10- Appendices
   :maxdepth: 1
 
   bibliography

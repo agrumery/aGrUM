@@ -91,7 +91,7 @@ namespace gum {
     }
     // add parents (always written, even empty, so the section always exists)
     content["parents"] = ordered_json::object();
-    auto& parentsObj = content["parents"].template get_ref< ordered_json::object_t& >();
+    auto& parentsObj   = content["parents"].template get_ref< ordered_json::object_t& >();
     parentsObj.reserve(bn.size());
     for (const auto& node: bn.nodes()) {
       ordered_json parentList = ordered_json::array();
@@ -102,7 +102,7 @@ namespace gum {
     }
     // add cpts (always written, even empty, so the section always exists)
     content["cpt"] = ordered_json::object();
-    auto& cptObj = content["cpt"].template get_ref< ordered_json::object_t& >();
+    auto& cptObj   = content["cpt"].template get_ref< ordered_json::object_t& >();
     cptObj.reserve(bn.size());
     for (const auto& node: bn.nodes()) {
       const auto& cpt = bn.cpt(node);

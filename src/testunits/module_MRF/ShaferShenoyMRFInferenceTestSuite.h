@@ -62,7 +62,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     static gum::Tensor< double > pAC(const gum::MarkovRandomField< double >& mn) {
       gum::Tensor< double > joint;
       for (auto& [nods, factor]: mn.factors()) {

@@ -378,7 +378,6 @@ namespace gum_tests {
     /// Test sur les fonctions avec valeurs exactes
     // ************************************************************************************************
 
-
     //  ************************************************************************************************
     ///  Fonction de reproduction des tests amenant à des bugs/erreurs (rayer
     ///  les mentions inutiles)

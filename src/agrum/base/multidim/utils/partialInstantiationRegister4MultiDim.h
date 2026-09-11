@@ -89,10 +89,9 @@ namespace gum {
   class PartialInstantiationRegister4MultiDim {
     public:
     /// The type of functions used by the register
-    using PartialInstantiationPtr
-        = MultiDimImplementation< GUM_ELEMENT >* (*)(const MultiDimImplementation< GUM_ELEMENT >*,
-                                                     const HashTable< const DiscreteVariable*,
-                                                                      Idx >&);
+    using PartialInstantiationPtr = MultiDimImplementation< GUM_ELEMENT >* (*)(
+        const MultiDimImplementation< GUM_ELEMENT >*,
+        const HashTable< const DiscreteVariable*, Idx >&);
 
     // ========================================================================
     /// @name Accessors / Modifiers

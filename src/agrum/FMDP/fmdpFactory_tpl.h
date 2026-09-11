@@ -68,7 +68,6 @@ namespace gum {
   /* ****************************************************************************************************
    * **/
 
-
   // Default constructor.
   // @param fmdp A pointer over the Factored Markov Decision Process filled by
   // this factory.
@@ -97,7 +96,6 @@ namespace gum {
   /* ** **/
   /* ****************************************************************************************************
    * **/
-
 
   // Returns the IBayesNet created by this factory.
 
@@ -142,7 +140,6 @@ namespace gum {
   /* ** **/
   /* ****************************************************************************************************
    * **/
-
 
   // Tells the factory that we're in a variable declaration.
 
@@ -249,7 +246,6 @@ namespace gum {
   /* ****************************************************************************************************
    * **/
 
-
   // Tells the factory that we're declaring action
 
   template < typename GUM_ELEMENT >
@@ -296,7 +292,6 @@ namespace gum {
   /* ** **/
   /* ****************************************************************************************************
    * **/
-
 
   // Tells the factory that we're declaring transition
 
@@ -366,7 +361,6 @@ namespace gum {
   /* ****************************************************************************************************
    * **/
 
-
   // Tells the factory that we're declaring cost
 
   template < typename GUM_ELEMENT >
@@ -425,7 +419,6 @@ namespace gum {
   /* ** **/
   /* ****************************************************************************************************
    * **/
-
 
   // Tells the factory that we're declaring reward
 
@@ -529,7 +522,6 @@ namespace gum {
   /* ****************************************************************************************************
    * **/
 
-
   // Tells the factory that we're declaring discount
   template < typename GUM_ELEMENT >
   void FMDPFactory< GUM_ELEMENT >::startDiscountDeclaration() {
@@ -567,7 +559,6 @@ namespace gum {
   /* ****************************************************************************************************
    * **/
 
-
   // Insert in diagram a non terminal node
 
   template < typename GUM_ELEMENT >
@@ -600,7 +591,6 @@ namespace gum {
   /* ** **/
   /* ****************************************************************************************************
    * **/
-
 
   // Raise an OperationNotAllowed with the message "Illegal state."
 

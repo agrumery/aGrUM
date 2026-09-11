@@ -54,7 +54,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     void xtest_trans5() {
       gum::learning::DBTranslator4RangeVariable translator(1000);
       GUM_CHECK_ASSERT_THROWS_NOTHING(translator.translate("3"));

@@ -49,12 +49,12 @@
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
-#  define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
+#define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
-#  include <agrum/agrum.h>
+#include <agrum/agrum.h>
 
-#  include <agrum/base/graphs/parts/nodeGraphPart.h>
-#  include <agrum/base/multidim/utils/FunctionGraphUtilities/internalNode.h>
+#include <agrum/base/graphs/parts/nodeGraphPart.h>
+#include <agrum/base/multidim/utils/FunctionGraphUtilities/internalNode.h>
 
 namespace gum {
 
@@ -441,7 +441,7 @@ namespace gum {
 }   // namespace gum
 
 // ============================================================================
-#  include <agrum/base/multidim/implementations/multiDimFunctionGraphManager_tpl.h>
+#include <agrum/base/multidim/implementations/multiDimFunctionGraphManager_tpl.h>
 // ============================================================================
 #endif   // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 // ============================================================================

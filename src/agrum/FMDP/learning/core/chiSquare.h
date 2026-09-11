@@ -49,11 +49,11 @@
 
 
 #ifndef GUM_CHI_SQUARE_H
-#  define GUM_CHI_SQUARE_H
+#define GUM_CHI_SQUARE_H
 
-#  include <agrum/base/core/hashTable.h>
+#include <agrum/base/core/hashTable.h>
 
-#  include <agrum/base/core/math/math_utils.h>
+#include <agrum/base/core/math/math_utils.h>
 
 namespace gum {
 
@@ -105,9 +105,9 @@ namespace gum {
 
 } /* namespace gum */
 
-#  ifndef GUM_NO_INLINE
-#    include <agrum/FMDP/learning/core/chiSquare_inl.h>
-#  endif
+#ifndef GUM_NO_INLINE
+#  include <agrum/FMDP/learning/core/chiSquare_inl.h>
+#endif
 #endif   // GUM_CHI_SQUARE_H
 
 

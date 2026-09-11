@@ -70,7 +70,6 @@ namespace gum_tests {
     public:
     // namespace gum_tests
 
-
     void dBN_INRA_regression_testing() {
       {
         gum::BayesNet< double >  net;
