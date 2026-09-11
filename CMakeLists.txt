@@ -86,16 +86,19 @@ include(threads)
 # transitively re-link agrumBASE/agrumBN (see buildFileListsWithModules() in Modules.agrum.cmake) --
 # re-embedding them collided with _pyagrum's PYGUM_PUBLIC dllexports on MSVC (LNK2005) -- so they can
 # no longer inherit these through that PUBLIC link chain either.
+# std::mutex is used unconditionally elsewhere in agrumBASE regardless of GUM_THREADS, so
+# Threads::Threads must always be linked here -- not only under the "stl" flavor -- otherwise
+# GUM_THREADS=omp builds fail to link pthread_mutex_* symbols on glibc < 2.34.
+if (Threads_FOUND)
+    link_libraries(Threads::Threads)
+endif ()
 if (GUM_THREADS MATCHES "stl")
-    if (Threads_FOUND)
-        link_libraries(Threads::Threads)
-        add_compile_definitions(GUM_THREADS_USE_STL)
-    endif ()
+    add_compile_definitions(GUM_THREADS_USE_STL)
 elseif (GUM_THREADS MATCHES "omp")
     if (OpenMP_FOUND)
         link_libraries(OpenMP::OpenMP_CXX)
-        add_compile_definitions(GUM_THREADS_USE_OMP)
     endif ()
+    add_compile_definitions(GUM_THREADS_USE_OMP)
 endif ()
 
 if (BUILD_PYTHON)
