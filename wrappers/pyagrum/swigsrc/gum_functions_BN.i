@@ -125,6 +125,8 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
   elif extension == "NET":
     warns = bn.loadNET(filename, listeners)
   elif extension == "O3PRM":
+    if not hasattr(bn, "loadO3PRM"):
+      raise InvalidArgument("loading a .o3prm file requires 'import pyagrum.prm' first")
     warns = bn.loadO3PRM(filename, opts.get('system', ''),
                          opts.get('classpath', ''), listeners)
   elif extension == "UAI":
@@ -185,6 +187,8 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   elif extension == "UAI":
     bn.saveUAI(filename, allowModificationWhenSaving)
   elif extension == "O3PRM":
+    if not hasattr(bn, "saveO3PRM"):
+      raise InvalidArgument("saving a .o3prm file requires 'import pyagrum.prm' first")
     bn.saveO3PRM(filename, allowModificationWhenSaving)
   elif extension == "JGUM":
     bn.saveGUM(filename)
@@ -449,5 +453,46 @@ def mutilateBN(bn, intervention=None, observation=None):
 
   return (inter_bn, evidence)
 
+
+def getPosterior(model, *, target, evs=None):
+  """
+  Compute the posterior of a single target (variable) in a BN given evidence
+
+
+  getPosterior uses a VariableElimination inference.
+  If more than one target is needed with the same set of evidence or if the same
+  target is needed with more than one set of evidence, this function is not
+  relevant since it creates a new inference engine every time it is called.
+
+  Parameters
+  ----------
+  bn : pyagrum.BayesNet or pyagrum.MarkovRandomField
+    The probabilistic Graphical Model
+  target: string or int
+    variable name or id (forced keyword argument)
+  evs:  dict[name|id:val, name|id : list[ val1, val2 ], ...]. (optional forced keyword argument)
+    the (hard and soft) evidence
+
+  Returns
+  -------
+    posterior (pyagrum.Tensor or other)
+  """
+  if isinstance(model, pyagrum.BayesNet):
+    inf = pyagrum.VariableElimination(model)
+  else:
+    # lazy import: MarkovRandomField only lives in the pyagrum.mrf extension,
+    # keep the common BayesNet-only case free of it
+    import pyagrum.mrf as _mrf
+    if isinstance(model, _mrf.MarkovRandomField):
+      inf = _mrf.ShaferShenoyMRFInference(model)
+    else:
+      raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
+
+  if evs is not None:
+    inf.setEvidence(evs)
+  inf.addTarget(target)
+  inf.makeInference()
+  # creating a new Tensor from posterior(will disappear with ie)
+  return pyagrum.Tensor(inf.posterior(target))
 
 %}

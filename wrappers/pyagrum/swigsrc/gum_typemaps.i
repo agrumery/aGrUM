@@ -48,28 +48,12 @@
 // Sentinel typedefs: used as %extend return types so that passForPyType.py
 // can map each sentinel name to the correct Python type annotation.
 // All are aliases for PyObject at the C level — no runtime overhead.
+// Declared in a shared header (not inlined here) so split submodules can
+// %{ #include %} it too: %import does not carry raw %{ %} code blocks
+// across modules, only typemap/type declarations (the plain `typedef`
+// list right below, kept for SWIG's own type system).
 %{
-typedef PyObject PyAgrumSetOfArc;
-typedef PyObject PyAgrumSetOfEdge;
-typedef PyObject PyAgrumSetOfInt;
-typedef PyObject PyAgrumSetOfStr;
-typedef PyObject PyAgrumListOfSetOfInt;
-typedef PyObject PyAgrumListOfInt;
-typedef PyObject PyAgrumListOfStr;
-typedef PyObject PyAgrumListOfArc;
-typedef PyObject PyAgrumList;
-typedef PyObject PyAgrumTupleFF;
-typedef PyObject PyAgrumTupleOfInt;
-typedef PyObject PyAgrumDictSF;
-typedef PyObject PyAgrumDictState;
-typedef PyObject PyAgrumInstDict;
-typedef PyObject PyAgrumBool;
-typedef PyObject PyAgrumFloat;
-typedef PyObject PyAgrumArgMinMax;
-typedef PyObject PyAgrumStr;
-typedef PyObject PyAgrumNdArray;
-typedef PyObject PyAgrumNone;
-typedef PyObject PyAgrumDict;
+#include "extensions/pyagrumSentinelTypes.h"
 %}
 typedef PyObject PyAgrumSetOfArc;
 typedef PyObject PyAgrumSetOfEdge;

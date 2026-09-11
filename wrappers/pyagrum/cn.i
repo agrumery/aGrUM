@@ -41,20 +41,23 @@
 
 
 
+%module(package="pyagrum.cn", docstring="pyagrum.cn module") cn
 
-
-
-
- /* EXCEPTION HANDLING */
+// %import only carries typemap/type declarations into this module's own
+// generated .cxx, not raw %{ %} code blocks -- these must be re-declared
+// here too (see mrf.i for the long-form explanation).
 %{
+#include "extensions/helpers.h"
+#include "extensions/pyagrumSentinelTypes.h"
 #include "extensions/pyagrumExceptionHandling.h"
 %}
 
-%exception {
-  try {
-    $action
-  } catch (...) {
-    SetPythonizeAgrumException();
-    SWIG_fail;
-  }
-}
+%import "pyagrum.i"
+
+/////////////////////////////////
+/////// CN submodule ////////////
+/////////////////////////////////
+%include "CNinference.i"
+
+/* extraction of the API for all wrappers */
+%include "aGrUM_wrap_CN.i"

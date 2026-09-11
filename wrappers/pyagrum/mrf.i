@@ -41,20 +41,31 @@
 
 
 
+%module(package="pyagrum.mrf", docstring="pyagrum.mrf module") mrf
 
-
-
-
- /* EXCEPTION HANDLING */
+// %import only carries typemap/type declarations into this module's own
+// generated .cxx, not raw %{ %} code blocks -- PyAgrumHelper and the
+// PyAgrumSetOf*/PyAgrumList*/... sentinel typedefs (used by typemaps
+// declared in pyagrum.i) must be re-declared here too.
 %{
+#include "extensions/helpers.h"
+#include "extensions/pyagrumSentinelTypes.h"
 #include "extensions/pyagrumExceptionHandling.h"
+#include "extensions/PythonLoadListener.h"
 %}
 
-%exception {
-  try {
-    $action
-  } catch (...) {
-    SetPythonizeAgrumException();
-    SWIG_fail;
-  }
-}
+%import "pyagrum.i"
+
+/////////////////////////////////
+/////// MRF submodule ///////////
+/////////////////////////////////
+%include "markovRandomField.i"
+%include "MRFinference.i"
+
+/* extraction of the API for all wrappers */
+%include "aGrUM_wrap_MRF.i"
+// after_templates MUST come after aGrUM_wrap_MRF.i: %extend on template
+// specializations (gum::MarkovRandomField<double>) requires prior %template.
+%include "markovRandomField_after_templates.i"
+
+%include "gum_functions_MRF.i"

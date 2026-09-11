@@ -39,6 +39,13 @@
  ****************************************************************************/
 
 %pythoncode %{
+# _gum_pickle_load/_gum_pickle_save/_gum_set_name_property are defined once in
+# core pyagrum (gum_functions_BASE.i) and re-exported by pyagrum/__init__.py
+# -- %import does not carry %pythoncode content across modules, only
+# re-declaring them here would duplicate them, so pull the same functions in
+# instead.
+from pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+
 def availableMRFExts():
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
@@ -178,40 +185,4 @@ def fastMRF(structure, domain="[2]"):
   return MarkovRandomField.fastPrototype(structure, domain)
 
 
-def getPosterior(model, *, target, evs=None):
-  """
-  Compute the posterior of a single target (variable) in a BN given evidence
-
-
-  getPosterior uses a VariableElimination inference.
-  If more than one target is needed with the same set of evidence or if the same
-  target is needed with more than one set of evidence, this function is not
-  relevant since it creates a new inference engine every time it is called.
-
-  Parameters
-  ----------
-  bn : pyagrum.BayesNet or pyagrum.MarkovRandomField
-    The probabilistic Graphical Model
-  target: string or int
-    variable name or id (forced keyword argument)
-  evs:  dict[name|id:val, name|id : list[ val1, val2 ], ...]. (optional forced keyword argument)
-    the (hard and soft) evidence
-
-  Returns
-  -------
-    posterior (pyagrum.Tensor or other)
-  """
-  if isinstance(model, pyagrum.BayesNet):
-    inf = pyagrum.VariableElimination(model)
-  elif isinstance(model, MarkovRandomField):
-    inf = ShaferShenoyMRFInference(model)
-  else:
-    raise InvalidArgument("Argument model should be a PGM (BayesNet or MarkovRandomField")
-
-  if evs is not None:
-    inf.setEvidence(evs)
-  inf.addTarget(target)
-  inf.makeInference()
-  # creating a new Tensor from posterior(will disappear with ie)
-  return pyagrum.Tensor(inf.posterior(target))
 %}

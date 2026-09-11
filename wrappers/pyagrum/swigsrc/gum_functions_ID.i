@@ -45,6 +45,13 @@
 
 
 %pythoncode %{
+# _gum_pickle_load/_gum_pickle_save/_gum_set_name_property are defined once in
+# core pyagrum (gum_functions_BASE.i) and re-exported by pyagrum/__init__.py
+# -- %import does not carry %pythoncode content across modules, only
+# re-declaring them here would duplicate them, so pull the same functions in
+# instead.
+from pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+
 def availableIDExts():
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 

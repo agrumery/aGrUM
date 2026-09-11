@@ -157,54 +157,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 
 %include "learning.i"
 
-%include "prm.i"
-
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BN.i"
 
 %include "gum_functions_BN.i"
-
-/////////////////////////////////
-/////// CN submodule ////////////
-/////////////////////////////////
-%include "CNinference.i"
-
-/* extraction of the API for all wrappers */
-%include "aGrUM_wrap_CN.i"
-
-/////////////////////////////////
-/////// ID submodule ////////////
-/////////////////////////////////
-%include "influenceDiagram.i"
-%include "influenceDiagramInference.i"
-
-/* extraction of the API for all wrappers */
-%include "aGrUM_wrap_ID.i"
-
-/* Many functions added for pyAgrum                             */
-%pythoncode "common.py"
-
-%include "gum_functions_ID.i"
-
-/////////////////////////////////
-/////// MRF submodule ///////////
-/////////////////////////////////
-%include "markovRandomField.i"
-%include "MRFinference.i"
-
-/* extraction of the API for all wrappers */
-%include "aGrUM_wrap_MRF.i"
-// after_templates MUST come after aGrUM_wrap_MRF.i: %extend on template
-// specializations (gum::MarkovRandomField<double>) requires prior %template.
-%include "markovRandomField_after_templates.i"
-
-%include "gum_functions_MRF.i"
-
-/////////////////////////////////
-///// Causal submodule //////////
-/////////////////////////////////
-%include "causal.i"
-%include "aGrUM_wrap_CM.i"
-// after_templates MUST come after aGrUM_wrap_CM.i: %extend on template
-// specializations (gum::CausalModel<double>, gum::CausalImpact<double>) requires prior %template.
-%include "causal_after_templates.i"

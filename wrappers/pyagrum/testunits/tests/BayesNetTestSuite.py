@@ -43,6 +43,7 @@ import unittest
 
 import numpy
 import pyagrum as gum
+import pyagrum.prm  # noqa -- needed for loadBN/saveBN on .o3prm files (see TestLoadBN/TestSaveBN below)
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 

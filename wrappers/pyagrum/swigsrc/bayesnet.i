@@ -357,34 +357,6 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
     writer.write( name, *self );
   };
 
-  std::string loadO3PRM(std::string name, std::string system="",std::string classpath="",PyObject *l=nullptr)
-  {
-      std::stringstream stream;
-      std::vector<PythonLoadListener> py_listener;
-
-      try {
-          gum::O3prmBNReader<GUM_SCALAR> reader(self,name,system,classpath);
-
-          auto nbErr=reader.proceed();
-          reader.showElegantErrorsAndWarnings(stream);
-          if (nbErr>0) {
-              reader.showErrorCounts(stream);
-              GUM_ERROR(gum::FatalError,stream.str())
-          } else {
-              return stream.str();
-          }
-      } catch (gum::IOError& e) {
-        throw(e);
-      }
-      return "";
-  };
-
-  void saveO3PRM(std::string name,bool allowModificationWhenSaving=false) {
-    gum::O3prmBNWriter<GUM_SCALAR> writer;
-    writer.setAllowModification(allowModificationWhenSaving);
-    writer.write( name, *self );
-  };
-
   std::string loadBIFXML(std::string name, PyObject *l=nullptr)
   {
       std::stringstream stream;

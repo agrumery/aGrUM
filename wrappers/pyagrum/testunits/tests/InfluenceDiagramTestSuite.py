@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum as gum
+import pyagrum.id as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 

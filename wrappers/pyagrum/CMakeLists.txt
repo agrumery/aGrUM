@@ -114,15 +114,50 @@ if(NOT _AGRUM_IPO_SUPPORTED)
   message(STATUS "pyAgrum: LTO not supported by this toolchain (${_AGRUM_IPO_OUTPUT})")
 endif()
 
+# pyAgrum never wraps FMDP in SWIG (independent module, no Python bindings -- see
+# src/modules.txt). Link against every other built module explicitly instead of
+# the full ${LIBAGRUM} interface, which would otherwise pull agrumFMDP into every
+# pyAgrum .so/.pyd for no functional reason.
+set(LIBAGRUM_PYAGRUM "agrumForPyAgrum")
+add_library(${LIBAGRUM_PYAGRUM} INTERFACE)
+foreach(OPTION ${LIST_OF_MODULES})
+  if(NOT OPTION STREQUAL "FMDP" AND (BUILD_${OPTION} OR BUILD_ALL))
+    target_link_libraries(${LIBAGRUM_PYAGRUM} INTERFACE agrum${OPTION})
+  endif()
+endforeach()
+
 macro(gum_add_python_module MODULENAME)
   string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
+
+  # Optional 2nd arg: install subdirectory under pyagrum/ (e.g. "mrf" for
+  # pyagrum.mrf). Defaults to "." (install straight under pyagrum/, today's
+  # only case) so a single-arg call keeps installing where it always has.
+  # Mirrored by _PYAGRUM_BUILD_SUBDIR below: the .so/.py must land in the
+  # same subdirectory in the build tree too, since act test runs pyAgrum
+  # straight out of the build tree (PYTHONPATH), not the installed wheel.
+  set(_PYAGRUM_INSTALL_DIR "${INSTALL_PYTHONDIR}/pyagrum")
+  set(_PYAGRUM_BUILD_SUBDIR "${CMAKE_CURRENT_BINARY_DIR}")
+  if(${ARGC} GREATER 1)
+    set(_PYAGRUM_INSTALL_DIR "${INSTALL_PYTHONDIR}/pyagrum/${ARGV1}")
+    set(_PYAGRUM_BUILD_SUBDIR "${CMAKE_CURRENT_BINARY_DIR}/${ARGV1}")
+    file(MAKE_DIRECTORY ${_PYAGRUM_BUILD_SUBDIR})
+  endif()
+
+  # Not every module has a generic wrappers/swig/aGrUM_wrap_<MODULENAME>.i
+  # layer (PRM's whole API is PRMexplorer.h, included directly) -- only add
+  # it to DEPENDS when it actually exists, otherwise Make/Ninja errors with
+  # "no rule to make target" for a prerequisite nothing produces.
+  set(_PYAGRUM_WRAP_FILE ${SWIG_SOURCE_DIR}/aGrUM_wrap_${MODULENAME}.i)
+  if(NOT EXISTS ${_PYAGRUM_WRAP_FILE})
+    set(_PYAGRUM_WRAP_FILE "")
+  endif()
 
   if(SWIG_FOUND)
     add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
       ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
       ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
-      ${SWIG_SOURCE_DIR}/aGrUM_wrap_${MODULENAME}.i
+      ${_PYAGRUM_WRAP_FILE}
       ${PYAGRUMFILES}
       COMMAND ${SWIG_EXECUTABLE} -c++ -python ${CMAKE_SWIG_FLAGS}
       -outdir ${CMAKE_SWIG_OUTDIR}
@@ -182,7 +217,7 @@ macro(gum_add_python_module MODULENAME)
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES NO_SONAME ON)
 
-  target_link_libraries(${_PYAGRUMLIB} PRIVATE ${LIBAGRUM})
+  target_link_libraries(${_PYAGRUMLIB} PRIVATE ${LIBAGRUM_PYAGRUM})
   target_include_directories(${_PYAGRUMLIB} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${Python_NumPy_INCLUDE_DIRS})
   
   if(AGRUM_PYTHON_SABI AND TARGET Python::SABIModule)
@@ -194,11 +229,31 @@ macro(gum_add_python_module MODULENAME)
   get_filename_component(PY_LIB_DIR "${Python_LIBRARIES}" DIRECTORY)
   target_link_directories(${_PYAGRUMLIB} PRIVATE ${PY_LIB_DIR})
 
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+  # Relative RPATH, not absolute: an absolute ${CMAKE_INSTALL_PREFIX}-based RPATH
+  # works for `act install`'s stable prefix but dangles for a wheel build, whose
+  # temp CMAKE_INSTALL_PREFIX is deleted right after zipping (reproduced earlier:
+  # dlopen looked for libagrumBASE under a /var/folders/.../actXXXXX/lib that no
+  # longer existed). agrumBASE/BN are installed straight into pyagrum/ (see the
+  # install(TARGETS agrumBASE agrumBN ...) call below gum_add_python_module(pyagrum))
+  # so core pyagrum/_pyagrum.so needs same-dir, submodules (pyagrum/<mod>/_<mod>.so)
+  # need one level up -- this also transparently covers the build tree (CMake's
+  # default auto-computed BUILD_RPATH already finds co-located build outputs;
+  # INSTALL_RPATH only takes effect once `cmake --install` actually runs).
+  if(${ARGC} GREATER 1)
+    set(_PYAGRUM_RPATH_UP "/..")
+  else()
+    set(_PYAGRUM_RPATH_UP "")
+  endif()
+  if(APPLE)
+    set(_PYAGRUM_RPATH "@loader_path${_PYAGRUM_RPATH_UP}")
+  else()
+    set(_PYAGRUM_RPATH "$ORIGIN${_PYAGRUM_RPATH_UP}")
+  endif()
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES INSTALL_RPATH_USE_LINK_PATH TRUE INSTALL_RPATH ${_PYAGRUM_RPATH})
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_BINARY_DIR})
+    LIBRARY_OUTPUT_DIRECTORY ${_PYAGRUM_BUILD_SUBDIR} LIBRARY_OUTPUT_DIRECTORY_RELEASE ${_PYAGRUM_BUILD_SUBDIR}
+    RUNTIME_OUTPUT_DIRECTORY ${_PYAGRUM_BUILD_SUBDIR} RUNTIME_OUTPUT_DIRECTORY_RELEASE ${_PYAGRUM_BUILD_SUBDIR})
 
   if(SWIG_COMPILE_FLAGS)
     target_compile_options(${_PYAGRUMLIB} PRIVATE ${SWIG_COMPILE_FLAGS})
@@ -222,18 +277,30 @@ macro(gum_add_python_module MODULENAME)
     target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--gc-sections)
   endif()
 
-  install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
-  install(TARGETS ${_PYAGRUMLIB} DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
+  install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
+  install(TARGETS ${_PYAGRUMLIB} DESTINATION ${_PYAGRUM_INSTALL_DIR})
 
-  # for additionnal rule such test pyAgrum
-  add_custom_command(TARGET ${_PYAGRUMLIB} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${GENERATED_PYTHON}/${MODULENAME_LOWER}.py" "${CMAKE_CURRENT_BINARY_DIR}/.")
-
-  # copy pyLibs at execution time so they are available without a build step
-  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
-  foreach(_pylib causal causalEffectEstimation skbn qBNSampling clg ctbn explain)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory
-      "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/${_pylib}" "${CMAKE_CURRENT_BINARY_DIR}/${_pylib}")
-  endforeach()
+  # Copy the Python proxy into the build tree (needed for `act test`, which
+  # runs pyAgrum straight out of the build tree, not the installed wheel).
+  # A plain `add_custom_command(TARGET ... POST_BUILD ...)` (the previous
+  # approach) only fires when ${_PYAGRUMLIB} itself gets rebuilt/relinked --
+  # a .i change confined to a %pythoncode block updates
+  # ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py (via passForPyType) without
+  # touching the generated .cxx, so the .so has no reason to relink and the
+  # POST_BUILD copy silently never runs, leaving a stale .py in the build
+  # tree. An OUTPUT-based command instead depends on the .py file itself,
+  # regardless of whether the .so needed rebuilding.
+  set(_PY_PROXY_COPY_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_py_proxy_copy.stamp)
+  add_custom_command(OUTPUT ${_PY_PROXY_COPY_STAMP}
+    DEPENDS ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+    COMMAND ${CMAKE_COMMAND} -E copy "${GENERATED_PYTHON}/${MODULENAME_LOWER}.py" "${_PYAGRUM_BUILD_SUBDIR}/."
+    COMMAND ${CMAKE_COMMAND} -E touch ${_PY_PROXY_COPY_STAMP}
+    COMMENT "copying ${MODULENAME} Python proxy into the build tree"
+  )
+  add_custom_target(${MODULENAME_LOWER}_py_proxy_copy ALL DEPENDS ${_PY_PROXY_COPY_STAMP})
+  if(SWIG_FOUND)
+    add_dependencies(${MODULENAME_LOWER}_py_proxy_copy ${MODULENAME_LOWER}_swig_generated)
+  endif()
 
 endmacro()
 
@@ -244,6 +311,66 @@ endmacro()
 #  gum_add_python_module(${MODULE})
 #endforeach()
 gum_add_python_module(pyagrum)
+
+# agrumBASE/BN are forced SHARED for pyAgrum (src/cmake/Modules.agrum.cmake) so
+# every split extension shares one instance of BASE's process-global state (the
+# same reason all the RPATH plumbing above exists). Installing them at the generic
+# ${CMAKE_INSTALL_LIBDIR} (src/cmake/Install.agrum.cmake) is not enough: the wheel
+# builder only zips site-packages (ActBuilderWheel.zip_wheel walks get_base_dir(),
+# never ${prefix}/lib), so a copy has to land *inside* the pyagrum package itself --
+# same convention as numpy's/scipy's bundled *.libs/ shared objects. Harmless no-op
+# if BASE/BN end up static in some other configuration (ARCHIVE artifacts are
+# simply not produced by this DESTINATION-less-for-ARCHIVE rule).
+install(TARGETS agrumBASE agrumBN
+        RUNTIME DESTINATION ${INSTALL_PYTHONDIR}/pyagrum
+        LIBRARY DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
+
+option(PYAGRUM_WITH_MRF "build pyagrum.mrf as a separate extension module" ON)
+option(PYAGRUM_WITH_ID "build pyagrum.id as a separate extension module" ON)
+option(PYAGRUM_WITH_CN "build pyagrum.cn as a separate extension module" ON)
+option(PYAGRUM_WITH_CM "build pyagrum.cm as a separate extension module" ON)
+option(PYAGRUM_WITH_PRM "build pyagrum.prm as a separate extension module" ON)
+
+# Static subpackage __init__.py: just re-exports the compiled extension.
+# Written directly (no source template needed) and installed from the same path.
+#
+# gum_add_python_module's 1st arg (MODULENAME) must match the *actual*
+# on-disk case of wrappers/swig/aGrUM_wrap_<MODULENAME>.i (BASE, BN, MRF,
+# ID, CN, CM -- all uppercase, matching src/modules.txt) -- NOT the lowercase
+# Python package name. Passing lowercase here worked by accident on macOS
+# (APFS is case-insensitive by default) but breaks the CMake dependency
+# tracking on a case-sensitive filesystem (Linux): Make/Ninja would look for
+# a literal aGrUM_wrap_mrf.i, find nothing able to produce it, and fail.
+foreach(_pysubmod_upper MRF ID CN CM PRM)
+  string(TOLOWER ${_pysubmod_upper} _pysubmod)
+  if(PYAGRUM_WITH_${_pysubmod_upper} AND BUILD_${_pysubmod_upper})
+    gum_add_python_module(${_pysubmod_upper} ${_pysubmod})
+    # from .<mod> (the SWIG-generated Python proxy, e.g. mrf.py, which itself
+    # does `from . import _mrf`), NOT from ._<mod> (the raw C extension) --
+    # mirrors how pyagrum/__init__.py itself does `from .pyagrum import X`.
+    #
+    # "from .. import *" first: re-exports the core (BASE+BN) namespace so
+    # `import pyagrum.mrf as gum` is a drop-in superset of `import pyagrum as
+    # gum` -- code that mixes core classes (Tensor, Instantiation, fastBN...)
+    # with module-specific ones needs only the one scoped import.
+    # __getattr__ fallback: delegate names not covered by "from .. import *"
+    # (e.g. getPosterior, only reachable through pyagrum's own lazy
+    # __getattr__ shim, see cmake/__init__.in.py) to the parent package,
+    # so e.g. `import pyagrum.cm as gum; gum.getPosterior(...)` works without
+    # duplicating the lazy-submodule-loading logic here.
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py "from .. import *\nfrom .${_pysubmod} import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubmod})
+  endif()
+endforeach()
+
+# copy pyLibs at execution time so they are available without a build step.
+# Done once, outside gum_add_python_module, so calling the macro for several
+# modules later (Phase 2) won't re-copy the same tree once per module.
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
+foreach(_pylib causal causalEffectEstimation skbn qBNSampling clg ctbn explain)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs/${_pylib}" "${CMAKE_CURRENT_BINARY_DIR}/${_pylib}")
+endforeach()
 
 # updating generated cat requirements.txt from pyagrum/requirements.txt and pyAgrum/optional_requirements.txt
 set(PYAGRUM_REQUIREMENTS_LIST

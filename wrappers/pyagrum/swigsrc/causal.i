@@ -95,15 +95,16 @@
             LaTeX representation of the causal impact expression.
         """
         if doOperatorPrefix is None:
-            doOperatorPrefix = config["causal", "latex_do_prefix"]
+            doOperatorPrefix = pyagrum.config["causal", "latex_do_prefix"]
         if doOperatorSuffix is None:
-            doOperatorSuffix = config["causal", "latex_do_suffix"]
+            doOperatorSuffix = pyagrum.config["causal", "latex_do_suffix"]
         return $action(self, doOperatorPrefix, doOperatorSuffix)
 %}
 
 // CausalImpact constructor: keyword-only on/doing/knowing with str→set coercion.
-// $action expands to _pyagrum.new_CausalImpact; swiginit is the SWIG object
-// initialisation convention for this project.
+// $action expands to _cm.new_CausalImpact; swiginit is the SWIG object
+// initialisation convention for this project. _cm (not _pyagrum) since this
+// module (pyagrum.cm) is a separate compiled extension from core pyagrum.
 %feature("shadow") gum::CausalImpact::CausalImpact %{
     def __init__(self, cm, *, on, doing, knowing=None):
         if isinstance(on, str):
@@ -112,7 +113,7 @@
             doing = {doing}
         if isinstance(knowing, str):
             knowing = {knowing}
-        _pyagrum.CausalImpact_swiginit(self, $action(cm, on, doing,
+        _cm.CausalImpact_swiginit(self, $action(cm, on, doing,
                                        knowing if knowing is not None else set(),
                                        False))
 %}

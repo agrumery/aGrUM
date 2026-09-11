@@ -41,20 +41,30 @@
 
 
 
+%module(package="pyagrum.id", docstring="pyagrum.id module") id
 
-
-
-
- /* EXCEPTION HANDLING */
+// %import only carries typemap/type declarations into this module's own
+// generated .cxx, not raw %{ %} code blocks -- these must be re-declared
+// here too (see mrf.i for the long-form explanation).
 %{
+#include "extensions/helpers.h"
+#include "extensions/pyagrumSentinelTypes.h"
 #include "extensions/pyagrumExceptionHandling.h"
+#include "extensions/PythonLoadListener.h"
 %}
 
-%exception {
-  try {
-    $action
-  } catch (...) {
-    SetPythonizeAgrumException();
-    SWIG_fail;
-  }
-}
+%import "pyagrum.i"
+
+/////////////////////////////////
+/////// ID submodule ////////////
+/////////////////////////////////
+%include "influenceDiagram.i"
+%include "influenceDiagramInference.i"
+
+/* extraction of the API for all wrappers */
+%include "aGrUM_wrap_ID.i"
+
+/* Many functions added for pyAgrum                             */
+%pythoncode "common.py"
+
+%include "gum_functions_ID.i"
