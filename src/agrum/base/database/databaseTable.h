@@ -197,7 +197,7 @@ namespace gum::learning {
    * database.clear ();
    * @endcode
    */
-  class DatabaseTable final: public IDatabaseTable< DBTranslatedValue > {
+  class PYGUM_SHARED_PUBLIC DatabaseTable final: public IDatabaseTable< DBTranslatedValue > {
     public:
     /// the type for the vectors used in the DatabaseTable
     template < typename TX_DATA >

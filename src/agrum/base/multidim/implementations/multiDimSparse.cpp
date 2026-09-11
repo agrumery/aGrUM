@@ -52,7 +52,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  template class MultiDimSparse< double >;
+  template class PYGUM_SHARED_PUBLIC MultiDimSparse< double >;
 #endif
 
 }   // namespace gum

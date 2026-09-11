@@ -73,7 +73,7 @@ namespace gum {
    * is designed to be used in incremental inference engines.
    */
   template < GUM_Numeric GUM_SCALAR >
-  class JointTargetedMRFInference: public MarginalTargetedMRFInference< GUM_SCALAR > {
+  class PYGUM_PUBLIC JointTargetedMRFInference: public MarginalTargetedMRFInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

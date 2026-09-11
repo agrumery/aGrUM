@@ -104,6 +104,15 @@ macro(buildFileListsWithModules)
         if (BUILD_${OPTION} OR BUILD_ALL)
             message(STATUS "** aGrUM Notification:      (+) adding target for ${OPTION}")
 
+            # BASE/BN are the two modules pyAgrum embeds once into core _pyagrum.so (whole-archived,
+            # see wrappers/pyagrum/CMakeLists.txt) instead of re-linking per leaf module -- computed
+            # once here since both the export split below and the dependency handling further down
+            # branch on it.
+            set (_IS_BASE_OR_BN OFF)
+            if (OPTION STREQUAL "BASE" OR OPTION STREQUAL "BN")
+                set (_IS_BASE_OR_BN ON)
+            endif ()
+
             # pyAgrum forces static linkage project-wide (ActBuilderPyAgrum.check_consistency,
             # "Static library forced for [[pyAgrum]] target.") -- BASE/BN stay static here too:
             # they carry process-global state (e.g. CompleteProjectionRegister4MultiDim, used by
@@ -113,6 +122,35 @@ macro(buildFileListsWithModules)
             # built SHARED -- see wrappers/pyagrum/CMakeLists.txt), and every other extension links
             # against that single _pyagrum.so instead of re-embedding its own copy of BASE/BN.
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
+
+            # GUM_PUBLIC blanking applies to every module under BUILD_PYTHON, not just
+            # BASE/BN: -fvisibility=hidden is already active project-wide for pyAgrum
+            # builds (CompilOptions.agrum.cmake), so a class tagged GUM_PUBLIC only
+            # (public C++ API, not needed by pyAgrum -- as opposed to PYGUM_PUBLIC/
+            # PYGUM_SHARED_PUBLIC) would otherwise still get re-exposed by that macro
+            # in *any* module's .so/.pyd, not just the core's. Currently a no-op (0
+            # standalone GUM_PUBLIC tag anywhere in src/agrum/ -- see GUM_PUBLIC.md,
+            # Phase 6 not started), but scoping it to _IS_BASE_OR_BN only would silently
+            # leave a future leaf module's GUM_PUBLIC-only symbols exported under
+            # pyAgrum, contrary to the documented GUM_PUBLIC.md §3.1 semantics.
+            if (BUILD_PYTHON)
+                target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC=)
+            endif ()
+
+            # PYGUM_SHARED_EXPORTING marks agrumBASE/agrumBN as the true owner of every
+            # PYGUM_SHARED_PUBLIC-tagged symbol (config.h.in) for the Windows dllexport/
+            # dllimport split: only these two targets' own object files -- whole-archived
+            # into core _pyagrum (and core's own SWIG wrap TU, see
+            # wrappers/pyagrum/CMakeLists.txt) -- may dllexport them. Every other consumer
+            # (leaf modules PRM/CN/ID/MRF/CM) sees dllimport instead, so it references
+            # core's exported copy instead of emitting its own duplicate definition
+            # (LNK2005 on MSVC). Unlike GUM_PUBLIC above, this stays BASE/BN-only: it is
+            # specifically the whole-archive producer/consumer split, which only BASE/BN
+            # need -- a leaf module's own symbols use PYGUM_PUBLIC (unconditional
+            # dllexport, no split) instead of PYGUM_SHARED_PUBLIC.
+            if (BUILD_PYTHON AND _IS_BASE_OR_BN)
+                target_compile_definitions (agrum${OPTION} PRIVATE PYGUM_SHARED_EXPORTING)
+            endif ()
 
             target_include_directories (agrum${OPTION} PRIVATE ${AGRUM_SOURCE_DIR};${AGRUM_BINARY_DIR})
             target_include_directories (agrum${OPTION} INTERFACE $<INSTALL_INTERFACE:include>)
@@ -129,7 +167,21 @@ macro(buildFileListsWithModules)
 
             # handle dependencies
             foreach (DEP ${${OPTION}_DEPS})
-                target_link_libraries (agrum${OPTION} PUBLIC agrum${DEP})
+                if (BUILD_PYTHON AND NOT _IS_BASE_OR_BN)
+                    # Leaf pyAgrum modules (PRM/MRF/CN/ID/CM) reach BASE/BN through core _pyagrum.so
+                    # only (see comment above): do NOT link agrum${DEP} here at all. For a STATIC
+                    # library, target_link_libraries still adds the dependency to the *direct*
+                    # consumer's link line even when PRIVATE -- static libs have no link step of
+                    # their own, so CMake must pass their transitive deps down for symbol
+                    # resolution regardless of PRIVATE/PUBLIC -- so PRIVATE alone still re-embeds
+                    # agrumBASE/agrumBN's object code into the leaf .pyd on top of what _pyagrum's
+                    # import lib already dllexports there (LNK2005 on MSVC). Headers stay reachable
+                    # via the AGRUM_SOURCE_DIR PRIVATE include set above; unresolved symbols are
+                    # resolved at the final .pyd link against _pyagrum (see
+                    # wrappers/pyagrum/CMakeLists.txt).
+                else ()
+                    target_link_libraries (agrum${OPTION} PUBLIC agrum${DEP})
+                endif ()
             endforeach()
 
         endif ()

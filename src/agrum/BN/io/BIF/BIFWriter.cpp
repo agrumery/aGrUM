@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BIFWriter< double >;
+template class PYGUM_SHARED_PUBLIC gum::BIFWriter< double >;
 #endif

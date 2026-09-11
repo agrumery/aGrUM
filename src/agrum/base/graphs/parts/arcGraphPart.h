@@ -95,7 +95,7 @@ namespace gum {
    * @endcode
    */
 
-  class ArcGraphPart {
+  class PYGUM_SHARED_PUBLIC ArcGraphPart {
     public:
     using ArcIterator = ArcSetIterator;
 

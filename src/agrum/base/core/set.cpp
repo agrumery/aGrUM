@@ -55,8 +55,10 @@ namespace gum {
   // The constinit ensures it is created at compile time. Here, we use the
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
-  constinit const SetIterator< int >     _static_Set_end_(StaticInitializer::CONSTINIT);
-  constinit const SetIteratorSafe< int > _static_Set_end_safe_(StaticInitializer::CONSTINIT);
+  extern constinit PYGUM_SHARED_PUBLIC const SetIterator< int >
+                                             _static_Set_end_(StaticInitializer::CONSTINIT);
+  extern constinit PYGUM_SHARED_PUBLIC const SetIteratorSafe< int >
+                                             _static_Set_end_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 
@@ -64,10 +66,14 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::Set< int >;
-template class gum::Set< long >;
-template class gum::Set< unsigned int >;
-template class gum::Set< unsigned long >;
-template class gum::Set< double >;
-template class gum::Set< std::string >;
+template class PYGUM_SHARED_PUBLIC gum::Set< int >;
+template class PYGUM_SHARED_PUBLIC gum::Set< long >;
+template class PYGUM_SHARED_PUBLIC gum::Set< unsigned int >;
+template class PYGUM_SHARED_PUBLIC gum::Set< unsigned long >;
+template class PYGUM_SHARED_PUBLIC gum::Set< double >;
+template class PYGUM_SHARED_PUBLIC gum::Set< std::string >;
+
+template class PYGUM_SHARED_PUBLIC gum::HashFunc< gum::Set< unsigned long > >;
+template class PYGUM_SHARED_PUBLIC gum::SetIterator< int >;
+template class PYGUM_SHARED_PUBLIC gum::SetIteratorSafe< int >;
 #endif

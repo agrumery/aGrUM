@@ -79,7 +79,7 @@ namespace gum {
    * dimensionnal containers). Its purpose is to deal with the dimensions.
    *
    */
-  class MultiDimInterface {
+  class PYGUM_SHARED_PUBLIC MultiDimInterface {
     public:
     /**
      * @brief Class destructor.
@@ -222,7 +222,8 @@ namespace gum {
    * sequence of variables.
    * @throw OperationNotAllowed Raised if *this is non mutable.
    */
-  MultiDimInterface& operator<<(MultiDimInterface& c, const DiscreteVariable& v);
+  PYGUM_SHARED_PUBLIC MultiDimInterface& operator<<(MultiDimInterface&      c,
+                                                    const DiscreteVariable& v);
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -231,7 +232,8 @@ namespace gum {
    * @throw OperationNotAllowed Raised if this object is non mutable.
    * @throw NotFound Raised if v does not belong to this
    */
-  MultiDimInterface& operator>>(MultiDimInterface& c, const DiscreteVariable& v);
+  PYGUM_SHARED_PUBLIC MultiDimInterface& operator>>(MultiDimInterface&      c,
+                                                    const DiscreteVariable& v);
 
 } /* namespace gum */
 

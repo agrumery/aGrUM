@@ -69,7 +69,7 @@ namespace gum {
    *
    * \ingroup graph_group
    */
-  class PartialOrderedTriangulation: public StaticTriangulation {
+  class PYGUM_SHARED_PUBLIC PartialOrderedTriangulation: public StaticTriangulation {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

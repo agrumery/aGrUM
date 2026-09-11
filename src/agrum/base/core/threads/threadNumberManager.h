@@ -60,7 +60,7 @@ namespace gum {
    * @brief A class to manage the number of threads to use in an algorithm
    * @headerfile threadNumberManager.h <agrum/base/core/threads/threadNumberManager.h>
    */
-  class ThreadNumberManager: public IThreadNumberManager {
+  class PYGUM_SHARED_PUBLIC ThreadNumberManager: public IThreadNumberManager {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

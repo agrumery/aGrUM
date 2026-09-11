@@ -76,7 +76,7 @@ namespace gum {
    *  - satisfiesBackdoorCriterion   => pyagrum: is_backdoor
    *  - satisfiesFrontdoorCriterion  => pyagrum: is_frontdoor
    */
-  class DoorCriteria {
+  class PYGUM_PUBLIC DoorCriteria {
     public:
     /// Convenience type: list of candidate adjustment sets.
     using NodeSetVec = std::vector< NodeSet >;

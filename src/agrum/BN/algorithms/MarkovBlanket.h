@@ -64,7 +64,7 @@ namespace gum {
    represents the Markov Blanket.
    *
    */
-  class MarkovBlanket {
+  class PYGUM_SHARED_PUBLIC MarkovBlanket {
     public:
     MarkovBlanket(const DAGmodel& m, NodeId n, int level = 1);
     MarkovBlanket(const DAGmodel& m, std::string_view name, int level = 1);

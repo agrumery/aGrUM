@@ -1735,11 +1735,15 @@ namespace gum {
   // The type of _Bijection_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const BijectionIterator< int, int >     _static_Bijection_end_;
-  extern const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC BijectionIterator< int, int >;
+  extern template class PYGUM_SHARED_PUBLIC BijectionIteratorSafe< int, int >;
+#  endif
+  extern PYGUM_SHARED_PUBLIC const BijectionIterator< int, int > _static_Bijection_end_;
+  extern PYGUM_SHARED_PUBLIC const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
 
-  inline constexpr void* const _Bijection_end_      = (void* const)&_static_Bijection_end_;
-  inline constexpr void* const _Bijection_end_safe_ = (void* const)&_static_Bijection_end_safe_;
+  inline const void* const _Bijection_end_      = (void* const)&_static_Bijection_end_;
+  inline const void* const _Bijection_end_safe_ = (void* const)&_static_Bijection_end_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
@@ -1758,8 +1762,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::Bijection< int, int >;
-extern template class gum::Bijection< std::string, std::string >;
+extern template class PYGUM_SHARED_PUBLIC gum::Bijection< int, int >;
+extern template class PYGUM_SHARED_PUBLIC gum::Bijection< std::string, std::string >;
 #endif
 
 

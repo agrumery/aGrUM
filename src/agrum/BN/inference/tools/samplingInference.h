@@ -267,7 +267,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class SamplingInference< double >;
+  extern template class PYGUM_SHARED_PUBLIC SamplingInference< double >;
 #endif
 
 }   // namespace gum

@@ -227,8 +227,96 @@ macro(gum_add_python_module MODULENAME)
   # its own copy -- this is what keeps process-global state (e.g.
   # CompleteProjectionRegister4MultiDim, used by Tensor::min/max/sum/product) a
   # single shared instance across every pyAgrum SWIG extension.
+  #
+  # "Embedded once" has to mean the WHOLE compiled surface of BASE/BN, not just
+  # whatever core's own SWIG wrap file happens to reference: a plain
+  # target_link_libraries() on a STATIC archive only pulls in the .o members
+  # needed to resolve symbols already seen by the linker (classic archive
+  # semantics) -- so a symbol used only by a leaf module (e.g. gum::Formula,
+  # used solely by PRM's o3prm parser; gum::BayesNetFactory<double>;
+  # gum::Rational<double>) would silently never make it into _pyagrum.so at
+  # all, no matter how it's tagged. PYGUM_PUBLIC only controls whether an
+  # *included* symbol is exported -- not whether it gets included in the first
+  # place -- so both are needed together: whole-archive for inclusion,
+  # PYGUM_PUBLIC for visibility. Force the whole archive in with the
+  # platform-specific linker flag.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
-    target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBASE agrumBN)
+    # Whole-archive is the ONLY link mechanism used for BASE/BN into core: do
+    # NOT also add a plain target_link_libraries(... agrumBASE agrumBN) here.
+    # That was tried first (to get include dirs for free) but it lists the
+    # same .a three times in the final link line -- once forced, once plain,
+    # once more transitively (agrumBN PUBLIC-links agrumBASE) -- and ld64
+    # does not cleanly coalesce weak/template symbols pulled in through both
+    # a forced and a plain reference to the same archive: observed duplicate
+    # addresses for the exact same mangled symbol (e.g.
+    # gum::BayesNetFactory<double>::BayesNetFactory(gum::BayesNet<double>*)
+    # showed up twice, each demoted to local linkage instead of being merged
+    # into one exported definition). Pull just the include dirs we actually
+    # need instead of a full target dependency.
+    target_include_directories(${_PYAGRUMLIB} PRIVATE ${AGRUM_SOURCE_DIR} ${AGRUM_BINARY_DIR})
+    # This TU (core's own SWIG wrap file) whole-archives agrumBASE/agrumBN's compiled
+    # object code directly into itself (see the platform branches below), so it is
+    # really a third "owner" of every PYGUM_SHARED_PUBLIC symbol alongside agrumBASE/
+    # agrumBN -- without this define, PYGUM_SHARED_PUBLIC resolves to dllimport here
+    # (config.h.in: GUM_FOR_SWIG defined, PYGUM_SHARED_EXPORTING not) even though the
+    # symbol's actual definition ends up in this very binary. MSVC's linker tolerates
+    # that mismatch with an LNK4217 warning (locally-defined symbol imported), but GNU
+    # ld (MinGW) rejects it outright: unlike link.exe, it never resolves an __imp_*
+    # thunk against a same-binary definition, only against a real import library --
+    # so leaving this TU on dllimport turned every whole-archived symbol it touches
+    # into a hard "undefined reference to `__imp_...'" on MinGW.
+    target_compile_definitions(${_PYAGRUMLIB} PRIVATE PYGUM_SHARED_EXPORTING)
+    # $<TARGET_FILE:...> in target_link_options is not always enough to
+    # guarantee build order under parallel make -- force it explicitly so a
+    # clean -j build doesn't try to link before agrumBASE/agrumBN exist.
+    add_dependencies(${_PYAGRUMLIB} agrumBASE agrumBN)
+    if(APPLE)
+      target_link_options(${_PYAGRUMLIB} PRIVATE
+        -Wl,-force_load,$<TARGET_FILE:agrumBASE>
+        -Wl,-force_load,$<TARGET_FILE:agrumBN>)
+    elseif(MSVC)
+      # MSVC has no force-load-only mechanism: /WHOLEARCHIVE requires the
+      # archive to also be a normal link input. Link only agrumBN here, NOT
+      # agrumBASE too -- agrumBN already PUBLIC-links agrumBASE (see
+      # Modules.agrum.cmake), so listing agrumBASE explicitly here is a
+      # redundant duplicate in the final link line (once via this call, once
+      # transitively via agrumBN, plus /WHOLEARCHIVE referencing it by name).
+      # Harmless simplification, not a correctness fix: the LNK2019
+      # unresolved-external seen for gum::MultiDimWithOffset<double>::
+      # operator= turned out to be a genuine pre-existing bug unrelated to
+      # linking -- the operator was declared but never defined anywhere in
+      # multiDimWithOffset_tpl.h (fixed separately).
+      target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBN)
+      target_link_options(${_PYAGRUMLIB} PRIVATE
+        /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBASE>
+        /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBN>)
+    else()
+      # GNU ld (Linux and MinGW alike): whole-archive is enough on its own on Linux,
+      # where -fvisibility=hidden + the PYGUM_PUBLIC/PYGUM_SHARED_PUBLIC tagging
+      # (config.h.in) already controls exactly what's exported. MinGW needs one more
+      # flag on top of that: ld's default PE behavior is to auto-export every global
+      # symbol from a DLL as long as NO object being linked carries an explicit
+      # dllexport attribute, and consumers auto-import plain (undecorated) references
+      # back out of it -- this is what let MinGW builds work even though the vast
+      # majority of agrumBASE/agrumBN's public surface (HashFunc<*>, _hashTableLog2_,
+      # trim, isInteger, isNumerical, remove_newline, ...) was never tagged
+      # PYGUM_SHARED_PUBLIC, only ever needing it on MSVC's own producer/consumer
+      # split. The _WIN32 fix in config.h.in made PYGUM_SHARED_PUBLIC/PYGUM_PUBLIC
+      # emit real dllexport on MinGW too (correctly, for MSVC-parity on the symbols
+      # that ARE tagged) -- but the moment ld sees ANY explicit dllexport in the link,
+      # it silently switches the whole DLL from "export everything" to "export only
+      # what's tagged", so every one of those untagged-but-needed symbols vanished
+      # from the leaf modules' undefined-reference resolution in one shot.
+      # --export-all-symbols forces ld back to exporting everything regardless of
+      # that switch, restoring the pre-regression behavior; the explicit
+      # dllexport/dllimport pairs added above/in config.h.in stay in effect for the
+      # symbols that do carry them, so nothing regresses there.
+      target_link_options(${_PYAGRUMLIB} PRIVATE
+        -Wl,--whole-archive $<TARGET_FILE:agrumBASE> $<TARGET_FILE:agrumBN> -Wl,--no-whole-archive)
+      if(MINGW)
+        target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--export-all-symbols)
+      endif()
+    endif()
   else()
     target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} _pyagrum)
   endif()
@@ -275,9 +363,26 @@ macro(gum_add_python_module MODULENAME)
   endif()
   set_target_properties(${_PYAGRUMLIB} PROPERTIES UNITY_BUILD OFF)
 
-  # LTO: eliminates dead code across translation units at link time
+  # LTO: eliminates dead code across translation units at link time -- but
+  # every pyAgrum SWIG module (core AND leaf) now crosses a real DLL boundary
+  # to resolve BASE/BN symbols: core embeds the whole BASE/BN archive on
+  # purpose (see the whole-archive force-load above) so symbols only
+  # referenced from a *submodule* stay available, and every leaf module
+  # resolves those same symbols back out of core's exported surface. LTO's
+  # cross-TU view does not extend cleanly across that boundary on any
+  # toolchain tested so far:
+  #   - core, ld64 (macOS): LTO silently demotes/duplicates
+  #     whole-archive-only symbols to internal linkage despite PYGUM_PUBLIC
+  #     (observed: gum::BayesNetFactory<double>, gum::HashFunc<Set<unsigned
+  #     long>> -- used only by pyagrum.prm/.cn, never by core's own SWIG wrap
+  #     code).
+  #   - leaf, MinGW/GCC: LTRANS fails with "undefined reference" for symbols
+  #     genuinely exported by core's .pyd, because GCC's LTO pipeline doesn't
+  #     see core's import library as satisfying them (observed building
+  #     _id.pyd against ticpp/TiXml symbols exported by _pyagrum.pyd).
+  # Disable LTO for all of them rather than chase this per-toolchain.
   if(_AGRUM_IPO_SUPPORTED)
-    set_property(TARGET ${_PYAGRUMLIB} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    message(STATUS "pyAgrum: LTO disabled for ${_PYAGRUMLIB} (crosses a DLL boundary to reach BASE/BN symbols; LTO does not resolve cleanly across it on ld64 or MinGW/GCC)")
   endif()
   
   # Dead-strip: drop unreachable functions/data at link time. Only safe for leaf

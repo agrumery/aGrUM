@@ -49,5 +49,5 @@
 #include <agrum/BN/BayesNetFactory.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BayesNetFactory< double >;
+template class PYGUM_SHARED_PUBLIC gum::BayesNetFactory< double >;
 #endif

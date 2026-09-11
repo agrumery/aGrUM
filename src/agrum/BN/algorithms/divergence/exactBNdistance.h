@@ -119,7 +119,7 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class ExactBNdistance< double >;
+  extern template class PYGUM_SHARED_PUBLIC ExactBNdistance< double >;
 #endif
 
 }   // namespace gum

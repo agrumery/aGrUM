@@ -91,7 +91,7 @@ namespace gum {
    * @endcode
    */
 
-  class EdgeGraphPart {
+  class PYGUM_SHARED_PUBLIC EdgeGraphPart {
     public:
     using EdgeIterator = EdgeSetIterator;
 

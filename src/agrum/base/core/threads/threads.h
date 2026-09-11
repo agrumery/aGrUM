@@ -112,10 +112,10 @@ namespace gum {
    * threads than logical processors (x2 could be a good all-around value).
    * @param number The number of threads to be used in the next parallel region.
    */
-  void setNumberOfThreads(unsigned int number);
+  PYGUM_SHARED_PUBLIC void setNumberOfThreads(unsigned int number);
 
   /// indicates whether aGrUM uses openMP or STL threads
-  bool isOMP();
+  PYGUM_SHARED_PUBLIC bool isOMP();
 
   /** returns a vector equally splitting elements of a range among threads
    * @brief
@@ -126,8 +126,8 @@ namespace gum {
    * @return a vector containing the range [beginning,end) that each thread should
    * work on
    */
-  std::vector< std::pair< Idx, Idx > >
-      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
+  PYGUM_SHARED_PUBLIC std::vector< std::pair< Idx, Idx > >
+                      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
 
 } /* namespace gum */
 

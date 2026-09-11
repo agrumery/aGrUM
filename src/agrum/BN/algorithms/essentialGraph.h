@@ -73,7 +73,7 @@ namespace gum {
    *
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  class EssentialGraph {
+  class PYGUM_SHARED_PUBLIC EssentialGraph {
     public:
     EssentialGraph() = default;
     // this constructor will build the essential graph

@@ -451,7 +451,7 @@ class TiXmlBase
   in a document, or stand on its own. The type of a TiXmlNode
   can be queried, and it can be cast to its more defined type.
 */
-class TiXmlNode : public TiXmlBase {
+class PYGUM_SHARED_PUBLIC TiXmlNode : public TiXmlBase {
   friend class TiXmlDocument;
   friend class TiXmlElement;
 

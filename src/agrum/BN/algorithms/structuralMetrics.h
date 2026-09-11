@@ -60,7 +60,7 @@ namespace gum {
    *
    * @ingroup bn_group
    */
-  class StructuralMetrics {
+  class PYGUM_SHARED_PUBLIC StructuralMetrics {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

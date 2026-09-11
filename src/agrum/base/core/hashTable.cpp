@@ -56,23 +56,30 @@ namespace gum {
   // The constinit ensures it is created at compile time. Here, we use the
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
-  constinit const HashTableIterator< int, int >
-      _static_HashTable_end_(StaticInitializer::CONSTINIT);
-  constinit const HashTableConstIterator< int, int >
-      _static_HashTable_cend_(StaticInitializer::CONSTINIT);
-  constinit const HashTableIteratorSafe< int, int >
+  extern constinit PYGUM_SHARED_PUBLIC const HashTableIterator< int, int >
+                                             _static_HashTable_end_(StaticInitializer::CONSTINIT);
+  extern constinit PYGUM_SHARED_PUBLIC const HashTableConstIterator< int, int >
+                                             _static_HashTable_cend_(StaticInitializer::CONSTINIT);
+  extern constinit PYGUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int >
       _static_HashTable_end_safe_(StaticInitializer::CONSTINIT);
-  constinit const HashTableConstIteratorSafe< int, int >
+  extern constinit PYGUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >
       _static_HashTable_cend_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
+
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class PYGUM_SHARED_PUBLIC gum::HashTableIterator< int, int >;
+template class PYGUM_SHARED_PUBLIC gum::HashTableConstIterator< int, int >;
+template class PYGUM_SHARED_PUBLIC gum::HashTableIteratorSafe< int, int >;
+template class PYGUM_SHARED_PUBLIC gum::HashTableConstIteratorSafe< int, int >;
+#  endif
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::HashTable< int, int >;
-template class gum::HashTable< int, std::string >;
-template class gum::HashTable< std::string, std::string >;
-template class gum::HashTable< std::string, int >;
+template class PYGUM_SHARED_PUBLIC gum::HashTable< int, int >;
+template class PYGUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
+template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
+template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
 #endif

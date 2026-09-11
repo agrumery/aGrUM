@@ -68,7 +68,7 @@ namespace gum {
    * of the probability of evidence entered in Markov random fields
    */
   template < GUM_Numeric GUM_SCALAR >
-  class EvidenceMRFInference: public virtual MRFInference< GUM_SCALAR > {
+  class PYGUM_PUBLIC EvidenceMRFInference: public virtual MRFInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -83,12 +83,71 @@
 
 #define GUM_UNUSED(expr) do { (void)(expr); } while (0)
 
-#if defined(_MSC_VER)
-#  define GUM_PUBLIC __declspec(dllexport)
-#elif defined(__GNUC__) || defined(__clang__)
-#  define GUM_PUBLIC __attribute__((visibility("default")))
-#else
-#  define GUM_PUBLIC
+// Windows PE targets (MSVC AND MinGW-w64) both need dllexport/dllimport: GCC's
+// visibility("default") attribute only controls symbol binding on ELF/Mach-O --
+// on PE it is not translated into an export-table entry at all, so gating this on
+// _MSC_VER alone (leaving MinGW, which also defines __GNUC__, to fall through to
+// the visibility branch) silently produced a _pyagrum.dll that exported nothing,
+// breaking every leaf module's cross-DLL import on MinGW while MSVC (and
+// Linux/macOS, genuinely ELF/Mach-O) stayed fine. _WIN32 is the actual target
+// check (defined by both toolchains) and is what portable dllexport/dllimport
+// macros key off; see e.g. https://gcc.gnu.org/wiki/Visibility.
+#ifndef GUM_PUBLIC
+#  if defined(_WIN32)
+#    define GUM_PUBLIC __declspec(dllexport)
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC
+#  endif
+#endif
+
+#ifndef PYGUM_PUBLIC
+#  if defined(_WIN32)
+#    define PYGUM_PUBLIC __declspec(dllexport)
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define PYGUM_PUBLIC __attribute__((visibility("default")))
+#  else
+#    define PYGUM_PUBLIC
+#  endif
+#endif
+
+// PYGUM_SHARED_PUBLIC tags BASE/BN symbols that pyAgrum leaf modules (PRM/CN/ID/MRF/CM)
+// need but that live in BASE/BN's own object files, embedded once into core _pyagrum
+// (see wrappers/pyagrum/CMakeLists.txt). Unlike PYGUM_PUBLIC (self-contained: producer
+// and only consumer are the same target), these symbols are declared by every consumer
+// via shared headers. On Windows (MSVC and MinGW alike), __declspec(dllexport) must
+// only be used by the TU that actually owns/defines the symbol (agrumBASE/agrumBN, see
+// PYGUM_SHARED_EXPORTING in src/cmake/Modules.agrum.cmake) -- every other TU that
+// includes the same header must see dllimport instead, or the linker emits its own
+// local dllexport'd definition too, producing a duplicate-symbol link error (LNK2005
+// on MSVC) once linked against core's import library. GCC/Clang's visibility("default")
+// has no such asymmetry on genuine ELF/Mach-O targets: it only says "don't hide this
+// symbol", so no producer/consumer distinction is needed there -- but MinGW is a PE
+// target like MSVC (see the _WIN32 note above GUM_PUBLIC), so it needs the same
+// dllexport/dllimport split, not the ELF-only visibility attribute.
+//
+// The producer/consumer split only makes sense for pyAgrum builds (GUM_FOR_SWIG,
+// defined iff BUILD_PYTHON, CMakeLists.txt) -- that's the only context where BASE/BN
+// get embedded into one binary (core _pyagrum) while every other consumer is a
+// separately-linked .pyd. Plain aGrUM (BUILD_PYTHON=OFF) never defines
+// PYGUM_SHARED_EXPORTING anywhere, including on agrumBASE/agrumBN themselves, so
+// without this GUM_FOR_SWIG guard every tagged symbol -- even in the TU that defines
+// it -- would resolve to dllimport, producing MSVC C4273 ("inconsistent dll linkage")
+// on the very definition. Outside GUM_FOR_SWIG, fall back to plain dllexport (same as
+// GUM_PUBLIC): a single library, no cross-.pyd split, nothing to import from.
+#ifndef PYGUM_SHARED_PUBLIC
+#  if defined(_WIN32)
+#    if defined(GUM_FOR_SWIG) && !defined(PYGUM_SHARED_EXPORTING)
+#      define PYGUM_SHARED_PUBLIC __declspec(dllimport)
+#    else
+#      define PYGUM_SHARED_PUBLIC __declspec(dllexport)
+#    endif
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define PYGUM_SHARED_PUBLIC __attribute__((visibility("default")))
+#  else
+#    define PYGUM_SHARED_PUBLIC
+#  endif
 #endif
 
 #ifdef _MSC_VER

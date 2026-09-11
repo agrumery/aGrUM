@@ -64,7 +64,7 @@ namespace gum {
    * When the rules alone cannot resolve all undirected edges, an arbitrary orientation is chosen
    * using a min-parents heuristic; the affected arcs are recorded and accessible via choices().
    */
-  class MeekRules {
+  class PYGUM_SHARED_PUBLIC MeekRules {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

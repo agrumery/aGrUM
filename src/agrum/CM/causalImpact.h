@@ -62,13 +62,13 @@ namespace gum {
    * If not identifiable, the formula carries a null AST and the tensor is empty.
    */
   template < GUM_Numeric GUM_SCALAR >
-  std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
-      causalImpact(const CausalModel< GUM_SCALAR >&             cm,
-                   const Set< std::string >&                    on,
-                   const Set< std::string >&                    doing,
-                   const Set< std::string >&                    knowing = Set< std::string >(),
-                   const HashTable< std::string, std::string >& values
-                   = HashTable< std::string, std::string >());
+  PYGUM_PUBLIC std::tuple< CausalImpact< GUM_SCALAR >, Tensor< GUM_SCALAR >, std::string >
+               causalImpact(const CausalModel< GUM_SCALAR >&             cm,
+                            const Set< std::string >&                    on,
+                            const Set< std::string >&                    doing,
+                            const Set< std::string >&                    knowing = Set< std::string >(),
+                            const HashTable< std::string, std::string >& values
+                            = HashTable< std::string, std::string >());
 
   /**
    * @class CausalImpact
@@ -79,7 +79,7 @@ namespace gum {
    * AST first and initialize `result` in the initializer list (single shot).
    */
   template < GUM_Numeric GUM_SCALAR >
-  class CausalImpact {
+  class PYGUM_PUBLIC CausalImpact {
     public:
     // --- Forwarded accessors for wrapping ---
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.

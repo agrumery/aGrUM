@@ -334,6 +334,10 @@ namespace gum {
     void _setNotCommitedChange_();
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC MultiDimImplementation< double >;
+#endif
+
   /**
    * @brief For friendly displaying the content of the array.
    * @ingroup multidim_group

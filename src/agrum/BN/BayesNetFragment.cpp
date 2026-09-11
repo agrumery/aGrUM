@@ -50,5 +50,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BayesNetFragment< double >;
+template class PYGUM_SHARED_PUBLIC gum::BayesNetFragment< double >;
 #endif

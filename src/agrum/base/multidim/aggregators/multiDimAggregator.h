@@ -49,8 +49,9 @@
 #ifndef GUM_MULTI_DIM_AGGREGATOR_H
 #define GUM_MULTI_DIM_AGGREGATOR_H
 
-#include <agrum/base/multidim/implementations/multiDimReadOnly.h>
 #include <optional>
+
+#include <agrum/base/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
   namespace aggregator {
@@ -143,7 +144,7 @@ namespace gum {
        * @return the parameter, or std::nullopt if this aggregator has none.
        */
       virtual std::optional< Idx > value() const;
-      std::string toString() const override;
+      std::string                  toString() const override;
 
       void changeNotification(const gum::Instantiation&,
                               const gum::DiscreteVariable* const,
@@ -221,7 +222,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class MultiDimAggregator< double >;
+    extern template class PYGUM_SHARED_PUBLIC MultiDimAggregator< double >;
 #endif
 
     /// For friendly displaying the content of the array.

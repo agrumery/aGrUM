@@ -49,5 +49,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BIFXMLBNReader< double >;
+template class PYGUM_SHARED_PUBLIC gum::BIFXMLBNReader< double >;
 #endif

@@ -150,7 +150,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class DSLReader< double >;
+  extern template class PYGUM_SHARED_PUBLIC DSLReader< double >;
 #endif
 
 } /* namespace gum */

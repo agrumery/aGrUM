@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum as gum
+import pyagrum.mrf as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
@@ -227,6 +227,21 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(pbn.domainSize(), diff.domainSize())
     self.assertLessEqual(diff.max(), 1e-10)
     self.assertEqual(mrf.graph(), bn.moralGraph())
+
+  def testChangeVariableLabelCrossModule(self):
+    # gum.LabelizedVariable is constructed by the core "pyagrum" extension
+    # module, but MarkovRandomField.changeVariableLabel (compiled into the
+    # separate "_mrf" extension) does an internal dynamic_cast<LabelizedVariable*>
+    # (MarkovRandomField_tpl.h) on it -- a real, already-existing code path that
+    # exercises C++ RTTI identity across the _pyagrum/_mrf module boundary.
+    # See md_docs/GUM_PUBLIC.md: without proper symbol visibility, this cast can
+    # silently fail (wrongly raising TypeError) even though the object really is
+    # a LabelizedVariable, because each extension module may hold its own
+    # unlinked copy of the class's vtable/RTTI.
+    mrf = gum.MarkovRandomField()
+    mrf.add(gum.LabelizedVariable("A", "", 2))
+    mrf.changeVariableLabel("A", "0", "foo")
+    self.assertEqual(mrf.variable("A").label(0), "foo")
 
   def testExistsEdge(self):
     mrf = gum.fastMRF("A--B--C;C--D;E--F--G")

@@ -364,7 +364,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class MultiDimBucket< double >;
+  extern template class PYGUM_SHARED_PUBLIC MultiDimBucket< double >;
 #endif
 
 

@@ -96,8 +96,8 @@ namespace gum {
        */
       [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
-      std::string           aggregatorName() const override;
-      std::optional< Idx >  value() const override;
+      std::string          aggregatorName() const override;
+      std::optional< Idx > value() const override;
 
       protected:
       Idx neutralElt_() const override;
@@ -109,7 +109,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class Forall< double >;
+    extern template class PYGUM_SHARED_PUBLIC Forall< double >;
 #endif
 
 

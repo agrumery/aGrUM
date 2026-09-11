@@ -81,7 +81,7 @@ namespace gum {
    *   those children are preserved or may be adjusted (implementation dependent).
    */
   template < GUM_Numeric GUM_SCALAR >
-  class CausalModel {
+  class PYGUM_PUBLIC CausalModel {
     private:
     /// The underlying BayesNet representing the observed part of the model.
     BayesNet< GUM_SCALAR > _observationalBN_;

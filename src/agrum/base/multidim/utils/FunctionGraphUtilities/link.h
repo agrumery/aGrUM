@@ -218,7 +218,7 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class Link< Idx >;
+  extern template class PYGUM_SHARED_PUBLIC Link< Idx >;
 #endif
 
 }   // End of namespace gum

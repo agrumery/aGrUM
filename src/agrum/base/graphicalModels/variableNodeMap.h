@@ -65,7 +65,7 @@ namespace gum {
    * @warning VariableNodeMap ensures that every name of variable is unique in
    * the container.
    */
-  class VariableNodeMap {
+  class PYGUM_SHARED_PUBLIC VariableNodeMap {
     public:
     /// @name Constructors / Destructors
 

@@ -67,7 +67,7 @@ namespace gum {
    * @brief Returns a path to a unique file name.
    * @return Returns a path to a unique file name.
    */
-  std::string getUniqueFileName();
+  PYGUM_SHARED_PUBLIC std::string getUniqueFileName();
 
   /**
    * @brief Returns the lowercase version of str.
@@ -87,7 +87,7 @@ namespace gum {
    * @brief Returns true if value ends with ending.
    * @return Returns true if value ends with ending.
    */
-  bool endsWith(const std::string_view& value, const std::string_view& ending);
+  PYGUM_SHARED_PUBLIC bool endsWith(const std::string_view& value, const std::string_view& ending);
 
   /**
    * @brief Split str using the delimiter
@@ -95,7 +95,8 @@ namespace gum {
    * @param delimiter string
    * @return Vector of splitted strings
    */
-  std::vector< std::string > split(std::string_view orig, std::string_view delimiter);
+  PYGUM_SHARED_PUBLIC std::vector< std::string > split(std::string_view orig,
+                                                       std::string_view delimiter);
 
   /**
    * @brief Replace val by new_val in s.
@@ -104,7 +105,8 @@ namespace gum {
    * @param new_val The new value to replace val in s.
    * @return A new string with val replaced by new_val.
    */
-  std::string replace(std::string_view s, std::string_view val, std::string_view new_val);
+  PYGUM_SHARED_PUBLIC std::string
+                      replace(std::string_view s, std::string_view val, std::string_view new_val);
 
   /**
    * @brief return true is a string contains an integer value
@@ -118,7 +120,7 @@ namespace gum {
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  bool isIntegerWithResult(std::string_view val, int* res);
+  PYGUM_SHARED_PUBLIC bool isIntegerWithResult(std::string_view val, int* res);
 
   /**
    * @brief return true is a string contains a numerical (double) value
@@ -132,7 +134,7 @@ namespace gum {
    * @param s A string     *
    * @return true if s exactly contains a double
    */
-  bool isNumericalWithResult(std::string_view val, double* res);
+  PYGUM_SHARED_PUBLIC bool isNumericalWithResult(std::string_view val, double* res);
 
 
   /**

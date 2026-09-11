@@ -46,8 +46,6 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
-// WARNING : Do not include this file directly : instead include
-// <agrum/config.h>
 
 #include <format>
 #include <iomanip>
@@ -55,6 +53,8 @@
 #include <sstream>
 #include <string>
 #include <utility>
+
+#include <agrum/config.h>
 
 #include <agrum/base/core/types.h>
 
@@ -92,7 +92,7 @@
 #endif     //  defined(SWIG) || defined(GUM_FOR_SWIG)
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-  class TYPE: public SUPERCLASS {                                            \
+  class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
     public:                                                                  \
     explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
         SUPERCLASS(aMsg, aType) {}                                           \
@@ -119,7 +119,7 @@ namespace gum {
   /**
    * @brief Base class for all aGrUM's exceptions.
    */
-  class Exception: public std::exception {
+  class PYGUM_SHARED_PUBLIC Exception: public std::exception {
     protected:
     std::string msg_;
     std::string type_;
@@ -528,10 +528,10 @@ namespace gum {
   class HedgeException;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  std::string _createMsg_(std::string_view filename,
-                          std::string_view function,
-                          int              line,
-                          std::string_view msg);
+  PYGUM_SHARED_PUBLIC std::string _createMsg_(std::string_view filename,
+                                              std::string_view function,
+                                              int              line,
+                                              std::string_view msg);
 
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
 
@@ -651,7 +651,7 @@ namespace gum {
 
   GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError, "Unknown label found in database")
 
-  class SyntaxError final: public IOError {
+  class PYGUM_SHARED_PUBLIC SyntaxError final: public IOError {
     protected:
     Size        noLine_;
     Size        noCol_;

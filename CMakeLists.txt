@@ -77,5 +77,49 @@ endif ()
 
 enable_testing()
 
+include(threads)
+
+# Toolchain-wide compile requirements, set via directory scope (add_compile_definitions /
+# add_compile_options / link_libraries) instead of target_compile_definitions(agrumBASE PUBLIC ...):
+# this way they reach every target under src/ and wrappers/ regardless of the
+# target_link_libraries graph. Needed because pyAgrum leaf submodules (PRM/MRF/CN/ID/CM) no longer
+# transitively re-link agrumBASE/agrumBN (see buildFileListsWithModules() in Modules.agrum.cmake) --
+# re-embedding them collided with _pyagrum's PYGUM_PUBLIC dllexports on MSVC (LNK2005) -- so they can
+# no longer inherit these through that PUBLIC link chain either.
+if (GUM_THREADS MATCHES "stl")
+    if (Threads_FOUND)
+        link_libraries(Threads::Threads)
+        add_compile_definitions(GUM_THREADS_USE_STL)
+    endif ()
+elseif (GUM_THREADS MATCHES "omp")
+    if (OpenMP_FOUND)
+        link_libraries(OpenMP::OpenMP_CXX)
+        add_compile_definitions(GUM_THREADS_USE_OMP)
+    endif ()
+endif ()
+
+if (BUILD_PYTHON)
+    add_compile_definitions(GUM_FOR_SWIG)
+endif ()
+
+if (MSVC)
+    add_compile_definitions(NOMINMAX _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_DEPRECATE)
+    add_compile_options(/bigobj)
+endif ()
+
+if (MINGW OR MSVC)
+    # MSVC: "extern template class" combined with PYGUM_PUBLIC/GUM_PUBLIC (__declspec(dllexport))
+    # triggers C4910 ("dllexport and extern are incompatible on an explicit instantiation").
+    add_compile_definitions(GUM_NO_EXTERN_TEMPLATE_CLASS)
+endif ()
+
+if (NOT AGRUM_INLINE)
+    add_compile_definitions(GUM_NO_INLINE)
+endif ()
+
+if (_AGRUM_CLANG_SUPPORTS_ASSUME_UNIQUE_VTABLES)
+    add_compile_options("-fno-assume-unique-vtables")
+endif ()
+
 add_subdirectory(src)
 add_subdirectory(wrappers)

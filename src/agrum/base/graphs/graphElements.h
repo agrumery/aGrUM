@@ -161,7 +161,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class Edge {
+  class PYGUM_SHARED_PUBLIC Edge {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -264,7 +264,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class Arc {
+  class PYGUM_SHARED_PUBLIC Arc {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -413,15 +413,15 @@ namespace gum {
   /// @}
 
   /// to friendly display an edge
-  std::ostream& operator<<(std::ostream& stream, const Edge& edge);
+  PYGUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream& stream, const Edge& edge);
 
   /// to friendly display an arc
-  std::ostream& operator<<(std::ostream& stream, const Arc& arc);
+  PYGUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream& stream, const Arc& arc);
 
 } /* namespace gum */
 
 #if !defined(GUM_NO_EXTERN_TEMPLATE_CLASS) && !defined(SWIG)
-extern template class gum::HashFunc< gum::NodeSet >;
+extern template class PYGUM_SHARED_PUBLIC gum::HashFunc< gum::NodeSet >;
 #endif
 
 #ifndef GUM_NO_INLINE

@@ -87,7 +87,7 @@ namespace gum {
    *
    * @ingroup graph_group
    */
-  class PAG: public UndiGraph {
+  class PYGUM_SHARED_PUBLIC PAG: public UndiGraph {
     public:
     // ########################################################################
     /// @name Constructors / Destructors

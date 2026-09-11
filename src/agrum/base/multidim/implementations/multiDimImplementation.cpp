@@ -46,3 +46,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #include <agrum/base/multidim/implementations/multiDimImplementation.h>
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class PYGUM_SHARED_PUBLIC gum::MultiDimImplementation< double >;
+#endif

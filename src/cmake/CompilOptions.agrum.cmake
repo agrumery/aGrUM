@@ -75,6 +75,12 @@ endif ()
 # shrinks the export table of _pyagrum.so and allows the linker to dead-strip more.
 # Not applied for shared-library builds of aGrUM where all public symbols must be
 # visible across dylib boundaries without GUM_PUBLIC annotations.
+# Applied to pyAgrum builds too (BUILD_PYTHON): every symbol pyAgrum's SWIG wrap
+# code actually needs across the _pyagrum.so <-> other .so boundary is annotated
+# PYGUM_PUBLIC/PYGUM_SHARED_PUBLIC (always exported, see config.h.in); GUM_PUBLIC
+# is blanked for agrumBASE/agrumBN under BUILD_PYTHON (Modules.agrum.cmake), so
+# hiding everything else here is safe and shrinks _pyagrum.so's export table
+# instead of leaving it unfiltered.
 if (NOT MSVC AND NOT BUILD_SHARED_LIBS AND NOT CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
     check_cxx_compiler_flag("-fvisibility=hidden" _AGRUM_SUPPORT_VISIBILITY_HIDDEN)
     if (_AGRUM_SUPPORT_VISIBILITY_HIDDEN)

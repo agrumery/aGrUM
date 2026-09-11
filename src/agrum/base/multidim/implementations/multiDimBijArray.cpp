@@ -53,7 +53,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  template class MultiDimBijArray< double >;
+  template class PYGUM_SHARED_PUBLIC MultiDimBijArray< double >;
 #endif
 
 }   // namespace gum

@@ -103,7 +103,7 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< float, WeightedSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< float, WeightedSampling >;
 #              endif
 #            endif
 #          endif
@@ -120,42 +120,7 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< double, WeightedSampling >;
-#              endif
-#            endif
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< float, ImportanceSampling >;
-#              endif
-#            endif
-#          endif
-#        endif
-#      endif
-#    endif
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< double, ImportanceSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< double, WeightedSampling >;
 #              endif
 #            endif
 #          endif
@@ -173,7 +138,7 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< float, MonteCarloSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< float, ImportanceSampling >;
 #              endif
 #            endif
 #          endif
@@ -190,7 +155,7 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< double, MonteCarloSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< double, ImportanceSampling >;
 #              endif
 #            endif
 #          endif
@@ -208,7 +173,7 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< float, GibbsSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< float, MonteCarloSampling >;
 #              endif
 #            endif
 #          endif
@@ -225,7 +190,42 @@ namespace gum {
 #          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 #              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class LoopySamplingInference< double, GibbsSampling >;
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< double, MonteCarloSampling >;
+#              endif
+#            endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< float, GibbsSampling >;
+#              endif
+#            endif
+#          endif
+#        endif
+#      endif
+#    endif
+#  endif
+#endif
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#    ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#      ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#        ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#          ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#            ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#              ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC LoopySamplingInference< double, GibbsSampling >;
 #              endif
 #            endif
 #          endif

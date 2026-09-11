@@ -64,7 +64,7 @@ namespace gum {
    *  - void whenArcAdded( const void *,gum::NodeId,gum::NodeId )
    *  - void whenArcDeleted( const void *,gum::NodeId,gum::NodeId )
    */
-  class DiGraphListener: public Listener {
+  class PYGUM_SHARED_PUBLIC DiGraphListener: public Listener {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

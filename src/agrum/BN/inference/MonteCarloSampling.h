@@ -102,7 +102,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class MonteCarloSampling< double >;
+  extern template class PYGUM_SHARED_PUBLIC MonteCarloSampling< double >;
 #endif
 }   // namespace gum
 

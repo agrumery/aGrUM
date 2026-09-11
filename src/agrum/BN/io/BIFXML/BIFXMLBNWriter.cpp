@@ -49,5 +49,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::BIFXMLBNWriter< double >;
+template class PYGUM_SHARED_PUBLIC gum::BIFXMLBNWriter< double >;
 #endif

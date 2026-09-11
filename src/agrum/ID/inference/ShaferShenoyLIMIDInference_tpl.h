@@ -801,15 +801,19 @@ namespace gum {
         }
         // GCC 16 false positive: deep inlining confuses heap-allocated internals
         // of DecisionTensor with the stack object bounds
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Warray-bounds"
+#  ifdef __GNUC__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Warray-bounds"
+#  endif
         const auto dp = finalphi ^ family;
 
         gum::Tensor< double > decision = dp.utilPot.putFirst(&infdiag.variable(node));
         binarizingMax_(decision, dp.probPot);
         strategies_.insert(node, decision);
         res = dp ^ sev;
-#  pragma GCC diagnostic pop
+#  ifdef __GNUC__
+#    pragma GCC diagnostic pop
+#  endif
         res.probPot.normalize();
         if (unconditionalDecisions_.exists(node)) {
           res.utilPot = unconditionalDecisions_[node].utilPot;

@@ -72,7 +72,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < GUM_Numeric GUM_SCALAR >
-    class CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
+    class PYGUM_PUBLIC CNLoopyPropagation: public InferenceEngine< GUM_SCALAR > {
       public:
       using msg   = std::vector< Tensor< GUM_SCALAR >* >;
       using cArcP = const class gum::Arc*;   // 'class' disambiguates from GDI Arc on Windows

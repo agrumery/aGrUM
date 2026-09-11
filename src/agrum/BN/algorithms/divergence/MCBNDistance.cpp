@@ -45,5 +45,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::MCBNDistance< double >;
+template class PYGUM_SHARED_PUBLIC gum::MCBNDistance< double >;
 #endif

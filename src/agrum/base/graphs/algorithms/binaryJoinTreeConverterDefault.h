@@ -51,7 +51,7 @@
 
 namespace gum {
 
-  class BinaryJoinTreeConverterDefault {
+  class PYGUM_SHARED_PUBLIC BinaryJoinTreeConverterDefault {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

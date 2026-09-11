@@ -2534,20 +2534,24 @@ namespace gum {
   // The type of _list_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const ListConstIteratorSafe< Debug > _static_list_end_safe_;
-  extern const ListConstIterator< Debug >     _static_list_end_;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC ListConstIterator< Debug >;
+  extern template class PYGUM_SHARED_PUBLIC ListConstIteratorSafe< Debug >;
+#  endif
+  extern PYGUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug > _static_list_end_safe_;
+  extern PYGUM_SHARED_PUBLIC const ListConstIterator< Debug > _static_list_end_;
 
-  inline constexpr void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
-  inline constexpr void* const _list_end_      = (void* const)&_static_list_end_;
+  inline const void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
+  inline const void* const _list_end_      = (void* const)&_static_list_end_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::List< bool >;
-extern template class gum::List< int >;
-extern template class gum::List< unsigned int >;
+extern template class PYGUM_SHARED_PUBLIC gum::List< bool >;
+extern template class PYGUM_SHARED_PUBLIC gum::List< int >;
+extern template class PYGUM_SHARED_PUBLIC gum::List< unsigned int >;
 #endif
 
 

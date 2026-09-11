@@ -143,7 +143,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class MixedGraph: public UndiGraph, public DiGraph {
+  class PYGUM_SHARED_PUBLIC MixedGraph: public UndiGraph, public DiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

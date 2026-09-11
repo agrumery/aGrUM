@@ -40,3 +40,8 @@
 
 
 #include <agrum/base/variables/discretizedVariable.h>
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class PYGUM_SHARED_PUBLIC gum::DiscretizedVariable< double >;
+#endif

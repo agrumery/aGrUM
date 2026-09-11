@@ -76,7 +76,7 @@ namespace gum {
     struct IDatabaseTableInsert4DBCell;
 
     template <>
-    struct IDatabaseTableInsert4DBCell< true > {
+    struct PYGUM_SHARED_PUBLIC IDatabaseTableInsert4DBCell< true > {
       template < typename TX_DATA >
       using DBVector = std::vector< TX_DATA >;
 

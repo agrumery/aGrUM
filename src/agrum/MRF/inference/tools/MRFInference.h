@@ -132,7 +132,7 @@ namespace gum {
    */
 
   template < GUM_Numeric GUM_SCALAR >
-  class MRFInference: public GraphicalModelInference< GUM_SCALAR > {
+  class PYGUM_PUBLIC MRFInference: public GraphicalModelInference< GUM_SCALAR > {
     public:
     /**
      * current state of the inference

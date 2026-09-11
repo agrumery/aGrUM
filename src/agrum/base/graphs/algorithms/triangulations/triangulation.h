@@ -63,7 +63,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class Triangulation {
+  class PYGUM_SHARED_PUBLIC Triangulation {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

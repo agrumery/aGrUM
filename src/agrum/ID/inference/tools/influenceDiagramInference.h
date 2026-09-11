@@ -65,7 +65,7 @@ namespace gum {
    *
    */
   template < GUM_Numeric GUM_SCALAR >
-  class InfluenceDiagramInference: public GraphicalModelInference< GUM_SCALAR > {
+  class PYGUM_PUBLIC InfluenceDiagramInference: public GraphicalModelInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor

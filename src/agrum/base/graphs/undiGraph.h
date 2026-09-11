@@ -127,7 +127,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class UndiGraph: public virtual NodeGraphPart, public EdgeGraphPart {
+  class PYGUM_SHARED_PUBLIC UndiGraph: public virtual NodeGraphPart, public EdgeGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

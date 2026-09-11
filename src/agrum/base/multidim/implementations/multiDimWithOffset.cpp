@@ -47,3 +47,8 @@
  */
 
 #include <agrum/base/multidim/implementations/multiDimWithOffset.h>
+
+
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+template class PYGUM_SHARED_PUBLIC gum::MultiDimWithOffset< double >;
+#endif

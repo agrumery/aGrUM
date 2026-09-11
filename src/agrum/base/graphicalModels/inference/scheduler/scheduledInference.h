@@ -60,7 +60,7 @@ namespace gum {
    * @headerfile scheduledInference.h <agrum/base/graphicalModels/inference/scheduler/scheduledInference.h>
    * @ingroup gm_group
    */
-  class ScheduledInference: public ThreadNumberManager {
+  class PYGUM_SHARED_PUBLIC ScheduledInference: public ThreadNumberManager {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

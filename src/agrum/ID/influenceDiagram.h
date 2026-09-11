@@ -69,7 +69,7 @@ namespace gum {
    *
    */
   template < GUM_Numeric GUM_SCALAR >
-  class InfluenceDiagram: public DAGmodel {
+  class PYGUM_PUBLIC InfluenceDiagram: public DAGmodel {
     // friend class InfluenceDiagramFactory<GUM_SCALAR>;
 
     public:

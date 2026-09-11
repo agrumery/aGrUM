@@ -61,7 +61,7 @@ namespace gum {
    * Virtual base class for PGMs using a undirected graph
    *
    */
-  class UGmodel: public DiscreteGraphicalModel {
+  class PYGUM_SHARED_PUBLIC UGmodel: public DiscreteGraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{

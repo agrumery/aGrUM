@@ -51,7 +51,7 @@ namespace gum {
 namespace BIF {
 
 
-class Parser {
+class PYGUM_SHARED_PUBLIC Parser {
   private:
     	enum {
 		_EOF=0,

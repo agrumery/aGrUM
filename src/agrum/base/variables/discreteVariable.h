@@ -77,7 +77,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class DiscreteVariable: public Variable {
+  class PYGUM_SHARED_PUBLIC DiscreteVariable: public Variable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -187,7 +187,7 @@ namespace gum {
 
   /// for friendly displaying the content of the variable
 
-  std::ostream& operator<<(std::ostream&, const DiscreteVariable&);
+  PYGUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const DiscreteVariable&);
 
   using VariableSet = Set< const DiscreteVariable* >;
 } /* namespace gum */

@@ -38,7 +38,7 @@ class TiCppRCImp;
 /**
 Base class for reference counting functionality
 */
-class TiCppRC {
+class PYGUM_SHARED_PUBLIC TiCppRC {
   // Allow ticpp::Node to directly modify reference count
   friend class ticpp::Base;
 
@@ -71,7 +71,7 @@ class TiCppRC {
   void DeleteSpawnedWrappers();
 };
 
-class TiCppRCImp {
+class PYGUM_SHARED_PUBLIC TiCppRCImp {
   private:
   int m_count; /**< Holds reference count to me, and to the node I point to */
 

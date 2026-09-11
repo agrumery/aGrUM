@@ -73,17 +73,20 @@ namespace gum {
   // an iterator that represents both end and rend for all the Lists (whatever
   // their type). Here, we use the constinit keyword rather than constexpr because,
   // in debugging mode, the iterators' destructors cannot be declared as constepxr.
-  constinit const ListConstIteratorSafe< Debug >
+  extern constinit PYGUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug >
                                              _static_list_end_safe_(StaticInitializer::CONSTINIT);
-  constinit const ListConstIterator< Debug > _static_list_end_(StaticInitializer::CONSTINIT);
+  extern constinit PYGUM_SHARED_PUBLIC const ListConstIterator< Debug >
+                                             _static_list_end_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::List< bool >;
-template class gum::List< int >;
-template class gum::List< unsigned int >;
+template class PYGUM_SHARED_PUBLIC gum::List< bool >;
+template class PYGUM_SHARED_PUBLIC gum::List< int >;
+template class PYGUM_SHARED_PUBLIC gum::List< unsigned int >;
+template class PYGUM_SHARED_PUBLIC gum::ListConstIterator< gum::Debug >;
+template class PYGUM_SHARED_PUBLIC gum::ListConstIteratorSafe< gum::Debug >;
 #  endif
 
 

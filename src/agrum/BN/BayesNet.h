@@ -656,14 +656,16 @@ namespace gum {
     /// Generic factory for aggregator nodes, dispatching on the aggregator's name.
     /// @note Not part of the public API: used by GumBNReader to reconstruct aggregator
     /// nodes serialized in the compact jgum/bgum format.
-    NodeId
-        _addAggregator_(std::string_view aggregatorType, const DiscreteVariable& var, Idx value = 1);
+    NodeId _addAggregator_(std::string_view        aggregatorType,
+                           const DiscreteVariable& var,
+                           Idx                     value = 1);
 
     /// Generic factory for ICI model nodes, dispatching on the implementation's name.
     /// @note Not part of the public API: used by GumBNReader to reconstruct ICI model
     /// nodes serialized in the compact jgum/bgum format.
-    NodeId
-        _addICIModel_(std::string_view iciType, const DiscreteVariable& var, GUM_SCALAR externalWeight);
+    NodeId _addICIModel_(std::string_view        iciType,
+                         const DiscreteVariable& var,
+                         GUM_SCALAR              externalWeight);
 
     public:
     using IBayesNet< GUM_SCALAR >::dag;
@@ -683,7 +685,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class BayesNet< double >;
+  extern template class PYGUM_SHARED_PUBLIC BayesNet< double >;
 #endif
 } /* namespace gum */
 

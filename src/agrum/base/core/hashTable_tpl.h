@@ -1641,7 +1641,7 @@ namespace gum {
   template < typename Key, typename Val >
   typename HashTableIteratorSafe< Key, Val >::value_type&
       HashTableIteratorSafe< Key, Val >::operator*() {
-    return const_cast< Val& >(HashTableConstIteratorSafe< Key, Val >::operator*());
+    return const_cast< value_type& >(HashTableConstIteratorSafe< Key, Val >::operator*());
   }
 
   template < typename Key, typename Val >

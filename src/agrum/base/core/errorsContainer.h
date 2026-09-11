@@ -66,7 +66,7 @@ namespace gum {
    * @ingroup basicstruct_group
    *
    */
-  class ParseError {
+  class PYGUM_SHARED_PUBLIC ParseError {
     public:
     // ============================================================================
     /// @name Class constructors and destructors
@@ -177,7 +177,7 @@ namespace gum {
    * @brief This class is used contain and manipulate gum::ParseError.
    * @ingroup basicstruct_group
    */
-  class ErrorsContainer {
+  class PYGUM_SHARED_PUBLIC ErrorsContainer {
     /// The list of gum::ParseError contained in this gum::ErrorsContainer.
     mutable std::vector< ParseError > errors;
 

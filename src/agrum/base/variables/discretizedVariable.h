@@ -216,6 +216,10 @@ namespace gum {
     bool _checkSameDomain_(const Variable& aRV) const override;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC DiscretizedVariable< double >;
+#endif
+
 } /* namespace gum */
 
 /// always include the implementation of the templates

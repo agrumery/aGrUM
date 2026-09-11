@@ -72,7 +72,7 @@ namespace gum {
    *needed.
    */
   template < GUM_Numeric GUM_SCALAR >
-  class IMarkovRandomField: public UGmodel {
+  class PYGUM_PUBLIC IMarkovRandomField: public UGmodel {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors

@@ -59,7 +59,7 @@ namespace gum {
    */
   /* =========================================================================*/
 
-  class NumericalDiscreteVariable: public DiscreteVariable {
+  class PYGUM_SHARED_PUBLIC NumericalDiscreteVariable: public DiscreteVariable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

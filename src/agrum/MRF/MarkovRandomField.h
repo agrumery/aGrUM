@@ -85,7 +85,7 @@ namespace gum {
    * gum::operator<<(std::ostream&, const MarkovRandomField<GUM_SCALAR>&).
    */
   template < GUM_Numeric GUM_SCALAR >
-  class MarkovRandomField: public IMarkovRandomField< GUM_SCALAR > {
+  class PYGUM_PUBLIC MarkovRandomField: public IMarkovRandomField< GUM_SCALAR > {
     public:
     /**
      * Create a Markov random field with a dot-like syntax which specifies:

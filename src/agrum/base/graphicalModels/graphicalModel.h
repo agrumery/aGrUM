@@ -61,7 +61,7 @@ namespace gum {
    * Virtual base class for probabilistic graphical models
    *
    */
-  class GraphicalModel {
+  class PYGUM_SHARED_PUBLIC GraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{

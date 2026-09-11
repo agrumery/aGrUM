@@ -51,5 +51,5 @@
 #include <agrum/base/core/math/math_utils.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::ExactBNdistance< double >;
+template class PYGUM_SHARED_PUBLIC gum::ExactBNdistance< double >;
 #endif

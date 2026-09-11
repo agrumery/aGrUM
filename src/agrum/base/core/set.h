@@ -983,6 +983,16 @@ namespace gum {
     Size operator()(const Set< T >& key) const final;
   };
 
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  // No leaf-module usage of this specific specialization ever appears in
+  // core's own SWIG wrap code (only used internally, e.g. by HashTable<Set<
+  // unsigned long>, ...> in CN/PRM/MRF) -- with no explicit instantiation,
+  // its methods stay implicitly/vaguely-inline and get re-hidden by
+  // -fvisibility-inlines-hidden regardless of the class-level PYGUM_SHARED_PUBLIC
+  // tag above (same root cause fixed for gum::BayesNetFactory<double>).
+  extern template class PYGUM_SHARED_PUBLIC HashFunc< Set< unsigned long > >;
+#endif
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // _static_Set_end_ is a 'constant' iterator initialized at compile time
   // that represents the end iterators for all sets (whatever their
@@ -992,23 +1002,27 @@ namespace gum {
   // The type of _Set_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const SetIterator< int >     _static_Set_end_;
-  extern const SetIteratorSafe< int > _static_Set_end_safe_;
+#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  extern template class PYGUM_SHARED_PUBLIC SetIterator< int >;
+  extern template class PYGUM_SHARED_PUBLIC SetIteratorSafe< int >;
+#  endif
+  extern PYGUM_SHARED_PUBLIC const SetIterator< int > _static_Set_end_;
+  extern PYGUM_SHARED_PUBLIC const SetIteratorSafe< int > _static_Set_end_safe_;
 
-  inline constexpr const void* const _Set_end_      = &_static_Set_end_;
-  inline constexpr const void* const _Set_end_safe_ = &_static_Set_end_safe_;
+  inline const void* const _Set_end_      = &_static_Set_end_;
+  inline const void* const _Set_end_safe_ = &_static_Set_end_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace gum */
 
 
 #if !defined(GUM_NO_EXTERN_TEMPLATE_CLASS) && !defined(SWIG)
-extern template class gum::Set< int >;
-extern template class gum::Set< long >;
-extern template class gum::Set< unsigned int >;
-extern template class gum::Set< unsigned long >;
-extern template class gum::Set< double >;
-extern template class gum::Set< std::string >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< int >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< long >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< unsigned int >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< unsigned long >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< double >;
+extern template class PYGUM_SHARED_PUBLIC gum::Set< std::string >;
 #endif
 
 

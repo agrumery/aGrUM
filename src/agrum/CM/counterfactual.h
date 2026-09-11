@@ -99,7 +99,7 @@ namespace gum {
    * @tparam GUM_ELEMENT Numeric type used in potentials (e.g., double).
    */
   template < GUM_Numeric GUM_ELEMENT >
-  class Counterfactual {
+  class PYGUM_PUBLIC Counterfactual {
     public:
     using VarName = std::string;
     using ValName = std::string;
@@ -248,13 +248,14 @@ namespace gum {
    *         (variables are those of \p cm).
    */
   template < GUM_Numeric GUM_ELEMENT >
-  Tensor< GUM_ELEMENT > counterfactual(const CausalModel< GUM_ELEMENT >&            cm,
-                                       const Set< std::string >&                    on,
-                                       const Set< std::string >&                    whatif,
-                                       const HashTable< std::string, std::string >& profile
-                                       = HashTable< std::string, std::string >(),
-                                       const HashTable< std::string, std::string >& values
-                                       = HashTable< std::string, std::string >());
+  PYGUM_PUBLIC Tensor< GUM_ELEMENT >
+               counterfactual(const CausalModel< GUM_ELEMENT >&            cm,
+                              const Set< std::string >&                    on,
+                              const Set< std::string >&                    whatif,
+                              const HashTable< std::string, std::string >& profile
+                              = HashTable< std::string, std::string >(),
+                              const HashTable< std::string, std::string >& values
+                              = HashTable< std::string, std::string >());
 
   /**
    * \brief Build the twin causal model.

@@ -53,5 +53,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::MultiDimNoisyORNet< double >;
+template class PYGUM_SHARED_PUBLIC gum::MultiDimNoisyORNet< double >;
 #endif

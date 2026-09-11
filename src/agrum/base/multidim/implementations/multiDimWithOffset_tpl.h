@@ -85,6 +85,18 @@ namespace gum {
     // MultiDimImplementation
   }
 
+  // copy operator
+
+  template < typename GUM_ELEMENT >
+  MultiDimWithOffset< GUM_ELEMENT >&
+      MultiDimWithOffset< GUM_ELEMENT >::operator=(const MultiDimWithOffset< GUM_ELEMENT >& from) {
+    // for debugging purposes
+    GUM_OP_CPY(MultiDimWithOffset);
+    MultiDimImplementation< GUM_ELEMENT >::operator=(from);
+    gaps_ = from.gaps_;
+    return *this;
+  }
+
   // add a new dimension, needed for updating the offsets_ & gaps_
 
   template < typename GUM_ELEMENT >

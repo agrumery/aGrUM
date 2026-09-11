@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::IBayesNet< double >;
+template class PYGUM_SHARED_PUBLIC gum::IBayesNet< double >;
 #endif

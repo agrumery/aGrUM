@@ -46,5 +46,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::MultiDimNoisyORCompound< double >;
+template class PYGUM_SHARED_PUBLIC gum::MultiDimNoisyORCompound< double >;
 #endif

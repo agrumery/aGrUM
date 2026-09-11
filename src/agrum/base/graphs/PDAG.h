@@ -127,7 +127,7 @@ namespace gum {
    * @endcode
    */
   /* ====================================================================== */
-  class PDAG: public MixedGraph {
+  class PYGUM_SHARED_PUBLIC PDAG: public MixedGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -192,7 +192,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class BIFXMLBNReader< double >;
+  extern template class PYGUM_SHARED_PUBLIC BIFXMLBNReader< double >;
 #endif
 
 } /* namespace gum */

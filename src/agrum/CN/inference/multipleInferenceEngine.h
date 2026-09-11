@@ -71,7 +71,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
-    class MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
+    class PYGUM_PUBLIC MultipleInferenceEngine: public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       using _infE_ = InferenceEngine< GUM_SCALAR >;

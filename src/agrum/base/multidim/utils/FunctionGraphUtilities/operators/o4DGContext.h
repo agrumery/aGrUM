@@ -67,7 +67,7 @@ namespace gum {
    */
   // clang-format on
 
-  class O4DGContext {
+  class PYGUM_SHARED_PUBLIC O4DGContext {
     public:
     // ============================================================================
     /// @name Constructors, Destructors.
@@ -153,7 +153,10 @@ namespace gum {
 
     /// Table containing the log2 of prime numbers
     static const double _logPrime_[];
-    static const Idx    _nbLogPrime_, _offsetv_, _offset1_, _offset2_;
+    static const Idx    _nbLogPrime_;
+    static const Idx    _offsetv_;
+    static const Idx    _offset1_;
+    static const Idx    _offset2_;
   };
 }   // namespace gum
 
