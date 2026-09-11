@@ -183,9 +183,26 @@
 // single-token asymmetry bug the per-module split (GUM_PUBLIC_<MODULE> family,
 // below) exists to avoid. Each non-BASE module gets its own name when its turn
 // in the rollout comes.
+//
+// For *standalone* aGrUM (BUILD_SHARED_LIBS=ON, 8 separate module .dll/.so),
+// BN genuinely is a different DLL from BASE, so BN must see dllimport for
+// BASE's GUM_SHARED_PUBLIC symbols -- the plain GUM_SHARED_EXPORTING check
+// below is correct there. But for pyAgrum builds (GUM_FOR_SWIG), BASE and BN
+// are both whole-archived into the very same binary (core _pyagrum, see
+// Modules.agrum.cmake's _IS_BASE_OR_BN), so BN's dllimport reference to a
+// GUM_SHARED_PUBLIC symbol BASE defines in that *same* link never crosses a
+// real DLL boundary. MSVC's link.exe tolerates that (LNK4217 warning,
+// auto-resolves); GNU ld (MinGW) does not -- it demands a real import library
+// backing every __imp_* thunk, failing with "undefined reference to
+// __imp_..." for every GUM_SHARED_PUBLIC symbol BN's own .cpp files call into
+// BASE for. PYGUM_SHARED_EXPORTING is already defined for BASE *and* BN
+// together whenever GUM_FOR_SWIG is set (Modules.agrum.cmake) -- reusing it
+// here as an extra dllexport condition, gated on GUM_FOR_SWIG so
+// standalone-build behavior is untouched, closes the gap without duplicating
+// the BASE/BN pairing logic it already encodes.
 #ifndef GUM_SHARED_PUBLIC
 #  if defined(_WIN32)
-#    if defined(GUM_SHARED_EXPORTING)
+#    if defined(GUM_SHARED_EXPORTING) || (defined(GUM_FOR_SWIG) && defined(PYGUM_SHARED_EXPORTING))
 #      define GUM_SHARED_PUBLIC __declspec(dllexport)
 #    else
 #      define GUM_SHARED_PUBLIC __declspec(dllimport)

@@ -207,11 +207,52 @@ macro(gum_add_python_module MODULENAME)
   else()
     add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
   endif()
-  set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
+  if(SWIG_FOUND)
+    # OBJECT_DEPENDS hardens the compile step itself (not just the target-level
+    # ordering from add_dependencies below) against a build tree that survives
+    # partially between CI runs: MSBuild/VS's own up-to-date check for a
+    # generated source only looks at that source file's own mtime, and can
+    # decide the .obj is current even though the SWIG/passForPyType custom
+    # commands were supposed to (re)write it -- e.g. if copy_if_different
+    # skips a write because content is unchanged while raw/ or the stamp
+    # advanced, or the tree was only partially cleaned. Depending explicitly
+    # on the stamp and the raw SWIG outputs forces MSBuild/Ninja to recheck
+    # the compile whenever those actually change, closing that skip window.
+    set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES
+      GENERATED TRUE
+      OBJECT_DEPENDS "${_PASSFORPYTYPE_STAMP};${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx;${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h"
+    )
+  else()
+    set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
+  endif()
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
+  # GUM_PUBLIC is blanked to nothing on every agrum${OPTION} module library under
+  # BUILD_PYTHON (Modules.agrum.cmake) so a plain-GUM_PUBLIC-tagged class never gets
+  # re-exposed by -fvisibility=hidden/dllexport in pyAgrum builds -- but that blanking
+  # was never applied to the SWIG wrap targets themselves (this macro, one call per
+  # module: pyagrum/id/mrf/cn/cm/prm). Each wrap TU pulls in its module's umbrella
+  # header (e.g. core's #include <agrum/bn.h>), and umbrella headers freely reach
+  # across module boundaries for convenience (agrum/bn.h itself #includes PRM's
+  # O3prmBNReader.h/O3prmBNWriter.h for O3PRM-format BN I/O) -- so a wrap TU can end up
+  # compiling a class it never actually wraps or calls. On MSVC specifically, merely
+  # having a __declspec(dllexport)-tagged class's full definition visible is enough:
+  # unlike GCC/Clang (which only emit an inline member if it's actually ODR-used),
+  # MSVC eagerly instantiates and emits EVERY inline member of a dllexport'd class,
+  # since the DLL's ABI must be complete regardless of what this TU itself calls. This
+  # is exactly what broke core (windows_pyagrum_2022_py314/py310 CI, tip 72c98501c):
+  # PRMType (GUM_PUBLIC at its real definition, PRMType.h) reaches core only via
+  # agrum/bn.h's O3prmBNReader.h include, core's own wrap.cxx never mentions or calls
+  # PRMType anywhere (confirmed: zero SWIG-generated bindings for O3prmBNReader/Writer
+  # in pyagrumPYTHON_wrap.cxx) -- yet MSVC still emitted PRMType::boolean()/
+  # isSuperTypeOf()'s bodies into pyagrumPYTHON_wrap.obj, calling PRMType's out-of-line
+  # constructor/isSubTypeOf (PRMType.cpp, agrumPRM.lib only) that core's _pyagrum.vcxproj
+  # never links -- LNK2019. Blanking GUM_PUBLIC here, uniformly for every module (not
+  # just core), closes the same latent gap for any leaf's own umbrella-header reach.
+  target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC=)
   if(SWIG_FOUND)
     add_dependencies(${_PYAGRUMLIB} ${MODULENAME_LOWER}_swig_generated)
   endif()
+
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
 
   if(WIN32)
@@ -281,10 +322,12 @@ macro(gum_add_python_module MODULENAME)
     # (non-decorated) symbol, LNK2019 on every GUM_SHARED_PUBLIC-tagged BASE
     # class this wrap file touches (Timer::reset, IdCondSet::size,
     # RecordCounter::database, ScoringCache::tryGet, ...). PRMType's own
-    # LNK2019 in the same link is unrelated: it isn't GUM_SHARED_PUBLIC-tagged
-    # at its real definition (PRMType.h) at all, only at its PRMObject.h
-    # forward declaration, and core has no link dependency on agrumPRM to
-    # begin with -- separate bug, not fixed by this define.
+    # LNK2019 in the same link was a separate bug, not fixed by this define:
+    # it isn't GUM_SHARED_PUBLIC-tagged at its real definition (PRMType.h) at
+    # all, only plain GUM_PUBLIC, reached via agrum/bn.h's O3prmBNReader.h
+    # include -- fixed by blanking GUM_PUBLIC on every SWIG wrap target, see
+    # the target_compile_definitions(... GUM_PUBLIC=) call earlier in this
+    # macro.
     target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_SHARED_EXPORTING)
     # $<TARGET_FILE:...> in target_link_options is not always enough to
     # guarantee build order under parallel make -- force it explicitly so a
