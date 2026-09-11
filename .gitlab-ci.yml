@@ -47,12 +47,9 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "web"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-# Windows-only, same as mac_win_main_template plus an explicit branch match so
-# push CI on modularizePyAgrum also runs the Windows jobs automatically instead
-# of requiring a manual "web" trigger -- this branch has repeatedly regressed on
-# Windows-only link errors (dllexport/dllimport mismatches, see config.h.in) that
-# macOS/Linux push CI cannot catch. Remove this override once the branch merges
-# into master (already covered by the $CI_COMMIT_BRANCH == "master" rule above).
+# Windows-only: unlike mac_win_main_template, runs on every branch push, not
+# just master -- Windows-only link errors (dllexport/dllimport mismatches, see
+# config.h.in) have repeatedly slipped through macOS/Linux push CI.
 .windows_main_template: &windows_main_template
   stage: aGrUM
   retry: 1
@@ -60,9 +57,7 @@ stages:
     - if: '$WHEELS_ONLY == "true"'
       when: never
     - if: $CI_COMMIT_TAG
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $CI_COMMIT_BRANCH == "modularizePyAgrum"
-    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_COMMIT_BRANCH
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 .wheel_rules: &wheel_rules
