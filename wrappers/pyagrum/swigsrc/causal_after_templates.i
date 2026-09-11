@@ -55,9 +55,11 @@
 // Solution: inject the keyword-only Python wrappers via %extend %pythoncode.
 // Methods defined in a %pythoncode block inside %extend appear after the C++
 // binding methods in the generated class body and therefore shadow them.
-// The C-level dispatch function _pyagrum.DoorCriteria_enumerateBackdoorSets is
+// The C-level dispatch function _cm.DoorCriteria_enumerateBackdoorSets is
 // always available because the C++ functions are not %ignore'd; we call it with
 // all arguments explicitly, so the 7-argument overload is always selected.
+// _cm (not _pyagrum): this module (pyagrum.cm) is a separate compiled
+// extension from core pyagrum.
 // ---------------------------------------------------------------------------
 %extend gum::DoorCriteria {
 %pythoncode %{
@@ -90,7 +92,7 @@
         list of set of int
             All valid backdoor adjustment sets (as NodeId sets).
         """
-        return _pyagrum.DoorCriteria_enumerateBackdoorSets(
+        return _cm.DoorCriteria_enumerateBackdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)
@@ -123,7 +125,7 @@
         list of set of int
             All valid frontdoor adjustment sets (as NodeId sets).
         """
-        return _pyagrum.DoorCriteria_enumerateFrontdoorSets(
+        return _cm.DoorCriteria_enumerateFrontdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)
@@ -134,7 +136,7 @@
 // CausalImpact<double>::toDict() — convert the identified AST to a Python dict
 //
 // The traversal helper PyAgrumHelper::PyDictFromASTtree is defined in
-// extensions/helpers.h, included at the top of pyagrum.i, so it is always
+// extensions/helpersCM.h, included at the top of cm.i, so it is always
 // available to wrapper functions generated here.
 // Placed here (after_templates) because %extend on a template specialisation
 // must come after the matching %template directive.

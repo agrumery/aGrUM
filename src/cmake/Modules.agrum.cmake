@@ -104,6 +104,14 @@ macro(buildFileListsWithModules)
         if (BUILD_${OPTION} OR BUILD_ALL)
             message(STATUS "** aGrUM Notification:      (+) adding target for ${OPTION}")
 
+            # pyAgrum forces static linkage project-wide (ActBuilderPyAgrum.check_consistency,
+            # "Static library forced for [[pyAgrum]] target.") -- BASE/BN stay static here too:
+            # they carry process-global state (e.g. CompleteProjectionRegister4MultiDim, used by
+            # Tensor::min/max/sum/product) that must be a SINGLE instance shared by every pyAgrum
+            # SWIG extension (_pyagrum.so, _mrf.so, _id.so, ...). Rather than making agrumBASE/BN
+            # themselves shared libraries, they are embedded once into core pyagrum (_pyagrum.so,
+            # built SHARED -- see wrappers/pyagrum/CMakeLists.txt), and every other extension links
+            # against that single _pyagrum.so instead of re-embedding its own copy of BASE/BN.
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
 
             target_include_directories (agrum${OPTION} PRIVATE ${AGRUM_SOURCE_DIR};${AGRUM_BINARY_DIR})

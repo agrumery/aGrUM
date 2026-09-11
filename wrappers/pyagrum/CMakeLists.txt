@@ -115,16 +115,13 @@ if(NOT _AGRUM_IPO_SUPPORTED)
 endif()
 
 # pyAgrum never wraps FMDP in SWIG (independent module, no Python bindings -- see
-# src/modules.txt). Link against every other built module explicitly instead of
-# the full ${LIBAGRUM} interface, which would otherwise pull agrumFMDP into every
-# pyAgrum .so/.pyd for no functional reason.
-set(LIBAGRUM_PYAGRUM "agrumForPyAgrum")
-add_library(${LIBAGRUM_PYAGRUM} INTERFACE)
-foreach(OPTION ${LIST_OF_MODULES})
-  if(NOT OPTION STREQUAL "FMDP" AND (BUILD_${OPTION} OR BUILD_ALL))
-    target_link_libraries(${LIBAGRUM_PYAGRUM} INTERFACE agrum${OPTION})
-  endif()
-endforeach()
+# src/modules.txt), so it is never linked in below (agrumBASE/agrumBN for core,
+# agrum${MODULENAME} for submodules -- see gum_add_python_module). Shared headers
+# (extensions/helpers.h) must stay free of other-module types for this to hold --
+# a dynamic_cast<ASTjointProba<double>*> (ASTjointProba living in CM) used to leak
+# through helpers.h into every module including core, which briefly forced core to
+# link the full module set; that helper moved to extensions/helpersCM.h, included
+# only from cm.i, so core only ever needs BASE/BN.
 
 macro(gum_add_python_module MODULENAME)
   string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
@@ -201,7 +198,15 @@ macro(gum_add_python_module MODULENAME)
   endif()
 
   set(_PYAGRUMLIB _${MODULENAME_LOWER})
-  add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+  # Core "pyagrum" is SHARED, not MODULE: every split submodule (_mrf.so, _id.so,
+  # ...) links against it directly to reach BASE/BN (see target_link_libraries
+  # below), so it must be a real linkable shared library, not a Python-only
+  # loadable bundle. Submodules stay MODULE -- nothing links against them.
+  if(MODULENAME_LOWER STREQUAL "pyagrum")
+    add_library(${_PYAGRUMLIB} SHARED ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+  else()
+    add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+  endif()
   set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
   if(SWIG_FOUND)
@@ -217,7 +222,16 @@ macro(gum_add_python_module MODULENAME)
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES NO_SONAME ON)
 
-  target_link_libraries(${_PYAGRUMLIB} PRIVATE ${LIBAGRUM_PYAGRUM})
+  # BASE/BN are embedded once into core pyagrum (SHARED, see add_library above);
+  # every submodule links against that single instance instead of re-embedding
+  # its own copy -- this is what keeps process-global state (e.g.
+  # CompleteProjectionRegister4MultiDim, used by Tensor::min/max/sum/product) a
+  # single shared instance across every pyAgrum SWIG extension.
+  if(MODULENAME_LOWER STREQUAL "pyagrum")
+    target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBASE agrumBN)
+  else()
+    target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} _pyagrum)
+  endif()
   target_include_directories(${_PYAGRUMLIB} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${Python_NumPy_INCLUDE_DIRS})
   
   if(AGRUM_PYTHON_SABI AND TARGET Python::SABIModule)
@@ -233,12 +247,13 @@ macro(gum_add_python_module MODULENAME)
   # works for `act install`'s stable prefix but dangles for a wheel build, whose
   # temp CMAKE_INSTALL_PREFIX is deleted right after zipping (reproduced earlier:
   # dlopen looked for libagrumBASE under a /var/folders/.../actXXXXX/lib that no
-  # longer existed). agrumBASE/BN are installed straight into pyagrum/ (see the
-  # install(TARGETS agrumBASE agrumBN ...) call below gum_add_python_module(pyagrum))
-  # so core pyagrum/_pyagrum.so needs same-dir, submodules (pyagrum/<mod>/_<mod>.so)
-  # need one level up -- this also transparently covers the build tree (CMake's
-  # default auto-computed BUILD_RPATH already finds co-located build outputs;
-  # INSTALL_RPATH only takes effect once `cmake --install` actually runs).
+  # longer existed). Core pyagrum/_pyagrum.so is itself the shared dependency
+  # submodules link against (see target_link_libraries above), installed straight
+  # into pyagrum/ -- so core pyagrum/_pyagrum.so needs same-dir RPATH (it depends
+  # on nothing outside its own directory), submodules (pyagrum/<mod>/_<mod>.so)
+  # need one level up to reach it -- this also transparently covers the build tree
+  # (CMake's default auto-computed BUILD_RPATH already finds co-located build
+  # outputs; INSTALL_RPATH only takes effect once `cmake --install` actually runs).
   if(${ARGC} GREATER 1)
     set(_PYAGRUM_RPATH_UP "/..")
   else()
@@ -265,16 +280,23 @@ macro(gum_add_python_module MODULENAME)
     set_property(TARGET ${_PYAGRUMLIB} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
   endif()
   
-  # Dead-strip: drop unreachable functions/data at link time
+  # Dead-strip: drop unreachable functions/data at link time. Only safe for leaf
+  # modules (nothing links against them): core pyagrum is now a real SHARED
+  # library that submodules link against (see add_library above), so dead-strip
+  # would drop symbols (e.g. typeinfo for classes only referenced from a
+  # submodule, like gum::ASTjointProba<double> from pyagrum.cm) that this
+  # translation unit never itself references but external consumers still need.
   #   macOS: -dead_strip works natively on Mach-O without per-section flags
   #   Linux: requires -ffunction-sections/-fdata-sections on all TUs (set in CompilOptions)
   #   MSVC:  /OPT:REF removes unreferenced COMDATs; /OPT:ICF folds identical ones
-  if(APPLE)
-    target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,-dead_strip)
-  elseif(MSVC)
-    target_link_options(${_PYAGRUMLIB} PRIVATE /OPT:REF /OPT:ICF)
-  elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--gc-sections)
+  if(NOT MODULENAME_LOWER STREQUAL "pyagrum")
+    if(APPLE)
+      target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,-dead_strip)
+    elseif(MSVC)
+      target_link_options(${_PYAGRUMLIB} PRIVATE /OPT:REF /OPT:ICF)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+      target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--gc-sections)
+    endif()
   endif()
 
   install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
@@ -312,18 +334,6 @@ endmacro()
 #endforeach()
 gum_add_python_module(pyagrum)
 
-# agrumBASE/BN are forced SHARED for pyAgrum (src/cmake/Modules.agrum.cmake) so
-# every split extension shares one instance of BASE's process-global state (the
-# same reason all the RPATH plumbing above exists). Installing them at the generic
-# ${CMAKE_INSTALL_LIBDIR} (src/cmake/Install.agrum.cmake) is not enough: the wheel
-# builder only zips site-packages (ActBuilderWheel.zip_wheel walks get_base_dir(),
-# never ${prefix}/lib), so a copy has to land *inside* the pyagrum package itself --
-# same convention as numpy's/scipy's bundled *.libs/ shared objects. Harmless no-op
-# if BASE/BN end up static in some other configuration (ARCHIVE artifacts are
-# simply not produced by this DESTINATION-less-for-ARCHIVE rule).
-install(TARGETS agrumBASE agrumBN
-        RUNTIME DESTINATION ${INSTALL_PYTHONDIR}/pyagrum
-        LIBRARY DESTINATION ${INSTALL_PYTHONDIR}/pyagrum)
 
 option(PYAGRUM_WITH_MRF "build pyagrum.mrf as a separate extension module" ON)
 option(PYAGRUM_WITH_ID "build pyagrum.id as a separate extension module" ON)
