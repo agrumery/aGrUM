@@ -94,7 +94,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class ConstraintBasedLearning: public ApproximationScheme {
+    class PYGUM_SHARED_PUBLIC ConstraintBasedLearning: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

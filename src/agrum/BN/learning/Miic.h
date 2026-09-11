@@ -97,7 +97,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class Miic: public ConstraintBasedLearning {
+    class PYGUM_SHARED_PUBLIC Miic: public ConstraintBasedLearning {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

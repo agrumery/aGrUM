@@ -63,7 +63,7 @@ namespace gum::learning {
    *
    * @ingroup learning_group
    */
-  class StructuralConstraintIndegree:
+  class PYGUM_SHARED_PUBLIC StructuralConstraintIndegree:
       protected virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
     public:
     // ##########################################################################

@@ -101,7 +101,9 @@ namespace gum::learning {
    * LocalSearchWithTabuList also miic
    * @ingroup learning_group
    */
-  class IBNLearner: public IApproximationSchemeConfiguration, public ThreadNumberManager {
+  class PYGUM_SHARED_PUBLIC IBNLearner:
+      public IApproximationSchemeConfiguration,
+      public ThreadNumberManager {
     public:
     /// an enumeration enabling to select easily the score we wish to use
     enum class ScoreType { AIC, BD, BDeu, BIC, fNML, K2, LOG2LIKELIHOOD, MDL };
@@ -135,7 +137,7 @@ namespace gum::learning {
     static constexpr double default_EM_noise{0.1};
 
     /// a helper to easily read databases
-    class Database {
+    class PYGUM_SHARED_PUBLIC Database {
       public:
       // ########################################################################
       /// @name Constructors / Destructors

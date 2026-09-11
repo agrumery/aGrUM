@@ -69,7 +69,7 @@ namespace gum {
      * @warning If you pass an prior to the score, this one will be added
      * into the log-likelihood part of the score.
      */
-    class ScorefNML: public Score {
+    class PYGUM_SHARED_PUBLIC ScorefNML: public Score {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

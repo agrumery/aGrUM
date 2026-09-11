@@ -83,13 +83,13 @@ namespace gum {
 
     // forward the declarations of the Graph changes classes. This will be
     // useful for specifying HashFunc friendships in Class GraphChange
-    class ArcAddition;
-    class ArcDeletion;
-    class ArcReversal;
-    class ArcTriangleDeletion1;
-    class ArcTriangleDeletion2;
-    class EdgeAddition;
-    class EdgeDeletion;
+    class PYGUM_SHARED_PUBLIC ArcAddition;
+    class PYGUM_SHARED_PUBLIC ArcDeletion;
+    class PYGUM_SHARED_PUBLIC ArcReversal;
+    class PYGUM_SHARED_PUBLIC ArcTriangleDeletion1;
+    class PYGUM_SHARED_PUBLIC ArcTriangleDeletion2;
+    class PYGUM_SHARED_PUBLIC EdgeAddition;
+    class PYGUM_SHARED_PUBLIC EdgeDeletion;
 
     /* ========================================================================= */
     /* ===                        GRAPH CHANGE CLASS                         === */
@@ -98,7 +98,7 @@ namespace gum {
      * @brief
      * @ingroup learning_group
      */
-    class GraphChange {
+    class PYGUM_SHARED_PUBLIC GraphChange {
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -206,7 +206,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcAddition: public GraphChange {
+    class PYGUM_SHARED_PUBLIC ArcAddition: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -259,7 +259,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcDeletion: public GraphChange {
+    class PYGUM_SHARED_PUBLIC ArcDeletion: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -312,7 +312,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcReversal: public GraphChange {
+    class PYGUM_SHARED_PUBLIC ArcReversal: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -366,7 +366,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcTriangleDeletion1: public GraphChange {
+    class PYGUM_SHARED_PUBLIC ArcTriangleDeletion1: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -441,7 +441,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class ArcTriangleDeletion2: public GraphChange {
+    class PYGUM_SHARED_PUBLIC ArcTriangleDeletion2: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -515,7 +515,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class EdgeAddition: public GraphChange {
+    class PYGUM_SHARED_PUBLIC EdgeAddition: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -568,7 +568,7 @@ namespace gum {
      * using a switch on GraphChanges to determine which change corresponds to
      * this class.
      */
-    class EdgeDeletion: public GraphChange {
+    class PYGUM_SHARED_PUBLIC EdgeDeletion: public GraphChange {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

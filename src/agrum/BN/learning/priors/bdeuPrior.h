@@ -68,7 +68,7 @@ namespace gum::learning {
    * learning requires that the same priors are taken into account during
    * structure learning and parameter learning.
    */
-  class BDeuPrior: public Prior {
+  class PYGUM_SHARED_PUBLIC BDeuPrior: public Prior {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

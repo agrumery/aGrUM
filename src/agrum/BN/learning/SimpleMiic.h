@@ -80,7 +80,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class SimpleMiic: public ApproximationScheme {
+    class PYGUM_SHARED_PUBLIC SimpleMiic: public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

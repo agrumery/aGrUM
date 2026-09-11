@@ -67,7 +67,7 @@ namespace gum {
      * @warning If you pass an prior to the score, this one will be added
      * into the log-likelihood part of the score.
      */
-    class ScoreAIC: public Score {
+    class PYGUM_SHARED_PUBLIC ScoreAIC: public Score {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

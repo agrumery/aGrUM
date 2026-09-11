@@ -68,7 +68,7 @@ namespace gum {
      * learning requires that the same priors are taken into account during
      * structure learning and parameter learning.
      */
-    class K2Prior: public SmoothingPrior {
+    class PYGUM_SHARED_PUBLIC K2Prior: public SmoothingPrior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

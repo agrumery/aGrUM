@@ -61,7 +61,7 @@ namespace gum {
      * removed or reversed
      * @ingroup learning_group
      */
-    class StructuralConstraintMandatoryArcs: public virtual StructuralConstraintEmpty {
+    class PYGUM_SHARED_PUBLIC StructuralConstraintMandatoryArcs: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

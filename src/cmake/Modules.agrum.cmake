@@ -137,9 +137,18 @@ macro(buildFileListsWithModules)
             if (BUILD_PYTHON)
                 target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC=)
 
-                # GUM_SHARED_PUBLIC (BASE's macro, config.h.in) blanked unconditionally,
-                # same reasoning as GUM_PUBLIC above -- every module includes BASE headers.
-                target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_PUBLIC=)
+                # GUM_SHARED_PUBLIC is deliberately NEVER blanked here, unlike GUM_PUBLIC
+                # above: it is not a "not needed by pyAgrum" tag, it is the producer/
+                # consumer split for symbols pyAgrum's leaf modules DO need (config.h.in),
+                # exactly like PYGUM_SHARED_PUBLIC -- which is also never blanked anywhere
+                # in this file. Blanking it here would define the macro empty on agrumBASE's
+                # own target before config.h.in's #ifndef guard ever runs, so BASE --
+                # GUM_SHARED_PUBLIC's own producer, see config.h.in -- would silently compile
+                # every GUM_SHARED_PUBLIC-tagged symbol (KNML, CachedContingencyCounter,
+                # IndependenceTest, Score/Prior/ParamEstimator/GraphChange, ...) as
+                # hidden-visibility on every platform, GUM_SHARED_EXPORTING below
+                # notwithstanding: undefined symbol at leaf-module dlopen time (e.g.
+                # KNML::clear from pyagrum.id), silent on macOS's lazy binding.
 
                 # Same blanking for the remaining 7 modules' still-placeholder
                 # GUM_PUBLIC_<MODULE> names (config.h.in) -- BASE excluded, it no longer

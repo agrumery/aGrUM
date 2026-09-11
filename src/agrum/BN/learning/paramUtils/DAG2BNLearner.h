@@ -67,7 +67,7 @@ namespace gum {
      * @headerfile DAG2BNLearner.h <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
      * @ingroup learning_param_utils
      */
-    class DAG2BNLearner: public EMApproximationScheme {
+    class PYGUM_SHARED_PUBLIC DAG2BNLearner: public EMApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

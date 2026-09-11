@@ -65,7 +65,7 @@ namespace gum {
      * @brief A class for parameterizing EM's parameter learning approximations
      * @ingroup learning_param_utils
      */
-    class EMApproximationScheme: public ApproximationScheme {
+    class PYGUM_SHARED_PUBLIC EMApproximationScheme: public ApproximationScheme {
       public:
       /**
        * @brief initializes the EM parameter learning approximation with the min rate criterion

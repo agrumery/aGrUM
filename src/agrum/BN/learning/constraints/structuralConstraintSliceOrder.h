@@ -83,7 +83,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class StructuralConstraintSliceOrder:
+    class PYGUM_SHARED_PUBLIC StructuralConstraintSliceOrder:
         protected virtual StructuralConstraintSetStatic< StructuralConstraintDiGraph > {
       public:
       // ##########################################################################

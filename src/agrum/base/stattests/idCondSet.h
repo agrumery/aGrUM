@@ -65,14 +65,14 @@ namespace gum {
   namespace learning {
 
 
-    class IdCondSet;
+    class GUM_SHARED_PUBLIC IdCondSet;
 
     /** @class IdCondSetIterator
      * @brief The iterators for IdSets
      * @headerfile idCondSet.h <agrum/BN/learning/scores/idSet.h>
      * @ingroup learning_scores
      */
-    class IdCondSetIterator {
+    class GUM_SHARED_PUBLIC IdCondSetIterator {
       public:
       /// types for STL compliance
       /// @{
@@ -211,7 +211,7 @@ namespace gum {
      * this purpose because their implementations makes the computation of their
      * hash values quite difficult. IdCondSets fix this issue.
      */
-    class IdCondSet {
+    class GUM_SHARED_PUBLIC IdCondSet {
       public:
       using iterator            = IdCondSetIterator;
       using const_iterator      = IdCondSetIterator;
@@ -425,7 +425,7 @@ namespace gum {
 
   /// the hash function for idSets
   template <>
-  class HashFunc< learning::IdCondSet >: public HashFuncBase< learning::IdCondSet > {
+  class GUM_SHARED_PUBLIC HashFunc< learning::IdCondSet >: public HashFuncBase< learning::IdCondSet > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

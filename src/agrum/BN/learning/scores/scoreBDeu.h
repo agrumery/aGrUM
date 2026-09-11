@@ -74,7 +74,7 @@ namespace gum {
      * the two priors into the score.
      *
      */
-    class ScoreBDeu: public Score {
+    class PYGUM_SHARED_PUBLIC ScoreBDeu: public Score {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

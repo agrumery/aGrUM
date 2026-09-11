@@ -69,7 +69,7 @@ namespace gum {
      * Both IndependenceTest (Chi2, G2) and KNML inherit from this class.
      * Copy and move constructors/operators are protected to prevent slicing.
      */
-    class CachedContingencyCounter: public IThreadNumberManager {
+    class GUM_SHARED_PUBLIC CachedContingencyCounter: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

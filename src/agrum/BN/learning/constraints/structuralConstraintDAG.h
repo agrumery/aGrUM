@@ -66,7 +66,7 @@ namespace gum {
      * into a single class
      * @ingroup learning_group
      */
-    class StructuralConstraintDAG: public virtual StructuralConstraintEmpty {
+    class PYGUM_SHARED_PUBLIC StructuralConstraintDAG: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

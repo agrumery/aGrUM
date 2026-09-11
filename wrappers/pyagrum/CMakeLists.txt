@@ -266,6 +266,26 @@ macro(gum_add_python_module MODULENAME)
     # so leaving this TU on dllimport turned every whole-archived symbol it touches
     # into a hard "undefined reference to `__imp_...'" on MinGW.
     target_compile_definitions(${_PYAGRUMLIB} PRIVATE PYGUM_SHARED_EXPORTING)
+    # Same gap, same fix, for the newer GUM_SHARED_PUBLIC (BASE-only pilot,
+    # config.h.in): Modules.agrum.cmake defines GUM_SHARED_EXPORTING on
+    # agrumBASE's own target and blanks GUM_SHARED_PUBLIC to nothing on every
+    # agrum<MODULE> static-lib target for pyAgrum builds, but neither of those
+    # scopes covers this TU -- core's own wrap file is a third owner of every
+    # GUM_SHARED_PUBLIC symbol exactly like it is for PYGUM_SHARED_PUBLIC above,
+    # via the same whole-archive embedding below. Without this, GUM_SHARED_PUBLIC
+    # resolves to plain dllimport here (config.h.in: GUM_SHARED_EXPORTING not
+    # defined) while the symbol's actual definition (Timer, IdCondSet,
+    # RecordCounter, ScoringCache, GammaLog2, FormulaPart, ...) is blanked to no
+    # attribute at all in agrumBASE's own compilation -- link.exe then can't
+    # resolve the __imp_* thunk this TU emits against agrumBASE.lib's plain
+    # (non-decorated) symbol, LNK2019 on every GUM_SHARED_PUBLIC-tagged BASE
+    # class this wrap file touches (Timer::reset, IdCondSet::size,
+    # RecordCounter::database, ScoringCache::tryGet, ...). PRMType's own
+    # LNK2019 in the same link is unrelated: it isn't GUM_SHARED_PUBLIC-tagged
+    # at its real definition (PRMType.h) at all, only at its PRMObject.h
+    # forward declaration, and core has no link dependency on agrumPRM to
+    # begin with -- separate bug, not fixed by this define.
+    target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_SHARED_EXPORTING)
     # $<TARGET_FILE:...> in target_link_options is not always enough to
     # guarantee build order under parallel make -- force it explicitly so a
     # clean -j build doesn't try to link before agrumBASE/agrumBN exist.
@@ -477,6 +497,204 @@ foreach(_pysubmod_upper MRF ID CN CM PRM)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubmod})
   endif()
 endforeach()
+
+# ==========================================================================
+# Experimental: shrink the core to the symbols the built leaf modules
+# actually use. See md_docs/reportModularizedPyAgrum.md (§4/§8/§9) and
+# cmake/trim_core_exports.py for the rationale: the PYGUM_SHARED_PUBLIC
+# source annotations control what CAN be exported, not what a
+# whole-archived core keeps once dead-code removal runs -- this derives the
+# real, currently-needed subset from the actually-built leaf binaries
+# (undefined-symbol scan), then relinks the core in place restricted to
+# that subset plus its own Python entry point, with dead code removal
+# finally turned on for the core too (see the dead-strip comment on
+# gum_add_python_module above for why it stays off on core's *primary*
+# link -- that link still has to keep everything, since it happens before
+# any leaf module exists to be scanned).
+#
+# Runs strictly after core and every enabled leaf module have already
+# linked normally against the untouched, fully-exported core, so the leaf
+# modules' own build is entirely unaffected -- only the core's output file
+# gets overwritten afterward. Symbol resolution for the already-built leaf
+# modules happens by name at load time on every platform covered here, so
+# relinking core afterward does not require rebuilding them.
+#
+# Not attempted for MinGW: it already falls back to --export-all-symbols
+# (see the whole-archive branch above) precisely because most of
+# BASE/BN's surface was never individually tagged, for MSVC-parity reasons
+# alone -- restricting exports there needs that fallback removed first, a
+# separate, riskier change left for later.
+# ==========================================================================
+option(PYAGRUM_TRIM_CORE_EXPORTS "Shrink core's kept symbol set to what the built leaf modules actually use (experimental)" ON)
+
+if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW)
+  set(_PYAGRUM_LEAF_FILES "")
+  set(_PYAGRUM_LEAF_TARGETS "")
+  foreach(_pysubmod_upper MRF ID CN CM PRM)
+    string(TOLOWER ${_pysubmod_upper} _pysubmod)
+    if(PYAGRUM_WITH_${_pysubmod_upper} AND BUILD_${_pysubmod_upper})
+      list(APPEND _PYAGRUM_LEAF_TARGETS _${_pysubmod})
+      list(APPEND _PYAGRUM_LEAF_FILES "$<TARGET_FILE:_${_pysubmod}>")
+    endif()
+  endforeach()
+
+  if(_PYAGRUM_LEAF_TARGETS)
+    set(_PYAGRUM_EXPORTS_FILE ${CMAKE_CURRENT_BINARY_DIR}/core_exports_trimmed.txt)
+    set(_PYAGRUM_SCAN_STAMP ${CMAKE_CURRENT_BINARY_DIR}/core_trim_scan.stamp)
+
+    # CMAKE_CXX_FLAGS & co are plain space-separated strings, not CMake
+    # ;-separated lists -- used unquoted in a VERBATIM custom_command
+    # COMMAND, each stays ONE argument instead of splitting into per-flag
+    # arguments, so e.g. "-fopenmp=libomp -Wall ..." gets handed to the
+    # compiler as the single (bogus) value of "-fopenmp=". separate_arguments
+    # turns them into real lists first. _PYAGRUM_CXX_FLAGS_LIST is only read
+    # by the APPLE/Linux *link* commands below (they invoke the compiler as a
+    # Unix-style linker driver) -- MSVC links via a plain /link step, and
+    # compiling the wrap source itself goes through a real OBJECT library
+    # target (see _pyagrum_core_trim_obj below), which gets every compile
+    # flag/definition _pyagrum itself gets the normal CMake way (CXX_STANDARD,
+    # MSVC's /bigobj and NOMINMAX, -fvisibility=hidden, ...) instead of a
+    # hand-copied list -- a hand-copied list is exactly what silently missed
+    # the C++ standard flag once already (CMAKE_CXX_STANDARD is applied by
+    # CMake as a per-target /std:c++NN flag, never folded into
+    # CMAKE_CXX_FLAGS).
+    separate_arguments(_PYAGRUM_CXX_FLAGS_LIST UNIX_COMMAND "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE}")
+    if(WIN32)
+      separate_arguments(_PYAGRUM_SHARED_LINKER_FLAGS_LIST WINDOWS_COMMAND "${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
+    else()
+      separate_arguments(_PYAGRUM_SHARED_LINKER_FLAGS_LIST UNIX_COMMAND "${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
+    endif()
+
+    if(APPLE)
+      set(_PYAGRUM_TRIM_FORMAT apple)
+    elseif(MSVC)
+      set(_PYAGRUM_TRIM_FORMAT msvc)
+    else()
+      set(_PYAGRUM_TRIM_FORMAT gnu)
+    endif()
+
+    # Computed once, reused both by _pyagrum_core_trim_obj's target_link_libraries
+    # below and by the MSVC relink command's $<TARGET_LINKER_FILE:...> further down
+    # -- gum_add_python_module(pyagrum) above makes this same choice a third time
+    # for _pyagrum itself; that copy can't be deduped away without touching that
+    # pre-existing, shared-across-every-module macro.
+    if(AGRUM_PYTHON_SABI AND TARGET Python::SABIModule)
+      set(_PYAGRUM_CORE_PYTHON_TARGET Python::SABIModule)
+    else()
+      set(_PYAGRUM_CORE_PYTHON_TARGET Python::Module)
+    endif()
+
+    # Recompile core's one wrap source through a real OBJECT library target.
+    # Compile definitions/include directories/options are read straight back
+    # off _pyagrum itself via $<TARGET_PROPERTY:...> instead of a hand-copied
+    # second list, so this automatically stays in sync with whatever
+    # gum_add_python_module(pyagrum) above sets on _pyagrum (SWIG_TYPE_TABLE,
+    # PYGUM_SHARED_EXPORTING, AGRUM_SOURCE_DIR/AGRUM_BINARY_DIR,
+    # Python_NumPy_INCLUDE_DIRS, SWIG_COMPILE_FLAGS) -- a hand-copied list is
+    # exactly what silently missed the C++ standard flag once already (see
+    # above). TARGET_PROPERTY only reads what was set directly on a target,
+    # not requirements inherited through its own PRIVATE links, so the Python
+    # include dir (which _pyagrum picks up transitively by linking
+    # Python::Module/SABIModule) still needs linking in directly below.
+    #
+    # CMake also generates the actual compile command itself, so this also
+    # carries every directory-scoped flag applied to every target (CXX_STANDARD
+    # 20, MSVC's /bigobj and NOMINMAX, -fvisibility=hidden, ...) with no
+    # hand-copying at all.
+    #
+    # $<TARGET_OBJECTS:...> reliably expands for an OBJECT library target on
+    # every generator (unlike for _pyagrum itself, a SHARED target), so this
+    # also replaces the previous per-platform object-path guessing: APPLE/
+    # Linux used to point straight at _pyagrum's own already-compiled .o
+    # under a hardcoded, Make/Ninja-shaped CMakeFiles/_pyagrum.dir/... path;
+    # that guess broke under the Visual Studio generator's differently
+    # shaped, per-configuration object layout (LNK1181: input file not
+    # found), which is why MSVC alone used to recompile by hand instead.
+    # One shared mechanism for all three platforms removes that split.
+    add_library(_pyagrum_core_trim_obj OBJECT EXCLUDE_FROM_ALL ${GENERATED_PYTHON}/pyagrumPYTHON_wrap.cxx)
+    # CMake auto-enables -fPIC for SHARED/MODULE targets (that's how _pyagrum itself gets
+    # it) but NOT for a plain OBJECT library -- it has no way to know its objects will end
+    # up in a shared object. Without this, GCC/ld on Linux reject the relink with
+    # "relocation R_X86_64_32S ... can not be used when making a shared object" (harmless
+    # on macOS/MSVC, where code is PIC-by-default/PIC-irrelevant respectively).
+    set_target_properties(_pyagrum_core_trim_obj PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    target_compile_definitions(_pyagrum_core_trim_obj PRIVATE $<TARGET_PROPERTY:_pyagrum,COMPILE_DEFINITIONS>)
+    target_include_directories(_pyagrum_core_trim_obj PRIVATE $<TARGET_PROPERTY:_pyagrum,INCLUDE_DIRECTORIES>)
+    target_compile_options(_pyagrum_core_trim_obj PRIVATE $<TARGET_PROPERTY:_pyagrum,COMPILE_OPTIONS>)
+    target_link_libraries(_pyagrum_core_trim_obj PRIVATE ${_PYAGRUM_CORE_PYTHON_TARGET})
+    if(SWIG_FOUND)
+      add_dependencies(_pyagrum_core_trim_obj pyagrum_swig_generated)
+    endif()
+    set(_PYAGRUM_CORE_WRAP_OBJ $<TARGET_OBJECTS:_pyagrum_core_trim_obj>)
+
+    set(_PYAGRUM_TRIM_ARGS
+      --core $<TARGET_FILE:_pyagrum>
+      --format ${_PYAGRUM_TRIM_FORMAT}
+      --keep PyInit__pyagrum
+      --out ${_PYAGRUM_EXPORTS_FILE})
+    foreach(_leaf ${_PYAGRUM_LEAF_FILES})
+      list(APPEND _PYAGRUM_TRIM_ARGS --leaf ${_leaf})
+    endforeach()
+    if(MSVC)
+      list(APPEND _PYAGRUM_TRIM_ARGS --core-basename $<TARGET_FILE_NAME:_pyagrum>)
+    endif()
+
+    add_custom_command(OUTPUT ${_PYAGRUM_SCAN_STAMP}
+      DEPENDS _pyagrum ${_PYAGRUM_LEAF_TARGETS}
+      COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/trim_core_exports.py ${_PYAGRUM_TRIM_ARGS}
+      COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_SCAN_STAMP}
+      COMMENT "pyAgrum: scanning built leaf modules for core symbols actually used"
+      VERBATIM)
+
+    set(_PYAGRUM_RELINK_STAMP ${CMAKE_CURRENT_BINARY_DIR}/core_trim_relink.stamp)
+    if(APPLE)
+      add_custom_command(OUTPUT ${_PYAGRUM_RELINK_STAMP}
+        DEPENDS ${_PYAGRUM_SCAN_STAMP} _pyagrum_core_trim_obj
+        COMMAND ${CMAKE_CXX_COMPILER} ${_PYAGRUM_CXX_FLAGS_LIST} ${_PYAGRUM_SHARED_LINKER_FLAGS_LIST}
+                -dynamiclib -Wl,-headerpad_max_install_names
+                -Wl,-force_load,$<TARGET_FILE:agrumBASE> -Wl,-force_load,$<TARGET_FILE:agrumBN>
+                -Xlinker -undefined -Xlinker dynamic_lookup
+                -Wl,-dead_strip -Wl,-exported_symbols_list,${_PYAGRUM_EXPORTS_FILE}
+                -install_name $<TARGET_FILE_NAME:_pyagrum>
+                -Wl,-rpath,@loader_path
+                -o $<TARGET_FILE:_pyagrum>
+                ${_PYAGRUM_CORE_WRAP_OBJ}
+        COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_RELINK_STAMP}
+        COMMENT "pyAgrum: relinking core restricted to the symbols actually used (macOS)"
+        VERBATIM)
+    elseif(MSVC)
+      add_custom_command(OUTPUT ${_PYAGRUM_RELINK_STAMP}
+        DEPENDS ${_PYAGRUM_SCAN_STAMP} _pyagrum_core_trim_obj
+        COMMAND ${CMAKE_CXX_COMPILER} /nologo /LD
+                ${_PYAGRUM_CORE_WRAP_OBJ}
+                /link /NOLOGO
+                /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBASE> /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBN>
+                /LIBPATH:$<TARGET_FILE_DIR:agrumBASE> /LIBPATH:$<TARGET_FILE_DIR:agrumBN>
+                /DEF:${_PYAGRUM_EXPORTS_FILE} /OPT:REF /OPT:ICF
+                /OUT:$<TARGET_FILE:_pyagrum> /IMPLIB:$<TARGET_LINKER_FILE:_pyagrum>
+                $<TARGET_LINKER_FILE:${_PYAGRUM_CORE_PYTHON_TARGET}>
+                ${_PYAGRUM_SHARED_LINKER_FLAGS_LIST}
+        COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_RELINK_STAMP}
+        COMMENT "pyAgrum: relinking core restricted to the symbols actually used (MSVC -- links the already-compiled _pyagrum_core_trim_obj object, generator-agnostic)"
+        VERBATIM)
+    else()
+      add_custom_command(OUTPUT ${_PYAGRUM_RELINK_STAMP}
+        DEPENDS ${_PYAGRUM_SCAN_STAMP} _pyagrum_core_trim_obj
+        COMMAND ${CMAKE_CXX_COMPILER} ${_PYAGRUM_CXX_FLAGS_LIST} ${_PYAGRUM_SHARED_LINKER_FLAGS_LIST}
+                -shared
+                -Wl,--whole-archive $<TARGET_FILE:agrumBASE> $<TARGET_FILE:agrumBN> -Wl,--no-whole-archive
+                -Wl,--gc-sections -Wl,--version-script=${_PYAGRUM_EXPORTS_FILE}
+                -Wl,-rpath,$ORIGIN
+                -o $<TARGET_FILE:_pyagrum>
+                ${_PYAGRUM_CORE_WRAP_OBJ}
+        COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_RELINK_STAMP}
+        COMMENT "pyAgrum: relinking core restricted to the symbols actually used (Linux)"
+        VERBATIM)
+    endif()
+
+    add_custom_target(pyagrum_core_trim ALL DEPENDS ${_PYAGRUM_RELINK_STAMP})
+  endif()
+endif()
 
 # copy pyLibs at execution time so they are available without a build step.
 # Done once, outside gum_add_python_module, so calling the macro for several

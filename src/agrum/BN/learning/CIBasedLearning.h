@@ -78,7 +78,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class CIBasedLearning: public ConstraintBasedLearning {
+    class PYGUM_SHARED_PUBLIC CIBasedLearning: public ConstraintBasedLearning {
       public:
       /// Controls how collider candidates are ordered before orientation.
       enum class UCPriority : uint8_t {

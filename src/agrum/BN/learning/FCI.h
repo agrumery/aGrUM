@@ -76,7 +76,7 @@ namespace gum::learning {
    *
    * @ingroup learning_group
    */
-  class FCI: public CIBasedLearning {
+  class PYGUM_SHARED_PUBLIC FCI: public CIBasedLearning {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

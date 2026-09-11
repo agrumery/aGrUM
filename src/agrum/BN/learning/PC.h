@@ -71,7 +71,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class PC: public CIBasedLearning {
+    class PYGUM_SHARED_PUBLIC PC: public CIBasedLearning {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
