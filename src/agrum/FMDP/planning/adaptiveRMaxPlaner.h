@@ -70,7 +70,7 @@ namespace gum {
    * process
    *
    */
-  class GUM_PUBLIC AdaptiveRMaxPlaner: public StructuredPlaner< double >, public IDecisionStrategy {
+  class GUM_PUBLIC_FMDP AdaptiveRMaxPlaner: public StructuredPlaner< double >, public IDecisionStrategy {
     // ###################################################################
     /// @name
     // ###################################################################

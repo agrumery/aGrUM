@@ -67,7 +67,7 @@ namespace gum {
    * @ingroup fmdp_group
    *
    */
-  class GUM_PUBLIC IDecisionStrategy {
+  class GUM_PUBLIC_FMDP IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

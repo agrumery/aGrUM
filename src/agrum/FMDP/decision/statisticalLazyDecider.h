@@ -71,7 +71,7 @@ namespace gum {
    * But count how many times every visited states have been visited
    *
    */
-  class GUM_PUBLIC StatisticalLazyDecider: public IDecisionStrategy {
+  class GUM_PUBLIC_FMDP StatisticalLazyDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

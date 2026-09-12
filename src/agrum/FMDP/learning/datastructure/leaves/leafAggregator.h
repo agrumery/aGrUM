@@ -69,7 +69,7 @@ namespace gum {
    */
 
 
-  class GUM_PUBLIC LeafAggregator {
+  class LeafAggregator {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

@@ -66,7 +66,7 @@ namespace gum {
    * already visited.
    * @ingroup fmdp_group
    */
-  class GUM_PUBLIC StatesChecker {
+  class GUM_PUBLIC_FMDP StatesChecker {
     public:
     // ==========================================================================
     /// @name Constructor & destructor.

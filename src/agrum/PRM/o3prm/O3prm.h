@@ -71,7 +71,7 @@ namespace gum {
        *
        * @brief The O3Position is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Position {
+      class GUM_PUBLIC_PRM O3Position {
         public:
         O3Position();
         O3Position(std::string_view filename, int line, int column);
@@ -104,7 +104,7 @@ namespace gum {
        *
        * @brief The O3Formula is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Formula {
+      class GUM_PUBLIC_PRM O3Formula {
         public:
         O3Formula();
         O3Formula(const O3Position& pos, const Formula& formula);
@@ -133,7 +133,7 @@ namespace gum {
        *
        * @brief The O3Float is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Float {
+      class GUM_PUBLIC_PRM O3Float {
         public:
         O3Float();
         O3Float(const O3Position& pos, float value);
@@ -162,7 +162,7 @@ namespace gum {
        *
        * @brief The O3Integer is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Integer {
+      class GUM_PUBLIC_PRM O3Integer {
         public:
         O3Integer();
         O3Integer(const O3Position& pos, int value);
@@ -191,7 +191,7 @@ namespace gum {
        *
        * @brief The O3Label is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Label {
+      class GUM_PUBLIC_PRM O3Label {
         public:
         O3Label();
         O3Label(const O3Position& pos, std::string_view label);
@@ -222,7 +222,7 @@ namespace gum {
        *
        * @brief The O3Type is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Type {
+      class GUM_PUBLIC_PRM O3Type {
         public:
         using LabelPair = std::pair< O3Label, O3Label >;
         using LabelMap  = std::vector< LabelPair >;
@@ -265,7 +265,7 @@ namespace gum {
        *
        * @brief The O3IntType is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3IntType {
+      class GUM_PUBLIC_PRM O3IntType {
         public:
         O3IntType();
         O3IntType(const O3IntType& src);
@@ -305,7 +305,7 @@ namespace gum {
        *
        * @brief The O3RealType is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3RealType {
+      class GUM_PUBLIC_PRM O3RealType {
         public:
         O3RealType();
         O3RealType(const O3RealType& src);
@@ -341,7 +341,7 @@ namespace gum {
        *
        * @brief The O3InterfaceElement is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3InterfaceElement {
+      class GUM_PUBLIC_PRM O3InterfaceElement {
         public:
         O3InterfaceElement();
         O3InterfaceElement(const O3Label& type, const O3Label& name, bool isArray);
@@ -374,7 +374,7 @@ namespace gum {
        *
        * @brief The O3Interface is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Interface {
+      class GUM_PUBLIC_PRM O3Interface {
         public:
         using O3InterfaceElementList = std::vector< O3InterfaceElement >;
 
@@ -412,7 +412,7 @@ namespace gum {
        *
        * @brief The O3Parameter is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Parameter {
+      class GUM_PUBLIC_PRM O3Parameter {
         public:
         enum class PRMType { NONE, INT, FLOAT };
 
@@ -452,7 +452,7 @@ namespace gum {
        *
        * @brief The O3ReferenceSlot is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3ReferenceSlot {
+      class GUM_PUBLIC_PRM O3ReferenceSlot {
         public:
         O3ReferenceSlot();
         O3ReferenceSlot(const O3Label& type, const O3Label& name, bool isArray);
@@ -485,7 +485,7 @@ namespace gum {
        *
        * @brief The O3Attribute is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Attribute {
+      class GUM_PUBLIC_PRM O3Attribute {
         public:
         using O3LabelList = std::vector< O3Label >;
 
@@ -522,7 +522,7 @@ namespace gum {
        *
        * @brief The O3RawCPT is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3RawCPT: public O3Attribute {
+      class GUM_PUBLIC_PRM O3RawCPT: public O3Attribute {
         public:
         using O3FormulaList = std::vector< O3Formula >;
 
@@ -558,7 +558,7 @@ namespace gum {
        *
        * @brief The O3RuleCPT is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3RuleCPT: public O3Attribute {
+      class GUM_PUBLIC_PRM O3RuleCPT: public O3Attribute {
         public:
         using O3LabelList   = std::vector< O3Label >;
         using O3FormulaList = std::vector< O3Formula >;
@@ -597,7 +597,7 @@ namespace gum {
        *
        * @brief The O3Aggregate is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Aggregate {
+      class GUM_PUBLIC_PRM O3Aggregate {
         public:
         using O3LabelList = std::vector< O3Label >;
 
@@ -639,7 +639,7 @@ namespace gum {
        *
        * @brief The O3Class is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Class {
+      class GUM_PUBLIC_PRM O3Class {
         public:
         using O3LabelList         = std::vector< O3Label >;
         using O3ParameterList     = std::vector< O3Parameter >;
@@ -697,7 +697,7 @@ namespace gum {
        *
        * @brief The O3Assignment is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Assignment {
+      class GUM_PUBLIC_PRM O3Assignment {
         public:
         O3Assignment();
         O3Assignment(const O3Assignment& src);
@@ -737,7 +737,7 @@ namespace gum {
        *
        * @brief The O3Increment is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Increment {
+      class GUM_PUBLIC_PRM O3Increment {
         public:
         O3Increment();
         O3Increment(const O3Increment& src);
@@ -778,7 +778,7 @@ namespace gum {
        * @brief The O3InstanceParameter is part of the AST of the O3PRM
        * language.
        */
-      class GUM_PUBLIC O3InstanceParameter {
+      class GUM_PUBLIC_PRM O3InstanceParameter {
         public:
         O3InstanceParameter();
         O3InstanceParameter(const O3InstanceParameter& src);
@@ -810,7 +810,7 @@ namespace gum {
        *
        * @brief The O3Instance is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Instance {
+      class GUM_PUBLIC_PRM O3Instance {
         public:
         using O3InstanceParameterList = std::vector< O3InstanceParameter >;
 
@@ -848,7 +848,7 @@ namespace gum {
        *
        * @brief The O3System is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3System {
+      class GUM_PUBLIC_PRM O3System {
         public:
         using O3InstanceList   = std::vector< O3Instance >;
         using O3AssignmentList = std::vector< O3Assignment >;
@@ -888,7 +888,7 @@ namespace gum {
        *
        * @brief The O3Import is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3Import {
+      class GUM_PUBLIC_PRM O3Import {
         public:
         O3Import();
         O3Import(const O3Import& src);
@@ -912,7 +912,7 @@ namespace gum {
        *
        * @brief The O3PRM is part of the AST of the O3PRM language.
        */
-      class GUM_PUBLIC O3PRM {
+      class GUM_PUBLIC_PRM O3PRM {
         public:
         using O3TypeList      = std::vector< std::unique_ptr< O3Type > >;
         using O3IntTypeList   = std::vector< std::unique_ptr< O3IntType > >;

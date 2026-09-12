@@ -68,7 +68,7 @@ namespace gum {
    * @ingroup fmdp_group
    *
    */
-  class GUM_PUBLIC IVisitableGraphLearner {
+  class GUM_PUBLIC_FMDP IVisitableGraphLearner {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

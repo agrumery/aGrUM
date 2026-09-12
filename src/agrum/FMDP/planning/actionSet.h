@@ -95,7 +95,7 @@ namespace gum {
    * tree or function graph
    *
    */
-  class GUM_PUBLIC ActionSet {
+  class GUM_PUBLIC_FMDP ActionSet {
     public:
     // ###########################################################################
     /// @name CNL

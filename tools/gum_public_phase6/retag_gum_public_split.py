@@ -27,7 +27,7 @@ import argparse
 import re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 MODULES_TXT = REPO_ROOT / "src/modules.txt"
 AGRUM_SRC = REPO_ROOT / "src/agrum"
 
@@ -46,6 +46,25 @@ DIR_SET_RE = re.compile(r'^\s*set\(\s*(?P<module>\w+)_DIRS\s+"(?P<dir>[^"]+)"\s*
 # distinct name, not this one, when its turn in the rollout comes -- see
 # config.h.in's GUM_SHARED_PUBLIC comment for the full reasoning.
 MACRO_NAME_OVERRIDES = {"BASE": "GUM_SHARED_PUBLIC"}
+
+
+def _preceded_by_template(lines: list[str], idx: int) -> bool:
+    """True if a `template <...>` opens the declaration at `lines[idx]` -- walks
+    back over blank/comment/Doxygen lines and multi-line template parameter lists
+    (e.g. one parameter per line), stopping at the first line that terminates a
+    prior, unrelated statement (`;`, `{`, `}`)."""
+    j = idx - 1
+    while j >= 0:
+        stripped = lines[j].strip()
+        if stripped == "" or stripped.startswith(("//", "*", "/*", "@")):
+            j -= 1
+            continue
+        if stripped.startswith("template"):
+            return True
+        if stripped.endswith((";", "{", "}")):
+            return False
+        j -= 1
+    return False
 
 
 def load_dir_to_module() -> dict[str, str]:
@@ -90,6 +109,15 @@ def main() -> int:
         for idx, line in enumerate(lines):
             m = CLASS_LINE_RE.match(line)
             if not m:
+                continue
+            if _preceded_by_template(lines, idx):
+                # Generic template class (e.g. FMDPLearner<VariableAttributeSelection,
+                # RewardAttributeSelection, LearnerSelection>, template<...> spanning
+                # several lines) -- out of scope for this pass (GUM_PUBLIC.md §16:
+                # "classes/fonctions non-template uniquement"). Retagging one produces
+                # C2491 under MSVC ("dllimport not allowed on a function definition")
+                # the moment a consuming TU implicitly instantiates it -- caught live
+                # by Windows CI on FMDPLearner, invisible on macOS/Linux.
                 continue
             new_tag = MACRO_NAME_OVERRIDES.get(module, f"GUM_PUBLIC_{module}")
             new_line = f'{m.group("indent")}{m.group("kw")} {new_tag} {m.group("name")}{m.group("rest")}'

@@ -71,7 +71,7 @@ namespace gum {
    * @ingroup fmdp_group
    *
    */
-  class GUM_PUBLIC ILearningStrategy {
+  class GUM_PUBLIC_FMDP ILearningStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################

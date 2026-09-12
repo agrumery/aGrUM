@@ -66,7 +66,7 @@ namespace gum {
        * It represent a o3prmr command.
        * There five types of command, such sub-classes.
        * */
-      class GUM_PUBLIC O3prmrCommand {
+      class GUM_PUBLIC_PRM O3prmrCommand {
         public:
         int line;
         enum class RequestType : char { Observe, Unobserve, Query, SetEngine, SetGndEngine };
@@ -82,7 +82,7 @@ namespace gum {
       };
 
       ///
-      class GUM_PUBLIC ImportCommand {
+      class GUM_PUBLIC_PRM ImportCommand {
         public:
         ImportCommand(int line, std::string_view value, std::string_view alias);
 
@@ -96,7 +96,7 @@ namespace gum {
       };
 
       ///
-      class GUM_PUBLIC SetEngineCommand: public O3prmrCommand {
+      class GUM_PUBLIC_PRM SetEngineCommand: public O3prmrCommand {
         public:
         SetEngineCommand(int line, std::string_view value);
 
@@ -110,7 +110,7 @@ namespace gum {
       };
 
       ///
-      class GUM_PUBLIC SetGndEngineCommand: public O3prmrCommand {
+      class GUM_PUBLIC_PRM SetGndEngineCommand: public O3prmrCommand {
         public:
         SetGndEngineCommand(int line, std::string_view value);
 

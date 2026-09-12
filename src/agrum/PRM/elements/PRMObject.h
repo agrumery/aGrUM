@@ -74,7 +74,7 @@ namespace gum {
      * @ingroup prm_group
      */
 
-    class GUM_PUBLIC PRMObject {
+    class GUM_PUBLIC_PRM PRMObject {
       public:
       // ==========================================================================
       /// @name Built-in types.
@@ -199,7 +199,7 @@ namespace gum {
     std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type);
 
     // list of declarations of PRMObjects
-    class GUM_PUBLIC PRMType;
+    class GUM_PUBLIC_PRM PRMType;
     template < GUM_Numeric GUM_SCALAR >
     class PRMClassElement;
     template < GUM_Numeric GUM_SCALAR >

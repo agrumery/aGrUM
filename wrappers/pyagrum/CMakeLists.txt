@@ -246,6 +246,19 @@ macro(gum_add_python_module MODULENAME)
   # external. Blanking GUM_PUBLIC here, uniformly for every module (not just core),
   # closes that gap for any leaf's own umbrella-header reach.
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC=)
+  # Same umbrella-header transitive-reach gap as GUM_PUBLIC above (comment right
+  # above), now one macro name per module (GUM_PUBLIC.md §16) instead of a single
+  # shared one -- each needs its own blanking here too, or a wrap TU that merely
+  # includes another module's header through an umbrella (e.g. agrum/bn.h pulling
+  # in PRM's O3prmBNReader.h/Writer.h) sees that module's macro resolve to
+  # dllimport (config.h.in's AGRUM_<MODULE>_EXPORTING branch, since this TU never
+  # defines that module's own EXPORTING flag) on a class it never actually links
+  # against -- the exact LNK2001/ImportError-at-dlopen failure mode already
+  # documented above for plain GUM_PUBLIC. BASE keeps GUM_SHARED_PUBLIC, never
+  # blanked anywhere (Modules.agrum.cmake), same reasoning applies here.
+  foreach(_gum_public_blank_module BN PRM MRF CN FMDP ID CM)
+    target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC_${_gum_public_blank_module}=)
+  endforeach()
   if(SWIG_FOUND)
     add_dependencies(${_PYAGRUMLIB} ${MODULENAME_LOWER}_swig_generated)
   endif()

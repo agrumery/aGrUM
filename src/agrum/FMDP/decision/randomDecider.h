@@ -67,7 +67,7 @@ namespace gum {
    * Does nothing more than the interface for DecisionStrategy does
    *
    */
-  class GUM_PUBLIC RandomDecider: public IDecisionStrategy {
+  class GUM_PUBLIC_FMDP RandomDecider: public IDecisionStrategy {
     // ###################################################################
     /// @name Constructor & destructor.
     // ###################################################################
