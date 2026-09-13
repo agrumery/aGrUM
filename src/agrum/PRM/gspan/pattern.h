@@ -87,7 +87,7 @@ namespace gum {
        * from backward edges.
        *
        */
-      class Pattern: private DiGraph {
+      class GUM_PUBLIC_PRM Pattern: private DiGraph {
         public:
         // =========================================================================
         /// @name Constructor and destructor.

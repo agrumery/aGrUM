@@ -50,7 +50,7 @@ namespace gum {
      * by Class DBInitializerFromSQL.
      * @ingroup learning_database
      */
-    class NanodbcParser {
+    class GUM_SHARED_PUBLIC NanodbcParser {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -72,17 +72,17 @@ namespace gum {
     using Ranking              = std::pair< ThreePoints*, double >;
     using ProbabilisticRanking = std::tuple< ThreePoints*, double, double, double >;
 
-    class GreaterPairOn2nd {
+    class GUM_PUBLIC_BN GreaterPairOn2nd {
       public:
       bool operator()(const CondRanking& e1, const CondRanking& e2) const;
     };
 
-    class GreaterAbsPairOn2nd {
+    class GUM_PUBLIC_BN GreaterAbsPairOn2nd {
       public:
       bool operator()(const Ranking& e1, const Ranking& e2) const;
     };
 
-    class GreaterTupleOnLast {
+    class GUM_PUBLIC_BN GreaterTupleOnLast {
       public:
       bool operator()(const ProbabilisticRanking& e1, const ProbabilisticRanking& e2) const;
     };

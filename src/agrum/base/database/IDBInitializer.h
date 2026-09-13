@@ -132,7 +132,7 @@ namespace gum {
      * // but only columns 1, 3 and 4 of the CSV file have been kept.
      * @endcode
      */
-    class IDBInitializer {
+    class GUM_SHARED_PUBLIC IDBInitializer {
       public:
       /** @brief the enumeration indicating the type of the data the
        * IDBInitializer expects as input data */

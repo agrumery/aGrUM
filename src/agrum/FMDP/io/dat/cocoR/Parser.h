@@ -51,7 +51,7 @@ namespace gum {
 namespace MDPDAT {
 
 
-class Parser {
+class GUM_PUBLIC_FMDP Parser {
   private:
     	enum {
 		_EOF=0,

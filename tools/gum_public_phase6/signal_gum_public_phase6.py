@@ -40,7 +40,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 AGRUM_SRC = REPO_ROOT / "src/agrum"
 
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*<agrum/([^>]+)>', re.MULTILINE)

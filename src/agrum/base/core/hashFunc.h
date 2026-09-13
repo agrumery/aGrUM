@@ -78,7 +78,7 @@ namespace gum {
    * @throw OutOfBounds is raised if the smallest power of 2 greater than or
    * equal to nb requires more bits to be stored than Size can provide.
    */
-  unsigned int _hashTableLog2_(const Size nb);
+  GUM_SHARED_PUBLIC unsigned int _hashTableLog2_(const Size nb);
 
   /**
    * @class HashFuncConst
@@ -601,7 +601,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< std::string >: public HashFuncBase< std::string > {
+  class GUM_SHARED_PUBLIC HashFunc< std::string >: public HashFuncBase< std::string > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -630,7 +630,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< std::vector< Idx > >: public HashFuncBase< std::vector< Idx > > {
+  class GUM_SHARED_PUBLIC HashFunc< std::vector< Idx > >: public HashFuncBase< std::vector< Idx > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
@@ -653,7 +653,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< Debug >: public HashFuncBase< Debug > {
+  class GUM_SHARED_PUBLIC HashFunc< Debug >: public HashFuncBase< Debug > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

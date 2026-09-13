@@ -1163,22 +1163,29 @@ namespace gum {
   // The type of _SortedPriorityQueue_end_ is a pointer to void because C++ allows
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
-  extern const SortedPriorityQueueIterator< int, std::less< int > >
+  extern GUM_SHARED_PUBLIC const SortedPriorityQueueIterator< int, std::less< int > >
       _static_SortedPriorityQueue_end_;
-  extern const SortedPriorityQueueReverseIterator< int, std::less< int > >
+  extern GUM_SHARED_PUBLIC const SortedPriorityQueueReverseIterator< int, std::less< int > >
       _static_SortedPriorityQueue_rend_;
-  extern const SortedPriorityQueueIteratorSafe< int, std::less< int > >
+  extern GUM_SHARED_PUBLIC const SortedPriorityQueueIteratorSafe< int, std::less< int > >
       _static_SortedPriorityQueue_end_safe_;
-  extern const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
+  extern GUM_SHARED_PUBLIC const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
       _static_SortedPriorityQueue_rend_safe_;
 
-  inline constexpr void* const _SortedPriorityQueue_end_
+  // Not constexpr: on Windows, GUM_SHARED_PUBLIC expands to __declspec(dllimport)
+  // in every TU other than BASE's own, and the address of a dllimport'd symbol is
+  // only resolved by the loader -- it is not a core constant expression there, so
+  // constexpr initialization fails to compile (GCC/MinGW: "is not a constant
+  // expression") as soon as these symbols leave BASE. Dynamic initialization is
+  // safe here regardless of static-init order: DLL imports are resolved by the
+  // loader before any C++ static initializer runs.
+  inline const void* const _SortedPriorityQueue_end_
       = (void* const)&_static_SortedPriorityQueue_end_;
-  inline constexpr void* const _SortedPriorityQueue_rend_
+  inline const void* const _SortedPriorityQueue_rend_
       = (void* const)&_static_SortedPriorityQueue_rend_;
-  inline constexpr void* const _SortedPriorityQueue_end_safe_
+  inline const void* const _SortedPriorityQueue_end_safe_
       = (void* const)&_static_SortedPriorityQueue_end_safe_;
-  inline constexpr void* const _SortedPriorityQueue_rend_safe_
+  inline const void* const _SortedPriorityQueue_rend_safe_
       = (void* const)&_static_SortedPriorityQueue_rend_safe_;
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 

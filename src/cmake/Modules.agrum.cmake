@@ -182,6 +182,29 @@ macro(buildFileListsWithModules)
                 target_compile_definitions (agrum${OPTION} PRIVATE AGRUM_${OPTION}_EXPORTING)
             endif ()
 
+            # AGRUM_BUILD_SHARED_LIBS (config.h.in, CompilOptions.agrum.cmake) tells
+            # GUM_SHARED_PUBLIC/GUM_PUBLIC_<MODULE> whether there is an actual DLL
+            # boundary to cross. It is set globally when BUILD_SHARED_LIBS=ON (aGrUM's
+            # own standalone shared build), but pyAgrum forces BUILD_SHARED_LIBS=OFF
+            # unconditionally (every agrum${OPTION} here is a plain static library) even
+            # though a real shared boundary still exists one level up: core _pyagrum.so
+            # is always built SHARED (wrappers/pyagrum/CMakeLists.txt) and whole-archives
+            # BASE/BN, while leaf .pyd's link against it as a genuine DLL. Every
+            # agrum${OPTION} target must see the same signal core's own SWIG wrap TU
+            # already gets (wrappers/pyagrum/CMakeLists.txt), or the split becomes
+            # inconsistent between "this is the defining TU" and "this is a mere
+            # declarer": BASE's own compilation would emit a plain, undecorated
+            # definition (empty-macro fallback) while core's wrap TU still claims
+            # dllexport for the same symbol -- an inline-vs-exported mismatch MSVC
+            # reports as LNK2005 (e.g. _hashTableLog2_, genuinely inline there --
+            # AGRUM_INLINE defaults ON off MinGW/Debug, CompilOptions.agrum.cmake) -- or
+            # BASE's plain definition never reaches core's real export table at all,
+            # leaving a leaf .pyd's correct dllimport with nothing to resolve against
+            # (LNK2019, e.g. the SortedPriorityQueue end-marker statics).
+            if (BUILD_PYTHON)
+                target_compile_definitions (agrum${OPTION} PRIVATE AGRUM_BUILD_SHARED_LIBS)
+            endif ()
+
             # PYGUM_SHARED_EXPORTING marks agrumBASE/agrumBN as the true owner of every
             # PYGUM_SHARED_PUBLIC-tagged symbol (config.h.in) for the Windows dllexport/
             # dllimport split: only these two targets' own object files -- whole-archived

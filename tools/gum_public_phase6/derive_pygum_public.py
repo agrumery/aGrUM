@@ -55,7 +55,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_BUILD_DIR = REPO_ROOT / "build/pyAgrum/release/wrappers/pyagrum/raw"
 AGRUM_SRC = REPO_ROOT / "src/agrum"
 

@@ -71,7 +71,7 @@ namespace gum {
      * each new name. Different numbers are used for each different type of
      * PRMObject.
      */
-    class NameGenerator {
+    class GUM_PUBLIC_PRM NameGenerator {
       public:
       // ========================================================================
       /// @name Constructors and destructor.

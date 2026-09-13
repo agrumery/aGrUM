@@ -126,7 +126,7 @@ namespace gum {
      * into the DBRowGeneratorSet, only one while loop is needed to
      * parse all the generated output DBRow instances.
      */
-    class DBRowGeneratorSet final {
+    class GUM_SHARED_PUBLIC DBRowGeneratorSet final {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

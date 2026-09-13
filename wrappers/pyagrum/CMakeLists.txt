@@ -226,6 +226,16 @@ macro(gum_add_python_module MODULENAME)
     set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
   endif()
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
+  # This target (core _pyagrum.so, or a leaf _mrf/_id/_cn/_cm/_prm.pyd) is a real
+  # shared object regardless of the global BUILD_SHARED_LIBS (CompilOptions.agrum.cmake),
+  # which pyAgrum forces OFF only to control how agrum${OPTION} module libraries are
+  # built (static, whole-archived or plainly linked here) -- it says nothing about
+  # this SWIG target itself, always declared SHARED/MODULE regardless. Define the flag
+  # here too so GUM_SHARED_PUBLIC (config.h.in) keeps applying its real dllexport/
+  # dllimport split across this genuine DLL boundary: core sees dllexport (its own
+  # GUM_SHARED_EXPORTING, set below), every leaf sees dllimport (it never defines that
+  # flag), exactly as before this global gate was introduced.
+  target_compile_definitions(${_PYAGRUMLIB} PRIVATE AGRUM_BUILD_SHARED_LIBS)
   # GUM_PUBLIC is blanked to nothing on every agrum${OPTION} module library under
   # BUILD_PYTHON (Modules.agrum.cmake) so a plain-GUM_PUBLIC-tagged class never gets
   # re-exposed by -fvisibility=hidden/dllexport in pyAgrum builds -- but that blanking

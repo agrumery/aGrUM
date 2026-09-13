@@ -69,7 +69,7 @@ namespace gum {
        * Regarding memory allocation EdgeCode are shared between related
        * DFSCode, so delete DFSCode in a bottom up fashion.
        */
-      class DFSCode {
+      class GUM_PUBLIC_PRM DFSCode {
         public:
         /**
          * Returns true of e2 is a valid neighbor for e1 (i.e. it respect the

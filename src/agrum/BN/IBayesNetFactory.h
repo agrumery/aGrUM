@@ -67,7 +67,7 @@ namespace gum {
    * many ways to build a BN do not depend on the specification of the
    * GUM_SCALAR template argument (for instance for BN readers).
    */
-  class IBayesNetFactory {
+  class GUM_PUBLIC_BN IBayesNetFactory {
     public:
     /**
      * @brief The enumeration of states in which the factory can be in.

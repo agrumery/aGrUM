@@ -73,7 +73,7 @@ namespace gum {
    * @brief Returns the lowercase version of str.
    * @return Returns the lowercase version of str.
    */
-  std::string toLower(std::string_view str);
+  GUM_SHARED_PUBLIC std::string toLower(std::string_view str);
 
   /**
    * true if needle in s
@@ -81,7 +81,7 @@ namespace gum {
    * @param s
    * @param needle   * @return
    */
-  bool contains(std::string_view s, std::string_view needle);
+  GUM_SHARED_PUBLIC bool contains(std::string_view s, std::string_view needle);
 
   /**
    * @brief Returns true if value ends with ending.
@@ -113,7 +113,7 @@ namespace gum {
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  bool isInteger(std::string_view val);
+  GUM_SHARED_PUBLIC bool isInteger(std::string_view val);
 
   /**
    * @brief return true is a string contains an integer value
@@ -127,7 +127,7 @@ namespace gum {
    * @param s A string
    * @return true if s exactly contains a double
    */
-  bool isNumerical(std::string_view val);
+  GUM_SHARED_PUBLIC bool isNumerical(std::string_view val);
 
   /**
    * @brief return true is a string contains a numerical (double) value
@@ -160,14 +160,14 @@ namespace gum {
    * @param s A string
    * @return the new string trimmed from start
    */
-  std::string trim_copy(std::string_view s);
+  GUM_SHARED_PUBLIC std::string trim_copy(std::string_view s);
 
   /**
    * @brief remove all newlines in a string
    * @param s A string
    * @return the new string with no newline
    */
-  std::string remove_newline(std::string_view s);
+  GUM_SHARED_PUBLIC std::string remove_newline(std::string_view s);
 
   template < typename T >
   std::string compact_tostr(T value);

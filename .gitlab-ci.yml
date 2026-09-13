@@ -286,6 +286,23 @@ windows_agrum_2022:
   script:
     - *windows_build_script
 
+# aGrUM does not support BUILD_SHARED_LIBS=ON under Windows: act itself now
+# refuses it (ActBuilderAgrum.check_consistency, md_docs/GUM_PUBLIC.md #17.2) --
+# every attempt to actually exercise the 8-separate-shared-libraries topology
+# GUM_PUBLIC_<MODULE> was designed for hit LNK2019/LNK2005 failures that only
+# a full, zero-gap Phase 6 tagging pass across every module would resolve, on
+# top of pyAgrum's own always-static requirement making that goal moot in
+# practice. This job now validates plain static aGrUM under mingw64 instead
+# (build_windows.ps1 passes --static_lib), the same coverage as
+# windows_agrum_2019/2022 but on a different compiler/toolchain.
+windows_agrum_mingw:
+  <<: *windows_main_template
+  stage: aGrUM
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "aGrUM", COMPILER: "mingw64" }
+  script:
+    - *windows_build_script
+
 windows_pyagrum_2022_py310:
   <<: *windows_main_template
   stage: pyAgrum

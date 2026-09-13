@@ -37,7 +37,7 @@ import json
 import re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 CLASS_LINE_RE = re.compile(
     r'^(?P<indent>\s*)(?P<kw>class|struct)\s+'

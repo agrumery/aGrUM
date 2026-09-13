@@ -69,7 +69,7 @@ namespace gum {
        *nodes.
        */
 
-      struct EdgeCode {
+      struct GUM_PUBLIC_PRM EdgeCode {
         /**
          * Default constructor.
          *

@@ -57,7 +57,7 @@ namespace gum {
 
   namespace learning {
 
-    class IGraphChangesGenerator4UndiGraph {
+    class GUM_PUBLIC_BN IGraphChangesGenerator4UndiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
       using iterator = typename Set< GraphChange >::const_iterator;

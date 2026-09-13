@@ -141,7 +141,7 @@ namespace gum {
      *
      * @ingroup learning_database
      */
-    class DBTranslator4ContinuousVariable final: public DBTranslator {
+    class GUM_SHARED_PUBLIC DBTranslator4ContinuousVariable final: public DBTranslator {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

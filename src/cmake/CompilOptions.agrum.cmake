@@ -92,6 +92,23 @@ if (MSVC)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS OFF)
 endif ()
 
+# AGRUM_BUILD_SHARED_LIBS tells config.h.in whether GUM_SHARED_PUBLIC/GUM_PUBLIC_<MODULE>
+# (the pure-aGrUM Phase 6 visibility macros, md_docs/GUM_PUBLIC.md) are actually crossing
+# a real DLL boundary. On Windows, __declspec(dllexport)/dllimport is applied purely from
+# what a translation unit has #define'd -- unlike -fvisibility=hidden above, it does NOT
+# become a no-op when BUILD_SHARED_LIBS=OFF. That mismatch broke every consumer of a
+# tagged symbol that isn't itself a producer of the same module (gumTest, apps/o3prm/*,
+# a user's own program linking aGrUM statically, ...): with BUILD_SHARED_LIBS=OFF (MSVC
+# forces it unconditionally, ActBuilder.check_compiler_and_maker; so does every pyAgrum
+# build), agrum<MODULE> are plain static libraries with no DLL to import from, yet a
+# consumer TU that doesn't define the module's own *_EXPORTING flag still saw dllimport
+# and failed at link time (LNK2019/LNK2001, e.g. gum::prm::gspan::Pattern and the
+# SortedPriorityQueue end-marker statics, md_docs/GUM_PUBLIC.md #17.2). Gating the split
+# on this flag makes it apply only when there is an actual DLL boundary to cross.
+if (BUILD_SHARED_LIBS)
+    add_compile_definitions(AGRUM_BUILD_SHARED_LIBS)
+endif ()
+
 # Emit one section per function/variable so the linker can dead-strip unused code.
 #   Linux: -ffunction-sections/-fdata-sections (used with --gc-sections on _pyagrum target)
 #   MSVC:  /Gy enables function-level linking (used with /OPT:REF on _pyagrum target)

@@ -153,7 +153,7 @@ namespace gum {
      * // been kept.
      * @endcode
      */
-    class DBInitializerFromSQL: public IDBInitializer {
+    class GUM_SHARED_PUBLIC DBInitializerFromSQL: public IDBInitializer {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -91,7 +91,7 @@ namespace gum {
      * class.
      *
      * @ingroup learning_database */
-    class DBCell {
+    class GUM_SHARED_PUBLIC DBCell {
       public:
       /// the set of types possibly taken by the last element read
       enum class EltType : unsigned char { REAL, INTEGER, STRING, MISSING };

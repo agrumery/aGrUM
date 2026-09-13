@@ -220,7 +220,7 @@ namespace gum {
      * };
      * @endcode
      */
-    class DBRowGenerator {
+    class GUM_SHARED_PUBLIC DBRowGenerator {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

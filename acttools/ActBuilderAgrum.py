@@ -149,6 +149,14 @@ class ActBuilderAgrum(ActBuilder):
       notif("Updating test(s) declaration.")
       write_test_list(list(alltests.values()))
 
+    if platform.system() == "Windows" and not self.current["static_lib"]:
+      critic(
+        "aGrUM does not support BUILD_SHARED_LIBS=ON under Windows: dllexport/dllimport "
+        "correctness across separate module DLLs is not maintained there "
+        "(md_docs/GUM_PUBLIC.md #17.2). Pass --static_lib."
+      )
+      return False
+
     if not self.check_compiler_and_maker():
       return False
 

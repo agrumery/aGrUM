@@ -30,13 +30,20 @@ Check-LastCommand
 Write-Host "Building $TARGET..."
 Set-Location $CI_PROJECT_DIR
 python act clean
+
+if ($COMPILER -eq "mingw64") {
+    # Updating compiler path here because I'm annoyed of dealing with paths
+    $env:PATH = "C:\msys64\ucrt64\bin;" + $env:PATH
+}
+
 if ($TARGET -eq "aGrUM") {
-    python act --compiler=$COMPILER -d build -j except1 test release aGrUM
+    # aGrUM does not support BUILD_SHARED_LIBS=ON under Windows (act itself now
+    # refuses it, ActBuilderAgrum.check_consistency) -- pass --static_lib
+    # explicitly instead of relying on a silent per-compiler default.
+    python act --compiler=$COMPILER --static_lib -d build -j except1 test release aGrUM
 } else {
 
     if ($COMPILER -eq "mingw64") {
-        # Updating compiler path here because I'm annoyed of dealing with paths
-        $env:PATH = "C:\msys64\ucrt64\bin;" + $env:PATH
         python act install release pyAgrum --compiler=mingw64 -d build -j except1 -m all -t all
         $files = @("libgcc_s_seh-1", "libgomp-1", "libstdc++-6", "libwinpthread-1")
 

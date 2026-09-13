@@ -201,12 +201,28 @@
 // standalone-build behavior is untouched, closes the gap without duplicating
 // the BASE/BN pairing logic it already encodes.
 #ifndef GUM_SHARED_PUBLIC
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(GUM_SHARED_EXPORTING) || (defined(GUM_FOR_SWIG) && defined(PYGUM_SHARED_EXPORTING))
 #      define GUM_SHARED_PUBLIC __declspec(dllexport)
 #    else
 #      define GUM_SHARED_PUBLIC __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_SHARED_PUBLIC
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_SHARED_PUBLIC __attribute__((visibility("default")))
 #  else
@@ -215,12 +231,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_BN
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_BN_EXPORTING)
 #      define GUM_PUBLIC_BN __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_BN __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_BN
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_BN __attribute__((visibility("default")))
 #  else
@@ -229,12 +261,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_PRM
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_PRM_EXPORTING)
 #      define GUM_PUBLIC_PRM __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_PRM __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_PRM
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_PRM __attribute__((visibility("default")))
 #  else
@@ -243,12 +291,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_MRF
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_MRF_EXPORTING)
 #      define GUM_PUBLIC_MRF __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_MRF __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_MRF
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_MRF __attribute__((visibility("default")))
 #  else
@@ -257,12 +321,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_CN
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_CN_EXPORTING)
 #      define GUM_PUBLIC_CN __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_CN __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_CN
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_CN __attribute__((visibility("default")))
 #  else
@@ -271,12 +351,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_FMDP
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_FMDP_EXPORTING)
 #      define GUM_PUBLIC_FMDP __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_FMDP __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_FMDP
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_FMDP __attribute__((visibility("default")))
 #  else
@@ -285,12 +381,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_ID
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_ID_EXPORTING)
 #      define GUM_PUBLIC_ID __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_ID __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_ID
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_ID __attribute__((visibility("default")))
 #  else
@@ -299,12 +411,28 @@
 #endif
 
 #ifndef GUM_PUBLIC_CM
-#  if defined(_WIN32)
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
 #    if defined(AGRUM_CM_EXPORTING)
 #      define GUM_PUBLIC_CM __declspec(dllexport)
 #    else
 #      define GUM_PUBLIC_CM __declspec(dllimport)
 #    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_CM
 #  elif defined(__GNUC__) || defined(__clang__)
 #    define GUM_PUBLIC_CM __attribute__((visibility("default")))
 #  else

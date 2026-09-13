@@ -57,7 +57,7 @@ namespace gum {
      * @brief the base class for all structural constraints
      * @ingroup learning_group
      */
-    struct StructuralConstraintEmpty {
+    struct GUM_PUBLIC_BN StructuralConstraintEmpty {
       using allConstraints = _ConstraintSet_< void >;
     };
 

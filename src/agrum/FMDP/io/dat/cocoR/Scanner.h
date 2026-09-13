@@ -46,7 +46,7 @@ namespace MDPDAT {
 // Token, Buffer, InMemoryBuffer, StreamBuffer, MappedBuffer, UTF8Buffer,
 // StartStates, KeywordMap are now defined in <agrum/base/core/cocoR/common.h>
 
-class Scanner {
+class GUM_PUBLIC_FMDP Scanner {
   private:
     void* firstHeap;
     void* heap;

@@ -60,7 +60,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 BUILD_DIR = REPO_ROOT / "build" / "aGrUM" / "release"
 SRC_DIR = REPO_ROOT / "src"
 

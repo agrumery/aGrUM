@@ -67,7 +67,7 @@ namespace gum {
     using prm_float = float;
 
     /// Decompose a string in a vector of strings using "." as separators.
-    void decomposePath(std::string_view path, std::vector< std::string >& v);
+    GUM_PUBLIC_PRM void decomposePath(std::string_view path, std::vector< std::string >& v);
 
     /**
      * @brief Returns a copy of a Tensor after applying a bijection over the

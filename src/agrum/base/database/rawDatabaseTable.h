@@ -131,7 +131,7 @@ namespace gum {
      * database.clear ();
      * @endcode
      */
-    class RawDatabaseTable: public IDatabaseTable< DBCell > {
+    class GUM_SHARED_PUBLIC RawDatabaseTable: public IDatabaseTable< DBCell > {
       public:
       /// the type for the vectors used in the RawDatabaseTable
       template < typename TX_DATA >

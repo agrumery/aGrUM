@@ -185,7 +185,7 @@ namespace gum {
     /// The very bone of the ActionSet
     Sequence< Idx >* _actionSeq_;
 
-    friend std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy);
+    friend GUM_PUBLIC_FMDP std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy);
   };
 }   // namespace gum
 

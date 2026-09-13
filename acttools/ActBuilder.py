@@ -145,11 +145,6 @@ class ActBuilder:
       if self.current["compiler"] in ["clang", "gcc"]:
         error(f"{self.current['compiler']} forbidden : clang or gcc only configured for non-windows system.")
         return False
-      else:
-        if self.current["compiler"] != "mingw64":  # mvsc
-          if not self.current["static_lib"]:
-            notif("Static library forced with MSVC compiler.")
-            self.current["static_lib"] = True
     else:
       if self.current["compiler"] not in ["clang", "gcc"]:
         error(f"{self.current['compiler']} forbidden : only clang or gcc for non-windows system.")

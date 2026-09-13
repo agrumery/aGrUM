@@ -1244,7 +1244,7 @@ namespace gum {
    */
   template <>
   // class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
-  class HashFunc< Instantiation >: public HashFuncBase< Instantiation > {
+  class GUM_SHARED_PUBLIC HashFunc< Instantiation >: public HashFuncBase< Instantiation > {
     public:
     /**
      * @brief Returns the value of a key as a Size.
