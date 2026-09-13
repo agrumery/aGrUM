@@ -767,4 +767,11 @@ h4.glow, h5.glow, h6.glow {
 	text-shadow: 0 0 15px #67d8ef;
 }
 
-
+/*********************************************/
+/**   Transparent background for dot/graphviz **/
+/**   diagrams (inheritance, collaboration)   **/
+/*********************************************/
+.dyncontent iframe,
+.zoom iframe {
+	background: transparent;
+}
