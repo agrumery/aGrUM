@@ -1,0 +1,135 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2026 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
+
+/**
+ * @file
+ * @brief Code modularization documentation (aGrUM and pyAgrum).
+ *
+ * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ */
+
+/*!
+ * \defgroup modularization_group Code modularization (aGrUM and pyAgrum)
+ *
+ * aGrUM's C++ sources are split into 8 modules (`BASE`, `BN`, `PRM`, `MRF`,
+ * `CN`, `FMDP`, `ID`, `CM`, declared in `src/modules.txt` with their
+ * dependencies). Depending on the target and the platform, these modules are
+ * assembled into a final binary in one of three ways.
+ *
+ * \section modularization_configs Build configurations
+ *
+ * <table>
+ * <tr><th>Target / platform</th><th>Resulting binaries</th></tr>
+ * <tr><td>Pure aGrUM, Linux/macOS (default)</td>
+ *     <td>8 genuinely separate shared libraries (`libagrumBASE.so`,
+ *     `libagrumBN.so`, ...), each simultaneously a producer of its own
+ *     symbols and a consumer of the modules it depends on.</td></tr>
+ * <tr><td>Pure aGrUM, Windows</td>
+ *     <td>Always statically linked into a single binary (`--static_lib`,
+ *     enforced by `act`) -- no DLL boundary exists between modules there.</td></tr>
+ * <tr><td>pyAgrum, any platform</td>
+ *     <td>`BASE` and `BN` are statically whole-archived into one shared
+ *     core extension (`_pyagrum.so`/`.pyd`); `PRM`, `MRF`, `CN`, `ID` and
+ *     `CM` each get their own separate shared leaf extension
+ *     (`pyagrum.prm`, `.mrf`, `.cn`, `.id`, `.cm`) that links against that
+ *     core. `FMDP` has no pyAgrum extension.</td></tr>
+ * </table>
+ *
+ * \section modularization_macros Visibility macros
+ *
+ * Whenever a symbol defined in one module/extension is used from another
+ * one, the compiler needs to know whether it is *producing* that symbol
+ * (exporting it) or *consuming* it (importing it) -- on Windows this is not
+ * optional: without the right `__declspec(dllexport)`/`dllimport`
+ * annotation, a symbol is invisible from one `.dll` to another. Two
+ * independent macro families cover the two topologies above.
+ *
+ * \subsection modularization_macros_py pyAgrum: PYGUM_PUBLIC / PYGUM_SHARED_PUBLIC
+ *
+ * - **`PYGUM_PUBLIC`** -- a symbol that is self-contained: declared,
+ *   defined and used within the *same* extension (typically a leaf
+ *   module's own class). Always exports, no producer/consumer split needed.
+ * - **`PYGUM_SHARED_PUBLIC`** -- a `BASE`/`BN` symbol that a leaf extension
+ *   needs but that actually lives in core's object files. Resolves to
+ *   `dllexport` only on `BASE`/`BN`'s own compilation (which also produces
+ *   core), `dllimport` everywhere else.
+ *
+ * \subsection modularization_macros_agrum Pure aGrUM: GUM_SHARED_PUBLIC / GUM_PUBLIC_<MODULE>
+ *
+ * - **`GUM_SHARED_PUBLIC`** -- for a `BASE` symbol. `BASE` has no
+ *   dependencies of its own (`BASE_DEPS` is empty), so it only ever
+ *   produces, never consumes, under this family -- a single unqualified
+ *   name is safe for it.
+ * - **`GUM_PUBLIC_<MODULE>`** -- for a `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`
+ *   symbol, one macro name per module (`GUM_PUBLIC_BN`, `GUM_PUBLIC_PRM`,
+ *   ...). A module both produces its own symbols and consumes others' -- a
+ *   single shared macro name could not tell "I own this" from "I merely
+ *   included the header that declares it" in the same translation unit, so
+ *   each module needs its own name.
+ *
+ * On Windows, pure aGrUM never crosses a real DLL boundary (see the table
+ * above), so `GUM_SHARED_PUBLIC`/`GUM_PUBLIC_<MODULE>` quietly expand to
+ * nothing there: a tagged symbol behaves exactly like an untagged one,
+ * resolved by ordinary static linking. Tagging is therefore never *harmful*
+ * on Windows, it is simply without effect -- its value on that platform is
+ * purely documentary.
+ *
+ * \subsection modularization_macros_table Which macro applies to a given symbol?
+ *
+ * | Symbol lives in... | Consumed only within its own module/extension | Consumed across a module/extension boundary |
+ * |---|---|---|
+ * | pyAgrum leaf extension's own code | `PYGUM_PUBLIC` | (leaf extensions don't export to each other) |
+ * | `BASE` or `BN`, needed by a pyAgrum leaf extension | `PYGUM_PUBLIC` | `PYGUM_SHARED_PUBLIC` |
+ * | `BASE`, in a pure aGrUM build | (no tag needed) | `GUM_SHARED_PUBLIC` |
+ * | `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`, in a pure aGrUM build | (no tag needed) | `GUM_PUBLIC_<MODULE>` |
+ * | Still-generic template (`template <typename T> class Foo`) | never tagged | never tagged |
+ *
+ * A symbol used both by pyAgrum and by a pure aGrUM cross-module consumer
+ * carries **both** its pyAgrum-family tag and its pure-aGrUM-family tag --
+ * the two macro families are independent and both apply. A still-generic
+ * template is never tagged with either family: it is re-instantiated
+ * locally in every consumer from its header definition, so it never needs
+ * to cross a binary boundary as a distinct symbol.
+ *
+ * See \ref using_visibility_macros for how to apply these macros when
+ * adding a new class, function or module, and \ref visibility_tags_summary
+ * for the current, auto-generated inventory of every tagged symbol.
+ */

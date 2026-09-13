@@ -1,0 +1,114 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2026 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
+
+/*!
+ * \page using_visibility_macros How to tag a symbol's visibility in aGrUM/pyAgrum ?
+ *
+ * See \ref modularization_group for the module/extension architecture and
+ * the visibility macros this page assumes (`PYGUM_PUBLIC`,
+ * `PYGUM_SHARED_PUBLIC`, `GUM_SHARED_PUBLIC`, `GUM_PUBLIC_<MODULE>`). This
+ * page only covers the two things contributors actually need to do:
+ * tagging a new class or function, and adding a whole new module.
+ *
+ * \section vis_add_symbol How to add a new public class or function to a module
+ *
+ * -# **Decide if it needs a tag at all.** Only symbols that another
+ *    module/extension calls directly (not merely a type it passes through
+ *    a template parameter) need one. A class used only within its own
+ *    module never needs a pure-aGrUM tag; a class that pyAgrum's SWIG
+ *    layer never touches never needs a pyAgrum tag.
+ * -# **Never tag a still-generic template.** `template <> class
+ *    HashFunc<std::string>` (a full specialization, effectively a concrete
+ *    class) can be tagged; `template <typename T> class Foo` cannot -- MSVC
+ *    rejects `dllexport`/`dllimport` combined with `extern template`
+ *    (`C2491`), and `GUM_NO_EXTERN_TEMPLATE_CLASS` (`CMakeLists.txt`)
+ *    disables that mechanism outright on MSVC/MinGW anyway.
+ * -# **Place the macro right after `class`/`struct`, before the name** --
+ *    not before `class`/`struct` (GCC/Clang silently ignore the attribute
+ *    there):
+ *    \code{.cpp}
+ *    class GUM_SHARED_PUBLIC MyBaseClass { ... };          // BASE, pure aGrUM
+ *    class GUM_PUBLIC_BN MyBnClass { ... };                // BN, pure aGrUM
+ *    class PYGUM_PUBLIC MyLeafOnlyClass { ... };           // pyAgrum leaf-only
+ *    \endcode
+ * -# **For a free function**, tag the declaration the same way:
+ *    \code{.cpp}
+ *    GUM_SHARED_PUBLIC std::string toLower(std::string_view str);
+ *    \endcode
+ * -# **For a `friend` operator declared inside a class**, tag the `friend`
+ *    declaration itself -- tagging the enclosing class does not cover it:
+ *    \code{.cpp}
+ *    class GUM_PUBLIC_FMDP ActionSet {
+ *      friend GUM_PUBLIC_FMDP std::ostream& operator<<(std::ostream&, const ActionSet&);
+ *    };
+ *    \endcode
+ * -# **Build and test on every platform you can**: `act test release
+ *    aGrUM` (both `--static_lib` and the default shared mode) and
+ *    `act install release pyAgrum` locally cover macOS/Linux; a missing or
+ *    wrong tag can still slip through and only show up in Windows CI.
+ *
+ * \section vis_add_module How to add a new module
+ *
+ * These steps assume the module is a genuine new entry in
+ * `src/modules.txt`, the same way `BN`/`PRM`/... are declared today.
+ *
+ * -# **`src/modules.txt`** -- add the module and its dependencies
+ *    (`<MODULE>_DEPS`), following the existing entries.
+ * -# **`src/cmake/config.h.in`** -- add a new `GUM_PUBLIC_<MODULE>` block,
+ *    copying one of the existing per-module blocks (e.g. `GUM_PUBLIC_BN`)
+ *    verbatim except for the name and its `AGRUM_<MODULE>_EXPORTING` guard.
+ * -# **`src/cmake/Modules.agrum.cmake`** -- nothing to add by hand: the
+ *    existing `foreach (OPTION ${LIST_OF_MODULES})` loop already derives
+ *    `LIST_OF_MODULES` from `src/modules.txt` and applies
+ *    `AGRUM_<MODULE>_EXPORTING` and `AGRUM_BUILD_SHARED_LIBS` to every
+ *    module uniformly, new one included.
+ * -# **If the module gets a pyAgrum SWIG extension** (like `MRF`/`ID`/`CN`/
+ *    `CM`/`PRM`; `FMDP` does not have one), add its name to the two
+ *    hardcoded lists in `wrappers/pyagrum/CMakeLists.txt`: the
+ *    `foreach(_gum_public_blank_module BN PRM MRF CN FMDP ID CM)` blanking
+ *    loop, and the `foreach(_pysubmod_upper MRF ID CN CM PRM)` SWIG-module
+ *    loop -- these two lists are not derived automatically from
+ *    `src/modules.txt`.
+ * -# **Tag the module's public API** following \ref vis_add_symbol above,
+ *    then validate with `act test release aGrUM` (pure aGrUM, both
+ *    `--static_lib` and the default shared mode) and `act test release
+ *    pyAgrum -m all` if it has a SWIG extension.
+ */
