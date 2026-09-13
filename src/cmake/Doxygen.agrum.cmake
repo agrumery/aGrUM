@@ -21,7 +21,7 @@ IF (DOXYGEN_FOUND)
     add_custom_command(
             OUTPUT ${DOXYGEN_OUTPUT}
             COMMAND ${CMAKE_COMMAND} -E echo_append "Building Documentation..."
-            COMMAND python3 ${AGRUM_SOURCE_DIR}/../tools/generate_visibility_tags_doc.py
+            COMMAND python3 ${AGRUM_SOURCE_DIR}/cmake/generate_visibility_tags_doc.py
             COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
             COMMAND ${CMAKE_COMMAND} -E echo "Done."
             WORKING_DIRECTORY ${AGRUM_BINARY_DIR}
