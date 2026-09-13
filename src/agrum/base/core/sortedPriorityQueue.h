@@ -1164,13 +1164,13 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
   extern GUM_SHARED_PUBLIC const SortedPriorityQueueIterator< int, std::less< int > >
-      _static_SortedPriorityQueue_end_;
+                                 _static_SortedPriorityQueue_end_;
   extern GUM_SHARED_PUBLIC const SortedPriorityQueueReverseIterator< int, std::less< int > >
-      _static_SortedPriorityQueue_rend_;
+                                 _static_SortedPriorityQueue_rend_;
   extern GUM_SHARED_PUBLIC const SortedPriorityQueueIteratorSafe< int, std::less< int > >
-      _static_SortedPriorityQueue_end_safe_;
+                                 _static_SortedPriorityQueue_end_safe_;
   extern GUM_SHARED_PUBLIC const SortedPriorityQueueReverseIteratorSafe< int, std::less< int > >
-      _static_SortedPriorityQueue_rend_safe_;
+                                 _static_SortedPriorityQueue_rend_safe_;
 
   // Not constexpr: on Windows, GUM_SHARED_PUBLIC expands to __declspec(dllimport)
   // in every TU other than BASE's own, and the address of a dllimport'd symbol is

@@ -1,5 +1,53 @@
 # aGrUM Changelog
 
+## Changelog for 3.2.0
+
+- pyAgrum
+
+    - **Modular build**:
+        - pyAgrum's SWIG extension is now split into independent modules -- `pyagrum.mrf`, `.id`, `.cn`, `.cm`, `.prm` --
+          built and shipped as separate shared libraries instead of one monolithic extension, loaded lazily through a
+          `__getattr__` compatibility shim so `import pyagrum` still works unchanged.
+        - `BASE` and `BN` are merged into one shared core library (`_pyagrum.so`) with a relative RPATH so the wheel
+          stays self-contained.
+        - The core library's exported symbol surface is trimmed to only the BASE/BN symbols the leaf modules actually
+          use (`PYAGRUM_TRIM_CORE_EXPORTS`).
+        - Introduced the `PYGUM_PUBLIC`/`PYGUM_SHARED_PUBLIC` dllexport/dllimport producer-consumer macros needed for
+          the multi-`.so` build, with directory-scoped compile flags and symbol-derivation tooling.
+        - Added `diagnose_leaf_imports.py`, a CI diagnostic reporting every leaf-module import failure in one pass.
+        - Fixed `GUM_SHARED_EXPORTING`/`GUM_PUBLIC` macro scoping for MinGW and MSVC builds.
+        - New documentation page on pyAgrum's modular C++ extension architecture and its lazy-import mechanism.
+    - **Misc**:
+        - Fixed a few visual glitches in the example notebooks.
+
+- aGrUM
+
+    - **Visibility macros (GUM_PUBLIC)**:
+        - Tagged the full public C++ API with `GUM_PUBLIC`/`GUM_SHARED_PUBLIC` for standalone shared-library builds
+          (BASE, BN, PRM, FMDP, CM, CN, ID).
+        - aGrUM builds are now always static under Windows: dllexport/dllimport correctness across separate module
+          DLLs is not maintained there; `act` now hard-errors if a dynamic Windows build is requested for aGrUM
+          (pass `--static_lib`).
+        - Fixed several visibility-tag gaps found while validating the above (BN learning hierarchy, `PRMType`/
+          `IdCondSet`, the PRM/FMDP/MRF cocoR parsers, CN's `LpCol`/`LpExpr`/`LpRow`, ID's `SimpleUTGenerator`/
+          `UTGenerator`).
+    - **Build fixes**:
+        - Fixed undefined `pthread_mutex_*` references on glibc < 2.34 by linking `Threads::Threads` unconditionally,
+          regardless of the `GUM_THREADS` flavor.
+        - Restored the `OpenMP_FOUND` guard around `GUM_THREADS_USE_OMP`'s compile definition.
+        - Removed a stray `BN` include from a `BASE` header that caused an MSVC `C2491` error (`InformationTheory`).
+    - **CI**:
+        - Windows CI jobs now run on every branch push instead of only on `master`, so Windows-only link errors are
+          caught earlier.
+        - Added a conda-forge-style validation job on the Windows runner.
+    - **Documentation**:
+        - New Doxygen "Topics" page describing aGrUM/pyAgrum's code modularization and the two visibility-macro
+          families, moved above "How to" in the navigation.
+        - New auto-generated page listing every symbol tagged with each visibility macro, refreshed automatically by
+          `act doc release aGrUM`.
+        - Fixed a Topics group id collision (`bn_group`/`mn_group`), dead `EXCLUDE` paths, the obsolete
+          `DOT_MULTI_TARGETS` tag, and several howto typos; inheritance/collaboration diagrams now open by default.
+
 ## Changelog for 3.1.0
 
 - pyAgrum

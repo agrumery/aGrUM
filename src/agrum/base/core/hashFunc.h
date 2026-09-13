@@ -630,7 +630,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class GUM_SHARED_PUBLIC HashFunc< std::vector< Idx > >: public HashFuncBase< std::vector< Idx > > {
+  class GUM_SHARED_PUBLIC HashFunc< std::vector< Idx > >:
+      public HashFuncBase< std::vector< Idx > > {
     public:
     /**
      * @brief Returns the value of a key as a Size.

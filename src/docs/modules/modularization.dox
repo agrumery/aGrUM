@@ -114,13 +114,15 @@
  *
  * \subsection modularization_macros_table Which macro applies to a given symbol?
  *
- * | Symbol lives in... | Consumed only within its own module/extension | Consumed across a module/extension boundary |
+ * | Symbol lives in... | Consumed only within its own module/extension | Consumed across a
+ * module/extension boundary |
  * |---|---|---|
- * | pyAgrum leaf extension's own code | `PYGUM_PUBLIC` | (leaf extensions don't export to each other) |
- * | `BASE` or `BN`, needed by a pyAgrum leaf extension | `PYGUM_PUBLIC` | `PYGUM_SHARED_PUBLIC` |
- * | `BASE`, in a pure aGrUM build | (no tag needed) | `GUM_SHARED_PUBLIC` |
- * | `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`, in a pure aGrUM build | (no tag needed) | `GUM_PUBLIC_<MODULE>` |
- * | Still-generic template (`template <typename T> class Foo`) | never tagged | never tagged |
+ * | pyAgrum leaf extension's own code | `PYGUM_PUBLIC` | (leaf extensions don't export to each
+ * other) | | `BASE` or `BN`, needed by a pyAgrum leaf extension | `PYGUM_PUBLIC` |
+ * `PYGUM_SHARED_PUBLIC` | | `BASE`, in a pure aGrUM build | (no tag needed) | `GUM_SHARED_PUBLIC` |
+ * | `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`, in a pure aGrUM build | (no tag needed) |
+ * `GUM_PUBLIC_<MODULE>` | | Still-generic template (`template <typename T> class Foo`) | never
+ * tagged | never tagged |
  *
  * A symbol used both by pyAgrum and by a pure aGrUM cross-module consumer
  * carries **both** its pyAgrum-family tag and its pure-aGrUM-family tag --
