@@ -151,7 +151,7 @@
 #endif
 
 // GUM_PUBLIC_<MODULE> is the producer/consumer split for GUM_PUBLIC (pure aGrUM's
-// full public C++ API, Phase 6 of GUM_PUBLIC.md), one macro per module rather than
+// full public C++ API), one macro per module rather than
 // a single shared name. Unlike PYGUM_SHARED_PUBLIC/PYGUM_SHARED_EXPORTING (which
 // only ever needed to distinguish BASE/BN as sole owner from every other consumer,
 // because pyAgrum whole-archives BASE/BN into one core binary), aGrUM's own pure

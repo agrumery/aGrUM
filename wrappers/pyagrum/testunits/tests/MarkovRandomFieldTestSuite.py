@@ -234,10 +234,10 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     # separate "_mrf" extension) does an internal dynamic_cast<LabelizedVariable*>
     # (MarkovRandomField_tpl.h) on it -- a real, already-existing code path that
     # exercises C++ RTTI identity across the _pyagrum/_mrf module boundary.
-    # See md_docs/GUM_PUBLIC.md: without proper symbol visibility, this cast can
-    # silently fail (wrongly raising TypeError) even though the object really is
-    # a LabelizedVariable, because each extension module may hold its own
-    # unlinked copy of the class's vtable/RTTI.
+    # Without proper symbol visibility (GUM_SHARED_PUBLIC/PYGUM_SHARED_PUBLIC on
+    # LabelizedVariable), this cast can silently fail (wrongly raising TypeError)
+    # even though the object really is a LabelizedVariable, because each
+    # extension module may hold its own unlinked copy of the class's vtable/RTTI.
     mrf = gum.MarkovRandomField()
     mrf.add(gum.LabelizedVariable("A", "", 2))
     mrf.changeVariableLabel("A", "0", "foo")

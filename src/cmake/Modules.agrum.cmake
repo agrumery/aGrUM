@@ -128,12 +128,11 @@ macro(buildFileListsWithModules)
             # builds (CompilOptions.agrum.cmake), so a class tagged GUM_PUBLIC only
             # (public C++ API, not needed by pyAgrum -- as opposed to PYGUM_PUBLIC/
             # PYGUM_SHARED_PUBLIC) would otherwise still get re-exposed by that macro
-            # in *any* module's .so/.pyd, not just the core's. Still needed for any
-            # GUM_PUBLIC tag not yet migrated to a module-specific name (see below --
-            # migration is per-module, in progress, GUM_PUBLIC.md Phase 6), but
-            # scoping it to _IS_BASE_OR_BN only would silently leave a future leaf
-            # module's GUM_PUBLIC-only symbols exported under pyAgrum, contrary to the
-            # documented GUM_PUBLIC.md §3.1 semantics.
+            # in *any* module's .so/.pyd, not just the core's. Every module has since
+            # been migrated to its own GUM_PUBLIC_<MODULE> name, so no header uses
+            # plain GUM_PUBLIC anymore; this blanking is kept as a safety net so a
+            # future GUM_PUBLIC use (before it gets its own per-module name) can never
+            # leak a symbol into pyAgrum by accident, regardless of which module adds it.
             if (BUILD_PYTHON)
                 target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC=)
 

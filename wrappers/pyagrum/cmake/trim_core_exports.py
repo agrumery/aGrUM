@@ -45,8 +45,6 @@ trusting the PYGUM_SHARED_PUBLIC source annotations (which control what
 *can* be exported, not what a whole-archived core actually keeps once dead
 code removal is enabled). Emits a platform-specific export list consumed by
 a second, restricted link of the core in wrappers/pyagrum/CMakeLists.txt.
-
-See md_docs/reportModularizedPyAgrum.md for the design rationale.
 """
 
 import argparse

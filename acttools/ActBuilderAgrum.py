@@ -152,8 +152,7 @@ class ActBuilderAgrum(ActBuilder):
     if platform.system() == "Windows" and not self.current["static_lib"]:
       critic(
         "aGrUM does not support BUILD_SHARED_LIBS=ON under Windows: dllexport/dllimport "
-        "correctness across separate module DLLs is not maintained there "
-        "(md_docs/GUM_PUBLIC.md #17.2). Pass --static_lib."
+        "correctness across separate module DLLs is not maintained there. Pass --static_lib."
       )
       return False
 

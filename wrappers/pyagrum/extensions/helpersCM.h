@@ -24,7 +24,7 @@
  * this one is included only from cm.i: it references gum::CM/tools/doAST.h types
  * (ASTplus, ASTjointProba, ...), which live in the CM module. Including it from
  * the generic helpers.h (shared by every pyAgrum SWIG module) made every module,
- * including core, require CM's typeinfo to be linkable -- see md_docs/modularizePyAgrum.md.
+ * including core, require CM's typeinfo to be linkable.
  *
  * @author Pierre-Henri WUILLEMIN
  */
