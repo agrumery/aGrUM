@@ -167,6 +167,26 @@ def parse_modules_txt() -> dict[str, str]:
   return modules
 
 
+def parse_pymodules_txt() -> dict[str, str]:
+  """Same idea as parse_modules_txt(), for wrappers/pyagrum/pymodules.txt --
+  the pyAgrum leaf modules (independent SWIG extensions on top of the
+  BASE+BN core), keyed by their uppercase tag (e.g. "MRF")."""
+  modules = {}
+  module_line = re.compile(
+    r"^\s*list\s*\(\s*APPEND\s*PYAGRUM_LEAF_MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?"
+  )
+  with open(cfg.pymodulesFile, encoding="utf8") as f:
+    for ll in f:
+      rep = module_line.search(ll)
+      if rep:
+        module = rep.groups(0)[0]
+        descr = rep.groups(0)[2]
+        if descr == 0:
+          descr = module
+        modules[module] = descr
+  return modules
+
+
 cfg.withColour = True
 
 cfg.act_version_major = "3"
@@ -189,6 +209,7 @@ cfg.gum_version_patch = res["AGRUM_VERSION_PATCH"]
 cfg.gum_version = f"{cfg.gum_version_major}.{cfg.gum_version_minor}.{cfg.gum_version_patch}"
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
+cfg.pymodulesFile = "wrappers/pyagrum/pymodules.txt"  # the file to parse to find the pyAgrum leaf modules
 cfg.pymodulesPath = "wrappers/pyagrum/pyLibs"  # the path to the python modules
 cfg.configFile = ".options.act3.pickle"  #
 cfg.fixedSeedValue = "10"
@@ -255,6 +276,7 @@ def init_params() -> None:
   cfg.modes = set("debug release".split())
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()
+  cfg.pyagrum_leaf_modules = parse_pymodules_txt()
 
   cfg.non_persistent = [
     "verbose",

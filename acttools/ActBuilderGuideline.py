@@ -1189,7 +1189,7 @@ def _check_pure_headers(details: bool, source: str | None = None) -> int:
 _PYGUM_SKIP_DIRS = _PH_SKIP_DIRS  # external/, mvsc/, cocoR/, patterns/: vendored or
 # generated code, not meant to be auto-tagged by this check.
 
-_PYGUM_LEAF_MODULES = ("mrf", "id", "cn", "cm", "prm")
+_PYGUM_LEAF_MODULES = tuple(m.lower() for m in cfg.pyagrum_leaf_modules)
 
 # Class/struct definition opening its body on the same line, with an optional
 # PYGUM_SHARED_PUBLIC tag right after the keyword -- e.g. "class Foo {" or

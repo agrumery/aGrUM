@@ -515,11 +515,15 @@ endmacro()
 gum_add_python_module(pyagrum)
 
 
-option(PYAGRUM_WITH_MRF "build pyagrum.mrf as a separate extension module" ON)
-option(PYAGRUM_WITH_ID "build pyagrum.id as a separate extension module" ON)
-option(PYAGRUM_WITH_CN "build pyagrum.cn as a separate extension module" ON)
-option(PYAGRUM_WITH_CM "build pyagrum.cm as a separate extension module" ON)
-option(PYAGRUM_WITH_PRM "build pyagrum.prm as a separate extension module" ON)
+# List of pyAgrum leaf modules (independent SWIG extensions on top of the
+# BASE+BN core): wrappers/pyagrum/pymodules.txt, not hardcoded here -- see
+# that file to add a new one.
+include("pymodules.txt")
+
+foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
+  string(TOLOWER ${_pysubmod_upper} _pysubmod)
+  option(PYAGRUM_WITH_${_pysubmod_upper} "build pyagrum.${_pysubmod} as a separate extension module" ON)
+endforeach()
 
 # Static subpackage __init__.py: just re-exports the compiled extension.
 # Written directly (no source template needed) and installed from the same path.
@@ -531,9 +535,9 @@ option(PYAGRUM_WITH_PRM "build pyagrum.prm as a separate extension module" ON)
 # (APFS is case-insensitive by default) but breaks the CMake dependency
 # tracking on a case-sensitive filesystem (Linux): Make/Ninja would look for
 # a literal aGrUM_wrap_mrf.i, find nothing able to produce it, and fail.
-foreach(_pysubmod_upper MRF ID CN CM PRM)
+foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
   string(TOLOWER ${_pysubmod_upper} _pysubmod)
-  if(PYAGRUM_WITH_${_pysubmod_upper} AND BUILD_${_pysubmod_upper})
+  if(PYAGRUM_WITH_${_pysubmod_upper} AND (BUILD_${_pysubmod_upper} OR BUILD_ALL))
     gum_add_python_module(${_pysubmod_upper} ${_pysubmod})
     # from .<mod> (the SWIG-generated Python proxy, e.g. mrf.py, which itself
     # does `from . import _mrf`), NOT from ._<mod> (the raw C extension) --
@@ -585,9 +589,9 @@ option(PYAGRUM_TRIM_CORE_EXPORTS "Shrink core's kept symbol set to what the buil
 if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW)
   set(_PYAGRUM_LEAF_FILES "")
   set(_PYAGRUM_LEAF_TARGETS "")
-  foreach(_pysubmod_upper MRF ID CN CM PRM)
+  foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
     string(TOLOWER ${_pysubmod_upper} _pysubmod)
-    if(PYAGRUM_WITH_${_pysubmod_upper} AND BUILD_${_pysubmod_upper})
+    if(PYAGRUM_WITH_${_pysubmod_upper} AND (BUILD_${_pysubmod_upper} OR BUILD_ALL))
       list(APPEND _PYAGRUM_LEAF_TARGETS _${_pysubmod})
       list(APPEND _PYAGRUM_LEAF_FILES "$<TARGET_FILE:_${_pysubmod}>")
     endif()

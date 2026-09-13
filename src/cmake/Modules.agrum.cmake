@@ -51,10 +51,18 @@ foreach (OPTION ${MODULES})
     endif ()
 endforeach ()
 
+# CACHE FORCE (not a plain set()): this recomputed value must be visible
+# outside this scope -- wrappers/pyagrum/CMakeLists.txt (a sibling
+# add_subdirectory(), not a descendant of this include()'d file's directory
+# scope) checks BUILD_ALL too, to decide whether to build a leaf module's
+# SWIG extension when no BUILD_<MODULE> flag was passed explicitly at all
+# (e.g. a plain `cmake -DBUILD_PYTHON=ON`, as conda-forge-style recipes do,
+# bypassing act's own explicit -DBUILD_ALL=ON). A plain set() here used to
+# stay local to src/'s scope and never reach that check.
 if (NBR_OPTIONS EQUAL 0 OR NBR_OPTIONS EQUAL TOTAL_OPTIONS)
-    set(BUILD_ALL "ON")
+    set(BUILD_ALL ON CACHE BOOL "build every module" FORCE)
 else ()
-    set(BUILD_ALL "OFF")
+    set(BUILD_ALL OFF CACHE BOOL "build every module" FORCE)
 endif ()
 
 # modules are all options (except ALL) + BASE module

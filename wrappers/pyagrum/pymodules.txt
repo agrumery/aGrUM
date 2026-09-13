@@ -1,0 +1,18 @@
+# Warning : this file is roughly parsed by <act> (see acttools/configuration.py's
+# pyagrum module listing). Change it only if you want to add/remove a pyAgrum
+# leaf module.
+#
+# List of aGrUM modules that pyAgrum wraps as independent SWIG extensions
+# (pyagrum.<name>), on top of the shared BASE+BN core (_pyagrum). To add a
+# new one: add the module to src/modules.txt first (the aGrUM/C++ side),
+# then list its uppercase tag here -- it must match the on-disk case of
+# wrappers/swig/aGrUM_wrap_<TAG>.i, NOT the lowercase Python package name
+# (see wrappers/pyagrum/CMakeLists.txt for why case matters on a
+# case-sensitive filesystem).
+
+set(PYAGRUM_LEAF_MODULES)
+list(APPEND PYAGRUM_LEAF_MODULES "MRF") # Markov Random Fields
+list(APPEND PYAGRUM_LEAF_MODULES "ID")  # Influence Diagrams
+list(APPEND PYAGRUM_LEAF_MODULES "CN")  # Credal Networks
+list(APPEND PYAGRUM_LEAF_MODULES "CM")  # Causal Models
+list(APPEND PYAGRUM_LEAF_MODULES "PRM") # Probabilistic Relational Models
