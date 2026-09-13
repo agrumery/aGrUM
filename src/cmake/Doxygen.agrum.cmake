@@ -15,9 +15,13 @@ IF (DOXYGEN_FOUND)
             COMMAND ${CMAKE_COMMAND} -E copy ${AGRUM_SOURCE_DIR}/docs/mini_agrum2.png ${AGRUM_BINARY_DIR}/mini_agrum2.png
             )
 
+    # Regenerate the visibility-tags inventory (src/docs/modules/visibility_tags_summary.dox)
+    # right before Doxygen runs, so it never goes stale relative to the actual
+    # GUM_SHARED_PUBLIC/GUM_PUBLIC_<MODULE>/PYGUM_* tags in src/agrum/.
     add_custom_command(
             OUTPUT ${DOXYGEN_OUTPUT}
             COMMAND ${CMAKE_COMMAND} -E echo_append "Building Documentation..."
+            COMMAND python3 ${AGRUM_SOURCE_DIR}/../tools/generate_visibility_tags_doc.py
             COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_INPUT}
             COMMAND ${CMAKE_COMMAND} -E echo "Done."
             WORKING_DIRECTORY ${AGRUM_BINARY_DIR}
