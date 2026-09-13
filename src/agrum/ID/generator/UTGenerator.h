@@ -60,7 +60,7 @@ namespace gum {
    * help changing UT generation policies for the InfluenceDiagramGenerator
    *class.
    */
-  class UTGenerator {
+  class GUM_PUBLIC_ID UTGenerator {
     public:
     // ############################################################################
     /// @name Constructors / Destructor

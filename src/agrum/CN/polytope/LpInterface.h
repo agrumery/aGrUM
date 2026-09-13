@@ -77,7 +77,7 @@ namespace gum {
        * @ingroup cn_group
        * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
-      class LpCol {
+      class GUM_PUBLIC_CN LpCol {
         public:
         /// @name Constructor / Destructor
         /// @{
@@ -226,7 +226,7 @@ namespace gum {
        * @brief Class representing a linear expression.
        * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
-      class LpExpr {
+      class GUM_PUBLIC_CN LpExpr {
         friend class LpRow;
         template < GUM_Numeric GUM_SCALAR >
         friend class LpInterface;
@@ -518,7 +518,7 @@ namespace gum {
        * inequality.
        * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
        */
-      class LpRow {
+      class GUM_PUBLIC_CN LpRow {
         template < GUM_Numeric GUM_SCALAR >
         friend class LpInterface;
 
