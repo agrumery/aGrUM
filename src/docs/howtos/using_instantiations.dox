@@ -69,7 +69,7 @@
  * of a
  * MultiDim.
 
- * When a instantiation is meant to be used on a MultiDim it is better to register
+ * When an instantiation is meant to be used on a MultiDim it is better to register
  * it
  * to
  * the MultiDim but there is one restriction: an instantiation can be registered
@@ -83,7 +83,7 @@
  * gum::Instantiation::Instantiation(MultiDimAdressable& aMD) or
  * gum::Instantiation::actAsSlave(MultiDimAdressable& aMD).
 
- * When an instantiation is registered to a MutliDim, the MultiDim is called "the
+ * When an instantiation is registered to a MultiDim, the MultiDim is called "the
  * master" and the instantiation it's "slave".
 
  * When registered to a MultiDim finding a value in a table and other computation
@@ -102,7 +102,7 @@
 
  * Some methods can be used to perform algebraic operations on instantiations, for
  * example if you have two instantiations i1 and i2, with i1 being a subset of
- * i2 variables, makink a projection of i2 on all variables of i1 will be done by
+ * i2 variables, making a projection of i2 on all variables of i1 will be done by
  * i1.chgValIn (i2).
 
  * When incrementing a Instantiation, one does not know the variables order used

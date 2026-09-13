@@ -49,18 +49,16 @@
  * - in the project folder, a file CMakeLists.txt like this one :
  *
  * \code{.cmake}
+cmake_minimum_required(VERSION 3.13)
+
 project(FOO)
 # do not forget to change "FOO", "FOO_SOURCE" and "FOO_SOURCE_DIR" with the name of your project
 # do not forget to change the target "foo" with the name of your executable
-
-cmake_minimum_required(VERSION 3.13)
 
 # make RELEASE the default option
 if(NOT DEFINED CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
-
-project(EXAMPLE)
 
 # do not forget to change this line: the path where you installed aGrUM with ("act install -d...")
 set(AGRUM_INSTALLATION_DIRECTORY "/home/xxx/usr")
@@ -107,7 +105,7 @@ int main(void) {
  * - to compile the project (from the project folder)
  *
  * \code{.sh}
- *     cmake -B build_release .
+ *     cmake -B build .
  *     cmake --build build
  * \endcode
  *
