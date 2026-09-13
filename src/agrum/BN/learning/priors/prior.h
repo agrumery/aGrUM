@@ -63,6 +63,9 @@ namespace gum::learning {
     BDeuPriorType,
   };
 
+  // constexpr requires the full definition to be visible in every TU that
+  // evaluates it at compile time, so -- unlike an ordinary INLINE method --
+  // this cannot be moved to prior_inl.h behind the GUM_NO_INLINE toggle.
   constexpr const char* priorTypeToString(PriorType e) noexcept {
     switch (e) {
       case PriorType::NoPriorType : return "No prior";
@@ -179,7 +182,6 @@ namespace gum::learning {
 } /* namespace gum::learning */
 
 // include the inlined functions if necessary
-// constexpr priorTypeToString must be visible in all TUs — include unconditionally
 #ifndef GUM_NO_INLINE
 #  include <agrum/BN/learning/priors/prior_inl.h>
 #endif   // GUM_NO_INLINE

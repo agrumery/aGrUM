@@ -1028,8 +1028,11 @@ _PH_CONTROL_FLOW_RE = re.compile(r"\b(?:if|for|while|switch|catch|else)\s*\(")
 # GUM debug macros: constructor/destructor helpers that open a brace on their line.
 _PH_GUM_MACRO_RE = re.compile(r"\b(?:GUM_CONSTRUCTOR|GUM_DESTRUCTOR|GUM_CONS_MOV|GUM_CONS_CPY)\b")
 
-# consteval (or constexpr) function with an inline empty body — legitimate in headers.
-_PH_CONSTEVAL_RE = re.compile(r"\b(?:consteval|constexpr)\b.*\)\s*[^{]*\{\s*\}")
+# consteval/constexpr function definition (any body, not just empty) — the C++
+# standard requires the full definition to be visible in every TU that evaluates
+# it at compile time, so unlike a plain INLINE method it cannot be moved to a
+# *_inl.h/*_tpl.h file behind the GUM_NO_INLINE toggle; legitimate in headers.
+_PH_CONSTEVAL_RE = re.compile(r"\b(?:consteval|constexpr)\b.*\)\s*[^{]*\{")
 
 # requires-expression (C++20 concepts).
 _PH_REQUIRES_RE = re.compile(r"\brequires\b")
@@ -1071,7 +1074,7 @@ def _check_pure_headers(details: bool, source: str | None = None) -> int:
 
   Does NOT flag:
     - friend ... {              inline friends in template classes (legitimate)
-    - consteval/constexpr ... {} single-line empty bodies (required in header)
+    - consteval/constexpr ... {   function definitions (required to live in the header)
     - requires(...) {           C++20 concept constraints
     - GUM_CONSTRUCTOR/DESTRUCTOR/CONS_CPY/CONS_MOV lines
     - class/struct/namespace/enum openings
@@ -1122,7 +1125,7 @@ def _check_pure_headers(details: bool, source: str | None = None) -> int:
           prev_code_line = stripped
           continue
 
-        # skip consteval/constexpr single-line empty body (required in headers)
+        # skip consteval/constexpr function definitions (required in headers)
         if _PH_CONSTEVAL_RE.search(stripped):
           prev_code_line = stripped
           continue
