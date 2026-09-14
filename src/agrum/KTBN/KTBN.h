@@ -73,6 +73,7 @@ namespace gum {
    * @headerfile KTBN.h <agrum/KTBN/KTBN.h>
    * @brief A parent's value in gum::KTBN::fillCPT(): a modality index @b or a
    * modality label.
+   * @ingroup ktbn_group
    *
    * Implicitly built from either spelling, so a single fillCPT() signature
    * serves both and one parent map may mix them:
@@ -122,7 +123,7 @@ namespace gum {
    * @class KTBN
    * @headerfile KTBN.h <agrum/KTBN/KTBN.h>
    * @brief Class representing a k-order dynamic Bayesian network (k-DBN).
-   * @ingroup bn_group
+   * @ingroup ktbn_group
    *
    * A <b>k-order dynamic Bayesian network</b> (k-DBN, sometimes called a
    * k-Time-slice Bayesian Network or k-TBN) generalizes the classical 2-TBN:

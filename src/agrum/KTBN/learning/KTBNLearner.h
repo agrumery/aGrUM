@@ -100,7 +100,7 @@ namespace gum {
      * @class KTBNLearner
      * @headerfile KTBNLearner.h <agrum/KTBN/learning/KTBNLearner.h>
      * @brief Learns a k-TBN (structure and/or parameters) from trajectory CSVs.
-     * @ingroup learning_group
+     * @ingroup ktbn_learning
      *
      * @see gum::learning::BNLearner, the static Bayesian-network counterpart whose
      * API this class mirrors. KTBNLearner delegates score / algorithm / prior /

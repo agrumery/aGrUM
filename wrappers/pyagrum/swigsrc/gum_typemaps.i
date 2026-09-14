@@ -63,6 +63,7 @@ typedef PyObject PyAgrumListOfSetOfInt;
 typedef PyObject PyAgrumListOfInt;
 typedef PyObject PyAgrumListOfStr;
 typedef PyObject PyAgrumListOfArc;
+typedef PyObject PyAgrumListOfTensor;
 typedef PyObject PyAgrumList;
 typedef PyObject PyAgrumTupleFF;
 typedef PyObject PyAgrumTupleOfInt;
@@ -400,6 +401,45 @@ typedef PyObject PyAgrumDict;
       }
     }
   }
+}
+
+// std::unordered_set<std::string> <- Python set[str]. Restricted to an
+// actual `set`/`frozenset` (not any sequence): several call sites overload
+// on this type vs. a sibling std::vector<std::string> at the same argument
+// position (e.g. gum::learning::KTBNLearner's atemporalVars vs.
+// missingSymbols constructors), and a Python `set` is never a
+// PySequence_Check() sequence, so restricting the typecheck this way keeps
+// the two overloads unambiguous -- callers select one or the other purely
+// by passing a set literal vs. a list/tuple literal.
+%typemap(in) const std::unordered_set<std::string>& (std::unordered_set<std::string> _tmp_uss) {
+  if (!PyAnySet_Check($input)) {
+    PyErr_SetString(PyExc_TypeError, "expected a set of strings");
+    SWIG_fail;
+  }
+  PyObject* _iter = PyObject_GetIter($input);
+  if (!_iter) SWIG_fail;
+  PyObject* _item;
+  while ((_item = PyIter_Next(_iter)) != NULL) {
+    _tmp_uss.insert(PyAgrumHelper::stringFromPyObject(_item));
+    Py_DECREF(_item);
+  }
+  Py_DECREF(_iter);
+  if (PyErr_Occurred()) SWIG_fail;
+  $1 = &_tmp_uss;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) const std::unordered_set<std::string>& {
+  $1 = PyAnySet_Check($input) ? 1 : 0;
+}
+
+// std::unordered_set<std::string> -> Python frozenset[str]
+%typemap(out) const std::unordered_set<std::string>& {
+  PyObject* _s = PyFrozenSet_New(NULL);
+  for (const auto& _e : *$1) {
+    PyObject* _pystr = PyUnicode_FromString(_e.c_str());
+    PySet_Add(_s, _pystr);
+    Py_DECREF(_pystr);
+  }
+  $result = _s;
 }
 
 // std::vector<gum::NodeId> -> Python list[int]

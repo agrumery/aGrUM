@@ -87,7 +87,10 @@ namespace gum {
 
     // [1,3,5]...
     if (*(var_description.rbegin()) == ']') {
-      if (auto posBrack = var_description.find('['); posBrack != std::string::npos) {
+      // The domain spec is the LAST bracket group, not the first: a name may
+      // itself legally contain "[...]" (e.g. gum::KTBN's "base[slice]" engine
+      // names), and such a name must survive round-tripping through toFast().
+      if (auto posBrack = var_description.rfind('['); posBrack != std::string::npos) {
         name = var_description.substr(0, posBrack);
         const auto& s_args
             = var_description.substr(posBrack + 1, var_description.size() - posBrack - 2);

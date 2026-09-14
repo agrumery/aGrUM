@@ -16,3 +16,4 @@ list(APPEND PYAGRUM_LEAF_MODULES "ID")  # Influence Diagrams
 list(APPEND PYAGRUM_LEAF_MODULES "CN")  # Credal Networks
 list(APPEND PYAGRUM_LEAF_MODULES "CM")  # Causal Models
 list(APPEND PYAGRUM_LEAF_MODULES "PRM") # Probabilistic Relational Models
+list(APPEND PYAGRUM_LEAF_MODULES "KTBN") # k-order dynamic Bayesian networks

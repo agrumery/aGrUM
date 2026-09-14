@@ -98,7 +98,7 @@ namespace gum {
      * @class KTBNAdaptiveLearner
      * @headerfile KTBNAdaptiveLearner.h <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
      * @brief Learns a k-TBN (order k + structure + parameters) from trajectory CSVs.
-     * @ingroup learning_group
+     * @ingroup ktbn_learning
      *
      * @see gum::learning::IKTBNLearner for the configuration interface,
      *      gum::learning::KTBNLearner for the fixed-k learner this class

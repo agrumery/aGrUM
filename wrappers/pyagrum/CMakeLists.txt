@@ -266,7 +266,7 @@ macro(gum_add_python_module MODULENAME)
   # against -- the exact LNK2001/ImportError-at-dlopen failure mode already
   # documented above for plain GUM_PUBLIC. BASE keeps GUM_SHARED_PUBLIC, never
   # blanked anywhere (Modules.agrum.cmake), same reasoning applies here.
-  foreach(_gum_public_blank_module BN PRM MRF CN FMDP ID CM)
+  foreach(_gum_public_blank_module BN PRM MRF CN FMDP ID CM KTBN)
     target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC_${_gum_public_blank_module}=)
   endforeach()
   if(SWIG_FOUND)

@@ -88,6 +88,7 @@ Reference manual
   ctbn
   clg
   bnmixture
+  ktbn
   qBNSampling
 
 

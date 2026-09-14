@@ -817,7 +817,6 @@ namespace gum {
     annotated.setProperty("KTBN.k", std::to_string(_k_));
     annotated.setProperty("KTBN.temporal", join(_temporal_));
     annotated.setProperty("KTBN.atemporal", join(_atemporal_));
-
     GumBNWriter< GUM_SCALAR > writer(binary);
     writer.write(filepath, annotated);
   }
@@ -828,7 +827,13 @@ namespace gum {
 
     BayesNet< GUM_SCALAR >    bn;
     GumBNReader< GUM_SCALAR > reader(&bn, filepath, binary);
-    reader.proceed();
+    const Size                nbErr = reader.proceed();
+    if (nbErr > 0) {
+      std::stringstream stream;
+      reader.showElegantErrorsAndWarnings(stream);
+      reader.showErrorCounts(stream);
+      GUM_ERROR(IOError, "KTBN::load: " << stream.str())
+    }
 
     // A file written by save() carries the classification as properties: restore it
     // directly. Otherwise fall back to fromBN(), which re-derives it from node names.

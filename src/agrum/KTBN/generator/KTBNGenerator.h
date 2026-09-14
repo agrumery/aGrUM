@@ -68,7 +68,7 @@ namespace gum {
    * @class KTBNGenerator
    * @headerfile KTBNGenerator.h <agrum/KTBN/generator/KTBNGenerator.h>
    * @brief Draws a random k-DBN template (structure and, optionally, CPTs).
-   * @ingroup bn_group
+   * @ingroup ktbn_generator
    *
    * @par Usage
    * @code

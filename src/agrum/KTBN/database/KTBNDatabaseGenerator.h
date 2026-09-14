@@ -97,7 +97,7 @@ namespace gum {
      * @class KTBNDatabaseGenerator
      * @headerfile KTBNDatabaseGenerator.h <agrum/KTBN/database/KTBNDatabaseGenerator.h>
      * @brief Generates a database of trajectories from a k-DBN (one CSV per trajectory).
-     * @ingroup bn_group
+     * @ingroup ktbn_database
      *
      * @see gum::learning::BNDatabaseGenerator, the (static) Bayesian-network
      * counterpart. Same role and sampling principle, but it streams @e

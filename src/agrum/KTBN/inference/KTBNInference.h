@@ -118,7 +118,7 @@ namespace gum {
    * @headerfile KTBNInference.h <agrum/KTBN/inference/KTBNInference.h>
    * @brief Exact inference on a gum::KTBN with observations and interventions,
    * by the interface algorithm.
-   * @ingroup bn_group
+   * @ingroup ktbn_inference
    *
    * @par Usage
    * @code

@@ -40,6 +40,7 @@ typedef PyObject PyAgrumListOfSetOfInt;
 typedef PyObject PyAgrumListOfInt;
 typedef PyObject PyAgrumListOfStr;
 typedef PyObject PyAgrumListOfArc;
+typedef PyObject PyAgrumListOfTensor;
 typedef PyObject PyAgrumList;
 typedef PyObject PyAgrumTupleFF;
 typedef PyObject PyAgrumTupleOfInt;

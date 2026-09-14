@@ -101,7 +101,7 @@ namespace gum {
      * @class IKTBNLearner
      * @headerfile IKTBNLearner.h <agrum/KTBN/learning/IKTBNLearner.h>
      * @brief Pure-virtual configuration interface shared by all k-TBN learners.
-     * @ingroup learning_group
+     * @ingroup ktbn_learning
      *
      * @see gum::learning::KTBNLearner (fixed k),
      *      gum::learning::KTBNAdaptiveLearner (k is learned too).

@@ -1,101 +1,3 @@
-%include "doc_Arc.i"
-%include "doc_Edge.i"
-%include "doc_DiGraph.i"
-%include "doc_DAG.i"
-%include "doc_UndiGraph.i"
-%include "doc_CliqueGraph.i"
-%include "doc_MixedGraph.i"
-%include "doc_PDAG.i"
-%include "doc_PAG.i"
-
-%include "doc_Variable.i"
-%include "doc_DiscreteVariable.i"
-%include "doc_LabelizedVariable.i"
-%include "doc_DiscretizedVariable.i"
-%include "doc_RangeVariable.i"
-%include "doc_IntegerVariable.i"
-%include "doc_NumericalDiscreteVariable.i"
-
-%include "doc_Instantiation.i"
-%include "doc_Tensor.i"
-
-%include "doc_GraphicalModel.i"
-%include "doc_DAGmodel.i"
-%include "doc_IBayesNet.i"
-%include "doc_BayesNet.i"
-%include "doc_BayesNetFragment.i"
-%include "doc_EssentialGraph.i"
-%include "doc_MarkovBlanket.i"
-%include "doc_MeekRules.i"
-
-%include "doc_BNdistance.i"
-%include "doc_GibbsBNdistance.i"
-%include "doc_ExactBNdistance.i"
-%include "doc_MCBNDistance.i"
-
-%include "doc_GenericInference.i"
-
-%include "doc_LazyPropagation.i"
-%include "doc_ShaferShenoyInference.i"
-%include "doc_VariableElimination.i"
-
-%include "doc_InformationTheory.i"
-
-%include "doc_LoopyBeliefPropagation.i"
-%include "doc_GibbsSampling.i"
-%include "doc_MonteCarloSampling.i"
-%include "doc_WeightedSampling.i"
-%include "doc_ImportanceSampling.i"
-
-%include "doc_LoopyGibbsSampling.i"
-%include "doc_LoopyMonteCarloSampling.i"
-%include "doc_LoopyWeightedSampling.i"
-%include "doc_LoopyImportanceSampling.i"
-
-%include "doc_IApproximationSchemeConfiguration.i"
-%include "doc_ApproximationScheme.i"
-
-%include "doc_BNDatabaseGenerator.i"
-%include "doc_BNLearner.i"
-
-%include "doc_MarkovRandomField.i"
-%include "doc_ShaferShenoyMRFInference.i"
-
-%include "doc_KTBN.i"
-%include "doc_KTBNGenerator.i"
-%include "doc_KTBNInference.i"
-%include "doc_KTBNDatabaseGenerator.i"
-%include "doc_KTBNLearner.i"
-%include "doc_KTBNAdaptiveLearner.i"
-
-%include "doc_PRMexplorer.i"
-
-%include "doc_CredalNet.i"
-%include "doc_CNInference.i"
-%include "doc_CNMonteCarloSampling.i"
-%include "doc_CNLoopyPropagation.i"
-
-%include "doc_InfluenceDiagram.i"
-%include "doc_ShaferShenoyLIMIDInference.i"
-
-%include "doc_DoorCriteria.i"
-%include "doc_CausalModel.i"
-%include "doc_CausalImpact.i"
-%include "doc_Counterfactual.i"
-
-%include "doc_miscellaneous.i"
-%include "doc_JunctionTreeGenerator.i"
-%include "doc_IDGenerator.i"
-%include "doc_BNGenerator.i"
-
-%include "doc_StructuralMetrics.i"
-
-%include "doc_PythonLoadListener.i"
-%include "doc_PythonBNListener.i"
-%include "doc_PythonApproximationListener.i"
-
-%include "doc_GumException.i"
-%include "doc_SyntaxError.i"
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
@@ -136,9 +38,15 @@
  *                                                                          *
  ****************************************************************************/
 
-
-
-
-
-
-
+// Pre-template directives for gum::KTBNInference. Must be %include'd BEFORE
+// aGrUM_wrap_KTBN.i's %template (KTBNInference).
+//
+// posteriors() returns `const std::vector<Tensor<GUM_SCALAR>>&`, whose
+// nested template type passForPyType.py cannot render as a valid Python
+// type hint (produces a syntactically broken generated .py). Ignored here
+// using the fully-instantiated name, mirroring the proven working precedent
+// in swigsrc/causal.i (`%ignore gum::CausalImpact<double>::getResult;`,
+// also pre-template) rather than markovRandomField_after_templates.i's
+// post-template %ignore+%extend convention, which -- empirically, for this
+// method -- does not actually suppress the native wrapper.
+%ignore gum::KTBNInference<double>::posteriors;

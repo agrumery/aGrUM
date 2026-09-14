@@ -1,101 +1,3 @@
-%include "doc_Arc.i"
-%include "doc_Edge.i"
-%include "doc_DiGraph.i"
-%include "doc_DAG.i"
-%include "doc_UndiGraph.i"
-%include "doc_CliqueGraph.i"
-%include "doc_MixedGraph.i"
-%include "doc_PDAG.i"
-%include "doc_PAG.i"
-
-%include "doc_Variable.i"
-%include "doc_DiscreteVariable.i"
-%include "doc_LabelizedVariable.i"
-%include "doc_DiscretizedVariable.i"
-%include "doc_RangeVariable.i"
-%include "doc_IntegerVariable.i"
-%include "doc_NumericalDiscreteVariable.i"
-
-%include "doc_Instantiation.i"
-%include "doc_Tensor.i"
-
-%include "doc_GraphicalModel.i"
-%include "doc_DAGmodel.i"
-%include "doc_IBayesNet.i"
-%include "doc_BayesNet.i"
-%include "doc_BayesNetFragment.i"
-%include "doc_EssentialGraph.i"
-%include "doc_MarkovBlanket.i"
-%include "doc_MeekRules.i"
-
-%include "doc_BNdistance.i"
-%include "doc_GibbsBNdistance.i"
-%include "doc_ExactBNdistance.i"
-%include "doc_MCBNDistance.i"
-
-%include "doc_GenericInference.i"
-
-%include "doc_LazyPropagation.i"
-%include "doc_ShaferShenoyInference.i"
-%include "doc_VariableElimination.i"
-
-%include "doc_InformationTheory.i"
-
-%include "doc_LoopyBeliefPropagation.i"
-%include "doc_GibbsSampling.i"
-%include "doc_MonteCarloSampling.i"
-%include "doc_WeightedSampling.i"
-%include "doc_ImportanceSampling.i"
-
-%include "doc_LoopyGibbsSampling.i"
-%include "doc_LoopyMonteCarloSampling.i"
-%include "doc_LoopyWeightedSampling.i"
-%include "doc_LoopyImportanceSampling.i"
-
-%include "doc_IApproximationSchemeConfiguration.i"
-%include "doc_ApproximationScheme.i"
-
-%include "doc_BNDatabaseGenerator.i"
-%include "doc_BNLearner.i"
-
-%include "doc_MarkovRandomField.i"
-%include "doc_ShaferShenoyMRFInference.i"
-
-%include "doc_KTBN.i"
-%include "doc_KTBNGenerator.i"
-%include "doc_KTBNInference.i"
-%include "doc_KTBNDatabaseGenerator.i"
-%include "doc_KTBNLearner.i"
-%include "doc_KTBNAdaptiveLearner.i"
-
-%include "doc_PRMexplorer.i"
-
-%include "doc_CredalNet.i"
-%include "doc_CNInference.i"
-%include "doc_CNMonteCarloSampling.i"
-%include "doc_CNLoopyPropagation.i"
-
-%include "doc_InfluenceDiagram.i"
-%include "doc_ShaferShenoyLIMIDInference.i"
-
-%include "doc_DoorCriteria.i"
-%include "doc_CausalModel.i"
-%include "doc_CausalImpact.i"
-%include "doc_Counterfactual.i"
-
-%include "doc_miscellaneous.i"
-%include "doc_JunctionTreeGenerator.i"
-%include "doc_IDGenerator.i"
-%include "doc_BNGenerator.i"
-
-%include "doc_StructuralMetrics.i"
-
-%include "doc_PythonLoadListener.i"
-%include "doc_PythonBNListener.i"
-%include "doc_PythonApproximationListener.i"
-
-%include "doc_GumException.i"
-%include "doc_SyntaxError.i"
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
@@ -136,9 +38,35 @@
  *                                                                          *
  ****************************************************************************/
 
+// This file contains %extend blocks that must appear AFTER the %template
+// instantiation of gum::KTBN<double> in aGrUM_wrap_KTBN.i. SWIG does not
+// apply %extend declared before %template to the instantiated class; it
+// must be declared here, after %template (KTBN) has been processed.
 
+// ---------------------------------------------------------------------------
+// KTBN<double>::fillCPT
+//
+// The C++ class exposes two fillCPT() overloads, neither directly bindable:
+//   - fillCPT(base, slice, const std::map<std::pair<std::string,int>,
+//     KTBNModality>&, const std::vector<double>&)
+//   - fillCPT(node_name, const std::map<std::variant<std::string,
+//     std::pair<std::string,int>>, KTBNModality>&, const std::vector<double>&)
+// KTBNModality (implicit int-or-str) is never exposed to Python: both
+// dispatchers below build it from a plain Python dict {key: int_or_str},
+// via the shared helpers in extensions/helpersKTBN.h. `distribution` is left
+// as a plain `const std::vector<double>&` -- gum_typemaps.i already maps a
+// Python sequence[float] to it, no dispatch needed there.
+// ---------------------------------------------------------------------------
+%extend gum::KTBN<double> {
+  void fillCPT(std::string base, int slice, PyObject* parents, const std::vector<double>& distribution) const {
+    std::map<std::pair<std::string,int>, gum::KTBNModality> m;
+    PyAgrumHelper::populateKTBNParentPairModalityMapFromPyDict(m, parents);
+    self->fillCPT(base, slice, m, distribution);
+  }
 
-
-
-
-
+  void fillCPT(std::string node_name, PyObject* parents, const std::vector<double>& distribution) const {
+    std::map<std::variant<std::string,std::pair<std::string,int>>, gum::KTBNModality> m;
+    PyAgrumHelper::populateKTBNParentModalityMapFromPyDict(m, parents);
+    self->fillCPT(node_name, m, distribution);
+  }
+}
