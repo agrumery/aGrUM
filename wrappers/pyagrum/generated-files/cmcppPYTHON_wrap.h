@@ -6,8 +6,8 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-#ifndef SWIG_cn_WRAP_H_
-#define SWIG_cn_WRAP_H_
+#ifndef SWIG_cmcpp_WRAP_H_
+#define SWIG_cmcpp_WRAP_H_
 
 #include <map>
 #include <string>

@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.mrf", docstring="pyagrum.mrf module") mrf
+%module(package="pyagrum.mrf", docstring="pyagrum.mrf module") mrfcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- PyAgrumHelper and the

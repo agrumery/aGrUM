@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _cm
+    from . import _cmcpp
 else:
-    import _cm
+    import _cmcpp
 
 import builtins as __builtin__
 
@@ -56,7 +56,7 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
+import pyagrum.pyagrumcpp
 
 def causalImpact(cm, *, on, doing, knowing=None, values=None):
     """
@@ -271,11 +271,11 @@ class DoorCriteria(object):
             True if Z satisfies the backdoor criterion for (X, Y).
 
         """
-        return _cm.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
+        return _cmcpp.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _cm.DoorCriteria_enumerateBackdoorSets(*args)
+    def _enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        return _cmcpp.DoorCriteria__enumerateBackdoorSets(*args)
 
     @staticmethod
     def firstBackdoor(*args) -> list[int] | None:
@@ -304,7 +304,7 @@ class DoorCriteria(object):
             The first valid backdoor adjustment set as a list of NodeIds, or None if none exists.
 
         """
-        return _cm.DoorCriteria_firstBackdoor(*args)
+        return _cmcpp.DoorCriteria_firstBackdoor(*args)
 
     @staticmethod
     def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
@@ -335,11 +335,11 @@ class DoorCriteria(object):
             True if Z satisfies the frontdoor criterion for (X, Y).
 
         """
-        return _cm.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
+        return _cmcpp.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
-        return _cm.DoorCriteria_enumerateFrontdoorSets(*args)
+    def _enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+        return _cmcpp.DoorCriteria__enumerateFrontdoorSets(*args)
 
     @staticmethod
     def firstFrontdoor(*args) -> list[int] | None:
@@ -368,7 +368,7 @@ class DoorCriteria(object):
             The first valid frontdoor adjustment set as a list of NodeIds, or None if none exists.
 
         """
-        return _cm.DoorCriteria_firstFrontdoor(*args)
+        return _cmcpp.DoorCriteria_firstFrontdoor(*args)
 
     @staticmethod
     def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
@@ -394,7 +394,7 @@ class DoorCriteria(object):
             True if at least one unblocked directed path from X to Y exists.
 
         """
-        return _cm.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
+        return _cmcpp.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
 
     @staticmethod
     def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int] | None:
@@ -418,7 +418,7 @@ class DoorCriteria(object):
             directed path from X to Y. Empty if no directed path exists.
 
         """
-        return _cm.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
+        return _cmcpp.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
 
     @staticmethod
     def backdoorReach(dag: "pyagrum.DAG", X: int) -> list[int]:
@@ -442,7 +442,7 @@ class DoorCriteria(object):
             NodeIds of all nodes reachable from X via a backdoor path.
 
         """
-        return _cm.DoorCriteria_backdoorReach(dag, X)
+        return _cmcpp.DoorCriteria_backdoorReach(dag, X)
 
     @staticmethod
     def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
@@ -467,7 +467,7 @@ class DoorCriteria(object):
             True if an open backdoor path from X to Y exists after conditioning on Z.
 
         """
-        return _cm.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
+        return _cmcpp.DoorCriteria_hasBackdoorPath(dag, X, Y, Z)
 
     @staticmethod
     def enumerateBackdoorSets(dag, X, Y, *, excluded_nodes=None, max_cardinality=0,
@@ -498,7 +498,7 @@ class DoorCriteria(object):
         list of set of int
             All valid backdoor adjustment sets (as NodeId sets).
         """
-        return _cm.DoorCriteria_enumerateBackdoorSets(
+        return DoorCriteria._enumerateBackdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)
@@ -531,21 +531,21 @@ class DoorCriteria(object):
         list of set of int
             All valid frontdoor adjustment sets (as NodeId sets).
         """
-        return _cm.DoorCriteria_enumerateFrontdoorSets(
+        return DoorCriteria._enumerateFrontdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)
 
 
     def __init__(self):
-        _cm.DoorCriteria_swiginit(self, _cm.new_DoorCriteria())
-    __swig_destroy__ = _cm.delete_DoorCriteria
+        _cmcpp.DoorCriteria_swiginit(self, _cmcpp.new_DoorCriteria())
+    __swig_destroy__ = _cmcpp.delete_DoorCriteria
 
-# Register DoorCriteria in _cm:
-_cm.DoorCriteria_swigregister(DoorCriteria)
+# Register DoorCriteria in _cmcpp:
+_cmcpp.DoorCriteria_swigregister(DoorCriteria)
 
 def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
-    return _cm._causalImpact(*args)
+    return _cmcpp._causalImpact(*args)
 class CausalModel(object):
     r"""
 
@@ -586,7 +586,7 @@ class CausalModel(object):
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    __swig_destroy__ = _cm.delete_CausalModel
+    __swig_destroy__ = _cmcpp.delete_CausalModel
 
     def addLatentVariable(self, *args) -> None:
         r"""
@@ -608,7 +608,7 @@ class CausalModel(object):
             Default is False.
 
         """
-        return _cm.CausalModel_addLatentVariable(self, *args)
+        return _cmcpp.CausalModel_addLatentVariable(self, *args)
 
     def existsArc(self, *args) -> bool:
         r"""
@@ -628,7 +628,7 @@ class CausalModel(object):
             True if the arc x→y exists in the causal DAG.
 
         """
-        return _cm.CausalModel_existsArc(self, *args)
+        return _cmcpp.CausalModel_existsArc(self, *args)
 
     def assumeSpurious(self, *args) -> None:
         r"""
@@ -647,7 +647,7 @@ class CausalModel(object):
             Head of the arc (NodeId or variable name).
 
         """
-        return _cm.CausalModel_assumeSpurious(self, *args)
+        return _cmcpp.CausalModel_assumeSpurious(self, *args)
 
     def assumeNonSpurious(self, *args) -> None:
         r"""
@@ -662,7 +662,7 @@ class CausalModel(object):
             Head of the arc (NodeId or variable name).
 
         """
-        return _cm.CausalModel_assumeNonSpurious(self, *args)
+        return _cmcpp.CausalModel_assumeNonSpurious(self, *args)
 
     def isAssumedSpurious(self, *args) -> bool:
         r"""
@@ -682,7 +682,7 @@ class CausalModel(object):
             True if the arc x→y is marked as spurious.
 
         """
-        return _cm.CausalModel_isAssumedSpurious(self, *args)
+        return _cmcpp.CausalModel_isAssumedSpurious(self, *args)
 
     def backDoor(self, *args) -> list[int] | None:
         r"""
@@ -714,7 +714,7 @@ class CausalModel(object):
         pyagrum.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
 
         """
-        return _cm.CausalModel_backDoor(self, *args)
+        return _cmcpp.CausalModel_backDoor(self, *args)
 
     def frontDoor(self, *args) -> list[int] | None:
         r"""
@@ -745,7 +745,7 @@ class CausalModel(object):
         pyagrum.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 
         """
-        return _cm.CausalModel_frontDoor(self, *args)
+        return _cmcpp.CausalModel_frontDoor(self, *args)
 
     def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel":
         r"""
@@ -768,7 +768,7 @@ class CausalModel(object):
             The induced causal sub-model.
 
         """
-        return _cm.CausalModel_inducedCausalSubModel(self, cm, subset)
+        return _cmcpp.CausalModel_inducedCausalSubModel(self, cm, subset)
 
     def toDot(self, *args) -> str:
         r"""
@@ -803,7 +803,7 @@ class CausalModel(object):
         >>> print(cm.toDot())
 
         """
-        return _cm.CausalModel_toDot(self, *args)
+        return _cmcpp.CausalModel_toDot(self, *args)
 
     def observationalBN(self) -> "pyagrum.BayesNet":
         r"""
@@ -822,7 +822,7 @@ class CausalModel(object):
             The observational BN (observed variables only).
 
         """
-        return _cm.CausalModel_observationalBN(self)
+        return _cmcpp.CausalModel_observationalBN(self)
 
     def causalDAG(self) -> "pyagrum.DAG":
         r"""
@@ -835,7 +835,7 @@ class CausalModel(object):
             The causal DAG (observed + latent nodes).
 
         """
-        return _cm.CausalModel_causalDAG(self)
+        return _cmcpp.CausalModel_causalDAG(self)
 
     def names(self) -> set[str]:
         r"""
@@ -848,7 +848,7 @@ class CausalModel(object):
             The set of all variable names.
 
         """
-        return _cm.CausalModel_names(self)
+        return _cmcpp.CausalModel_names(self)
 
     def idFromName(self, name: str) -> int:
         r"""
@@ -871,7 +871,7 @@ class CausalModel(object):
             If no variable with that name exists in the causal model.
 
         """
-        return _cm.CausalModel_idFromName(self, name)
+        return _cmcpp.CausalModel_idFromName(self, name)
 
     def nameFromId(self, id: int) -> str:
         r"""
@@ -894,7 +894,7 @@ class CausalModel(object):
             If no variable with that NodeId exists in the causal model.
 
         """
-        return _cm.CausalModel_nameFromId(self, id)
+        return _cmcpp.CausalModel_nameFromId(self, id)
 
     def latentVariablesIds(self) -> list[int]:
         r"""
@@ -907,7 +907,7 @@ class CausalModel(object):
             NodeIds of latent variables.
 
         """
-        return _cm.CausalModel_latentVariablesIds(self)
+        return _cmcpp.CausalModel_latentVariablesIds(self)
 
     def latentVariablesNames(self) -> set[str]:
         r"""
@@ -920,7 +920,7 @@ class CausalModel(object):
             Names of latent variables.
 
         """
-        return _cm.CausalModel_latentVariablesNames(self)
+        return _cmcpp.CausalModel_latentVariablesNames(self)
 
     def parents(self, *args) -> list[int]:
         r"""
@@ -938,7 +938,7 @@ class CausalModel(object):
             NodeIds of the variable's parents in the causal DAG.
 
         """
-        return _cm.CausalModel_parents(self, *args)
+        return _cmcpp.CausalModel_parents(self, *args)
 
     def children(self, *args) -> list[int]:
         r"""
@@ -956,7 +956,7 @@ class CausalModel(object):
             NodeIds of the variable's children in the causal DAG.
 
         """
-        return _cm.CausalModel_children(self, *args)
+        return _cmcpp.CausalModel_children(self, *args)
 
     def connectedComponents(self) -> dict[int, list[int]]:
         r"""
@@ -969,7 +969,7 @@ class CausalModel(object):
             A mapping from component index to the set of NodeIds in that component.
 
         """
-        return _cm.CausalModel_connectedComponents(self)
+        return _cmcpp.CausalModel_connectedComponents(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -992,13 +992,13 @@ class CausalModel(object):
             if the id or name does not correspond to an observed variable in the model
 
         """
-        return _cm.CausalModel_variable(self, *args)
+        return _cmcpp.CausalModel_variable(self, *args)
 
     def __init__(self, *args):
-        _cm.CausalModel_swiginit(self, _cm.new_CausalModel(*args))
+        _cmcpp.CausalModel_swiginit(self, _cmcpp.new_CausalModel(*args))
 
-# Register CausalModel in _cm:
-_cm.CausalModel_swigregister(CausalModel)
+# Register CausalModel in _cmcpp:
+_cmcpp.CausalModel_swigregister(CausalModel)
 class CausalImpact(object):
     r"""
 
@@ -1059,7 +1059,7 @@ class CausalImpact(object):
             If the causal effect is not identified (:meth:`isIdentified` is False).
 
         """
-        return _cm.CausalImpact_eval(self)
+        return _cmcpp.CausalImpact_eval(self)
 
     def toString(self) -> str:
         r"""
@@ -1073,7 +1073,7 @@ class CausalImpact(object):
             conditional probabilities).
 
         """
-        return _cm.CausalImpact_toString(self)
+        return _cmcpp.CausalImpact_toString(self)
 
     def toLatex(self, *, doOperatorPrefix=None, doOperatorSuffix=None):
         """
@@ -1095,7 +1095,7 @@ class CausalImpact(object):
             doOperatorPrefix = pyagrum.config["causal", "latex_do_prefix"]
         if doOperatorSuffix is None:
             doOperatorSuffix = pyagrum.config["causal", "latex_do_suffix"]
-        return _cm.CausalImpact_toLatex(self, doOperatorPrefix, doOperatorSuffix)
+        return _cmcpp.CausalImpact_toLatex(self, doOperatorPrefix, doOperatorSuffix)
 
 
 
@@ -1119,7 +1119,7 @@ class CausalImpact(object):
             LaTeX string of the causal query.
 
         """
-        return _cm.CausalImpact_latexQuery(self, *args)
+        return _cmcpp.CausalImpact_latexQuery(self, *args)
 
     def isIdentified(self) -> bool:
         r"""
@@ -1135,7 +1135,7 @@ class CausalImpact(object):
             True if the query is identifiable.
 
         """
-        return _cm.CausalImpact_isIdentified(self)
+        return _cmcpp.CausalImpact_isIdentified(self)
 
     def cm(self) -> "pyagrum.CausalModel":
         r"""
@@ -1148,7 +1148,7 @@ class CausalImpact(object):
             The causal model.
 
         """
-        return _cm.CausalImpact_cm(self)
+        return _cmcpp.CausalImpact_cm(self)
 
     def on(self) -> list[int]:
         r"""
@@ -1161,7 +1161,7 @@ class CausalImpact(object):
             NodeIds of the variables in the on-set.
 
         """
-        return _cm.CausalImpact_on(self)
+        return _cmcpp.CausalImpact_on(self)
 
     def doing(self) -> list[int]:
         r"""
@@ -1174,7 +1174,7 @@ class CausalImpact(object):
             NodeIds of the variables in the doing-set (do-operator).
 
         """
-        return _cm.CausalImpact_doing(self)
+        return _cmcpp.CausalImpact_doing(self)
 
     def knowing(self) -> list[int]:
         r"""
@@ -1187,7 +1187,7 @@ class CausalImpact(object):
             NodeIds of the variables in the knowing-set.
 
         """
-        return _cm.CausalImpact_knowing(self)
+        return _cmcpp.CausalImpact_knowing(self)
 
     def explanation(self) -> str:
         r"""
@@ -1204,7 +1204,7 @@ class CausalImpact(object):
             Explanation of the identification outcome.
 
         """
-        return _cm.CausalImpact_explanation(self)
+        return _cmcpp.CausalImpact_explanation(self)
 
     def onNames(self) -> tuple[str, ...]:
         r"""
@@ -1217,7 +1217,7 @@ class CausalImpact(object):
             Variable names in the on-set.
 
         """
-        return _cm.CausalImpact_onNames(self)
+        return _cmcpp.CausalImpact_onNames(self)
 
     def doingNames(self) -> tuple[str, ...]:
         r"""
@@ -1230,7 +1230,7 @@ class CausalImpact(object):
             Variable names in the doing-set.
 
         """
-        return _cm.CausalImpact_doingNames(self)
+        return _cmcpp.CausalImpact_doingNames(self)
 
     def knowingNames(self) -> tuple[str, ...]:
         r"""
@@ -1243,7 +1243,7 @@ class CausalImpact(object):
             Variable names in the knowing-set.
 
         """
-        return _cm.CausalImpact_knowingNames(self)
+        return _cmcpp.CausalImpact_knowingNames(self)
 
     def __init__(self, cm, *, on, doing, knowing=None):
         if isinstance(on, str):
@@ -1252,7 +1252,7 @@ class CausalImpact(object):
             doing = {doing}
         if isinstance(knowing, str):
             knowing = {knowing}
-        _cm.CausalImpact_swiginit(self, _cm.new_CausalImpact(cm, on, doing,
+        _cmcpp.CausalImpact_swiginit(self, _cmcpp.new_CausalImpact(cm, on, doing,
                                        knowing if knowing is not None else set(),
                                        False))
 
@@ -1336,11 +1336,11 @@ class CausalImpact(object):
         >>> print(json.dumps(ci.toDict(), indent=2))
 
         """
-        return _cm.CausalImpact_toDict(self)
-    __swig_destroy__ = _cm.delete_CausalImpact
+        return _cmcpp.CausalImpact_toDict(self)
+    __swig_destroy__ = _cmcpp.delete_CausalImpact
 
-# Register CausalImpact in _cm:
-_cm.CausalImpact_swigregister(CausalImpact)
+# Register CausalImpact in _cmcpp:
+_cmcpp.CausalImpact_swigregister(CausalImpact)
 class Counterfactual(object):
     r"""
 
@@ -1393,7 +1393,7 @@ class Counterfactual(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _cm.Counterfactual_swiginit(self, _cm.new_Counterfactual(*args))
+        _cmcpp.Counterfactual_swiginit(self, _cmcpp.new_Counterfactual(*args))
 
     @staticmethod
     def counterFactualModel(*args) -> "pyagrum.CausalModel":
@@ -1426,7 +1426,7 @@ class Counterfactual(object):
         pyagrum.counterfactualModel : high-level function wrapper.
 
         """
-        return _cm.Counterfactual_counterFactualModel(*args)
+        return _cmcpp.Counterfactual_counterFactualModel(*args)
 
     def run(self) -> None:
         r"""
@@ -1437,7 +1437,7 @@ class Counterfactual(object):
         only if you need to re-run after modifying the object's state.
 
         """
-        return _cm.Counterfactual_run(self)
+        return _cmcpp.Counterfactual_run(self)
 
     def originalModel(self) -> "pyagrum.CausalModel":
         r"""
@@ -1450,7 +1450,7 @@ class Counterfactual(object):
             The original causal model passed to the constructor.
 
         """
-        return _cm.Counterfactual_originalModel(self)
+        return _cmcpp.Counterfactual_originalModel(self)
 
     def twinModel(self) -> "pyagrum.CausalModel":
         r"""
@@ -1466,7 +1466,7 @@ class Counterfactual(object):
             The twin model.
 
         """
-        return _cm.Counterfactual_twinModel(self)
+        return _cmcpp.Counterfactual_twinModel(self)
 
     def impact(self) -> "pyagrum.CausalImpact":
         r"""
@@ -1479,7 +1479,7 @@ class Counterfactual(object):
         pyagrum.CausalImpact
             The identified causal impact on the twin model.
         """
-        return _cm.Counterfactual_impact(self)
+        return _cmcpp.Counterfactual_impact(self)
 
 
 
@@ -1495,7 +1495,7 @@ class Counterfactual(object):
             optionally sliced by *values* if provided at construction.
 
         """
-        return _cm.Counterfactual_value(self)
+        return _cmcpp.Counterfactual_value(self)
 
     def on(self) -> set[str]:
         r"""
@@ -1508,7 +1508,7 @@ class Counterfactual(object):
             Variable names in the on-set.
 
         """
-        return _cm.Counterfactual_on(self)
+        return _cmcpp.Counterfactual_on(self)
 
     def whatif(self) -> set[str]:
         r"""
@@ -1521,7 +1521,7 @@ class Counterfactual(object):
             Variable names in the whatif-set.
 
         """
-        return _cm.Counterfactual_whatif(self)
+        return _cmcpp.Counterfactual_whatif(self)
 
     def profile(self) -> dict[str,str]:
         r"""
@@ -1534,7 +1534,7 @@ class Counterfactual(object):
             The observed profile as ``{variable_name: value_name}``.
 
         """
-        return _cm.Counterfactual_profile(self)
+        return _cmcpp.Counterfactual_profile(self)
 
     def values(self) -> dict[str,str]:
         r"""
@@ -1548,7 +1548,7 @@ class Counterfactual(object):
             Empty dict if no specific values were requested.
 
         """
-        return _cm.Counterfactual_values(self)
+        return _cmcpp.Counterfactual_values(self)
 
     def toString(self) -> str:
         r"""
@@ -1561,15 +1561,15 @@ class Counterfactual(object):
             Human-readable summary of the counterfactual computation.
 
         """
-        return _cm.Counterfactual_toString(self)
-    __swig_destroy__ = _cm.delete_Counterfactual
+        return _cmcpp.Counterfactual_toString(self)
+    __swig_destroy__ = _cmcpp.delete_Counterfactual
 
-# Register Counterfactual in _cm:
-_cm.Counterfactual_swigregister(Counterfactual)
+# Register Counterfactual in _cmcpp:
+_cmcpp.Counterfactual_swigregister(Counterfactual)
 
 def _counterfactual(*args) -> "pyagrum.Tensor":
-    return _cm._counterfactual(*args)
+    return _cmcpp._counterfactual(*args)
 
 def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
-    return _cm._counterfactualModel(cm, profile, whatif)
+    return _cmcpp._counterfactualModel(cm, profile, whatif)
 

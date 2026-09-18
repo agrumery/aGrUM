@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_cm"
+#define SWIG_name    "_cmcpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3779,9 +3779,9 @@ static swig_module_info swig_module = {swig_types, 54, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _cm.so
+              @(target):= _cmcpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__cm
+#define SWIG_init    PyInit__cmcpp
 
 
 #ifdef __cplusplus
@@ -4385,7 +4385,7 @@ SWIGINTERN PyAgrumDict *gum_CausalImpact_Sl_double_Sg__toDict(gum::CausalImpact<
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "cmPYTHON_wrap.h"
+#include "cmcppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -4460,7 +4460,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4488,20 +4488,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_0(PyObject *
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -4525,17 +4525,17 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_0(PyObject *
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "6"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "6"" of type '" "bool""'");
   } 
   arg6 = static_cast< bool >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "7"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "7"" of type '" "bool""'");
   } 
   arg7 = static_cast< bool >(val7);
   {
@@ -4560,7 +4560,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4585,20 +4585,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_1(PyObject *
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -4622,12 +4622,12 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_1(PyObject *
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "6"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "6"" of type '" "bool""'");
   } 
   arg6 = static_cast< bool >(val6);
   {
@@ -4652,7 +4652,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4674,20 +4674,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_2(PyObject *
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -4711,7 +4711,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_2(PyObject *
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   {
@@ -4736,7 +4736,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4755,20 +4755,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_3(PyObject *
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -4812,7 +4812,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4829,20 +4829,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_4(PyObject *
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -4867,7 +4867,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -4887,25 +4887,25 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets__SWIG_5(PyObject *
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DoorCriteria_enumerateBackdoorSets" "', argument " "4"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DoorCriteria__enumerateBackdoorSets" "', argument " "4"" of type '" "bool""'");
   } 
   arg4 = static_cast< bool >(val4);
   {
@@ -4930,16 +4930,16 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[8] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "DoorCriteria_enumerateBackdoorSets", 0, 7, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DoorCriteria__enumerateBackdoorSets", 0, 7, argv))) SWIG_fail;
   --argc;
   if (argc == 3) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_4(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_4(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -4966,33 +4966,33 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateBackdoorSets(PyObject *self, Py
       }
     }
     if (!_v) goto check_2;
-    return _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_3(self, argc, argv);
+    return _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_3(self, argc, argv);
   }
 check_2:
   
   if (argc == 4) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_5(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_5(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 5) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 6) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 7) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateBackdoorSets__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateBackdoorSets__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DoorCriteria_enumerateBackdoorSets'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DoorCriteria__enumerateBackdoorSets'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::DoorCriteria::enumerateBackdoorSets(gum::DAG const &,gum::NodeId,gum::NodeId,gum::NodeSet const &,std::size_t,bool,bool)\n"
     "    gum::DoorCriteria::enumerateBackdoorSets(gum::DAG const &,gum::NodeId,gum::NodeId,gum::NodeSet const &,std::size_t,bool)\n"
@@ -5421,7 +5421,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5449,20 +5449,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_0(PyObject 
   if ((nobjs < 7) || (nobjs > 7)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -5486,17 +5486,17 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_0(PyObject 
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "6"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "6"" of type '" "bool""'");
   } 
   arg6 = static_cast< bool >(val6);
   ecode7 = SWIG_AsVal_bool(swig_obj[6], &val7);
   if (!SWIG_IsOK(ecode7)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "7"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "7"" of type '" "bool""'");
   } 
   arg7 = static_cast< bool >(val7);
   {
@@ -5521,7 +5521,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5546,20 +5546,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_1(PyObject 
   if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -5583,12 +5583,12 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_1(PyObject 
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
   if (!SWIG_IsOK(ecode6)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "6"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "6"" of type '" "bool""'");
   } 
   arg6 = static_cast< bool >(val6);
   {
@@ -5613,7 +5613,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5635,20 +5635,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_2(PyObject 
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -5672,7 +5672,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_2(PyObject 
   }
   ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "5"" of type '" "std::size_t""'");
   } 
   arg5 = static_cast< std::size_t >(val5);
   {
@@ -5697,7 +5697,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5716,20 +5716,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_3(PyObject 
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -5773,7 +5773,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5790,20 +5790,20 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_4(PyObject 
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   {
@@ -5828,7 +5828,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   gum::NodeId arg2 ;
@@ -5848,25 +5848,25 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_5(PyObject 
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "1"" of type '" "gum::DAG const &""'"); 
   }
   arg1 = reinterpret_cast< gum::DAG * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "3"" of type '" "gum::NodeId""'");
   } 
   arg3 = static_cast< gum::NodeId >(val3);
   ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DoorCriteria_enumerateFrontdoorSets" "', argument " "4"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DoorCriteria__enumerateFrontdoorSets" "', argument " "4"" of type '" "bool""'");
   } 
   arg4 = static_cast< bool >(val4);
   {
@@ -5891,16 +5891,16 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[8] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "DoorCriteria_enumerateFrontdoorSets", 0, 7, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DoorCriteria__enumerateFrontdoorSets", 0, 7, argv))) SWIG_fail;
   --argc;
   if (argc == 3) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_4(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_4(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -5927,33 +5927,33 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_enumerateFrontdoorSets(PyObject *self, P
       }
     }
     if (!_v) goto check_2;
-    return _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_3(self, argc, argv);
+    return _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_3(self, argc, argv);
   }
 check_2:
   
   if (argc == 4) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_5(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_5(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 5) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 6) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 7) {
-    PyObject *retobj = _wrap_DoorCriteria_enumerateFrontdoorSets__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DoorCriteria_enumerateFrontdoorSets'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DoorCriteria__enumerateFrontdoorSets'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::DoorCriteria::enumerateFrontdoorSets(gum::DAG const &,gum::NodeId,gum::NodeId,gum::NodeSet const &,std::size_t,bool,bool)\n"
     "    gum::DoorCriteria::enumerateFrontdoorSets(gum::DAG const &,gum::NodeId,gum::NodeId,gum::NodeSet const &,std::size_t,bool)\n"
@@ -12601,7 +12601,7 @@ static PyMethodDef SwigMethods[] = {
 		"    True if Z satisfies the backdoor criterion for (X, Y).\n"
 		"\n"
 		""},
-	 { "DoorCriteria_enumerateBackdoorSets", _wrap_DoorCriteria_enumerateBackdoorSets, METH_VARARGS, NULL},
+	 { "DoorCriteria__enumerateBackdoorSets", _wrap_DoorCriteria__enumerateBackdoorSets, METH_VARARGS, NULL},
 	 { "DoorCriteria_firstBackdoor", _wrap_DoorCriteria_firstBackdoor, METH_VARARGS, "\n"
 		"\n"
 		"Return the first valid backdoor adjustment set for the causal effect of X on Y.\n"
@@ -12654,7 +12654,7 @@ static PyMethodDef SwigMethods[] = {
 		"    True if Z satisfies the frontdoor criterion for (X, Y).\n"
 		"\n"
 		""},
-	 { "DoorCriteria_enumerateFrontdoorSets", _wrap_DoorCriteria_enumerateFrontdoorSets, METH_VARARGS, NULL},
+	 { "DoorCriteria__enumerateFrontdoorSets", _wrap_DoorCriteria__enumerateFrontdoorSets, METH_VARARGS, NULL},
 	 { "DoorCriteria_firstFrontdoor", _wrap_DoorCriteria_firstFrontdoor, METH_VARARGS, "\n"
 		"\n"
 		"Return the first valid frontdoor adjustment set for the causal effect of X on Y.\n"

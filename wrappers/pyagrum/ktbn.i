@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.ktbn", docstring="pyagrum.ktbn module") ktbn
+%module(package="pyagrum.ktbn", docstring="pyagrum.ktbn module") ktbncpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- PyAgrumHelper and the

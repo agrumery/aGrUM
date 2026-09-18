@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_ktbn"
+#define SWIG_name    "_ktbncpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3781,9 +3781,9 @@ static swig_module_info swig_module = {swig_types, 56, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _ktbn.so
+              @(target):= _ktbncpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__ktbn
+#define SWIG_init    PyInit__ktbncpp
 
 
 #ifdef __cplusplus
@@ -4477,7 +4477,7 @@ SWIGINTERN std::vector< double,std::allocator< double > > gum_learning_KTBNDatab
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "ktbnPYTHON_wrap.h"
+#include "ktbncppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

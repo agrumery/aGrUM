@@ -6,8 +6,8 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-#ifndef SWIG_ktbn_WRAP_H_
-#define SWIG_ktbn_WRAP_H_
+#ifndef SWIG_cncpp_WRAP_H_
+#define SWIG_cncpp_WRAP_H_
 
 #include <map>
 #include <string>

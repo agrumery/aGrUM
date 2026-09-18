@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.cm", docstring="pyagrum.cm module") cm
+%module(package="pyagrum.cm", docstring="pyagrum.cm module") cmcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

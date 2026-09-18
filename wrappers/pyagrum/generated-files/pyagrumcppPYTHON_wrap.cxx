@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_pyagrum"
+#define SWIG_name    "_pyagrumcpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3910,9 +3910,9 @@ static swig_module_info swig_module = {swig_types, 182, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _pyagrum.so
+              @(target):= _pyagrumcpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__pyagrum
+#define SWIG_init    PyInit__pyagrumcpp
 
 
 #ifdef __cplusplus
@@ -8852,7 +8852,7 @@ SWIGINTERN bool gum_learning_BNLearner_Sl_double_Sg__isGumNumberOfThreadsOverrid
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "pyagrumPYTHON_wrap.h"
+#include "pyagrumcppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum", docstring="pyagrum module", directors="1") pyagrum
+%module(package="pyagrum", docstring="pyagrum module", directors="1") pyagrumcpp
 
 /////////////////////////////////
 /////// Documentation ///////////

@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _prm
+    from . import _prmcpp
 else:
-    import _prm
+    import _prmcpp
 
 import builtins as __builtin__
 
@@ -56,7 +56,7 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
+import pyagrum.pyagrumcpp
 class PRMexplorer(object):
     r"""
 
@@ -79,8 +79,8 @@ class PRMexplorer(object):
             default constructor
 
         """
-        _prm.PRMexplorer_swiginit(self, _prm.new_PRMexplorer())
-    __swig_destroy__ = _prm.delete_PRMexplorer
+        _prmcpp.PRMexplorer_swiginit(self, _prmcpp.new_PRMexplorer())
+    __swig_destroy__ = _prmcpp.delete_PRMexplorer
 
     def load(self, *args) -> None:
         r"""
@@ -100,7 +100,7 @@ class PRMexplorer(object):
             If file not found
 
         """
-        return _prm.PRMexplorer_load(self, *args)
+        return _prmcpp.PRMexplorer_load(self, *args)
 
     def isType(self, name: str) -> bool:
         r"""
@@ -116,7 +116,7 @@ class PRMexplorer(object):
             True if the parameter correspond to a type in the PRM
 
         """
-        return _prm.PRMexplorer_isType(self, name)
+        return _prmcpp.PRMexplorer_isType(self, name)
 
     def isClass(self, name: str) -> bool:
         r"""
@@ -132,7 +132,7 @@ class PRMexplorer(object):
             True if the parameter correspond to a class in the PRM
 
         """
-        return _prm.PRMexplorer_isClass(self, name)
+        return _prmcpp.PRMexplorer_isClass(self, name)
 
     def isInterface(self, name: str) -> bool:
         r"""
@@ -148,7 +148,7 @@ class PRMexplorer(object):
             True if the parameter correspond to an interface in the PRM
 
         """
-        return _prm.PRMexplorer_isInterface(self, name)
+        return _prmcpp.PRMexplorer_isInterface(self, name)
 
     def classes(self) -> list[str]:
         r"""
@@ -159,7 +159,7 @@ class PRMexplorer(object):
             the list of classes
 
         """
-        return _prm.PRMexplorer_classes(self)
+        return _prmcpp.PRMexplorer_classes(self)
 
     def classAttributes(self, class_name: str) -> list[object]:
         r"""
@@ -180,7 +180,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classAttributes(self, class_name)
+        return _prmcpp.PRMexplorer_classAttributes(self, class_name)
 
     def isAttribute(self, class_name: str, att_name: str) -> bool:
         r"""
@@ -205,7 +205,7 @@ class PRMexplorer(object):
             If att_name is not an element of class_name
 
         """
-        return _prm.PRMexplorer_isAttribute(self, class_name, att_name)
+        return _prmcpp.PRMexplorer_isAttribute(self, class_name, att_name)
 
     def classReferences(self, class_name: str) -> list[object]:
         r"""
@@ -226,7 +226,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classReferences(self, class_name)
+        return _prmcpp.PRMexplorer_classReferences(self, class_name)
 
     def classParameters(self, class_name: str) -> list[str]:
         r"""
@@ -247,7 +247,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classParameters(self, class_name)
+        return _prmcpp.PRMexplorer_classParameters(self, class_name)
 
     def classImplements(self, class_name: str) -> list[str]:
         r"""
@@ -263,8 +263,8 @@ class PRMexplorer(object):
             the list of interfaces implemented by the class
 
         """
-        return _prm.PRMexplorer_classImplements(self, class_name)
-    aggType = property(_prm.PRMexplorer_aggType_get, _prm.PRMexplorer_aggType_set, doc=r"""
+        return _prmcpp.PRMexplorer_classImplements(self, class_name)
+    aggType = property(_prmcpp.PRMexplorer_aggType_get, _prmcpp.PRMexplorer_aggType_set, doc=r"""
 
     min/max/count/exists/forall/or/and/amplitude/median
 
@@ -289,7 +289,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classAggregates(self, class_name)
+        return _prmcpp.PRMexplorer_classAggregates(self, class_name)
 
     def classSlotChains(self, class_name: str) -> list[object]:
         r"""
@@ -310,7 +310,7 @@ class PRMexplorer(object):
             if the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classSlotChains(self, class_name)
+        return _prmcpp.PRMexplorer_classSlotChains(self, class_name)
 
     def classDag(self, class_name: str) -> object:
         r"""
@@ -331,7 +331,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_classDag(self, class_name)
+        return _prmcpp.PRMexplorer_classDag(self, class_name)
 
     def getalltheSystems(self) -> list[object]:
         r"""
@@ -342,7 +342,7 @@ class PRMexplorer(object):
             the list of all the systems and their components
 
         """
-        return _prm.PRMexplorer_getalltheSystems(self)
+        return _prmcpp.PRMexplorer_getalltheSystems(self)
 
     def getSuperClass(self, class_name: str) -> str | None:
         r"""
@@ -363,7 +363,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_getSuperClass(self, class_name)
+        return _prmcpp.PRMexplorer_getSuperClass(self, class_name)
 
     def getDirectSubClass(self, class_name: str) -> list[str]:
         r"""
@@ -384,7 +384,7 @@ class PRMexplorer(object):
             If the class is not in the PRM
 
         """
-        return _prm.PRMexplorer_getDirectSubClass(self, class_name)
+        return _prmcpp.PRMexplorer_getDirectSubClass(self, class_name)
 
     def cpf(self, class_name: str, attribute: str) -> "pyagrum.Tensor":
         r"""
@@ -412,7 +412,7 @@ class PRMexplorer(object):
             If the attribute in parameters does not exist
 
         """
-        return _prm.PRMexplorer_cpf(self, class_name, attribute)
+        return _prmcpp.PRMexplorer_cpf(self, class_name, attribute)
 
     def types(self) -> list[str]:
         r"""
@@ -423,7 +423,7 @@ class PRMexplorer(object):
             the list of the custom types in the PRM
 
         """
-        return _prm.PRMexplorer_types(self)
+        return _prmcpp.PRMexplorer_types(self)
 
     def getSuperType(self, type_name: str) -> str | None:
         r"""
@@ -444,7 +444,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_getSuperType(self, type_name)
+        return _prmcpp.PRMexplorer_getSuperType(self, type_name)
 
     def getDirectSubTypes(self, type_name: str) -> list[str]:
         r"""
@@ -465,7 +465,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_getDirectSubTypes(self, type_name)
+        return _prmcpp.PRMexplorer_getDirectSubTypes(self, type_name)
 
     def getLabels(self, type_name: str) -> list[str]:
         r"""
@@ -486,7 +486,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_getLabels(self, type_name)
+        return _prmcpp.PRMexplorer_getLabels(self, type_name)
 
     def getLabelMap(self, type_name: str) -> object:
         r"""
@@ -507,7 +507,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_getLabelMap(self, type_name)
+        return _prmcpp.PRMexplorer_getLabelMap(self, type_name)
 
     def interfaces(self) -> list[str]:
         r"""
@@ -518,7 +518,7 @@ class PRMexplorer(object):
             the list of interfaces in the PRM
 
         """
-        return _prm.PRMexplorer_interfaces(self)
+        return _prmcpp.PRMexplorer_interfaces(self)
 
     def interAttributes(self, interface_name: str, allAttributes: bool=False) -> list[object]:
         r"""
@@ -542,7 +542,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_interAttributes(self, interface_name, allAttributes)
+        return _prmcpp.PRMexplorer_interAttributes(self, interface_name, allAttributes)
 
     def interReferences(self, interface_name: str) -> list[object]:
         r"""
@@ -563,7 +563,7 @@ class PRMexplorer(object):
             If the type is not in the PRM
 
         """
-        return _prm.PRMexplorer_interReferences(self, interface_name)
+        return _prmcpp.PRMexplorer_interReferences(self, interface_name)
 
     def getSuperInterface(self, interface_name: str) -> str | None:
         r"""
@@ -584,7 +584,7 @@ class PRMexplorer(object):
             If the interface is not in the PRM
 
         """
-        return _prm.PRMexplorer_getSuperInterface(self, interface_name)
+        return _prmcpp.PRMexplorer_getSuperInterface(self, interface_name)
 
     def getDirectSubInterfaces(self, interface_name: str) -> list[str]:
         r"""
@@ -605,7 +605,7 @@ class PRMexplorer(object):
             If the interface is not in the PRM
 
         """
-        return _prm.PRMexplorer_getDirectSubInterfaces(self, interface_name)
+        return _prmcpp.PRMexplorer_getDirectSubInterfaces(self, interface_name)
 
     def getImplementations(self, interface_name: str) -> list[str]:
         r"""
@@ -626,16 +626,16 @@ class PRMexplorer(object):
             If the interface is not in the PRM
 
         """
-        return _prm.PRMexplorer_getImplementations(self, interface_name)
+        return _prmcpp.PRMexplorer_getImplementations(self, interface_name)
 
-# Register PRMexplorer in _prm:
-_prm.PRMexplorer_swigregister(PRMexplorer)
+# Register PRMexplorer in _prmcpp:
+_prmcpp.PRMexplorer_swigregister(PRMexplorer)
 
 def _o3prm_loadBN(bn: "pyagrum.BayesNet", name: str, system: str, classpath: str, l: object) -> str:
-    return _prm._o3prm_loadBN(bn, name, system, classpath, l)
+    return _prmcpp._o3prm_loadBN(bn, name, system, classpath, l)
 
 def _o3prm_saveBN(bn: "pyagrum.BayesNet", name: str, allowModificationWhenSaving: bool) -> None:
-    return _prm._o3prm_saveBN(bn, name, allowModificationWhenSaving)
+    return _prmcpp._o3prm_saveBN(bn, name, allowModificationWhenSaving)
 
 def _bn_loadO3PRM(self, name, system="", classpath="", listeners=None):
   return _o3prm_loadBN(self, name, system, classpath, listeners)

@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _mrf
+    from . import _mrfcpp
 else:
-    import _mrf
+    import _mrfcpp
 
 import builtins as __builtin__
 
@@ -56,22 +56,22 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
-class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
+import pyagrum.pyagrumcpp
+class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __swig_destroy__ = _mrf.delete_IMarkovRandomField
+    __swig_destroy__ = _mrfcpp.delete_IMarkovRandomField
 
     def smallestFactorFromNode(self, *args) -> list[int]:
-        return _mrf.IMarkovRandomField_smallestFactorFromNode(self, *args)
+        return _mrfcpp.IMarkovRandomField_smallestFactorFromNode(self, *args)
 
     def factors(self) -> list[set[int]]:
-        return _mrf.IMarkovRandomField_factors(self)
+        return _mrfcpp.IMarkovRandomField_factors(self)
 
     def __eq__(self, _from: "IMarkovRandomField") -> bool:
-        return _mrf.IMarkovRandomField___eq__(self, _from)
+        return _mrfcpp.IMarkovRandomField___eq__(self, _from)
 
     def dim(self) -> int:
         r"""
@@ -84,7 +84,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the number of free parameters
 
         """
-        return _mrf.IMarkovRandomField_dim(self)
+        return _mrfcpp.IMarkovRandomField_dim(self)
 
     def maxVarDomainSize(self) -> int:
         r"""
@@ -97,7 +97,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the maximum domain size
 
         """
-        return _mrf.IMarkovRandomField_maxVarDomainSize(self)
+        return _mrfcpp.IMarkovRandomField_maxVarDomainSize(self)
 
     def minParam(self) -> float:
         r"""
@@ -110,7 +110,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the minimum factor parameter
 
         """
-        return _mrf.IMarkovRandomField_minParam(self)
+        return _mrfcpp.IMarkovRandomField_minParam(self)
 
     def maxParam(self) -> float:
         r"""
@@ -123,7 +123,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the maximum factor parameter
 
         """
-        return _mrf.IMarkovRandomField_maxParam(self)
+        return _mrfcpp.IMarkovRandomField_maxParam(self)
 
     def minNonZeroParam(self) -> float:
         r"""
@@ -136,7 +136,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the minimum non-zero factor parameter
 
         """
-        return _mrf.IMarkovRandomField_minNonZeroParam(self)
+        return _mrfcpp.IMarkovRandomField_minNonZeroParam(self)
 
     def maxNonOneParam(self) -> float:
         r"""
@@ -149,7 +149,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             the maximum non-one factor parameter
 
         """
-        return _mrf.IMarkovRandomField_maxNonOneParam(self)
+        return _mrfcpp.IMarkovRandomField_maxNonOneParam(self)
 
     def toDot(self) -> str:
         r"""
@@ -162,7 +162,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             a dot-format string
 
         """
-        return _mrf.IMarkovRandomField_toDot(self)
+        return _mrfcpp.IMarkovRandomField_toDot(self)
 
     def toDotAsFactorGraph(self) -> str:
         r"""
@@ -175,7 +175,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             a dot-format string with variable nodes and factor nodes
 
         """
-        return _mrf.IMarkovRandomField_toDotAsFactorGraph(self)
+        return _mrfcpp.IMarkovRandomField_toDotAsFactorGraph(self)
 
     def names(self) -> set[str]:
         r"""
@@ -188,7 +188,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
             The names of the graph variables
 
         """
-        return _mrf.IMarkovRandomField_names(self)
+        return _mrfcpp.IMarkovRandomField_names(self)
 
     def __iter__(self):
       """
@@ -212,7 +212,7 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
 
 
     def nodes(self) -> set[int]:
-        return _mrf.IMarkovRandomField_nodes(self)
+        return _mrfcpp.IMarkovRandomField_nodes(self)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -269,16 +269,16 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
 
 
     def neighbours(self, norid: object) -> set[int]:
-        return _mrf.IMarkovRandomField_neighbours(self, norid)
+        return _mrfcpp.IMarkovRandomField_neighbours(self, norid)
 
     def edges(self) -> set[tuple[int,int]]:
-        return _mrf.IMarkovRandomField_edges(self)
+        return _mrfcpp.IMarkovRandomField_edges(self)
 
     def minimalCondSet(self, *args) -> set[int]:
-        return _mrf.IMarkovRandomField_minimalCondSet(self, *args)
+        return _mrfcpp.IMarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
-        return _mrf.IMarkovRandomField_factor(self, *args)
+        return _mrfcpp.IMarkovRandomField_factor(self, *args)
 
     def isIndependent(self, *args) -> bool:
         r"""
@@ -305,16 +305,16 @@ class IMarkovRandomField(pyagrum.pyagrum.UGmodel):
           True if X and Y are independent given Z in the model
 
         """
-        return _mrf.IMarkovRandomField_isIndependent(self, *args)
+        return _mrfcpp.IMarkovRandomField_isIndependent(self, *args)
 
     def __repr__(self) -> str:
-        return _mrf.IMarkovRandomField___repr__(self)
+        return _mrfcpp.IMarkovRandomField___repr__(self)
 
     def __str__(self) -> str:
-        return _mrf.IMarkovRandomField___str__(self)
+        return _mrfcpp.IMarkovRandomField___str__(self)
 
-# Register IMarkovRandomField in _mrf:
-_mrf.IMarkovRandomField_swigregister(IMarkovRandomField)
+# Register IMarkovRandomField in _mrfcpp:
+_mrfcpp.IMarkovRandomField_swigregister(IMarkovRandomField)
 class MarkovRandomField(IMarkovRandomField):
     r"""
 
@@ -358,7 +358,7 @@ class MarkovRandomField(IMarkovRandomField):
                 the resulting Markov random field
 
         """
-        return _mrf.MarkovRandomField_fastPrototype(*args)
+        return _mrfcpp.MarkovRandomField_fastPrototype(*args)
 
     @staticmethod
     def fromBN(bn: "pyagrum.BayesNet") -> "pyagrum.MarkovRandomField":
@@ -377,11 +377,11 @@ class MarkovRandomField(IMarkovRandomField):
             a new MRF with the same variables and moralised structure
 
         """
-        return _mrf.MarkovRandomField_fromBN(bn)
-    __swig_destroy__ = _mrf.delete_MarkovRandomField
+        return _mrfcpp.MarkovRandomField_fromBN(bn)
+    __swig_destroy__ = _mrfcpp.delete_MarkovRandomField
 
     def __init__(self, *args):
-        _mrf.MarkovRandomField_swiginit(self, _mrf.new_MarkovRandomField(*args))
+        _mrfcpp.MarkovRandomField_swiginit(self, _mrfcpp.new_MarkovRandomField(*args))
 
     def smallestFactorFromNode(self, node: int) -> list[int]:
         r"""
@@ -404,7 +404,7 @@ class MarkovRandomField(IMarkovRandomField):
             if no factor contains this node
 
         """
-        return _mrf.MarkovRandomField_smallestFactorFromNode(self, node)
+        return _mrfcpp.MarkovRandomField_smallestFactorFromNode(self, node)
 
     def factors(self) -> list[set[int]]:
         r"""
@@ -417,7 +417,7 @@ class MarkovRandomField(IMarkovRandomField):
             a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
 
         """
-        return _mrf.MarkovRandomField_factors(self)
+        return _mrfcpp.MarkovRandomField_factors(self)
 
     def add(self, *args) -> int:
         r"""
@@ -450,7 +450,7 @@ class MarkovRandomField(IMarkovRandomField):
             If id is already used.
 
         """
-        return _mrf.MarkovRandomField_add(self, *args)
+        return _mrfcpp.MarkovRandomField_add(self, *args)
 
     def clear(self) -> None:
         r"""
@@ -458,7 +458,7 @@ class MarkovRandomField(IMarkovRandomField):
         Clear the whole MarkovRandomField
 
         """
-        return _mrf.MarkovRandomField_clear(self)
+        return _mrfcpp.MarkovRandomField_clear(self)
 
     def erase(self, *args) -> None:
         r"""
@@ -475,7 +475,7 @@ class MarkovRandomField(IMarkovRandomField):
             a variable's id (int) or name of variable or a reference of this variable to remove.
 
         """
-        return _mrf.MarkovRandomField_erase(self, *args)
+        return _mrfcpp.MarkovRandomField_erase(self, *args)
 
     def changeVariableName(self, *args) -> None:
         r"""
@@ -499,7 +499,7 @@ class MarkovRandomField(IMarkovRandomField):
             If no variable matches id.
 
         """
-        return _mrf.MarkovRandomField_changeVariableName(self, *args)
+        return _mrfcpp.MarkovRandomField_changeVariableName(self, *args)
 
     def changeVariableLabel(self, *args) -> None:
         r"""
@@ -521,7 +521,7 @@ class MarkovRandomField(IMarkovRandomField):
             if id/name is not a variable or if old_label does not exist.
 
         """
-        return _mrf.MarkovRandomField_changeVariableLabel(self, *args)
+        return _mrfcpp.MarkovRandomField_changeVariableLabel(self, *args)
 
     def generateFactors(self) -> None:
         r"""
@@ -529,7 +529,7 @@ class MarkovRandomField(IMarkovRandomField):
         Randomly generates factors parameters for a given structure.
 
         """
-        return _mrf.MarkovRandomField_generateFactors(self)
+        return _mrfcpp.MarkovRandomField_generateFactors(self)
 
     def generateFactor(self, vars: list[int]) -> None:
         r"""
@@ -542,7 +542,7 @@ class MarkovRandomField(IMarkovRandomField):
             a variable's id (int) or name
 
         """
-        return _mrf.MarkovRandomField_generateFactor(self, vars)
+        return _mrfcpp.MarkovRandomField_generateFactor(self, vars)
 
     def beginTopologyTransformation(self) -> None:
         r"""
@@ -552,7 +552,7 @@ class MarkovRandomField(IMarkovRandomField):
         Structural changes are batched until endTopologyTransformation is called, which then adjusts all factor dimensions.
 
         """
-        return _mrf.MarkovRandomField_beginTopologyTransformation(self)
+        return _mrfcpp.MarkovRandomField_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> None:
         r"""
@@ -565,7 +565,7 @@ class MarkovRandomField(IMarkovRandomField):
         pyagrum.MarkovRandomField
 
         """
-        return _mrf.MarkovRandomField_endTopologyTransformation(self)
+        return _mrfcpp.MarkovRandomField_endTopologyTransformation(self)
 
     def graph(self) -> "pyagrum.UndiGraph":
         r"""
@@ -578,7 +578,7 @@ class MarkovRandomField(IMarkovRandomField):
             the underlying graph
 
         """
-        return _mrf.MarkovRandomField_graph(self)
+        return _mrfcpp.MarkovRandomField_graph(self)
 
     def size(self) -> int:
         r"""
@@ -591,7 +591,7 @@ class MarkovRandomField(IMarkovRandomField):
             the number of nodes
 
         """
-        return _mrf.MarkovRandomField_size(self)
+        return _mrfcpp.MarkovRandomField_size(self)
 
     def log10DomainSize(self) -> float:
         r"""
@@ -604,7 +604,7 @@ class MarkovRandomField(IMarkovRandomField):
             the log10 domain size.
 
         """
-        return _mrf.MarkovRandomField_log10DomainSize(self)
+        return _mrfcpp.MarkovRandomField_log10DomainSize(self)
 
     def idFromName(self, name: str) -> int:
         r"""
@@ -627,7 +627,7 @@ class MarkovRandomField(IMarkovRandomField):
             if no variable with this name exists in the model
 
         """
-        return _mrf.MarkovRandomField_idFromName(self, name)
+        return _mrfcpp.MarkovRandomField_idFromName(self, name)
 
     def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
         r"""
@@ -640,7 +640,7 @@ class MarkovRandomField(IMarkovRandomField):
             the internal variable-to-node bijection
 
         """
-        return _mrf.MarkovRandomField_variableNodeMap(self)
+        return _mrfcpp.MarkovRandomField_variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -663,7 +663,7 @@ class MarkovRandomField(IMarkovRandomField):
             if the node id does not exist
 
         """
-        return _mrf.MarkovRandomField_variable(self, *args)
+        return _mrfcpp.MarkovRandomField_variable(self, *args)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -686,7 +686,7 @@ class MarkovRandomField(IMarkovRandomField):
             if the variable does not exist in the model
 
         """
-        return _mrf.MarkovRandomField_nodeId(self, var)
+        return _mrfcpp.MarkovRandomField_nodeId(self, var)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         r"""
@@ -709,7 +709,7 @@ class MarkovRandomField(IMarkovRandomField):
             if no variable with this name exists in the model
 
         """
-        return _mrf.MarkovRandomField_variableFromName(self, name)
+        return _mrfcpp.MarkovRandomField_variableFromName(self, name)
 
     def names(self) -> set[str]:
         r"""
@@ -722,7 +722,7 @@ class MarkovRandomField(IMarkovRandomField):
             The names of the graph variables
 
         """
-        return _mrf.MarkovRandomField_names(self)
+        return _mrfcpp.MarkovRandomField_names(self)
 
     def __iter__(self):
       """
@@ -756,7 +756,7 @@ class MarkovRandomField(IMarkovRandomField):
             the set of node ids
 
         """
-        return _mrf.MarkovRandomField_nodes(self)
+        return _mrfcpp.MarkovRandomField_nodes(self)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -828,7 +828,7 @@ class MarkovRandomField(IMarkovRandomField):
             the set of neighbour node ids
 
         """
-        return _mrf.MarkovRandomField_neighbours(self, norid)
+        return _mrfcpp.MarkovRandomField_neighbours(self, norid)
 
     def edges(self) -> set[tuple[int,int]]:
         r"""
@@ -839,7 +839,7 @@ class MarkovRandomField(IMarkovRandomField):
             the set of edges in the Markov random field
 
         """
-        return _mrf.MarkovRandomField_edges(self)
+        return _mrfcpp.MarkovRandomField_edges(self)
 
     def minimalCondSet(self, *args) -> set[int]:
         r"""
@@ -859,7 +859,7 @@ class MarkovRandomField(IMarkovRandomField):
             the minimal conditioning set (as node ids)
 
         """
-        return _mrf.MarkovRandomField_minimalCondSet(self, *args)
+        return _mrfcpp.MarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -882,7 +882,7 @@ class MarkovRandomField(IMarkovRandomField):
             If no variable's id matches varId.
 
         """
-        return _mrf.MarkovRandomField_factor(self, *args)
+        return _mrfcpp.MarkovRandomField_factor(self, *args)
 
     def isIndependent(self, *args) -> bool:
         r"""
@@ -909,7 +909,7 @@ class MarkovRandomField(IMarkovRandomField):
           True if X and Y are independent given Z in the model
 
         """
-        return _mrf.MarkovRandomField_isIndependent(self, *args)
+        return _mrfcpp.MarkovRandomField_isIndependent(self, *args)
 
     def loadGUM(self, name: str, binary: bool=False) -> None:
         r"""
@@ -935,7 +935,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrf.MarkovRandomField_loadGUM(self, name, binary)
+        return _mrfcpp.MarkovRandomField_loadGUM(self, name, binary)
 
     def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         r"""
@@ -958,7 +958,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrf.MarkovRandomField__saveGUM(self, name, binary, indent)
+        return _mrfcpp.MarkovRandomField__saveGUM(self, name, binary, indent)
 
     def _saveGUMstring(self, indent: int=2) -> str:
         r"""
@@ -982,7 +982,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrf.MarkovRandomField__saveGUMstring(self, indent)
+        return _mrfcpp.MarkovRandomField__saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -1004,7 +1004,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrf.MarkovRandomField_loadGUMstring(self, content)
+        return _mrfcpp.MarkovRandomField_loadGUMstring(self, content)
 
     def loadUAI(self, *args) -> str:
         r"""
@@ -1026,7 +1026,7 @@ class MarkovRandomField(IMarkovRandomField):
             If file is not valid
 
         """
-        return _mrf.MarkovRandomField_loadUAI(self, *args)
+        return _mrfcpp.MarkovRandomField_loadUAI(self, *args)
 
     def saveUAI(self, name: str) -> None:
         r"""
@@ -1039,7 +1039,7 @@ class MarkovRandomField(IMarkovRandomField):
             the file's name
 
         """
-        return _mrf.MarkovRandomField_saveUAI(self, name)
+        return _mrfcpp.MarkovRandomField_saveUAI(self, name)
 
     def __getstate__(self):
         return self.saveGUMstring()
@@ -1129,10 +1129,10 @@ class MarkovRandomField(IMarkovRandomField):
 
 
     def __repr__(self) -> str:
-        return _mrf.MarkovRandomField___repr__(self)
+        return _mrfcpp.MarkovRandomField___repr__(self)
 
     def __str__(self) -> str:
-        return _mrf.MarkovRandomField___str__(self)
+        return _mrfcpp.MarkovRandomField___str__(self)
 
     def addFactor(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1145,7 +1145,7 @@ class MarkovRandomField(IMarkovRandomField):
             The sequence (ordered or not) of node id or names
 
         """
-        return _mrf.MarkovRandomField_addFactor(self, *args)
+        return _mrfcpp.MarkovRandomField_addFactor(self, *args)
 
     def eraseFactor(self, *args) -> None:
         r"""
@@ -1158,7 +1158,7 @@ class MarkovRandomField(IMarkovRandomField):
             the set of variable ids or names whose factor should be removed
 
         """
-        return _mrf.MarkovRandomField_eraseFactor(self, *args)
+        return _mrfcpp.MarkovRandomField_eraseFactor(self, *args)
 
     def addVariables(self,listFastVariables,default_nbr_mod=2):
        """
@@ -1213,8 +1213,8 @@ class MarkovRandomField(IMarkovRandomField):
         self._listeners.append(nl)
 
 
-# Register MarkovRandomField in _mrf:
-_mrf.MarkovRandomField_swigregister(MarkovRandomField)
+# Register MarkovRandomField in _mrfcpp:
+_mrfcpp.MarkovRandomField_swigregister(MarkovRandomField)
 class ShaferShenoyMRFInference(object):
     r"""
 
@@ -1230,13 +1230,13 @@ class ShaferShenoyMRFInference(object):
     __repr__ = _swig_repr
 
     def __init__(self, MN: "IMarkovRandomField", use_binary_join_tree: bool=True):
-        _mrf.ShaferShenoyMRFInference_swiginit(self, _mrf.new_ShaferShenoyMRFInference(MN, use_binary_join_tree))
+        _mrfcpp.ShaferShenoyMRFInference_swiginit(self, _mrfcpp.new_ShaferShenoyMRFInference(MN, use_binary_join_tree))
 
         self._model=MN#first arg of the constructor
 
 
 
-    __swig_destroy__ = _mrf.delete_ShaferShenoyMRFInference
+    __swig_destroy__ = _mrfcpp.delete_ShaferShenoyMRFInference
 
     def setTriangulation(self, new_triangulation: "pyagrum.Triangulation") -> None:
         r"""
@@ -1249,7 +1249,7 @@ class ShaferShenoyMRFInference(object):
             the new triangulation algorithm
 
         """
-        return _mrf.ShaferShenoyMRFInference_setTriangulation(self, new_triangulation)
+        return _mrfcpp.ShaferShenoyMRFInference_setTriangulation(self, new_triangulation)
 
     def joinTree(self) -> "pyagrum.CliqueGraph":
         r"""
@@ -1260,7 +1260,7 @@ class ShaferShenoyMRFInference(object):
           the current join tree used
 
         """
-        return _mrf.ShaferShenoyMRFInference_joinTree(self)
+        return _mrfcpp.ShaferShenoyMRFInference_joinTree(self)
 
     def junctionTree(self) -> "pyagrum.JunctionTree":
         r"""
@@ -1271,7 +1271,7 @@ class ShaferShenoyMRFInference(object):
           the current junction tree
 
         """
-        val = _mrf.ShaferShenoyMRFInference_junctionTree(self)
+        val = _mrfcpp.ShaferShenoyMRFInference_junctionTree(self)
 
         val._engine=self
 
@@ -1288,7 +1288,7 @@ class ShaferShenoyMRFInference(object):
           the probability of evidence
 
         """
-        return _mrf.ShaferShenoyMRFInference_evidenceProbability(self)
+        return _mrfcpp.ShaferShenoyMRFInference_evidenceProbability(self)
 
     def setEvidence(self, evidces):
         """
@@ -1381,7 +1381,7 @@ class ShaferShenoyMRFInference(object):
           the set of nodes with hard evidence
 
         """
-        return _mrf.ShaferShenoyMRFInference_hardEvidenceNodes(self)
+        return _mrfcpp.ShaferShenoyMRFInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -1392,7 +1392,7 @@ class ShaferShenoyMRFInference(object):
           the set of nodes with soft evidence
 
         """
-        return _mrf.ShaferShenoyMRFInference_softEvidenceNodes(self)
+        return _mrfcpp.ShaferShenoyMRFInference_softEvidenceNodes(self)
 
     def targets(self) -> set[int]:
         r"""
@@ -1403,7 +1403,7 @@ class ShaferShenoyMRFInference(object):
           the list of marginal targets
 
         """
-        return _mrf.ShaferShenoyMRFInference_targets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_targets(self)
 
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
@@ -1427,7 +1427,7 @@ class ShaferShenoyMRFInference(object):
           a Tensor for P(targets|evs)
 
         """
-        return _mrf.ShaferShenoyMRFInference_evidenceImpact(self, target, evs)
+        return _mrfcpp.ShaferShenoyMRFInference_evidenceImpact(self, target, evs)
 
     def jointMutualInformation(self, targets: object) -> float:
         r"""
@@ -1445,7 +1445,7 @@ class ShaferShenoyMRFInference(object):
             the joint mutual information
 
         """
-        return _mrf.ShaferShenoyMRFInference_jointMutualInformation(self, targets)
+        return _mrfcpp.ShaferShenoyMRFInference_jointMutualInformation(self, targets)
 
     def jointPosterior(self, targets: object) -> "pyagrum.Tensor":
         r"""
@@ -1473,7 +1473,7 @@ class ShaferShenoyMRFInference(object):
           If an element of nodes is not in targets
 
         """
-        return _mrf.ShaferShenoyMRFInference_jointPosterior(self, targets)
+        return _mrfcpp.ShaferShenoyMRFInference_jointPosterior(self, targets)
 
     def addJointTarget(self, targets: object) -> None:
         r"""
@@ -1491,7 +1491,7 @@ class ShaferShenoyMRFInference(object):
           If some node(s) do not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_addJointTarget(self, targets)
+        return _mrfcpp.ShaferShenoyMRFInference_addJointTarget(self, targets)
 
     def eraseJointTarget(self, targets: object) -> None:
         r"""
@@ -1511,7 +1511,7 @@ class ShaferShenoyMRFInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseJointTarget(self, targets)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseJointTarget(self, targets)
 
     def isJointTarget(self, targets: object) -> bool:
         r"""
@@ -1534,7 +1534,7 @@ class ShaferShenoyMRFInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_isJointTarget(self, targets)
+        return _mrfcpp.ShaferShenoyMRFInference_isJointTarget(self, targets)
 
     def jointTargets(self) -> list[set[int]]:
         r"""
@@ -1545,7 +1545,7 @@ class ShaferShenoyMRFInference(object):
           the list of target sets
 
         """
-        return _mrf.ShaferShenoyMRFInference_jointTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_jointTargets(self)
 
     def setNumberOfThreads(self, nb: int) -> None:
         r"""
@@ -1559,7 +1559,7 @@ class ShaferShenoyMRFInference(object):
             the number of threads to be used by ShaferShenoyMRFInference
 
         """
-        return _mrf.ShaferShenoyMRFInference_setNumberOfThreads(self, nb)
+        return _mrfcpp.ShaferShenoyMRFInference_setNumberOfThreads(self, nb)
 
     def getNumberOfThreads(self) -> int:
         r"""
@@ -1572,7 +1572,7 @@ class ShaferShenoyMRFInference(object):
             the number of threads used by LazyPropagation during inferences
 
         """
-        return _mrf.ShaferShenoyMRFInference_getNumberOfThreads(self)
+        return _mrfcpp.ShaferShenoyMRFInference_getNumberOfThreads(self)
 
     def isGumNumberOfThreadsOverriden(self) -> bool:
         r"""
@@ -1585,7 +1585,7 @@ class ShaferShenoyMRFInference(object):
             A Boolean indicating whether LazyPropagation currently overrides aGrUM's default number of threads
 
         """
-        return _mrf.ShaferShenoyMRFInference_isGumNumberOfThreadsOverriden(self)
+        return _mrfcpp.ShaferShenoyMRFInference_isGumNumberOfThreadsOverriden(self)
 
     def setMaxMemory(self, gigabytes: int) -> None:
         r"""
@@ -1598,7 +1598,7 @@ class ShaferShenoyMRFInference(object):
           this upper bound in gigabytes.
 
         """
-        return _mrf.ShaferShenoyMRFInference_setMaxMemory(self, gigabytes)
+        return _mrfcpp.ShaferShenoyMRFInference_setMaxMemory(self, gigabytes)
 
     def makeInference(self) -> None:
         r"""
@@ -1609,7 +1609,7 @@ class ShaferShenoyMRFInference(object):
         This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages.
 
         """
-        return _mrf.ShaferShenoyMRFInference_makeInference(self)
+        return _mrfcpp.ShaferShenoyMRFInference_makeInference(self)
 
     def addEvidence(self, *args) -> None:
         r"""
@@ -1643,7 +1643,7 @@ class ShaferShenoyMRFInference(object):
             If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_addEvidence(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
         r"""
@@ -1675,7 +1675,7 @@ class ShaferShenoyMRFInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_chgEvidence(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
         r"""
@@ -1698,7 +1698,7 @@ class ShaferShenoyMRFInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_hasEvidence(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
         r"""
@@ -1706,7 +1706,7 @@ class ShaferShenoyMRFInference(object):
         Removes all the evidence entered into the network.
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseAllEvidence(self)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""
@@ -1726,7 +1726,7 @@ class ShaferShenoyMRFInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseEvidence(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
         r"""
@@ -1749,7 +1749,7 @@ class ShaferShenoyMRFInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_hasHardEvidence(self, nodeName)
+        return _mrfcpp.ShaferShenoyMRFInference_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -1772,7 +1772,7 @@ class ShaferShenoyMRFInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_hasSoftEvidence(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
         r"""
@@ -1783,7 +1783,7 @@ class ShaferShenoyMRFInference(object):
           the number of evidence entered into the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_nbrEvidence(self)
+        return _mrfcpp.ShaferShenoyMRFInference_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
         r"""
@@ -1794,7 +1794,7 @@ class ShaferShenoyMRFInference(object):
           the number of hard evidence entered into the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_nbrHardEvidence(self)
+        return _mrfcpp.ShaferShenoyMRFInference_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
         r"""
@@ -1805,7 +1805,7 @@ class ShaferShenoyMRFInference(object):
           the number of soft evidence entered into the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_nbrSoftEvidence(self)
+        return _mrfcpp.ShaferShenoyMRFInference_nbrSoftEvidence(self)
 
     def eraseAllTargets(self) -> None:
         r"""
@@ -1815,7 +1815,7 @@ class ShaferShenoyMRFInference(object):
         As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user).
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseAllTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseAllTargets(self)
 
     def addAllTargets(self) -> None:
         r"""
@@ -1823,7 +1823,7 @@ class ShaferShenoyMRFInference(object):
         Add all the nodes as targets.
 
         """
-        return _mrf.ShaferShenoyMRFInference_addAllTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_addAllTargets(self)
 
     def addTarget(self, *args) -> None:
         r"""
@@ -1843,7 +1843,7 @@ class ShaferShenoyMRFInference(object):
           If target is not a NodeId in the Bayes net
 
         """
-        return _mrf.ShaferShenoyMRFInference_addTarget(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_addTarget(self, *args)
 
     def eraseTarget(self, *args) -> None:
         r"""
@@ -1865,7 +1865,7 @@ class ShaferShenoyMRFInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseTarget(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseTarget(self, *args)
 
     def isTarget(self, *args) -> bool:
         r"""
@@ -1890,7 +1890,7 @@ class ShaferShenoyMRFInference(object):
           If node Id is not in the Bayesian network
 
         """
-        return _mrf.ShaferShenoyMRFInference_isTarget(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_isTarget(self, *args)
 
     def nbrTargets(self) -> int:
         r"""
@@ -1901,7 +1901,7 @@ class ShaferShenoyMRFInference(object):
           the number of marginal targets
 
         """
-        return _mrf.ShaferShenoyMRFInference_nbrTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_nbrTargets(self)
 
     def H(self, *args) -> float:
         r"""
@@ -1919,7 +1919,7 @@ class ShaferShenoyMRFInference(object):
           the computed Shanon's entropy of a node given the observation
 
         """
-        return _mrf.ShaferShenoyMRFInference_H(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_H(self, *args)
 
     def MRF(self) -> "pyagrum.IMarkovRandomField":
         r"""
@@ -1932,7 +1932,7 @@ class ShaferShenoyMRFInference(object):
             the Markov random field
 
         """
-        return _mrf.ShaferShenoyMRFInference_MRF(self)
+        return _mrfcpp.ShaferShenoyMRFInference_MRF(self)
 
     def posterior(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1957,7 +1957,7 @@ class ShaferShenoyMRFInference(object):
           If an element of nodes is not in targets
 
         """
-        return _mrf.ShaferShenoyMRFInference_posterior(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_posterior(self, *args)
 
     def eraseAllJointTargets(self) -> None:
         r"""
@@ -1965,7 +1965,7 @@ class ShaferShenoyMRFInference(object):
         Clear all previously defined joint targets.
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseAllJointTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseAllJointTargets(self)
 
     def eraseAllMarginalTargets(self) -> None:
         r"""
@@ -1973,7 +1973,7 @@ class ShaferShenoyMRFInference(object):
         Clear all the previously defined marginal targets.
 
         """
-        return _mrf.ShaferShenoyMRFInference_eraseAllMarginalTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_eraseAllMarginalTargets(self)
 
     def nbrJointTargets(self) -> int:
         r"""
@@ -1984,7 +1984,7 @@ class ShaferShenoyMRFInference(object):
           the number of joint targets
 
         """
-        return _mrf.ShaferShenoyMRFInference_nbrJointTargets(self)
+        return _mrfcpp.ShaferShenoyMRFInference_nbrJointTargets(self)
 
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -2009,10 +2009,10 @@ class ShaferShenoyMRFInference(object):
           If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
-        return _mrf.ShaferShenoyMRFInference_evidenceJointImpact(self, *args)
+        return _mrfcpp.ShaferShenoyMRFInference_evidenceJointImpact(self, *args)
 
-# Register ShaferShenoyMRFInference in _mrf:
-_mrf.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
+# Register ShaferShenoyMRFInference in _mrfcpp:
+_mrfcpp.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
 
 # _gum_pickle_load/_gum_pickle_save/_gum_set_name_property are defined once in
 # core pyagrum (gum_functions_BASE.i) and re-exported by pyagrum/__init__.py

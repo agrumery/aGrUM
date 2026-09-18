@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.id", docstring="pyagrum.id module") id
+%module(package="pyagrum.id", docstring="pyagrum.id module") idcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

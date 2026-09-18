@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_cn"
+#define SWIG_name    "_cncpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3782,9 +3782,9 @@ static swig_module_info swig_module = {swig_types, 57, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _cn.so
+              @(target):= _cncpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__cn
+#define SWIG_init    PyInit__cncpp
 
 
 #ifdef __cplusplus
@@ -4538,7 +4538,7 @@ SWIGINTERN gum::credal::CredalNet< double > const &gum_credal_CNLoopyPropagation
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "cnPYTHON_wrap.h"
+#include "cncppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

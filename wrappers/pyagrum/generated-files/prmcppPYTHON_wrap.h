@@ -6,8 +6,8 @@
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-#ifndef SWIG_pyagrum_WRAP_H_
-#define SWIG_pyagrum_WRAP_H_
+#ifndef SWIG_prmcpp_WRAP_H_
+#define SWIG_prmcpp_WRAP_H_
 
 #include <map>
 #include <string>

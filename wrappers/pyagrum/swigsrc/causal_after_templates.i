@@ -55,11 +55,12 @@
 // Solution: inject the keyword-only Python wrappers via %extend %pythoncode.
 // Methods defined in a %pythoncode block inside %extend appear after the C++
 // binding methods in the generated class body and therefore shadow them.
-// The C-level dispatch function _cm.DoorCriteria_enumerateBackdoorSets is
-// always available because the C++ functions are not %ignore'd; we call it with
-// all arguments explicitly, so the 7-argument overload is always selected.
-// _cm (not _pyagrum): this module (pyagrum.cm) is a separate compiled
-// extension from core pyagrum.
+// enumerateBackdoorSets/enumerateFrontdoorSets are %renamed (causal.i) to
+// _enumerateBackdoorSets/_enumerateFrontdoorSets, so SWIG itself generates a
+// plain class-qualified staticmethod (DoorCriteria._enumerateBackdoorSets)
+// under that name -- always in sync with this module's actual compiled name,
+// with no hand-typed module reference needed here. We call it with all
+// arguments explicitly, so the 7-argument overload is always selected.
 // ---------------------------------------------------------------------------
 %extend gum::DoorCriteria {
 %pythoncode %{
@@ -92,7 +93,7 @@
         list of set of int
             All valid backdoor adjustment sets (as NodeId sets).
         """
-        return _cm.DoorCriteria_enumerateBackdoorSets(
+        return DoorCriteria._enumerateBackdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)
@@ -125,7 +126,7 @@
         list of set of int
             All valid frontdoor adjustment sets (as NodeId sets).
         """
-        return _cm.DoorCriteria_enumerateFrontdoorSets(
+        return DoorCriteria._enumerateFrontdoorSets(
             dag, X, Y,
             excluded_nodes if excluded_nodes is not None else set(),
             max_cardinality, only_minimal, stopAtFirst)

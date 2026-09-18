@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_prm"
+#define SWIG_name    "_prmcpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3770,9 +3770,9 @@ static swig_module_info swig_module = {swig_types, 45, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _prm.so
+              @(target):= _prmcpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__prm
+#define SWIG_init    PyInit__prmcpp
 
 
 #ifdef __cplusplus
@@ -4229,7 +4229,7 @@ SWIG_From_std_string  (const std::string& s)
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "prmPYTHON_wrap.h"
+#include "prmcppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

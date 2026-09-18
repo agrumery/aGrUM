@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_mrf"
+#define SWIG_name    "_mrfcpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3790,9 +3790,9 @@ static swig_module_info swig_module = {swig_types, 65, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _mrf.so
+              @(target):= _mrfcpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__mrf
+#define SWIG_init    PyInit__mrfcpp
 
 
 #ifdef __cplusplus
@@ -4827,7 +4827,7 @@ SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evid
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "mrfPYTHON_wrap.h"
+#include "mrfcppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

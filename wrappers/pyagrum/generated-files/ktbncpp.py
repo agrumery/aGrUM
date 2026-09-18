@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _ktbn
+    from . import _ktbncpp
 else:
-    import _ktbn
+    import _ktbncpp
 
 import builtins as __builtin__
 
@@ -56,23 +56,23 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
+import pyagrum.pyagrumcpp
 class KTBNModality(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _ktbn.KTBNModality_swiginit(self, _ktbn.new_KTBNModality(*args))
+        _ktbncpp.KTBNModality_swiginit(self, _ktbncpp.new_KTBNModality(*args))
 
     def toIndex(self, var: "pyagrum.DiscreteVariable") -> int:
-        return _ktbn.KTBNModality_toIndex(self, var)
-    isLabel = property(_ktbn.KTBNModality_isLabel_get, _ktbn.KTBNModality_isLabel_set)
-    index = property(_ktbn.KTBNModality_index_get, _ktbn.KTBNModality_index_set)
-    label = property(_ktbn.KTBNModality_label_get, _ktbn.KTBNModality_label_set)
-    __swig_destroy__ = _ktbn.delete_KTBNModality
+        return _ktbncpp.KTBNModality_toIndex(self, var)
+    isLabel = property(_ktbncpp.KTBNModality_isLabel_get, _ktbncpp.KTBNModality_isLabel_set)
+    index = property(_ktbncpp.KTBNModality_index_get, _ktbncpp.KTBNModality_index_set)
+    label = property(_ktbncpp.KTBNModality_label_get, _ktbncpp.KTBNModality_label_set)
+    __swig_destroy__ = _ktbncpp.delete_KTBNModality
 
-# Register KTBNModality in _ktbn:
-_ktbn.KTBNModality_swigregister(KTBNModality)
+# Register KTBNModality in _ktbncpp:
+_ktbncpp.KTBNModality_swigregister(KTBNModality)
 class KTBN(object):
     r"""
 
@@ -110,17 +110,17 @@ class KTBN(object):
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    ATEMPORAL = _ktbn.KTBN_ATEMPORAL
+    ATEMPORAL = _ktbncpp.KTBN_ATEMPORAL
     r"""
 
     Conventional slice value (``-1``) denoting an atemporal (static) variable, to be
     used wherever a slice index is expected.
 
     """
-    __swig_destroy__ = _ktbn.delete_KTBN
+    __swig_destroy__ = _ktbncpp.delete_KTBN
 
     def __init__(self, *args):
-        _ktbn.KTBN_swiginit(self, _ktbn.new_KTBN(*args))
+        _ktbncpp.KTBN_swiginit(self, _ktbncpp.new_KTBN(*args))
 
     def k(self) -> int:
         r"""
@@ -131,7 +131,7 @@ class KTBN(object):
             the order k of the k-TBN
 
         """
-        return _ktbn.KTBN_k(self)
+        return _ktbncpp.KTBN_k(self)
 
     def size(self) -> int:
         r"""
@@ -142,7 +142,7 @@ class KTBN(object):
             the number of nodes in the template (all slices)
 
         """
-        return _ktbn.KTBN_size(self)
+        return _ktbncpp.KTBN_size(self)
 
     def sizeArcs(self) -> int:
         r"""
@@ -153,7 +153,7 @@ class KTBN(object):
             the number of arcs in the template
 
         """
-        return _ktbn.KTBN_sizeArcs(self)
+        return _ktbncpp.KTBN_sizeArcs(self)
 
     def empty(self) -> bool:
         r"""
@@ -164,7 +164,7 @@ class KTBN(object):
             True if the template contains no variable
 
         """
-        return _ktbn.KTBN_empty(self)
+        return _ktbncpp.KTBN_empty(self)
 
     def clear(self) -> None:
         r"""
@@ -172,7 +172,7 @@ class KTBN(object):
         Remove all variables and arcs, keeping the order k.
 
         """
-        return _ktbn.KTBN_clear(self)
+        return _ktbncpp.KTBN_clear(self)
 
     def add(self, *args) -> None:
         r"""
@@ -200,7 +200,7 @@ class KTBN(object):
             ``"X"`` already exists)
 
         """
-        return _ktbn.KTBN_add(self, *args)
+        return _ktbncpp.KTBN_add(self, *args)
 
     def addTemporal(self, *args) -> None:
         r"""
@@ -213,7 +213,7 @@ class KTBN(object):
             the variable to add (added by copy)
 
         """
-        return _ktbn.KTBN_addTemporal(self, *args)
+        return _ktbncpp.KTBN_addTemporal(self, *args)
 
     def addAtemporal(self, *args) -> None:
         r"""
@@ -226,7 +226,7 @@ class KTBN(object):
             the variable to add (added by copy)
 
         """
-        return _ktbn.KTBN_addAtemporal(self, *args)
+        return _ktbncpp.KTBN_addAtemporal(self, *args)
 
     def erase(self, base: str) -> None:
         r"""
@@ -246,7 +246,7 @@ class KTBN(object):
             if no variable with that name exists
 
         """
-        return _ktbn.KTBN_erase(self, base)
+        return _ktbncpp.KTBN_erase(self, base)
 
     def changeVariableName(self, oldBase: str, newBase: str) -> None:
         r"""
@@ -271,7 +271,7 @@ class KTBN(object):
             if newBase is empty or would create a name collision
 
         """
-        return _ktbn.KTBN_changeVariableName(self, oldBase, newBase)
+        return _ktbncpp.KTBN_changeVariableName(self, oldBase, newBase)
 
     def exists(self, base: str) -> bool:
         r"""
@@ -287,7 +287,7 @@ class KTBN(object):
             True if a variable with this base name exists
 
         """
-        return _ktbn.KTBN_exists(self, base)
+        return _ktbncpp.KTBN_exists(self, base)
 
     def temporalVarNames(self) -> set[str]:
         r"""
@@ -298,7 +298,7 @@ class KTBN(object):
             the base names of the temporal processes
 
         """
-        return _ktbn.KTBN_temporalVarNames(self)
+        return _ktbncpp.KTBN_temporalVarNames(self)
 
     def atemporalVarNames(self) -> set[str]:
         r"""
@@ -309,7 +309,7 @@ class KTBN(object):
             the base names of the atemporal variables
 
         """
-        return _ktbn.KTBN_atemporalVarNames(self)
+        return _ktbncpp.KTBN_atemporalVarNames(self)
 
     def nbTemporalVars(self) -> int:
         r"""
@@ -320,7 +320,7 @@ class KTBN(object):
             the number of temporal processes
 
         """
-        return _ktbn.KTBN_nbTemporalVars(self)
+        return _ktbncpp.KTBN_nbTemporalVars(self)
 
     def nbAtemporalVars(self) -> int:
         r"""
@@ -331,7 +331,7 @@ class KTBN(object):
             the number of atemporal variables
 
         """
-        return _ktbn.KTBN_nbAtemporalVars(self)
+        return _ktbncpp.KTBN_nbAtemporalVars(self)
 
     def nodes(self) -> tuple[tuple[str, int], ...]:
         r"""
@@ -343,7 +343,7 @@ class KTBN(object):
             as its slice
 
         """
-        return _ktbn.KTBN_nodes(self)
+        return _ktbncpp.KTBN_nodes(self)
 
     def parents(self, *args) -> tuple[tuple[str, int], ...]:
         r"""
@@ -365,7 +365,7 @@ class KTBN(object):
             the parents, as (base, slice) pairs (:attr:`ATEMPORAL` if atemporal)
 
         """
-        return _ktbn.KTBN_parents(self, *args)
+        return _ktbncpp.KTBN_parents(self, *args)
 
     def children(self, *args) -> tuple[tuple[str, int], ...]:
         r"""
@@ -387,7 +387,7 @@ class KTBN(object):
             the children, as (base, slice) pairs (:attr:`ATEMPORAL` if atemporal)
 
         """
-        return _ktbn.KTBN_children(self, *args)
+        return _ktbncpp.KTBN_children(self, *args)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -418,7 +418,7 @@ class KTBN(object):
             if the temporal/atemporal kind does not match slice
 
         """
-        return _ktbn.KTBN_variable(self, *args)
+        return _ktbncpp.KTBN_variable(self, *args)
 
     def timeSlice(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -439,7 +439,7 @@ class KTBN(object):
             if var is not a node of this k-TBN
 
         """
-        return _ktbn.KTBN_timeSlice(self, var)
+        return _ktbncpp.KTBN_timeSlice(self, var)
 
     def baseName(self, var: "pyagrum.DiscreteVariable") -> str:
         r"""
@@ -460,7 +460,7 @@ class KTBN(object):
             if var is not a node of this k-TBN
 
         """
-        return _ktbn.KTBN_baseName(self, var)
+        return _ktbncpp.KTBN_baseName(self, var)
 
     def addArc(self, *args) -> None:
         r"""
@@ -491,7 +491,7 @@ class KTBN(object):
             if the arc would create a cycle
 
         """
-        return _ktbn.KTBN_addArc(self, *args)
+        return _ktbncpp.KTBN_addArc(self, *args)
 
     def eraseArc(self, *args) -> None:
         r"""
@@ -513,7 +513,7 @@ class KTBN(object):
             if an endpoint, or the arc itself, does not exist
 
         """
-        return _ktbn.KTBN_eraseArc(self, *args)
+        return _ktbncpp.KTBN_eraseArc(self, *args)
 
     def existsArc(self, *args) -> bool:
         r"""
@@ -533,7 +533,7 @@ class KTBN(object):
             True if the arc exists
 
         """
-        return _ktbn.KTBN_existsArc(self, *args)
+        return _ktbncpp.KTBN_existsArc(self, *args)
 
     def arcs(self) -> tuple[tuple[tuple[str, int], tuple[str, int]], ...]:
         r"""
@@ -544,7 +544,7 @@ class KTBN(object):
             all arcs, each as a (tail, head) pair of (base, slice) endpoints
 
         """
-        return _ktbn.KTBN_arcs(self)
+        return _ktbncpp.KTBN_arcs(self)
 
     def cpt(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -569,7 +569,7 @@ class KTBN(object):
             the (mutable) conditional probability table
 
         """
-        return _ktbn.KTBN_cpt(self, *args)
+        return _ktbncpp.KTBN_cpt(self, *args)
 
     def generateCPTs(self) -> None:
         r"""
@@ -577,7 +577,7 @@ class KTBN(object):
         Randomly generate every CPT of the template.
 
         """
-        return _ktbn.KTBN_generateCPTs(self)
+        return _ktbncpp.KTBN_generateCPTs(self)
 
     def generateCPT(self, *args) -> None:
         r"""
@@ -594,7 +594,7 @@ class KTBN(object):
             alternatively, the node's engine name
 
         """
-        return _ktbn.KTBN_generateCPT(self, *args)
+        return _ktbncpp.KTBN_generateCPT(self, *args)
 
     def toBN(self) -> "pyagrum.BayesNet":
         r"""
@@ -606,7 +606,7 @@ class KTBN(object):
             named with the bracket-encoded engine names)
 
         """
-        return _ktbn.KTBN_toBN(self)
+        return _ktbncpp.KTBN_toBN(self)
 
     def unroll(self, nbTimeSlices: int) -> "pyagrum.BayesNet":
         r"""
@@ -633,7 +633,7 @@ class KTBN(object):
             if nbTimeSlices < k
 
         """
-        return _ktbn.KTBN_unroll(self, nbTimeSlices)
+        return _ktbncpp.KTBN_unroll(self, nbTimeSlices)
 
     def save(self, filename: str) -> None:
         r"""
@@ -647,7 +647,7 @@ class KTBN(object):
             the destination file
 
         """
-        return _ktbn.KTBN_save(self, filename)
+        return _ktbncpp.KTBN_save(self, filename)
 
     @staticmethod
     def load(filename: str) -> "pyagrum.KTBN":
@@ -672,7 +672,7 @@ class KTBN(object):
             if the file cannot be read or is not valid
 
         """
-        return _ktbn.KTBN_load(filename)
+        return _ktbncpp.KTBN_load(filename)
 
     @staticmethod
     def fromBN(*args) -> "pyagrum.KTBN":
@@ -703,7 +703,7 @@ class KTBN(object):
             if the temporal structure of bn is inconsistent
 
         """
-        return _ktbn.KTBN_fromBN(*args)
+        return _ktbncpp.KTBN_fromBN(*args)
 
     def toString(self) -> str:
         r"""
@@ -714,7 +714,7 @@ class KTBN(object):
             a human-readable description of the k-TBN
 
         """
-        return _ktbn.KTBN_toString(self)
+        return _ktbncpp.KTBN_toString(self)
 
     def toDot(self) -> str:
         r"""
@@ -725,7 +725,7 @@ class KTBN(object):
             a Graphviz dot string with one cluster per time slice of the template
 
         """
-        return _ktbn.KTBN_toDot(self)
+        return _ktbncpp.KTBN_toDot(self)
 
     def toUnrolledDot(self, T: int, highlightReplicated: bool=False) -> str:
         r"""
@@ -752,7 +752,7 @@ class KTBN(object):
             if T < k
 
         """
-        return _ktbn.KTBN_toUnrolledDot(self, T, highlightReplicated)
+        return _ktbncpp.KTBN_toUnrolledDot(self, T, highlightReplicated)
 
     def bnToDot(self) -> str:
         r"""
@@ -764,7 +764,7 @@ class KTBN(object):
             labelled by their internal engine names (no time-slice clustering)
 
         """
-        return _ktbn.KTBN_bnToDot(self)
+        return _ktbncpp.KTBN_bnToDot(self)
 
     def fillCPT(self, *args) -> None:
         r"""
@@ -822,10 +822,10 @@ class KTBN(object):
             if a dict entry's node is not actually a parent of the target
 
         """
-        return _ktbn.KTBN_fillCPT(self, *args)
+        return _ktbncpp.KTBN_fillCPT(self, *args)
 
-# Register KTBN in _ktbn:
-_ktbn.KTBN_swigregister(KTBN)
+# Register KTBN in _ktbncpp:
+_ktbncpp.KTBN_swigregister(KTBN)
 class KTBNGenerator(object):
     r"""
 
@@ -872,8 +872,8 @@ class KTBNGenerator(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _ktbn.KTBNGenerator_swiginit(self, _ktbn.new_KTBNGenerator(*args))
-    __swig_destroy__ = _ktbn.delete_KTBNGenerator
+        _ktbncpp.KTBNGenerator_swiginit(self, _ktbncpp.new_KTBNGenerator(*args))
+    __swig_destroy__ = _ktbncpp.delete_KTBNGenerator
 
     def generateKTBN(self, out: "KTBN") -> None:
         r"""
@@ -887,7 +887,7 @@ class KTBNGenerator(object):
             the k-TBN to fill
 
         """
-        return _ktbn.KTBNGenerator_generateKTBN(self, out)
+        return _ktbncpp.KTBNGenerator_generateKTBN(self, out)
 
     def generate(self) -> "pyagrum.KTBN":
         r"""
@@ -898,7 +898,7 @@ class KTBNGenerator(object):
             a freshly drawn model
 
         """
-        return _ktbn.KTBNGenerator_generate(self)
+        return _ktbncpp.KTBNGenerator_generate(self)
 
     def setDensity(self, density: float) -> "pyagrum.KTBNGenerator":
         r"""
@@ -922,7 +922,7 @@ class KTBNGenerator(object):
             if density is outside [0,1]
 
         """
-        return _ktbn.KTBNGenerator_setDensity(self, density)
+        return _ktbncpp.KTBNGenerator_setDensity(self, density)
 
     def setDomainRange(self, minModality: int, maxModality: int) -> "pyagrum.KTBNGenerator":
         r"""
@@ -947,7 +947,7 @@ class KTBNGenerator(object):
             if minModality < 2 or maxModality < minModality
 
         """
-        return _ktbn.KTBNGenerator_setDomainRange(self, minModality, maxModality)
+        return _ktbncpp.KTBNGenerator_setDomainRange(self, minModality, maxModality)
 
     def setMaxParents(self, maxParents: int) -> "pyagrum.KTBNGenerator":
         r"""
@@ -967,7 +967,7 @@ class KTBNGenerator(object):
             self, for chaining
 
         """
-        return _ktbn.KTBNGenerator_setMaxParents(self, maxParents)
+        return _ktbncpp.KTBNGenerator_setMaxParents(self, maxParents)
 
     def setGuaranteeOrder(self, on: bool) -> "pyagrum.KTBNGenerator":
         r"""
@@ -989,7 +989,7 @@ class KTBNGenerator(object):
             self, for chaining
 
         """
-        return _ktbn.KTBNGenerator_setGuaranteeOrder(self, on)
+        return _ktbncpp.KTBNGenerator_setGuaranteeOrder(self, on)
 
     def setGenerateCPTs(self, on: bool) -> "pyagrum.KTBNGenerator":
         r"""
@@ -1008,7 +1008,7 @@ class KTBNGenerator(object):
             self, for chaining
 
         """
-        return _ktbn.KTBNGenerator_setGenerateCPTs(self, on)
+        return _ktbncpp.KTBNGenerator_setGenerateCPTs(self, on)
 
     def setNamePrefixes(self, temporal: str, atemporal: str) -> "pyagrum.KTBNGenerator":
         r"""
@@ -1035,7 +1035,7 @@ class KTBNGenerator(object):
             if a prefix is empty or the two are equal
 
         """
-        return _ktbn.KTBNGenerator_setNamePrefixes(self, temporal, atemporal)
+        return _ktbncpp.KTBNGenerator_setNamePrefixes(self, temporal, atemporal)
 
     def k(self) -> int:
         r"""
@@ -1046,7 +1046,7 @@ class KTBNGenerator(object):
             the order of the generated models
 
         """
-        return _ktbn.KTBNGenerator_k(self)
+        return _ktbncpp.KTBNGenerator_k(self)
 
     def nbLegalArcs(self) -> int:
         r"""
@@ -1059,10 +1059,10 @@ class KTBNGenerator(object):
             silently clamped to
 
         """
-        return _ktbn.KTBNGenerator_nbLegalArcs(self)
+        return _ktbncpp.KTBNGenerator_nbLegalArcs(self)
 
-# Register KTBNGenerator in _ktbn:
-_ktbn.KTBNGenerator_swigregister(KTBNGenerator)
+# Register KTBNGenerator in _ktbncpp:
+_ktbncpp.KTBNGenerator_swigregister(KTBNGenerator)
 class KTBNInference(object):
     r"""
 
@@ -1105,11 +1105,11 @@ class KTBNInference(object):
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    ATEMPORAL = _ktbn.KTBNInference_ATEMPORAL
+    ATEMPORAL = _ktbncpp.KTBNInference_ATEMPORAL
 
     def __init__(self, ktbn: "KTBN"):
-        _ktbn.KTBNInference_swiginit(self, _ktbn.new_KTBNInference(ktbn))
-    __swig_destroy__ = _ktbn.delete_KTBNInference
+        _ktbncpp.KTBNInference_swiginit(self, _ktbncpp.new_KTBNInference(ktbn))
+    __swig_destroy__ = _ktbncpp.delete_KTBNInference
 
     def eraseIntervention(self, *args) -> None:
         r"""
@@ -1126,7 +1126,7 @@ class KTBNInference(object):
             alternatively, the node's engine name
 
         """
-        return _ktbn.KTBNInference_eraseIntervention(self, *args)
+        return _ktbncpp.KTBNInference_eraseIntervention(self, *args)
 
     def clearInterventions(self) -> None:
         r"""
@@ -1134,7 +1134,7 @@ class KTBNInference(object):
         Remove all recorded interventions.
 
         """
-        return _ktbn.KTBNInference_clearInterventions(self)
+        return _ktbncpp.KTBNInference_clearInterventions(self)
 
     def hasIntervention(self, *args) -> bool:
         r"""
@@ -1154,7 +1154,7 @@ class KTBNInference(object):
             True if the node carries an intervention
 
         """
-        return _ktbn.KTBNInference_hasIntervention(self, *args)
+        return _ktbncpp.KTBNInference_hasIntervention(self, *args)
 
     def eraseObservation(self, *args) -> None:
         r"""
@@ -1171,7 +1171,7 @@ class KTBNInference(object):
             alternatively, the node's engine name
 
         """
-        return _ktbn.KTBNInference_eraseObservation(self, *args)
+        return _ktbncpp.KTBNInference_eraseObservation(self, *args)
 
     def clearObservation(self) -> None:
         r"""
@@ -1179,7 +1179,7 @@ class KTBNInference(object):
         Remove all recorded observations.
 
         """
-        return _ktbn.KTBNInference_clearObservation(self)
+        return _ktbncpp.KTBNInference_clearObservation(self)
 
     def hasObservation(self, *args) -> bool:
         r"""
@@ -1203,7 +1203,7 @@ class KTBNInference(object):
             True if the node (or, with no argument, any node) carries an observation
 
         """
-        return _ktbn.KTBNInference_hasObservation(self, *args)
+        return _ktbncpp.KTBNInference_hasObservation(self, *args)
 
     def addTarget(self, base: str) -> None:
         r"""
@@ -1224,7 +1224,7 @@ class KTBNInference(object):
             if base is neither a temporal nor an atemporal variable of the k-TBN
 
         """
-        return _ktbn.KTBNInference_addTarget(self, base)
+        return _ktbncpp.KTBNInference_addTarget(self, base)
 
     def eraseTarget(self, base: str) -> None:
         r"""
@@ -1238,7 +1238,7 @@ class KTBNInference(object):
             the base variable to un-target
 
         """
-        return _ktbn.KTBNInference_eraseTarget(self, base)
+        return _ktbncpp.KTBNInference_eraseTarget(self, base)
 
     def clearTargets(self) -> None:
         r"""
@@ -1246,7 +1246,7 @@ class KTBNInference(object):
         Remove all targets (restores default-all-targets mode).
 
         """
-        return _ktbn.KTBNInference_clearTargets(self)
+        return _ktbncpp.KTBNInference_clearTargets(self)
 
     def isTarget(self, base: str) -> bool:
         r"""
@@ -1262,7 +1262,7 @@ class KTBNInference(object):
             True if base is a target of the next inference
 
         """
-        return _ktbn.KTBNInference_isTarget(self, base)
+        return _ktbncpp.KTBNInference_isTarget(self, base)
 
     def isInTargetMode(self) -> bool:
         r"""
@@ -1274,7 +1274,7 @@ class KTBNInference(object):
             base is a target
 
         """
-        return _ktbn.KTBNInference_isInTargetMode(self)
+        return _ktbncpp.KTBNInference_isInTargetMode(self)
 
     def makeInference(self, nbTimeSlices: int) -> None:
         r"""
@@ -1297,7 +1297,7 @@ class KTBNInference(object):
             if the recorded observations have probability 0 under the model
 
         """
-        return _ktbn.KTBNInference_makeInference(self, nbTimeSlices)
+        return _ktbncpp.KTBNInference_makeInference(self, nbTimeSlices)
 
     def posterior(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1332,7 +1332,7 @@ class KTBNInference(object):
             if slice was not computed (>= the horizon)
 
         """
-        return _ktbn.KTBNInference_posterior(self, *args)
+        return _ktbncpp.KTBNInference_posterior(self, *args)
 
     def logObservationProbability(self) -> float:
         r"""
@@ -1352,7 +1352,7 @@ class KTBNInference(object):
             if makeInference has never been run
 
         """
-        return _ktbn.KTBNInference_logObservationProbability(self)
+        return _ktbncpp.KTBNInference_logObservationProbability(self)
 
     def observationProbability(self) -> float:
         r"""
@@ -1366,7 +1366,7 @@ class KTBNInference(object):
             the probability of the observations
 
         """
-        return _ktbn.KTBNInference_observationProbability(self)
+        return _ktbncpp.KTBNInference_observationProbability(self)
 
     def ktbn(self) -> "pyagrum.KTBN":
         r"""
@@ -1377,7 +1377,7 @@ class KTBNInference(object):
             the k-TBN this engine reasons about
 
         """
-        return _ktbn.KTBNInference_ktbn(self)
+        return _ktbncpp.KTBNInference_ktbn(self)
 
     def toString(self) -> str:
         r"""
@@ -1388,7 +1388,7 @@ class KTBNInference(object):
             a human-readable summary of the engine's state
 
         """
-        return _ktbn.KTBNInference_toString(self)
+        return _ktbncpp.KTBNInference_toString(self)
 
     def windowJunctionTree(self) -> "pyagrum.JunctionTree":
         r"""
@@ -1402,7 +1402,7 @@ class KTBNInference(object):
             the window's junction tree
 
         """
-        return _ktbn.KTBNInference_windowJunctionTree(self)
+        return _ktbncpp.KTBNInference_windowJunctionTree(self)
 
     def interfaceSize(self) -> int:
         r"""
@@ -1416,7 +1416,7 @@ class KTBNInference(object):
             the interface size
 
         """
-        return _ktbn.KTBNInference_interfaceSize(self)
+        return _ktbncpp.KTBNInference_interfaceSize(self)
 
     def addIntervention(self, *args) -> None:
         r"""
@@ -1458,7 +1458,7 @@ class KTBNInference(object):
             if a modality index is out of range
 
         """
-        return _ktbn.KTBNInference_addIntervention(self, *args)
+        return _ktbncpp.KTBNInference_addIntervention(self, *args)
 
     def addObservation(self, *args) -> None:
         r"""
@@ -1504,13 +1504,13 @@ class KTBNInference(object):
             entry, or is all zeros
 
         """
-        return _ktbn.KTBNInference_addObservation(self, *args)
+        return _ktbncpp.KTBNInference_addObservation(self, *args)
 
     def addObservations(self, *args) -> None:
-        return _ktbn.KTBNInference_addObservations(self, *args)
+        return _ktbncpp.KTBNInference_addObservations(self, *args)
 
     def _posteriorsAsList(self, base: str) -> list["pyagrum.Tensor"]:
-        return _ktbn.KTBNInference__posteriorsAsList(self, base)
+        return _ktbncpp.KTBNInference__posteriorsAsList(self, base)
 
     def posteriors(self, base: str) -> list:
         """
@@ -1529,8 +1529,8 @@ class KTBNInference(object):
         return self._posteriorsAsList(base)
 
 
-# Register KTBNInference in _ktbn:
-_ktbn.KTBNInference_swigregister(KTBNInference)
+# Register KTBNInference in _ktbncpp:
+_ktbncpp.KTBNInference_swigregister(KTBNInference)
 class KTBNDatabaseGenerator(object):
     r"""
 
@@ -1563,16 +1563,16 @@ class KTBNDatabaseGenerator(object):
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    DiscretizedLabelMode_INTERVAL = _ktbn.KTBNDatabaseGenerator_DiscretizedLabelMode_INTERVAL
-    DiscretizedLabelMode_MEDIAN = _ktbn.KTBNDatabaseGenerator_DiscretizedLabelMode_MEDIAN
-    DiscretizedLabelMode_RANDOM = _ktbn.KTBNDatabaseGenerator_DiscretizedLabelMode_RANDOM
-    VarOrderMode_RANDOM = _ktbn.KTBNDatabaseGenerator_VarOrderMode_RANDOM
-    VarOrderMode_TOPOLOGICAL = _ktbn.KTBNDatabaseGenerator_VarOrderMode_TOPOLOGICAL
-    VarOrderMode_ANTI_TOPOLOGICAL = _ktbn.KTBNDatabaseGenerator_VarOrderMode_ANTI_TOPOLOGICAL
+    DiscretizedLabelMode_INTERVAL = _ktbncpp.KTBNDatabaseGenerator_DiscretizedLabelMode_INTERVAL
+    DiscretizedLabelMode_MEDIAN = _ktbncpp.KTBNDatabaseGenerator_DiscretizedLabelMode_MEDIAN
+    DiscretizedLabelMode_RANDOM = _ktbncpp.KTBNDatabaseGenerator_DiscretizedLabelMode_RANDOM
+    VarOrderMode_RANDOM = _ktbncpp.KTBNDatabaseGenerator_VarOrderMode_RANDOM
+    VarOrderMode_TOPOLOGICAL = _ktbncpp.KTBNDatabaseGenerator_VarOrderMode_TOPOLOGICAL
+    VarOrderMode_ANTI_TOPOLOGICAL = _ktbncpp.KTBNDatabaseGenerator_VarOrderMode_ANTI_TOPOLOGICAL
 
     def __init__(self, kdbn: "KTBN"):
-        _ktbn.KTBNDatabaseGenerator_swiginit(self, _ktbn.new_KTBNDatabaseGenerator(kdbn))
-    __swig_destroy__ = _ktbn.delete_KTBNDatabaseGenerator
+        _ktbncpp.KTBNDatabaseGenerator_swiginit(self, _ktbncpp.new_KTBNDatabaseGenerator(kdbn))
+    __swig_destroy__ = _ktbncpp.delete_KTBNDatabaseGenerator
 
     def setDiscretizedLabelModeRandom(self) -> None:
         r"""
@@ -1581,7 +1581,7 @@ class KTBNDatabaseGenerator(object):
         interval (the default; each labelled export then differs).
 
         """
-        return _ktbn.KTBNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
+        return _ktbncpp.KTBNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
 
     def setDiscretizedLabelModeMedian(self) -> None:
         r"""
@@ -1589,7 +1589,7 @@ class KTBNDatabaseGenerator(object):
         Set discretized-variable label rendering to the (deterministic) interval median.
 
         """
-        return _ktbn.KTBNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
+        return _ktbncpp.KTBNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
 
     def setDiscretizedLabelModeInterval(self) -> None:
         r"""
@@ -1597,7 +1597,7 @@ class KTBNDatabaseGenerator(object):
         Set discretized-variable label rendering to the interval label, e.g. ``"[min,max["``.
 
         """
-        return _ktbn.KTBNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
+        return _ktbncpp.KTBNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
 
     def nbVars(self) -> int:
         r"""
@@ -1608,7 +1608,7 @@ class KTBNDatabaseGenerator(object):
             the number of base variable columns
 
         """
-        return _ktbn.KTBNDatabaseGenerator_nbVars(self)
+        return _ktbncpp.KTBNDatabaseGenerator_nbVars(self)
 
     def drawSamples(self, *args) -> tuple[float, ...]:
         r"""
@@ -1654,10 +1654,10 @@ class KTBNDatabaseGenerator(object):
             if a horizon is smaller than k
 
         """
-        return _ktbn.KTBNDatabaseGenerator_drawSamples(self, *args)
+        return _ktbncpp.KTBNDatabaseGenerator_drawSamples(self, *args)
 
-# Register KTBNDatabaseGenerator in _ktbn:
-_ktbn.KTBNDatabaseGenerator_swigregister(KTBNDatabaseGenerator)
+# Register KTBNDatabaseGenerator in _ktbncpp:
+_ktbncpp.KTBNDatabaseGenerator_swigregister(KTBNDatabaseGenerator)
 class KTBNLearner(object):
     r"""
 
@@ -1731,8 +1731,8 @@ class KTBNLearner(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _ktbn.KTBNLearner_swiginit(self, _ktbn.new_KTBNLearner(*args))
-    __swig_destroy__ = _ktbn.delete_KTBNLearner
+        _ktbncpp.KTBNLearner_swiginit(self, _ktbncpp.new_KTBNLearner(*args))
+    __swig_destroy__ = _ktbncpp.delete_KTBNLearner
 
     def learnKTBN(self) -> "pyagrum.KTBN":
         r"""
@@ -1745,7 +1745,7 @@ class KTBNLearner(object):
             the learned k-TBN
 
         """
-        return _ktbn.KTBNLearner_learnKTBN(self)
+        return _ktbncpp.KTBNLearner_learnKTBN(self)
 
     def learnParameters(self, structure: "KTBN", takeIntoAccountScore: bool=True) -> "pyagrum.KTBN":
         r"""
@@ -1767,7 +1767,7 @@ class KTBNLearner(object):
             a new k-TBN with structure's arcs and freshly learned CPTs
 
         """
-        return _ktbn.KTBNLearner_learnParameters(self, structure, takeIntoAccountScore)
+        return _ktbncpp.KTBNLearner_learnParameters(self, structure, takeIntoAccountScore)
 
     def useScoreAIC(self) -> "pyagrum.KTBNLearner":
         r"""
@@ -1780,7 +1780,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreAIC(self)
+        val = _ktbncpp.KTBNLearner_useScoreAIC(self)
 
         return self
 
@@ -1799,7 +1799,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreBD(self)
+        val = _ktbncpp.KTBNLearner_useScoreBD(self)
 
         return self
 
@@ -1818,7 +1818,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreBDeu(self)
+        val = _ktbncpp.KTBNLearner_useScoreBDeu(self)
 
         return self
 
@@ -1837,7 +1837,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreBIC(self)
+        val = _ktbncpp.KTBNLearner_useScoreBIC(self)
 
         return self
 
@@ -1856,7 +1856,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreLog2Likelihood(self)
+        val = _ktbncpp.KTBNLearner_useScoreLog2Likelihood(self)
 
         return self
 
@@ -1875,7 +1875,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useScoreMDL(self)
+        val = _ktbncpp.KTBNLearner_useScoreMDL(self)
 
         return self
 
@@ -1889,7 +1889,7 @@ class KTBNLearner(object):
         Use the fNML score for structure learning.
 
         """
-        return _ktbn.KTBNLearner_useScorefNML(self)
+        return _ktbncpp.KTBNLearner_useScorefNML(self)
 
     def checkScorePriorCompatibility(self) -> str:
         r"""
@@ -1901,7 +1901,7 @@ class KTBNLearner(object):
             empty string otherwise
 
         """
-        return _ktbn.KTBNLearner_checkScorePriorCompatibility(self)
+        return _ktbncpp.KTBNLearner_checkScorePriorCompatibility(self)
 
     def useGreedyHillClimbing(self) -> "pyagrum.KTBNLearner":
         r"""
@@ -1914,7 +1914,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useGreedyHillClimbing(self)
+        val = _ktbncpp.KTBNLearner_useGreedyHillClimbing(self)
 
         return self
 
@@ -1933,7 +1933,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useExtendedGreedyHillClimbing(self)
+        val = _ktbncpp.KTBNLearner_useExtendedGreedyHillClimbing(self)
 
         return self
 
@@ -1959,7 +1959,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
+        val = _ktbncpp.KTBNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
         return self
 
@@ -1978,7 +1978,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useMIIC(self)
+        val = _ktbncpp.KTBNLearner_useMIIC(self)
 
         return self
 
@@ -1997,7 +1997,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useNMLCorrection(self)
+        val = _ktbncpp.KTBNLearner_useNMLCorrection(self)
 
         return self
 
@@ -2016,7 +2016,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useMDLCorrection(self)
+        val = _ktbncpp.KTBNLearner_useMDLCorrection(self)
 
         return self
 
@@ -2035,7 +2035,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useNoCorrection(self)
+        val = _ktbncpp.KTBNLearner_useNoCorrection(self)
 
         return self
 
@@ -2054,7 +2054,7 @@ class KTBNLearner(object):
             algorithm is not MIIC
 
         """
-        return _ktbn.KTBNLearner_latentVariables(self)
+        return _ktbncpp.KTBNLearner_latentVariables(self)
 
     def useSmoothingPrior(self, weight: float=1.0) -> "pyagrum.KTBNLearner":
         r"""
@@ -2072,7 +2072,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_useSmoothingPrior(self, weight)
+        val = _ktbncpp.KTBNLearner_useSmoothingPrior(self, weight)
 
         return self
 
@@ -2101,7 +2101,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addForbiddenArc(self, *args)
+        val = _ktbncpp.KTBNLearner_addForbiddenArc(self, *args)
 
         return self
 
@@ -2120,7 +2120,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseForbiddenArc(self, *args)
+        val = _ktbncpp.KTBNLearner_eraseForbiddenArc(self, *args)
 
         return self
 
@@ -2149,7 +2149,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addMandatoryArc(self, *args)
+        val = _ktbncpp.KTBNLearner_addMandatoryArc(self, *args)
 
         return self
 
@@ -2168,7 +2168,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseMandatoryArc(self, *args)
+        val = _ktbncpp.KTBNLearner_eraseMandatoryArc(self, *args)
 
         return self
 
@@ -2198,7 +2198,7 @@ class KTBNLearner(object):
             if either endpoint is unknown or atemporal
 
         """
-        val = _ktbn.KTBNLearner_addForbiddenIntraSliceArc(self, tailBase, headBase)
+        val = _ktbncpp.KTBNLearner_addForbiddenIntraSliceArc(self, tailBase, headBase)
 
         return self
 
@@ -2217,7 +2217,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseForbiddenIntraSliceArc(self, tailBase, headBase)
+        val = _ktbncpp.KTBNLearner_eraseForbiddenIntraSliceArc(self, tailBase, headBase)
 
         return self
 
@@ -2242,7 +2242,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addForbiddenArcAllSlices(self, tailBase, headBase)
+        val = _ktbncpp.KTBNLearner_addForbiddenArcAllSlices(self, tailBase, headBase)
 
         return self
 
@@ -2261,7 +2261,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseForbiddenArcAllSlices(self, tailBase, headBase)
+        val = _ktbncpp.KTBNLearner_eraseForbiddenArcAllSlices(self, tailBase, headBase)
 
         return self
 
@@ -2289,7 +2289,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addNoParentNode(self, *args)
+        val = _ktbncpp.KTBNLearner_addNoParentNode(self, *args)
 
         return self
 
@@ -2308,7 +2308,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseNoParentNode(self, *args)
+        val = _ktbncpp.KTBNLearner_eraseNoParentNode(self, *args)
 
         return self
 
@@ -2336,7 +2336,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addNoChildrenNode(self, *args)
+        val = _ktbncpp.KTBNLearner_addNoChildrenNode(self, *args)
 
         return self
 
@@ -2355,7 +2355,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_eraseNoChildrenNode(self, *args)
+        val = _ktbncpp.KTBNLearner_eraseNoChildrenNode(self, *args)
 
         return self
 
@@ -2385,7 +2385,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_addPossibleEdge(self, *args)
+        val = _ktbncpp.KTBNLearner_addPossibleEdge(self, *args)
 
         return self
 
@@ -2404,7 +2404,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_erasePossibleEdge(self, *args)
+        val = _ktbncpp.KTBNLearner_erasePossibleEdge(self, *args)
 
         return self
 
@@ -2428,7 +2428,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_allowArcAdditions(self, allow)
+        val = _ktbncpp.KTBNLearner_allowArcAdditions(self, allow)
 
         return self
 
@@ -2452,7 +2452,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_allowArcDeletions(self, allow)
+        val = _ktbncpp.KTBNLearner_allowArcDeletions(self, allow)
 
         return self
 
@@ -2476,7 +2476,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_allowArcReversals(self, allow)
+        val = _ktbncpp.KTBNLearner_allowArcReversals(self, allow)
 
         return self
 
@@ -2500,7 +2500,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNLearner_setMaxIndegree(self, max_indegree)
+        val = _ktbncpp.KTBNLearner_setMaxIndegree(self, max_indegree)
 
         return self
 
@@ -2517,7 +2517,7 @@ class KTBNLearner(object):
             the order k of the k-TBN being learned
 
         """
-        return _ktbn.KTBNLearner_k(self)
+        return _ktbncpp.KTBNLearner_k(self)
 
     def nbCols(self) -> int:
         r"""
@@ -2528,7 +2528,7 @@ class KTBNLearner(object):
             the number of base variable columns (temporal + atemporal)
 
         """
-        return _ktbn.KTBNLearner_nbCols(self)
+        return _ktbncpp.KTBNLearner_nbCols(self)
 
     def nbRows(self) -> tuple[int, ...]:
         r"""
@@ -2541,7 +2541,7 @@ class KTBNLearner(object):
             sliding-window row count
 
         """
-        return _ktbn.KTBNLearner_nbRows(self)
+        return _ktbncpp.KTBNLearner_nbRows(self)
 
     def isConstraintBased(self) -> bool:
         r"""
@@ -2552,7 +2552,7 @@ class KTBNLearner(object):
             True if the current structure-learning algorithm is constraint-based (MIIC)
 
         """
-        return _ktbn.KTBNLearner_isConstraintBased(self)
+        return _ktbncpp.KTBNLearner_isConstraintBased(self)
 
     def isScoreBased(self) -> bool:
         r"""
@@ -2563,7 +2563,7 @@ class KTBNLearner(object):
             True if the current structure-learning algorithm is score-based (BIC, AIC, ...)
 
         """
-        return _ktbn.KTBNLearner_isScoreBased(self)
+        return _ktbncpp.KTBNLearner_isScoreBased(self)
 
     def toString(self) -> str:
         r"""
@@ -2574,7 +2574,7 @@ class KTBNLearner(object):
             a human-readable summary of the learner's current configuration
 
         """
-        return _ktbn.KTBNLearner_toString(self)
+        return _ktbncpp.KTBNLearner_toString(self)
 
     def state(self) -> tuple[tuple[str, str, str], ...]:
         r"""
@@ -2585,7 +2585,7 @@ class KTBNLearner(object):
             the settings, as (key, value, comment) tuples
 
         """
-        return _ktbn.KTBNLearner_state(self)
+        return _ktbncpp.KTBNLearner_state(self)
 
     def copyState(self, learner: "KTBNLearner") -> None:
         r"""
@@ -2599,7 +2599,7 @@ class KTBNLearner(object):
             the learner to copy settings from
 
         """
-        return _ktbn.KTBNLearner_copyState(self, learner)
+        return _ktbncpp.KTBNLearner_copyState(self, learner)
 
     def nbSamples(self) -> int:
         r"""
@@ -2610,7 +2610,7 @@ class KTBNLearner(object):
             the number of trajectory CSV files loaded
 
         """
-        return _ktbn.KTBNLearner_nbSamples(self)
+        return _ktbncpp.KTBNLearner_nbSamples(self)
 
     def hasMissingValues(self) -> bool:
         r"""
@@ -2622,7 +2622,7 @@ class KTBNLearner(object):
             :func:`nbDroppedRows` to learn whether the CSVs actually had any)
 
         """
-        return _ktbn.KTBNLearner_hasMissingValues(self)
+        return _ktbncpp.KTBNLearner_hasMissingValues(self)
 
     def nbDroppedRows(self) -> int:
         r"""
@@ -2642,7 +2642,7 @@ class KTBNLearner(object):
             the number of dropped rows, summed across the three internal tables
 
         """
-        return _ktbn.KTBNLearner_nbDroppedRows(self)
+        return _ktbncpp.KTBNLearner_nbDroppedRows(self)
 
     def isIgnoringMissingSymbols(self) -> bool:
         r"""
@@ -2653,7 +2653,7 @@ class KTBNLearner(object):
             True if incomplete rows are dropped rather than rejected outright
 
         """
-        return _ktbn.KTBNLearner_isIgnoringMissingSymbols(self)
+        return _ktbncpp.KTBNLearner_isIgnoringMissingSymbols(self)
 
     def names(self) -> tuple[str, ...]:
         r"""
@@ -2665,7 +2665,7 @@ class KTBNLearner(object):
             header order
 
         """
-        return _ktbn.KTBNLearner_names(self)
+        return _ktbncpp.KTBNLearner_names(self)
 
     def domainSizes(self) -> tuple[int, ...]:
         r"""
@@ -2676,7 +2676,7 @@ class KTBNLearner(object):
             domain sizes of the base variables, in the same order as :func:`names`
 
         """
-        return _ktbn.KTBNLearner_domainSizes(self)
+        return _ktbncpp.KTBNLearner_domainSizes(self)
 
     def domainSize(self, base: str) -> int:
         r"""
@@ -2693,10 +2693,10 @@ class KTBNLearner(object):
             the domain size of base
 
         """
-        return _ktbn.KTBNLearner_domainSize(self, base)
+        return _ktbncpp.KTBNLearner_domainSize(self, base)
 
-# Register KTBNLearner in _ktbn:
-_ktbn.KTBNLearner_swigregister(KTBNLearner)
+# Register KTBNLearner in _ktbncpp:
+_ktbncpp.KTBNLearner_swigregister(KTBNLearner)
 class KTBNAdaptiveLearner(object):
     r"""
 
@@ -2749,8 +2749,8 @@ class KTBNAdaptiveLearner(object):
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _ktbn.KTBNAdaptiveLearner_swiginit(self, _ktbn.new_KTBNAdaptiveLearner(*args))
-    __swig_destroy__ = _ktbn.delete_KTBNAdaptiveLearner
+        _ktbncpp.KTBNAdaptiveLearner_swiginit(self, _ktbncpp.new_KTBNAdaptiveLearner(*args))
+    __swig_destroy__ = _ktbncpp.delete_KTBNAdaptiveLearner
 
     def learnKTBN(self) -> "pyagrum.KTBN":
         r"""
@@ -2766,7 +2766,7 @@ class KTBNAdaptiveLearner(object):
             the learned k-TBN, at the selected order
 
         """
-        return _ktbn.KTBNAdaptiveLearner_learnKTBN(self)
+        return _ktbncpp.KTBNAdaptiveLearner_learnKTBN(self)
 
     def bestK(self) -> int:
         r"""
@@ -2782,7 +2782,7 @@ class KTBNAdaptiveLearner(object):
             if learnKTBN has not run yet
 
         """
-        return _ktbn.KTBNAdaptiveLearner_bestK(self)
+        return _ktbncpp.KTBNAdaptiveLearner_bestK(self)
 
     def scorePerCandidateK(self) -> tuple[tuple[int, float], ...]:
         r"""
@@ -2800,7 +2800,7 @@ class KTBNAdaptiveLearner(object):
             if learnKTBN has not run yet
 
         """
-        return _ktbn.KTBNAdaptiveLearner_scorePerCandidateK(self)
+        return _ktbncpp.KTBNAdaptiveLearner_scorePerCandidateK(self)
 
     def latentVariables(self) -> tuple[tuple[str, str], ...]:
         r"""
@@ -2818,10 +2818,10 @@ class KTBNAdaptiveLearner(object):
             if learnKTBN has not run yet
 
         """
-        return _ktbn.KTBNAdaptiveLearner_latentVariables(self)
-    OrderScoreType_BIC = _ktbn.KTBNAdaptiveLearner_OrderScoreType_BIC
-    OrderScoreType_AIC = _ktbn.KTBNAdaptiveLearner_OrderScoreType_AIC
-    OrderScoreType_fNML = _ktbn.KTBNAdaptiveLearner_OrderScoreType_fNML
+        return _ktbncpp.KTBNAdaptiveLearner_latentVariables(self)
+    OrderScoreType_BIC = _ktbncpp.KTBNAdaptiveLearner_OrderScoreType_BIC
+    OrderScoreType_AIC = _ktbncpp.KTBNAdaptiveLearner_OrderScoreType_AIC
+    OrderScoreType_fNML = _ktbncpp.KTBNAdaptiveLearner_OrderScoreType_fNML
 
     def useOrderScoreBIC(self) -> "pyagrum.KTBNAdaptiveLearner":
         r"""
@@ -2835,7 +2835,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_useOrderScoreBIC(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useOrderScoreBIC(self)
 
         return self
 
@@ -2855,7 +2855,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_useOrderScoreAIC(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useOrderScoreAIC(self)
 
         return self
 
@@ -2875,7 +2875,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_useOrderScorefNML(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useOrderScorefNML(self)
 
         return self
 
@@ -2906,7 +2906,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_ignoreMissingSymbols(self, ignore)
+        val = _ktbncpp.KTBNAdaptiveLearner_ignoreMissingSymbols(self, ignore)
 
         return self
 
@@ -2923,7 +2923,7 @@ class KTBNAdaptiveLearner(object):
             True if incomplete rows/instances are dropped (default False)
 
         """
-        return _ktbn.KTBNAdaptiveLearner_isIgnoringMissingSymbols(self)
+        return _ktbncpp.KTBNAdaptiveLearner_isIgnoringMissingSymbols(self)
 
     def kMax(self) -> int:
         r"""
@@ -2934,7 +2934,7 @@ class KTBNAdaptiveLearner(object):
             the largest order explored (the kMax constructor argument)
 
         """
-        return _ktbn.KTBNAdaptiveLearner_kMax(self)
+        return _ktbncpp.KTBNAdaptiveLearner_kMax(self)
 
     def checkScorePriorCompatibility(self) -> str:
         r"""
@@ -2950,7 +2950,7 @@ class KTBNAdaptiveLearner(object):
             empty string otherwise
 
         """
-        return _ktbn.KTBNAdaptiveLearner_checkScorePriorCompatibility(self)
+        return _ktbncpp.KTBNAdaptiveLearner_checkScorePriorCompatibility(self)
 
     def toString(self) -> str:
         r"""
@@ -2963,7 +2963,7 @@ class KTBNAdaptiveLearner(object):
             selected k once learnKTBN has run
 
         """
-        return _ktbn.KTBNAdaptiveLearner_toString(self)
+        return _ktbncpp.KTBNAdaptiveLearner_toString(self)
 
     def state(self) -> tuple[tuple[str, str, str], ...]:
         r"""
@@ -2974,10 +2974,10 @@ class KTBNAdaptiveLearner(object):
             the recorded configuration, as (key, value, comment) tuples
 
         """
-        return _ktbn.KTBNAdaptiveLearner_state(self)
+        return _ktbncpp.KTBNAdaptiveLearner_state(self)
 
     def useScoreAIC(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreAIC(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreAIC(self)
 
         return self
 
@@ -2986,7 +2986,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScoreBD(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreBD(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreBD(self)
 
         return self
 
@@ -2995,7 +2995,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScoreBDeu(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreBDeu(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreBDeu(self)
 
         return self
 
@@ -3004,7 +3004,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScoreBIC(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreBIC(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreBIC(self)
 
         return self
 
@@ -3013,7 +3013,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScoreLog2Likelihood(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreLog2Likelihood(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreLog2Likelihood(self)
 
         return self
 
@@ -3022,7 +3022,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScoreMDL(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useScoreMDL(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useScoreMDL(self)
 
         return self
 
@@ -3031,10 +3031,10 @@ class KTBNAdaptiveLearner(object):
 
 
     def useScorefNML(self) -> None:
-        return _ktbn.KTBNAdaptiveLearner_useScorefNML(self)
+        return _ktbncpp.KTBNAdaptiveLearner_useScorefNML(self)
 
     def useGreedyHillClimbing(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useGreedyHillClimbing(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useGreedyHillClimbing(self)
 
         return self
 
@@ -3043,7 +3043,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useExtendedGreedyHillClimbing(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useExtendedGreedyHillClimbing(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useExtendedGreedyHillClimbing(self)
 
         return self
 
@@ -3052,7 +3052,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
+        val = _ktbncpp.KTBNAdaptiveLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
 
         return self
 
@@ -3061,7 +3061,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useMIIC(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useMIIC(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useMIIC(self)
 
         return self
 
@@ -3070,7 +3070,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useNMLCorrection(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useNMLCorrection(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useNMLCorrection(self)
 
         return self
 
@@ -3079,7 +3079,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useMDLCorrection(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useMDLCorrection(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useMDLCorrection(self)
 
         return self
 
@@ -3088,7 +3088,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useNoCorrection(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useNoCorrection(self)
+        val = _ktbncpp.KTBNAdaptiveLearner_useNoCorrection(self)
 
         return self
 
@@ -3097,7 +3097,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def useSmoothingPrior(self, weight: float=1.0) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_useSmoothingPrior(self, weight)
+        val = _ktbncpp.KTBNAdaptiveLearner_useSmoothingPrior(self, weight)
 
         return self
 
@@ -3106,7 +3106,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addForbiddenArc(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addForbiddenArc(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_addForbiddenArc(self, *args)
 
         return self
 
@@ -3115,7 +3115,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseForbiddenArc(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseForbiddenArc(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseForbiddenArc(self, *args)
 
         return self
 
@@ -3124,7 +3124,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addMandatoryArc(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addMandatoryArc(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_addMandatoryArc(self, *args)
 
         return self
 
@@ -3133,7 +3133,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseMandatoryArc(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseMandatoryArc(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseMandatoryArc(self, *args)
 
         return self
 
@@ -3164,7 +3164,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_addForbiddenKernelArc(self, tailBase, lag, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_addForbiddenKernelArc(self, tailBase, lag, headBase)
 
         return self
 
@@ -3183,7 +3183,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_eraseForbiddenKernelArc(self, tailBase, lag, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseForbiddenKernelArc(self, tailBase, lag, headBase)
 
         return self
 
@@ -3210,7 +3210,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_addMandatoryKernelArc(self, tailBase, lag, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_addMandatoryKernelArc(self, tailBase, lag, headBase)
 
         return self
 
@@ -3229,7 +3229,7 @@ class KTBNAdaptiveLearner(object):
             self, for chaining
 
         """
-        val = _ktbn.KTBNAdaptiveLearner_eraseMandatoryKernelArc(self, tailBase, lag, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseMandatoryKernelArc(self, tailBase, lag, headBase)
 
         return self
 
@@ -3238,7 +3238,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addForbiddenIntraSliceArc(self, tailBase: str, headBase: str) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addForbiddenIntraSliceArc(self, tailBase, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_addForbiddenIntraSliceArc(self, tailBase, headBase)
 
         return self
 
@@ -3247,7 +3247,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseForbiddenIntraSliceArc(self, tailBase: str, headBase: str) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseForbiddenIntraSliceArc(self, tailBase, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseForbiddenIntraSliceArc(self, tailBase, headBase)
 
         return self
 
@@ -3256,7 +3256,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addForbiddenArcAllSlices(self, tailBase: str, headBase: str) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addForbiddenArcAllSlices(self, tailBase, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_addForbiddenArcAllSlices(self, tailBase, headBase)
 
         return self
 
@@ -3265,7 +3265,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseForbiddenArcAllSlices(self, tailBase: str, headBase: str) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseForbiddenArcAllSlices(self, tailBase, headBase)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseForbiddenArcAllSlices(self, tailBase, headBase)
 
         return self
 
@@ -3274,7 +3274,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addNoParentNode(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addNoParentNode(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_addNoParentNode(self, *args)
 
         return self
 
@@ -3283,7 +3283,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseNoParentNode(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseNoParentNode(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseNoParentNode(self, *args)
 
         return self
 
@@ -3292,7 +3292,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addNoChildrenNode(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addNoChildrenNode(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_addNoChildrenNode(self, *args)
 
         return self
 
@@ -3301,7 +3301,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def eraseNoChildrenNode(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_eraseNoChildrenNode(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_eraseNoChildrenNode(self, *args)
 
         return self
 
@@ -3310,7 +3310,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def addPossibleEdge(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_addPossibleEdge(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_addPossibleEdge(self, *args)
 
         return self
 
@@ -3319,7 +3319,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def erasePossibleEdge(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_erasePossibleEdge(self, *args)
+        val = _ktbncpp.KTBNAdaptiveLearner_erasePossibleEdge(self, *args)
 
         return self
 
@@ -3328,7 +3328,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def allowArcAdditions(self, allow: bool=True) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_allowArcAdditions(self, allow)
+        val = _ktbncpp.KTBNAdaptiveLearner_allowArcAdditions(self, allow)
 
         return self
 
@@ -3337,7 +3337,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def allowArcDeletions(self, allow: bool=True) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_allowArcDeletions(self, allow)
+        val = _ktbncpp.KTBNAdaptiveLearner_allowArcDeletions(self, allow)
 
         return self
 
@@ -3346,7 +3346,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def allowArcReversals(self, allow: bool=True) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_allowArcReversals(self, allow)
+        val = _ktbncpp.KTBNAdaptiveLearner_allowArcReversals(self, allow)
 
         return self
 
@@ -3355,7 +3355,7 @@ class KTBNAdaptiveLearner(object):
 
 
     def setMaxIndegree(self, max_indegree: int) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbn.KTBNAdaptiveLearner_setMaxIndegree(self, max_indegree)
+        val = _ktbncpp.KTBNAdaptiveLearner_setMaxIndegree(self, max_indegree)
 
         return self
 
@@ -3363,8 +3363,8 @@ class KTBNAdaptiveLearner(object):
         return val
 
 
-# Register KTBNAdaptiveLearner in _ktbn:
-_ktbn.KTBNAdaptiveLearner_swigregister(KTBNAdaptiveLearner)
+# Register KTBNAdaptiveLearner in _ktbncpp:
+_ktbncpp.KTBNAdaptiveLearner_swigregister(KTBNAdaptiveLearner)
 
 def availableKTBNExts():
   """ Give the list of all formats known by pyAgrum to save a k-TBN.

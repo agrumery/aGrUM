@@ -12,7 +12,7 @@
 #define SWIG_DIRECTORS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
-#define SWIG_name    "_id"
+#define SWIG_name    "_idcpp"
 /* -----------------------------------------------------------------------------
  *  This section contains generic SWIG labels for method/variable
  *  declarations/attributes, and other compiler dependent labels.
@@ -3788,9 +3788,9 @@ static swig_module_info swig_module = {swig_types, 63, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _id.so
+              @(target):= _idcpp.so
   ------------------------------------------------*/
-#define SWIG_init    PyInit__id
+#define SWIG_init    PyInit__idcpp
 
 
 #ifdef __cplusplus
@@ -4606,7 +4606,7 @@ SWIGINTERN gum::InfluenceDiagram< double > const &gum_ShaferShenoyLIMIDInference
  * C++ director class methods
  * --------------------------------------------------- */
 
-#include "idPYTHON_wrap.h"
+#include "idcppPYTHON_wrap.h"
 
 #ifdef __cplusplus
 extern "C" {

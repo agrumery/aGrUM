@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _cn
+    from . import _cncpp
 else:
-    import _cn
+    import _cncpp
 
 import builtins as __builtin__
 
@@ -56,7 +56,7 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
+import pyagrum.pyagrumcpp
 class CredalNet(object):
     r"""
 
@@ -78,14 +78,14 @@ class CredalNet(object):
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    NodeType_Precise = _cn.CredalNet_NodeType_Precise
-    NodeType_Credal = _cn.CredalNet_NodeType_Credal
-    NodeType_Vacuous = _cn.CredalNet_NodeType_Vacuous
-    NodeType_Indic = _cn.CredalNet_NodeType_Indic
+    NodeType_Precise = _cncpp.CredalNet_NodeType_Precise
+    NodeType_Credal = _cncpp.CredalNet_NodeType_Credal
+    NodeType_Vacuous = _cncpp.CredalNet_NodeType_Vacuous
+    NodeType_Indic = _cncpp.CredalNet_NodeType_Indic
 
     def __init__(self, *args):
-        _cn.CredalNet_swiginit(self, _cn.new_CredalNet(*args))
-    __swig_destroy__ = _cn.delete_CredalNet
+        _cncpp.CredalNet_swiginit(self, _cncpp.new_CredalNet(*args))
+    __swig_destroy__ = _cncpp.delete_CredalNet
 
     def addVariable(self, name: str, card: int) -> int:
         r"""
@@ -103,7 +103,7 @@ class CredalNet(object):
             the id of the new node
 
         """
-        return _cn.CredalNet_addVariable(self, name, card)
+        return _cncpp.CredalNet_addVariable(self, name, card)
 
     def addArc(self, tail: int, head: int) -> None:
         r"""
@@ -127,7 +127,7 @@ class CredalNet(object):
             If one of the arc already exists
 
         """
-        return _cn.CredalNet_addArc(self, tail, head)
+        return _cncpp.CredalNet_addArc(self, tail, head)
 
     def setCPTs(self, id: int, cpt: "pyagrum.YetUnWrapped") -> None:
         r"""
@@ -151,7 +151,7 @@ class CredalNet(object):
         DOES not change the BayesNet (s) associated to this credal net !
 
         """
-        return _cn.CredalNet_setCPTs(self, id, cpt)
+        return _cncpp.CredalNet_setCPTs(self, id, cpt)
 
     def setCPT(self, *args) -> None:
         r"""
@@ -179,7 +179,7 @@ class CredalNet(object):
         DOES not change the BayesNet(s) associated to this credal net !
 
         """
-        return _cn.CredalNet_setCPT(self, *args)
+        return _cncpp.CredalNet_setCPT(self, *args)
 
     def fillConstraints(self, id: int, lower: tuple[float, ...], upper: tuple[float, ...]) -> None:
         r"""
@@ -204,7 +204,7 @@ class CredalNet(object):
         DOES change the BayesNet (s) associated to this credal net !
 
         """
-        return _cn.CredalNet_fillConstraints(self, id, lower, upper)
+        return _cncpp.CredalNet_fillConstraints(self, id, lower, upper)
 
     def fillConstraint(self, *args) -> None:
         r"""
@@ -233,7 +233,7 @@ class CredalNet(object):
         DOES change the BayesNet (s) associated to this credal net !
 
         """
-        return _cn.CredalNet_fillConstraint(self, *args)
+        return _cncpp.CredalNet_fillConstraint(self, *args)
 
     def instantiation(self, id: int) -> "pyagrum.Instantiation":
         r"""
@@ -253,7 +253,7 @@ class CredalNet(object):
             the instantiation
 
         """
-        return _cn.CredalNet_instantiation(self, id)
+        return _cncpp.CredalNet_instantiation(self, id)
 
     def domainSize(self, id: int) -> int:
         r"""
@@ -269,7 +269,7 @@ class CredalNet(object):
             The cardinality of the node
 
         """
-        return _cn.CredalNet_domainSize(self, id)
+        return _cncpp.CredalNet_domainSize(self, id)
 
     def bnToCredal(self, *args) -> None:
         r"""
@@ -286,7 +286,7 @@ class CredalNet(object):
             used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
 
         """
-        return _cn.CredalNet_bnToCredal(self, *args)
+        return _cncpp.CredalNet_bnToCredal(self, *args)
 
     def intervalToCredalWithFiles(self) -> None:
         r"""
@@ -301,7 +301,7 @@ class CredalNet(object):
         Use this method when using a single BayesNet storing counts of events.
 
         """
-        return _cn.CredalNet_intervalToCredalWithFiles(self)
+        return _cncpp.CredalNet_intervalToCredalWithFiles(self)
 
     def intervalToCredal(self) -> None:
         r"""
@@ -311,7 +311,7 @@ class CredalNet(object):
         Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
 
         """
-        return _cn.CredalNet_intervalToCredal(self)
+        return _cncpp.CredalNet_intervalToCredal(self)
 
     def lagrangeNormalization(self) -> None:
         r"""
@@ -323,7 +323,7 @@ class CredalNet(object):
         Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
 
         """
-        return _cn.CredalNet_lagrangeNormalization(self)
+        return _cncpp.CredalNet_lagrangeNormalization(self)
 
     def idmLearning(self, *args) -> None:
         r"""
@@ -340,7 +340,7 @@ class CredalNet(object):
             used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
 
         """
-        return _cn.CredalNet_idmLearning(self, *args)
+        return _cncpp.CredalNet_idmLearning(self, *args)
 
     def approximatedBinarization(self) -> None:
         r"""
@@ -354,7 +354,7 @@ class CredalNet(object):
         Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead
 
         """
-        return _cn.CredalNet_approximatedBinarization(self)
+        return _cncpp.CredalNet_approximatedBinarization(self)
 
     def saveBNsMinMax(self, min_path: str, max_path: str) -> None:
         r"""
@@ -371,7 +371,7 @@ class CredalNet(object):
             the path to save the BayesNet which contains the upper probabilities of each node X.
 
         """
-        return _cn.CredalNet_saveBNsMinMax(self, min_path, max_path)
+        return _cncpp.CredalNet_saveBNsMinMax(self, min_path, max_path)
 
     def computeBinaryCPTMinMax(self) -> None:
         r"""
@@ -381,7 +381,7 @@ class CredalNet(object):
         Store the lower and upper probabilities of each node X over the 'True' modality.
 
         """
-        return _cn.CredalNet_computeBinaryCPTMinMax(self)
+        return _cncpp.CredalNet_computeBinaryCPTMinMax(self)
 
     def src_bn(self) -> "pyagrum.BayesNet":
         r"""
@@ -392,7 +392,7 @@ class CredalNet(object):
             Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
-        return _cn.CredalNet_src_bn(self)
+        return _cncpp.CredalNet_src_bn(self)
 
     def current_bn(self) -> "pyagrum.BayesNet":
         r"""
@@ -403,7 +403,7 @@ class CredalNet(object):
             Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
-        return _cn.CredalNet_current_bn(self)
+        return _cncpp.CredalNet_current_bn(self)
 
     def credalNet_currentCpt(self) -> "pyagrum.YetUnWrapped":
         r"""
@@ -418,7 +418,7 @@ class CredalNet(object):
             a constant reference to the (up-to-date) CredalNet CPTs.
 
         """
-        return _cn.CredalNet_credalNet_currentCpt(self)
+        return _cncpp.CredalNet_credalNet_currentCpt(self)
 
     def credalNet_srcCpt(self) -> "pyagrum.YetUnWrapped":
         r"""
@@ -433,7 +433,7 @@ class CredalNet(object):
             a constant reference to the (up-to-date) CredalNet CPTs.
 
         """
-        return _cn.CredalNet_credalNet_srcCpt(self)
+        return _cncpp.CredalNet_credalNet_srcCpt(self)
 
     def currentNodeType(self, id: int) -> int:
         r"""
@@ -449,7 +449,7 @@ class CredalNet(object):
             the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
 
         """
-        return _cn.CredalNet_currentNodeType(self, id)
+        return _cncpp.CredalNet_currentNodeType(self, id)
 
     def nodeType(self, id: int) -> int:
         r"""
@@ -465,7 +465,7 @@ class CredalNet(object):
             the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
 
         """
-        return _cn.CredalNet_nodeType(self, id)
+        return _cncpp.CredalNet_nodeType(self, id)
 
     def epsilonMin(self) -> float:
         r"""
@@ -476,7 +476,7 @@ class CredalNet(object):
             a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
-        return _cn.CredalNet_epsilonMin(self)
+        return _cncpp.CredalNet_epsilonMin(self)
 
     def epsilonMax(self) -> float:
         r"""
@@ -487,7 +487,7 @@ class CredalNet(object):
             a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
-        return _cn.CredalNet_epsilonMax(self)
+        return _cncpp.CredalNet_epsilonMax(self)
 
     def epsilonMean(self) -> float:
         r"""
@@ -498,7 +498,7 @@ class CredalNet(object):
             a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
 
         """
-        return _cn.CredalNet_epsilonMean(self)
+        return _cncpp.CredalNet_epsilonMean(self)
 
     def isSeparatelySpecified(self) -> bool:
         r"""
@@ -509,7 +509,7 @@ class CredalNet(object):
             True if this CredalNet is separately and interval specified, False otherwise.
 
         """
-        return _cn.CredalNet_isSeparatelySpecified(self)
+        return _cncpp.CredalNet_isSeparatelySpecified(self)
 
     def hasComputedBinaryCPTMinMax(self) -> bool:
         r"""
@@ -522,7 +522,7 @@ class CredalNet(object):
             True if binary CPT min/max have been computed (via the dedicated computation method)
 
         """
-        return _cn.CredalNet_hasComputedBinaryCPTMinMax(self)
+        return _cncpp.CredalNet_hasComputedBinaryCPTMinMax(self)
 
     def get_binaryCPT_min(self) -> "pyagrum.YetUnWrapped":
         r"""
@@ -537,7 +537,7 @@ class CredalNet(object):
             a constant reference to the lower probabilities of each node X over the 'True' modality
 
         """
-        return _cn.CredalNet_get_binaryCPT_min(self)
+        return _cncpp.CredalNet_get_binaryCPT_min(self)
 
     def get_binaryCPT_max(self) -> "pyagrum.YetUnWrapped":
         r"""
@@ -552,16 +552,16 @@ class CredalNet(object):
             a constant reference to the upper probabilities of each node X over the 'True' modality
 
         """
-        return _cn.CredalNet_get_binaryCPT_max(self)
+        return _cncpp.CredalNet_get_binaryCPT_max(self)
 
     def __repr__(self) -> str:
-        return _cn.CredalNet___repr__(self)
+        return _cncpp.CredalNet___repr__(self)
 
     def __str__(self) -> str:
-        return _cn.CredalNet___str__(self)
+        return _cncpp.CredalNet___str__(self)
 
-# Register CredalNet in _cn:
-_cn.CredalNet_swigregister(CredalNet)
+# Register CredalNet in _cncpp:
+_cncpp.CredalNet_swigregister(CredalNet)
 class CNMonteCarloSampling(object):
     r"""
 
@@ -577,13 +577,13 @@ class CNMonteCarloSampling(object):
     __repr__ = _swig_repr
 
     def __init__(self, credalNet: "CredalNet"):
-        _cn.CNMonteCarloSampling_swiginit(self, _cn.new_CNMonteCarloSampling(credalNet))
+        _cncpp.CNMonteCarloSampling_swiginit(self, _cncpp.new_CNMonteCarloSampling(credalNet))
 
         self._model=credalNet
 
 
 
-    __swig_destroy__ = _cn.delete_CNMonteCarloSampling
+    __swig_destroy__ = _cncpp.delete_CNMonteCarloSampling
 
     def makeInference(self) -> None:
         r"""
@@ -591,7 +591,7 @@ class CNMonteCarloSampling(object):
         Starts the inference.
 
         """
-        return _cn.CNMonteCarloSampling_makeInference(self)
+        return _cncpp.CNMonteCarloSampling_makeInference(self)
 
     def insertEvidenceFile(self, path: str) -> None:
         r"""
@@ -604,7 +604,7 @@ class CNMonteCarloSampling(object):
             the path to the evidence file.
 
         """
-        return _cn.CNMonteCarloSampling_insertEvidenceFile(self, path)
+        return _cncpp.CNMonteCarloSampling_insertEvidenceFile(self, path)
 
     def setEvidence(self, evidces):
       """
@@ -648,7 +648,7 @@ class CNMonteCarloSampling(object):
                 verbosity
 
         """
-        return _cn.CNMonteCarloSampling_setVerbosity(self, v)
+        return _cncpp.CNMonteCarloSampling_setVerbosity(self, v)
 
     def setEpsilon(self, eps: float) -> None:
         r"""
@@ -664,7 +664,7 @@ class CNMonteCarloSampling(object):
             If eps<0
 
         """
-        return _cn.CNMonteCarloSampling_setEpsilon(self, eps)
+        return _cncpp.CNMonteCarloSampling_setEpsilon(self, eps)
 
     def setMinEpsilonRate(self, rate: float) -> None:
         r"""
@@ -675,7 +675,7 @@ class CNMonteCarloSampling(object):
             the minimal epsilon rate
 
         """
-        return _cn.CNMonteCarloSampling_setMinEpsilonRate(self, rate)
+        return _cncpp.CNMonteCarloSampling_setMinEpsilonRate(self, rate)
 
     def setMaxIter(self, max: int) -> None:
         r"""
@@ -691,7 +691,7 @@ class CNMonteCarloSampling(object):
             If max <= 1
 
         """
-        return _cn.CNMonteCarloSampling_setMaxIter(self, max)
+        return _cncpp.CNMonteCarloSampling_setMaxIter(self, max)
 
     def setMaxTime(self, timeout: float) -> None:
         r"""
@@ -707,7 +707,7 @@ class CNMonteCarloSampling(object):
             If timeout<=0.0
 
         """
-        return _cn.CNMonteCarloSampling_setMaxTime(self, timeout)
+        return _cncpp.CNMonteCarloSampling_setMaxTime(self, timeout)
 
     def setPeriodSize(self, p: int) -> None:
         r"""
@@ -723,7 +723,7 @@ class CNMonteCarloSampling(object):
             If p<1
 
         """
-        return _cn.CNMonteCarloSampling_setPeriodSize(self, p)
+        return _cncpp.CNMonteCarloSampling_setPeriodSize(self, p)
 
     def verbosity(self) -> bool:
         r"""
@@ -734,7 +734,7 @@ class CNMonteCarloSampling(object):
             True if the verbosity is enabled
 
         """
-        return _cn.CNMonteCarloSampling_verbosity(self)
+        return _cncpp.CNMonteCarloSampling_verbosity(self)
 
     def epsilon(self) -> float:
         r"""
@@ -745,7 +745,7 @@ class CNMonteCarloSampling(object):
             the value of epsilon
 
         """
-        return _cn.CNMonteCarloSampling_epsilon(self)
+        return _cncpp.CNMonteCarloSampling_epsilon(self)
 
     def minEpsilonRate(self) -> float:
         r"""
@@ -756,7 +756,7 @@ class CNMonteCarloSampling(object):
             the value of the minimal epsilon rate
 
         """
-        return _cn.CNMonteCarloSampling_minEpsilonRate(self)
+        return _cncpp.CNMonteCarloSampling_minEpsilonRate(self)
 
     def maxIter(self) -> int:
         r"""
@@ -767,7 +767,7 @@ class CNMonteCarloSampling(object):
             the criterion on number of iterations
 
         """
-        return _cn.CNMonteCarloSampling_maxIter(self)
+        return _cncpp.CNMonteCarloSampling_maxIter(self)
 
     def maxTime(self) -> float:
         r"""
@@ -778,7 +778,7 @@ class CNMonteCarloSampling(object):
             the timeout(in seconds)
 
         """
-        return _cn.CNMonteCarloSampling_maxTime(self)
+        return _cncpp.CNMonteCarloSampling_maxTime(self)
 
     def periodSize(self) -> int:
         r"""
@@ -794,7 +794,7 @@ class CNMonteCarloSampling(object):
             If p<1
 
         """
-        return _cn.CNMonteCarloSampling_periodSize(self)
+        return _cncpp.CNMonteCarloSampling_periodSize(self)
 
     def nbrIterations(self) -> int:
         r"""
@@ -805,7 +805,7 @@ class CNMonteCarloSampling(object):
             the number of iterations
 
         """
-        return _cn.CNMonteCarloSampling_nbrIterations(self)
+        return _cncpp.CNMonteCarloSampling_nbrIterations(self)
 
     def currentTime(self) -> float:
         r"""
@@ -816,7 +816,7 @@ class CNMonteCarloSampling(object):
             get the current running time in second (float)
 
         """
-        return _cn.CNMonteCarloSampling_currentTime(self)
+        return _cncpp.CNMonteCarloSampling_currentTime(self)
 
     def messageApproximationScheme(self) -> str:
         r"""
@@ -827,7 +827,7 @@ class CNMonteCarloSampling(object):
             the approximation scheme message
 
         """
-        return _cn.CNMonteCarloSampling_messageApproximationScheme(self)
+        return _cncpp.CNMonteCarloSampling_messageApproximationScheme(self)
 
     def history(self) -> tuple[float, ...]:
         r"""
@@ -843,10 +843,10 @@ class CNMonteCarloSampling(object):
             If the scheme did not performed or if verbosity is set to false
 
         """
-        return _cn.CNMonteCarloSampling_history(self)
+        return _cncpp.CNMonteCarloSampling_history(self)
 
     def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
-        return _cn.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
+        return _cncpp.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
         r"""
@@ -857,7 +857,7 @@ class CNMonteCarloSampling(object):
             True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
-        return _cn.CNMonteCarloSampling_setRepetitiveInd(self, flag)
+        return _cncpp.CNMonteCarloSampling_setRepetitiveInd(self, flag)
 
     def marginalMax(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -882,7 +882,7 @@ class CNMonteCarloSampling(object):
             If the node does not belong to the Credal network
 
         """
-        return _cn.CNMonteCarloSampling_marginalMax(self, *args)
+        return _cncpp.CNMonteCarloSampling_marginalMax(self, *args)
 
     def marginalMin(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -907,7 +907,7 @@ class CNMonteCarloSampling(object):
             If the node does not belong to the Credal network
 
         """
-        return _cn.CNMonteCarloSampling_marginalMin(self, *args)
+        return _cncpp.CNMonteCarloSampling_marginalMin(self, *args)
 
     def insertModalsFile(self, path: str) -> None:
         r"""
@@ -920,7 +920,7 @@ class CNMonteCarloSampling(object):
             The path to the modalities file.
 
         """
-        return _cn.CNMonteCarloSampling_insertModalsFile(self, path)
+        return _cncpp.CNMonteCarloSampling_insertModalsFile(self, path)
 
     def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
         r"""
@@ -938,7 +938,7 @@ class CNMonteCarloSampling(object):
             a constant reference to the variable upper expectation over all time steps.
 
         """
-        return _cn.CNMonteCarloSampling_dynamicExpMax(self, varName)
+        return _cncpp.CNMonteCarloSampling_dynamicExpMax(self, varName)
 
     def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
         r"""
@@ -956,7 +956,7 @@ class CNMonteCarloSampling(object):
             a constant reference to the variable lower expectation over all time steps.
 
         """
-        return _cn.CNMonteCarloSampling_dynamicExpMin(self, varName)
+        return _cncpp.CNMonteCarloSampling_dynamicExpMin(self, varName)
 
     def eraseAllEvidence(self) -> None:
         r"""
@@ -966,7 +966,7 @@ class CNMonteCarloSampling(object):
         You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
 
         """
-        return _cn.CNMonteCarloSampling_eraseAllEvidence(self)
+        return _cncpp.CNMonteCarloSampling_eraseAllEvidence(self)
 
     def addEvidence(self, *args) -> None:
         r"""
@@ -981,7 +981,7 @@ class CNMonteCarloSampling(object):
             the value index or label for the evidence
 
         """
-        return _cn.CNMonteCarloSampling_addEvidence(self, *args)
+        return _cncpp.CNMonteCarloSampling_addEvidence(self, *args)
 
     def CN(self) -> "pyagrum.CredalNet":
         r"""
@@ -994,10 +994,10 @@ class CNMonteCarloSampling(object):
             the credal network
 
         """
-        return _cn.CNMonteCarloSampling_CN(self)
+        return _cncpp.CNMonteCarloSampling_CN(self)
 
-# Register CNMonteCarloSampling in _cn:
-_cn.CNMonteCarloSampling_swigregister(CNMonteCarloSampling)
+# Register CNMonteCarloSampling in _cncpp:
+_cncpp.CNMonteCarloSampling_swigregister(CNMonteCarloSampling)
 class CNLoopyPropagation(object):
     r"""
 
@@ -1011,9 +1011,9 @@ class CNLoopyPropagation(object):
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    InferenceType_nodeToNeighbours = _cn.CNLoopyPropagation_InferenceType_nodeToNeighbours
-    InferenceType_ordered = _cn.CNLoopyPropagation_InferenceType_ordered
-    InferenceType_randomOrder = _cn.CNLoopyPropagation_InferenceType_randomOrder
+    InferenceType_nodeToNeighbours = _cncpp.CNLoopyPropagation_InferenceType_nodeToNeighbours
+    InferenceType_ordered = _cncpp.CNLoopyPropagation_InferenceType_ordered
+    InferenceType_randomOrder = _cncpp.CNLoopyPropagation_InferenceType_randomOrder
 
     def makeInference(self) -> None:
         r"""
@@ -1021,7 +1021,7 @@ class CNLoopyPropagation(object):
         Starts the inference.
 
         """
-        return _cn.CNLoopyPropagation_makeInference(self)
+        return _cncpp.CNLoopyPropagation_makeInference(self)
 
     def insertEvidenceFile(self, path: str) -> None:
         r"""
@@ -1034,7 +1034,7 @@ class CNLoopyPropagation(object):
             the path to the evidence file.
 
         """
-        return _cn.CNLoopyPropagation_insertEvidenceFile(self, path)
+        return _cncpp.CNLoopyPropagation_insertEvidenceFile(self, path)
 
     def inferenceType(self, *args) -> int:
         r"""
@@ -1045,7 +1045,7 @@ class CNLoopyPropagation(object):
             the inference type
 
         """
-        return _cn.CNLoopyPropagation_inferenceType(self, *args)
+        return _cncpp.CNLoopyPropagation_inferenceType(self, *args)
 
     def saveInference(self, path: str) -> None:
         r"""
@@ -1058,16 +1058,16 @@ class CNLoopyPropagation(object):
             The path to the file to save marginals.
 
         """
-        return _cn.CNLoopyPropagation_saveInference(self, path)
+        return _cncpp.CNLoopyPropagation_saveInference(self, path)
 
     def __init__(self, credalNet: "CredalNet"):
-        _cn.CNLoopyPropagation_swiginit(self, _cn.new_CNLoopyPropagation(credalNet))
+        _cncpp.CNLoopyPropagation_swiginit(self, _cncpp.new_CNLoopyPropagation(credalNet))
 
         self._model=credalNet
 
 
 
-    __swig_destroy__ = _cn.delete_CNLoopyPropagation
+    __swig_destroy__ = _cncpp.delete_CNLoopyPropagation
 
     def setEvidence(self, evidces):
       """
@@ -1111,7 +1111,7 @@ class CNLoopyPropagation(object):
                 verbosity
 
         """
-        return _cn.CNLoopyPropagation_setVerbosity(self, v)
+        return _cncpp.CNLoopyPropagation_setVerbosity(self, v)
 
     def setEpsilon(self, eps: float) -> None:
         r"""
@@ -1127,7 +1127,7 @@ class CNLoopyPropagation(object):
             If eps<0
 
         """
-        return _cn.CNLoopyPropagation_setEpsilon(self, eps)
+        return _cncpp.CNLoopyPropagation_setEpsilon(self, eps)
 
     def setMinEpsilonRate(self, rate: float) -> None:
         r"""
@@ -1138,7 +1138,7 @@ class CNLoopyPropagation(object):
             the minimal epsilon rate
 
         """
-        return _cn.CNLoopyPropagation_setMinEpsilonRate(self, rate)
+        return _cncpp.CNLoopyPropagation_setMinEpsilonRate(self, rate)
 
     def setMaxIter(self, max: int) -> None:
         r"""
@@ -1154,7 +1154,7 @@ class CNLoopyPropagation(object):
             If max <= 1
 
         """
-        return _cn.CNLoopyPropagation_setMaxIter(self, max)
+        return _cncpp.CNLoopyPropagation_setMaxIter(self, max)
 
     def setMaxTime(self, timeout: float) -> None:
         r"""
@@ -1170,7 +1170,7 @@ class CNLoopyPropagation(object):
             If timeout<=0.0
 
         """
-        return _cn.CNLoopyPropagation_setMaxTime(self, timeout)
+        return _cncpp.CNLoopyPropagation_setMaxTime(self, timeout)
 
     def setPeriodSize(self, p: int) -> None:
         r"""
@@ -1186,7 +1186,7 @@ class CNLoopyPropagation(object):
             If p<1
 
         """
-        return _cn.CNLoopyPropagation_setPeriodSize(self, p)
+        return _cncpp.CNLoopyPropagation_setPeriodSize(self, p)
 
     def verbosity(self) -> bool:
         r"""
@@ -1197,7 +1197,7 @@ class CNLoopyPropagation(object):
             True if the verbosity is enabled
 
         """
-        return _cn.CNLoopyPropagation_verbosity(self)
+        return _cncpp.CNLoopyPropagation_verbosity(self)
 
     def epsilon(self) -> float:
         r"""
@@ -1208,7 +1208,7 @@ class CNLoopyPropagation(object):
             the value of epsilon
 
         """
-        return _cn.CNLoopyPropagation_epsilon(self)
+        return _cncpp.CNLoopyPropagation_epsilon(self)
 
     def minEpsilonRate(self) -> float:
         r"""
@@ -1219,7 +1219,7 @@ class CNLoopyPropagation(object):
             the value of the minimal epsilon rate
 
         """
-        return _cn.CNLoopyPropagation_minEpsilonRate(self)
+        return _cncpp.CNLoopyPropagation_minEpsilonRate(self)
 
     def maxIter(self) -> int:
         r"""
@@ -1230,7 +1230,7 @@ class CNLoopyPropagation(object):
             the criterion on number of iterations
 
         """
-        return _cn.CNLoopyPropagation_maxIter(self)
+        return _cncpp.CNLoopyPropagation_maxIter(self)
 
     def maxTime(self) -> float:
         r"""
@@ -1241,7 +1241,7 @@ class CNLoopyPropagation(object):
             the timeout(in seconds)
 
         """
-        return _cn.CNLoopyPropagation_maxTime(self)
+        return _cncpp.CNLoopyPropagation_maxTime(self)
 
     def periodSize(self) -> int:
         r"""
@@ -1257,7 +1257,7 @@ class CNLoopyPropagation(object):
             If p<1
 
         """
-        return _cn.CNLoopyPropagation_periodSize(self)
+        return _cncpp.CNLoopyPropagation_periodSize(self)
 
     def nbrIterations(self) -> int:
         r"""
@@ -1268,7 +1268,7 @@ class CNLoopyPropagation(object):
             the number of iterations
 
         """
-        return _cn.CNLoopyPropagation_nbrIterations(self)
+        return _cncpp.CNLoopyPropagation_nbrIterations(self)
 
     def currentTime(self) -> float:
         r"""
@@ -1279,7 +1279,7 @@ class CNLoopyPropagation(object):
             get the current running time in second (float)
 
         """
-        return _cn.CNLoopyPropagation_currentTime(self)
+        return _cncpp.CNLoopyPropagation_currentTime(self)
 
     def messageApproximationScheme(self) -> str:
         r"""
@@ -1290,7 +1290,7 @@ class CNLoopyPropagation(object):
             the approximation scheme message
 
         """
-        return _cn.CNLoopyPropagation_messageApproximationScheme(self)
+        return _cncpp.CNLoopyPropagation_messageApproximationScheme(self)
 
     def history(self) -> tuple[float, ...]:
         r"""
@@ -1306,10 +1306,10 @@ class CNLoopyPropagation(object):
             If the scheme did not performed or if verbosity is set to false
 
         """
-        return _cn.CNLoopyPropagation_history(self)
+        return _cncpp.CNLoopyPropagation_history(self)
 
     def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
-        return _cn.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
+        return _cncpp.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
         r"""
@@ -1320,7 +1320,7 @@ class CNLoopyPropagation(object):
             True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks.
 
         """
-        return _cn.CNLoopyPropagation_setRepetitiveInd(self, flag)
+        return _cncpp.CNLoopyPropagation_setRepetitiveInd(self, flag)
 
     def marginalMax(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1345,7 +1345,7 @@ class CNLoopyPropagation(object):
             If the node does not belong to the Credal network
 
         """
-        return _cn.CNLoopyPropagation_marginalMax(self, *args)
+        return _cncpp.CNLoopyPropagation_marginalMax(self, *args)
 
     def marginalMin(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1370,7 +1370,7 @@ class CNLoopyPropagation(object):
             If the node does not belong to the Credal network
 
         """
-        return _cn.CNLoopyPropagation_marginalMin(self, *args)
+        return _cncpp.CNLoopyPropagation_marginalMin(self, *args)
 
     def insertModalsFile(self, path: str) -> None:
         r"""
@@ -1383,7 +1383,7 @@ class CNLoopyPropagation(object):
             The path to the modalities file.
 
         """
-        return _cn.CNLoopyPropagation_insertModalsFile(self, path)
+        return _cncpp.CNLoopyPropagation_insertModalsFile(self, path)
 
     def dynamicExpMax(self, varName: str) -> tuple[float, ...]:
         r"""
@@ -1401,7 +1401,7 @@ class CNLoopyPropagation(object):
             a constant reference to the variable upper expectation over all time steps.
 
         """
-        return _cn.CNLoopyPropagation_dynamicExpMax(self, varName)
+        return _cncpp.CNLoopyPropagation_dynamicExpMax(self, varName)
 
     def dynamicExpMin(self, varName: str) -> tuple[float, ...]:
         r"""
@@ -1419,7 +1419,7 @@ class CNLoopyPropagation(object):
             a constant reference to the variable lower expectation over all time steps.
 
         """
-        return _cn.CNLoopyPropagation_dynamicExpMin(self, varName)
+        return _cncpp.CNLoopyPropagation_dynamicExpMin(self, varName)
 
     def eraseAllEvidence(self) -> None:
         r"""
@@ -1429,7 +1429,7 @@ class CNLoopyPropagation(object):
         You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
 
         """
-        return _cn.CNLoopyPropagation_eraseAllEvidence(self)
+        return _cncpp.CNLoopyPropagation_eraseAllEvidence(self)
 
     def addEvidence(self, *args) -> None:
         r"""
@@ -1444,7 +1444,7 @@ class CNLoopyPropagation(object):
             the value index or label for the evidence
 
         """
-        return _cn.CNLoopyPropagation_addEvidence(self, *args)
+        return _cncpp.CNLoopyPropagation_addEvidence(self, *args)
 
     def CN(self) -> "pyagrum.CredalNet":
         r"""
@@ -1457,8 +1457,8 @@ class CNLoopyPropagation(object):
             the credal network
 
         """
-        return _cn.CNLoopyPropagation_CN(self)
+        return _cncpp.CNLoopyPropagation_CN(self)
 
-# Register CNLoopyPropagation in _cn:
-_cn.CNLoopyPropagation_swigregister(CNLoopyPropagation)
+# Register CNLoopyPropagation in _cncpp:
+_cncpp.CNLoopyPropagation_swigregister(CNLoopyPropagation)
 

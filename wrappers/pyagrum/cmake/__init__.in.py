@@ -83,7 +83,7 @@ __all__ = [
   "availableBNExts", "common", "config", "deprecated", "deprecatedCausalBN", "fastBN", "fastDAG",
   "fastDiGraph", "fastGraph", "fastMixedGraph", "fastPDAG", "fastUndiGraph", "fastVariable",
   "generateSample", "getMaxNumberOfThreads", "getNumberOfLogicalProcessors",
-  "getNumberOfThreads", "getPosterior", "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrum",
+  "getNumberOfThreads", "getPosterior", "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrumcpp",
   "randomBN", "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue",
   "saveBN", "setNumberOfThreads", "statsObj",
 ]
@@ -92,7 +92,7 @@ __all__ = [
 # once per process, before the first DLL that needs it is loaded. libagrumBASE.dll/
 # libagrumBN.dll are installed alongside this file (see the
 # install(TARGETS agrumBASE agrumBN ...) call in wrappers/pyagrum/CMakeLists.txt) --
-# add_dll_directory here covers _pyagrum.pyd below *and* every split submodule's
+# add_dll_directory here covers _pyagrumcpp.pyd below *and* every split submodule's
 # _<mod>.pyd, since Windows DLL search directories are process-wide, not per-import.
 import sys as _sys
 
@@ -106,15 +106,15 @@ del _sys
 # selection of imports extracted from dir(.pyagrum)
 
 # submodule BASE
-from .pyagrum import log2
-from .pyagrum import statsObj
+from .pyagrumcpp import log2
+from .pyagrumcpp import statsObj
 # Re-exported so split submodules (mrf/id/cn/cm) can do
 # `from pyagrum import _gum_pickle_load, ...` instead of reaching into the
-# `pyagrum.pyagrum` SWIG proxy submodule directly.
-from .pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
-from .pyagrum import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG
-from .pyagrum import config
-from .pyagrum import (
+# `pyagrum.pyagrumcpp` SWIG proxy submodule directly.
+from .pyagrumcpp import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+from .pyagrumcpp import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG
+from .pyagrumcpp import config
+from .pyagrumcpp import (
   DiscretizedVariable,
   LabelizedVariable,
   RangeVariable,
@@ -122,35 +122,35 @@ from .pyagrum import (
   IntegerVariable,
   NumericalDiscreteVariable,
 )
-from .pyagrum import Tensor, Instantiation, Tensor
-from .pyagrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, PAG, CliqueGraph
-from .pyagrum import EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
-from .pyagrum import JunctionTreeGenerator
-from .pyagrum import MeekRules
-from .pyagrum import ApproximationScheme
-from .pyagrum import fastVariable
-from .pyagrum import (
+from .pyagrumcpp import Tensor, Instantiation, Tensor
+from .pyagrumcpp import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, PAG, CliqueGraph
+from .pyagrumcpp import EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
+from .pyagrumcpp import JunctionTreeGenerator
+from .pyagrumcpp import MeekRules
+from .pyagrumcpp import ApproximationScheme
+from .pyagrumcpp import fastVariable
+from .pyagrumcpp import (
   initRandom,
   randomProba,
   randomDistribution,
   randomGeneratorSeed,
   randomValue,
 )
-from .pyagrum import (
+from .pyagrumcpp import (
   isOMP,
   getNumberOfThreads,
   getMaxNumberOfThreads,
   getNumberOfLogicalProcessors,
   setNumberOfThreads,
 )
-from .pyagrum import (
+from .pyagrumcpp import (
   VarType_DISCRETIZED,
   VarType_LABELIZED,
   VarType_RANGE,
   VarType_INTEGER,
   VarType_NUMERICAL,
 )
-from .pyagrum import (
+from .pyagrumcpp import (
   DefaultInLabel,
   DuplicateElement,
   DuplicateLabel,
@@ -187,36 +187,36 @@ from .pyagrum import (
 )
 
 # submodule BN
-from .pyagrum import fastBN
-from .pyagrum import availableBNExts, loadBN, saveBN
-from .pyagrum import randomBN, generateSample
-from .pyagrum import mutilateBN
-from .pyagrum import getPosterior
-from .pyagrum import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
-from .pyagrum import ExactBNdistance, GibbsBNdistance, MCBNDistance, StructuralMetrics
-from .pyagrum import LazyPropagation, ShaferShenoyInference, VariableElimination
-from .pyagrum import (
+from .pyagrumcpp import fastBN
+from .pyagrumcpp import availableBNExts, loadBN, saveBN
+from .pyagrumcpp import randomBN, generateSample
+from .pyagrumcpp import mutilateBN
+from .pyagrumcpp import getPosterior
+from .pyagrumcpp import BayesNet, BayesNetFragment, EssentialGraph, MarkovBlanket
+from .pyagrumcpp import ExactBNdistance, GibbsBNdistance, MCBNDistance, StructuralMetrics
+from .pyagrumcpp import LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyagrumcpp import (
   LoopyBeliefPropagation,
   GibbsSampling,
   MonteCarloSampling,
   ImportanceSampling,
   WeightedSampling,
 )
-from .pyagrum import (
+from .pyagrumcpp import (
   LoopyImportanceSampling,
   LoopyGibbsSampling,
   LoopyWeightedSampling,
   LoopyMonteCarloSampling,
 )
-from .pyagrum import (
+from .pyagrumcpp import (
   PythonApproximationListener,
   PythonBNListener,
   PythonLoadListener,
   PythonDatabaseGeneratorListener,
 )
-from .pyagrum import BNGenerator
-from .pyagrum import BNDatabaseGenerator, InformationTheory
-from .pyagrum import BNLearner
+from .pyagrumcpp import BNGenerator
+from .pyagrumcpp import BNDatabaseGenerator, InformationTheory
+from .pyagrumcpp import BNLearner
 
 import sys
 
@@ -263,7 +263,7 @@ def _lazy_import_submodule(submodule_name):
     # below): applied here, on first successful lazy import of pyagrum.cm,
     # rather than unconditionally at module top-level -- CausalModel is no
     # longer an eagerly-imported name once this shim replaces the old
-    # direct `from .pyagrum import CausalModel`. Idempotent: safe to run
+    # direct `from .pyagrumcpp import CausalModel`. Idempotent: safe to run
     # again if cm attributes are accessed via several different names.
     _patch_causal_model(submodule.CausalModel)
 

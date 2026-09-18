@@ -48,6 +48,13 @@
 %rename(_counterfactual) gum::counterfactual;
 %rename(_counterfactualModel) gum::counterfactualModel;
 
+// DoorCriteria's two static methods are renamed the same way, so the
+// %extend %pythoncode kwargs wrappers in causal_after_templates.i can call
+// them back as plain class-qualified names (DoorCriteria._enumerate...Sets)
+// instead of reaching into this module's compiled extension by hand.
+%rename(_enumerateBackdoorSets) gum::DoorCriteria::enumerateBackdoorSets;
+%rename(_enumerateFrontdoorSets) gum::DoorCriteria::enumerateFrontdoorSets;
+
 %ignore *::id2name;
 %ignore *::root;
 %ignore gum::CausalImpact<double>::getResult;
@@ -102,9 +109,9 @@
 %}
 
 // CausalImpact constructor: keyword-only on/doing/knowing with str→set coercion.
-// $action expands to _cm.new_CausalImpact; swiginit is the SWIG object
-// initialisation convention for this project. _cm (not _pyagrum) since this
-// module (pyagrum.cm) is a separate compiled extension from core pyagrum.
+// $action expands to _cmcpp.new_CausalImpact; swiginit is the SWIG object
+// initialisation convention for this project. _cmcpp (not _pyagrumcpp) since
+// this module (pyagrum.cm) is a separate compiled extension from core pyagrum.
 %feature("shadow") gum::CausalImpact::CausalImpact %{
     def __init__(self, cm, *, on, doing, knowing=None):
         if isinstance(on, str):
@@ -113,7 +120,7 @@
             doing = {doing}
         if isinstance(knowing, str):
             knowing = {knowing}
-        _cm.CausalImpact_swiginit(self, $action(cm, on, doing,
+        _cmcpp.CausalImpact_swiginit(self, $action(cm, on, doing,
                                        knowing if knowing is not None else set(),
                                        False))
 %}

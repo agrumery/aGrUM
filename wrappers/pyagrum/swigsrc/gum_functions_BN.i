@@ -355,7 +355,7 @@ def mutilateBN(bn, intervention=None, observation=None):
 
   Parameters
   ----------
-  bn : pyagrum.pyagrum.BayesNet
+  bn : pyagrum.BayesNet
     A bayesian network
   intervention : dict[str,list[str|float|int]]
     set of variables on which we intervene to force the value
@@ -364,7 +364,7 @@ def mutilateBN(bn, intervention=None, observation=None):
 
   Returns
   -------
-  inter_bn : new bayesian network reflecting the interventions and observations (pyagrum.pyagrum.BayesNet)
+  inter_bn : new bayesian network reflecting the interventions and observations (pyagrum.BayesNet)
   evidence : dictionary of all evidences for future inferences (dict)
   """
   if intervention is None:

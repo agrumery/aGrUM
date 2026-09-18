@@ -124,20 +124,36 @@ endif()
 # only from cm.i, so core only ever needs BASE/BN.
 
 macro(gum_add_python_module MODULENAME)
-  string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
-
-  # Optional 2nd arg: install subdirectory under pyagrum/ (e.g. "mrf" for
-  # pyagrum.mrf). Defaults to "." (install straight under pyagrum/, today's
-  # only case) so a single-arg call keeps installing where it always has.
+  # SUBDIR (optional): install subdirectory under pyagrum/ (e.g. "mrf" for
+  # pyagrum.mrf). Left unset, installs straight under pyagrum/ (core's case).
   # Mirrored by _PYAGRUM_BUILD_SUBDIR below: the .so/.py must land in the
   # same subdirectory in the build tree too, since act test runs pyAgrum
   # straight out of the build tree (PYTHONPATH), not the installed wheel.
+  #
+  # SWIGMOD (optional): basename of the compiled SWIG extension itself (the
+  # generated <name>.py proxy / _<name>.so, and the name the module is
+  # importable under -- e.g. "pyagrumcpp" for pyagrum/pyagrumcpp.py, "ktbncpp"
+  # for pyagrum/ktbn/ktbncpp.py). Left unset, defaults to MODULENAME_LOWER.
+  # Kept distinct from SUBDIR (the *package* name, still "ktbn") and from
+  # MODULENAME_LOWER (still used below for the source <name>.i lookup, the
+  # generic aGrUM_wrap_<MODULENAME>.i layer, and the agrum<MODULENAME> link)
+  # so the package stays pyagrum.ktbn while the module inside it is named
+  # ktbncpp -- avoiding the pyagrum.ktbn.ktbn double-naming that otherwise
+  # results from package and module sharing the same basename.
+  cmake_parse_arguments(_PYAGRUM_ARG "" "SUBDIR;SWIGMOD" "" ${ARGN})
+  string(TOLOWER "${MODULENAME}" MODULENAME_LOWER)
+
   set(_PYAGRUM_INSTALL_DIR "${INSTALL_PYTHONDIR}/pyagrum")
   set(_PYAGRUM_BUILD_SUBDIR "${CMAKE_CURRENT_BINARY_DIR}")
-  if(${ARGC} GREATER 1)
-    set(_PYAGRUM_INSTALL_DIR "${INSTALL_PYTHONDIR}/pyagrum/${ARGV1}")
-    set(_PYAGRUM_BUILD_SUBDIR "${CMAKE_CURRENT_BINARY_DIR}/${ARGV1}")
+  if(_PYAGRUM_ARG_SUBDIR)
+    set(_PYAGRUM_INSTALL_DIR "${INSTALL_PYTHONDIR}/pyagrum/${_PYAGRUM_ARG_SUBDIR}")
+    set(_PYAGRUM_BUILD_SUBDIR "${CMAKE_CURRENT_BINARY_DIR}/${_PYAGRUM_ARG_SUBDIR}")
     file(MAKE_DIRECTORY ${_PYAGRUM_BUILD_SUBDIR})
+  endif()
+
+  set(_PYAGRUM_SWIGMOD ${MODULENAME_LOWER})
+  if(_PYAGRUM_ARG_SWIGMOD)
+    set(_PYAGRUM_SWIGMOD ${_PYAGRUM_ARG_SWIGMOD})
   endif()
 
   # Not every module has a generic wrappers/swig/aGrUM_wrap_<MODULENAME>.i
@@ -150,18 +166,18 @@ macro(gum_add_python_module MODULENAME)
   endif()
 
   if(SWIG_FOUND)
-    add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
-      ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-      ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+    add_custom_command(OUTPUT ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}.py
+      ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
+      ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
       ${_PYAGRUM_WRAP_FILE}
       ${PYAGRUMFILES}
       COMMAND ${SWIG_EXECUTABLE} -c++ -python ${CMAKE_SWIG_FLAGS}
       -outdir ${CMAKE_SWIG_OUTDIR}
       -I${AGRUM_SOURCE_DIR} -I${SWIG_SOURCE_DIR} -I${CMAKE_CURRENT_SOURCE_DIR}/swigsrc/ -I${CMAKE_CURRENT_SOURCE_DIR}/doc
-      -o ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+      -o ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
       ${CMAKE_CURRENT_SOURCE_DIR}/${MODULENAME_LOWER}.i
-      COMMENT "SWIG: generating ${MODULENAME} Python bindings"
+      COMMENT "SWIG: generating ${MODULENAME} Python bindings (module ${_PYAGRUM_SWIGMOD})"
     )
 
     # passForPyType post-processes raw/ → generated-files/.
@@ -173,24 +189,24 @@ macro(gum_add_python_module MODULENAME)
     set(_PASSFORPYTYPE_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_passForPyType.stamp)
     add_custom_command(OUTPUT ${_PASSFORPYTYPE_STAMP}
       BYPRODUCTS
-        ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
-        ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-        ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
+        ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py
+        ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
+        ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h
       DEPENDS
-        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
-        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-        ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
+        ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}.py
+        ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
+        ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h
       COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
-              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}.py
-              ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
+              ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}.py
+              ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py
       COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/passForPyType.py
-              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx
-              ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx
+              ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
+              ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
-              ${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h
-              ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.h
+              ${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h
+              ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h
       COMMAND ${CMAKE_COMMAND} -E touch ${_PASSFORPYTYPE_STAMP}
-      COMMENT "passForPyType: post-processing ${MODULENAME} SWIG output"
+      COMMENT "passForPyType: post-processing ${MODULENAME} SWIG output (module ${_PYAGRUM_SWIGMOD})"
     )
 
     # Custom target so the library can declare an explicit ordering dependency on the stamp.
@@ -203,9 +219,9 @@ macro(gum_add_python_module MODULENAME)
   # below), so it must be a real linkable shared library, not a Python-only
   # loadable bundle. Submodules stay MODULE -- nothing links against them.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
-    add_library(${_PYAGRUMLIB} SHARED ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+    add_library(${_PYAGRUMLIB} SHARED ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx)
   else()
-    add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx)
+    add_library(${_PYAGRUMLIB} MODULE ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx)
   endif()
   if(SWIG_FOUND)
     # OBJECT_DEPENDS hardens the compile step itself (not just the target-level
@@ -218,12 +234,12 @@ macro(gum_add_python_module MODULENAME)
     # advanced, or the tree was only partially cleaned. Depending explicitly
     # on the stamp and the raw SWIG outputs forces MSBuild/Ninja to recheck
     # the compile whenever those actually change, closing that skip window.
-    set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES
+    set_source_files_properties(${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx PROPERTIES
       GENERATED TRUE
-      OBJECT_DEPENDS "${_PASSFORPYTYPE_STAMP};${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.cxx;${CMAKE_SWIG_OUTDIR}/${MODULENAME_LOWER}PYTHON_wrap.h"
+      OBJECT_DEPENDS "${_PASSFORPYTYPE_STAMP};${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx;${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h"
     )
   else()
-    set_source_files_properties(${GENERATED_PYTHON}/${MODULENAME_LOWER}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
+    set_source_files_properties(${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
   endif()
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
   # This target (core _pyagrum.so, or a leaf _mrf/_id/_cn/_cm/_prm.pyd) is a real
@@ -274,6 +290,13 @@ macro(gum_add_python_module MODULENAME)
   endif()
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
+  # OUTPUT_NAME decoupled from the target name (${_PYAGRUMLIB}, still
+  # "_pyagrum"/"_ktbn"/... -- used for target_link_libraries cross-references
+  # like the literal "_pyagrum" at the core-link branch below): the actual
+  # produced binary must be "_<swigmod>.so"/".pyd" to match the SWIG-generated
+  # proxy's own "from . import _<swigmod>" statement (module token in the
+  # .i file's %module directive).
+  set_target_properties(${_PYAGRUMLIB} PROPERTIES OUTPUT_NAME "_${_PYAGRUM_SWIGMOD}")
 
   if(WIN32)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".pyd")
@@ -417,7 +440,7 @@ macro(gum_add_python_module MODULENAME)
   # need one level up to reach it -- this also transparently covers the build tree
   # (CMake's default auto-computed BUILD_RPATH already finds co-located build
   # outputs; INSTALL_RPATH only takes effect once `cmake --install` actually runs).
-  if(${ARGC} GREATER 1)
+  if(_PYAGRUM_ARG_SUBDIR)
     set(_PYAGRUM_RPATH_UP "/..")
   else()
     set(_PYAGRUM_RPATH_UP "")
@@ -479,7 +502,7 @@ macro(gum_add_python_module MODULENAME)
     endif()
   endif()
 
-  install(FILES ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
+  install(FILES ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
   install(TARGETS ${_PYAGRUMLIB} DESTINATION ${_PYAGRUM_INSTALL_DIR})
 
   # Copy the Python proxy into the build tree (needed for `act test`, which
@@ -494,10 +517,10 @@ macro(gum_add_python_module MODULENAME)
   # regardless of whether the .so needed rebuilding.
   set(_PY_PROXY_COPY_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_py_proxy_copy.stamp)
   add_custom_command(OUTPUT ${_PY_PROXY_COPY_STAMP}
-    DEPENDS ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py
-    COMMAND ${CMAKE_COMMAND} -E copy "${GENERATED_PYTHON}/${MODULENAME_LOWER}.py" "${_PYAGRUM_BUILD_SUBDIR}/."
+    DEPENDS ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py
+    COMMAND ${CMAKE_COMMAND} -E copy "${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py" "${_PYAGRUM_BUILD_SUBDIR}/."
     COMMAND ${CMAKE_COMMAND} -E touch ${_PY_PROXY_COPY_STAMP}
-    COMMENT "copying ${MODULENAME} Python proxy into the build tree"
+    COMMENT "copying ${MODULENAME} Python proxy (module ${_PYAGRUM_SWIGMOD}) into the build tree"
   )
   add_custom_target(${MODULENAME_LOWER}_py_proxy_copy ALL DEPENDS ${_PY_PROXY_COPY_STAMP})
   if(SWIG_FOUND)
@@ -512,7 +535,7 @@ endmacro()
 #
 #  gum_add_python_module(${MODULE})
 #endforeach()
-gum_add_python_module(pyagrum)
+gum_add_python_module(pyagrum SWIGMOD pyagrumcpp)
 
 
 # List of pyAgrum leaf modules (independent SWIG extensions on top of the
@@ -538,10 +561,16 @@ endforeach()
 foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
   string(TOLOWER ${_pysubmod_upper} _pysubmod)
   if(PYAGRUM_WITH_${_pysubmod_upper} AND (BUILD_${_pysubmod_upper} OR BUILD_ALL))
-    gum_add_python_module(${_pysubmod_upper} ${_pysubmod})
-    # from .<mod> (the SWIG-generated Python proxy, e.g. mrf.py, which itself
-    # does `from . import _mrf`), NOT from ._<mod> (the raw C extension) --
-    # mirrors how pyagrum/__init__.py itself does `from .pyagrum import X`.
+    # 3rd arg ("${_pysubmod}cpp"): the compiled SWIG extension's own basename,
+    # distinct from the package dir name ${_pysubmod} -- so the module ends up
+    # importable as pyagrum.ktbn.ktbncpp (package pyagrum.ktbn, module
+    # ktbncpp) instead of pyagrum.ktbn.ktbn, whose repeated name reads like a
+    # typo/bug even though it is not one.
+    gum_add_python_module(${_pysubmod_upper} SUBDIR ${_pysubmod} SWIGMOD ${_pysubmod}cpp)
+    # from .<mod>cpp (the SWIG-generated Python proxy, e.g. mrfcpp.py, which
+    # itself does `from . import _mrfcpp`), NOT from ._<mod>cpp (the raw C
+    # extension) -- mirrors how pyagrum/__init__.py itself does
+    # `from .pyagrumcpp import X`.
     #
     # "from .. import *" first: re-exports the core (BASE+BN) namespace so
     # `import pyagrum.mrf as gum` is a drop-in superset of `import pyagrum as
@@ -552,7 +581,7 @@ foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
     # __getattr__ shim, see cmake/__init__.in.py) to the parent package,
     # so e.g. `import pyagrum.cm as gum; gum.getPosterior(...)` works without
     # duplicating the lazy-submodule-loading logic here.
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py "from .. import *\nfrom .${_pysubmod} import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py "from .. import *\nfrom .${_pysubmod}cpp import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubmod})
   endif()
 endforeach()
@@ -668,7 +697,7 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW)
     # under the Visual Studio generator's differently shaped, per-configuration
     # object layout -- this OBJECT-library recompile is the one mechanism that
     # works identically on all three platforms.
-    add_library(_pyagrum_core_trim_obj OBJECT EXCLUDE_FROM_ALL ${GENERATED_PYTHON}/pyagrumPYTHON_wrap.cxx)
+    add_library(_pyagrum_core_trim_obj OBJECT EXCLUDE_FROM_ALL ${GENERATED_PYTHON}/pyagrumcppPYTHON_wrap.cxx)
     # CMake auto-enables -fPIC for SHARED/MODULE targets (that's how _pyagrum itself gets
     # it) but NOT for a plain OBJECT library -- it has no way to know its objects will end
     # up in a shared object. Without this, GCC/ld on Linux reject the relink with
@@ -687,7 +716,7 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW)
     set(_PYAGRUM_TRIM_ARGS
       --core $<TARGET_FILE:_pyagrum>
       --format ${_PYAGRUM_TRIM_FORMAT}
-      --keep PyInit__pyagrum
+      --keep PyInit__pyagrumcpp
       --out ${_PYAGRUM_EXPORTS_FILE})
     foreach(_leaf ${_PYAGRUM_LEAF_FILES})
       list(APPEND _PYAGRUM_TRIM_ARGS --leaf ${_leaf})

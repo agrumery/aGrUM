@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.prm", docstring="pyagrum.prm module") prm
+%module(package="pyagrum.prm", docstring="pyagrum.prm module") prmcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

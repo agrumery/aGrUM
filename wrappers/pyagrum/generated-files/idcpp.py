@@ -13,9 +13,9 @@ import pyagrum
 
 # Import the low-level C/C++ module
 if getattr(globals().get("__spec__"), "parent", None) or __package__ or "." in __name__:
-    from . import _id
+    from . import _idcpp
 else:
-    import _id
+    import _idcpp
 
 import builtins as __builtin__
 
@@ -56,7 +56,7 @@ class _SwigNonDynamicMeta(type):
 
 import weakref
 
-import pyagrum.pyagrum
+import pyagrum.pyagrumcpp
 class IDGenerator(object):
     r"""
 
@@ -94,7 +94,7 @@ class IDGenerator(object):
             the generated influence diagram
 
         """
-        return _id.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
+        return _idcpp.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
 
     def __init__(self):
         r"""
@@ -105,12 +105,12 @@ class IDGenerator(object):
             default constructor
 
         """
-        _id.IDGenerator_swiginit(self, _id.new_IDGenerator())
-    __swig_destroy__ = _id.delete_IDGenerator
+        _idcpp.IDGenerator_swiginit(self, _idcpp.new_IDGenerator())
+    __swig_destroy__ = _idcpp.delete_IDGenerator
 
-# Register IDGenerator in _id:
-_id.IDGenerator_swigregister(IDGenerator)
-class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
+# Register IDGenerator in _idcpp:
+_idcpp.IDGenerator_swigregister(IDGenerator)
+class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
     r"""
 
     InfluenceDiagram represents an Influence Diagram.
@@ -172,14 +172,14 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
                 the resulting Influence Diagram
 
         """
-        return _id.InfluenceDiagram_fastPrototype(*args)
-    __swig_destroy__ = _id.delete_InfluenceDiagram
+        return _idcpp.InfluenceDiagram_fastPrototype(*args)
+    __swig_destroy__ = _idcpp.delete_InfluenceDiagram
 
     def __init__(self, *args):
-        _id.InfluenceDiagram_swiginit(self, _id.new_InfluenceDiagram(*args))
+        _idcpp.InfluenceDiagram_swiginit(self, _idcpp.new_InfluenceDiagram(*args))
 
     def __eq__(self, other: "InfluenceDiagram") -> bool:
-        return _id.InfluenceDiagram___eq__(self, other)
+        return _idcpp.InfluenceDiagram___eq__(self, other)
 
     def toDot(self) -> str:
         r"""
@@ -190,7 +190,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             a friendly display of the graph in DOT format
 
         """
-        return _id.InfluenceDiagram_toDot(self)
+        return _idcpp.InfluenceDiagram_toDot(self)
 
     def clear(self) -> None:
         r"""
@@ -198,7 +198,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         Clear the influence diagram, removing all nodes and arcs.
 
         """
-        return _id.InfluenceDiagram_clear(self)
+        return _idcpp.InfluenceDiagram_clear(self)
 
     def cpt(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -221,7 +221,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If no variable's id matches varId.
 
         """
-        return _id.InfluenceDiagram_cpt(self, *args)
+        return _idcpp.InfluenceDiagram_cpt(self, *args)
 
     def utility(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -242,7 +242,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If the InfluenceDiagram does not contain the variable
 
         """
-        return _id.InfluenceDiagram_utility(self, *args)
+        return _idcpp.InfluenceDiagram_utility(self, *args)
 
     def isUtilityNode(self, *args) -> bool:
         r"""
@@ -258,7 +258,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             true if node is an utility node
 
         """
-        return _id.InfluenceDiagram_isUtilityNode(self, *args)
+        return _idcpp.InfluenceDiagram_isUtilityNode(self, *args)
 
     def isDecisionNode(self, *args) -> bool:
         r"""
@@ -274,7 +274,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             true if node is a decision node
 
         """
-        return _id.InfluenceDiagram_isDecisionNode(self, *args)
+        return _idcpp.InfluenceDiagram_isDecisionNode(self, *args)
 
     def isChanceNode(self, *args) -> bool:
         r"""
@@ -290,7 +290,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             true if node is a chance node
 
         """
-        return _id.InfluenceDiagram_isChanceNode(self, *args)
+        return _idcpp.InfluenceDiagram_isChanceNode(self, *args)
 
     def utilityNodeSize(self) -> int:
         r"""
@@ -301,7 +301,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the number of utility nodes
 
         """
-        return _id.InfluenceDiagram_utilityNodeSize(self)
+        return _idcpp.InfluenceDiagram_utilityNodeSize(self)
 
     def chanceNodeSize(self) -> int:
         r"""
@@ -312,7 +312,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the number of chance nodes.
 
         """
-        return _id.InfluenceDiagram_chanceNodeSize(self)
+        return _idcpp.InfluenceDiagram_chanceNodeSize(self)
 
     def decisionNodeSize(self) -> int:
         r"""
@@ -323,7 +323,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the number of decision nodes
 
         """
-        return _id.InfluenceDiagram_decisionNodeSize(self)
+        return _idcpp.InfluenceDiagram_decisionNodeSize(self)
 
     def add(self, *args) -> int:
         r"""
@@ -353,7 +353,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
               If already used id or name.
 
         """
-        return _id.InfluenceDiagram_add(self, *args)
+        return _idcpp.InfluenceDiagram_add(self, *args)
 
     def addChanceNode(self, *args) -> int:
         r"""
@@ -384,7 +384,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If id(<>0) is already used
 
         """
-        return _id.InfluenceDiagram_addChanceNode(self, *args)
+        return _idcpp.InfluenceDiagram_addChanceNode(self, *args)
 
     def addUtilityNode(self, *args) -> int:
         r"""
@@ -417,7 +417,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If id(<>0) is already used
 
         """
-        return _id.InfluenceDiagram_addUtilityNode(self, *args)
+        return _idcpp.InfluenceDiagram_addUtilityNode(self, *args)
 
     def addDecisionNode(self, *args) -> int:
         r"""
@@ -448,7 +448,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If id(<>0) is already used
 
         """
-        return _id.InfluenceDiagram_addDecisionNode(self, *args)
+        return _idcpp.InfluenceDiagram_addDecisionNode(self, *args)
 
     def erase(self, *args) -> None:
         r"""
@@ -465,7 +465,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             a variable's id (int) or name or th reference on the variable to remove.
 
         """
-        return _id.InfluenceDiagram_erase(self, *args)
+        return _idcpp.InfluenceDiagram_erase(self, *args)
 
     def changeVariableName(self, *args) -> None:
         r"""
@@ -485,7 +485,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If no nodes matches id.
 
         """
-        return _id.InfluenceDiagram_changeVariableName(self, *args)
+        return _idcpp.InfluenceDiagram_changeVariableName(self, *args)
 
     def addArc(self, *args) -> None:
         r"""
@@ -507,7 +507,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If tail is a utility node
 
         """
-        return _id.InfluenceDiagram_addArc(self, *args)
+        return _idcpp.InfluenceDiagram_addArc(self, *args)
 
     def eraseArc(self, *args) -> None:
         r"""
@@ -526,7 +526,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             a variable's id (int) or name when calling eraseArc(tail,head)
 
         """
-        return _id.InfluenceDiagram_eraseArc(self, *args)
+        return _idcpp.InfluenceDiagram_eraseArc(self, *args)
 
     def decisionOrderExists(self) -> bool:
         r"""
@@ -537,7 +537,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             True if a directed path exist with all decision node
 
         """
-        return _id.InfluenceDiagram_decisionOrderExists(self)
+        return _idcpp.InfluenceDiagram_decisionOrderExists(self)
 
     def getDecisionGraph(self) -> "pyagrum.DAG":
         r"""
@@ -548,7 +548,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the temporal Graph.
 
         """
-        return _id.InfluenceDiagram_getDecisionGraph(self)
+        return _idcpp.InfluenceDiagram_getDecisionGraph(self)
 
     def decisionOrder(self) -> list[int]:
         r"""
@@ -566,7 +566,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             if no valid decision order exists
 
         """
-        return _id.InfluenceDiagram_decisionOrder(self)
+        return _idcpp.InfluenceDiagram_decisionOrder(self)
 
     def existsPathBetween(self, *args) -> bool:
         r"""
@@ -577,7 +577,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             true if a path exists between two nodes.
 
         """
-        return _id.InfluenceDiagram_existsPathBetween(self, *args)
+        return _idcpp.InfluenceDiagram_existsPathBetween(self, *args)
 
     def beginTopologyTransformation(self) -> None:
         r"""
@@ -587,7 +587,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         Structural changes are batched until endTopologyTransformation is called.
 
         """
-        return _id.InfluenceDiagram_beginTopologyTransformation(self)
+        return _idcpp.InfluenceDiagram_beginTopologyTransformation(self)
 
     def endTopologyTransformation(self) -> None:
         r"""
@@ -597,7 +597,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         Should be called after beginTopologyTransformation when all modifications are done.
 
         """
-        return _id.InfluenceDiagram_endTopologyTransformation(self)
+        return _idcpp.InfluenceDiagram_endTopologyTransformation(self)
 
     def idFromName(self, name: str) -> int:
         r"""
@@ -620,7 +620,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             if no variable with this name exists in the model
 
         """
-        return _id.InfluenceDiagram_idFromName(self, name)
+        return _idcpp.InfluenceDiagram_idFromName(self, name)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -641,7 +641,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If no variable's id matches the parameter
 
         """
-        return _id.InfluenceDiagram_variable(self, *args)
+        return _idcpp.InfluenceDiagram_variable(self, *args)
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -664,7 +664,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             if the variable does not exist in the model
 
         """
-        return _id.InfluenceDiagram_nodeId(self, var)
+        return _idcpp.InfluenceDiagram_nodeId(self, var)
 
     def variableFromName(self, name: str) -> "pyagrum.DiscreteVariable":
         r"""
@@ -687,7 +687,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             if no variable with this name exists in the model
 
         """
-        return _id.InfluenceDiagram_variableFromName(self, name)
+        return _idcpp.InfluenceDiagram_variableFromName(self, name)
 
     def names(self) -> set[str]:
         r"""
@@ -698,7 +698,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             The names of the InfluenceDiagram variables
 
         """
-        return _id.InfluenceDiagram_names(self)
+        return _idcpp.InfluenceDiagram_names(self)
 
     def __iter__(self):
       """
@@ -730,7 +730,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the set of ids
 
         """
-        return _id.InfluenceDiagram_nodes(self)
+        return _idcpp.InfluenceDiagram_nodes(self)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -795,7 +795,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the list of all the arcs in the Influence Diagram.
 
         """
-        return _id.InfluenceDiagram_arcs(self)
+        return _idcpp.InfluenceDiagram_arcs(self)
 
     def parents(self, norid: object) -> set[int]:
         r"""
@@ -811,7 +811,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the set of the parents ids.
 
         """
-        return _id.InfluenceDiagram_parents(self, norid)
+        return _idcpp.InfluenceDiagram_parents(self, norid)
 
     def children(self, norid: object) -> set[int]:
         r"""
@@ -827,7 +827,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the set of all the children
 
         """
-        return _id.InfluenceDiagram_children(self, norid)
+        return _idcpp.InfluenceDiagram_children(self, norid)
 
     def family(self, norid: object) -> set[int]:
         r"""
@@ -845,7 +845,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
           the set of nodeId of the family of the node `norid`
 
         """
-        return _id.InfluenceDiagram_family(self, norid)
+        return _idcpp.InfluenceDiagram_family(self, norid)
 
     def descendants(self, norid: object) -> set[int]:
         r"""
@@ -863,7 +863,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
           the set of ids of the descendants of node `norid`.
 
         """
-        return _id.InfluenceDiagram_descendants(self, norid)
+        return _idcpp.InfluenceDiagram_descendants(self, norid)
 
     def ancestors(self, norid: object) -> set[int]:
         r"""
@@ -881,7 +881,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
           the set of ids of the ancestors of node `norid`.
 
         """
-        return _id.InfluenceDiagram_ancestors(self, norid)
+        return _idcpp.InfluenceDiagram_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
@@ -903,7 +903,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
           the moralized ancestral graph of the nodes
 
         """
-        return _id.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
+        return _idcpp.InfluenceDiagram_moralizedAncestralGraph(self, nodes)
 
     def loadGUM(self, name: str, binary: bool=False) -> None:
         r"""
@@ -929,7 +929,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _id.InfluenceDiagram_loadGUM(self, name, binary)
+        return _idcpp.InfluenceDiagram_loadGUM(self, name, binary)
 
     def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
         r"""
@@ -952,7 +952,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _id.InfluenceDiagram__saveGUM(self, name, binary, indent)
+        return _idcpp.InfluenceDiagram__saveGUM(self, name, binary, indent)
 
     def _saveGUMstring(self, indent: int=2) -> str:
         r"""
@@ -976,7 +976,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _id.InfluenceDiagram__saveGUMstring(self, indent)
+        return _idcpp.InfluenceDiagram__saveGUMstring(self, indent)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -998,7 +998,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _id.InfluenceDiagram_loadGUMstring(self, content)
+        return _idcpp.InfluenceDiagram_loadGUMstring(self, content)
 
     def loadBIFXML(self, *args) -> bool:
         r"""
@@ -1018,7 +1018,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             If file is not valid
 
         """
-        return _id.InfluenceDiagram_loadBIFXML(self, *args)
+        return _idcpp.InfluenceDiagram_loadBIFXML(self, *args)
 
     def saveBIFXML(self, name: str) -> None:
         r"""
@@ -1031,7 +1031,7 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
             the file's name
 
         """
-        return _id.InfluenceDiagram_saveBIFXML(self, name)
+        return _idcpp.InfluenceDiagram_saveBIFXML(self, name)
 
     def addVariables(self,listFastVariables,default_nbr_mod=2):
        """
@@ -1198,13 +1198,13 @@ class InfluenceDiagram(pyagrum.pyagrum.DAGmodel):
 
 
     def __repr__(self) -> str:
-        return _id.InfluenceDiagram___repr__(self)
+        return _idcpp.InfluenceDiagram___repr__(self)
 
     def __str__(self) -> str:
-        return _id.InfluenceDiagram___str__(self)
+        return _idcpp.InfluenceDiagram___str__(self)
 
-# Register InfluenceDiagram in _id:
-_id.InfluenceDiagram_swigregister(InfluenceDiagram)
+# Register InfluenceDiagram in _idcpp:
+_idcpp.InfluenceDiagram_swigregister(InfluenceDiagram)
 class ShaferShenoyLIMIDInference(object):
     r"""
 
@@ -1220,13 +1220,13 @@ class ShaferShenoyLIMIDInference(object):
     __repr__ = _swig_repr
 
     def __init__(self, infDiag: "InfluenceDiagram"):
-        _id.ShaferShenoyLIMIDInference_swiginit(self, _id.new_ShaferShenoyLIMIDInference(infDiag))
+        _idcpp.ShaferShenoyLIMIDInference_swiginit(self, _idcpp.new_ShaferShenoyLIMIDInference(infDiag))
 
         self._model=infDiag
 
 
 
-    __swig_destroy__ = _id.delete_ShaferShenoyLIMIDInference
+    __swig_destroy__ = _idcpp.delete_ShaferShenoyLIMIDInference
 
     def junctionTree(self) -> "pyagrum.JunctionTree":
         r"""
@@ -1237,7 +1237,7 @@ class ShaferShenoyLIMIDInference(object):
           the current junction tree
 
         """
-        val = _id.ShaferShenoyLIMIDInference_junctionTree(self)
+        val = _idcpp.ShaferShenoyLIMIDInference_junctionTree(self)
 
         val._engine=self
 
@@ -1251,7 +1251,7 @@ class ShaferShenoyLIMIDInference(object):
         Clear all evidence and reset the inference engine to its initial state.
 
         """
-        return _id.ShaferShenoyLIMIDInference_clear(self)
+        return _idcpp.ShaferShenoyLIMIDInference_clear(self)
 
     def addNoForgettingAssumption(self, *args) -> None:
         r"""
@@ -1271,7 +1271,7 @@ class ShaferShenoyLIMIDInference(object):
             if a given id is not a decision node
 
         """
-        return _id.ShaferShenoyLIMIDInference_addNoForgettingAssumption(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_addNoForgettingAssumption(self, *args)
 
     def hasNoForgettingAssumption(self) -> bool:
         r"""
@@ -1284,7 +1284,7 @@ class ShaferShenoyLIMIDInference(object):
             True if the no-forgetting assumption is currently active
 
         """
-        return _id.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
+        return _idcpp.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
 
     def reducedGraph(self) -> "pyagrum.DAG":
         r"""
@@ -1298,7 +1298,7 @@ class ShaferShenoyLIMIDInference(object):
 
 
         """
-        return _id.ShaferShenoyLIMIDInference_reducedGraph(self)
+        return _idcpp.ShaferShenoyLIMIDInference_reducedGraph(self)
 
     def reversePartialOrder(self) -> "pyagrum.YetUnWrapped":
         r"""
@@ -1311,7 +1311,7 @@ class ShaferShenoyLIMIDInference(object):
             the reversed partial order as a list of node id sets
 
         """
-        return _id.ShaferShenoyLIMIDInference_reversePartialOrder(self)
+        return _idcpp.ShaferShenoyLIMIDInference_reversePartialOrder(self)
 
     def reducedLIMID(self) -> "pyagrum.InfluenceDiagram":
         r"""
@@ -1325,7 +1325,7 @@ class ShaferShenoyLIMIDInference(object):
 
 
         """
-        return _id.ShaferShenoyLIMIDInference_reducedLIMID(self)
+        return _idcpp.ShaferShenoyLIMIDInference_reducedLIMID(self)
 
     def isSolvable(self) -> bool:
         r"""
@@ -1338,7 +1338,7 @@ class ShaferShenoyLIMIDInference(object):
           True if the influence diagram is solvable
 
         """
-        return _id.ShaferShenoyLIMIDInference_isSolvable(self)
+        return _idcpp.ShaferShenoyLIMIDInference_isSolvable(self)
 
     def optimalDecision(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1358,7 +1358,7 @@ class ShaferShenoyLIMIDInference(object):
             If node given in parmaeter is not a decision node
 
         """
-        return _id.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_optimalDecision(self, *args)
 
     def posteriorUtility(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1379,7 +1379,7 @@ class ShaferShenoyLIMIDInference(object):
 
 
         """
-        return _id.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
 
     def setEvidence(self, evidces):
         """
@@ -1449,7 +1449,7 @@ class ShaferShenoyLIMIDInference(object):
           the set of nodes with hard evidence
 
         """
-        return _id.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
+        return _idcpp.ShaferShenoyLIMIDInference_hardEvidenceNodes(self)
 
     def softEvidenceNodes(self) -> set[int]:
         r"""
@@ -1462,7 +1462,7 @@ class ShaferShenoyLIMIDInference(object):
             the set of node ids with soft evidence
 
         """
-        return _id.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
+        return _idcpp.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
 
     def MEU(self, *args) -> dict[str, float]:
         r"""
@@ -1475,7 +1475,7 @@ class ShaferShenoyLIMIDInference(object):
             If no inference have yet been made
 
         """
-        return _id.ShaferShenoyLIMIDInference_MEU(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_MEU(self, *args)
 
     def meanVar(self, *args) -> dict[str, float]:
         r"""
@@ -1493,7 +1493,7 @@ class ShaferShenoyLIMIDInference(object):
           a dictionary with the mean and variance of the node (after the inference)
 
         """
-        return _id.ShaferShenoyLIMIDInference_meanVar(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_meanVar(self, *args)
 
     def makeInference(self) -> None:
         r"""
@@ -1501,7 +1501,7 @@ class ShaferShenoyLIMIDInference(object):
         Perform the heavy computations needed to compute the optimal decisions.
 
         """
-        return _id.ShaferShenoyLIMIDInference_makeInference(self)
+        return _idcpp.ShaferShenoyLIMIDInference_makeInference(self)
 
     def posterior(self, *args) -> "pyagrum.Tensor":
         r"""
@@ -1521,7 +1521,7 @@ class ShaferShenoyLIMIDInference(object):
           a const ref to the posterior probability of the node
 
         """
-        return _id.ShaferShenoyLIMIDInference_posterior(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_posterior(self, *args)
 
     def addEvidence(self, *args) -> None:
         r"""
@@ -1555,7 +1555,7 @@ class ShaferShenoyLIMIDInference(object):
             If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_addEvidence(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_addEvidence(self, *args)
 
     def chgEvidence(self, *args) -> None:
         r"""
@@ -1587,7 +1587,7 @@ class ShaferShenoyLIMIDInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_chgEvidence(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_chgEvidence(self, *args)
 
     def hasEvidence(self, *args) -> bool:
         r"""
@@ -1610,7 +1610,7 @@ class ShaferShenoyLIMIDInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_hasEvidence(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_hasEvidence(self, *args)
 
     def eraseAllEvidence(self) -> None:
         r"""
@@ -1618,7 +1618,7 @@ class ShaferShenoyLIMIDInference(object):
         Remove all evidence.
 
         """
-        return _id.ShaferShenoyLIMIDInference_eraseAllEvidence(self)
+        return _idcpp.ShaferShenoyLIMIDInference_eraseAllEvidence(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""
@@ -1638,7 +1638,7 @@ class ShaferShenoyLIMIDInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
 
     def hasHardEvidence(self, nodeName: str) -> bool:
         r"""
@@ -1661,7 +1661,7 @@ class ShaferShenoyLIMIDInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
+        return _idcpp.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -1684,7 +1684,7 @@ class ShaferShenoyLIMIDInference(object):
           If the node does not belong to the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_hasSoftEvidence(self, *args)
+        return _idcpp.ShaferShenoyLIMIDInference_hasSoftEvidence(self, *args)
 
     def nbrEvidence(self) -> int:
         r"""
@@ -1695,7 +1695,7 @@ class ShaferShenoyLIMIDInference(object):
           the number of evidence entered into the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_nbrEvidence(self)
+        return _idcpp.ShaferShenoyLIMIDInference_nbrEvidence(self)
 
     def nbrHardEvidence(self) -> int:
         r"""
@@ -1706,7 +1706,7 @@ class ShaferShenoyLIMIDInference(object):
           the number of hard evidence entered into the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_nbrHardEvidence(self)
+        return _idcpp.ShaferShenoyLIMIDInference_nbrHardEvidence(self)
 
     def nbrSoftEvidence(self) -> int:
         r"""
@@ -1717,7 +1717,7 @@ class ShaferShenoyLIMIDInference(object):
           the number of soft evidence entered into the Bayesian network
 
         """
-        return _id.ShaferShenoyLIMIDInference_nbrSoftEvidence(self)
+        return _idcpp.ShaferShenoyLIMIDInference_nbrSoftEvidence(self)
 
     def influenceDiagram(self) -> "pyagrum.InfluenceDiagram":
         r"""
@@ -1730,10 +1730,10 @@ class ShaferShenoyLIMIDInference(object):
             the InfluenceDiagram on which this class work
 
         """
-        return _id.ShaferShenoyLIMIDInference_influenceDiagram(self)
+        return _idcpp.ShaferShenoyLIMIDInference_influenceDiagram(self)
 
-# Register ShaferShenoyLIMIDInference in _id:
-_id.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
+# Register ShaferShenoyLIMIDInference in _idcpp:
+_idcpp.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
