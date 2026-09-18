@@ -221,6 +221,10 @@ def srcAgrum() -> Iterator[str]:
   yield from recglob("src/", "*.cpp")
   yield from recglob("src/docs", "*.dox")
   yield from recglob("src/testunits", "*TestSuite.h")
+  # hand-written C++ headers used by the Python wrapper (SWIG %{ %} includes,
+  # e.g. pyagrumExceptionHandling.h) -- not under src/, so not covered by the
+  # globs above, but still real C++ code subject to the same style checks.
+  yield from recglob("wrappers/pyagrum/extensions", "*.h")
 
 
 def srcGeneratorAgrum() -> Iterator[str]:

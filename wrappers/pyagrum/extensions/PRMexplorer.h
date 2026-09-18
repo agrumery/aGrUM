@@ -28,10 +28,10 @@
 #include <string>
 #include <vector>
 
-#include <agrum/PRM/PRM.h>
 #include <agrum/PRM/elements/PRMAggregate.h>
 #include <agrum/PRM/elements/PRMClassElement.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
+#include <agrum/PRM/PRM.h>
 
 template < typename GUM_SCALAR >
 class classElement;
@@ -47,6 +47,7 @@ class PRMexplorer {
   PRMexplorer(void) {}
 
   ~PRMexplorer(void) {}
+
   /**
    * Fill an explorer from a filename and a classpath
    * @param filename
@@ -97,7 +98,6 @@ class PRMexplorer {
 
     return _prm_->isInterface(name) ? Py_True : Py_False;
   }
-
 
   /************CLASS**************/
 
@@ -190,7 +190,6 @@ class PRMexplorer {
     return q;
   }
 
-
   /**
    * @return a list of parameters from a class
    * @param class_name : the name of the class
@@ -225,14 +224,13 @@ class PRMexplorer {
     return l;
   }
 
-
   /**
    * @return a list of Tuplet(typename, name, agg_type, agg_label=None,
    * applies_label_list)
    * @param class_name : the name of the class
    */
   std::string aggType[9]
-     = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
+      = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
 
   PyAgrumList* classAggregates(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
@@ -405,7 +403,6 @@ class PRMexplorer {
     return _prm_->getClass(class_name).get(attribute).cpf();
   }
 
-
   /************TYPE**************/
 
   /**
@@ -484,9 +481,10 @@ class PRMexplorer {
     auto  superTypeLabelVector    = selected.superType().variable().labels();
     auto& labelMapTypeToSuperType = selected.label_map();
     for (unsigned i = 0; i != labelMapTypeToSuperType.size(); i++) {
-      PyDict_SetItem(d,
-                     PyUnicode_FromString(typeLabelVector[i].c_str()),
-                     PyUnicode_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
+      PyDict_SetItem(
+          d,
+          PyUnicode_FromString(typeLabelVector[i].c_str()),
+          PyUnicode_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
     }
     return d;
   }

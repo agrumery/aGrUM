@@ -29,7 +29,6 @@
 #include <Python.h>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#include <numpy/arrayobject.h>
 #include <cstring>
 
 #include <agrum/base/core/set.h>
@@ -38,6 +37,8 @@
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
+
+#include <numpy/arrayobject.h>
 
 #ifndef PYAGRUM_HELPER
 #  define PYAGRUM_HELPER
@@ -50,7 +51,7 @@ namespace PyAgrumHelper {
       PyObject* asbytes = PyUnicode_AsUTF8String(o);
       name              = PyBytes_AsString(asbytes);
       Py_DECREF(asbytes);
-    } else if (PyBytes_Check(o)) {    // other python3 string
+    } else if (PyBytes_Check(o)) {   // other python3 string
       name = PyBytes_AsString(o);
     }
     return name;
@@ -674,33 +675,30 @@ namespace PyAgrumHelper {
     }
     return q;
   }
+
   // ---- numpy interoperability helpers ----------------------------------------
 
   // Zero-copy view: creates a numpy array pointing to the Tensor's buffer.
   // self_pyobj becomes the numpy base object (keeps the Tensor alive).
-  PyObject* tensorAsNpArrayRaw(gum::Tensor< double >* self,
-                               PyObject*              self_pyobj) {
+  PyObject* tensorAsNpArrayRaw(gum::Tensor< double >* self, PyObject* self_pyobj) {
     double* raw = self->content()->data();
     if (raw == nullptr) {
-      PyErr_SetString(PyExc_RuntimeError,
-                      "[pyAgrum] Tensor has no contiguous data buffer");
+      PyErr_SetString(PyExc_RuntimeError, "[pyAgrum] Tensor has no contiguous data buffer");
       return nullptr;
     }
-    npy_intp dims[1] = {static_cast< npy_intp >(self->domainSize())};
-    PyObject* arr    = PyArray_New(&PyArray_Type,
-                                   1,
-                                   dims,
-                                   NPY_DOUBLE,
-                                   nullptr,
-                                   raw,
-                                   0,
-                                   NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_WRITEABLE,
-                                   nullptr);
+    npy_intp  dims[1] = {static_cast< npy_intp >(self->domainSize())};
+    PyObject* arr     = PyArray_New(&PyArray_Type,
+                                    1,
+                                    dims,
+                                    NPY_DOUBLE,
+                                    nullptr,
+                                    raw,
+                                    0,
+                                    NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_WRITEABLE,
+                                    nullptr);
     if (arr == nullptr) return nullptr;
     Py_INCREF(self_pyobj);   // SetBaseObject steals the reference
-    if (PyArray_SetBaseObject(reinterpret_cast< PyArrayObject* >(arr),
-                              self_pyobj)
-        < 0) {
+    if (PyArray_SetBaseObject(reinterpret_cast< PyArrayObject* >(arr), self_pyobj) < 0) {
       Py_DECREF(arr);
       return nullptr;
     }
@@ -729,13 +727,11 @@ namespace PyAgrumHelper {
     }
     PyArrayObject* nparr = reinterpret_cast< PyArrayObject* >(arr);
     if (!PyArray_IS_C_CONTIGUOUS(nparr)) {
-      PyErr_SetString(PyExc_ValueError,
-                      "[pyAgrum] numpy array must be C-contiguous");
+      PyErr_SetString(PyExc_ValueError, "[pyAgrum] numpy array must be C-contiguous");
       return -1;
     }
     if (PyArray_TYPE(nparr) != NPY_DOUBLE) {
-      PyErr_SetString(PyExc_TypeError,
-                      "[pyAgrum] numpy array must have dtype float64");
+      PyErr_SetString(PyExc_TypeError, "[pyAgrum] numpy array must have dtype float64");
       return -1;
     }
     npy_intp  np_size = PyArray_SIZE(nparr);
@@ -750,8 +746,7 @@ namespace PyAgrumHelper {
     }
     double* dst = self->content()->data();
     if (dst == nullptr) {
-      PyErr_SetString(PyExc_RuntimeError,
-                      "[pyAgrum] Tensor has no contiguous data buffer");
+      PyErr_SetString(PyExc_RuntimeError, "[pyAgrum] Tensor has no contiguous data buffer");
       return -1;
     }
     std::memcpy(dst, PyArray_DATA(nparr), t_size * sizeof(double));

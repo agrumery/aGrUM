@@ -25,12 +25,12 @@
  */
 #include <agrum/config.h>
 
-#include <agrum/base/graphs/undiGraph.h>
-#include <agrum/base/graphs/graphElements.h>
-#include <agrum/base/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
-#include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 #include <agrum/base/graphs/algorithms/binaryJoinTreeConverterDefault.h>
+#include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/base/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
+#include <agrum/base/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
+#include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/undiGraph.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/MRF/MarkovRandomField.h>
 
@@ -53,14 +53,15 @@ class JunctionTreeGenerator {
   }
 
   gum::JunctionTree junctionTree(const gum::MarkovRandomField< double >& mn,
-                                 PyObject*                       partial_order = nullptr) const {
+                                 PyObject* partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node: mn.internalGraph().nodes())
       mods.insert(node, mn.variable(node).domainSize());
     return junctionTree_(mn.graph(), translatePartialOrder_(partial_order), mods);
   }
 
-  PyAgrumListOfInt* eliminationOrder(const gum::UndiGraph& g, PyObject* partial_order = nullptr) const {
+  PyAgrumListOfInt* eliminationOrder(const gum::UndiGraph& g,
+                                     PyObject*             partial_order = nullptr) const {
     return eliminationOrder_(g, translatePartialOrder_(partial_order));
   }
 
@@ -69,13 +70,12 @@ class JunctionTreeGenerator {
   }
 
   PyAgrumListOfInt* eliminationOrder(const gum::BayesNet< double >& bn,
-                             PyObject*                      partial_order = nullptr) const {
+                                     PyObject*                      partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node: bn.internalDag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
     return eliminationOrder_(bn.moralGraph(), translatePartialOrder_(partial_order), mods);
   }
-
 
   gum::JunctionTree binaryJoinTree(const gum::UndiGraph& g,
                                    PyObject*             partial_order = nullptr) const {

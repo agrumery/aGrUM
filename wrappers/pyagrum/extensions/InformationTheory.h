@@ -24,9 +24,11 @@
  * @author Pierre-Henri WUILLEMIN
  */
 #include <agrum/agrum.h>
+
+#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/MRF/inference/ShaferShenoyMRFInference.h>
-#include <agrum/base/graphicalModels/algorithms/informationTheory.h>
+
 #include "helpers.h"
 
 #ifndef AGRUM_INFORMATIONTHEORY_H
@@ -54,7 +56,6 @@ class InformationTheory {
     _bnIT_  = new gum::InformationTheory(engine, X, Y, Z);
     _mrfIT_ = nullptr;
   }
-
 
   InformationTheory(gum::ShaferShenoyMRFInference< double >& engine,
                     PyObject*                                Xnames,

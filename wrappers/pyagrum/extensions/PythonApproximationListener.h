@@ -19,9 +19,9 @@
  ***************************************************************************/
 #include <Python.h>
 
-#include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 
 class PythonApproximationListener: public gum::ApproximationSchemeListener {
   private:

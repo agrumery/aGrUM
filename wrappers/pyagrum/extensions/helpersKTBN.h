@@ -52,13 +52,12 @@
 #pragma once
 
 #include <Python.h>
-
 #include <tuple>
 #include <utility>
 #include <vector>
 
-#include <agrum/KTBN/KTBN.h>
 #include <agrum/KTBN/inference/KTBNInference.h>
+#include <agrum/KTBN/KTBN.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
 #include <agrum/KTBN/learning/KTBNLearner.h>
 
@@ -87,8 +86,8 @@ namespace PyAgrumHelper {
       std::map< std::variant< std::string, std::pair< std::string, int > >, gum::KTBNModality >& m,
       PyObject* dict) {
     if (!PyDict_Check(dict)) GUM_ERROR(gum::InvalidArgument, "parents must be a dict");
-    PyObject* key;
-    PyObject* value;
+    PyObject*  key;
+    PyObject*  value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict, &pos, &key, &value)) {
       const gum::KTBNModality mod = ktbnModalityFromPyObject(value);
@@ -113,20 +112,23 @@ namespace PyAgrumHelper {
   // bare engine-name string key is rejected here (use the node_name overload
   // instead, whose parents dict accepts both spellings).
   void populateKTBNParentPairModalityMapFromPyDict(
-      std::map< std::pair< std::string, int >, gum::KTBNModality >& m, PyObject* dict) {
+      std::map< std::pair< std::string, int >, gum::KTBNModality >& m,
+      PyObject*                                                     dict) {
     if (!PyDict_Check(dict)) GUM_ERROR(gum::InvalidArgument, "parents must be a dict");
-    PyObject* key;
-    PyObject* value;
+    PyObject*  key;
+    PyObject*  value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict, &pos, &key, &value)) {
       if (!(PyTuple_Check(key) && PyTuple_Size(key) == 2))
         GUM_ERROR(gum::InvalidArgument,
-                   "a parents key must be a (str,int) tuple when the target node is given as "
-                   "(base,slice)");
+                  "a parents key must be a (str,int) tuple when the target node is given as "
+                  "(base,slice)");
       const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
-      if (base == "") GUM_ERROR(gum::InvalidArgument, "a (base,slice) parent key's base must be a str");
+      if (base == "")
+        GUM_ERROR(gum::InvalidArgument, "a (base,slice) parent key's base must be a str");
       const long slice = PyLong_AsLong(PyTuple_GetItem(key, 1));
-      m.insert_or_assign(std::pair< std::string, int >(base, int(slice)), ktbnModalityFromPyObject(value));
+      m.insert_or_assign(std::pair< std::string, int >(base, int(slice)),
+                         ktbnModalityFromPyObject(value));
     }
   }
 
@@ -136,12 +138,14 @@ namespace PyAgrumHelper {
   gum::KTBNInference< double >::NodeKey nodeKeyFromPyObject(PyObject* key) {
     if (PyTuple_Check(key) && PyTuple_Size(key) == 2) {
       const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
-      if (base == "") GUM_ERROR(gum::InvalidArgument, "a (base,slice) node key's base must be a str");
+      if (base == "")
+        GUM_ERROR(gum::InvalidArgument, "a (base,slice) node key's base must be a str");
       const long slice = PyLong_AsLong(PyTuple_GetItem(key, 1));
       return std::pair< std::string, int >(base, int(slice));
     }
     const std::string name = stringFromPyObject(key);
-    if (name == "") GUM_ERROR(gum::InvalidArgument, "a node key must be a str or a (str,int) tuple");
+    if (name == "")
+      GUM_ERROR(gum::InvalidArgument, "a node key must be a str or a (str,int) tuple");
     return name;
   }
 
@@ -150,10 +154,10 @@ namespace PyAgrumHelper {
   // std::vector<std::pair<NodeKey, KTBNModality>> shape.
   void populateKTBNNodeModalityVectorFromPyDict(
       std::vector< std::pair< gum::KTBNInference< double >::NodeKey, gum::KTBNModality > >& v,
-      PyObject* dict) {
+      PyObject*                                                                             dict) {
     if (!PyDict_Check(dict)) GUM_ERROR(gum::InvalidArgument, "argument must be a dict");
-    PyObject* key;
-    PyObject* value;
+    PyObject*  key;
+    PyObject*  value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict, &pos, &key, &value))
       v.emplace_back(nodeKeyFromPyObject(key), ktbnModalityFromPyObject(value));
@@ -186,8 +190,8 @@ namespace PyAgrumHelper {
 
   // KTBN::arcs() -> tuple[tuple[tuple[str,int], tuple[str,int]], ...]
   PyObject* PyTupleFromArcVector(
-      const std::vector< std::pair< std::pair< std::string, int >, std::pair< std::string, int > > >&
-          v) {
+      const std::vector<
+          std::pair< std::pair< std::string, int >, std::pair< std::string, int > > >& v) {
     const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
     PyObject*        t = PyTuple_New(n);
     for (Py_ssize_t i = 0; i < n; ++i) {
@@ -201,8 +205,7 @@ namespace PyAgrumHelper {
   }
 
   // KTBNLearner/KTBNAdaptiveLearner::latentVariables() -> tuple[tuple[str,str], ...]
-  PyObject*
-      PyTupleFromStrStrVector(const std::vector< std::pair< std::string, std::string > >& v) {
+  PyObject* PyTupleFromStrStrVector(const std::vector< std::pair< std::string, std::string > >& v) {
     const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
     PyObject*        t = PyTuple_New(n);
     for (Py_ssize_t i = 0; i < n; ++i) {
