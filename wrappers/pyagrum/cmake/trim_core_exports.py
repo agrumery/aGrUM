@@ -150,14 +150,17 @@ def main():
   if args.format == "apple":
     core_defined = apple_defined_symbols(args.core)
     undefined_per_leaf = [apple_undefined_symbols(leaf) for leaf in args.leaf]
+    defined_per_leaf = [apple_defined_symbols(leaf) for leaf in args.leaf]
   elif args.format == "gnu":
     core_defined = gnu_defined_symbols(args.core)
     undefined_per_leaf = [gnu_undefined_symbols(leaf) for leaf in args.leaf]
+    defined_per_leaf = [gnu_defined_symbols(leaf) for leaf in args.leaf]
   else:
     core_defined = msvc_defined_symbols(args.core)
     undefined_per_leaf = [
       msvc_undefined_symbols_from_core(leaf, args.core_basename) for leaf in args.leaf
     ]
+    defined_per_leaf = [msvc_defined_symbols(leaf) for leaf in args.leaf]
 
   # --keep values are given as plain (undecorated) C symbol names. Apple's
   # Mach-O convention prefixes every C symbol with a leading underscore
@@ -174,6 +177,21 @@ def main():
   needed = set(keep)
   for undefined in undefined_per_leaf:
     needed |= undefined & core_defined
+  # A symbol independently DEFINED in both a leaf and the core can only
+  # happen for a weak/COMDAT definition: an inline function, a template
+  # instantiation, or the vtable/typeinfo of a class with no out-of-line
+  # "key function" (every gum:: exception class in exceptions.h -- see
+  # GUM_MAKE_ERROR -- is exactly that: header-only, all methods inline).
+  # Each shared library that uses such a class gets its own weak copy; the
+  # dynamic linker coalesces them into a single one at load time, but only
+  # if core's copy stays exported. A leaf never references a symbol it
+  # already defines itself as an *undefined* symbol, so the scan above can
+  # never see this dependency -- silently losing it breaks any cross-.so
+  # virtual dispatch or RTTI that must resolve through the coalesced
+  # symbol (e.g. a leaf catching a core-thrown gum::Exception subclass and
+  # calling its pythonClassName_() override to translate it to Python).
+  for defined in defined_per_leaf:
+    needed |= defined & core_defined
 
   if not needed:
     print(
