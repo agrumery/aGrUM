@@ -74,6 +74,7 @@ from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
 from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
+from pyagrum.lib.ktbn2graph import plotFollowKTBN
 
 from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
