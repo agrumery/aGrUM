@@ -55,6 +55,12 @@ namespace gum {
 
   GUM_NODISCARD INLINE std::string Exception::errorCallStack() const { return callstack_; }
 
+#ifdef GUM_FOR_SWIG
+  GUM_NODISCARD INLINE const char* Exception::pythonClassName_() const noexcept {
+    return "Exception";
+  }
+#endif   // GUM_FOR_SWIG
+
   INLINE
   SyntaxError::SyntaxError(const std::string& aMsg,
                            std::string        aFilename,

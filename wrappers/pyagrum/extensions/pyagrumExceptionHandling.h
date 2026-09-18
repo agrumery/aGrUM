@@ -27,61 +27,30 @@
  * every module's wrapper call sites call SetPythonizeAgrumException(), but
  * each module's own translation unit still needs this definition.
  *
+ * The gum::Exception -> Python exception type mapping needs no per-class
+ * catch here: every gum::Exception subclass overrides pythonClassName_()
+ * (see GUM_MAKE_ERROR in exceptions.h) with its own exact C++ class name,
+ * which is enough to look up the matching SWIG-wrapped Python type.
+ *
  * @author Pierre-Henri WUILLEMIN
  */
 #pragma once
 
 #include <Python.h>
+#include <string>
 
 #include <agrum/agrum.h>
-
-#define PYGUM_CATCH(GUMEXCEPTION)                                               \
-  catch (gum::GUMEXCEPTION & e) {                                               \
-     PyErr_SetString (SWIG_Python_ExceptionType(SWIG_TypeQuery("gum::" #GUMEXCEPTION " *")), e.what()); \
-  }
 
 static void SetPythonizeAgrumException() {
   try {
     throw;
-  }
-  catch ( std::bad_cast& ) {
-    PyErr_SetString ( PyExc_RuntimeError, "C++ Bad Cast" );
-  }
-  catch (gum::SyntaxError & e) {
-    PyErr_SetString ( PyExc_SyntaxError, e.errorContent().c_str());
+  } catch (std::bad_cast&) {
+    PyErr_SetString(PyExc_RuntimeError, "C++ Bad Cast");
+  } catch (gum::SyntaxError& e) {
+    PyErr_SetString(PyExc_SyntaxError, e.errorContent().c_str());
     PyErr_SyntaxLocationEx(e.filename().c_str(), e.line(), e.col());
-  }
-  PYGUM_CATCH(DefaultInLabel)
-  PYGUM_CATCH(DuplicateElement)
-  PYGUM_CATCH(DuplicateLabel)
-  PYGUM_CATCH(FatalError)
-  PYGUM_CATCH(FormatNotFound)
-  PYGUM_CATCH(InvalidArc)
-  PYGUM_CATCH(InvalidArgument)
-  PYGUM_CATCH(InvalidArgumentsNumber)
-  PYGUM_CATCH(InvalidDirectedCycle)
-  PYGUM_CATCH(InvalidEdge)
-  PYGUM_CATCH(InvalidNode)
-  PYGUM_CATCH(DatabaseError)
-  PYGUM_CATCH(MissingValueInDatabase)
-  PYGUM_CATCH(MissingVariableInDatabase)
-  PYGUM_CATCH(NoChild)
-  PYGUM_CATCH(NoNeighbour)
-  PYGUM_CATCH(NoParent)
-  PYGUM_CATCH(GraphError)
-  PYGUM_CATCH(NotFound)
-  PYGUM_CATCH(NullElement)
-  PYGUM_CATCH(OperationNotAllowed)
-  PYGUM_CATCH(OutOfBounds)
-  PYGUM_CATCH(ArgumentError)
-  PYGUM_CATCH(SizeError)
-  PYGUM_CATCH(IOError)
-  PYGUM_CATCH(UndefinedElement)
-  PYGUM_CATCH(UndefinedIteratorKey)
-  PYGUM_CATCH(UndefinedIteratorValue)
-  PYGUM_CATCH(UnknownLabelInDatabase)
-  PYGUM_CATCH(CPTError)
-  catch ( std::exception& e ) {
-    PyErr_SetString ( PyExc_Exception, e.what() );
-  }
+  } catch (gum::Exception& e) {
+    const std::string swigTypeName = std::string("gum::") + e.pythonClassName_() + " *";
+    PyErr_SetString(SWIG_Python_ExceptionType(SWIG_TypeQuery(swigTypeName.c_str())), e.what());
+  } catch (std::exception& e) { PyErr_SetString(PyExc_Exception, e.what()); }
 }

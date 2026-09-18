@@ -91,13 +91,24 @@
 #  endif   // GUM_DEBUG_MODE
 #endif     //  defined(SWIG) || defined(GUM_FOR_SWIG)
 
-#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-  class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
-    public:                                                                  \
-    explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
-        SUPERCLASS(aMsg, aType) {}                                           \
-    TYPE(const TYPE& src) : SUPERCLASS(src) {}                               \
-  };
+#ifdef GUM_FOR_SWIG
+#  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
+    class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+      public:                                                                  \
+      explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
+          SUPERCLASS(aMsg, aType) {}                                           \
+      TYPE(const TYPE& src) : SUPERCLASS(src) {}                               \
+      const char* pythonClassName_() const noexcept override { return #TYPE; } \
+    };
+#else   // GUM_FOR_SWIG
+#  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
+    class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+      public:                                                                  \
+      explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
+          SUPERCLASS(aMsg, aType) {}                                           \
+      TYPE(const TYPE& src) : SUPERCLASS(src) {}                               \
+    };
+#endif   // GUM_FOR_SWIG
 
 #ifdef GUM_FOR_SWIG
 #  define GUM_SYNTAX_ERROR(msg, filename, line, column)                    \
@@ -158,6 +169,19 @@ namespace gum {
      * @return Returns the error call stack.
      */
     GUM_NODISCARD std::string errorCallStack() const;
+
+#ifdef GUM_FOR_SWIG
+    /**
+     * @brief Exact C++ class name of this exception (e.g. "InvalidArgument"),
+     * used only to select the matching Python exception type when
+     * translating a C++ exception across the SWIG boundary -- see
+     * wrappers/pyagrum/extensions/pyagrumExceptionHandling.h. Overridden by
+     * GUM_MAKE_ERROR for every derived exception class; never called, and
+     * not compiled into, a pure aGrUM (non-Python) build.
+     * @return Returns this exception's exact C++ class name.
+     */
+    GUM_NODISCARD virtual const char* pythonClassName_() const noexcept;
+#endif   // GUM_FOR_SWIG
   };
 
 
