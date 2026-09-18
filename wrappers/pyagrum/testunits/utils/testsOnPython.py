@@ -112,6 +112,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("DiscreteTypeProcessorTestSuite", _pd, "[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas"),
         ("EssentialGraphTestSuite", True),
         ("EvidenceTestSuite", True),
+        ("ExceptionTracebackTestSuite", True),
         ("GraphTestSuite", True),
         ("GumFormatTestSuite", True),
         ("ICIModelsForBNTestSuite", True),
