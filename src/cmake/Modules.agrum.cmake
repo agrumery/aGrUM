@@ -112,7 +112,7 @@ macro(buildFileListsWithModules)
         if (BUILD_${OPTION} OR BUILD_ALL)
             message(STATUS "** aGrUM Notification:      (+) adding target for ${OPTION}")
 
-            # BASE/BN are the two modules pyAgrum embeds once into core _pyagrum.so (whole-archived,
+            # BASE/BN are the two modules pyAgrum embeds once into core _pyagrumcpp.so (whole-archived,
             # see wrappers/pyagrum/CMakeLists.txt) instead of re-linking per leaf module -- computed
             # once here since both the export split below and the dependency handling further down
             # branch on it.
@@ -125,10 +125,10 @@ macro(buildFileListsWithModules)
             # "Static library forced for [[pyAgrum]] target.") -- BASE/BN stay static here too:
             # they carry process-global state (e.g. CompleteProjectionRegister4MultiDim, used by
             # Tensor::min/max/sum/product) that must be a SINGLE instance shared by every pyAgrum
-            # SWIG extension (_pyagrum.so, _mrf.so, _id.so, ...). Rather than making agrumBASE/BN
-            # themselves shared libraries, they are embedded once into core pyagrum (_pyagrum.so,
+            # SWIG extension (_pyagrumcpp.so, _mrfcpp.so, _idcpp.so, ...). Rather than making agrumBASE/BN
+            # themselves shared libraries, they are embedded once into core pyagrum (_pyagrumcpp.so,
             # built SHARED -- see wrappers/pyagrum/CMakeLists.txt), and every other extension links
-            # against that single _pyagrum.so instead of re-embedding its own copy of BASE/BN.
+            # against that single _pyagrumcpp.so instead of re-embedding its own copy of BASE/BN.
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
 
             # GUM_PUBLIC blanking applies to every module under BUILD_PYTHON, not just
@@ -194,7 +194,7 @@ macro(buildFileListsWithModules)
             # boundary to cross. It is set globally when BUILD_SHARED_LIBS=ON (aGrUM's
             # own standalone shared build), but pyAgrum forces BUILD_SHARED_LIBS=OFF
             # unconditionally (every agrum${OPTION} here is a plain static library) even
-            # though a real shared boundary still exists one level up: core _pyagrum.so
+            # though a real shared boundary still exists one level up: core _pyagrumcpp.so
             # is always built SHARED (wrappers/pyagrum/CMakeLists.txt) and whole-archives
             # BASE/BN, while leaf .pyd's link against it as a genuine DLL. Every
             # agrum${OPTION} target must see the same signal core's own SWIG wrap TU
@@ -215,7 +215,7 @@ macro(buildFileListsWithModules)
             # PYGUM_SHARED_EXPORTING marks agrumBASE/agrumBN as the true owner of every
             # PYGUM_SHARED_PUBLIC-tagged symbol (config.h.in) for the Windows dllexport/
             # dllimport split: only these two targets' own object files -- whole-archived
-            # into core _pyagrum (and core's own SWIG wrap TU, see
+            # into core _pyagrumcpp (and core's own SWIG wrap TU, see
             # wrappers/pyagrum/CMakeLists.txt) -- may dllexport them. Every other consumer
             # (leaf modules PRM/CN/ID/MRF/CM) sees dllimport instead, so it references
             # core's exported copy instead of emitting its own duplicate definition
@@ -243,7 +243,7 @@ macro(buildFileListsWithModules)
             # handle dependencies
             foreach (DEP ${${OPTION}_DEPS})
                 if (BUILD_PYTHON AND NOT _IS_BASE_OR_BN)
-                    # Leaf pyAgrum modules (PRM/MRF/CN/ID/CM) reach BASE/BN through core _pyagrum.so
+                    # Leaf pyAgrum modules (PRM/MRF/CN/ID/CM) reach BASE/BN through core _pyagrumcpp.so
                     # only (see comment above): do NOT link agrum${DEP} here at all. For a STATIC
                     # library, target_link_libraries still adds the dependency to the *direct*
                     # consumer's link line even when PRIVATE -- static libs have no link step of

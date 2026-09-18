@@ -242,7 +242,7 @@ macro(gum_add_python_module MODULENAME)
     set_source_files_properties(${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
   endif()
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
-  # This target (core _pyagrum.so, or a leaf _mrf/_id/_cn/_cm/_prm.pyd) is a real
+  # This target (core _pyagrumcpp.so, or a leaf _mrfcpp/_idcpp/_cncpp/_cmcpp/_prmcpp.pyd) is a real
   # shared object regardless of the global BUILD_SHARED_LIBS (CompilOptions.agrum.cmake),
   # which pyAgrum forces OFF only to control how agrum${OPTION} module libraries are
   # built (static, whole-archived or plainly linked here) -- it says nothing about
@@ -318,7 +318,7 @@ macro(gum_add_python_module MODULENAME)
   # needed to resolve symbols already seen by the linker (classic archive
   # semantics) -- so a symbol used only by a leaf module (e.g. gum::Formula,
   # used solely by PRM's o3prm parser; gum::BayesNetFactory<double>;
-  # gum::Rational<double>) would silently never make it into _pyagrum.so at
+  # gum::Rational<double>) would silently never make it into _pyagrumcpp.so at
   # all, no matter how it's tagged. PYGUM_PUBLIC only controls whether an
   # *included* symbol is exported -- not whether it gets included in the first
   # place -- so both are needed together: whole-archive for inclusion,
@@ -433,9 +433,9 @@ macro(gum_add_python_module MODULENAME)
   # works for `act install`'s stable prefix but dangles for a wheel build, whose
   # temp CMAKE_INSTALL_PREFIX is deleted right after zipping -- dlopen would then
   # look for libagrumBASE under a temp directory that no longer exists. Core
-  # pyagrum/_pyagrum.so is itself the shared dependency
+  # pyagrum/_pyagrumcpp.so is itself the shared dependency
   # submodules link against (see target_link_libraries above), installed straight
-  # into pyagrum/ -- so core pyagrum/_pyagrum.so needs same-dir RPATH (it depends
+  # into pyagrum/ -- so core pyagrum/_pyagrumcpp.so needs same-dir RPATH (it depends
   # on nothing outside its own directory), submodules (pyagrum/<mod>/_<mod>.so)
   # need one level up to reach it -- this also transparently covers the build tree
   # (CMake's default auto-computed BUILD_RPATH already finds co-located build
@@ -477,7 +477,7 @@ macro(gum_add_python_module MODULENAME)
   #   - leaf, MinGW/GCC: LTRANS fails with "undefined reference" for symbols
   #     genuinely exported by core's .pyd, because GCC's LTO pipeline doesn't
   #     see core's import library as satisfying them (observed building
-  #     _id.pyd against ticpp/TiXml symbols exported by _pyagrum.pyd).
+  #     _idcpp.pyd against ticpp/TiXml symbols exported by _pyagrumcpp.pyd).
   # Disable LTO for all of them rather than chase this per-toolchain.
   if(_AGRUM_IPO_SUPPORTED)
     message(STATUS "pyAgrum: LTO disabled for ${_PYAGRUMLIB} (crosses a DLL boundary to reach BASE/BN symbols; LTO does not resolve cleanly across it on ld64 or MinGW/GCC)")

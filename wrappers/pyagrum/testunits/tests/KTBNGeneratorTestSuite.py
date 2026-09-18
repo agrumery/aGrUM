@@ -110,8 +110,8 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
     # NOTE: the C++ suite's testGeneratorReproducibleFromSeed asserts that
     # re-seeding via gum::initRandom(seed) and regenerating reproduces the
     # exact same model. That does NOT hold here: gum.initRandom() (re-)seeds
-    # the RNG engine living in core _pyagrum.so, but KTBNGenerator's own
-    # draws (compiled into the separate _ktbn.so) appear to consult a
+    # the RNG engine living in core _pyagrumcpp.so, but KTBNGenerator's own
+    # draws (compiled into the separate _ktbncpp.so) appear to consult a
     # DIFFERENT, un-reseeded copy of that engine -- suspected root cause:
     # utils_random.h's generator()/randomGenerator() (the mutable RNG
     # accessor) carry no PYGUM_SHARED_PUBLIC/GUM_SHARED_PUBLIC visibility

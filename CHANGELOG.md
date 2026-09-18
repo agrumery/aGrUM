@@ -8,7 +8,7 @@
         - pyAgrum's SWIG extension is now split into independent modules -- `pyagrum.markov_random_field`, `.influence_diagram`, `.credal_net`, `.causal_model`, `.prm`, `.ktbn` --
           built and shipped as separate shared libraries instead of one monolithic extension, loaded lazily through a
           `__getattr__` compatibility shim so `import pyagrum` still works unchanged.
-        - `BASE` and `BN` are merged into one shared core library (`_pyagrum.so`) with a relative RPATH so the wheel
+        - `BASE` and `BN` are merged into one shared core library (`_pyagrumcpp.so`) with a relative RPATH so the wheel
           stays self-contained.
         - The core library's exported symbol surface is trimmed to only the BASE/BN symbols the leaf modules actually
           use (`PYAGRUM_TRIM_CORE_EXPORTS`).
