@@ -124,8 +124,8 @@ endif()
 # only from cm.i, so core only ever needs BASE/BN.
 
 macro(gum_add_python_module MODULENAME)
-  # SUBDIR (optional): install subdirectory under pyagrum/ (e.g. "mrf" for
-  # pyagrum.mrf). Left unset, installs straight under pyagrum/ (core's case).
+  # SUBDIR (optional): install subdirectory under pyagrum/ (e.g. "markov_random_field" for
+  # pyagrum.markov_random_field). Left unset, installs straight under pyagrum/ (core's case).
   # Mirrored by _PYAGRUM_BUILD_SUBDIR below: the .so/.py must land in the
   # same subdirectory in the build tree too, since act test runs pyAgrum
   # straight out of the build tree (PYTHONPATH), not the installed wheel.
@@ -487,7 +487,7 @@ macro(gum_add_python_module MODULENAME)
   # modules (nothing links against them): core pyagrum is now a real SHARED
   # library that submodules link against (see add_library above), so dead-strip
   # would drop symbols (e.g. typeinfo for classes only referenced from a
-  # submodule, like gum::ASTjointProba<double> from pyagrum.cm) that this
+  # submodule, like gum::ASTjointProba<double> from pyagrum.causal_model) that this
   # translation unit never itself references but external consumers still need.
   #   macOS: -dead_strip works natively on Mach-O without per-section flags
   #   Linux: requires -ffunction-sections/-fdata-sections on all TUs (set in CompilOptions)
@@ -543,46 +543,63 @@ gum_add_python_module(pyagrum SWIGMOD pyagrumcpp)
 # that file to add a new one.
 include("pymodules.txt")
 
-foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
-  string(TOLOWER ${_pysubmod_upper} _pysubmod)
-  option(PYAGRUM_WITH_${_pysubmod_upper} "build pyagrum.${_pysubmod} as a separate extension module" ON)
-endforeach()
+# Public Python package name for each leaf module -- distinct from the
+# lowercased tag (_pysubmod below, still used for the SWIG extension's own
+# basename, e.g. "mrfcpp", and for the on-disk <tag>.i lookup) to avoid
+# short, collision-prone names: "id" used to shadow the builtin id() once
+# pyagrum.id had been imported (it becomes an attribute of the pyagrum
+# package). PRM and KTBN keep their short tag as-is: already unambiguous.
+set(_PYAGRUM_PYNAME_MRF markov_random_field)
+set(_PYAGRUM_PYNAME_ID influence_diagram)
+set(_PYAGRUM_PYNAME_CN credal_net)
+set(_PYAGRUM_PYNAME_CM causal_model)
 
 # Static subpackage __init__.py: just re-exports the compiled extension.
 # Written directly (no source template needed) and installed from the same path.
 #
 # gum_add_python_module's 1st arg (MODULENAME) must match the *actual*
 # on-disk case of wrappers/swig/aGrUM_wrap_<MODULENAME>.i (BASE, BN, MRF,
-# ID, CN, CM -- all uppercase, matching src/modules.txt) -- NOT the lowercase
+# ID, CN, CM, PRM, KTBN -- all uppercase, matching src/modules.txt) -- NOT the lowercase
 # Python package name. Passing lowercase here worked by accident on macOS
 # (APFS is case-insensitive by default) but breaks the CMake dependency
 # tracking on a case-sensitive filesystem (Linux): Make/Ninja would look for
 # a literal aGrUM_wrap_mrf.i, find nothing able to produce it, and fail.
 foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
   string(TOLOWER ${_pysubmod_upper} _pysubmod)
+  if(DEFINED _PYAGRUM_PYNAME_${_pysubmod_upper})
+    set(_pysubdir ${_PYAGRUM_PYNAME_${_pysubmod_upper}})
+  else()
+    set(_pysubdir ${_pysubmod})
+  endif()
+  option(PYAGRUM_WITH_${_pysubmod_upper} "build pyagrum.${_pysubdir} as a separate extension module" ON)
+
   if(PYAGRUM_WITH_${_pysubmod_upper} AND (BUILD_${_pysubmod_upper} OR BUILD_ALL))
     # 3rd arg ("${_pysubmod}cpp"): the compiled SWIG extension's own basename,
-    # distinct from the package dir name ${_pysubmod} -- so the module ends up
+    # distinct from the package dir name ${_pysubdir} -- so the module ends up
     # importable as pyagrum.ktbn.ktbncpp (package pyagrum.ktbn, module
     # ktbncpp) instead of pyagrum.ktbn.ktbn, whose repeated name reads like a
-    # typo/bug even though it is not one.
-    gum_add_python_module(${_pysubmod_upper} SUBDIR ${_pysubmod} SWIGMOD ${_pysubmod}cpp)
+    # typo/bug even though it is not one. ${_pysubdir} can also differ from
+    # ${_pysubmod} itself (see _PYAGRUM_PYNAME_* above, e.g. pyagrum.id ->
+    # pyagrum.influence_diagram) while ${_pysubmod}cpp -- an internal-only
+    # name, never typed by users -- stays the short tag.
+    gum_add_python_module(${_pysubmod_upper} SUBDIR ${_pysubdir} SWIGMOD ${_pysubmod}cpp)
     # from .<mod>cpp (the SWIG-generated Python proxy, e.g. mrfcpp.py, which
     # itself does `from . import _mrfcpp`), NOT from ._<mod>cpp (the raw C
     # extension) -- mirrors how pyagrum/__init__.py itself does
     # `from .pyagrumcpp import X`.
     #
     # "from .. import *" first: re-exports the core (BASE+BN) namespace so
-    # `import pyagrum.mrf as gum` is a drop-in superset of `import pyagrum as
-    # gum` -- code that mixes core classes (Tensor, Instantiation, fastBN...)
-    # with module-specific ones needs only the one scoped import.
+    # `import pyagrum.markov_random_field as gum` is a drop-in superset of
+    # `import pyagrum as gum` -- code that mixes core classes (Tensor,
+    # Instantiation, fastBN...) with module-specific ones needs only the one
+    # scoped import.
     # __getattr__ fallback: delegate names not covered by "from .. import *"
     # (e.g. getPosterior, only reachable through pyagrum's own lazy
     # __getattr__ shim, see cmake/__init__.in.py) to the parent package,
-    # so e.g. `import pyagrum.cm as gum; gum.getPosterior(...)` works without
-    # duplicating the lazy-submodule-loading logic here.
-    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py "from .. import *\nfrom .${_pysubmod}cpp import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubmod}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubmod})
+    # so e.g. `import pyagrum.causal_model as gum; gum.getPosterior(...)` works
+    # without duplicating the lazy-submodule-loading logic here.
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubdir}/__init__.py "from .. import *\nfrom .${_pysubmod}cpp import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubdir}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubdir})
   endif()
 endforeach()
 

@@ -155,7 +155,7 @@ macro(buildFileListsWithModules)
                 # IndependenceTest, Score/Prior/ParamEstimator/GraphChange, ...) as
                 # hidden-visibility on every platform, GUM_SHARED_EXPORTING below
                 # notwithstanding: undefined symbol at leaf-module dlopen time (e.g.
-                # KNML::clear from pyagrum.id), silent on macOS's lazy binding.
+                # KNML::clear from pyagrum.influence_diagram), silent on macOS's lazy binding.
 
                 # Same blanking for the remaining 7 modules' still-placeholder
                 # GUM_PUBLIC_<MODULE> names (config.h.in) -- BASE excluded, it no longer

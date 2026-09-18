@@ -5,17 +5,20 @@ pyAgrum's modular architecture
     :align: center
     :alt: pyAgrum import paths: core vs. lazy submodules
 
-    ``import pyagrum`` loads the core eagerly and only *registers* the five
-    submodules (lazy); ``import pyagrum.mrf`` (or any other submodule) loads
-    the core **and** that submodule eagerly, the others staying lazy.
+    ``import pyagrum`` loads the core eagerly and only *registers* its six
+    submodules (lazy); ``import pyagrum.markov_random_field`` (or any other
+    submodule) loads the core **and** that submodule eagerly, the others
+    staying lazy.
 
 .. note::
   This page is only about the **compiled part** of pyAgrum: the C++/aGrUM
   code exported through SWIG. ``pyagrum`` is not a single compiled
   extension: it is a lightweight **core** (Bayesian networks and every
-  fundamental component -- graphs, variables, tensors...) plus five
-  **optional submodules**, one per probabilistic graphical model family
-  beyond BN, each compiled as its own independent extension.
+  fundamental component -- graphs, variables, tensors...) plus six
+  **optional submodules**, each compiled as its own independent extension --
+  one per probabilistic graphical model family beyond BN, plus
+  ``pyagrum.ktbn`` (k-order dynamic Bayesian networks). All six are
+  reachable lazily (see below).
 
   pyAgrum also ships several **pure-Python** modules -- :doc:`pyagrum.lib
   <pyAgrum.lib>` (notebook display, image export, ...),
@@ -42,19 +45,19 @@ pyAgrum's modular architecture
       - :class:`~pyagrum.BayesNet`, :class:`~pyagrum.LazyPropagation`,
         :class:`~pyagrum.BNLearner`...
       - always loaded
-    * - ``pyagrum.mrf``
+    * - ``pyagrum.markov_random_field``
       - :doc:`Markov random fields <markovRandomField>`
       - ``MarkovRandomField``, ``ShaferShenoyMRFInference``
       - yes
-    * - ``pyagrum.id``
+    * - ``pyagrum.influence_diagram``
       - :doc:`Influence diagrams and LIMIDs <infdiag>`
       - ``InfluenceDiagram``, ``ShaferShenoyLIMIDInference``, ``IDGenerator``
       - yes
-    * - ``pyagrum.cn``
+    * - ``pyagrum.credal_net``
       - :doc:`Credal networks <credalNetwork>`
       - ``CredalNet``, ``CNLoopyPropagation``, ``CNMonteCarloSampling``
       - yes
-    * - ``pyagrum.cm``
+    * - ``pyagrum.causal_model``
       - :doc:`Causal models <CausalModel>` (causal inference,
         counterfactuals)
       - ``CausalModel``, ``CausalImpact``, ``Counterfactual``
@@ -63,6 +66,10 @@ pyAgrum's modular architecture
       - :doc:`Probabilistic relational models <PRM>` (o3prm)
       - ``PRMexplorer``
       - partially (see below)
+    * - ``pyagrum.ktbn``
+      - :doc:`k-order dynamic Bayesian networks <ktbn>`
+      - ``KTBN``, ``KTBNInference``, ``KTBNLearner``
+      - yes
 
 Splitting the C++/SWIG extension this way keeps a plain ``import pyagrum``
 fast and light: a script that only ever builds and queries Bayesian networks
@@ -80,22 +87,22 @@ submodule explicitly:
 
     import pyagrum as gum
 
-    mrf = gum.MarkovRandomField()  # transparently imports pyagrum.mrf on first use
+    mrf = gum.MarkovRandomField()  # transparently imports pyagrum.markov_random_field on first use
     ie = gum.ShaferShenoyMRFInference(mrf)
 
 The first access to a name owned by a submodule (``MarkovRandomField``,
-``InfluenceDiagram``, ``CredalNet``, ``CausalModel``...) imports that
-submodule behind the scenes and caches the result -- every later access is a
-plain attribute lookup, no import overhead. If the submodule was excluded
-from the build (see :ref:`optional-submodules` below), the same call raises
-an ``AttributeError`` instead of silently doing nothing.
+``InfluenceDiagram``, ``CredalNet``, ``CausalModel``, ``KTBN``...) imports
+that submodule behind the scenes and caches the result -- every later access
+is a plain attribute lookup, no import overhead. If the submodule was
+excluded from the build (see :ref:`optional-submodules` below), the same
+call raises an ``AttributeError`` instead of silently doing nothing.
 
 **2. Scope the import explicitly.** Each submodule can also be imported on
 its own, as a drop-in superset of the core namespace:
 
 .. code-block:: python
 
-    import pyagrum.mrf as gum
+    import pyagrum.markov_random_field as gum
 
     bn = gum.BayesNet()               # still available: the core is re-exported
     mrf = gum.MarkovRandomField()      # no lazy-loading step needed, already imported
@@ -129,16 +136,16 @@ Optional submodules
 --------------------
 
 Each submodule can be excluded from a given pyAgrum build (see the
-``PYAGRUM_WITH_MRF`` / ``_ID`` / ``_CN`` / ``_CM`` / ``_PRM`` build options)
+``PYAGRUM_WITH_MRF`` / ``_ID`` / ``_CN`` / ``_CM`` / ``_PRM`` / ``_KTBN`` build options)
 -- for instance a minimal deployment that only ever needs Bayesian networks.
 When a submodule was left out, accessing any of its names raises a plain
 ``AttributeError`` rather than an import error deep in unrelated code, and
-``import pyagrum.mrf`` (etc.) fails with the usual ``ModuleNotFoundError``.
+``import pyagrum.markov_random_field`` (etc.) fails with the usual ``ModuleNotFoundError``.
 
 The ``pyagrum.prm`` special case
 ----------------------------------
 
-``pyagrum.prm`` behaves slightly differently from the other four submodules.
+``pyagrum.prm`` behaves slightly differently from the five fully-lazy submodules above.
 Its ``PRMexplorer`` class is reachable lazily like everything else, but
 O3PRM file support on :class:`~pyagrum.BayesNet` --
 ``BayesNet.loadO3PRM``/``saveO3PRM``, and the ``"O3PRM"`` extension of

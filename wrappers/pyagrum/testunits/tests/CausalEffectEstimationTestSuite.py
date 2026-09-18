@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum.cm as gum
+import pyagrum.causal_model as gum
 import pyagrum.causalEffectEstimation as gcee
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 

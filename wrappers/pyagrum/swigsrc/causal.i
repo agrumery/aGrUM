@@ -111,7 +111,7 @@
 // CausalImpact constructor: keyword-only on/doing/knowing with str→set coercion.
 // $action expands to _cmcpp.new_CausalImpact; swiginit is the SWIG object
 // initialisation convention for this project. _cmcpp (not _pyagrumcpp) since
-// this module (pyagrum.cm) is a separate compiled extension from core pyagrum.
+// this module (pyagrum.causal_model) is a separate compiled extension from core pyagrum.
 %feature("shadow") gum::CausalImpact::CausalImpact %{
     def __init__(self, cm, *, on, doing, knowing=None):
         if isinstance(on, str):

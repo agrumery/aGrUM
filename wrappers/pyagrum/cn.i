@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.cn", docstring="pyagrum.cn module") cncpp
+%module(package="pyagrum.credal_net", docstring="pyagrum.credal_net module") cncpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

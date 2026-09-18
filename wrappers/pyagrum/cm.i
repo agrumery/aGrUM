@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.cm", docstring="pyagrum.cm module") cmcpp
+%module(package="pyagrum.causal_model", docstring="pyagrum.causal_model module") cmcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

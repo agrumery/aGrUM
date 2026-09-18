@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-LEAVES = ["mrf", "id", "cn", "cm", "prm"]
+LEAVES = ["markov_random_field", "influence_diagram", "credal_net", "causal_model", "prm", "ktbn"]
 
 # palette
 CORE_FILL   = "#123C69"
@@ -27,9 +27,12 @@ CODE_SIZE = 15
 CODE_CHAR_W = CODE_SIZE * 0.6
 
 # every module box (core included) shares the same footprint; the whole
-# import graph is now a single vertical column, to keep the figure narrow
-MODULE_W, MODULE_H = 130, 60
-CHIP_W, CHIP_H = 260, 60
+# import graph is now a single vertical column, to keep the figure narrow.
+# Widened from the original 130/260 to comfortably fit the longest submodule
+# names (markov_random_field, influence_diagram); fit_font_size() below is a
+# safety net that shrinks a label's font further if it ever still overflows.
+MODULE_W, MODULE_H = 220, 60
+CHIP_W, CHIP_H = 380, 60
 TITLEBAR_H = 18
 TITLEBAR_FILL = "#3A3D41"
 DOT_COLORS = ["#FF5F56", "#FFBD2E", "#27C93F"]
@@ -63,6 +66,13 @@ def text(x, y, s, size=14, weight="normal", fill="#000", anchor="middle", family
     if italic:
         style += ' font-style="italic"'
     return f'<text x="{x:.1f}" y="{y:.1f}" {style}>{esc(s)}</text>'
+
+
+def fit_font_size(label, box_w, max_size=18, min_size=11, padding=20, char_w_ratio=0.62):
+    """Box label font size that keeps `label` within `box_w` (bold Helvetica width estimate)."""
+    available = box_w - padding
+    size = available / (len(label) * char_w_ratio)
+    return max(min_size, min(max_size, size))
 
 
 def code_line(x, y, parts):
@@ -140,7 +150,7 @@ def panel(panel_x, chip_label, eager_leaf, panel_title, show_core_loaded=True):
             # merged directly onto core: overlap, same visual family, no bus stub
             top = y - TAB_OVERLAP
             svg.append(rounded_rect(cx - MODULE_W / 2, top, MODULE_W, MODULE_H, 10, EAGER_FILL))
-            svg.append(text(cx, top + MODULE_H / 2 - 3, name, size=18, weight="700", fill=EAGER_TEXT))
+            svg.append(text(cx, top + MODULE_H / 2 - 3, name, size=fit_font_size(name, MODULE_W), weight="700", fill=EAGER_TEXT))
             svg.append(text(cx, top + MODULE_H / 2 + 13, "loaded", size=10, weight="600", fill="#D7E9F2"))
             y = top + MODULE_H
         else:
@@ -162,7 +172,7 @@ def panel(panel_x, chip_label, eager_leaf, panel_title, show_core_loaded=True):
     for name, top, box_cy in lazy_boxes:
         svg.append(rounded_rect(cx - MODULE_W / 2, top, MODULE_W, MODULE_H, 9, LAZY_FILL, stroke=LAZY_BORDER,
                                  stroke_width=1.6))
-        svg.append(text(cx, box_cy - 3, name, size=18, weight="700", fill=LAZY_TEXT))
+        svg.append(text(cx, box_cy - 3, name, size=fit_font_size(name, MODULE_W), weight="700", fill=LAZY_TEXT))
         svg.append(text(cx, box_cy + 13, "lazy", size=10, weight="600", italic=True, fill=LAZY_BORDER))
         svg.append(
             f'<line x1="{bus_x:.1f}" y1="{box_cy:.1f}" x2="{cx - MODULE_W/2 - 2:.1f}" y2="{box_cy:.1f}" '
@@ -188,7 +198,7 @@ panel1_x = SIDE_MARGIN
 panel2_x = SIDE_MARGIN + PW + GAP_BETWEEN
 
 svg1, h1 = panel(panel1_x, "import pyagrum", None, "import pyagrum")
-svg2, h2 = panel(panel2_x, "import pyagrum.mrf", "mrf", "import pyagrum.mrf", show_core_loaded=False)
+svg2, h2 = panel(panel2_x, "import pyagrum.markov_random_field", "markov_random_field", "import pyagrum.markov_random_field", show_core_loaded=False)
 panel_h = max(h1, h2)
 
 body = []

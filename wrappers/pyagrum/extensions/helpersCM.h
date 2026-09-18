@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief C++ helper functions for the pyagrum.cm wrapper only (not included but
+ * @brief C++ helper functions for the pyagrum.causal_model wrapper only (not included but
  * imported in the wrapper). Split out of extensions/helpers.h -- unlike that file,
  * this one is included only from cm.i: it references gum::CM/tools/doAST.h types
  * (ASTplus, ASTjointProba, ...), which live in the CM module. Including it from
@@ -43,7 +43,7 @@ namespace PyAgrumHelper {
   // Returns a new reference. Each node dict has an "op" key identifying its
   // type, plus type-specific keys (op1/op2 for binary ops, vars/knowing for
   // probability nodes, var/term for sum nodes).
-  PyObject* PyDictFromASTtree(const gum::ASTtree<double>& node) {
+  PyObject* PyDictFromASTtree(const gum::ASTtree< double >& node) {
     PyObject* d = PyDict_New();
     if (!d) return nullptr;
 
@@ -56,9 +56,9 @@ namespace PyAgrumHelper {
       PyDict_SetItemString(d, key, obj);
       Py_XDECREF(obj);
     };
-    auto makeStrList = [](const gum::Set<std::string>& names) {
+    auto makeStrList = [](const gum::Set< std::string >& names) {
       PyObject* list = PyList_New(0);
-      for (const auto& n : names) {
+      for (const auto& n: names) {
         PyObject* s = PyUnicode_FromString(n.c_str());
         PyList_Append(list, s);
         Py_DECREF(s);
@@ -66,31 +66,31 @@ namespace PyAgrumHelper {
       return list;
     };
 
-    if (auto* p = dynamic_cast<const gum::ASTplus<double>*>(&node)) {
+    if (auto* p = dynamic_cast< const gum::ASTplus< double >* >(&node)) {
       setStr("op", "+");
       setObj("op1", PyDictFromASTtree(p->op1()));
       setObj("op2", PyDictFromASTtree(p->op2()));
-    } else if (auto* p = dynamic_cast<const gum::ASTminus<double>*>(&node)) {
+    } else if (auto* p = dynamic_cast< const gum::ASTminus< double >* >(&node)) {
       setStr("op", "-");
       setObj("op1", PyDictFromASTtree(p->op1()));
       setObj("op2", PyDictFromASTtree(p->op2()));
-    } else if (auto* p = dynamic_cast<const gum::ASTmult<double>*>(&node)) {
+    } else if (auto* p = dynamic_cast< const gum::ASTmult< double >* >(&node)) {
       setStr("op", "*");
       setObj("op1", PyDictFromASTtree(p->op1()));
       setObj("op2", PyDictFromASTtree(p->op2()));
-    } else if (auto* p = dynamic_cast<const gum::ASTdiv<double>*>(&node)) {
+    } else if (auto* p = dynamic_cast< const gum::ASTdiv< double >* >(&node)) {
       setStr("op", "/");
       setObj("op1", PyDictFromASTtree(p->op1()));
       setObj("op2", PyDictFromASTtree(p->op2()));
-    } else if (auto* p = dynamic_cast<const gum::ASTposteriorProba<double>*>(&node)) {
+    } else if (auto* p = dynamic_cast< const gum::ASTposteriorProba< double >* >(&node)) {
       setStr("op", "P");
-      setObj("vars",    makeStrList(p->vars()));
+      setObj("vars", makeStrList(p->vars()));
       setObj("knowing", makeStrList(p->knw()));
-    } else if (auto* p = dynamic_cast<const gum::ASTjointProba<double>*>(&node)) {
+    } else if (auto* p = dynamic_cast< const gum::ASTjointProba< double >* >(&node)) {
       setStr("op", "P");
       setObj("vars", makeStrList(p->varNames()));
-    } else if (auto* p = dynamic_cast<const gum::ASTsum<double>*>(&node)) {
-      setStr("op",  "sum");
+    } else if (auto* p = dynamic_cast< const gum::ASTsum< double >* >(&node)) {
+      setStr("op", "sum");
       setStr("var", p->var());
       setObj("term", PyDictFromASTtree(p->term()));
     }

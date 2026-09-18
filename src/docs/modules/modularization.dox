@@ -49,8 +49,8 @@
 /*!
  * \defgroup modularization_group Code modularization (aGrUM and pyAgrum)
  *
- * aGrUM's C++ sources are split into 8 modules (`BASE`, `BN`, `PRM`, `MRF`,
- * `CN`, `FMDP`, `ID`, `CM`, declared in `src/modules.txt` with their
+ * aGrUM's C++ sources are split into 9 modules (`BASE`, `BN`, `PRM`, `MRF`,
+ * `CN`, `FMDP`, `ID`, `CM`, `KTBN`, declared in `src/modules.txt` with their
  * dependencies). Depending on the target and the platform, these modules are
  * assembled into a final binary in one of three ways.
  *
@@ -59,7 +59,7 @@
  * <table>
  * <tr><th>Target / platform</th><th>Resulting binaries</th></tr>
  * <tr><td>Pure aGrUM, Linux/macOS (default)</td>
- *     <td>8 genuinely separate shared libraries (`libagrumBASE.so`,
+ *     <td>9 genuinely separate shared libraries (`libagrumBASE.so`,
  *     `libagrumBN.so`, ...), each simultaneously a producer of its own
  *     symbols and a consumer of the modules it depends on.</td></tr>
  * <tr><td>Pure aGrUM, Windows</td>
@@ -67,9 +67,9 @@
  *     enforced by `act`) -- no DLL boundary exists between modules there.</td></tr>
  * <tr><td>pyAgrum, any platform</td>
  *     <td>`BASE` and `BN` are statically whole-archived into one shared
- *     core extension (`_pyagrum.so`/`.pyd`); `PRM`, `MRF`, `CN`, `ID` and
- *     `CM` each get their own separate shared leaf extension
- *     (`pyagrum.prm`, `.mrf`, `.cn`, `.id`, `.cm`) that links against that
+ *     core extension (`_pyagrumcpp.so`/`.pyd`); `PRM`, `MRF`, `CN`, `ID`, `CM`
+ *     and `KTBN` each get their own separate shared leaf extension
+ *     (`pyagrum.prm`, `.markov_random_field`, `.credal_net`, `.influence_diagram`, `.causal_model`, `.ktbn`) that links against that
  *     core. `FMDP` has no pyAgrum extension.</td></tr>
  * </table>
  *
@@ -98,7 +98,7 @@
  *   dependencies of its own (`BASE_DEPS` is empty), so it only ever
  *   produces, never consumes, under this family -- a single unqualified
  *   name is safe for it.
- * - **`GUM_PUBLIC_<MODULE>`** -- for a `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`
+ * - **`GUM_PUBLIC_<MODULE>`** -- for a `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`/`KTBN`
  *   symbol, one macro name per module (`GUM_PUBLIC_BN`, `GUM_PUBLIC_PRM`,
  *   ...). A module both produces its own symbols and consumes others' -- a
  *   single shared macro name could not tell "I own this" from "I merely
@@ -120,7 +120,7 @@
  * | pyAgrum leaf extension's own code | `PYGUM_PUBLIC` | (leaf extensions don't export to each
  * other) | | `BASE` or `BN`, needed by a pyAgrum leaf extension | `PYGUM_PUBLIC` |
  * `PYGUM_SHARED_PUBLIC` | | `BASE`, in a pure aGrUM build | (no tag needed) | `GUM_SHARED_PUBLIC` |
- * | `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`, in a pure aGrUM build | (no tag needed) |
+ * | `BN`/`PRM`/`MRF`/`CN`/`FMDP`/`ID`/`CM`/`KTBN`, in a pure aGrUM build | (no tag needed) |
  * `GUM_PUBLIC_<MODULE>` | | Still-generic template (`template <typename T> class Foo`) | never
  * tagged | never tagged |
  *

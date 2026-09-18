@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum.cm as gum
+import pyagrum.causal_model as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 

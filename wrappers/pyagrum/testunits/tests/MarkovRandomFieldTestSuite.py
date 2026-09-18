@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum.mrf as gum
+import pyagrum.markov_random_field as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 

@@ -4,7 +4,7 @@
 # Do not make changes to this file unless you know what you are doing - modify
 # the SWIG interface file instead.
 
-"""pyagrum.cm module"""
+"""pyagrum.causal_model module"""
 
 import typing
 # ## recursive import for typehints annotation

@@ -4,7 +4,7 @@
 # Do not make changes to this file unless you know what you are doing - modify
 # the SWIG interface file instead.
 
-"""pyagrum.mrf module"""
+"""pyagrum.markov_random_field module"""
 
 import typing
 # ## recursive import for typehints annotation

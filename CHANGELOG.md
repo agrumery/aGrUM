@@ -5,7 +5,7 @@
 - pyAgrum
 
     - **Modular build**:
-        - pyAgrum's SWIG extension is now split into independent modules -- `pyagrum.mrf`, `.id`, `.cn`, `.cm`, `.prm` --
+        - pyAgrum's SWIG extension is now split into independent modules -- `pyagrum.markov_random_field`, `.influence_diagram`, `.credal_net`, `.causal_model`, `.prm`, `.ktbn` --
           built and shipped as separate shared libraries instead of one monolithic extension, loaded lazily through a
           `__getattr__` compatibility shim so `import pyagrum` still works unchanged.
         - `BASE` and `BN` are merged into one shared core library (`_pyagrum.so`) with a relative RPATH so the wheel

@@ -43,7 +43,7 @@ TEMPORARY DIAGNOSTIC (2026-09-07): audits every pyAgrum leaf module for the
 GUM_PUBLIC-vs-PYGUM_SHARED_PUBLIC visibility bug (see commits cf75ee306,
 ef844b9a3, 5e0dfe594) -- a BASE/BN class tagged plain GUM_PUBLIC (or left
 untagged) instead of PYGUM_SHARED_PUBLIC/GUM_SHARED_PUBLIC never gets
-exported from core's _pyagrum.so under BUILD_PYTHON (-fvisibility=hidden
+exported from core's _pyagrumcpp.so under BUILD_PYTHON (-fvisibility=hidden
 blanks it), so any leaf module (id/mrf/cn/cm/prm) whose SWIG-generated or
 inline/template code needs that symbol fails with "undefined symbol" at
 import time -- ImportError, not a runtime crash inside a specific function,
@@ -74,11 +74,12 @@ import sys
 
 MODULES = [
     "pyagrum",
-    "pyagrum.id",
-    "pyagrum.mrf",
-    "pyagrum.cn",
-    "pyagrum.cm",
+    "pyagrum.influence_diagram",
+    "pyagrum.markov_random_field",
+    "pyagrum.credal_net",
+    "pyagrum.causal_model",
     "pyagrum.prm",
+    "pyagrum.ktbn",
 ]
 
 

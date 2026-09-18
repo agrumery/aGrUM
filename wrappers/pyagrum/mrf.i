@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.mrf", docstring="pyagrum.mrf module") mrfcpp
+%module(package="pyagrum.markov_random_field", docstring="pyagrum.markov_random_field module") mrfcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- PyAgrumHelper and the

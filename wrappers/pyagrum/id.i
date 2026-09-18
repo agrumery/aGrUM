@@ -41,7 +41,7 @@
 
 
 
-%module(package="pyagrum.id", docstring="pyagrum.id module") idcpp
+%module(package="pyagrum.influence_diagram", docstring="pyagrum.influence_diagram module") idcpp
 
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared

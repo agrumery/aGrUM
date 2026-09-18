@@ -40,7 +40,7 @@
 
 import unittest
 
-import pyagrum.id as gum
+import pyagrum.influence_diagram as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 

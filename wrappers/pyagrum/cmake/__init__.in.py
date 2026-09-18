@@ -57,7 +57,8 @@ pyAgrum includes :
 # (MarkovRandomField, InfluenceDiagram, DirectedModel, ...) are deliberately
 # NOT listed here: "import *" resolves __all__ entries via getattr(), which
 # would trigger the shim and pull in other split submodules transitively --
-# e.g. importing pyagrum.mrf would end up also importing cn/id/cm.
+# e.g. importing pyagrum.markov_random_field would end up also importing
+# credal_net/influence_diagram/causal_model.
 __all__ = [
   "ApproximationScheme", "Arc", "ArcSet", "ArgumentError", "ArrayLike", "BNDatabaseGenerator",
   "BNGenerator", "BNInference", "BNLearner", "BayesNet", "BayesNetFragment", "CPTError",
@@ -118,7 +119,6 @@ del _sys
 import os as _os
 import sys as _sys
 import types as _types
-import builtins as _builtins
 
 
 _PYAGRUM_WRAPPER_MODULES = frozenset(
@@ -152,8 +152,8 @@ def _pyagrum_filter_traceback(tb):
 def _pyagrum_filter_exception(exc):
   seen = set()
   current = exc
-  while current is not None and _builtins.id(current) not in seen:
-    seen.add(_builtins.id(current))
+  while current is not None and id(current) not in seen:
+    seen.add(id(current))
     current.__traceback__ = _pyagrum_filter_traceback(current.__traceback__)
     current = current.__cause__ or current.__context__
 
@@ -303,32 +303,39 @@ from .pyagrumcpp import BNLearner
 
 import sys
 
-# submodules MRF, CN, ID, CM are compiled as separate extensions
-# (pyagrum.mrf, pyagrum.cn, pyagrum.id, pyagrum.cm), each importable on its
-# own. Backward compat: pyagrum.MarkovRandomField etc. keep working without
-# an explicit `import pyagrum.mrf` first, via a lazy module __getattr__
+# submodules MRF, CN, ID, CM, PRM and KTBN are compiled as separate
+# extensions (pyagrum.markov_random_field, pyagrum.credal_net,
+# pyagrum.influence_diagram, pyagrum.causal_model, pyagrum.prm,
+# pyagrum.ktbn), each importable on its own. Backward compat:
+# pyagrum.MarkovRandomField etc. keep working without an explicit
+# `import pyagrum.markov_random_field` first, via a lazy module __getattr__
 # (PEP 562) -- the submodule is only actually imported on first access of
 # one of its names, so `import pyagrum` alone stays light (does not pull in
 # submodules that are never used).
 _LAZY_SUBMODULE_ATTRS = {
-  "availableMRFExts": "mrf", "loadMRF": "mrf", "saveMRF": "mrf",
-  "fastMRF": "mrf",
-  "MarkovRandomField": "mrf", "ShaferShenoyMRFInference": "mrf",
+  "availableMRFExts": "markov_random_field", "loadMRF": "markov_random_field", "saveMRF": "markov_random_field",
+  "fastMRF": "markov_random_field",
+  "MarkovRandomField": "markov_random_field", "ShaferShenoyMRFInference": "markov_random_field",
 
-  "CredalNet": "cn", "CNMonteCarloSampling": "cn", "CNLoopyPropagation": "cn",
+  "CredalNet": "credal_net", "CNMonteCarloSampling": "credal_net", "CNLoopyPropagation": "credal_net",
 
-  "IDGenerator": "id",
-  "availableIDExts": "id", "loadID": "id", "saveID": "id",
-  "fastID": "id",
-  "InfluenceDiagram": "id", "ShaferShenoyLIMIDInference": "id",
+  "IDGenerator": "influence_diagram",
+  "availableIDExts": "influence_diagram", "loadID": "influence_diagram", "saveID": "influence_diagram",
+  "fastID": "influence_diagram",
+  "InfluenceDiagram": "influence_diagram", "ShaferShenoyLIMIDInference": "influence_diagram",
 
-  "DoorCriteria": "cm",
-  "CausalModel": "cm",
-  "CausalImpact": "cm",
-  "Counterfactual": "cm",
-  "causalImpact": "cm", "counterfactual": "cm", "counterfactualModel": "cm",
+  "DoorCriteria": "causal_model",
+  "CausalModel": "causal_model",
+  "CausalImpact": "causal_model",
+  "Counterfactual": "causal_model",
+  "causalImpact": "causal_model", "counterfactual": "causal_model", "counterfactualModel": "causal_model",
 
   "PRMexplorer": "prm",
+
+  "KTBNModality": "ktbn", "KTBN": "ktbn", "KTBNGenerator": "ktbn",
+  "KTBNInference": "ktbn", "KTBNDatabaseGenerator": "ktbn",
+  "KTBNLearner": "ktbn", "KTBNAdaptiveLearner": "ktbn",
+  "availableKTBNExts": "ktbn", "loadKTBN": "ktbn", "saveKTBN": "ktbn",
 }
 
 
@@ -341,13 +348,14 @@ def _lazy_import_submodule(submodule_name):
       f"module {__name__!r}: pyagrum.{submodule_name} failed to import ({e})"
     ) from e
 
-  if submodule_name == "cm":
+  if submodule_name == "causal_model":
     # CausalModel.causalBN deprecated-alias patch (see _patch_causal_model
-    # below): applied here, on first successful lazy import of pyagrum.cm,
-    # rather than unconditionally at module top-level -- CausalModel is no
-    # longer an eagerly-imported name once this shim replaces the old
-    # direct `from .pyagrumcpp import CausalModel`. Idempotent: safe to run
-    # again if cm attributes are accessed via several different names.
+    # below): applied here, on first successful lazy import of
+    # pyagrum.causal_model, rather than unconditionally at module top-level --
+    # CausalModel is no longer an eagerly-imported name once this shim
+    # replaces the old direct `from .pyagrumcpp import CausalModel`.
+    # Idempotent: safe to run again if causal_model attributes are accessed
+    # via several different names.
     _patch_causal_model(submodule.CausalModel)
 
   return submodule
@@ -363,22 +371,27 @@ def _lazy_import_submodule(submodule_name):
 # submodule; they are rarely-used convenience aliases, not on the
 # `import pyagrum` hot path.
 def _build_directed_model():
-  return BayesNet | DAG | _lazy_import_submodule("cm").CausalModel | _lazy_import_submodule("id").InfluenceDiagram
+  return (
+    BayesNet
+    | DAG
+    | _lazy_import_submodule("causal_model").CausalModel
+    | _lazy_import_submodule("influence_diagram").InfluenceDiagram
+  )
 
 def _build_mrf_inference():
-  return _lazy_import_submodule("mrf").ShaferShenoyMRFInference
+  return _lazy_import_submodule("markov_random_field").ShaferShenoyMRFInference
 
 def _build_cn_inference():
-  cn = _lazy_import_submodule("cn")
+  cn = _lazy_import_submodule("credal_net")
   return cn.CNLoopyPropagation | cn.CNMonteCarloSampling
 
 def _build_id_inference():
-  return _lazy_import_submodule("id").ShaferShenoyLIMIDInference
+  return _lazy_import_submodule("influence_diagram").ShaferShenoyLIMIDInference
 
 def _build_pgm():
-  mrf = _lazy_import_submodule("mrf")
-  id_ = _lazy_import_submodule("id")
-  cn = _lazy_import_submodule("cn")
+  mrf = _lazy_import_submodule("markov_random_field")
+  id_ = _lazy_import_submodule("influence_diagram")
+  cn = _lazy_import_submodule("credal_net")
   return BayesNet | mrf.MarkovRandomField | id_.InfluenceDiagram | cn.CredalNet
 
 _LAZY_COMPOSITE_TYPE_ALIASES = {
@@ -492,10 +505,10 @@ Graph: TypeAlias = DiGraph | DAG | UndiGraph | MixedGraph
 # does `isinstance`/`is` checks against these) is built lazily by
 # __getattr__ below, via _LAZY_COMPOSITE_TYPE_ALIASES.
 if TYPE_CHECKING:
-  from .mrf import MarkovRandomField, ShaferShenoyMRFInference
-  from .cn import CredalNet, CNLoopyPropagation, CNMonteCarloSampling
-  from .id import InfluenceDiagram, ShaferShenoyLIMIDInference
-  from .cm import CausalModel
+  from .markov_random_field import MarkovRandomField, ShaferShenoyMRFInference
+  from .credal_net import CredalNet, CNLoopyPropagation, CNMonteCarloSampling
+  from .influence_diagram import InfluenceDiagram, ShaferShenoyLIMIDInference
+  from .causal_model import CausalModel
 
   #: Any directed probabilistic model: BayesNet, DAG, CausalModel or InfluenceDiagram.
   DirectedModel: TypeAlias = BayesNet | DAG | CausalModel | InfluenceDiagram

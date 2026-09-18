@@ -81,11 +81,15 @@ class ExceptionTracebackTestCase(pyAgrumTestCase):
     self.assertNotIn("pyagrumcpp.py", printed)
 
   def testFilterSurvivesInfluenceDiagramSubmoduleImport(self):
-    # Regression test: pyagrum.id (the InfluenceDiagram submodule) becomes an
-    # attribute of the pyagrum module once imported, which used to shadow the
-    # builtin id() relied on internally by the traceback filter (raising
-    # "TypeError: 'module' object is not callable" instead of the real error).
-    _ = gum.InfluenceDiagram  # triggers the lazy submodule import of pyagrum.id
+    # Regression test: pyagrum used to have a submodule literally named "id"
+    # (InfluenceDiagram), which became an attribute of the pyagrum module
+    # once imported and shadowed the builtin id() relied on internally by
+    # the traceback filter (raising "TypeError: 'module' object is not
+    # callable" instead of the real error). It has since been renamed to
+    # pyagrum.influence_diagram, removing that specific collision -- this
+    # test still guards the filter against breaking when an unrelated lazy
+    # submodule has been imported first.
+    _ = gum.InfluenceDiagram  # triggers the lazy submodule import of pyagrum.influence_diagram
     printed = self._printedTraceback(lambda: gum.fastBN("A[3"))
     self.assertIn("InvalidArgument", printed)
     self.assertNotIn("TypeError", printed)

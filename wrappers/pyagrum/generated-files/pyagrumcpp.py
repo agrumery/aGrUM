@@ -29794,9 +29794,9 @@ def getPosterior(model, *, target, evs=None):
   if isinstance(model, pyagrum.BayesNet):
     inf = pyagrum.VariableElimination(model)
   else:
-# lazy import: MarkovRandomField only lives in the pyagrum.mrf extension,
+# lazy import: MarkovRandomField only lives in the pyagrum.markov_random_field extension,
 # keep the common BayesNet-only case free of it
-    import pyagrum.mrf as _mrf
+    import pyagrum.markov_random_field as _mrf
     if isinstance(model, _mrf.MarkovRandomField):
       inf = _mrf.ShaferShenoyMRFInference(model)
     else:
