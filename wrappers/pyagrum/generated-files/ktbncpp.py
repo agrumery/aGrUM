@@ -678,17 +678,56 @@ class KTBN(object):
     def fromBN(*args) -> "pyagrum.KTBN":
         r"""
 
-        Build a k-TBN from an existing :class:`pyagrum.BayesNet` whose node names follow
-        the bracket notation (``base[t]`` for temporal, bare name for atemporal). The
-        order k is inferred as one plus the largest slice index found.
+        Build a k-TBN from an existing :class:`pyagrum.BayesNet`, reading its node names
+        under one of two mutually exclusive conventions -- picked automatically, never
+        mixed within one network:
+
+        - **Bracket convention**: used as soon as *any* node name already carries the
+          engine's own ``base[t]`` bracket notation (e.g. produced by
+          :func:`pyagrum.KTBN.toBN`). In that case the *whole* network is read that
+          way: every temporal node name must be ``base[t]`` with a plain decimal
+          slice (no leading zeros), any other name is atemporal.
+        - **Bracket-free convention**: used when *no* node name carries a bracket at
+          all. A name ending in a run of digits denotes a temporal variable at the
+          timeslice given by that integer -- the base is everything before the
+          digits, so ``'X0'`` and ``'X12'`` both belong to process ``'X'``, at slices
+          0 and 12 respectively. Any other name (no trailing digit) is atemporal.
+
+        In both conventions, the order k is inferred as one plus the largest slice
+        index found. A group of same-base nodes that does not cover every slice
+        ``0..k-1`` is not an error: each of its nodes is reclassified as an atemporal
+        variable (original name kept), with a warning -- pass the name explicitly in
+        ``atemporalNodes`` to silence it. When no temporal process survives, k falls
+        back to 1.
+
+        Examples
+        --------
+        Bracket-free convention (a plain, hand-built or foreign BN):
+
+        >>> bn = pyagrum.BayesNet()
+        >>> bn.add(pyagrum.LabelizedVariable('X0', '', 2))
+        >>> bn.add(pyagrum.LabelizedVariable('X1', '', 2))
+        >>> bn.add(pyagrum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
+        >>> bn.addArc('X0', 'X1')
+        >>> bn.addArc('C', 'X1')
+        >>> ktbn = pyagrum.KTBN.fromBN(bn)
+        >>> ktbn.k()
+        2
+
+        Bracket convention (round-tripping a KTBN's own storage BN):
+
+        >>> ktbn2 = pyagrum.KTBN.fromBN(ktbn.toBN())
 
         Parameters
         ----------
         bn : pyagrum.BayesNet
             the source Bayesian network (copied)
         atemporalNodes : set[str]
-            node names to classify atemporal outright, to lift an ambiguity when a
-            group of bracket-named nodes does not cover every slice (default: empty)
+            node names -- exactly as they appear in bn -- to classify atemporal
+            outright. Only needed to lift an ambiguity: a name the active convention
+            already reads as atemporal changes nothing by being listed, while listing
+            a temporal-shaped name says 'I meant this atemporally' where the
+            reclassification above would only guess (and warn) (default: empty)
 
         Returns
         -------
@@ -700,7 +739,10 @@ class KTBN(object):
         pyagrum.NotFound
             if a name in atemporalNodes is not a node of bn
         pyagrum.OperationNotAllowed
-            if the temporal structure of bn is inconsistent
+            if the temporal structure of bn is inconsistent: two variables mapping to
+            the same (process, slice), a base name used both as an atemporal
+            variable and as a temporal process, an arc from a temporal node into an
+            atemporal one, or an arc from the future to the past
 
         """
         return _ktbncpp.KTBN_fromBN(*args)

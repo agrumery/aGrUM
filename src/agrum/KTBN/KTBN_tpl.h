@@ -902,6 +902,48 @@ namespace gum {
       if (warnings != nullptr) warnings->push_back(message);
     };
 
+    // fromBN()'s bracket-free convention: a name ending in a run of digits
+    // denotes a temporal variable at the timeslice given by that integer (base =
+    // everything before the run); a name with no trailing digit is atemporal.
+    // Purely syntactic, like _decodeName_, but that one expects the engine's own
+    // base[t] convention. Used below only when the source BN carries no bracket
+    // at all (see hasBracket).
+    const auto decodeTrailingSlice
+        = [](std::string_view name) -> std::pair< std::string, int > {
+      std::size_t pos = name.size();
+      while (pos > 0 && std::isdigit(static_cast< unsigned char >(name[pos - 1]))) --pos;
+      if (pos == name.size()) return {std::string{name}, ATEMPORAL};
+
+      const std::string_view digits = name.substr(pos);
+      int                    slice{};
+      try {
+        slice = std::stoi(std::string{digits});
+      } catch (const std::out_of_range&) {
+        GUM_ERROR(InvalidArgument,
+                  "Node name '" << name << "' has a slice index too large to represent as int.")
+      }
+      return {std::string{name.substr(0, pos)}, slice};
+    };
+
+    // The two conventions never mix within one graph: if any node name already
+    // carries the engine's own base[t] bracket notation, the WHOLE graph is read
+    // that way (legacy behaviour -- what KTBNLearner and toBN() round-trips
+    // produce); only when no node carries a bracket at all does every node get
+    // read via the trailing-integer convention above. Nodes declared in
+    // atemporalNodes are skipped here: their shape says nothing about the rest
+    // of the graph's convention, so a bracket-shaped one (e.g. an orphan
+    // "Y[0]" named atemporal on purpose, see below) must not force
+    // bracket-reading onto otherwise bracket-free temporal nodes.
+    bool hasBracket = false;
+    for (const NodeId n: _bn_.nodes()) {
+      const std::string& name = _bn_.variable(n).name();
+      if (atemporalNodes.contains(name)) continue;
+      if (_decodeName_(name).second != ATEMPORAL) {
+        hasBracket = true;
+        break;
+      }
+    }
+
     // first pass: determine every node, collecting the slices seen per process
     std::vector< std::string >                         discovered;   // temporal bases, in order
     HashTable< std::string, HashTable< int, NodeId > > slicesPerProcess;
@@ -910,15 +952,15 @@ namespace gum {
     for (const NodeId n: _bn_.nodes()) {
       const std::string& name = _bn_.variable(n).name();
 
-      // an explicitly declared node is atemporal whatever its shape, brackets
-      // included: it never enters slicesPerProcess, so the completeness rules
-      // below never see it and never warn about it
+      // an explicitly declared node is atemporal whatever its shape, trailing
+      // digits included: it never enters slicesPerProcess, so the completeness
+      // rules below never see it and never warn about it
       if (atemporalNodes.contains(name)) {
         _atemporal_.insert(name);
         continue;
       }
 
-      const auto [base, slice] = _decodeName_(name);
+      const auto [base, slice] = hasBracket ? _decodeName_(name) : decodeTrailingSlice(name);
 
       if (slice == ATEMPORAL) {
         _atemporal_.insert(base);
@@ -942,17 +984,18 @@ namespace gum {
 
     // second pass: register the complete processes. A group that does not cover
     // every slice 0..k-1 is NOT rejected: each of its nodes becomes an atemporal
-    // variable, bracket name kept, and a warning is recorded. Only a base used
-    // BOTH bare and bracketed stays an error -- there the two readings collide
-    // on one name, and no reclassification can resolve that.
+    // variable, original name kept, and a warning is recorded. Only a base used
+    // BOTH bare and temporal-shaped stays an error -- there the two readings
+    // collide on one name, and no reclassification can resolve that.
+    const char* const conventionNoun = hasBracket ? "bracket" : "digit-suffixed";
     for (const auto& base: discovered) {
       const HashTable< int, NodeId >& sliceMap = slicesPerProcess[base];
 
       if (_atemporal_.contains(base))
         GUM_ERROR(OperationNotAllowed,
                   "Base name '" << base << "' is used both as an atemporal variable (bare node '"
-                                << base << "') and as a temporal process (via bracket nodes). "
-                                << "Rename one of them before calling fromBN().")
+                                << base << "') and as a temporal process (via " << conventionNoun
+                                << " nodes). " << "Rename one of them before calling fromBN().")
 
       std::string missing;
       for (Size t = 0; t < _k_; ++t)
@@ -983,6 +1026,16 @@ namespace gum {
                           << ". Every slice of a process must have the same type and domain.")
         }
         _temporal_.insert(base);
+        if (!hasBracket) {
+          // Under the trailing-integer convention the slices just matched above
+          // carry no bracket notation yet: rename them onto the engine's
+          // canonical base[t] form -- the invariant every other method (add(),
+          // unroll(), rename(), ...) relies on. Under the bracket convention
+          // source names are already canonical, so nothing to do here.
+          for (Size t = 0; t < _k_; ++t)
+            _bn_.changeVariableName(_bn_.variable(sliceMap[static_cast< int >(t)]).name(),
+                                    _encode_(base, static_cast< int >(t)));
+        }
         continue;
       }
 
@@ -994,9 +1047,9 @@ namespace gum {
         reclassified += "'" + nodeName + "'";
       }
       warn("Node(s) " + reclassified + " look temporal (base='" + base
-           + "') but the process is missing slice(s) " + missing + " for k="
-           + std::to_string(_k_)
-           + ": they are classified as atemporal variables, bracket names kept. Pass them in "
+           + "', " + conventionNoun + " convention) but the process is missing slice(s) " + missing
+           + " for k=" + std::to_string(_k_)
+           + ": they are classified as atemporal variables, original name kept. Pass them in "
              "fromBN()'s atemporalNodes argument to make that explicit and silence this warning.");
     }
 

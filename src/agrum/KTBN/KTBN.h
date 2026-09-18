@@ -604,36 +604,46 @@ namespace gum {
     static KTBN< GUM_SCALAR > load(std::string_view filename);
 
     /**
-     * @brief Builds a k-DBN from an existing gum::BayesNet whose node names
-     * follow the bracket notation (<tt>base[t]</tt> for temporal, bare name for
-     * atemporal).
+     * @brief Builds a k-DBN from an existing gum::BayesNet, reading its node
+     * names under one of two mutually exclusive conventions.
      *
-     * The order @f$k@f$ is inferred as one plus the largest slice index found.
-     * Temporal node names are assumed to be @b canonical, i.e. <tt>base[t]</tt>
-     * with a plain decimal slice and no leading zeros (the form produced by
-     * add() / unroll()).
-     * A group of bracket-named nodes that does @b not cover every slice
+     * If any node name already carries the engine's own bracket notation
+     * (<tt>base[t]</tt>), the @b whole network is read that way: exactly the
+     * legacy behaviour, temporal node names assumed @b canonical (a plain
+     * decimal slice, no leading zeros -- the form produced by add() /
+     * unroll() / toBN()). Otherwise -- no node name carries a bracket at all
+     * -- every node is read under the bracket-free convention: a name ending
+     * in a run of digits denotes a temporal variable at the timeslice given
+     * by that integer (base = everything before the digits, e.g.
+     * <tt>"X0"</tt> and <tt>"X12"</tt> both belong to process <tt>"X"</tt>,
+     * at slices 0 and 12); any other name is atemporal.
+     *
+     * The order @f$k@f$ is inferred as one plus the largest slice index
+     * found. A group of same-base nodes that does @b not cover every slice
      * @f$0..k-1@f$ is @b not an error: each of its nodes becomes an atemporal
-     * variable, bracket name kept, and a message is appended to @p warnings.
+     * variable, original name kept, and a message is appended to @p warnings.
      * When no temporal process survives, @f$k@f$ falls back to 1.
      *
      * @param bn The source Bayesian network (copied).
-     * @param atemporalNodes Node names -- exactly as they appear in @p bn,
-     *        bracket-suffixed or not -- to classify atemporal outright. Only
-     *        needed to lift an ambiguity: a bare name is atemporal anyway, so
-     *        listing it changes nothing, and listing a bracket name says
-     *        "I meant this" where the reclassification above would only guess
-     *        (and warn).
+     * @param atemporalNodes Node names -- exactly as they appear in @p bn --
+     *        to classify atemporal outright. Only needed to lift an ambiguity:
+     *        a name the active convention already reads as atemporal changes
+     *        nothing by being listed, while listing a temporal-shaped name
+     *        says "I meant this atemporally" where the reclassification above
+     *        would only guess (and warn).
      * @param warnings If non-null, receives one message per reclassified group.
      * @throw NotFound if a name in @p atemporalNodes is not a node of @p bn.
      * @throw OperationNotAllowed if the temporal structure is inconsistent:
      * two variables mapping to the same (process, slice), a base name used
-     * both as a bare node and as bracket-named slices, an arc from a temporal
-     * node into an atemporal one, or an arc from the future to the past.
+     * both as an atemporal variable and as a temporal process, an arc from a
+     * temporal node into an atemporal one, or an arc from the future to the
+     * past.
      *
-     * @warning A lone @c "X[0]" with no other bracket node in @p bn yields
-     * @f$k=1@f$, where a single slice is a @e complete process: it is kept
-     * temporal, silently. List it in @p atemporalNodes to say otherwise.
+     * @warning A lone temporal-shaped node with no sibling sharing its base
+     * (e.g. @c "X0" alone under the bracket-free convention, or @c "X[0]"
+     * alone under the bracket one) yields @f$k=1@f$, where a single slice is
+     * a @e complete process: it is kept temporal, silently. List it in
+     * @p atemporalNodes to say otherwise.
      */
     static KTBN< GUM_SCALAR > fromBN(const BayesNet< GUM_SCALAR >&            bn,
                                      const std::unordered_set< std::string >& atemporalNodes = {},

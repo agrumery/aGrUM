@@ -240,6 +240,152 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(FromBNBracketFreeConvention) {
+    // basic k=2: X0/X1 (temporal, base "X") + C (atemporal, no trailing digit).
+    // Also checks that the source names get renamed onto the engine's canonical
+    // base[t] form: existsArc()/exists() go through that encoding, so they would
+    // fail to find anything if the rename had not happened.
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X1", "", 2));
+      bn.add(gum::LabelizedVariable("C", "", 2));
+      bn.addArc(bn.idFromName("X0"), bn.idFromName("X1"));
+      bn.addArc(bn.idFromName("C"), bn.idFromName("X1"));
+      bn.generateCPTs();
+
+      const auto m = gum::KTBN< double >::fromBN(bn);
+      CHECK_EQ(m.k(), gum::Size(2));
+      CHECK(m.temporalVarNames().contains("X"));
+      CHECK(m.atemporalVarNames().contains("C"));
+      CHECK(m.existsArc("X", 0, "X", 1));
+      CHECK(m.existsArc("C", AT, "X", 1));
+    }
+
+    // k=1 (order-0): a lone "X0" is a complete process on its own, must not throw
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("C", "", 2));
+      bn.addArc(bn.idFromName("C"), bn.idFromName("X0"));
+      bn.generateCPTs();
+
+      gum::KTBN< double > m;
+      CHECK_NOTHROW(m = gum::KTBN< double >::fromBN(bn));
+      CHECK_EQ(m.k(), gum::Size(1));
+      CHECK(m.exists("X"));
+      CHECK(m.exists("C"));
+    }
+
+    // multi-digit base disambiguation: base is everything before the trailing run
+    // of digits, so "X12" belongs to process "X" at slice 12, not process "X1"
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X1", "", 2));
+      bn.generateCPTs();
+
+      const auto m = gum::KTBN< double >::fromBN(bn);
+      CHECK(m.temporalVarNames().contains("X"));
+      CHECK_FALSE(m.temporalVarNames().contains("X1"));
+    }
+
+    // missing slice: X0 and X12 present (so k=13) but slices 1..11 absent, so the
+    // process does not survive and is reclassified as atemporal, original
+    // (bracket-free) names kept, k falls back to 1
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X12", "", 2));
+      bn.generateCPTs();
+
+      std::vector< std::string > warnings;
+      const auto                 m = gum::KTBN< double >::fromBN(bn, {}, &warnings);
+      CHECK_EQ(m.k(), gum::Size(1));
+      CHECK(m.temporalVarNames().empty());
+      CHECK(m.atemporalVarNames().contains("X0"));
+      CHECK(m.atemporalVarNames().contains("X12"));
+      CHECK_EQ(warnings.size(), std::size_t(1));
+    }
+
+    // atemporalNodes lifts the ambiguity explicitly, without a warning
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.generateCPTs();
+
+      std::vector< std::string > warnings;
+      const auto m = gum::KTBN< double >::fromBN(bn, {"X0"}, &warnings);
+      CHECK(m.atemporalVarNames().contains("X0"));
+      CHECK(warnings.empty());
+    }
+
+    // a bracket-shaped atemporalNodes name must not flip the whole graph onto
+    // the bracket convention: X0/X1 stay a bracket-free temporal process even
+    // though "Y[0]" (explicitly atemporal) looks bracket-shaped
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X1", "", 2));
+      bn.add(gum::LabelizedVariable("Y[0]", "", 2));
+      bn.addArc(bn.idFromName("X0"), bn.idFromName("X1"));
+      bn.generateCPTs();
+
+      const auto m = gum::KTBN< double >::fromBN(bn, {"Y[0]"});
+      CHECK_EQ(m.k(), gum::Size(2));
+      CHECK(m.temporalVarNames().contains("X"));
+      CHECK(m.existsArc("X", 0, "X", 1));
+      CHECK(m.atemporalVarNames().contains("Y[0]"));
+    }
+
+    // bare "Y" (atemporal) collides with digit-suffixed "Y0"/"Y1" (temporal)
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("Y", "", 2));
+      bn.add(gum::LabelizedVariable("Y0", "", 2));
+      bn.add(gum::LabelizedVariable("Y1", "", 2));
+      bn.generateCPTs();
+      CHECK_THROWS_AS(gum::KTBN< double >::fromBN(bn), const gum::OperationNotAllowed&);
+    }
+
+    // temporal -> atemporal arc is rejected
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X1", "", 2));
+      bn.add(gum::LabelizedVariable("C", "", 2));
+      bn.addArc(bn.idFromName("X1"), bn.idFromName("C"));   // temporal -> atemporal
+      bn.generateCPTs();
+      CHECK_THROWS_AS(gum::KTBN< double >::fromBN(bn), const gum::OperationNotAllowed&);
+    }
+
+    // future -> past arc is rejected
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("X0", "", 2));
+      bn.add(gum::LabelizedVariable("X1", "", 2));
+      bn.addArc(bn.idFromName("X1"), bn.idFromName("X0"));   // slice 1 -> slice 0
+      bn.generateCPTs();
+      CHECK_THROWS_AS(gum::KTBN< double >::fromBN(bn), const gum::OperationNotAllowed&);
+    }
+
+    // the two conventions never mix: a single bracket-named node anywhere in the
+    // graph forces the WHOLE graph to be read under the bracket convention, so a
+    // digit-suffixed name elsewhere ("Z9") is then read literally, atemporal
+    {
+      gum::BayesNet< double > bn;
+      bn.add(gum::LabelizedVariable("Y[0]", "", 2));
+      bn.add(gum::LabelizedVariable("Y[1]", "", 2));
+      bn.add(gum::LabelizedVariable("Z9", "", 2));
+      bn.generateCPTs();
+
+      const auto m = gum::KTBN< double >::fromBN(bn);
+      CHECK(m.temporalVarNames().contains("Y"));
+      CHECK(m.atemporalVarNames().contains("Z9"));
+      CHECK_FALSE(m.temporalVarNames().contains("Z"));
+    }
+  }
+
   GUM_TEST(ToString) {
     const gum::KTBN< double > m = buildK2Model();
 

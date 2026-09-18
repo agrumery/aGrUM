@@ -152,6 +152,92 @@ class KTBNConstructionTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.OperationNotAllowed):
       gum.KTBN.fromBN(bn4)
 
+  def testFromBNBracketFreeConvention(self):
+    # basic k=2: X0/X1 (temporal, base "X") + C (atemporal, no trailing digit)
+    bn = gum.BayesNet()
+    bn.add(gum.LabelizedVariable("X0", "", 2))
+    bn.add(gum.LabelizedVariable("X1", "", 2))
+    bn.add(gum.LabelizedVariable("C", "", 2))
+    bn.addArc(bn.idFromName("X0"), bn.idFromName("X1"))
+    bn.addArc(bn.idFromName("C"), bn.idFromName("X1"))
+    bn.generateCPTs()
+
+    m = gum.KTBN.fromBN(bn)
+    self.assertEqual(m.k(), 2)
+    self.assertTrue(m.exists("X"))
+    self.assertTrue(m.exists("C"))
+    self.assertTrue(m.existsArc("X", 0, "X", 1))
+    self.assertTrue(m.existsArc("C", AT, "X", 1))
+
+    # k=1 (order-0): a lone "X0" is a complete process on its own, must not throw
+    bn1 = gum.BayesNet()
+    bn1.add(gum.LabelizedVariable("X0", "", 2))
+    bn1.add(gum.LabelizedVariable("C", "", 2))
+    bn1.addArc(bn1.idFromName("C"), bn1.idFromName("X0"))
+    bn1.generateCPTs()
+    m1 = gum.KTBN.fromBN(bn1)
+    self.assertEqual(m1.k(), 1)
+    self.assertTrue(m1.exists("X"))
+    self.assertTrue(m1.exists("C"))
+
+    # multi-digit base disambiguation: "X12" belongs to process "X" at slice 12
+    bn2 = gum.BayesNet()
+    bn2.add(gum.LabelizedVariable("X0", "", 2))
+    bn2.add(gum.LabelizedVariable("X1", "", 2))
+    bn2.generateCPTs()
+    m2 = gum.KTBN.fromBN(bn2)
+    self.assertTrue(m2.exists("X"))
+    self.assertFalse(m2.exists("X1"))
+
+    # missing slice: X0 and X12 present (k=13) but slices 1..11 absent, so the
+    # process does not survive and is reclassified as atemporal, k falls back to 1
+    bn3 = gum.BayesNet()
+    bn3.add(gum.LabelizedVariable("X0", "", 2))
+    bn3.add(gum.LabelizedVariable("X12", "", 2))
+    bn3.generateCPTs()
+    m3 = gum.KTBN.fromBN(bn3)
+    self.assertEqual(m3.k(), 1)
+
+    # temporal -> atemporal arc is rejected
+    bn4b = gum.BayesNet()
+    bn4b.add(gum.LabelizedVariable("X0", "", 2))
+    bn4b.add(gum.LabelizedVariable("X1", "", 2))
+    bn4b.add(gum.LabelizedVariable("C", "", 2))
+    bn4b.addArc(bn4b.idFromName("X1"), bn4b.idFromName("C"))
+    bn4b.generateCPTs()
+    with self.assertRaises(gum.OperationNotAllowed):
+      gum.KTBN.fromBN(bn4b)
+
+    # future -> past arc is rejected
+    bn5 = gum.BayesNet()
+    bn5.add(gum.LabelizedVariable("X0", "", 2))
+    bn5.add(gum.LabelizedVariable("X1", "", 2))
+    bn5.addArc(bn5.idFromName("X1"), bn5.idFromName("X0"))
+    bn5.generateCPTs()
+    with self.assertRaises(gum.OperationNotAllowed):
+      gum.KTBN.fromBN(bn5)
+
+    # bare "Y" (atemporal) collides with digit-suffixed "Y0"/"Y1" (temporal)
+    bn6 = gum.BayesNet()
+    bn6.add(gum.LabelizedVariable("Y", "", 2))
+    bn6.add(gum.LabelizedVariable("Y0", "", 2))
+    bn6.add(gum.LabelizedVariable("Y1", "", 2))
+    bn6.generateCPTs()
+    with self.assertRaises(gum.OperationNotAllowed):
+      gum.KTBN.fromBN(bn6)
+
+    # the two conventions never mix: a bracket-named node anywhere forces the
+    # WHOLE network to be read under the bracket convention, so a digit-suffixed
+    # name elsewhere ("Z9") is then read literally, atemporal
+    bn7 = gum.BayesNet()
+    bn7.add(gum.LabelizedVariable("Y[0]", "", 2))
+    bn7.add(gum.LabelizedVariable("Y[1]", "", 2))
+    bn7.add(gum.LabelizedVariable("Z9", "", 2))
+    bn7.generateCPTs()
+    m7 = gum.KTBN.fromBN(bn7)
+    self.assertTrue(m7.exists("Y"))
+    self.assertFalse(m7.exists("Z"))
+
   def testToString(self):
     m = _buildK2Model()
     s = m.toString()
