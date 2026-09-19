@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -49,7 +49,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -222,7 +221,7 @@ namespace gum_tests {
       m.addArc("X", 0, "X", 1);
       m.generateCPTs();
 
-      gum::BayesNet< double > bn = m.toBN();
+      gum::BayesNet< double > bn     = m.toBN();
       const gum::Size         before = m.size();
       bn.add(gum::LabelizedVariable("NEW", "", 2));   // mutate the returned BN
       CHECK_FALSE(m.exists("NEW"));
@@ -315,7 +314,7 @@ namespace gum_tests {
       bn.generateCPTs();
 
       std::vector< std::string > warnings;
-      const auto m = gum::KTBN< double >::fromBN(bn, {"X0"}, &warnings);
+      const auto                 m = gum::KTBN< double >::fromBN(bn, {"X0"}, &warnings);
       CHECK(m.atemporalVarNames().contains("X0"));
       CHECK(warnings.empty());
     }
@@ -462,10 +461,10 @@ namespace gum_tests {
     // toUnrolledDot(T, true): slices >= k (here slice 2) are shaded lightcyan
     const std::string undotHl = m.toUnrolledDot(3, true);
     CHECK(undotHl.find("cluster_2 {\n    label=\"Time slice 2\";\n    style=filled;\n    "
-                        "bgcolor=\"lightcyan\"")
+                       "bgcolor=\"lightcyan\"")
           != std::string::npos);
     CHECK(undotHl.find("cluster_0 {\n    label=\"Time slice 0\";\n    style=filled;\n    "
-                        "bgcolor=\"#DDDDDD\"")
+                       "bgcolor=\"#DDDDDD\"")
           != std::string::npos);
 
     // bnToDot(): raw storage-BN dot, also using bracket engine names

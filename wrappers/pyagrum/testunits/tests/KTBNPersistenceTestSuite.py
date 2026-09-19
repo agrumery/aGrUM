@@ -38,11 +38,6 @@
 #                                                                          #
 ############################################################################
 
-# NOTE: KTBN has no saveGUMstring()/loadGUMstring() nor pickle support (its
-# C++ API only offers save()/load() on a filename); this suite therefore
-# lives on its own instead of being folded into GumFormatTestSuite.py, whose
-# pattern relies on both.
-
 import os
 import tempfile
 import unittest

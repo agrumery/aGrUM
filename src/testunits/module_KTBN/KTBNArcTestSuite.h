@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -47,7 +47,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-
 namespace gum_tests {
 
   struct KTBNArcTestSuite {
@@ -63,20 +62,20 @@ namespace gum_tests {
     m.add(gum::LabelizedVariable("Y", "", 2), true);
     m.add(gum::LabelizedVariable("C", "", 2), false);
 
-    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 0, "X", 2));   // lag 2
-    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 1, "X", 2));   // lag 1
-    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 2, "Y", 2));   // intra-slice
-    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("C", AT, "X", 2));  // atemporal -> temporal
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 0, "X", 2));    // lag 2
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 1, "X", 2));    // lag 1
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("X", 2, "Y", 2));    // intra-slice
+    GUM_CHECK_ASSERT_THROWS_NOTHING(m.addArc("C", AT, "X", 2));   // atemporal -> temporal
 
     CHECK(m.existsArc("X", 0, "X", 2));
     CHECK_FALSE(m.existsArc("X", 0, "X", 1));
     CHECK_THROWS(m.existsArc("Z", 0, "X", 2));   // unknown variable -> throws
 
-    CHECK_THROWS_AS(m.addArc("X", 2, "X", 0), const gum::OperationNotAllowed&);   // future->past
-    CHECK_THROWS_AS(m.addArc("X", 0, "C", AT), const gum::OperationNotAllowed&);  // temp->atemp
+    CHECK_THROWS_AS(m.addArc("X", 2, "X", 0), const gum::OperationNotAllowed&);    // future->past
+    CHECK_THROWS_AS(m.addArc("X", 0, "C", AT), const gum::OperationNotAllowed&);   // temp->atemp
 
     m.addArc("X", 0, "Y", 0);
-    CHECK_THROWS_AS(m.addArc("Y", 0, "X", 0), const gum::InvalidDirectedCycle&);  // cycle
+    CHECK_THROWS_AS(m.addArc("Y", 0, "X", 0), const gum::InvalidDirectedCycle&);   // cycle
 
     m.eraseArc("X", 0, "Y", 0);
     CHECK_FALSE(m.existsArc("X", 0, "Y", 0));
@@ -167,10 +166,10 @@ namespace gum_tests {
 
     // parents/children bracket overloads resolve the same way
     m.addArc("Y[0]", "X[1]");
-    auto ch = m.children("Y[0]");   // atemporal bracket name
+    auto ch = m.children("Y[0]");          // atemporal bracket name
     CHECK_EQ(ch.size(), std::size_t(1));   // X[1] only (Y[0]->X[2] was erased above)
 
-    auto pa = m.parents("X[1]");   // temporal bracket name
+    auto pa = m.parents("X[1]");           // temporal bracket name
     CHECK_EQ(pa.size(), std::size_t(1));
     CHECK_EQ(pa[0].first, std::string("Y[0]"));
     CHECK_EQ(pa[0].second, AT);

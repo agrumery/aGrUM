@@ -53,7 +53,6 @@
 #include <format>
 #include <fstream>
 #include <memory>
-#include <unordered_map>
 
 #include <agrum/base/database/CSVParser.h>
 #include <agrum/base/multidim/instantiation.h>
@@ -62,10 +61,12 @@
 #include <agrum/BN/learning/scores/scoreBD.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scoreBIC.h>
+#include <agrum/BN/learning/scores/scorefNML.h>
 #include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
 #include <agrum/BN/learning/scores/scoreMDL.h>
-#include <agrum/BN/learning/scores/scorefNML.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
+
+#include <unordered_map>
 
 namespace gum::learning {
 
@@ -83,20 +84,18 @@ namespace gum::learning {
       const std::vector< std::string >&        missingSymbols,
       bool                                     induceTypes) :
       _dirPath_(dirPath), _csvBaseName_(csvBaseName), _nbSamples_(nbSamples), _kMax_(kMax),
-      _atemporalVars_(atemporalVars), _missingSymbols_(missingSymbols),
-      _induceTypes_(induceTypes) {
+      _atemporalVars_(atemporalVars), _missingSymbols_(missingSymbols), _induceTypes_(induceTypes) {
     // cheap argument checks first, so bad calls fail before touching the disk
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(kMax, "kMax");
-    if (nbSamples < 1)
-      GUM_ERROR(InvalidArgument, "KTBNAdaptiveLearner requires nbSamples >= 1")
+    if (nbSamples < 1) GUM_ERROR(InvalidArgument, "KTBNAdaptiveLearner requires nbSamples >= 1")
 
     // Load the base-variable names (the CSV columns) so the constraint setters can
     // reject unknown names eagerly. Only the header row is needed, so we parse a
     // single line instead of loading and typing the whole file. The column order
     // matches what every per-k KTBNLearner reads from the same header at
     // learnKTBN() time.
-    namespace fs                = std::filesystem;
-    const fs::path firstCSV     = fs::path{dirPath} / (std::string{csvBaseName} + "1.csv");
+    namespace fs            = std::filesystem;
+    const fs::path firstCSV = fs::path{dirPath} / (std::string{csvBaseName} + "1.csv");
     std::ifstream  is(firstCSV, std::ifstream::in);
     if (!is.is_open()) GUM_ERROR(IOError, "Cannot open " << firstCSV.string())
 
@@ -107,7 +106,7 @@ namespace gum::learning {
     _baseNames_.insert(header.begin(), header.end());
 
     // every declared atemporal variable must actually be one of those columns
-    for (const std::string& aname : _atemporalVars_)
+    for (const std::string& aname: _atemporalVars_)
       if (!_baseNames_.contains(aname))
         GUM_ERROR(InvalidArgument,
                   "atemporal variable '" << aname << "' not found in the CSV header")
@@ -131,9 +130,14 @@ namespace gum::learning {
       // (header read); _inferAtemporalVars_ needs nbSamples, unlike the
       // header-only read above, since one trajectory alone cannot show that a
       // value stays constant.
-      KTBNAdaptiveLearner(dirPath, csvBaseName, nbSamples, kMax,
-                          _inferAtemporalVars_(dirPath, csvBaseName, nbSamples, kMax, missingSymbols),
-                          missingSymbols, induceTypes) {}
+      KTBNAdaptiveLearner(
+          dirPath,
+          csvBaseName,
+          nbSamples,
+          kMax,
+          _inferAtemporalVars_(dirPath, csvBaseName, nbSamples, kMax, missingSymbols),
+          missingSymbols,
+          induceTypes) {}
 
   template < GUM_Numeric GUM_SCALAR >
   std::unordered_set< std::string > KTBNAdaptiveLearner< GUM_SCALAR >::_inferAtemporalVars_(
@@ -144,8 +148,10 @@ namespace gum::learning {
       const std::vector< std::string >& missingSymbols) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(kMax, "kMax");
     if (nbSamples < 1) GUM_ERROR(InvalidArgument, "KTBNAdaptiveLearner requires nbSamples >= 1")
-    return IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(dirPath, csvBaseName, nbSamples,
-                                                              missingSymbols);
+    return IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(dirPath,
+                                                             csvBaseName,
+                                                             nbSamples,
+                                                             missingSymbols);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -161,20 +167,20 @@ namespace gum::learning {
       _atemporalVars_(atemporalVars), _missingSymbols_(missingSymbols), _induceTypes_(false),
       _prior_bn_(std::make_unique< BayesNet< GUM_SCALAR > >(bn)) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(kMax, "kMax");
-    if (nbSamples < 1)
-      GUM_ERROR(InvalidArgument, "KTBNAdaptiveLearner requires nbSamples >= 1")
+    if (nbSamples < 1) GUM_ERROR(InvalidArgument, "KTBNAdaptiveLearner requires nbSamples >= 1")
 
     // the schema BN is the authoritative variable universe here (not the CSV
     // header): take the base names from it, so the constraint setters validate
     // against the same variables every per-k KTBNLearner will use. The CSV is
     // read only later, at learnKTBN() time.
-    for (const NodeId node : bn.nodes())
+    for (const NodeId node: bn.nodes())
       _baseNames_.insert(bn.variable(node).name());
 
     // every declared atemporal variable must be a node of the schema BN
-    for (const std::string& aname : _atemporalVars_)
+    for (const std::string& aname: _atemporalVars_)
       if (!_baseNames_.contains(aname))
-        GUM_ERROR(InvalidArgument, "atemporal variable '" << aname << "' not found in the schema BN")
+        GUM_ERROR(InvalidArgument,
+                  "atemporal variable '" << aname << "' not found in the schema BN")
 
     GUM_CONSTRUCTOR(KTBNAdaptiveLearner)
   }
@@ -203,11 +209,12 @@ namespace gum::learning {
     _bestLatentVariables_.clear();
     _scorePerCandidateK_.clear();
     KTBN< GUM_SCALAR > best;
-    Size               bestK     = 0;     // local; committed to _bestK_ only if the whole sweep succeeds
-    double             bestScore = 0.0;   // unread until the first candidate sets it
-    double             logN      = 0.0;   // log2 of the total number of observations
-    std::vector< std::pair< Size, double > >             scores;       // per-k scores, committed at the end
-    std::vector< std::pair< std::string, std::string > > bestLatents;  // winner's latent pairs, committed at the end
+    Size               bestK = 0;   // local; committed to _bestK_ only if the whole sweep succeeds
+    double             bestScore = 0.0;                // unread until the first candidate sets it
+    double             logN      = 0.0;                // log2 of the total number of observations
+    std::vector< std::pair< Size, double > > scores;   // per-k scores, committed at the end
+    std::vector< std::pair< std::string, std::string > >
+        bestLatents;   // winner's latent pairs, committed at the end
 
     for (Size k = _kMin_; k <= _kMax_; ++k) {
       // build this candidate's fixed-k learner: from the schema BN when one was
@@ -215,21 +222,21 @@ namespace gum::learning {
       // KTBNLearner is non-movable, so hold it through a unique_ptr.
       std::unique_ptr< KTBNLearner< GUM_SCALAR > > learnerPtr
           = _prior_bn_ ? std::make_unique< KTBNLearner< GUM_SCALAR > >(_dirPath_,
-                                                                      _csvBaseName_,
-                                                                      _nbSamples_,
-                                                                      k,
-                                                                      *_prior_bn_,
-                                                                      _atemporalVars_,
-                                                                      _missingSymbols_,
-                                                                      _ignoreMissingSymbols_)
-                      : std::make_unique< KTBNLearner< GUM_SCALAR > >(_dirPath_,
-                                                                      _csvBaseName_,
-                                                                      _nbSamples_,
-                                                                      k,
-                                                                      _atemporalVars_,
-                                                                      _missingSymbols_,
-                                                                      _induceTypes_,
-                                                                      _ignoreMissingSymbols_);
+                                                                       _csvBaseName_,
+                                                                       _nbSamples_,
+                                                                       k,
+                                                                       *_prior_bn_,
+                                                                       _atemporalVars_,
+                                                                       _missingSymbols_,
+                                                                       _ignoreMissingSymbols_)
+                       : std::make_unique< KTBNLearner< GUM_SCALAR > >(_dirPath_,
+                                                                       _csvBaseName_,
+                                                                       _nbSamples_,
+                                                                       k,
+                                                                       _atemporalVars_,
+                                                                       _missingSymbols_,
+                                                                       _induceTypes_,
+                                                                       _ignoreMissingSymbols_);
       KTBNLearner< GUM_SCALAR >& learner = *learnerPtr;
 
       // Refused here rather than deep inside structure learning: learnDag_ would
@@ -248,7 +255,8 @@ namespace gum::learning {
       // candidate and reused — it must stay fixed for the scores to compare.
       if (logN == 0.0) {
         Size nbObs = 0;
-        for (const Size len : learner.nbRows()) nbObs += len;
+        for (const Size len: learner.nbRows())
+          nbObs += len;
         logN = std::log2(nbObs);
       }
 
@@ -302,8 +310,7 @@ namespace gum::learning {
       KTBNAdaptiveLearner< GUM_SCALAR >::latentVariables() const {
     // gated on the same sentinel as bestK(): 0 means learnKTBN() has not run.
     if (_bestK_ == 0)
-      GUM_ERROR(OperationNotAllowed,
-                "latentVariables() is undefined: call learnKTBN() first.")
+      GUM_ERROR(OperationNotAllowed, "latentVariables() is undefined: call learnKTBN() first.")
     return _bestLatentVariables_;
   }
 
@@ -312,8 +319,9 @@ namespace gum::learning {
       KTBNAdaptiveLearner< GUM_SCALAR >::scorePerCandidateK() const {
     // same sentinel gate as bestK()/latentVariables(): 0 means learnKTBN() has not run.
     if (_bestK_ == 0)
-      GUM_ERROR(OperationNotAllowed,
-                "scorePerCandidateK() is undefined: call learnKTBN() before querying the per-k scores.")
+      GUM_ERROR(
+          OperationNotAllowed,
+          "scorePerCandidateK() is undefined: call learnKTBN() before querying the per-k scores.")
     return _scorePerCandidateK_;
   }
 
@@ -361,9 +369,9 @@ namespace gum::learning {
     };
     // render a set of engine-name pairs as "{a->b, c->d}"
     const auto arcs = [](const std::set< std::pair< std::string, std::string > >& s) {
-      std::string r = "{";
+      std::string r     = "{";
       bool        first = true;
-      for (const auto& [a, b] : s) {
+      for (const auto& [a, b]: s) {
         if (!first) r += ", ";
         first = false;
         r += a + "->" + b;
@@ -371,9 +379,9 @@ namespace gum::learning {
       return r + "}";
     };
     const auto names = [](const std::set< std::string >& s) {
-      std::string r = "{";
+      std::string r     = "{";
       bool        first = true;
-      for (const auto& n : s) {
+      for (const auto& n: s) {
         if (!first) r += ", ";
         first = false;
         r += n;
@@ -381,17 +389,16 @@ namespace gum::learning {
       return r + "}";
     };
     // render a set of (tailBase, headBase, lag) triples as "{a->b (lag 1), ...}"
-    const auto kernelArcs
-        = [](const std::set< std::tuple< std::string, std::string, int > >& s) {
-            std::string r = "{";
-            bool        first = true;
-            for (const auto& [a, b, lag] : s) {
-              if (!first) r += ", ";
-              first = false;
-              r += a + "->" + b + " (lag " + std::to_string(lag) + ")";
-            }
-            return r + "}";
-          };
+    const auto kernelArcs = [](const std::set< std::tuple< std::string, std::string, int > >& s) {
+      std::string r     = "{";
+      bool        first = true;
+      for (const auto& [a, b, lag]: s) {
+        if (!first) r += ", ";
+        first = false;
+        r += a + "->" + b + " (lag " + std::to_string(lag) + ")";
+      }
+      return r + "}";
+    };
 
     add("Candidate orders", std::to_string(_kMin_) + ".." + std::to_string(_kMax_));
     add("Selected k", _bestK_ == 0 ? "not learned yet" : std::to_string(_bestK_));
@@ -478,10 +485,11 @@ namespace gum::learning {
     // aligned "key : value  (comment)" listing, same layout as BNLearner::toString
     const auto  st     = state();
     std::size_t maxkey = 0;
-    for (const auto& t : st) maxkey = std::max(maxkey, std::get< 0 >(t).length());
+    for (const auto& t: st)
+      maxkey = std::max(maxkey, std::get< 0 >(t).length());
 
     std::string s;
-    for (const auto& t : st) {
+    for (const auto& t: st) {
       s += std::format("{:<{}} : {}", std::get< 0 >(t), maxkey, std::get< 1 >(t));
       if (!std::get< 2 >(t).empty()) s += std::format("  ({})", std::get< 2 >(t));
       s += '\n';
@@ -518,8 +526,7 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNAdaptiveLearner< GUM_SCALAR >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::useScoreLog2Likelihood() {
+  KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::useScoreLog2Likelihood() {
     _score_ = IBNLearner::ScoreType::LOG2LIKELIHOOD;
     return *this;
   }
@@ -593,7 +600,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size,
-                                                                     Size nb_decrease) {
+                                                                    Size nb_decrease) {
     _algo_       = IBNLearner::AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
     _tabuSize_   = tabu_size;
     _nbDecrease_ = nb_decrease;
@@ -647,7 +654,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenArc(std::string_view tailNode,
-                                                          std::string_view headNode) {
+                                                         std::string_view headNode) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tailNode});
     const auto [headBase, headSlice] = _determineNode_(std::string{headNode});
     _verifyBase_(tailBase, tailSlice);
@@ -664,9 +671,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenArc(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) {
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -677,7 +684,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tailNode,
-                                                            std::string_view headNode) {
+                                                           std::string_view headNode) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tailNode});
     const auto [headBase, headSlice] = _determineNode_(std::string{headNode});
     _verifyBase_(tailBase, tailSlice);
@@ -691,9 +698,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) {
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -704,7 +711,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addMandatoryArc(std::string_view tailNode,
-                                                          std::string_view headNode) {
+                                                         std::string_view headNode) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tailNode});
     const auto [headBase, headSlice] = _determineNode_(std::string{headNode});
     _verifyBase_(tailBase, tailSlice);
@@ -722,9 +729,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addMandatoryArc(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) {
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -735,7 +742,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tailNode,
-                                                            std::string_view headNode) {
+                                                           std::string_view headNode) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tailNode});
     const auto [headBase, headSlice] = _determineNode_(std::string{headNode});
     _verifyBase_(tailBase, tailSlice);
@@ -750,9 +757,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) {
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -766,8 +773,9 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenKernelArc(std::string_view tailBase, int lag,
-                                                                std::string_view headBase) {
+      KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenKernelArc(std::string_view tailBase,
+                                                               int              lag,
+                                                               std::string_view headBase) {
     _verifyKernelArc_(tailBase, headBase, lag);
     _forbiddenKernelArcs_.emplace(std::string{tailBase}, std::string{headBase}, lag);
     _raiseKMinForSlice_(lag);
@@ -776,8 +784,9 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenKernelArc(std::string_view tailBase, int lag,
-                                                                  std::string_view headBase) {
+      KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenKernelArc(std::string_view tailBase,
+                                                                 int              lag,
+                                                                 std::string_view headBase) {
     _verifyKernelArc_(tailBase, headBase, lag);
     _forbiddenKernelArcs_.erase({std::string{tailBase}, std::string{headBase}, lag});
     _recomputeKMin_();
@@ -786,8 +795,9 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::addMandatoryKernelArc(std::string_view tailBase, int lag,
-                                                                std::string_view headBase) {
+      KTBNAdaptiveLearner< GUM_SCALAR >::addMandatoryKernelArc(std::string_view tailBase,
+                                                               int              lag,
+                                                               std::string_view headBase) {
     _verifyKernelArc_(tailBase, headBase, lag);
     // no separate feasibility check: lag >= 0 (just verified) already guarantees
     // headSlice = k-1 >= k-1-lag = tailSlice for every candidate, so this can
@@ -799,8 +809,9 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::eraseMandatoryKernelArc(std::string_view tailBase, int lag,
-                                                                  std::string_view headBase) {
+      KTBNAdaptiveLearner< GUM_SCALAR >::eraseMandatoryKernelArc(std::string_view tailBase,
+                                                                 int              lag,
+                                                                 std::string_view headBase) {
     _verifyKernelArc_(tailBase, headBase, lag);
     _mandatoryKernelArcs_.erase({std::string{tailBase}, std::string{headBase}, lag});
     _recomputeKMin_();
@@ -810,7 +821,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenIntraSliceArc(std::string_view tailBase,
-                                                                    std::string_view headBase) {
+                                                                   std::string_view headBase) {
     // these constraints carry no single slice, so no slice range is checked;
     // an atemporal base has no intra-slice position and is rejected eagerly
     // here, where KTBNLearner would throw at its own setter (expanding to "C[t]")
@@ -825,7 +836,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenIntraSliceArc(std::string_view tailBase,
-                                                                      std::string_view headBase) {
+                                                                     std::string_view headBase) {
     // same eager rejection as addForbiddenIntraSliceArc: such a constraint can
     // never have been recorded
     _checkBaseIsTemporal_(tailBase, "an intra-slice constraint");
@@ -837,7 +848,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addForbiddenArcAllSlices(std::string_view tailBase,
-                                                                   std::string_view headBase) {
+                                                                  std::string_view headBase) {
     _verifyBase_(tailBase, KTBN< GUM_SCALAR >::ATEMPORAL);
     _verifyBase_(headBase, KTBN< GUM_SCALAR >::ATEMPORAL);
     // record the base pair; learnKTBN() expands it over every causally-possible
@@ -849,7 +860,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::eraseForbiddenArcAllSlices(std::string_view tailBase,
-                                                                     std::string_view headBase) {
+                                                                    std::string_view headBase) {
     _verifyBase_(tailBase, KTBN< GUM_SCALAR >::ATEMPORAL);
     _verifyBase_(headBase, KTBN< GUM_SCALAR >::ATEMPORAL);
     _forbiddenArcsAllSlices_.erase({std::string{tailBase}, std::string{headBase}});
@@ -931,9 +942,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addPossibleEdge(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) {
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -944,7 +955,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::addPossibleEdge(std::string_view tail,
-                                                          std::string_view head) {
+                                                         std::string_view head) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tail});
     const auto [headBase, headSlice] = _determineNode_(std::string{head});
     _verifyBase_(tailBase, tailSlice);
@@ -965,9 +976,9 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::erasePossibleEdge(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) {
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) {
     // validate before _encode_ flattens the slice (a negative one would
     // silently read back as atemporal, losing the real error)
     _verifyBase_(tailBase, tailSlice);
@@ -978,7 +989,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >&
       KTBNAdaptiveLearner< GUM_SCALAR >::erasePossibleEdge(std::string_view tail,
-                                                            std::string_view head) {
+                                                           std::string_view head) {
     const auto [tailBase, tailSlice] = _determineNode_(std::string{tail});
     const auto [headBase, headSlice] = _determineNode_(std::string{head});
     _verifyBase_(tailBase, tailSlice);
@@ -1063,18 +1074,18 @@ namespace gum::learning {
                                           "atemporal variable)")
     if (slice >= static_cast< int >(_kMax_))
       GUM_ERROR(InvalidArgument,
-                "time slice " << slice << " for '" << base << "' is out of range: it must be < kMax ("
-                              << _kMax_ << ")")
+                "time slice " << slice << " for '" << base
+                              << "' is out of range: it must be < kMax (" << _kMax_ << ")")
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNAdaptiveLearner< GUM_SCALAR >::_verifyKernelArc_(std::string_view tailBase,
-                                                             std::string_view headBase,
-                                                             int              lag) const {
+                                                            std::string_view headBase,
+                                                            int              lag) const {
     // an atemporal variable has a single instance, not a per-slice one, so it
     // has no kernel slice to anchor a lag against: same rule as the intra-slice
     // setters, hence the same shared check
-    for (const std::string_view base : {tailBase, headBase})
+    for (const std::string_view base: {tailBase, headBase})
       _checkBaseIsTemporal_(base, "a kernel-relative arc");
     // lag < 0 would place the tail AFTER the kernel slice (the last slice by
     // definition), which can never happen
@@ -1093,7 +1104,8 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNAdaptiveLearner< GUM_SCALAR >::_raiseKMinForSlice_(int slice) {
-    if (slice != KTBN< GUM_SCALAR >::ATEMPORAL) _kMin_ = std::max(_kMin_, static_cast< Size >(slice) + 1);
+    if (slice != KTBN< GUM_SCALAR >::ATEMPORAL)
+      _kMin_ = std::max(_kMin_, static_cast< Size >(slice) + 1);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -1103,25 +1115,29 @@ namespace gum::learning {
     // single _raiseKMinForSlice_ call, so this rebuilds from scratch rather
     // than adjusting in place.
     _kMin_ = 2;
-    for (const auto& [tail, head] : _forbiddenArcs_) {
+    for (const auto& [tail, head]: _forbiddenArcs_) {
       _raiseKMinForSlice_(_determineNode_(tail).second);
       _raiseKMinForSlice_(_determineNode_(head).second);
     }
-    for (const auto& [tail, head] : _mandatoryArcs_) {
+    for (const auto& [tail, head]: _mandatoryArcs_) {
       _raiseKMinForSlice_(_determineNode_(tail).second);
       _raiseKMinForSlice_(_determineNode_(head).second);
     }
-    for (const auto& [tail, head] : _possibleEdges_) {
+    for (const auto& [tail, head]: _possibleEdges_) {
       _raiseKMinForSlice_(_determineNode_(tail).second);
       _raiseKMinForSlice_(_determineNode_(head).second);
     }
-    for (const auto& node : _noParentNodes_) _raiseKMinForSlice_(_determineNode_(node).second);
-    for (const auto& node : _noChildrenNodes_) _raiseKMinForSlice_(_determineNode_(node).second);
+    for (const auto& node: _noParentNodes_)
+      _raiseKMinForSlice_(_determineNode_(node).second);
+    for (const auto& node: _noChildrenNodes_)
+      _raiseKMinForSlice_(_determineNode_(node).second);
     // kernel-relative arcs: the lag itself is what must fit (the head's slice is
     // always the kernel k-1, which trivially fits any k), so raise on the lag
     // directly rather than decoding an engine name that doesn't exist yet.
-    for (const auto& t : _forbiddenKernelArcs_) _raiseKMinForSlice_(std::get< 2 >(t));
-    for (const auto& t : _mandatoryKernelArcs_) _raiseKMinForSlice_(std::get< 2 >(t));
+    for (const auto& t: _forbiddenKernelArcs_)
+      _raiseKMinForSlice_(std::get< 2 >(t));
+    for (const auto& t: _mandatoryKernelArcs_)
+      _raiseKMinForSlice_(std::get< 2 >(t));
     // _forbiddenIntraSliceArcs_ / _forbiddenArcsAllSlices_ carry no slice (they
     // are base-name pairs, expanded per-k by the fixed-k learner) and so are
     // left out: they never make a candidate drop anything, whatever k is.
@@ -1183,42 +1199,42 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNAdaptiveLearner< GUM_SCALAR >::_applyConstraints_(KTBNLearner< GUM_SCALAR >& learner,
-                                                              Size k) const {
+                                                             Size                       k) const {
     const int ik = static_cast< int >(k);
     // an engine-name endpoint fits candidate k iff its slice is < k (ATEMPORAL == -1
     // always fits); a constraint touching a slice this candidate does not have is
     // skipped for this k only.
     auto fits = [&](const std::string& node) { return _determineNode_(node).second < ik; };
 
-    for (const auto& [tail, head] : _forbiddenArcs_)
+    for (const auto& [tail, head]: _forbiddenArcs_)
       if (fits(tail) && fits(head)) learner.addForbiddenArc(tail, head);
-    for (const auto& [tail, head] : _mandatoryArcs_)
+    for (const auto& [tail, head]: _mandatoryArcs_)
       if (fits(tail) && fits(head)) learner.addMandatoryArc(tail, head);
-    for (const auto& [tail, head] : _possibleEdges_)
+    for (const auto& [tail, head]: _possibleEdges_)
       if (fits(tail) && fits(head)) learner.addPossibleEdge(tail, head);
-    for (const auto& node : _noParentNodes_)
+    for (const auto& node: _noParentNodes_)
       if (fits(node)) learner.addNoParentNode(node);
-    for (const auto& node : _noChildrenNodes_)
+    for (const auto& node: _noChildrenNodes_)
       if (fits(node)) learner.addNoChildrenNode(node);
 
     // kernel-relative arcs: resolve the lag against this candidate's kernel
     // slice (k-1) into an explicit (base, slice) arc. Always fits once k >=
     // _kMin_ (guaranteed by _raiseKMinForSlice_/_recomputeKMin_ above), but the
     // guard mirrors fits()'s defensive style above rather than assuming it.
-    for (const auto& [tailBase, headBase, lag] : _forbiddenKernelArcs_) {
+    for (const auto& [tailBase, headBase, lag]: _forbiddenKernelArcs_) {
       const int tailSlice = ik - 1 - lag;
       if (tailSlice >= 0) learner.addForbiddenArc(tailBase, tailSlice, headBase, ik - 1);
     }
-    for (const auto& [tailBase, headBase, lag] : _mandatoryKernelArcs_) {
+    for (const auto& [tailBase, headBase, lag]: _mandatoryKernelArcs_) {
       const int tailSlice = ik - 1 - lag;
       if (tailSlice >= 0) learner.addMandatoryArc(tailBase, tailSlice, headBase, ik - 1);
     }
 
     // base-only constraints: hand them to the fixed-k learner, which expands them
     // over its own slices (no manual expansion / no slice filtering needed here).
-    for (const auto& [tailBase, headBase] : _forbiddenIntraSliceArcs_)
+    for (const auto& [tailBase, headBase]: _forbiddenIntraSliceArcs_)
       learner.addForbiddenIntraSliceArc(tailBase, headBase);
-    for (const auto& [tailBase, headBase] : _forbiddenArcsAllSlices_)
+    for (const auto& [tailBase, headBase]: _forbiddenArcsAllSlices_)
       learner.addForbiddenArcAllSlices(tailBase, headBase);
 
     // structural-search knobs, applied only when the user changed them from default
@@ -1235,7 +1251,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   template < typename PerInstance, typename PerNodeFinal >
   void KTBNAdaptiveLearner< GUM_SCALAR >::_forEachScoredNode_(const KTBN< GUM_SCALAR >& net,
-                                                              PerInstance  perInstance,
+                                                              PerInstance               perInstance,
                                                               PerNodeFinal perNodeFinal) const {
     namespace fs = std::filesystem;
     const int k  = static_cast< int >(net.k());
@@ -1312,12 +1328,11 @@ namespace gum::learning {
         std::ifstream pis(file, std::ifstream::in);
         if (!pis.is_open()) GUM_ERROR(IOError, "Cannot open " << file.string())
         CSVParser pre(pis, file.string());
-        if (!pre.next()) GUM_ERROR(IOError, "empty trajectory file '" << file.string() << "'")
-        {
-          const auto& header = pre.current();
-          for (std::size_t c = 0; c < header.size(); ++c)
-            colOf[header[c]] = c;
-        }
+        if (!pre.next()) GUM_ERROR(IOError, "empty trajectory file '" << file.string() << "'") {
+            const auto& header = pre.current();
+            for (std::size_t c = 0; c < header.size(); ++c)
+              colOf[header[c]] = c;
+          }
         const std::size_t nbAtemp = net.atemporalVarNames().size();
         while (atempVal.size() < nbAtemp && pre.next()) {
           const auto& row = pre.current();
@@ -1407,8 +1422,10 @@ namespace gum::learning {
     // per-node closing pass over every evaluator (all slices + atemporal), for
     // criteria that reduce the accumulated per-node state after the whole walk
     for (auto& slice: temporalEvals)
-      for (NodeEval& e: slice) perNodeFinal(e);
-    for (NodeEval& e: atemporalEvals) perNodeFinal(e);
+      for (NodeEval& e: slice)
+        perNodeFinal(e);
+    for (NodeEval& e: atemporalEvals)
+      perNodeFinal(e);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -1443,7 +1460,8 @@ namespace gum::learning {
           e.counts[idx] += 1.0;
         },
         [this, &penalty](auto& e) {
-          for (const auto& [cfg, n]: e.counts) penalty += _ctable_.log2Cnr(e.selfDom, n);
+          for (const auto& [cfg, n]: e.counts)
+            penalty += _ctable_.log2Cnr(e.selfDom, n);
         });
     return logL - penalty;
   }
@@ -1455,9 +1473,9 @@ namespace gum::learning {
     // (initial slices, kernel slice, atemporal nodes), this is the k-TBN's total
     // parameter count — it rises with k, which is what the BIC penalty needs.
     double df = 0.0;
-    for (const auto& [base, slice] : net.nodes()) {
+    for (const auto& [base, slice]: net.nodes()) {
       double cell = net.variable(base, slice).domainSize() - 1.0;
-      for (const auto& [pbase, pslice] : net.parents(base, slice))
+      for (const auto& [pbase, pslice]: net.parents(base, slice))
         cell *= net.variable(pbase, pslice).domainSize();
       df += cell;
     }

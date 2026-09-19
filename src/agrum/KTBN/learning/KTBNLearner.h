@@ -81,16 +81,16 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/BN/learning/BNLearner.h>
-#include <agrum/KTBN/KTBN.h>
 #include <agrum/KTBN/learning/IKTBNLearner.h>
+
+#include <string_view>
+#include <unordered_set>
 
 namespace gum {
 
@@ -153,14 +153,14 @@ namespace gum {
        * parameter. Name the type — @c std::unordered_set<std::string>{"C","D"}
        * — or pass a named variable.
        */
-      KTBNLearner(std::string_view                  dirPath,
-                  std::string_view                  csvBaseName,
-                  Size                              nbSamples,
-                  Size                              k,
+      KTBNLearner(std::string_view                         dirPath,
+                  std::string_view                         csvBaseName,
+                  Size                                     nbSamples,
+                  Size                                     k,
                   const std::unordered_set< std::string >& atemporalVars,
-                  const std::vector< std::string >& missingSymbols = {"?"},
-                  bool                              induceTypes    = true,
-                  bool                              ignoreMissingSymbols = false);
+                  const std::vector< std::string >&        missingSymbols       = {"?"},
+                  bool                                     induceTypes          = true,
+                  bool                                     ignoreMissingSymbols = false);
 
       /**
        * @brief Structure-learning constructor — atemporal variables inferred from the CSVs.
@@ -208,8 +208,8 @@ namespace gum {
                   std::string_view                  csvBaseName,
                   Size                              nbSamples,
                   Size                              k,
-                  const std::vector< std::string >& missingSymbols = {"?"},
-                  bool                              induceTypes    = true,
+                  const std::vector< std::string >& missingSymbols       = {"?"},
+                  bool                              induceTypes          = true,
                   bool                              ignoreMissingSymbols = false);
 
       /**
@@ -243,8 +243,8 @@ namespace gum {
                   Size                                     nbSamples,
                   Size                                     k,
                   const BayesNet< GUM_SCALAR >&            bn,
-                  const std::unordered_set< std::string >& atemporalVars  = {},
-                  const std::vector< std::string >&        missingSymbols = {"?"},
+                  const std::unordered_set< std::string >& atemporalVars        = {},
+                  const std::vector< std::string >&        missingSymbols       = {"?"},
                   bool                                     ignoreMissingSymbols = false);
 
       /// destructor
@@ -263,7 +263,7 @@ namespace gum {
       /// @p structure must have the same base variables (names and domains) as
       /// those used to construct this learner; mismatches throw at learn time.
       KTBN< GUM_SCALAR > learnParameters(const KTBN< GUM_SCALAR >& structure,
-                                         bool takeIntoAccountScore = true);
+                                         bool                      takeIntoAccountScore = true);
 
       /// @}
       // #######################################################################
@@ -490,7 +490,7 @@ namespace gum {
       /// @brief Number of trajectory CSV files loaded (the constructor's
       /// @p nbSamples).
       Size nbSamples() const;
-      
+
       /// @brief True if any internal database contains missing values.
       ///
       /// @warning Always @c false since _build_() performs complete-case
@@ -577,7 +577,7 @@ namespace gum {
       std::unique_ptr< BNLearner< GUM_SCALAR > > _initialLearner_;
 
       /// learns the atemporal variables (arcs atemporal -> atemporal)
-      std::unique_ptr< BNLearner< GUM_SCALAR> > _atemporalLearner_;
+      std::unique_ptr< BNLearner< GUM_SCALAR > > _atemporalLearner_;
 
       /// prior k-TBN: the single source of truth for k, variable domains,
       /// temporal/atemporal classification and engine names. Everything else
@@ -645,9 +645,8 @@ namespace gum {
       /// MissingVariableInDatabase -- but deliberately NOT that they are
       /// temporal: an atemporal tail is one of the four shapes above.
       template < class F >
-      void _forEachAllSlicesPair_(std::string_view tailBase,
-                                  std::string_view headBase,
-                                  F&&              f) const;
+      void
+          _forEachAllSlicesPair_(std::string_view tailBase, std::string_view headBase, F&& f) const;
 
       // ----- construction (runs once, in the constructor) -----
 
@@ -724,8 +723,8 @@ namespace gum {
                                     const BayesNet< GUM_SCALAR >& atemporalBN) const;
 
       // forbidden copies / moves
-      KTBNLearner(const KTBNLearner< GUM_SCALAR >&)                       = delete;
-      KTBNLearner(KTBNLearner< GUM_SCALAR >&&)                            = delete;
+      KTBNLearner(const KTBNLearner< GUM_SCALAR >&)                          = delete;
+      KTBNLearner(KTBNLearner< GUM_SCALAR >&&)                               = delete;
       KTBNLearner< GUM_SCALAR >& operator=(const KTBNLearner< GUM_SCALAR >&) = delete;
       KTBNLearner< GUM_SCALAR >& operator=(KTBNLearner< GUM_SCALAR >&&)      = delete;
     };

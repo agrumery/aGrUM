@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -46,15 +46,14 @@
 #include <fstream>
 #include <vector>
 
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/io/GUM/GumBNWriter.h>
 #include <agrum/base/multidim/instantiation.h>
 #include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/io/GUM/GumBNWriter.h>
 #include <agrum/KTBN/KTBN.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -85,8 +84,7 @@ namespace gum_tests {
       return v;
     }
 
-    static void checkCPTsEqual(const gum::Tensor< double >& a,
-                               const gum::Tensor< double >& b) {
+    static void checkCPTsEqual(const gum::Tensor< double >& a, const gum::Tensor< double >& b) {
       CHECK_EQ(a.domainSize(), b.domainSize());
       const auto va = flatCPT(a), vb = flatCPT(b);
       for (std::size_t i = 0; i < va.size(); ++i)
@@ -108,7 +106,7 @@ namespace gum_tests {
       checkCPTsEqual(m2.cpt("Y", 0), orig.cpt("Y", 0));
       checkCPTsEqual(m2.cpt("Y", 1), orig.cpt("Y", 1));
       checkCPTsEqual(m2.cpt("Y", 2), orig.cpt("Y", 2));
-      checkCPTsEqual(m2.cpt("C"),    orig.cpt("C"));
+      checkCPTsEqual(m2.cpt("C"), orig.cpt("C"));
     }
 
     // hand-set CPT values survive both formats exactly, and KTBN properties (k,
@@ -157,7 +155,7 @@ namespace gum_tests {
       CHECK(loaded.existsArc("X", 0, "X", 1));
       CHECK(loaded.existsArc("C", AT, "X", 1));
       checkCPTsEqual(loaded.cpt("X", 0), m.cpt("X", 0));
-      checkCPTsEqual(loaded.cpt("C"),    m.cpt("C"));
+      checkCPTsEqual(loaded.cpt("C"), m.cpt("C"));
       checkCPTsEqual(loaded.cpt("X", 1), m.cpt("X", 1));
     };
 
@@ -175,7 +173,7 @@ namespace gum_tests {
     const auto m = buildK3Model();
 
     const std::string stem = GET_RESSOURCES_PATH("outputs/KTBN_noext");
-    std::remove((stem + ".bgum").c_str());   // clean slate
+    std::remove((stem + ".bgum").c_str());           // clean slate
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(m.save(stem));   // no extension -> append ".bgum"
 
@@ -198,7 +196,7 @@ namespace gum_tests {
     bn.generateCPTs();
 
     // write it with a plain BN writer -> NO KTBN.* properties in the file
-    const std::string fn = GET_RESSOURCES_PATH("outputs/KTBN_plainbn.jgum");
+    const std::string          fn = GET_RESSOURCES_PATH("outputs/KTBN_plainbn.jgum");
     gum::GumBNWriter< double > writer(false);   // text
     writer.write(fn, bn);
 
@@ -218,7 +216,7 @@ namespace gum_tests {
     m.add(gum::LabelizedVariable("C", "", 2), false);   // atemporal
     m.addArc("C", AT, "X", 0);
     m.cpt("C").fillWith({0.4, 0.6});
-    m.cpt("X", 0).fillWith({0.3, 0.7, 0.8, 0.2});   // P(X[0] | C)
+    m.cpt("X", 0).fillWith({0.3, 0.7, 0.8, 0.2});       // P(X[0] | C)
 
     auto check = [&](const gum::KTBN< double >& loaded) {
       CHECK_EQ(loaded.k(), gum::Size(1));
@@ -226,7 +224,7 @@ namespace gum_tests {
       CHECK_EQ(loaded.nbAtemporalVars(), gum::Size(1));
       CHECK(loaded.existsArc("C", AT, "X", 0));
       checkCPTsEqual(loaded.cpt("X", 0), m.cpt("X", 0));
-      checkCPTsEqual(loaded.cpt("C"),    m.cpt("C"));
+      checkCPTsEqual(loaded.cpt("C"), m.cpt("C"));
     };
 
     const std::string fnj = GET_RESSOURCES_PATH("outputs/KTBN_k1.jgum");

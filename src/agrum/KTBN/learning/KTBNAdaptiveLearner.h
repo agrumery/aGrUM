@@ -74,21 +74,18 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <string_view>
 #include <tuple>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/math/variableLog2ParamComplexity.h>
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
-#include <agrum/BN/learning/correctedMutualInformation.h>
 #include <agrum/KTBN/KTBN.h>
-#include <agrum/KTBN/learning/IKTBNLearner.h>
 #include <agrum/KTBN/learning/KTBNLearner.h>
 
+#include <string_view>
+#include <unordered_set>
 
 namespace gum {
 
@@ -140,12 +137,12 @@ namespace gum {
        * — or pass a named variable.
        */
       KTBNAdaptiveLearner(std::string_view                         dirPath,
-                           std::string_view                         csvBaseName,
-                           Size                                     nbSamples,
-                           Size                                     kMax,
-                           const std::unordered_set< std::string >& atemporalVars,
-                           const std::vector< std::string >&        missingSymbols = {"?"},
-                           bool                                     induceTypes    = true);
+                          std::string_view                         csvBaseName,
+                          Size                                     nbSamples,
+                          Size                                     kMax,
+                          const std::unordered_set< std::string >& atemporalVars,
+                          const std::vector< std::string >&        missingSymbols = {"?"},
+                          bool                                     induceTypes    = true);
 
       /**
        * @brief Structure-learning constructor — atemporal variables inferred from the CSVs.
@@ -191,7 +188,7 @@ namespace gum {
                           Size                              nbSamples,
                           Size                              kMax,
                           const std::vector< std::string >& missingSymbols = {"?"},
-                          bool                               induceTypes    = true);
+                          bool                              induceTypes    = true);
 
       /**
        * @brief Variable-schema constructor — types and domains supplied via a BN.
@@ -216,12 +213,12 @@ namespace gum {
        * @param missingSymbols Symbols in the CSVs to interpret as missing values.
        */
       KTBNAdaptiveLearner(std::string_view                         dirPath,
-                           std::string_view                         csvBaseName,
-                           Size                                     nbSamples,
-                           Size                                     kMax,
-                           const BayesNet< GUM_SCALAR >&            bn,
-                           const std::unordered_set< std::string >& atemporalVars  = {},
-                           const std::vector< std::string >&        missingSymbols = {"?"});
+                          std::string_view                         csvBaseName,
+                          Size                                     nbSamples,
+                          Size                                     kMax,
+                          const BayesNet< GUM_SCALAR >&            bn,
+                          const std::unordered_set< std::string >& atemporalVars  = {},
+                          const std::vector< std::string >&        missingSymbols = {"?"});
 
       ~KTBNAdaptiveLearner();
 
@@ -369,7 +366,7 @@ namespace gum {
       KTBNAdaptiveLearner< GUM_SCALAR >& useScoreBIC() override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useScoreLog2Likelihood() override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useScoreMDL() override;
-      void                                useScorefNML() override;
+      void                               useScorefNML() override;
 
       /// @}
       // #######################################################################
@@ -380,7 +377,7 @@ namespace gum {
       KTBNAdaptiveLearner< GUM_SCALAR >& useGreedyHillClimbing() override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                                     Size nb_decrease = 2) override;
+                                                                    Size nb_decrease = 2) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useMIIC() override;
 
       /// @}
@@ -408,30 +405,30 @@ namespace gum {
       /// @{
 
       KTBNAdaptiveLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tailNode,
-                                                          std::string_view headNode) override;
+                                                         std::string_view headNode) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) override;
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tailNode,
-                                                            std::string_view headNode) override;
+                                                           std::string_view headNode) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) override;
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) override;
 
       KTBNAdaptiveLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tailNode,
-                                                          std::string_view headNode) override;
+                                                         std::string_view headNode) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) override;
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tailNode,
-                                                            std::string_view headNode) override;
+                                                           std::string_view headNode) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) override;
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) override;
 
       /// @brief Forbid an arc from @p tailBase, @p lag slices before the kernel,
       /// to @p headBase in the kernel: tailBase at slice k-1-lag -> headBase at
@@ -476,32 +473,31 @@ namespace gum {
       KTBNAdaptiveLearner< GUM_SCALAR >&
           eraseForbiddenArcAllSlices(std::string_view tailBase, std::string_view headBase) override;
 
-      KTBNAdaptiveLearner< GUM_SCALAR >& addNoParentNode(std::string_view base,
-                                                          int              slice) override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& addNoParentNode(std::string_view base, int slice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& addNoParentNode(std::string_view name) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view base,
-                                                            int              slice) override;
+                                                           int              slice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name) override;
 
       KTBNAdaptiveLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view base,
-                                                            int              slice) override;
+                                                           int              slice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view base,
-                                                              int              slice) override;
+                                                             int              slice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name) override;
 
       KTBNAdaptiveLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tailBase,
-                                                          int              tailSlice,
-                                                          std::string_view headBase,
-                                                          int              headSlice) override;
+                                                         int              tailSlice,
+                                                         std::string_view headBase,
+                                                         int              headSlice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail,
-                                                          std::string_view head) override;
+                                                         std::string_view head) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tailBase,
-                                                            int              tailSlice,
-                                                            std::string_view headBase,
-                                                            int              headSlice) override;
+                                                           int              tailSlice,
+                                                           std::string_view headBase,
+                                                           int              headSlice) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail,
-                                                            std::string_view head) override;
+                                                           std::string_view head) override;
 
       KTBNAdaptiveLearner< GUM_SCALAR >& allowArcAdditions(bool allow = true) override;
       KTBNAdaptiveLearner< GUM_SCALAR >& allowArcDeletions(bool allow = true) override;
@@ -776,12 +772,11 @@ namespace gum {
       mutable VariableLog2ParamComplexity _ctable_;
 
       // forbidden copies / moves (same policy as KTBNLearner)
-      KTBNAdaptiveLearner(const KTBNAdaptiveLearner< GUM_SCALAR >&)            = delete;
-      KTBNAdaptiveLearner(KTBNAdaptiveLearner< GUM_SCALAR >&&)                 = delete;
+      KTBNAdaptiveLearner(const KTBNAdaptiveLearner< GUM_SCALAR >&) = delete;
+      KTBNAdaptiveLearner(KTBNAdaptiveLearner< GUM_SCALAR >&&)      = delete;
       KTBNAdaptiveLearner< GUM_SCALAR >& operator=(const KTBNAdaptiveLearner< GUM_SCALAR >&)
           = delete;
       KTBNAdaptiveLearner< GUM_SCALAR >& operator=(KTBNAdaptiveLearner< GUM_SCALAR >&&) = delete;
-
     };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

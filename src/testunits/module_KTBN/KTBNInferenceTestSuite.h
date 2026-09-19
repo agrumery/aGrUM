@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -51,12 +51,11 @@
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/KTBN/KTBN.h>
 #include <agrum/KTBN/inference/KTBNInference.h>
+#include <agrum/KTBN/KTBN.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -107,14 +106,17 @@ namespace gum_tests {
       for (const auto& [base, slice, value]: dos) {
         const std::string          n = nodeName(base, slice);
         std::vector< std::string > parents;   // snapshot before mutating the graph
-        for (const gum::NodeId p: bn.parents(n)) parents.push_back(bn.variable(p).name());
-        for (const auto& p: parents) bn.eraseArc(p, n);
+        for (const gum::NodeId p: bn.parents(n))
+          parents.push_back(bn.variable(p).name());
+        for (const auto& p: parents)
+          bn.eraseArc(p, n);
         bn.cpt(n).fillWith(gum::Tensor< double >::deterministicTensor(bn.variable(n), value));
       }
 
       gum::LazyPropagation< double > lp(&bn);
       // an observation is plain conditioning on the (possibly mutilated) net
-      for (const auto& [base, slice, value]: evs) lp.addEvidence(nodeName(base, slice), value);
+      for (const auto& [base, slice, value]: evs)
+        lp.addEvidence(nodeName(base, slice), value);
 
       std::map< std::string, std::vector< double > > out;
       for (const gum::NodeId n: bn.nodes())
@@ -154,9 +156,12 @@ namespace gum_tests {
                                    const std::vector< std::string >& targets,
                                    int                               T) {
       gum::KTBNInference< double > ie(&ktbn);
-      for (const auto& [b, s, v]: dos) ie.addIntervention(b, s, v);
-      for (const auto& [b, s, v]: evs) ie.addObservation(b, s, v);
-      for (const auto& t: targets) ie.addTarget(t);
+      for (const auto& [b, s, v]: dos)
+        ie.addIntervention(b, s, v);
+      for (const auto& [b, s, v]: evs)
+        ie.addObservation(b, s, v);
+      for (const auto& t: targets)
+        ie.addTarget(t);
       ie.makeInference(static_cast< gum::Size >(T));
 
       double     pe     = 1.0;
@@ -259,8 +264,10 @@ namespace gum_tests {
     gum::KTBN< double > m(4);
     m.addTemporal("X", 2);
     m.addTemporal("Y", 2);
-    for (int s = 1; s <= 3; ++s) m.addArc("X", s - 1, "X", s);
-    for (int s = 1; s <= 3; ++s) m.addArc("Y", s - 1, "Y", s);
+    for (int s = 1; s <= 3; ++s)
+      m.addArc("X", s - 1, "X", s);
+    for (int s = 1; s <= 3; ++s)
+      m.addArc("Y", s - 1, "Y", s);
     m.addArc("X", 0, "Y", 3);
     m.generateCPTs();
     checkAgainstOracle(m, {}, {}, 12);
@@ -270,8 +277,8 @@ namespace gum_tests {
     gum::initRandom(5);
     gum::KTBN< double > m(3);
     m.addTemporal("Q", 2);
-    m.addTemporal("R", 2);   // barren: never a parent
-    m.addAtemporal("W", 2);  // unused: never a parent
+    m.addTemporal("R", 2);    // barren: never a parent
+    m.addAtemporal("W", 2);   // unused: never a parent
     m.addArc("Q", 0, "Q", 1);
     m.addArc("Q", 1, "Q", 2);
     m.addArc("Q", 0, "R", 2);
@@ -317,7 +324,8 @@ namespace gum_tests {
     gum::KTBNInference< double > big(&m);
     big.makeInference(8);
     std::vector< std::vector< double > > ref;
-    for (int t = 0; t < 8; ++t) ref.push_back(toVector(big.posterior("X", t)));
+    for (int t = 0; t < 8; ++t)
+      ref.push_back(toVector(big.posterior("X", t)));
 
     for (int T = 1; T <= 8; ++T) {
       gum::KTBNInference< double > ie(&m);
@@ -543,8 +551,10 @@ namespace gum_tests {
     gum::KTBN< double > m(4);
     m.addTemporal("X", 2);
     m.addTemporal("Y", 2);
-    for (int s = 1; s <= 3; ++s) m.addArc("X", s - 1, "X", s);
-    for (int s = 1; s <= 3; ++s) m.addArc("Y", s - 1, "Y", s);
+    for (int s = 1; s <= 3; ++s)
+      m.addArc("X", s - 1, "X", s);
+    for (int s = 1; s <= 3; ++s)
+      m.addArc("Y", s - 1, "Y", s);
     m.addArc("X", 0, "Y", 3);
     m.generateCPTs();
     checkAgainstOracle(m, {}, {{"Y", 10, 1}}, {}, 12);
@@ -669,8 +679,8 @@ namespace gum_tests {
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addArc("X", 0, "X", 1);
-    m.fillCPT("X", 0, {}, {1.0, 0.0});                        // X[0] is surely 0
-    m.fillCPT("X", 1, {{{"X", 0}, 0}}, {1.0, 0.0});           // and it never moves
+    m.fillCPT("X", 0, {}, {1.0, 0.0});                // X[0] is surely 0
+    m.fillCPT("X", 1, {{{"X", 0}, 0}}, {1.0, 0.0});   // and it never moves
     m.fillCPT("X", 1, {{{"X", 0}, 1}}, {0.0, 1.0});
 
     gum::KTBNInference< double > ie(&m);
@@ -688,8 +698,8 @@ namespace gum_tests {
     m.generateCPTs();
 
     gum::KTBNInference< double > ie(&m);
-    const gum::Size iface  = ie.interfaceSize();
-    const gum::Size nbClq  = ie.windowJunctionTree().size();
+    const gum::Size              iface = ie.interfaceSize();
+    const gum::Size              nbClq = ie.windowJunctionTree().size();
     CHECK(iface == 2);   // X is read at lags 1 and 2, so two occurrences persist
     CHECK(nbClq > 0);
     ie.makeInference(5);
@@ -734,7 +744,7 @@ namespace gum_tests {
       }
 
     gum::KTBNInference< double > ie(&m);
-    for (int t = 0; t < T; ++t) {           // alternate: force the 1e-100 branch
+    for (int t = 0; t < T; ++t) {   // alternate: force the 1e-100 branch
       ie.addObservation("A", t, t % 2);
       ie.addObservation("B", t, (t + 1) % 2);
     }
@@ -764,10 +774,12 @@ namespace gum_tests {
       const auto&        p = ie.posterior("A", t);
       gum::Instantiation inst(p);
       double             sum = 0.0;
-      for (inst.setFirst(); !inst.end(); ++inst) sum += p[inst];
+      for (inst.setFirst(); !inst.end(); ++inst)
+        sum += p[inst];
       CHECK(std::fabs(sum - 1.0) < 1e-9);
     }
   }
+
   GUM_TEST(WindowPotentialCacheIsExact) {
     // psi(t) is periodic in t % k on any slice carrying no temporal evidence, so
     // _windowPotentials_ memoizes it in 2k slots -- k for the initial windows,
@@ -802,19 +814,20 @@ namespace gum_tests {
       int                                          atempC;
       int                                          doX;
     };
+
     const std::vector< Case > cases = {
-        {{}, -1, -1},                                  // filtering: pure cache hits
-        {{{"X", 1}}, -1, -1},                          // observed, initial block
-        {{{"Y", 7}}, -1, -1},                          // observed, repeating window
-        {{{"X", 2}, {"Y", 9}}, -1, -1},                // one in each regime
-        {{{"X", 4}, {"X", 7}, {"X", 10}}, -1, -1},     // same phase, three slices
-        {{}, 1, -1},                                   // atemporal only: still periodic
-        {{{"Y", 5}}, 0, -1},                           // atemporal + temporal
-        {{{"Y", 5}}, -1, 8},                           // intervention forces a rebuild
+        {{}, -1, -1},                                // filtering: pure cache hits
+        {{{"X", 1}}, -1, -1},                        // observed, initial block
+        {{{"Y", 7}}, -1, -1},                        // observed, repeating window
+        {{{"X", 2}, {"Y", 9}}, -1, -1},              // one in each regime
+        {{{"X", 4}, {"X", 7}, {"X", 10}}, -1, -1},   // same phase, three slices
+        {{}, 1, -1},                                 // atemporal only: still periodic
+        {{{"Y", 5}}, 0, -1},                         // atemporal + temporal
+        {{{"Y", 5}}, -1, 8},                         // intervention forces a rebuild
     };
 
     for (const auto& c: cases) {
-      gum::KTBNInference< double >  ie(&m);
+      gum::KTBNInference< double >   ie(&m);
       gum::LazyPropagation< double > lp(&un);
       for (const auto& [b, t]: c.obs) {
         ie.addObservation(b, t, 0);
@@ -838,7 +851,7 @@ namespace gum_tests {
         for (const auto& [b, t]: c.obs)
           ref.addObservation(b, t, 0);
         ref.addIntervention("X", c.doX, 1);
-        ref.addTarget("Y");            // different requisite set => different windows
+        ref.addTarget("Y");   // different requisite set => different windows
         ref.makeInference(T);
 
         for (int t = 0; t < T; ++t) {
@@ -855,7 +868,8 @@ namespace gum_tests {
       for (const char* base: {"X", "Y"})
         for (int t = 0; t < T; ++t) {
           const auto& a = ie.posterior(base, t);
-          const auto& b = lp.posterior(un.idFromName(std::string(base) + "[" + std::to_string(t) + "]"));
+          const auto& b
+              = lp.posterior(un.idFromName(std::string(base) + "[" + std::to_string(t) + "]"));
           gum::Instantiation ia(a), ib(b);
           for (ia.setFirst(), ib.setFirst(); !ia.end(); ++ia, ++ib)
             CHECK(std::fabs(a[ia] - b[ib]) < 1e-12);
@@ -875,7 +889,7 @@ namespace gum_tests {
     gum::KTBNInference< double > ie(&m);
     ie.addObservation("X", 0, 0);
     ie.makeInference(6);
-    const auto&  p0 = ie.posterior("X", 5);
+    const auto&        p0 = ie.posterior("X", 5);
     gum::Instantiation i0(p0);
     i0.setFirst();
     const double before = p0[i0];
@@ -883,7 +897,7 @@ namespace gum_tests {
     // flip the kernel, then re-run on the SAME engine
     const_cast< gum::Tensor< double >& >(m.cpt("X", 1)).fillWith({0.99, 0.01, 0.01, 0.99});
     ie.makeInference(6);
-    const auto&  p1 = ie.posterior("X", 5);
+    const auto&        p1 = ie.posterior("X", 5);
     gum::Instantiation i1(p1);
     i1.setFirst();
     CHECK(std::fabs(p1[i1] - before) > 1e-6);   // the edit was picked up

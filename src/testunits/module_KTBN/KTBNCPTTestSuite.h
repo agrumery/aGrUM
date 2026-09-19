@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -49,7 +49,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -207,7 +206,7 @@ namespace gum_tests {
     m.addArc("R", 0, "R", 1);
 
     gum::KTBN< double > byLabel = m;
-    m.fillCPT("R", 1, {{{"R", 0}, 1}}, {0.1, 0.2, 0.3, 0.4});          // index 1
+    m.fillCPT("R", 1, {{{"R", 0}, 1}}, {0.1, 0.2, 0.3, 0.4});           // index 1
     byLabel.fillCPT("R", 1, {{{"R", 0}, "3"}}, {0.1, 0.2, 0.3, 0.4});   // label "3" == index 1
     GUM_CHECK_TENSOR_ALMOST_EQUALS(byLabel.cpt("R", 1), m.cpt("R", 1));
 
@@ -314,7 +313,7 @@ namespace gum_tests {
     gum::KTBN< double > m = buildK2Model();
 
     m.fillCPT("X[0]", {}, {0.3, 0.7});
-    m.fillCPT("C",    {}, {0.4, 0.6});
+    m.fillCPT("C", {}, {0.4, 0.6});
 
     CHECK_EQ(&m.cpt("X[0]"), &m.cpt("X", 0));
     CHECK_EQ(&m.cpt("C"), &m.cpt("C", AT));

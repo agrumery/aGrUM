@@ -82,13 +82,13 @@
 
 #include <cstddef>
 #include <string>
-#include <string_view>
-#include <unordered_set>
 #include <vector>
 
 #include <agrum/base/core/progressNotification.h>
-#include <agrum/base/multidim/instantiation.h>
 #include <agrum/KTBN/KTBN.h>
+
+#include <string_view>
+#include <unordered_set>
 
 namespace gum {
 
@@ -178,8 +178,8 @@ namespace gum {
       std::vector< double > drawSamples(const std::vector< Size >& nbTimeSlices,
                                         std::string_view           dirPath,
                                         std::string_view           csvBaseName,
-                                        VarOrderMode               mode         = VarOrderMode::RANDOM,
-                                        bool                       useLabels    = true,
+                                        VarOrderMode               mode      = VarOrderMode::RANDOM,
+                                        bool                       useLabels = true,
                                         std::string                csvSeparator = ",");
 
       /// set discretized-label rendering to a uniform random draw in the interval

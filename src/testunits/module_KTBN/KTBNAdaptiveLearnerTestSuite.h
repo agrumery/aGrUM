@@ -45,19 +45,18 @@
 #include <fstream>
 #include <map>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
-#include <agrum/base/core/utils_random.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
+#include <unordered_map>
+#include <unordered_set>
 
 namespace gum_tests {
 
@@ -78,11 +77,13 @@ namespace gum_tests {
     // probability is hand-computable. Recurring shape: a temporal X driven by a
     // fixed rule, atemporal columns constant within a trajectory.
 
-    static void _writeCSV_(const std::string& file, const std::string& header,
+    static void _writeCSV_(const std::string&                file,
+                           const std::string&                header,
                            const std::vector< std::string >& rows) {
       std::ofstream f(file);
       f << header << '\n';
-      for (const auto& row: rows) f << row << '\n';
+      for (const auto& row: rows)
+        f << row << '\n';
     }
 
     // single column "X" alternating (X[t+1] = 1 - X[t]) from a per-trajectory
@@ -109,7 +110,8 @@ namespace gum_tests {
       const int         S[] = {0, 1, 1, 0};
       for (gum::Size i = 0; i < nbTraj; ++i) {
         std::vector< std::string > rows;
-        for (gum::Size t = 0; t < len; ++t) rows.push_back(std::to_string(S[(i + t) % 4]));
+        for (gum::Size t = 0; t < len; ++t)
+          rows.push_back(std::to_string(S[(i + t) % 4]));
         _writeCSV_(dir + "/" + base + std::to_string(i + 1) + ".csv", "X", rows);
       }
       return dir;
@@ -136,7 +138,8 @@ namespace gum_tests {
     // would otherwise be mistyped from trajectory 1 alone)
     static gum::BayesNet< double > _schema_(const std::vector< std::string >& names) {
       gum::BayesNet< double > bn;
-      for (const auto& n: names) bn.add(gum::LabelizedVariable(n, "", {"0", "1"}));
+      for (const auto& n: names)
+        bn.add(gum::LabelizedVariable(n, "", {"0", "1"}));
       return bn;
     }
 
@@ -207,7 +210,8 @@ namespace gum_tests {
       std::getline(f, line);
       colOf.clear();
       const auto header = split(line);
-      for (std::size_t c = 0; c < header.size(); ++c) colOf[header[c]] = c;
+      for (std::size_t c = 0; c < header.size(); ++c)
+        colOf[header[c]] = c;
 
       std::vector< std::vector< std::string > > rows;
       while (std::getline(f, line))
@@ -215,8 +219,10 @@ namespace gum_tests {
       return rows;
     }
 
-    static double _log2LOracle_(const KTBN& net, const std::string& dir, const std::string& base,
-                                gum::Size nbSamples) {
+    static double _log2LOracle_(const KTBN&        net,
+                                const std::string& dir,
+                                const std::string& base,
+                                gum::Size          nbSamples) {
       double ll = 0.0;
       for (gum::Size s = 1; s <= nbSamples; ++s) {
         std::unordered_map< std::string, std::size_t > colOf;
@@ -226,11 +232,13 @@ namespace gum_tests {
           const auto&        cpt = bn.cpt(node);
           gum::Instantiation I(cpt);
           for (gum::Idx d = 0; d < cpt.nbrDim(); ++d) {
-            const std::string name  = cpt.variable(d).name();   // "V[t]" (temporal) or "V" (atemporal)
-            const auto        lb    = name.rfind('[');
-            const bool        temp  = (lb != std::string::npos && name.back() == ']');
-            const std::string var   = temp ? name.substr(0, lb) : name;
-            const std::size_t row    = temp ? std::stoul(name.substr(lb + 1, name.size() - lb - 2)) : 0;
+            const std::string name
+                = cpt.variable(d).name();   // "V[t]" (temporal) or "V" (atemporal)
+            const auto        lb   = name.rfind('[');
+            const bool        temp = (lb != std::string::npos && name.back() == ']');
+            const std::string var  = temp ? name.substr(0, lb) : name;
+            const std::size_t row
+                = temp ? std::stoul(name.substr(lb + 1, name.size() - lb - 2)) : 0;
             I.chgVal(name, rows[row][colOf.at(var)]);
           }
           ll += std::log2(cpt[I]);
@@ -258,13 +266,15 @@ namespace gum_tests {
     // observations of each distinct parent-label tuple. log2Cnr itself is a shared
     // mathematical primitive (as std::log2 is for the likelihood oracle); what is
     // validated is the per-template-node count aggregation.
-    static double _fNMLPenaltyOracle_(const KTBN& net, const std::string& dir,
-                                      const std::string& base, gum::Size nbSamples) {
+    static double _fNMLPenaltyOracle_(const KTBN&        net,
+                                      const std::string& dir,
+                                      const std::string& base,
+                                      gum::Size          nbSamples) {
       const int k = static_cast< int >(net.k());
       // template key ("base|templateSlice") -> node domain size, and -> (parent
       // label tuple -> count). std::map keeps the reduction order deterministic.
-      std::map< std::string, std::size_t >                                     rOf;
-      std::map< std::string, std::map< std::vector< std::string >, double > >   counts;
+      std::map< std::string, std::size_t >                                    rOf;
+      std::map< std::string, std::map< std::vector< std::string >, double > > counts;
 
       // decode an engine name "V[t]" / "V" into (base, slice) with slice = -1 atemporal
       const auto decode = [](const std::string& name) -> std::pair< std::string, int > {
@@ -278,11 +288,11 @@ namespace gum_tests {
         const auto rows = _readTraj_(dir + "/" + base + std::to_string(s) + ".csv", colOf);
         const auto bn   = net.unroll(rows.size());
         for (const gum::NodeId node: bn.nodes()) {
-          const auto& cpt              = bn.cpt(node);
-          const auto [sbase, sslice]   = decode(cpt.variable(0).name());   // dim 0 is the node
-          const int         tslice     = (sslice < 0) ? -1 : std::min(sslice, k - 1);
-          const std::string key        = sbase + "|" + std::to_string(tslice);
-          rOf[key]                     = cpt.variable(0).domainSize();
+          const auto& cpt            = bn.cpt(node);
+          const auto [sbase, sslice] = decode(cpt.variable(0).name());   // dim 0 is the node
+          const int         tslice   = (sslice < 0) ? -1 : std::min(sslice, k - 1);
+          const std::string key      = sbase + "|" + std::to_string(tslice);
+          rOf[key]                   = cpt.variable(0).domainSize();
           // parent-label tuple (dims 1..n-1), read from the data at each lag
           std::vector< std::string > tuple;
           for (gum::Idx d = 1; d < cpt.nbrDim(); ++d) {
@@ -297,7 +307,8 @@ namespace gum_tests {
       gum::VariableLog2ParamComplexity ctable;
       double                           penalty = 0.0;
       for (const auto& [key, perConfig]: counts)
-        for (const auto& [tuple, n]: perConfig) penalty += ctable.log2Cnr(rOf[key], n);
+        for (const auto& [tuple, n]: perConfig)
+          penalty += ctable.log2Cnr(rOf[key], n);
       return penalty;
     }
 
@@ -442,8 +453,8 @@ namespace gum_tests {
   GUM_TEST(ShortTrajectoryBoundary) {
     const std::string dir = _writeAlt_("kad_short", {{0, 5}, {1, 2}});   // shortest length 2
     Learner           l(dir, "kad_short", 2, 3);
-    CHECK_THROWS_AS(l.learnKTBN(), const gum::OperationNotAllowed&);   // fails at k = 3
-    CHECK_THROWS_AS(l.bestK(), const gum::OperationNotAllowed&);       // nothing selected
+    CHECK_THROWS_AS(l.learnKTBN(), const gum::OperationNotAllowed&);     // fails at k = 3
+    CHECK_THROWS_AS(l.bestK(), const gum::OperationNotAllowed&);         // nothing selected
   }
 
   GUM_TEST(ValidationUnknownBase) {
@@ -674,8 +685,8 @@ namespace gum_tests {
     // independent of the order score
     {
       const std::string dir  = _writeAlt_("kad_alt", {{0, 8}, {1, 8}, {0, 8}, {1, 8}});
-      const double       logL = _log2LOracle_(best, dir, "kad_alt", 4);
-      const double       df   = _dfOracle_(best);
+      const double      logL = _log2LOracle_(best, dir, "kad_alt", 4);
+      const double      df   = _dfOracle_(best);
 
       Learner lAIC(dir, "kad_alt", 4, 2);
       lAIC.useOrderScoreAIC();
@@ -704,7 +715,7 @@ namespace gum_tests {
 
     // a second learnKTBN() reproduces the first, doesn't accumulate
     {
-      auto            l  = _alt_(4);
+      auto l = _alt_(4);
       _learn_(l);
       const gum::Size k1 = l.bestK();
       const auto      s1 = l.scorePerCandidateK();
@@ -745,7 +756,8 @@ namespace gum_tests {
     auto l = _solo_();   // kMax=3, X temporal, C/D atemporal
     CHECK_THROWS_AS(l.addForbiddenKernelArc("GHOST", 0, "X"), const gum::InvalidArgument&);
     CHECK_THROWS_AS(l.addForbiddenKernelArc("X", -1, "X"), const gum::InvalidArgument&);
-    CHECK_THROWS_AS(l.addForbiddenKernelArc("X", 3, "X"), const gum::InvalidArgument&);   // lag == kMax
+    CHECK_THROWS_AS(l.addForbiddenKernelArc("X", 3, "X"),
+                    const gum::InvalidArgument&);                            // lag == kMax
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.addForbiddenKernelArc("X", 2, "X"));   // lag == kMax-1
     l.eraseForbiddenKernelArc("X", 2, "X");
     // atemporal endpoints have no kernel-slice instance to anchor a lag to

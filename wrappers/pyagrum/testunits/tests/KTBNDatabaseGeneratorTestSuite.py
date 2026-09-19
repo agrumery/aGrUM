@@ -38,12 +38,6 @@
 #                                                                          #
 ############################################################################
 
-# NOTE: the C++ suite's testProgressNotifier (a gum::ProgressListener attached
-# to the generator) has no Python counterpart here: KTBNDatabaseGenerator's
-# ProgressNotifier base is not wired to a Python-callable listener mechanism
-# in the current SWIG bindings (unlike e.g. BNDatabaseGenerator's dedicated
-# PythonDatabaseGeneratorListener extension). Left out rather than faked.
-
 import csv as csvmod
 import math
 import os
@@ -54,6 +48,7 @@ import pyagrum.ktbn as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 AT = gum.KTBN.ATEMPORAL
+
 
 class VarOrderMode:
   # SWIG exposes the nested enum as flat EnumName_MEMBER class attributes,

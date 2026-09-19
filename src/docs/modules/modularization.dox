@@ -69,8 +69,8 @@
  *     <td>`BASE` and `BN` are statically whole-archived into one shared
  *     core extension (`_pyagrumcpp.so`/`.pyd`); `PRM`, `MRF`, `CN`, `ID`, `CM`
  *     and `KTBN` each get their own separate shared leaf extension
- *     (`pyagrum.prm`, `.markov_random_field`, `.credal_net`, `.influence_diagram`, `.causal_model`, `.ktbn`) that links against that
- *     core. `FMDP` has no pyAgrum extension.</td></tr>
+ *     (`pyagrum.prm`, `.markov_random_field`, `.credal_net`, `.influence_diagram`, `.causal_model`,
+ * `.ktbn`) that links against that core. `FMDP` has no pyAgrum extension.</td></tr>
  * </table>
  *
  * \section modularization_macros Visibility macros

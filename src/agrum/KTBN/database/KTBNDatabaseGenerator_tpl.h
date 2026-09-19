@@ -58,11 +58,13 @@
 #include <queue>
 #include <sstream>
 #include <string>
-#include <unordered_map>
 #include <vector>
-#include <agrum/base/core/utils_random.h>
+
 #include <agrum/base/variables/IDiscretizedVariable.h>
 #include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
+
+#include <agrum/base/core/utils_random.h>
+#include <unordered_map>
 
 namespace gum::learning {
 
@@ -161,7 +163,7 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   Idx KTBNDatabaseGenerator< GUM_SCALAR >::_drawVar_(const DiscreteVariable&     var,
                                                      const Tensor< GUM_SCALAR >& cpt,
-                                                     double& log2likelihood) {
+                                                     double&                     log2likelihood) {
     const double threshold = gum::randomProba();
     double       cumulProb = 0.0;
     for (_inst_.setFirstVar(var); !_inst_.end(); _inst_.incVar(var)) {
@@ -174,29 +176,42 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::vector< double > KTBNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size             nbSamples,
-                                                                         Size             nbTimeSlices,
-                                                                         std::string_view dirPath,
-                                                                         std::string_view csvBaseName,
-                                                                         VarOrderMode     mode,
-                                                                         bool             useLabels,
-                                                                         std::string      csvSeparator) {
+  std::vector< double >
+      KTBNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size             nbSamples,
+                                                       Size             nbTimeSlices,
+                                                       std::string_view dirPath,
+                                                       std::string_view csvBaseName,
+                                                       VarOrderMode     mode,
+                                                       bool             useLabels,
+                                                       std::string      csvSeparator) {
     // fixed horizon: every trajectory shares nbTimeSlices (perTraj == nullptr)
-    return _drawSamples_(nbSamples, nbTimeSlices, nullptr, dirPath, csvBaseName, mode, useLabels,
+    return _drawSamples_(nbSamples,
+                         nbTimeSlices,
+                         nullptr,
+                         dirPath,
+                         csvBaseName,
+                         mode,
+                         useLabels,
                          csvSeparator);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::vector< double > KTBNDatabaseGenerator< GUM_SCALAR >::drawSamples(
-      const std::vector< Size >& nbTimeSlices,
-      std::string_view           dirPath,
-      std::string_view           csvBaseName,
-      VarOrderMode               mode,
-      bool                       useLabels,
-      std::string                csvSeparator) {
+  std::vector< double >
+      KTBNDatabaseGenerator< GUM_SCALAR >::drawSamples(const std::vector< Size >& nbTimeSlices,
+                                                       std::string_view           dirPath,
+                                                       std::string_view           csvBaseName,
+                                                       VarOrderMode               mode,
+                                                       bool                       useLabels,
+                                                       std::string                csvSeparator) {
     // per-trajectory horizons: nbTimeSlices[i] is trajectory i's length
-    return _drawSamples_(nbTimeSlices.size(), 0, &nbTimeSlices, dirPath, csvBaseName, mode,
-                         useLabels, csvSeparator);
+    return _drawSamples_(nbTimeSlices.size(),
+                         0,
+                         &nbTimeSlices,
+                         dirPath,
+                         csvBaseName,
+                         mode,
+                         useLabels,
+                         csvSeparator);
   }
 
   /// The single worker behind both public drawSamples() overloads. Trajectory i's
@@ -210,15 +225,15 @@ namespace gum::learning {
   /// Phase 2 — transition (slices k..T-1): only the slice-(k-1) nodes (the kernel,
   /// already topological) are drawn, each parent read from the row at time (t - lag).
   template < GUM_Numeric GUM_SCALAR >
-  std::vector< double > KTBNDatabaseGenerator< GUM_SCALAR >::_drawSamples_(
-      Size                       nbSamples,
-      Size                       fixedLen,
-      const std::vector< Size >* perTraj,
-      std::string_view           dirPath,
-      std::string_view           csvBaseName,
-      VarOrderMode               mode,
-      bool                       useLabels,
-      const std::string&         csvSeparator) {
+  std::vector< double >
+      KTBNDatabaseGenerator< GUM_SCALAR >::_drawSamples_(Size                       nbSamples,
+                                                         Size                       fixedLen,
+                                                         const std::vector< Size >* perTraj,
+                                                         std::string_view           dirPath,
+                                                         std::string_view           csvBaseName,
+                                                         VarOrderMode               mode,
+                                                         bool                       useLabels,
+                                                         const std::string&         csvSeparator) {
     // horizon of trajectory i: from perTraj when given, else the shared fixedLen
     const auto lengthAt = [&](Idx i) { return perTraj ? (*perTraj)[i] : fixedLen; };
 
@@ -246,9 +261,9 @@ namespace gum::learning {
     std::vector< double > log2Ls;
     log2Ls.reserve(nbSamples);
 
-    const bool            hasListener = onProgress.hasListener();
+    const bool             hasListener = onProgress.hasListener();
     std::optional< Timer > timer;
-    int                    progress   = 0;
+    int                    progress = 0;
     if (hasListener) {
       timer.emplace();
       GUM_EMIT2(onProgress, 0, 0.0);
@@ -343,12 +358,13 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void KTBNDatabaseGenerator< GUM_SCALAR >::_writeTrajectory_(std::string_view csvFileURL,
-                                                             const std::vector< Idx >& traj,
-                                                             Size                      nbTimeSlices,
-                                                             bool                      useLabels,
-                                                             const std::string&        csvSeparator,
-                                                             const std::vector< Idx >& colOrder) const {
+  void KTBNDatabaseGenerator< GUM_SCALAR >::_writeTrajectory_(
+      std::string_view          csvFileURL,
+      const std::vector< Idx >& traj,
+      Size                      nbTimeSlices,
+      bool                      useLabels,
+      const std::string&        csvSeparator,
+      const std::vector< Idx >& colOrder) const {
     std::ofstream os(std::filesystem::path{csvFileURL}, std::ofstream::out);
     if (!os) GUM_ERROR(IOError, "could not open '" << csvFileURL << "' for writing")
 
@@ -363,7 +379,7 @@ namespace gum::learning {
 
     for (Size t = 0; t < nbTimeSlices; ++t) {
       const Size base = t * _nbVars_;
-      firstCol = true;
+      firstCol        = true;
       for (const Idx col: colOrder) {
         if (!firstCol) os << csvSeparator;
         os << (useLabels ? _label_(col, traj[base + col]) : std::to_string(traj[base + col]));

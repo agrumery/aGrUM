@@ -49,7 +49,6 @@
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
-
 namespace gum_tests {
 
   // The generator has one job the k-DBN cannot check for itself: every arc it
@@ -78,9 +77,9 @@ namespace gum_tests {
       for (const auto& [tail, head]: m.arcs()) {
         const bool tailTemporal = temporal.find(tail.first) != temporal.end();
         const bool headTemporal = temporal.find(head.first) != temporal.end();
-        if (!headTemporal) CHECK_FALSE(tailTemporal);      // temporal -> atemporal is illegal
+        if (!headTemporal) CHECK_FALSE(tailTemporal);   // temporal -> atemporal is illegal
         if (tailTemporal && headTemporal) {
-          CHECK(tail.second <= head.second);               // never future -> past
+          CHECK(tail.second <= head.second);            // never future -> past
           CHECK(head.second - tail.second <= static_cast< int >(m.k()) - 1);
         }
       }
@@ -105,7 +104,8 @@ namespace gum_tests {
     gum::initRandom(7);
     for (gum::Size k: {2, 3, 5}) {
       gum::KTBNGenerator< double > gen(k, 3, 0);
-      gen.setDensity(0.05);   // sparse on purpose: without the guarantee, max lag would often fall short
+      gen.setDensity(
+          0.05);   // sparse on purpose: without the guarantee, max lag would often fall short
       for (int rep = 0; rep < 20; ++rep) {
         const auto m = gen.generate();
         CHECK_EQ(KTBNGeneratorTestSuite::maxKernelLag(m), static_cast< int >(k) - 1);

@@ -128,17 +128,20 @@ namespace gum::learning {
   // =========================================================================
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >::KTBNLearner(
-      std::string_view                         dirPath,
-      std::string_view                         csvBaseName,
-      Size                                     nbSamples,
-      Size                                     k,
-      const std::unordered_set< std::string >& atemporalVars,
-      const std::vector< std::string >&        missingSymbols,
-      bool                                     induceTypes,
-      bool                                     ignoreMissingSymbols) :
-      _ignoreMissingSymbols_(ignoreMissingSymbols),
-      _prior_ktbn_(_buildPriorFromCSV_(dirPath, csvBaseName, k, atemporalVars, missingSymbols, induceTypes)) {
+  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                         dirPath,
+                                         std::string_view                         csvBaseName,
+                                         Size                                     nbSamples,
+                                         Size                                     k,
+                                         const std::unordered_set< std::string >& atemporalVars,
+                                         const std::vector< std::string >&        missingSymbols,
+                                         bool                                     induceTypes,
+                                         bool ignoreMissingSymbols) :
+      _ignoreMissingSymbols_(ignoreMissingSymbols), _prior_ktbn_(_buildPriorFromCSV_(dirPath,
+                                                                                     csvBaseName,
+                                                                                     k,
+                                                                                     atemporalVars,
+                                                                                     missingSymbols,
+                                                                                     induceTypes)) {
     // k >= 2 is already enforced by _buildPriorFromCSV_ during member initialisation
     if (nbSamples == 0) GUM_ERROR(InvalidArgument, "KTBNLearner needs at least one sample")
     GUM_CONSTRUCTOR(KTBNLearner)
@@ -167,14 +170,13 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >::KTBNLearner(
-      std::string_view                  dirPath,
-      std::string_view                  csvBaseName,
-      Size                              nbSamples,
-      Size                              k,
-      const std::vector< std::string >& missingSymbols,
-      bool                              induceTypes,
-      bool                              ignoreMissingSymbols) :
+  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                  dirPath,
+                                         std::string_view                  csvBaseName,
+                                         Size                              nbSamples,
+                                         Size                              k,
+                                         const std::vector< std::string >& missingSymbols,
+                                         bool                              induceTypes,
+                                         bool                              ignoreMissingSymbols) :
       // _inferAtemporalVars_ checks k>=2 itself, before opening anything (see
       // its declaration) — this initialiser-list call runs before the
       // delegated-to constructor's own body, so that check cannot be left to
@@ -183,20 +185,24 @@ namespace gum::learning {
       // (including the UnknownLabelInDatabase hint); _inferAtemporalVars_
       // needs nbSamples, unlike _buildPriorFromCSV_, since one trajectory
       // alone cannot show that a value stays constant.
-      KTBNLearner(dirPath, csvBaseName, nbSamples, k,
+      KTBNLearner(dirPath,
+                  csvBaseName,
+                  nbSamples,
+                  k,
                   _inferAtemporalVars_(dirPath, csvBaseName, nbSamples, k, missingSymbols),
-                  missingSymbols, induceTypes, ignoreMissingSymbols) {}
+                  missingSymbols,
+                  induceTypes,
+                  ignoreMissingSymbols) {}
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >::KTBNLearner(
-      std::string_view                         dirPath,
-      std::string_view                         csvBaseName,
-      Size                                     nbSamples,
-      Size                                     k,
-      const BayesNet< GUM_SCALAR >&            bn,
-      const std::unordered_set< std::string >& atemporalVars,
-      const std::vector< std::string >&        missingSymbols,
-      bool                                     ignoreMissingSymbols) :
+  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                         dirPath,
+                                         std::string_view                         csvBaseName,
+                                         Size                                     nbSamples,
+                                         Size                                     k,
+                                         const BayesNet< GUM_SCALAR >&            bn,
+                                         const std::unordered_set< std::string >& atemporalVars,
+                                         const std::vector< std::string >&        missingSymbols,
+                                         bool ignoreMissingSymbols) :
       _ignoreMissingSymbols_(ignoreMissingSymbols),
       _prior_ktbn_(_buildPriorFromBN_(k, bn, atemporalVars)) {
     // k >= 2 is already enforced by _buildPriorFromBN_ during member initialisation
@@ -209,7 +215,6 @@ namespace gum::learning {
       throw;
     }
   }
-    
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >::~KTBNLearner() {
@@ -227,8 +232,8 @@ namespace gum::learning {
     // atemporal->atemporal edge was whitelisted, the atemporal learner has an
     // empty (hence unrestricted) list. Skip it entirely so no atemporal arc is
     // produced; _assemble_ then leaves the atemporal variables as roots.
-    const bool suppressAtemporal =
-        (_nbTemporalPossibleEdges_ > 0) && (_nbAtemporalPossibleEdges_ == 0);
+    const bool suppressAtemporal
+        = (_nbTemporalPossibleEdges_ > 0) && (_nbAtemporalPossibleEdges_ == 0);
     BayesNet< GUM_SCALAR > transitionBN = _transitionLearner_->learnBN();
     BayesNet< GUM_SCALAR > initialBN    = _initialLearner_->learnBN();
     BayesNet< GUM_SCALAR > atemporalBN  = (_atemporalLearner_ && !suppressAtemporal)
@@ -238,13 +243,12 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBN< GUM_SCALAR > KTBNLearner< GUM_SCALAR >::learnParameters(
-      const KTBN< GUM_SCALAR >& structure,
-       bool takeIntoAccountScore) {
+  KTBN< GUM_SCALAR > KTBNLearner< GUM_SCALAR >::learnParameters(const KTBN< GUM_SCALAR >& structure,
+                                                                bool takeIntoAccountScore) {
     if (structure.k() != _prior_ktbn_.k())
       GUM_ERROR(InvalidArgument,
-                "learnParameters: structure has k=" << structure.k()
-                    << " but this learner was built with k=" << _prior_ktbn_.k())
+                "learnParameters: structure has k="
+                    << structure.k() << " but this learner was built with k=" << _prior_ktbn_.k())
     const int k = (int)_prior_ktbn_.k();
 
     // Build one DAG per internal table, in that table's own NodeId space, by
@@ -271,22 +275,22 @@ namespace gum::learning {
         atemporalDAG.addNodeWithId(NodeId(id));
     }
 
-    for (const auto& [tail, head] : structure.arcs()) {
+    for (const auto& [tail, head]: structure.arcs()) {
       const auto& [tailBase, tailSlice] = tail;
       const auto& [headBase, headSlice] = head;
-      const std::string tailName = _encode_(tailBase, tailSlice);
-      const std::string headName = _encode_(headBase, headSlice);
+      const std::string tailName        = _encode_(tailBase, tailSlice);
+      const std::string headName        = _encode_(headBase, headSlice);
 
       if (headSlice == k - 1) {
         transitionDAG.addArc(_transitionLearner_->idFromName(tailName),
-                              _transitionLearner_->idFromName(headName));
+                             _transitionLearner_->idFromName(headName));
       } else if (headSlice == KTBN< GUM_SCALAR >::ATEMPORAL) {
         if (_atemporalLearner_)
           atemporalDAG.addArc(_atemporalLearner_->idFromName(tailName),
-                               _atemporalLearner_->idFromName(headName));
+                              _atemporalLearner_->idFromName(headName));
       } else {
         initialDAG.addArc(_initialLearner_->idFromName(tailName),
-                           _initialLearner_->idFromName(headName));
+                          _initialLearner_->idFromName(headName));
       }
     }
 
@@ -295,8 +299,9 @@ namespace gum::learning {
     BayesNet< GUM_SCALAR > initialBN
         = _initialLearner_->learnParameters(initialDAG, takeIntoAccountScore);
     BayesNet< GUM_SCALAR > atemporalBN
-        = _atemporalLearner_ ? _atemporalLearner_->learnParameters(atemporalDAG, takeIntoAccountScore)
-                              : BayesNet< GUM_SCALAR >{};
+        = _atemporalLearner_
+            ? _atemporalLearner_->learnParameters(atemporalDAG, takeIntoAccountScore)
+            : BayesNet< GUM_SCALAR >{};
 
     return _assemble_(transitionBN, initialBN, atemporalBN);
   }
@@ -420,7 +425,7 @@ namespace gum::learning {
 
     auto collect = [&](const std::unique_ptr< BNLearner< GUM_SCALAR > >& learner) {
       if (!learner) return;
-      for (const auto& arc : learner->latentVariables()) {
+      for (const auto& arc: learner->latentVariables()) {
         std::string tail = learner->nameFromId(arc.tail());
         std::string head = learner->nameFromId(arc.head());
         if (seen.insert(tail + '\t' + head).second)
@@ -466,8 +471,9 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tailNode,
-                                                                          std::string_view headNode) {
+  KTBNLearner< GUM_SCALAR >&
+      KTBNLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tailNode,
+                                                   std::string_view headNode) {
     // refuse to lift an invariant the k-TBN definition enforces (shared with addMandatoryArc)
     _checkArcTemporallyFeasible_(tailNode, headNode, "un-forbid the arc");
 
@@ -479,7 +485,7 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseForbiddenArc(std::string_view tailBase,
-                                                                          int              tailSlice,
+                                                                          int tailSlice,
                                                                           std::string_view headBase,
                                                                           int headSlice) {
     return eraseForbiddenArc(_encode_(tailBase, tailSlice), _encode_(headBase, headSlice));
@@ -511,8 +517,9 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tailNode,
-                                                                          std::string_view headNode) {
+  KTBNLearner< GUM_SCALAR >&
+      KTBNLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tailNode,
+                                                   std::string_view headNode) {
     // no feasibility check: a backward-in-time arc can never have been added, so
     // erasing it is harmless -- it resolves to a no-op on the owning learner.
     _forOwningLearner_(tailNode, headNode, [&](BNLearner< GUM_SCALAR >& l) {
@@ -523,14 +530,15 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseMandatoryArc(std::string_view tailBase,
-                                                                          int              tailSlice,
+                                                                          int tailSlice,
                                                                           std::string_view headBase,
                                                                           int headSlice) {
     return eraseMandatoryArc(_encode_(tailBase, tailSlice), _encode_(headBase, headSlice));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >&KTBNLearner< GUM_SCALAR >::addForbiddenIntraSliceArc(std::string_view tailBase,
+  KTBNLearner< GUM_SCALAR >&
+      KTBNLearner< GUM_SCALAR >::addForbiddenIntraSliceArc(std::string_view tailBase,
                                                            std::string_view headBase) {
     // validate both endpoints BEFORE touching any learner, so a rejected call
     // leaves no partially-applied constraint behind
@@ -576,13 +584,12 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addNoParentNode(std::string_view base,
-int              slice) {
-    return addNoParentNode(_encode_(base, slice));                                                                        
+                                                                        int              slice) {
+    return addNoParentNode(_encode_(base, slice));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addNoParentNode(
-      std::string_view name) {
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addNoParentNode(std::string_view name) {
     const int  slice   = _determineNode_(std::string{name}).second;
     const bool isAtemp = (slice == KTBN< GUM_SCALAR >::ATEMPORAL);
     if (isAtemp && _atemporalLearner_) {
@@ -591,8 +598,7 @@ int              slice) {
       _atemporalLearner_->addNoParentNode(name);
     } else if (!isAtemp) {
       _transitionLearner_->addNoParentNode(name);
-      if (slice < (int)_prior_ktbn_.k() - 1)
-        _initialLearner_->addNoParentNode(name);
+      if (slice < (int)_prior_ktbn_.k() - 1) _initialLearner_->addNoParentNode(name);
     }
     return *this;
   }
@@ -604,15 +610,12 @@ int              slice) {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoParentNode(
-      std::string_view name) {
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoParentNode(std::string_view name) {
     const int  slice   = _determineNode_(std::string{name}).second;
     const int  last    = (int)_prior_ktbn_.k() - 1;
     const bool isAtemp = (slice == KTBN< GUM_SCALAR >::ATEMPORAL);
-    if (isAtemp && _atemporalLearner_)
-      _atemporalLearner_->eraseNoParentNode(name);
-    else if (slice == last)
-      _transitionLearner_->eraseNoParentNode(name);
+    if (isAtemp && _atemporalLearner_) _atemporalLearner_->eraseNoParentNode(name);
+    else if (slice == last) _transitionLearner_->eraseNoParentNode(name);
     else if (!isAtemp)
       // Past slices keep their transition-learner root constraint (confines learning
       // to the kernel); only lift the constraint in the initial learner.
@@ -627,34 +630,28 @@ int              slice) {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addNoChildrenNode(
-      std::string_view name) {
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addNoChildrenNode(std::string_view name) {
     const int  slice   = _determineNode_(std::string{name}).second;
     const bool isAtemp = (slice == KTBN< GUM_SCALAR >::ATEMPORAL);
     _transitionLearner_->addNoChildrenNode(name);
-    if (slice < (int)_prior_ktbn_.k() - 1)
-      _initialLearner_->addNoChildrenNode(name);
-    if (isAtemp && _atemporalLearner_)
-      _atemporalLearner_->addNoChildrenNode(name);
+    if (slice < (int)_prior_ktbn_.k() - 1) _initialLearner_->addNoChildrenNode(name);
+    if (isAtemp && _atemporalLearner_) _atemporalLearner_->addNoChildrenNode(name);
     return *this;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoChildrenNode(
-      std::string_view base, int slice) {
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoChildrenNode(std::string_view base,
+                                                                            int slice) {
     return eraseNoChildrenNode(_encode_(base, slice));
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoChildrenNode(
-      std::string_view name) {
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::eraseNoChildrenNode(std::string_view name) {
     const int  slice   = _determineNode_(std::string{name}).second;
     const bool isAtemp = (slice == KTBN< GUM_SCALAR >::ATEMPORAL);
     _transitionLearner_->eraseNoChildrenNode(name);
-    if (slice < (int)_prior_ktbn_.k() - 1)
-      _initialLearner_->eraseNoChildrenNode(name);
-    if (isAtemp && _atemporalLearner_)
-      _atemporalLearner_->eraseNoChildrenNode(name);
+    if (slice < (int)_prior_ktbn_.k() - 1) _initialLearner_->eraseNoChildrenNode(name);
+    if (isAtemp && _atemporalLearner_) _atemporalLearner_->eraseNoChildrenNode(name);
     return *this;
   }
 
@@ -662,7 +659,7 @@ int              slice) {
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::addPossibleEdge(std::string_view tailBase,
                                                                         int              tailSlice,
                                                                         std::string_view headBase,
-                                                                        int              headSlice) {
+                                                                        int headSlice) {
     // encode (base, slice) -> engine name and delegate to the string overload, which
     // owns the full routing (atemporal->atemporal to the atemporal learner, slice-k-1 guard)
     return addPossibleEdge(_encode_(tailBase, tailSlice), _encode_(headBase, headSlice));
@@ -670,9 +667,9 @@ int              slice) {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::erasePossibleEdge(std::string_view tailBase,
-                                                                          int              tailSlice,
+                                                                          int tailSlice,
                                                                           std::string_view headBase,
-                                                                          int              headSlice) {
+                                                                          int headSlice) {
     return erasePossibleEdge(_encode_(tailBase, tailSlice), _encode_(headBase, headSlice));
   }
 
@@ -754,7 +751,6 @@ int              slice) {
     return _prior_ktbn_.k();
   }
 
-
   template < GUM_Numeric GUM_SCALAR >
   Size KTBNLearner< GUM_SCALAR >::nbCols() const {
     return _prior_ktbn_.nbTemporalVars() + _prior_ktbn_.nbAtemporalVars();
@@ -813,19 +809,21 @@ int              slice) {
     // (e.g. "W[0][2], W[1][2], W[2][2], W[3][2]"). Replace that row with one
     // entry per base variable (e.g. "W[2]") built directly from the KTBN's own
     // variable sets — no string parsing, robust to any base name.
-    for (auto& [key, val, comment] : result) {
+    for (auto& [key, val, comment]: result) {
       if (key != "Variables") continue;
       // Build base -> domainSize from the prior KTBN (slice 0 for temporal, AT for atemporal).
       std::string collapsed;
       bool        first = true;
       auto        emit  = [&](const std::string& base, int slice) {
-        const auto& var  = _prior_ktbn_.variable(base, slice);
+        const auto& var = _prior_ktbn_.variable(base, slice);
         if (!first) collapsed += ", ";
         collapsed += base + "[" + std::to_string(var.domainSize()) + "]";
         first = false;
       };
-      for (const auto& base : _prior_ktbn_.temporalVarNames())  emit(base, 0);
-      for (const auto& base : _prior_ktbn_.atemporalVarNames()) emit(base, KTBN< GUM_SCALAR >::ATEMPORAL);
+      for (const auto& base: _prior_ktbn_.temporalVarNames())
+        emit(base, 0);
+      for (const auto& base: _prior_ktbn_.atemporalVarNames())
+        emit(base, KTBN< GUM_SCALAR >::ATEMPORAL);
       val = collapsed;
       break;
     }
@@ -883,8 +881,8 @@ int              slice) {
     // (slice-0 temporals then atemporals); the remaining columns are just later
     // slices of those same temporals. So strip the slice suffix off the first
     // nbCols() engine names to get each base variable exactly once.
-    const auto& engine = _transitionLearner_->names();
-    const Size  n      = nbCols();
+    const auto&                engine = _transitionLearner_->names();
+    const Size                 n      = nbCols();
     std::vector< std::string > result;
     result.reserve(n);
     for (Size i = 0; i < n; ++i)
@@ -907,8 +905,8 @@ int              slice) {
     // also lets a raw engine name pass through). An unknown name reaches
     // domainSize() unchanged and throws MissingVariableInDatabase.
     const std::string b{base};
-    const int slice = _prior_ktbn_.temporalVarNames().contains(b) ? 0
-                                                                  : KTBN< GUM_SCALAR >::ATEMPORAL;
+    const int         slice
+        = _prior_ktbn_.temporalVarNames().contains(b) ? 0 : KTBN< GUM_SCALAR >::ATEMPORAL;
     return _transitionLearner_->domainSize(_encode_(b, slice));
   }
 
@@ -925,8 +923,10 @@ int              slice) {
       Size                              k,
       const std::vector< std::string >& missingSymbols) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(k, "k");
-    return IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(dirPath, csvBaseName, nbSamples,
-                                                              missingSymbols);
+    return IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(dirPath,
+                                                             csvBaseName,
+                                                             nbSamples,
+                                                             missingSymbols);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -940,8 +940,8 @@ int              slice) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(k, "k");
 
     namespace fs = std::filesystem;
-    const std::string firstCSV =
-        (fs::path{dirPath} / (std::string{csvBaseName} + "1.csv")).string();
+    const std::string firstCSV
+        = (fs::path{dirPath} / (std::string{csvBaseName} + "1.csv")).string();
     // _build_() also reads trajectory 1 (its i=0 pass). The double-read is
     // unavoidable: this function runs in the member-initialiser list, before
     // the object (and hence _build_()) exists, and _build_() must read every
@@ -963,7 +963,7 @@ int              slice) {
     }
 
     // Every declared atemporal name must appear in the CSV header.
-    for (const std::string& aname : atemporalVars)
+    for (const std::string& aname: atemporalVars)
       if (!prior.exists(aname))
         GUM_ERROR(InvalidArgument,
                   "atemporal variable '" << aname << "' not found in the CSV header")
@@ -980,26 +980,23 @@ int              slice) {
     KTBN< GUM_SCALAR > prior(k);
     // bn.nodes() iterates in hash order (unspecified). This is harmless because
     // KTBN looks up variables by name, not by insertion index.
-    for (const NodeId node : bn.nodes()) {
+    for (const NodeId node: bn.nodes()) {
       const DiscreteVariable& var = bn.variable(node);
       prior.add(var, !atemporalVars.contains(var.name()));
     }
-    for (const std::string& aname : atemporalVars)
+    for (const std::string& aname: atemporalVars)
       if (!prior.exists(aname))
-        GUM_ERROR(InvalidArgument,
-                  "atemporal variable '" << aname << "' not found in the BN")
+        GUM_ERROR(InvalidArgument, "atemporal variable '" << aname << "' not found in the BN")
     return prior;
   }
-
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNLearner< GUM_SCALAR >::_build_(std::string_view                  dirPath,
                                           std::string_view                  csvBaseName,
                                           Size                              nbSamples,
-                                          const std::vector< std::string >& missingSymbols)
-  {
-    Size k = _prior_ktbn_.k();
-    Size nbTempVars = _prior_ktbn_.temporalVarNames().size();
+                                          const std::vector< std::string >& missingSymbols) {
+    Size k           = _prior_ktbn_.k();
+    Size nbTempVars  = _prior_ktbn_.temporalVarNames().size();
     Size nbAtempVars = _prior_ktbn_.atemporalVarNames().size();
 
     // tables are default-constructed here; translators are inserted per-column
@@ -1043,69 +1040,69 @@ int              slice) {
     const std::size_t initRowSize  = nbAtempVars + nbTempVars * (k - 1);
     const std::size_t atempRowSize = nbAtempVars;
 
-    std::vector<std::string> header;        // column order, captured from trajectory 1
-    std::unordered_set<Size> atemVarsCols;  // atemporal column indices
+    std::vector< std::string > header;         // column order, captured from trajectory 1
+    std::unordered_set< Size > atemVarsCols;   // atemporal column indices
 
     // reused across trajectories (capacity is kept between iterations)
-    std::vector<std::vector<std::string>> buffer;
-    std::vector<std::string>              row;
+    std::vector< std::vector< std::string > > buffer;
+    std::vector< std::string >                row;
     row.reserve(transRowSize);
     _nbTimeSlices_.reserve(nbSamples);   // one raw length per trajectory (see nbRows())
 
-    for (Size i=0;  i<nbSamples; ++i){
-
+    for (Size i = 0; i < nbSamples; ++i) {
       // open the i-th trajectory (each file is opened exactly once)
-      const std::filesystem::path file = dir / (stem + std::to_string(i+1) + ".csv");
-      std::ifstream is(file, std::ifstream::in);
+      const std::filesystem::path file = dir / (stem + std::to_string(i + 1) + ".csv");
+      std::ifstream               is(file, std::ifstream::in);
       if (!is.is_open()) GUM_ERROR(gum::IOError, "Cannot open " << file.string());
 
       CSVParser parser(is, file.string());
       parser.next();
 
-      if (i == 0){
+      if (i == 0) {
         // first file only: capture the column order, derive the atemporal columns
         // from _prior_ktbn_, build the bracket-encoded names and finish setting up the
         // tables (must happen before any insertRow)
         const auto& rawHeader = parser.current();
         header.assign(rawHeader.begin(), rawHeader.end());
         for (std::size_t c = 0; c < header.size(); ++c)
-          if (_prior_ktbn_.atemporalVarNames().contains(header[c]))
-            atemVarsCols.insert(c);
+          if (_prior_ktbn_.atemporalVarNames().contains(header[c])) atemVarsCols.insert(c);
 
         // every schema variable must appear in the data, else _assemble_ (used
         // by both learnKTBN and learnParameters) would later fail with an
         // opaque NotFound when resolving bracket names
         {
           const std::unordered_set< std::string > headerSet(header.begin(), header.end());
-          auto requirePresent = [&](const std::string& base) {
+          auto                                    requirePresent = [&](const std::string& base) {
             if (!headerSet.contains(base))
               GUM_ERROR(MissingVariableInDatabase,
                         "schema variable '" << base << "' is absent from '" << file.string() << "'")
           };
-          for (const auto& base : _prior_ktbn_.temporalVarNames())  requirePresent(base);
-          for (const auto& base : _prior_ktbn_.atemporalVarNames()) requirePresent(base);
+          for (const auto& base: _prior_ktbn_.temporalVarNames())
+            requirePresent(base);
+          for (const auto& base: _prior_ktbn_.atemporalVarNames())
+            requirePresent(base);
 
           // conversely, every CSV column must be a known schema variable, else the
           // translator-insertion loop below would fail with an opaque NotFound
           // when resolving it against _prior_ktbn_
-          for (const std::string& col : header)
+          for (const std::string& col: header)
             if (!_prior_ktbn_.exists(col))
               GUM_ERROR(MissingVariableInDatabase,
                         "CSV column '" << col << "' in '" << file.string()
-                            << "' is not declared as a variable of this KTBNLearner")
+                                       << "' is not declared as a variable of this KTBNLearner")
         }
 
         // insert one translator per column into each table; every schema variable
         // has a concrete domain (user-supplied, or discovered by _buildPriorFromCSV_), so
         // insertTranslator picks the matching translator type from the variable.
-        std::vector<std::string> varNamesTran;
-        std::vector<std::string> varNamesInit;
-        std::vector<std::string> varNamesAtemp;
+        std::vector< std::string > varNamesTran;
+        std::vector< std::string > varNamesInit;
+        std::vector< std::string > varNamesAtemp;
         {
-          auto insertTrans = [&](DatabaseTable& table, const std::string& base,
-                                 int slice, std::size_t col) {
-            table.insertTranslator(_prior_ktbn_.variable(base, slice), col, missingSymbols);
-          };
+          auto insertTrans
+              = [&](DatabaseTable& table, const std::string& base, int slice, std::size_t col) {
+                  table.insertTranslator(_prior_ktbn_.variable(base, slice), col, missingSymbols);
+                };
 
           // translators and their engine names are built in lockstep, column by
           // column, so a translator's table position and its name can never drift
@@ -1116,8 +1113,7 @@ int              slice) {
 
           std::size_t tcol = 0, icol = 0, acol = 0;
           for (std::size_t c = 0; c < header.size(); ++c) {
-            const int slice = atemVarsCols.contains(c)
-                                ? KTBN< GUM_SCALAR >::ATEMPORAL : 0;
+            const int slice = atemVarsCols.contains(c) ? KTBN< GUM_SCALAR >::ATEMPORAL : 0;
             insertTrans(transitionTable, header[c], slice, tcol++);
             varNamesTran.push_back(_encode_(header[c], slice));
             insertTrans(initTable, header[c], slice, icol++);
@@ -1151,8 +1147,7 @@ int              slice) {
         for (std::size_t c = 0; same && c < header.size(); ++c)
           same = (raw[c] == header[c]);
         if (!same)
-          GUM_ERROR(InvalidArgument,
-                    "Header of " << file.string() << " differs from trajectory 1");
+          GUM_ERROR(InvalidArgument, "Header of " << file.string() << " differs from trajectory 1");
       }
 
       buffer.clear();
@@ -1160,16 +1155,15 @@ int              slice) {
         const auto& tokens = parser.current();
         if (tokens.size() != header.size())
           GUM_ERROR(InvalidArgument,
-                    "Trajectory " << (i + 1) << ", row " << parser.nbLine()
-                    << ": expected " << header.size() << " columns, got "
-                    << tokens.size());
+                    "Trajectory " << (i + 1) << ", row " << parser.nbLine() << ": expected "
+                                  << header.size() << " columns, got " << tokens.size());
         buffer.push_back({tokens.begin(), tokens.end()});
       }
 
       if (buffer.size() < k)
         GUM_ERROR(OperationNotAllowed,
                   "Trajectory " << (i + 1) << " has " << buffer.size()
-                  << " time steps but at least k=" << k << " are required");
+                                << " time steps but at least k=" << k << " are required");
 
       // record this trajectory's raw length (number of time steps), exposed by nbRows()
       _nbTimeSlices_.push_back(buffer.size());
@@ -1201,14 +1195,12 @@ int              slice) {
         row.clear();
         // slice 0 carries the atemporal columns; later slices skip them so atemporal
         // variables aren't repeated k-1 times in each row
-        for(Size col = 0; col < buffer[0].size(); ++col){
+        for (Size col = 0; col < buffer[0].size(); ++col) {
           row.push_back(cellAt(t, col));
         }
-        for (Size slice = 1; slice < k; ++slice){
-          for(Size col = 0; col < buffer[0].size(); ++col){
-            if (!atemVarsCols.contains(col)){
-              row.push_back(buffer[t+slice][col]);
-            }
+        for (Size slice = 1; slice < k; ++slice) {
+          for (Size col = 0; col < buffer[0].size(); ++col) {
+            if (!atemVarsCols.contains(col)) { row.push_back(buffer[t + slice][col]); }
           }
         }
         insertIfComplete(transitionTable, row);
@@ -1216,14 +1208,12 @@ int              slice) {
 
       // initial table: first k-1 slices, one row per trajectory
       row.clear();
-      for(Size col = 0; col < buffer[0].size(); ++col){
+      for (Size col = 0; col < buffer[0].size(); ++col) {
         row.push_back(cellAt(0, col));
       }
-      for (Size slice = 1; slice < k-1; ++slice){
-        for(Size col = 0; col < buffer[0].size(); ++col){
-          if (!atemVarsCols.contains(col)){
-            row.push_back(buffer[slice][col]);
-          }
+      for (Size slice = 1; slice < k - 1; ++slice) {
+        for (Size col = 0; col < buffer[0].size(); ++col) {
+          if (!atemVarsCols.contains(col)) { row.push_back(buffer[slice][col]); }
         }
       }
       insertIfComplete(initTable, row);
@@ -1246,21 +1236,23 @@ int              slice) {
     // say what actually happened.
     if (_ignoreMissingSymbols_ && (transitionTable.nbRows() == 0 || initTable.nbRows() == 0))
       GUM_ERROR(OperationNotAllowed,
-                "every row was dropped as incomplete (" << _nbDroppedRows_
+                "every row was dropped as incomplete ("
+                    << _nbDroppedRows_
                     << " in total): no fully observed transition window (or initial block) is left "
-                       "to learn from. The trajectories are too sparsely observed for k=" << k << ".")
+                       "to learn from. The trajectories are too sparsely observed for k="
+                    << k << ".")
 
     // Variables are already typed upstream (template / first-trajectory learner),
     // so no induceTypes pass is needed here — just canonicalize the value codes.
     transitionTable.reorder();
     initTable.reorder();
 
-    _transitionLearner_ = std::make_unique<BNLearner<GUM_SCALAR>>(transitionTable);
-    _initialLearner_ = std::make_unique<BNLearner<GUM_SCALAR>>(initTable);
+    _transitionLearner_ = std::make_unique< BNLearner< GUM_SCALAR > >(transitionTable);
+    _initialLearner_    = std::make_unique< BNLearner< GUM_SCALAR > >(initTable);
 
     if (nbAtempVars > 1) {
       atemporalTable.reorder();
-      _atemporalLearner_ = std::make_unique<BNLearner<GUM_SCALAR>>(atemporalTable);
+      _atemporalLearner_ = std::make_unique< BNLearner< GUM_SCALAR > >(atemporalTable);
     }
 
 
@@ -1279,11 +1271,11 @@ int              slice) {
     const auto& temporalVars  = _prior_ktbn_.temporalVarNames();
     const auto& atemporalVars = _prior_ktbn_.atemporalVarNames();
 
-    for (const auto& base : temporalVars)
+    for (const auto& base: temporalVars)
       for (int slice = 0; slice < ki - 1; ++slice)
         _transitionLearner_->addNoParentNode(_encode_(base, slice));
-    
-    for (const auto& atemBase : atemporalVars){
+
+    for (const auto& atemBase: atemporalVars) {
       _transitionLearner_->addNoParentNode(atemBase);
       _initialLearner_->addNoParentNode(atemBase);
     }
@@ -1293,18 +1285,17 @@ int              slice) {
       // explicitly: this is the only form MIIC honours (it ignores slice order),
       // and score-based algorithms respect it too, so it fully covers the
       // constraint. A setSliceOrder() mirror was dropped here as redundant.
-      for (const auto& tailBase : temporalVars)
-        for (const auto& headBase : temporalVars)
+      for (const auto& tailBase: temporalVars)
+        for (const auto& headBase: temporalVars)
           for (int tailSlice = 1; tailSlice < ki - 1; ++tailSlice)
             for (int headSlice = 0; headSlice < tailSlice; ++headSlice)
               _initialLearner_->addForbiddenArc(_encode_(tailBase, tailSlice),
-                                               _encode_(headBase, headSlice));
+                                                _encode_(headBase, headSlice));
     }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const std::unordered_set< std::string >&
-      KTBNLearner< GUM_SCALAR >::_atemporalVarNames_() const {
+  const std::unordered_set< std::string >& KTBNLearner< GUM_SCALAR >::_atemporalVarNames_() const {
     return _prior_ktbn_.atemporalVarNames();
   }
 
@@ -1316,9 +1307,10 @@ int              slice) {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBN< GUM_SCALAR > KTBNLearner< GUM_SCALAR >::_assemble_(const BayesNet< GUM_SCALAR >& transitionBN,
-                                                           const BayesNet< GUM_SCALAR >& initialBN,
-                                                           const BayesNet< GUM_SCALAR >& atemporalBN) const {
+  KTBN< GUM_SCALAR >
+      KTBNLearner< GUM_SCALAR >::_assemble_(const BayesNet< GUM_SCALAR >& transitionBN,
+                                            const BayesNet< GUM_SCALAR >& initialBN,
+                                            const BayesNet< GUM_SCALAR >& atemporalBN) const {
     const int k = (int)_prior_ktbn_.k();
 
     // 1. Base: initialBN provides slices 0..k-2 (temporal structure + CPTs, and
@@ -1328,17 +1320,17 @@ int              slice) {
     BayesNet< GUM_SCALAR > bn(initialBN);
 
     // 2. Add the slice k-1 variables from transitionBN (absent from initialBN).
-    for (const auto& base : _prior_ktbn_.temporalVarNames()) {
+    for (const auto& base: _prior_ktbn_.temporalVarNames()) {
       const std::string name    = _encode_(base, k - 1);
       const NodeId      transId = transitionBN.idFromName(name);
       bn.add(transitionBN.variable(transId));
     }
 
     // 3. Add the arcs arriving at slice k-1 from transitionBN
-    for (const auto& base : _prior_ktbn_.temporalVarNames()) {
+    for (const auto& base: _prior_ktbn_.temporalVarNames()) {
       const std::string headName  = _encode_(base, k - 1);
       const NodeId      transHead = transitionBN.idFromName(headName);
-      for (const NodeId transParent : transitionBN.parents(transHead)) {
+      for (const NodeId transParent: transitionBN.parents(transHead)) {
         const std::string& parentName = transitionBN.variable(transParent).name();
         bn.addArc(parentName, headName);
       }
@@ -1350,9 +1342,9 @@ int              slice) {
     //    temporal-only possible-edge whitelist (see learnKTBN()). Either way the
     //    atemporal variables already sit in bn as roots, via initialBN.
     if (atemporalBN.size() != 0) {
-      for (const auto& atemBase : _prior_ktbn_.atemporalVarNames()){
+      for (const auto& atemBase: _prior_ktbn_.atemporalVarNames()) {
         const NodeId atemTail = atemporalBN.idFromName(atemBase);
-        for (const NodeId atemChild : atemporalBN.children(atemTail)){
+        for (const NodeId atemChild: atemporalBN.children(atemTail)) {
           const std::string& childName = atemporalBN.variable(atemChild).name();
           bn.addArc(atemBase, childName);
         }
@@ -1360,7 +1352,7 @@ int              slice) {
     }
 
     // 5. Fill the slice k-1 CPTs from transitionBN
-    for (const auto& base : _prior_ktbn_.temporalVarNames()) {
+    for (const auto& base: _prior_ktbn_.temporalVarNames()) {
       const std::string name    = _encode_(base, k - 1);
       const NodeId      bnId    = bn.idFromName(name);
       const NodeId      transId = transitionBN.idFromName(name);
@@ -1370,8 +1362,8 @@ int              slice) {
     // 6. Fill the atemporal CPTs from atemporalBN (same guard as step 4); when
     //    skipped, the atemporal variables keep their initialBN marginal.
     if (atemporalBN.size() != 0) {
-      for (const auto& atemBase : _prior_ktbn_.atemporalVarNames()) {
-        const NodeId bnId    = bn.idFromName(atemBase);
+      for (const auto& atemBase: _prior_ktbn_.atemporalVarNames()) {
+        const NodeId bnId   = bn.idFromName(atemBase);
         const NodeId atemId = atemporalBN.idFromName(atemBase);
         bn.cpt(bnId).fillWith(atemporalBN.cpt(atemId));
       }

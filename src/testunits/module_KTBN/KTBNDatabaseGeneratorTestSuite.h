@@ -49,14 +49,13 @@
 #include <string>
 #include <vector>
 
-#include <agrum/base/core/utils_random.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -209,8 +208,8 @@ namespace gum_tests {
     // --- custom separator: ';' must appear in the output, ',' must not ---
     gen.drawSamples(1, 2, dir, "kdbn_semi", VarOrderMode::RANDOM, false, ";");
     {
-      std::ifstream       f((std::filesystem::path{dir} / "kdbn_semi1.csv").string());
-      const std::string   content((std::istreambuf_iterator< char >(f)), {});
+      std::ifstream     f((std::filesystem::path{dir} / "kdbn_semi1.csv").string());
+      const std::string content((std::istreambuf_iterator< char >(f)), {});
       CHECK(content.find(';') != std::string::npos);
       CHECK(content.find(',') == std::string::npos);
     }
@@ -221,8 +220,8 @@ namespace gum_tests {
     const auto m = _model_();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string              dir     = GET_RESSOURCES_PATH("outputs");
-    const std::vector< gum::Size > lengths = {3, 4, 5};
+    const std::string                              dir     = GET_RESSOURCES_PATH("outputs");
+    const std::vector< gum::Size >                 lengths = {3, 4, 5};
 
     const auto lls = gen.drawSamples(lengths, dir, "toto");
     _checkDrawSamples_(lls, dir, "toto", lengths);
@@ -233,18 +232,18 @@ namespace gum_tests {
     const auto m = _model_();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir       = GET_RESSOURCES_PATH("outputs");
-    const gum::Size   nbSamples = 4;
-    const gum::Size   T         = 5;
+    const std::string                              dir       = GET_RESSOURCES_PATH("outputs");
+    const gum::Size                                nbSamples = 4;
+    const gum::Size                                T         = 5;
 
     const auto lls = gen.drawSamples(nbSamples, T, dir, "fixed");
     _checkDrawSamples_(lls, dir, "fixed", std::vector< gum::Size >(nbSamples, T));
   }
 
   GUM_TEST(VarOrderModesAndNbVars) {
-    const auto m = _model_();
+    const auto                                     m = _model_();
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
 
     // nbVars() counts one column per process/atemporal variable
     CHECK_EQ(gen.nbVars(), gum::Size(2));
@@ -253,8 +252,8 @@ namespace gum_tests {
     for (const auto mode:
          {VarOrderMode::RANDOM, VarOrderMode::TOPOLOGICAL, VarOrderMode::ANTI_TOPOLOGICAL}) {
       gen.drawSamples(1, 2, dir, "kdbn_varorder", mode, false);
-      const CSV c = _readCSV_((std::filesystem::path{dir} / "kdbn_varorder1.csv").string());
-      auto names = std::vector< std::string >(c.header.begin(), c.header.end());
+      const CSV c     = _readCSV_((std::filesystem::path{dir} / "kdbn_varorder1.csv").string());
+      auto      names = std::vector< std::string >(c.header.begin(), c.header.end());
       std::sort(names.begin(), names.end());
       CHECK_EQ(names, std::vector< std::string >({"C", "X"}));
     }
@@ -272,16 +271,16 @@ namespace gum_tests {
     m.generateCPTs();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
 
     gen.drawSamples(1, 2, dir, "kdbn_topo", VarOrderMode::TOPOLOGICAL);
-    const CSV topo_csv = _readCSV_((std::filesystem::path{dir} / "kdbn_topo1.csv").string());
+    const CSV  topo_csv = _readCSV_((std::filesystem::path{dir} / "kdbn_topo1.csv").string());
     const auto topo = std::vector< std::string >(topo_csv.header.begin(), topo_csv.header.end());
     CHECK_EQ(topo, std::vector< std::string >({"C", "X"}));   // contemporaneous parent C before X
 
     gen.drawSamples(1, 2, dir, "kdbn_antitopo", VarOrderMode::ANTI_TOPOLOGICAL);
     const CSV anti_csv = _readCSV_((std::filesystem::path{dir} / "kdbn_antitopo1.csv").string());
-    auto anti = std::vector< std::string >(anti_csv.header.begin(), anti_csv.header.end());
+    auto      anti     = std::vector< std::string >(anti_csv.header.begin(), anti_csv.header.end());
     CHECK_EQ(anti, std::vector< std::string >({"X", "C"}));
     std::reverse(anti.begin(), anti.end());
     CHECK_EQ(anti, topo);   // anti is exactly the reverse of topo
@@ -298,7 +297,7 @@ namespace gum_tests {
     gum::learning::KTBNDatabaseGenerator< double > gen2(m2);
 
     gen2.drawSamples(1, 2, dir, "kdbn_topo2_", VarOrderMode::TOPOLOGICAL);
-    const CSV c2 = _readCSV_((std::filesystem::path{dir} / "kdbn_topo2_1.csv").string());
+    const CSV  c2 = _readCSV_((std::filesystem::path{dir} / "kdbn_topo2_1.csv").string());
     const auto t2 = std::vector< std::string >(c2.header.begin(), c2.header.end());
     // valid permutation of every base variable
     auto sorted = t2;
@@ -318,7 +317,7 @@ namespace gum_tests {
     m.generateCPTs();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
 
     // INTERVAL: the "[a,b[" interval label
     gen.setDiscretizedLabelModeInterval();
@@ -358,7 +357,7 @@ namespace gum_tests {
     m.cpt("X", 1).fillWith({0.9, 0.1, 0.2, 0.8});   // P(X@1=0 | X@0)= .9 / .2
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
     gen.drawSamples(1, 60000, dir, "kdbn_stats", VarOrderMode::RANDOM, false);
 
     const CSV         c  = _readCSV_((std::filesystem::path{dir} / "kdbn_stats1.csv").string());
@@ -381,17 +380,17 @@ namespace gum_tests {
     gum::initRandom(1);
     gum::KTBN< double > m(3);
     m.add(gum::LabelizedVariable("X", "", 2), true);
-    m.addArc("X", 0, "X", 2);   // lag 2: X[t] depends only on X[t-2]
+    m.addArc("X", 0, "X", 2);                         // lag 2: X[t] depends only on X[t-2]
 
-    m.fillCPT("X", 0, {}, {1.0, 0.0});             // X[0] = 0   (deterministic)
-    m.fillCPT("X", 1, {}, {0.0, 1.0});             // X[1] = 1   (deterministic)
-    m.fillCPT("X", 2, {{{"X", 0}, 0}}, {1.0, 0.0});  // X[t] = 0 when X[t-2] = 0
-    m.fillCPT("X", 2, {{{"X", 0}, 1}}, {0.0, 1.0});  // X[t] = 1 when X[t-2] = 1
+    m.fillCPT("X", 0, {}, {1.0, 0.0});                // X[0] = 0   (deterministic)
+    m.fillCPT("X", 1, {}, {0.0, 1.0});                // X[1] = 1   (deterministic)
+    m.fillCPT("X", 2, {{{"X", 0}, 0}}, {1.0, 0.0});   // X[t] = 0 when X[t-2] = 0
+    m.fillCPT("X", 2, {{{"X", 0}, 1}}, {0.0, 1.0});   // X[t] = 1 when X[t-2] = 1
 
-    const gum::Size T = 7;
+    const gum::Size                                T = 7;
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
-    const auto        lls = gen.drawSamples(1, T, dir, "kdbn_lag", VarOrderMode::RANDOM, false);
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
+    const auto lls = gen.drawSamples(1, T, dir, "kdbn_lag", VarOrderMode::RANDOM, false);
 
     // every CPT is deterministic, so each drawn value has probability 1 and
     // the total log2-likelihood is exactly 0.
@@ -406,9 +405,9 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesErrors) {
-    const auto m = _model_();   // k = 2
+    const auto                                     m = _model_();   // k = 2
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
-    const std::string dir = GET_RESSOURCES_PATH("outputs");
+    const std::string                              dir = GET_RESSOURCES_PATH("outputs");
 
     // per-trajectory vector with T < k must throw
     CHECK_THROWS_AS(gen.drawSamples(std::vector< gum::Size >{3, 1, 4}, dir, "err"),
@@ -417,9 +416,8 @@ namespace gum_tests {
     CHECK_THROWS_AS(gen.drawSamples(gum::Size(3), gum::Size(1), dir, "errfix"),
                     const gum::OperationNotAllowed&);
     // a newline in the CSV separator is rejected before any I/O
-    CHECK_THROWS_AS(
-        gen.drawSamples(1, 3, dir, "errsep", VarOrderMode::RANDOM, false, "\n"),
-        const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gen.drawSamples(1, 3, dir, "errsep", VarOrderMode::RANDOM, false, "\n"),
+                    const gum::InvalidArgument&);
   }
 
   GUM_TEST(ProgressNotifier) {
@@ -430,12 +428,15 @@ namespace gum_tests {
     struct Listener: public gum::ProgressListener {
       std::vector< gum::Size > percents;
       std::string              stopMsg;
+
       explicit Listener(gum::ProgressNotifier& n) : gum::ProgressListener(n) {}
+
       void whenProgress(const void*, gum::Size pct, double) override { percents.push_back(pct); }
+
       void whenStop(const void*, std::string_view msg) override { stopMsg = std::string(msg); }
     };
 
-    Listener listener(gen);
+    Listener                       listener(gen);
     const std::vector< gum::Size > lengths(200, 2);   // 200 short trajectories
     gen.drawSamples(lengths, GET_RESSOURCES_PATH("outputs"), "prog");
 

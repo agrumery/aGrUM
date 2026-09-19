@@ -38,12 +38,6 @@
 #                                                                          #
 ############################################################################
 
-# Correctness of the forward interventional engine, judged against an
-# INDEPENDENT path: the KTBN unrolled to a plain BayesNet, do-mutilated
-# (intervened nodes: parents cut, CPT set to a point mass), then solved by
-# LazyPropagation. The forward roll and the join tree share no code, so
-# agreement is meaningful -- not a tautology.
-
 import unittest
 
 import pyagrum.ktbn as gum

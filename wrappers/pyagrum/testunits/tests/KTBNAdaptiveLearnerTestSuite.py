@@ -30,6 +30,7 @@
 #   SPDX-FileCopyrightText: Copyright 2005-2026                            #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
 #                                                                          #
 #   Contact  : info_at_agrum_dot_org                                       #
 #   homepage : http://agrum.gitlab.io                                      #

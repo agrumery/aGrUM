@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -43,13 +43,12 @@
 
 #include <cmath>
 
-#include <agrum/BN/BayesNet.h>
 #include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/BN/BayesNet.h>
 #include <agrum/KTBN/KTBN.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -118,14 +117,14 @@ namespace gum_tests {
     // mismatched cells; map explicitly: rep X[3]<-tmpl X[2], X[2]<-X[1] (lag 1),
     // X[1]<-X[0] (lag 2), C<-C.
     {
-      const gum::Tensor< double >&  tmpl = bn.cpt("X[2]");
-      const gum::Tensor< double >&  rep  = bn.cpt("X[3]");
-      const gum::DiscreteVariable&  vX0  = bn.variableFromName("X[0]");
-      const gum::DiscreteVariable&  vX1  = bn.variableFromName("X[1]");
-      const gum::DiscreteVariable&  vX2  = bn.variableFromName("X[2]");
-      const gum::DiscreteVariable&  vX3  = bn.variableFromName("X[3]");
-      const gum::DiscreteVariable&  vC   = bn.variableFromName("C");
-      double                        diff = 0.0;
+      const gum::Tensor< double >& tmpl = bn.cpt("X[2]");
+      const gum::Tensor< double >& rep  = bn.cpt("X[3]");
+      const gum::DiscreteVariable& vX0  = bn.variableFromName("X[0]");
+      const gum::DiscreteVariable& vX1  = bn.variableFromName("X[1]");
+      const gum::DiscreteVariable& vX2  = bn.variableFromName("X[2]");
+      const gum::DiscreteVariable& vX3  = bn.variableFromName("X[3]");
+      const gum::DiscreteVariable& vC   = bn.variableFromName("C");
+      double                       diff = 0.0;
       for (gum::Instantiation ir(rep); !ir.end(); ir.inc()) {
         gum::Instantiation it(tmpl);
         it.chgVal(vX2, ir.val(vX3));   // node
@@ -146,9 +145,9 @@ namespace gum_tests {
     const auto              m  = buildK3Model();   // k = 3
     gum::BayesNet< double > bn = m.unroll(3);
 
-    CHECK_EQ(bn.size(), gum::Size(3 + 3 + 1));   // X:3, Y:3, C:1
+    CHECK_EQ(bn.size(), gum::Size(3 + 3 + 1));     // X:3, Y:3, C:1
     CHECK(bn.exists("X[2]"));
-    CHECK_FALSE(bn.exists("X[3]"));              // no extension slice
+    CHECK_FALSE(bn.exists("X[3]"));                // no extension slice
     CHECK(bn.existsArc("X[0]", "X[2]"));
     CHECK(bn.existsArc("C", "X[2]"));
   }

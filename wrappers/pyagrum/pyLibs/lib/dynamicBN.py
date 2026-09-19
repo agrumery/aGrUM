@@ -43,10 +43,12 @@ This module is deprecated. Please use "import pyagrum.ktbn"
 """
 
 import warnings
+
 warnings.warn(
-    "This module is deprecated since pyAgrum>=3.2. Please use the new c++ enhanced module : 'import pyagrum.ktbn' instead.",
-    FutureWarning,
-    stacklevel=2,)
+  "This module is deprecated since pyAgrum>=3.2. Please use the new c++ enhanced module : 'import pyagrum.ktbn' instead.",
+  FutureWarning,
+  stacklevel=2,
+)
 
 import numpy as np
 import pydot as dot

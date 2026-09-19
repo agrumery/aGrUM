@@ -4,49 +4,23 @@
 
 - pyAgrum
 
-    - **Modular build**:
-        - pyAgrum's SWIG extension is now split into independent modules -- `pyagrum.markov_random_field`, `.influence_diagram`, `.credal_net`, `.causal_model`, `.prm`, `.ktbn` --
-          built and shipped as separate shared libraries instead of one monolithic extension, loaded lazily through a
-          `__getattr__` compatibility shim so `import pyagrum` still works unchanged.
-        - `BASE` and `BN` are merged into one shared core library (`_pyagrumcpp.so`) with a relative RPATH so the wheel
-          stays self-contained.
-        - The core library's exported symbol surface is trimmed to only the BASE/BN symbols the leaf modules actually
-          use (`PYAGRUM_TRIM_CORE_EXPORTS`).
-        - Introduced the `PYGUM_PUBLIC`/`PYGUM_SHARED_PUBLIC` dllexport/dllimport producer-consumer macros needed for
-          the multi-`.so` build, with directory-scoped compile flags and symbol-derivation tooling.
-        - Added `diagnose_leaf_imports.py`, a CI diagnostic reporting every leaf-module import failure in one pass.
-        - Fixed `GUM_SHARED_EXPORTING`/`GUM_PUBLIC` macro scoping for MinGW and MSVC builds.
-        - New documentation page on pyAgrum's modular C++ extension architecture and its lazy-import mechanism.
-    - **Misc**:
-        - Fixed a few visual glitches in the example notebooks.
-
+    - **New: KTBN (k-order dynamic Bayesian networks)** (thanks to Seth Aguila and Anis Khacef): learn, generate
+      and run inference on dynamic Bayesian networks with more than one time slice of memory. Inference (filtering
+      and smoothing) works over any time window with intervention AND observations, and the memory order K itself
+      can be learned from data instead of being fixed by hand.
+      Replaces `pyagrum.lib.dynamicBN` (now deprecated), with new notebooks.
+    - **Lighter, faster import**: pyAgrum's Python modules (`markov_random_field`, `influence_diagram`,
+      `credal_net`, `causal_model`, `prm`, `ktbn`) are now loaded only when needed instead of all at once.
+    - Cleaner error messages (internal technical details no longer shown).
+    - Minor notebook fixes.
+  
 - aGrUM
 
-    - **Visibility macros (GUM_PUBLIC)**:
-        - Tagged the full public C++ API with `GUM_PUBLIC`/`GUM_SHARED_PUBLIC` for standalone shared-library builds
-          (BASE, BN, PRM, FMDP, CM, CN, ID).
-        - aGrUM builds are now always static under Windows: dllexport/dllimport correctness across separate module
-          DLLs is not maintained there; `act` now hard-errors if a dynamic Windows build is requested for aGrUM
-          (pass `--static_lib`).
-        - Fixed several visibility-tag gaps found while validating the above (BN learning hierarchy, `PRMType`/
-          `IdCondSet`, the PRM/FMDP/MRF cocoR parsers, CN's `LpCol`/`LpExpr`/`LpRow`, ID's `SimpleUTGenerator`/
-          `UTGenerator`).
-    - **Build fixes**:
-        - Fixed undefined `pthread_mutex_*` references on glibc < 2.34 by linking `Threads::Threads` unconditionally,
-          regardless of the `GUM_THREADS` flavor.
-        - Restored the `OpenMP_FOUND` guard around `GUM_THREADS_USE_OMP`'s compile definition.
-        - Removed a stray `BN` include from a `BASE` header that caused an MSVC `C2491` error (`InformationTheory`).
-    - **CI**:
-        - Windows CI jobs now run on every branch push instead of only on `master`, so Windows-only link errors are
-          caught earlier.
-        - Added a conda-forge-style validation job on the Windows runner.
-    - **Documentation**:
-        - New Doxygen "Topics" page describing aGrUM/pyAgrum's code modularization and the two visibility-macro
-          families, moved above "How to" in the navigation.
-        - New auto-generated page listing every symbol tagged with each visibility macro, refreshed automatically by
-          `act doc release aGrUM`.
-        - Fixed a Topics group id collision (`bn_group`/`mn_group`), dead `EXCLUDE` paths, the obsolete
-          `DOT_MULTI_TARGETS` tag, and several howto typos; inheritance/collaboration diagrams now open by default.
+    - **New: KTBN (k-order dynamic Bayesian networks)** (thanks to Seth Aguila and Anis Khacef): C++ engine behind
+      the pyAgrum feature above -- construction, inference over an arbitrary time window (filtering and smoothing),
+      automatic learning of the memory order K, and random generation.
+    - Windows build reliability improvements (several linking/build fixes).
+    - Documentation improvements and typo fixes.
 
 ## Changelog for 3.1.0
 

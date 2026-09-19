@@ -82,16 +82,16 @@
 #include <fstream>
 #include <numeric>
 #include <string>
-#include <string_view>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/database/CSVParser.h>
-
 #include <agrum/KTBN/KTBN.h>
+
+#include <string_view>
+#include <unordered_set>
 
 namespace gum {
 
@@ -142,12 +142,11 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      virtual IKTBNLearner< GUM_SCALAR >& useGreedyHillClimbing()         = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useGreedyHillClimbing()                          = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing()                  = 0;
       virtual IKTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                                     Size nb_decrease = 2)
-          = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useMIIC() = 0;
+                                                                     Size nb_decrease = 2) = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useMIIC()                                        = 0;
 
       /// @}
       // #######################################################################
@@ -175,56 +174,47 @@ namespace gum {
 
       /// @brief Forbid @p tailNode -> @p headNode (engine names, e.g. "X[1]", "C").
       virtual IKTBNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tailNode,
-                                                          std::string_view headNode)
-          = 0;
+                                                          std::string_view headNode) = 0;
 
       /// @brief Forbid one (base, slice) -> (base, slice) arc (KTBN::ATEMPORAL for static).
       virtual IKTBNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tailBase,
                                                           int              tailSlice,
                                                           std::string_view headBase,
-                                                          int              headSlice)
-          = 0;
+                                                          int              headSlice) = 0;
 
       /// @brief Undo a previous addForbiddenArc (engine names).
       virtual IKTBNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tailNode,
-                                                            std::string_view headNode)
-          = 0;
+                                                            std::string_view headNode) = 0;
 
       /// @brief Undo a previous addForbiddenArc for a specific (base, slice) pair.
       virtual IKTBNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tailBase,
                                                             int              tailSlice,
                                                             std::string_view headBase,
-                                                            int              headSlice)
-          = 0;
+                                                            int              headSlice) = 0;
 
       /// @brief Force @p tailNode to be a parent of @p headNode (engine names).
       virtual IKTBNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tailNode,
-                                                          std::string_view headNode)
-          = 0;
+                                                          std::string_view headNode) = 0;
 
       /// @brief Force one arc, lag stated explicitly via slices (KTBN::ATEMPORAL for static).
       virtual IKTBNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tailBase,
                                                           int              tailSlice,
                                                           std::string_view headBase,
-                                                          int              headSlice)
-          = 0;
+                                                          int              headSlice) = 0;
 
       /// @brief Undo a previous addMandatoryArc (engine names).
       virtual IKTBNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tailNode,
-                                                            std::string_view headNode)
-          = 0;
+                                                            std::string_view headNode) = 0;
 
       /// @brief Undo a previous addMandatoryArc.
       virtual IKTBNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tailBase,
                                                             int              tailSlice,
                                                             std::string_view headBase,
-                                                            int              headSlice)
-          = 0;
+                                                            int              headSlice) = 0;
 
       /// @brief Forbid @p tailBase -> @p headBase at every intra-slice position.
       virtual IKTBNLearner< GUM_SCALAR >& addForbiddenIntraSliceArc(std::string_view tailBase,
-                                                                    std::string_view headBase)
-          = 0;
+                                                                    std::string_view headBase) = 0;
 
       /// @brief Undo a previous addForbiddenIntraSliceArc.
       virtual IKTBNLearner< GUM_SCALAR >& eraseForbiddenIntraSliceArc(std::string_view tailBase,
@@ -233,13 +223,11 @@ namespace gum {
 
       /// @brief Forbid @p tailBase -> @p headBase at every causally-possible slice pair.
       virtual IKTBNLearner< GUM_SCALAR >& addForbiddenArcAllSlices(std::string_view tailBase,
-                                                                   std::string_view headBase)
-          = 0;
+                                                                   std::string_view headBase) = 0;
 
       /// @brief Undo a previous addForbiddenArcAllSlices.
       virtual IKTBNLearner< GUM_SCALAR >& eraseForbiddenArcAllSlices(std::string_view tailBase,
-                                                                     std::string_view headBase)
-          = 0;
+                                                                     std::string_view headBase) = 0;
 
       /// @brief Declare a single (base, slice) node as a root (no parents).
       virtual IKTBNLearner< GUM_SCALAR >& addNoParentNode(std::string_view base, int slice) = 0;
@@ -260,8 +248,7 @@ namespace gum {
       virtual IKTBNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name) = 0;
 
       /// @brief Undo a previous addNoChildrenNode for a single (base, slice) node.
-      virtual IKTBNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view base, int slice)
-          = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view base, int slice) = 0;
 
       /// @brief Undo addNoChildrenNode for a node given by bracket notation.
       virtual IKTBNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name) = 0;
@@ -270,25 +257,21 @@ namespace gum {
       virtual IKTBNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tailBase,
                                                           int              tailSlice,
                                                           std::string_view headBase,
-                                                          int              headSlice)
-          = 0;
+                                                          int              headSlice) = 0;
 
       /// @brief Add a candidate edge for MIIC using engine names (e.g. "X[1]", "C").
       virtual IKTBNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail,
-                                                          std::string_view head)
-          = 0;
+                                                          std::string_view head) = 0;
 
       /// @brief Undo a previous addPossibleEdge.
       virtual IKTBNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tailBase,
                                                             int              tailSlice,
                                                             std::string_view headBase,
-                                                            int              headSlice)
-          = 0;
+                                                            int              headSlice) = 0;
 
       /// @brief Undo a previous addPossibleEdge using engine names (e.g. "X[1]", "C").
       virtual IKTBNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail,
-                                                            std::string_view head)
-          = 0;
+                                                            std::string_view head) = 0;
 
       /// @brief Allow or forbid arc additions during structure search.
       virtual IKTBNLearner< GUM_SCALAR >& allowArcAdditions(bool allow = true) = 0;

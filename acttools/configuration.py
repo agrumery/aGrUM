@@ -172,9 +172,7 @@ def parse_pymodules_txt() -> dict[str, str]:
   the pyAgrum leaf modules (independent SWIG extensions on top of the
   BASE+BN core), keyed by their uppercase tag (e.g. "MRF")."""
   modules = {}
-  module_line = re.compile(
-    r"^\s*list\s*\(\s*APPEND\s*PYAGRUM_LEAF_MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?"
-  )
+  module_line = re.compile(r"^\s*list\s*\(\s*APPEND\s*PYAGRUM_LEAF_MODULES\s*\"(.*)\"\s*\)(\s*#\s*(.*))?")
   with open(cfg.pymodulesFile, encoding="utf8") as f:
     for ll in f:
       rep = module_line.search(ll)

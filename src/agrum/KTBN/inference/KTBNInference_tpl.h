@@ -82,7 +82,7 @@ namespace gum {
     _atemporalSorted_.assign(ktbn->atemporalVarNames().begin(), ktbn->atemporalVarNames().end());
     std::sort(_atemporalSorted_.begin(), _atemporalSorted_.end());
 
-    _baseNames_ = _temporalSorted_;
+    _baseNames_  = _temporalSorted_;
     _nbTemporal_ = _baseNames_.size();
     _baseNames_.insert(_baseNames_.end(), _atemporalSorted_.begin(), _atemporalSorted_.end());
     for (std::size_t i = 0; i < _baseNames_.size(); ++i)
@@ -133,7 +133,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::_validateNode_(const std::string& base, int slice) const {
-    const bool temporal = _isTemporal_(base);
+    const bool temporal  = _isTemporal_(base);
     const bool atemporal = _isAtemporal_(base);
 
     if (!temporal && !atemporal) GUM_ERROR(NotFound, "Unknown variable '" << base << "'.")
@@ -145,7 +145,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const DiscreteVariable& KTBNInference< GUM_SCALAR >::_templateVar_(const std::string& base,
-                                                                    int slice) const {
+                                                                     int slice) const {
     if (slice == ATEMPORAL) return _ktbn_->variable(base, ATEMPORAL);
     return _ktbn_->variable(base, (slice < _k_) ? slice : _k_ - 1);
   }
@@ -192,7 +192,8 @@ namespace gum {
       resolved.emplace_back(_encode_(b, s), value.toIndex(_templateVar_(b, s)));
     }
 
-    for (const auto& [name, idx]: resolved) _interventions_[name] = idx;
+    for (const auto& [name, idx]: resolved)
+      _interventions_[name] = idx;
     if (!resolved.empty()) _done_ = false;
   }
 
@@ -231,36 +232,36 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::addObservation(std::string_view    base,
-                                                int                 slice,
-                                                const KTBNModality& value) {
+                                                   int                 slice,
+                                                   const KTBNModality& value) {
     const std::string b(base);
     _validateNode_(b, slice);
-    const DiscreteVariable& v   = _templateVar_(b, slice);
-    const Idx               idx = value.toIndex(v);
+    const DiscreteVariable&   v   = _templateVar_(b, slice);
+    const Idx                 idx = value.toIndex(v);
     std::vector< GUM_SCALAR > like(v.domainSize(), GUM_SCALAR(0));
-    like[idx] = GUM_SCALAR(1);
+    like[idx]                          = GUM_SCALAR(1);
     _observations_[_encode_(b, slice)] = std::move(like);
-    _done_                         = false;
+    _done_                             = false;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::addObservation(std::string_view    node_name,
-                                                const KTBNModality& value) {
+                                                   const KTBNModality& value) {
     const auto [b, s] = _determineNode_(std::string(node_name));
     addObservation(b, s, value);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::addObservation(std::string_view                 base,
-                                                int                              slice,
-                                                const std::vector< GUM_SCALAR >& likelihood) {
+                                                   int                              slice,
+                                                   const std::vector< GUM_SCALAR >& likelihood) {
     const std::string b(base);
     _validateNode_(b, slice);
     const DiscreteVariable& v = _templateVar_(b, slice);
     if (likelihood.size() != v.domainSize())
       GUM_ERROR(InvalidArgument,
                 "Soft observation on '" << _encode_(b, slice) << "' needs " << v.domainSize()
-                                     << " values, got " << likelihood.size() << ".")
+                                        << " values, got " << likelihood.size() << ".")
     GUM_SCALAR total = GUM_SCALAR(0);
     for (const auto x: likelihood) {
       if (x < GUM_SCALAR(0))
@@ -272,12 +273,12 @@ namespace gum {
       GUM_ERROR(InvalidArgument,
                 "Soft observation on '" << _encode_(b, slice) << "' is all zeros: impossible.")
     _observations_[_encode_(b, slice)] = likelihood;
-    _done_                         = false;
+    _done_                             = false;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::addObservation(std::string_view                 node_name,
-                                                const std::vector< GUM_SCALAR >& likelihood) {
+                                                   const std::vector< GUM_SCALAR >& likelihood) {
     const auto [b, s] = _determineNode_(std::string(node_name));
     addObservation(b, s, likelihood);
   }
@@ -293,12 +294,13 @@ namespace gum {
                             ? _determineNode_(std::get< std::string >(key))
                             : std::get< std::pair< std::string, int > >(key);
       _validateNode_(b, s);
-      const DiscreteVariable& v = _templateVar_(b, s);
+      const DiscreteVariable&   v = _templateVar_(b, s);
       std::vector< GUM_SCALAR > like(v.domainSize(), GUM_SCALAR(0));
       like[value.toIndex(v)] = GUM_SCALAR(1);
       resolved.emplace_back(_encode_(b, s), std::move(like));
     }
-    for (auto& [name, like]: resolved) _observations_[name] = std::move(like);
+    for (auto& [name, like]: resolved)
+      _observations_[name] = std::move(like);
     if (!resolved.empty()) _done_ = false;
   }
 
@@ -481,23 +483,25 @@ namespace gum {
       return nid;
     };
 
-    for (const auto& s: Iprev) ensure(s);
+    for (const auto& s: Iprev)
+      ensure(s);
     for (int i = 0; i < static_cast< int >(_nbTemporal_); ++i)
       if (_requisite_[i]) ensure({i, 0});
     if (withAtemporalFamilies)
-      for (int i = static_cast< int >(_nbTemporal_);
-           i < static_cast< int >(_baseNames_.size());
+      for (int i = static_cast< int >(_nbTemporal_); i < static_cast< int >(_baseNames_.size());
            ++i)
         if (_requisite_[i]) ensure({i, ATEMPORAL});
-    for (const auto& s: Icur) ensure(s);
+    for (const auto& s: Icur)
+      ensure(s);
 
     if (graph.size() == 0) return w;   // nothing requisite: an empty window
 
     // ---- moralise: every family becomes a clique ----------------------------
     std::vector< std::pair< int, std::vector< NodeId > > > families;
-    const auto                                            addFamily = [&](int b) {
+    const auto                                             addFamily = [&](int b) {
       std::vector< NodeId > scope;
-      for (const auto& s: _familySlots_(b, t)) scope.push_back(ensure(s));
+      for (const auto& s: _familySlots_(b, t))
+        scope.push_back(ensure(s));
       for (std::size_t a = 0; a < scope.size(); ++a)
         for (std::size_t c = a + 1; c < scope.size(); ++c)
           if (!graph.existsEdge(scope[a], scope[c])) graph.addEdge(scope[a], scope[c]);
@@ -506,8 +510,7 @@ namespace gum {
     for (int i = 0; i < static_cast< int >(_nbTemporal_); ++i)
       if (_requisite_[i]) addFamily(i);
     if (withAtemporalFamilies)
-      for (int i = static_cast< int >(_nbTemporal_);
-           i < static_cast< int >(_baseNames_.size());
+      for (int i = static_cast< int >(_nbTemporal_); i < static_cast< int >(_baseNames_.size());
            ++i)
         if (_requisite_[i]) addFamily(i);
 
@@ -516,7 +519,8 @@ namespace gum {
     // message crossing the slice boundary is a single potential.
     const auto makeClique = [&](const std::vector< _Slot_ >& slots) {
       std::vector< NodeId > ids;
-      for (const auto& s: slots) ids.push_back(ensure(s));
+      for (const auto& s: slots)
+        ids.push_back(ensure(s));
       for (std::size_t a = 0; a < ids.size(); ++a)
         for (std::size_t c = a + 1; c < ids.size(); ++c)
           if (!graph.existsEdge(ids[a], ids[c])) graph.addEdge(ids[a], ids[c]);
@@ -567,8 +571,7 @@ namespace gum {
         }
       }
       if (!placed)
-        GUM_ERROR(FatalError,
-                  "KTBNInference: family of '" << _baseNames_[b] << "' fits no clique.")
+        GUM_ERROR(FatalError, "KTBNInference: family of '" << _baseNames_[b] << "' fits no clique.")
     }
 
     // ---- where to read each base's own marginal (and place its observation) ----
@@ -677,9 +680,11 @@ namespace gum {
     };
 
     if (!_targeted_mode_) {
-      for (const auto& b: _baseNames_) push(b);
+      for (const auto& b: _baseNames_)
+        push(b);
     } else {
-      for (const auto& b: _targets_) push(b);
+      for (const auto& b: _targets_)
+        push(b);
     }
     // an observed node is requisite even if barren: its likelihood is what
     // revises everything upstream of it.
@@ -718,7 +723,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& KTBNInference< GUM_SCALAR >::_buildKernel_(const std::string& p,
-                                                                        int t) const {
+                                                                         int t) const {
     // The result depends on t only through t % k -- for the child directly, and
     // for each parent as (t - lag) % k, which is fixed once t % k is. So one
     // tensor per (process, phase) serves every slice of that phase.
@@ -754,7 +759,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::_applyTemporalObservations_(
-      const _Window_& w, int t, std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi) const {
+      const _Window_&                                     w,
+      int                                                 t,
+      std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi) const {
     for (const auto& [c, bases]: w.factorsOf)
       for (const int b: bases) {
         if (b >= static_cast< int >(_nbTemporal_)) continue;   // atemporal: already in the base
@@ -804,23 +811,26 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::_fillWindow_(
-      const _Window_& w, int t, std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
-      bool withTemporalEvidence) const {
+      const _Window_&                                     w,
+      int                                                 t,
+      std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
+      bool                                                withTemporalEvidence) const {
     psi.clear();
 
     // every clique starts at the unit potential: even one that receives no
     // factor must contribute its variables' free mass to a summed-out message
     for (const NodeId c: w.jt.nodes()) {
       Tensor< GUM_SCALAR > p;
-      for (const NodeId n: w.jt.clique(c)) p << *_varOfSlot_(w.slotOfNode[n], t);
+      for (const NodeId n: w.jt.clique(c))
+        p << *_varOfSlot_(w.slotOfNode[n], t);
       p.fillWith(GUM_SCALAR(1));
       psi.emplace(c, std::move(p));
     }
 
     const auto applyBase = [&](int b, NodeId owner) {
-      const std::string& base  = _baseNames_[b];
-      const bool         atemp = b >= static_cast< int >(_nbTemporal_);
-      const std::string  name  = _encode_(base, atemp ? ATEMPORAL : t);
+      const std::string&      base  = _baseNames_[b];
+      const bool              atemp = b >= static_cast< int >(_nbTemporal_);
+      const std::string       name  = _encode_(base, atemp ? ATEMPORAL : t);
       const DiscreteVariable& var
           = atemp ? _ktbn_->variable(base, ATEMPORAL) : _ktbn_->variable(base, t % _k_);
 
@@ -853,7 +863,8 @@ namespace gum {
     };
 
     for (const auto& [c, bases]: w.factorsOf)
-      for (const int b: bases) applyBase(b, c);
+      for (const int b: bases)
+        applyBase(b, c);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -901,19 +912,20 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNInference< GUM_SCALAR >::_propagate_(
-      const _Window_&                                           w,
-      int                                                       t,
-      const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
-      const Tensor< GUM_SCALAR >*                               inPrev,
-      const Tensor< GUM_SCALAR >*                               inNext,
-      bool                                                      distribute,
+      const _Window_&                                                w,
+      int                                                            t,
+      const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&      psi,
+      const Tensor< GUM_SCALAR >*                                    inPrev,
+      const Tensor< GUM_SCALAR >*                                    inNext,
+      bool                                                           distribute,
       std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > >& msgs) const {
     msgs.clear();
     if (w.bfs.empty()) return;
 
     const auto sepVars = [&](NodeId a, NodeId b) {
       VariableSet keep;
-      for (const NodeId n: w.jt.separator(a, b)) keep.insert(_varOfSlot_(w.slotOfNode[n], t));
+      for (const NodeId n: w.jt.separator(a, b))
+        keep.insert(_varOfSlot_(w.slotOfNode[n], t));
       return keep;
     };
 
@@ -942,8 +954,8 @@ namespace gum {
   void KTBNInference< GUM_SCALAR >::makeInference(Size nbTimeSlices) {
     if (nbTimeSlices == 0) GUM_ERROR(InvalidArgument, "makeInference: nbTimeSlices must be >= 1.")
 
-    const int T   = static_cast< int >(nbTimeSlices);
-    _horizon_     = nbTimeSlices;
+    const int T      = static_cast< int >(nbTimeSlices);
+    _horizon_        = nbTimeSlices;
     _logObservation_ = GUM_SCALAR(0);
     _posteriors_.clear();
     _kernelCache_.clear();   // CPT values may have been edited since the last run
@@ -972,9 +984,7 @@ namespace gum {
     _markRequisite_();
 
     const bool defaultAll = !_targeted_mode_;
-    const auto targeted   = [&](const std::string& b) {
-      return defaultAll || _targets_.contains(b);
-    };
+    const auto targeted = [&](const std::string& b) { return defaultAll || _targets_.contains(b); };
     // nothing observed => backward messages are provably uniform, so the
     // sweep is skipped and only one window is ever live
     const bool smoothing = hasObservation();
@@ -984,41 +994,42 @@ namespace gum {
       const std::string& b = _baseNames_[i];
       if (!_requisite_[i] || !targeted(b)) continue;
       _Series_&         s = _posteriors_[b];
-      const std::size_t n = (i < static_cast< int >(_nbTemporal_)) ? static_cast< std::size_t >(T)
-                                                                  : std::size_t(1);
+      const std::size_t n
+          = (i < static_cast< int >(_nbTemporal_)) ? static_cast< std::size_t >(T) : std::size_t(1);
       s.vars.resize(n);
       s.tensors.resize(n);
     }
 
     const auto ifaceVars = [&](const std::vector< _Slot_ >& slots, int slice) {
       VariableSet keep;
-      for (const auto& s: slots) keep.insert(_varOfSlot_(s, slice));
+      for (const auto& s: slots)
+        keep.insert(_varOfSlot_(s, slice));
       return keep;
     };
 
-    const auto readPosteriors = [&](const _Window_&                            w,
-                                    int                                        slice,
-                                    const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
-                                    const std::map< std::pair< NodeId, NodeId >,
-                                                    Tensor< GUM_SCALAR > >&    msgs,
-                                    const Tensor< GUM_SCALAR >*                inPrev,
-                                    const Tensor< GUM_SCALAR >*                inNext) {
-      const int lastBase = (slice == 0) ? static_cast< int >(_baseNames_.size())
-                                        : static_cast< int >(_nbTemporal_);
-      for (int i = 0; i < lastBase; ++i) {
-        if (!_requisite_[i] || !targeted(_baseNames_[i])) continue;
-        const auto itc = w.selfClique.find(i);
-        if (itc == w.selfClique.end()) continue;
-        const bool atemp = i >= static_cast< int >(_nbTemporal_);
-        VariableSet keep;
-        keep.insert(atemp ? &_ktbn_->variable(_baseNames_[i], ATEMPORAL)
-                          : &_ktbn_->variable(_baseNames_[i], slice % _k_));
-        Tensor< GUM_SCALAR > m
-            = _belief_(w, psi, msgs, inPrev, inNext, itc->second, KTBN_SKIP_NONE).sumIn(keep);
-        m.normalize();
-        _snapshot_(_baseNames_[i], atemp ? ATEMPORAL : slice, m);
-      }
-    };
+    const auto readPosteriors
+        = [&](const _Window_&                                                      w,
+              int                                                                  slice,
+              const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&            psi,
+              const std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > >& msgs,
+              const Tensor< GUM_SCALAR >*                                          inPrev,
+              const Tensor< GUM_SCALAR >*                                          inNext) {
+            const int lastBase = (slice == 0) ? static_cast< int >(_baseNames_.size())
+                                              : static_cast< int >(_nbTemporal_);
+            for (int i = 0; i < lastBase; ++i) {
+              if (!_requisite_[i] || !targeted(_baseNames_[i])) continue;
+              const auto itc = w.selfClique.find(i);
+              if (itc == w.selfClique.end()) continue;
+              const bool  atemp = i >= static_cast< int >(_nbTemporal_);
+              VariableSet keep;
+              keep.insert(atemp ? &_ktbn_->variable(_baseNames_[i], ATEMPORAL)
+                                : &_ktbn_->variable(_baseNames_[i], slice % _k_));
+              Tensor< GUM_SCALAR > m
+                  = _belief_(w, psi, msgs, inPrev, inNext, itc->second, KTBN_SKIP_NONE).sumIn(keep);
+              m.normalize();
+              _snapshot_(_baseNames_[i], atemp ? ATEMPORAL : slice, m);
+            }
+          };
 
     std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > > msgs;
 
@@ -1066,7 +1077,7 @@ namespace gum {
         const _Window_& w = _windowAt_(t);
         if (w.bfs.empty()) break;
 
-        const auto& psi = _windowPotentials_(w, t);
+        const auto&                 psi = _windowPotentials_(w, t);
         const Tensor< GUM_SCALAR >* inPrev
             = (t > 0) ? &fwd[static_cast< std::size_t >(t - 1)] : nullptr;
         const Tensor< GUM_SCALAR >* inNext = hasNext ? &nxt : nullptr;
@@ -1075,10 +1086,9 @@ namespace gum {
         readPosteriors(w, t, psi, msgs, inPrev, inNext);
 
         if (t > 0) {
-          Tensor< GUM_SCALAR > r
-              = _belief_(w, psi, msgs, inPrev, inNext, w.rootD, KTBN_SKIP_PREV)
-                    .sumIn(ifaceVars(w.Iprev, t));
-          const GUM_SCALAR mass = r.sum();
+          Tensor< GUM_SCALAR > r = _belief_(w, psi, msgs, inPrev, inNext, w.rootD, KTBN_SKIP_PREV)
+                                       .sumIn(ifaceVars(w.Iprev, t));
+          const GUM_SCALAR     mass = r.sum();
           // Symmetric with the forward sweep. In exact arithmetic this cannot
           // fire -- a null backward mass would mean P(e_{t:T} | I) = 0 for every
           // interface state, hence P(e) = 0, which the forward sweep just
@@ -1123,7 +1133,7 @@ namespace gum {
                                                const Tensor< GUM_SCALAR >& marginal) {
     // owned, stably-named descriptor: marginal's axis is a reused ring object
     // whose name isn't base[slice], so fillWith is positional, not name-matched
-    const std::size_t idx = (slice == ATEMPORAL) ? 0u : static_cast< std::size_t >(slice);
+    const std::size_t idx    = (slice == ATEMPORAL) ? 0u : static_cast< std::size_t >(slice);
     _Series_&         series = _posteriors_[base];
     if (series.tensors.size() <= idx) {
       series.tensors.resize(idx + 1);
@@ -1158,7 +1168,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   const Tensor< GUM_SCALAR >& KTBNInference< GUM_SCALAR >::posterior(std::string_view base,
-                                                                    int              slice) {
+                                                                     int              slice) {
     const std::string b(base);
     const _Series_&   series = _series_(b);
 

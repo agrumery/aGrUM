@@ -76,8 +76,7 @@ namespace gum {
       _k_(k), _nbTemporal_(nbTemporal), _nbAtemporal_(nbAtemporal), _maxArcs_(maxArcs),
       _maxModality_(maxModality) {
     if (k == 0) GUM_ERROR(InvalidArgument, "KTBNGenerator: k must be >= 1.")
-    if (maxModality < 2)
-      GUM_ERROR(InvalidArgument, "KTBNGenerator: maxModality must be >= 2.")
+    if (maxModality < 2) GUM_ERROR(InvalidArgument, "KTBNGenerator: maxModality must be >= 2.")
     GUM_CONSTRUCTOR(KTBNGenerator)
   }
 
@@ -100,9 +99,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNGenerator< GUM_SCALAR >& KTBNGenerator< GUM_SCALAR >::setDomainRange(Size minModality,
-                                                                          Size maxModality) {
-    if (minModality < 2)
-      GUM_ERROR(InvalidArgument, "KTBNGenerator: minModality must be >= 2.")
+                                                                           Size maxModality) {
+    if (minModality < 2) GUM_ERROR(InvalidArgument, "KTBNGenerator: minModality must be >= 2.")
     if (maxModality < minModality)
       GUM_ERROR(InvalidArgument, "KTBNGenerator: maxModality must be >= minModality.")
     _minModality_ = minModality;
@@ -154,10 +152,10 @@ namespace gum {
   Size KTBNGenerator< GUM_SCALAR >::nbLegalArcs() const {
     const Size n = _nbTemporal_, m = _nbAtemporal_, k = _k_;
     // guarded against unsigned underflow: each term is 0 when its shape is degenerate
-    const Size atemporalPairs = (m >= 2) ? m * (m - 1) / 2 : 0;   // atemporal -> atemporal
-    const Size atemporalToAll = m * n * k;                        // atemporal -> temporal
+    const Size atemporalPairs = (m >= 2) ? m * (m - 1) / 2 : 0;         // atemporal -> atemporal
+    const Size atemporalToAll = m * n * k;                              // atemporal -> temporal
     const Size slicePairs     = (k >= 2) ? k * (k - 1) / 2 : 0;
-    const Size crossSlice     = n * n * slicePairs;               // temporal, lag >= 1
+    const Size crossSlice     = n * n * slicePairs;                     // temporal, lag >= 1
     const Size intraSlice     = ((n >= 2) ? n * (n - 1) / 2 : 0) * k;   // temporal, lag 0
     return atemporalPairs + atemporalToAll + crossSlice + intraSlice;
   }
@@ -186,13 +184,15 @@ namespace gum {
     // rules already forbid a temporal variable from parenting an atemporal one.
     for (const auto& a: atemporal)
       for (const auto& b: temporal)
-        for (int s = 0; s < k; ++s) out.push_back({a, AT, b, s});
+        for (int s = 0; s < k; ++s)
+          out.push_back({a, AT, b, s});
 
     // temporal, lag >= 1: the slice index strictly increases, so never cyclic
     for (int s1 = 0; s1 < k; ++s1)
       for (int s2 = s1 + 1; s2 < k; ++s2)
         for (const auto& b1: temporal)
-          for (const auto& b2: temporal) out.push_back({b1, s1, b2, s2});
+          for (const auto& b2: temporal)
+            out.push_back({b1, s1, b2, s2});
 
     // temporal, lag 0: the other cycle-prone family, so rank-ordered as well
     for (int s = 0; s < k; ++s)
@@ -208,7 +208,7 @@ namespace gum {
     out = KTBN< GUM_SCALAR >(_k_);
 
     // ---- variables, with domain sizes drawn in [_minModality_, _maxModality_] ----
-    const Size spread = _maxModality_ - _minModality_ + 1;
+    const Size                 spread = _maxModality_ - _minModality_ + 1;
     std::vector< std::string > temporal, atemporal;
     temporal.reserve(_nbTemporal_);
     atemporal.reserve(_nbAtemporal_);
@@ -226,14 +226,18 @@ namespace gum {
 
     // ---- random ranks for the two cycle-prone arc families ----
     std::vector< Size > tPerm(_nbTemporal_), aPerm(_nbAtemporal_);
-    for (Size i = 0; i < _nbTemporal_; ++i) tPerm[i] = i;
-    for (Size i = 0; i < _nbAtemporal_; ++i) aPerm[i] = i;
+    for (Size i = 0; i < _nbTemporal_; ++i)
+      tPerm[i] = i;
+    for (Size i = 0; i < _nbAtemporal_; ++i)
+      aPerm[i] = i;
     _shuffle_(tPerm);
     _shuffle_(aPerm);
 
     std::vector< Size > tRank(_nbTemporal_), aRank(_nbAtemporal_);
-    for (Size i = 0; i < _nbTemporal_; ++i) tRank[tPerm[i]] = i;
-    for (Size i = 0; i < _nbAtemporal_; ++i) aRank[aPerm[i]] = i;
+    for (Size i = 0; i < _nbTemporal_; ++i)
+      tRank[tPerm[i]] = i;
+    for (Size i = 0; i < _nbAtemporal_; ++i)
+      aRank[aPerm[i]] = i;
 
     // ---- how many arcs to draw ----
     const Size legalCount = nbLegalArcs();

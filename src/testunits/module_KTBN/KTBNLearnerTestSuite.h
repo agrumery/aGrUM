@@ -45,19 +45,18 @@
 #include <fstream>
 #include <functional>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
-#include <agrum/base/core/utils_random.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
 #include <agrum/KTBN/learning/KTBNLearner.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
+#include <unordered_set>
 
 namespace gum_tests {
 
@@ -78,7 +77,8 @@ namespace gum_tests {
     // per-trajectory start, atemporal columns are constant within a trajectory.
 
     // writes a single trajectory CSV: the given header and pre-joined data rows
-    static void _writeCSV_(const std::string& file, const std::string& header,
+    static void _writeCSV_(const std::string&                file,
+                           const std::string&                header,
                            const std::vector< std::string >& rows) {
       std::ofstream f(file);
       f << header << '\n';
@@ -98,8 +98,8 @@ namespace gum_tests {
         std::vector< std::string > rows;
         int                        x = starts[i];
         for (gum::Size t = 0; t < lens[i]; ++t, x = 1 - x)
-          rows.push_back(std::to_string(x) + ',' + std::to_string(x) + ','
-                         + std::to_string(cs[i]) + ',' + std::to_string(cs[i]));
+          rows.push_back(std::to_string(x) + ',' + std::to_string(x) + ',' + std::to_string(cs[i])
+                         + ',' + std::to_string(cs[i]));
         _writeCSV_(dir + "/ktbnl_std" + std::to_string(i + 1) + ".csv", "X,Y,C,D", rows);
       }
       return dir;
@@ -115,8 +115,7 @@ namespace gum_tests {
         std::vector< std::string > rows;
         int                        x = start;
         for (gum::Size t = 0; t < 10; ++t, x = 1 - x)
-          rows.push_back(std::to_string(x) + ',' + std::to_string(c) + ','
-                         + std::to_string(c));
+          rows.push_back(std::to_string(x) + ',' + std::to_string(c) + ',' + std::to_string(c));
         _writeCSV_(dir + "/ktbnl_solo" + std::to_string(i + 1) + ".csv", "X,C,D", rows);
       }
       return dir;
@@ -142,27 +141,28 @@ namespace gum_tests {
       net.add(gum::LabelizedVariable("W", "", {"0", "1"}), true);
       net.add(gum::LabelizedVariable("C", "", {"0", "1"}), false);
       net.add(gum::LabelizedVariable("D", "", {"0", "1"}), false);
-      net.addArc("C", AT, "X", 0);   // initial:    atemporal -> slice 0
-      net.addArc("Z", 0, "Z", 1);    // initial:    lag-1 (head=1)
-      net.addArc("Z", 1, "Z", 2);    // initial:    lag-1 (head=2)
-      net.addArc("X", 2, "X", 3);    // transition: lag-1
-      net.addArc("W", 0, "W", 3);    // transition: lag-3 (multi-lag)
-      net.addArc("X", 3, "Y", 3);    // transition: intra-slice
-      net.addArc("C", AT, "D", AT);  // atemporal  -> atemporal
+      net.addArc("C", AT, "X", 0);    // initial:    atemporal -> slice 0
+      net.addArc("Z", 0, "Z", 1);     // initial:    lag-1 (head=1)
+      net.addArc("Z", 1, "Z", 2);     // initial:    lag-1 (head=2)
+      net.addArc("X", 2, "X", 3);     // transition: lag-1
+      net.addArc("W", 0, "W", 3);     // transition: lag-3 (multi-lag)
+      net.addArc("X", 3, "Y", 3);     // transition: intra-slice
+      net.addArc("C", AT, "D", AT);   // atemporal  -> atemporal
 
       net.cpt("C", AT).fillWith({0.5, 0.5});
       net.cpt("Z", 0).fillWith({0.5, 0.5});
       net.cpt("Z", 3).fillWith({0.5, 0.5});   // parentless kernel marginal
-      for (int s: {1, 2}) net.cpt("X", s).fillWith({0.5, 0.5});
+      for (int s: {1, 2})
+        net.cpt("X", s).fillWith({0.5, 0.5});
       for (int s: {0, 1, 2}) {
         net.cpt("Y", s).fillWith({0.5, 0.5});
         net.cpt("W", s).fillWith({0.5, 0.5});
       }
-      net.fillCPT("X", 0, {{{"C", AT}, 0}}, {0.9, 0.1});   // X[0] ~ C
+      net.fillCPT("X", 0, {{{"C", AT}, 0}}, {0.9, 0.1});    // X[0] ~ C
       net.fillCPT("X", 0, {{{"C", AT}, 1}}, {0.1, 0.9});
       net.fillCPT("D", AT, {{{"C", AT}, 0}}, {0.9, 0.1});   // D ~ C
       net.fillCPT("D", AT, {{{"C", AT}, 1}}, {0.1, 0.9});
-      net.fillCPT("Z", 1, {{{"Z", 0}, 0}}, {0.9, 0.1});   // Z copies itself
+      net.fillCPT("Z", 1, {{{"Z", 0}, 0}}, {0.9, 0.1});     // Z copies itself
       net.fillCPT("Z", 1, {{{"Z", 0}, 1}}, {0.1, 0.9});
       net.fillCPT("Z", 2, {{{"Z", 1}, 0}}, {0.9, 0.1});
       net.fillCPT("Z", 2, {{{"Z", 1}, 1}}, {0.1, 0.9});
@@ -178,20 +178,19 @@ namespace gum_tests {
     // BN schema supplies the {0,1} domains: the CSV constructor types each
     // variable from trajectory 1 alone, which can't see atemporal domains
     // that are constant within a trajectory - see testCSVConstructor.
-    static Learner _std_(gum::Size                                 k = 2,
+    static Learner _std_(gum::Size                                k         = 2,
                          const std::unordered_set< std::string >& atemporal = {"C", "D"}) {
       return Learner(_writeStd_(), "ktbnl_std", 4, k, _schema_({"X", "Y", "C", "D"}), atemporal);
     }
 
     static Learner _solo_() {
-      return Learner(_writeSolo_(), "ktbnl_solo", 8, 2, _schema_({"X", "C", "D"}),
-                     {"C", "D"});
+      return Learner(_writeSolo_(), "ktbnl_solo", 8, 2, _schema_({"X", "C", "D"}), {"C", "D"});
     }
 
     // k=2 structure over the std schema holding exactly the given arcs
-    static gum::KTBN< double >
-        _structure_(const std::vector< std::pair< Node, Node > >& arcs,
-                    const std::unordered_set< std::string >&      atemporal = {"C", "D"}) {
+    static gum::KTBN< double > _structure_(const std::vector< std::pair< Node, Node > >& arcs,
+                                           const std::unordered_set< std::string >&      atemporal
+                                           = {"C", "D"}) {
       gum::KTBN< double > s(2);
       for (const std::string name: {"X", "Y", "C", "D"})
         s.add(gum::LabelizedVariable(name, "", {"0", "1"}), !atemporal.contains(name));
@@ -228,8 +227,10 @@ namespace gum_tests {
 
     // in CPT p, P(target == source) must be 1 (or P(target == 1 - source) when
     // flipped), whatever the values of p's other dimensions
-    static void _checkCopyCPT_(const gum::Tensor< double >& p, const std::string& target,
-                               const std::string& source, bool flipped = false) {
+    static void _checkCopyCPT_(const gum::Tensor< double >& p,
+                               const std::string&           target,
+                               const std::string&           source,
+                               bool                         flipped = false) {
       gum::Instantiation I(p);
       for (I.setFirst(); !I.end(); ++I) {
         const bool same = I.val(p.variable(target)) == I.val(p.variable(source));
@@ -466,14 +467,24 @@ namespace gum_tests {
     // a custom missing symbol is honoured
     _writeCSV_(dir + "/ktbnl_na1.csv", "X,Y", {"0,1", "1,0", "0,1"});
     _writeCSV_(dir + "/ktbnl_na2.csv", "X,Y", {"0,1", "NA,0", "1,1"});
-    Learner lna(dir, "ktbnl_na", 2, 2, std::unordered_set< std::string >{},
+    Learner lna(dir,
+                "ktbnl_na",
+                2,
+                2,
+                std::unordered_set< std::string >{},
                 std::vector< std::string >{"NA"});
     CHECK(lna.hasMissingValues());
 
     // with the flag, the incomplete rows are dropped instead and the internal
     // databases end up with no gap at all
-    Learner ldrop(dir, "ktbnl_miss", 2, 2, std::unordered_set< std::string >{},
-                  std::vector< std::string >{"?"}, true, /*ignoreMissingSymbols*/ true);
+    Learner ldrop(dir,
+                  "ktbnl_miss",
+                  2,
+                  2,
+                  std::unordered_set< std::string >{},
+                  std::vector< std::string >{"?"},
+                  true,
+                  /*ignoreMissingSymbols*/ true);
     CHECK(!ldrop.hasMissingValues());
     CHECK(ldrop.nbDroppedRows() > gum::Size(0));
     CHECK(ldrop.isIgnoringMissingSymbols());
@@ -498,8 +509,14 @@ namespace gum_tests {
     CHECK_THROWS_AS(refuse.learnKTBN(), const gum::MissingValueInDatabase&);
 
     // ... and with it, learning goes through on the complete cases
-    Learner l(dir, "ktbnl_gap", 4, 2, std::unordered_set< std::string >{},
-              std::vector< std::string >{"?"}, true, /*ignoreMissingSymbols*/ true);
+    Learner l(dir,
+              "ktbnl_gap",
+              4,
+              2,
+              std::unordered_set< std::string >{},
+              std::vector< std::string >{"?"},
+              true,
+              /*ignoreMissingSymbols*/ true);
     l.useScoreBIC().useGreedyHillClimbing().useSmoothingPrior(1.0);
     gum::initRandom(1);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.learnKTBN());
@@ -521,8 +538,14 @@ namespace gum_tests {
       _writeCSV_(dir + "/ktbnl_c0_" + std::to_string(s) + ".csv", "X,C", rows);
     }
 
-    Learner l(dir, "ktbnl_c0_", 4, 2, std::unordered_set< std::string >{"C"},
-              std::vector< std::string >{"?"}, true, /*ignoreMissingSymbols*/ true);
+    Learner l(dir,
+              "ktbnl_c0_",
+              4,
+              2,
+              std::unordered_set< std::string >{"C"},
+              std::vector< std::string >{"?"},
+              true,
+              /*ignoreMissingSymbols*/ true);
     l.useScoreBIC().useGreedyHillClimbing().useSmoothingPrior(1.0);
     gum::initRandom(1);
     gum::KTBN< double > m;
@@ -561,8 +584,7 @@ namespace gum_tests {
     gen.drawSamples(3000, 8, dir, "ktbnl_gen", Generator::VarOrderMode::TOPOLOGICAL);
 
     // BN-schema constructor: CSV-typing can't recover atemporal domains here
-    Learner l(dir, "ktbnl_gen", 3000, 4, _schema_({"X", "Y", "Z", "W", "C", "D"}),
-              {"C", "D"});
+    Learner l(dir, "ktbnl_gen", 3000, 4, _schema_({"X", "Y", "Z", "W", "C", "D"}), {"C", "D"});
 
     const std::vector< std::pair< std::string, std::function< void(Learner&) > > > algos{
         {"greedy hill climbing", [](Learner& x) { x.useScoreBIC().useGreedyHillClimbing(); }},
@@ -580,8 +602,7 @@ namespace gum_tests {
       const auto m = l.learnKTBN();
 
       CHECK_EQ(m.k(), gum::Size(4));
-      CHECK_EQ(m.temporalVarNames(),
-               (std::unordered_set< std::string >{"X", "Y", "Z", "W"}));
+      CHECK_EQ(m.temporalVarNames(), (std::unordered_set< std::string >{"X", "Y", "Z", "W"}));
       CHECK_EQ(m.atemporalVarNames(), (std::unordered_set< std::string >{"C", "D"}));
       _checkTemporalValidity_(m);
 
@@ -674,7 +695,7 @@ namespace gum_tests {
 
   GUM_TEST(ScoreAndPriorSelection) {
     auto l = _std_();
-    l.useGreedyHillClimbing();   // scores are only reported for score-based algos
+    l.useGreedyHillClimbing();        // scores are only reported for score-based algos
 
     CHECK_EQ(&l.useScoreAIC(), &l);   // setters chain on the learner itself
     CHECK_EQ(_stateValue_(l, "Score"), "AIC");
@@ -887,7 +908,7 @@ namespace gum_tests {
     l.addNoParentNode("X", 1);
     auto m = _learn_(l);
     CHECK(m.parents("X", 1).empty());
-    CHECK(_hasCDedge_(m));   // untouched
+    CHECK(_hasCDedge_(m));         // untouched
 
     l.eraseNoParentNode("X[1]");   // engine-name overload
     CHECK(_learn_(l).existsArc("X", 0, "X", 1));

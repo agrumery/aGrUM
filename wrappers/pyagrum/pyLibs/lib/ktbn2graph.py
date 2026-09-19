@@ -44,10 +44,13 @@ The purpose of this module is to provide tools for mapping KTBN models (and infe
 
 import pyagrum
 
-def plotFollowKTBN(m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: dict=None  ,interventions:dict=None):
+
+def plotFollowKTBN(
+  m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: dict = None, interventions: dict = None
+):
   """
   Plots the evolution of the posterior distribution of a set of variables in a KTBN model.
-  
+
   Parameters
   ----------
   m : gum.KTBN
@@ -61,13 +64,13 @@ def plotFollowKTBN(m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: 
   interventions: dict
       A dictionary of interventions, where keys are variable names and values are the intervened values.
   """
-  
+
   # lazy import
   import numpy as np
   import pyagrum.ktbn as ktbn
   import matplotlib.pyplot as plt
   from matplotlib.patches import Rectangle
-  
+
   kie = ktbn.KTBNInference(m)
   if observations is not None:
     for node, val in observations.items():
@@ -75,7 +78,7 @@ def plotFollowKTBN(m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: 
   if interventions is not None:
     for node, val in interventions.items():
       kie.addIntervention(node, val)
-      
+
   for var in lovars:
     kie.addTarget(var)
   kie.makeInference(T)

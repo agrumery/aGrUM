@@ -124,7 +124,7 @@ namespace gum_tests {
 
       std::vector< int > rank;
       if (!total_order.empty()) {
-        rank.resize(total_order.size());
+        rank.resize(nb_vars);
         int i = 0;
         for (const auto node: total_order) {
           rank[node] = i++;
@@ -1203,7 +1203,7 @@ namespace gum_tests {
     // read the prior database
     gum::learning::DBInitializerFromCSV dirichlet_initializer(
         GET_RESSOURCES_PATH("csv/db_dirichlet_prior.csv"));
-    const auto&       dirichlet_var_names = initializer.variableNames();
+    const auto&       dirichlet_var_names = dirichlet_initializer.variableNames();
     const std::size_t dirichlet_nb_vars   = dirichlet_var_names.size();
 
     gum::learning::DBTranslatorSet dirichlet_translator_set;

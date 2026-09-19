@@ -59,8 +59,9 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/utils_random.h>
 #include <agrum/KTBN/KTBN.h>
+
+#include <agrum/base/core/utils_random.h>
 
 namespace gum {
 

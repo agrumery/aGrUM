@@ -66,8 +66,7 @@ namespace gum {
   // ===========================================================================
 
   template < std::integral T >
-  KTBNModality::KTBNModality(T modality) :
-      isLabel(false), index(static_cast< Idx >(modality)) {}
+  KTBNModality::KTBNModality(T modality) : isLabel(false), index(static_cast< Idx >(modality)) {}
 
   // ===========================================================================
   // Private naming helpers (the only place names are produced / parsed)
@@ -222,8 +221,7 @@ namespace gum {
     if (otherSet.contains(base))
       GUM_ERROR(DuplicateLabel,
                 (temporal ? "Cannot add temporal process '" : "Cannot add atemporal variable '")
-                    << base << "': "
-                    << (temporal ? "an atemporal variable" : "a temporal process")
+                    << base << "': " << (temporal ? "an atemporal variable" : "a temporal process")
                     << " with that name already exists.")
 
     if (temporal) {
@@ -254,8 +252,8 @@ namespace gum {
                   "Atemporal variable name '"
                       << base << "' is invalid: '" << decodedBase
                       << "' is a temporal process, so every bracket-suffixed name over it is "
-                         "reserved -- including slice " << decodedSlice
-                      << ", beyond the current order k=" << _k_ << ".")
+                         "reserved -- including slice "
+                      << decodedSlice << ", beyond the current order k=" << _k_ << ".")
       }
     }
   }
@@ -618,8 +616,8 @@ namespace gum {
     Instantiation inst(cpt);
     for (const auto& [parNode, parVal]: parents) {
       const auto& [parBase, parSlice] = parNode;
-      const NodeId            parId  = _validateVariable_(parBase, parSlice);
-      const DiscreteVariable& parVar = _bn_.variable(parId);
+      const NodeId            parId   = _validateVariable_(parBase, parSlice);
+      const DiscreteVariable& parVar  = _bn_.variable(parId);
       if (parId == id || !cpt.contains(parVar))
         GUM_ERROR(InvalidArgument,
                   "fillCPT: '" << parBase << "' is not a parent of the target node.")
@@ -637,7 +635,7 @@ namespace gum {
   void KTBN< GUM_SCALAR >::fillCPT(
       std::string_view node_name,
       const std::map< std::variant< std::string, std::pair< std::string, int > >, KTBNModality >&
-                                        parents,
+                                       parents,
       const std::vector< GUM_SCALAR >& distribution) const {
     const NodeId                id   = _bn_.idFromName(std::string{node_name});
     const Tensor< GUM_SCALAR >& cpt  = _bn_.cpt(id);
@@ -666,7 +664,7 @@ namespace gum {
           = std::holds_alternative< std::string >(parKey)
               ? std::get< std::string >(parKey)
               : _encode_(std::get< std::pair< std::string, int > >(parKey).first,
-                        std::get< std::pair< std::string, int > >(parKey).second);
+                         std::get< std::pair< std::string, int > >(parKey).second);
       const NodeId            parId  = _bn_.idFromName(parName);
       const DiscreteVariable& parVar = _bn_.variable(parId);
       if (parId == id || !cpt.contains(parVar))
@@ -734,8 +732,8 @@ namespace gum {
     // 5. transition kernel: for each extra slice t = k..nbTimeSlices-1,
     //    add arcs and fill the CPT in one pass using lags computed once per process.
     for (const auto& p: _temporal_) {
-      const NodeId lastSliceNodeId = _bn_.idFromName(_encode_(p, kernelSlice));
-      const Tensor< GUM_SCALAR >& templateCpt = _bn_.cpt(lastSliceNodeId);
+      const NodeId                lastSliceNodeId = _bn_.idFromName(_encode_(p, kernelSlice));
+      const Tensor< GUM_SCALAR >& templateCpt     = _bn_.cpt(lastSliceNodeId);
 
       // (parBase, lag): lag == ATEMPORAL for static parents, otherwise lag = (k-1) - parSlice.
       std::vector< std::pair< std::string, int > > lags;
@@ -760,8 +758,7 @@ namespace gum {
           } else {
             const std::string parName = _encode_(parBase, static_cast< int >(t) - lag);
             unrolled.addArc(parName, child);
-            unrolledToTemplate.insert(parName,
-                                      _encode_(parBase, kernelSlice - lag));
+            unrolledToTemplate.insert(parName, _encode_(parBase, kernelSlice - lag));
           }
         }
 
@@ -864,8 +861,9 @@ namespace gum {
     try {
       k_val = static_cast< Size >(std::stoul(bn.property("KTBN.k")));
     } catch (const std::exception& e) {
-      GUM_ERROR(IOError, "KTBN::load: malformed KTBN.k property ('" << bn.property("KTBN.k")
-                                                                     << "'): " << e.what())
+      GUM_ERROR(IOError,
+                "KTBN::load: malformed KTBN.k property ('" << bn.property("KTBN.k")
+                                                           << "'): " << e.what())
     }
     KTBN< GUM_SCALAR > res(k_val);
     res._bn_ = bn;
@@ -876,9 +874,10 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBN< GUM_SCALAR > KTBN< GUM_SCALAR >::fromBN(const BayesNet< GUM_SCALAR >&            bn,
-                                                const std::unordered_set< std::string >& atemporalNodes,
-                                                std::vector< std::string >* warnings) {
+  KTBN< GUM_SCALAR >
+      KTBN< GUM_SCALAR >::fromBN(const BayesNet< GUM_SCALAR >&            bn,
+                                 const std::unordered_set< std::string >& atemporalNodes,
+                                 std::vector< std::string >*              warnings) {
     KTBN< GUM_SCALAR > res(1);   // _determineNodesFromBN_ below will modify this k=1
     res._bn_ = bn;
     res._determineNodesFromBN_(atemporalNodes, warnings);
@@ -908,10 +907,10 @@ namespace gum {
     // Purely syntactic, like _decodeName_, but that one expects the engine's own
     // base[t] convention. Used below only when the source BN carries no bracket
     // at all (see hasBracket).
-    const auto decodeTrailingSlice
-        = [](std::string_view name) -> std::pair< std::string, int > {
+    const auto decodeTrailingSlice = [](std::string_view name) -> std::pair< std::string, int > {
       std::size_t pos = name.size();
-      while (pos > 0 && std::isdigit(static_cast< unsigned char >(name[pos - 1]))) --pos;
+      while (pos > 0 && std::isdigit(static_cast< unsigned char >(name[pos - 1])))
+        --pos;
       if (pos == name.size()) return {std::string{name}, ATEMPORAL};
 
       const std::string_view digits = name.substr(pos);
@@ -1046,8 +1045,8 @@ namespace gum {
         if (!reclassified.empty()) reclassified += ", ";
         reclassified += "'" + nodeName + "'";
       }
-      warn("Node(s) " + reclassified + " look temporal (base='" + base
-           + "', " + conventionNoun + " convention) but the process is missing slice(s) " + missing
+      warn("Node(s) " + reclassified + " look temporal (base='" + base + "', " + conventionNoun
+           + " convention) but the process is missing slice(s) " + missing
            + " for k=" + std::to_string(_k_)
            + ": they are classified as atemporal variables, original name kept. Pass them in "
              "fromBN()'s atemporalNodes argument to make that explicit and silence this warning.");
@@ -1122,8 +1121,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::toUnrolledDot(Size T, bool highlightReplicated) const {
     if (T < _k_)
-      GUM_ERROR(OperationNotAllowed,
-                "toUnrolledDot: T=" << T << " must be >= k=" << _k_ << ".")
+      GUM_ERROR(OperationNotAllowed, "toUnrolledDot: T=" << T << " must be >= k=" << _k_ << ".")
     return _timeSlicesToDot_(unroll(T), highlightReplicated);
   }
 
@@ -1133,7 +1131,7 @@ namespace gum {
   // invisible edges so every cluster keeps the same vertical variable order.
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::_timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
-                                                     bool highlightReplicated) const {
+                                                    bool highlightReplicated) const {
     const auto escape_ = [](const std::string& name) {
       std::string out;
       out.reserve(name.size());
@@ -1149,8 +1147,8 @@ namespace gum {
     // increasing slice indices — mirroring pyAgrum's noTimeCluster-then-slices order.
     std::map< int, std::vector< std::pair< std::string, std::string > > > timeslices;
     for (const NodeId n: bn.nodes()) {
-      const std::string& name       = bn.variable(n).name();
-      const auto [base, slice]      = _decodeName_(name);
+      const std::string& name  = bn.variable(n).name();
+      const auto [base, slice] = _decodeName_(name);
       timeslices[slice].emplace_back(name, base);
     }
 
@@ -1192,8 +1190,8 @@ namespace gum {
     if (const auto it0 = timeslices.find(0); it0 != timeslices.end()) {
       for (const auto& node0: it0->second) {
         const std::string& label = node0.second;
-        int  prec  = ATEMPORAL;
-        bool first = true;
+        int                prec  = ATEMPORAL;
+        bool               first = true;
         for (const auto& [slice, nodes]: timeslices) {
           if (slice == ATEMPORAL) continue;
           if (!first)

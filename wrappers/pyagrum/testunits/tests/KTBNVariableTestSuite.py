@@ -156,7 +156,7 @@ class KTBNVariableTestCase(pyAgrumTestCase):
 
   def testFastDescription(self):
     m = gum.KTBN(2)
-    m.add("Z[3]", True)   # temporal Z, 3 modalities
+    m.add("Z[3]", True)  # temporal Z, 3 modalities
     m.add("C[4]", False)  # atemporal C, 4 modalities
 
     self.assertIn("Z", m.temporalVarNames())

@@ -43,12 +43,10 @@
 #define GUM_KTBN_MODULE_H
 
 #include <agrum/bn.h>
-#include <agrum/KTBN/KTBN.h>
+#include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
 #include <agrum/KTBN/generator/KTBNGenerator.h>
 #include <agrum/KTBN/inference/KTBNInference.h>
-#include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
-#include <agrum/KTBN/learning/IKTBNLearner.h>
-#include <agrum/KTBN/learning/KTBNLearner.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
+#include <agrum/KTBN/learning/KTBNLearner.h>
 
 #endif   // GUM_KTBN_MODULE_H

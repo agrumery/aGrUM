@@ -97,19 +97,18 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <variant>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/base/graphs/cliqueGraph.h>
 #include <agrum/base/graphs/undiGraph.h>
-#include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discreteVariable.h>
 #include <agrum/KTBN/KTBN.h>
+
+#include <unordered_map>
+#include <unordered_set>
 
 namespace gum {
 
@@ -273,9 +272,9 @@ namespace gum {
      * @throw InvalidArgument if @p likelihood has the wrong length, holds a
      * negative entry, or is all zeros.
      */
-    void addObservation(std::string_view                  base,
-                     int                               slice,
-                     const std::vector< GUM_SCALAR >& likelihood);
+    void addObservation(std::string_view                 base,
+                        int                              slice,
+                        const std::vector< GUM_SCALAR >& likelihood);
     /// @brief Same, using an engine name (@c "X[2]", @c "C", …).
     void addObservation(std::string_view node_name, const std::vector< GUM_SCALAR >& likelihood);
 
@@ -437,8 +436,8 @@ namespace gum {
     /// behind the window's current slice. @c lag == ATEMPORAL marks an
     /// atemporal base, which sits in every interface and never ages.
     struct _Slot_ {
-      int base;
-      int lag;
+      int  base;
+      int  lag;
       bool operator==(const _Slot_& o) const;
     };
 
@@ -665,20 +664,20 @@ namespace gum {
     /// that does carry evidence). Valid until the next call, and until the next
     /// makeInference(), which clears the cache. Callers only read it:
     /// _propagate_ and _belief_ both take psi by const reference.
-    const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&
-        _windowPotentials_(const _Window_& w, int t) const;
+    const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& _windowPotentials_(const _Window_& w,
+                                                                                 int t) const;
 
     /// @brief Multiplies slice @p t's temporal observation likelihoods into an
     /// already-built base. Atemporal ones are skipped: the base holds them.
-    void _applyTemporalObservations_(const _Window_&                                    w,
-                                     int                                                t,
+    void _applyTemporalObservations_(const _Window_&                                     w,
+                                     int                                                 t,
                                      std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi) const;
 
     /// @param withTemporalEvidence false builds the @b base: the periodic part
     /// only, i.e. CPTs/kernels plus atemporal evidence, with slice @p t's own
     /// observations and interventions left out. That is what _psiCache_ stores.
-    void _fillWindow_(const _Window_&                                    w,
-                      int                                                t,
+    void _fillWindow_(const _Window_&                                     w,
+                      int                                                 t,
                       std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
                       bool withTemporalEvidence = true) const;
 
@@ -688,24 +687,24 @@ namespace gum {
     /// casing.
     /// @param msgs out: (from,to) clique message. Collect-only when
     /// @p distribute is false -- enough for the forward message alone.
-    void _propagate_(const _Window_&                                          w,
-                     int                                                      t,
-                     const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >& psi,
-                     const Tensor< GUM_SCALAR >*                              inPrev,
-                     const Tensor< GUM_SCALAR >*                              inNext,
-                     bool                                                     distribute,
+    void _propagate_(const _Window_&                                                w,
+                     int                                                            t,
+                     const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&      psi,
+                     const Tensor< GUM_SCALAR >*                                    inPrev,
+                     const Tensor< GUM_SCALAR >*                                    inNext,
+                     bool                                                           distribute,
                      std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > >& msgs) const;
 
     /// @brief The belief of clique @p c: its potential times every message
     /// reaching it, interface messages included.
-    Tensor< GUM_SCALAR > _belief_(
-        const _Window_&                                                     w,
-        const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&           psi,
-        const std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > >& msgs,
-        const Tensor< GUM_SCALAR >*                                         inPrev,
-        const Tensor< GUM_SCALAR >*                                         inNext,
-        NodeId                                                              c,
-        NodeId                                                              skipNeighbour) const;
+    Tensor< GUM_SCALAR >
+        _belief_(const _Window_&                                                      w,
+                 const std::unordered_map< NodeId, Tensor< GUM_SCALAR > >&            psi,
+                 const std::map< std::pair< NodeId, NodeId >, Tensor< GUM_SCALAR > >& msgs,
+                 const Tensor< GUM_SCALAR >*                                          inPrev,
+                 const Tensor< GUM_SCALAR >*                                          inNext,
+                 NodeId                                                               c,
+                 NodeId skipNeighbour) const;
 
     /// @brief Snapshots @p marginal onto an owned, stably-named descriptor and
     /// appends it to that base's series (index == slice for a temporal base).

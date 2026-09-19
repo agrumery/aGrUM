@@ -57,7 +57,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -65,6 +64,8 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/BayesNet.h>
+
+#include <unordered_set>
 
 namespace gum {
 
@@ -415,9 +416,9 @@ namespace gum {
 
     /// @return @c true if the arc exists in the template.
     bool existsArc(std::string_view tailBase,
-                   int               tailSlice,
-                   std::string_view  headBase,
-                   int               headSlice) const;
+                   int              tailSlice,
+                   std::string_view headBase,
+                   int              headSlice) const;
 
     /// @return @c true if the arc exists; uses internal engine names (bracket notation).
     /// @throw NotFound if an endpoint name is unknown.
@@ -531,7 +532,7 @@ namespace gum {
      * @throw SizeError / InvalidArgument / OutOfBounds — same conditions as the
      *        @c (base, slice) overload.
      */
-    void fillCPT(std::string_view node_name,
+    void fillCPT(std::string_view                 node_name,
                  const std::map< std::variant< std::string, std::pair< std::string, int > >,
                                  KTBNModality >&  parents,
                  const std::vector< GUM_SCALAR >& distribution) const;
@@ -647,7 +648,7 @@ namespace gum {
      */
     static KTBN< GUM_SCALAR > fromBN(const BayesNet< GUM_SCALAR >&            bn,
                                      const std::unordered_set< std::string >& atemporalNodes = {},
-                                     std::vector< std::string >* warnings = nullptr);
+                                     std::vector< std::string >*              warnings = nullptr);
 
     /// @}
     // ===========================================================================

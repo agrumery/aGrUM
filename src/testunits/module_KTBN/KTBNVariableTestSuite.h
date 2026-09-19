@@ -17,7 +17,7 @@
  *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
  *                                                                          *
  *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
- *   useful, but WITHOUT ANY KIND, EXPRESS OR IMPLIED,                      *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
  *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
  *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
  *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
@@ -51,7 +51,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-
 
 namespace gum_tests {
 
@@ -115,7 +114,7 @@ namespace gum_tests {
     CHECK(m.atemporalVarNames().contains("C"));
     CHECK_EQ(m.nbTemporalVars(), gum::Size(1));
     CHECK_EQ(m.nbAtemporalVars(), gum::Size(1));
-    CHECK_EQ(m.size(), gum::Size(2 * 1 + 1));            // X[0], X[1], C
+    CHECK_EQ(m.size(), gum::Size(2 * 1 + 1));   // X[0], X[1], C
     CHECK_EQ(m.variable("X", 0).domainSize(), gum::Size(3));
     CHECK_EQ(m.variable("C").domainSize(), gum::Size(2));
   }
@@ -134,7 +133,8 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(gum::LabelizedVariable("A[B]", "", 2), true));
     CHECK(m.temporalVarNames().contains("A[B]"));
     // atemporal "X[0]" conflicts with temporal "X" at slice 0
-    CHECK_THROWS_AS(m.add(gum::LabelizedVariable("X[0]", "", 2), false), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(m.add(gum::LabelizedVariable("X[0]", "", 2), false),
+                    const gum::InvalidArgument&);
     // a bracket-named atemporal variable is allowed when no temporal process
     // shares its decoded base (there is no temporal "Z" here)
     GUM_CHECK_ASSERT_THROWS_NOTHING(m.add(gum::LabelizedVariable("Z[1]", "", 2), false));
@@ -182,9 +182,9 @@ namespace gum_tests {
     CHECK_EQ(m.variable("C").domainSize(), gum::Size(4));
 
     gum::KTBN< double > m2(2);
-    m2.addTemporal("X[3]");          // temporal X, 3 modalities
-    m2.addAtemporal("C{yes|no}");    // atemporal C, labels yes/no
-    m2.addTemporal("R");             // temporal R, default 2 modalities
+    m2.addTemporal("X[3]");         // temporal X, 3 modalities
+    m2.addAtemporal("C{yes|no}");   // atemporal C, labels yes/no
+    m2.addTemporal("R");            // temporal R, default 2 modalities
 
     CHECK(m2.temporalVarNames().contains("X"));
     CHECK(m2.atemporalVarNames().contains("C"));
@@ -302,7 +302,7 @@ namespace gum_tests {
     // pointer identity: bracket overload returns the same object as 2-arg form
     CHECK_EQ(&m.variable("X[0]"), &m.variable("X", 0));
     CHECK_EQ(&m.variable("X[2]"), &m.variable("X", 2));
-    CHECK_EQ(&m.variable("C"),    &m.variable("C", AT));
+    CHECK_EQ(&m.variable("C"), &m.variable("C", AT));
 
     // atemporal bracket-named variable: "Y[0]" is in _atemporal_,
     // so _determineNode_ resolves it to ("Y[0]", ATEMPORAL), not ("Y", 0)
@@ -311,7 +311,7 @@ namespace gum_tests {
 
     // domain sizes are correct
     CHECK_EQ(m.variable("X[1]").domainSize(), gum::Size(2));
-    CHECK_EQ(m.variable("C").domainSize(),    gum::Size(4));
+    CHECK_EQ(m.variable("C").domainSize(), gum::Size(4));
 
     // unknown name throws NotFound
     CHECK_THROWS_AS(m.variable("Z[0]"), const gum::NotFound&);
