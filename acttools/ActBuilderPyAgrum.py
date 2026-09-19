@@ -205,7 +205,9 @@ class ActBuilderPyAgrum(ActBuilder):
 
     line += f" -j {self.current['jobs']}"
 
-    line += " -C wrappers/pyagrum"
+    if self.current["action"] != "install":
+      # scoped `wrappers/pyagrum/all` never builds agrumFMDP (not SWIG-wrapped), but install() covers it (BUILD_ALL=ON) -- install must run from the build root
+      line += " -C wrappers/pyagrum"
 
     return line
 
