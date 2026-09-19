@@ -6,13 +6,16 @@
 
     - **New: KTBN (k-order dynamic Bayesian networks)** (thanks to Seth Aguila and Anis Khacef): learn, generate
       and run inference on dynamic Bayesian networks with more than one time slice of memory. Inference (filtering
-      and smoothing) works over any time window with intervention AND observations, and the memory order K itself
+      and smoothing) works over any time window with interventions AND observations, and the memory order K itself
       can be learned from data instead of being fixed by hand.
       Replaces `pyagrum.lib.dynamicBN` (now deprecated), with new notebooks.
     - **Lighter, faster import**: pyAgrum's Python modules (`markov_random_field`, `influence_diagram`,
       `credal_net`, `causal_model`, `prm`, `ktbn`) are now loaded only when needed instead of all at once.
     - Cleaner error messages (internal technical details no longer shown).
     - Minor notebook fixes.
+    - **CausalModel from a DAG**: `CausalModel` can now be built from a plain `DAG`, without a `BayesNet`
+      (`hasObservationalBN()`); structural queries work either way, CPT-dependent ones raise
+      `OperationNotAllowed`. `connectedComponents()` return type aligned with other graphical models.
   
 - aGrUM
 
@@ -20,6 +23,10 @@
       the pyAgrum feature above -- construction, inference over an arbitrary time window (filtering and smoothing),
       automatic learning of the memory order K, and random generation.
     - Windows build reliability improvements (several linking/build fixes).
+    - New CI job testing pyAgrum wheels against a conda-forge-like environment on Windows.
+    - **CausalModel decoupled from BayesNet**: new DAG-only constructor; `observationalBN()` now optional
+      (`hasObservationalBN()` guard); fixes `inducedCausalSubModel` silently building a BN with
+      uninitialized CPTs. `connectedComponents()` now returns `NodeProperty<NodeId>`, like `DAGmodel`/`DiGraph`.
     - Documentation improvements and typo fixes.
 
 ## Changelog for 3.1.0

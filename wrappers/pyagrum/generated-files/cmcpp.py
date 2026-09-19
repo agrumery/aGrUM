@@ -549,12 +549,20 @@ def _causalImpact(*args) -> tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]:
 class CausalModel(object):
     r"""
 
-    A causal model pairing an observational Bayesian network with a causal DAG.
+    A causal model pairing a causal DAG with an optional observational Bayesian network.
 
-    A CausalModel extends an observational BayesNet by adding latent (hidden)
+    A CausalModel can be built either from a full BayesNet (CPTs available, the classic
+    use case) or from a plain named DAG (structure only, no CPTs -- see the third
+    constructor form below and :func:`hasObservationalBN`). It adds latent (hidden)
     variables that represent unobserved common causes between observed variables.
-    The causal DAG includes both observed and latent nodes, while the observational
-    BN contains only the observed ones.
+    The causal DAG includes both observed and latent nodes; when built from a BayesNet,
+    the observational BN contains only the observed ones.
+
+    Every structural operation (backdoor/frontdoor, existsArc, toDot, inducedCausalSubModel,
+    do-calculus identification via :func:`pyagrum.causalImpact`) works in both cases.
+    Anything that needs actual conditional probabilities (:meth:`observationalBN`,
+    :meth:`variable`, evaluating a :class:`pyagrum.CausalImpact`, :func:`pyagrum.counterfactual`)
+    raises :class:`pyagrum.OperationNotAllowed` when the model has no BayesNet.
 
     CausalModel(bn) -> CausalModel
         Parameters:
@@ -572,6 +580,16 @@ class CausalModel(object):
               affected children are removed as they are assumed to be explained by
               the latent confounder).
 
+    CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
+        Build a causal model from a plain (named) DAG, without any BayesNet.
+
+        Parameters:
+            - **dag** (*pyagrum.DAG*) -- a named DAG (every node must have a name).
+            - **latents** (*list of (str, list of str)*, optional) -- same format as above.
+            - **assumeNonSpurious** (*bool*) -- same meaning as above.
+
+        :func:`hasObservationalBN` returns False on the resulting model.
+
     Examples
     --------
     >>> import pyagrum as gum
@@ -581,6 +599,14 @@ class CausalModel(object):
     Create a model with a latent confounder U between X and Y:
 
     >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
+
+    Build a causal model from a DAG only (no CPTs needed for structural queries):
+
+    >>> dag = pyagrum.fastDAG('X->Y->Z')
+    >>> cm = pyagrum.CausalModel(dag)
+    >>> cm.hasObservationalBN()
+    False
+    >>> cm.backDoor('X', 'Z')  # structural queries work without a BN
 
     """
 
@@ -805,6 +831,24 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_toDot(self, *args)
 
+    def hasObservationalBN(self) -> bool:
+        r"""
+
+        Whether this model was built from a BayesNet (CPTs available).
+
+        Returns
+        -------
+        bool
+            True if the model has an observational BayesNet (built with a BayesNet
+            constructor); False if it was built from a plain DAG.
+
+        See Also
+        --------
+        pyagrum.CausalModel.observationalBN : raises if this is False.
+
+        """
+        return _cmcpp.CausalModel_hasObservationalBN(self)
+
     def observationalBN(self) -> "pyagrum.BayesNet":
         r"""
 
@@ -820,6 +864,12 @@ class CausalModel(object):
         -------
         pyagrum.BayesNet
             The observational BN (observed variables only).
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the model has no observational BayesNet (built from a DAG) -- see
+            :meth:`hasObservationalBN`.
 
         """
         return _cmcpp.CausalModel_observationalBN(self)
@@ -958,15 +1008,23 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_children(self, *args)
 
-    def connectedComponents(self) -> dict[int, list[int]]:
+    def connectedComponents(self) -> dict[int,int]:
         r"""
 
-        Return the connected components of the causal DAG (treating arcs as undirected).
+        Return the weakly connected components of the causal DAG (treating arcs as undirected).
+
+        Each node is mapped to the id of its component root (an arbitrarily chosen node from the
+        same component).
 
         Returns
         -------
-        dict of int → set of int
-            A mapping from component index to the set of NodeIds in that component.
+        dict[int, int]
+            mapping node id → component root id
+
+        See Also
+        --------
+        connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+        connectedComponentsCount : returns the number of components
 
         """
         return _cmcpp.CausalModel_connectedComponents(self)
@@ -990,12 +1048,43 @@ class CausalModel(object):
         ------
         pyagrum.NotFound
             if the id or name does not correspond to an observed variable in the model
+        pyagrum.OperationNotAllowed
+            if the model has no observational BayesNet (built from a DAG).
 
         """
         return _cmcpp.CausalModel_variable(self, *args)
 
     def __init__(self, *args):
         _cmcpp.CausalModel_swiginit(self, _cmcpp.new_CausalModel(*args))
+
+    def connectedComponentsList(self):
+        """ connected components as a dict of sets
+
+        Returns
+        -------
+        dict(int, set[int])
+          dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+        """
+        cc = self.connectedComponents()
+        result = {}
+        for node, root in cc.items():
+            if root not in result:
+                result[root] = set()
+            result[root].add(node)
+        return result
+
+    def connectedComponentsCount(self):
+        """ number of connected components
+
+        Returns
+        -------
+        int
+          the number of connected components in the graph.
+
+        """
+        return len(set(self.connectedComponents().values()))
+
 
 # Register CausalModel in _cmcpp:
 _cmcpp.CausalModel_swigregister(CausalModel)

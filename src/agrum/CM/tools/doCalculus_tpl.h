@@ -286,7 +286,7 @@ namespace gum {
       DoCalculus< GUM_SCALAR >::_cDecomposition_(const CausalModel< GUM_SCALAR >& cm) const {
     // c-components: undirected connectivity among observed children of the same latent.
     const NodeSet lat = cm.latentVariablesIds();
-    const NodeSet V   = cm.observationalBN().internalDag().nodes().asNodeSet();
+    const NodeSet V   = cm.causalDAG().nodes().asNodeSet() - lat;
 
     // adjacency among observed nodes, via latent co-children
     std::unordered_map< NodeId, std::vector< NodeId > > adj;
@@ -343,13 +343,14 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::vector< NodeId >
       DoCalculus< GUM_SCALAR >::_topoObserved_(const CausalModel< GUM_SCALAR >& cm) const {
-    const auto&   dag = cm.observationalBN().internalDag();
-    const NodeSet V   = dag.nodes().asNodeSet();
+    const NodeSet lat = cm.latentVariablesIds();
+    const NodeSet V   = cm.causalDAG().nodes().asNodeSet() - lat;
+    const DAG     dag = cm.causalDAG();
 
-    // indegree in the observed DAG
+    // indegree in the observed DAG (ignore latent-induced parent arcs)
     std::unordered_map< NodeId, Size > indeg;
     for (auto v: V)
-      indeg[v] = dag.parents(v).size();
+      indeg[v] = (dag.parents(v) - lat).size();
 
     std::vector< NodeId > order;
     order.reserve(V.size());
@@ -365,7 +366,7 @@ namespace gum {
       order.push_back(u);
 
       for (auto c: dag.children(u)) {
-        if (indeg[c] > 0) {
+        if (indeg.contains(c) && indeg[c] > 0) {
           --indeg[c];
           if (indeg[c] == 0) q.push(c);
         }
@@ -530,7 +531,7 @@ namespace gum {
                                      const NodeSet&                           X,
                                      std::unique_ptr< ASTtree< GUM_SCALAR > > P) const {
     const NodeSet lat = cm.latentVariablesIds();
-    const NodeSet V   = cm.observationalBN().internalDag().nodes().asNodeSet();
+    const NodeSet V   = cm.causalDAG().nodes().asNodeSet() - lat;
 
     // --- 1) if X is empty ---
     if (X.empty()) {
@@ -648,8 +649,9 @@ namespace gum {
         if (sInCdg) {
           // P_new := Π_{v∈S in topo order} P(v | v_π) under current P (if provided),
           // otherwise P from the BN (chain rule)
-          const auto& bn    = cm.observationalBN();
-          auto        order = _topoObserved_(cm);
+          auto       order = _topoObserved_(cm);
+          const DAG  dag   = cm.causalDAG();
+          const auto id2n  = cm.id2name(/*includeLatentVariables=*/false);
 
           std::unique_ptr< ASTtree< GUM_SCALAR > > prod;
 
@@ -676,7 +678,11 @@ namespace gum {
               Set< std::string > lhs;
               lhs.insert(cm.nameFromId(v));
               if (condNames.empty()) term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
-              else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
+              else
+                term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(dag,
+                                                                           id2n,
+                                                                           lhs,
+                                                                           condNames);
             } else {
               // from accumulated P: factorize Q[S] by full-order prefix marginals
               Size                       k = pos[v];
@@ -755,8 +761,9 @@ namespace gum {
           Spr = S;
         }
 
-        const auto& bn    = cm.observationalBN();
-        auto        order = _topoObserved_(cm);
+        auto       order = _topoObserved_(cm);
+        const DAG  dag   = cm.causalDAG();
+        const auto id2n  = cm.id2name(/*includeLatentVariables=*/false);
 
         std::unique_ptr< ASTtree< GUM_SCALAR > > prod;
 
@@ -780,7 +787,8 @@ namespace gum {
             Set< std::string > lhs;
             lhs.insert(cm.nameFromId(v));
             if (condNames.empty()) term = std::make_unique< ASTjointProba< GUM_SCALAR > >(lhs);
-            else term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(bn, lhs, condNames);
+            else
+              term = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(dag, id2n, lhs, condNames);
           } else {
             // from accumulated P: factorize Q[Spr] by full-order prefix marginals
             Size                       k = pos[v];

@@ -56,24 +56,29 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   NodeSet CausalFormula< GUM_SCALAR >::_toNodeSetFromNames_(const CausalModel< GUM_SCALAR >& cm,
                                                             const Set< std::string >& names) {
-    NodeSet     ids;
-    const auto& bn = cm.observationalBN();
+    NodeSet ids;
     for (const auto& n: names) {
-      ids.insert(bn.idFromName(n));   // throws NotFound if unknown
+      ids.insert(cm.idFromName(n));   // throws NotFound if unknown
     }
     return ids;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   void CausalFormula< GUM_SCALAR >::_ensureVariablesExist() const {
-    const auto& bn = _cm.observationalBN();
-    // Touch the variable object to ensure validity (throws NotFound if invalid)
-    for (const auto& id: _on)
-      (void)bn.variable(id);
-    for (const auto& id: _doing)
-      (void)bn.variable(id);
-    for (const auto& id: _knowing)
-      (void)bn.variable(id);
+    const NodeSet lat           = _cm.latentVariablesIds();
+    const DAG     dag           = _cm.causalDAG();
+    auto          checkObserved = [&](const NodeSet& S) {
+      for (const auto& id: S) {
+        if (!dag.existsNode(id) || lat.contains(id)) {
+          GUM_ERROR(NotFound,
+                    "CausalFormula: variable id " + std::to_string(id)
+                        + " is not an observed variable of the model.");
+        }
+      }
+    };
+    checkObserved(_on);
+    checkObserved(_doing);
+    checkObserved(_knowing);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -162,11 +167,9 @@ namespace gum {
     // Track variable name occurrences for prime management in AST LaTeX
     HashTable< std::string, int > nameOccur;
 
-    const auto& bn       = _cm.observationalBN();
-    auto        addNames = [&](const NodeSet& S) {
+    auto addNames = [&](const NodeSet& S) {
       for (const auto& id: S) {
-        const auto& v    = bn.variable(id);
-        const auto& name = v.name();
+        const auto name = _cm.nameFromId(id);
         if (!nameOccur.exists(name)) nameOccur.insert(name, 1);
       }
     };
@@ -180,13 +183,11 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string CausalFormula< GUM_SCALAR >::latexQuery(std::string_view doOperatorPrefix,
                                                       std::string_view doOperatorSuffix) const {
-    const auto& bn = _cm.observationalBN();
-
     auto namesSorted = [&](const NodeSet& S) {
       std::vector< std::string > res;
       res.reserve(S.size());
       for (const auto& id: S)
-        res.emplace_back(bn.variable(id).name());
+        res.emplace_back(_cm.nameFromId(id));
       std::sort(res.begin(), res.end());
       return res;
     };
@@ -238,33 +239,30 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::onNames() const {
-    const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;
     out.reserve(_on.size());
     for (const auto& id: _on)
-      out.emplace_back(bn.variable(id).name());
+      out.emplace_back(_cm.nameFromId(id));
     std::sort(out.begin(), out.end());
     return out;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::doingNames() const {
-    const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;
     out.reserve(_doing.size());
     for (const auto& id: _doing)
-      out.emplace_back(bn.variable(id).name());
+      out.emplace_back(_cm.nameFromId(id));
     std::sort(out.begin(), out.end());
     return out;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   std::vector< std::string > CausalFormula< GUM_SCALAR >::knowingNames() const {
-    const auto&                bn = _cm.observationalBN();
     std::vector< std::string > out;
     out.reserve(_knowing.size());
     for (const auto& id: _knowing)
-      out.emplace_back(bn.variable(id).name());
+      out.emplace_back(_cm.nameFromId(id));
     std::sort(out.begin(), out.end());
     return out;
   }

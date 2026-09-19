@@ -236,9 +236,11 @@ namespace gum {
       const DAG gXbar = _removeIncomingIntoLocal_(cm.causalDAG(), i_doing);
       if (Separation::isDSeparated(gXbar, i_doing, i_on, cond)) {
         // P(Y | K) in the observational BN
-        auto ast = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(cm.observationalBN(),
-                                                                       on,
-                                                                       knowing);
+        auto ast = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(
+            cm.causalDAG(),
+            cm.id2name(/*includeLatentVariables=*/false),
+            on,
+            knowing);
         return CausalFormula< GUM_SCALAR >(cm,
                                            std::move(ast),
                                            on,

@@ -45,6 +45,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/CM/causalImpact.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
 
@@ -202,7 +203,8 @@ namespace gum_tests {
 
       auto subA = cm.inducedCausalSubModel(cm, subsetA);
 
-      CHECK_EQ(subA.observationalBN().size(), 3u);
+      CHECK_FALSE(subA.hasObservationalBN());   // induced sub-models are always DAG-only now
+      CHECK_EQ(subA.causalDAG().size() - subA.latentVariablesIds().size(), 3u);
       CHECK(subA.existsArc("X", "Y"));
       CHECK(subA.existsArc("Y", "Z"));
       CHECK(!subA.existsArc("X", "Z"));   // removed by latent surgery
@@ -221,7 +223,8 @@ namespace gum_tests {
 
       auto subB = cm.inducedCausalSubModel(cm, subsetB);
 
-      CHECK_EQ(subB.observationalBN().size(), 2u);
+      CHECK_FALSE(subB.hasObservationalBN());
+      CHECK_EQ(subB.causalDAG().size() - subB.latentVariablesIds().size(), 2u);
       CHECK(subB.existsArc("Y", "Z"));   // observed arc preserved
 
       // U must be absent; do NOT call existsArc("U", ...)
@@ -235,7 +238,8 @@ namespace gum_tests {
 
       auto subC = cm.inducedCausalSubModel(cm, subsetC);
 
-      CHECK_EQ(subC.observationalBN().size(), 1u);
+      CHECK_FALSE(subC.hasObservationalBN());
+      CHECK_EQ(subC.causalDAG().size() - subC.latentVariablesIds().size(), 1u);
       // U must be absent; do NOT call existsArc("U", ...)
       CHECK(!subC.latentVariablesNames().contains("U"));
     }
@@ -284,8 +288,11 @@ namespace gum_tests {
 
     // --- connected components: initially 2 ( {A,B} and {C,D} )
     {
-      auto comps = cm.connectedComponents();
-      CHECK_EQ(comps.size(), 2u);
+      auto         comps = cm.connectedComponents();
+      gum::NodeSet distinctComps;
+      for (auto it = comps.begin(); it != comps.end(); ++it)
+        distinctComps.insert(it.val());
+      CHECK_EQ(distinctComps.size(), 2u);
     }
 
     // Add latent U that confounds B and C -> bridges the two components
@@ -309,8 +316,11 @@ namespace gum_tests {
       CHECK(cU.contains(cm.idFromName("C")));
 
       // Components collapse to 1 due to the latent bridge
-      auto comps2 = cm.connectedComponents();
-      CHECK_EQ(comps2.size(), 1u);
+      auto         comps2 = cm.connectedComponents();
+      gum::NodeSet distinctComps2;
+      for (auto it = comps2.begin(); it != comps2.end(); ++it)
+        distinctComps2.insert(it.val());
+      CHECK_EQ(distinctComps2.size(), 1u);
     }
   }
 
@@ -449,6 +459,86 @@ namespace gum_tests {
 
     // duplicate latent name must throw
     CHECK_THROWS_AS(cm.addLatentVariable("U", kidsXY), const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(ConstructFromDagOnly_StructuralOpsWork) {
+    // Named DAG: A->B->C, with a latent U confounding A and C
+    gum::DAG   dag;
+    const auto A = dag.addNode();
+    const auto B = dag.addNode();
+    const auto C = dag.addNode();
+    dag.setName(A, "A");
+    dag.setName(B, "B");
+    dag.setName(C, "C");
+    dag.addArc(A, B);
+    dag.addArc(B, C);
+
+    gum::CausalModel< double > cm(dag, {{"U", {A, C}}}, false);
+
+    CHECK_FALSE(cm.hasObservationalBN());
+    CHECK(cm.existsArc("A", "B"));
+    CHECK(cm.existsArc("B", "C"));
+    CHECK(cm.latentVariablesNames().contains("U"));
+    CHECK(cm.existsArc("U", "A"));
+    CHECK(cm.existsArc("U", "C"));
+
+    // structural queries work without any BN
+    CHECK_EQ(cm.parents("B").size(), 1u);
+    CHECK_EQ(cm.children("A").size(), 1u);
+    {
+      auto         comps = cm.connectedComponents();
+      gum::NodeSet distinctComps;
+      for (auto it = comps.begin(); it != comps.end(); ++it)
+        distinctComps.insert(it.val());
+      CHECK_EQ(distinctComps.size(), 1u);
+    }
+
+    auto dot = cm.toDot();
+    CHECK_NE(dot.find("A"), std::string::npos);
+    CHECK_NE(dot.find("\"A\"->\"B\""), std::string::npos);
+
+    // CPT-dependent accessors throw OperationNotAllowed
+    CHECK_THROWS_AS(cm.observationalBN(), const gum::OperationNotAllowed&);
+    CHECK_THROWS_AS(cm.variable("A"), const gum::OperationNotAllowed&);
+    CHECK_THROWS_AS(cm.variable(A), const gum::OperationNotAllowed&);
+
+    // round-trip via causalDAG()
+    gum::CausalModel< double > cm2(cm.causalDAG());
+    CHECK(cm2.existsArc("A", "B"));
+    CHECK(cm2.existsArc("B", "C"));
+    CHECK_FALSE(cm2.hasObservationalBN());
+  }
+
+  GUM_TEST(ConstructFromDag_ThrowsIfNodeUnnamed) {
+    gum::DAG dag;
+    dag.setName(dag.addNode(), "A");
+    dag.addNode();   // second node left unnamed
+
+    CHECK_THROWS_AS((gum::CausalModel< double >(dag)), const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(DagOnly_CausalImpact_IdentifiesStructurallyButEvalThrows) {
+    // Z->X;Z->Y;X->Y as a plain named DAG (no BN): backdoor {Z} is found structurally.
+    gum::DAG   dag;
+    const auto Z = dag.addNode();
+    const auto X = dag.addNode();
+    const auto Y = dag.addNode();
+    dag.setName(Z, "Z");
+    dag.setName(X, "X");
+    dag.setName(Y, "Y");
+    dag.addArc(Z, X);
+    dag.addArc(Z, Y);
+    dag.addArc(X, Y);
+
+    gum::CausalModel< double > cm(dag);
+    CHECK_FALSE(cm.hasObservationalBN());
+
+    gum::CausalImpact< double > ci(cm,
+                                   gum::Set< std::string >{"Y"},
+                                   gum::Set< std::string >{"X"},
+                                   gum::Set< std::string >{});
+    CHECK(ci.isIdentified());
+    CHECK_THROWS_AS(ci.eval(), const gum::OperationNotAllowed&);
   }
 
 }   // namespace gum_tests

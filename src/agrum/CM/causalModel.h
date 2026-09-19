@@ -67,14 +67,21 @@ namespace gum {
 
   /**
    * @class CausalModel
-   * @brief A causal model pairing an observational BayesNet with a causal DAG.
+   * @brief A causal model pairing a causal DAG with an optional observational BayesNet.
    *
    * The class is **DAG-centric** for causality: all causal-structure queries and edits
    * happen on `_causalDAG_`, which may include latent variables that do not appear
    * in `_observationalBN_`. Name/Id bookkeeping is handled so you can work with either.
    *
+   * A CausalModel can be built either from a full `BayesNet` (CPTs available, the classic use
+   * case) or from a plain named `DAG` (structure only, see the DAG-only constructor and
+   * hasObservationalBN()). Every structural operation (backdoor/frontdoor, d-separation, toDot,
+   * induced submodels, do-calculus tree construction) works in both cases; anything that reads a
+   * CPT (`ASTtree::eval`, `CausalFormula::eval`, `Counterfactual`) throws
+   * `gum::OperationNotAllowed` when no BayesNet is present.
+   *
    * ### Invariants / expectations
-   * - `_observationalBN_` corresponds to the observed part (no latents).
+   * - `_observationalBN_` (when present) corresponds to the observed part (no latents).
    * - `_causalDAG_` contains all observed variables and any added latent variables.
    * - When adding a latent with children, the latent becomes a parent of all listed children
    *   in the **causal DAG**. The `assumeNonSpurious` flag controls whether existing arcs between
@@ -83,13 +90,18 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class PYGUM_PUBLIC CausalModel {
     private:
-    /// The underlying BayesNet representing the observed part of the model.
-    BayesNet< GUM_SCALAR > _observationalBN_;
+    /// The observed Bayesian network, when the model was built with CPTs. Absent when built
+    /// from a plain DAG — see hasObservationalBN().
+    std::optional< BayesNet< GUM_SCALAR > > _observationalBN_;
+
+    /// Frozen copy of the observed DAG (never mutated after construction); names are set on it
+    /// directly (setName) — the single source of truth for observed variable names.
+    DAG _observedDAG_;
 
     /// The underlying DAG representing the causal structure (observed + latent).
     DAG _causalDAG_;
 
-    /// Bidirectional mapping between node ids and variable names (observed + latent).
+    /// Bidirectional mapping between node ids and variable names (latents only).
     Bijection< NodeId, std::string > _ids_names_;
 
     public:
@@ -116,6 +128,23 @@ namespace gum {
     explicit CausalModel(const BayesNet< GUM_SCALAR >& observationalBN,
                          const LatentDescriptorVector& latentVarsDescriptor,
                          bool                          assumeNonSpurious = false);
+
+    /**
+     * @brief Construct a causal model from a plain (named) DAG, without any BayesNet.
+     * @param dag a named DAG (every node must have a name, see gum::DAG::hasName)
+     * @param latentVarsDescriptor list of (latentName, childrenIds) descriptors
+     * @param assumeNonSpurious whether to preserve existing arcs among the latent's children
+     *
+     * The resulting model has no observational BayesNet: hasObservationalBN() returns false, and
+     * observationalBN()/variable()/CausalFormula::eval()/CausalImpact::eval()/Counterfactual throw
+     * gum::OperationNotAllowed. All structural operations (backdoor/frontdoor, d-separation, toDot,
+     * induced submodels, do-calculus tree construction) work normally.
+     *
+     * @throw gum::InvalidArgument if some node of `dag` has no name.
+     */
+    explicit CausalModel(const DAG&                    dag,
+                         const LatentDescriptorVector& latentVarsDescriptor = {},
+                         bool                          assumeNonSpurious    = false);
 
     /// Copy constructor
     CausalModel(const CausalModel& other);
@@ -286,7 +315,14 @@ namespace gum {
                       const char* NODE_FG           = "white",
                       const char* EDGE_COL          = "#4A4A4A") const;
 
-    /// @brief Observational BN (observed variables only).
+    /// @brief Whether this model was built from a BayesNet (CPTs available).
+    bool hasObservationalBN() const noexcept;
+
+    /**
+     * @brief Observational BN (observed variables only).
+     * @throw gum::OperationNotAllowed if the model was built from a plain DAG (see
+     * hasObservationalBN()).
+     */
     const BayesNet< GUM_SCALAR >& observationalBN() const;
 
     /// @brief Causal DAG (observed + latent variables), with node names set.
@@ -324,9 +360,9 @@ namespace gum {
 
     /**
      * @brief Weakly connected components of the causal DAG.
-     * @return A table mapping a representative NodeId to the NodeSet of nodes in its component.
+     * @return A table mapping each node to the (arbitrary but consistent) id of its component.
      */
-    HashTable< NodeId, NodeSet > connectedComponents() const;
+    NodeProperty< NodeId > connectedComponents() const;
 
     /**
      * From id to variable (observed only, by id). Throws if id does not correspond to an observed
@@ -335,6 +371,9 @@ namespace gum {
      * @param id the node id
      * @exception throws gum::NotFound if id does not correspond to an observed variable in the
      * model
+     *
+     * @exception throws gum::OperationNotAllowed if the model has no observational BN (see
+     * hasObservationalBN()).
      *
      * @return the variable if exists
      */
@@ -347,6 +386,9 @@ namespace gum {
      * @param name
      * @exception throws gum::NotFound if id does not correspond to an observed variable in the
      * model
+     *
+     * @exception throws gum::OperationNotAllowed if the model has no observational BN (see
+     * hasObservationalBN()).
      *
      * @return the variable if exists
      */

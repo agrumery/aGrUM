@@ -228,6 +228,36 @@ class TestCausalModel(pyAgrumTestCase):
 
     self.assertEqual(pot[81 - 65], 1.0)
 
+  def test_dagOnly_noObservationalBN(self):
+    dag = gum.fastDAG("A->B->C")
+    cm = gum.CausalModel(dag)
+
+    self.assertFalse(cm.hasObservationalBN())
+    self.assertTrue(cm.existsArc("A", "B"))
+    self.assertTrue(cm.existsArc("B", "C"))
+
+    with self.assertRaises(gum.OperationNotAllowed):
+      cm.observationalBN()
+    with self.assertRaises(gum.OperationNotAllowed):
+      cm.variable("A")
+
+  def test_dagOnly_withLatents(self):
+    dag = gum.fastDAG("Z->X;Z->Y;X->Y")
+    cm = gum.CausalModel(dag, [("U", ["X", "Y"])], False)
+
+    self.assertIn("U", cm.latentVariablesNames())
+    self.assertTrue(cm.existsArc("U", "X"))
+    self.assertTrue(cm.existsArc("U", "Y"))
+
+  def test_dagOnly_roundTripViaCausalDAG(self):
+    dag = gum.fastDAG("A->B->C")
+    cm = gum.CausalModel(dag)
+    cm2 = gum.CausalModel(cm.causalDAG())
+
+    self.assertTrue(cm2.existsArc("A", "B"))
+    self.assertTrue(cm2.existsArc("B", "C"))
+    self.assertFalse(cm2.hasObservationalBN())
+
 
 1
 

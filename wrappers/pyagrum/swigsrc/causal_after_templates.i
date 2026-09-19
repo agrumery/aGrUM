@@ -200,3 +200,83 @@
     return cm;
   }
 }
+
+// ---------------------------------------------------------------------------
+// CausalModel<double>: Python-friendly constructor from a plain (named) DAG,
+// without any BayesNet -- mirrors the BN-based constructor just above.
+// ---------------------------------------------------------------------------
+%extend gum::CausalModel<double> {
+  CausalModel(const gum::DAG& dag, PyObject* latents, bool assumeNonSpurious=false) {
+    auto* cm = new gum::CausalModel<double>(dag);
+    if (latents == Py_None) return cm;
+    if (!PySequence_Check(latents)) {
+      delete cm;
+      PyErr_SetString(PyExc_TypeError, "CausalModel: latents must be a sequence of (name, children) pairs");
+      return nullptr;
+    }
+    Py_ssize_t n = PySequence_Size(latents);
+    for (Py_ssize_t i = 0; i < n; ++i) {
+      PyObject* item = PySequence_GetItem(latents, i);
+      if (!PySequence_Check(item) || PySequence_Size(item) != 2) {
+        Py_DecRef(item);
+        delete cm;
+        PyErr_SetString(PyExc_TypeError, "CausalModel: each latent descriptor must be a (name, children) pair");
+        return nullptr;
+      }
+      PyObject* pyname     = PySequence_GetItem(item, 0);
+      PyObject* pychildren = PySequence_GetItem(item, 1);
+      Py_DecRef(item);
+      std::string              name = PyAgrumHelper::stringFromPyObject(pyname);
+      Py_DecRef(pyname);
+      std::vector<std::string> childNames;
+      Py_ssize_t               nc = PySequence_Size(pychildren);
+      for (Py_ssize_t j = 0; j < nc; ++j) {
+        PyObject* child = PySequence_GetItem(pychildren, j);
+        childNames.push_back(PyAgrumHelper::stringFromPyObject(child));
+        Py_DecRef(child);
+      }
+      Py_DecRef(pychildren);
+      cm->addLatentVariable(name, childNames, assumeNonSpurious);
+    }
+    return cm;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// CausalModel<double>::connectedComponentsList / connectedComponentsCount
+//
+// connectedComponents() returns a NodeProperty<NodeId> (dict[int,int], node -> component
+// root id) -- same shape as gum::DAGmodel/DiGraph/MixedGraph. Reuse the exact convenience
+// wrappers already defined for those classes (swigsrc/graphs.i) rather than reinventing them.
+// ---------------------------------------------------------------------------
+%extend gum::CausalModel<double> {
+%pythoncode %{
+    def connectedComponentsList(self):
+        """ connected components as a dict of sets
+
+        Returns
+        -------
+        dict(int, set[int])
+          dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+        """
+        cc = self.connectedComponents()
+        result = {}
+        for node, root in cc.items():
+            if root not in result:
+                result[root] = set()
+            result[root].add(node)
+        return result
+
+    def connectedComponentsCount(self):
+        """ number of connected components
+
+        Returns
+        -------
+        int
+          the number of connected components in the graph.
+
+        """
+        return len(set(self.connectedComponents().values()))
+%}
+}

@@ -17,9 +17,17 @@ pyAgrum provides a set of tools to perform causal inference and estimate causal 
             pyagrum.config["causal","latex_do_prefix"]="\hookrightarrow("
             pyagrum.config["causal","latex_do_suffix"]=")"
 
-A :class:`pyagrum.CausalModel` extends a :class:`pyagrum.BayesNet` with latent (hidden) variables
-and explicit causal assumptions. It is the entry point for do-calculus reasoning and causal effect
+A :class:`pyagrum.CausalModel` pairs a causal DAG with latent (hidden) variables and explicit
+causal assumptions. It is the entry point for do-calculus reasoning and causal effect
 identification.
+
+Most of the time, a :class:`pyagrum.CausalModel` extends a :class:`pyagrum.BayesNet`: the model
+then carries the observational CPTs needed to actually evaluate causal effects. It can also be
+built from a plain named :class:`pyagrum.DAG` instead, with no BayesNet at all -- every structural
+operation (backdoor/frontdoor, d-separation, ``toDot``, induced sub-models, do-calculus
+identification) still works, but anything that reads a CPT raises
+:class:`pyagrum.OperationNotAllowed`. Check :func:`pyagrum.CausalModel.hasObservationalBN` to know
+which case you are in.
 
 .. seealso::
 

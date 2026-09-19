@@ -3716,58 +3716,57 @@ namespace Swig {
 #define SWIGTYPE_p_EdgeIterator swig_types[1]
 #define SWIGTYPE_p_Handler swig_types[2]
 #define SWIGTYPE_p_HandlerSafe swig_types[3]
-#define SWIGTYPE_p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t swig_types[4]
-#define SWIGTYPE_p_HashTableT_std__size_t_std__size_t_t swig_types[5]
-#define SWIGTYPE_p_IsMissing swig_types[6]
-#define SWIGTYPE_p_MissingValType swig_types[7]
-#define SWIGTYPE_p_NodeConstIterator swig_types[8]
-#define SWIGTYPE_p_NodeConstIteratorSafe swig_types[9]
-#define SWIGTYPE_p_NodeIterator swig_types[10]
-#define SWIGTYPE_p_NodeIteratorSafe swig_types[11]
-#define SWIGTYPE_p_NodeSetVec swig_types[12]
-#define SWIGTYPE_p_PyObject swig_types[13]
-#define SWIGTYPE_p_ValName swig_types[14]
-#define SWIGTYPE_p_VarName swig_types[15]
-#define SWIGTYPE_p_char swig_types[16]
-#define SWIGTYPE_p_difference_type swig_types[17]
-#define SWIGTYPE_p_first_type swig_types[18]
-#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[19]
-#define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[20]
-#define SWIGTYPE_p_gum__CausalModelT_double_t swig_types[21]
-#define SWIGTYPE_p_gum__CliqueGraph swig_types[22]
-#define SWIGTYPE_p_gum__CounterfactualT_double_t swig_types[23]
-#define SWIGTYPE_p_gum__DAG swig_types[24]
-#define SWIGTYPE_p_gum__DiscreteVariable swig_types[25]
-#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[26]
-#define SWIGTYPE_p_gum__DoorCriteria swig_types[27]
-#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[28]
-#define SWIGTYPE_p_gum__IntegerVariable swig_types[29]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[30]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[31]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[32]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[33]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[34]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[35]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[36]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[37]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[38]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[39]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[40]
-#define SWIGTYPE_p_iterator swig_types[41]
-#define SWIGTYPE_p_iterator_category swig_types[42]
-#define SWIGTYPE_p_iterator_safe swig_types[43]
-#define SWIGTYPE_p_node_const_iterator swig_types[44]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[45]
-#define SWIGTYPE_p_node_iterator swig_types[46]
-#define SWIGTYPE_p_node_iterator_safe swig_types[47]
-#define SWIGTYPE_p_second_type swig_types[48]
-#define SWIGTYPE_p_size_type swig_types[49]
-#define SWIGTYPE_p_std__size_t swig_types[50]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t swig_types[51]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[52]
-#define SWIGTYPE_p_value_type swig_types[53]
-static swig_type_info *swig_types[55];
-static swig_module_info swig_module = {swig_types, 54, 0, 0, 0, 0};
+#define SWIGTYPE_p_HashTableT_std__size_t_std__size_t_t swig_types[4]
+#define SWIGTYPE_p_IsMissing swig_types[5]
+#define SWIGTYPE_p_MissingValType swig_types[6]
+#define SWIGTYPE_p_NodeConstIterator swig_types[7]
+#define SWIGTYPE_p_NodeConstIteratorSafe swig_types[8]
+#define SWIGTYPE_p_NodeIterator swig_types[9]
+#define SWIGTYPE_p_NodeIteratorSafe swig_types[10]
+#define SWIGTYPE_p_NodeSetVec swig_types[11]
+#define SWIGTYPE_p_PyObject swig_types[12]
+#define SWIGTYPE_p_ValName swig_types[13]
+#define SWIGTYPE_p_VarName swig_types[14]
+#define SWIGTYPE_p_char swig_types[15]
+#define SWIGTYPE_p_difference_type swig_types[16]
+#define SWIGTYPE_p_first_type swig_types[17]
+#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[18]
+#define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[19]
+#define SWIGTYPE_p_gum__CausalModelT_double_t swig_types[20]
+#define SWIGTYPE_p_gum__CliqueGraph swig_types[21]
+#define SWIGTYPE_p_gum__CounterfactualT_double_t swig_types[22]
+#define SWIGTYPE_p_gum__DAG swig_types[23]
+#define SWIGTYPE_p_gum__DiscreteVariable swig_types[24]
+#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[25]
+#define SWIGTYPE_p_gum__DoorCriteria swig_types[26]
+#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[27]
+#define SWIGTYPE_p_gum__IntegerVariable swig_types[28]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[29]
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[30]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[31]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[32]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[33]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[34]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[35]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[36]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[37]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[38]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[39]
+#define SWIGTYPE_p_iterator swig_types[40]
+#define SWIGTYPE_p_iterator_category swig_types[41]
+#define SWIGTYPE_p_iterator_safe swig_types[42]
+#define SWIGTYPE_p_node_const_iterator swig_types[43]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[44]
+#define SWIGTYPE_p_node_iterator swig_types[45]
+#define SWIGTYPE_p_node_iterator_safe swig_types[46]
+#define SWIGTYPE_p_second_type swig_types[47]
+#define SWIGTYPE_p_size_type swig_types[48]
+#define SWIGTYPE_p_std__size_t swig_types[49]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t swig_types[50]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[51]
+#define SWIGTYPE_p_value_type swig_types[52]
+static swig_type_info *swig_types[54];
+static swig_module_info swig_module = {swig_types, 53, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4341,8 +4340,42 @@ SWIG_From_size_t  (size_t value)
 #endif
 }
 
-SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_5(gum::BayesNet< double > const &bn,PyObject *latents,bool assumeNonSpurious=false){
+SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_8(gum::BayesNet< double > const &bn,PyObject *latents,bool assumeNonSpurious=false){
     auto* cm = new gum::CausalModel<double>(bn);
+    if (latents == Py_None) return cm;
+    if (!PySequence_Check(latents)) {
+      delete cm;
+      PyErr_SetString(PyExc_TypeError, "CausalModel: latents must be a sequence of (name, children) pairs");
+      return nullptr;
+    }
+    Py_ssize_t n = PySequence_Size(latents);
+    for (Py_ssize_t i = 0; i < n; ++i) {
+      PyObject* item = PySequence_GetItem(latents, i);
+      if (!PySequence_Check(item) || PySequence_Size(item) != 2) {
+        Py_DecRef(item);
+        delete cm;
+        PyErr_SetString(PyExc_TypeError, "CausalModel: each latent descriptor must be a (name, children) pair");
+        return nullptr;
+      }
+      PyObject* pyname     = PySequence_GetItem(item, 0);
+      PyObject* pychildren = PySequence_GetItem(item, 1);
+      Py_DecRef(item);
+      std::string              name = PyAgrumHelper::stringFromPyObject(pyname);
+      Py_DecRef(pyname);
+      std::vector<std::string> childNames;
+      Py_ssize_t               nc = PySequence_Size(pychildren);
+      for (Py_ssize_t j = 0; j < nc; ++j) {
+        PyObject* child = PySequence_GetItem(pychildren, j);
+        childNames.push_back(PyAgrumHelper::stringFromPyObject(child));
+        Py_DecRef(child);
+      }
+      Py_DecRef(pychildren);
+      cm->addLatentVariable(name, childNames, assumeNonSpurious);
+    }
+    return cm;
+  }
+SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_10(gum::DAG const &dag,PyObject *latents,bool assumeNonSpurious=false){
+    auto* cm = new gum::CausalModel<double>(dag);
     if (latents == Py_None) return cm;
     if (!PySequence_Check(latents)) {
       delete cm;
@@ -6964,6 +6997,132 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  gum::LatentDescriptorVector *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::LatentDescriptorVector const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::LatentDescriptorVector const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::LatentDescriptorVector * >(argp2);
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CausalModel" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new gum::CausalModel< double >((gum::DAG const &)*arg1,(gum::LatentDescriptorVector const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  gum::LatentDescriptorVector *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::LatentDescriptorVector const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::LatentDescriptorVector const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::LatentDescriptorVector * >(argp2);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new gum::CausalModel< double >((gum::DAG const &)*arg1,(gum::LatentDescriptorVector const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new gum::CausalModel< double >((gum::DAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -6994,7 +7153,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_7(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -8804,6 +8963,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CausalModel_hasObservationalBN(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_hasObservationalBN" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  {
+    try {
+      result = (bool)((gum::CausalModel< double > const *)arg1)->hasObservationalBN();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CausalModel_observationalBN(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
@@ -9332,7 +9522,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_connectedComponents(PyObject *self, PyObj
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  gum::HashTable< gum::NodeId,gum::NodeSet > result;
+  SwigValueWrapper< gum::NodeProperty< std::size_t > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -9350,7 +9540,9 @@ SWIGINTERN PyObject *_wrap_CausalModel_connectedComponents(PyObject *self, PyObj
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::HashTable< gum::NodeId,gum::NodeSet >(result)), SWIGTYPE_p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t, SWIG_POINTER_OWN |  0 );
+  {
+    resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -9486,7 +9678,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_8(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
@@ -9515,7 +9707,7 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_5(PyObject *self, Py_ssize_t no
   arg3 = static_cast< bool >(val3);
   {
     try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_5((gum::BayesNet< double > const &)*arg1,arg2,arg3);
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_8((gum::BayesNet< double > const &)*arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9528,7 +9720,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_9(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
@@ -9549,7 +9741,83 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_6(PyObject *self, Py_ssize_t no
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_5((gum::BayesNet< double > const &)*arg1,arg2);
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_8((gum::BayesNet< double > const &)*arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_10(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  arg2 = swig_obj[1];
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CausalModel" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_10((gum::DAG const &)*arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_11(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_10((gum::DAG const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9584,50 +9852,130 @@ check_1:
   if (argc == 1) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_2;
-    return _wrap_new_CausalModel__SWIG_3(self, argc, argv);
+    return _wrap_new_CausalModel__SWIG_5(self, argc, argv);
   }
 check_2:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_4(self, argc, argv);
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_3;
+    return _wrap_new_CausalModel__SWIG_6(self, argc, argv);
+  }
+check_3:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_7(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
     int _v = 0;
     {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_5;
+    {
       int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
-    if (!_v) goto check_4;
-    return _wrap_new_CausalModel__SWIG_2(self, argc, argv);
+    if (!_v) goto check_5;
+    return _wrap_new_CausalModel__SWIG_4(self, argc, argv);
   }
-check_4:
+check_5:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_6(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 3) {
     int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_6;
     {
       int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_6;
+    return _wrap_new_CausalModel__SWIG_2(self, argc, argv);
+  }
+check_6:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_7;
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_9(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_7:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_11(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_9;
+    {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_9;
     PyObject *retobj = _wrap_new_CausalModel__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-check_6:
+check_9:
   
   if (argc == 3) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_5(self, argc, argv);
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_10;
+    {
+      _v = (argv[1] != 0);
+    }
+    if (!_v) goto check_10;
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_8(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_10:
+  
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_11;
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_3(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_11:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_10(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -9638,10 +9986,15 @@ fail:
     "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,gum::LatentDescriptorVector const &,bool)\n"
     "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,gum::LatentDescriptorVector const &)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::DAG const &,gum::LatentDescriptorVector const &,bool)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::DAG const &,gum::LatentDescriptorVector const &)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::DAG const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::CausalModel< double > const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::CausalModel< double > &&)\n"
     "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,PyObject *,bool)\n"
-    "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,PyObject *)\n");
+    "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,PyObject *)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::DAG const &,PyObject *,bool)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::DAG const &,PyObject *)\n");
   return 0;
 }
 
@@ -12959,6 +13312,21 @@ static PyMethodDef SwigMethods[] = {
 		">>> print(cm.toDot())\n"
 		"\n"
 		""},
+	 { "CausalModel_hasObservationalBN", _wrap_CausalModel_hasObservationalBN, METH_O, "\n"
+		"\n"
+		"Whether this model was built from a BayesNet (CPTs available).\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"    True if the model has an observational BayesNet (built with a BayesNet\n"
+		"    constructor); False if it was built from a plain DAG.\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.CausalModel.observationalBN : raises if this is False.\n"
+		"\n"
+		""},
 	 { "CausalModel_observationalBN", _wrap_CausalModel_observationalBN, METH_O, "\n"
 		"\n"
 		"Return the observational Bayesian network underlying the causal model.\n"
@@ -12973,6 +13341,12 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"pyagrum.BayesNet\n"
 		"    The observational BN (observed variables only).\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.OperationNotAllowed\n"
+		"    If the model has no observational BayesNet (built from a DAG) -- see\n"
+		"    :meth:`hasObservationalBN`.\n"
 		"\n"
 		""},
 	 { "CausalModel_causalDAG", _wrap_CausalModel_causalDAG, METH_O, "\n"
@@ -13087,12 +13461,20 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "CausalModel_connectedComponents", _wrap_CausalModel_connectedComponents, METH_O, "\n"
 		"\n"
-		"Return the connected components of the causal DAG (treating arcs as undirected).\n"
+		"Return the weakly connected components of the causal DAG (treating arcs as undirected).\n"
+		"\n"
+		"Each node is mapped to the id of its component root (an arbitrarily chosen node from the\n"
+		"same component).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"dict of int → set of int\n"
-		"    A mapping from component index to the set of NodeIds in that component.\n"
+		"dict[int, int]\n"
+		"    mapping node id → component root id\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component\n"
+		"connectedComponentsCount : returns the number of components\n"
 		"\n"
 		""},
 	 { "CausalModel_variable", _wrap_CausalModel_variable, METH_VARARGS, "\n"
@@ -13113,6 +13495,8 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.NotFound\n"
 		"    if the id or name does not correspond to an observed variable in the model\n"
+		"pyagrum.OperationNotAllowed\n"
+		"    if the model has no observational BayesNet (built from a DAG).\n"
 		"\n"
 		""},
 	 { "new_CausalModel", _wrap_new_CausalModel, METH_VARARGS, NULL},
@@ -13474,7 +13858,6 @@ static swig_type_info _swigt__p_ArcIterator = {"_p_ArcIterator", "ArcIterator *"
 static swig_type_info _swigt__p_EdgeIterator = {"_p_EdgeIterator", "EdgeIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Handler = {"_p_Handler", "Handler *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_HandlerSafe = {"_p_HandlerSafe", "HandlerSafe *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t = {"_p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t", "HashTable< gum::NodeId,gum::NodeSet > *|HashTable< std::size_t,gum::Set< std::size_t > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_HashTableT_std__size_t_std__size_t_t = {"_p_HashTableT_std__size_t_std__size_t_t", "HashTable< gum::NodeId,gum::Idx > *|HashTable< std::size_t,std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_IsMissing = {"_p_IsMissing", "IsMissing *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MissingValType = {"_p_MissingValType", "MissingValType *", 0, 0, (void*)0, 0};
@@ -13530,7 +13913,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_EdgeIterator,
   &_swigt__p_Handler,
   &_swigt__p_HandlerSafe,
-  &_swigt__p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t,
   &_swigt__p_HashTableT_std__size_t_std__size_t_t,
   &_swigt__p_IsMissing,
   &_swigt__p_MissingValType,
@@ -13586,7 +13968,6 @@ static swig_cast_info _swigc__p_ArcIterator[] = {  {&_swigt__p_ArcIterator, 0, 0
 static swig_cast_info _swigc__p_EdgeIterator[] = {  {&_swigt__p_EdgeIterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Handler[] = {  {&_swigt__p_Handler, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_HandlerSafe[] = {  {&_swigt__p_HandlerSafe, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t[] = {  {&_swigt__p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_HashTableT_std__size_t_std__size_t_t[] = {  {&_swigt__p_HashTableT_std__size_t_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_IsMissing[] = {  {&_swigt__p_IsMissing, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MissingValType[] = {  {&_swigt__p_MissingValType, 0, 0, 0},{0, 0, 0, 0}};
@@ -13642,7 +14023,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_EdgeIterator,
   _swigc__p_Handler,
   _swigc__p_HandlerSafe,
-  _swigc__p_HashTableT_std__size_t_gum__SetT_std__size_t_t_t,
   _swigc__p_HashTableT_std__size_t_std__size_t_t,
   _swigc__p_IsMissing,
   _swigc__p_MissingValType,

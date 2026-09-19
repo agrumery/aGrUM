@@ -41,12 +41,20 @@
 
 %feature("docstring") gum::CausalModel
 "
-A causal model pairing an observational Bayesian network with a causal DAG.
+A causal model pairing a causal DAG with an optional observational Bayesian network.
 
-A CausalModel extends an observational BayesNet by adding latent (hidden)
+A CausalModel can be built either from a full BayesNet (CPTs available, the classic
+use case) or from a plain named DAG (structure only, no CPTs -- see the third
+constructor form below and :func:`hasObservationalBN`). It adds latent (hidden)
 variables that represent unobserved common causes between observed variables.
-The causal DAG includes both observed and latent nodes, while the observational
-BN contains only the observed ones.
+The causal DAG includes both observed and latent nodes; when built from a BayesNet,
+the observational BN contains only the observed ones.
+
+Every structural operation (backdoor/frontdoor, existsArc, toDot, inducedCausalSubModel,
+do-calculus identification via :func:`pyagrum.causalImpact`) works in both cases.
+Anything that needs actual conditional probabilities (:meth:`observationalBN`,
+:meth:`variable`, evaluating a :class:`pyagrum.CausalImpact`, :func:`pyagrum.counterfactual`)
+raises :class:`pyagrum.OperationNotAllowed` when the model has no BayesNet.
 
 CausalModel(bn) -> CausalModel
     Parameters:
@@ -64,6 +72,16 @@ CausalModel(bn, latents, assumeNonSpurious=False) -> CausalModel
           affected children are removed as they are assumed to be explained by
           the latent confounder).
 
+CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
+    Build a causal model from a plain (named) DAG, without any BayesNet.
+
+    Parameters:
+        - **dag** (*pyagrum.DAG*) -- a named DAG (every node must have a name).
+        - **latents** (*list of (str, list of str)*, optional) -- same format as above.
+        - **assumeNonSpurious** (*bool*) -- same meaning as above.
+
+    :func:`hasObservationalBN` returns False on the resulting model.
+
 Examples
 --------
 >>> import pyagrum as gum
@@ -73,6 +91,14 @@ Examples
 Create a model with a latent confounder U between X and Y:
 
 >>> cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
+
+Build a causal model from a DAG only (no CPTs needed for structural queries):
+
+>>> dag = gum.fastDAG('X->Y->Z')
+>>> cm = gum.CausalModel(dag)
+>>> cm.hasObservationalBN()
+False
+>>> cm.backDoor('X', 'Z')  # structural queries work without a BN
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable
@@ -213,6 +239,21 @@ See Also
 pyagrum.DoorCriteria.enumerateFrontdoorSets : enumerate all valid sets.
 "
 
+%feature("docstring") gum::CausalModel::hasObservationalBN
+"
+Whether this model was built from a BayesNet (CPTs available).
+
+Returns
+-------
+bool
+    True if the model has an observational BayesNet (built with a BayesNet
+    constructor); False if it was built from a plain DAG.
+
+See Also
+--------
+pyagrum.CausalModel.observationalBN : raises if this is False.
+"
+
 %feature("docstring") gum::CausalModel::observationalBN
 "
 Return the observational Bayesian network underlying the causal model.
@@ -227,6 +268,12 @@ Returns
 -------
 pyagrum.BayesNet
     The observational BN (observed variables only).
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If the model has no observational BayesNet (built from a DAG) -- see
+    :meth:`hasObservationalBN`.
 "
 
 %feature("docstring") gum::CausalModel::causalDAG
@@ -341,12 +388,20 @@ set of int
 
 %feature("docstring") gum::CausalModel::connectedComponents
 "
-Return the connected components of the causal DAG (treating arcs as undirected).
+Return the weakly connected components of the causal DAG (treating arcs as undirected).
+
+Each node is mapped to the id of its component root (an arbitrarily chosen node from the
+same component).
 
 Returns
 -------
-dict of int → set of int
-    A mapping from component index to the set of NodeIds in that component.
+dict[int, int]
+    mapping node id → component root id
+
+See Also
+--------
+connectedComponentsList : returns a dict[int, set[int]] grouping nodes by component
+connectedComponentsCount : returns the number of components
 "
 
 %feature("docstring") gum::CausalModel::inducedCausalSubModel
@@ -419,4 +474,6 @@ Raises
 ------
 pyagrum.NotFound
     if the id or name does not correspond to an observed variable in the model
+pyagrum.OperationNotAllowed
+    if the model has no observational BayesNet (built from a DAG).
 "
