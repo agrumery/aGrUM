@@ -52,7 +52,9 @@
 #include <cctype>
 #include <format>
 #include <map>
+#include <set>
 #include <sstream>
+#include <tuple>
 
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
@@ -1125,6 +1127,17 @@ namespace gum {
     return _timeSlicesToDot_(unroll(T), highlightReplicated);
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  std::string KTBN< GUM_SCALAR >::_escapeDot_(std::string_view name) {
+    std::string out;
+    out.reserve(name.size());
+    for (const char c: name) {
+      if (c == '"') out += '\\';
+      out += c;
+    }
+    return out;
+  }
+
   // Direct port of pyAgrum's pyagrum.lib.dynamicBN._TimeSlicesToDot: groups nodes by
   // timeslice (one cluster per slice, atemporal nodes ungrouped), draws the real arcs
   // unconstrained, then chains each temporal variable across consecutive slices with
@@ -1132,15 +1145,6 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::_timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
                                                     bool highlightReplicated) const {
-    const auto escape_ = [](const std::string& name) {
-      std::string out;
-      out.reserve(name.size());
-      for (const char c: name) {
-        if (c == '"') out += '\\';
-        out += c;
-      }
-      return out;
-    };
 
     // Group (full name, base label) by timeslice. std::map keeps keys sorted, and
     // ATEMPORAL == -1 so atemporal variables naturally sort first, followed by
@@ -1166,7 +1170,7 @@ namespace gum {
         dot << "    style=filled;\n";
         dot << "    bgcolor=\"lightyellow\";\n";
         for (const auto& [full, label]: nodes)
-          dot << "    \"" << escape_(full) << "\" [label=\"" << escape_(label) << "\"];\n";
+          dot << "    \"" << _escapeDot_(full) << "\" [label=\"" << _escapeDot_(label) << "\"];\n";
         dot << "  }\n";
       } else {
         const bool replicated = highlightReplicated && Size(slice) >= _k_;
@@ -1175,7 +1179,7 @@ namespace gum {
         dot << "    style=filled;\n";
         dot << "    bgcolor=\"" << (replicated ? "lightcyan" : "#DDDDDD") << "\";\n";
         for (const auto& [full, label]: nodes)
-          dot << "    \"" << escape_(full) << "\" [label=\"" << escape_(label) << "\"];\n";
+          dot << "    \"" << _escapeDot_(full) << "\" [label=\"" << _escapeDot_(label) << "\"];\n";
         dot << "  }\n";
       }
       dot << "\n";
@@ -1183,8 +1187,8 @@ namespace gum {
 
     dot << "  edge [color=black, constraint=false];\n";
     for (const auto& arc: bn.arcs())
-      dot << "  \"" << escape_(bn.variable(arc.tail()).name()) << "\" -> \""
-          << escape_(bn.variable(arc.head()).name()) << "\";\n";
+      dot << "  \"" << _escapeDot_(bn.variable(arc.tail()).name()) << "\" -> \""
+          << _escapeDot_(bn.variable(arc.head()).name()) << "\";\n";
 
     dot << "\n  edge [style=invis, constraint=true];\n";
     if (const auto it0 = timeslices.find(0); it0 != timeslices.end()) {
@@ -1195,8 +1199,8 @@ namespace gum {
         for (const auto& [slice, nodes]: timeslices) {
           if (slice == ATEMPORAL) continue;
           if (!first)
-            dot << "  \"" << escape_(_encode_(label, prec)) << "\" -> \""
-                << escape_(_encode_(label, slice)) << "\";\n";
+            dot << "  \"" << _escapeDot_(_encode_(label, prec)) << "\" -> \""
+                << _escapeDot_(_encode_(label, slice)) << "\";\n";
           prec  = slice;
           first = false;
         }
@@ -1210,6 +1214,41 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   INLINE std::string KTBN< GUM_SCALAR >::bnToDot() const {
     return _bn_.toDot();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string KTBN< GUM_SCALAR >::summaryGraph() const {
+    std::set< std::string > baseNames(_temporal_.begin(), _temporal_.end());
+    baseNames.insert(_atemporal_.begin(), _atemporal_.end());
+
+    const int lastSlice = static_cast< int >(_k_) - 1;
+    std::set< std::tuple< std::string, std::string, int > > edges;
+    for (const auto& arc: _bn_.arcs()) {
+      const auto [tailBase, tailSlice] = _decodeName_(_bn_.variable(arc.tail()).name());
+      const auto [headBase, headSlice] = _decodeName_(_bn_.variable(arc.head()).name());
+      if (headSlice != lastSlice) continue;   // not part of the repeated transition kernel
+
+      const int lag = (tailSlice == ATEMPORAL) ? ATEMPORAL : headSlice - tailSlice;
+      edges.emplace(tailBase, headBase, lag);
+    }
+
+    std::stringstream dot;
+    dot << "digraph KTBN {\n";
+    dot << "  rankdir=LR;\n";
+    dot << "  node [color=\"#000000\", fillcolor=white, style=filled];\n\n";
+
+    for (const auto& base: baseNames)
+      dot << "  \"" << _escapeDot_(base) << "\";\n";
+    dot << "\n";
+
+    for (const auto& [tailBase, headBase, lag]: edges) {
+      dot << "  \"" << _escapeDot_(tailBase) << "\" -> \"" << _escapeDot_(headBase) << "\"";
+      if (lag != ATEMPORAL) dot << " [label=\"" << lag << "\"]";
+      dot << ";\n";
+    }
+
+    dot << "}\n";
+    return dot.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >

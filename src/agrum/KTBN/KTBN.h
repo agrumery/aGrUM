@@ -680,6 +680,23 @@ namespace gum {
      */
     std::string bnToDot() const;
 
+    /**
+     * @brief Returns the Graphviz DOT string of the summary graph: the
+     * projection of the transition kernel alone (the pattern that actually
+     * repeats through time when unrolling), not the whole template.
+     *
+     * Every process (temporal or atemporal) becomes a single node. Only arcs
+     * whose head lies in the last time slice (@f$k-1@f$) are kept -- an arc
+     * between two earlier slices belongs to the initial-condition structure
+     * (slices @f$0, \ldots, k-2@f$), not to the repeated pattern, and is
+     * dropped. Several arcs may connect the same pair of nodes when the
+     * kernel depends on more than one lag (e.g. both @c X[k-2] and @c X[k-3]
+     * pointing to @c X[k-1]): each is kept and labelled with its @e lag
+     * (head slice minus tail slice). An arc from an atemporal variable has no
+     * lag and is left unlabelled.
+     */
+    std::string summaryGraph() const;
+
     /// @}
 
     private:
@@ -734,6 +751,10 @@ namespace gum {
     /// @brief Renders @p bn as time-slice-clustered DOT. Shared engine behind
     /// toDot() (on @c _bn_) and toUnrolledDot() (on unroll(T)).
     std::string _timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn, bool highlightReplicated) const;
+
+    /// @brief Escapes double quotes for a DOT identifier or label. Shared by
+    /// _timeSlicesToDot_() and summaryGraph().
+    static std::string _escapeDot_(std::string_view name);
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS

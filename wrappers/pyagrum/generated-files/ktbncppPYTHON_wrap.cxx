@@ -8532,6 +8532,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_KTBN_summaryGraph(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::KTBN< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__KTBNT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBN_summaryGraph" "', argument " "1"" of type '" "gum::KTBN< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::KTBN< double > * >(argp1);
+  {
+    try {
+      result = ((gum::KTBN< double > const *)arg1)->summaryGraph();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_KTBN_fillCPT__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::KTBN< double > *arg1 = 0 ;
@@ -25001,6 +25032,26 @@ static PyMethodDef SwigMethods[] = {
 		"str\n"
 		"    the Graphviz dot string of the underlying storage BayesNet, with nodes\n"
 		"    labelled by their internal engine names (no time-slice clustering)\n"
+		"\n"
+		""},
+	 { "KTBN_summaryGraph", _wrap_KTBN_summaryGraph, METH_O, "\n"
+		"\n"
+		"Returns the Graphviz dot string of the summary graph: the projection of the\n"
+		"transition kernel alone (the pattern that actually repeats through time when\n"
+		"unrolling), not the whole template.\n"
+		"\n"
+		"Every process (temporal or atemporal) becomes a single node. Only arcs whose\n"
+		"head lies in the last time slice (k-1) are kept -- an arc between two earlier\n"
+		"slices belongs to the initial-condition structure (slices 0..k-2), not to the\n"
+		"repeated pattern, and is dropped. Several arcs may connect the same pair of\n"
+		"nodes when the kernel depends on more than one lag: each is kept and labelled\n"
+		"with its lag (head slice minus tail slice). An arc from an atemporal variable\n"
+		"has no lag and is left unlabelled.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"    a Graphviz dot string\n"
 		"\n"
 		""},
 	 { "KTBN_fillCPT", _wrap_KTBN_fillCPT, METH_VARARGS, "\n"

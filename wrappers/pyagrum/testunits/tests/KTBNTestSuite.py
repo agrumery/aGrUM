@@ -295,11 +295,36 @@ class KTBNConstructionTestCase(pyAgrumTestCase):
     self.assertIn("digraph", bndot)
     self.assertIn("X[0]", bndot)
 
+    # summaryGraph(): k=2, so lastSlice=1 -- both arcs qualify (X[0]->X[1] head=1,
+    # C->X[1] head=1). X[0]->X[1] becomes a self-loop labelled with lag 1; the
+    # atemporal C->X arc carries no label.
+    sumdot = m.summaryGraph()
+    self.assertIn("digraph KTBN", sumdot)
+    self.assertIn('"X" -> "X" [label="1"]', sumdot)
+    self.assertIn('"C" -> "X";', sumdot)
+
     # NOTE: unlike BayesNet/MarkovRandomField, KTBN has no __str__ bound to
     # toString() yet (no operator<<-based %extend in the SWIG layer) -- str(m)
     # currently falls back to the default SWIG proxy repr. Calling toString()
     # directly, as intended, still works fine.
     self.assertIsInstance(m.toString(), str)
+
+  def testSummaryGraphMultiLagAndInitFilter(self):
+    # k=3: Z[0]->Z[1] is an initialization-only arc (head slice 1 != lastSlice
+    # 2), must be filtered out. Z[0]->Z[2] (lag 2) and Z[1]->Z[2] (lag 1) both
+    # belong to the transition kernel (head slice 2 == lastSlice) and must
+    # coexist as two distinct labelled arcs between the same pair of nodes.
+    m = gum.KTBN(3)
+    m.add(gum.LabelizedVariable("Z", "", 2), True)
+    m.addArc("Z", 0, "Z", 1)
+    m.addArc("Z", 0, "Z", 2)
+    m.addArc("Z", 1, "Z", 2)
+
+    dot = m.summaryGraph()
+    self.assertIn('"Z" -> "Z" [label="2"]', dot)
+    self.assertIn('"Z" -> "Z" [label="1"]', dot)
+    # the initialization arc Z[0]->Z[1] must not leak in: exactly two "Z"->"Z" arcs
+    self.assertEqual(dot.count('"Z" -> "Z"'), 2)
 
 
 class KTBNArcTestCase(pyAgrumTestCase):

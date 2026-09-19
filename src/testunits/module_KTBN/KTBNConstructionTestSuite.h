@@ -472,9 +472,41 @@ namespace gum_tests {
     CHECK(bndot.find("digraph") != std::string::npos);
     CHECK(bndot.find("X[0]") != std::string::npos);
 
+    // summaryGraph(): k=2, so lastSlice=1 -- both arcs qualify (X[0]->X[1] head=1,
+    // C->X[1] head=1). X[0]->X[1] becomes a self-loop labelled with lag 1; the
+    // atemporal C->X arc carries no label.
+    const std::string sumdot = m.summaryGraph();
+    CHECK(sumdot.find("digraph KTBN") != std::string::npos);
+    CHECK(sumdot.find("\"X\" -> \"X\" [label=\"1\"]") != std::string::npos);
+    CHECK(sumdot.find("\"C\" -> \"X\";") != std::string::npos);
+
     // operator<< prints toString()
     std::stringstream ss;
     ss << m;
     CHECK_EQ(ss.str(), m.toString());
+  }
+
+  GUM_TEST(SummaryGraphMultiLagAndInitFilter) {
+    // k=3: Z[0]->Z[1] is an initialization-only arc (head slice 1 != lastSlice
+    // 2), must be filtered out. Z[0]->Z[2] (lag 2) and Z[1]->Z[2] (lag 1) both
+    // belong to the transition kernel (head slice 2 == lastSlice) and must
+    // coexist as two distinct labelled arcs between the same pair of nodes.
+    gum::KTBN< double > m(3);
+    m.add(gum::LabelizedVariable("Z", "", 2), true);
+    m.addArc("Z", 0, "Z", 1);
+    m.addArc("Z", 0, "Z", 2);
+    m.addArc("Z", 1, "Z", 2);
+
+    const std::string dot = m.summaryGraph();
+    CHECK(dot.find("\"Z\" -> \"Z\" [label=\"2\"]") != std::string::npos);
+    CHECK(dot.find("\"Z\" -> \"Z\" [label=\"1\"]") != std::string::npos);
+
+    // the initialization arc Z[0]->Z[1] must not leak in as an unlabelled or a
+    // lag-1 arc counted only once: check there are exactly two "Z" -> "Z" arcs
+    std::size_t count = 0;
+    for (std::size_t pos = dot.find("\"Z\" -> \"Z\""); pos != std::string::npos;
+         pos             = dot.find("\"Z\" -> \"Z\"", pos + 1))
+      ++count;
+    CHECK_EQ(count, std::size_t(2));
   }
 }   // namespace gum_tests

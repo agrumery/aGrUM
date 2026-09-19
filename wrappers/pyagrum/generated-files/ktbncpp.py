@@ -808,6 +808,29 @@ class KTBN(object):
         """
         return _ktbncpp.KTBN_bnToDot(self)
 
+    def summaryGraph(self) -> str:
+        r"""
+
+        Returns the Graphviz dot string of the summary graph: the projection of the
+        transition kernel alone (the pattern that actually repeats through time when
+        unrolling), not the whole template.
+
+        Every process (temporal or atemporal) becomes a single node. Only arcs whose
+        head lies in the last time slice (k-1) are kept -- an arc between two earlier
+        slices belongs to the initial-condition structure (slices 0..k-2), not to the
+        repeated pattern, and is dropped. Several arcs may connect the same pair of
+        nodes when the kernel depends on more than one lag: each is kept and labelled
+        with its lag (head slice minus tail slice). An arc from an atemporal variable
+        has no lag and is left unlabelled.
+
+        Returns
+        -------
+        str
+            a Graphviz dot string
+
+        """
+        return _ktbncpp.KTBN_summaryGraph(self)
+
     def fillCPT(self, *args) -> None:
         r"""
 
