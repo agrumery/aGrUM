@@ -66,6 +66,7 @@ def plotFollowKTBN(
   """
 
   # lazy import
+  import math
   import numpy as np
   import pyagrum.ktbn as ktbn
   import matplotlib.pyplot as plt
@@ -84,20 +85,32 @@ def plotFollowKTBN(
   kie.makeInference(T)
 
   x = np.arange(T)
-  for var in lovars:
+
+  # arrange subplots as a near-square grid rather than one figure per variable
+  n = len(lovars)
+  ncols = math.ceil(math.sqrt(n))
+  nrows = math.ceil(n / ncols)
+  fig, axes = plt.subplots(nrows, ncols, figsize=(6 * ncols, 4 * nrows), squeeze=False)
+  flat_axes = axes.flatten()
+
+  for ax, var in zip(flat_axes, lovars):
     v0 = m.variable(var, 0)
     series = kie.posteriors(var)
     lpots = [[p.tolist()[i] for p in series] for i in range(v0.domainSize())]
 
-    _, ax = plt.subplots()
-    plt.xlim(left=0, right=T - 1)
-    plt.ylim(top=1, bottom=0)
+    ax.set_xlim(left=0, right=T - 1)
+    ax.set_ylim(top=1, bottom=0)
     ax.xaxis.grid()
-    plt.title(f"Following variable {var}", fontsize=20)
-    plt.xlabel("time")
+    ax.set_title(f"Following variable {var}", fontsize=20)
+    ax.set_xlabel("time")
 
     stack = ax.stackplot(x, lpots)
     proxy_rects = [Rectangle((0, 0), 1, 1, fc=pc.get_facecolor()[0]) for pc in stack]
     labels = [v0.label(i) for i in range(v0.domainSize())]
-    plt.legend(proxy_rects, labels, loc="center left", bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
-    plt.show()
+    ax.legend(proxy_rects, labels, loc="center left", bbox_to_anchor=(1, 0.5), ncol=1, fancybox=True, shadow=True)
+
+  for ax in flat_axes[n:]:
+    ax.set_visible(False)
+
+  fig.tight_layout()
+  plt.show()
