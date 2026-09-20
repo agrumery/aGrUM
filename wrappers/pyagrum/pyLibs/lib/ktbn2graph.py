@@ -45,11 +45,14 @@ The purpose of this module is to provide tools for mapping KTBN models (and infe
 import pyagrum
 
 
-def plotFollowKTBN(
+def getFollowKTBN(
   m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: dict = None, interventions: dict = None
-):
+) -> str:
   """
-  Plots the evolution of the posterior distribution of a set of variables in a KTBN model.
+  Builds the evolution of the posterior distribution of a set of variables in a KTBN model as an HTML (img) fragment.
+
+  This HTML fragment can then be combined with other pyagrum.lib.notebook fragments, e.g. in
+  `pyagrum.lib.notebook.sideBySide` or `pyagrum.lib.notebook.flow`.
 
   Parameters
   ----------
@@ -63,9 +66,16 @@ def plotFollowKTBN(
       A dictionary of observations, where keys are variable names and values are the observed values.
   interventions: dict
       A dictionary of interventions, where keys are variable names and values are the intervened values.
+
+  Returns
+  -------
+  str
+    the HTML representation of the plot
   """
 
   # lazy import
+  import base64
+  import io
   import math
   import numpy as np
   import pyagrum.ktbn as ktbn
@@ -113,4 +123,35 @@ def plotFollowKTBN(
     ax.set_visible(False)
 
   fig.tight_layout()
-  plt.show()
+
+  bio = io.BytesIO()
+  fig.savefig(bio, format="png", bbox_inches="tight")
+  sB64Img = base64.b64encode(bio.getvalue()).decode()
+  plt.close(fig)
+  return f'<img src="data:image/png;base64,{sB64Img}\n">'
+
+
+def plotFollowKTBN(
+  m: pyagrum.KTBN, lovars: list[str], *, T: int, observations: dict = None, interventions: dict = None
+) -> None:
+  """
+  Plots the evolution of the posterior distribution of a set of variables in a KTBN model.
+
+  Parameters
+  ----------
+  m : gum.KTBN
+      The KTBN model.
+  lovars : list
+      List of variable names to follow.
+  T : int
+      The number of time steps.
+  observations : dict
+      A dictionary of observations, where keys are variable names and values are the observed values.
+  interventions: dict
+      A dictionary of interventions, where keys are variable names and values are the intervened values.
+  """
+  import IPython.display
+
+  IPython.display.display(
+    IPython.display.HTML(getFollowKTBN(m, lovars, T=T, observations=observations, interventions=interventions))
+  )
