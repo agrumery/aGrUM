@@ -1774,7 +1774,7 @@ _idcpp.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 #                                                                          #
 ############################################################################
 
-__version__ = '3.1.1.9'
+__version__ = '3.2.0'
 __license__ = __doc__
 __project_url__ = 'https://agrum.org'
 __project_name__ = 'pyAgrum'
