@@ -13,6 +13,8 @@ wrappers/pyagrum/generated-files/*.pyold.py
 CMakeCache.txt
 CMakeFiles
 build
+build-conda-mac
+build-conda-linux
 cmake-build-*
 .options.act2.py.db
 aGrUM-dev.kdev
