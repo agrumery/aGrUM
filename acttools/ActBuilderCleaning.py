@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import errno
 import shutil
 import time
 import glob
@@ -54,6 +55,21 @@ class ActBuilderCleaning(ActBuilder):
 
   def check_consistency(self):
     return True
+
+  def _rmtree_or_empty(self, path: str) -> None:
+    try:
+      shutil.rmtree(path)
+    except OSError as e:
+      if e.errno != errno.EBUSY:
+        raise
+      # path is an active mount point (e.g. a Docker bind mount) -- the directory
+      # itself can never be rmdir'd from inside its own mount namespace; clear its
+      # contents instead.
+      for entry in os.scandir(path):
+        if entry.is_dir(follow_symlinks=False):
+          shutil.rmtree(entry.path)
+        else:
+          os.remove(entry.path)
 
   def rectouch(self, suf: str) -> int:
     n = 0
@@ -78,7 +94,7 @@ class ActBuilderCleaning(ActBuilder):
     if os.path.isdir("build"):
       notif("Removing build")
       if not self.current["dry_run"]:
-        shutil.rmtree("build")
+        self._rmtree_or_empty("build")
       ops += 1
     if self.current["action"] == "purge":
       self.run_start("purging atg files")
