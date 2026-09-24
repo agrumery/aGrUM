@@ -1,0 +1,35 @@
+; Module-definition file exporting lrslib's C API from agrumCN's DLL, used by
+; both MSVC and MinGW (Modules.agrum.cmake, via configure_file() -- this is a
+; .def.in template, not a usable .def directly). lrslib
+; (src/agrum/base/external/lrslib/) is vendored third-party code and must not
+; be edited to add export attributes -- this .def is aGrUM-owned glue instead.
+; MinGW does need it too, despite GNU ld's usual "auto-export everything"
+; fallback: that fallback is disabled the moment any symbol in the link is
+; explicitly dllexport-tagged, which agrumCN's own GUM_PUBLIC_CN-tagged
+; classes are under BUILD_SHARED_LIBS=ON.
+;
+; LIBRARY must name the DLL dlltool/link.exe actually produce: MSVC has no
+; "lib" prefix on Windows shared libs (agrumCN.dll), MinGW follows the GNU
+; convention and does (libagrumCN.dll) -- a mismatch here builds fine (this
+; is purely metadata for the import library, not the linker) but leaves any
+; DLL depending on agrumCN (_cncpp.pyd) with a NEEDED entry naming a file
+; that doesn't exist, "module not found" at import time, not link time.
+LIBRARY @LRSLIB_DEF_LIBRARY_NAME@
+EXPORTS
+    lrs_main
+    redund_main
+    lrs_alloc_dat
+    lrs_alloc_dic
+    lrs_getfirstbasis
+    lrs_getnextbasis
+    lrs_getsolution
+    lrs_close
+    lrs_init
+    lrs_printoutput
+    lrs_set_row
+    checkindex
+    lrs_free_dic
+    lrs_free_dat
+    lrs_alloc_mp_vector
+    lrs_clear_mp_vector
+    lrs_clear_mp_matrix

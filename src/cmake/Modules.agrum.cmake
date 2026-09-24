@@ -129,6 +129,38 @@ macro(buildFileListsWithModules)
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
 
             # lrslib (base/external/lrslib) is vendored third-party C code with zero
+            # export attributes on its declarations -- see the .def.in file's own header
+            # comment for why it must not be tagged directly. Attach the .def only when
+            # agrumCN will actually be a DLL for MSVC/MinGW to apply it to: standalone
+            # aGrUM's own BUILD_SHARED_LIBS=ON default, or this chantier's pyAgrum
+            # BUILD_SHARED_LIBS=ON exercise. Never under pyAgrum's normal static build,
+            # where agrumCN is a plain archive and both linkers reject a .def input.
+            # MSVC and MinGW alike need it: GNU ld's "auto-export everything" fallback
+            # only applies when NO symbol in the link is explicitly dllexport-tagged --
+            # agrumCN's own GUM_PUBLIC_CN-tagged classes are (BUILD_SHARED_LIBS=ON, see
+            # the blanking guard below), which switches ld to explicit-only mode and
+            # drops lrslib's untagged C symbols (e.g. checkindex, LNK/undefined
+            # reference from LrsWrapper_tpl.h) same as MSVC without the .def.
+            if (OPTION STREQUAL "CN" AND WIN32 AND (MSVC OR MINGW) AND (BUILD_SHARED_LIBS OR NOT BUILD_PYTHON))
+                # The .def's LIBRARY line must name the DLL the linker actually produces --
+                # MSVC has no "lib" prefix on Windows shared libs (agrumCN.dll), MinGW
+                # follows the GNU convention and does (libagrumCN.dll). A mismatch here
+                # builds fine (pure import-library metadata) but leaves _cncpp.pyd's
+                # NEEDED entry naming a file that doesn't exist -- "module not found" at
+                # import time, not link time (confirmed on CI, pipeline 2883976149).
+                if (MINGW)
+                    set (LRSLIB_DEF_LIBRARY_NAME "libagrumCN.dll")
+                else ()
+                    set (LRSLIB_DEF_LIBRARY_NAME "agrumCN.dll")
+                endif ()
+                configure_file (
+                        ${AGRUM_SOURCE_DIR}/agrum/CN/polytope/lrslib_windows.def.in
+                        ${AGRUM_BINARY_DIR}/agrum/CN/polytope/lrslib_windows.def
+                        @ONLY)
+                target_sources (agrumCN PRIVATE ${AGRUM_BINARY_DIR}/agrum/CN/polytope/lrslib_windows.def)
+            endif ()
+
+            # lrslib (base/external/lrslib) is vendored third-party C code with zero
             # export attributes on its declarations -- see the .def file's own header
             # comment for why it must not be tagged directly. Attach the .def only when
             # agrumCN will actually be a DLL for MSVC/MinGW to apply it to: standalone
