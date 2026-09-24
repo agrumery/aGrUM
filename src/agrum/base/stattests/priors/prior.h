@@ -81,7 +81,7 @@ namespace gum::learning {
    * @headerfile prior.h <agrum/base/stattests/priors/prior.h>
    * @ingroup learning_priors
    */
-  class PYGUM_SHARED_PUBLIC Prior {
+  class GUM_SHARED_PUBLIC Prior {
     public:
     // ##########################################################################
     /// @name Constructors / Destructors

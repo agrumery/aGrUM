@@ -90,7 +90,7 @@ namespace gum {
    * Listener.
    * @ingroup signal_group
    */
-  class PYGUM_SHARED_PUBLIC Listener {
+  class GUM_SHARED_PUBLIC Listener {
     private:
     /// Alias for the list of signal senders.
     using Senders_list = std::vector< __sig__::ISignaler* >;

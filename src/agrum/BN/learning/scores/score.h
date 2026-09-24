@@ -65,7 +65,7 @@ namespace gum {
      * @headerfile score.h <agrum/BN/learning/scores/score.h>
      * @ingroup learning_scores
      */
-    class PYGUM_SHARED_PUBLIC Score: public IThreadNumberManager {
+    class GUM_PUBLIC_BN Score: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

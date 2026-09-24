@@ -52,7 +52,7 @@
 namespace gum {
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  template class PYGUM_SHARED_PUBLIC Link< Idx >;
+  template class GUM_SHARED_PUBLIC Link< Idx >;
 #endif
 
 }   // namespace gum

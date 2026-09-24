@@ -126,30 +126,30 @@ Coco/R itself) does not fall under the GNU General Public License.
 namespace gum {
 
   /// string handling, wide character
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value, int startIndex);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value, int startIndex, int length);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create_upper(const wchar_t* data);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create_lower(const wchar_t* data);
-  PYGUM_SHARED_PUBLIC wchar_t*
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value, int startIndex);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create(const wchar_t* value, int startIndex, int length);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create_upper(const wchar_t* data);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create_lower(const wchar_t* data);
+  GUM_SHARED_PUBLIC wchar_t*
       coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data1,
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data1,
                                                          const wchar_t* data2);
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
-  PYGUM_SHARED_PUBLIC void     coco_string_delete(wchar_t*& data);
-  PYGUM_SHARED_PUBLIC int      coco_string_length(const wchar_t* data);
-  PYGUM_SHARED_PUBLIC bool     coco_string_endswith(const wchar_t* data, const wchar_t* value);
-  PYGUM_SHARED_PUBLIC int      coco_string_indexof(const wchar_t* data, const wchar_t value);
-  PYGUM_SHARED_PUBLIC int      coco_string_lastindexof(const wchar_t* data, const wchar_t value);
-  PYGUM_SHARED_PUBLIC void     coco_string_merge(wchar_t*& data, const wchar_t* value);
-  PYGUM_SHARED_PUBLIC bool     coco_string_equal(const wchar_t* data1, const wchar_t* data2);
-  PYGUM_SHARED_PUBLIC int      coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
-  PYGUM_SHARED_PUBLIC unsigned int coco_string_hash(const wchar_t* data);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
+  GUM_SHARED_PUBLIC void     coco_string_delete(wchar_t*& data);
+  GUM_SHARED_PUBLIC int      coco_string_length(const wchar_t* data);
+  GUM_SHARED_PUBLIC bool     coco_string_endswith(const wchar_t* data, const wchar_t* value);
+  GUM_SHARED_PUBLIC int      coco_string_indexof(const wchar_t* data, const wchar_t value);
+  GUM_SHARED_PUBLIC int      coco_string_lastindexof(const wchar_t* data, const wchar_t value);
+  GUM_SHARED_PUBLIC void     coco_string_merge(wchar_t*& data, const wchar_t* value);
+  GUM_SHARED_PUBLIC bool     coco_string_equal(const wchar_t* data1, const wchar_t* data2);
+  GUM_SHARED_PUBLIC int      coco_string_compareto(const wchar_t* data1, const wchar_t* data2);
+  GUM_SHARED_PUBLIC unsigned int coco_string_hash(const wchar_t* data);
 
   /// string handling, ascii character
-  PYGUM_SHARED_PUBLIC wchar_t* coco_string_create(const char* value);
-  PYGUM_SHARED_PUBLIC char*    coco_string_create_char(const wchar_t* value);
-  PYGUM_SHARED_PUBLIC void     coco_string_delete(char*& data);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create(const char* value);
+  GUM_SHARED_PUBLIC char*    coco_string_create_char(const wchar_t* value);
+  GUM_SHARED_PUBLIC void     coco_string_delete(char*& data);
 
   /// CocoR uses unicode, thus use this to cast string in wstring.
   inline std::wstring widen(const std::string& str) {
@@ -195,7 +195,7 @@ namespace gum {
   // ==========================================================================
   // Token - Represents a lexical token
   // ==========================================================================
-  class PYGUM_SHARED_PUBLIC Token {
+  class GUM_SHARED_PUBLIC Token {
     public:
     int      kind;      // token kind
     int      pos;       // token position in bytes in the source text (starting at 0)
@@ -216,7 +216,7 @@ namespace gum {
   // Concrete buffer classes (InMemoryBuffer, StreamBuffer, MappedBuffer) are
   // declared in an anonymous namespace in common.cpp (internal linkage).
   // ==========================================================================
-  class PYGUM_SHARED_PUBLIC Buffer {
+  class GUM_SHARED_PUBLIC Buffer {
     protected:
     int fileLen_;   // length of input stream
     int bufPos_;    // current position in buffer
@@ -248,7 +248,7 @@ namespace gum {
   // ==========================================================================
   // UTF8Buffer - Wrapper for UTF-8 decoding (works with any buffer type)
   // ==========================================================================
-  class PYGUM_SHARED_PUBLIC UTF8Buffer: public Buffer {
+  class GUM_SHARED_PUBLIC UTF8Buffer: public Buffer {
     private:
     Buffer* innerBuffer_;
     bool    ownsInner_;

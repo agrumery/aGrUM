@@ -121,15 +121,29 @@ macro(buildFileListsWithModules)
                 set (_IS_BASE_OR_BN ON)
             endif ()
 
-            # pyAgrum forces static linkage project-wide (ActBuilderPyAgrum.check_consistency,
-            # "Static library forced for [[pyAgrum]] target.") -- BASE/BN stay static here too:
-            # they carry process-global state (e.g. CompleteProjectionRegister4MultiDim, used by
-            # Tensor::min/max/sum/product) that must be a SINGLE instance shared by every pyAgrum
-            # SWIG extension (_pyagrumcpp.so, _mrfcpp.so, _idcpp.so, ...). Rather than making agrumBASE/BN
-            # themselves shared libraries, they are embedded once into core pyagrum (_pyagrumcpp.so,
-            # built SHARED -- see wrappers/pyagrum/CMakeLists.txt), and every other extension links
-            # against that single _pyagrumcpp.so instead of re-embedding its own copy of BASE/BN.
+            # BUILD_SHARED_LIBS=ON combined with BUILD_PYTHON=ON is exercised only
+            # by the conda-forge recipe (see the BUILD_SHARED_LIBS option comment
+            # in the root CMakeLists.txt) -- PyPI/wheelhouse always builds pyAgrum
+            # static, so this branch's split-per-module behavior only ever runs
+            # there.
             add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
+
+            # lrslib (base/external/lrslib) is vendored third-party C code with zero
+            # export attributes on its declarations -- see the .def file's own header
+            # comment for why it must not be tagged directly. Attach the .def only when
+            # agrumCN will actually be a DLL for MSVC/MinGW to apply it to: standalone
+            # aGrUM's own BUILD_SHARED_LIBS=ON default, or this chantier's pyAgrum
+            # BUILD_SHARED_LIBS=ON exercise. Never under pyAgrum's normal static build,
+            # where agrumCN is a plain archive and both linkers reject a .def input.
+            # MSVC and MinGW alike need it: GNU ld's "auto-export everything" fallback
+            # only applies when NO symbol in the link is explicitly dllexport-tagged --
+            # agrumCN's own GUM_PUBLIC_CN-tagged classes are (BUILD_SHARED_LIBS=ON, see
+            # the blanking guard below), which switches ld to explicit-only mode and
+            # drops lrslib's untagged C symbols (e.g. checkindex, LNK/undefined
+            # reference from LrsWrapper_tpl.h) same as MSVC without the .def.
+            if (OPTION STREQUAL "CN" AND WIN32 AND (MSVC OR MINGW) AND (BUILD_SHARED_LIBS OR NOT BUILD_PYTHON))
+                target_sources (agrumCN PRIVATE ${AGRUM_SOURCE_DIR}/agrum/CN/polytope/lrslib_windows.def)
+            endif ()
 
             # GUM_PUBLIC blanking applies to every module under BUILD_PYTHON, not just
             # BASE/BN: -fvisibility=hidden is already active project-wide for pyAgrum
@@ -157,18 +171,29 @@ macro(buildFileListsWithModules)
                 # notwithstanding: undefined symbol at leaf-module dlopen time (e.g.
                 # KNML::clear from pyagrum.influence_diagram), silent on macOS's lazy binding.
 
-                # Same blanking for the remaining 7 modules' still-placeholder
-                # GUM_PUBLIC_<MODULE> names (config.h.in) -- BASE excluded, it no longer
-                # uses that family (renamed to GUM_SHARED_PUBLIC above: BASE is the one
-                # module with no dependencies of its own, so unlike BN/PRM/..., a single
-                # unqualified name is safe for it -- see config.h.in's comment on
-                # GUM_SHARED_PUBLIC for why this doesn't generalize to the other 7).
+                # Same blanking for the remaining 7 modules' GUM_PUBLIC_<MODULE>
+                # names (config.h.in) -- BASE excluded, it no longer uses that
+                # family (renamed to GUM_SHARED_PUBLIC above). Only applied under
+                # BUILD_SHARED_LIBS=OFF (pyAgrum's normal static build): there it's
+                # a harmless safety net (config.h.in's plain-undecorated fallback
+                # applies anyway, no real DLL boundary between agrum<MODULE> and
+                # its own leaf .pyd). Skipped under BUILD_SHARED_LIBS=ON, where
+                # each agrum<MODULE> is now a genuine separate DLL/.so and needs
+                # its own GUM_PUBLIC_<MODULE>-tagged symbols actually exported --
+                # blanking would define the macro empty on the command line,
+                # short-circuiting config.h.in's #ifndef guard and permanently
+                # hiding that module's own AGRUM_<MODULE>_EXPORTING dllexport
+                # (LNK1181: no .lib produced at all once every tagged symbol is
+                # hidden, or LNK2019 for symbols still referenced cross-module,
+                # e.g. gum::Separation from CM, referenced by CausalImpact).
                 # LIST_OF_MODULES (computed above, exported to parent scope) lists all 8.
-                foreach (BLANK_MODULE ${LIST_OF_MODULES})
-                    if (NOT BLANK_MODULE STREQUAL "BASE")
-                        target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC_${BLANK_MODULE}=)
-                    endif ()
-                endforeach ()
+                if (NOT BUILD_SHARED_LIBS)
+                    foreach (BLANK_MODULE ${LIST_OF_MODULES})
+                        if (NOT BLANK_MODULE STREQUAL "BASE")
+                            target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC_${BLANK_MODULE}=)
+                        endif ()
+                    endforeach ()
+                endif ()
             endif ()
 
             # GUM_SHARED_EXPORTING marks agrumBASE as the sole producer of
@@ -184,8 +209,10 @@ macro(buildFileListsWithModules)
             if (OPTION STREQUAL "BASE")
                 target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_EXPORTING)
             else ()
-                # Placeholder producer flag for the not-yet-rolled-out GUM_PUBLIC_<MODULE>
-                # scaffolding (config.h.in) -- unused until that module's tags are migrated.
+                # Producer flag for GUM_PUBLIC_<MODULE> (config.h.in), wired for real
+                # dllexport/dllimport on Windows under BUILD_SHARED_LIBS=ON -- see the
+                # blanking guard above, which must stay skipped in that case or this
+                # flag's dllexport gets short-circuited back to nothing.
                 target_compile_definitions (agrum${OPTION} PRIVATE AGRUM_${OPTION}_EXPORTING)
             endif ()
 
@@ -217,12 +244,13 @@ macro(buildFileListsWithModules)
             # dllimport split: only these two targets' own object files -- whole-archived
             # into core _pyagrumcpp (and core's own SWIG wrap TU, see
             # wrappers/pyagrum/CMakeLists.txt) -- may dllexport them. Every other consumer
-            # (leaf modules PRM/CN/ID/MRF/CM) sees dllimport instead, so it references
-            # core's exported copy instead of emitting its own duplicate definition
-            # (LNK2005 on MSVC). Unlike GUM_PUBLIC above, this stays BASE/BN-only: it is
-            # specifically the whole-archive producer/consumer split, which only BASE/BN
-            # need -- a leaf module's own symbols use PYGUM_PUBLIC (unconditional
-            # dllexport, no split) instead of PYGUM_SHARED_PUBLIC.
+            # (leaf modules PRM/CN/ID/MRF/CM/KTBN, and FMDP -- redirected to agrumBN in the
+            # dependency loop below instead of getting its own copy) sees dllimport instead,
+            # so it references core's/BN's exported copy instead of emitting its own
+            # duplicate definition (LNK2005 on MSVC). Unlike GUM_PUBLIC above, this stays
+            # BASE/BN-only: it is specifically the whole-archive producer/consumer split,
+            # which only BASE/BN need -- a leaf module's own symbols use PYGUM_PUBLIC
+            # (unconditional dllexport, no split) instead of PYGUM_SHARED_PUBLIC.
             if (BUILD_PYTHON AND _IS_BASE_OR_BN)
                 target_compile_definitions (agrum${OPTION} PRIVATE PYGUM_SHARED_EXPORTING)
             endif ()
@@ -242,7 +270,7 @@ macro(buildFileListsWithModules)
 
             # handle dependencies
             foreach (DEP ${${OPTION}_DEPS})
-                if (BUILD_PYTHON AND NOT _IS_BASE_OR_BN)
+                if (BUILD_PYTHON AND NOT _IS_BASE_OR_BN AND NOT BUILD_SHARED_LIBS)
                     # Leaf pyAgrum modules (PRM/MRF/CN/ID/CM) reach BASE/BN through core _pyagrumcpp.so
                     # only (see comment above): do NOT link agrum${DEP} here at all. For a STATIC
                     # library, target_link_libraries still adds the dependency to the *direct*
@@ -254,6 +282,12 @@ macro(buildFileListsWithModules)
                     # via the AGRUM_SOURCE_DIR PRIVATE include set above; unresolved symbols are
                     # resolved at the final .pyd link against _pyagrum (see
                     # wrappers/pyagrum/CMakeLists.txt).
+                    #
+                    # BUILD_SHARED_LIBS=ON is the exception to that skip: agrum${OPTION} here is a
+                    # genuine standalone .so/.dylib (not embedded into core at all -- core links
+                    # agrumBASE/agrumBN normally too, see wrappers/pyagrum/CMakeLists.txt), so it
+                    # must resolve its own BASE/BN symbols the ordinary way, like every other
+                    # non-python consumer below.
                 else ()
                     target_link_libraries (agrum${OPTION} PUBLIC agrum${DEP})
                 endif ()

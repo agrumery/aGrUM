@@ -67,7 +67,7 @@ namespace gum {
    */
   // clang-format on
 
-  class PYGUM_SHARED_PUBLIC O4DGContext {
+  class GUM_SHARED_PUBLIC O4DGContext {
     public:
     // ============================================================================
     /// @name Constructors, Destructors.

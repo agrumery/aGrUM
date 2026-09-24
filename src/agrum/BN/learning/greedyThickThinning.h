@@ -77,7 +77,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class PYGUM_SHARED_PUBLIC GreedyThickThinning: public ApproximationScheme {
+    class GUM_PUBLIC_BN GreedyThickThinning: public ApproximationScheme {
       public:
       /// @name Constructors / Destructors
       /// @{

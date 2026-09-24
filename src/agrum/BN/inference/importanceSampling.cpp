@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::ImportanceSampling< double >;
+template class GUM_PUBLIC_BN gum::ImportanceSampling< double >;
 #endif

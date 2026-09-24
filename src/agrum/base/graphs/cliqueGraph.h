@@ -74,7 +74,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class PYGUM_SHARED_PUBLIC CliqueGraph: public UndiGraph {
+  class GUM_SHARED_PUBLIC CliqueGraph: public UndiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

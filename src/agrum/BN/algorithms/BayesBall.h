@@ -64,7 +64,7 @@ namespace gum {
    * @ingroup bn_inference
    *
    */
-  class PYGUM_SHARED_PUBLIC BayesBall {
+  class GUM_PUBLIC_BN BayesBall {
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################

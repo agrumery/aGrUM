@@ -120,7 +120,7 @@ namespace gum {
    */
   // clang-format on
 
-  class PYGUM_SHARED_PUBLIC InternalNode {
+  class GUM_SHARED_PUBLIC InternalNode {
     private:
     /// Variable associated to such node
     const DiscreteVariable* _nodeVar_;

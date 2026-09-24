@@ -73,13 +73,13 @@ namespace gum {
    * @return Returns a random idx between 0 and max-1 included .
    * By default, max=2
    */
-  PYGUM_SHARED_PUBLIC Idx randomValue(const Size max = 2);
+  GUM_SHARED_PUBLIC Idx randomValue(const Size max = 2);
 
   /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).
    * @return Returns a random double between 0 and 1 included (i.e. a proba).
    */
-  PYGUM_SHARED_PUBLIC double randomProba();
+  GUM_SHARED_PUBLIC double randomProba();
 
   /**
    * @brief Return a random discrete distribution.
@@ -94,15 +94,15 @@ namespace gum {
    * @brief Returns the aGrUM's seed used by the std::generators.
    * @return Returns the aGrUM's seed used by the std::generators.
    */
-  PYGUM_SHARED_PUBLIC unsigned int randomGeneratorSeed();
+  GUM_SHARED_PUBLIC unsigned int randomGeneratorSeed();
 
   /// returns the current generator's value
-  PYGUM_SHARED_PUBLIC unsigned int currentRandomGeneratorValue();
+  GUM_SHARED_PUBLIC unsigned int currentRandomGeneratorValue();
 
   /**
    * @brief Initialize random generator seed.
    */
-  PYGUM_SHARED_PUBLIC void initRandom(unsigned int seed = 0);
+  GUM_SHARED_PUBLIC void initRandom(unsigned int seed = 0);
 
   /**
    * define a random_engine with correct seed

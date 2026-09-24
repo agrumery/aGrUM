@@ -315,7 +315,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class KTBNDatabaseGenerator< double >;
+    extern template class GUM_PUBLIC_KTBN KTBNDatabaseGenerator< double >;
 #endif
 
   } /* namespace learning */

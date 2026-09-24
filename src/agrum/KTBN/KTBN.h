@@ -758,7 +758,7 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class KTBN< double >;
+  extern template class GUM_PUBLIC_KTBN KTBN< double >;
 #endif
 
   /// @brief Prints the k-DBN using its toString() description.

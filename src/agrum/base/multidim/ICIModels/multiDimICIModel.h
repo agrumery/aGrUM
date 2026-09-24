@@ -194,7 +194,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class PYGUM_SHARED_PUBLIC MultiDimICIModel< double >;
+  extern template class GUM_SHARED_PUBLIC MultiDimICIModel< double >;
 #endif
 
 } /* namespace gum */

@@ -64,7 +64,7 @@ namespace gum {
      * @headerfile paramEstimator.h <agrum/BN/learning/paramUtils/paramEstimator.h>
      * @ingroup learning_param_utils
      */
-    class PYGUM_SHARED_PUBLIC ParamEstimator: public IThreadNumberManager {
+    class GUM_PUBLIC_BN ParamEstimator: public IThreadNumberManager {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

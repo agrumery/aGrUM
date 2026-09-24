@@ -66,7 +66,7 @@ namespace gum {
    * @class NodeGraphPartIterator
    * @brief Unsafe iterator on the node set of a graph.
    */
-  class PYGUM_SHARED_PUBLIC NodeGraphPartIterator {
+  class GUM_SHARED_PUBLIC NodeGraphPartIterator {
     friend class NodeGraphPart;
 
     public:
@@ -146,7 +146,7 @@ namespace gum {
    * @class NodeGraphPartIteratorSafe
    * @brief Safe iterator on the node set of a graph.
    */
-  class PYGUM_SHARED_PUBLIC NodeGraphPartIteratorSafe final:
+  class GUM_SHARED_PUBLIC NodeGraphPartIteratorSafe final:
       public NodeGraphPartIterator,
       public Listener {
     friend class NodeGraphPart;
@@ -262,7 +262,7 @@ namespace gum {
    * @endcode
    */
 
-  class PYGUM_SHARED_PUBLIC NodeGraphPart {
+  class GUM_SHARED_PUBLIC NodeGraphPart {
     public:
     /// types for STL compliance
     /// @{

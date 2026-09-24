@@ -67,7 +67,7 @@ namespace gum {
    * @brief Returns a path to a unique file name.
    * @return Returns a path to a unique file name.
    */
-  PYGUM_SHARED_PUBLIC std::string getUniqueFileName();
+  GUM_SHARED_PUBLIC std::string getUniqueFileName();
 
   /**
    * @brief Returns the lowercase version of str.
@@ -87,7 +87,7 @@ namespace gum {
    * @brief Returns true if value ends with ending.
    * @return Returns true if value ends with ending.
    */
-  PYGUM_SHARED_PUBLIC bool endsWith(const std::string_view& value, const std::string_view& ending);
+  GUM_SHARED_PUBLIC bool endsWith(const std::string_view& value, const std::string_view& ending);
 
   /**
    * @brief Split str using the delimiter
@@ -95,7 +95,7 @@ namespace gum {
    * @param delimiter string
    * @return Vector of splitted strings
    */
-  PYGUM_SHARED_PUBLIC std::vector< std::string > split(std::string_view orig,
+  GUM_SHARED_PUBLIC std::vector< std::string > split(std::string_view orig,
                                                        std::string_view delimiter);
 
   /**
@@ -105,7 +105,7 @@ namespace gum {
    * @param new_val The new value to replace val in s.
    * @return A new string with val replaced by new_val.
    */
-  PYGUM_SHARED_PUBLIC std::string
+  GUM_SHARED_PUBLIC std::string
                       replace(std::string_view s, std::string_view val, std::string_view new_val);
 
   /**
@@ -120,7 +120,7 @@ namespace gum {
    * @param s A string
    * @return true if s exactly contains an int (s can start with "-" or "+")
    */
-  PYGUM_SHARED_PUBLIC bool isIntegerWithResult(std::string_view val, int* res);
+  GUM_SHARED_PUBLIC bool isIntegerWithResult(std::string_view val, int* res);
 
   /**
    * @brief return true is a string contains a numerical (double) value
@@ -134,7 +134,7 @@ namespace gum {
    * @param s A string     *
    * @return true if s exactly contains a double
    */
-  PYGUM_SHARED_PUBLIC bool isNumericalWithResult(std::string_view val, double* res);
+  GUM_SHARED_PUBLIC bool isNumericalWithResult(std::string_view val, double* res);
 
 
   /**

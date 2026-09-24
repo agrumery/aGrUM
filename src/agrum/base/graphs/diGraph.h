@@ -129,7 +129,7 @@ namespace gum {
    */
   /* ===========================================================================
    */
-  class PYGUM_SHARED_PUBLIC DiGraph: public virtual NodeGraphPart, public ArcGraphPart {
+  class GUM_SHARED_PUBLIC DiGraph: public virtual NodeGraphPart, public ArcGraphPart {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

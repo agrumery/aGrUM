@@ -61,7 +61,7 @@ namespace gum {
    * Virtual base class for PGMs using a DAG
    *
    */
-  class PYGUM_SHARED_PUBLIC DAGmodel: public DiscreteGraphicalModel {
+  class GUM_SHARED_PUBLIC DAGmodel: public DiscreteGraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{

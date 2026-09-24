@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::GumMRFWriter< double >;
+template class GUM_PUBLIC_MRF gum::GumMRFWriter< double >;
 #endif

@@ -60,6 +60,14 @@ set(CMAKE_INSTALL_PREFIX ${BACKUP_CMAKE_INSTALL_PREFIX})
 
 
 # options
+# Combined with BUILD_PYTHON=ON, BUILD_SHARED_LIBS=ON is exercised only by
+# the conda-forge recipe (build.sh/build.bat), which needs a real separate
+# libagrumBASE/BN/... for external C++ consumers like otagrum to link
+# against (find_package(aGrUM CONFIG)) without embedding their own private
+# copy -- see Modules.agrum.cmake for the per-module split this enables.
+# PyPI/wheelhouse builds always force pyAgrum static regardless of this
+# option's default (ActBuilderPyAgrum.check_consistency): no benefit there,
+# pip has no shared-prefix/find_package mechanism across wheels to exploit.
 option(BUILD_SHARED_LIBS "build shared|static libs" ON)
 option(BUILD_PYTHON "build python bindings" OFF)
 option(USE_OPENMP "use openmp" ON)

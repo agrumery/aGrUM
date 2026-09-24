@@ -76,7 +76,7 @@ namespace gum {
      * i.e., we will resort to the Bayesian Dirichlet (BD) formula to include
      * the sum of the two priors into the score.
      */
-    class PYGUM_SHARED_PUBLIC ScoreK2: public Score {
+    class GUM_PUBLIC_BN ScoreK2: public Score {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

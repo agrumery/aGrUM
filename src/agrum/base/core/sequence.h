@@ -1375,10 +1375,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class PYGUM_SHARED_PUBLIC gum::Sequence< int >;
-extern template class PYGUM_SHARED_PUBLIC gum::Sequence< long >;
-extern template class PYGUM_SHARED_PUBLIC gum::Sequence< double >;
-extern template class PYGUM_SHARED_PUBLIC gum::Sequence< std::string >;
+extern template class GUM_SHARED_PUBLIC gum::Sequence< int >;
+extern template class GUM_SHARED_PUBLIC gum::Sequence< long >;
+extern template class GUM_SHARED_PUBLIC gum::Sequence< double >;
+extern template class GUM_SHARED_PUBLIC gum::Sequence< std::string >;
 #endif
 
 

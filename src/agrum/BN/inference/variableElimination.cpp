@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::VariableElimination< double >;
+template class GUM_PUBLIC_BN gum::VariableElimination< double >;
 #endif

@@ -66,7 +66,7 @@ namespace gum {
    * All concrete models (BayesNet, MarkovRandomField, InfluenceDiagram, …)
    * inherit from this class via DAGmodel or UGmodel.
    */
-  class PYGUM_SHARED_PUBLIC DiscreteGraphicalModel: public GraphicalModel {
+  class GUM_SHARED_PUBLIC DiscreteGraphicalModel: public GraphicalModel {
     public:
     /// @name Constructors / Destructors
     /// @{

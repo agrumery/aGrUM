@@ -59,7 +59,7 @@ namespace gum {
    * @brief The base class used by all thread executors
    * @headerfile threadExecutorBase.h <agrum/base/core/threads/threadExecutorBase.h>
    */
-  class PYGUM_SHARED_PUBLIC ThreadExecutorBase
+  class GUM_SHARED_PUBLIC ThreadExecutorBase
   /**
    * @brief Set the max number of threads to be used.
    * @ingroup basicstruct_group

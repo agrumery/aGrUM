@@ -62,7 +62,7 @@ namespace gum {
      * @headerfile smoothingPrior.h <agrum/base/database/smoothingPrior.h>
      * @ingroup learning_priors
      */
-    class PYGUM_SHARED_PUBLIC SmoothingPrior: public Prior {
+    class GUM_SHARED_PUBLIC SmoothingPrior: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -79,7 +79,7 @@ namespace gum {
    * @ingroup mn_inference
    */
   template < GUM_Numeric GUM_SCALAR >
-  class PYGUM_PUBLIC ShaferShenoyMRFInference:
+  class ShaferShenoyMRFInference:
       public JointTargetedMRFInference< GUM_SCALAR >,
       public EvidenceMRFInference< GUM_SCALAR >,
       public ScheduledInference {
@@ -459,7 +459,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class ShaferShenoyMRFInference< double >;
+  extern template class GUM_PUBLIC_MRF ShaferShenoyMRFInference< double >;
 #endif
 
 

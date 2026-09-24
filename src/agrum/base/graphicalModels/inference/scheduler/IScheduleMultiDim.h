@@ -64,7 +64,7 @@ namespace gum {
    * @headerfile IScheduleMultiDim.h <agrum/base/graphicalModels/inference/scheduler/IScheduleMultiDim.h>
    * @ingroup inference_schedule
    */
-  class PYGUM_SHARED_PUBLIC IScheduleMultiDim {
+  class GUM_SHARED_PUBLIC IScheduleMultiDim {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

@@ -730,7 +730,7 @@ namespace gum {
     };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class KTBNLearner< double >;
+    extern template class GUM_PUBLIC_KTBN KTBNLearner< double >;
 #endif
 
   } /* namespace learning */

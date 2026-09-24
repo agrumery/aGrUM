@@ -76,7 +76,7 @@ namespace gum {
    * @ingroup core
    */
 
-  class PYGUM_SHARED_PUBLIC FixedAllocator {
+  class GUM_SHARED_PUBLIC FixedAllocator {
     // clang-format off
     /**
      * @struct  _Chunk_ fixedAllocator.h <agrum/base/core/smallobjectallocator/fixedAllocator.h>

@@ -69,7 +69,7 @@ namespace gum {
    * If maxVal - minVal < 0, then domainsize() = 0.
    */
 
-  class PYGUM_SHARED_PUBLIC RangeVariable final: public DiscreteVariable {
+  class GUM_SHARED_PUBLIC RangeVariable final: public DiscreteVariable {
     public:
     /// @name Constructors / Destructors
 

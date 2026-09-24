@@ -325,6 +325,7 @@ macro(gum_add_python_module MODULENAME)
   # PYGUM_PUBLIC for visibility. Force the whole archive in with the
   # platform-specific linker flag.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
+   if(NOT BUILD_SHARED_LIBS)
     # Whole-archive is the ONLY link mechanism used for BASE/BN into core: do
     # NOT also add a plain target_link_libraries(... agrumBASE agrumBN) here.
     # Doing so lists the same .a three times in the final link line -- once
@@ -415,8 +416,77 @@ macro(gum_add_python_module MODULENAME)
         target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--export-all-symbols)
       endif()
     endif()
+   else()
+    # BUILD_SHARED_LIBS=ON: agrumBASE/agrumBN are genuine shared libraries here
+    # (conda-forge's default -- also what an external C++ consumer like otagrum
+    # links against via find_package(aGrUM CONFIG)). Link against them normally
+    # instead of whole-archiving, so the process has exactly ONE loaded copy of
+    # BASE/BN's code: correct RTTI (typeid/dynamic_cast/catch) and a single
+    # instance of process-global state (e.g. CompleteProjectionRegister4MultiDim,
+    # see comment above) whether the object came from pyagrum or from another
+    # extension sharing the same libagrumBASE/libagrumBN in the same process.
+    # A plain target_link_libraries() also gets CMake's normal RPATH
+    # propagation, unlike the raw -Wl,-force_load/--whole-archive route this
+    # replaces, which bypasses it entirely (verified locally: that route left
+    # macOS failing "Library not loaded: @rpath/libagrumBASE.3.dylib", no RPATH
+    # ever added).
+    #
+    # On Linux, a plain target_link_libraries() alone is not enough: conda-forge's
+    # LDFLAGS carry -Wl,--as-needed globally, and GNU ld's --as-needed drops a
+    # shared library from DT_NEEDED whenever it decides nothing on the command
+    # line so far needs it -- verified locally that it does so here even though
+    # libagrumBASE.so genuinely defines every one of these symbols (e.g.
+    # gum::Listener's ctor/dtor/typeinfo), leaving _pyagrumcpp.so with zero
+    # libagrum* dependency and "undefined symbol" at import time.
+    # -Wl,--no-as-needed forces the dependency through regardless. Not
+    # restored afterward on purpose: CMake emits every target_link_options()
+    # call as one grouped block ahead of target_link_libraries(), in call
+    # order, not interleaved by call sequence -- a trailing
+    # target_link_options(... -Wl,--as-needed) here would land right next to
+    # this -Wl,--no-as-needed, both still before the actual library names,
+    # silently undoing this fix (verified locally: exactly this happened).
+    # Nothing links after agrumBASE/agrumBN on this target that needs
+    # --as-needed restored.
+    if(UNIX AND NOT APPLE)
+      target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--no-as-needed)
+    endif()
+    # agrumBASE is a genuine separate shared library too, PUBLIC-linked into
+    # agrumBN (Modules.agrum.cmake): linking agrumBN here is enough, CMake
+    # propagates agrumBASE transitively through that PUBLIC dependency --
+    # no need to name it again on this link line.
+    target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBN)
+    # Belt and suspenders under parallel make (matches the whole-archive branch's
+    # own add_dependencies above): target_link_libraries() on a target normally
+    # implies the build-order dependency too, but make it explicit here as well.
+    add_dependencies(${_PYAGRUMLIB} agrumBN)
+   endif()
   else()
-    target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} _pyagrum)
+    # Leaf module wrap target (_cncpp, _prmcpp, ...). Under BUILD_SHARED_LIBS=OFF
+    # (pyAgrum's normal static build), _pyagrum alone is enough: it whole-archives
+    # and re-exports all of BASE/BN (see the "pyagrum" branch above). Under
+    # BUILD_SHARED_LIBS=ON, _pyagrum no longer whole-archives BASE/BN -- it links
+    # agrumBN normally (see this same branch above), and a normally-linked DLL
+    # dependency is not re-exported to _pyagrum's own consumers. Every leaf module's
+    # own agrum${MODULENAME} already PUBLIC-links agrumBN for this same reason
+    # (Modules.agrum.cmake, BUILD_SHARED_LIBS=ON leaf branch) -- link agrumBN
+    # explicitly here too instead of relying solely on that transitive propagation,
+    # symmetric with how the "pyagrum" branch above always links it explicitly.
+    if(BUILD_SHARED_LIBS)
+      if(UNIX AND NOT APPLE)
+        target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--no-as-needed)
+      endif()
+      target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} agrumBN _pyagrum)
+      # Belt and suspenders, same reasoning as the "pyagrum" branch above: this
+      # target_link_libraries() call implies the build-order dependency on both
+      # agrum${MODULENAME} and agrumBN, but make it explicit for both -- the
+      # agrumBN-only guard above was not enough to keep MSVC's parallel build
+      # from occasionally racing agrum${MODULENAME}'s own .lib (observed on CI:
+      # LNK1181 "cannot open input file 'agrumKTBN.lib'", agrumKTBN.vcxproj
+      # timestamped as already finished in the same log).
+      add_dependencies(${_PYAGRUMLIB} agrum${MODULENAME} agrumBN)
+    else()
+      target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} _pyagrum)
+    endif()
   endif()
   target_include_directories(${_PYAGRUMLIB} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${Python_NumPy_INCLUDE_DIRS})
   
@@ -632,7 +702,15 @@ endforeach()
 # ==========================================================================
 option(PYAGRUM_TRIM_CORE_EXPORTS "Shrink core's kept symbol set to what the built leaf modules actually use (experimental)" ON)
 
-if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW)
+# BUILD_SHARED_LIBS=ON: core already links agrumBASE/agrumBN normally (see the
+# gum_add_python_module() core branch above) -- there is no whole-archived
+# static surface here to shrink, and this trim's own relink step still
+# whole-archives/force-loads them unconditionally, exactly like the pre-fix
+# core link it was modeled on. Left enabled, it silently overwrites core's
+# correctly-linked .so with a broken one that never references the now-shared
+# agrumBASE/agrumBN at all (observed: "undefined symbol: typeinfo for
+# gum::Listener" at import time, despite the first, unpatched link succeeding).
+if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
   set(_PYAGRUM_LEAF_FILES "")
   set(_PYAGRUM_LEAF_TARGETS "")
   foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})

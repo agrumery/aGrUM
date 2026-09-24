@@ -121,7 +121,7 @@ namespace gum {
    * }
    * @endcode
    */
-  class PYGUM_SHARED_PUBLIC ApproximationScheme: public IApproximationSchemeConfiguration {
+  class GUM_SHARED_PUBLIC ApproximationScheme: public IApproximationSchemeConfiguration {
     public:
     // ========================================================================
     /// @name Constructors and Destructors

@@ -65,7 +65,7 @@ namespace gum {
      * a single class
      * @ingroup learning_group
      */
-    class PYGUM_SHARED_PUBLIC StructuralConstraintDiGraph:
+    class GUM_PUBLIC_BN StructuralConstraintDiGraph:
         public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################

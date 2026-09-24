@@ -62,7 +62,7 @@ namespace gum {
    * @brief Detect barren nodes for inference in Bayesian networks
    * @ingroup bn_inference
    */
-  class PYGUM_SHARED_PUBLIC BarrenNodesFinder {
+  class GUM_PUBLIC_BN BarrenNodesFinder {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

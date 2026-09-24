@@ -127,7 +127,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class MRFWriter< double >;
+  extern template class GUM_PUBLIC_MRF MRFWriter< double >;
 #endif
 } /* namespace gum */
 

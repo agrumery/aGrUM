@@ -2535,11 +2535,11 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class PYGUM_SHARED_PUBLIC ListConstIterator< Debug >;
-  extern template class PYGUM_SHARED_PUBLIC ListConstIteratorSafe< Debug >;
+  extern template class GUM_SHARED_PUBLIC ListConstIterator< Debug >;
+  extern template class GUM_SHARED_PUBLIC ListConstIteratorSafe< Debug >;
 #  endif
-  extern PYGUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug > _static_list_end_safe_;
-  extern PYGUM_SHARED_PUBLIC const ListConstIterator< Debug > _static_list_end_;
+  extern GUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug > _static_list_end_safe_;
+  extern GUM_SHARED_PUBLIC const ListConstIterator< Debug > _static_list_end_;
 
   inline const void* const _list_end_safe_ = (void* const)&_static_list_end_safe_;
   inline const void* const _list_end_      = (void* const)&_static_list_end_;
@@ -2549,9 +2549,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class PYGUM_SHARED_PUBLIC gum::List< bool >;
-extern template class PYGUM_SHARED_PUBLIC gum::List< int >;
-extern template class PYGUM_SHARED_PUBLIC gum::List< unsigned int >;
+extern template class GUM_SHARED_PUBLIC gum::List< bool >;
+extern template class GUM_SHARED_PUBLIC gum::List< int >;
+extern template class GUM_SHARED_PUBLIC gum::List< unsigned int >;
 #endif
 
 

@@ -62,7 +62,7 @@ namespace gum {
      * @headerfile noPrior.h <agrum/base/stattests/priors/noPrior.h>
      * @ingroup learning_priors
      */
-    class PYGUM_SHARED_PUBLIC NoPrior: public Prior {
+    class GUM_SHARED_PUBLIC NoPrior: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

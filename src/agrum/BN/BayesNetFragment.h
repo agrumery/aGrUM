@@ -318,7 +318,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class PYGUM_SHARED_PUBLIC BayesNetFragment< double >;
+  extern template class GUM_PUBLIC_BN BayesNetFragment< double >;
 #endif
 
 }   // namespace gum

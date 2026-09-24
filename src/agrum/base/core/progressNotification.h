@@ -63,7 +63,7 @@ namespace gum {
    *
    * An interface for progress notification
    */
-  class PYGUM_SHARED_PUBLIC ProgressNotifier {
+  class GUM_SHARED_PUBLIC ProgressNotifier {
     public:
     /// Progression (percent) and time.
     Signaler< Size, double > onProgress;
@@ -77,7 +77,7 @@ namespace gum {
    * @brief The ProgressListener class.
    *
    */
-  class PYGUM_SHARED_PUBLIC ProgressListener: public Listener {
+  class GUM_SHARED_PUBLIC ProgressListener: public Listener {
     public:
     /**
      * @brief Class constructor.

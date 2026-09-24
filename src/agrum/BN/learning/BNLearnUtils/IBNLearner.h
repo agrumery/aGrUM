@@ -101,7 +101,7 @@ namespace gum::learning {
    * LocalSearchWithTabuList also miic
    * @ingroup learning_group
    */
-  class PYGUM_SHARED_PUBLIC IBNLearner:
+  class GUM_PUBLIC_BN IBNLearner:
       public IApproximationSchemeConfiguration,
       public ThreadNumberManager {
     public:
@@ -137,7 +137,7 @@ namespace gum::learning {
     static constexpr double default_EM_noise{0.1};
 
     /// a helper to easily read databases
-    class PYGUM_SHARED_PUBLIC Database {
+    class GUM_PUBLIC_BN Database {
       public:
       // ########################################################################
       /// @name Constructors / Destructors

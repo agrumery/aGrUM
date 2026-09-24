@@ -58,22 +58,22 @@ namespace gum {
   // The constinit ensures it is created at compile time. Here, we use the
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
-  extern constinit PYGUM_SHARED_PUBLIC const BijectionIterator< int, int >
+  extern constinit GUM_SHARED_PUBLIC const BijectionIterator< int, int >
                                              _static_Bijection_end_(StaticInitializer::CONSTINIT);
-  extern constinit PYGUM_SHARED_PUBLIC const BijectionIteratorSafe< int, int >
+  extern constinit GUM_SHARED_PUBLIC const BijectionIteratorSafe< int, int >
       _static_Bijection_end_safe_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::BijectionIterator< int, int >;
-template class PYGUM_SHARED_PUBLIC gum::BijectionIteratorSafe< int, int >;
+template class GUM_SHARED_PUBLIC gum::BijectionIterator< int, int >;
+template class GUM_SHARED_PUBLIC gum::BijectionIteratorSafe< int, int >;
 #  endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::Bijection< int, int >;
-template class PYGUM_SHARED_PUBLIC gum::Bijection< std::string, std::string >;
+template class GUM_SHARED_PUBLIC gum::Bijection< int, int >;
+template class GUM_SHARED_PUBLIC gum::Bijection< std::string, std::string >;
 #endif

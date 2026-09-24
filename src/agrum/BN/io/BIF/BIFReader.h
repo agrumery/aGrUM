@@ -206,7 +206,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class PYGUM_SHARED_PUBLIC BIFReader< double >;
+  extern template class GUM_PUBLIC_BN BIFReader< double >;
 #endif
 }   // namespace gum
 

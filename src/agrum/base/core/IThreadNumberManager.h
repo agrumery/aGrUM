@@ -52,7 +52,7 @@
 
 namespace gum {
 
-  struct PYGUM_SHARED_PUBLIC IThreadNumberManager {
+  struct GUM_SHARED_PUBLIC IThreadNumberManager {
     /// sets the number max of threads that can be used
     /**
      * @param nb the number max of threads to be used. If this number is set to 0, then

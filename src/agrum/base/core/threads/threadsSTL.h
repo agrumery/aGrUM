@@ -71,7 +71,7 @@ namespace gum {
      *
      * @return Returns the maximum number of threads that should be used at any time.
      */
-    PYGUM_SHARED_PUBLIC unsigned int getMaxNumberOfThreads();
+    GUM_SHARED_PUBLIC unsigned int getMaxNumberOfThreads();
 
     /**
      * @brief returns the max number of threads used by default when entering the
@@ -85,14 +85,14 @@ namespace gum {
      * @return the number of threads used by default the next time we enter into
      * a parallel region
      */
-    PYGUM_SHARED_PUBLIC unsigned int getNumberOfThreads();
+    GUM_SHARED_PUBLIC unsigned int getNumberOfThreads();
 
     /**
      * @brief Get the number of logical processors.
      * @ingroup basicstruct_group
      * @return The number of logical processors.
      */
-    PYGUM_SHARED_PUBLIC unsigned int getNumberOfLogicalProcessors();
+    GUM_SHARED_PUBLIC unsigned int getNumberOfLogicalProcessors();
 
     /**
      * @brief Set the max number of threads to be used when entering the next

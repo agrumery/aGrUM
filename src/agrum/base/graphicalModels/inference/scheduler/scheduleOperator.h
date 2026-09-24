@@ -81,7 +81,7 @@ namespace gum {
    * @headerfile scheduleOperator.h <agrum/base/graphicalModels/inference/scheduler/scheduleOperator.h>
    * @ingroup inference_schedule
    */
-  class PYGUM_SHARED_PUBLIC ScheduleOperator {
+  class GUM_SHARED_PUBLIC ScheduleOperator {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

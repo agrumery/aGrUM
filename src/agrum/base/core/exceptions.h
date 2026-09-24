@@ -93,7 +93,7 @@
 
 #ifdef GUM_FOR_SWIG
 #  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-    class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
       public:                                                                  \
       explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
           SUPERCLASS(aMsg, aType) {}                                           \
@@ -102,7 +102,7 @@
     };
 #else   // GUM_FOR_SWIG
 #  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-    class PYGUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
       public:                                                                  \
       explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
           SUPERCLASS(aMsg, aType) {}                                           \
@@ -130,7 +130,7 @@ namespace gum {
   /**
    * @brief Base class for all aGrUM's exceptions.
    */
-  class PYGUM_SHARED_PUBLIC Exception: public std::exception {
+  class GUM_SHARED_PUBLIC Exception: public std::exception {
     protected:
     std::string msg_;
     std::string type_;
@@ -552,7 +552,7 @@ namespace gum {
   class HedgeException;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  PYGUM_SHARED_PUBLIC std::string _createMsg_(std::string_view filename,
+  GUM_SHARED_PUBLIC std::string _createMsg_(std::string_view filename,
                                               std::string_view function,
                                               int              line,
                                               std::string_view msg);
@@ -675,7 +675,7 @@ namespace gum {
 
   GUM_MAKE_ERROR(UnknownLabelInDatabase, LearningError, "Unknown label found in database")
 
-  class PYGUM_SHARED_PUBLIC SyntaxError final: public IOError {
+  class GUM_SHARED_PUBLIC SyntaxError final: public IOError {
     protected:
     Size        noLine_;
     Size        noCol_;

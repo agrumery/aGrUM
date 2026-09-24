@@ -81,7 +81,7 @@ namespace gum {
      * list.
      * @ingroup learning_group
      */
-    class PYGUM_SHARED_PUBLIC StructuralConstraintTabuList:
+    class GUM_PUBLIC_BN StructuralConstraintTabuList:
         public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################

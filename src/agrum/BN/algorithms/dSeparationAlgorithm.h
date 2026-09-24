@@ -60,7 +60,7 @@ namespace gum {
    * @brief the d-separation algorithm as described in Koller & Friedman (2009)
    * @ingroup bn_inference
    */
-  class PYGUM_SHARED_PUBLIC dSeparationAlgorithm {
+  class GUM_PUBLIC_BN dSeparationAlgorithm {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

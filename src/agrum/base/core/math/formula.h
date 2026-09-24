@@ -290,7 +290,7 @@ namespace gum {
    *
    * @warning Checking is only done when evaluating the formula !
    */
-  class PYGUM_SHARED_PUBLIC Formula {
+  class GUM_SHARED_PUBLIC Formula {
     friend class gum::formula::Parser;
 
     public:

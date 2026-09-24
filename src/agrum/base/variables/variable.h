@@ -78,7 +78,7 @@ namespace gum {
   /* ===========================================================================
    */
 
-  class PYGUM_SHARED_PUBLIC Variable {
+  class GUM_SHARED_PUBLIC Variable {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

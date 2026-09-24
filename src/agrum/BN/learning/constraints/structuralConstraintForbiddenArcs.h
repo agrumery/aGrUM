@@ -61,7 +61,7 @@ namespace gum {
      * during structure learning
      * @ingroup learning_group
      */
-    class PYGUM_SHARED_PUBLIC StructuralConstraintForbiddenArcs:
+    class GUM_PUBLIC_BN StructuralConstraintForbiddenArcs:
         public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################

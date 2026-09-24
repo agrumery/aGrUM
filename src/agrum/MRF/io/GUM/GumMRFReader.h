@@ -111,7 +111,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumMRFReader< double >;
+  extern template class GUM_PUBLIC_MRF GumMRFReader< double >;
 #endif
 } /* namespace gum */
 

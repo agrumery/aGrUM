@@ -75,7 +75,7 @@ namespace gum {
    *
    * An interface for configuration of approximation scheme.
    */
-  class PYGUM_SHARED_PUBLIC IApproximationSchemeConfiguration {
+  class GUM_SHARED_PUBLIC IApproximationSchemeConfiguration {
     public:
     /// Progression, error and time.
     Signaler< Size, double, double > onProgress;

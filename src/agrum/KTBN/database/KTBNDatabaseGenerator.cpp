@@ -49,5 +49,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::learning::KTBNDatabaseGenerator< double >;
+template class GUM_PUBLIC_KTBN gum::learning::KTBNDatabaseGenerator< double >;
 #endif

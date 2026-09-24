@@ -99,7 +99,7 @@ namespace gum {
    * @see operator<<(std::ostream&, const Instantiation&).
    */
 
-  class PYGUM_SHARED_PUBLIC Instantiation final: public MultiDimInterface {
+  class GUM_SHARED_PUBLIC Instantiation final: public MultiDimInterface {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -1236,7 +1236,7 @@ namespace gum {
   /**
    * @brief Print information of the instantiation in the stream.
    */
-  PYGUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const Instantiation&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const Instantiation&);
 
   /**
    * @brief Hash function for gum::Instantiation.

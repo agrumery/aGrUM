@@ -51,8 +51,8 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::Sequence< int >;
-template class PYGUM_SHARED_PUBLIC gum::Sequence< long >;
-template class PYGUM_SHARED_PUBLIC gum::Sequence< double >;
-template class PYGUM_SHARED_PUBLIC gum::Sequence< std::string >;
+template class GUM_SHARED_PUBLIC gum::Sequence< int >;
+template class GUM_SHARED_PUBLIC gum::Sequence< long >;
+template class GUM_SHARED_PUBLIC gum::Sequence< double >;
+template class GUM_SHARED_PUBLIC gum::Sequence< std::string >;
 #endif

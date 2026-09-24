@@ -63,7 +63,7 @@ namespace gum {
      * @headerfile DirichletPriorFromDatabase.h <agrum/base/database/DirichletPriorFromDatabase.h>
      * @ingroup learning_priors
      */
-    class PYGUM_SHARED_PUBLIC DirichletPriorFromDatabase: public Prior {
+    class GUM_SHARED_PUBLIC DirichletPriorFromDatabase: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

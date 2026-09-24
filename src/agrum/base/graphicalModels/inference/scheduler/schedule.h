@@ -76,7 +76,7 @@ namespace gum {
    * insert new operations into the schedule (at a specific location) and to
    * remove some operations.
    */
-  class PYGUM_SHARED_PUBLIC Schedule {
+  class GUM_SHARED_PUBLIC Schedule {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

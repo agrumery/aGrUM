@@ -73,7 +73,7 @@ namespace gum {
    *
    * @ingroup core
    */
-  class PYGUM_SHARED_PUBLIC SmallObjectAllocator {
+  class GUM_SHARED_PUBLIC SmallObjectAllocator {
     public:
     /**
      * @param The default size of chunck of memory.

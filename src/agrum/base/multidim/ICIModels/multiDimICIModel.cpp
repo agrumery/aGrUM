@@ -46,5 +46,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class PYGUM_SHARED_PUBLIC gum::MultiDimICIModel< double >;
+template class GUM_SHARED_PUBLIC gum::MultiDimICIModel< double >;
 #endif

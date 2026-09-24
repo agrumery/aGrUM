@@ -58,7 +58,7 @@ namespace gum::learning {
    * @brief the structural constraint for forbidding children for some nodes
    * @ingroup learning_group
    */
-  class PYGUM_SHARED_PUBLIC StructuralConstraintNoChildrenNodes:
+  class GUM_PUBLIC_BN StructuralConstraintNoChildrenNodes:
       public virtual StructuralConstraintEmpty {
     public:
     // ##########################################################################

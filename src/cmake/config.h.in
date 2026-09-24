@@ -112,44 +112,6 @@
 #  endif
 #endif
 
-// PYGUM_SHARED_PUBLIC tags BASE/BN symbols that pyAgrum leaf modules (PRM/CN/ID/MRF/CM)
-// need but that live in BASE/BN's own object files, embedded once into core _pyagrum
-// (see wrappers/pyagrum/CMakeLists.txt). Unlike PYGUM_PUBLIC (self-contained: producer
-// and only consumer are the same target), these symbols are declared by every consumer
-// via shared headers. On Windows (MSVC and MinGW alike), __declspec(dllexport) must
-// only be used by the TU that actually owns/defines the symbol (agrumBASE/agrumBN, see
-// PYGUM_SHARED_EXPORTING in src/cmake/Modules.agrum.cmake) -- every other TU that
-// includes the same header must see dllimport instead, or the linker emits its own
-// local dllexport'd definition too, producing a duplicate-symbol link error (LNK2005
-// on MSVC) once linked against core's import library. GCC/Clang's visibility("default")
-// has no such asymmetry on genuine ELF/Mach-O targets: it only says "don't hide this
-// symbol", so no producer/consumer distinction is needed there -- but MinGW is a PE
-// target like MSVC (see the _WIN32 note above GUM_PUBLIC), so it needs the same
-// dllexport/dllimport split, not the ELF-only visibility attribute.
-//
-// The producer/consumer split only makes sense for pyAgrum builds (GUM_FOR_SWIG,
-// defined iff BUILD_PYTHON, CMakeLists.txt) -- that's the only context where BASE/BN
-// get embedded into one binary (core _pyagrum) while every other consumer is a
-// separately-linked .pyd. Plain aGrUM (BUILD_PYTHON=OFF) never defines
-// PYGUM_SHARED_EXPORTING anywhere, including on agrumBASE/agrumBN themselves, so
-// without this GUM_FOR_SWIG guard every tagged symbol -- even in the TU that defines
-// it -- would resolve to dllimport, producing MSVC C4273 ("inconsistent dll linkage")
-// on the very definition. Outside GUM_FOR_SWIG, fall back to plain dllexport (same as
-// GUM_PUBLIC): a single library, no cross-.pyd split, nothing to import from.
-#ifndef PYGUM_SHARED_PUBLIC
-#  if defined(_WIN32)
-#    if defined(GUM_FOR_SWIG) && !defined(PYGUM_SHARED_EXPORTING)
-#      define PYGUM_SHARED_PUBLIC __declspec(dllimport)
-#    else
-#      define PYGUM_SHARED_PUBLIC __declspec(dllexport)
-#    endif
-#  elif defined(__GNUC__) || defined(__clang__)
-#    define PYGUM_SHARED_PUBLIC __attribute__((visibility("default")))
-#  else
-#    define PYGUM_SHARED_PUBLIC
-#  endif
-#endif
-
 // GUM_PUBLIC_<MODULE> is the producer/consumer split for GUM_PUBLIC (pure aGrUM's
 // full public C++ API), one macro per module rather than
 // a single shared name. Unlike PYGUM_SHARED_PUBLIC/PYGUM_SHARED_EXPORTING (which
@@ -437,6 +399,64 @@
 #    define GUM_PUBLIC_CM __attribute__((visibility("default")))
 #  else
 #    define GUM_PUBLIC_CM
+#  endif
+#endif
+
+#ifndef GUM_PUBLIC_KTBN
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
+#    if defined(AGRUM_KTBN_EXPORTING)
+#      define GUM_PUBLIC_KTBN __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_KTBN __declspec(dllimport)
+#    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_KTBN
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_KTBN __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_KTBN
+#  endif
+#endif
+
+// GUM_COCOR_PUBLIC: generic export tag for the CoCo/R-generated Parser/Scanner
+// classes (base/core/cocoR/Parser.frame, Scanner.frame). The frame text is
+// identical for all 9 grammars, so it cannot itself reference a
+// module-specific GUM_PUBLIC_<MODULE> name; resolved here instead by
+// checking which AGRUM_<MODULE>_EXPORTING flag Modules.agrum.cmake set on
+// the CURRENT target (mutually exclusive: each agrum<MODULE> target gets
+// exactly its own flag) and aliasing to that module's own macro -- not
+// reinventing the dllexport/dllimport logic above. base/core/math's grammar
+// maps to GUM_SHARED_PUBLIC (BASE's own macro, now a real producer/consumer
+// split since BASE is no longer forced static under BUILD_PYTHON+
+// BUILD_SHARED_LIBS). Falls back to empty for any module without a CoCo/R
+// grammar (CN, ID, CM, KTBN).
+#ifndef GUM_COCOR_PUBLIC
+#  if defined(AGRUM_BASE_EXPORTING)
+#    define GUM_COCOR_PUBLIC GUM_SHARED_PUBLIC
+#  elif defined(AGRUM_BN_EXPORTING)
+#    define GUM_COCOR_PUBLIC GUM_PUBLIC_BN
+#  elif defined(AGRUM_PRM_EXPORTING)
+#    define GUM_COCOR_PUBLIC GUM_PUBLIC_PRM
+#  elif defined(AGRUM_MRF_EXPORTING)
+#    define GUM_COCOR_PUBLIC GUM_PUBLIC_MRF
+#  elif defined(AGRUM_FMDP_EXPORTING)
+#    define GUM_COCOR_PUBLIC GUM_PUBLIC_FMDP
+#  else
+#    define GUM_COCOR_PUBLIC
 #  endif
 #endif
 

@@ -118,7 +118,7 @@ namespace gum {
    * @endcode
    */
   /* ====================================================================== */
-  class PYGUM_SHARED_PUBLIC DAG: public DiGraph {
+  class GUM_SHARED_PUBLIC DAG: public DiGraph {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

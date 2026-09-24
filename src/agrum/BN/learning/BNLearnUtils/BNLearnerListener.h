@@ -84,7 +84,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class PYGUM_SHARED_PUBLIC BNLearnerListener: public ApproximationSchemeListener {
+    class GUM_PUBLIC_BN BNLearnerListener: public ApproximationSchemeListener {
       public:
       BNLearnerListener(IBNLearner* bnl, ApproximationScheme& sch);
       ~BNLearnerListener() override;

@@ -2652,15 +2652,15 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class PYGUM_SHARED_PUBLIC HashTableIterator< int, int >;
-  extern template class PYGUM_SHARED_PUBLIC HashTableConstIterator< int, int >;
-  extern template class PYGUM_SHARED_PUBLIC HashTableIteratorSafe< int, int >;
-  extern template class PYGUM_SHARED_PUBLIC HashTableConstIteratorSafe< int, int >;
+  extern template class GUM_SHARED_PUBLIC HashTableIterator< int, int >;
+  extern template class GUM_SHARED_PUBLIC HashTableConstIterator< int, int >;
+  extern template class GUM_SHARED_PUBLIC HashTableIteratorSafe< int, int >;
+  extern template class GUM_SHARED_PUBLIC HashTableConstIteratorSafe< int, int >;
 #  endif
-  extern PYGUM_SHARED_PUBLIC const HashTableIterator< int, int > _static_HashTable_end_;
-  extern PYGUM_SHARED_PUBLIC const HashTableConstIterator< int, int > _static_HashTable_cend_;
-  extern PYGUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
-  extern PYGUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >
+  extern GUM_SHARED_PUBLIC const HashTableIterator< int, int > _static_HashTable_end_;
+  extern GUM_SHARED_PUBLIC const HashTableConstIterator< int, int > _static_HashTable_cend_;
+  extern GUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
+  extern GUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >
                                    _static_HashTable_cend_safe_;
 
   inline const void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
@@ -2672,10 +2672,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class PYGUM_SHARED_PUBLIC gum::HashTable< int, int >;
-extern template class PYGUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
-extern template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
-extern template class PYGUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
+extern template class GUM_SHARED_PUBLIC gum::HashTable< int, int >;
+extern template class GUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
+extern template class GUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
+extern template class GUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
 #endif
 
 

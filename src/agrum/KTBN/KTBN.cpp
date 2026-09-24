@@ -50,5 +50,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::KTBN< double >;
+template class GUM_PUBLIC_KTBN gum::KTBN< double >;
 #endif

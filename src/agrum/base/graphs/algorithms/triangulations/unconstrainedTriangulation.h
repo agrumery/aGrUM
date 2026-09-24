@@ -61,7 +61,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class PYGUM_SHARED_PUBLIC UnconstrainedTriangulation: public StaticTriangulation {
+  class GUM_SHARED_PUBLIC UnconstrainedTriangulation: public StaticTriangulation {
     public:
     // ############################################################################
     /// @name Accessors / Modifiers
